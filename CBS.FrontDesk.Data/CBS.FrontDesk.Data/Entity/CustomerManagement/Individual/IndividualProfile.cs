@@ -42,6 +42,31 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public decimal TotalSubcriptionAmount { get; set; }
         public string EventName { get; set; }
     }
+    public class CustomerLightDto
+    {
+        public string CustomerId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string FullName { get; set; }
+        public string Matricule { get; set; }
+        public string CustomerType { get; set; }
+        public string MobileLoginId { get; set; }
+        public string LegalForm { get; set; }
+        public string MembershipApprovalStatus { get; set; }
+        public string Gender { get; set; }
+        public string Phone { get; set; }
+        public string BranchId { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+        public string BankId { get; set; }
+        public string Language { get; set; }
+        public bool Active { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string AccountConfirmationNumber { get; set; }
+
+
+
+    }
 
     public class IndividualProfile
     {

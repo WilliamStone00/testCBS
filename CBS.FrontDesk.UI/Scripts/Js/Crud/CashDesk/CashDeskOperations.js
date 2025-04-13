@@ -163,56 +163,56 @@ function validateTotalAmount(total, totalNotes) {
 
     return true;
 }
-function collectDeposits() {
-    var deposits = [];
+//function collectDeposits() {
+//    var deposits = [];
 
-    var alphaNumber = $('#CustomerAlphaNumber').val();
-    var customerId = $('#customerId').val();
-    var operationType = $('#OperationType').val();
-    var checkName = $('#CheckName')?.val() || '';
-    var checkNumber = $('#CheckNumber')?.val() || '';
-    var note = $('#Note')?.val() || '';
+//    var alphaNumber = $('#CustomerAlphaNumber').val();
+//    var customerId = $('#customerId').val();
+//    var operationType = $('#OperationType').val();
+//    var checkName = $('#CheckName')?.val() || '';
+//    var checkNumber = $('#CheckNumber')?.val() || '';
+//    var note = $('#Note')?.val() || '';
 
-    $('#myDataTableT tbody tr').each(function () {
-        if ($(this).find('.form-check-input').prop('checked')) {
-            var deposit = {};
+//    $('#myDataTableT tbody tr').each(function () {
+//        if ($(this).find('.form-check-input').prop('checked')) {
+//            var deposit = {};
 
-            deposit.AccountNumber = $(this).find('td:eq(0)').text().trim();
-            deposit.AccountType = $(this).find('td:eq(1)').text().trim();
-            deposit.Balance = parseFloat($(this).find('td:eq(2)').text()) || 0;
+//            deposit.AccountNumber = $(this).find('td:eq(0)').text().trim();
+//            deposit.AccountType = $(this).find('td:eq(1)').text().trim();
+//            deposit.Balance = parseFloat($(this).find('td:eq(2)').text()) || 0;
 
-            deposit.Amount = parseFloat($(this).find('.amount-input').val()) || 0;
-            deposit.Fee = parseFloat($(this).find('.fee-input').val()) || 0;
-            deposit.Penalty = parseFloat($(this).find('.penalty-input')?.val()) || 0;
-            deposit.Interest = parseFloat($(this).find('.interest-input')?.val()) || 0;
-            deposit.Total = parseFloat($(this).find('.total-span').text()) || 0;
+//            deposit.Amount = parseFloat($(this).find('.amount-input').val()) || 0;
+//            deposit.Fee = parseFloat($(this).find('.fee-input').val()) || 0;
+//            deposit.Penalty = parseFloat($(this).find('.penalty-input')?.val()) || 0;
+//            deposit.Interest = parseFloat($(this).find('.interest-input')?.val()) || 0;
+//            deposit.Total = parseFloat($(this).find('.total-span').text()) || 0;
 
-            deposit.Note = note;
-            deposit.CheckName = checkName;
-            deposit.CheckNumber = checkNumber;
+//            deposit.Note = note;
+//            deposit.CheckName = checkName;
+//            deposit.CheckNumber = checkNumber;
 
-            deposit.CustomerAlphaNumber = alphaNumber;
-            deposit.CustomerId = customerId;
-            deposit.OperationType = operationType;
+//            deposit.CustomerAlphaNumber = alphaNumber;
+//            deposit.CustomerId = customerId;
+//            deposit.OperationType = operationType;
 
-            deposit.isDepositDoneByAccountOwner = $(this).find('.form-check-input').prop('checked');
-            deposit.IsChargesInclussive = $(this).find('.check-inclussive').prop('checked');
+//            deposit.isDepositDoneByAccountOwner = $(this).find('.form-check-input').prop('checked');
+//            deposit.IsChargesInclussive = $(this).find('.check-inclussive').prop('checked');
 
-            deposit.IsSWS = true;
-            deposit.PaymentMethod = 'Cash';
-            deposit.PaymentChannel = 'Web_Portal';
+//            deposit.IsSWS = true;
+//            deposit.PaymentMethod = 'Cash';
+//            deposit.PaymentChannel = 'Web_Portal';
 
-            // Optional fields if present
-            deposit.LoanApplicationId = $(this).find('.loan-application-id')?.val() || '';
-            deposit.Period = $(this).find('.period')?.val() || '';
+//            // Optional fields if present
+//            deposit.LoanApplicationId = $(this).find('.loan-application-id')?.val() || '';
+//            deposit.Period = $(this).find('.period')?.val() || '';
 
-            deposits.push(deposit);
-        }
-    });
+//            deposits.push(deposit);
+//        }
+//    });
 
-    console.log("Collected Deposits:", deposits); // Debug output
-    return deposits;
-}
+//    console.log("Collected Deposits:", deposits); // Debug output
+//    return deposits;
+//}
 
 
 //function collectDeposits() {
@@ -248,6 +248,62 @@ function collectDeposits() {
 
 //    return deposits;
 //}
+function collectDeposits() {
+    var deposits = [];
+
+    var alphaNumber = $('#CustomerAlphaNumber').val();
+    var customerId = $('#customerId').val();
+    var operationType = $('#OperationType').val();
+    var checkName = $('#CheckName')?.val() || '';
+    var checkNumber = $('#CheckNumber')?.val() || '';
+    var note = $('#Note')?.val() || '';
+
+    // ✅ Capture the global calculated VAT from the footer element
+    var globalVat = parseFloat($('#calculatedVat').text().replace(/,/g, '')) || 0;
+
+    $('#myDataTableT tbody tr').each(function () {
+        if ($(this).find('.form-check-input').prop('checked')) {
+            var deposit = {};
+
+            deposit.AccountNumber = $(this).find('td:eq(0)').text().trim();
+            deposit.AccountType = $(this).find('td:eq(1)').text().trim();
+            deposit.Balance = parseFloat($(this).find('td:eq(2)').text()) || 0;
+
+            deposit.Amount = parseFloat($(this).find('.amount-input').val()) || 0;
+            deposit.Fee = parseFloat($(this).find('.fee-input').val()) || 0;
+            deposit.Penalty = parseFloat($(this).find('.penalty-input')?.val()) || 0;
+            deposit.Interest = parseFloat($(this).find('.interest-input')?.val()) || 0;
+            deposit.Total = parseFloat($(this).find('.total-span').text()) || 0;
+
+            deposit.Note = note;
+            deposit.CheckName = checkName;
+            deposit.CheckNumber = checkNumber;
+
+            deposit.CustomerAlphaNumber = alphaNumber;
+            deposit.CustomerId = customerId;
+            deposit.OperationType = operationType;
+
+            deposit.isDepositDoneByAccountOwner = $(this).find('.form-check-input').prop('checked');
+            deposit.IsChargesInclussive = $(this).find('.check-inclussive').prop('checked');
+
+            deposit.IsSWS = true;
+            deposit.PaymentMethod = 'Cash';
+            deposit.PaymentChannel = 'Web_Portal';
+
+            // Optional fields if present
+            deposit.LoanApplicationId = $(this).find('.loan-application-id')?.val() || '';
+            deposit.Period = $(this).find('.period')?.val() || '';
+
+            // ✅ Add captured VAT
+            deposit.Vat = globalVat;
+
+            deposits.push(deposit);
+        }
+    });
+
+    console.log("✅ Collected Deposits with VAT:", deposits);
+    return deposits;
+}
 
 function collectCurrencyNotes() {
     return {
@@ -627,7 +683,7 @@ function GetMemberData(Key, partialView, divToloadPV, path) {
         spanElement.innerText = "CASH OPERATIONS";
         spanElement.style.color = "blue"; // Default color for other paths
     }
-    
+
     AddORUpdateGen(Key, divToloadPV, partialView, path, "CashDesk");
     //calculateBalance();
 }
@@ -796,56 +852,145 @@ function updateTotal() {
 }
 
 // Function to apply the payment values from the modal to the table row
-function applyPayment() {
-    var loanId = document.getElementById('modalLoanId').value;
-    var amount = parseFloat(document.getElementById('modalAmount').value) || 0;
-    var interest = parseFloat(document.getElementById('modalInterest').value) || 0;
-    var penalty = parseFloat(document.getElementById('modalPenalty').value) || 0;
+//function applyPayment() {
+//    var loanId = document.getElementById('modalLoanId').value;
+//    var amount = parseFloat(document.getElementById('modalAmount').value) || 0;
+//    var interest = parseFloat(document.getElementById('modalInterest').value) || 0;
+//    var penalty = parseFloat(document.getElementById('modalPenalty').value) || 0;
 
-    // Update the row with the values entered from the modal
-    var capitalInput = document.getElementById('capital-' + loanId);
-    var interestInput = document.getElementById('interest-' + loanId);
-    var penaltyInput = document.getElementById('penalty-' + loanId);
-    var totalSpan = document.getElementById('total-' + loanId);
+//    // Update the row with the values entered from the modal
+//    var capitalInput = document.getElementById('capital-' + loanId);
+//    var interestInput = document.getElementById('interest-' + loanId);
+//    var penaltyInput = document.getElementById('penalty-' + loanId);
+//    var totalSpan = document.getElementById('total-' + loanId);
 
-    // Check if elements are found
-    if (!capitalInput || !interestInput || !penaltyInput || !totalSpan) {
-        console.error("One or more elements not found. Check your IDs and ensure they match.");
-        return;
+//    // Check if elements are found
+//    if (!capitalInput || !interestInput || !penaltyInput || !totalSpan) {
+//        console.error("One or more elements not found. Check your IDs and ensure they match.");
+//        return;
+//    }
+
+//    // Update the row with entered values
+//    capitalInput.value = amount;
+//    interestInput.value = interest;
+//    penaltyInput.value = penalty;
+
+//    // Calculate total (capital + interest + penalty)
+//    var total = amount + interest + penalty;
+//    totalSpan.innerText = total;
+//    calculateTableTotal();
+//    // Calculate VAT based on the entered interest
+//    //calculateVat(interestInput, selectedVatRate);
+
+//    // Close the modal
+//    var paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+//    paymentModal.hide();
+//}
+//function calculateTableTotal() {
+//    let total = 0;
+//    let totalVat = 0;
+
+//    // Sum all visible row totals (capital + interest + penalty)
+//    $('.total-span').each(function () {
+//        total += parseFloat($(this).text()) || 0;
+//    });
+
+//    // Sum all VATs from hidden inputs or inputs with class 'vat-input'
+//    $('.vat-input').each(function () {
+//        totalVat += parseFloat($(this).value || $(this).val()) || 0;
+//    });
+
+//    // Grand total includes VAT
+//    const grandTotal = total + totalVat;
+
+//    // Display total VAT in footer
+//    $('#calculatedVat').text(totalVat.toLocaleString('en-US'));
+
+//    // Compute and display balance
+//    const totalNotes = parseFloat($("#totalNoteAmount").val()) || 0;
+//    const balance = totalNotes - grandTotal;
+//    $('#tableBalance').text(balance.toLocaleString('en-US'));
+
+//    // Color balance if negative
+//    $('#tableBalance').toggleClass('text-danger', balance < 0);
+
+//    // Set comparison icon
+//    $('#tableTotal .total-icon').remove();
+//    let iconClass = '', iconColor = '';
+//    if (grandTotal === totalNotes) {
+//        iconClass = 'fas fa-check-circle'; iconColor = 'text-success';
+//    } else if (grandTotal < totalNotes) {
+//        iconClass = 'fas fa-exclamation-circle'; iconColor = 'text-warning';
+//    } else {
+//        iconClass = 'fas fa-times-circle'; iconColor = 'text-danger';
+//    }
+
+//    // Display total with icon
+//    $('#tableTotal').html(`<span>${grandTotal.toLocaleString('en-US')}</span> <i class="${iconClass} total-icon ${iconColor}"></i>`);
+
+//    // Enable/disable button
+//    $('#submit').prop('disabled', grandTotal !== totalNotes);
+//}
+
+var vatMap = {};
+
+function previewVat(loanId, interestValue, vatRate, loanAmount) {
+    var interestAmount = parseFloat(interestValue) || 0;
+    var vat = 0;
+
+    // Only apply VAT if loan amount >= 2,000,000
+    if (parseFloat(loanAmount) >= 2000000) {
+        vat = Math.round(interestAmount * (parseFloat(vatRate) / 100));
     }
 
-    // Update the row with entered values
-    capitalInput.value = amount;
-    interestInput.value = interest;
-    penaltyInput.value = penalty;
+    // Store VAT per loan
+    vatMap[loanId] = {
+        original: interestAmount,
+        vat: vat
+    };
 
-    // Calculate total (capital + interest + penalty)
-    var total = amount + interest + penalty;
-    totalSpan.innerText = total;
-    calculateTableTotal();
-    // Calculate VAT based on the entered interest
-    calculateVat(interestInput, selectedVatRate);
+    // Recalculate and update total VAT in footer
+    let totalVat = 0;
+    for (const key in vatMap) {
+        if (vatMap.hasOwnProperty(key)) {
+            totalVat += vatMap[key].vat || 0;
+        }
+    }
 
-    // Close the modal
-    var paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
-    paymentModal.hide();
+    const vatFooter = document.getElementById("calculatedVat");
+    if (vatFooter) {
+        vatFooter.innerText = totalVat.toLocaleString('en-US', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
+    }
+}
+
+
+function applyVatAdjustment(loanId) {
+    const interestInput = document.getElementById("interest-" + loanId);
+    if (!interestInput || !vatMap[loanId]) return;
+
+    const { original, vat } = vatMap[loanId];
+    const netInterest = Math.round(original - vat);
+    interestInput.value = netInterest.toFixed(0);
 }
 
 
 // VAT calculation function
-function calculateVat(interestInput, vatRate) {
-    // Parse the interest value from the input
-    var interest = parseFloat(interestInput.value) || 0;
+//function calculateVat(interestInput, vatRate) {
+//    // Parse the interest value from the input
+//    var interest = parseFloat(interestInput.value) || 0;
 
-    // Calculate VAT based on the vatRate
-    var vat = interest * vatRate / 100;
+//    // Calculate VAT based on the vatRate
+//    var vat = interest * vatRate / 100;
 
-    // Format VAT with thousands separators and two decimal places
-    var formattedVat = vat.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+//    // Format VAT with thousands separators and two decimal places
+//    var formattedVat = vat.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
-    // Display the formatted VAT amount
-    document.getElementById('calculatedVat').innerText = `${formattedVat}`;
-}
+//    // Display the formatted VAT amount
+//    document.getElementById('calculatedVat').innerText = `${formattedVat}`;
+//}
 
 // Function to open the loan details modal and populate it with data
 

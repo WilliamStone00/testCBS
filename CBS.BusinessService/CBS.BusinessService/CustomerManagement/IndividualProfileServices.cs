@@ -21,6 +21,8 @@ using Newtonsoft.Json;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
+using CBS.FrontDesk.Data.Entity.CMoney;
+using CBS.BusinessService.Session;
 
 namespace CBS.BusinessService.CustomerManagement
 {
@@ -32,14 +34,14 @@ namespace CBS.BusinessService.CustomerManagement
         private readonly ApiCallerHelper _bankConfigApiHelper;
         private readonly ApiCallerHelper _transactionApiHelper;
         private readonly ApiCallerHelper _identityServerBaseUrl;
-
+        private readonly LocationAggregateService _locationAggregateService;
         private readonly BranchServices _branchServices;
         private readonly BankServices _bankServices;
 
         private readonly MemberAccountActivationServices _memberAccountActivationServices;
         private readonly MemberAccountActivationPolicyServices _memberAccountActivationPolicyServices;
 
-        public IndividualProfileServices(BranchServices branchServices = null, MemberAccountActivationServices memberAccountActivationServices = null, MemberAccountActivationPolicyServices memberAccountActivationPolicyServices = null, BankServices bankServices = null)
+        public IndividualProfileServices(BranchServices branchServices = null, MemberAccountActivationServices memberAccountActivationServices = null, MemberAccountActivationPolicyServices memberAccountActivationPolicyServices = null, BankServices bankServices = null, LocationAggregateService locationAggregateService = null)
         {
             _customerApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["CustomerBaseUrl"].ToString());
             //_bankConfigApiHelper = new ApiCallerHelper("https://localhost:7085/");
@@ -50,6 +52,7 @@ namespace CBS.BusinessService.CustomerManagement
             _memberAccountActivationServices = memberAccountActivationServices;
             _memberAccountActivationPolicyServices = memberAccountActivationPolicyServices;
             _bankServices = bankServices;
+            _locationAggregateService=locationAggregateService;
         }
         public async Task<ExecutionMessages> UploadFiles(CustomerDocumentRequest documentRequest)
         {
@@ -186,7 +189,69 @@ namespace CBS.BusinessService.CustomerManagement
 
             return dataTable;
         }
+        public List<CustomerLightDto> MapToDtoOrdered(List<CustomerLightDto> entities, List<Branch> branches)
+        {
+            if (entities == null) return new List<CustomerLightDto>();
 
+            return entities
+                .Select(x =>
+                {
+                    var branch = branches.FirstOrDefault(b => b.Id == x.BranchId);
+
+                    return new CustomerLightDto
+                    {
+                        CustomerId = x.CustomerId,
+                        FirstName = x.FirstName,
+                        LastName = x.LastName,
+                        FullName = $"{x.FirstName} {x.LastName}",
+                        Matricule = x.Matricule,
+                        MobileLoginId = x.MobileLoginId,
+                        LegalForm = x.LegalForm,
+                        MembershipApprovalStatus = x.MembershipApprovalStatus,
+                        Gender = x.Gender,  CustomerType=x.CustomerType,
+                        Phone = x.Phone,
+                        BranchId = x.BranchId,
+                        BranchName = branch?.Name ?? "Unknown",
+                        BranchCode = branch?.BranchCode ?? "N/A",
+                        BankId = x.BankId,
+                        Language = x.Language,
+                        Active = x.Active,
+                        CreateDate = x.CreateDate,
+                        AccountConfirmationNumber = x.AccountConfirmationNumber
+                    };
+                })
+                .ToList();
+        }
+
+
+        public async Task<CustomDataTable> GetDataTableAsync(GetCustomersForDataTableQuery customersForDataTableQuery)
+        {
+            
+            if (!IsHeadOffice())
+            {
+                customersForDataTableQuery.BranchId=GetBranchID();
+            }
+            // Make API call to fetch the DataTable result
+            var couApiResponse = await _customerApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                APICallHelper.MembersDatatableQuery,
+                customersForDataTableQuery
+            );
+
+            // Return response if successful
+            if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+            {
+                return couApiResponse.ApiResponseData.Data;
+            }
+
+            // Return an empty DataTable if the request fails
+            return new CustomDataTable(
+                draw: Convert.ToInt32(customersForDataTableQuery.Options.draw),
+                recordsTotal: 0,
+                recordsFiltered: 0,
+                data: new List<object>(), // No data
+                dataTableOptions: customersForDataTableQuery.Options
+            );
+        }
 
         public async Task<IEnumerable<IndividualProfile>> GetMembers(PagginationResource resource)
         {
@@ -259,13 +324,15 @@ namespace CBS.BusinessService.CustomerManagement
                     Logo = bank.LogoUrl,
 
                     // Head Office details
-                    HeadOfficeName = bank.Name, 
+                    HeadOfficeName = bank.Name,
                     HeadOfficeAddress = bank.Address,
                     HeadOfficeTelephone = bank.Telephone,
                     HeadOfficeEmail = bank.Email,
                     HeadOfficeWebSite = bank.WebSite,
                     HeadOfficeInitial = bank.BankInitial,
-                    HeadOfficeCode = bank.BankCode, AccountConfirmationNumber=c.AccountConfirmationNumber, Matricule=c.Matricule
+                    HeadOfficeCode = bank.BankCode,
+                    AccountConfirmationNumber=c.AccountConfirmationNumber,
+                    Matricule=c.Matricule
                 };
             }).ToList();
         }
@@ -289,7 +356,7 @@ namespace CBS.BusinessService.CustomerManagement
             try
             {
 
-                var individuals=await GetMemberByCustomerType(memberCategory);
+                var individuals = await GetMemberByCustomerType(memberCategory);
                 var stringValuesList = individuals
                          .Select(x => new StringValues($"[{x.CustomerId}] [{x.FirstName} {x.LastName}]", x.CustomerId))
                          .ToList();
@@ -439,6 +506,14 @@ namespace CBS.BusinessService.CustomerManagement
                 Language = a.Language,
                 MaritalStatus = a.MaritalStatus,
                 Occupation = a.Occupation,
+                FAddress=a.FAddress,
+                FName=a.FName,
+                FOccupation=a.FOccupation,
+                FPhone=a.FPhone,
+                MAddress=a.MAddress,
+                MName=a.MName,
+                MOccupation=a.MOccupation,
+                MPhone=a.MPhone,
                 POBox = a.POBox,
                 MembershipAllocatedNumber = a.MembershipAllocatedNumber,
                 MembershipApplicantDate = a.MembershipApplicantDate,
@@ -627,16 +702,12 @@ namespace CBS.BusinessService.CustomerManagement
             try
             {
 
-                //bool exists = SessionHelper.Exists("aggregates");
-                //if (exists)
-                //{
-                //    return SessionHelper.Retrieve<Aggregrate>("aggregates");
-                //}
 
-                var subscriptionAggregatesResponse = await _bankConfigApiHelper.GetAsync<ResponseObject<Aggregrate>>(APICallHelper.SubcriptionAggregates);
+               var subscriptionAggregatesResponse = await _bankConfigApiHelper.GetAsync<ResponseObject<Aggregrate>>(APICallHelper.SubcriptionAggregates);
                 if (subscriptionAggregatesResponse.IsSuccess)
                 {
                     var aggregates = subscriptionAggregatesResponse?.ApiResponseData.Data ?? new Aggregrate();
+                    await _locationAggregateService.GetOrLoadLocationDataAsync(aggregates);
                     var savingsResponse = await _transactionApiHelper.GetAsync<ResponseObject<List<SavingProduct>>>(APICallHelper.GetSavingProducts);
                     aggregates.Savings = savingsResponse?.ApiResponseData == null ? new List<SavingProduct>() : savingsResponse.ApiResponseData.Data.Where(x => !x.IsUsedForTellerProvisioning && x.ActiveStatus).ToList();
                     var customerDefaultEnum = await _customerApiHelper.GetAsync<ResponseObject<CustomerDefaultEnum>>(APICallHelper.GetCustomerDefaultEnums);

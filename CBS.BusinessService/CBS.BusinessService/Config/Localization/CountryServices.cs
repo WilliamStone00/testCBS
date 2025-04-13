@@ -28,7 +28,7 @@ namespace CBS.BusinessService.Config.Localization
             try
             {
                 var objCountry = await GetCountry(id);
-                var inResponse = await _bankConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_Country,id), id));
+                var inResponse = await _bankConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(APICallHelper.Get_Update_Delete_Country,id));
                 if (inResponse.IsSuccess)
                 {
 

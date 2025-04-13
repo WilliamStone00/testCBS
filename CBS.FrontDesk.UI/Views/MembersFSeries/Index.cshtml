@@ -1,18 +1,21 @@
 ﻿@{
-    ViewBag.Title = "Members - F2 & F5 Series";
+    ViewBag.Title = "Member Overall branches";
 }
+
 <div class="row">
     <div class="col-12">
-        <!-- Page Header -->
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-group-outline me-2"></i> F2 & F5 Members Reporting
+                    <i class="mdi mdi-account-group-outline me-2"></i> MEMBERS OVERVIEW FROM OVER ALL BRANCHES
                 </h1>
-                <p class="card-text text-muted">
+                <p class="card-text">
                     The F2 & F5 Series provides users with detailed insights into member situations regarding loan and account balances, movements, and account statements.
                     This report offers network-wide access, specifically limited to the <strong>@Session["BankName"]</strong>, and is strictly read-only.
                     A list of members is first displayed, where users can click on a member to view the F2 Series for detailed information.
+                </p>
+                <p class="card-text fw-bold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> Leverage the filters below to narrow results by gender, legal form, branch, registration date, or approval status. Use the export feature to extract reports for auditing or further analysis.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -20,70 +23,320 @@
     </div>
 </div>
 
-
-    <!-- Tips Section -->
-    <div class="card mb-1">
-        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-            <span><i class="mdi mdi-information-outline me-2"></i> IMPORTANT TIPS</span>
-            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
-                <i class="mdi mdi-chevron-down"></i>
-            </button>
-        </h6>
-        <div id="collapseTips" class="collapse">
-            <div class="card-body">
-                <ul>
-                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use the search bar to quickly find members by their account number, name, or phone number.</li>
-                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure you select the correct member to view their F2 Series for accurate insights.</li>
-                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Click on "View List" to load all members before performing specific searches.</li>
-                    <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Only authorized personnel are allowed to access this data as it is strictly read-only.</li>
-                    <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Ensure all interactions comply with the organization's data privacy policies.</li>
-                </ul>
-            </div>
+<!-- Tips Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR FILTERING MEMBERS EFFECTIVELY</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Filter by Branch:</strong> Easily segment members by operational branch.</li>
+                <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>Registration Dates:</strong> Filter by creation date or birth date to target specific demographics.</li>
+                <li><i class="mdi mdi-gender-male-female text-secondary me-2"></i> <strong>Gender & Marital Status:</strong> Analyze member breakdown across key attributes.</li>
+                <li><i class="mdi mdi-account-check-outline text-info me-2"></i> <strong>Approval & Legal Status:</strong> Filter approved members by legal form or type.</li>
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>Export:</strong> Export search results to Excel for reporting or recordkeeping.</li>
+            </ul>
         </div>
     </div>
+</div>
 
-    <div id="accordionMembers" class="accordion accordion-popout">
-        <div class="accordion-item active">
-            <h2 class="accordion-header" id="membersHeading">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#membersCollapse" aria-expanded="true" aria-controls="membersCollapse">
-                    <i class="mdi mdi-file-document me-2"></i> Members Overview - F2 & F5 Series
-                </button>
-            </h2>
-            <div id="membersCollapse" class="accordion-collapse collapse show" aria-labelledby="membersHeading" data-bs-parent="#accordionMembers">
-                <div class="accordion-body">
+<!-- Advanced Filters -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Member Filters</h5>
+    <form id="memberFilterForm">
+        <div class="card p-3 mb-3 bg-light">
+            <!-- Toggle switches for additional filters -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDemographics" onclick="document.getElementById('demographicFilters').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleDemographics">Show Demographic Filters</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleApproval" onclick="document.getElementById('approvalFilters').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleApproval">Show Approval & Legal Filters</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDates" onclick="document.getElementById('dateFilters').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleDates">Show Date Filters</label>
+                    </div>
+                </div>
+            </div>
 
-                    <div class="card mb-4 shadow">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0"><i class="mdi mdi-account-circle-outline"></i> Members Overview</h5>
-                            <button type="button" onclick="LoadMembers('All')" class="btn btn-label-primary">
-                                <i class="mdi mdi-view-list me-2"></i>View List
-                            </button>
-                        </div>
+            <!-- Default Filters -->
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Member Account Number</label>
+                    <input type="text" id="customerId" name="CustomerId" class="form-control" placeholder="Member Account/Temporal Number" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">First Name</label>
+                    <input type="text" id="firstName" name="FirstName" class="form-control" placeholder="First Name" />
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label fw-bold">Last Name</label>
+                    <input type="text" id="lastName" name="LastName" class="form-control" placeholder="Last Name" />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label class="form-label fw-bold">Branch</label>
+                    @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
+                </div>
+            </div>
+
+            <!-- Demographic Filters -->
+            <div id="demographicFilters" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Gender Or Groups</label>
+                        <select id="gender" name="Gender" class="form-select">
+                            <option value="">All</option>
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Male">Groups</option>
+                        </select>
+
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Marital Status</label>
+                        <select id="maritalStatus" name="MaritalStatus" class="form-select">
+                            <option value="">All</option>
+                            <option value="Divorced">Divorced</option>
+                            <option value="Married">Married</option>
+                            <option value="Single">Single</option>
+                            <option value="Widowed">Widowed</option>
+                        </select>
+
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Working Status</label>
+                        <select id="workingStatus" name="WorkingStatus" class="form-select">
+                            <option value="">All</option>
+                            <option value="Unemployed">Unemployed</option>
+                            <option value="Working">Working</option>
+                        </select>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Approval & Legal Filters -->
+            <div id="approvalFilters" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Membership Approval</label>
+                        <select id="membershipApprovalStatus" name="MembershipApprovalStatus" class="form-select">
+                            <option value="">All</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Pending">Awaits_Validation</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Legal Form</label>
+                        <select id="legalForm" name="LegalForm" class="form-select">
+                            <option value="">All</option>
+                            <option value="Moral_Person">Moral Person</option>
+                            <option value="Physical_Person">Physical Person</option>
+                        </select>
+
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Member's Profile</label>
+                        <select id="customerType" name="CustomerType" class="form-select">
+                            <option value="">All</option>
+                            <option value="AffiliateMemberSalaryAccount">Affiliate Member Salary (TMAA)</option>
+                            <option value="CivilServantsSalaryCollection">Civil Servants Salary (CSCA)</option>
+                            <option value="DailyCollection">Daily Collection (DCA)</option>
+                            <option value="DailySaver">Daily Saver (DSA)</option>
+                            <option value="MemberAccount">Member's Account (Serial number)</option>
+                            <option value="MobileMoneyMTN">Mobile Money MTN (MTCA)</option>
+                            <option value="MobileMoneyOrange">Mobile Money Orange (OMCA)</option>
+                            <option value="PreRegisteredMember">Pre-Registered Members (PRM)</option>
+                            <option value="PrivateInstitutionSalaryCollection">Private Institution Salary (PICA)</option>
+                            <option value="Remittance">Remittance (RMCA)</option>
+                            <option value="TemporalAccount">Temporal Account (TEMP)</option>
+                            <option value="UnknownSalaryMemberAccount">Temporal Salary For Member (TMSA)</option>
+                        </select>
+
+
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Age Category</label>
+                        <select id="ageCategoryStatus" name="AgeCategoryStatus" class="form-select">
+                            <option value="">All</option>
+                            <option value="Major">Major</option>
+                            <option value="Minor">Minor</option>
+                        </select>
                     </div>
 
-                    <!-- Search Bar -->
-                    <div class="card mb-4 shadow">
-                        <div class="card-body">
-                            <label for="manualSearchInput" class="form-label fw-bold">Search Members</label>
-                            <div class="input-group">
-                                <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="Search by account number, member's name, or phone number..." />
-                                <button class="btn btn-primary" onclick="manualSearch()">Search</button>
-                            </div>
-                            <small class="text-muted mt-2 d-block">Example: Enter "12345", "John Doe", or "0701234567" to find a member.</small>
-                        </div>
-                    </div>
+                </div>
+            </div>
 
-                    <!-- Members Data Listing -->
-                    <div id="datalistingview">
-                        @Html.Partial("_MembersData")
+            <!-- Date Filters -->
+            <div id="dateFilters" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Date of Birth (From)</label>
+                        <input type="date" id="dobFrom" name="DateOfBirthFrom" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Date of Birth (To)</label>
+                        <input type="date" id="dobTo" name="DateOfBirthTo" class="form-control" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Created From</label>
+                        <input type="date" id="createdFrom" name="CreatedFrom" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Created To</label>
+                        <input type="date" id="createdTo" name="CreatedTo" class="form-control" />
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
+                <button id="resetFilterBtn" type="reset" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+                <button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-excel"></i> Export</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    @Html.Partial("_MembersData")
+</div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    <script src="~/Scripts/Js/Crud/MembersFSeries/Members.js"></script>
+    @*<script src="~/Scripts/Js/Crud/MembersFSeries/Members.js"></script>*@
+    <script>
+        function loadMemberData() {
+            $('#myDataTable').DataTable({
+                serverSide: true,
+                destroy: true,
+                searching: false,
+                order: [[0, 'desc']],
+                ajax: {
+                    url: '/MembersFSeries/LoadMembersData',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        const filters = collectMemberExportParams();
+
+                        filters.options = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            skip: d.start,
+                            pageSize: d.length,
+                            searchValue: '',
+                            sortColumnName: d.columns[d.order[0].column].data,
+                            sortColumnDirection: d.order[0].dir
+                        };
+
+                        return JSON.stringify(filters);
+                    }
+                },
+                columns: [
+                    {
+                        data: 'CreateDate',
+                        name: 'CreateDate',
+                        render: function (data) {
+                            return moment(data).format('DD/MM/YYYY');
+                        }
+                    },
+                    { data: 'FullName', name: 'FullName' },
+                    { data: 'CustomerId', name: 'CustomerId' },
+                    { data: 'Phone', name: 'Phone' },
+                    {
+                        data: 'CustomerType', // important: this should match what you want to sort by
+                        name: 'CustomerType',
+                        render: function (data, type, row) {
+                            const label = CustomerType || '';
+                            const isApproved = row.MembershipApprovalStatus === 'Approved';
+                            const badgeClass = isApproved ? 'bg-primary' : 'bg-warning text-dark';
+                            return `<span class="badge ${badgeClass}">${label}</span>`;
+                        }
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        render: function (data, type, row) {
+                            return `<a href='/MembersFSeries/F2MembersGeneratSituation?KEY=${row.CustomerId}' target='_blank' class='btn btn-sm btn-info'>
+                                <i class="mdi mdi-account-circle"></i> Profile
+                            </a>`;
+                        }
+                    }
+                ]
+            });
+        }
+
+        function exportMemberData() {
+            const filters = collectMemberExportParams();
+            const params = new URLSearchParams(filters).toString();
+            window.location.href = `/MembersFSeries/DownloadMembers?${params}`;
+        }
+
+        function collectMemberExportParams() {
+            return {
+                CustomerId: $('#customerId').val(),
+                FirstName: $('#firstName').val(),
+                LastName: $('#lastName').val(),
+                BranchId: $('#branchId').val(),
+                Gender: $('#gender').val(),
+                MaritalStatus: $('#maritalStatus').val(),
+                WorkingStatus: $('#workingStatus').val(),
+                MembershipApprovalStatus: $('#membershipApprovalStatus').val(),
+                LegalForm: $('#legalForm').val(),
+                CustomerType: $('#customerType').val(),
+                AgeCategoryStatus: $('#ageCategoryStatus').val(),
+                DateOfBirthFrom: $('#dobFrom').val(),
+                DateOfBirthTo: $('#dobTo').val(),
+                CreatedFrom: $('#createdFrom').val(),
+                CreatedTo: $('#createdTo').val(),
+                ShowAll: false,
+                options: {}
+            };
+        }
+
+        function resetMemberFilters() {
+            $('#memberFilterForm').trigger('reset');
+            $('.select2').val('').trigger('change');
+            $('#demographicFilters, #approvalFilters, #dateFilters').addClass('d-none');
+            loadMemberData();
+        }
+
+        $(document).ready(function () {
+            loadMemberData();
+
+            $('#applyFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                loadMemberData();
+            });
+
+            $('#resetFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                resetMemberFilters();
+            });
+
+            $('#exportBtn').on('click', function (e) {
+                e.preventDefault();
+                exportMemberData();
+            });
+        });
+    </script>
 }

@@ -1,104 +1,91 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
-
+@{
+    var selectedSourceType = Model?.BulkDeposit?.OtherTransaction?.SourceType ?? "Cash_Collected";
+}
 @if (ViewBag.Operation == "income_expense")
 {
     <div class="form-wrapper">
         <fieldset class="fieldset-custom p-4">
-            <legend class="text-primary h5 mb-4">Other Cash-In</legend>
+            <legend class="text-primary h5 mb-4">💰 Other Cash-In</legend>
 
-            <div class="change-group">
+            <!-- 🔹 Source Type Selection -->
+            <div class="mb-4">
+                <label class="fw-semibold mb-2 d-block">Select Source</label>
+                <div class="form-check">
+                    @Html.RadioButton("BulkDeposit.OtherTransaction.SourceType", "Cash_Collected", true, new
+                    {
+                        @class = "form-check-input",
+                        id = "cashCollectionOption",
+                        @onclick = "toggleAccountDropdown()"
+                    })
+                    <label class="form-check-label" for="cashCollectionOption">Collect Cash</label>
+                </div>
+            </div>
 
+            <!-- 🔹 Event Item -->
+            <div class="mb-4">
+                <div class="form-floating shadow-sm">
+                    @Html.DropDownListFor(m => m.BulkDeposit.OtherTransaction.EventCode,
+                        new SelectList(ViewBag.EventCodes, "Value", "Text"),
+                        "---Select Event Item---",
+                        new { @class = "form-control select2", @id = "BulkDeposit_OtherTransaction_EventCode" })
+                    @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.EventCode, "", new { @class = "text-danger" })
+                    <label for="BulkDeposit_OtherTransaction_EventCode">Event Item</label>
+                </div>
+            </div>
 
-                <!-- Source Type Selection -->
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="form-check">
-                            @Html.RadioButtonFor(m => m.BulkDeposit.OtherTransaction.SourceType, "Member_Account", new { @class = "form-check-input", id = "memberAccountOption", @onclick = "toggleAccountDropdown()" })
-                            <label class="form-check-label" for="memberAccountOption">From member's account</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-check">
-                            @Html.RadioButtonFor(m => m.BulkDeposit.OtherTransaction.SourceType, "Cash_Collected", new { @class = "form-check-input", id = "cashCollectionOption", @onclick = "toggleAccountDropdown()" })
-                            <label class="form-check-label" for="cashCollectionOption">Collect cash</label>
-                        </div>
-                    </div>
+            <!-- 🔹 Member Name -->
+            <div class="mb-4">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.BulkDeposit.OtherTransaction.MemberName, new { @class = "form-control", @id = "Name" })
+                    @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.MemberName, "", new { @class = "text-danger" })
+                    <label for="Name">Name</label>
                 </div>
-                <!-- Search Member Reference -->
-                <div class="row mb-3 align-items-center">
-                    <div class="col-md-6">
-                        <div class="input-group shadow-sm">
-                            <input type="text" id="manualSearchInput" class="form-control" placeholder="Enter member's reference number">
-                            <button class="btn btn-outline-primary" type="button" id="manualSearchInputbutton" onclick="LoadMembersAccounts('account_number')">Search</button>
-                        </div>
-                    </div>
-                    <div class="col-md-6 text-end">
-                        <span class="formatted-amount shadow-box fw-bold" id="lblDepositRequest_amount">Total amount: 0.0</span>
-                        <input type="hidden" id="totalNoteAmount" value="0">
-                    </div>
-                </div>
+            </div>
 
-                <hr />
-                <!-- Event Item Selection -->
-                <div class="row mb-3">
-                    <div class="col-md-12">
-                        <div class="form-floating shadow-sm">
-                            @Html.DropDownListFor(m => m.BulkDeposit.OtherTransaction.EventCode, new SelectList(ViewBag.EventCodes, "Value", "Text"), "---Select Event Item---", new { @class = "form-control select2", @id = "BulkDeposit_OtherTransaction_EventCode" })
-                            @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.EventCode, "", new { @class = "text-danger" })
-                            <label for="BulkDeposit_OtherTransaction_EventCode">Event Item</label>
-                        </div>
-                    </div>
+            <!-- 🔹 Narration -->
+            <div class="mb-4">
+                <div class="form-floating shadow-sm">
+                    @Html.TextAreaFor(m => m.BulkDeposit.OtherTransaction.Narration,
+                        new { @class = "form-control", style = "height: 80px;", @id = "DepositerNote" })
+                    @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.Narration, "", new { @class = "text-danger" })
+                    <label for="DepositerNote">Narration / Description</label>
                 </div>
+            </div>
 
-                <!-- Account and Member Information -->
-                <div class="row mb-3">
-                    <div class="col-md-8" id="memberAccountDropdown">
-                        <div class="form-floating shadow-sm">
-                            @Html.DropDownListFor(m => m.BulkDeposit.OtherTransaction.AccountNumber, new SelectList(ViewBag.MemberAccounts, "Value", "Text"), "---Member's account---", new { @class = "form-control select2", @id = "account_number" })
-                            @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.AccountNumber, "", new { @class = "text-danger" })
-                            <label for="account_number">Select Account</label>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-floating shadow-sm">
-                            @Html.TextBoxFor(m => m.BulkDeposit.OtherTransaction.MemberName, new { @class = "form-control", @id = "Name" })
-                            @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.MemberName, "", new { @class = "text-danger" })
-                            <label for="Name">Individual Name</label>
-                        </div>
-                    </div>
+            <!-- 🔹 Summary Display -->
+            <div class="row mb-4">
+                <div class="col-md-6"></div>
+                <div class="col-md-6 text-end">
+                    <span class="formatted-amount shadow-box fw-bold" id="lblDepositRequest_amount">
+                        Total amount: 0.0
+                    </span>
+                    <input type="hidden" id="totalNoteAmount" value="0" />
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-12">
-                        <div class="form-floating form-floating-outline">
-                            @Html.TextAreaFor(m => m.BulkDeposit.OtherTransaction.Narration, new { @class = "form-control", @style = "height: 80px;", @id = "DepositerNote" })
-                            @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.Narration, "", new { @class = "text-danger " })
-                            <label for="formValidationDob">Naration or Description</label>
-                        </div>
-                    </div>
-                </div>
-                    <!-- Include Partial for Non-Member Payment -->
-                    @Html.Partial("_NoneMemberPayment")
+            </div>
 
-                    <!-- Action Buttons -->
-                    <div class="d-flex justify-content-end mt-4">
-                        <input type="hidden" name="OperationType" value="OtherCashIn" id="OperationType">
-                        <input type="hidden" name="customerId" value="" id="customerId">
-                        <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostOtherCashIn()">
-                            <i class="fas fa-save me-1"></i> Post
-                        </button>
-                        <button type="button" id="reprint" class="btn btn-secondary me-2" onclick="Reprint()">
-                            <i class="fas fa-print me-1"></i> Re-print
-                        </button>
-                        <button type="reset" class="btn btn-outline-secondary">
-                            <i class="fas fa-sync-alt me-1"></i> Reset
-                        </button>
-                    </div>
-                </div>
-</fieldset>
+            <!-- 🔹 Include Non-Member Payment Info -->
+            @Html.Partial("_NoneMemberPayment")
+
+            <!-- 🔹 Action Buttons -->
+            <div class="d-flex justify-content-end mt-4">
+                <input type="hidden" name="OperationType" value="OtherCashIn" id="OperationType" />
+                <input type="hidden" name="customerId" value="" id="customerId" />
+
+                <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostOtherCashIn()">
+                    <i class="fas fa-save me-1"></i> Post
+                </button>
+                <button type="button" id="reprint" class="btn btn-secondary me-2" onclick="Reprint()">
+                    <i class="fas fa-print me-1"></i> Re-print
+                </button>
+                <button type="reset" class="btn btn-outline-secondary">
+                    <i class="fas fa-sync-alt me-1"></i> Reset
+                </button>
+            </div>
+        </fieldset>
     </div>
-
-
 }
+
 else if (ViewBag.Operation == "transfer_non_member")
 {
     <div class="form-wrapper">

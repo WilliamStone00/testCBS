@@ -134,5 +134,111 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(document).ready(function () {
+        // Log version check
+        console.log("📦 Cascading Location Dropdowns Initialized");
+
+        $('#CountryId').on('change', function () {
+            const countryId = $(this).val();
+            console.log("🌍 Country selected:", countryId);
+            resetDropdowns(['#RegionId', '#DivisionId', '#SubDivisionId', '#TownId']);
+
+            if (!countryId) return;
+
+            $('#RegionId').append('<option>Loading...</option>');
+
+            $.getJSON('/Individual/GetRegionsByCountry', { countryId: countryId })
+                .done(function (data) {
+                    populateDropdown('#RegionId', data, '---Select Region---');
+                })
+                .fail(function (xhr, status, error) {
+                    console.error("❌ Error loading regions:", error);
+                    populateDropdown('#RegionId', [], 'Error loading regions');
+                });
+        });
+
+        $('#RegionId').on('change', function () {
+            const regionId = $(this).val();
+            console.log("📍 Region selected:", regionId);
+            resetDropdowns(['#DivisionId', '#SubDivisionId', '#TownId']);
+
+            if (!regionId) return;
+
+            $('#DivisionId').append('<option>Loading...</option>');
+
+            $.getJSON('/Individual/GetDivisionsByRegion', { regionId: regionId })
+                .done(function (data) {
+                    populateDropdown('#DivisionId', data, '---Select Division---');
+                })
+                .fail(function (xhr, status, error) {
+                    console.error("❌ Error loading divisions:", error);
+                    populateDropdown('#DivisionId', [], 'Error loading divisions');
+                });
+        });
+
+        $('#DivisionId').on('change', function () {
+            const divisionId = $(this).val();
+            console.log("🏛 Division selected:", divisionId);
+            resetDropdowns(['#SubDivisionId', '#TownId']);
+
+            if (!divisionId) return;
+
+            $('#SubDivisionId').append('<option>Loading...</option>');
+
+            $.getJSON('/Individual/GetSubDivisionsByDivision', { divisionId: divisionId })
+                .done(function (data) {
+                    populateDropdown('#SubDivisionId', data, '---Select Sub-Division---');
+                })
+                .fail(function (xhr, status, error) {
+                    console.error("❌ Error loading sub-divisions:", error);
+                    populateDropdown('#SubDivisionId', [], 'Error loading sub-divisions');
+                });
+        });
+
+        $('#SubDivisionId').on('change', function () {
+            const subDivisionId = $(this).val();
+            console.log("🏘 Sub-Division selected:", subDivisionId);
+            resetDropdowns(['#TownId']);
+
+            if (!subDivisionId) return;
+
+            $('#TownId').append('<option>Loading...</option>');
+
+            $.getJSON('/Individual/GetTownsBySubDivision', { subDivisionId: subDivisionId })
+                .done(function (data) {
+                    populateDropdown('#TownId', data, '---Select Town---');
+                })
+                .fail(function (xhr, status, error) {
+                    console.error("❌ Error loading towns:", error);
+                    populateDropdown('#TownId', [], 'Error loading towns');
+                });
+        });
+
+        function populateDropdown(selector, data, placeholder) {
+            const dropdown = $(selector);
+            dropdown.empty().append($('<option>').val('').text(placeholder));
+
+            $.each(data, function (i, item) {
+                dropdown.append($('<option>').val(item.Id).text(item.Name));
+            });
+
+            // If you're using select2
+            if (dropdown.hasClass('select2')) {
+                dropdown.trigger('change.select2');
+            }
+        }
+
+        function resetDropdowns(selectors) {
+            selectors.forEach(id => {
+                $(id).empty().append('<option value="">---Select---</option>');
+                if ($(id).hasClass('select2')) {
+                    $(id).trigger('change.select2');
+                }
+            });
+        }
+    });
+
+    </script>
     <script src="~/Scripts/Js/Crud/CustomerManagement/Customers/Customers.js"></script>
 }

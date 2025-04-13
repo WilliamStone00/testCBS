@@ -81,8 +81,7 @@ namespace CBS.FrontDesk.UI.Controllers.Session
 
             if (sessionResult == null)
             {
-                Session.Clear();
-                Session.Abandon();
+               
                 return Json(new
                 {
                     success = false,

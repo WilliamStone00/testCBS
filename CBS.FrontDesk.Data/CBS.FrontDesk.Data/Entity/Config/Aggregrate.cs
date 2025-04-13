@@ -10,9 +10,17 @@ namespace CBS.FrontDesk.Data.Entity.Config
 
 
 
-  
 
 
+
+    public class LocationAggregate
+    {
+        public List<Country> Countries { get; set; } = new List<Country>();
+        public List<Region> Regions { get; set; } = new List<Region>();
+        public List<Division> Divisions { get; set; } = new List<Division>();
+        public List<SubDivision> SubDivisions { get; set; } = new List<SubDivision>();
+        public List<Town> Towns { get; set; } = new List<Town>();
+    }
 
 
 

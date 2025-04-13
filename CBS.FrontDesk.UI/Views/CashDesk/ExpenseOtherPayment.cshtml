@@ -1,48 +1,94 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @{
-    ViewBag.Title = "Other cash payment expense";
+    ViewBag.Title = "Other Expense Operations";
 }
+
+<!-- 🔷 Page Title and Welcome Message -->
 <div class="row">
-    <div class="col">
-        <div class="row my-4">
-            <div class="accordion" id="collapsibleSection">
-                <div class="card accordion-item mb-3">
-                    <h2 class="accordion-header" id="headingDeliveryAddress">
-
-                        <button type="button"
-                                class="accordion-button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#accordionPopoutIcon-3"
-                                aria-expanded="true"
-                                aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-cash-register me-2"></i>
-                            EXPENSE PAYMENTS
-                        </button>
-                    </h2>
-                    <hr />
-                    <div id="collapseDeliveryAddress"
-                         data-bs-parent="#collapsibleSection">
-                        <div class="accordion-body">
-                            <div id="datalistingview">
-
-                                @Html.Partial("_ExpenseOtherTransactionDesk");
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="col-12">
+        <div class="card bg-light mb-3">
+            <div class="card-body text-center">
+                <h1 class="card-title text-danger">
+                    <i class="mdi mdi-cash-minus me-2"></i> Cash Desk Management
+                </h1>
+                <p class="card-text">
+                    Welcome to the Cash Desk of <strong>TRUST SOFT CREDIT (TSC)</strong>. This interface manages <strong>Other Cash-Out Operations</strong> including expenses made to <strong>members</strong>, <strong>staff</strong>, or <strong>non-members</strong>.
+                </p>
+                <p class="card-text">
+                    <strong>Other Expenses</strong> refer to physical cash paid out at the teller desk and recorded directly against <strong>General Ledger (GL) accounts</strong> using predefined <strong>accounting event items</strong>.
+                </p>
+                <p class="card-text">
+                    💡 <strong>Note:</strong> This interface supports GL-linked <strong>cash-out payments</strong> with optional member association. Use other modules for standard member withdrawals or loan disbursements.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
-            @*}*@
         </div>
     </div>
 </div>
 
+<!-- 🔷 Tips Section for Other Expenses -->
+<div class="row">
+    <div class="col-12">
+        <div class="accordion mb-4" id="tipsAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed fw-bold text-danger" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+                        <i class="mdi mdi-alert-circle-outline me-2"></i> Tips & Guidelines for Other Expense
+                    </button>
+                </h2>
+                <div id="collapseTips" class="accordion-collapse collapse" data-bs-parent="#tipsAccordion">
+                    <div class="accordion-body">
+                        <ul class="mb-2">
+                            <li><strong>Member vs Non-Member:</strong> Use the radio buttons to indicate whether the recipient is a <strong>member</strong> (search required) or a <strong>non-member/staff</strong>.</li>
+                            <li><strong>GL Posting:</strong> Each transaction is recorded against a configured <strong>GL account</strong> tied to the selected <strong>event item</strong>.</li>
+                            <li><strong>Mandatory Event Item:</strong> Selecting an event item is <strong>required</strong> to ensure proper GL mapping and audit trail.</li>
+                            <li><strong>Clear Beneficiary Info:</strong> The recipient's name is required for all transactions—this ensures traceability and reporting accuracy.</li>
+                            <li><strong>Narration Matters:</strong> A meaningful narration or description is vital for accountability and financial clarity.</li>
+                            <li><strong>Denomination Breakdown:</strong> The actual amount disbursed should be broken down using the denomination interface to match the total cash-out.</li>
+                            <li><strong>Branch-Level Config:</strong> Only event items authorized for your branch will be visible in the dropdown.</li>
+                        </ul>
+                        <p class="text">
+                            <strong>Reminder:</strong> This module is designed for <strong>non-loan and non-withdrawal cash-outs</strong>. For those operations, please use their respective modules.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- 🔷 Main Transaction Area -->
+<div class="row g-4">
+    <div class="col-md-3">
+        <!-- Denominations Breakdown -->
+        @Html.Partial("_DenominationBreakDown")
+    </div>
 
+    <div class="col-md-9">
+        <!-- Collapsible Card for Cash Transactions -->
+        <div class="accordion" id="collapsibleSection">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingExpenseOps">
+                    <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseExpenseOps" aria-expanded="true" aria-controls="collapseExpenseOps">
+                        <i class="mdi mdi-cash-refund me-2"></i> <span id="cashDeskOperations">OTHER CASH-OUT OPERATIONS</span>
+                    </button>
+                </h2>
+                <div id="collapseExpenseOps" class="accordion-collapse collapse show" data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body p-4">
+                        <!-- Cash-Out Form Partial -->
+                        <div class="mt-4" id="datalistingview_inner">
+                            @Html.Partial("_ExpenseOtherTransactionDesk")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- Modal to display customer information -->
 @Html.Partial("_model")
 
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/Js/Crud/CashDesk/ExpensesCashDesk.js"></script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/CashDesk/ExpensesCashDesk.js"></script>
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.DataTable;
 
 namespace CBS.FrontDesk.Data.Entity
 {
@@ -50,6 +51,34 @@ namespace CBS.FrontDesk.Data.Entity
             CardSignatureSpecimen = cardSignatureSpecimen;
         }
     }
+    public class GetCustomersForDataTableQuery
+    {
+        public DataTableOptions Options { get; set; }
+
+        // Filters
+        public string MembershipApprovalStatus { get; set; }
+        public string Gender { get; set; }
+        public string MaritalStatus { get; set; }
+        public string WorkingStatus { get; set; }
+        public string CustomerType { get; set; }
+        public string AgeCategoryStatus { get; set; }
+        public string LegalForm { get; set; }
+        public string CustomerId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string BranchId { get; set; }
+
+        // Date Ranges
+        public DateTime? DateOfBirthFrom { get; set; }
+        public DateTime? DateOfBirthTo { get; set; }
+        public DateTime? CreatedFrom { get; set; }
+        public DateTime? CreatedTo { get; set; }
+
+        // Show all flag
+        public bool ShowAll { get; set; } = false;
+    }
+
+
     public abstract class ResourceParameter
     {
         public ResourceParameter(string OrderBy)

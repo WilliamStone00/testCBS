@@ -1,48 +1,91 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @{
-    ViewBag.Title = "Mobile Money";
+    ViewBag.Title = "Mobile Money Operations";
 }
+
+<!-- 🔷 Page Title and Welcome Message -->
 <div class="row">
-    <div class="col">
-        <div class="row my-4">
-            <div class="accordion" id="collapsibleSection">
-                <div class="card accordion-item mb-3">
-                    <h2 class="accordion-header" id="headingDeliveryAddress">
-
-                        <button type="button"
-                                class="accordion-button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#accordionPopoutIcon-3"
-                                aria-expanded="true"
-                                aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-cash-register me-2"></i>
-                            MOBILE-MONEY
-                        </button>
-                    </h2>
-                    <hr />
-                    <div id="collapseDeliveryAddress"
-                         data-bs-parent="#collapsibleSection">
-                        <div class="accordion-body">
-                            <div id="datalistingview">
-
-                                @Html.Partial("_OtherCashMobileMoneyDesk");
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="col-12">
+        <div class="card bg-light mb-3">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-cellphone-message me-2"></i> Mobile Money Management
+                </h1>
+                <p class="card-text">
+                    Welcome to the <strong>Mobile Money Cash Desk</strong> of <strong>TRUST SOFT CREDIT (TSC)</strong>. This interface manages <strong>Mobile Money (MTN & Orange) operations</strong> for both <strong>Cash-In</strong> and <strong>Cash-Out</strong> transactions.
+                </p>
+                <p class="card-text">
+                    Mobile Money transactions are registered under <strong>GL accounts</strong> using defined <strong>accounting mappings</strong> and linked to <strong>non-member</strong> representatives.
+                </p>
+                <p class="card-text">
+                    💡 <strong>Note:</strong> This module supports <strong>cash-based transactions</strong> with telecom wallets, validated via <strong>Till Codes</strong> and properly itemized for reconciliation.
+                </p>
+                <hr style="border: 2px solid rgba(0, 128, 0, 0.5);" />
             </div>
-            @*}*@
         </div>
     </div>
 </div>
 
+<!-- 🔷 Tips Section for Mobile Money -->
+<div class="row">
+    <div class="col-12">
+        <div class="accordion mb-4" id="tipsAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed fw-bold text-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+                        <i class="mdi mdi-information-outline me-2"></i> Tips & Guidelines for Mobile Money Transactions
+                    </button>
+                </h2>
+                <div id="collapseTips" class="accordion-collapse collapse" data-bs-parent="#tipsAccordion">
+                    <div class="accordion-body">
+                        <ul class="mb-2">
+                            <li><strong>Operator Selection:</strong> Choose either <span style="color: #FFD700;"><strong>MTN Mobile Money</strong></span> or <span style="color: #FFA500;"><strong>Orange Money</strong></span> to specify the transaction source.</li>
+                            <li><strong>Transaction Direction:</strong> Indicate whether the transaction is a <strong>Cash-In</strong> (deposit) or <strong>Cash-Out</strong> (withdrawal).</li>
+                            <li><strong>Client Identification:</strong> Enter the <strong>representative’s name</strong>, <strong>phone number</strong>, and <strong>CNI</strong> for proper customer tracking.</li>
+                            <li><strong>Member Reference:</strong> Optionally provide a reference if the transaction is linked to a known member.</li>
+                            <li><strong>Till Code:</strong> The <strong>Till Code</strong> is <span class="text-danger fw-bold">mandatory</span> for branch offices with <strong>multiple tills</strong>. This ensures precise <strong>teller tracking and reconciliation</strong>.</li>
+                            <li><strong>Transaction Entry:</strong> Use the transaction table to input amounts, confirm them, and monitor total balances dynamically.</li>
+                            <li><strong>Posting Mapping:</strong> All operations are automatically linked to predefined GL accounts based on selected telecom operator and transaction type.</li>
+                        </ul>
+                        <p class="text">
+                            <strong>Reminder:</strong> Use this interface for external Mobile Money wallet interactions only. For internal member wallet or inter-account transactions, use the respective modules.
+                        </p>
 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- 🔷 Main Transaction Area -->
+<div class="row">
+    <div class="col">
+        <div class="accordion" id="collapsibleSection">
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingMobileMoney">
+                    <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseMobileMoney" aria-expanded="true" aria-controls="collapseMobileMoney">
+                        <i class="mdi mdi-cash-register me-2"></i> MOBILE MONEY OPERATIONS
+                    </button>
+                </h2>
+                <hr />
+                <div id="collapseMobileMoney" class="accordion-collapse collapse show" data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <div id="datalistingview">
+                            @Html.Partial("_OtherCashMobileMoneyDesk")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- Modal to display customer information -->
+<!-- 🔷 Modal for Customer Info -->
 @Html.Partial("_model")
 
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/Js/Crud/CashDesk/OtherCashMobileMoney.js"></script>
+<!-- 🔷 Scripts -->
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/CashDesk/OtherCashMobileMoney.js"></script>
 }
