@@ -13,6 +13,71 @@
 
 
 });
+function calculateVatOnlyLedger(loanId) {
+    const interestInput = document.getElementById(`interest-${loanId}`);
+    const vatInput = document.getElementById(`vat-${loanId}`);
+    const loanAmountEl = document.querySelector(`#row-${loanId} .loan-amount`);
+
+    const rawInterest = parseFloat((interestInput.value || "0").replace(/,/g, '')) || 0;
+    const loanAmount = parseFloat(loanAmountEl?.getAttribute("data-loan-amount") || "0");
+    const vatRate = 19.25;
+
+    let vat = 0;
+    if (loanAmount >= 2000000) {
+        vat = Math.round(rawInterest * (vatRate / 100));
+    }
+
+    // Store raw interest
+    interestInput.setAttribute("data-original", rawInterest.toFixed(0));
+
+    // Update VAT field
+    if (vatInput) {
+        vatInput.value = vat.toLocaleString('en-US');
+    }
+
+    updateLedgerRowTotal(loanId);
+}
+
+function adjustInterestWithVatLedger(loanId) {
+    const interestInput = document.getElementById(`interest-${loanId}`);
+    const vatInput = document.getElementById(`vat-${loanId}`);
+
+    const originalInterest = parseFloat(interestInput.getAttribute("data-original") || "0") || 0;
+    const vat = parseFloat((vatInput?.value || "0").replace(/,/g, '')) || 0;
+
+    const netInterest = Math.max(originalInterest - vat, 0);
+    interestInput.value = netInterest.toFixed(0);
+
+    updateLedgerRowTotal(loanId);
+}
+
+function updateLedgerRowTotal(loanId) {
+    const capital = parseFloat(document.getElementById(`capital-${loanId}`)?.value) || 0;
+    const interest = parseFloat(document.getElementById(`interest-${loanId}`)?.value) || 0;
+    const vat = parseFloat(document.getElementById(`vat-${loanId}`)?.value.replace(/,/g, '')) || 0;
+    const penalty = parseFloat(document.getElementById(`penalty-${loanId}`)?.value) || 0;
+
+    const total = capital + interest + vat + penalty;
+
+    const totalSpan = document.getElementById(`total-${loanId}`);
+    if (totalSpan) {
+        totalSpan.innerText = total.toLocaleString('en-US', { minimumFractionDigits: 0 });
+    }
+
+    calculateLedgerGrandTotal();
+}
+
+function calculateLedgerGrandTotal() {
+    let grandTotal = 0;
+    document.querySelectorAll(".total-span").forEach(el => {
+        const val = parseFloat(el.innerText.replace(/,/g, '')) || 0;
+        grandTotal += val;
+    });
+
+    document.getElementById("grandTotalRepayment").innerText = grandTotal.toLocaleString('en-US', {
+        minimumFractionDigits: 0
+    });
+}
 function calculateVatAndTotals(loanId) {
     console.log("Calculating for loanId:", loanId);
     var capitalInput = document.getElementById(`capital-${loanId}`);
@@ -70,41 +135,41 @@ function collectDeposits() {
     var selectedLoans = 0;
     var hasInvalidLoans = false;
 
-    console.clear(); // Clear console for debugging
+    console.clear();
 
-    // Capture member and branch information
+    // Member and branch info
     var memberReference = $('#customerId').val();
     var memberName = $('#memberName').val();
     var branchName = $('#branchName').val();
     var branchCode = $('#branchCode').val();
     var accountantName = $('#accountantName').val();
 
-    // ✅ Capture the selected ledger account (Chart of Account ID)
+    // Chart of account (ledger source)
     var chartOfAccountId = $('#account_number').val();
     var chartOfAccountName = $('#account_number option:selected').text().trim();
 
-    if (!chartOfAccountId || chartOfAccountId === "0" || chartOfAccountId === "") {
+    if (!chartOfAccountId || chartOfAccountId === "0") {
         appalert("❌ Please select a source ledger account (GL) before proceeding.", 3, 1);
         $('#account_number').focus();
         return null;
     }
-    let transactionNote = getValidatedNote();
-    if (!transactionNote) {
-        return null;
-    }
 
-    // Step 2: Collect Loan Repayments
+    let transactionNote = getValidatedNote();
+    if (!transactionNote) return null;
+
+    // 🟩 Collect Loans
     $('#loanRepaymentTable tr').each(function () {
         let checkbox = $(this).find('.form-check-input');
         let loanId = $(this).find('td:eq(0)').text().trim();
+        let loanAmountContracted = parseFloat($(this).find('.loan-amount').data('loan-amount')) || 0;
+
         let capital = parseFloat($(this).find('.capital-input').val()) || 0;
         let interest = parseFloat($(this).find('.interest-input').val()) || 0;
         let penalty = parseFloat($(this).find('.penalty-input').val()) || 0;
-        let loanAmountContracted = parseFloat($(this).find('.loan-amount').data('loan-amount')) || 0;
+        let vat = parseFloat($(this).find('.vat-input').val().replace(/,/g, '')) || 0;
 
-        let vat = (loanAmountContracted >= 2000000) ? (interest * 0.1925) : 0;
-        vat = parseFloat(vat.toFixed(2));
-        let totalAmount = capital + interest + penalty + vat;
+        // ✅ Use existing VAT & interest from input
+        let totalAmount = capital + interest + vat + penalty;
 
         if (totalAmount > 0) {
             checkbox.prop('checked', true);
@@ -133,6 +198,7 @@ function collectDeposits() {
         selectedLoans++;
     });
 
+    // Final validations
     if (selectedLoans === 0) {
         appalert("❌ Please enter an amount and select at least one loan to process repayment.", 3, 1);
         return null;

@@ -31,6 +31,86 @@ using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 
 namespace BusinessServices
 {
+    using System;
+    using System.Globalization;
+
+    public static class LocalizedDateConverter
+    {
+        private const string DefaultCultureCode = "en-US";
+        private const string DefaultDateFormat = "d"; // Short date pattern
+
+        /// <summary>
+        /// Converts start and end date strings into DateTime values using localization and formatting logic.
+        /// </summary>
+        public static void ConvertDateRange(
+            string startDateInput,
+            string endDateInput,
+            out DateTime startDate,
+            out DateTime endDate,
+            string cultureCode = DefaultCultureCode,
+            string inputFormat = null)
+        {
+            var culture = GetCultureOrDefault(cultureCode);
+
+            endDate = ParseDate(endDateInput, culture, inputFormat) ?? DateTime.Today;
+            startDate = ParseDate(startDateInput, culture, inputFormat) ?? new DateTime(endDate.Year, endDate.Month, 1);
+        }
+
+        /// <summary>
+        /// Parses a string into a DateTime using a specific or default format and culture.
+        /// </summary>
+        public static DateTime? ParseDate(string input, string cultureCode = DefaultCultureCode, string inputFormat = null)
+        {
+            var culture = GetCultureOrDefault(cultureCode);
+            return ParseDate(input, culture, inputFormat);
+        }
+
+        /// <summary>
+        /// Converts a DateTime to a localized string using a specific format and culture.
+        /// </summary>
+        public static string ToLocalizedString(DateTime date, string format = DefaultDateFormat, string cultureCode = DefaultCultureCode)
+        {
+            var culture = GetCultureOrDefault(cultureCode);
+            return date.ToString(format, culture);
+        }
+
+        /// <summary>
+        /// Gets a valid CultureInfo object. Defaults to en-US if the input is invalid.
+        /// </summary>
+        private static CultureInfo GetCultureOrDefault(string cultureCode)
+        {
+            try
+            {
+                return new CultureInfo(string.IsNullOrWhiteSpace(cultureCode) ? DefaultCultureCode : cultureCode);
+            }
+            catch
+            {
+                return new CultureInfo(DefaultCultureCode);
+            }
+        }
+
+        /// <summary>
+        /// Internal parse method with optional format.
+        /// </summary>
+        private static DateTime? ParseDate(string input, CultureInfo culture, string format)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return null;
+
+            if (!string.IsNullOrWhiteSpace(format))
+            {
+                if (DateTime.TryParseExact(input, format, culture, DateTimeStyles.None, out var exact))
+                    return exact;
+            }
+
+            if (DateTime.TryParse(input, culture, DateTimeStyles.None, out var fallback))
+                return fallback;
+
+            return null;
+        }
+    }
+
+
     public class BaseService
     {
         private Random random = new Random();

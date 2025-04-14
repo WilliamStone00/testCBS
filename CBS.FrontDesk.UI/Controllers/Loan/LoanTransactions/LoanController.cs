@@ -1,4 +1,5 @@
-﻿using CBS.BusinessService;
+﻿using BusinessServices;
+using CBS.BusinessService;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.AuditTrailP;
 using CBS.BusinessService.Config;
@@ -22,6 +23,7 @@ using CrystalDecisions.Shared;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -366,19 +368,32 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
         {
             try
             {
-                // Safely initialize the end date
-                var endDate = reportCommand.EndDate == default(DateTime)
-                    ? DateTime.Today
-                    : reportCommand.EndDate;
+                string userDateFormat = "yyyy/MM/dd";
+                string cultureCode = "fr-FR";
 
-                // Safely initialize the start date using the end date's month
-                var startDate = reportCommand.StartDate == default(DateTime)
-                    ? new DateTime(endDate.Year, endDate.Month, 1)
-                    : reportCommand.StartDate;
+                // Convert DateTime to string in the expected format
+                string startInput = reportCommand.StartDate.ToString(userDateFormat, new CultureInfo(cultureCode));
+                string endInput = reportCommand.EndDate.ToString(userDateFormat, new CultureInfo(cultureCode));
 
-                // Assign formatted values back if needed
+                // Parse back to DateTime using the same format + culture
+                DateTime startDate, endDate;
+                LocalizedDateConverter.ConvertDateRange(
+                    startInput,
+                    endInput,
+                    out startDate,
+                    out endDate,
+                    cultureCode,
+                    userDateFormat
+                );
+
+                // Assign parsed results
                 reportCommand.StartDate = startDate;
                 reportCommand.EndDate = endDate;
+
+
+
+
+
 
 
                 var loanPortfolioAnalysis = await _LoanServices.GetLoanPortfolioAnalysisAsync(reportCommand);
