@@ -19,6 +19,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class TrialBalance6ColumnDto
     {
+        public string PrintersName { get; set; }
         public string entityId { get; set; }
         public string entityType { get; set; }
         public DateTime fromDate { get; set; }
@@ -149,6 +150,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                         BranchName = this.BranchName,
                         BranchLocation = this.BranchLocation,
                         BranchAddress = this.BranchAddress,
+            
                         Capital = this.Capital,
                         ImmatriculationNumber = this.ImmatriculationNumber,
                         WebSite = this.WebSite,

@@ -3,45 +3,45 @@
     <div class="card-body">
         <fieldset class="fieldset-custom">
             <legend>Downloaded History</legend>
-
-            <table id="myDataTable" class="display" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Report Type</th>
-                        <th>Branch Office</th>
-                        <th>DateCreated</th>
-                        <th>File Name</th>
-                        <th>File size</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Rows will be dynamically added here -->
-                    @foreach (var d in Model.ReportDownloadInfo)
-                    {
-                        string file = d.FileName + d.Extension;
+            <table class="table table-hover table-bordered table-sm" id="myDataTable">
+                 
+                    <thead>
                         <tr>
-                            <td style="width:17%">@d.ReportType</td>
-                            <td style="width:20%">@d.BranchName</td>
-                            <td style="width:13%">@d.CreatedDate</td>
-                            <td style="width:20%">@file </td>
-                            <td style="width:10%">@d.Size</td>
-                            <td style="width:20%">
-                                <a href="/AccountingStatements/DownloadById?fileId=@d.Id" onclick="" class="mr-2 btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.FileName to download">Download</a> |
-                                <a href="#"
-                                   class="mr-2 btn btn-danger"
-                                   data-toggle="tooltip"
-                                   data-placement="top"
-                                   title="Delete @d.FileName"
-                                   onclick="DeleteRecordPage('AccountingStatements', '@d.Id', '_DownloadedReportData')">
-                                    Delete
-                                </a>
-                            </td>
+                            <th>Report Type</th>
+                            <th>Branch Office</th>
+                            <th>DateCreated</th>
+                            <th>File Name</th>
+                            <th>File size</th>
+                            <th>Action</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-    
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be dynamically added here -->
+                        @foreach (var d in Model.ReportDownloadInfo)
+                        {
+                            string file = d.FileName + d.Extension;
+                            <tr>
+                                <td style="width:17%">@d.ReportType</td>
+                                <td style="width:20%">@d.BranchName</td>
+                                <td style="width:13%">@d.CreatedDate</td>
+                                <td style="width:35%">@file </td>
+                                <td style="width:10%">@d.Size</td>
+                                <td style="width:5%">
+                                    <a href="/AccountingStatements/DownloadById?fileId=@d.Id" onclick="" class="mr-2 btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.FileName to download"><i class="mdi mdi-download"></i>  </a> |
+                                    <a href="#"
+                                       class="mr-2 btn btn-danger"
+                                       data-toggle="tooltip"
+                                       data-placement="top"
+                                       title="Delete @d.FileName"
+                                       onclick="DeleteRecordPage('AccountingStatements', '@d.Id', '_DownloadedReportData')">
+                                        <i class="mdi mdi-delete"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
 
         </fieldset>
 

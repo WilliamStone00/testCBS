@@ -150,7 +150,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
         public AccountingEntryDto AccountingEntry { get; set; }
         public List<Branch> Branchs { get; set; }
-        public SystemQuery SystemQuery { get; set; }
+        public SystemQuery SystemQuery { get; set; } = new SystemQuery();
  
         public List<ReportInfo> ReportDownloadInfo { get; set; } = new List<ReportInfo>();
     }
@@ -288,8 +288,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public class SystemQuery
     {
 
-        public DateTime ToDate { get; set; }  
-        public DateTime FromDate { get; set; }  
+        public DateTime ToDate { get; set; } //= new DateTimeOffset();
+        public DateTime FromDate { get; set; }// = new DateTimeOffset();
         public string FileType { get; set; }
         public string ReportType { get; set; }
         public List<string> AccountIds { get; set; }
@@ -324,23 +324,23 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     }
     public class JEQuery
     {
-        public DateTime ToDate { get; set; }
-        public DateTime FromDate { get; set; }
+        public DateTimeOffset ToDate { get; set; }
+        public DateTimeOffset FromDate { get; set; }
         public string FileType { get; set; }
         public string BranchId { get; set; }
     }
     public class BSQuery
     {
         public string BranchId { get; set; }
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
         public string FileType { get; set; }
         public string DocumentId { get; set; }
     }
         
     public class TrialBalance4Column
     {
-        public DateTime ToDate { get; set; }
-        public DateTime FromDate { get; set; }
+        public DateTimeOffset ToDate { get; set; }
+        public DateTimeOffset FromDate { get; set; }
         public string FileType { get; set; }
         public string ReportType { get; set; }
 
