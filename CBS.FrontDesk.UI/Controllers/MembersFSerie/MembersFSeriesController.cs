@@ -49,7 +49,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
         {
             try
             {
-                var dataTable = await _individualProfileServices.GetDataTableAsync(query);
+                var dataTable = await _individualProfileServices.GetDataTableAsync(query, "MemberSituation");
 
                 var customerList = JsonConvert.DeserializeObject<List<CustomerLightDto>>(
                     JsonConvert.SerializeObject(dataTable.data)
