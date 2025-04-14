@@ -1,6 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingEntryQuery
 <div class="container">
-    <fieldset class="fieldset">
+    @*<fieldset class="fieldset">*@
         <div class="card-body">
             @using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostSearch(this);" }))
             {
@@ -35,15 +35,20 @@
 
                         <div class="col-md-4">
                             <div class="form-floating form-floating-outline">
-                                @Html.TextBoxFor(model => model.SystemQuery.FromDate, new { @class = "form-control date-picker", placeholder = "From Date" })
+
+                                @Html.TextBoxFor(model => model.SystemQuery.FromDate, new { @class = "form-control date-picker", @type = "datetime-local", @id = "html5-datetime-local-input" })
                                 @Html.ValidationMessageFor(model => model.SystemQuery.FromDate, "", new { @class = "text-danger" })
                                 <label>From Date</label>
                             </div>
                         </div>
+                  
                         <div class="col-md-4">
                             <div class="form-floating form-floating-outline">
-                                @Html.TextBoxFor(model => model.SystemQuery.ToDate, new { @class = "form-control date-picker", placeholder = "To Date" })
+
+
+                                @Html.TextBoxFor(model => model.SystemQuery.ToDate, new { @class = "form-control date-picker", @type = "datetime-local", @id = "html5-datetime-local-input" })
                                 @Html.ValidationMessageFor(model => model.SystemQuery.ToDate, "", new { @class = "text-danger" })
+
                                 <label>To Date</label>
                             </div>
                         </div>
@@ -112,7 +117,7 @@
             }
 
         </div>
-    </fieldset>
+    @*</fieldset>*@
 
 </div>
 

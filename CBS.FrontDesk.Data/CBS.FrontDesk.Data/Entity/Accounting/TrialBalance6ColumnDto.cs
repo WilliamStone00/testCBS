@@ -19,6 +19,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class TrialBalance6ColumnDto
     {
+        public string PrintersName { get; set; }
         public string entityId { get; set; }
         public string entityType { get; set; }
         public DateTime fromDate { get; set; }
@@ -36,18 +37,18 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string address { get; set; }
         public string accountNumber { get; set; }
         public string accountName { get; set; }
-        public string beginningDebitBalance { get; set; }
-        public string beginningCreditBalance { get; set; }
-        public string debitBalance { get; set; }
-        public string creditBalance { get; set; }
-        public string endDebitBalance { get; set; }
-        public string endCreditBalance { get; set; }
-        public object totalBeginningDebitBalance { get; set; }
-        public object totalBeginningCreditBalance { get; set; }
-        public object totalDebitBalance { get; set; }
-        public object totalCreditBalance { get; set; }
-        public object totalEndDebitBalance { get; set; }
-        public object totalEndCreditBalance { get; set; }
+        public double beginningDebitBalance { get; set; }
+        public double beginningCreditBalance { get; set; }
+        public double debitBalance { get; set; }
+        public double creditBalance { get; set; }
+        public double endDebitBalance { get; set; }
+        public double endCreditBalance { get; set; }
+        public double totalBeginningDebitBalance { get; set; }
+        public double totalBeginningCreditBalance { get; set; }
+        public double totalDebitBalance { get; set; }
+        public double totalCreditBalance { get; set; }
+        public double totalEndDebitBalance { get; set; }
+        public double totalEndCreditBalance { get; set; }
         public string cartegory { get; set; }
 
         public List<TrialBalanceDto> ConvertToExcelTrialBalance(List<TrialBalance6ColumnDto> trialBalances)
@@ -149,6 +150,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                         BranchName = this.BranchName,
                         BranchLocation = this.BranchLocation,
                         BranchAddress = this.BranchAddress,
+            
                         Capital = this.Capital,
                         ImmatriculationNumber = this.ImmatriculationNumber,
                         WebSite = this.WebSite,

@@ -46,6 +46,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     }
     public class TrialBalance4ColumnDto
     {
+        public string PrintersName { get; set; }
         public string EntityId { get; set; }
         public string EntityType { get; set; }
         public DateTime FromDate { get; set; }
@@ -64,14 +65,14 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string  Address { get; set; }
         public string  AccountNumber { get; set; }
         public string  AccountName { get; set; }
-        public string  BeginningBalance { get; set; }
-        public string  DebitBalance { get; set; }
-        public string  CreditBalance { get; set; }
-        public string  EndingBalance { get; set; }
-        public object totalBeginningBalance { get; set; }
-        public object totalDebitBalance { get; set; }
-        public object totalCreditBalance { get; set; }
-        public object totalEndingBalance { get; set; }
+        public double BeginningBalance { get; set; }
+        public double DebitBalance { get; set; }
+        public double CreditBalance { get; set; }
+        public double EndingBalance { get; set; }
+        public double totalBeginningBalance { get; set; }
+        public double totalDebitBalance { get; set; }
+        public double totalCreditBalance { get; set; }
+        public double totalEndingBalance { get; set; }
     }
 
 

@@ -25,7 +25,7 @@ namespace CBS.BusinessService
                 throw new ArgumentNullException(nameof(branch));
 
             string barcodeData = $"{branch.Bank.BankCode}|{paymentReceipt.InternalReferenceNumber}|{paymentReceipt.MemberReference}|{paymentReceipt.Amount:N1}";
-            string barcodeImagePath = GenerateAndSaveBarcodeImage(barcodeData, paymentReceipt.MemberName, paymentReceipt.InternalReferenceNumber, branch.Name);
+           string barcodeImagePath = GenerateAndSaveBarcodeImage(barcodeData, paymentReceipt.MemberName, paymentReceipt.InternalReferenceNumber, branch.Name);
 
             // Generate DenominationDS list and filter out denominations with zero value
             var denominations = new List<DenominationDS>
