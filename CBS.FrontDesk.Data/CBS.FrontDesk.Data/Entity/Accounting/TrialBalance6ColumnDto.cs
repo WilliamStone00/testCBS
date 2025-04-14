@@ -166,11 +166,12 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                     model.NumberCredit = item.AccountingEntries.Count();
                     model.AccountName = item.AccountName;
                     model.AccountNumber = item.AccountNumber;
-                    model.CurrentBalance = item.BeginningBalance;
+                    model.CurrentBalance = entry.CurrentBalance;
                     model.Currency = "XAF(BEAC CEMAC)";
+                    model.Balance = entry.CurrentBalance;
                     model.Debit =  entry.DrAmount;
                     model.Credit = entry.CrAmount;
-                    model.Balance = entry.CurrentBalance;
+                    model.BeginningBalance = item.BeginningBalance;
                     model.Description = entry.Description;
                     model.Reference = entry.ReferenceID;
                     model.Representative = entry.Representative;
