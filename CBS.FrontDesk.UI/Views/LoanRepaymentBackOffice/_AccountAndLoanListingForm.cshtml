@@ -111,7 +111,17 @@
                                         <input type="number" class="form-control capital-input" id="capital-@d.Id" value="0" oninput="updateTotals()">
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control interest-input" id="interest-@d.Id" value="0" oninput="updateTotals()">
+                                        <input type="number"
+                                               class="form-control interest-input"
+                                               id="interest-@d.Id"
+                                               value="0"
+                                               data-vatrate="@d.VatRate"
+                                               data-loanamount="@d.LoanAmount"
+                                               oninput="calculateVatOnly('@d.Id')"
+                                               onblur="calculateVatAndAdjustInterest('@d.Id')" />
+
+
+
                                     </td>
                                     <td>
                                         <input type="text" class="form-control vat-input" id="vat-@d.Id" value="0" readonly> <!-- ✅ NEW VAT FIELD -->

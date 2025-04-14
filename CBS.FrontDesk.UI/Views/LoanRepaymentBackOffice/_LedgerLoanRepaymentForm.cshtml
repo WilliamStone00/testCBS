@@ -58,28 +58,54 @@
                         <tbody id="loanRepaymentTable">
                             @foreach (var d in Model.Loans)
                             {
-                                var loanId = d.Id; // Clean ID
+                                var loanId = d.Id;
                                 <tr id="row-@loanId">
                                     <td style="display:none;">@loanId</td>
                                     <td>@d.LoanDate.ToString("dd/MM/yy")</td>
                                     <td class="loan-amount" data-loan-amount="@d.LoanAmount">@d.LoanAmount.ToString("#,##0.0")</td>
                                     <td>@d.AccrualInterest.ToString("#,##0.0")</td>
                                     <td>@d.Balance.ToString("#,##0.0")</td>
+
                                     <td>
-                                        <input type="number" class="form-control capital-input" id="capital-@loanId" value="0" oninput="calculateVatAndTotals('@loanId')">
+                                        <input type="number"
+                                               class="form-control capital-input"
+                                               id="capital-@loanId"
+                                               value="0"
+                                               oninput="updateLedgerRowTotal('@loanId')" />
                                     </td>
+
                                     <td>
-                                        <input type="number" class="form-control interest-input" id="interest-@loanId" value="0" oninput="calculateVatAndTotals('@loanId')">
+                                        <input type="number"
+                                               class="form-control interest-input"
+                                               id="interest-@loanId"
+                                               value="0"
+                                               data-original="0"
+                                               oninput="calculateVatOnlyLedger('@loanId')"
+                                               onblur="adjustInterestWithVatLedger('@loanId')" />
                                     </td>
+
                                     <td>
-                                        <input type="text" class="form-control vat-input" id="vat-@loanId" value="0" readonly>
+                                        <input type="text"
+                                               class="form-control vat-input"
+                                               id="vat-@loanId"
+                                               value="0"
+                                               readonly />
                                     </td>
+
                                     <td>
-                                        <input type="number" class="form-control penalty-input" id="penalty-@loanId" value="0" oninput="calculateVatAndTotals('@loanId')">
+                                        <input type="number"
+                                               class="form-control penalty-input"
+                                               id="penalty-@loanId"
+                                               value="0"
+                                               oninput="updateLedgerRowTotal('@loanId')" />
                                     </td>
-                                    <td><span class="total-span" id="total-@loanId">0</span></td>
+
                                     <td>
-                                        <input type="checkbox" class="form-check-input" disabled>
+                                        <span class="total-span" id="total-@loanId">0</span>
+                                    </td>
+
+                                    <td>
+                                        <input type="checkbox" class="form-check-input" disabled />
                                     </td>
                                 </tr>
                             }

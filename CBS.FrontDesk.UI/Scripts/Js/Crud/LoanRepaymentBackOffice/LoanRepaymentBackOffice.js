@@ -13,12 +13,15 @@
 
 
 });
+
+
+
 function updateTotals() {
     let totalDebited = 0;
 
-    // Validate Account Table: Amount entered must not exceed balance
+    // 🔹 Validate account entries
     document.querySelectorAll("#memberAccountsTable tr").forEach(row => {
-        let balanceElement = row.cells[3]; // Balance column
+        let balanceElement = row.cells[3];
         let amountInput = row.querySelector(".amount-input");
         let statusIndicator = row.querySelector(".status-indicator");
 
@@ -27,67 +30,202 @@ function updateTotals() {
             let amount = parseFloat(amountInput.value) || 0;
 
             if (amount > balance) {
-                statusIndicator.innerHTML = " ❌"; // Red X for invalid entry
+                statusIndicator.innerHTML = " ❌";
                 statusIndicator.style.color = "red";
             } else if (amount > 0) {
-                statusIndicator.innerHTML = " ✅"; // Green Tick if valid
+                statusIndicator.innerHTML = " ✅";
                 statusIndicator.style.color = "green";
             } else {
-                statusIndicator.innerHTML = ""; // Clear indicator if no amount entered
+                statusIndicator.innerHTML = "";
             }
 
             totalDebited += amount;
         }
     });
 
-    // Update the Total Debited Amount
     document.getElementById("totalDebitedAmount").innerText = formatCurrency(totalDebited);
 
     let totalRepayment = 0;
     let totalVAT = 0;
 
-    // Update each loan row's total dynamically
+    // 🔹 Loop through each loan and just READ values (no recalculation!)
     document.querySelectorAll("#loanRepaymentTable tr").forEach(row => {
         let loanId = row.id.replace("row-", "");
-        let loanAmountElement = row.cells[2]; // Loan Amount Column
 
-        let loanAmount = parseFloat(loanAmountElement.innerText.replace(/[^\d.-]/g, '')) || 0;
-        let capitalInput = document.getElementById("capital-" + loanId);
-        let interestInput = document.getElementById("interest-" + loanId);
-        let penaltyInput = document.getElementById("penalty-" + loanId);
-        let vatInput = document.getElementById("vat-" + loanId); // ✅ NEW VAT FIELD
+        let capital = parseFloat(document.getElementById("capital-" + loanId)?.value?.replace(/,/g, '') || 0);
+        let interest = parseFloat(document.getElementById("interest-" + loanId)?.value?.replace(/,/g, '') || 0);
+        let penalty = parseFloat(document.getElementById("penalty-" + loanId)?.value?.replace(/,/g, '') || 0);
+        let vat = parseFloat(document.getElementById("vat-" + loanId)?.value?.replace(/,/g, '') || 0);
 
-        let capital = capitalInput ? parseFloat(capitalInput.value) || 0 : 0;
-        let interest = interestInput ? parseFloat(interestInput.value) || 0 : 0;
-        let penalty = penaltyInput ? parseFloat(penaltyInput.value) || 0 : 0;
-
-        // ✅ Calculate VAT (19% on Interest ONLY if Loan Amount >= 2,000,000 XAF)
-        let vat = loanAmount >= 2000000 ? interest * 0.1925 : 0;
-        vat = parseFloat(vat.toFixed(0)); // Format VAT correctly
-        vatInput.value = formatCurrencyNoName(vat); // ✅ Update VAT input field
-        totalVAT += vat;
-
+        // ✅ Do NOT recalculate anything. Just use values as-is
         let rowTotal = capital + interest + penalty + vat;
-        document.getElementById("total-" + loanId).innerText = formatCurrencyNoName(rowTotal);
+
+        const totalField = document.getElementById("total-" + loanId);
+        if (totalField) {
+            totalField.innerText = formatCurrencyNoName(rowTotal);
+        }
 
         totalRepayment += rowTotal;
+        totalVAT += vat;
     });
 
+    // 🔹 Update footer totals
     document.getElementById("totalRepaymentAmount").innerText = formatCurrencyNoName(totalRepayment);
-    document.getElementById("calculatedVat").innerText = formatCurrencyNoName(totalVAT); // Display total VAT
+    document.getElementById("calculatedVat").innerText = formatCurrencyNoName(totalVAT);
 
     let remainingBalance = totalDebited - totalRepayment;
     document.getElementById("remainingBalance").innerText = formatCurrency(remainingBalance);
 
     let balanceIndicator = document.getElementById("balanceIndicator");
-    if (remainingBalance === 0) {
-        balanceIndicator.innerHTML = " ✅";
-        balanceIndicator.style.color = "green";
-    } else {
-        balanceIndicator.innerHTML = " ❌";
-        balanceIndicator.style.color = "red";
+    if (balanceIndicator) {
+        if (remainingBalance === 0) {
+            balanceIndicator.innerHTML = " ✅";
+            balanceIndicator.style.color = "green";
+        } else {
+            balanceIndicator.innerHTML = " ❌";
+            balanceIndicator.style.color = "red";
+        }
     }
 }
+
+function bindInterestFieldEvents() {
+    document.querySelectorAll(".interest-input").forEach(input => {
+        input.replaceWith(input.cloneNode(true)); // Remove old events
+    });
+
+    document.querySelectorAll(".interest-input").forEach(input => {
+        const loanId = input.id.replace("interest-", "");
+        const vatRate = parseFloat(input.dataset.vatrate || "0");
+        const loanAmount = parseFloat(input.dataset.loanamount || "0");
+
+        // 🔹 On INPUT: show calculated VAT only
+        input.addEventListener("input", function () {
+            const rawInterest = parseFloat(this.value) || 0;
+            let vat = 0;
+            if (loanAmount >= 2000000) {
+                vat = Math.round(rawInterest * (vatRate / 100));
+            }
+
+            const vatInput = document.getElementById("vat-" + loanId);
+            if (vatInput) {
+                vatInput.value = formatCurrencyNoName(vat);
+            }
+
+            updateTotals();
+        });
+
+        // 🔹 On BLUR: apply VAT adjustment to interest field
+        input.addEventListener("blur", function () {
+            const rawInterest = parseFloat(this.value) || 0;
+            let vat = 0;
+            if (loanAmount >= 2000000) {
+                vat = Math.round(rawInterest * (vatRate / 100));
+            }
+
+            const netInterest = Math.max(rawInterest - vat, 0);
+            this.value = netInterest.toFixed(0);
+
+            const vatInput = document.getElementById("vat-" + loanId);
+            if (vatInput) {
+                vatInput.value = formatCurrencyNoName(vat);
+            }
+
+            updateTotals();
+        });
+    });
+}
+
+
+// 🔹 Bind on DOM ready
+document.addEventListener("DOMContentLoaded", function () {
+    bindInterestFieldEvents();
+});
+
+// 🔹 Rebind if dynamic content is injected
+const observer = new MutationObserver(() => {
+    bindInterestFieldEvents();
+});
+
+const datalist = document.getElementById("datalistingview");
+if (datalist) {
+    observer.observe(datalist, { childList: true, subtree: true });
+}
+
+//function updateTotals() {
+//    let totalDebited = 0;
+
+//    // Validate Account Table: Amount entered must not exceed balance
+//    document.querySelectorAll("#memberAccountsTable tr").forEach(row => {
+//        let balanceElement = row.cells[3]; // Balance column
+//        let amountInput = row.querySelector(".amount-input");
+//        let statusIndicator = row.querySelector(".status-indicator");
+
+//        if (balanceElement && amountInput && statusIndicator) {
+//            let balance = parseFloat(balanceElement.innerText.replace(/[^\d.-]/g, '')) || 0;
+//            let amount = parseFloat(amountInput.value) || 0;
+
+//            if (amount > balance) {
+//                statusIndicator.innerHTML = " ❌"; // Red X for invalid entry
+//                statusIndicator.style.color = "red";
+//            } else if (amount > 0) {
+//                statusIndicator.innerHTML = " ✅"; // Green Tick if valid
+//                statusIndicator.style.color = "green";
+//            } else {
+//                statusIndicator.innerHTML = ""; // Clear indicator if no amount entered
+//            }
+
+//            totalDebited += amount;
+//        }
+//    });
+
+//    // Update the Total Debited Amount
+//    document.getElementById("totalDebitedAmount").innerText = formatCurrency(totalDebited);
+
+//    let totalRepayment = 0;
+//    let totalVAT = 0;
+
+//    // Update each loan row's total dynamically
+//    document.querySelectorAll("#loanRepaymentTable tr").forEach(row => {
+//        let loanId = row.id.replace("row-", "");
+//        let loanAmountElement = row.cells[2]; // Loan Amount Column
+
+//        let loanAmount = parseFloat(loanAmountElement.innerText.replace(/[^\d.-]/g, '')) || 0;
+//        let capitalInput = document.getElementById("capital-" + loanId);
+//        let interestInput = document.getElementById("interest-" + loanId);
+//        let penaltyInput = document.getElementById("penalty-" + loanId);
+//        let vatInput = document.getElementById("vat-" + loanId); // ✅ NEW VAT FIELD
+
+//        let capital = capitalInput ? parseFloat(capitalInput.value) || 0 : 0;
+//        let interest = interestInput ? parseFloat(interestInput.value) || 0 : 0;
+//        let penalty = penaltyInput ? parseFloat(penaltyInput.value) || 0 : 0;
+
+//        // ✅ Calculate VAT (19% on Interest ONLY if Loan Amount >= 2,000,000 XAF)
+//        let vat = loanAmount >= 2000000 ? interest * 0.1925 : 0;
+//        vat = parseFloat(vat.toFixed(0)); // Format VAT correctly
+//        vatInput.value = formatCurrencyNoName(vat); // ✅ Update VAT input field
+//        totalVAT += vat;
+
+//        let rowTotal = capital + interest + penalty + vat;
+//        document.getElementById("total-" + loanId).innerText = formatCurrencyNoName(rowTotal);
+
+//        totalRepayment += rowTotal;
+//    });
+
+//    document.getElementById("totalRepaymentAmount").innerText = formatCurrencyNoName(totalRepayment);
+//    document.getElementById("calculatedVat").innerText = formatCurrencyNoName(totalVAT); // Display total VAT
+
+//    let remainingBalance = totalDebited - totalRepayment;
+//    document.getElementById("remainingBalance").innerText = formatCurrency(remainingBalance);
+
+//    let balanceIndicator = document.getElementById("balanceIndicator");
+//    if (remainingBalance === 0) {
+//        balanceIndicator.innerHTML = " ✅";
+//        balanceIndicator.style.color = "green";
+//    } else {
+//        balanceIndicator.innerHTML = " ❌";
+//        balanceIndicator.style.color = "red";
+//    }
+//}
 
 
 
@@ -102,26 +240,26 @@ function collectDeposits() {
     var hasInvalidAccounts = false;
     var hasInvalidLoans = false;
 
-    console.clear(); // Clear console for debugging
+    console.clear();
 
-    // Step 1: Collect Accounts to be Debited
+    // ✅ Step 1: Collect Accounts
     $('#memberAccountsTable tr').each(function () {
-        let checkbox = $(this).find('.form-check-input'); // Find the checkbox
-        let amountInput = $(this).find('.amount-input'); // Find the amount input field
-        let statusIndicator = $(this).find('.status-indicator'); // Find the status indicator
+        let checkbox = $(this).find('.form-check-input');
+        let amountInput = $(this).find('.amount-input');
+        let statusIndicator = $(this).find('.status-indicator');
         let amount = parseFloat(amountInput.val()) || 0;
-        let balance = parseFloat($(this).find('.balance-span').text().replace(/[^\d.-]/g, '')) || 0; // Extract balance
-        let accountNumber = $(this).find('td:eq(1)').text().trim(); // Hidden column for AccountNumber
-        let accountType = $(this).find('td:eq(2)').text().trim(); // Account Type Column
-        let productId = $(this).find('td:eq(0)').text().trim(); // Hidden column for ProductId
+        let balance = parseFloat($(this).find('.balance-span').text().replace(/[^\d.-]/g, '')) || 0;
+        let accountNumber = $(this).find('td:eq(1)').text().trim();
+        let accountType = $(this).find('td:eq(2)').text().trim();
+        let productId = $(this).find('td:eq(0)').text().trim();
 
         if (amount > 0) {
             if (amount > balance) {
-                statusIndicator.html("❌").css("color", "red"); // Red ❌ if amount > balance
+                statusIndicator.html("❌").css("color", "red");
                 hasInvalidAccounts = true;
             } else {
-                statusIndicator.html("✅").css("color", "green"); // Green ✅ if valid
-                checkbox.prop('checked', true); // ✅ Auto-check the account if an amount is entered
+                statusIndicator.html("✅").css("color", "green");
+                checkbox.prop('checked', true);
             }
 
             accountsToBeDebited.push({
@@ -136,7 +274,6 @@ function collectDeposits() {
         }
     });
 
-    // Step 2: Validate at least one account is selected
     if (selectedAccounts === 0) {
         appalert("❌ Please enter an amount and select at least one account from the account table.", 3, 1);
         return null;
@@ -147,34 +284,32 @@ function collectDeposits() {
         return null;
     }
 
-    console.log("✅ Selected Accounts Count:", selectedAccounts);
-    console.log("✅ Accounts Collected:", accountsToBeDebited);
-
-    // Step 3: Validate the transaction note
     let transactionNote = getValidatedNote();
-    if (!transactionNote) {
-        return null; // Prevent submission if note validation fails
-    }
+    if (!transactionNote) return null;
 
-    // Step 4: Collect Loan Repayments
+    // ✅ Step 2: Collect Loans
     $('#loanRepaymentTable tr').each(function () {
-        let checkbox = $(this).find('.form-check-input'); // Find the checkbox
-        let loanId = $(this).find('td:eq(0)').text().trim(); // Hidden column for LoanId
+        let checkbox = $(this).find('.form-check-input');
+        let loanId = $(this).find('td:eq(0)').text().trim();
+
+        // ✅ Read values directly from table inputs
         let capital = parseFloat($(this).find('.capital-input').val()) || 0;
         let interest = parseFloat($(this).find('.interest-input').val()) || 0;
+        let vat = parseFloat($(this).find('.vat-input').val().replace(/,/g, '')) || 0;
         let penalty = parseFloat($(this).find('.penalty-input').val()) || 0;
-        let loanAmountContracted = parseFloat($(this).find('td:eq(2)').text().trim().replace(/[^\d.-]/g, '')) || 0; // Extract Loan Amount Contracted
 
-        // ✅ Calculate VAT (19% of Interest ONLY if Loan Amount Contracted ≥ 2,000,000 XAF)
-        let vat = (loanAmountContracted >= 2000000) ? (interest * 0.1925) : 0;
-        vat = parseFloat(vat.toFixed(1)); // Format VAT correctly
+        // ✅ Use values as-is, do not recalculate VAT or interest
+        let totalAmount = capital + interest + vat + penalty;
 
-        let totalAmount = capital + interest + penalty + vat; // Add VAT to total repayment
+        // ✅ Show total in the row
+        $(this).find('.total-span').html(totalAmount.toLocaleString('en-US', {
+            minimumFractionDigits: 0
+        })).css("color", "");
 
         if (totalAmount > 0) {
-            checkbox.prop('checked', true); // ✅ Auto-check the loan if an amount is entered
+            checkbox.prop('checked', true);
         } else {
-            $(this).find('.total-span').html("⚠️ Missing Values").css("color", "orange"); // Show Warning ⚠️
+            $(this).find('.total-span').html("⚠️ Missing Values").css("color", "orange");
             hasInvalidLoans = true;
         }
 
@@ -184,8 +319,8 @@ function collectDeposits() {
             Interest: interest,
             Penalty: penalty,
             Vat: vat,
-            TotalAmount: totalAmount, // Include VAT in total loan amount
-            LoanAmount: loanAmountContracted, // Store contracted loan amount
+            TotalAmount: totalAmount,
+            LoanAmount: parseFloat($(this).find('td:eq(2)').text().trim().replace(/[^\d.-]/g, '')) || 0,
             MemberRefence: $('#customerId').val(),
             Note: transactionNote
         });
@@ -194,7 +329,8 @@ function collectDeposits() {
         selectedLoans++;
     });
 
-    // Step 5: Validate Loan Selection
+    $('#totalRepaymentAmount').text(totalRepayment.toLocaleString('en-US', { minimumFractionDigits: 0 }));
+
     if (selectedLoans === 0) {
         appalert("❌ Please enter an amount and select at least one loan to process repayment.", 3, 1);
         return null;
@@ -210,18 +346,12 @@ function collectDeposits() {
         return null;
     }
 
-    console.log("✅ Selected Loans Count:", selectedLoans);
-    console.log("✅ Loans Collected:", loansToBeRefunded);
-
-    // Step 6: Ensure the total debited amount matches the total repayment amount
-    if (Math.round(totalDebited) !== Math.round(totalRepayment)) {
-        appalert(`❌ The sum of Capital, Interest, and Penalty (including VAT) (${formatCurrency(totalRepayment)}) must be equal to the total amount to be debited (${formatCurrency(totalDebited)}).`, 3, 1);
-        return null;
-    }
-
+    //if (Math.round(totalDebited) !== Math.round(totalRepayment)) {
+    //    appalert(`❌ The sum of Capital, Interest, and Penalty (including VAT) (${formatCurrency(totalRepayment)}) must be equal to the total amount to be debited (${formatCurrency(totalDebited)}).`, 3, 1);
+    //    return null;
+    //}
 
     console.log("✅ FINAL VALIDATION PASSED. Ready to Submit!");
-
     return [{ AccountToBeDebiteds: accountsToBeDebited, LoanToBeRefundeds: loansToBeRefunded }];
 }
 
@@ -264,12 +394,8 @@ function getValidatedNote() {
 
 function PostLoanRepayment() {
     var deposits = collectDeposits();
+    if (!deposits) return;
 
-    if (!deposits) {
-        return; // Stop execution if deposits collection is not valid
-    }
-
-    // Validate Note field
     var note = $('#Note').val().trim();
     var wordCount = note.split(/\s+/).filter(word => word.length > 0).length;
 
@@ -283,20 +409,17 @@ function PostLoanRepayment() {
         return;
     }
 
-    // Get total amount to be debited
-    var accountsToBeDebited = deposits[0].AccountToBeDebiteds;
-    var loansToBeRefunded = deposits[0].LoanToBeRefundeds[0];
+    var accountsToBeDebited = deposits[0].AccountsToBeDebited || [];
+    var loansToBeRefunded = deposits[0].LoansToBeRefunded[0];
 
     var totalDebited = parseFloat(accountsToBeDebited.reduce((sum, acc) => sum + acc.Amount, 0)) || 0;
     var totalLoanAmount = parseFloat(loansToBeRefunded.TotalAmount) || 0;
+
     var capital = parseFloat(loansToBeRefunded.Capital) || 0;
     var interest = parseFloat(loansToBeRefunded.Interest) || 0;
     var penalty = parseFloat(loansToBeRefunded.Penalty) || 0;
-    var loanAmountContracted = parseFloat(loansToBeRefunded.LoanAmount) || 0;
-
-    // Calculate VAT (19% on Interest ONLY if Loan Amount Contracted ≥ 2,000,000 XAF)
-    var vat = (loanAmountContracted >= 2000000) ? (interest * 0.1925) : 0;
-    vat = parseFloat(vat.toFixed(0)); // Ensure VAT is correctly formatted
+    var vat = parseFloat(loansToBeRefunded.Vat) || 0; // ✅ Read VAT from collected data
+    var loanAmountContracted = parseFloat(loansToBeRefunded.LoanAmountContracted) || 0;
 
     console.log("🔹 Loan Amount Contracted:", loanAmountContracted);
     console.log("🔹 Total Debited:", totalDebited);
@@ -311,16 +434,14 @@ function PostLoanRepayment() {
         return;
     }
 
-
-    // Construct Account Debits Breakdown
+    // 🧾 Accounts breakdown
     var accountsSummary = `<br><strong>Accounts to be Debited:</strong><br>`;
     accountsToBeDebited.forEach(account => {
         accountsSummary += `✔️ ${account.AccountType} (${account.AccountNumber}) : ${formatCurrency(account.Amount)}<br>`;
     });
-
     accountsSummary += `<hr><strong>Total Amount to be Debited: ${formatCurrency(totalDebited)}</strong><br>`;
 
-    // Construct Loan Repayment Breakdown
+    // 📋 Loan breakdown
     var loanSummary = `
         <br><strong>Loan Repayment Details:</strong><br>
         🔹 Contracted Loan Amount: ${formatCurrency(loanAmountContracted)}<br>
@@ -332,7 +453,6 @@ function PostLoanRepayment() {
         <strong>Total Loan Amount to be Paid: ${formatCurrency(Math.round(totalLoanAmount))}</strong><br>
     `;
 
-    // Final confirmation message
     var message = `Are you sure you want to proceed with this loan repayment?<br>
                    ${accountsSummary} ${loanSummary}`;
 
