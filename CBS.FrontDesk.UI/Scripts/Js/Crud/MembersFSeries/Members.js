@@ -10,7 +10,7 @@ function loadMemberData() {
         searching: false,
         order: [[0, 'desc']],
         ajax: {
-            url: '/Individual/LoadMembersData',
+            url: '/MembersFSeries/LoadMembersData',
             type: 'POST',
             contentType: 'application/json',
             data: function (d) {
@@ -55,7 +55,7 @@ function loadMemberData() {
                 data: null,
                 orderable: false,
                 render: function (data, type, row) {
-                    return `<a href='/Individual/CustomerProfile?KEY=${row.CustomerId}' target='_blank' 
+                    return `<a href='/MembersFSeries/F2MembersGeneratSituation?KEY=${row.CustomerId}' target='_blank' 
                     class='btn btn-sm btn-outline-dark' title='Check account situation'>
                     <i class="mdi mdi-account-cash-outline me-1 text-primary"></i> Account Situation
                 </a>`;

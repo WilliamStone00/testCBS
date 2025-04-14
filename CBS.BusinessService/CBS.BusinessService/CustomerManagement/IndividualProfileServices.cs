@@ -23,6 +23,8 @@ using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Entity.CMoney;
 using CBS.BusinessService.Session;
+using CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping;
+using DocumentFormat.OpenXml.Bibliography;
 
 namespace CBS.BusinessService.CustomerManagement
 {
@@ -224,13 +226,22 @@ namespace CBS.BusinessService.CustomerManagement
         }
 
 
-        public async Task<CustomDataTable> GetDataTableAsync(GetCustomersForDataTableQuery customersForDataTableQuery)
+        public async Task<CustomDataTable> GetDataTableAsync(GetCustomersForDataTableQuery customersForDataTableQuery, string source)
         {
-            
-            if (!IsHeadOffice())
+            if (source=="MemberSituation")
             {
-                customersForDataTableQuery.BranchId=GetBranchID();
+
             }
+            else
+            {
+                if (!IsHeadOffice())
+                {
+                    customersForDataTableQuery.BranchId=GetBranchID();
+                }
+            }
+
+         
+           
             // Make API call to fetch the DataTable result
             var couApiResponse = await _customerApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
                 APICallHelper.MembersDatatableQuery,
@@ -448,109 +459,116 @@ namespace CBS.BusinessService.CustomerManagement
         }
         private IndividualProfile TransformToCustomerList(IndividualProfile a, Branch b, Town t)
         {
+            if (a == null) return new IndividualProfile(); // Prevent total null access crash
+
             var customer = new IndividualProfile
             {
-                name = $"{a.FirstName} {a.LastName}",
-                Phone = a.Phone,
-                FirstName = a.FirstName,
-                LastName = a.LastName,
-                Email = a.Email,
+                name = $"{a.FirstName ?? ""} {a.LastName ?? ""}".Trim(),
+                Phone = a.Phone ?? string.Empty,
+                FirstName = a.FirstName ?? string.Empty,
+                LastName = a.LastName ?? string.Empty,
+                Email = a.Email ?? string.Empty,
                 TownId = a.TownId,
-                town = t == null ? "N/A" : t.Name,
-                branch = b == null ? "N/A" : b.Name,
+                town = t?.Name ?? "N/A",
+                branch = b?.Name ?? "N/A",
                 BranchId = a.BranchId,
                 Active = a.Active,
                 ActiveStatus = a.Active ? "Active" : "In-Active",
-                Address = a.Address,
+                Address = a.Address ?? string.Empty,
                 BankId = a.BankId,
                 CountryId = a.CountryId,
                 CustomerId = a.CustomerId,
                 DateOfBirth = a.DateOfBirth,
                 DivisionId = a.DivisionId,
                 EconomicActivitiesId = a.EconomicActivitiesId,
-                Gender = a.Gender,
-                IDNumber = a.IDNumber,
+                Gender = a.Gender ?? string.Empty,
+                IDNumber = a.IDNumber ?? string.Empty,
                 IsUseOnLineMobileBanking = a.IsUseOnLineMobileBanking,
                 OrganizationId = a.OrganizationId,
                 CustomerPackageId = a.CustomerPackageId,
-                Fax = a.Fax,
-                photoUrl = a.photoUrl,
-                signatureUrl = a.signatureUrl,
-                BankingRelationship = a.BankingRelationship,
-                CardSignatureSpecimens = a.CardSignatureSpecimens,
-                CustomerDocuments = a.CustomerDocuments,
-                pin = a.pin,
+                Fax = a.Fax ?? string.Empty,
+                photoUrl = a.photoUrl ?? string.Empty,
+                signatureUrl = a.signatureUrl ?? string.Empty,
+                BankingRelationship = a.BankingRelationship ?? string.Empty,
+                CardSignatureSpecimens = a.CardSignatureSpecimens ?? new List<CardSignatureSpecimen>(),
+                CustomerDocuments = a.CustomerDocuments ?? new List<CustomerDocument>(),
+                pin = a.pin ?? string.Empty,
                 RegionId = a.RegionId,
                 SubDivisionId = a.SubDivisionId,
-                TaxIdentificationNumber = a.TaxIdentificationNumber,
-                bankCode = a.bankCode,
-                FormalOrInformalSector = a.FormalOrInformalSector,
+                TaxIdentificationNumber = a.TaxIdentificationNumber ?? string.Empty,
+                bankCode = a.bankCode ?? string.Empty,
+                FormalOrInformalSector = a.FormalOrInformalSector ?? string.Empty,
                 IsMemberOfACompany = a.IsMemberOfACompany,
-                LegalForm = a.LegalForm,
-                MembershipApprovalStatus = a.MembershipApprovalStatus,
-                branchCode = a.branchCode,
+                LegalForm = a.LegalForm ?? string.Empty,
+                MembershipApprovalStatus = a.MembershipApprovalStatus ?? string.Empty,
+                branchCode = a.branchCode ?? string.Empty,
                 CustomerCategory = a.CustomerCategory,
                 CustomerCategoryId = a.CustomerCategoryId,
-                EmployerAddress = a.EmployerAddress,
-                EmployerName = a.EmployerName,
-                EmployerTelephone = a.EmployerTelephone,
+                EmployerAddress = a.EmployerAddress ?? string.Empty,
+                EmployerName = a.EmployerName ?? string.Empty,
+                EmployerTelephone = a.EmployerTelephone ?? string.Empty,
                 Income = a.Income,
-                WorkingStatus = a.WorkingStatus,
-                IDNumberIssueAt = a.IDNumberIssueAt,
+                WorkingStatus = a.WorkingStatus ?? string.Empty,
+                IDNumberIssueAt = a.IDNumberIssueAt ?? string.Empty,
                 IDNumberIssueDate = a.IDNumberIssueDate,
-                ImageNoVirtualPath = a.ImageNoVirtualPath,
-                ImageVirtualNoSignaturePath = a.ImageVirtualNoSignaturePath,
-                ImageVirtualPath = a.ImageVirtualPath,
-                ImageVirtualSignaturePath = a.ImageVirtualSignaturePath,
+                ImageNoVirtualPath = a.ImageNoVirtualPath ?? string.Empty,
+                ImageVirtualNoSignaturePath = a.ImageVirtualNoSignaturePath ?? string.Empty,
+                ImageVirtualPath = a.ImageVirtualPath ?? string.Empty,
+                ImageVirtualSignaturePath = a.ImageVirtualSignaturePath ?? string.Empty,
                 IsMemberOfAGroup = a.IsMemberOfAGroup,
-                Language = a.Language,
-                MaritalStatus = a.MaritalStatus,
-                Occupation = a.Occupation,
-                FAddress=a.FAddress,
-                FName=a.FName,
-                FOccupation=a.FOccupation,
-                FPhone=a.FPhone,
-                MAddress=a.MAddress,
-                MName=a.MName,
-                MOccupation=a.MOccupation,
-                MPhone=a.MPhone,
-                POBox = a.POBox,
-                MembershipAllocatedNumber = a.MembershipAllocatedNumber,
+                Language = a.Language ?? string.Empty,
+                MaritalStatus = a.MaritalStatus ?? string.Empty,
+                Occupation = a.Occupation ?? string.Empty,
+
+                FAddress = a.FAddress ?? string.Empty,
+                FName = a.FName ?? string.Empty,
+                FOccupation = a.FOccupation ?? string.Empty,
+                FPhone = a.FPhone ?? string.Empty,
+                MAddress = a.MAddress ?? string.Empty,
+                MName = a.MName ?? string.Empty,
+                MOccupation = a.MOccupation ?? string.Empty,
+                MPhone = a.MPhone ?? string.Empty,
+
+                POBox = a.POBox ?? string.Empty,
+                MembershipAllocatedNumber = a.MembershipAllocatedNumber ?? string.Empty,
                 MembershipApplicantDate = a.MembershipApplicantDate,
-                MembershipApplicantProposedByReferral1 = a.MembershipApplicantProposedByReferral1,
-                MembershipApplicantProposedByReferral2 = a.MembershipApplicantProposedByReferral2,
-                MembershipApprovalBy = a.MembershipApprovalBy,
+                MembershipApplicantProposedByReferral1 = a.MembershipApplicantProposedByReferral1 ?? string.Empty,
+                MembershipApplicantProposedByReferral2 = a.MembershipApplicantProposedByReferral2 ?? string.Empty,
+                MembershipApprovalBy = a.MembershipApprovalBy ?? string.Empty,
                 MembershipApprovedDate = a.MembershipApprovedDate,
-                MembershipApprovedSignatureUrl = a.MembershipApprovedSignatureUrl,
+                MembershipApprovedSignatureUrl = a.MembershipApprovedSignatureUrl ?? string.Empty,
                 MembershipNextOfKings = a.MembershipNextOfKings,
-                mobileOrOnLineBankingLoginState = a.mobileOrOnLineBankingLoginState,
+
+                mobileOrOnLineBankingLoginState = a.mobileOrOnLineBankingLoginState ?? string.Empty,
                 NumberOfKids = a.NumberOfKids,
-                PlaceOfBirth = a.PlaceOfBirth,
+                PlaceOfBirth = a.PlaceOfBirth ?? string.Empty,
                 IsDailyCollector = a.IsDailyCollector,
-                SecretAnswer = a.SecretAnswer,
-                SecretQuestion = a.SecretQuestion,
-                SpouseAddress = a.SpouseAddress,
-                SpouseContactNumber = a.SpouseContactNumber,
-                SpouseName = a.SpouseName,
-                SpouseOccupation = a.SpouseOccupation,
-                BankName = b == null ? "N/A" : b.Bank.Name,
-                CustomerCode = a.CustomerCode,
-                VillageOfOrigin = a.VillageOfOrigin,
+                SecretAnswer = a.SecretAnswer ?? string.Empty,
+                SecretQuestion = a.SecretQuestion ?? string.Empty,
+                SpouseAddress = a.SpouseAddress ?? string.Empty,
+                SpouseContactNumber = a.SpouseContactNumber ?? string.Empty,
+                SpouseName = a.SpouseName ?? string.Empty,
+                SpouseOccupation = a.SpouseOccupation ?? string.Empty,
+
+                BankName = b?.Bank?.Name ?? "N/A",
+                CustomerCode = a.CustomerCode ?? string.Empty,
+                VillageOfOrigin = a.VillageOfOrigin ?? string.Empty,
                 PaginationMetadata = a.PaginationMetadata,
-                Matricule=a.Matricule,
-                AccountConfirmationNumber=a.AccountConfirmationNumber,
-                CustomerType=a.CustomerType,
-                ProfileType=a.ProfileType,
-                CompanyCreationDate=a.CompanyCreationDate,
-                ConditionForWithdrawal=a.ConditionForWithdrawal,
-                GroupCustomers=a.GroupCustomers,
-                IsBelongToGroup=a.IsBelongToGroup,
-                MobileLoginId=a.MobileLoginId,
-                MobileOrOnLineBankingLoginFailedAttempts=a.MobileOrOnLineBankingLoginFailedAttempts,
-                NoneMemberAccount=a.NoneMemberAccount,
-                NumberOfAttemptsOfMobileOrOnLineBankingLogin=a.NumberOfAttemptsOfMobileOrOnLineBankingLogin,
-                PlaceOfCreation=a.PlaceOfCreation,
-                RegistrationNumber=a.RegistrationNumber
+
+                Matricule = a.Matricule ?? string.Empty,
+                AccountConfirmationNumber = a.AccountConfirmationNumber ?? string.Empty,
+                CustomerType = a.CustomerType ?? string.Empty,
+                ProfileType = a.ProfileType ?? string.Empty,
+                CompanyCreationDate = a.CompanyCreationDate,
+                ConditionForWithdrawal = a.ConditionForWithdrawal ?? string.Empty,
+                GroupCustomers = a.GroupCustomers ?? new List<GroupCustomer>(),
+                IsBelongToGroup = a.IsBelongToGroup,
+                MobileLoginId = a.MobileLoginId ?? string.Empty,
+                MobileOrOnLineBankingLoginFailedAttempts = a.MobileOrOnLineBankingLoginFailedAttempts,
+                NoneMemberAccount = a.NoneMemberAccount,
+                NumberOfAttemptsOfMobileOrOnLineBankingLogin = a.NumberOfAttemptsOfMobileOrOnLineBankingLogin,
+                PlaceOfCreation = a.PlaceOfCreation ?? string.Empty,
+                RegistrationNumber = a.RegistrationNumber ?? string.Empty
             };
 
             return customer;

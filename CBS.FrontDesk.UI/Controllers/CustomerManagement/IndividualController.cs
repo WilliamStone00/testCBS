@@ -433,7 +433,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         {
             try
             {
-                var dataTable = await _individualProfileServices.GetDataTableAsync(query);
+                var dataTable = await _individualProfileServices.GetDataTableAsync(query,"MyMembers");
 
                 var customerList = JsonConvert.DeserializeObject<List<CustomerLightDto>>(
                     JsonConvert.SerializeObject(dataTable.data)
@@ -467,7 +467,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
                     skip = 0
                 };
 
-                var dataTable = await _individualProfileServices.GetDataTableAsync(query);
+                var dataTable = await _individualProfileServices.GetDataTableAsync(query,"MyMembers");
 
                 var customerList = JsonConvert.DeserializeObject<List<CustomerLightDto>>(
                     JsonConvert.SerializeObject(dataTable.data)
