@@ -173,6 +173,24 @@ function ApprovePostedEntries(response) {
 
     }
 }
+
+function PrintDataEntries(response) {
+    //comment_description
+    var storedId = $("#selectedId").val();
+    var comment = $("#comment_description").val();
+    console.log(storedId + "  " + comment + "  " + response);
+    if (comment === "") {
+
+        appalert("Please kindly enter your decision for this entry with referenceId:" + storedId + " before you continue", 2, 1);
+        return;
+    } else {
+        var ServiceOption = "EntryTempData";
+        var message = "WARNING!!!\n";
+        message += "Are you sure you want to confirm this various account adjustment?\n";
+        ApprovePostedEntriesTransactions('Confirm Manual Entry Operation', message, '/ManuallyJournalEntry/ApproveEntries', ServiceOption, response, storedId, comment);
+
+    }
+}
 function ApprovePostedEntriesTransactions(title, message, ajaxUrl, serviceoption, Response, Id, comment) {
     alertify.confirm(title, message,
         function () {

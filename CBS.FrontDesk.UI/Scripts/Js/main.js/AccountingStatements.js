@@ -33,21 +33,21 @@
             loadBranchAccounts(selectedId);
         } else {
 
-            const targetReportTypes = ["BS", "PANDL", "TB6", "TB4"];
+            //const targetReportTypes = ["BS", "PANDL", "TB6", "TB4"];
 
        
-                const selectedValue = $(this).val();
-                const fromDateInput = $('input[name="SystemQuery.FromDate"]');
+            //    const selectedValue = $(this).val();
+            //    const fromDateInput = $('input[name="SystemQuery.FromDate"]');
 
-                if (targetReportTypes.includes(selectedValue)) {
-                    const currentYear = new Date().getFullYear();
-                    const beginningOfYear = `${currentYear}-01-01`;
+            //    if (targetReportTypes.includes(selectedValue)) {
+            //        const currentYear = new Date().getFullYear();
+            //        const beginningOfYear = `${currentYear}-01-01`;
 
-                    fromDateInput.val(beginningOfYear);
-                    fromDateInput.prop('disabled', true);
-                } else {
-                    fromDateInput.prop('disabled', false);
-                }
+            //        fromDateInput.val(beginningOfYear);
+            //        fromDateInput.prop('disabled', true);
+            //    } else {
+            //        fromDateInput.prop('disabled', false);
+            //    }
          
             // Hide the element
             $('#AccountToHide').hide();

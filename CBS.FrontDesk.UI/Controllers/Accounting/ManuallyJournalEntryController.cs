@@ -877,6 +877,7 @@ namespace CBS.FrontDesk.UI.Controllers
             return Json(new { success = false, status = false, message = "Invalid option selected." });
         }
 
+        // = results;
 
         [HttpGet]
         public async Task<ActionResult> ApproveEntries(string Id, bool HasApproved,string Comment)
@@ -893,6 +894,36 @@ namespace CBS.FrontDesk.UI.Controllers
                 {
                     return Json(new { success = false, status = false, message = data.MessageString }, JsonRequestBehavior.AllowGet);
                 }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+            }
+
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> PrintDataEntries(string Id, bool HasApproved, string Comment)
+        {
+            List< PostedEntryX > listPosted =(List<PostedEntryX>)this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()];
+            try
+            {
+                this.HttpContext.Session["rptSource"] = listPosted;
+                string ReportName = $"PrintedManualJE.rpt";
+
+
+
+                if (listPosted.Count() == 0)
+                {
+                    this.HttpContext.Session["rptSource"] = "empty";
+                }
+            
+                this.HttpContext.Session["fileType"] = $"PDF";
+                this.HttpContext.Session["ReportName"] = $"{ReportName}";
+                this.HttpContext.Session["rptType"] = $"PDF";
+                this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
+                return Json(new { success = true, status = true, message = $"Print out journal entry[{listPosted[0].EntryDetail[0].Reference}]" });
 
             }
             catch (Exception ex)
