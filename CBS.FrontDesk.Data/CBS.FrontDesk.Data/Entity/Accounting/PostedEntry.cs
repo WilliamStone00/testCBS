@@ -13,7 +13,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Status { get; set; }
         public string Description { get; set; }
         public decimal Amount { get; set; }
-        public string CreatedDate { get; set; }
+        public DateTimeOffset CreatedDate { get; set; }
         public string CreatedBy { get; set; }
         public string IssuedBy { get; set; }
         public string PostingSource { get; set; }
@@ -31,7 +31,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Status { get; set; }
         public string Description { get; set; }
         public decimal Amount { get; set; }
-        public string CreatedDate { get; set; }
+        public DateTimeOffset CreatedDate { get; set; }
         public string CreatedBy { get; set; }
         public string IssuedBy { get; set; }
         public string BranchCode { get; set; }

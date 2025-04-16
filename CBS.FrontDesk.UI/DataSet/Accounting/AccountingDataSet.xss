@@ -16,7 +16,7 @@
     <Shape ID="DesignTable:Expense" ZOrder="8" X="747" Y="943" Height="309" Width="210" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="305" />
     <Shape ID="DesignTable:PandLSummary" ZOrder="7" X="385" Y="1031" Height="102" Width="287" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="98" />
     <Shape ID="DesignTable:GeneralLedgerStatement" ZOrder="3" X="1577" Y="100" Height="657" Width="174" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="653" />
-    <Shape ID="DesignTable:ManaulJour" ZOrder="1" X="1367" Y="29" Height="619" Width="157" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="615" />
+    <Shape ID="DesignTable:MET_PrintOut" ZOrder="1" X="1367" Y="29" Height="619" Width="157" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="615" />
   </Shapes>
   <Connectors />
 </DiagramLayout>

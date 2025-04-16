@@ -3592,6 +3592,8 @@
     <Content Include="Views\AccountOpeningRulePerBranch\_VaultInitializationForm.cshtml" />
     <Content Include="Views\AccountOpeningRulePerBranch\Index.cshtml" />
     <Content Include="Views\AccountOpeningRulePerBranch\Initilization.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\_SearchOptions.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\_PendingEntries.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

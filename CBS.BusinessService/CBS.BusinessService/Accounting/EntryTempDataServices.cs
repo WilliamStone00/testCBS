@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Config;
@@ -382,7 +383,24 @@ namespace CBS.BusinessService.Accounting
             }
         }
 
-       
- 
+        public async Task<List<PostedEntry>> RetrieveManualEntriesWithFilterAsync(QueryModel model)
+        {
+            try
+            {
+                var cusResponseObject = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<PostedEntry>>>(APICallHelper.Url_Get_AllPostedEntriesStatus);
+                if (cusResponseObject.IsSuccess)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+
+      
     }
 }
