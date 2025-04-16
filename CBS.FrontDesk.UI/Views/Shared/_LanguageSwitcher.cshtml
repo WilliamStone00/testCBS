@@ -1,0 +1,37 @@
+﻿@{
+    var selectedLang = (Session["SelectedLanguage"]?.ToString() ?? "en").ToLower();
+    var langFlag = selectedLang == "fr"
+        ? Url.Content("~/AppFiles/Images/Lang/france_64.png")
+        : Url.Content("~/AppFiles/Images/Lang/united_kingdom_64.png");
+}
+
+<li class="nav-item dropdown-language dropdown me-1 me-xl-0">
+    <a class="nav-link btn btn-text-secondary rounded-pill btn-icon hide-arrow"
+       href="javascript:void(0);" data-bs-toggle="dropdown" title="@((selectedLang == "fr") ? "Français" : "English")">
+        <img id="current-lang-flag" src="@langFlag" alt="Lang" width="24" height="16" class="transition-lang" />
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+            <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);" onclick="setLanguage('en', '~/AppFiles/Images/Lang/united_kingdom_64.png')">
+                <i class="mdi mdi-flag-variant-outline text-primary me-2"></i>
+                <img src="~/AppFiles/Images/Lang/united_kingdom_64.png" alt="English" width="20" class="me-2" />
+                <span>English</span>
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);" onclick="setLanguage('fr', '~/AppFiles/Images/Lang/france_64.png')">
+                <i class="mdi mdi-flag-variant-outline text-danger me-2"></i>
+                <img src="~/AppFiles/Images/Lang/france_64.png" alt="French" width="20" class="me-2" />
+                <span>Français</span>
+            </a>
+        </li>
+    </ul>
+</li>
+
+<style>
+    .transition-lang {
+        transition: opacity 0.3s ease-in-out;
+    }
+</style>
+
+

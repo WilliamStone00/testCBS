@@ -1125,73 +1125,24 @@
     </script>
 
 
-
-
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,fr',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false
-            }, 'google_translate_element');
-        }
-
-        function setLanguage(langCode, flagPath) {
-            const flagImg = document.getElementById("current-lang-flag");
-            if (flagImg) flagImg.src = flagPath.replace("~", "");
-
-            let attempts = 0;
-            const maxAttempts = 20;
-
-            const intervalId = setInterval(function () {
-                const frame = document.querySelector('iframe.goog-te-menu-frame');
-                if (!frame || !frame.contentWindow) {
-                    attempts++;
-                    if (attempts >= maxAttempts) {
-                        clearInterval(intervalId);
-                        appalert('TSC Translating service did not load. Please try again.', 3, 1);
-                    }
-                    return;
-                }
-
-                const innerDoc = frame.contentDocument || frame.contentWindow.document;
-                const items = innerDoc.querySelectorAll('.goog-te-menu2-item span.text');
-
-                for (let i = 0; i < items.length; i++) {
-                    const text = items[i].innerText.trim().toLowerCase();
-                    if ((langCode === 'fr' && text.includes('french')) ||
-                        (langCode === 'en' && text.includes('english'))) {
-
-                        items[i].click(); // ✅ triggers Google Translate
-
-                        // ✅ Manually trigger in case Google Translate doesn't react
-                        triggerManualTranslation(langCode);
-
-                        clearInterval(intervalId);
-                        return;
-                    }
-                }
-
-                attempts++;
-                if (attempts >= maxAttempts) {
-                    clearInterval(intervalId);
-                    appalert('Language not found in TSC Translate menu.', 3, 1);
-                }
-            }, 500);
-        }
-
-        // ✅ Add this function once in your layout script
-        function triggerManualTranslation(langCode) {
-            const translateCombo = document.querySelector('.goog-te-combo');
-            if (translateCombo) {
-                translateCombo.value = langCode;
-                translateCombo.dispatchEvent(new Event('change'));
+    <script>
+        function setLanguage(lang, flagPath) {
+            const flagElement = document.getElementById('current-lang-flag');
+            if (flagElement) {
+                flagElement.style.opacity = '0.3';
             }
+
+            fetch(`/Localization/SetLanguage?lang=${lang}`)
+                .then(() => {
+                    if (flagElement) {
+                        flagElement.src = flagPath.replace('~', '');
+                        flagElement.style.opacity = '1';
+                    }
+                    location.reload();
+                });
         }
     </script>
 
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 
     <script>
@@ -1216,19 +1167,19 @@
 
     @*<script>
 
-        $(document).ready(function () {
-            $.ajaxSetup({
-                complete: function (xhr) {
-                    if (xhr.status === 401) { // Unauthorized
-                        // Redirect to login page
-                        alert("Your session has expired. Please log in again.");
-                        window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+            $(document).ready(function () {
+                $.ajaxSetup({
+                    complete: function (xhr) {
+                        if (xhr.status === 401) { // Unauthorized
+                            // Redirect to login page
+                            alert("Your session has expired. Please log in again.");
+                            window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+                        }
                     }
-                }
+                });
             });
-        });
 
-    </script>*@
+        </script>*@
     <script>
         function fetchAccountingDate() {
             $.ajax({

@@ -1,7 +1,8 @@
-﻿@model CBS.API.Helper.AuthRequest
+﻿@using Resources
+@model CBS.API.Helper.AuthRequest
 @{
     Layout = "~/Views/Shared/_LoginMainCover.cshtml";
-    ViewBag.Title = "T R U S T S O F T C R E D I T-Authentication";
+    ViewBag.Title = GlobalLogin.Title;
 }
 
 <style>
@@ -146,10 +147,10 @@
             </div>
             <hr class="styled-hr">
             <h5 class="trustbank-text mb-1">
-                <span class="trust-soft">T R U S T S O F T</span>
-                <span class="credit">C R E D I T</span>
+                <span class="trust-soft">@GlobalHome.TrustSoft</span>
+                <span class="credit">@GlobalHome.Credit</span>
             </h5>
-            <small class="d-block mt-0"><i>Empowering businesses. Enhancing lives.</i></small>
+            <small class="d-block mt-0"><i>@GlobalHome.SatisfactionText</i></small>
 
             <hr class="styled-hr">
 
@@ -160,7 +161,7 @@
                     @ViewBag.Message
                 </div>
             }
-            <p class="mb-4 text-center">Please sign in to your account.</p>
+        <p class="mb-4 text-center">@GlobalLogin.LoginNote</p>
 
             @using (Html.BeginForm("Login", "Authentication", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-label-left" }))
             {
@@ -168,7 +169,7 @@
                 <div class="form-floating form-floating-outline mb-3">
                     @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Email or Username", autocomplete = "username" })
                     @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
-                    <label for="username">Email or Username</label>
+                    <label for="username">@GlobalLogin.UserName</label>
                 </div>
 
                 <!-- Password Input -->
@@ -177,23 +178,23 @@
                         <div class="form-floating form-floating-outline">
                             @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", autocomplete = "current-password" })
                             @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                            <label for="password">Password</label>
+                            <label for="password">@GlobalLogin.Password</label>
                         </div>
                         <span class="input-group-text cursor-pointer"><i class="mdi mdi-eye-off-outline"></i></span>
                     </div>
                 </div>
                 <!-- Login Button -->
-                <button type="submit" class="btn btn-primary d-grid w-100">Login</button>
+        <button type="submit" class="btn btn-primary d-grid w-100">@GlobalLogin.LoginButton</button>
             }
 
             <!-- Login Policy -->
             <div class="login-policy mt-4">
-                <p class="text-muted mb-0 text-center mt-2"><b>LOGIN POLICY</b></p>
+                <p class="text-muted mb-0 text-center mt-2"><b>@GlobalLogin.LOGINPOLICY_TITLE</b></p>
                 <hr class="styled-hr" />
                 <ol class="text-start ps-3">
-                    <li>Your max login attempt is 3, else blocked.</li>
-                    <li>If your account is blocked, contact administrator.</li>
-                    <li>If you forget your password, contact administrator.</li>
+                    <li>@GlobalLogin.LOGINPOLICY_1</li>
+                    <li>@GlobalLogin.LOGIN_POLICY_2</li>
+                    <li>@GlobalLogin.LOGIN_POLICY_3</li>
                 </ol>
             </div>
 

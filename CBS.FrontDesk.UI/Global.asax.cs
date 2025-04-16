@@ -44,7 +44,27 @@ namespace CBS.FrontDesk.UI
             ValueProviderFactories.Factories.Add(new JsonValueProviderFactory());
             ConnectionMonitoringService connectionService = new ConnectionMonitoringService();
 
+
         }
+        protected void Application_BeginRequest()
+        {
+            string lang = null;
+
+            if (HttpContext.Current.Session != null)
+            {
+                lang = HttpContext.Current.Session["SelectedLanguage"]?.ToString();
+            }
+
+            if (string.IsNullOrEmpty(lang))
+            {
+                lang = HttpContext.Current.Request.Cookies["TSC_Lang"]?.Value ?? "en";
+            }
+
+            var ci = new CultureInfo(lang);
+            Thread.CurrentThread.CurrentCulture = ci;
+            Thread.CurrentThread.CurrentUICulture = ci;
+        }
+
         //protected void Application_AcquireRequestState(object sender, EventArgs e)
         //{
         //    var context = HttpContext.Current;
