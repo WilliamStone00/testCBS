@@ -1,74 +1,73 @@
-﻿@{
-    ViewBag.Title = "Home";
+﻿@using Resources
+@{
+    ViewBag.Title = GlobalHome.Home;
 }
 
 <style>
     body {
-        background-image: url('@Url.Content("~/AppFiles/Images/NBG.jpeg")'); /* Resolves the relative path in MVC */
-        background-size: cover; /* Ensures the image covers the entire screen */
-        background-position: center; /* Centers the image */
-        background-repeat: no-repeat; /* Prevents tiling */
-        background-attachment: fixed; /* Keeps the background static while scrolling */
+        background-image: url('@Url.Content("~/AppFiles/Images/NBG.jpeg")');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
         margin: 0;
         padding: 0;
-        height: 100vh; /* Ensures it fills the full viewport height */
-        width: 100vw; /* Ensures it fills the full viewport width */
-        font-family: Arial, sans-serif; /* Optional: Set default font */
+        height: 100vh;
+        width: 100vw;
+        font-family: Arial, sans-serif;
     }
 
     .navbar {
-        background-color: #333; /* Adjust navbar background color */
-        height: 50px; /* Set a fixed height for the navbar */
+        background-color: #333;
+        height: 50px;
         position: fixed;
         width: 100%;
         top: 0;
         left: 0;
-        z-index: 1000; /* Ensure navbar stays on top */
+        z-index: 1000;
     }
 
     .content {
         position: relative;
-        z-index: 1; /* Ensures content appears above the background */
-        color: #fff; /* White text for contrast */
-        text-align: center; /* Center the text */
-        padding-top: 100px; /* Adds spacing from the top (adjust based on navbar height) */
+        z-index: 1;
+        color: #fff;
+        text-align: center;
+        padding-top: 100px;
     }
 
-    /* Style for the h1 tag */
     h1 {
-        font-size: 3rem; /* Larger font size for the header */
-        font-weight: bold; /* Bold text */
-        color: #2d9cdb; /* Sky Blue color */
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Adds a subtle shadow for better visibility */
-        margin-bottom: 20px; /* Adds space below the header */
-    }
-
-    /* Style for the p tag (top-right corner positioning) */
-    p {
-        font-size: 1.1rem; /* Medium size text */
-        color: green; /* Lime Green color */
-        font-weight: normal; /* Regular weight */
-        line-height: 1.6; /* Adds space between lines for better readability */
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Adds subtle shadow for better visibility */
-        position: absolute; /* Absolute positioning */
-        top: 70px; /* Distance from the top (adjust this based on navbar height) */
-        right: 20px; /* Distance from the right edge */
-        margin: 0; /* Removes default margin */
-    }
-    /* Style for "Your secure and reliable partner. FLUX!" */
-    .partner-text {
-        font-size: 16px;
+        font-size: 3rem;
         font-weight: bold;
-        margin-bottom: 5px; /* Reduce spacing between the two lines */
-        color: black; /* Default color */
+        color: #2d9cdb;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        margin-bottom: 20px;
     }
 
-    /* Style for "Your objective, Our Satisfaction" */
-    .satisfaction-text {
-        font-size: 14px; /* Slightly smaller text */
-        color: blue; /* Blue color for the text */
-        margin-top: -5px; /* Adjust spacing to place it closer */
+    p {
+        font-size: 1.1rem;
+        color: green;
+        font-weight: normal;
+        line-height: 1.6;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        margin: 0;
     }
+
+    .partner-text {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: forestgreen;
+    }
+
+    .satisfaction-text {
+        font-size: 1rem;
+        color: blue;
+        margin-top: 0;
+    }
+
     .styled-hr {
         font-size: 2rem;
         font-weight: bold;
@@ -81,38 +80,24 @@
     .credit {
         color: limegreen;
     }
-
-    .partner-text {
-        color: forestgreen;
-        font-size: 1.2rem;
-    }
-
-    .satisfaction-text {
-        color: blue;
-        margin-top: 0;
-        font-size: 1rem;
-    }
 </style>
 
 <body>
     <div class="content">
         <h1 class="styled-hr">
-            WELCOME TO
-            <span class="trust-soft">TRUSTSOFT</span>
-            <span class="credit">CREDIT</span>
+            @GlobalHome.WelcomeTitle
+            <span class="trust-soft">@GlobalHome.TrustSoft</span>
+            <span class="credit">@GlobalHome.Credit</span>
         </h1>
     </div>
 
-    <!-- Paragraph placed below the navbar -->
+    <!-- Partner Info -->
     <a href="https://fluxcm.com" target="_blank" class="footer-link fw-medium">
-        <p class="partner-text">Your Secure & Reliable Partner. FLUX!</p>
-        <p class="satisfaction-text mt-4"><small><i>Flux SARL! : Empowering businesses. Enhancing lives.</i></small></p>
+        <p class="partner-text">@GlobalHome.PartnerText</p>
+        <p class="satisfaction-text mt-4"><small><i>@GlobalHome.SatisfactionText</i></small></p>
     </a>
 </body>
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
 
-
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 }
-
-
-

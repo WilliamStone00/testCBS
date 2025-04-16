@@ -593,6 +593,36 @@
       <DependentUpon>OpeningAndClossingOfTellersRPT.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="App_GlobalResources\HomePage\GlobalAbout.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAbout.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\HomePage\GlobalAbout.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAbout.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\HomePage\GlobalHome.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalHome.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\HomePage\GlobalHome.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalHome.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Login\GlobalLogin.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLogin.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Login\GlobalLogin.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLogin.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -610,7 +640,7 @@
     <Compile Include="Controllers\AndriodVersioning\AndriodAppVersioningController.cs" />
     <Compile Include="Controllers\ChangeCustomerNumber\ChangeNumberController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectorManagementController.cs" />
-    <Compile Include="Controllers\Language\LanguageController.cs" />
+    <Compile Include="Controllers\Localization\LocalizationController.cs" />
     <Compile Include="Controllers\LoanApplicationP\LoanApplicationController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\LoanRepaymentBackOfficeController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\MobileMoneyBackOfficeController.cs" />
@@ -2518,6 +2548,18 @@
       <DependentUpon>AccountingDataSet.xsd</DependentUpon>
     </Content>
     <Content Include="AppFiles\UploadedSampleTrialBalance.xlsx" />
+    <Content Include="App_GlobalResources\HomePage\GlobalAbout.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAbout.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\HomePage\GlobalAbout.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAbout.fr.designer.cs</LastGenOutput>
+    </Content>
+    <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="DataSet\Accounting\AccountingDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -3592,6 +3634,7 @@
     <Content Include="Views\AccountOpeningRulePerBranch\_VaultInitializationForm.cshtml" />
     <Content Include="Views\AccountOpeningRulePerBranch\Index.cshtml" />
     <Content Include="Views\AccountOpeningRulePerBranch\Initilization.cshtml" />
+    <Content Include="Views\Shared\_LanguageSwitcher.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -3782,6 +3825,18 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>OpeningAndClossingOfTellersRPT.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="App_GlobalResources\HomePage\GlobalHome.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalHome.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\HomePage\GlobalHome.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalHome.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Login\GlobalLogin.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLogin.Designer.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
