@@ -18,7 +18,7 @@ using System.Web.UI;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
-   // [CheckSessionTimeOutAttribute]
+    // [CheckSessionTimeOutAttribute]
 
     public class ReportsController : BaseController
     {
@@ -301,57 +301,67 @@ namespace CBS.FrontDesk.UI.Controllers
             return File(filePath, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Filename);
         }
 
-        public ActionResult AccountingPDFReport(string FileType="")
+        public ActionResult AccountingPDFReport(string FileType = "")
         {
             try
-             {
+            {
                 var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
                 //string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
                 string fileType = System.Web.HttpContext.Current.Session["fileType"].ToString();
                 string rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
-     
+
                 string rptType = System.Web.HttpContext.Current.Session["rptType"].ToString();
-             
+
                 ReportDocument rd = new ReportDocument();
                 if (rptSource != "empty")
-                    {
+                {
                     List<TrialBalance6ColumnDto> trialBalance6ColumnDto = new List<TrialBalance6ColumnDto>();
                     List<TrialBalance4ColumnDto> trialBalance4ColumnDto = new List<TrialBalance4ColumnDto>();
-                        AccountingGeneralLedger accountingGeneralLedger = new AccountingGeneralLedger();
-                        AccountingEntriesReport journalEntryDto = new AccountingEntriesReport();
+                    AccountingGeneralLedger accountingGeneralLedger = new AccountingGeneralLedger();
+                    AccountingEntriesReport journalEntryDto = new AccountingEntriesReport();
                     AccountingGeneralLedgerDetails accountingGeneralLedgerDetails = new AccountingGeneralLedgerDetails();
-                        if (fileType.Contains("TB6"))
-                        {
-                           trialBalance6ColumnDto = (List<TrialBalance6ColumnDto>)rptSource;
-                      
+                    if (fileType.Contains("TB6"))
+                    {
+                        trialBalance6ColumnDto = (List<TrialBalance6ColumnDto>)rptSource;
+
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
                         rd.SetDataSource(trialBalance6ColumnDto);
 
                     }
                     else if (fileType.Contains("TB4"))
-                        {
+                    {
                         trialBalance4ColumnDto = (List<TrialBalance4ColumnDto>)rptSource;
-              
+
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
                         rd.SetDataSource(trialBalance4ColumnDto);
 
                     }
-               
+
                     else if (fileType.Contains("JE"))
                     {
                         journalEntryDto = (AccountingEntriesReport)rptSource;
-            
+
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
-                        rd.SetDataSource(journalEntryDto.BuildJournalEntry(journalEntryDto,GetUserDto().FullName));
+                        rd.SetDataSource(journalEntryDto.BuildJournalEntry(journalEntryDto, GetUserDto().FullName));
 
                     }
                     else if (fileType.Contains("GL"))
                     {
                         accountingGeneralLedgerDetails = (AccountingGeneralLedgerDetails)rptSource;
-                   
+
+                        string strRptPath = Server.MapPath(rptpath);
+                        rd.Load(strRptPath);
+                        var listData = accountingGeneralLedgerDetails.ConvertToGeneralLedgerDto(accountingGeneralLedgerDetails);
+                        rd.SetDataSource(listData);
+
+                    }
+                    else if (fileType.Contains("GL"))
+                    {
+                        accountingGeneralLedgerDetails = (AccountingGeneralLedgerDetails)rptSource;
+
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
                         var listData = accountingGeneralLedgerDetails.ConvertToGeneralLedgerDto(accountingGeneralLedgerDetails);
@@ -363,26 +373,26 @@ namespace CBS.FrontDesk.UI.Controllers
 
 
                     string SavedFileName = string.Format($"{rptType}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
-                        //Export the report to a byte array
-                        Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
-                        byte[] bytes = new byte[stream.Length];
-                        stream.Read(bytes, 0, bytes.Length);
+                    //Export the report to a byte array
+                    Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
+                    byte[] bytes = new byte[stream.Length];
+                    stream.Read(bytes, 0, bytes.Length);
 
-                        //Clear the response and set the content type
-                        Response.ClearContent();
-                        Response.ClearHeaders();
-                        Response.ContentType = "application/pdf";
+                    //Clear the response and set the content type
+                    Response.ClearContent();
+                    Response.ClearHeaders();
+                    Response.ContentType = "application/pdf";
 
-                        //Write the report bytes to the response
-                        Response.BinaryWrite(bytes);
-                        Response.Flush();
-                        Response.End();
-                        //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
-                        CleanReport(rd);
+                    //Write the report bytes to the response
+                    Response.BinaryWrite(bytes);
+                    Response.Flush();
+                    Response.End();
+                    //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
+                    CleanReport(rd);
 
-                    }
+                }
 
-           
+
 
             }
             catch (Exception ex)
@@ -406,7 +416,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
             }
-           
+
         }
         public void ReportWithParameter()
         {
@@ -847,15 +857,15 @@ namespace CBS.FrontDesk.UI.Controllers
         //}
         public ActionResult DownloadExcelFilelist()
         {
-            var rptSource = System.Web.HttpContext.Current.Session["rptSource"+Session.SessionID];
+            var rptSource = System.Web.HttpContext.Current.Session["rptSource" + Session.SessionID];
             string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
-    
+
             var model = rptSource;
 
-               Export export = new Export();
-                export.ToExcel(Response, model as IEnumerable<object>, strtitle);
+            Export export = new Export();
+            export.ToExcel(Response, model as IEnumerable<object>, strtitle);
 
- 
+
             return new EmptyResult();
 
 
@@ -983,7 +993,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 if (rptSource != "empty")
                 {
-                    if (rpTType.ToUpper()=="BS")
+                    if (rpTType.ToUpper() == "BS")
                     {
                         var user = this.GetUserDto();
                         var modeli = (BSQuery)dtoPasser;
@@ -1017,14 +1027,14 @@ namespace CBS.FrontDesk.UI.Controllers
                         var modeli = (BSQuery)dtoPasser;
                         var assetsModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Income, BSCartegory.Expense);
                         var LiabilityModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Income, BSCartegory.Expense);
-                        var DataList = new  List<BalanceSheetInfo> {  };
+                        var DataList = new List<BalanceSheetInfo> { };
                         DataList.AddRange(assetsModel);
                         DataList.AddRange(LiabilityModel);
                         ReportDocument rd = new ReportDocument();
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
                         rd.SetDataSource(DataList);
-                 
+
                         string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
                         //Export the report to a byte array
                         Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
@@ -1043,7 +1053,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     }
                     //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
                     //CleanReport(rd);
- 
+
                 }
 
             }
@@ -1078,21 +1088,21 @@ namespace CBS.FrontDesk.UI.Controllers
         //        }
         //        else
         //        {
-              
+
         //            if (rptSource != "empty")
         //            {
         //                var user = this.GetUserDto();
         //                var modeli = (BSQuery)dtoPasser;
-                      
+
         //                var assetsModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd/MM/yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
 
         //                ReportDocument rd = new ReportDocument();
         //                string strRptPath = Server.MapPath(rptpath);
         //                rd.Load(strRptPath);
         //                rd.SetDataSource(assetsModel);
-                       
 
-         
+
+
         //                string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
         //                // Export the report to a byte array
         //                Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
@@ -1616,7 +1626,7 @@ namespace CBS.FrontDesk.UI.Controllers
                         worksheet.Cell(row, 2).Value = account.Reference;
                         worksheet.Cell(row, 3).Value = account.AccountNumber;
                         worksheet.Cell(row, 4).Value = account.Description;
-                        worksheet.Cell(row, 5).Value = ConvertToLong( account.Debit);
+                        worksheet.Cell(row, 5).Value = ConvertToLong(account.Debit);
                         worksheet.Cell(row, 5).Style.NumberFormat.Format = "#,##0";
                         worksheet.Cell(row, 6).Value = ConvertToLong(account.Credit);
                         worksheet.Cell(row, 6).Style.NumberFormat.Format = "#,##0";
@@ -1890,7 +1900,7 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             else
             {
-                if (rpttype.ToLower()=="pdf")
+                if (rpttype.ToLower() == "pdf")
                 {
 
                 }
@@ -2058,7 +2068,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
                     }
                 }
-       
+
 
             }
 
@@ -2066,63 +2076,63 @@ namespace CBS.FrontDesk.UI.Controllers
         }
 
 
-public ActionResult PrintGeneralLedgerOfAccount()
-{
-    // Retrieve session values
-    var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
+        public ActionResult PrintGeneralLedgerOfAccount()
+        {
+            // Retrieve session values
+            var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
             var rptTitle = System.Web.HttpContext.Current.Session["rpttitle"]?.ToString() ?? "General Ledger";
 
-    if (rptSource == null || rptSource.ToString() == "empty")
-    {
-        return new EmptyResult();
-    }
+            if (rptSource == null || rptSource.ToString() == "empty")
+            {
+                return new EmptyResult();
+            }
 
-    var accounts = rptSource as AccountingGeneralLedgerDetails;
-    if (accounts == null)
-    {
-        return new EmptyResult();
-    }
+            var accounts = rptSource as AccountingGeneralLedgerDetails;
+            if (accounts == null)
+            {
+                return new EmptyResult();
+            }
 
-    using (var workbook = new XLWorkbook())
-    {
-        var worksheet = workbook.Worksheets.Add(rptTitle);
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add(rptTitle);
 
-        // Define reusable styles
-        var headerStyle = workbook.Style;
-        headerStyle.Font.Bold = true;
-        headerStyle.Font.FontSize = 12;
-        headerStyle.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                // Define reusable styles
+                var headerStyle = workbook.Style;
+                headerStyle.Font.Bold = true;
+                headerStyle.Font.FontSize = 12;
+                headerStyle.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
-        // Print letterhead
-        AddLetterhead(worksheet, accounts);
+                // Print letterhead
+                AddLetterhead(worksheet, accounts);
 
-        // Process each ledger account
-        int currentRow = 9; // Start data after letterhead
-        foreach (var ledger in accounts.LedgerDetails)
-        {
-            currentRow = AddLedgerHeader(worksheet, ledger, accounts, currentRow);
-            currentRow = AddLedgerEntries(worksheet, ledger, currentRow);
+                // Process each ledger account
+                int currentRow = 9; // Start data after letterhead
+                foreach (var ledger in accounts.LedgerDetails)
+                {
+                    currentRow = AddLedgerHeader(worksheet, ledger, accounts, currentRow);
+                    currentRow = AddLedgerEntries(worksheet, ledger, currentRow);
+                }
+
+                // Autofit columns for better presentation
+                worksheet.Columns().AdjustToContents();
+
+                // Save and return the Excel file
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    stream.Position = 0;
+                    return File(stream.ToArray(),
+                                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                $"GeneralLedger_{accounts.BranchName}.xlsx");
+                }
+            }
         }
 
-        // Autofit columns for better presentation
-        worksheet.Columns().AdjustToContents();
-
-        // Save and return the Excel file
-        using (var stream = new MemoryStream())
+        private void AddLetterhead(IXLWorksheet worksheet, AccountingGeneralLedgerDetails accounts)
         {
-            workbook.SaveAs(stream);
-            stream.Position = 0;
-            return File(stream.ToArray(), 
-                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", 
-                        $"GeneralLedger_{accounts.BranchName}.xlsx");
-        }
-    }
-}
-
-private void AddLetterhead(IXLWorksheet worksheet, AccountingGeneralLedgerDetails accounts)
-{
-    var letterheadData = new (string Label, string Value)[]
-    {
+            var letterheadData = new (string Label, string Value)[]
+            {
         ("Branch Name", accounts.BranchName),
         ("Address", $"{accounts.BranchLocation}, {accounts.BranchAddress}"),
         ("Capital", accounts.Capital),
@@ -2130,92 +2140,92 @@ private void AddLetterhead(IXLWorksheet worksheet, AccountingGeneralLedgerDetail
         ("Website", accounts.WebSite),
         ("Branch Telephone", accounts.BranchTelephone),
         ("Head Office Telephone", accounts.HeadOfficeTelePhone)
-    };
+            };
 
-    for (int i = 0; i < letterheadData.Length; i++)
-    {
-        worksheet.Cell(i + 1, 1).Value = letterheadData[i].Label;
-        worksheet.Cell(i + 1, 2).Value = letterheadData[i].Value;
-    }
+            for (int i = 0; i < letterheadData.Length; i++)
+            {
+                worksheet.Cell(i + 1, 1).Value = letterheadData[i].Label;
+                worksheet.Cell(i + 1, 2).Value = letterheadData[i].Value;
+            }
 
-    var letterheadRange = worksheet.Range(1, 1, letterheadData.Length, 2);
-    letterheadRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
-    letterheadRange.Style.Font.Bold = true;
-    letterheadRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-}
+            var letterheadRange = worksheet.Range(1, 1, letterheadData.Length, 2);
+            letterheadRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
+            letterheadRange.Style.Font.Bold = true;
+            letterheadRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+        }
 
-private int AddLedgerHeader(IXLWorksheet worksheet, LedgerDetails ledger, AccountingGeneralLedgerDetails accounts, int startRow)
-{
-    // Add ledger title
-    var titleCell = worksheet.Cell(startRow, 1);
-    titleCell.Value = $"Entries of {ledger.AccountNumber} - {ledger.AccountName} ({accounts.FromDate:dd-MMM-yyyy} to {accounts.ToDate:dd-MMM-yyyy})";
-    var titleRange = worksheet.Range(startRow, 1, startRow, 5);
-    titleRange.Merge().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-    titleRange.Style.Font.Bold = true;
-    titleRange.Style.Font.FontSize = 14;
-    titleRange.Style.Fill.BackgroundColor = XLColor.LightGray;
+        private int AddLedgerHeader(IXLWorksheet worksheet, LedgerDetails ledger, AccountingGeneralLedgerDetails accounts, int startRow)
+        {
+            // Add ledger title
+            var titleCell = worksheet.Cell(startRow, 1);
+            titleCell.Value = $"Entries of {ledger.AccountNumber} - {ledger.AccountName} ({accounts.FromDate:dd-MMM-yyyy} to {accounts.ToDate:dd-MMM-yyyy})";
+            var titleRange = worksheet.Range(startRow, 1, startRow, 5);
+            titleRange.Merge().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            titleRange.Style.Font.Bold = true;
+            titleRange.Style.Font.FontSize = 14;
+            titleRange.Style.Fill.BackgroundColor = XLColor.LightGray;
 
-  //Account Header 
-    worksheet.Cell(startRow + 2, 1).Value = "Account Number:";
-    worksheet.Cell(startRow + 2, 2).Value = ledger.AccountNumber;
-    worksheet.Cell(startRow + 3, 1).Value = "Account Name:";
-    worksheet.Cell(startRow + 3, 2).Value = ledger.AccountName;
-    var letterheadRange = worksheet.Range(startRow + 2, 1, startRow + 3, 2);
-    letterheadRange.Style.Fill.BackgroundColor = XLColor.LightGray;
-    letterheadRange.Style.Font.Bold = true;
-    letterheadRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+            //Account Header 
+            worksheet.Cell(startRow + 2, 1).Value = "Account Number:";
+            worksheet.Cell(startRow + 2, 2).Value = ledger.AccountNumber;
+            worksheet.Cell(startRow + 3, 1).Value = "Account Name:";
+            worksheet.Cell(startRow + 3, 2).Value = ledger.AccountName;
+            var letterheadRange = worksheet.Range(startRow + 2, 1, startRow + 3, 2);
+            letterheadRange.Style.Fill.BackgroundColor = XLColor.LightGray;
+            letterheadRange.Style.Font.Bold = true;
+            letterheadRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
             return startRow + 5; // Move to the next section
-}
+        }
 
-private int AddLedgerEntries(IXLWorksheet worksheet, LedgerDetails ledger, int startRow)
-{
-    // Add column headers
-    var headers = new[] 
-    { 
-        "Entry DateTime", "Reference", "Account Number","Description", 
-         
-        "Debit", "Credit ", "Balance" 
+        private int AddLedgerEntries(IXLWorksheet worksheet, LedgerDetails ledger, int startRow)
+        {
+            // Add column headers
+            var headers = new[]
+            {
+        "Entry DateTime", "Reference", "Account Number","Description",
+
+        "Debit", "Credit ", "Balance"
     };
 
-    for (int i = 0; i < headers.Length; i++)
-    {
-        worksheet.Cell(startRow, i + 1).Value = headers[i];
-    }
+            for (int i = 0; i < headers.Length; i++)
+            {
+                worksheet.Cell(startRow, i + 1).Value = headers[i];
+            }
 
-    var headerRange = worksheet.Range(startRow, 1, startRow, headers.Length);
-    headerRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
-    headerRange.Style.Font.Bold = true;
-    headerRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+            var headerRange = worksheet.Range(startRow, 1, startRow, headers.Length);
+            headerRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
+            headerRange.Style.Font.Bold = true;
+            headerRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
-    // Populate ledger entries
-    int currentRow = startRow + 1;
-    foreach (var entry in ledger.AccountingEntries)
-    {
-        worksheet.Cell(currentRow, 1).Value = entry.EntryDateTime;
-        worksheet.Cell(currentRow, 2).Value = entry.ReferenceID;     
-        worksheet.Cell(currentRow, 3).Value = entry.AccountNumber;
-        worksheet.Cell(currentRow, 4).Value = entry.Description;
-        worksheet.Cell(currentRow, 5).Value = ConvertToLong(entry.DrAmount);
-        worksheet.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
-        worksheet.Cell(currentRow, 6).Value = ConvertToLong(entry.CrAmount);
-        worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "#,##0";
-        worksheet.Cell(currentRow, 7).Value = ConvertToLong(entry.CurrentBalance);
-        worksheet.Cell(currentRow, 7).Style.NumberFormat.Format = "#,##0";
-        currentRow++;
-    }
+            // Populate ledger entries
+            int currentRow = startRow + 1;
+            foreach (var entry in ledger.AccountingEntries)
+            {
+                worksheet.Cell(currentRow, 1).Value = entry.EntryDateTime;
+                worksheet.Cell(currentRow, 2).Value = entry.ReferenceID;
+                worksheet.Cell(currentRow, 3).Value = entry.AccountNumber;
+                worksheet.Cell(currentRow, 4).Value = entry.Description;
+                worksheet.Cell(currentRow, 5).Value = ConvertToLong(entry.DrAmount);
+                worksheet.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
+                worksheet.Cell(currentRow, 6).Value = ConvertToLong(entry.CrAmount);
+                worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "#,##0";
+                worksheet.Cell(currentRow, 7).Value = ConvertToLong(entry.CurrentBalance);
+                worksheet.Cell(currentRow, 7).Style.NumberFormat.Format = "#,##0";
+                currentRow++;
+            }
 
-    // Add totals
-    worksheet.Cell(currentRow, 4).Value = "Totals";
-    worksheet.Cell(currentRow, 5).Value = ConvertToLong(ledger.AccountingEntries.Sum(e => Convert.ToDouble( e.DrAmount)));
-    worksheet.Cell(currentRow, 6).Value = ConvertToLong(ledger.AccountingEntries.Sum(e => Convert.ToDouble(e.CrAmount)));
- //worksheet.Cell(currentRow, 6).Value = ConvertToLong(ledger.AccountingEntries[currentRow-1]);
+            // Add totals
+            worksheet.Cell(currentRow, 4).Value = "Totals";
+            worksheet.Cell(currentRow, 5).Value = ConvertToLong(ledger.AccountingEntries.Sum(e => Convert.ToDouble(e.DrAmount)));
+            worksheet.Cell(currentRow, 6).Value = ConvertToLong(ledger.AccountingEntries.Sum(e => Convert.ToDouble(e.CrAmount)));
+            //worksheet.Cell(currentRow, 6).Value = ConvertToLong(ledger.AccountingEntries[currentRow-1]);
             var totalsRange = worksheet.Range(currentRow, 5, currentRow, 7);
-    totalsRange.Style.Font.Bold = true;
-    totalsRange.Style.Fill.BackgroundColor = XLColor.LightGray;
+            totalsRange.Style.Font.Bold = true;
+            totalsRange.Style.Fill.BackgroundColor = XLColor.LightGray;
 
-    return currentRow + 2; // Leave a gap before the next ledger
-}
+            return currentRow + 2; // Leave a gap before the next ledger
+        }
 
 
     }
@@ -2260,7 +2270,7 @@ private int AddLedgerEntries(IXLWorksheet worksheet, LedgerDetails ledger, int s
         }
     }
 
-    
+
 }
 
 public class Export

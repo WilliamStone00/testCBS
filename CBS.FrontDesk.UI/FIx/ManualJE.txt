@@ -1,7 +1,8 @@
-﻿let basket = [];
+let basket = [];
 let tableJE;
 
-$(document).ready(function () {
+$(document).ready(function ()
+{
     GetSequenceReference();
     LoadPendingPostedEntries("myDataTable")
     $("#datalistingview_AddEntryPurpose").hide();
@@ -13,13 +14,13 @@ $(document).ready(function () {
             data: 'debit',
             render: function (data, type, row) {
                 // Check if the booking direction is 'debit', if true, show '0' in debit column
-                return (row.bookingDirection.toLowerCase() === 'debit') ? data : 0;
+                return (row.bookingDirection.toLowerCase() === 'debit') ? data : 0 ;
             }
         }, {
             data: 'credit',
             render: function (data, type, row) {
                 // Check if the booking direction is 'credit', if true, show '0' in credit column
-                return (row.bookingDirection.toLowerCase() === 'credit') ? data : 0;
+                return (row.bookingDirection.toLowerCase() === 'credit') ? data:0 ;
             }
         }, {
             data: null,
@@ -75,7 +76,7 @@ $(document).ready(function () {
         removeItem(data);
     });
     // Posted entry request approval 
-
+  
 
     $(document).on('change', '#EntryBookingDirection', function () {
         var EventId = $(this).val();
@@ -92,7 +93,7 @@ function Search() {
         FromDate: $('#fromDate').val(),
         ToDate: $('#toDate').val()
     };
-
+ 
     var jsonDataj = JSON.stringify(jsonData);
     console.log("Collected Form Data:", jsonData);
 
@@ -109,7 +110,7 @@ function Search() {
     return false;
 }
 function GetSequenceReference() {
-
+ 
     $.ajax({
         url: '/ManuallyJournalEntry/GetSequenceReference',
         type: 'GET',
@@ -134,10 +135,10 @@ function loadBranchUsers(branchId) {
         data: { branchId: branchId },
         success: function (data) {
             // Clear existing options in the OperationEventAttributeId combo
-
+    
             $('#QueryModel_ApprovedBy').empty();
             // Add new options based on the fetched data
-
+          
             $.each(data, function (index, item) {
                 $('#QueryModel_ApprovedBy').append($('<option>').text(item.Value).attr('value', item.Text));
             });
@@ -160,8 +161,8 @@ function loadIssuingBranchUsers(branchId) {
             $('#QueryModel_IssuedBy').empty();
             $('#QueryModel_ApprovedBy').empty();
             // Add new options based on the fetched data
-            if (branchId === "XXXXX") {
-
+            if (branchId==="XXXXX") {
+            
                 $.each(data, function (index, item) {
                     $('#QueryModel_ApprovedBy').append($('<option>').text(item.Value).attr('value', item.Text));
                 });
@@ -179,7 +180,8 @@ function loadIssuingBranchUsers(branchId) {
         }
     });
 }
-function loadPostedEntryByReference(reference) {
+function loadPostedEntryByReference(reference)
+{
     $("#under_review").hide();
     $("#rejected").hide();
     $("#approved").hide();
@@ -194,7 +196,7 @@ function loadPostedEntryByReference(reference) {
             // Clear existing options in the OperationEventAttributeId combo
 
             console.log(data);
-
+            
             $('#exampleModalLabel3').empty();
             var referenceCell = $("#" + reference + "-Reference").text();
             var branchCodeCell = $("#" + reference + "-BranchCode").text();
@@ -202,7 +204,7 @@ function loadPostedEntryByReference(reference) {
             var createdByCell = $("#" + reference + "-CreatedBy").text();
             var description = $("#" + reference + "-Description").text();
             var statusCell = $("#" + reference + "-Status").text();
-
+          
             const parts = description.split('*');
             description = parts[0];
             var ApprovedDateCell = parts[1];
@@ -326,7 +328,7 @@ function LoadDataTableNewVersion(controller, tableID, action, KEY, partialView, 
         }
     });
 }
-
+ 
 
 // Helper function to show toast notifications
 function showToast(message, type = 'success') {
@@ -374,11 +376,11 @@ function PrintDataEntries(response) {
         var ServiceOption = "EntryTempData";
         var message = "WARNING!!!\n";
         message += "Are you sure you want to print this entries?\n";
-        GetPostedEntriesTransactions('Confirm Manual Entry Operation', message, '/ManuallyJournalEntry/ApproveEntries', ServiceOption, response, storedId, comment);
+         GetPostedEntriesTransactions('Confirm Manual Entry Operation', message, '/ManuallyJournalEntry/ApproveEntries', ServiceOption, response, storedId, comment);
 
     }
 }
-function GetPostedEntriesTransactions(title, message, ajaxUrl, serviceoption, Response, Id, comment) {
+function  GetPostedEntriesTransactions(title, message, ajaxUrl, serviceoption, Response, Id, comment) {
     alertify.confirm(title, message,
         function () {
             $.ajax({
@@ -407,12 +409,12 @@ function GetPostedEntriesTransactions(title, message, ajaxUrl, serviceoption, Re
 }
 function openReportPrintingWindow(reportType) {
     var url;
+    
+   url = "/Reports/AccountingPDFReport?FileType=" + reportType;
+        
 
-    url = "/Reports/AccountingPDFReport?FileType=" + reportType;
 
-
-
-
+ 
     console.log(url);
     window.open(url, "_blank");
 }
@@ -473,7 +475,7 @@ function loadAccountById(AccountId) {
         }
     });
 }
-
+ 
 function calculateDebitAndCreditTotals(entries) {
     // Initialize totals
     let totalDebit = 0;
@@ -491,11 +493,11 @@ function calculateDebitAndCreditTotals(entries) {
         }
     });
     let balance = totalCredit - totalDebit;
-    let balancePrefix = balance >= 0 ? "DR" : "CR";
+    let balancePrefix = balance >= 0 ? "DR"  : "CR";
     $('#totalDebit').text(totalDebit);
     $('#totalCredit').text(totalCredit);
     let response = balance === 0 ? "" : balancePrefix;
-    $('#balance').text((response + balance));
+    $('#balance').text((response +balance));
 }
 
 
@@ -504,7 +506,8 @@ let manuallyJournalEntryDataSet = createManuallyJournalEntryDataSet();
  * Adds an item to the shopping basket with validation
  * @returns {void}
  */
-function addToBasket() {
+function addToBasket()
+{
     // Get form values
     const item = {
         reference: $('#EntryTempData_Reference').val().trim(),
@@ -534,11 +537,11 @@ function addToBasket() {
             message: 'No booking direction has been set. Please contact administrators for help.'
         },
         'accountId': {
-            condition: item.accountId === "---Select Account---" || item.accountId === "",
+            condition: item.accountId === "---Select Account---" || item.accountId === "", 
             message: 'No account number has been selected. Please contact administrators for help.'
         },
         'reference': {
-            condition: !item.reference,
+            condition: !item.reference ,
             message: 'No entry reference has been set. Please contact administrators for help.'
         },
         'description': {
@@ -581,7 +584,7 @@ function addToBasket() {
 
     // Clear form fields
     $('#EntryTempData_BookingDirection').val('').change();
-
+  
 }
 
 function validateDebitTransaction(item) {
@@ -591,10 +594,10 @@ function validateDebitTransaction(item) {
     const accountStart = item.accountNumber.substring(0, 2);
 
     // Check if account starts with specified prefixes
-
+  
 
     // For other accounts, validate debit transactions
-    if (bookingDirection === 'debit' && item.AccountCategoryId == 'credit') {
+    if (bookingDirection === 'debit' && item.AccountCategoryId=='credit') {
         if (accountBalance - amount < 0) {
             console.log('Insufficient account balance for debit transaction');
             return false;
@@ -608,7 +611,8 @@ function validateDebitTransaction(item) {
     }
     return true;
 }
-function createManuallyJournalEntryDataSet(basket) {
+function createManuallyJournalEntryDataSet(basket)
+{
     return {
         entryTempData: {
             // Add properties as needed
@@ -672,7 +676,8 @@ function submitBasket() {
         return;
     }
 
-    if (validateBasketDirections(basket)) {
+    if (validateBasketDirections(basket))
+    {
 
         alertify.confirm("T R U S T S O F T C R E D I T", "The system is about to submit your accounting entries with referenceId : " + basket[0].reference + ".\nAre sure you want to persit this operation?",
             function () {
@@ -693,9 +698,9 @@ function submitBasket() {
                                 appalert(response.message, 2, 1);
                             } else {
                                 $('#DataEntrybasketTable').DataTable().clear().draw();
-
+                       
                                 location.reload();
-                                /* appalert(response.message, 1, 1);*/
+                               /* appalert(response.message, 1, 1);*/
                             }
 
                             if (response.reloadDataView === "Yes") {
@@ -726,7 +731,7 @@ function submitBasket() {
             }
         );
     } else {
-        alertify.confirm("T R U S T S O F T C R E D I T", "Your accounting entries are not balance. Please contact administrators for assitances.", 1, 2);
+        alertify.confirm("T R U S T S O F T C R E D I T","Your accounting entries are not balance. Please contact administrators for assitances.", 1, 2);
         return;
     }
 
@@ -849,7 +854,7 @@ function LoadPendingPostedEntries(tableID) {
             { "targets": 5, "searchable": true, "orderable": true, "width": "15%" },
             { "targets": 6, "searchable": true, "orderable": true, "width": "10%" },
             { "targets": 7, "searchable": true, "orderable": true, "width": "10%" },
-
+     
         ],
 
         oLanguage: {
@@ -949,13 +954,13 @@ function submitAccountingEntries() {
             Description: rowData.Description,
             MFI_ChartOfAccountId: rowData.MFI_ChartOfAccountId
         };
-        //      const entry = createManuallyJournalEntryDataSet();
+  //      const entry = createManuallyJournalEntryDataSet();
         dataToSend.push(entry);
     });
 
     // Collect the operation description if it exists
     const operationDescription = $('#operationDescription').val() || '';
-
+ 
     if (operationDescription === "") {
         appalert('The journal entry cannot be void of description. Please contact administrators.', 2, 1);
         return;

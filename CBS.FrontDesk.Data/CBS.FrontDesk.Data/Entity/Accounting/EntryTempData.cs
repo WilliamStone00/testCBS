@@ -31,7 +31,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 EventName = model.AccountingRules[0].RuleName,
                 UnitAmount = model.AccountingRules[0].UnitAmount,
                 AccountingRules = BuildRequestItems(model.AccountingRules),
-                IsDoubleValidationNeeded =model.AccountingRules[0].IsValidationNeed,
+                IsDoubleValidationNeeded = model.AccountingRules[0].IsValidationNeed,
                 LevelOfExecution = model.AccountingRules[0].LevelOfExecution,
                 EntryType = model.AccountingRules[0].EntryType,
                 ListOfEligibleBranchId = model.AccountingRules[0].ListOfEligibleBranchId,
@@ -107,7 +107,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string BranchId { get; set; }
         public string ExternalBranchId { get; set; }
         public bool IsInterBranchTransaction { get; set; }
-        public static AccountingEntryPayloadCommand ConvertToAccountingEntryPayloadCommand(List<EntryTempData> entries,string branchId)
+        public static AccountingEntryPayloadCommand ConvertToAccountingEntryPayloadCommand(List<EntryTempData> entries, string branchId)
         {
             List<EntryTempDatas> accountingEntries = new List<EntryTempDatas>();
             foreach (var Item in entries)
@@ -122,23 +122,23 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                     BookingDirection = Item.BookingDirection,
                     BranchId = branchId,
                     Amount = Convert.ToDecimal(Item.Amount),
-                    AccountBalance =  Item.AccountBalance??"0",
+                    AccountBalance = Item.AccountBalance ?? "0",
                     Description = Item.Description,
                     ExternalBranchId = branchId,
                     Reference = Item.Reference,
                     ValueDate = Item.ValueDate
-    });
+                });
             }
             return new AccountingEntryPayloadCommand
-            { 
-                EntryTempDatas = accountingEntries, 
+            {
+                EntryTempDatas = accountingEntries,
                 BranchId = branchId,
                 ExternalBranchId = branchId,
-                AccountingEventRuleId = null, 
+                AccountingEventRuleId = null,
                 IsDoubleValidationNeeded = true,
                 IsInterBranchTransaction = false,
                 IsSystem = false,
-                ListOfBranchIds = new List<string> { branchId}
+                ListOfBranchIds = new List<string> { branchId }
             };
         }
 
@@ -171,7 +171,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public class AccountingEntryPayloadCommand
     {
         public List<EntryTempDatas> EntryTempDatas { get; set; }
-        public bool IsDoubleValidationNeeded { get; set; }  
+        public bool IsDoubleValidationNeeded { get; set; }
         public bool IsSystem { get; set; }
         public string BranchId { get; set; }
         public string AccountingEventRuleId { get; set; }
@@ -191,9 +191,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Id { get; set; }
 
         public bool HasApproved { get; set; }
-        public string Comment { get;   set; }
+        public string Comment { get; set; }
         public bool ValidationIsNotRequired { get; set; }
-        public string BranchId { get;   set; }
+        public string BranchId { get; set; }
     }
     public class EntryTempDataResult
     {
@@ -237,7 +237,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             public string BookingDirection { get; set; }
             //public string System_Id { get; internal set; }
         }
-   
+
         public static AccountingEventRule BuildRequest(ManuallyJournalEntryDataSet model)
         {
             return new AccountingEventRule
@@ -262,11 +262,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             List<AccountingEventRule.AccountingRule> listItems = new List<AccountingEventRule.AccountingRule>();
             foreach (var accountingRule in accountingRules)
             {
-              
+
                 accountingRule.MFI_ChartOfAccountId = accountingRule.MFI_ChartOfAccountId;
                 accountingRule.BookingDirection = accountingRule.BookingDirection;
                 accountingRule.Id = "";
-                listItems.Add(new AccountingEventRule.AccountingRule { BookingDirection=accountingRule.BookingDirection,MFI_ChartOfAccountId=accountingRule.MFI_ChartOfAccountId,Id=accountingRule.Id});
+                listItems.Add(new AccountingEventRule.AccountingRule { BookingDirection = accountingRule.BookingDirection, MFI_ChartOfAccountId = accountingRule.MFI_ChartOfAccountId, Id = accountingRule.Id });
             }
             return listItems;
         }
@@ -300,7 +300,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                         Id = splitItems[splitItems.Length - 1],
                         AccountName = splitItems[0] + " " + splitItems[1],
                         AccountNumber = splitItems[2],
-                        BranchCode = splitItems[2].Substring(splitItems[2].Length-3),
+                        BranchCode = splitItems[2].Substring(splitItems[2].Length - 3),
                         Amount = item.Credit > item.Debit ? item.Credit : item.Debit,
                         BookingDirection = item.Credit > item.Debit ? "CREDIT" : "DEBIT",
                         Description = model.Description,
@@ -359,8 +359,20 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public AccountingEventRule AccountingEventRule { get; set; } = new AccountingEventRule();
         public List<AccountingEventRule> AccountingEventRules { get; set; } = new List<AccountingEventRule>();
         public string ServiceOption { get; set; }
-        public string Action { get; set; }
+        public string Action { get; set; }//
+        public QueryModel QueryModel { get; set; }
+
         public string Key { get; set; }
         public bool HasApproved { get; set; }
+    }
+    public class QueryModel
+    {
+        public string Status { get; set; }
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+        public string BranchId { get; set; }
+        public string IssuedBy { get; set; }
+        public string ApprovedBy { get; set; } //
+        public bool ValidateApproverUnionWide { get; set; }
     }
 }

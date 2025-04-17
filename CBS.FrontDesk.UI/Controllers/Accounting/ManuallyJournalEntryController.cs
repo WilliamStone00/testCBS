@@ -29,6 +29,7 @@ using CBS.FrontDesk.Data.Entity.Config;
 using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
+using CBS.FrontDesk.Data.UserManagement;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -56,12 +57,12 @@ namespace CBS.FrontDesk.UI.Controllers
             _ChartOfAccountManagementPositionServicesServices = new ChartOfAccountManagementPositionService();
             _chartOfAccountServices = new ChartOfAccountServices();
             _accountingEntryRuleService = new AccountingEntryRuleService();
-       _AccountServices = new AccountingServices();
+            _AccountServices = new AccountingServices();
             _userService = new UserManagementServices();
             _branchService = new BranchServices();
             _AccountingRuleServices = new AccountingRuleService();
             _accountCategoryServices = new AccountCategoryServices();
-                }
+        }
         // GET:ManuallyJournalEntry/PendingAccountingEntries
 
         public async Task<ActionResult> Index()
@@ -71,11 +72,44 @@ namespace CBS.FrontDesk.UI.Controllers
         }
         public async Task<ActionResult> PendingAccountingEntries()
         {
+
+
+            ViewBag.Branches = BuildBranchViewBag((await _branchService.GetBranches()).ToList());
+            ViewBag.filteringOptions = GetFilteringOptions();
+
+            var users = (await _userService.GetUsers()).ToList();
+            ViewBag.UsersInBranch = BuildUserViewBag(users);
+
+            return View();
+
+        }
+
+        private dynamic BuildUserViewBag(List<User> listOfItems)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = "XXXXX", Text = $"I don't know the issuer" });
+            foreach (var item in listOfItems)
+            {
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.id.ToString(), Value = $"{item.firstName} {item.name}" });
+            }
+            return selectListItems;
+        }
+        private dynamic BuildUserApproverViewBag(List<User> listOfItems)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = "XXXXX", Text = $"I don't know the approver" });
+            foreach (var item in listOfItems)
+            {
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.id.ToString(), Value = $"{item.firstName} {item.name}" });
+            }
+            return selectListItems;
+        }
+        public async Task<ManuallyJournalEntryDataSet> GetEntries(QueryModel model, string filter)
+        {
             List<PostedEntry> postedCollectionEntries = new List<PostedEntry>();
-            await GetList();
             var PostedEntries = await _Service.GetManualEntriesAsync(); //()
-            var PendingPostedEntries = PostedEntries.Where(x => x.Status.ToLower().Equals("pending")).ToList();
-            var ApprovedPostedEntries = PostedEntries.Where(x => x.Status.ToLower()!=("pending")).ToList();
+            var PendingPostedEntries = PostedEntries.Where(x => x.Status.ToLower() == (filter) && (x.CreatedDate >= model.FromDate && x.CreatedDate >= model.ToDate));
+            var ApprovedPostedEntries = PostedEntries.Where(x => x.Status.ToLower() != (filter)).ToList();
             var users = await _userService.GetUsers();
             var usersx = users;
             var branch = await _branchService.GetBranches();
@@ -92,7 +126,7 @@ namespace CBS.FrontDesk.UI.Controllers
                                Description = p.Description,
                                CreatedDate = p.CreatedDate,
                                //ApprovedBy=po.firstName + " " + po.lastName,
-                               ApprovedDate =p.ApprovedDate,
+                               ApprovedDate = p.ApprovedDate,
                                Status = p.Status,
                                PostingSource = p.PostingSource,
                                Id = p.Id,
@@ -103,40 +137,41 @@ namespace CBS.FrontDesk.UI.Controllers
 
             var result0s = (from p in ApprovedPostedEntries
                             join u in users on p.CreatedBy equals u.id.ToString()
-                           join po in usersx on p.ApprovedBy equals po.id.ToString()
-                           join b in branch on u.BranchID equals b.Id.ToString()
-                           select new PostedEntryX
-                           {
-                               Amount = Convert.ToDecimal(p.Amount.ToString("N")),
-                               BranchCode = b.BranchCode,
-                               CreatedBy = u.firstName + " " + u.lastName,
-                               IssuedBy = u.id.ToString(),
-                               PostingSource = p.PostingSource,
-                               Description = p.Description,
-                               CreatedDate = p.CreatedDate,
-                               ApprovedBy=po.firstName + " " + po.lastName,
-                               ApprovedDate = p.ApprovedDate,
-                               Status = p.Status,
-                               Id = p.Id,
-                               EntryDetail = p.EntryDetail
+                            join po in usersx on p.ApprovedBy equals po.id.ToString()
+                            join b in branch on u.BranchID equals b.Id.ToString()
+                            select new PostedEntryX
+                            {
+                                Amount = Convert.ToDecimal(p.Amount.ToString("N")),
+                                BranchCode = b.BranchCode,
+                                CreatedBy = u.firstName + " " + u.lastName,
+                                IssuedBy = u.id.ToString(),
+                                PostingSource = p.PostingSource,
+                                Description = p.Description,
+                                CreatedDate = p.CreatedDate,
+                                ApprovedBy = po.firstName + " " + po.lastName,
+                                ApprovedDate = p.ApprovedDate,
+                                Status = p.Status,
+                                Id = p.Id,
+                                EntryDetail = p.EntryDetail
 
 
-                           }).ToList();
+                            }).ToList();
             results.AddRange(result0s);
-            this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()]= results;
+
             foreach (var item in results)
             {
                 postedCollectionEntries.Add(item.ConvertToPostedEntry(item));
-            }        
-            return View(new ManuallyJournalEntryDataSet { PostedEntries = postedCollectionEntries });
-        }
+            }
+            this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()] = results;
+            return new ManuallyJournalEntryDataSet { PostedEntries = postedCollectionEntries };
 
+        }
         private async Task GetList()
         {
-       
-           
+
+
             var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
-  
+
             var CreditAccounts = BuildMenuViewBag(await GetAllAccountsExcludingOperationsAccountAsync());
             ViewBag.Accounts = CreditAccounts;
             ViewBag.BookingDirections = await GetBookingDirections();
@@ -161,14 +196,36 @@ namespace CBS.FrontDesk.UI.Controllers
         private dynamic BuildAccountingRuleViewBag(List<AccountingEventRule> listOfItems)
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
- 
+
             foreach (var item in listOfItems)
             {
-                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text =  $"{item.EventName}", Value =item.Id });
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = $"{item.EventName}", Value = item.Id });
             }
             return selectListItems;
         }
+        public async Task<ActionResult> GetBranchUsersByBranchId(string branchId)
+        {
 
+
+            try
+            {
+                var users = (await _userService.GetUsers()).ToList();
+                if (branchId != "XXXXX")
+                {
+                    users = users.Where(x => x.BranchID == branchId).ToList();
+                }
+                var AccountData = BuildUserApproverViewBag(users);
+
+
+
+
+                return Json(AccountData, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
         public async Task<ActionResult> GetAccountMFIChartOfAccount()
         {
 
@@ -177,7 +234,7 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 var AccountData = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
 
-       
+
 
 
                 return Json(BuildMenuCOAccountViewBag(AccountData.ToList()), JsonRequestBehavior.AllowGet);
@@ -187,28 +244,28 @@ namespace CBS.FrontDesk.UI.Controllers
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
         }
-        private dynamic BuildBranchViewBag(  List<Branch> listOfItems)
+        private dynamic BuildBranchViewBag(List<Branch> listOfItems)
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-       //     listOfItems.Remove(listOfItems.Where(x => x.BranchCode == "000").FirstOrDefault());
+            //     listOfItems.Remove(listOfItems.Where(x => x.BranchCode == "000").FirstOrDefault());
             foreach (var item in listOfItems)
             {
-                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem {  Value= item.Id,  Text= $"{item.Name}" });
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = item.Id, Text = $"{item.Name}" });
             }
             return selectListItems;
         }
         private dynamic BuildLevelOfExecutionViewBag()
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-          
-            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = LevelOfExecution.BRANCH_OFFICE.ToString(), Text  = LevelOfExecution.BRANCH_OFFICE.ToString() });
-            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem {  Value= LevelOfExecution.HEAD_OFFICE.ToString(), Text = LevelOfExecution.HEAD_OFFICE.ToString() });
+
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = LevelOfExecution.BRANCH_OFFICE.ToString(), Text = LevelOfExecution.BRANCH_OFFICE.ToString() });
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = LevelOfExecution.HEAD_OFFICE.ToString(), Text = LevelOfExecution.HEAD_OFFICE.ToString() });
             return selectListItems;
         }
         private dynamic BuildEntryTypesViewBag()
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-        
+
 
             selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "USER", Value = $"USER" });
             selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "SYSTEM", Value = "SYSTEM" });
@@ -219,7 +276,7 @@ namespace CBS.FrontDesk.UI.Controllers
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
             string code = "";
             var listOfItems = (from item in ChartofAccountManagementPositions
-                               //join element in ListchartOfAccounts on item.ChartOfAccountId equals element.Id
+                                   //join element in ListchartOfAccounts on item.ChartOfAccountId equals element.Id
                                select new ManagementSelectionOption
                                {
                                    Id = item.Id,
@@ -276,7 +333,7 @@ namespace CBS.FrontDesk.UI.Controllers
         "Virtual_Teller_Momo_cash_Collection"
     };
 
-            var matchingRules = accountingRules 
+            var matchingRules = accountingRules
                 .FirstOrDefault(x => x.DeterminationAccountId.Equals(account.ChartOfAccountManagementPositionId));
 
             return Task.FromResult(
@@ -290,11 +347,19 @@ namespace CBS.FrontDesk.UI.Controllers
             var bookingDirections = new System.Web.WebPages.Html.SelectListItem[] { new System.Web.WebPages.Html.SelectListItem { Text = "DEBIT", Value = "DEBIT" }, new System.Web.WebPages.Html.SelectListItem { Text = "CREDIT", Value = "CREDIT" } }.ToList();
             return Task.FromResult(bookingDirections);
         }
-
+        private List<System.Web.WebPages.Html.SelectListItem> GetFilteringOptions()
+        {
+            //        
+            var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[]
+            { new System.Web.WebPages.Html.SelectListItem { Text = "List Of Pending Entries", Value = "ListOfPendingEntries" },
+                new System.Web.WebPages.Html.SelectListItem { Text = "List Of Approved Entries", Value = "ListOfApprovedEntries" },
+                new System.Web.WebPages.Html.SelectListItem { Text = "List Of Rejected Entries", Value = "ListOfRejectedEntries" } }.ToList();
+            return doubbleEntryValidations;
+        }
         private Task<List<System.Web.WebPages.Html.SelectListItem>> GetDoubbleEntryValidation()
         {
-            var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[] 
-            { new System.Web.WebPages.Html.SelectListItem { Text = "Doubble validation is mandatory", Value = "true" }, 
+            var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[]
+            { new System.Web.WebPages.Html.SelectListItem { Text = "Doubble validation is mandatory", Value = "true" },
                 new System.Web.WebPages.Html.SelectListItem { Text = "Doubble validation is NOT mandatory", Value = "false" } }.ToList();
             return Task.FromResult(doubbleEntryValidations);
         }
@@ -348,7 +413,7 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 //var AccountData = await _AccountServices.GetSequenceReference();
 
-        
+
                 var data = $"{BaseUtilities.GenerateInsuranceUniqueNumber(5, $"MET-{_AccountServices.GetBranchCode()}-{BaseUtilities.DayCode()}")}";
 
                 return Json(data, JsonRequestBehavior.AllowGet);
@@ -376,7 +441,7 @@ namespace CBS.FrontDesk.UI.Controllers
         }
         public async Task<ActionResult> MultipleJournalEntryConfiguration()
         {
-           
+
 
             try
             {
@@ -394,24 +459,24 @@ namespace CBS.FrontDesk.UI.Controllers
         public async Task<ActionResult> AddAccountingEntryRule(ManuallyJournalEntryDataSet model)
         {
             AddAccountingRuleCommand modelRequest = AddAccountingRuleCommand.BuildRequest(model);
-                try
+            try
+            {
+                var data = await _AccountingRuleServices.Creating(modelRequest);
+                if (data.Result)
                 {
-                    var data = await _AccountingRuleServices.Creating(modelRequest);
-                    if (data.Result)
-                    {
-                        return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-                    }
-                    else
-                    {
-                        return Json(new { success = false, status = false, message = data.MessageString });
-                    }
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
                 }
-                catch (Exception ex)
+                else
                 {
-                    return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+                    return Json(new { success = false, status = false, message = data.MessageString });
                 }
-            
-            
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+            }
+
+
         }
         [HttpPost]
         public async Task<ActionResult> UpdateAccountingRule(ManuallyJournalEntryDataSet model)
@@ -439,7 +504,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
         public class TempData
         {
-            
+
             public string identifier { get; set; }
             public string oldValue { get; set; }
             public string newValue { get; set; }
@@ -453,16 +518,16 @@ namespace CBS.FrontDesk.UI.Controllers
                 var results = (AccountingEventRule)this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()];
                 var Id = GetIdentifier(model.identifier.Split('-'));
                 var Modelreturn = list.Find(x => x.Id.Contains(Id));
-              
-                var data = results.AccountingRules.Find(x => x.Id.Contains( Id));
+
+                var data = results.AccountingRules.Find(x => x.Id.Contains(Id));
 
                 if (results.AccountingRules.Remove(data))
                 {
-                    data.Id= Modelreturn.Description + "-" + Modelreturn.AccountNumber + Modelreturn.PositionNumber + "-" + Modelreturn.Id; ;
+                    data.Id = Modelreturn.Description + "-" + Modelreturn.AccountNumber + Modelreturn.PositionNumber + "-" + Modelreturn.Id; ;
                     data.MFI_ChartOfAccountId = Modelreturn.Description + "-" + Modelreturn.AccountNumber + Modelreturn.PositionNumber + "-" + Modelreturn.Id;
                     results.AccountingRules.Add(data);
                 }
-                this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()]= results;
+                this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()] = results;
                 return Json(results, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -473,7 +538,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
         private string GetIdentifier(string[] strings)
         {
-            if (strings.Length>1)
+            if (strings.Length > 1)
             {
                 return strings[2];
             }
@@ -490,18 +555,18 @@ namespace CBS.FrontDesk.UI.Controllers
                 var list = (await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList();
                 var results = (AccountingEventRule)this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()];
                 var Id = GetIdentifier(model.identifier.Split('-'));
-                var Modelreturn = list.Find(x => x.Id.Contains( Id));
+                var Modelreturn = list.Find(x => x.Id.Contains(Id));
 
                 var data = results.AccountingRules.Find(x => x.Id.Contains(Id));
                 if (results.AccountingRules.Remove(data))
                 {
-                     data.Id=  Modelreturn.Id;
+                    data.Id = Modelreturn.Id;
                     data.BookingDirection = model.newValue;
                     results.AccountingRules.Add(data);
                 }
                 this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()] = results;
                 return Json(results, JsonRequestBehavior.AllowGet);
-   
+
             }
             catch (Exception ex)
             {
@@ -517,17 +582,17 @@ namespace CBS.FrontDesk.UI.Controllers
                 this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()] = model;
 
 
-                var Branches = GetSetOfBranchesActivatedForEvents( (await _branchService.GetBranches()).ToList(), model.ListOfEligibleBranchId);
+                var Branches = GetSetOfBranchesActivatedForEvents((await _branchService.GetBranches()).ToList(), model.ListOfEligibleBranchId);
                 // model.AccountingRules = GetSetOfAccountsUsed((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList(), model.AccountingRules);        
                 model.AccountingRules = SetAccountRuleId(model);
                 ViewBag.ListOfEligibleBranchId = BuildBranchViewBag((await _branchService.GetBranches()).ToList());
                 ViewBag.EntryTypes = BuildEntryTypesViewBag();
                 ViewBag.LevelOfExecution = BuildLevelOfExecutionViewBag();
-                  ViewBag.DoubbleEntryValidation = await GetDoubbleEntryValidation();
+                ViewBag.DoubbleEntryValidation = await GetDoubbleEntryValidation();
                 ViewBag.IsChainEntry = await GetEntrySystem();
                 ViewBag.IsInterBranchTransaction = BuildIsInterBranchTransactionViewBag();
                 ViewBag.AccountingEventRuleIds = BuildAccountingRuleViewBag((await _AccountingRuleServices.GetAccountingRules()).ToList());
-              
+
                 return View(new ManuallyJournalEntryDataSet { AccountingEventRule = model });
             }
             catch (Exception ex)
@@ -543,10 +608,10 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             try
             {
-              var  model = (AccountingEventRule) this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()] ;
+                var model = (AccountingEventRule)this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()];
                 return Json(model.AccountingRules, JsonRequestBehavior.AllowGet);
 
-         
+
             }
             catch (Exception ex)
             {
@@ -561,7 +626,7 @@ namespace CBS.FrontDesk.UI.Controllers
             List<AccountingEventRule.AccountingRule> list = new List<AccountingEventRule.AccountingRule>();
             foreach (var item in model.AccountingRules)
             {
-                list.Add(new AccountingEventRule.AccountingRule { BookingDirection = item.BookingDirection, Id = item.MFI_ChartOfAccountId ,MFI_ChartOfAccountId=item.MFI_ChartOfAccountId});
+                list.Add(new AccountingEventRule.AccountingRule { BookingDirection = item.BookingDirection, Id = item.MFI_ChartOfAccountId, MFI_ChartOfAccountId = item.MFI_ChartOfAccountId });
             }
             return list;
         }
@@ -580,7 +645,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 ViewBag.DoubbleEntryValidation = await GetDoubbleEntryValidation();
                 ViewBag.IsChainEntry = await GetEntrySystem();
                 ViewBag.AccountingEventRuleIds = BuildAccountingRuleViewBag((await _AccountingRuleServices.GetAccountingRules()).ToList());
-              
+
 
 
                 return View(new ManuallyJournalEntryDataSet { AccountingEventRule = model });
@@ -595,11 +660,11 @@ namespace CBS.FrontDesk.UI.Controllers
 
         private dynamic BuildAllBrachScope(List<Branch> collection, AccountingEventRule model)
         {
-            List<string> branchString =  new List<string>();
+            List<string> branchString = new List<string>();
             foreach (var item in model.ListOfEligibleBranchId)
             {
-               var branch = collection.Find(x => x.Id.Equals(item));
-                      branchString.Add(branch.BranchCode+"-"+branch.Name);
+                var branch = collection.Find(x => x.Id.Equals(item));
+                branchString.Add(branch.BranchCode + "-" + branch.Name);
 
             }
             return branchString;
@@ -617,9 +682,9 @@ namespace CBS.FrontDesk.UI.Controllers
                 // Determine if BranchId can execute this Automated JE
                 if (model.ListOfEligibleBranchId.Contains(_AccountingRuleServices.BranchId))
                 {
-                    var tempData= model;
+                    var tempData = model;
                     this.HttpContext.Session["EventEntrySystemInfo" + this.HttpContext.Session.SessionID + _AccountingRuleServices.GetUserID()] = tempData;
-                    if (model.IsChainEntry==true)
+                    if (model.IsChainEntry == true)
                     {
                         var EventRuleId = await _AccountingRuleServices.GetAccountingRuleById(model.AccountingEventRuleId);
                         model.AccountingEventRuleId = $"{EventRuleId.EventName}[{EventRuleId.Description}]";
@@ -629,7 +694,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 }
                 else
                 {
-                    if (model.LevelOfExecution.ToUpper()== LevelOfExecution.HEAD_OFFICE.ToString() && _AccountingRuleServices.IsHeadOffice())
+                    if (model.LevelOfExecution.ToUpper() == LevelOfExecution.HEAD_OFFICE.ToString() && _AccountingRuleServices.IsHeadOffice())
                     {
                         var tempData = model;
                         ViewBag.IsAuthourized = true;
@@ -640,7 +705,7 @@ namespace CBS.FrontDesk.UI.Controllers
                             //model.AccountingEventRuleId = $"{EventRuleId.EventName}[{EventRuleId.Description}]";
                         }
                         return View(new ManuallyJournalEntryDataSet { AccountingEventRule = model });
-                       
+
                     }
                     else
                     {
@@ -650,9 +715,9 @@ namespace CBS.FrontDesk.UI.Controllers
 
                     }
                 }
-                
+
                 // model.AccountingRules = GetSetOfAccountsUsed((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList(), model.AccountingRules);      
-              
+
             }
             catch (Exception ex)
             {
@@ -668,8 +733,8 @@ namespace CBS.FrontDesk.UI.Controllers
             foreach (var item in accountingRules)
             {
                 var model = chartofAccountManagementPositions.Find(x => x.Id == item.MFI_ChartOfAccountId.Split('-')[2]);
-               
-                listOfBranch.Add(new AccountingEventRule.AccountingRule {Id= model.ChartOfAccountId, MFI_ChartOfAccountId =$"{model.Description}-{model.AccountNumber}{model.PositionNumber}-{model.ChartOfAccountId}", BookingDirection = item.BookingDirection});
+
+                listOfBranch.Add(new AccountingEventRule.AccountingRule { Id = model.ChartOfAccountId, MFI_ChartOfAccountId = $"{model.Description}-{model.AccountNumber}{model.PositionNumber}-{model.ChartOfAccountId}", BookingDirection = item.BookingDirection });
             }
             return listOfBranch;
         }
@@ -708,11 +773,11 @@ namespace CBS.FrontDesk.UI.Controllers
         public async Task<ActionResult> MultipleJournalEntryClient()
         {
             var model = new ManuallyJournalEntryDataSet();
-            model.AccountingRuleDtos = new List<AccountingRuleDtos>();  
+            model.AccountingRuleDtos = new List<AccountingRuleDtos>();
             try
             {
-               var ResponseList= await _AccountingRuleServices.GetAccountingRules();
-                model.AccountingEventRules=  ResponseList.ToList();
+                var ResponseList = await _AccountingRuleServices.GetAccountingRules();
+                model.AccountingEventRules = ResponseList.ToList();
                 return View(model);
             }
             catch (Exception ex)
@@ -737,13 +802,13 @@ namespace CBS.FrontDesk.UI.Controllers
         private List<AccountingRuleDtos> BuildEntryTable(List<AccountingRule> responseList)
         {
             var collection = GetUniqueRuleNames(responseList);
-          
-            List < AccountingRuleDtos > modelList = new List < AccountingRuleDtos >();
-            foreach (var response in collection) 
-            { 
+
+            List<AccountingRuleDtos> modelList = new List<AccountingRuleDtos>();
+            foreach (var response in collection)
+            {
                 var result = new AccountingRuleDtos();
 
-                result.RuleName= response.RuleName;
+                result.RuleName = response.RuleName;
                 result.System_Id = response.System_Id;
 
                 modelList.Add(result);
@@ -765,26 +830,26 @@ namespace CBS.FrontDesk.UI.Controllers
         private AccountingModelRule GetJournalEntryTestData(string message)
         {
             AccountingModelRule modelRule = new AccountingModelRule();
-          AccountingRule[] serverResponse = new AccountingRule[]
-        {
+            AccountingRule[] serverResponse = new AccountingRule[]
+          {
             new AccountingRule { Id = "1", RuleName = $"{message}", Description =  $"{message}", EventName =  $"{message}", System_Id = "SYS001", BookingDirection = "Credit", MFI_ChartOfAccountId = "000000", AccountNumber =  $"{message}", Amount = 1500.00, AccountName =  $"{message}" },
             new AccountingRule { Id = "2", RuleName =  $"{message}", Description =  $"{message}", EventName =  $"{message}", System_Id = "SYS002", BookingDirection = "Debit", MFI_ChartOfAccountId = "000000", AccountNumber =  $"{message}", Amount = 800.00, AccountName =  $"{message}" },
             new AccountingRule { Id = "3", RuleName =  $"{message}", Description =  $"{message}", EventName =  $"{message}", System_Id = "SYS003", BookingDirection = "Debit", MFI_ChartOfAccountId = "000000", AccountNumber =  $"{message}", Amount = 500.00, AccountName = $"{message}" },
             new AccountingRule { Id = "4", RuleName =  $"{message}", Description =  $"{message}", EventName =  $"{message}", System_Id = "SYS004", BookingDirection = "Credit", MFI_ChartOfAccountId = "000000", AccountNumber =  $"{message}", Amount = 1200.00, AccountName = $"{message}" }
-        };
-            modelRule.AccountingRule= serverResponse.ToList();
-            modelRule.HasError= true;
+          };
+            modelRule.AccountingRule = serverResponse.ToList();
+            modelRule.HasError = true;
             return modelRule;
         }
         public async Task<ActionResult> GetAllEntriesForJournalEntryReference(string Id)
         {
-           
+
             try
             {
                 var results = (List<PostedEntryX>)this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()];
 
                 var data = results.Find(x => x.Id.Equals(Id)); //<<<await _Service.GetPostedEntryReference(Id);
-               
+
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -800,15 +865,15 @@ namespace CBS.FrontDesk.UI.Controllers
             try
             {
                 var modelList = await _AccountingRuleServices.GetAccountingRules();
-                var list = modelList.Where(c=>c.Id == system_Id).ToList();   
-                  //list = await RebuildEntryBookAsync(list);
+                var list = modelList.Where(c => c.Id == system_Id).ToList();
+                //list = await RebuildEntryBookAsync(list);
                 //modelRule.AccountingRule = list;
                 //modelRule.HasError = false;
                 return Json(modelRule, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-               
+
                 return Json(GetJournalEntryTestData(ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
@@ -816,21 +881,77 @@ namespace CBS.FrontDesk.UI.Controllers
         private async Task<List<AccountingRule>> RebuildEntryBookAsync(List<AccountingRule> list)
         {
             List<AccountingRule> accountingRules = new List<AccountingRule>();
-            
-                foreach (var rule in list)
-                {
-                    var model = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositionServiceByIdandBranchIDAsync(rule.MFI_ChartOfAccountId, _AccountServices.GetUserID());
-                    rule.AccountNumber = $"{model.AccountNumberCU}-{model.AccountName}";
-                    accountingRules.Add(rule);
-                }
-                return accountingRules;
-         
-     
-           
-        }
 
+            foreach (var rule in list)
+            {
+                var model = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositionServiceByIdandBranchIDAsync(rule.MFI_ChartOfAccountId, _AccountServices.GetUserID());
+                rule.AccountNumber = $"{model.AccountNumberCU}-{model.AccountName}";
+                accountingRules.Add(rule);
+            }
+            return accountingRules;
+
+
+
+        }
+        //
         [HttpPost]
         public async Task<ActionResult> AddOrUpdate(ManuallyJournalEntryDataSet model)
+        {
+            Func<Task<ExecutionMessages>> serviceAction = null;
+            if (model.ServiceOption == "SearchAndFilter")
+            {
+                ExecutionMessages data = new ExecutionMessages();
+                data.Result = true;
+                data.MessageStatus = "Success";
+                data.Data = model.QueryModel;
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data), Data = data.Data });
+
+            }
+            if (model.Action == "insert")
+            {
+                serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
+            }
+            else
+            {
+
+                serviceAction = await GetUpdateServiceAction(model.ServiceOption, model);
+            }
+            //if (model.ServiceOption == "CreateAccountingEntries")
+            //{
+            //        serviceAction = await PostAccountingEntryActionAsync(model.ServiceOption, model);
+            //}
+            //else if (model.ServiceOption == "accountingEventRule")
+            //{
+            //    AddAccountingRuleCommand modelRequest = AddAccountingRuleCommand.BuildRequest(model);
+            //    serviceAction = await PostAccountingEntryActionAsync(model.ServiceOption, model);
+            //}
+
+
+            if (serviceAction != null)
+            {
+                try
+                {
+                    var data = await serviceAction();
+                    if (data.Result)
+                    {
+                        return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                    }
+                    else
+                    {
+                        return Json(new { success = false, status = false, message = data.MessageString });
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+                }
+            }
+
+            return Json(new { success = false, status = false, message = "Invalid option selected." });
+        }
+
+        public async Task<ActionResult> PostToRetrieveData(ManuallyJournalEntryDataSet model)
         {
             Func<Task<ExecutionMessages>> serviceAction = null;
             if (model.Action == "insert")
@@ -851,7 +972,7 @@ namespace CBS.FrontDesk.UI.Controllers
             //    AddAccountingRuleCommand modelRequest = AddAccountingRuleCommand.BuildRequest(model);
             //    serviceAction = await PostAccountingEntryActionAsync(model.ServiceOption, model);
             //}
-           
+
 
             if (serviceAction != null)
             {
@@ -880,9 +1001,9 @@ namespace CBS.FrontDesk.UI.Controllers
         // = results;
 
         [HttpGet]
-        public async Task<ActionResult> ApproveEntries(string Id, bool HasApproved,string Comment)
+        public async Task<ActionResult> ApproveEntries(string Id, bool HasApproved, string Comment)
         {
-            var model = new EntryApproval { HasApproved = HasApproved, Id = Id , Comment = Comment, BranchId= _Service .GetBranchID()};
+            var model = new EntryApproval { HasApproved = HasApproved, Id = Id, Comment = Comment, BranchId = _Service.GetBranchID() };
             try
             {
                 var data = await _Service.ApproveAccountingEntry(model);
@@ -906,19 +1027,17 @@ namespace CBS.FrontDesk.UI.Controllers
         [HttpGet]
         public async Task<ActionResult> PrintDataEntries(string Id, bool HasApproved, string Comment)
         {
-            List< PostedEntryX > listPosted =(List<PostedEntryX>)this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()];
+            List<PostedEntryX> listPosted = (List<PostedEntryX>)this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()];
             try
             {
-                this.HttpContext.Session["rptSource"] = listPosted;
+                var Model = listPosted.Where(x => x.Id == Id);
+                this.HttpContext.Session["rptSource"] = Model.Any() ? Model.FirstOrDefault() : null;
                 string ReportName = $"PrintedManualJE.rpt";
-
-
-
-                if (listPosted.Count() == 0)
+                if (Model.Any())
                 {
                     this.HttpContext.Session["rptSource"] = "empty";
                 }
-            
+
                 this.HttpContext.Session["fileType"] = $"PDF";
                 this.HttpContext.Session["ReportName"] = $"{ReportName}";
                 this.HttpContext.Session["rptType"] = $"PDF";
@@ -937,28 +1056,28 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             if (string.IsNullOrEmpty(data.Description))
             {
-                return Json(  "Kindly fill in the transaction description");
+                return Json("Kindly fill in the transaction description");
             }
             // Process the received data
             // For example, you can save it to the database or perform any business logic
             if (data.Entries[0].MFI_ChartOfAccountId.Contains("000000"))
             {
-                return Json(await _Service.PostAutomatedJournalEntry(data,true));
+                return Json(await _Service.PostAutomatedJournalEntry(data, true));
             }
             else
             {
-        
-                    return Json(await _Service.PostAutomatedJournalEntry(data));
-              
-           
-                
+
+                return Json(await _Service.PostAutomatedJournalEntry(data));
+
+
+
             }
             // Return a success response
-          
+
         }
 
         [HttpPost]
- 
+
         public async Task<ActionResult> SubmitManualEntry(ManualJournalEntryRequest model)
         {
             try
@@ -976,8 +1095,8 @@ namespace CBS.FrontDesk.UI.Controllers
                         SystemMessageStatus.Failed.ToString(), null, "Session data is missing."));
                 }
 
-            
-               
+
+
                 // Determine processing path based on branch count
                 bool isBatchProcessingRequired = accountingEventRule.ListOfEligibleBranchId.Count() > 8;
 
@@ -999,7 +1118,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 }
 
                 // Log successful processing
-               
+
                 return Json(ExecutionMessages.StaticGetExecutionMessages(response, true, response.MessageString,
                     MessagesResults.Success, ExecutionProcessOption.InsertObject,
                     SystemMessageStatus.Success.ToString(), null, response.MessageString));
@@ -1007,7 +1126,7 @@ namespace CBS.FrontDesk.UI.Controllers
             catch (Exception ex)
             {
                 // Log error
-       
+
                 return Json(ExecutionMessages.StaticGetExecutionMessages(model, false,
                     "An error occurred while processing the request.", MessagesResults.Failed,
                     ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, ex.Message));
@@ -1026,10 +1145,11 @@ namespace CBS.FrontDesk.UI.Controllers
                 if (true)
                 {
                     AddAccountingRuleCommand modelRequest = AddAccountingRuleCommand.BuildRequest(model);
-                    return () => _AccountingRuleServices.Creating(modelRequest); 
+                    return () => _AccountingRuleServices.Creating(modelRequest);
                 }
-             
+
             }
+
             else
             {
                 return null;
@@ -1068,7 +1188,7 @@ namespace CBS.FrontDesk.UI.Controllers
             {
 
                 AccountingEventRule modelRequest = AccountingEventRule.BuildRequest(model);
-                var objec=   (AccountingEventRule)this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()] ;
+                var objec = (AccountingEventRule)this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()];
                 modelRequest.Id = objec.Id;
                 return () => _AccountingRuleServices.Update(modelRequest);
 
@@ -1173,7 +1293,7 @@ namespace CBS.FrontDesk.UI.Controllers
                                       Id = entry.Reference,
                                       AccountName = entry.AccountName,
                                       AccountNumber = entry.AccountNumber,
-                                      Amount =Convert.ToDecimal( entry.Amount),
+                                      Amount = Convert.ToDecimal(entry.Amount),
                                       Reference = entry.Reference,
                                       BookingDirection = entry.BookingDirection,
                                       SumDebit = data.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDecimal(x.Amount)),
@@ -1185,6 +1305,8 @@ namespace CBS.FrontDesk.UI.Controllers
                     return PartialView(partialView, sysData);
 
                 }
+
+
                 else if (path == "new")
                 {
                     var chartOfAccount = await _AccountServices.GetAccount(key);
@@ -1205,6 +1327,29 @@ namespace CBS.FrontDesk.UI.Controllers
 
 
             }
+            else if (serviceOption == "FilteringOption")
+            {
+                if (path == "ListOfPendingEntries")
+                {
+                    var model = JsonConvert.DeserializeObject<QueryModel>(key);
+                    var dataModel = await GetEntries(model, "Pending");
+                    return PartialView(partialView, dataModel);
+                }
+                else if (path == "ListOfApprovedEntries")
+                {
+                    var model = JsonConvert.DeserializeObject<QueryModel>(key);
+                    var dataModel = await GetEntries(model, "Approved");
+                    return PartialView(partialView, dataModel);
+
+                }
+                else if (path == "ListOfRejectedEntries")
+                {
+                    var model = JsonConvert.DeserializeObject<QueryModel>(key);
+                    var dataModel = await GetEntries(model, "Rejected");
+                    return PartialView(partialView, dataModel);
+
+                }
+            }
             else if (serviceOption == "Account")
             {
                 var AccountData = await _AccountServices.GetAccount(key);
@@ -1218,22 +1363,23 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             else if (serviceOption == "accountingEventRule")
             {
-       
+
                 if (path == "list")
                 {
                     var model = new ManuallyJournalEntryDataSet();
                     model.AccountingRuleDtos = new List<AccountingRuleDtos>();
-                   
-                        var ResponseList = await _AccountingRuleServices.GetAccountingRules();
-                        model.AccountingEventRules = ResponseList.ToList();
-               
-                   
+
+                    var ResponseList = await _AccountingRuleServices.GetAccountingRules();
+                    model.AccountingEventRules = ResponseList.ToList();
+
+
                     return PartialView(partialView, model);
 
                 }
+
                 else if (path == "new")
                 {
-                  
+
                     return PartialView(partialView, new ManuallyJournalEntryDataSet { });
                 }
                 else
@@ -1255,7 +1401,7 @@ namespace CBS.FrontDesk.UI.Controllers
                         ViewBag.IsInterBranchTransaction = BuildIsInterBranchTransactionViewBag();
                         ViewBag.AccountingEventRuleIds = BuildAccountingRuleViewBag((await _AccountingRuleServices.GetAccountingRules()).ToList());
                         AccountingRule AccountingRule = SetAccountingRules(model);
-                        return PartialView(partialView,new ManuallyJournalEntryDataSet { AccountingRule = AccountingRule });
+                        return PartialView(partialView, new ManuallyJournalEntryDataSet { AccountingRule = AccountingRule });
                     }
                     catch (Exception ex)
                     {
@@ -1298,9 +1444,9 @@ namespace CBS.FrontDesk.UI.Controllers
             var list = from item in accountingRules
                        select new AccountEventRule
                        {
-                           Id= item.Id,
-                           MFI_ChartOfAccountId=item.MFI_ChartOfAccountId,
-                           BookingDirection= item.BookingDirection
+                           Id = item.Id,
+                           MFI_ChartOfAccountId = item.MFI_ChartOfAccountId,
+                           BookingDirection = item.BookingDirection
 
                        };
             return list.Any() ? list.ToList() : new List<AccountEventRule>();
@@ -1320,8 +1466,8 @@ namespace CBS.FrontDesk.UI.Controllers
 
         public async Task<ActionResult> DeleteAccountingRule(string KEY)
         {
-                var data = await _AccountingRuleServices.Delete(KEY);
-                return Json(new { success = data, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+            var data = await _AccountingRuleServices.Delete(KEY);
+            return Json(new { success = data, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
         public async Task<ActionResult> Delete(string KEY, string serviceOption)
         {
@@ -1333,7 +1479,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 return Json(new { success = data, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
 
 
-            } 
+            }
 
             else
             {
@@ -1343,5 +1489,5 @@ namespace CBS.FrontDesk.UI.Controllers
         }
     }
 
- 
+
 }
