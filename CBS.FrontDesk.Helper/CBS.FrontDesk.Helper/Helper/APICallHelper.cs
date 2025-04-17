@@ -172,7 +172,7 @@ namespace CBS.FrontDesk.Helper
         public static string DeleteUserPermission = "/api/UserPermission/Delete";
         public static string GetUserPermissions = "/api/UserPermission/User/{0}";
         public static string GetAllUserRoles = "/api/RoleUsers/GetAllUserRoles";
-        
+
         //RolePermission
         public static string Get_Update_Delete_RolePermission = "/api/RolePermission/{0}";
         public static string GetAllRolePermission = "/api/RolePermissions";
@@ -370,7 +370,7 @@ namespace CBS.FrontDesk.Helper
         //Teller
         public static string Get_Update_Delete_Teller = "/api/v1/Teller/{0}";
         public static string MobileMoneyTellerConfiguration = "/api/v1/Teller/MobileMoney/Configuration/{0}";
-        public static string GetAllTeller = "/api/v1/Teller"; 
+        public static string GetAllTeller = "/api/v1/Teller";
         public static string CreateTeller = "/api/v1/Teller";
         //DailyTeller
         public static string Get_Update_Delete_DailyTeller = "/api/v1/DailyTeller/{0}";
@@ -422,7 +422,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllOtherTransaction = "/api/v1/OtherTransaction";
         public static string CreateOtherTransaction = "/api/v1/OtherTransaction";
         public static string MobileMoneyNoneCashCashIn = "/api/v1/OtherTransaction/MobileMoney-None-Cash-Cash-In";
-        
+
         public static string CreateOtherTransactionMobileMoney = "/api/v1/OtherTransaction/MobileMoney";
         //SavingProduct
         public static string Get_Update_Delete_SavingProduct = "/api/v1/SavingProduct/{0}";
@@ -662,8 +662,8 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllRemittanceRequests = "/api/v1/Remittance/Requests";
         public static string GenerateOTPRemittance = "/api/v1/Remittance/GenerateRemittanceOTP";
         public static string GetRemittanceDataTable = "/api/v1/datatable";
-        
-        
+
+
 
         //GeneralDailyDashboard
         public static string GetAllGeneralDailyDashboard = "/api/v1/Dashboard/GetAllGeneralDailyDashboard";
@@ -682,7 +682,7 @@ namespace CBS.FrontDesk.Helper
         //CMoney
         public static string CMoneyMemberActivation = "/api/v1/cmoney/members/activate";
         public static string CMoneyMemberResetPin = "/api/v1/cmoney/members/reset-pin";
-        public static string CMoneyMemberResepinWithSecurity= "/api/v1/cmoney/members/reset-pin-with-security";
+        public static string CMoneyMemberResepinWithSecurity = "/api/v1/cmoney/members/reset-pin-with-security";
         public static string CMoneyMemberActivationUpdate = "/api/v1/cmoney/members/update-activation";
         public static string CMoneyMemberDeactivation = "/api/v1/cmoney/members/deactivate";
         public static string CMoneyMemberReactivation = "/api/v1/cmoney/members/reactivate";
@@ -693,7 +693,7 @@ namespace CBS.FrontDesk.Helper
         public static string CMoneyGetMembersPaggination = "/api/v1/cmoney/Customers/CMoneyMembersPagginationQuery";
         public static string CMoneyChangePhoneNumber = "/api/v1/cmoney/members/change-phone-number";
 
-       
+
 
         //SavingProductFee
         public static string Get_Update_Delete_SavingProductFee = "/api/v1/SavingProductFee/{0}";
@@ -787,14 +787,14 @@ namespace CBS.FrontDesk.Helper
         public static string Create_DocumentType = "/api/v1/DocumentType";
         public static string Get_Update_Delete_DocumentType = "/api/v1/DocumentType/{0}";
         public static string GetAllDocumentTypes = "/api/v1/DocumentType";
-      
+
         //DocumentReference   
 
         public static string Get_DocumentType_By_DocumentReference = "/api/v1/DocumentTypeByDocumentReference/{0}";
         public static string UpdateDocumentReferenceCode = "/api/v1/FinancialReport/DocumentReferenceCode/Update/{0}";
         public static string Delete_DocumentReference = "/api/v1/FinancialReport/DocumentReferenceCode/Delete/{0}";
         public static string GetDocumentReferenceCode = "/api/v1/FinancialReport/GetDocumentReferenceCodeById/{0}";
-        public static string GetAllDocumentReferenceCode = "/api/v1/FinancialReport/DocumentReferenceCode";    
+        public static string GetAllDocumentReferenceCode = "/api/v1/FinancialReport/DocumentReferenceCode";
         public static string CreateDocumentReferenceCode = "/api/v1/FinancialReport/DocumentReferenceCode/Create";
         public static string GetCorrespondingmappingByDocumentRefenceId = "/api/v1/FinancialReport/GetCorrespondingMappingByDocumentReferenceCodeIdQuery/{0}";
         public static string GetCorrespondingmappingExceptionByDocumentRefenceId = "/api/v1/FinancialReport/GetCorrespondingMappingExceptionsByDocumentReferenceCodeIdQuery/{0}";
@@ -816,7 +816,7 @@ namespace CBS.FrontDesk.Helper
         public static string Get_CorrespondingMappingException = "/api/v1/CorrespondingMappingException/{0}";
         //GetAllowAnonymous All AccountCategory
         public static string GetAllCorrespondingMappingException = "/api/v1/CorrespondingMappingException";
- 
+
 
         //ChartOfAccount
         //GetAllowAnonymous,Update,Delete ChartOfAccount By Id
@@ -857,7 +857,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAccountUploadFiles = "/api/v1/Accounts/UploadFiles/{0}";
         public static string PutAccount = "/api/v1/Account/{0}";
         public static string GetSystemLiaisonAccountQueryUrl = "/api/v1/Account/GetSystemLiaisonAccountQuery/{0}";
-  
+
         public static string GetAccountType = "/api/v1/AccountType/{0}";
         public static string GetAccountTypeAccountRubrique = "/api/v1/AccountType/AccountRubrique/{0}";
         public static string GetAllAccountType = "/api/v1/AccountTypes/AllSystemAccountTypes";
@@ -898,7 +898,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllCashReplenishmentRequests = "/api/v1/BankingOperation/GetAllCashReplenishmentRequests";
         public static string GetAllCashReplenishmentQueryAsBranch = "/api/v1/BankingOperation/GetAllCashReplenishmentQueryAsBranch/{0}";
         public static string GetAllCashRequestApprovalQuery = "/api/v1/BankingOperation/GetAllCashRequestApprovalQuery";
-        public static string GetAccountByEvenCodeUrl= "/api/v1/Account/GetAccountByEventCodeQuery";
+        public static string GetAccountByEvenCodeUrl = "/api/v1/Account/GetAccountByEventCodeQuery";
         public static string BranchToBranchTransferUrl = "/api/v1/AccountingEntry/BranchToBranchTransferCommand";
         public static string CashClearingTransferCashReplenishmentUrl = "/api/v1/AccountingEntry/CashClearingTransferFromCashReplenishmentCommand";
         public static string CashClearingTransferBankDepositUrl = "/api/v1/AccountingEntry/CashClearingTransferFromBankDepositCommand";
@@ -934,9 +934,8 @@ namespace CBS.FrontDesk.Helper
         public static string Post_AccountingEntry_Entries = "/api/v1/EntryTempData/PostManualEntries";
         public static string GetReferenceSequenceUrl = "/api/v1/EntryTempDatas/GetSequence";
         public static string Url_Get_AllPostedEntries = "/api/v1/EntryTempDatas/PostedEntry";
-        //public static string Url_Get_Update_delete_EntryTempData = "/api/v1/EntryTempData/{0}";
-        //public static string Url_Get_RefereceId = "api/v1/EntryTempDatas/{0}";
-        //public static string Post_AccountingEntry_Entries = "/api/v1/EntryTempData/PostManualEntries";
+        public static string Url_Get_AllPostedEntriesStatus = "/api/v1/EntryTempDatas/RetrieveManualEntriesWithFilter?status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}";
+
         public static string Post_ManaulEntryApproval_Entries = "/api/v1/EntryTempData/ManaulEntryApproval";
         //BUdgetmanagement
         public static string Get_Update_Delete_Budget = "/api/v1/Budget/{0}";

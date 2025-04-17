@@ -1,8 +1,7 @@
 ﻿let basket = [];
 let tableJE;
 
-$(document).ready(function ()
-{
+$(document).ready(function () {
     GetSequenceReference();
     LoadPendingPostedEntries("myDataTable")
     $("#datalistingview_AddEntryPurpose").hide();
@@ -14,13 +13,13 @@ $(document).ready(function ()
             data: 'debit',
             render: function (data, type, row) {
                 // Check if the booking direction is 'debit', if true, show '0' in debit column
-                return (row.bookingDirection.toLowerCase() === 'debit') ? data : 0 ;
+                return (row.bookingDirection.toLowerCase() === 'debit') ? data : 0;
             }
         }, {
             data: 'credit',
             render: function (data, type, row) {
                 // Check if the booking direction is 'credit', if true, show '0' in credit column
-                return (row.bookingDirection.toLowerCase() === 'credit') ? data:0 ;
+                return (row.bookingDirection.toLowerCase() === 'credit') ? data : 0;
             }
         }, {
             data: null,
@@ -48,18 +47,35 @@ $(document).ready(function ()
         autoWidth: false // This is important to enforce our custom widths
     });
 
+
     $(document).on('change', '#EntryTempData_AccountId', function () {
         // Get the selected value (AccountId) from the dropdown
         var selectedValue = $(this).val();
         // Call the `loadAccountById` function with the selected AccountId
         loadAccountById(selectedValue);
     });
+
+    $(document).on('change', '#QueryModel_BranchId', function () {
+        // Get the selected value (AccountId) from the dropdown
+        var selectedValue = $(this).val();
+        // Call the `loadAccountById` function with the selected AccountId
+        loadIssuingBranchUsers(selectedValue);
+    });
+    $('#QueryModel_ValidateApproverUnionWide').on('change', function () {
+        if ($(this).is(':checked')) {
+            // ✅ Checkbox is checked – perform your data loading logic here
+            loadIssuingBranchUsers("XXXXX");
+        } else {
+            // Optionally handle when it's unchecked
+            console.log("Checkbox unchecked");
+        }
+    });
     $('#DataEntrybasketTable tbody').on('click', 'button.removeBtn', function () {
         const data = tableJE.row($(this).parents('tr')).data();
         removeItem(data);
     });
     // Posted entry request approval 
-  
+
 
     $(document).on('change', '#EntryBookingDirection', function () {
         var EventId = $(this).val();
@@ -67,9 +83,33 @@ $(document).ready(function ()
         loadDescriptionByOperationDirection(EventId);
     });
 });
+function Search() {
+    // if (e) e.preventDefault(); // Prevent default if the event is passed
 
+    const jsonData = {
+        BranchID: $('select[name="QueryModel.BranchID"]').val(),
+        FilteringOption: $('select[name="QueryModel.FilteringOption"]').val(),
+        FromDate: $('#fromDate').val(),
+        ToDate: $('#toDate').val()
+    };
+
+    var jsonDataj = JSON.stringify(jsonData);
+    console.log("Collected Form Data:", jsonData);
+
+    LoadSearchData(
+        'ManuallyJournalEntry',
+        'myDataTable',
+        '_PendingEntries',
+        'datalistingview_pendingEntries',
+        jsonDataj,
+        'FilteringOption',
+        $('select[name="QueryModel.FilteringOption"]').val()
+    );
+
+    return false;
+}
 function GetSequenceReference() {
- 
+
     $.ajax({
         url: '/ManuallyJournalEntry/GetSequenceReference',
         type: 'GET',
@@ -84,8 +124,62 @@ function GetSequenceReference() {
         }
     });
 }
-function loadPostedEntryByReference(reference)
-{
+function loadBranchUsers(branchId) {
+    console.log(branchId);
+    // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
+    $.ajax({
+        url: '/ManuallyJournalEntry/GetBranchUsersByBranchId',
+        type: 'GET',
+        dataType: 'json',
+        data: { branchId: branchId },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo
+
+            $('#QueryModel_ApprovedBy').empty();
+            // Add new options based on the fetched data
+
+            $.each(data, function (index, item) {
+                $('#QueryModel_ApprovedBy').append($('<option>').text(item.Value).attr('value', item.Text));
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+function loadIssuingBranchUsers(branchId) {
+    console.log(branchId);
+    // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
+    $.ajax({
+        url: '/ManuallyJournalEntry/GetBranchUsersByBranchId',
+        type: 'GET',
+        dataType: 'json',
+        data: { branchId: branchId },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo
+            $('#QueryModel_IssuedBy').empty();
+            $('#QueryModel_ApprovedBy').empty();
+            // Add new options based on the fetched data
+            if (branchId === "XXXXX") {
+
+                $.each(data, function (index, item) {
+                    $('#QueryModel_ApprovedBy').append($('<option>').text(item.Value).attr('value', item.Text));
+                });
+            } else {
+                $.each(data, function (index, item) {
+                    $('#QueryModel_IssuedBy').append($('<option>').text(item.Value).attr('value', item.Text));
+                });
+                $.each(data, function (index, item) {
+                    $('#QueryModel_ApprovedBy').append($('<option>').text(item.Value).attr('value', item.Text));
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+function loadPostedEntryByReference(reference) {
     $("#under_review").hide();
     $("#rejected").hide();
     $("#approved").hide();
@@ -100,7 +194,7 @@ function loadPostedEntryByReference(reference)
             // Clear existing options in the OperationEventAttributeId combo
 
             console.log(data);
-            
+
             $('#exampleModalLabel3').empty();
             var referenceCell = $("#" + reference + "-Reference").text();
             var branchCodeCell = $("#" + reference + "-BranchCode").text();
@@ -108,7 +202,7 @@ function loadPostedEntryByReference(reference)
             var createdByCell = $("#" + reference + "-CreatedBy").text();
             var description = $("#" + reference + "-Description").text();
             var statusCell = $("#" + reference + "-Status").text();
-          
+
             const parts = description.split('*');
             description = parts[0];
             var ApprovedDateCell = parts[1];
@@ -174,6 +268,99 @@ function ApprovePostedEntries(response) {
     }
 }
 
+
+
+function LoadSearchData(controller, tableID, partialView, datalistingview, KEY, serviceOption, path = 'list') {
+    // Call LoadDataTableNewVersion with predefined action "InitializeData" and other parameters
+    LoadDataTableNewVersion(
+        controller,
+        tableID,
+        "InitializeData",
+        KEY,
+        partialView,
+        path,
+        datalistingview,
+        serviceOption
+    );
+}
+/**
+ * Loads data into a table via AJAX and initializes it as a DataTable.
+ * 
+ * @param {string} controller - The controller name for the AJAX request.
+ * @param {string} tableID - The ID of the table to be initialized as a DataTable.
+ * @param {string} action - The action name for the AJAX request.
+ * @param {string} KEY - A key parameter for the request.
+ * @param {string} partialView - The name of the partial view to be loaded.
+ * @param {string} path - A path parameter for the request.
+ * @param {string} diveToloadtheData - The ID of the div where the loaded data will be inserted.
+ * @param {string} serviceOption - An option parameter for the service.
+ */
+function LoadDataTableNewVersion(controller, tableID, action, KEY, partialView, path, diveToloadtheData, serviceOption) {
+    // Construct the URL for the AJAX request
+    var encodedURL = '/' + controller + '/' + action +
+        '?KEY=' + encodeURIComponent(KEY) +
+        '&partialView=' + encodeURIComponent(partialView) +
+        '&serviceOption=' + encodeURIComponent(serviceOption) +
+        '&path=' + encodeURIComponent(path);
+
+    // Log the constructed URL and other details
+    console.log(encodedURL + " tableId= " + tableID + " divloader:" + diveToloadtheData);
+
+    // Perform the AJAX request
+    $.ajax({
+        type: "GET",
+        url: encodedURL,
+        success: function (data) {
+            // Insert the received data into the specified div
+            $('#' + diveToloadtheData).html(data);
+
+            // Log the presence of the table element
+            console.log($('#' + tableID).length);
+
+            // Initialize the DataTable
+            LoadData(tableID);
+        },
+        error: function (err) {
+            // Display an error alert if the request fails
+            appalert(err.statusText, 1, 3);
+        }
+    });
+}
+
+
+// Helper function to show toast notifications
+function showToast(message, type = 'success') {
+    // Example using Bootstrap toast (make sure you have toast container in your layout)
+    const toast = $(`
+        <div class="toast align-items-center text-white bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    `);
+
+    $('#toastContainer').append(toast);
+    toast.toast({ delay: 5000 }).toast('show');
+
+    // Remove toast after it hides
+    toast.on('hidden.bs.toast', function () {
+        $(this).remove();
+    });
+}
+
+// Function to initialize plugins for dynamically loaded content
+function initializePlugins() {
+    // Initialize Select2 if needed
+    if ($.fn.select2) {
+        $('.select2').select2();
+    }
+
+    // Initialize any other plugins here
+    // For example: date pickers, tooltips, etc.
+}
 function PrintDataEntries(response) {
     //comment_description
     var storedId = $("#selectedId").val();
@@ -186,12 +373,12 @@ function PrintDataEntries(response) {
     } else {
         var ServiceOption = "EntryTempData";
         var message = "WARNING!!!\n";
-        message += "Are you sure you want to confirm this various account adjustment?\n";
-        ApprovePostedEntriesTransactions('Confirm Manual Entry Operation', message, '/ManuallyJournalEntry/ApproveEntries', ServiceOption, response, storedId, comment);
+        message += "Are you sure you want to print this entries?\n";
+        GetPostedEntriesTransactions('Confirm Manual Entry Operation', message, '/ManuallyJournalEntry/ApproveEntries', ServiceOption, response, storedId, comment);
 
     }
 }
-function ApprovePostedEntriesTransactions(title, message, ajaxUrl, serviceoption, Response, Id, comment) {
+function GetPostedEntriesTransactions(title, message, ajaxUrl, serviceoption, Response, Id, comment) {
     alertify.confirm(title, message,
         function () {
             $.ajax({
@@ -200,8 +387,9 @@ function ApprovePostedEntriesTransactions(title, message, ajaxUrl, serviceoption
                 contentType: 'application/json',
                 data: { Id: Id, HasApproved: Response, Comment: comment },
                 success: function (response) {
-
+                    openReportPrintingWindow("MET_PrintOut")
                     appalert(response.message, 3, 1);
+
                     setTimeout(function () {
                         window.location.reload();
                     }, 20000);
@@ -217,7 +405,17 @@ function ApprovePostedEntriesTransactions(title, message, ajaxUrl, serviceoption
         }
     );
 }
+function openReportPrintingWindow(reportType) {
+    var url;
 
+    url = "/Reports/AccountingPDFReport?FileType=" + reportType;
+
+
+
+
+    console.log(url);
+    window.open(url, "_blank");
+}
 function updatePageStatus(status) {
     if (status === "Under Review") {
         $("#under_review").show();
@@ -275,7 +473,7 @@ function loadAccountById(AccountId) {
         }
     });
 }
- 
+
 function calculateDebitAndCreditTotals(entries) {
     // Initialize totals
     let totalDebit = 0;
@@ -293,11 +491,11 @@ function calculateDebitAndCreditTotals(entries) {
         }
     });
     let balance = totalCredit - totalDebit;
-    let balancePrefix = balance >= 0 ? "DR"  : "CR";
+    let balancePrefix = balance >= 0 ? "DR" : "CR";
     $('#totalDebit').text(totalDebit);
     $('#totalCredit').text(totalCredit);
     let response = balance === 0 ? "" : balancePrefix;
-    $('#balance').text((response +balance));
+    $('#balance').text((response + balance));
 }
 
 
@@ -306,8 +504,7 @@ let manuallyJournalEntryDataSet = createManuallyJournalEntryDataSet();
  * Adds an item to the shopping basket with validation
  * @returns {void}
  */
-function addToBasket()
-{
+function addToBasket() {
     // Get form values
     const item = {
         reference: $('#EntryTempData_Reference').val().trim(),
@@ -337,11 +534,11 @@ function addToBasket()
             message: 'No booking direction has been set. Please contact administrators for help.'
         },
         'accountId': {
-            condition: item.accountId === "---Select Account---" || item.accountId === "", 
+            condition: item.accountId === "---Select Account---" || item.accountId === "",
             message: 'No account number has been selected. Please contact administrators for help.'
         },
         'reference': {
-            condition: !item.reference ,
+            condition: !item.reference,
             message: 'No entry reference has been set. Please contact administrators for help.'
         },
         'description': {
@@ -384,7 +581,7 @@ function addToBasket()
 
     // Clear form fields
     $('#EntryTempData_BookingDirection').val('').change();
-  
+
 }
 
 function validateDebitTransaction(item) {
@@ -394,10 +591,10 @@ function validateDebitTransaction(item) {
     const accountStart = item.accountNumber.substring(0, 2);
 
     // Check if account starts with specified prefixes
-  
+
 
     // For other accounts, validate debit transactions
-    if (bookingDirection === 'debit' && item.AccountCategoryId=='credit') {
+    if (bookingDirection === 'debit' && item.AccountCategoryId == 'credit') {
         if (accountBalance - amount < 0) {
             console.log('Insufficient account balance for debit transaction');
             return false;
@@ -411,8 +608,7 @@ function validateDebitTransaction(item) {
     }
     return true;
 }
-function createManuallyJournalEntryDataSet(basket)
-{
+function createManuallyJournalEntryDataSet(basket) {
     return {
         entryTempData: {
             // Add properties as needed
@@ -476,8 +672,7 @@ function submitBasket() {
         return;
     }
 
-    if (validateBasketDirections(basket))
-    {
+    if (validateBasketDirections(basket)) {
 
         alertify.confirm("T R U S T S O F T C R E D I T", "The system is about to submit your accounting entries with referenceId : " + basket[0].reference + ".\nAre sure you want to persit this operation?",
             function () {
@@ -498,9 +693,9 @@ function submitBasket() {
                                 appalert(response.message, 2, 1);
                             } else {
                                 $('#DataEntrybasketTable').DataTable().clear().draw();
-                       
+
                                 location.reload();
-                               /* appalert(response.message, 1, 1);*/
+                                /* appalert(response.message, 1, 1);*/
                             }
 
                             if (response.reloadDataView === "Yes") {
@@ -531,7 +726,7 @@ function submitBasket() {
             }
         );
     } else {
-        alertify.confirm("T R U S T S O F T C R E D I T","Your accounting entries are not balance. Please contact administrators for assitances.", 1, 2);
+        alertify.confirm("T R U S T S O F T C R E D I T", "Your accounting entries are not balance. Please contact administrators for assitances.", 1, 2);
         return;
     }
 
@@ -654,7 +849,7 @@ function LoadPendingPostedEntries(tableID) {
             { "targets": 5, "searchable": true, "orderable": true, "width": "15%" },
             { "targets": 6, "searchable": true, "orderable": true, "width": "10%" },
             { "targets": 7, "searchable": true, "orderable": true, "width": "10%" },
-     
+
         ],
 
         oLanguage: {
@@ -754,13 +949,13 @@ function submitAccountingEntries() {
             Description: rowData.Description,
             MFI_ChartOfAccountId: rowData.MFI_ChartOfAccountId
         };
-  //      const entry = createManuallyJournalEntryDataSet();
+        //      const entry = createManuallyJournalEntryDataSet();
         dataToSend.push(entry);
     });
 
     // Collect the operation description if it exists
     const operationDescription = $('#operationDescription').val() || '';
- 
+
     if (operationDescription === "") {
         appalert('The journal entry cannot be void of description. Please contact administrators.', 2, 1);
         return;

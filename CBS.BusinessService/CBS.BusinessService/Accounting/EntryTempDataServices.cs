@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Config;
@@ -42,7 +43,7 @@ namespace CBS.BusinessService.Accounting
                 // Make an API call to create an individual profile
 
 
-                var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.Post_AccountingEntry_Entries, EntryTempData.ConvertToAccountingEntryPayloadCommand( model,GetBranchID()));
+                var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.Post_AccountingEntry_Entries, EntryTempData.ConvertToAccountingEntryPayloadCommand(model, GetBranchID()));
                 if (response.IsSuccess)
                 {
                     // Successful creation
@@ -66,7 +67,7 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
- 
+
 
         public async Task<ExecutionMessages> PostAccountingEntry(AutomatedEventEntriesCommand model)
         {
@@ -97,7 +98,7 @@ namespace CBS.BusinessService.Accounting
             return ExecutionMessage;
         }
 
-        public async Task<ExecutionMessages> PostAutomatedJournalEntry(AutomatedEventEntryCommand model,bool hasError=false)
+        public async Task<ExecutionMessages> PostAutomatedJournalEntry(AutomatedEventEntryCommand model, bool hasError = false)
         {
             try
             {
@@ -144,7 +145,7 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
-                 
+
                 var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.Post_ManaulEntryApproval_Entries, model);
                 if (response.IsSuccess)
                 {
@@ -230,13 +231,13 @@ namespace CBS.BusinessService.Accounting
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages>  PostAutomatedEntries(ManualJournalEntryRequest model, AccountingEventRule accountingEventRule)
+        public async Task<ExecutionMessages> PostAutomatedEntries(ManualJournalEntryRequest model, AccountingEventRule accountingEventRule)
         {
             bool IsAccountBalance = true;
             string message = "";
             List<EntryTempData> EntryTempDatas = new List<EntryTempData>() { };
             var branchAccounts = await _accountServices.GetAllAccountForABranch(this.GetBranchID());
-            var chartOfAccountMps= await _chartofaccountService.GetChartOfAccountManagementPositions();
+            var chartOfAccountMps = await _chartofaccountService.GetChartOfAccountManagementPositions();
             var collection = ManualJournalEntryRequest.ConvertToAccountModelData(model);
             try
             {//PostAccountingEntry(List<EntryTempData> model)
@@ -259,13 +260,13 @@ namespace CBS.BusinessService.Accounting
                             Description = item.Description,
                             Id = item.Id,
                             Reference = item.Reference,
-                            BranchId= accountItem.AccountOwnerId,
+                            BranchId = accountItem.AccountOwnerId,
                             ExternalBranchId = accountItem.LiaisonId
                         });
                     }
                     else
                     {
-                        if (accountItem!=null)
+                        if (accountItem != null)
                         {
                             IsAccountBalance = false;
                             message = message + $"{accountItem.AccountName}-{accountItem.AccountNumberCU}: Account will be left with a negative balance";
@@ -274,7 +275,7 @@ namespace CBS.BusinessService.Accounting
                         else
                         {
                             IsAccountBalance = false;
-                            message = $"There is no account  {item.AccountName}-{item.AccountNumber} present in your branch please contact system admin"; 
+                            message = $"There is no account  {item.AccountName}-{item.AccountNumber} present in your branch please contact system admin";
                             break;
                         }
                     }
@@ -283,11 +284,18 @@ namespace CBS.BusinessService.Accounting
                 if (IsAccountBalance)
                 {
                     //accountingEventRule.IsDoubleValidationNeeded
-                 var eventEntreis=   new AutomatedEventEntriesCommand { EntryTempDatas = EntryTempDatas, IsSystem = accountingEventRule. IsDoubleValidationNeeded = accountingEventRule.IsDoubleValidationNeeded, BranchId = await GetBranchByIDAsync(GetBranchID()),
-                     ListOfBranchIds= accountingEventRule.ListOfEligibleBranchId, 
-                     AccountingEventRuleId= accountingEventRule.IsChainEntry==false?null: accountingEventRule.AccountingEventRuleId,IsInterBranchTransaction= accountingEventRule .IsInterBranchTransaction,ExternalBranchId=null};
+                    var eventEntreis = new AutomatedEventEntriesCommand
+                    {
+                        EntryTempDatas = EntryTempDatas,
+                        IsSystem = accountingEventRule.IsDoubleValidationNeeded = accountingEventRule.IsDoubleValidationNeeded,
+                        BranchId = await GetBranchByIDAsync(GetBranchID()),
+                        ListOfBranchIds = accountingEventRule.ListOfEligibleBranchId,
+                        AccountingEventRuleId = accountingEventRule.IsChainEntry == false ? null : accountingEventRule.AccountingEventRuleId,
+                        IsInterBranchTransaction = accountingEventRule.IsInterBranchTransaction,
+                        ExternalBranchId = null
+                    };
                     return await PostAccountingEntry(eventEntreis);
-                    
+
                 }
                 else
                 {
@@ -382,7 +390,24 @@ namespace CBS.BusinessService.Accounting
             }
         }
 
-       
- 
+        public async Task<List<PostedEntry>> RetrieveManualEntriesWithFilterAsync(QueryModel model)
+        {
+            try
+            {
+                var cusResponseObject = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<PostedEntry>>>(APICallHelper.Url_Get_AllPostedEntriesStatus);
+                if (cusResponseObject.IsSuccess)
+                {
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+
+
     }
 }
