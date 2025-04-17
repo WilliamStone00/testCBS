@@ -29,7 +29,6 @@ using CBS.FrontDesk.Data.Entity.Config;
 using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
-using CBS.FrontDesk.Data.UserManagement;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -72,44 +71,11 @@ namespace CBS.FrontDesk.UI.Controllers
         }
         public async Task<ActionResult> PendingAccountingEntries()
         {
-         
-          
-            ViewBag.Branches = BuildBranchViewBag((await _branchService.GetBranches()).ToList());
-            ViewBag.filteringOptions = GetFilteringOptions();
-
-            var users= (await _userService.GetUsers()).ToList();
-            ViewBag.UsersInBranch = BuildUserViewBag(users);
-          
-            return View();
-
-        }
-
-        private dynamic BuildUserViewBag(List<User> listOfItems)
-        {
-            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = "XXXXX", Text = $"I don't know the issuer" });
-            foreach (var item in listOfItems)
-            {
-                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem {  Text = item.id.ToString(), Value = $"{item.firstName} {item.name}" });
-            }
-            return selectListItems;
-        }
-        private dynamic BuildUserApproverViewBag(List<User> listOfItems)
-        {
-            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = "XXXXX", Text = $"I don't know the approver" });
-            foreach (var item in listOfItems)
-            {
-                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.id.ToString(), Value = $"{item.firstName} {item.name}" });
-            }
-            return selectListItems;
-        }
-        public async Task<ManuallyJournalEntryDataSet> GetEntries(QueryModel model, string filter)
-        {
             List<PostedEntry> postedCollectionEntries = new List<PostedEntry>();
+            await GetList();
             var PostedEntries = await _Service.GetManualEntriesAsync(); //()
-            var PendingPostedEntries = PostedEntries.Where(x => x.Status.ToLower() == (filter) && (x.CreatedDate >= model.FromDate && x.CreatedDate >= model.ToDate));
-            var ApprovedPostedEntries = PostedEntries.Where(x => x.Status.ToLower() != (filter)).ToList();
+            var PendingPostedEntries = PostedEntries.Where(x => x.Status.ToLower().Equals("pending")).ToList();
+            var ApprovedPostedEntries = PostedEntries.Where(x => x.Status.ToLower()!=("pending")).ToList();
             var users = await _userService.GetUsers();
             var usersx = users;
             var branch = await _branchService.GetBranches();
@@ -126,7 +92,7 @@ namespace CBS.FrontDesk.UI.Controllers
                                Description = p.Description,
                                CreatedDate = p.CreatedDate,
                                //ApprovedBy=po.firstName + " " + po.lastName,
-                               ApprovedDate = p.ApprovedDate,
+                               ApprovedDate =p.ApprovedDate,
                                Status = p.Status,
                                PostingSource = p.PostingSource,
                                Id = p.Id,
@@ -137,35 +103,34 @@ namespace CBS.FrontDesk.UI.Controllers
 
             var result0s = (from p in ApprovedPostedEntries
                             join u in users on p.CreatedBy equals u.id.ToString()
-                            join po in usersx on p.ApprovedBy equals po.id.ToString()
-                            join b in branch on u.BranchID equals b.Id.ToString()
-                            select new PostedEntryX
-                            {
-                                Amount = Convert.ToDecimal(p.Amount.ToString("N")),
-                                BranchCode = b.BranchCode,
-                                CreatedBy = u.firstName + " " + u.lastName,
-                                IssuedBy = u.id.ToString(),
-                                PostingSource = p.PostingSource,
-                                Description = p.Description,
-                                CreatedDate = p.CreatedDate,
-                                ApprovedBy = po.firstName + " " + po.lastName,
-                                ApprovedDate = p.ApprovedDate,
-                                Status = p.Status,
-                                Id = p.Id,
-                                EntryDetail = p.EntryDetail
+                           join po in usersx on p.ApprovedBy equals po.id.ToString()
+                           join b in branch on u.BranchID equals b.Id.ToString()
+                           select new PostedEntryX
+                           {
+                               Amount = Convert.ToDecimal(p.Amount.ToString("N")),
+                               BranchCode = b.BranchCode,
+                               CreatedBy = u.firstName + " " + u.lastName,
+                               IssuedBy = u.id.ToString(),
+                               PostingSource = p.PostingSource,
+                               Description = p.Description,
+                               CreatedDate = p.CreatedDate,
+                               ApprovedBy=po.firstName + " " + po.lastName,
+                               ApprovedDate = p.ApprovedDate,
+                               Status = p.Status,
+                               Id = p.Id,
+                               EntryDetail = p.EntryDetail
 
 
-                            }).ToList();
+                           }).ToList();
             results.AddRange(result0s);
-           
+            this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()]= results;
             foreach (var item in results)
             {
                 postedCollectionEntries.Add(item.ConvertToPostedEntry(item));
-            }
-            this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()] = results;
-            return new ManuallyJournalEntryDataSet { PostedEntries = postedCollectionEntries };
-
+            }        
+            return View(new ManuallyJournalEntryDataSet { PostedEntries = postedCollectionEntries });
         }
+
         private async Task GetList()
         {
        
@@ -203,29 +168,7 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             return selectListItems;
         }
-        public async Task<ActionResult> GetBranchUsersByBranchId(string branchId)
-        {
 
-
-            try
-            {
-                var users = (await _userService.GetUsers()).ToList();
-                 if (branchId!="XXXXX")
-                {
-                    users = users.Where(x => x.BranchID == branchId).ToList(); 
-                }
-                var AccountData = BuildUserApproverViewBag(users);
-
-
-
-
-                return Json(AccountData, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return Json(null, JsonRequestBehavior.AllowGet);
-            }
-        }
         public async Task<ActionResult> GetAccountMFIChartOfAccount()
         {
 
@@ -347,15 +290,7 @@ namespace CBS.FrontDesk.UI.Controllers
             var bookingDirections = new System.Web.WebPages.Html.SelectListItem[] { new System.Web.WebPages.Html.SelectListItem { Text = "DEBIT", Value = "DEBIT" }, new System.Web.WebPages.Html.SelectListItem { Text = "CREDIT", Value = "CREDIT" } }.ToList();
             return Task.FromResult(bookingDirections);
         }
-        private List<System.Web.WebPages.Html.SelectListItem> GetFilteringOptions()
-        {
-   //        
-            var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[]
-            { new System.Web.WebPages.Html.SelectListItem { Text = "List Of Pending Entries", Value = "ListOfPendingEntries" },
-                new System.Web.WebPages.Html.SelectListItem { Text = "List Of Approved Entries", Value = "ListOfApprovedEntries" },
-                new System.Web.WebPages.Html.SelectListItem { Text = "List Of Rejected Entries", Value = "ListOfRejectedEntries" } }.ToList();
-            return doubbleEntryValidations;
-        }
+
         private Task<List<System.Web.WebPages.Html.SelectListItem>> GetDoubbleEntryValidation()
         {
             var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[] 
@@ -893,20 +828,11 @@ namespace CBS.FrontDesk.UI.Controllers
      
            
         }
-        //
+
         [HttpPost]
         public async Task<ActionResult> AddOrUpdate(ManuallyJournalEntryDataSet model)
         {
             Func<Task<ExecutionMessages>> serviceAction = null;
-            if (model.ServiceOption== "SearchAndFilter")
-            {
-                ExecutionMessages data = new ExecutionMessages();
-                data.Result = true;
-                data.MessageStatus = "Success";
-                data.Data = model.QueryModel;
-                   return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data),Data= data.Data });
-
-            }
             if (model.Action == "insert")
             {
                 serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
@@ -926,53 +852,6 @@ namespace CBS.FrontDesk.UI.Controllers
             //    serviceAction = await PostAccountingEntryActionAsync(model.ServiceOption, model);
             //}
            
-
-            if (serviceAction != null)
-            {
-                try
-                {
-                    var data = await serviceAction();
-                    if (data.Result)
-                    {
-                        return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-                    }
-                    else
-                    {
-                        return Json(new { success = false, status = false, message = data.MessageString });
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
-                }
-            }
-
-            return Json(new { success = false, status = false, message = "Invalid option selected." });
-        }
-
-        public async Task<ActionResult> PostToRetrieveData(ManuallyJournalEntryDataSet model)
-        {
-            Func<Task<ExecutionMessages>> serviceAction = null;
-            if (model.Action == "insert")
-            {
-                serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
-            }
-            else
-            {
-
-                serviceAction = await GetUpdateServiceAction(model.ServiceOption, model);
-            }
-            //if (model.ServiceOption == "CreateAccountingEntries")
-            //{
-            //        serviceAction = await PostAccountingEntryActionAsync(model.ServiceOption, model);
-            //}
-            //else if (model.ServiceOption == "accountingEventRule")
-            //{
-            //    AddAccountingRuleCommand modelRequest = AddAccountingRuleCommand.BuildRequest(model);
-            //    serviceAction = await PostAccountingEntryActionAsync(model.ServiceOption, model);
-            //}
-
 
             if (serviceAction != null)
             {
@@ -1030,10 +909,12 @@ namespace CBS.FrontDesk.UI.Controllers
             List< PostedEntryX > listPosted =(List<PostedEntryX>)this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()];
             try
             {
-                var Model = listPosted.Where(x => x.Id == Id);
-                this.HttpContext.Session["rptSource"] = Model.Any()? Model.FirstOrDefault(): null;
+                this.HttpContext.Session["rptSource"] = listPosted;
                 string ReportName = $"PrintedManualJE.rpt";
-                if (Model.Any())
+
+
+
+                if (listPosted.Count() == 0)
                 {
                     this.HttpContext.Session["rptSource"] = "empty";
                 }
@@ -1147,9 +1028,8 @@ namespace CBS.FrontDesk.UI.Controllers
                     AddAccountingRuleCommand modelRequest = AddAccountingRuleCommand.BuildRequest(model);
                     return () => _AccountingRuleServices.Creating(modelRequest); 
                 }
-
+             
             }
-           
             else
             {
                 return null;
@@ -1268,7 +1148,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
         //    return Json(new { success = false, status = false, message = "Invalid option selected." });
         //}
-      
+
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
             await GetList();
@@ -1305,8 +1185,6 @@ namespace CBS.FrontDesk.UI.Controllers
                     return PartialView(partialView, sysData);
 
                 }
-               
-                
                 else if (path == "new")
                 {
                     var chartOfAccount = await _AccountServices.GetAccount(key);
@@ -1326,29 +1204,6 @@ namespace CBS.FrontDesk.UI.Controllers
                 }
 
 
-            }
-            else if (serviceOption == "FilteringOption")
-            {
-                if (path == "ListOfPendingEntries")
-                {
-                    var model = JsonConvert.DeserializeObject<QueryModel>(key);
-                    var dataModel = await GetEntries(model,"Pending");
-                    return PartialView(partialView, dataModel);
-                }
-                else if (path == "ListOfApprovedEntries")
-                {
-                    var model = JsonConvert.DeserializeObject<QueryModel>(key);
-                    var dataModel = await GetEntries(model,"Approved");
-                    return PartialView(partialView, dataModel);
-
-                }
-                else if (path == "ListOfRejectedEntries")
-                {
-                    var model = JsonConvert.DeserializeObject<QueryModel>(key);
-                    var dataModel = await GetEntries(model,"Rejected");
-                    return PartialView(partialView, dataModel);
-
-                }
             }
             else if (serviceOption == "Account")
             {
@@ -1376,7 +1231,6 @@ namespace CBS.FrontDesk.UI.Controllers
                     return PartialView(partialView, model);
 
                 }
-               
                 else if (path == "new")
                 {
                   

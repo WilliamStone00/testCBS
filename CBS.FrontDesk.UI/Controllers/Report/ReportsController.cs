@@ -357,15 +357,6 @@ namespace CBS.FrontDesk.UI.Controllers
                         var listData = accountingGeneralLedgerDetails.ConvertToGeneralLedgerDto(accountingGeneralLedgerDetails);
                         rd.SetDataSource(listData);
 
-                    }else if (fileType.Contains("GL"))
-                    {
-                        accountingGeneralLedgerDetails = (AccountingGeneralLedgerDetails)rptSource;
-
-                        string strRptPath = Server.MapPath(rptpath);
-                        rd.Load(strRptPath);
-                        var listData = accountingGeneralLedgerDetails.ConvertToGeneralLedgerDto(accountingGeneralLedgerDetails);
-                        rd.SetDataSource(listData);
-
                     }
 
 

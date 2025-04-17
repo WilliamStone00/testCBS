@@ -1,4 +1,4 @@
-﻿let basket = [];
+let basket = [];
 let tableJE;
 
 $(document).ready(function ()
@@ -48,11 +48,28 @@ $(document).ready(function ()
         autoWidth: false // This is important to enforce our custom widths
     });
 
+
     $(document).on('change', '#EntryTempData_AccountId', function () {
         // Get the selected value (AccountId) from the dropdown
         var selectedValue = $(this).val();
         // Call the `loadAccountById` function with the selected AccountId
         loadAccountById(selectedValue);
+    });
+
+    $(document).on('change', '#QueryModel_BranchId', function () {
+        // Get the selected value (AccountId) from the dropdown
+        var selectedValue = $(this).val();
+        // Call the `loadAccountById` function with the selected AccountId
+        loadIssuingBranchUsers(selectedValue);
+    });
+    $('#QueryModel_ValidateApproverUnionWide').on('change', function () {
+        if ($(this).is(':checked')) {
+            // ✅ Checkbox is checked – perform your data loading logic here
+            loadIssuingBranchUsers("XXXXX");
+        } else {
+            // Optionally handle when it's unchecked
+            console.log("Checkbox unchecked");
+        }
     });
     $('#DataEntrybasketTable tbody').on('click', 'button.removeBtn', function () {
         const data = tableJE.row($(this).parents('tr')).data();
@@ -67,7 +84,31 @@ $(document).ready(function ()
         loadDescriptionByOperationDirection(EventId);
     });
 });
+function Search() {
+    // if (e) e.preventDefault(); // Prevent default if the event is passed
 
+    const jsonData = {
+        BranchID: $('select[name="QueryModel.BranchID"]').val(),
+        FilteringOption: $('select[name="QueryModel.FilteringOption"]').val(),
+        FromDate: $('#fromDate').val(),
+        ToDate: $('#toDate').val()
+    };
+ 
+    var jsonDataj = JSON.stringify(jsonData);
+    console.log("Collected Form Data:", jsonData);
+
+    LoadSearchData(
+        'ManuallyJournalEntry',
+        'myDataTable',
+        '_PendingEntries',
+        'datalistingview_pendingEntries',
+        jsonDataj,
+        'FilteringOption',
+        $('select[name="QueryModel.FilteringOption"]').val()
+    );
+
+    return false;
+}
 function GetSequenceReference() {
  
     $.ajax({
@@ -78,6 +119,61 @@ function GetSequenceReference() {
             // Clear existing options in the OperationEventAttributeId combo
             console.log(data);
             $('#EntryTempData_Reference').val(data);
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+function loadBranchUsers(branchId) {
+    console.log(branchId);
+    // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
+    $.ajax({
+        url: '/ManuallyJournalEntry/GetBranchUsersByBranchId',
+        type: 'GET',
+        dataType: 'json',
+        data: { branchId: branchId },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo
+    
+            $('#QueryModel_ApprovedBy').empty();
+            // Add new options based on the fetched data
+          
+            $.each(data, function (index, item) {
+                $('#QueryModel_ApprovedBy').append($('<option>').text(item.Value).attr('value', item.Text));
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+function loadIssuingBranchUsers(branchId) {
+    console.log(branchId);
+    // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
+    $.ajax({
+        url: '/ManuallyJournalEntry/GetBranchUsersByBranchId',
+        type: 'GET',
+        dataType: 'json',
+        data: { branchId: branchId },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo
+            $('#QueryModel_IssuedBy').empty();
+            $('#QueryModel_ApprovedBy').empty();
+            // Add new options based on the fetched data
+            if (branchId==="XXXXX") {
+            
+                $.each(data, function (index, item) {
+                    $('#QueryModel_ApprovedBy').append($('<option>').text(item.Value).attr('value', item.Text));
+                });
+            } else {
+                $.each(data, function (index, item) {
+                    $('#QueryModel_IssuedBy').append($('<option>').text(item.Value).attr('value', item.Text));
+                });
+                $.each(data, function (index, item) {
+                    $('#QueryModel_ApprovedBy').append($('<option>').text(item.Value).attr('value', item.Text));
+                });
+            }
         },
         error: function (xhr, status, error) {
             console.error(xhr.responseText);
@@ -174,6 +270,99 @@ function ApprovePostedEntries(response) {
     }
 }
 
+
+
+function LoadSearchData(controller, tableID, partialView, datalistingview, KEY, serviceOption, path = 'list') {
+    // Call LoadDataTableNewVersion with predefined action "InitializeData" and other parameters
+    LoadDataTableNewVersion(
+        controller,
+        tableID,
+        "InitializeData",
+        KEY,
+        partialView,
+        path,
+        datalistingview,
+        serviceOption
+    );
+}
+/**
+ * Loads data into a table via AJAX and initializes it as a DataTable.
+ * 
+ * @param {string} controller - The controller name for the AJAX request.
+ * @param {string} tableID - The ID of the table to be initialized as a DataTable.
+ * @param {string} action - The action name for the AJAX request.
+ * @param {string} KEY - A key parameter for the request.
+ * @param {string} partialView - The name of the partial view to be loaded.
+ * @param {string} path - A path parameter for the request.
+ * @param {string} diveToloadtheData - The ID of the div where the loaded data will be inserted.
+ * @param {string} serviceOption - An option parameter for the service.
+ */
+function LoadDataTableNewVersion(controller, tableID, action, KEY, partialView, path, diveToloadtheData, serviceOption) {
+    // Construct the URL for the AJAX request
+    var encodedURL = '/' + controller + '/' + action +
+        '?KEY=' + encodeURIComponent(KEY) +
+        '&partialView=' + encodeURIComponent(partialView) +
+        '&serviceOption=' + encodeURIComponent(serviceOption) +
+        '&path=' + encodeURIComponent(path);
+
+    // Log the constructed URL and other details
+    console.log(encodedURL + " tableId= " + tableID + " divloader:" + diveToloadtheData);
+
+    // Perform the AJAX request
+    $.ajax({
+        type: "GET",
+        url: encodedURL,
+        success: function (data) {
+            // Insert the received data into the specified div
+            $('#' + diveToloadtheData).html(data);
+
+            // Log the presence of the table element
+            console.log($('#' + tableID).length);
+
+            // Initialize the DataTable
+            LoadData(tableID);
+        },
+        error: function (err) {
+            // Display an error alert if the request fails
+            appalert(err.statusText, 1, 3);
+        }
+    });
+}
+ 
+
+// Helper function to show toast notifications
+function showToast(message, type = 'success') {
+    // Example using Bootstrap toast (make sure you have toast container in your layout)
+    const toast = $(`
+        <div class="toast align-items-center text-white bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    `);
+
+    $('#toastContainer').append(toast);
+    toast.toast({ delay: 5000 }).toast('show');
+
+    // Remove toast after it hides
+    toast.on('hidden.bs.toast', function () {
+        $(this).remove();
+    });
+}
+
+// Function to initialize plugins for dynamically loaded content
+function initializePlugins() {
+    // Initialize Select2 if needed
+    if ($.fn.select2) {
+        $('.select2').select2();
+    }
+
+    // Initialize any other plugins here
+    // For example: date pickers, tooltips, etc.
+}
 function PrintDataEntries(response) {
     //comment_description
     var storedId = $("#selectedId").val();
@@ -186,12 +375,12 @@ function PrintDataEntries(response) {
     } else {
         var ServiceOption = "EntryTempData";
         var message = "WARNING!!!\n";
-        message += "Are you sure you want to confirm this various account adjustment?\n";
-        ApprovePostedEntriesTransactions('Confirm Manual Entry Operation', message, '/ManuallyJournalEntry/ApproveEntries', ServiceOption, response, storedId, comment);
+        message += "Are you sure you want to print this entries?\n";
+         GetPostedEntriesTransactions('Confirm Manual Entry Operation', message, '/ManuallyJournalEntry/ApproveEntries', ServiceOption, response, storedId, comment);
 
     }
 }
-function ApprovePostedEntriesTransactions(title, message, ajaxUrl, serviceoption, Response, Id, comment) {
+function  GetPostedEntriesTransactions(title, message, ajaxUrl, serviceoption, Response, Id, comment) {
     alertify.confirm(title, message,
         function () {
             $.ajax({
@@ -200,8 +389,9 @@ function ApprovePostedEntriesTransactions(title, message, ajaxUrl, serviceoption
                 contentType: 'application/json',
                 data: { Id: Id, HasApproved: Response, Comment: comment },
                 success: function (response) {
-
+                    openReportPrintingWindow("MET_PrintOut")
                     appalert(response.message, 3, 1);
+
                     setTimeout(function () {
                         window.location.reload();
                     }, 20000);
@@ -217,7 +407,17 @@ function ApprovePostedEntriesTransactions(title, message, ajaxUrl, serviceoption
         }
     );
 }
+function openReportPrintingWindow(reportType) {
+    var url;
+    
+   url = "/Reports/AccountingPDFReport?FileType=" + reportType;
+        
 
+
+ 
+    console.log(url);
+    window.open(url, "_blank");
+}
 function updatePageStatus(status) {
     if (status === "Under Review") {
         $("#under_review").show();

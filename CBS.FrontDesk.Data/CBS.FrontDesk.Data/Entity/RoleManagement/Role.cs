@@ -26,9 +26,12 @@ namespace CBS.FrontDesk.Data.Entity
 
     }
 
+
     public class PermissionMenuLoaderDto
     {
-        [Required]
+       
+
+        [Required(ErrorMessage = "")]
         public string roleID { get; set; }
         [Required]
         public string userID { get; set; }

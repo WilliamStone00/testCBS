@@ -30,6 +30,7 @@
         align-items: center;
         flex-wrap: wrap;
     }
+
     body {
         top: 0 !important;
     }
@@ -50,8 +51,6 @@
     .goog-te-gadget {
         display: none !important;
     }
-
-
 </style>
 @if (User.Identity.IsAuthenticated)
 {
@@ -127,122 +126,122 @@
             <ul class="navbar-nav flex-row align-items-center ms-auto">
 
                 @*/ Language
-        Style Switcher*@
+                    Style Switcher*@
                 <!-- 🌐 Language Selector -->
-                <li class="nav-item dropdown-language dropdown me-1 me-xl-0">
-                    <a class="nav-link btn btn-text-secondary rounded-pill btn-icon hide-arrow"
-                       href="javascript:void(0);" data-bs-toggle="dropdown">
-                        <img id="current-lang-flag" src="~/AppFiles/Images/Lang/united_kingdom_64.png" alt="Lang" width="24" height="16" />
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);" onclick="setLanguage('en', '~/AppFiles/Images/Lang/united_kingdom_64.png')">
-                                <img src="~/AppFiles/Images/Lang/united_kingdom_64.png" alt="English" width="20" class="me-2" />
-                                <span>English</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);" onclick="setLanguage('fr', '~/AppFiles/Images/Lang/france_64.png')">
-                                <img src="~/AppFiles/Images/Lang/france_64.png" alt="French" width="20" class="me-2" />
-                                <span>French</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                @*<li class="nav-item dropdown-language dropdown me-1 me-xl-0">
+                        <a class="nav-link btn btn-text-secondary rounded-pill btn-icon hide-arrow"
+                           href="javascript:void(0);" data-bs-toggle="dropdown">
+                            <img id="current-lang-flag" src="~/AppFiles/Images/Lang/united_kingdom_64.png" alt="Lang" width="24" height="16" />
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);" onclick="setLanguage('en', '~/AppFiles/Images/Lang/united_kingdom_64.png')">
+                                    <img src="~/AppFiles/Images/Lang/united_kingdom_64.png" alt="English" width="20" class="me-2" />
+                                    <span>English</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);" onclick="setLanguage('fr', '~/AppFiles/Images/Lang/france_64.png')">
+                                    <img src="~/AppFiles/Images/Lang/france_64.png" alt="French" width="20" class="me-2" />
+                                    <span>French</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>*@
 
-
+                @Html.Partial("_LanguageSwitcher")
 
                 <!-- / Style Switcher-->
                 <!-- Quick links  -->
                 @*<li class="nav-item dropdown-shortcuts navbar-dropdown dropdown me-1 me-xl-0">
-            <a class="nav-link btn btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow"
-               href="javascript:void(0);"
-               data-bs-toggle="dropdown"
-               data-bs-auto-close="outside"
-               aria-expanded="false">
-                <i class="mdi mdi-view-grid-plus-outline mdi-24px"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-end py-0">
-                <div class="dropdown-menu-header border-bottom">
-                    <div class="dropdown-header d-flex align-items-center py-3">
-                        <h5 class="text-body mb-0 me-auto">Shortcuts</h5>
-                        <a href="javascript:void(0)"
-                           class="dropdown-shortcuts-add text-muted"
-                           data-bs-toggle="tooltip"
-                           data-bs-placement="top"
-                           title="Add shortcuts">
+                        <a class="nav-link btn btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow"
+                           href="javascript:void(0);"
+                           data-bs-toggle="dropdown"
+                           data-bs-auto-close="outside"
+                           aria-expanded="false">
                             <i class="mdi mdi-view-grid-plus-outline mdi-24px"></i>
                         </a>
-                    </div>
-                </div>
-                <div class="dropdown-shortcuts-list scrollable-container">
-                    <div class="row row-bordered overflow-visible g-0">
-                        <div class="dropdown-shortcuts-item col">
-                            <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
-                                <i class="mdi mdi-calendar fs-4"></i>
-                            </span>
-                            <a href="app-calendar.html" class="stretched-link">Calendar</a>
-                            <small class="text-muted mb-0">Appointments</small>
+                        <div class="dropdown-menu dropdown-menu-end py-0">
+                            <div class="dropdown-menu-header border-bottom">
+                                <div class="dropdown-header d-flex align-items-center py-3">
+                                    <h5 class="text-body mb-0 me-auto">Shortcuts</h5>
+                                    <a href="javascript:void(0)"
+                                       class="dropdown-shortcuts-add text-muted"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-placement="top"
+                                       title="Add shortcuts">
+                                        <i class="mdi mdi-view-grid-plus-outline mdi-24px"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="dropdown-shortcuts-list scrollable-container">
+                                <div class="row row-bordered overflow-visible g-0">
+                                    <div class="dropdown-shortcuts-item col">
+                                        <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                                            <i class="mdi mdi-calendar fs-4"></i>
+                                        </span>
+                                        <a href="app-calendar.html" class="stretched-link">Calendar</a>
+                                        <small class="text-muted mb-0">Appointments</small>
+                                    </div>
+                                    <div class="dropdown-shortcuts-item col">
+                                        <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                                            <i class="mdi mdi-file-document-outline fs-4"></i>
+                                        </span>
+                                        <a href="app-invoice-list.html" class="stretched-link">Invoice App</a>
+                                        <small class="text-muted mb-0">Manage Accounts</small>
+                                    </div>
+                                </div>
+                                <div class="row row-bordered overflow-visible g-0">
+                                    <div class="dropdown-shortcuts-item col">
+                                        <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                                            <i class="mdi mdi-account-outline fs-4"></i>
+                                        </span>
+                                        <a href="app-user-list.html" class="stretched-link">User App</a>
+                                        <small class="text-muted mb-0">Manage Users</small>
+                                    </div>
+                                    <div class="dropdown-shortcuts-item col">
+                                        <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                                            <i class="mdi mdi-shield-check-outline fs-4"></i>
+                                        </span>
+                                        <a href="app-access-roles.html" class="stretched-link">Role Management</a>
+                                        <small class="text-muted mb-0">Permission</small>
+                                    </div>
+                                </div>
+                                <div class="row row-bordered overflow-visible g-0">
+                                    <div class="dropdown-shortcuts-item col">
+                                        <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                                            <i class="mdi mdi-chart-pie-outline fs-4"></i>
+                                        </span>
+                                        <a href="index.html" class="stretched-link">Dashboard</a>
+                                        <small class="text-muted mb-0">Analytics</small>
+                                    </div>
+                                    <div class="dropdown-shortcuts-item col">
+                                        <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                                            <i class="mdi mdi-cog-outline fs-4"></i>
+                                        </span>
+                                        <a href="pages-account-settings-account.html" class="stretched-link">Setting</a>
+                                        <small class="text-muted mb-0">Account Settings</small>
+                                    </div>
+                                </div>
+                                <div class="row row-bordered overflow-visible g-0">
+                                    <div class="dropdown-shortcuts-item col">
+                                        <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                                            <i class="mdi mdi-help-circle-outline fs-4"></i>
+                                        </span>
+                                        <a href="pages-faq.html" class="stretched-link">FAQs</a>
+                                        <small class="text-muted mb-0">FAQs & Articles</small>
+                                    </div>
+                                    <div class="dropdown-shortcuts-item col">
+                                        <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                                            <i class="mdi mdi-dock-window fs-4"></i>
+                                        </span>
+                                        <a href="modal-examples.html" class="stretched-link">Modals</a>
+                                        <small class="text-muted mb-0">Useful Popups</small>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="dropdown-shortcuts-item col">
-                            <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
-                                <i class="mdi mdi-file-document-outline fs-4"></i>
-                            </span>
-                            <a href="app-invoice-list.html" class="stretched-link">Invoice App</a>
-                            <small class="text-muted mb-0">Manage Accounts</small>
-                        </div>
-                    </div>
-                    <div class="row row-bordered overflow-visible g-0">
-                        <div class="dropdown-shortcuts-item col">
-                            <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
-                                <i class="mdi mdi-account-outline fs-4"></i>
-                            </span>
-                            <a href="app-user-list.html" class="stretched-link">User App</a>
-                            <small class="text-muted mb-0">Manage Users</small>
-                        </div>
-                        <div class="dropdown-shortcuts-item col">
-                            <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
-                                <i class="mdi mdi-shield-check-outline fs-4"></i>
-                            </span>
-                            <a href="app-access-roles.html" class="stretched-link">Role Management</a>
-                            <small class="text-muted mb-0">Permission</small>
-                        </div>
-                    </div>
-                    <div class="row row-bordered overflow-visible g-0">
-                        <div class="dropdown-shortcuts-item col">
-                            <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
-                                <i class="mdi mdi-chart-pie-outline fs-4"></i>
-                            </span>
-                            <a href="index.html" class="stretched-link">Dashboard</a>
-                            <small class="text-muted mb-0">Analytics</small>
-                        </div>
-                        <div class="dropdown-shortcuts-item col">
-                            <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
-                                <i class="mdi mdi-cog-outline fs-4"></i>
-                            </span>
-                            <a href="pages-account-settings-account.html" class="stretched-link">Setting</a>
-                            <small class="text-muted mb-0">Account Settings</small>
-                        </div>
-                    </div>
-                    <div class="row row-bordered overflow-visible g-0">
-                        <div class="dropdown-shortcuts-item col">
-                            <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
-                                <i class="mdi mdi-help-circle-outline fs-4"></i>
-                            </span>
-                            <a href="pages-faq.html" class="stretched-link">FAQs</a>
-                            <small class="text-muted mb-0">FAQs & Articles</small>
-                        </div>
-                        <div class="dropdown-shortcuts-item col">
-                            <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
-                                <i class="mdi mdi-dock-window fs-4"></i>
-                            </span>
-                            <a href="modal-examples.html" class="stretched-link">Modals</a>
-                            <small class="text-muted mb-0">Useful Popups</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>*@
+                    </li>*@
                 <!-- Quick links -->
                 <!-- Notification -->
                 <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-2 me-xl-1">
@@ -333,38 +332,38 @@
                             </a>
                         </li>
                         @*<li>
-                    <a class="dropdown-item" href="pages-account-settings-account.html">
-                        <i class="mdi mdi-cog-outline me-2"></i>
-                        <span class="align-middle">Settings</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item" href="pages-account-settings-billing.html">
-                        <span class="d-flex align-items-center align-middle">
-                            <i class="flex-shrink-0 mdi mdi-credit-card-outline me-2"></i>
-                            <span class="flex-grow-1 align-middle ms-1">Billing</span>
-                            <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <div class="dropdown-divider"></div>
-                </li>
-                <li>
-                    <a class="dropdown-item" href="pages-faq.html">
-                        <i class="mdi mdi-help-circle-outline me-2"></i>
-                        <span class="align-middle">FAQ</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item" href="pages-pricing.html">
-                        <i class="mdi mdi-currency-usd me-2"></i>
-                        <span class="align-middle">Pricing</span>
-                    </a>
-                </li>
-                <li>
-                    <div class="dropdown-divider"></div>
-                </li>*@
+                                <a class="dropdown-item" href="pages-account-settings-account.html">
+                                    <i class="mdi mdi-cog-outline me-2"></i>
+                                    <span class="align-middle">Settings</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="pages-account-settings-billing.html">
+                                    <span class="d-flex align-items-center align-middle">
+                                        <i class="flex-shrink-0 mdi mdi-credit-card-outline me-2"></i>
+                                        <span class="flex-grow-1 align-middle ms-1">Billing</span>
+                                        <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <div class="dropdown-divider"></div>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="pages-faq.html">
+                                    <i class="mdi mdi-help-circle-outline me-2"></i>
+                                    <span class="align-middle">FAQ</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="pages-pricing.html">
+                                    <i class="mdi mdi-currency-usd me-2"></i>
+                                    <span class="align-middle">Pricing</span>
+                                </a>
+                            </li>
+                            <li>
+                                <div class="dropdown-divider"></div>
+                            </li>*@
                         <li>
                             <a class="dropdown-item" href="/Authentication/Logout">
                                 <i class="mdi mdi-logout me-2"></i>
@@ -383,39 +382,3 @@
 }
 
 
-<script>
-    function changeLanguage(lang) {
-        const frame = document.querySelector('iframe.goog-te-menu-frame');
-        if (!frame) return;
-
-        const innerDoc = frame.contentDocument || frame.contentWindow.document;
-        const langElements = innerDoc.querySelectorAll('.goog-te-menu2-item span.text');
-
-        langElements.forEach(el => {
-            if (el.innerText.toLowerCase().includes(lang === 'fr' ? 'french' : 'english')) {
-                el.click();
-            }
-        });
-    }
-    function triggerManualTranslation(langCode) {
-        const translateCombo = document.querySelector('.goog-te-combo');
-        if (translateCombo) {
-            translateCombo.value = langCode;
-            translateCombo.dispatchEvent(new Event('change'));
-        }
-    }
-
-</script>
-
-
-@*<script>
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('[data-language]').forEach(item => {
-                item.addEventListener('click', function () {
-                    const lang = this.getAttribute('data-language');
-                    fetch(`/Language/SetLanguage?lang=${lang}`, { method: 'GET' })
-                        .then(() => location.reload());
-                });
-            });
-        });
-    </script>*@
