@@ -45,8 +45,6 @@ namespace CBS.FrontDesk.UI.Controllers.Language
                     {
                         user.UserPreferedLanguage = lang;
                         await _userManagementServices.UpdateUserProfile(user);
-                        userDto.UserPreferedLanguage = lang;
-                        Session["AuthUser"] = userDto;
                     }
                 }
             }

@@ -340,6 +340,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleManagement\RolePermissionServices.cs" />
     <Compile Include="RoleManagement\MenuMasterServices.cs" />
+    <Compile Include="RoleManagement\MenuTranslationServices.cs" />
     <Compile Include="RoleManagement\RoleServices.cs" />
     <Compile Include="Session\AggregateSessionService.cs" />
     <Compile Include="Session\SessionHelper.cs" />

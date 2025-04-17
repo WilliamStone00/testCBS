@@ -590,7 +590,10 @@ namespace CBS.BusinessService.UserManagement
                 {
                     userModel.userAllowedIPs = new List<UserAllowedIP> { new UserAllowedIP() { ipAddress = model.allowedIP } };
                 }
-
+                else
+                {
+                    userModel.UserPreferedLanguage=model.UserPreferedLanguage;
+                }
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
                 var reUser = await ApiCallerHelper.PutAsync<ResponseObject<User>>(string.Format(APICallHelper.UpdateUser, userModel.id), userModel);
                 if (reUser.IsSuccess)

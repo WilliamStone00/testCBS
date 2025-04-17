@@ -163,6 +163,12 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_Role = "/api/Role/{0}";
         public static string GetAllRoles = "/api/Role";
         public static string CreateRole = "/api/Role";
+        //Role
+        public static string GetMenuTransaltion = "/api/v1/menutranslation/{0}";
+        public static string GetAllMenuTransaltion = "/api/v1/menutranslation/all";
+        public static string AddMenuTransaltion = "/api/v1/menutranslation/add";
+        public static string UpdateMenuTransaltion = "/api/v1/menutranslation/update";
+        public static string GetUntreatedMenuTransaltion = "/api/v1/menutranslation/untranslated";
         //
 
         //UserPermission

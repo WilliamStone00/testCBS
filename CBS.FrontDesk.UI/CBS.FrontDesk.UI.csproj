@@ -645,6 +645,7 @@
     <Compile Include="Controllers\MemberNoneCashOperation\LoanRepaymentBackOfficeController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\MobileMoneyBackOfficeController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\MemberNoneCashOperationController.cs" />
+    <Compile Include="Controllers\RoleManagement\MenuTranslationController.cs" />
     <Compile Include="Controllers\StandingOrderP\StandingOrderController.cs" />
     <Compile Include="Controllers\CorrespondingBankManagement\CorrespondingBankManagementController.cs" />
     <Compile Include="Controllers\Accounting\DocumentConfigurationController.cs" />
@@ -2641,6 +2642,8 @@
     <Content Include="Scripts\Js\Crud\AccountingDay\AccountingDayStatus.js" />
     <Content Include="Scripts\Js\Crud\AuditTrail\Audits.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\LoanRefpaymentSimulation.js" />
+    <Content Include="Scripts\Js\Crud\MenuTranslation\MenuTranslationUpdate.js" />
+    <Content Include="Scripts\Js\Crud\MenuTranslation\MenuTranslation.js" />
     <Content Include="Scripts\Js\Crud\LoanApplicationHistory\LoanApplicationQuery.js" />
     <Content Include="Scripts\Js\Crud\LoanRepaymentBackOffice\LedgerLoanRepayment.js" />
     <Content Include="Scripts\Js\Crud\LoanRepaymentBackOffice\LoanRepaymentBackOffice.js" />
@@ -3639,6 +3642,10 @@
     <Content Include="Views\ManuallyJournalEntry\_PendingEntries.cshtml" />
     <Content Include="Views\Shared\_LanguageSwitcher.cshtml" />
     <Content Include="Views\UserManagement\_UserChangeLanguage.cshtml" />
+    <Content Include="Views\MenuTranslation\_MenuTranslationData.cshtml" />
+    <Content Include="Views\MenuTranslation\Index.cshtml" />
+    <Content Include="Views\MenuTranslation\Update.cshtml" />
+    <Content Include="Views\MenuTranslation\_MenuTranslationUpdateData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
