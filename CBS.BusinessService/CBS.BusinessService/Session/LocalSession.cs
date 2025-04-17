@@ -179,6 +179,61 @@ namespace CBS.BusinessService.Session
             }
         }
 
+        public async Task<User> GetUser(string userid)
+        {
+            try
+            {
+                var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
+                var user = await ApiCallerHelper.GetAsync<ResponseObject<User>>(string.Format(APICallHelper.GetUserByID, ConvertStringToGuid(userid)));
+                if (user.ApiResponseData != null)
+                {
+                    return user.ApiResponseData.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<bool> UpdateUserProfile(User model)
+        {
+            try
+            {
+                var apiUrl = ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString();
+                var apiCallerHelper = new ApiCallerHelper(apiUrl);
+
+                var response = await apiCallerHelper.PutAsync<ResponseObject<User>>(
+                    string.Format(APICallHelper.UpdateUser, model.id), model
+                );
+
+                if (response != null && response.IsSuccess)
+                {
+                    GetExecutionMessages(response, true, response.ApiResponseData?.Data?.firstName,
+                        MessagesResults.Success, ExecutionProcessOption.DefaultSuccessdMessages,
+                        SystemMessageStatus.Success.ToString(), null, response.Message);
+
+                    return true;
+                }
+
+                // Handle failure case
+                GetExecutionMessages(model, false, model?.firstName,
+                    MessagesResults.Failed, ExecutionProcessOption.DefaultFailedMessages,
+                    SystemMessageStatus.Failed.ToString(), null, response?.Message ?? "Update failed");
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(null, false, null,
+                    MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+
+                return false;
+            }
+        }
+
     }
 
 }

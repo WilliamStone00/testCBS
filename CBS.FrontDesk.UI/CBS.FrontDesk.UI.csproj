@@ -780,6 +780,7 @@
     </Compile>
     <Compile Include="App_Code\Helper\SessionTimeoutFilterAttribute.cs" />
     <Compile Include="Helper\ExportUtilityCMoney.cs" />
+    <Compile Include="Helper\LanguageHelper.cs" />
     <Compile Include="Helper\LoanApplicationExcelGenerator.cs" />
     <Compile Include="Helper\LoanExcelGenerator.cs" />
     <Compile Include="Helper\ExportUtilityAuditTrail.cs" />
@@ -3635,6 +3636,7 @@
     <Content Include="Views\AccountOpeningRulePerBranch\Index.cshtml" />
     <Content Include="Views\AccountOpeningRulePerBranch\Initilization.cshtml" />
     <Content Include="Views\Shared\_LanguageSwitcher.cshtml" />
+    <Content Include="Views\UserManagement\_UserChangeLanguage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

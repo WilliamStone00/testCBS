@@ -425,13 +425,13 @@ namespace CBS.FrontDesk.UI.Controllers
 
             string fullName = userSession.firstName + " " + userSession.lastName;
 
-            Session["FullName"] = userSession.firstName + " " + userSession.lastName;
+            Session["FullName"] = fullName;
             Session["Msisdn"] = userSession.phoneNumber;
             Session["Email"] = userSession.email;
             Session["Initial"] = userSession.firstName?.FirstOrDefault().ToString().ToUpper() ?? "U";
             Session["UserID"] = userSession.id;
-            Session["Roles"] = userSession.Roles.Select(r => r.RoleName).ToArray();
-            Session["RoleId"] = userSession.Roles.Select(r => r.RoleId).FirstOrDefault();
+            Session["Roles"] = roles;
+            Session["RoleId"] = roleid;
             Session["RefesherToken"] = userSession.refreshToken;
             Session["Token"] = userSession.bearerToken;
             Session["UserName"] = userSession.userName;
@@ -451,23 +451,27 @@ namespace CBS.FrontDesk.UI.Controllers
             Session["BankCode"] = userSession.Branch.Bank.BankCode;
             Session["IsHeadOffice"] = userSession.Branch.IsHeadOffice;
 
-            if (userSession.PermissionNodes == null)
-            {
-                HttpContext.Session["menu"] = new List<PermissionNode>(); // Assuming Permission is your type
-            }
-            else
-            {
-                HttpContext.Session["menu"] = userSession.PermissionNodes.ToList();
-            }
+            Session["menu"] = userSession.PermissionNodes?.ToList() ?? new List<PermissionNode>();
+            ViewBag.MenuItems = Session["menu"];
 
             Session["EncryptedJWToken"] = TokenEncryptionHelper.EncryptToken(userSession.bearerToken);
             Session["BranchObject"] = userSession.Branch;
             Session["AuthUser"] = userSession;
             Session["UserIP"] = Request.UserHostAddress;
-            ViewBag.MenuItems = Session["menu"];
 
+            // 🌐 Set language in session and cookie
+            var selectedLang = !string.IsNullOrWhiteSpace(userSession.UserPreferedLanguage)
+                ? userSession.UserPreferedLanguage.ToLower()
+                : "en";
 
+            Session["SelectedLanguage"] = selectedLang;
 
+            // 🍪 Persist language selection in cookie for 1 year
+            var langCookie = new HttpCookie("TSC_Lang", selectedLang)
+            {
+                Expires = DateTime.Now.AddYears(1)
+            };
+            Response.Cookies.Add(langCookie);
         }
 
         [NonAction]

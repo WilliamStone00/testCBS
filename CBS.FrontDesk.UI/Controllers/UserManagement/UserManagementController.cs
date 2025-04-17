@@ -20,6 +20,7 @@ using Microsoft.Owin.Logging;
 using DocumentFormat.OpenXml.EMMA;
 using System.ComponentModel;
 using DocumentFormat.OpenXml.Spreadsheet;
+using CBS.FrontDesk.UI.Helper;
 
 namespace CBS.FrontDesk.UI.Controllers.UserManagement
 {
@@ -83,17 +84,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
                 return PartialView(partialView, data);
             }
 
-            //ViewBag.KEY = KEY;
-            //var data = await _userManagementServices.GetUser(_userManagementServices.ConvertStringToGuid(KEY));
-            //string view = null;
-            //var roles = await _userManagementServices.GetRoles();
-            //ViewBag.Branches = await _userManagementServices.GetBranches();
-            //if (KEY==null)
-            //{
-
-            //    return PartialView("_CreateUser", new User());
-            //}
-            //return PartialView(view, "");
+         
         }
         // MyProfile
         public async Task<ActionResult> MyProfile(string serviceoption = null, string KEY = null, string ReadOptions = null, string path = null, string group = null, string datefrom = null, string dateto = null)
@@ -102,6 +93,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
             var data = await _userManagementServices.GetUser(_userManagementServices.ConvertStringToGuid(KEY));
             data.ResetPassword=new ResetPassword { userName=data.userName, password="000000", ResetPasswordReason=data.ResetPasswordReason };
             ViewBag.Branches = await _userManagementServices.GetBranches();
+            ViewBag.Languages = LanguageHelper.GetLanguages(); // Call and assign the list of languages
             return View(data);
         }
         public async Task<ActionResult> UserProfile(string serviceoption = null, string KEY = null, string ReadOptions = null, string path = null, string group = null, string datefrom = null, string dateto = null)
@@ -111,6 +103,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
             data.ResetPassword=new ResetPassword { userName=data.userName, password="000000", ResetPasswordReason=data.ResetPasswordReason };
             var permissionMenuLoaders = await _rolePermissionServices.GetAssignPermissions();
             data.PermissionMenuLoaders = permissionMenuLoaders.ToList();
+            ViewBag.Languages = LanguageHelper.GetLanguages(); // Call and assign the list of languages
             await GetList();
             ViewBag.Branches = await _userManagementServices.GetBranches();
             return View(data);
@@ -119,8 +112,11 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
         {
             ViewBag.Roles = await _userManagementServices.GetRoles();
             ViewBag.Branches = await _userManagementServices.GetBranches();
+            ViewBag.Languages = LanguageHelper.GetLanguages(); // Call and assign the list of languages
+
             return View(new User());
         }
+
         public async Task<bool> GetList()
         {
 
@@ -146,7 +142,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
         public async Task<ActionResult> AddOrEdit(User model)
         {
 
-            if (model.Option == "Profile"|| model.Option == "BlackList"||model.Option == "ChangeRole"||model.Option == "ChangeBranch"||model.Option == "ActivateDeactivateAccount")
+            if (model.Option == "Profile"||model.Option == "ChangeLanguage"|| model.Option == "BlackList"||model.Option == "ChangeRole"||model.Option == "ChangeBranch"||model.Option == "ActivateDeactivateAccount")
             {
                 var data = await _userManagementServices.UpdateUserProfile(model);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });

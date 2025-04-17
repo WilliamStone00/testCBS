@@ -6,126 +6,137 @@
     {
         @Html.ValidationSummary(true, "Please correct the errors and try again.", new { @class = "alert alert-danger" })
 
-        <div class="row gy-3">
-            <!-- Profile & Address Section -->
-            <div class="col-12">
-                <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-account-outline me-1"></i> Profile & Address</h6>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.firstName, new { @class = "form-control", placeholder = "First Name" })
-                    @Html.ValidationMessageFor(m => m.firstName, "", new { @class = "text-danger" })
-                    <label>First Name</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.lastName, new { @class = "form-control", placeholder = "Last Name" })
-                    @Html.ValidationMessageFor(m => m.lastName, "", new { @class = "text-danger" })
-                    <label>Last Name</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.email, new { @class = "form-control", placeholder = "Email" })
-                    @Html.ValidationMessageFor(m => m.email, "", new { @class = "text-danger" })
-                    <label>Email</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.phoneNumber, new { @class = "form-control", placeholder = "Phone Number" })
-                    @Html.ValidationMessageFor(m => m.phoneNumber, "", new { @class = "text-danger" })
-                    <label>Phone Number</label>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="form-floating shadow-sm">
-                    @Html.TextAreaFor(m => m.address, new { @class = "form-control", placeholder = "Address", style = "height: 100px;" })
-                    @Html.ValidationMessageFor(m => m.address, "", new { @class = "text-danger" })
-                    <label>Address</label>
-                </div>
-            </div>
-
-            <!-- ID Card Section -->
-            <div class="col-12">
-                <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-card-account-details-outline me-1"></i> ID Card Details</h6>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.NationalIdentityCardNumber, new { @class = "form-control", placeholder = "ID Card Number" })
-                    @Html.ValidationMessageFor(m => m.NationalIdentityCardNumber, "", new { @class = "text-danger" })
-                    <label>National ID Card Number</label>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.IssueDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                    @Html.ValidationMessageFor(m => m.IssueDate, "", new { @class = "text-danger" })
-                    <label>Issue Date</label>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.ExpiryDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                    @Html.ValidationMessageFor(m => m.ExpiryDate, "", new { @class = "text-danger" })
-                    <label>Expiry Date</label>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.PlaceOfIssue, new { @class = "form-control", placeholder = "Place of Issue" })
-                    @Html.ValidationMessageFor(m => m.PlaceOfIssue, "", new { @class = "text-danger" })
-                    <label>Place of Issue</label>
-                </div>
-            </div>
-
-            <!-- Role and Branch Section -->
-            <div class="col-12">
-                <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-office-building-marker-outline me-1"></i> Role & Branch</h6>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating shadow-sm">
-                    @Html.DropDownListFor(m => m.roleID, new SelectList(ViewBag.Roles, "Id", "Name"), "---Select Role---", new { @class = "form-control select2" })
-                    @Html.ValidationMessageFor(m => m.roleID, "", new { @class = "text-danger" })
-                    <label>Role</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating shadow-sm">
-                    @Html.DropDownListFor(m => m.BranchID, new SelectList(ViewBag.Branches, "Id", "Name"), "---Select Branch---", new { @class = "form-control select2" })
-                    @Html.ValidationMessageFor(m => m.BranchID, "", new { @class = "text-danger" })
-                    <label>Branch</label>
-                </div>
-            </div>
-
-            <!-- Security Section -->
-            <div class="col-12">
-                <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-security me-1"></i> Security</h6>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.userName, new { @class = "form-control", placeholder = "Username" })
-                    @Html.ValidationMessageFor(m => m.userName, "", new { @class = "text-danger" })
-                    <label>Username</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.allowedIP, new { @class = "form-control", placeholder = "Whitelist IP" })
-                    @Html.ValidationMessageFor(m => m.allowedIP, "", new { @class = "text-danger" })
-                    <label>Allowed IP (Example: 192.168.11.1)</label>
-                </div>
-            </div>
-
-            <div class="col-12 text-end mt-3">
-                <button type="submit" class="btn btn-primary shadow-sm px-4">
-                    <i class="fas fa-save me-1"></i> Create Account
-                </button>
-                <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">
-                    Reset
-                </button>
+    <div class="row gy-3">
+        <!-- Profile & Address Section -->
+        <div class="col-12">
+            <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-account-outline me-1"></i> Profile & Address</h6>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.firstName, new { @class = "form-control", placeholder = "First Name" })
+                @Html.ValidationMessageFor(m => m.firstName, "", new { @class = "text-danger" })
+                <label>First Name</label>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.lastName, new { @class = "form-control", placeholder = "Last Name" })
+                @Html.ValidationMessageFor(m => m.lastName, "", new { @class = "text-danger" })
+                <label>Last Name</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.email, new { @class = "form-control", placeholder = "Email" })
+                @Html.ValidationMessageFor(m => m.email, "", new { @class = "text-danger" })
+                <label>Email</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.phoneNumber, new { @class = "form-control", placeholder = "Phone Number" })
+                @Html.ValidationMessageFor(m => m.phoneNumber, "", new { @class = "text-danger" })
+                <label>Phone Number</label>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-floating shadow-sm">
+                @Html.TextAreaFor(m => m.address, new { @class = "form-control", placeholder = "Address", style = "height: 100px;" })
+                @Html.ValidationMessageFor(m => m.address, "", new { @class = "text-danger" })
+                <label>Address</label>
+            </div>
+        </div>
+
+        <!-- ID Card Section -->
+        <div class="col-12">
+            <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-card-account-details-outline me-1"></i> ID Card Details</h6>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.NationalIdentityCardNumber, new { @class = "form-control", placeholder = "ID Card Number" })
+                @Html.ValidationMessageFor(m => m.NationalIdentityCardNumber, "", new { @class = "text-danger" })
+                <label>National ID Card Number</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.IssueDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                @Html.ValidationMessageFor(m => m.IssueDate, "", new { @class = "text-danger" })
+                <label>Issue Date</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.ExpiryDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                @Html.ValidationMessageFor(m => m.ExpiryDate, "", new { @class = "text-danger" })
+                <label>Expiry Date</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.PlaceOfIssue, new { @class = "form-control", placeholder = "Place of Issue" })
+                @Html.ValidationMessageFor(m => m.PlaceOfIssue, "", new { @class = "text-danger" })
+                <label>Place of Issue</label>
+            </div>
+        </div>
+
+        <!-- Role and Branch Section -->
+        <div class="col-12">
+            <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-office-building-marker-outline me-1"></i> Role & Branch</h6>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                @Html.DropDownListFor(m => m.roleID, new SelectList(ViewBag.Roles, "Id", "Name"), "---Select Role---", new { @class = "form-control select2" })
+                @Html.ValidationMessageFor(m => m.roleID, "", new { @class = "text-danger" })
+                <label>Role</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                @Html.DropDownListFor(m => m.BranchID, new SelectList(ViewBag.Branches, "Id", "Name"), "---Select Branch---", new { @class = "form-control select2" })
+                @Html.ValidationMessageFor(m => m.BranchID, "", new { @class = "text-danger" })
+                <label>Branch</label>
+            </div>
+        </div>
+
+        <!-- Security Section -->
+        <div class="col-12">
+            <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-security me-1"></i> Security</h6>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.userName, new { @class = "form-control", placeholder = "Username" })
+                @Html.ValidationMessageFor(m => m.userName, "", new { @class = "text-danger" })
+                <label>Username</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.allowedIP, new { @class = "form-control", placeholder = "Whitelist IP" })
+                @Html.ValidationMessageFor(m => m.allowedIP, "", new { @class = "text-danger" })
+                <label>Allowed IP (Example: 192.168.11.1)</label>
+            </div>
+        </div>
+        <!-- Language Preference Section -->
+        <div class="col-12">
+            <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-translate me-1"></i> Language Preference</h6>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating shadow-sm">
+                @Html.DropDownListFor(m => m.UserPreferedLanguage, new SelectList(ViewBag.Languages, "Key", "Value"), "---Select Language---", new { @class = "form-control select2" })
+                @Html.ValidationMessageFor(m => m.UserPreferedLanguage, "", new { @class = "text-danger" })
+                <label>Preferred Language</label>
+            </div>
+        </div>
+
+        <div class="col-12 text-end mt-3">
+            <button type="submit" class="btn btn-primary shadow-sm px-4">
+                <i class="fas fa-save me-1"></i> Create Account
+            </button>
+            <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">
+                Reset
+            </button>
+        </div>
+    </div>
     }
 </div>

@@ -76,7 +76,7 @@ namespace CBS.FrontDesk.Data.UserManagement
         public string PlaceOfIssue { get; set; }
         public DateTime LastDateOfPasswordChange { get; set; }
         public string ReasonForBlockingAccount { get; set; }
-
+        public string UserPreferedLanguage { get; set; }
 
         public Bank Bank { get; set; }
         public Branch Brancch { get; set; }
