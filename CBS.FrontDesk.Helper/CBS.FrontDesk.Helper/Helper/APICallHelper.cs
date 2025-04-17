@@ -934,8 +934,9 @@ namespace CBS.FrontDesk.Helper
         public static string Post_AccountingEntry_Entries = "/api/v1/EntryTempData/PostManualEntries";
         public static string GetReferenceSequenceUrl = "/api/v1/EntryTempDatas/GetSequence";
         public static string Url_Get_AllPostedEntries = "/api/v1/EntryTempDatas/PostedEntry";
-        public static string Url_Get_AllPostedEntriesStatus = "/api/v1/EntryTempDatas/RetrieveManualEntriesWithFilter?status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}";
-
+        //public static string Url_Get_Update_delete_EntryTempData = "/api/v1/EntryTempData/{0}";
+        //public static string Url_Get_RefereceId = "api/v1/EntryTempDatas/{0}";
+        //public static string Post_AccountingEntry_Entries = "/api/v1/EntryTempData/PostManualEntries";
         public static string Post_ManaulEntryApproval_Entries = "/api/v1/EntryTempData/ManaulEntryApproval";
         //BUdgetmanagement
         public static string Get_Update_Delete_Budget = "/api/v1/Budget/{0}";

@@ -359,20 +359,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public AccountingEventRule AccountingEventRule { get; set; } = new AccountingEventRule();
         public List<AccountingEventRule> AccountingEventRules { get; set; } = new List<AccountingEventRule>();
         public string ServiceOption { get; set; }
-        public string Action { get; set; }//
-        public QueryModel QueryModel { get; set; }
-    
+        public string Action { get; set; }
         public string Key { get; set; }
         public bool HasApproved { get; set; }
-    }
-    public class QueryModel
-    {
-        public string Status { get; set; }
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
-        public string BranchId { get; set; }
-        public string IssuedBy { get; set; }
-        public string ApprovedBy { get; set; } //
-        public bool ValidateApproverUnionWide { get; set; }
     }
 }
