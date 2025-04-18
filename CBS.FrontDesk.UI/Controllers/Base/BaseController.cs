@@ -22,6 +22,7 @@ using CBS.BusinessService.UserManagement;
 using ClosedXML.Excel;
 using CBS.BusinessService.Session;
 using CBS.FrontDesk.Data.UserManagement;
+using System.Globalization;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -126,6 +127,21 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 // Log the exception (optional) and rethrow for centralized handling
                // throw(ex);
+            }
+        }
+
+        protected CultureInfo GetUserCultureInfo()
+        {
+            var lang = Session["SelectedLanguage"]?.ToString()?.ToLower();
+
+            switch (lang)
+            {
+                case "en":
+                    return new CultureInfo("en-US");
+                case "fr":
+                    return new CultureInfo("fr-FR");
+                default:
+                    return new CultureInfo("en-US"); // fallback
             }
         }
 

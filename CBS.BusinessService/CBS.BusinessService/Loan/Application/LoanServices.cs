@@ -599,6 +599,14 @@ namespace CBS.BusinessService
                 {
                     var loan = couApiResponse.ApiResponseData.Data;
                     var branches = await _branchServices.GetBranches();
+                    if (IsHeadOffice())
+                    {
+                        if (reportCommand.BranchId=="All")
+                        {
+                            reportCommand.BranchId=GetBranchID();
+                        }
+                    }
+                   
                     var mappingobject = LoanDelinquencyFlattener.FlattenAll(loan, branches.FirstOrDefault(x=>x.Id==reportCommand.BranchId));
                     return mappingobject;
                 }

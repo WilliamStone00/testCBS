@@ -14,7 +14,8 @@ namespace CBS.BusinessService.LoanportFolioFlattener
     {
         public static LoanDelinquencyReportResultRPT FlattenAll(LoanDelinquencyReportResult report, Branch branch)
         {
-            var headOffice = branch.Bank;
+            var headOffice = branch?.Bank ?? new Bank(); // assuming Bank is a class
+
             var rpt = new LoanDelinquencyReportResultRPT();
             rpt.PortfolioDetails=report.PortfolioDetails;
             // Branch Info
