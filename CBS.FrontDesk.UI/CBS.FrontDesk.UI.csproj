@@ -593,6 +593,36 @@
       <DependentUpon>OpeningAndClossingOfTellersRPT.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="App_GlobalResources\Bank\GlobalBank.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalBank.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Bank\GlobalBank.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalBank.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Bank\GlobalBankData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalBankData.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Bank\GlobalBankData.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalBankData.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\BranchManagement\GlobalBranchManagement.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalBranchManagement.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\BranchManagement\GlobalBranchManagement.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalBranchManagement.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\HomePage\GlobalAbout.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2555,6 +2585,30 @@
     <Content Include="App_GlobalResources\HomePage\GlobalAbout.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalAbout.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\BranchManagement\GlobalBranchManagement.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalBranchManagement.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\BranchManagement\GlobalBranchManagement.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalBranchManagement.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Bank\GlobalBank.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalBank.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Bank\GlobalBankData.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalBankData.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Bank\GlobalBank.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalBank.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Bank\GlobalBankData.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalBankData.fr.designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>

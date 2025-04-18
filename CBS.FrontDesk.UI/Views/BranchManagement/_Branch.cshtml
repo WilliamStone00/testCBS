@@ -1,9 +1,10 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Config.BankConfig
+@using Resources
 
 @using (Html.BeginForm("AddOrUpdate", "BranchManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
     <fieldset class="fieldset-custom">
-        <legend>Branch Information</legend>
+        <legend>@GlobalBranchManagement.BranchInformation</legend>
         <input type="hidden" name="ServiceOption" value="branch" id="ServiceOption" />
 
         <div class="row mt-2 gy-4">
@@ -12,32 +13,32 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Branch.BranchCode, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Branch.BranchCode, "", new { @class = "text-danger" })
-                        <label>Branch code</label>
+                        <label>@GlobalBranchManagement.BranchCode</label>
                     </div>
                 </div>
                 <div class="col-md-9">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Branch.Name, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Branch.Name, "", new { @class = "text-danger" })
-                        <label>Branch name</label>
+                        <label>@GlobalBranchManagement.BranchName</label>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.Branch.IsHavingBank, new { @class = "form-check-input" })
-                        <label class="form-check-label" for="isActive">Is this branch linked to any brank?</label>
+                        <label class="form-check-label" for="isActive">@GlobalBranchManagement.IsThisBranchLinkedToAnyBank</label>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.Branch.ActiveStatus, new { @class = "form-check-input" })
-                        <label class="form-check-label" for="isActive">Active</label>
+                        <label class="form-check-label" for="isActive">@GlobalBranchManagement.Active</label>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.Branch.IsHeadOffice, new { @class = "form-check-input" })
-                        <label class="form-check-label" for="isActive">Set as head office branch</label>
+                        <label class="form-check-label" for="isActive">@GlobalBranchManagement.SetAsHeadOfficeBranch</label>
                     </div>
                 </div>
 
@@ -45,35 +46,35 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Branch.Address, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Branch.Address, "", new { @class = "text-danger" })
-                        <label>Address</label>
+                        <label>@GlobalBranchManagement.Address</label>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Branch.PBox, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Branch.PBox, "", new { @class = "text-danger" })
-                        <label>PBox</label>
+                        <label>@GlobalBranchManagement.PBox</label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Branch.Email, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Branch.Email, "", new { @class = "text-danger" })
-                        <label>Email</label>
+                        <label>@GlobalBranchManagement.Email</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Branch.Location, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Branch.Location, "", new { @class = "text-danger" })
-                        <label>Location</label>
+                        <label>@GlobalBranchManagement.Location</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Branch.Telephone, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Branch.Telephone, "", new { @class = "text-danger" })
-                        <label>Telephone</label>
+                        <label>@GlobalBranchManagement.Telephone</label>
                     </div>
                 </div>
                 @*<div class="col-md-6">
@@ -87,70 +88,70 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Branch.RegistrationNumber, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Branch.RegistrationNumber, "", new { @class = "text-danger" })
-                        <label>Registration number</label>
+                        <label>@GlobalBranchManagement.RegistrationNumber</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Branch.ImmatriculationNumber, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Branch.ImmatriculationNumber, "", new { @class = "text-danger" })
-                        <label>Immatriculation number</label>
+                        <label>@GlobalBranchManagement.ImmatriculationNumber</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Branch.TaxPayerNUmber, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Branch.TaxPayerNUmber, "", new { @class = "text-danger" })
-                        <label>TaxPayerNUmber</label>
+                        <label>@GlobalBranchManagement.TaxPayerNumber</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Branch.PBox, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Branch.PBox, "", new { @class = "text-danger" })
-                        <label>Box code</label>
+                        <label>@GlobalBranchManagement.BoxCode</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Branch.WebSite, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Branch.WebSite, "", new { @class = "text-danger" })
-                        <label>Web site</label>
+                        <label>@GlobalBranchManagement.WebSite</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Branch.DateOfCreation, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Branch.DateOfCreation, "", new { @class = "text-danger" })
-                        <label>Date of creation</label>
+                        <label>@GlobalBranchManagement.DateOfCreation</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Branch.BankInitial, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Branch.BankInitial, "", new { @class = "text-danger" })
-                        <label>Bank initial</label>
+                        <label>@GlobalBranchManagement.BankInitial</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Branch.Motto, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Branch.Motto, "", new { @class = "text-danger" })
-                        <label>Motto</label>
+                        <label>@GlobalBranchManagement.Motto</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Branch.HeadOfficeTelehoneNumber, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Branch.HeadOfficeTelehoneNumber, "", new { @class = "text-danger" })
-                        <label>Head office telehone number</label>
+                        <label>@GlobalBranchManagement.HeadOfficePhoneNumber</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Branch.HeadOfficeAddress, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Branch.HeadOfficeAddress, "", new { @class = "text-danger" })
-                        <label>Head office address</label>
+                        <label>@GlobalBranchManagement.HeadOfficeAddress</label>
                     </div>
                 </div>
             </div>
@@ -159,11 +160,11 @@
             @if (Model.Branch.Id == null)
             {
                 @Html.HiddenFor(m => m.Branch.BankId)
-                <button type="submit" class="btn btn-primary me-2">Save</button>
+            <button type="submit" class="btn btn-primary me-2">@GlobalBranchManagement.Save</button>
                 <input type="hidden" name="Action" value="insert" id="Action" />
             }
             else
-            { <button type="submit" class="btn btn-primary me-2">Update</button>
+            { <button type="submit" class="btn btn-primary me-2">@GlobalBranchManagement.Update</button>
                 @Html.HiddenFor(m => m.Branch.Id)
                 <input type="hidden" name="Action" value="update" id="Action" />
             }

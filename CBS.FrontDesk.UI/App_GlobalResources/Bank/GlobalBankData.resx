@@ -117,15 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>About</value>
-    <comment>About TSC</comment>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
   </data>
-  <data name="AboutInformation" xml:space="preserve">
-    <value>Use this area to provide additional information.</value>
-    <comment>Use this area to provide additional information.</comment>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
   </data>
-  <data name="ContactUs" xml:space="preserve">
-    <value></value>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Initial" xml:space="preserve">
+    <value>Initial</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Tel" xml:space="preserve">
+    <value>Tel</value>
+  </data>
+  <data name="UpdateLogo" xml:space="preserve">
+    <value>Update Logo</value>
   </data>
 </root>
