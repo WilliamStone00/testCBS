@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Data.Entity.Migrations.Model.UpdateDatabaseOperation;
+using System.Resources;
 
 namespace CBS.FrontDesk.Data.Entity.Config
 {

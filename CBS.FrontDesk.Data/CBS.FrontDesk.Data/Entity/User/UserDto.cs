@@ -41,6 +41,7 @@ namespace CBS.FrontDesk.Data.Entity
         public string SessionRecoveryCode { get; set; }
         public string SessionCode { get; set; }
         public bool ChangePasswordOnFirstLogin { get; set; }
+        public string UserPreferedLanguage { get; set; }
         public string GoogleAuthenticatorSecretKey { get; set; }
         public bool IsVerified { get; set; }
         public string profilePhoto { get; set; }

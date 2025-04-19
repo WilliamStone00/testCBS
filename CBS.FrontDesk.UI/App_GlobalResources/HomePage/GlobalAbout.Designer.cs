@@ -77,5 +77,14 @@ namespace Resources {
                 return ResourceManager.GetString("AboutInformation", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ContactUs {
+            get {
+                return ResourceManager.GetString("ContactUs", resourceCulture);
+            }
+        }
     }
 }

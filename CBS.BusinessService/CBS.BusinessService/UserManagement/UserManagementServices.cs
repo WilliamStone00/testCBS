@@ -78,38 +78,6 @@ namespace CBS.BusinessService.UserManagement
             }
         }
 
-        //public async Task<ExecutionMessages> CreateUser(User user)
-        //{
-        //    try
-        //    {
-        //        //user.userRoles=new List<UserRole>{new UserRole{roleId = user.roleID} };
-        //        if (user.allowedIP != null)
-        //        {
-        //            user.userAllowedIPs = new List<UserAllowedIP> { new UserAllowedIP() { ipAddress = user.allowedIP } };
-        //        }
-        //        user.userRoles.Add(new UserRole { roleId = user.roleID });
-        //        user.userAllowedIPs = new List<UserAllowedIP>();
-        //        var ApiCallerHelper =new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-        //        var reUser = await ApiCallerHelper.PostAsync<ResponseObject<User>>(APICallHelper.createUserUrl, user);
-        //        if (reUser.IsSuccess)
-        //        {
-        //            GetExecutionMessages(reUser, true, user.firstName+" "+ user.lastName, MessagesResults.Success,
-        //                ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null,
-        //                null);
-        //            return ExecutionMessage;
-        //        }
-        //        GetExecutionMessages(user, false, user.firstName, MessagesResults.Failed,
-        //            ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null,
-        //            reUser.Message);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
-        //            SystemMessageStatus.Failed.ToString(), ex);
-        //    }
-        //    return ExecutionMessage;
-        //}
         public async Task<IEnumerable<Role>> GetRoles()
         {
             try
@@ -598,6 +566,11 @@ namespace CBS.BusinessService.UserManagement
                     userModel.ExpiryDate=model.ExpiryDate;
                     userModel.PlaceOfIssue=model.PlaceOfIssue;
                     userModel.BankID=GetBankID();
+                    
+                }
+                else if (model.Option == "SetLanguage")
+                {
+                    userModel.UserPreferedLanguage=userModel.UserPreferedLanguage;
                 }
                 else if (model.Option == "ActivateDeactivateAccount")
                 {
@@ -617,7 +590,10 @@ namespace CBS.BusinessService.UserManagement
                 {
                     userModel.userAllowedIPs = new List<UserAllowedIP> { new UserAllowedIP() { ipAddress = model.allowedIP } };
                 }
-
+                else
+                {
+                    userModel.UserPreferedLanguage=model.UserPreferedLanguage;
+                }
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
                 var reUser = await ApiCallerHelper.PutAsync<ResponseObject<User>>(string.Format(APICallHelper.UpdateUser, userModel.id), userModel);
                 if (reUser.IsSuccess)

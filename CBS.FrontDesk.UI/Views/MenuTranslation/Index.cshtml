@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Menu Translation Overview";
+}
+
+<style>
+    .wide-textarea {
+        min-width: 250px;
+        height: 178px;
+        width: 100%;
+        resize: vertical; /* or 'both' if you want width resizing too */
+    }
+</style>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-translate me-2"></i> MENU TRANSLATION OVERVIEW
+                </h1>
+                <p class="card-text">
+                    View and manage translation records for system menus. Select a language to identify untranslated menus and initiate translation updates.
+                </p>
+                <p class="card-text fw-bold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use the language selector below to view untranslated menu items and existing translations for the selected language.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR USING MENU TRANSLATIONS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-flag text-success me-2"></i> <strong>Select a Language:</strong> Start by selecting the language you want to translate into.</li>
+                <li><i class="mdi mdi-translate text-primary me-2"></i> <strong>Translate Missing Menus:</strong> Only untranslated menu items for that language will be shown.</li>
+                <li><i class="mdi mdi-check-outline text-info me-2"></i> <strong>Existing Translations:</strong> Existing translations can also be edited from the grid.</li>
+                <li><i class="mdi mdi-export text-success me-2"></i> <strong>Export Option:</strong> You can export translation data if needed for audit or batch work.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="d-flex justify-content-end gap-2 mb-4">
+    <a href="@Url.Action("Index", "MenuTranslationCreate")" class="btn btn-outline-primary">
+        <i class="mdi mdi-plus-circle-outline me-1"></i> Add New Translations
+    </a>
+    <a href="@Url.Action("Update", "MenuTranslation")" class="btn btn-outline-primary">
+        <i class="mdi mdi-pencil-box-outline me-1"></i> Edit Translations
+    </a>
+</div>
+<!-- Language Filter -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-translate me-1"></i> Language Filter</h5>
+    <form id="menuTranslationFilterForm">
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Select Language</label>
+                <select id="languageSelector" name="LanguageCode" class="form-select">
+                    <option value="en">English</option>
+                    <option value="fr" selected>French</option> <!-- ✅ French is now the default -->
+                </select>
+            </div>
+            <div class="col-md-8 d-flex align-items-end">
+                <button id="applyTranslationFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Load Translations</button>
+                <button id="resetTranslationFilterBtn" type="reset" class="btn btn-secondary w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="translationTableContainer">
+    @Html.Partial("_MenuTranslationData")
+</div>
+
+
+
+
+@section Scripts {
+    <script src="~/Scripts/Js/Crud/MenuTranslation/MenuTranslation.js"></script>
+}

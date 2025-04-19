@@ -125,4 +125,7 @@
     <value>Use this area to provide additional information.</value>
     <comment>Use this area to provide additional information.</comment>
   </data>
+  <data name="ContactUs" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

@@ -14,7 +14,8 @@ namespace CBS.BusinessService.LoanportFolioFlattener
     {
         public static LoanDelinquencyReportResultRPT FlattenAll(LoanDelinquencyReportResult report, Branch branch)
         {
-            var headOffice = branch.Bank;
+            var headOffice = branch?.Bank ?? new Bank(); // assuming Bank is a class
+
             var rpt = new LoanDelinquencyReportResultRPT();
             rpt.PortfolioDetails=report.PortfolioDetails;
             // Branch Info
@@ -228,7 +229,29 @@ namespace CBS.BusinessService.LoanportFolioFlattener
                 TotalInterest = x.TotalInterest.Interest,
                 TotalIPercentage = x.TotalInterest.IPercentage
             }).ToList();
+            // ✅ Inject branch and head office info into each loan record
+            if (report.PortfolioDetails != null && report.PortfolioDetails.Any())
+            {
+                foreach (var loan in report.PortfolioDetails)
+                {
+                    // Set branch data
+                    loan.BranchName = branch?.Name;
+                    loan.BranchCode = branch?.BranchCode;
+                    loan.BranchTelephone = branch?.Telephone;
+                    loan.BranchAddress = branch?.Address;
+                    loan.Logo = headOffice.LogoUrl;
+                    // Set head office info from inherited HeadOffice
+                    loan.HeadOfficeName = headOffice?.Name;
+                    loan.HeadOfficeAddress = headOffice?.Address;
+                    loan.HeadOfficeTelephone = headOffice?.Telephone;
+                    loan.HeadOfficeEmail = headOffice?.Email;
+                    loan.HeadOfficeWebSite = headOffice?.WebSite;
+                    loan.HeadOfficeInitial = headOffice?.BankInitial;
+                    loan.HeadOfficeCode = headOffice?.BankCode;
+                }
 
+                rpt.PortfolioDetails = report.PortfolioDetails;
+            }
             return rpt;
         }
     }

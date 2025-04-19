@@ -1,7 +1,8 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Config.BankConfig
+@using Resources
 
 @{
-    ViewBag.Title = "Branch Management";
+    ViewBag.Title = GlobalBranchManagement.PageTitle;
 }
 
 <div class="row">
@@ -29,7 +30,7 @@
                                     <div class="card mb-4">
                                         <div class="card-body d-sm-flex d-block">
                                             <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                                Branch management
+                                                @GlobalBranchManagement.PageTitle
                                             </div>
                                         </div>
                                     </div>

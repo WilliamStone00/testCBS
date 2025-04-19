@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.RoleManagement
 {
-    //[CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
 
     public class RolePermissionController : BaseController
     {
@@ -28,6 +28,36 @@ namespace CBS.FrontDesk.UI.Controllers.RoleManagement
             return View(new PermissionMenuLoaderDto { PermissionMenuLoaders = data.ToList() });
         }
 
+        //[HttpPost]
+        //public async Task<ActionResult> AddOrUpdate([FromBody] PermissionMenuLoaderDto model)
+        //{
+        //    if (model.Action == "insert")
+        //    {
+        //        foreach (var roleId in model.roleIDs)
+        //        {
+        //            model.roleID = roleId;
+
+        //            var serviceAction = GetInsertServiceAction(model.ServiceOption, model);
+        //            if (serviceAction != null)
+        //            {
+        //                try
+        //                {
+        //                    var data = await serviceAction();
+        //                    if (!data.Result)
+        //                        return Json(new { success = false, message = Messaging.MessageResult(data) });
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+        //                }
+        //            }
+        //        }
+
+        //        return Json(new { success = true, message = "Permissions successfully assigned to selected roles." });
+        //    }
+
+        //    return Json(new { success = false, message = "Invalid action." });
+        //}
 
         [HttpPost]
         public async Task<ActionResult> AddOrUpdate(PermissionMenuLoaderDto model)

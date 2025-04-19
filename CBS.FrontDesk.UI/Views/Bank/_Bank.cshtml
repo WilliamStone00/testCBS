@@ -1,64 +1,65 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Config.BankConfig
+@using Resources
 
 @using (Html.BeginForm("AddOrUpdate", "Bank", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {<fieldset class="fieldset-custom">
-    <legend>Updating @Model.Bank.Name's Information</legend>
+    <legend>Updating @Model.Bank.Name @GlobalBank.BankInformation</legend>
     <input type="hidden" name="ServiceOption" value="bank" id="ServiceOption" />
     <div class="row mt-2 gy-4">
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.Bank.BankCode, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Bank.BankCode, "", new { @class = "text-danger" })
-                <label>Bank code</label>
+                <label>@GlobalBank.BankCode</label>
             </div>
         </div>
         <div class="col-md-5">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.Bank.Name, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Bank.Name, "", new { @class = "text-danger" })
-                <label>Bank name</label>
+                <label>@GlobalBank.BankName</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.Bank.BankInitial, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Bank.BankInitial, "", new { @class = "text-danger" })
-                <label>Bank initial</label>
+                <label>@GlobalBank.BankInitial</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.Bank.Telephone, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Bank.Telephone, "", new { @class = "text-danger" })
-                <label>Telephone</label>
+                <label>@GlobalBank.Telephone</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.Bank.PBox, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Bank.PBox, "", new { @class = "text-danger" })
-                <label>PBox</label>
+                <label>@GlobalBank.PBox</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.Bank.RegistrationNumber, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Bank.RegistrationNumber, "", new { @class = "text-danger" })
-                <label>Registration number</label>
+                <label>@GlobalBank.RegistrationNumber</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.Bank.Address, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Bank.Address, "", new { @class = "text-danger" })
-                <label>Address</label>
+                <label>@GlobalBank.Address</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.Bank.Email, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Bank.Email, "", new { @class = "text-danger" })
-                <label>Email</label>
+                <label>@GlobalBank.Email</label>
             </div>
         </div>
 
@@ -66,35 +67,35 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.Bank.ImmatriculationNumber, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Bank.ImmatriculationNumber, "", new { @class = "text-danger" })
-                <label>Immatriculation number</label>
+                <label>@GlobalBank.ImmatriculationNumber</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.Bank.TaxPayerNUmber, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Bank.TaxPayerNUmber, "", new { @class = "text-danger" })
-                <label>Tax payer number</label>
+                <label>@GlobalBank.TaxPayerNumber</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.Bank.WebSite, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Bank.WebSite, "", new { @class = "text-danger" })
-                <label>Web site</label>
+                <label>@GlobalBank.WebSite</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.Bank.CustomerServiceContact, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Bank.CustomerServiceContact, "", new { @class = "text-danger" })
-                <label>Customer service contact</label>
+                <label>@GlobalBank.CustomerServiceContact</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.Bank.DateOfCreation, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Bank.DateOfCreation, "", new { @class = "text-danger" })
-                <label>Date of creation</label>
+                <label>@GlobalBank.DateOfCreation</label>
             </div>
         </div>
 
@@ -102,7 +103,7 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.Bank.Motto, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Bank.Motto, "", new { @class = "text-danger" })
-                <label>Motto</label>
+                <label>@GlobalBank.Motto</label>
             </div>
         </div>
     </div>
@@ -111,11 +112,11 @@
         @if (Model.Bank.Id == null)
         {
             @Html.HiddenFor(m => m.Bank.Id)
-            <button type="submit" class="btn btn-primary me-2">Save</button>
+        <button type="submit" class="btn btn-primary me-2">@GlobalBank.Save</button>
             <input type="hidden" name="Action" value="insert" id="Action" />
         }
         else
-        { <button type="submit" class="btn btn-primary me-2">Update</button>
+        { <button type="submit" class="btn btn-primary me-2">@GlobalBank.Update</button>
             @Html.HiddenFor(m => m.Bank.Id)
             <input type="hidden" name="Action" value="update" id="Action" />
         }
