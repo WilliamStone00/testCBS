@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,15 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>About</value>
-    <comment>About TSC</comment>
+  <data name="UpdateLogo" xml:space="preserve">
+    <value>Mettre à jour le logo</value>
   </data>
-  <data name="AboutInformation" xml:space="preserve">
-    <value>Use this area to provide additional information.</value>
-    <comment>Use this area to provide additional information.</comment>
+  <data name="Tel" xml:space="preserve">
+    <value>Tél</value>
   </data>
-  <data name="ContactUs" xml:space="preserve">
-    <value></value>
+  <data name="Name" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="Initial" xml:space="preserve">
+    <value>Initiale</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Éditer</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
   </data>
 </root>
