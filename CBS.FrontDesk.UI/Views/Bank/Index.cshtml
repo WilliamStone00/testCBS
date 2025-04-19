@@ -2,7 +2,7 @@
 @using Resources
 
 @{
-    ViewBag.Title = "Bank Management";
+    ViewBag.Title = GlobalBank.PageTitle;
 }
 
 <div class="row">
@@ -30,7 +30,7 @@
                                     <div class="card mb-4">
                                         <div class="card-body d-sm-flex d-block">
                                             <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                                Bank Configuration
+                                                @GlobalBank.BankConfiguration
                                             </div>
                                         </div>
                                     </div>

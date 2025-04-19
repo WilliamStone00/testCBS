@@ -657,6 +657,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalLogin.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\TransactionConfiguration\GlobalOrdinaryAccounts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalOrdinaryAccounts.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\TransactionConfiguration\GlobalsAccountMapping.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalsAccountMapping.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\TransactionConfiguration\GlobalsAccountMappingInfo.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalsAccountMappingInfo.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -3192,6 +3207,18 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="App_GlobalResources\TransactionConfiguration\GlobalOrdinaryAccounts.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalOrdinaryAccounts.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\TransactionConfiguration\GlobalsAccountMapping.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalsAccountMapping.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\TransactionConfiguration\GlobalsAccountMappingInfo.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalsAccountMappingInfo.Designer.cs</LastGenOutput>
+    </Content>
     <None Include="DataSet\Accounting\AccountingDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -4536,14 +4563,12 @@
   <Target Name="AfterBuild">
   </Target> -->
   <!-- ✅ Exclude aspnet_client folder from publish output -->
-<ItemGroup>
-  <Content Remove="aspnet_client\**" />
-</ItemGroup>
-
-<Target Name="ExcludeAspNetClient" BeforeTargets="CopyAllFilesToPublishFolder">
   <ItemGroup>
-    <FilesForPackagingFromProject Remove="aspnet_client\**" />
+    <Content Remove="aspnet_client\**" />
   </ItemGroup>
-</Target>
-
+  <Target Name="ExcludeAspNetClient" BeforeTargets="CopyAllFilesToPublishFolder">
+    <ItemGroup>
+      <FilesForPackagingFromProject Remove="aspnet_client\**" />
+    </ItemGroup>
+  </Target>
 </Project>
