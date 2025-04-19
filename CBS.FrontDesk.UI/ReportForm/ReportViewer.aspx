@@ -11,8 +11,8 @@
         html, body {
             margin: 0;
             padding: 0;
-            height: 100vh; /* Full viewport height */
-            overflow: hidden;
+            height: 100%;
+            overflow: auto; /* ✅ Allow scroll if report is taller than viewport */
         }
 
         form {
@@ -26,26 +26,33 @@
             color: navy;
             font-weight: bold;
             text-transform: uppercase;
-            margin: 0;
-            padding: 10px;
+            padding: 12px;
+            border-bottom: 1px solid #ccc;
             flex-shrink: 0;
+            background-color: #f9f9f9;
         }
 
         .report-viewer-container {
-            flex: 1; /* Takes the remaining space */
-            overflow: hidden;
+            flex-grow: 1;
+            overflow: auto;
+            padding: 0;
         }
 
         .report-viewer-container > div {
-            height: 100% !important;
+            min-height: 100%;
+        }
+
+        #CrystalReportViewer1 {
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
-        <h3 class="report-header">
+        <div class="report-header">
             <%= ViewState["ReportName"] != null ? ViewState["ReportName"].ToString() : "Crystal Report Viewer" %>
-        </h3>
+        </div>
 
         <div class="report-viewer-container">
             <CR:CrystalReportViewer 

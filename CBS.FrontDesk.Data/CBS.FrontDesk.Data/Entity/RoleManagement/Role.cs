@@ -29,20 +29,21 @@ namespace CBS.FrontDesk.Data.Entity
 
     public class PermissionMenuLoaderDto
     {
-       
 
-        [Required(ErrorMessage = "")]
+        [Required]
         public string roleID { get; set; }
         [Required]
         public string userID { get; set; }
+        public List<string> roleIDs { get; set; }
         public List<int> MenuMasterId { get; set; }
-        public List<PermissionMenuLoader> PermissionMenuLoaders { get; set; }
+        public List<PermissionMenuLoader> PermissionMenuLoaders { get; set; } = new List<PermissionMenuLoader>();
         public string Action { get; set; }
         public string ServiceOption { get; set; }
     }
+ 
 
-  
-  
+
+
     public class RolePermission
     {
         public int menuMasterId { get; set; }
@@ -111,7 +112,7 @@ namespace CBS.FrontDesk.Data.Entity
     }
     public class RolePermissionRequestCommand
     {
-        public Guid roleID { get; set; }
+        public List<string> roleID { get; set; }
         public List<Permission> Permissions { get; set; } = new List<Permission>();
         public List<PermissionRequest> rolePermissionRequests { get; set; } = new List<PermissionRequest>();
     }

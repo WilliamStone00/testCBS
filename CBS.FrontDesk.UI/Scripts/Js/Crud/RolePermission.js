@@ -1,118 +1,68 @@
-﻿
-    //$(document).ready(function () {
-    //    // Function to handle "Select All" checkbox
-    //    $('#selectAll').change(function () {
-    //        // Check or uncheck all checkboxes based on the state of "Select All" checkbox
-    //        $('#myDataTable input[name="selectedMenus"]').prop('checked', this.checked);
-    //    });
+﻿$(document).ready(function () {
+    LoadDTSelect("myDataTable", 0);
 
-    //    // Function to handle form submission
-    //    $('#submitBtn').click(function () {
-    //        // Array to store selected MenuMasterId values
-    //        var selectedMenuIds = [];
-
-    //        // Loop through selected checkboxes and push MenuMasterId to the array
-    //        $('#myDataTable input[name="selectedMenus"]:checked').each(function () {
-    //            selectedMenuIds.push($(this).val());
-    //        });
-
-    //        // Check if at least one checkbox is selected
-    //        if (selectedMenuIds.length > 0) {
-    //            // Your AJAX code to submit the data to the controller
-    //            var roleID = $('#roleID').val();
-    //            $.ajax({
-    //                type: 'POST',
-    //                url: '/RolePermission/SubmitSelectedMenus',
-    //                data: { menuIds: selectedMenuIds, roleID: roleID },
-    //                success: function (response) {
-    //                    // Handle success response
-    //                    console.log(response);
-    //                    if (response.success) {
-    //                        appalert(response.message, 1, 1);
-    //                        window.location.reload();
-    //                    }
-    //                    else {
-    //                        appalert(response.message, 3, 1);
-    //                    }
-    //                },
-    //                error: function (error) {
-    //                    // Handle error response
-    //                    console.error(error);
-    //                }
-    //            });
-    //        } else {
-    //            // Handle the case when no checkboxes are selected
-    //            alert('Please select at least one menu.');
-    //        }
-    //    });
-    //});
-
-
-
-                        
-$(document).ready(function () {
-   /* $("#myDataTable").DataTable();*/
-    LoadDTSelect("myDataTable", 0)
-    // Function to handle "Select All" checkbox
+    // Handle Select All
     $('#selectAll').change(function () {
-        // Check or uncheck all checkboxes based on the state of "Select All" checkbox
         $('#myDataTable input[name="selectedMenus"]').prop('checked', this.checked);
     });
 
-    // Function to handle form submission
-    $('#submitBtn').click(function () {
-        // Array to store selected MenuMasterId values
-        var selectedMenuIds = [];
+    // Handle Submit Click
+    $('#submitBtn').click(function (e) {
+        e.preventDefault();
 
-        // Loop through selected checkboxes and push MenuMasterId to the array
+        // Collect selected menu IDs
+        let selectedMenuIds = [];
         $('#myDataTable input[name="selectedMenus"]:checked').each(function () {
-            selectedMenuIds.push(parseInt($(this).val())); // Convert to integer
+            selectedMenuIds.push(parseInt($(this).val()));
         });
 
-        // Check if at least one checkbox is selected
-        if (selectedMenuIds.length > 0) {
-            // Get the roleID value
-            var roleID = $("#roleID").val(); // Provide the actual role ID here
+        const selectedRoles = $('#roleIds').val(); // this returns a list of strings
+        const selectedRoleNames = $('#roleIds option:selected').map(function () { return $(this).text(); }).get();
 
-            // Check if roleID is not null
-            if (roleID !== null) {
-                // Create the PermissionMenuLoaderDto object
-                var permissionDto = {
+        if (!selectedRoles || selectedRoles.length === 0) {
+            appalert("Validation", "Please select at least one role before saving.", 2, 1);
+            return;
+        }
+
+        if (selectedMenuIds.length === 0) {
+            appalert("Validation", "You must select at least one menu to assign.", 2, 1);
+            return;
+        }
+
+        alertify.confirm(
+            "Confirm Permission Assignment",
+            `You are about to assign <strong>${selectedMenuIds.length}</strong> menu item(s) to the following role(s):<br><strong>${selectedRoleNames.join(", ")}</strong>.<br><br>Do you want to continue?`,
+            function () {
+                const permissionDto = {
                     Action: "insert",
-                    roleID: roleID,
+                    roleIDs: selectedRoles, // keep as string[]
                     ServiceOption: "role_permission",
                     MenuMasterId: selectedMenuIds
                 };
 
-                // Your AJAX code to submit the data to the controller
                 $.ajax({
                     type: 'POST',
                     url: '/RolePermission/AddOrUpdate',
-                    contentType: 'application/json', // Set content type to JSON
-                    data: JSON.stringify(permissionDto), // Convert object to JSON string
+                    contentType: 'application/json',
+                    data: JSON.stringify(permissionDto),
                     success: function (response) {
-                        // Handle success response
-                        console.log(response);
                         if (response.success) {
                             appalert(response.message, 1, 1);
-                            window.location.reload();
-                        }
-                        else {
-                            appalert(response.message, 3, 1);
+                            setTimeout(() => window.location.reload(), 1000);
+                        } else {
+                            alertify.error(response.message);
                         }
                     },
                     error: function (error) {
-                        // Handle error response
                         console.error(error);
+                        appalert("An unexpected error occurred.", 3, 1);
                     }
                 });
-            } else {
-                // Handle the case when roleID is null
-                alert('Role ID is null. Please provide a valid role ID.');
+            },
+            function () {
+                appalert("Operation canceled by user.", 2, 1);
             }
-        } else {
-            // Handle the case when no checkboxes are selected
-            alert('Please select at least one menu.');
-        }
+        );
+
     });
 });
