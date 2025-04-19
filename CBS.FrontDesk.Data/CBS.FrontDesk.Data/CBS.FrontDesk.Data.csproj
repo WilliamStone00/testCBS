@@ -94,6 +94,7 @@
     <Compile Include="Entity\DataSetLoanPortfolio\LoanDelinquencyReportResult.cs" />
     <Compile Include="Entity\DataSetLoanPortfolio\LoanPortfolioDto.cs" />
     <Compile Include="Entity\MemberNoneCashOperationsP\MemberNoneCashOperation.cs" />
+    <Compile Include="Entity\MenuTranslationP\MenuTranslation.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryAnalysisResultSummary.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryExecutionModel.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryUploadModel.cs" />

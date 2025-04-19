@@ -79,6 +79,7 @@
                     <a class="nav-link active" id="vtab-awareness" data-bs-toggle="pill" href="#tab-awareness" role="tab" aria-selected="true">Security Awareness</a>
                     <a class="nav-link" id="vtab-profile" data-bs-toggle="pill" href="#tab-profile" role="tab" aria-selected="false">Update Profile</a>
                     <a class="nav-link" id="vtab-picture" data-bs-toggle="pill" href="#tab-picture" role="tab" aria-selected="false">Change Picture</a>
+                    <a class="nav-link" id="vtab-language" data-bs-toggle="pill" href="#tab-language" role="tab" aria-selected="false">Change Language</a>
                     <a class="nav-link" id="vtab-password" data-bs-toggle="pill" href="#tab-password" role="tab" aria-selected="false">Change Password</a>
                     <a class="nav-link" id="vtab-mfa" data-bs-toggle="pill" href="#tab-mfa" role="tab" aria-selected="false">MFA Settings</a>
                     <a class="nav-link" id="vtab-session" data-bs-toggle="pill" href="#tab-session" role="tab" aria-selected="false">User Sessions</a>
@@ -97,6 +98,7 @@
                     <div class="tab-pane fade show active" id="tab-awareness" role="tabpanel">@Html.Partial("_UserSecurityAwareness")</div>
                     <div class="tab-pane fade" id="tab-profile" role="tabpanel">@Html.Partial("_UserUpdateProfile")</div>
                     <div class="tab-pane fade" id="tab-picture" role="tabpanel">@Html.Partial("_UpdateImage")</div>
+                    <div class="tab-pane fade" id="tab-language" role="tabpanel">@Html.Partial("_UserChangeLanguage")</div>
                     <div class="tab-pane fade" id="tab-password" role="tabpanel">@Html.Partial("_UserChangePassword")</div>
                     <div class="tab-pane fade" id="tab-mfa" role="tabpanel">@Html.Partial("_UserEnableMFA")</div>
                     <div class="tab-pane fade" id="tab-session" role="tabpanel">@Html.Partial("_UserSessions")</div>

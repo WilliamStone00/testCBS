@@ -82,8 +82,8 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
     public class GenerateLoanPortfolioReportCommand
     {
         public string BranchId { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
         public string SubReportType { get; set; } // Comma-separated
         public string ReportDownloadType { get; set; } // PDF, Excel, Word
         public string MainReportType { get; set; } // All, CurrentLoan, DelinquentLoan, LoanByPurpose

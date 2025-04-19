@@ -11,6 +11,13 @@ namespace CBS.FrontDesk.Data.Entity
         public List<PermissionNode> Children { get; set; } = new List<PermissionNode>();
     }
 
+    public class MenuMasterFroTranslation
+    {
+        public int Id { get; set; }
+        public string MenuText { get; set; }
+        public string Tooltip { get; set; }
+        public string Description { get; set; }
+    }
 
     public class MenuMaster
     {
