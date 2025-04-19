@@ -387,7 +387,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                         break;
                     case "delinquentloan":
                         relativeReportPath = "Loan/PortFolio/DelinquentLoansRPT.rpt";
-                        reportTitle = "Delinquent Loans Report";
+                        reportTitle = "PORTFOLIO OF DELINQUENT LOANS ";
                         break;
                     case "loanbypurpose":
                         relativeReportPath = "Loan/PortFolio/LoanByPurposeRPT.rpt";
@@ -398,15 +398,26 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                         reportTitle = "Loan Portfolio Analysis Report";
                         break;
                 }
+                // Convert start and end date strings to DateTime safely
+                DateTime startDate = DateTime.TryParse(reportCommand.StartDate, out var sDate)
+                    ? sDate
+                    : DateTime.MinValue;
 
+                DateTime endDate = DateTime.TryParse(reportCommand.EndDate, out var eDate)
+                    ? eDate
+                    : DateTime.MinValue;
+
+                // Format to dd/MM/yyyy
                 var parameters = new Dictionary<string, object>
                 {
-                    { "DateFrom", reportCommand.StartDate },
-                    { "DateTo", reportCommand.EndDate },
+                    { "DateFrom", startDate.ToString("dd/MM/yyyy") },
+                    { "DateTo", endDate.ToString("dd/MM/yyyy") },
                     { "BranchName", loanPortfolioAnalysis.BranchName },
+                    { "CurrentYear", DateTime.Now.Year.ToString() },
                     { "PrintedBy", Session["FullName"]?.ToString() ?? "System" },
                     { "ReportTitle", reportTitle }
                 };
+
 
                 var subReportData = new Dictionary<string, object>();
                 if (mainReportType == "all")

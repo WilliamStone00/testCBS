@@ -1,29 +1,27 @@
 ﻿@model CBS.FrontDesk.Data.Entity.PermissionMenuLoaderDto
 
-<fieldset class="fieldset-custom">
-    <div class="row mt-2 gy-4">
-        <div class="row mt-2 gy-4">
-            <div class="col-md-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.roleID, new SelectList(ViewBag.Roles, "Value", "Text"), "---Select role---", new { @class = "form-control select2", @search = "true", @id = "roleID" })
-                    @Html.ValidationMessageFor(m => m.roleID, "", new { @class = "text-danger" })
-                    <label>Select Role/Rights</label>
-                </div>
-            </div>
-            <h4 class="mb-2">
-                <i class="mdi mdi-lock-outline me-2"></i>
-                PERMISSIONS
-            </h4>
-
-            <div class="col-md-12">
-                <div id="datalistingview_add">
-                    @Html.Partial("_AddRolePermission")
-                </div>
-
+<fieldset class="fieldset-custom p-3">
+    <div class="row gy-4">
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.ListBox("roleIds", new MultiSelectList(ViewBag.Roles, "Value", "Text"), new { @class = "form-control select2", id = "roleIds", multiple = "multiple" })
+                <label>Select Role(s)/Rights</label>
             </div>
         </div>
+
+        <div class="col-md-12">
+            <h4 class="mt-3 mb-2 text-primary">
+                <i class="mdi mdi-lock-outline me-2"></i>PERMISSIONS
+            </h4>
+            <div id="datalistingview_add">
+                @Html.Partial("_AddRolePermission")
+            </div>
+        </div>
+
+        <div class="col-md-12 text-end mt-4">
+            <button type="submit" id="submitBtn" class="btn btn-primary">
+                <i class="mdi mdi-content-save-outline me-1"></i>Save
+            </button>
+        </div>
     </div>
-    <div class="mt-4">
-        <button type="submit" id="submitBtn" class="btn btn-primary me-2">Save</button>
-    </div>
-    </fieldset>
+</fieldset>

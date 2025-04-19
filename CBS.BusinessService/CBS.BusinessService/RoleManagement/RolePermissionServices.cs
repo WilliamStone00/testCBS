@@ -205,7 +205,7 @@ namespace CBS.BusinessService
             try
             {
                 var rolePermissionRequestCommand = new RolePermissionRequestCommand();
-                rolePermissionRequestCommand.roleID = ConvertStringToGuid(command.roleID);
+                rolePermissionRequestCommand.roleID = command.roleIDs;
                 foreach (var a in command.MenuMasterId)
                 {
                     
@@ -219,7 +219,7 @@ namespace CBS.BusinessService
                 {
                     // Successful creation
                     GetExecutionMessages(response, true, $"Prrmission", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
