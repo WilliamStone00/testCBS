@@ -41,6 +41,7 @@ namespace CBS.API.Helper
                 {
                     _httpClient = new HttpClient();
                     _httpClient.BaseAddress = new Uri(newbaseUrl);
+                   
                     _baseURL = newbaseUrl;
                     _newbaseURL = baseUrl;
 
@@ -491,6 +492,25 @@ namespace CBS.API.Helper
 
             }
         }
+        public async Task<ApiResponse<List<PostedEntry>>> PostServicesEntryAsync<T>(string apiUrl, object data)
+        {
+
+            try
+            {
+                apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
+                string jsonData = JsonConvert.SerializeObject(data);
+                StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                AddAuthorizationHeader(_httpClient);
+                HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
+                return await HandleResponsePostedEntry<ApiResponse<List<PostedEntry>>>(response);
+            }
+            catch (Exception EX)
+            {
+
+                throw (EX);
+
+            }
+        }
 
         public async Task<ApiResponse<List<InfoAccount>>> PostServicesAsync<T>(string apiUrl, object data)
         {
@@ -872,6 +892,7 @@ namespace CBS.API.Helper
                             return new ApiResponse<T>
                             {
                                 IsSuccess = true,
+                              //  ApiResponseData = obj,
                                 Message = statusDescription + " " + message
                             };
                         }
@@ -1791,7 +1812,333 @@ namespace CBS.API.Helper
             }
         }
 
- 
+
+        private async Task<ApiResponse<List<PostedEntry>>> HandleResponsePostedEntry<T>(HttpResponseMessage response)
+        {
+            string message = null;
+            string statusDescription = null;
+            JObject jsonResponse = null;
+
+            try
+            {
+                if (response.Content != null)
+                {
+                    string responseData = await response.Content.ReadAsStringAsync();
+
+                    if (string.IsNullOrEmpty(responseData))
+                    {
+
+                        if (response.StatusCode == HttpStatusCode.Unauthorized)
+                        {
+                            message = "Unauthorized";
+                            return new ApiResponse<List<PostedEntry>>
+                            {
+                                IsSuccess = false,
+                                Message = $"Request failed with status code {(int)response.StatusCode}, Message: The server is requesting authorization token."
+                            };
+                        }
+
+                        else if (response.StatusCode == HttpStatusCode.InternalServerError)
+                        {
+                            return new ApiResponse<List<PostedEntry>>
+                            {
+                                IsSuccess = false,
+                                Message = "InternalServerError unexpected error"
+                            };
+                        }
+                        else
+                        {
+                            return new ApiResponse<List<PostedEntry>>
+                            {
+                                IsSuccess = false,
+                                Message = "Resource not Found"
+                            };
+                        }
+
+                    }
+
+                    if (response.IsSuccessStatusCode)
+                    {
+
+                        if (responseData.Contains("\"status\":SUCCESS") || responseData.Contains("\"data\":true") || responseData.Contains("\"isSuccess\":true"))
+                        {
+                            jsonResponse = JObject.Parse(responseData);
+
+                            message = jsonResponse["message"]?.ToString();
+                            var dataMessage = jsonResponse["apiResponseData"]?.ToString();
+                            statusDescription = jsonResponse["statusDescription"]?.ToString();
+                            var obj = JsonConvert.DeserializeObject<List<PostedEntry>>(dataMessage);
+
+                            return new ApiResponse<List<PostedEntry>>
+                            {
+                                ApiResponseData = obj,
+
+                                IsSuccess = true,
+                                Message = statusDescription + " " + message,
+                            };
+                        }
+
+                        List<PostedEntry> data = JsonConvert.DeserializeObject<List<PostedEntry>>(responseData, new JsonSerializerSettings
+                        {
+                            Converters = new List<JsonConverter> { new NullableDoubleConverter() },
+                            DateParseHandling = DateParseHandling.DateTimeOffset // Depending on your date format
+                        }); //DeserializeJson<T>(responseData);
+                        if (responseData.StartsWith("[") && responseData.EndsWith("]"))
+                        {
+                            return new ApiResponse<List<PostedEntry>>
+                            {
+                                IsSuccess = true,
+                                ApiResponseData = data,
+                                Message = statusDescription + " " + message
+                            };
+                        }
+                        else
+                        {
+                            if (bool.TryParse(responseData, out bool isBooleanResponse) && isBooleanResponse)
+                            {
+                                // If responseData is a boolean, convert it to a JSON string representation
+                                string boolResponseJson = JsonConvert.SerializeObject(responseData);
+
+                                // Deserialize the JSON string
+                                data = JsonConvert.DeserializeObject<List<PostedEntry>>(boolResponseJson, new JsonSerializerSettings
+                                {
+                                    Converters = new List<JsonConverter> { new NullableDoubleConverter() },
+                                    DateParseHandling = DateParseHandling.DateTimeOffset // Depending on your date format
+                                });
+
+                                return new ApiResponse<List<PostedEntry>>
+                                {
+                                    IsSuccess = true,
+                                    ApiResponseData = data,
+                                    Message = $"Operation completed successfully"
+                                };
+
+                            }
+                            else
+                            {
+                                jsonResponse = JObject.Parse(responseData);
+                                message = jsonResponse["message"]?.ToString();
+                                var dataStr = jsonResponse["data"]?.ToString();
+                                statusDescription = jsonResponse["statusDescription"]?.ToString();
+                                if (responseData.Contains("\"isSuccess\":false"))
+                                {
+                                    return new ApiResponse<List<PostedEntry>>
+                                    {
+                                        IsSuccess = false,
+                                        ApiResponseData = data,
+                                        Message = $"Success: {message}, Description: {statusDescription}"
+                                    };
+                                }
+                                else
+                                {
+                                    return new ApiResponse<List<PostedEntry>>
+                                    {
+                                        IsSuccess = true,
+                                        ApiResponseData = data,
+                                        Message = $"Success: {message}, Description: {statusDescription}"
+                                    };
+                                }
+
+                            }
+
+
+                        }
+                    }
+                    else
+                    {
+                        if (response.StatusCode == HttpStatusCode.Unauthorized)
+                        {
+                            jsonResponse = JObject.Parse(responseData);
+                            message = jsonResponse["message"]?.ToString();
+                            return new ApiResponse<List<PostedEntry>>
+                            {
+                                IsSuccess = false,
+                                Message = $"Request failed with status code {(int)response.StatusCode}, Message: {message}"
+                            };
+                        }
+                        else if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+                        {
+                            return new ApiResponse<List<PostedEntry>>
+                            {
+                                IsSuccess = false,
+                                Message = $"Request failed with status code {(int)response.StatusCode}, Message: The server {_baseURL} is temporally unavailable/unreachable."
+                            };
+
+
+                        }
+
+                        else if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == HttpStatusCode.Conflict || response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.Forbidden)
+                        {
+
+                            T data;
+                            try
+                            {
+                                if (responseData.Contains("\"data\":null") || responseData.Contains("null"))
+                                {
+                                    data = default(T); // Assign default value for T (typically null for reference types)
+
+                                    jsonResponse = JObject.Parse(responseData);
+                                    message = jsonResponse["message"]?.ToString();
+                                    statusDescription = jsonResponse["statusDescription"]?.ToString();
+                                    return new ApiResponse<List<PostedEntry>>
+                                    {
+                                        IsSuccess = false,
+                                        Message = $"Request failed with status code {(int)response.StatusCode}. Description: {statusDescription}, Message: {message}"
+                                    };
+                                }
+                                else if (responseData.Contains("\"data\":false") || responseData.Contains("\"isSuccess\":false"))
+                                {
+                                    jsonResponse = JObject.Parse(responseData);
+                                    var obj = JsonConvert.DeserializeObject<dynamic>(responseData);
+                                    message = jsonResponse["message"]?.ToString();
+                                    statusDescription = jsonResponse["statusDescription"]?.ToString();
+
+                                    return new ApiResponse<List<PostedEntry>>
+                                    {
+                                        IsSuccess = false,
+                                        Message = statusDescription + " " + message
+                                    };
+
+                                }
+                                else
+                                {
+                                    jsonResponse = JObject.Parse(responseData);
+
+
+                                    if (jsonResponse["errors"] != null)
+                                    {
+                                        var errorResponse = jsonResponse["errors"].ToObject<Dictionary<string, List<string>>>();
+
+                                        // Check if the error message indicates a duplicate record
+                                        if (errorResponse.Any(error => error.Value.Any(x => x.Contains("already exists"))))
+                                        {
+                                            return new ApiResponse<List<PostedEntry>>
+                                            {
+                                                IsSuccess = false,
+                                                Message = "A customer with the provided phone number already exists."
+                                            };
+                                        }
+                                        else
+                                        {
+                                            // Extract and join all error messages
+                                            var errorMessages = errorResponse
+                                                .SelectMany(error => error.Value) // Flatten the list of error messages
+                                                .ToList();
+                                            var errorMessage = string.Join(". ", errorMessages);
+
+                                            return new ApiResponse<List<PostedEntry>>
+                                            {
+                                                IsSuccess = false,
+                                                Message = string.IsNullOrEmpty(errorMessage) ? "Validation error occurred" : errorMessage
+                                            };
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // Handle case when there are no error messages in the response
+                                        return new ApiResponse<List<PostedEntry>>
+                                        {
+                                            IsSuccess = false,
+                                            Message = "Unexpected error occurred: No error messages in the response."
+                                        };
+                                    }
+
+
+
+
+
+                                    //if (jsonResponse["errors"] != null)
+                                    //{
+                                    //    var errorResponse = jsonResponse["errors"].ToObject<Dictionary<string, List<string>>>();
+                                    //    var errorMessages = errorResponse
+                                    //        .SelectMany(error => error.Value) // Flatten the list of error messages
+                                    //        .ToList();
+                                    //    var errorMessage = string.Join(". ", errorMessages);
+
+                                    //    return new ApiResponse<List<PostedEntry>>
+                                    //    {
+                                    //        IsSuccess = false,
+                                    //        Message = string.IsNullOrEmpty(errorMessage) ? "Validation error occurred" : errorMessage
+                                    //    };
+                                    //}
+                                }
+
+
+                                //// If the error structure doesn't match the expected format or errors object not found
+                                //return new ApiResponse<List<PostedEntry>>
+                                //{
+                                //    IsSuccess = false,
+                                //    Message = "Error in request" // Set a generic error message
+                                //};List<PostedEntry>
+                            }
+                            catch (Exception ex)
+                            {
+                                return new ApiResponse<List<PostedEntry>>
+                                {
+                                    IsSuccess = false,
+                                    Message = $"Error in handling response: {ex.Message}"
+                                };
+                            }
+
+
+                        }
+
+                        else if (response.StatusCode == HttpStatusCode.InternalServerError)
+                        {
+                            jsonResponse = JObject.Parse(responseData);
+                            string errorMessage = jsonResponse["message"]?.ToString() ?? "An unexpected fault happened.";
+                            return new ApiResponse<List<PostedEntry>>
+                            {
+                                IsSuccess = false,
+                                Message = errorMessage
+                            };
+                        }
+                        if (jsonResponse != null && jsonResponse["data"] == null)
+                        {
+                            return new ApiResponse<List<PostedEntry>>
+                            {
+                                IsSuccess = false,
+                                Message = $"Request failed with status code {(int)response.StatusCode}, Message: {message}, Description: {statusDescription}"
+                            };
+                        }
+                        else
+                        {
+                            List<string> errorMessages = JsonConvert.DeserializeObject<List<string>>(responseData);
+                            if (errorMessages != null && errorMessages.Count > 0)
+                            {
+                                return new ApiResponse<List<PostedEntry>>
+                                {
+                                    IsSuccess = false,
+                                    Message = $"Request failed with status code {(int)response.StatusCode}. Error: {string.Join(", ", errorMessages)}"
+                                };
+                            }
+                        }
+
+                        return new ApiResponse<List<PostedEntry>>
+                        {
+                            IsSuccess = false,
+                            Message = $"Request failed with status code {(int)response.StatusCode}"
+                        };
+                    }
+                }
+                else
+                {
+                    return new ApiResponse<List<PostedEntry>>
+                    {
+                        IsSuccess = false,
+                        Message = "No content in the response"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<PostedEntry>>
+                {
+                    IsSuccess = false,
+                    Message = $"Error in handling response: {ex.Message}"
+                };
+            }
+        }
 
         private async Task<APICallBackRespose> HandleResponseCallBackRespose(HttpResponseMessage response)
         {
@@ -2249,7 +2596,7 @@ namespace CBS.API.Helper
             {
                 if (client.DefaultRequestHeaders.Authorization != null)
                 {
-                    // Parse the existing token if present
+                    //Parse the existing token if present
                     //var jwtHandler = new JwtSecurityTokenHandler();
                     //var existingTokenData = jwtHandler.ReadToken(TokenEncryptionHelper.DecryptToken(client.DefaultRequestHeaders.Authorization.Parameter)) as JwtSecurityToken;
 
@@ -2257,8 +2604,8 @@ namespace CBS.API.Helper
                     //{
                     //    // Replace the token if it's expired
                     //    client.DefaultRequestHeaders.Remove("Authorization");
-                    //    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                    //}
+                    //    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                   // }
                 }
                 else
                 {
