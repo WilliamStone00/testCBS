@@ -144,7 +144,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 postedEntry.ApprovedDate = model.ApprovedDate;
                 postedEntry.ApproveMessage = model.ValidationMessage;
                 //postedEntry.CreatedBy = model.CreatedBy;
-                postedEntry.ValueDate = model.CreatedDate;
+                postedEntry.ValueDate = model.EntryDetail[0].ValueDate;
 
                 postedEntry.IssuedDate = model.CreatedDate;
                 postedEntry.Capital = "";

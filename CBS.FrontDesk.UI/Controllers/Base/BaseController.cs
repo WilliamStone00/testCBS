@@ -214,7 +214,7 @@ namespace CBS.FrontDesk.UI.Controllers
             return false; // Session does not exist
         }
 
-
+     
 
         public UserDto GetUserDto()
         {

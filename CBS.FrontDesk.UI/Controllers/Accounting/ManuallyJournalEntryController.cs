@@ -1393,10 +1393,28 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             else if (serviceOption == "FilteringOption")
             {
-                var model = JsonConvert.DeserializeObject<QueryModel>(key);
-                var modelc = JsonConvert.DeserializeObject<QueryFilter>(key);
-                var dataModel = await GetEntries(modelc, "Pending");
+                try
+                {
+                    var settings = new JsonSerializerSettings
+                    {
+                        DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                        DateTimeZoneHandling = DateTimeZoneHandling.Unspecified,
+                        Culture = CultureInfo.InvariantCulture
+                    };
+                    var modelc = JsonConvert.DeserializeObject<QueryFilter>(key, settings);
+             
+                    var dataModel = await GetEntries(modelc, "Pending");
+                    ViewBag.IsAuthourized = true;
                     return PartialView(partialView, dataModel);
+                }
+                catch (Exception EX)
+                {
+                    ViewBag.IsAuthourized = false;
+                    ViewBag.Error = _AccountServices.GetUserFullName() + ", You must select a date range you estimated the data was inputed";
+
+                    return PartialView(partialView, new ManuallyJournalEntryDataSet {  });
+                }
+                
                 
             }
             else if (serviceOption == "Account")
