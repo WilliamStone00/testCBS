@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
-
+@using Resources
 @{
-    ViewBag.Title = "Accouning entry booking";
+    ViewBag.Title = GlobalsAccountMappingInfo.AccouningEntryBooking;
 
 }
 <div class="container bg-icon-right">
@@ -10,7 +10,7 @@
 
         <span class="text-uppercase"></span>
     </h6>
-    <h3 class="text-center mb-2">Accounting entries for <span class="fw-bold"> @ViewBag.Name</span> service. </h3>
+    <h3 class="text-center mb-2">@GlobalsAccountMappingInfo.AccountingEntriesFor <span class="fw-bold"> @ViewBag.Name</span> service. </h3>
     <div class="row gy-5">
         <div class="col-lg-5">
             <div class="text-center">
@@ -28,20 +28,21 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="head-One">
                                 <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="false" aria-controls="accordionOne">
-                                    Collection of susbscribed members daily savings by daily collector:
+                                    @GlobalsAccountMappingInfo.CollOfSubsMemberDailySaving
                                 </button>
                             </h2>
 
                             <div id="accordionOne" class="accordion-collapse collapse" data-bs-parent="#accordionFront" aria-labelledby="accordionOne" style="">
                                 <div class="accordion-body">
                                     <p>
-                                        This table below shows the accounting entries for the collection of susbscribed members daily savings by the daily collector operation in favour of their <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                        @GlobalsAccountMappingInfo.TableAccountingEntriesDescription <span class="fw-bold">@ViewBag.ProductName</span> account.
                                     </p>
                                     <p>
-                                        <span class="fw-bold"> For Instance:</span>
+                                        <span class="fw-bold">@GlobalsAccountMappingInfo.ForInstance</span>
                                     </p>
 
                                     <p>
+                                        @GlobalsAccountMappingInfo.AMemberWantToDeposit
                                         A member wants to deposit 10000Frs in his daily savings account.
                                     </p>
 
@@ -49,10 +50,10 @@
                                         <table class="table table-hover" id="myDataTable_AccountData">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th>Accout Number</th>
-                                                    <th>Account Label</th>
-                                                    <th>Debit</th>
-                                                    <th>Credit</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
 
                                                 </tr>
                                             </thead>
@@ -86,7 +87,7 @@
                                             <thead class="table-light">
                                                 <tr>
 
-                                                    <th colspan="2">Total debit</th>
+                                                    <th colspan="2">@GlobalsAccountMappingInfo.TotalDebit</th>
                                                     @{
 
                                                         var MomoCollectionEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "MOMOCASH_COLLECTION");
@@ -108,29 +109,30 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="head-Two">
                                 <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionTwo" aria-expanded="false" aria-controls="accordionTwo">
-                                    Depositing of daily collectors field operation balance at the branch:
+                                    @GlobalsAccountMappingInfo.DepositOfDailyCollFieldOp
                                 </button>
                             </h2>
                             <div id="accordionTwo" class="accordion-collapse collapse" aria-labelledby="accordionTwo" data-bs-parent="#accordionFront" style="">
                                 <div class="accordion-body">
                                     <p>
-                                        This table below shows the accounting entries for depositing of daily collectors field operation balance at the branch office.
+                                        @GlobalsAccountMappingInfo.TableDepositOfDailyCollectorDesc
                                     </p>
                                     <p>
-                                        <span class="fw-bold"> For Instance:</span>
+                                        <span class="fw-bold">@GlobalsAccountMappingInfo.ForInstance :</span>
                                     </p>
 
                                     <p>
+                                        @GlobalsAccountMappingInfo.ADailyCollectorWantToPerformDeposit
                                         A daily collector wants to perform deposit the  1,000,000Frs collected from the daily savings members.
                                     </p>
                                     <div class="table-responsive mb-3">
                                         <table class="table table-hover" id="myDataTable_AccountData">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th>Accout Number</th>
-                                                    <th>Account Label</th>
-                                                    <th>Debit</th>
-                                                    <th>Credit</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
 
                                                 </tr>
                                             </thead>
@@ -164,7 +166,7 @@
                                             <thead class="table-light">
                                                 <tr>
 
-                                                    <th colspan="2">Total   :</th>
+                                                    <th colspan="2">@GlobalsAccountMappingInfo.Total  :</th>
                                                     @{
 
                                                         var CashCollectionEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "MOMO_CASHCOLLECTION_DEPOSIT");
@@ -186,29 +188,29 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="head-Three">
                                 <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionThree" aria-expanded="false" aria-controls="accordionTwo">
-                                    Payement of commission by members subscribed to daily saving product
+                                    @GlobalsAccountMappingInfo.PaymentOfCommissionByMember
                                 </button>
                             </h2>
                             <div id="accordionThree" class="accordion-collapse collapse" aria-labelledby="accordionThree" data-bs-parent="#accordionFront" style="">
                                 <div class="accordion-body">
                                     <p>
-                                        This table below shows the accounting entries for the monthly payement of commission by members subscribed to daily saving product at level of the branch office.
+                                        @GlobalsAccountMappingInfo.TableAccountingEntriesForMonthlyPaymentDesc
                                     </p>
                                     <p>
-                                        <span class="fw-bold"> For Instance:</span>
+                                        <span class="fw-bold"> @GlobalsAccountMappingInfo.ForInstance :</span>
                                     </p>
 
                                     <p>
-                                        The total commision collected from members subscribed to the daily saving product is 100000Frs.
+                                        @GlobalsAccountMappingInfo.TotalComissionCollectedFromMemSuscToDailySaving
                                     </p>
                                     <div class="table-responsive mb-3">
                                         <table class="table table-hover" id="myDataTable_AccountData">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th>Accout Number</th>
-                                                    <th>Account Label</th>
-                                                    <th>Debit</th>
-                                                    <th>Credit</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
 
                                                 </tr>
                                             </thead>
@@ -242,7 +244,7 @@
                                             <thead class="table-light">
                                                 <tr>
 
-                                                    <th colspan="2">Total   :</th>
+                                                    <th colspan="2">@GlobalsAccountMappingInfo.Total  :</th>
                                                     @{
 
                                                         var PayCashCollectionEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "MOMO_CASHCOLLECTION_PAYEMENT");
@@ -264,29 +266,29 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="head-Four">
                                 <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFour" aria-expanded="false" aria-controls="accordionTwo">
-                                    Payement of commission to daily collectors
+                                    @GlobalsAccountMappingInfo.PaymentOfCommissionToDailyColl
                                 </button>
                             </h2>
                             <div id="accordionFour" class="accordion-collapse collapse" aria-labelledby="accordionThree" data-bs-parent="#accordionFront" style="">
                                 <div class="accordion-body">
                                     <p>
-                                        This table below shows the accounting entries for the monthly payement of commission to daily collectors at level of the branch office.
+                                        @GlobalsAccountMappingInfo.TableAccountingEntriesForMonthlyPaymentDesc
                                     </p>
                                     <p>
-                                        <span class="fw-bold"> For Instance:</span>
+                                        <span class="fw-bold"> @GlobalsAccountMappingInfo.ForInstance:</span>
                                     </p>
 
                                     <p>
-                                        The total commision collected from members subscribed to the daily saving product is 100000Frs.
+                                        @GlobalsAccountMappingInfo.CommissionCollectedToDailySavingProduct
                                     </p>
                                     <div class="table-responsive mb-3">
                                         <table class="table table-hover" id="myDataTable_AccountData">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th>Accout Number</th>
-                                                    <th>Account Label</th>
-                                                    <th>Debit</th>
-                                                    <th>Credit</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
 
                                                 </tr>
                                             </thead>
@@ -320,7 +322,7 @@
                                             <thead class="table-light">
                                                 <tr>
 
-                                                    <th colspan="2">Total   :</th>
+                                                    <th colspan="2">@GlobalsAccountMappingInfo.Total   :</th>
                                                     @{
 
                                                         var PayCashCollectorEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "MOMO_CASHCOLLECTION_COMMISSION");
@@ -349,7 +351,7 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="head-One">
                                 <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="false" aria-controls="accordionOne">
-                                    Local Cash Deposit Operation:
+                                    @GlobalsAccountMappingInfo.LocalCashDepositOperation:
                                 </button>
                             </h2>
 
@@ -359,37 +361,37 @@
                                     @if (Model.SavingDepositProductIsChargable)
                                     {
                                         <p>
-                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.Name</span> account.
+                                            @GlobalsAccountMappingInfo.TableAccountingEntriesForLocalBranchDepositOp <span class="fw-bold">@ViewBag.Name</span> account.
                                         </p>
                                         <p>
-                                            <span class="fw-bold"> For Instance:</span>
+                                            <span class="fw-bold">@GlobalsAccountMappingInfo.ForInstance:</span>
                                         </p>
 
                                         <p>
-                                            A member wants to deposit 10000Frs and needs to pay deposit fee of 200Frs.
+                                            @GlobalsAccountMappingInfo.MemberWantDepositAndNeedToPayFee
                                         </p>
                                     }
                                     else
                                     {
+                                <p>
+                                    @GlobalsAccountMappingInfo.TableAccountingEntriesForLocalBranchDepositOp <span class="fw-bold">@ViewBag.Name</span> account.
+                                </p>
                                         <p>
-                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.Name</span> account.
-                                        </p>
-                                        <p>
-                                            <span class="fw-bold"> For Instance:</span>
+                                            <span class="fw-bold"> @GlobalsAccountMappingInfo.ForInstance:</span>
                                         </p>
 
                                         <p>
-                                            A member wants to deposit 10000Frs.
+                                            @GlobalsAccountMappingInfo.MemberWantDeposit
                                         </p>
                                     }
                                     <div class="table-responsive mb-3">
                                         <table class="table table-hover" id="myDataTable_AccountData">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th>Accout Number</th>
-                                                    <th>Account Label</th>
-                                                    <th>Debit</th>
-                                                    <th>Credit</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
 
                                                 </tr>
                                             </thead>
@@ -423,7 +425,7 @@
                                             <thead class="table-light">
                                                 <tr>
 
-                                                    <th colspan="2">Total debit</th>
+                                                    <th colspan="2"><th> @GlobalsAccountMappingInfo.TotalDebit</th>
                                                     @{
 
                                                         var localDepositEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "DEPOSIT");
@@ -445,7 +447,7 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="head-Two">
                                 <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionTwo" aria-expanded="false" aria-controls="accordionTwo">
-                                    Remote branch cash deposit Operation:
+                                    @GlobalsAccountMappingInfo.RemoteBranchCashDepositOperation:
                                 </button>
                             </h2>
                             <div id="accordionTwo" class="accordion-collapse collapse" aria-labelledby="accordionTwo" data-bs-parent="#accordionFront" style="">
@@ -454,24 +456,24 @@
                                     @if (Model.SavingDepositProductIsChargable)
                                     {
                                         <p>
-                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.Name</span> account.
+                                            @GlobalsAccountMappingInfo.TableAccountingEntriesForLocalBranchDepositOp <span class="fw-bold">@ViewBag.Name</span> account.
                                         </p>
                                         <p>
-                                            <span class="fw-bold"> For Instance:</span>
+                                            <span class="fw-bold">@GlobalsAccountMappingInfo.ForInstance:</span>
                                         </p>
 
                                         <p>
-                                            A member wants to deposit 10000Frs and needs to pay deposit fee of 200Frs.
+                                            @GlobalsAccountMappingInfo.MemberWantDepositAndNeedToPayFee
                                         </p>
                                     }
                                     else
                                     {
                                         <div class="text-center mb-2">
-                                            This table below show the accounting entries for a local branch deposit operation for a member in his  <span class="fw-bold"> @ViewBag.Name</span> account.
+                                            @GlobalsAccountMappingInfo.TableAccountingEntriesForLocalBranchDepositOp  <span class="fw-bold"> @ViewBag.Name</span> account.
                                             <span class="fw-bold">
-                                                For Instance:
+                                                @GlobalsAccountMappingInfo.ForInstance:
                                             </span><br>
-                                            A member wants to deposit 10000Frs.
+                                            @GlobalsAccountMappingInfo.MemberWantDeposit
                                         </div>
                                     }
 
@@ -481,10 +483,10 @@
                                         <table class="table table-hover" id="myDataTable_AccountData">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th>Accout Number</th>
-                                                    <th>Account Label</th>
-                                                    <th>Debit</th>
-                                                    <th>Credit</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
 
                                                 </tr>
                                             </thead>
@@ -518,7 +520,7 @@
                                             <thead class="table-light">
                                                 <tr>
 
-                                                    <th colspan="2">Total debit</th>
+                                                    <th colspan="2">@GlobalsAccountMappingInfo.TotalDebit</th>
                                                     @{
 
                                                         var RemoteDepositEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "DEPOSIT_REMOTE");
@@ -540,7 +542,7 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="head-Three">
                                 <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionThree" aria-expanded="false" aria-controls="accordionThree">
-                                    Local Cash Out Operation:
+                                    @GlobalsAccountMappingInfo.LocalCashOutOp
                                 </button>
                             </h2>
                             <div id="accordionThree" class="accordion-collapse collapse" aria-labelledby="accordionThree" data-bs-parent="#accordionFront" style="">
@@ -548,37 +550,37 @@
                                     @if (Model.SavingWithdrwalProductIsChargable)
                                     {
                                         <p>
-                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.Name</span> account.
+                                            @GlobalsAccountMappingInfo.TableAccountingEntriesForLocalBranchDepositOp <span class="fw-bold">@ViewBag.Name</span> account.
                                         </p>
                                         <p>
-                                            <span class="fw-bold"> For Instance:</span>
+                                            <span class="fw-bold"> @GlobalsAccountMappingInfo.ForInstance:</span>
                                         </p>
 
                                         <p>
-                                            A member wants to withdraw 10000Frs and needs to pay a fine of 200Frs.
+                                            @GlobalsAccountMappingInfo.MemberWithdrawAndNeedToPay
                                         </p>
                                     }
                                     else
                                     {
                                         <p>
-                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.Name</span> account.
+                                            @GlobalsAccountMappingInfo.TableAccountingEntriesForLocalBranchDepositOp <span class="fw-bold">@ViewBag.Name</span> account.
                                         </p>
                                         <p>
-                                            <span class="fw-bold"> For Instance:</span>
+                                            <span class="fw-bold"> @GlobalsAccountMappingInfo.ForInstance:</span>
                                         </p>
 
                                         <p>
-                                            A member wants to withdraw 10000Frs.
+                                            @GlobalsAccountMappingInfo.MemberWantWithdraw
                                         </p>
                                     }
                                     <div class="table-responsive mb-3">
                                         <table class="table table-hover" id="myDataTable_AccountData">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th>Accout Number</th>
-                                                    <th>Account Label</th>
-                                                    <th>Debit</th>
-                                                    <th>Credit</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
 
                                                 </tr>
                                             </thead>
@@ -612,7 +614,7 @@
                                             <thead class="table-light">
                                                 <tr>
 
-                                                    <th colspan="2">Total debit</th>
+                                                    <th colspan="2">@GlobalsAccountMappingInfo.TotalDebit</th>
                                                     @{
 
                                                         var localCashOutEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "CASHOUT");
@@ -634,7 +636,7 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="head-Four">
                                 <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFour" aria-expanded="false" aria-controls="accordionFour">
-                                    Remote Cash Out Operation:
+                                    @GlobalsAccountMappingInfo.RemoteCashOutOperation:
                                 </button>
                             </h2>
                             <div id="accordionFour" class="accordion-collapse collapse" aria-labelledby="accordionFour" data-bs-parent="#accordionFront" style="">
@@ -642,37 +644,37 @@
                                     @if (Model.SavingWithdrwalProductIsChargable)
                                     {
                                         <p>
-                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.Name</span> account.
+                                            @GlobalsAccountMappingInfo.TableAccountingEntriesForLocalBranchDepositOp <span class="fw-bold">@ViewBag.Name</span> account.
                                         </p>
                                         <p>
-                                            <span class="fw-bold"> For Instance:</span>
+                                            <span class="fw-bold"> @GlobalsAccountMappingInfo.ForInstance:</span>
                                         </p>
 
                                         <p>
-                                            A member wants to withdraw 10000Frs and needs to pay a fine of 200Frs.
+                                            @GlobalsAccountMappingInfo.MemberWithdrawAndNeedToPay
                                         </p>
                                     }
                                     else
                                     {
                                         <p>
-                                            This table below shows the accounting entries for a local branch deposit operation for a member in his <span class="fw-bold">@ViewBag.Name</span> account.
+                                            @GlobalsAccountMappingInfo.TableAccountingEntriesForLocalBranchDepositOp <span class="fw-bold">@ViewBag.Name</span> account.
                                         </p>
                                         <p>
-                                            <span class="fw-bold"> For Instance:</span>
+                                            <span class="fw-bold"> @GlobalsAccountMappingInfo.ForInstance:</span>
                                         </p>
 
                                         <p>
-                                            A member wants to withdraw 10000Frs.
+                                            @GlobalsAccountMappingInfo.MemberWantWithdraw
                                         </p>
                                     }
                                     <div class="table-responsive mb-3">
                                         <table class="table table-hover" id="myDataTable_AccountData">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th>Accout Number</th>
-                                                    <th>Account Label</th>
-                                                    <th>Debit</th>
-                                                    <th>Credit</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
 
                                                 </tr>
                                             </thead>
@@ -706,7 +708,7 @@
                                             <thead class="table-light">
                                                 <tr>
 
-                                                    <th colspan="2">Total debit</th>
+                                                    <th colspan="2">@GlobalsAccountMappingInfo.TotalDebit</th>
                                                     @{
 
                                                         var RemoteCashOutEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "CASHOUT_REMOTE");
@@ -728,7 +730,7 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="head-Five">
                                 <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionFive" aria-expanded="false" aria-controls="accordionFive">
-                                    Interest expense to members
+                                    @GlobalsAccountMappingInfo.InterestExpenseToMembers
                                 </button>
                             </h2>
                             <div id="accordionFive" class="accordion-collapse collapse show" aria-labelledby="accordionFive" data-bs-parent="#accordionFront" style="">
@@ -736,8 +738,9 @@
                                     @{
                                         var modelch = Model.chartofAccountInfos.Where(x => x.OperationType == "INTEREST_EXPENSE").FirstOrDefault();
                                     }
-                                    The determinant account @modelch.AccountNumber - @modelch.AccountName has been set but the default counterpart cannot be evaluated
-                                    due to missen configuration.
+                                    @GlobalsAccountMappingInfo.DeterminantAccountMessage.Replace("{0}",modelch.AccountNumber+" - "+ modelch.AccountName)
+                                    @*The determinant account @modelch.AccountNumber - @modelch.AccountName has been set but the default counterpart cannot be evaluated
+                                    due to missen configuration.*@
                                 </div>
                             </div>
                         </div>
@@ -745,21 +748,21 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="head-Six">
                                 <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionSix" aria-expanded="true" aria-controls="accordionSix">
-                                    Accounting Configurtions for  @ViewBag.Name 
+                                    @GlobalsAccountMappingInfo.AccountingConfigurationsFor  @ViewBag.Name
                                 </button>
                             </h2>
                             <div id="accordionSix" class="accordion-collapse collapse show" aria-labelledby="accordionSix" data-bs-parent="#accordionFront" style="">
                                 <div class="accordion-body">
 
-                                    The table bellows shows the configurations of the @ViewBag.Name
+                                    @GlobalsAccountMappingInfo.TableConfigForThe @ViewBag.Name
                                     <div class="table-responsive mb-3">
                                         <table class="table table-hover" id="myDataTable_AccountData">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th>Accouting Event</th>
-                                                    <th>Account Name</th>
-                                                    <th>AccountNumber</th>
-                                                    <th>Status</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
 
                                                 </tr>
                                             </thead>
@@ -773,17 +776,17 @@
                                                         <tr>
                                                             <td style="width:25%">@item.OperationEvent</td>
                                                             <td style="width:35%">@item.Description</td>
-                                                            
+
                                                             <td style="width:20%">@item.AccountNumber</td>
                                                             <td style="width:20%">@item.Status</td>
-                                                            
+
 
                                                         </tr>
                                                     }
 
                                                 }
                                             </tbody>
-                        
+
 
                                         </table>
 
@@ -810,7 +813,7 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="head-One">
                                 <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="false" aria-controls="accordionOne">
-                                    Mobile Money Cash Deposit Operation:
+                                    @GlobalsAccountMappingInfo.MoMoCashDepositOp:
                                 </button>
                             </h2>
 
@@ -819,24 +822,24 @@
 
 
                                     <p>
-                                        This table below shows the accounting entries for a local branch mobile money deposit operation for a member or non member that wants to perform operation in his <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                        @GlobalsAccountMappingInfo.TableEntriesForLocalBranchMoMoDepositOp <span class="fw-bold">@ViewBag.ProductName</span> account.
                                     </p>
                                     <p>
-                                        <span class="fw-bold"> For Instance:</span>
+                                        <span class="fw-bold"> @GlobalsAccountMappingInfo.ForInstance:</span>
                                     </p>
 
                                     <p>
-                                        A member wants to deposit 10000Frs.
+                                        @GlobalsAccountMappingInfo.MemberWantDeposit
                                     </p>
 
                                     <div class="table-responsive mb-3">
                                         <table class="table table-hover" id="myDataTable_AccountData">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th>Accout Number</th>
-                                                    <th>Account Label</th>
-                                                    <th>Debit</th>
-                                                    <th>Credit</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
 
                                                 </tr>
                                             </thead>
@@ -870,7 +873,7 @@
                                             <thead class="table-light">
                                                 <tr>
 
-                                                    <th colspan="2">Total debit</th>
+                                                    <th colspan="2">@GlobalsAccountMappingInfo.TotalDebit</th>
                                                     @{
 
                                                         var MobileMoneyEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "MOMODEPOSIT");
@@ -892,7 +895,7 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="head-Two">
                                 <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionTwo" aria-expanded="false" aria-controls="accordionTwo">
-                                    Mobile Money Cash Out Operation:
+                                    @GlobalsAccountMappingInfo.MomoCashoutOp:
                                 </button>
                             </h2>
                             <div id="accordionTwo" class="accordion-collapse collapse" aria-labelledby="accordionTwo" data-bs-parent="#accordionFront" style="">
@@ -900,14 +903,14 @@
 
 
                                     <p>
-                                        This table below shows the accounting entries for a local branch mobile money cash out operation for a member or non member that wants to perform operation in his <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                        @GlobalsAccountMappingInfo.TableEntriesForLocalBranchMoMoCashOutOp <span class="fw-bold">@ViewBag.ProductName</span> account.
                                     </p>
                                     <p>
-                                        <span class="fw-bold"> For Instance:</span>
+                                        <span class="fw-bold"> @GlobalsAccountMappingInfo.ForInstance:</span>
                                     </p>
 
                                     <p>
-                                        A member or non member wants to perform  Mobile Money Cash Out of 10000Frs.
+                                        @GlobalsAccountMappingInfo.MemberOrNotPerformOp
                                     </p>
 
 
@@ -917,10 +920,10 @@
                                         <table class="table table-hover" id="myDataTable_AccountData">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th>Accout Number</th>
-                                                    <th>Account Label</th>
-                                                    <th>Debit</th>
-                                                    <th>Credit</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
 
                                                 </tr>
                                             </thead>
