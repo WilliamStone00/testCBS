@@ -63,18 +63,12 @@ function renderTranslationUpdateTable(translations) {
                     ${item.menuText}
                     <input type="hidden" name="Id" value="${item.id}" />
                 </td>
-                <td>${item.originalTooltip || ''}</td>
                 <td>${item.originalDescription || ''}</td>
                 <td>
                     <textarea class="form-control shadow wide-textarea"
                         name="TranslatedText"
                         rows="4"
                         required>${item.translatedText || ''}</textarea>
-                </td>
-                <td>
-                    <textarea class="form-control shadow wide-textarea"
-                        name="Tooltip"
-                        rows="4">${item.tooltip || ''}</textarea>
                 </td>
                 <td>
                     <textarea class="form-control shadow wide-textarea"

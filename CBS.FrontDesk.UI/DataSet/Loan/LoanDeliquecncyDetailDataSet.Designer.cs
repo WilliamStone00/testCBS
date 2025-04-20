@@ -2721,6 +2721,12 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             private global::System.Data.DataColumn columnTotalPrincipalCollected;
             
+            private global::System.Data.DataColumn columnTotalRepayPenalty;
+            
+            private global::System.Data.DataColumn columnTotalRepayInterest;
+            
+            private global::System.Data.DataColumn columnTotalRepayVAT;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public LoanPortfolioDataTable() {
@@ -3172,6 +3178,30 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalRepayPenaltyColumn {
+                get {
+                    return this.columnTotalRepayPenalty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalRepayInterestColumn {
+                get {
+                    return this.columnTotalRepayInterest;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalRepayVATColumn {
+                get {
+                    return this.columnTotalRepayVAT;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -3259,7 +3289,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                         decimal OutstandingBalance, 
                         string HealthStatus, 
                         decimal TotalRepayment, 
-                        decimal TotalPrincipalCollected) {
+                        decimal TotalPrincipalCollected, 
+                        decimal TotalRepayPenalty, 
+                        decimal TotalRepayInterest, 
+                        decimal TotalRepayVAT) {
                 LoanPortfolioRow rowLoanPortfolioRow = ((LoanPortfolioRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -3313,7 +3346,10 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                         OutstandingBalance,
                         HealthStatus,
                         TotalRepayment,
-                        TotalPrincipalCollected};
+                        TotalPrincipalCollected,
+                        TotalRepayPenalty,
+                        TotalRepayInterest,
+                        TotalRepayVAT};
                 rowLoanPortfolioRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowLoanPortfolioRow);
                 return rowLoanPortfolioRow;
@@ -3388,6 +3424,9 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                 this.columnHealthStatus = base.Columns["HealthStatus"];
                 this.columnTotalRepayment = base.Columns["TotalRepayment"];
                 this.columnTotalPrincipalCollected = base.Columns["TotalPrincipalCollected"];
+                this.columnTotalRepayPenalty = base.Columns["TotalRepayPenalty"];
+                this.columnTotalRepayInterest = base.Columns["TotalRepayInterest"];
+                this.columnTotalRepayVAT = base.Columns["TotalRepayVAT"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3497,6 +3536,12 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
                 base.Columns.Add(this.columnTotalRepayment);
                 this.columnTotalPrincipalCollected = new global::System.Data.DataColumn("TotalPrincipalCollected", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalPrincipalCollected);
+                this.columnTotalRepayPenalty = new global::System.Data.DataColumn("TotalRepayPenalty", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalRepayPenalty);
+                this.columnTotalRepayInterest = new global::System.Data.DataColumn("TotalRepayInterest", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalRepayInterest);
+                this.columnTotalRepayVAT = new global::System.Data.DataColumn("TotalRepayVAT", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalRepayVAT);
                 this.columnId.Caption = "AgingBucket";
                 this.columnCustomerId.Caption = "DelinquentLoanCount";
                 this.columnCustomerName.Caption = "DelinquentPrincipal";
@@ -8132,6 +8177,54 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalRepayPenalty {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableLoanPortfolio.TotalRepayPenaltyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalRepayPenalty\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.TotalRepayPenaltyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalRepayInterest {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableLoanPortfolio.TotalRepayInterestColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalRepayInterest\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.TotalRepayInterestColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalRepayVAT {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableLoanPortfolio.TotalRepayVATColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalRepayVAT\' in table \'LoanPortfolio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableLoanPortfolio.TotalRepayVATColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsIdNull() {
                 return this.IsNull(this.tableLoanPortfolio.IdColumn);
             }
@@ -8752,6 +8845,42 @@ namespace CBS.FrontDesk.UI.DataSet.Loan {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetTotalPrincipalCollectedNull() {
                 this[this.tableLoanPortfolio.TotalPrincipalCollectedColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalRepayPenaltyNull() {
+                return this.IsNull(this.tableLoanPortfolio.TotalRepayPenaltyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalRepayPenaltyNull() {
+                this[this.tableLoanPortfolio.TotalRepayPenaltyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalRepayInterestNull() {
+                return this.IsNull(this.tableLoanPortfolio.TotalRepayInterestColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalRepayInterestNull() {
+                this[this.tableLoanPortfolio.TotalRepayInterestColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalRepayVATNull() {
+                return this.IsNull(this.tableLoanPortfolio.TotalRepayVATColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalRepayVATNull() {
+                this[this.tableLoanPortfolio.TotalRepayVATColumn] = global::System.Convert.DBNull;
             }
         }
         

@@ -65,7 +65,6 @@ function renderTranslationTable(menus, lang) {
                     ${menu.MenuText}
                     <input type="hidden" name="MenuMasterId" value="${menu.Id}" />
                 </td>
-                <td>${menu.Tooltip}</td>
                 <td>${menu.Description}</td>
                 <td>
                     <textarea class="form-control shadow wide-textarea"
@@ -73,12 +72,6 @@ function renderTranslationTable(menus, lang) {
                               placeholder="Enter menu translation to ${lang}"
                               data-menutext="${menu.MenuText}"
                               rows="4" required></textarea>
-                </td>
-                <td>
-                    <textarea class="form-control shadow wide-textarea"
-                              name="Tooltip"
-                              placeholder="Enter tooltip translation to ${lang}"
-                              rows="4"></textarea>
                 </td>
                 <td>
                     <textarea class="form-control shadow wide-textarea"

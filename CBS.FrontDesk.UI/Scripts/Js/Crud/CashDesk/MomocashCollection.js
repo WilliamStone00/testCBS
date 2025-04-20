@@ -14,6 +14,54 @@
 
 });
 
+var vatMap = {};
+
+function previewVat(loanId, interestValue, vatRate, loanAmount) {
+    var interestAmount = parseFloat(interestValue) || 0;
+    var vat = 0;
+
+    // Only apply VAT if loan amount >= 2,000,000
+    if (parseFloat(loanAmount) >= 2000000) {
+        vat = Math.round(interestAmount * (parseFloat(vatRate) / 100));
+    }
+
+    // Store VAT per loan
+    vatMap[loanId] = {
+        original: interestAmount,
+        vat: vat
+    };
+
+    // Recalculate and update total VAT in footer
+    let totalVat = 0;
+    for (const key in vatMap) {
+        if (vatMap.hasOwnProperty(key)) {
+            totalVat += vatMap[key].vat || 0;
+        }
+    }
+
+    const vatFooter = document.getElementById("calculatedVat");
+    if (vatFooter) {
+        vatFooter.innerText = totalVat.toLocaleString('en-US', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
+    }
+}
+function applyVatAdjustment(loanId) {
+    const interestInput = document.getElementById("interest-" + loanId);
+    const vatCheckbox = document.getElementById("vatExclusive-" + loanId);
+
+    // Validate existence
+    if (!interestInput || !vatMap[loanId]) return;
+
+    const { original, vat } = vatMap[loanId];
+
+    // Only adjust if VAT checkbox is NOT checked
+    if (vatCheckbox && !vatCheckbox.checked) {
+        const netInterest = Math.round(original - vat);
+        interestInput.value = netInterest.toFixed(0);
+    }
+}
 function AddNote() {
     EditResetModal(null, 'modal', 'modalContent', 'CashDesk', 'InitializeData', '_Note', 'new_depositor', 'NOTE', 'modalLabel')
 }
@@ -41,28 +89,80 @@ function AddDepositor() {
 
 $(document).on('input', '.amount-input, .fee-input, .interest-input, .penalty-input, .loan-amount-input', function () {
     var $row = $(this).closest('tr');
+
     var amount = parseFloat($row.find('.amount-input').val()) || 0;
     var fee = parseFloat($row.find('.fee-input').val()) || 0;
     var interest = parseFloat($row.find('.interest-input').val()) || 0;
     var penalty = parseFloat($row.find('.penalty-input').val()) || 0;
-    var loan_amount_input = parseFloat($row.find('.loan-amount-input').val()) || 0;
-    var total = amount + fee + penalty + interest + loan_amount_input;
+    var loanAmount = parseFloat($row.find('.loan-amount-input').val()) || 0;
+    var vat = parseFloat($('#calculatedVat').text()) || 0;
+
+    // ✅ Add VAT only if checkbox is CHECKED
+    var isVatExclusive = $row.find('.vat-exclusive-check').prop('checked');
+
+    var total = amount + fee + interest + penalty + loanAmount;
+    if (isVatExclusive) {
+        total += vat;
+    }
+
     $row.find('.total-span').text(total.toFixed(2));
     calculateTableTotal();
 });
-//$(document).on('input', '.amount-input, .fee-input, .interest-input, .penalty-input, .loan-amount-input', function () {
-//    var $row = $(this).closest('tr');
-//    var amount = parseFloat($row.find('.amount-input').val()) || 0;
-//    var fee = parseFloat($row.find('.fee-input').val()) || 0;
-//    var interest = parseFloat($row.find('.interest-input').val()) || 0;
-//    var penalty = parseFloat($row.find('.penalty-input').val()) || 0;
-//    var loan_amount_input = parseFloat($row.find('.loan-amount-input').val()) || 0;
-//    var total = amount + fee + penalty + interest + loan_amount_input;
-//    $row.find('.total-span').text(total.toFixed(2));
-//    calculateTableTotal();
-//});
-// Trigger this function whenever the "Amount" or "Fee" inputs change
-// Trigger this function whenever the "Amount" or "Fee" inputs change
+
+function handleVatToggle(loanId) {
+    const interestInput = document.getElementById(`interest-${loanId}`);
+    const vatCheckbox = document.getElementById(`vatExclusive-${loanId}`);
+    const vatElement = document.getElementById("calculatedVat");
+
+    const capitalInput = document.getElementById(`capital-${loanId}`);
+    const penaltyInput = document.getElementById(`penalty-${loanId}`);
+    const totalSpan = document.getElementById(`total-${loanId}`);
+
+    if (!interestInput || !vatCheckbox || !vatElement || !capitalInput || !penaltyInput || !totalSpan)
+        return;
+
+    const vat = parseFloat(vatElement.textContent) || 0;
+    let interest = parseFloat(interestInput.value) || 0;
+    const capital = parseFloat(capitalInput.value) || 0;
+    const penalty = parseFloat(penaltyInput.value) || 0;
+
+    const isExclusive = vatCheckbox.checked;
+
+    // Update interest
+    if (isExclusive) {
+        interest += vat;
+    } else {
+        interest -= vat;
+    }
+    interestInput.value = interest.toFixed(2);
+
+    // Recalculate total
+    const total = interest + vat + penalty + capital;
+    totalSpan.textContent = total.toFixed(2);
+
+    // Format numbers with financial separators
+    const formatCurrency = (num) =>
+        num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    // Prepare message
+    const message = `
+🧾 ${isExclusive ? "VAT Exclusive Selected" : "VAT Inclusive Selected"}
+
+  [Capital]     : ${formatCurrency(capital)}
+  [Interest]    : ${formatCurrency(interest)}
+  [VAT]         : ${formatCurrency(vat)}
+  [Penalty]     : ${formatCurrency(penalty)}
+  -------------------------------
+  [Total Due]   : ${formatCurrency(total)}
+`.trim();
+
+    // Show notification
+    if (typeof appalert === "function") {
+        appalert(message, 2, 1);
+    } else {
+        alert(message);
+    }
+}
 function calculateTableTotal() {
     var total = 0; // Total of all rows
     var totalVat = 0; // Total VAT for all rows

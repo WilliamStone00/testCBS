@@ -49,46 +49,30 @@ namespace CBS.FrontDesk.Data.Entity.DataSetLoanPortfolio
         public string PhoneNumber { get; set; }
         public string FullName { get; set; }
         public int Age { get; set; }
+        public decimal TotalRepayVAT { get; set; }
+        public decimal TotalRepayInterest { get; set; }
+        public decimal TotalRepayPenalty { get; set; }
 
         // ✅ Derived / Calculated Properties
 
-        public decimal TotalRepayment { get; set; }
         public decimal TotalPrincipalCollected { get; set; }
+
+        public decimal TotalRepayment { get; set; }
 
         public decimal TotalInDefault => DeliquentAmount + DeliquentInterest;
 
-        public decimal OutstandingBalance => Balance + TotalInDefault + Fine + VAT;
+        public decimal OutstandingBalance => Balance + AccrualInterest + Fine + VAT;
 
-        public decimal LiquidityRatio =>
-            LoanAmount > 0 ? ((LoanAmount - Balance) / LoanAmount) * 100 : 0;
+        public decimal LiquidityRatio { get; set; }
 
-        public decimal OutstandingBalanceRatio =>
-            LoanAmount > 0 ? (OutstandingBalance / LoanAmount) * 100 : 0;
+        public decimal OutstandingBalanceRatio { get; set; }
 
-        public decimal DefaultRatio =>
-            LoanAmount > 0 ? (TotalInDefault / LoanAmount) * 100 : 0;
+        public decimal DefaultRatio { get; set; }
 
-        public string LiquidityStatus =>
-            LiquidityRatio >= 70 ? "Healthy" :
-            LiquidityRatio >= 50 ? "Moderate" : "Weak";
+        public string LiquidityStatus { get; set; }
 
-        public string HealthStatus
-        {
-            get
-            {
-                var par = DeliquentDays >= 30 ? 100 : 0;
-                var delinquency = DeliquentDays >= 60 ? 100 : 0;
-                var liquidity = LiquidityRatio;
+        public string HealthStatus { get; set; }
 
-                if (par < 5 && delinquency < 5 && liquidity > 70)
-                    return "Excellent";
-                if (par < 10 && delinquency < 7 && liquidity > 60)
-                    return "Good";
-                if (par < 15 || delinquency > 10 || liquidity < 50)
-                    return "Warning";
-                return "🔴 Critical";
-            }
-        }
     }
 
 }
