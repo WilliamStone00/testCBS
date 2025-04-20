@@ -17,4 +17,10 @@ namespace CBS.FrontDesk.Data
         WorldRemit,
         TrustSoftCredit
     }
+    public enum EntryStatus
+    {
+        Pending,
+        Approved,
+        Rejected
+    }
 }

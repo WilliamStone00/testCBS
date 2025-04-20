@@ -1677,10 +1677,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             }
                             catch (Exception ex)
                             {
-                                
-                                // Log the exception
-                                // Handle the error gracefully
-                                throw new InvalidOperationException("An error occurred while extracting data from the file.", ex);
+                                return Json($"The file structure was not respected extension. Please check your input.{Path.GetExtension(model.ExcelFile.FileName)}", JsonRequestBehavior.AllowGet);
                             }
                         }
                         else
@@ -1794,7 +1791,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         }
                         else
                         {
-                            continue;
+                            throw new  Exception("The file structure was not respected");
                         }
                        
 

@@ -1,5 +1,10 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
 <div class="table-responsive mb-3">
+    @if (Convert.ToBoolean(ViewBag.IsAuthourized) == false)
+    {
+        @Html.Partial("_GeneralErrorDiv")
+    }
+    <hr />
     <div class="change-group">
         <div class="table-responsive mb-3">
             <table class="table table-hover table-bordered table-sm" id="myDataTable">
@@ -20,7 +25,7 @@
 
 
 
-                    @foreach (var item in Model.PostedEntries)
+                    @foreach (var item in Model.PostedEntriesX)
                     {
                         <tr>
                             <td style="width:5%" id="@item.Id-BranchCode">@item.BranchCode</td>
@@ -29,7 +34,7 @@
                             <td style="width:20%" id="@item.Id-CreatedBy">@(item.CreatedBy + "*" + (item.CreatedDate.ToString("dd-MM-yy HH:mm") ?? "None") + "*" + (item.PostingSource ?? ""))</td>
 
                             <td style="width:19%" id="@item.Id-CreatedDate">@item.CreatedDate</td>
-                            <td style="width:1%" id="@item.Id-Description">@(item.Description + "*" + (item.ApprovedBy ?? "None") + "*" + (item.ApprovedDate ?? ""))</td>
+                            <td style="width:1%" id="@item.Id-Description">@(item.Description + "*" + (item.ApprovedBy ?? "None") + "*" + (item.ApprovedDate.ToLongDateString()))</td>
                             <td style="width:15%" id="@item.Id-Amount">@item.Amount.ToString("N") </td>
 
                             @if (@item.Status.ToLower() == "pending")

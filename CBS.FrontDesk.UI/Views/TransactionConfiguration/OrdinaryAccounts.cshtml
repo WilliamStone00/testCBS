@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Ordinary Accounts";
+﻿@using Resources
+@{
+    ViewBag.Title = GlobalOrdinaryAccounts.OrdinaryAccounts;
 }
 <style>
     .fieldset-legend {
@@ -21,10 +22,9 @@
     <div class="col-xl-12 col-lg-12 col-md-12">
         <div class="card">
             <div class="card-header text-center">
-                <h4 class="card-title text-primary">Ordinary Account Policy Setup</h4>
+                <h4 class="card-title text-primary">@GlobalOrdinaryAccounts.OrdinaryAccountPolicySetup</h4>
                 <p class="card-text">
-                    Configure policies for ordinary accounts to ensure proper mapping and handling of transactions.
-                    This setup helps streamline account management and maintain consistency.
+                    @GlobalOrdinaryAccounts.OrdinaryAccountPolicySetupDescription
                 </p>
             </div>
             <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
@@ -38,7 +38,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-cog me-2"></i>
-                            Ordinary Account Policy Setup
+                            @GlobalOrdinaryAccounts.OrdinaryAccountPolicySetup
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -50,11 +50,10 @@
                                     <div class="card mb-4">
                                         <div class="card-body">
                                             <h5 class="text-success">
-                                                Manage Ordinary Account Policies
+                                                @GlobalOrdinaryAccounts.ManageOrdinaryPolicies
                                             </h5>
                                             <p class="text-muted">
-                                                This section allows you to configure, update, and review policies for ordinary accounts.
-                                                Ensure all required mappings are properly defined for smooth account operation.
+                                                @GlobalOrdinaryAccounts.ManageOrdinaryPoliciesDescriptionText
                                             </p>
                                         </div>
                                     </div>

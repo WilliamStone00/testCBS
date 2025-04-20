@@ -194,6 +194,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Comment { get; set; }
         public bool ValidationIsNotRequired { get; set; }
         public string BranchId { get; set; }
+        public DateTime? TransactionDate { get; set; }
+ 
     }
     public class EntryTempDataResult
     {
@@ -353,6 +355,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         {
 
         };
+        public List<PostedEntryX> PostedEntriesX { get; set; } = new List<PostedEntryX>();
         public List<Account> Accounts { get; set; } = new List<Account>();
         public List<AccountingRule> AccountingRules { get; set; } = new List<AccountingRule>();
         public AccountingRule AccountingRule { get; set; } = new AccountingRule();
@@ -365,7 +368,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Key { get; set; }
         public bool HasApproved { get; set; }
     }
-    public class QueryModel
+    public class QueryModel: QueryFilter
     {
         public string Status { get; set; }
         public DateTime FromDate { get; set; }
@@ -374,5 +377,17 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string IssuedBy { get; set; }
         public string ApprovedBy { get; set; } //
         public bool ValidateApproverUnionWide { get; set; }
+
+       
+    }
+    public class QueryFilter 
+    {
+        public string Status { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+        public string BranchId { get; set; }
+        public string IssuedBy { get; set; }
+        public string ApprovedBy { get; set; } //
+        
     }
 }

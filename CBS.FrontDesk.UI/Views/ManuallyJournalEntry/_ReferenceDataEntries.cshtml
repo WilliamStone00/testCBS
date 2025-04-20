@@ -79,9 +79,7 @@
                         </h5>
                
                         <div class="modal-footer">
-                            <button type="button" id="Reject" onclick="PrintDataEntries(false)" class="btn btn-danger" data-bs-dismiss="modal">
-                                Reject
-                            </button>
+                        
                             <button type="button" id="Reject" onclick="ApprovePostedEntries(false)" class="btn btn-danger" data-bs-dismiss="modal">
                                 Reject
                             </button>
@@ -96,15 +94,19 @@
             </div>
             <div id="rejected">
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                         Close
                     </button>
                 </div> 
             </div>
             <div id="approved">
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                         Close
+                    </button>
+                    <button type="button" id="print" onclick="PrintDataEntries(false)" class="btn btn-primary">
+                        <i class="mdi mdi-printer"></i>  Print
                     </button>
                 </div>
             </div>

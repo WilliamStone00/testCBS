@@ -79,6 +79,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bank Configuration.
+        /// </summary>
+        internal static string BankConfiguration {
+            get {
+                return ResourceManager.GetString("BankConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &apos;s Information.
         /// </summary>
         internal static string BankInformation {

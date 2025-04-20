@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Ordinary Accounts Management";
+﻿@using Resources
+@{
+    ViewBag.Title = GlobalOrdinaryAccounts.OrdinaryAccountsManagement;
 }
 
 <div class="row">
@@ -7,10 +8,9 @@
         <div class="card">
             <!-- Card Header -->
             <div class="card-header text-center">
-                <h4 class="card-title text-primary">Ordinary Account Management</h4>
+                <h4 class="card-title text-primary">@GlobalOrdinaryAccounts.OrdinaryAccountManagement</h4>
                 <p class="card-text text-muted">
-                    Manage ordinary account configurations and policies efficiently.
-                    Use the options below to view, add, or update account settings for ordinary accounts.
+                    @GlobalOrdinaryAccounts.OrdinaryAccountManagementDescription
                 </p>
             </div>
 
@@ -26,7 +26,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-cog me-2"></i>
-                            Ordinary Account Management
+                           @GlobalOrdinaryAccounts.OrdinaryAccountsManagement
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -47,16 +47,16 @@
                                                        onclick="LoadDataGen('TransactionConfiguration', 'myDataTable_product', '_ProductData', 0, 'datalistingview', null, 'savingproduct', 'list')"
                                                        class="btn btn-default btn-sm"
                                                        data-bs-toggle="tooltip"
-                                                       title="View the list of ordinary accounts">
-                                                        <i class="mdi mdi-view-list mdi-18px"></i> View List
+                                                       title=" @GlobalOrdinaryAccounts.ViewListDescription">
+                                                        <i class="mdi mdi-view-list mdi-18px"></i> @GlobalOrdinaryAccounts.ViewList
                                                     </a>
                                                     <!-- Add New Button -->
                                                     <a type="button"
                                                        onclick="AddORUpdateGen(null, 'datalistingview', '_ProductConfig', 'new', 'TransactionConfiguration', 'savingproduct')"
                                                        class="btn btn-default btn-sm"
                                                        data-bs-toggle="tooltip"
-                                                       title="Add a new ordinary account">
-                                                        <i class="mdi mdi-plus mdi-18px"></i> Add New
+                                                       title="@GlobalOrdinaryAccounts.AddNewDescription">
+                                                        <i class="mdi mdi-plus mdi-18px"></i> @GlobalOrdinaryAccounts.AddNew
                                                     </a>
                                                 </div>
                                             </div>

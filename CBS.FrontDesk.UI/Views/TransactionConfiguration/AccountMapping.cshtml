@@ -1,16 +1,16 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
-
+@using Resources
 @{
-    ViewBag.Title = "Account Mapping";
+    ViewBag.Title = GlobalsAccountMapping.AccountMapping;
 }
 
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12">
         <div class="card">
             <div class="card-header text-center">
-                <h4 class="card-title text-primary">Account Mapping for @Model.SavingProduct.Name</h4>
+                <h4 class="card-title text-primary">@GlobalsAccountMapping.AccountMappingFor @Model.SavingProduct.Name</h4>
                 <p class="card-text text-muted">
-                    Use this section to map chart of account configurations to the saving product. This ensures accurate tracking of transactions related to the product.
+                    @GlobalsAccountMapping.AccountMappingDescription
                 </p>
             </div>
             <div id="accordionPopoutIcon" class="accordion accordion-popout">
@@ -23,7 +23,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-cog me-2"></i> Ordinary Account Mapping
+                            <i class="mdi mdi-cog me-2"></i> @GlobalsAccountMapping.OrdinaryAccountMapping 
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -35,13 +35,11 @@
                                     <div class="card mb-4">
                                         <div class="card-body">
                                             <h5 class="text-success">
-                                                Configure account mappings for transactions related to
+                                                @GlobalsAccountMapping.ConfigureAccMapForTransRelTo
                                                 <strong>@Model.SavingProduct.Name</strong>.
                                             </h5>
                                             <p class="text-muted">
-                                                Account mapping ensures that all financial operations for this product
-                                                are accurately reflected in the appropriate accounts.
-                                                Please review and map the accounts carefully.
+                                                @GlobalsAccountMapping.ConfigureAccMapForTransRelToDescription
                                             </p>
                                         </div>
                                     </div>

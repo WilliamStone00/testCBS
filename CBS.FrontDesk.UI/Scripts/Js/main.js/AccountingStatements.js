@@ -7,6 +7,8 @@
     $("#btnData").click(function () {
         LoadData();
     });
+    // Initialize date pickers
+
     $(document).on('change', '#SystemQuery_BranchId', function () {
         // Get the selected value AccountNumber
         var selectedValue = $(this).val();
