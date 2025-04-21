@@ -482,8 +482,7 @@ else if (ViewBag.Operation == "repayment")
                                     <th>Enter Penalty</th> <!-- Added Penalty input column -->
                                     <th>Total</th>
                                     <th>Conf</th>
-                                    <!--<th>Action</th>--> <!-- New Action column -->
-                                    <th>Details</th> <!-- New Details column -->
+                                    <th>VAT-INC/EXC</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -521,13 +520,14 @@ else if (ViewBag.Operation == "repayment")
                                         <td>
                                             <input type="checkbox" class="form-check-input">
                                         </td>
-                                        @*<td>
-                                                <button type="button" class="btn btn-primary" onclick="openPaymentModal('@d.Id', @d.AccrualInterest, @d.Balance)">Pay</button>
-                                            </td>*@
                                         <td>
-                                            <!-- Details Button -->
-                                            <button type="button" class="btn btn-info btn-sm" onclick='showLoanDetails(@Html.Raw(Json.Encode(d)))'>Details</button>
+                                            <input type="checkbox"
+                                                   class="form-check-input vat-exclusive-check"
+                                                   id="vatExclusive-@d.Id"
+                                                   onchange="handleVatToggle('@d.Id')" />
                                         </td>
+
+                                       
                                     </tr>
                                 }
                             </tbody>

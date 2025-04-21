@@ -16,40 +16,105 @@
 function calculateVatOnlyLedger(loanId) {
     const interestInput = document.getElementById(`interest-${loanId}`);
     const vatInput = document.getElementById(`vat-${loanId}`);
+    const vatCheckbox = document.getElementById(`vatExclusive-${loanId}`);
     const loanAmountEl = document.querySelector(`#row-${loanId} .loan-amount`);
 
+    if (!interestInput || !vatInput || !loanAmountEl || !vatCheckbox) return;
+
     const rawInterest = parseFloat((interestInput.value || "0").replace(/,/g, '')) || 0;
-    const loanAmount = parseFloat(loanAmountEl?.getAttribute("data-loan-amount") || "0");
+    const loanAmount = parseFloat(loanAmountEl.getAttribute("data-loan-amount") || "0");
     const vatRate = 19.25;
 
     let vat = 0;
-    if (loanAmount >= 2000000) {
+
+    // Only calculate VAT if VAT is NOT exclusive
+    if (!vatCheckbox.checked && loanAmount >= 2000000) {
         vat = Math.round(rawInterest * (vatRate / 100));
     }
 
-    // Store raw interest
+    // Store raw interest for potential adjustments later
     interestInput.setAttribute("data-original", rawInterest.toFixed(0));
 
-    // Update VAT field
-    if (vatInput) {
-        vatInput.value = vat.toLocaleString('en-US');
-    }
+    // Update VAT input field
+    vatInput.value = vat.toLocaleString('en-US');
 
     updateLedgerRowTotal(loanId);
+}
+
+function handleVatToggle(loanId) {
+    const interestInput = document.getElementById(`interest-${loanId}`);
+    const vatInput = document.getElementById(`vat-${loanId}`);
+    const vatCheckbox = document.getElementById(`vatExclusive-${loanId}`);
+    const capitalInput = document.getElementById(`capital-${loanId}`);
+    const penaltyInput = document.getElementById(`penalty-${loanId}`);
+    const totalSpan = document.getElementById(`total-${loanId}`);
+
+    if (!interestInput || !vatInput || !vatCheckbox || !capitalInput || !penaltyInput || !totalSpan)
+        return;
+
+    const vat = parseFloat(vatInput.value) || 0;
+    let interest = parseFloat(interestInput.value) || 0;
+    const capital = parseFloat(capitalInput.value) || 0;
+    const penalty = parseFloat(penaltyInput.value) || 0;
+
+    const isExclusive = vatCheckbox.checked;
+
+    // Adjust interest only if exclusive checkbox is toggled
+    if (isExclusive) {
+        interest += vat;
+    } else {
+        interest -= vat;
+    }
+
+    // Update interest input value
+    interestInput.value = interest.toFixed(2);
+
+    // Compute new total
+    const total = capital + interest + vat + penalty;
+    totalSpan.textContent = total.toFixed(2);
+
+    // Format numbers with financial separators
+    const formatCurrency = (num) =>
+        num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    // Notification breakdown
+    const message = `
+🧾 ${isExclusive ? "VAT Exclusive Selected" : "VAT Inclusive Selected"}
+
+  [Capital]     : ${formatCurrency(capital)}
+  [Interest]    : ${formatCurrency(interest)}
+  [VAT]         : ${formatCurrency(vat)}
+  [Penalty]     : ${formatCurrency(penalty)}
+  -------------------------------
+ [Total Due]   : ${formatCurrency(total)}
+`.trim();
+
+    if (typeof appalert === "function") {
+        appalert(message, 2, 1);
+    } else {
+        alert(message);
+    }
 }
 
 function adjustInterestWithVatLedger(loanId) {
     const interestInput = document.getElementById(`interest-${loanId}`);
     const vatInput = document.getElementById(`vat-${loanId}`);
+    const vatCheckbox = document.getElementById(`vatExclusive-${loanId}`);
+
+    if (!interestInput || !vatInput || !vatCheckbox) return;
 
     const originalInterest = parseFloat(interestInput.getAttribute("data-original") || "0") || 0;
-    const vat = parseFloat((vatInput?.value || "0").replace(/,/g, '')) || 0;
+    const vat = parseFloat((vatInput.value || "0").replace(/,/g, '')) || 0;
 
-    const netInterest = Math.max(originalInterest - vat, 0);
-    interestInput.value = netInterest.toFixed(0);
+    if (!vatCheckbox.checked) {
+        // VAT Inclusive → Subtract VAT from original interest
+        const netInterest = Math.max(originalInterest - vat, 0);
+        interestInput.value = netInterest.toFixed(0);
+    }
 
     updateLedgerRowTotal(loanId);
 }
+
 
 function updateLedgerRowTotal(loanId) {
     const capital = parseFloat(document.getElementById(`capital-${loanId}`)?.value) || 0;

@@ -91,11 +91,20 @@ namespace CBS.FrontDesk.UI.ReportForm
                             return;
                     }
 
-                    string filename = $"{(ViewState["ReportName"] ?? "Report")}_{DateTime.Now:yyyyMMdd_HHmmss}";
+                    // ✅ Clear all previous content BEFORE exporting
+                    Response.Clear();
+                    Response.Buffer = true;
+                    Response.ContentType = "";
+
+                    string reportName = (Session["displayName"]?.ToString() ?? "TSCReport").Replace(" ", "_");
+                    string filename = $"{reportName}_{DateTime.Now:yyyyMMdd_HHmmss}";
                     exportDoc.ExportToHttpResponse(format, Response, false, filename);
-                    Response.End(); // Stop the pipeline
+
+                    // ✅ Do NOT call Response.End (deprecated), use CompleteRequest instead
+                    Context.ApplicationInstance.CompleteRequest();
                     return;
                 }
+
 
                 // 🧭 Standard load on first visit only
                 if (!IsPostBack)
@@ -215,6 +224,8 @@ namespace CBS.FrontDesk.UI.ReportForm
 
                 // 🧠 Cache the document in session for paging/export/postback
                 Session["ReportDocument"] = rd;
+                Session["displayName"] = displayName;
+                
             }
             catch (Exception ex)
             {

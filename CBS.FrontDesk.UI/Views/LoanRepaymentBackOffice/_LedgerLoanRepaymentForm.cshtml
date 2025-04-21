@@ -39,7 +39,7 @@
                     <table class="table table-hover" id="myDataTableT">
                         <thead class="table-light">
                             <tr>
-                                <th colspan="10" class="text-center fw-bold bg-light text-dark">MEMBER'S OPENED LOANS</th>
+                                <th colspan="11" class="text-center fw-bold bg-light text-dark">MEMBER'S OPENED LOANS</th>
                             </tr>
                             <tr>
                                 <th style="display:none;">L. Ref</th>
@@ -53,6 +53,7 @@
                                 <th>Penalty</th>
                                 <th>Total</th>
                                 <th>Conf</th>
+                                <th>VAT-INC/EXC</th>
                             </tr>
                         </thead>
                         <tbody id="loanRepaymentTable">
@@ -106,6 +107,12 @@
 
                                     <td>
                                         <input type="checkbox" class="form-check-input" disabled />
+                                    </td>
+                                    <td>
+                                        <input type="checkbox"
+                                               class="form-check-input vat-exclusive-check"
+                                               id="vatExclusive-@d.Id"
+                                               onchange="handleVatToggle('@d.Id')" />
                                     </td>
                                 </tr>
                             }

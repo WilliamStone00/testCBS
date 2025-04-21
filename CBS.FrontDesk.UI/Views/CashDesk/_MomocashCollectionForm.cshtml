@@ -138,23 +138,25 @@ else if (ViewBag.Operation == "repayment")
                     <hr style="border: 1px solid green;" />
 
                     <div class="row">
+
+
                         <div class="table-responsive" style="width: 100%;">
                             <table class="table table-hover" id="myDataTableT">
                                 <thead class="table-light">
                                     <tr>
                                         <th style="display:none;">LoanId</th>
                                         <th>Date</th>
-                                        <th style="display:none;">Amount</th>
+                                        <th style="display:none;">Amount</th> <!-- Hide Amount column -->
                                         <th>Balance</th>
                                         <th>Int</th>
-                                        <th style="display:none;">V.Rate</th>
-                                        <th style="display:none;">Due A</th>
+                                        <th style="display:none;">V.Rate</th> <!-- Hide V.Rate column -->
+                                        <th style="display:none;">Due A</th> <!-- Hide Due A column -->
                                         <th>Enter Capital</th>
                                         <th>Enter Interest</th>
-                                        <th>Enter Penalty</th>
+                                        <th>Enter Penalty</th> <!-- Added Penalty input column -->
                                         <th>Total</th>
                                         <th>Conf</th>
-                                        <th>Details</th>
+                                        <th>VAT-INC/EXC</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -163,19 +165,27 @@ else if (ViewBag.Operation == "repayment")
                                         <tr id="row-@d.Id">
                                             <td style="display:none;">@d.Id</td>
                                             <td>@d.LoanDate.ToString("dd/MM/yy")</td>
-                                            <td style="display:none;">@d.LoanAmount.ToString("#,##0.0")</td>
+                                            <td style="display:none;">@d.LoanAmount.ToString("#,##0.0")</td> <!-- Hide Amount column -->
                                             <td>@d.Balance.ToString("#,##0.0")</td>
                                             <td>@d.AccrualInterest.ToString("#,##0.0")</td>
-                                            <td style="display:none;" class="vat-rate">@d.VatRate</td> <!-- Hidden VAT rate -->
-                                            <td style="display:none;">@d.DueAmount.ToString("#,##0.0")</td>
+                                            <td style="display:none;">@d.VatRate.ToString("#,##0.00")</td> <!-- Hide V.Rate column -->
+                                            <td style="display:none;">@d.DueAmount.ToString("#,##0.0")</td> <!-- Hide Due A column -->
                                             <td>
                                                 <input type="number" class="form-control amount-input shadow-input-boxes" id="capital-@d.Id" value="0">
                                             </td>
                                             <td>
-                                                <input type="number" class="form-control interest-input shadow-input-boxes" id="interest-@d.Id"
-                                                       value="0" oninput="calculateVat(this, @d.VatRate)">
+                                                <input type="number"
+                                                       class="form-control interest-input shadow-input-boxes"
+                                                       id="interest-@d.Id"
+                                                       value="0"
+                                                       oninput="previewVat('@d.Id', this.value, '@d.VatRate', '@d.LoanAmount')"
+                                                       onblur="applyVatAdjustment('@d.Id')" />
+
+
+
                                             </td>
                                             <td>
+                                                <!-- Penalty input field -->
                                                 <input type="number" class="form-control penalty-input shadow-input-boxes" id="penalty-@d.Id" value="0">
                                             </td>
                                             <td>
@@ -185,7 +195,10 @@ else if (ViewBag.Operation == "repayment")
                                                 <input type="checkbox" class="form-check-input">
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-info btn-sm" onclick='showLoanDetails(@Html.Raw(Json.Encode(d)))'>Details</button>
+                                                <input type="checkbox"
+                                                       class="form-check-input vat-exclusive-check"
+                                                       id="vatExclusive-@d.Id"
+                                                       onchange="handleVatToggle('@d.Id')" />
                                             </td>
                                         </tr>
                                     }
@@ -196,12 +209,12 @@ else if (ViewBag.Operation == "repayment")
                                         <td id="tableTotal">0</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="6" style="text-align: right;"><strong>Difference:</strong></td>
+                                        <td colspan="6" style="text-align: right;"><strong>Balance:</strong></td>
                                         <td id="tableBalance">0</td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="text-align: right;"><strong>Calculated VAT:</strong></td>
-                                        <td id="calculatedVat">0</td> <!-- Total VAT displayed here -->
+                                        <td id="calculatedVat">0</td> <!-- This will display the calculated VAT -->
                                     </tr>
                                 </tfoot>
                             </table>
