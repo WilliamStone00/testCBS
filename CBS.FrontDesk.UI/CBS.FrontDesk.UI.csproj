@@ -3331,6 +3331,7 @@
     <Content Include="Scripts\Js\CMoney\cmMembers.js" />
     <Content Include="Scripts\Js\Crud\AccountingDay\AccountingDayStatus.js" />
     <Content Include="Scripts\Js\Crud\AuditTrail\Audits.js" />
+    <Content Include="Scripts\Js\Crud\CashDesk\CashDeskCashin.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\PreMemberOnboarding.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\LoanRefpaymentSimulation.js" />
     <Content Include="Scripts\Js\Crud\MenuTranslation\MenuTranslationUpdate.js" />
@@ -3369,7 +3370,7 @@
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\WithdrawalNotification.js" />
     <Content Include="Scripts\Js\Crud\SysConfiguration\SysConfigurations.js" />
     <Content Include="Scripts\Js\Crud\Bank\Banks.js" />
-    <Content Include="Scripts\Js\Crud\CashDesk\CashDeskOperations.js" />
+    <Content Include="Scripts\Js\Crud\CashDesk\CashDeskCashout.js" />
     <Content Include="Scripts\Js\Crud\Collateral\Collateral.js" />
     <Content Include="Scripts\Js\Crud\FeePolicy\FeePolicy.js" />
     <Content Include="Scripts\Js\Crud\FeeRange\FeeRange.js" />
@@ -3796,7 +3797,7 @@
     <Content Include="Views\Operation\Transfers.cshtml" />
     <Content Include="Views\Operation\_TransferDetails.cshtml" />
     <Content Include="Views\Operation\_TransferConfirmation.cshtml" />
-    <Content Include="Views\CashDesk\Index.cshtml" />
+    <Content Include="Views\CashDesk\Cashin.cshtml" />
     <Content Include="Views\CashDesk\_CustomerCard.cshtml" />
     <Content Include="Views\CashDesk\_Tabs.cshtml" />
     <Content Include="Views\CashDesk\_SearchBox.cshtml" />
@@ -4341,6 +4342,8 @@
     <Content Include="Views\AccountingConfiguration\JournalEntryConfig.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CreateBlacklistAccountForJE.cshtml" />
     <Content Include="Views\AccountingConfiguration\_BlacklistAccountData.cshtml" />
+    <Content Include="Views\CashDesk\Cashout.cshtml" />
+    <Content Include="Views\CashDesk\_TabsCashout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

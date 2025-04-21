@@ -964,7 +964,7 @@ namespace CBS.BusinessService.Accounts
                 {
                     case "newsubcription":
                         onboardingDetail = await GetOnboardingDetailsAsync(customer.LegalForm);
-                        subscriptionFee = onboardingDetail.GrandTotal;
+                        subscriptionFee = onboardingDetail.TotalItemCost;
                         break;
 
                     case "repayment":

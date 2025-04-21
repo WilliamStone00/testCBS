@@ -1,6 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @{
-    ViewBag.Title = "Cash Desk";
+    ViewBag.Title = "Cash Desk-Cashin";
 }
 <link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
 
@@ -9,108 +9,92 @@
     <span class="fw-bold text-dark">
         [@Model.Branch.Name.ToUpper()] : [@Model.Customer.name.ToUpper()]
     </span>
-    <span class="badge @(Session["BranchId"]?.ToString()?.ToLower() == @Model.Branch.Id?.ToLower() ? "bg-success" : "bg-warning") text-dark">
-        <b>
-            @(Session["BranchId"]?.ToString()?.ToLower() == @Model.Branch.Id?.ToLower() ? "[Local Operation]" : "[Inter-Branch Operation]")
-        </b>
-    </span>
+
+    @if ((Session["BranchId"]?.ToString()?.ToLower()) == @Model.Branch.Id?.ToLower())
+    {
+        <span class="badge rounded-pill bg-primary-subtle text-primary fw-semibold px-3 py-2 shadow-sm">
+            <i class="mdi mdi-home-map-marker me-1"></i> Local Operation
+        </span>
+    }
+    else
+    {
+        <span class="badge rounded-pill bg-warning-subtle text-warning fw-semibold px-3 py-2 shadow-sm">
+            <i class="mdi mdi-map-marker-path me-1"></i> Inter-Branch Operation
+        </span>
+    }
 </div>
-<fieldset class="fieldset-custom border border-success p-3 mb-4 rounded">
-    <legend class="text-success fw-bold"><i class="fas fa-arrow-down me-1"></i> CASH-IN OPERATIONS</legend>
+
+<fieldset class="fieldset-custom border border-primary p-3 mb-2 rounded">
+    <legend class="text-primary fw-bold">
+        <i class="fas fa-arrow-down me-1"></i>
+        @(ViewBag.Operation == "newsubcription" ? "MEMBER ONBOARDING DEPOSIT" : "CASH-IN OPERATIONS")
+    </legend>
 
     <div class="d-flex flex-wrap gap-2">
+        @if (ViewBag.Operation == "newsubcription")
+        {
+            <!-- 👤 Pre-Registered Members -->
+            <a href="#"
+               class="btn btn-sm btn-outline-danger d-flex align-items-center gap-2"
+               onclick="$('#tempMembersModal').modal('show'); setTimeout(loadMemberData, 300);"
+               data-bs-toggle="tooltip"
+               title="Manage Pre-Registered Members who are awaiting final validation before full onboarding">
+                <i class="mdi mdi-account-alert-outline fs-5"></i> Pre-Registered Members
+            </a>
+        }
+        else
+        {
+            <!-- 💵 Cash Deposit -->
+            <a href="#" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-2"
+               onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','cashin')"
+               data-bs-toggle="tooltip" title="Perform a cash deposit into the member's account">
+                <i class="mdi mdi-cash-multiple fs-5"></i> Cash-In
+            </a>
 
-        <!-- 💵 Cash Deposit -->
-        <a href="#" class="btn btn-sm btn-outline-success d-flex align-items-center gap-2"
-           onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','cashin')"
-           data-bs-toggle="tooltip" title="Perform a cash deposit into the member's account">
-            <i class="mdi mdi-cash-multiple fs-5"></i> Cash-In
-        </a>
+            <!-- 🔁 Loan Repayment -->
+            <a href="#" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-2"
+               onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','repayment')"
+               data-bs-toggle="tooltip" title="Repay a loan for this member">
+                <i class="mdi mdi-currency-usd-off fs-5"></i> Loan Repayment
+            </a>
 
-        <!-- 🔁 Loan Repayment -->
-        <a href="#" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-2"
-           onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','repayment')"
-           data-bs-toggle="tooltip" title="Repay a loan for this member">
-            <i class="mdi mdi-currency-usd-off fs-5"></i> Loan Repayment
-        </a>
+            <!-- 🧾 Loan Fee Payment -->
+            <a href="#" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-2"
+               onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','loanapplicationfeepayment')"
+               data-bs-toggle="tooltip" title="Pay for loan application processing">
+                <i class="mdi mdi-file-document-edit-outline fs-5"></i> Loan Fee
+            </a>
 
-        <!-- 🧾 Loan Fee Payment -->
-        <a href="#" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-2"
-           onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','loanapplicationfeepayment')"
-           data-bs-toggle="tooltip" title="Pay for loan application processing">
-            <i class="mdi mdi-file-document-edit-outline fs-5"></i> Loan Fee
-        </a>
+            <!-- 🔔 Notification Charge -->
+            <a href="#" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-2"
+               onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','withdrawalnotification')"
+               data-bs-toggle="tooltip" title="Pay pending notification fees (e.g. withdrawal alerts)">
+                <i class="mdi mdi-bell-alert-outline fs-5"></i> Notif. Charge
+            </a>
 
-        <!-- 🔔 Notification Charge -->
-        <a href="#" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-2"
-           onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','withdrawalnotification')"
-           data-bs-toggle="tooltip" title="Pay pending notification fees (e.g. withdrawal alerts)">
-            <i class="mdi mdi-bell-alert-outline fs-5"></i> Notif. Charge
-        </a>
+            <!-- 👤 Add Representative -->
+            <a href="#" class="btn btn-sm btn-outline-dark d-flex align-items-center gap-2"
+               onclick="AddDepositor()" data-bs-toggle="tooltip" title="Add depositor or representative">
+                <i class="mdi mdi-account-plus-outline fs-5"></i> Add Rep
+            </a>
 
-        <!-- 👤 Add Representative -->
-        <a href="#" class="btn btn-sm btn-outline-dark d-flex align-items-center gap-2"
-           onclick="AddDepositor()" data-bs-toggle="tooltip" title="Add depositor or representative">
-            <i class="mdi mdi-account-plus-outline fs-5"></i> Add Rep
-        </a>
+            <!-- 📝 Add Note -->
+            <a href="#" class="btn btn-sm btn-outline-info d-flex align-items-center gap-2"
+               onclick="AddNote()" data-bs-toggle="tooltip" title="Add internal notes for this operation">
+                <i class="mdi mdi-note-text-outline fs-5"></i> Note
+            </a>
 
-        <!-- 📝 Add Note -->
-        <a href="#" class="btn btn-sm btn-outline-info d-flex align-items-center gap-2"
-           onclick="AddNote()" data-bs-toggle="tooltip" title="Add internal notes for this operation">
-            <i class="mdi mdi-note-text-outline fs-5"></i> Note
-        </a>
-
-        <!-- 🧑‍🤝‍🧑 Temp Members -->
-        <!-- 👤 Pre-Registered Members (Pending Validation) -->
-        <a href="#"
-           class="btn btn-sm btn-outline-danger d-flex align-items-center gap-2"
-           onclick="$('#tempMembersModal').modal('show'); setTimeout(loadMemberData, 300);"
-           data-bs-toggle="tooltip"
-           title="Manage Pre-Registered Members who are awaiting final validation before full onboarding">
-            <i class="mdi mdi-account-alert-outline fs-5"></i> Pre-Registered Members
-        </a>
-
+            <!-- 🧑‍🤝‍🧑 Temp Members -->
+            <a href="#"
+               class="btn btn-sm btn-outline-danger d-flex align-items-center gap-2"
+               onclick="$('#tempMembersModal').modal('show'); setTimeout(loadMemberData, 300);"
+               data-bs-toggle="tooltip"
+               title="Manage Pre-Registered Members who are awaiting final validation before full onboarding">
+                <i class="mdi mdi-account-alert-outline fs-5"></i> Pre-Registered Members
+            </a>
+        }
     </div>
 </fieldset>
 
 
-<!-- 🔴 CASH-OUT PANEL -->
-@*<fieldset class="fieldset-custom border border-danger p-3 rounded">
-        <legend class="text-danger fw-bold"><i class="fas fa-arrow-up me-1"></i> CASH-OUT OPERATIONS</legend>
 
-        <div class="d-flex flex-wrap gap-2">
-
-            <a href="#" class="btn btn-sm btn-danger d-flex align-items-center gap-2"
-               onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','cashout')"
-               data-bs-toggle="tooltip" title="Cash Withdrawal">
-                <i class="fas fa-money-bill-wave-alt"></i> Cash-Out
-            </a>
-
-            <a href="#" class="btn btn-sm btn-warning d-flex align-items-center gap-2"
-               onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','cashoutsws')"
-               data-bs-toggle="tooltip" title="SWS Withdrawal">
-                <i class="fas fa-hand-holding-usd"></i> SWS Out
-            </a>
-
-            <a href="#" class="btn btn-sm btn-primary d-flex align-items-center gap-2"
-               onclick="AddDepositor()" data-toggle="modal" data-target="#depositerModal"
-               data-bs-toggle="tooltip" title="Add Representative">
-                <i class="fas fa-user-plus"></i> Add Rep
-            </a>
-
-            <a href="#" class="btn btn-sm btn-secondary d-flex align-items-center gap-2"
-               onclick="AddNote()" data-toggle="modal" data-target="#depositerModal"
-               data-bs-toggle="tooltip" title="Add Note">
-                <i class="fas fa-sticky-note"></i> Note
-            </a>
-
-            <a href="#" class="btn btn-sm btn-outline-success d-flex align-items-center gap-2"
-               onclick="openTempMembersModal()"
-               data-bs-toggle="tooltip" title="View Temporarily Registered Members">
-                <i class="fas fa-users"></i> Temp Members
-            </a>
-
-
-
-        </div>
-    </fieldset>*@

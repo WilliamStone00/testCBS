@@ -3,6 +3,7 @@
     var isNewSubscription = ViewBag.Operation?.ToString()?.ToLower() == "newsubcription";
 }
 
+<span id="customerName" class="d-none">@Model.Customer.name</span>
 @if (ViewBag.Operation == "cashin" || isNewSubscription)
 {
     <div class="form-wrapper">
@@ -33,7 +34,7 @@
 
                     <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: <b>@Model.MemberOnboardingDetailDto.GrandTotal.ToString("N0")</b></span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0" />
                         </div>
                     </div>
@@ -94,7 +95,7 @@
                             <tfoot>
                                 <tr>
                                     <td colspan="3" class="text-end fw-bold">Total:</td>
-                                    <td id="tableTotal">0</td>
+                                    <td id="tableTotal"><b>@Model.MemberOnboardingDetailDto.GrandTotal.ToString("N0")</b></td>
                                     <td colspan="4"></td>
                                 </tr>
                                 <tr>
@@ -941,7 +942,7 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
 }
 
 
-@*<input type="hidden" id="totalProvision" value="0" />
+<input type="hidden" id="totalProvision" value="0" />
 
     <div class="col-md-12" style="display:none">
         <div class="form-floating form-floating-outline">
@@ -950,4 +951,4 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
         <button type="submit" id="btnSave" class="btn btn-secondary me-2" onclick="Reprint()">
             <i class="fas fa-print me-1"></i> Re-print
         </button>
-    </div>*@
+    </div>
