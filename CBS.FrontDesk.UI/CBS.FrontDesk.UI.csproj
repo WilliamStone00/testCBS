@@ -3331,6 +3331,7 @@
     <Content Include="Scripts\Js\CMoney\cmMembers.js" />
     <Content Include="Scripts\Js\Crud\AccountingDay\AccountingDayStatus.js" />
     <Content Include="Scripts\Js\Crud\AuditTrail\Audits.js" />
+    <Content Include="Scripts\Js\Crud\CashDesk\PreMemberOnboarding.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\LoanRefpaymentSimulation.js" />
     <Content Include="Scripts\Js\Crud\MenuTranslation\MenuTranslationUpdate.js" />
     <Content Include="Scripts\Js\Crud\MenuTranslation\MenuTranslation.js" />
@@ -3804,7 +3805,7 @@
     <Content Include="Views\CashDesk\_OperationForm.cshtml" />
     <Content Include="Views\CashDesk\_DenominationBreakDown.cshtml" />
     <Content Include="Views\CashDesk\_DepositerForm.cshtml" />
-    <Content Include="Views\CashDesk\_OperationFormOld.cshtml" />
+    <Content Include="Views\CashDesk\_TemporalMembersLookUp.cshtml" />
     <Content Include="Views\CashDesk\_Note.cshtml" />
     <Content Include="Views\MembersFSeries\Index.cshtml" />
     <Content Include="Views\MembersFSeries\_MembersData.cshtml" />
@@ -4336,6 +4337,7 @@
     <Content Include="Views\MenuTranslation\Index.cshtml" />
     <Content Include="Views\MenuTranslation\Update.cshtml" />
     <Content Include="Views\MenuTranslation\_MenuTranslationUpdateData.cshtml" />
+    <Content Include="Views\CashDesk\_PreMemberOnboardingSummary.cshtml" />
     <Content Include="Views\AccountingConfiguration\JournalEntryConfig.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CreateBlacklistAccountForJE.cshtml" />
     <Content Include="Views\AccountingConfiguration\_BlacklistAccountData.cshtml" />

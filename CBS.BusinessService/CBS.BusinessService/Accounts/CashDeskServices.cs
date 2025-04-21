@@ -27,6 +27,7 @@ using System.Web.Mvc;
 using CBS.BusinessService.Application;
 using DocumentFormat.OpenXml.Bibliography;
 using CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP;
+using Microsoft.Owin.Logging;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -90,6 +91,8 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
+       
+
 
         private CustomerAccountDto MapCustomersToAccounts(IndividualProfile a, CustomerAccount caAccount, Branch b)
         {
@@ -903,74 +906,194 @@ namespace CBS.BusinessService.Accounts
             }
         }
 
+        public async Task<MemberOnboardingDetailDto> GetOnboardingDetailsAsync(string legalForm)
+        {
+            try
+            {
+                
+            
+
+                bool isMoralPerson = string.Equals(legalForm, "Moral_Person", StringComparison.OrdinalIgnoreCase);
+                var branchId = GetBranchID();
+
+                var getMemberOnboarding = new GetMemberOnboardingDetailQuery
+                {
+                    BranchId = branchId,
+                    IsMoralPerson = isMoralPerson
+                };
+                var response = await _transactionApiHelper.PostAsync<ResponseObject<MemberOnboardingDetailDto>>(
+                    APICallHelper.GetMemberOnboardingDetails, getMemberOnboarding);
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception with context if logging is configured
+                // _logger.LogError(ex, $"Error retrieving onboarding details for customer ID: {customerID}");
+                throw;
+            }
+        }
+
 
         public async Task<CashDesk> GetAccountByAccountNumberSearch(string customerId, string path)
         {
             try
             {
-
-                var cusResponseObject = await GetCustomerAccounts(customerId);
-                if (cusResponseObject == null)
-                {
+                var accounts = await GetCustomerAccounts(customerId);
+                if (accounts == null || !accounts.Any())
                     return null;
-                }
-                if (cusResponseObject.Any())
+
+                var customer = await GetCustomer(customerId);
+                if (customer == null)
+                    return null;
+
+                var firstAccount = accounts.First();
+                var branch = await _branchServices.GetBranch(firstAccount.branchId);
+
+                customer.name = firstAccount.customerName;
+                customer.CustomerId = customerId;
+
+                // Containers
+                var loans = new List<Loan>();
+                var withdrawalNotifications = new List<WithdrawalNotification>();
+                var loanApplicationFees = new List<LoanApplicationFee>();
+                var amountRequested = 0m;
+                var onboardingDetail = new MemberOnboardingDetailDto();
+                var subscriptionFee = 0m;
+
+                switch (path?.ToLower())
                 {
-                    var Accounts = cusResponseObject;
-                    var customer = new IndividualProfile();
-                    var branch = await _branchServices.GetBranch(Accounts.FirstOrDefault().branchId);
-                    var loans = new List<Loan>();
-                    var WithdrawalNotifications = new List<WithdrawalNotification>();
-                    var loanApplicationFees = new List<LoanApplicationFee>();
-                    decimal amountRequested = 0;
-                    if (path == "F5")
-                    {
-                        //loans = (from a in await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId = customerId, QueryParameter = "Open" }) select a).ToList();
+                    case "newsubcription":
+                        onboardingDetail = await GetOnboardingDetailsAsync(customer.LegalForm);
+                        subscriptionFee = onboardingDetail.GrandTotal;
+                        break;
 
-                    }
-                    else if (path == "repayment")
-                    {
-                        loans = (from a in await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId = customerId, QueryParameter = "Open" }) select a).ToList();
-
-                    }
-
-                    else if (path == "withdrawalnotification")
-                    {
-
-                        if (Accounts != null)
+                    case "repayment":
+                        loans = (await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery
                         {
-                            var savingAccount = Accounts.FirstOrDefault(x => x.accountType == "Saving");
-                            if (savingAccount != null && savingAccount.WithdrawalNotifications != null)
-                            {
-                                WithdrawalNotifications = savingAccount.WithdrawalNotifications.Where(x => x.IsNotificationPaid == false).ToList();
-                            }
+                            CustomerId = customerId,
+                            QueryParameter = "Open"
+                        }))?.ToList() ?? new List<Loan>();
+                        break;
+
+                    case "withdrawalnotification":
+                        var savingAcc = accounts.FirstOrDefault(x => x.accountType == "Saving");
+                        if (savingAcc?.WithdrawalNotifications != null)
+                        {
+                            withdrawalNotifications = savingAcc.WithdrawalNotifications
+                                .Where(x => !x.IsNotificationPaid)
+                                .ToList();
                         }
-                    }
-                    else if (path == "loanapplicationfeepayment")
-                    {
+                        break;
 
+                    case "loanapplicationfeepayment":
                         loanApplicationFees = await GetLoanApplicationFeesPending(customerId);
-                    }
-                    //Biossing@1234_
-                    else if (path == "cashout")
-                    {
-                        amountRequested = Accounts.FirstOrDefault(x => x.accountType == "Saving")?.WithdrawalNotifications.FirstOrDefault(x => x.IsNotificationPaid)?.AmountRequired ?? 0;
+                        break;
 
-                    }
-                    customer.name = $"{Accounts.FirstOrDefault().customerName}";
-                    customer.CustomerId = customerId;
-                    var cashDesk = new CashDesk { Branch = branch, Accounts = Accounts, BulkDeposit = new BulkDeposit { Amount = amountRequested, CheckNumber = "N/A", CheckName = "N/A" }, BulkDeposits = BuidObject(Accounts), Customer = customer, LoanId = null, CustomerId = customerId, Loans = loans.ToList(), WithdrawalNotifications = WithdrawalNotifications, LoanApplicationFees = loanApplicationFees };
-                    return cashDesk;
+                    case "cashout":
+                        amountRequested = accounts
+                            .FirstOrDefault(x => x.accountType == "Saving")
+                            ?.WithdrawalNotifications
+                            ?.FirstOrDefault(x => !x.IsNotificationPaid)
+                            ?.AmountRequired ?? 0;
+                        break;
                 }
 
-                return null;
+                return new CashDesk
+                {
+                    Branch = branch,
+                    Accounts = accounts,
+                    BulkDeposit = new BulkDeposit
+                    {
+                        Amount = amountRequested > 0 ? amountRequested : subscriptionFee,
+                        CheckNumber = "N/A",
+                        CheckName = "N/A"
+                    },
+                    BulkDeposits = BuidObject(accounts, path, subscriptionFee, onboardingDetail),
+                    Customer = customer,
+                    CustomerId = customerId,
+                    Loans = loans,
+                    WithdrawalNotifications = withdrawalNotifications,
+                    LoanApplicationFees = loanApplicationFees,
+                    MemberOnboardingDetailDto = onboardingDetail
+                };
             }
             catch (Exception ex)
             {
-                // Log and handle exception
-                throw ex;
+                throw;
             }
         }
+
+
+
+        //public async Task<CashDesk> GetAccountByAccountNumberSearch(string customerId, string path)
+        //{
+        //    try
+        //    {
+        //        var memberOnboardingDetail = new MemberOnboardingDetailDto();
+        //        var cusResponseObject = await GetCustomerAccounts(customerId);
+        //        if (cusResponseObject == null)
+        //        {
+        //            return null;
+        //        }
+        //        var customer = await GetCustomer(customerId);
+
+        //        if (cusResponseObject.Any())
+        //        {
+        //            var Accounts = cusResponseObject;
+        //            var branch = await _branchServices.GetBranch(Accounts.FirstOrDefault().branchId);
+        //            var loans = new List<Loan>();
+        //            var WithdrawalNotifications = new List<WithdrawalNotification>();
+        //            var loanApplicationFees = new List<LoanApplicationFee>();
+        //            decimal amountRequested = 0;
+        //            if (path == "newsubcription")
+        //            {
+        //                memberOnboardingDetail = await GetOnboardingDetailsAsync(customer.LegalForm);
+
+        //            }
+        //            else if (path == "repayment")
+        //            {
+        //                loans = (from a in await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId = customerId, QueryParameter = "Open" }) select a).ToList();
+
+        //            }
+
+        //            else if (path == "withdrawalnotification")
+        //            {
+
+        //                if (Accounts != null)
+        //                {
+        //                    var savingAccount = Accounts.FirstOrDefault(x => x.accountType == "Saving");
+        //                    if (savingAccount != null && savingAccount.WithdrawalNotifications != null)
+        //                    {
+        //                        WithdrawalNotifications = savingAccount.WithdrawalNotifications.Where(x => x.IsNotificationPaid == false).ToList();
+        //                    }
+        //                }
+        //            }
+        //            else if (path == "loanapplicationfeepayment")
+        //            {
+
+        //                loanApplicationFees = await GetLoanApplicationFeesPending(customerId);
+        //            }
+        //            //Biossing@1234_
+        //            else if (path == "cashout")
+        //            {
+        //                amountRequested = Accounts.FirstOrDefault(x => x.accountType == "Saving")?.WithdrawalNotifications.FirstOrDefault(x => x.IsNotificationPaid)?.AmountRequired ?? 0;
+
+        //            }
+        //            customer.name = $"{Accounts.FirstOrDefault().customerName}";
+        //            customer.CustomerId = customerId;
+        //            var cashDesk = new CashDesk { Branch = branch, Accounts = Accounts, BulkDeposit = new BulkDeposit { Amount = amountRequested, CheckNumber = "N/A", CheckName = "N/A" }, BulkDeposits = BuidObject(Accounts), Customer = customer, LoanId = null, CustomerId = customerId, Loans = loans.ToList(), WithdrawalNotifications = WithdrawalNotifications, LoanApplicationFees = loanApplicationFees };
+        //            cashDesk.MemberOnboardingDetailDto=memberOnboardingDetail;
+        //            return cashDesk;
+        //        }
+
+        //        return null;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log and handle exception
+        //        throw ex;
+        //    }
+        //}
 
         public async Task<CashDesk> GetCashDeskRemittance(Remittance remittance = null, string remittanceId = null)
         {
@@ -1115,50 +1238,75 @@ namespace CBS.BusinessService.Accounts
         //    }
         //}
 
-        public List<BulkDeposit> BuidObject(List<CustomerAccount> accounts)
+        public List<BulkDeposit> BuidObject(
+            List<CustomerAccount> accounts,
+            string path = null,
+            decimal subscriptionFee = 0,
+            MemberOnboardingDetailDto onboardingDetail = null)
         {
-            if (accounts.Any())
+            bool isNewSubscription = string.Equals(path, "newsubcription", StringComparison.OrdinalIgnoreCase);
+
+            if (accounts != null && accounts.Any())
             {
-                var selected = accounts.Select(a => new BulkDeposit
+                var selected = accounts.Select(a =>
                 {
-                    AccountNumber = a.accountNumber,
-                    AccountType = a.product.Name,
-                    Amount = 0,
-                    Balance = a == null ? 0 : a.balance,
-                    currencyNotes = new CurrencyNotes(),
-                    CustomerId = a.customerId,
-                    Fee = 0,
-                    Interest = 0,
-                    ProductId=a.productId,
-                    LoanId = null,
-                    Penalty = 0,
-                    Total = 0
+                    var accountType = a.accountType?.ToLower() ?? "";
+                    var productName = a.product?.Name ?? "Unknown";
+
+                    decimal applyAmount = 0;
+
+                    if (isNewSubscription && onboardingDetail != null)
+                    {
+                        if (accountType.Contains("saving"))
+                            applyAmount = onboardingDetail.MinSavingsOpening;
+                        else if (accountType.Contains("share") && !accountType.Contains("pref"))
+                            applyAmount = onboardingDetail.MinSharesOpening;
+                        else if (accountType.Contains("pref"))
+                            applyAmount = onboardingDetail.MinPrefSharesOpening;
+                        else if (accountType.Contains("deposit"))
+                            applyAmount = onboardingDetail.MinDepositOpening;
+                        else if (accountType.Contains("membership"))
+                            applyAmount = subscriptionFee;
+                    }
+
+                    return new BulkDeposit
+                    {
+                        AccountNumber = a.accountNumber,
+                        AccountType = productName,
+                        Amount = applyAmount,
+                        Balance = a.balance,
+                        currencyNotes = new CurrencyNotes(),
+                        CustomerId = a.customerId,
+                        Fee = 0,
+                        Interest = 0,
+                        ProductId = a.productId,
+                        LoanId = null,
+                        Penalty = 0,
+                        Total = applyAmount
+                    };
                 }).ToList();
+
                 return selected;
             }
-            else
-            {
-                // Create a default BulkDeposit object
-                var defaultBulkDeposit = new BulkDeposit
-                {
-                    AccountNumber = "N/A",
-                    AccountType = "N/A",
-                    Amount = 0,
-                    Balance = 0,
-                    currencyNotes = new CurrencyNotes(),
-                    CustomerId = "N/A",
-                    Fee = 0,
-                    Interest = 0,
-                    LoanId = null,
-                    Penalty = 0,
-                    Total = 0
-                };
 
-                // Return a list containing the default BulkDeposit object
-                return new List<BulkDeposit> { defaultBulkDeposit };
-
-            }
-
+            // Return a default fallback object if accounts are missing
+            return new List<BulkDeposit>
+    {
+        new BulkDeposit
+        {
+            AccountNumber = "N/A",
+            AccountType = "N/A",
+            Amount = 0,
+            Balance = 0,
+            currencyNotes = new CurrencyNotes(),
+            CustomerId = "N/A",
+            Fee = 0,
+            Interest = 0,
+            LoanId = null,
+            Penalty = 0,
+            Total = 0
+        }
+    };
         }
         public List<BulkDeposit> BuidObject(List<Account> accounts, Remittance remittance)
         {

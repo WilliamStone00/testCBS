@@ -561,57 +561,22 @@ function SearchByCustomerNumber(partialView, divToloadPV) {
     AddORUpdateGen($('#manualSearchInput').val(), divToloadPV, partialView, 'search', "CashDesk");
     //calculateBalance();
 }
+
+
 function GetMember() {
-    var operation = $("#currentselectedOperation").val();
     var memberId = $('#manualSearchInput').val();
+
+    // Set default operation
+    var operation = $("#currentselectedOperation").val();
+
+    // If the member ID contains 'PRM', override operation to 'newsubcription'
+    if (memberId && memberId.toUpperCase().includes("PRM")) {
+        operation = "newsubcription";
+        $("#currentselectedOperation").val(operation); // ✅ Save it back
+    }
+
+    // Now call the member loader
     GetMemberData(memberId, '_OperationDesk', 'datalistingview', operation);
-    /*GetMemberData(memberId, '_OperationDesk', 'datalistingview', 'cashin');*/
-}
-
-function GetMemberData(Key, partialView, divToloadPV, path) {
-    $("#currentselectedOperation").val(path);
-    var spanElement = document.getElementById('cashDeskOperations');
-
-    // Default style
-    spanElement.style.fontWeight = "bold";
-    spanElement.style.textDecoration = "underline";
-    spanElement.style.textDecorationThickness = "2px";
-
-    if (path == "cashin") {
-        spanElement.innerText = "CASH-IN OPERATIONS";
-        spanElement.style.color = "green";
-    }
-    else if (path == "cashout") {
-        spanElement.innerText = "CASH-OUT OPERATIONS";
-        spanElement.style.color = "red";
-    }
-    else if (path == "cashoutsws") {
-        spanElement.innerText = "SWS CASH-OUT OPERATIONS";
-        spanElement.style.color = "red";
-    }
-    else if (path == "repayment") {
-        spanElement.innerText = "LOAN REPAYMENT OPERATIONS";
-        spanElement.style.color = "green";
-    }
-    else if (path == "withdrawalnotification") {
-        spanElement.innerText = "SAVING WITHDRAWAL NOTIFICATION PAYMENT";
-        spanElement.style.color = "red";
-    }
-    else if (path == "loanapplicationfeepayment") {
-        spanElement.innerText = "LOAN APPLICATION FEE PAYMENT";
-        spanElement.style.color = "green";
-    }
-    else if (path == "search") {
-        spanElement.innerText = "MEMBER'S INFORMATION";
-        spanElement.style.color = "blue";
-    }
-    else {
-        spanElement.innerText = "CASH OPERATIONS";
-        spanElement.style.color = "blue"; // Default color for other paths
-    }
-
-    AddORUpdateGen(Key, divToloadPV, partialView, path, "CashDesk");
-    //calculateBalance();
 }
 
 function GetLoan(KEY) {

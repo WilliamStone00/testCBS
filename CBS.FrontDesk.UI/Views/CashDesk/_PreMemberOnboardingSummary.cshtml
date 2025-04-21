@@ -1,0 +1,89 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+
+<!-- Onboarding Summary Section -->
+<div class="card shadow-sm mb-1">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Onboarding Summary for Pre-Registered Member</span>
+        <button class="btn btn-sm btn-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOnboardingSummary" aria-expanded="false" aria-controls="collapseOnboardingSummary">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseOnboardingSummary" class="collapse">
+        <div class="card-body">
+
+            <!-- Inner Summary Panel -->
+            <div class="card border border-primary mb-3">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <span><i class="mdi mdi-cash-plus me-2"></i> Onboarding Breakdown</span>
+                    <span class="badge bg-light text-primary">@Model.MemberOnboardingDetailDto.CustomerId</span>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Opening Balances -->
+                        <div class="col-md-4">
+                            <h6 class="text-dark fw-bold mb-2">Minimum Opening Balances</h6>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Savings</span><span>@Model.MemberOnboardingDetailDto.MinSavingsOpening.ToString("N0")</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Shares</span><span>@Model.MemberOnboardingDetailDto.MinSharesOpening.ToString("N0")</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Preference Shares</span><span>@Model.MemberOnboardingDetailDto.MinPrefSharesOpening.ToString("N0")</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Deposit</span><span>@Model.MemberOnboardingDetailDto.MinDepositOpening.ToString("N0")</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Required Items -->
+                        <div class="col-md-8">
+                            <h6 class="text-dark fw-bold mb-2">Required Onboarding Items</h6>
+                            <ul class="list-group list-group-flush">
+                                @foreach (var item in Model.MemberOnboardingDetailDto.RequiredItems)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>@item.ItemName</span><span>@item.UnitPrice.ToString("N0")</span>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                    <hr class="mt-4" />
+
+                    <!-- Totals -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="d-flex justify-content-between fw-bold mb-1">
+                                <span>Total Account Opening:</span>
+                                <span>@Model.MemberOnboardingDetailDto.TotalAccountOpening.ToString("N0")</span>
+                            </div>
+                            <div class="d-flex justify-content-between fw-bold mb-1">
+                                <span>Total Onboarding Item Cost:</span>
+                                <span>@Model.MemberOnboardingDetailDto.TotalItemCost.ToString("N0")</span>
+                            </div>
+                            <div class="d-flex justify-content-between fs-5 mt-2">
+                                <span class="text-primary fw-bold">Grand Total:</span>
+                                <span class="text-primary fw-bold">@Model.MemberOnboardingDetailDto.GrandTotal.ToString("N0")</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legal Form Indicator -->
+            <div class="alert alert-info d-flex justify-content-between align-items-center mt-3">
+                <span class="fw-bold">Onboarding Type:</span>
+                <span class="badge bg-secondary text-white fs-6 px-3">
+                    @(Model.Customer?.LegalForm == "Moral_Person" ? "Moral Person" : "Physical Person")
+                </span>
+            </div>
+
+        </div>
+    </div>
+</div>
