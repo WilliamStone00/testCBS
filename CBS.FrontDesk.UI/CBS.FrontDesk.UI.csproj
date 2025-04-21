@@ -672,6 +672,31 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalsAccountMappingInfo.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\TransactionConfiguration\Globals_ClossingFeeConfig.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Globals_ClossingFeeConfig.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\TransactionConfiguration\Globals_ClossingFeeConfig.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Globals_ClossingFeeConfig.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\TransactionConfiguration\Globals_ClossingFeeData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Globals_ClossingFeeData.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\TransactionConfiguration\Globals_DepositConfig.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Globals_DepositConfig.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\TransactionConfiguration\Globals_DepositData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Globals_DepositData.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -3157,6 +3182,27 @@
     <Content Include="Loaders\Images\loading3.gif" />
     <Content Include="Loaders\Images\OxNk.txt" />
     <Content Include="ReportForm\ReportViewer.aspx" />
+    <Content Include="App_GlobalResources\TransactionConfiguration\Globals_ClossingFeeConfig.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Globals_ClossingFeeConfig.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\TransactionConfiguration\Globals_ClossingFeeConfig.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Globals_ClossingFeeConfig.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\TransactionConfiguration\Globals_ClossingFeeData.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Globals_ClossingFeeData.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\TransactionConfiguration\Globals_DepositConfig.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Globals_DepositConfig.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\TransactionConfiguration\Globals_DepositData.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Globals_DepositData.Designer.cs</LastGenOutput>
+    </Content>
+    <None Include="Resources\TextFile1.txt" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
