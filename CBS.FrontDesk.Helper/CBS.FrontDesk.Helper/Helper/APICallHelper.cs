@@ -5,7 +5,14 @@ namespace CBS.FrontDesk.Helper
 {
     public abstract class APICallHelper
     {
-        //
+
+        //BlacklistAccounts
+        public static string Get_Update_Delete_BlacklistAccount = "/api/v1/BlacklistAccount/{0}";
+        public static string GetAllBlacklistAccount = "/api/v1/BlacklistAccounts";
+        public static string CreateBlacklistAccount = "/api/v1/BlacklistAccount";
+
+
+
         public static string GetAllFinancialDocument = "/api/v1/Documents";
         public static string GetlocationInforUrl = "/api/v1/Country/Location/CMR";
         //TrialBalanceFile  

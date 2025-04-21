@@ -4336,6 +4336,9 @@
     <Content Include="Views\MenuTranslation\Index.cshtml" />
     <Content Include="Views\MenuTranslation\Update.cshtml" />
     <Content Include="Views\MenuTranslation\_MenuTranslationUpdateData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\JournalEntryConfig.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateBlacklistAccountForJE.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_BlacklistAccountData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

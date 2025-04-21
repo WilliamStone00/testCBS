@@ -195,7 +195,7 @@
     <Compile Include="Accounting\CashMovementTrackerServices.cs" />
     <Compile Include="Accounting\CashMovementTrackingConfigurationServices.cs" />
     <Compile Include="Accounting\ChartOfAccountManagementPositionService.cs" />
-    <Compile Include="Accounting\Class1.cs" />
+    <Compile Include="Accounting\BlacklistAccountServices.cs" />
     <Compile Include="Accounting\DocumentTypeServices.cs" />
     <Compile Include="Accounting\DocumentReportServices.cs" />
     <Compile Include="Accounting\ConnectionHub.cs" />
@@ -372,6 +372,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BankZone\" />
+    <Folder Include="BlacklistAccount\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

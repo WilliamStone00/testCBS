@@ -46,6 +46,7 @@ namespace CBS.FrontDesk.UI.Controllers
         private readonly AccountingEntryRuleService _accountingEntryRuleService;
         private readonly BranchServices _branchService;
         private readonly AccountingRuleService _AccountingRuleServices;
+        private readonly BlacklistAccountServices _blacklistAccountServices;
         //  private readonly List<string> excludedPrefixes = ['2', '5', '6', '46', '41', '42'];
         //private 
         private const string CLASS_4 = "4"; //THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)
@@ -63,6 +64,7 @@ namespace CBS.FrontDesk.UI.Controllers
             _branchService = new BranchServices();
             _AccountingRuleServices = new AccountingRuleService();
             _accountCategoryServices = new AccountCategoryServices();
+            _blacklistAccountServices = new BlacklistAccountServices();
         }
         // GET:ManuallyJournalEntry/PendingAccountingEntries
 
@@ -105,6 +107,25 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             return selectListItems;
         }
+
+        private async Task<List<ChartofAccountManagementPosition>> GetAllAccountsExcludingOperationsAccountIncludingBlacklistedAccountAsync()
+        {
+            var accounts = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
+            var accountingRules = await _accountingEntryRuleService.GetAccountingEntryRules();
+            var blacklistedAccounts = await _blacklistAccountServices.GetBlacklistAccounts();
+
+            // Use HashSet for O(1) lookup time
+            var excludedFromRules = new HashSet<string>(accountingRules.Select(x => x.DeterminationAccountId));
+            var excludedFromBlacklist = new HashSet<string>(blacklistedAccounts.Select(x => x.Id));
+
+            var result = accounts
+                .Where(account => !excludedFromRules.Contains(account.Id) && !excludedFromBlacklist.Contains(account.Id))
+                .ToList();
+
+            return result;
+        }
+
+
         public async Task<ManuallyJournalEntryDataSet> GetEntries(QueryFilter model, string filter)
         {
             List<PostedEntryX> postedCollectionEntries = new List<PostedEntryX>();
@@ -177,7 +198,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
             var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
 
-            var CreditAccounts = BuildMenuViewBag(await GetAllAccountsExcludingOperationsAccountAsync());
+            var CreditAccounts = BuildMenuViewBag(await GetAllAccountOpenForJEAsync( await GetAllAccountsExcludingOperationsAccountIncludingBlacklistedAccountAsync()));
             ViewBag.Accounts = CreditAccounts;
             ViewBag.BookingDirections = await GetBookingDirections();
             ViewBag.ChartOfAccountManagementPositions = BuildMenuCOAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList());
@@ -323,12 +344,12 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             var accounts = await _AccountServices.GetAllAccounting();
             var accountingRules = (await _accountingEntryRuleService.GetAccountingEntryRules()).ToList();
-            return accounts.ToList();
-            //return accounts.Where(account =>
-            //    !CheckIfAccountIsOperationsAccount(account, accountingRules).Result)
-            //    .ToList();
+            //return accounts.ToList();
+            return accounts.Where(account =>
+                !CheckIfAccountIsOperationsAccount(account, accountingRules).Result)
+                .ToList();
         }
-
+       
         private Task<bool> CheckIfAccountIsOperationsAccount(Data.Account account, List<AccountingRuleEntry> accountingRules)
         {
             const string OPERATIONS_PREFIX_1 = "3";
@@ -349,6 +370,28 @@ namespace CBS.FrontDesk.UI.Controllers
                 account.AccountNumber.StartsWith(OPERATIONS_PREFIX_2)
             );
         }
+
+        private async Task<List<Data.Account>> GetAllAccountOpenForJEAsync(List<ChartofAccountManagementPosition> requiredChartofAccountManagementPositions)
+        {
+            var accountList = await _AccountServices.GetAllAccounting();
+
+            // Build a dictionary for fast lookups (O(1) time)
+            var accountDict = accountList
+                .GroupBy(a => a.ChartOfAccountManagementPositionId)
+                .ToDictionary(g => g.Key, g => g.First());
+
+            // Select only matching accounts
+            var result = requiredChartofAccountManagementPositions
+                .Where(pos => accountDict.ContainsKey(pos.Id))
+                .Select(pos => accountDict[pos.Id])
+                .ToList();
+
+            return result;
+        }
+
+
+
+
         private Task<List<System.Web.WebPages.Html.SelectListItem>> GetBookingDirections()
         {
             var bookingDirections = new System.Web.WebPages.Html.SelectListItem[] { new System.Web.WebPages.Html.SelectListItem { Text = "DEBIT", Value = "DEBIT" }, new System.Web.WebPages.Html.SelectListItem { Text = "CREDIT", Value = "CREDIT" } }.ToList();
