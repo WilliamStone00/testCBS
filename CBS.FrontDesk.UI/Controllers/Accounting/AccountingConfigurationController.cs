@@ -59,6 +59,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
      private readonly TrialBalanceFileServices _trialBalanceFileServices;
         private readonly UserManagementServices _userService;
         private readonly BlacklistAccountServices _blacklistAccountServices;
+        private readonly AccountBookingDirectionServices _accountBookingDirectionServices;
         private const string CLASS_4 = "4"; //THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)
         private const string CLASS_4_Payabels = "THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)";
         private const string CLASS_4_Simple = "THIRD PARTY ACCOUNTS AND ACCRUALS";
@@ -84,6 +85,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             _trialBalanceFileServices = new TrialBalanceFileServices();
             _userService = new UserManagementServices();
             _blacklistAccountServices = new BlacklistAccountServices();
+            _accountBookingDirectionServices= new AccountBookingDirectionServices();
         }
         // GET: AccountingConfiguration
 
@@ -160,9 +162,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         }
         public async Task<ActionResult> JournalEntryConfig()
         {
- 
+            var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
+            ViewBag.ChartOfAccounts = BuildMenuAccountViewBag(listAccounts.ToList());
             ViewBag.ChartOfAccountManagementPositions = BuildChartofAccountManagementPositionViewBag(await GetAllAccountsExcludingOperationsAccountIncludingBlacklistedAccountAsync());
-
+            ViewBag.BookingDirection = BuildMenuViewBagopside();
             return View(new AccountingConfiguration());
         }
 
@@ -370,8 +373,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>
             {
-            new System.Web.WebPages.Html.SelectListItem { Value = "Debit", Text = "Debit" },
-            new System.Web.WebPages.Html.SelectListItem { Value = "Credit", Text = "Credit" },
+            new System.Web.WebPages.Html.SelectListItem { Value = "DEBIT", Text = "DEBIT" },
+            new System.Web.WebPages.Html.SelectListItem { Value = "CREDIT", Text = "CREDIT" },
 
             };
             return selectListItems;
@@ -751,7 +754,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 if (model.ChartOfAccount.IsForUpdate)
                 {
 
-                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+                    serviceAction = await GetUpdateServiceActionAsync(model.ServiceOption, model);
                 }
                 else if (model.ChartOfAccount.IsForUpdate == false)
                 {
@@ -769,7 +772,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 else
                 {
 
-                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+                    serviceAction = await GetUpdateServiceActionAsync(model.ServiceOption, model);
                 }
             }
             else if (model.ServiceOption == "operationEvent")
@@ -781,7 +784,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 else
                 {
 
-                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+                    serviceAction = await GetUpdateServiceActionAsync(model.ServiceOption, model);
                 }
             }
             else if (model.ServiceOption == "operationEventAttribute")
@@ -793,7 +796,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 else
                 {
 
-                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+                    serviceAction = await GetUpdateServiceActionAsync(model.ServiceOption, model);
                 }
             }
             else if (model.ServiceOption == "accountingRuleEntry")
@@ -805,7 +808,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 else
                 {
 
-                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+                    serviceAction = await GetUpdateServiceActionAsync(model.ServiceOption, model);
                 }
             }
             else if (model.ServiceOption == "accountingRule")
@@ -817,7 +820,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 if (model.ChartOfAccount.IsForUpdate)
                 {
 
-                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+                    serviceAction = await GetUpdateServiceActionAsync(model.ServiceOption, model);
                 }
                 else if (model.ChartOfAccount.IsForUpdate == false)
                 {
@@ -836,7 +839,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 else
                 {
 
-                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+                    serviceAction = await  GetUpdateServiceActionAsync(model.ServiceOption, model);
                 }
 
 
@@ -850,7 +853,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 else
                 {
 
-                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+                    serviceAction = await GetUpdateServiceActionAsync(model.ServiceOption, model);
                 }
             }
             else if (model.ServiceOption == "chartOfAccountManagementPosition")
@@ -862,7 +865,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 else
                 {
 
-                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+                    serviceAction =  await GetUpdateServiceActionAsync(model.ServiceOption, model);
                 }
 
 
@@ -876,7 +879,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 else
                 {
 
-                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+                    serviceAction = await GetUpdateServiceActionAsync(model.ServiceOption, model);
                 }
 
 
@@ -890,7 +893,21 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 else
                 {
 
-                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+                    serviceAction = await GetUpdateServiceActionAsync(model.ServiceOption, model);
+                }
+
+
+            }
+            else if (model.ServiceOption == "accountBookingDirection")
+            {
+                if (model.Action == "insert")
+                {
+                    serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
+                }
+                else
+                {
+
+                    serviceAction = await GetUpdateServiceActionAsync(model.ServiceOption, model);
                 }
 
 
@@ -1016,12 +1033,22 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
               
                 return () => _blacklistAccountServices.Create(model.BlacklistedAccounts);
             }
+            else if (serviceOption == "accountBookingDirection")
+            {
+                var mode = await _chartOfAccountServices.GetChartOfAccountById(model.AccountBookingDirection.Id);
+                if (mode != null)
+                {
+                    model.AccountBookingDirection.AccountNumber = mode.AccountNumber;
+                    model.AccountBookingDirection.AccountName = mode.LabelEn;
+                }
+                return () => _accountBookingDirectionServices.Create(model.AccountBookingDirection);
+            }
             else
             {
                 return null;
             }
         }
-        private Func<Task<ExecutionMessages>> GetUpdateServiceAction(string serviceOption, AccountingConfiguration model)
+        private async Task<Func<Task<ExecutionMessages>>> GetUpdateServiceActionAsync(string serviceOption, AccountingConfiguration model)
         {
             if (serviceOption == "account")
             {
@@ -1076,8 +1103,18 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else if (serviceOption == "blacklistAccount")
             {
-
+                var mode = await _chartOfAccountServices.GetChartOfAccountById(model.AccountBookingDirection.Id);
+                if (mode != null)
+                {
+                    model.AccountBookingDirection.AccountNumber = mode.AccountNumber;
+                    model.AccountBookingDirection.AccountName = mode.LabelEn;
+                }
                 return () => _blacklistAccountServices.Update(model.BlacklistAccount);
+            }
+            else if (serviceOption == "accountBookingDirection")
+            {
+
+                return () => _accountBookingDirectionServices.Update(model.AccountBookingDirection);
             }
             else
             {
@@ -1167,7 +1204,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
 
             }
-
             else if (serviceOption == "operationEvent")
             {
                 if (path == "list")
@@ -1532,8 +1568,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                  };
                 var sysData = new AccountingConfiguration { TrialBalanceFiles = LoadedData.ToList() };
                 return PartialView(partialView, sysData);
-            }
-            
+            }      
             else if (serviceOption == "accountPolicy")
             {
                 if (path == "list")
@@ -1571,6 +1606,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
                 else if (path == "new")
                 {
+                    ViewBag.ChartOfAccountManagementPositions = BuildChartofAccountManagementPositionViewBag(await GetAllAccountsExcludingOperationsAccountIncludingBlacklistedAccountAsync());
+
                     return PartialView(partialView, new AccountingConfiguration { BlacklistAccount = new BlacklistAccount() });
                 }
                 else
@@ -1580,6 +1617,33 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
 
                 }
+
+            }
+            else if (serviceOption == "accountBookingDirection")
+            {
+                if (path == "list")
+                {
+                    var dataChart = await _accountBookingDirectionServices.GetAccountBookingDirections();
+
+                    var sysData = new AccountingConfiguration { AccountBookingDirections = dataChart.ToList() };
+                    return PartialView(partialView, sysData);
+
+                }
+
+                else if (path == "new")
+                {
+                    var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
+                    ViewBag.ChartOfAccounts = BuildMenuAccountViewBag(listAccounts.ToList());
+                 
+                    return PartialView(partialView, new AccountingConfiguration { AccountBookingDirection = new AccountBookingDirection() });
+                }
+                else
+                {
+                    var data = await _accountBookingDirectionServices.GetAccountBookingDirection(key);
+                    return PartialView(partialView, new AccountingConfiguration { AccountBookingDirection = data });
+
+                }
+
 
             }
             return null;

@@ -13,4 +13,14 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<string> Id { get; set; }
         
     }
+
+    public class AccountBookingDirection 
+    {
+        public string Id { get; set; }
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+        public string NormalBalance { get; set; }
+        public string IncreaseDirection { get; set; }
+        public string DecreaseDirection { get; set; }
+    }
 }
