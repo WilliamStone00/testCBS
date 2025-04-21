@@ -12,6 +12,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
@@ -317,6 +318,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 {
                     List<TrialBalance6ColumnDto> trialBalance6ColumnDto = new List<TrialBalance6ColumnDto>();
                     List<TrialBalance4ColumnDto> trialBalance4ColumnDto = new List<TrialBalance4ColumnDto>();
+                    List<ManualEntry> manualEntries = new List<ManualEntry>();
                     AccountingGeneralLedger accountingGeneralLedger = new AccountingGeneralLedger();
                     AccountingEntriesReport journalEntryDto = new AccountingEntriesReport();
                     AccountingGeneralLedgerDetails accountingGeneralLedgerDetails = new AccountingGeneralLedgerDetails();
@@ -338,7 +340,6 @@ namespace CBS.FrontDesk.UI.Controllers
                         rd.SetDataSource(trialBalance4ColumnDto);
 
                     }
-
                     else if (fileType.Contains("JE"))
                     {
                         journalEntryDto = (AccountingEntriesReport)rptSource;
@@ -358,13 +359,13 @@ namespace CBS.FrontDesk.UI.Controllers
                         rd.SetDataSource(listData);
 
                     }
-                    else if (fileType.Contains("GL"))
+                    else if (fileType.Contains("MET"))
                     {
-                        accountingGeneralLedgerDetails = (AccountingGeneralLedgerDetails)rptSource;
+                        manualEntries = (List<ManualEntry>)rptSource;
 
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
-                        var listData = accountingGeneralLedgerDetails.ConvertToGeneralLedgerDto(accountingGeneralLedgerDetails);
+                        var listData = manualEntries;//<<accountingGeneralLedgerDetails.ConvertToGeneralLedgerDto(accountingGeneralLedgerDetails);
                         rd.SetDataSource(listData);
 
                     }
@@ -402,7 +403,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 Response.Write("<H2>An error occurred while generating the report</H2>");
             }
 
-            return new EmptyResult();
+            return View();
         }
 
         public void CleanReport(ReportDocument rd)

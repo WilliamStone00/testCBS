@@ -35,10 +35,14 @@
 
                         <div class="col-md-4">
                             <div class="form-floating form-floating-outline">
-
-                                @Html.TextBoxFor(model => model.SystemQuery.FromDate, new { @class = "form-control date-picker", @type = "datetime-local", @id = "html5-datetime-local-input" })
-                                @Html.ValidationMessageFor(model => model.SystemQuery.FromDate, "", new { @class = "text-danger" })
-                                <label>From Date</label>
+@Html.TextBoxFor(model => model.SystemQuery.FromDate, new
+ {
+     @class = "form-control",
+     type = "datetime-local",
+     id = "fromDate"
+ })   @*@Html.TextBoxFor(model => model.SystemQuery.FromDate, new { @class = "form-control", @id = "dateFrom", @autocomplete = "off" })*@
+                            @Html.ValidationMessageFor(model => model.SystemQuery.FromDate, "", new { @class = "text-danger" })
+                            <label>From Date</label>
                             </div>
                         </div>
                   
@@ -46,10 +50,15 @@
                             <div class="form-floating form-floating-outline">
 
 
-                                @Html.TextBoxFor(model => model.SystemQuery.ToDate, new { @class = "form-control date-picker", @type = "datetime-local", @id = "html5-datetime-local-input" })
-                                @Html.ValidationMessageFor(model => model.SystemQuery.ToDate, "", new { @class = "text-danger" })
 
-                                <label>To Date</label>
+                                @Html.TextBoxFor(model => model.SystemQuery.ToDate, new
+ {
+     @class = "form-control",
+     type = "datetime-local",
+     id = "toDate"
+ })     @Html.ValidationMessageFor(model => model.SystemQuery.ToDate, "", new { @class = "text-danger" })
+
+                            <label>To Date</label>
                             </div>
                         </div>
                         <div class="col-md-4">

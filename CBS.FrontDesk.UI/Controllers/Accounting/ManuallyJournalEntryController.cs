@@ -1,35 +1,36 @@
-﻿using CBS.BusinessService.Accounting;
+﻿using Azure;
 using CBS.BusinessService;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
+using CBS.BusinessService.Config;
+using CBS.BusinessService.UserManagement;
+using CBS.FrontDesk.Data;
+using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
-using System.Threading.Tasks;
-using System.Net.Http.Headers;
-using CBS.FrontDesk.Data.Entity.Accounting;
-using System.Web.Services.Description;
-using CBS.FrontDesk.Data;
-using System.Reflection;
-using System.Web.WebPages.Html;
-using Microsoft.Ajax.Utilities;
-using CBS.BusinessService.UserManagement;
-using CBS.BusinessService.Config;
-using Newtonsoft.Json;
-using Microsoft.AspNet.SignalR.Owin;
-using DocumentFormat.OpenXml.Drawing.ChartDrawing;
-using Azure;
-using DocumentFormat.OpenXml.EMMA;
-using DocumentFormat.OpenXml.Office2010.ExcelAc;
-using CBS.FrontDesk.Helper;
-using CBS.FrontDesk.Data.Entity.Config;
-using DocumentFormat.OpenXml.Drawing;
-using DocumentFormat.OpenXml.Office2010.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
 using CBS.FrontDesk.Data.UserManagement;
+using CBS.FrontDesk.Helper;
+using DocumentFormat.OpenXml.Drawing;
+using DocumentFormat.OpenXml.Drawing.ChartDrawing;
+using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.SignalR.Owin;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Net.Http.Headers;
+using System.Reflection;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Services.Description;
+using System.Web.WebPages.Html;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -45,6 +46,7 @@ namespace CBS.FrontDesk.UI.Controllers
         private readonly AccountingEntryRuleService _accountingEntryRuleService;
         private readonly BranchServices _branchService;
         private readonly AccountingRuleService _AccountingRuleServices;
+        private readonly BlacklistAccountServices _blacklistAccountServices;
         //  private readonly List<string> excludedPrefixes = ['2', '5', '6', '46', '41', '42'];
         //private 
         private const string CLASS_4 = "4"; //THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)
@@ -62,6 +64,7 @@ namespace CBS.FrontDesk.UI.Controllers
             _branchService = new BranchServices();
             _AccountingRuleServices = new AccountingRuleService();
             _accountCategoryServices = new AccountCategoryServices();
+            _blacklistAccountServices = new BlacklistAccountServices();
         }
         // GET:ManuallyJournalEntry/PendingAccountingEntries
 
@@ -77,8 +80,8 @@ namespace CBS.FrontDesk.UI.Controllers
             ViewBag.Branches = BuildBranchViewBag((await _branchService.GetBranches()).ToList());
             ViewBag.filteringOptions = GetFilteringOptions();
 
-            var users = (await _userService.GetUsers()).ToList();
-            ViewBag.UsersInBranch = BuildUserViewBag(users);
+            //var users = (await _userService.GetUsers()).ToList();
+            //ViewBag.UsersInBranch = BuildUserViewBag(users);
 
             return View();
 
@@ -87,83 +90,106 @@ namespace CBS.FrontDesk.UI.Controllers
         private dynamic BuildUserViewBag(List<User> listOfItems)
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = "XXXXX", Text = $"I don't know the issuer" });
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text  = $"I don't know the issuer", Value = "XXXXX" });
             foreach (var item in listOfItems)
             {
-                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.id.ToString(), Value = $"{item.firstName} {item.name}" });
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem {  Text = $"{item.firstName} {item.name}", Value = item.id.ToString() });
             }
             return selectListItems;
         }
         private dynamic BuildUserApproverViewBag(List<User> listOfItems)
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = "XXXXX", Text = $"I don't know the approver" });
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = $"I don't know the approver" , Value = "XXXXX" });
             foreach (var item in listOfItems)
             {
-                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.id.ToString(), Value = $"{item.firstName} {item.name}" });
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = $"{item.firstName} {item.name}", Value = item.id.ToString() });
             }
             return selectListItems;
         }
-        public async Task<ManuallyJournalEntryDataSet> GetEntries(QueryModel model, string filter)
+
+        private async Task<List<ChartofAccountManagementPosition>> GetAllAccountsExcludingOperationsAccountIncludingBlacklistedAccountAsync()
         {
-            List<PostedEntry> postedCollectionEntries = new List<PostedEntry>();
-            var PostedEntries = await _Service.GetManualEntriesAsync(); //()
-            var PendingPostedEntries = PostedEntries.Where(x => x.Status.ToLower() == (filter) && (x.CreatedDate >= model.FromDate && x.CreatedDate >= model.ToDate));
-            var ApprovedPostedEntries = PostedEntries.Where(x => x.Status.ToLower() != (filter)).ToList();
-            var users = await _userService.GetUsers();
+            var accounts = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
+            var accountingRules = await _accountingEntryRuleService.GetAccountingEntryRules();
+            var blacklistedAccounts = await _blacklistAccountServices.GetBlacklistAccounts();
+
+            // Use HashSet for O(1) lookup time
+            var excludedFromRules = new HashSet<string>(accountingRules.Select(x => x.DeterminationAccountId));
+            var excludedFromBlacklist = new HashSet<string>(blacklistedAccounts.Select(x => x.Id));
+
+            var result = accounts
+                .Where(account => !excludedFromRules.Contains(account.Id) && !excludedFromBlacklist.Contains(account.Id))
+                .ToList();
+
+            return result;
+        }
+
+
+        public async Task<ManuallyJournalEntryDataSet> GetEntries(QueryFilter model, string filter)
+        {
+            List<PostedEntryX> postedCollectionEntries = new List<PostedEntryX>();
+            var PostedEntries = await _Service.RetrieveManualEntriesWithFilterAsync(model); //()
+               var users = await _userService.GetUsers();
             var usersx = users;
             var branch = await _branchService.GetBranches();
-            var results = (from p in PendingPostedEntries
-                           join u in users on p.CreatedBy equals u.id.ToString()
-                           //join po in usersx on p.ApprovedBy equals po.id.ToString()
-                           join b in branch on u.BranchID equals b.Id.ToString()
-                           select new PostedEntryX
-                           {
-                               Amount = Convert.ToDecimal(p.Amount.ToString("N")),
-                               BranchCode = b.BranchCode,
-                               CreatedBy = u.firstName + " " + u.lastName,
-                               IssuedBy = u.id.ToString(),
-                               Description = p.Description,
-                               CreatedDate = p.CreatedDate,
-                               //ApprovedBy=po.firstName + " " + po.lastName,
-                               ApprovedDate = p.ApprovedDate,
-                               Status = p.Status,
-                               PostingSource = p.PostingSource,
-                               Id = p.Id,
-                               EntryDetail = p.EntryDetail
-
-
-                           }).ToList();
-
-            var result0s = (from p in ApprovedPostedEntries
-                            join u in users on p.CreatedBy equals u.id.ToString()
-                            join po in usersx on p.ApprovedBy equals po.id.ToString()
-                            join b in branch on u.BranchID equals b.Id.ToString()
-                            select new PostedEntryX
-                            {
-                                Amount = Convert.ToDecimal(p.Amount.ToString("N")),
-                                BranchCode = b.BranchCode,
-                                CreatedBy = u.firstName + " " + u.lastName,
-                                IssuedBy = u.id.ToString(),
-                                PostingSource = p.PostingSource,
-                                Description = p.Description,
-                                CreatedDate = p.CreatedDate,
-                                ApprovedBy = po.firstName + " " + po.lastName,
-                                ApprovedDate = p.ApprovedDate,
-                                Status = p.Status,
-                                Id = p.Id,
-                                EntryDetail = p.EntryDetail
-
-
-                            }).ToList();
-            results.AddRange(result0s);
-
-            foreach (var item in results)
+            if (model.Status.ToUpper()== EntryStatus.Pending.ToString().ToUpper())
             {
-                postedCollectionEntries.Add(item.ConvertToPostedEntry(item));
+                postedCollectionEntries = (from p in PostedEntries
+                               join u1 in users on p.CreatedBy equals u1.id.ToString()
+                               //join u2 in usersx on p.ApprovedBy equals u2.id.ToString()
+                               join b in branch on u1.BranchID equals b.Id.ToString()
+                               select new PostedEntryX
+                               {
+                                   Amount = Convert.ToDecimal(p.Amount.ToString("N")),
+                                   BranchCode = b.BranchCode,
+                                   CreatedBy = u1.firstName + " " + u1.lastName,
+                                   IssuedBy = u1.id.ToString(),
+                                   Description = p.Description,
+                                   CreatedDate = DateTime.ParseExact(p.CreatedDate, "dd-MMM-yy h:mm:ss tt", CultureInfo.InvariantCulture),
+                                   ApprovedBy = p.ApprovedBy,
+                                   EndorseBy = p.ApprovedBy,
+                                   ApprovedDate =DateTime.ParseExact(p.ApprovedDate, "dd-MMM-yy h:mm:ss tt", CultureInfo.InvariantCulture),
+                                   Status = p.Status,
+                                   PostingSource = p.PostingSource,
+                                   Id = p.Id,
+                                   EntryDetail = p.EntryDetail
+
+
+                               }).ToList();
             }
-            this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()] = results;
-            return new ManuallyJournalEntryDataSet { PostedEntries = postedCollectionEntries };
+            else
+            {
+                postedCollectionEntries = (from p in PostedEntries
+                                           join u1 in users on p.CreatedBy equals u1.id.ToString()
+                                           join u2 in usersx on p.ApprovedBy equals u2.id.ToString()
+                                           join b in branch on u1.BranchID equals b.Id.ToString()
+                                           select new PostedEntryX
+                                           {
+                                               Amount = Convert.ToDecimal(p.Amount.ToString("N")),
+                                               BranchCode = b.BranchCode,
+                                               CreatedBy = u1.firstName + " " + u1.lastName,
+                                               IssuedBy = u1.id.ToString(),
+                                               Description = p.Description,
+                                               CreatedDate = DateTime.ParseExact(p.CreatedDate, "dd-MMM-yy h:mm:ss tt", CultureInfo.InvariantCulture),
+
+                                               ApprovedBy = u2.firstName + " " + u2.lastName,
+                                               EndorseBy = p.ApprovedBy,
+                                               ApprovedDate = DateTime.ParseExact(p.ApprovedDate, "dd-MMM-yy h:mm:ss tt", CultureInfo.InvariantCulture),
+
+                                               Status = p.Status,
+                                               PostingSource = p.PostingSource,
+                                               Id = p.Id,
+                                               EntryDetail = p.EntryDetail
+
+
+                                           }).ToList();
+            }
+             
+
+            
+            this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()] = postedCollectionEntries;
+            return new ManuallyJournalEntryDataSet { PostedEntriesX = postedCollectionEntries };
 
         }
         private async Task GetList()
@@ -172,7 +198,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
             var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
 
-            var CreditAccounts = BuildMenuViewBag(await GetAllAccountsExcludingOperationsAccountAsync());
+            var CreditAccounts = BuildMenuViewBag(await GetAllAccountOpenForJEAsync( await GetAllAccountsExcludingOperationsAccountIncludingBlacklistedAccountAsync()));
             ViewBag.Accounts = CreditAccounts;
             ViewBag.BookingDirections = await GetBookingDirections();
             ViewBag.ChartOfAccountManagementPositions = BuildMenuCOAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList());
@@ -214,7 +240,9 @@ namespace CBS.FrontDesk.UI.Controllers
                 {
                     users = users.Where(x => x.BranchID == branchId).ToList();
                 }
-                var AccountData = BuildUserApproverViewBag(users);
+                 
+                  
+                    var AccountData = BuildUserApproverViewBag(users);
 
 
 
@@ -316,12 +344,12 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             var accounts = await _AccountServices.GetAllAccounting();
             var accountingRules = (await _accountingEntryRuleService.GetAccountingEntryRules()).ToList();
-            return accounts.ToList();
-            //return accounts.Where(account =>
-            //    !CheckIfAccountIsOperationsAccount(account, accountingRules).Result)
-            //    .ToList();
+            //return accounts.ToList();
+            return accounts.Where(account =>
+                !CheckIfAccountIsOperationsAccount(account, accountingRules).Result)
+                .ToList();
         }
-
+       
         private Task<bool> CheckIfAccountIsOperationsAccount(Data.Account account, List<AccountingRuleEntry> accountingRules)
         {
             const string OPERATIONS_PREFIX_1 = "3";
@@ -342,6 +370,28 @@ namespace CBS.FrontDesk.UI.Controllers
                 account.AccountNumber.StartsWith(OPERATIONS_PREFIX_2)
             );
         }
+
+        private async Task<List<Data.Account>> GetAllAccountOpenForJEAsync(List<ChartofAccountManagementPosition> requiredChartofAccountManagementPositions)
+        {
+            var accountList = await _AccountServices.GetAllAccounting();
+
+            // Build a dictionary for fast lookups (O(1) time)
+            var accountDict = accountList
+                .GroupBy(a => a.ChartOfAccountManagementPositionId)
+                .ToDictionary(g => g.Key, g => g.First());
+
+            // Select only matching accounts
+            var result = requiredChartofAccountManagementPositions
+                .Where(pos => accountDict.ContainsKey(pos.Id))
+                .Select(pos => accountDict[pos.Id])
+                .ToList();
+
+            return result;
+        }
+
+
+
+
         private Task<List<System.Web.WebPages.Html.SelectListItem>> GetBookingDirections()
         {
             var bookingDirections = new System.Web.WebPages.Html.SelectListItem[] { new System.Web.WebPages.Html.SelectListItem { Text = "DEBIT", Value = "DEBIT" }, new System.Web.WebPages.Html.SelectListItem { Text = "CREDIT", Value = "CREDIT" } }.ToList();
@@ -351,9 +401,9 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             //        
             var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[]
-            { new System.Web.WebPages.Html.SelectListItem { Text = "List Of Pending Entries", Value = "ListOfPendingEntries" },
-                new System.Web.WebPages.Html.SelectListItem { Text = "List Of Approved Entries", Value = "ListOfApprovedEntries" },
-                new System.Web.WebPages.Html.SelectListItem { Text = "List Of Rejected Entries", Value = "ListOfRejectedEntries" } }.ToList();
+            { new System.Web.WebPages.Html.SelectListItem { Text = "List Of Pending Entries", Value = "Pending" },
+                new System.Web.WebPages.Html.SelectListItem { Text = "List Of Approved Entries", Value = "Approved" },
+                new System.Web.WebPages.Html.SelectListItem { Text = "List Of Rejected Entries", Value = "Rejected" } }.ToList();
             return doubbleEntryValidations;
         }
         private Task<List<System.Web.WebPages.Html.SelectListItem>> GetDoubbleEntryValidation()
@@ -1003,7 +1053,7 @@ namespace CBS.FrontDesk.UI.Controllers
         [HttpGet]
         public async Task<ActionResult> ApproveEntries(string Id, bool HasApproved, string Comment)
         {
-            var model = new EntryApproval { HasApproved = HasApproved, Id = Id, Comment = Comment, BranchId = _Service.GetBranchID() };
+            var model = new EntryApproval { HasApproved = HasApproved, Id = Id, Comment = Comment, BranchId = _Service.GetBranchID(),TransactionDate = BaseUtilities.UtcToLocal() };
             try
             {
                 var data = await _Service.ApproveAccountingEntry(model);
@@ -1025,32 +1075,89 @@ namespace CBS.FrontDesk.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> PrintDataEntries(string Id, bool HasApproved, string Comment)
+
+        public async Task<ActionResult> PrintDataEntries(string id)
         {
-            List<PostedEntryX> listPosted = (List<PostedEntryX>)this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()];
             try
             {
-                var Model = listPosted.Where(x => x.Id == Id);
-                this.HttpContext.Session["rptSource"] = Model.Any() ? Model.FirstOrDefault() : null;
-                string ReportName = $"PrintedManualJE.rpt";
-                if (Model.Any())
-                {
-                    this.HttpContext.Session["rptSource"] = "empty";
-                }
+                string userKey = "postedEntryDetails" + _AccountServices.GetUserID();
+                List<PostedEntryX> listPosted = (List<PostedEntryX>)this.HttpContext.Session[userKey];
+                var branchModel = await _branchService.GetBranch(listPosted.ToArray()[0].EntryDetail.ToArray()[0].BranchId);
 
-                this.HttpContext.Session["fileType"] = $"PDF";
-                this.HttpContext.Session["ReportName"] = $"{ReportName}";
-                this.HttpContext.Session["rptType"] = $"PDF";
-                this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
-                return Json(new { success = true, status = true, message = $"Print out journal entry[{listPosted[0].EntryDetail[0].Reference}]" });
+                if (listPosted == null)
+                    throw new Exception("No posted entries found in session");
 
+                var entry = listPosted.FirstOrDefault(x => x.Id == id);
+                if (entry == null)
+                    throw new Exception($"Entry with ID {id} not found");
+
+                if (entry.EntryDetail == null || !entry.EntryDetail.Any())
+                    throw new Exception("Entry has no details");
+                var issuer = await _userService.GetUser(entry.IssuedBy);
+                var approver = await _userService.GetUser(entry.EndorseBy);
+                var modelData = PostedEntryX.ConvertToManualEntry(entry, branchModel, issuer, approver);
+                // Set session values using the standard indexer 
+                //  string userPrefix = $"rpt_{_AccountServices.GetUserID()}_";
+                HttpContext.Session["rptSource"] = modelData;
+                HttpContext.Session["fileType"] = "MET";
+                HttpContext.Session["rptType"] = "Entry_"+id;
+                string reportName = "PrintedManualJE.rpt";
+                HttpContext.Session[ "rptpath"] = $"~/AppFiles/Reporting/Accounting/{reportName}";
+
+                return Json(new { success = true, message = "Report generated successfully" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+                return Json(new
+                {
+                    success = false,
+                    message = $"Print failed: {ex.Message}"
+                });
             }
-
         }
+
+
+        [HttpGet]
+
+        public async Task<ActionResult> PrintCurrentDataEntries(string id)
+        {
+            try
+            {
+          
+              
+
+                var entry =await _Service.GetPostedEntryReference(id);
+                var entryX = entry.ConvertToPostedEntry(entry);
+                var branchModel = await _branchService.GetBranch(entry.EntryDetail.ToArray()[0].BranchId);
+
+                if (entryX == null)
+                    throw new Exception($"Entry with ID {id} not found");
+
+                if (entryX.EntryDetail == null || !entryX.EntryDetail.Any())
+                    throw new Exception("Entry has no details");
+                var issuer = await _userService.GetUser(entryX.IssuedBy);
+                var approver = await _userService.GetUser(entryX.EndorseBy);
+                var modelData = PostedEntryX.ConvertToManualEntry(entryX, branchModel, issuer, approver);
+                // Set session values using the standard indexer 
+                //  string userPrefix = $"rpt_{_AccountServices.GetUserID()}_";
+                HttpContext.Session["rptSource"] = modelData;
+                HttpContext.Session["fileType"] = "MET";
+                HttpContext.Session["rptType"] = "Entry_" + id;
+                string reportName = "PrintedManualJE.rpt";
+                HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{reportName}";
+
+                return Json(new { success = true, message = "Report generated successfully" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = $"Print failed: {ex.Message}"
+                });
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult> PostAutoJournalEntries(AutomatedEventEntryCommand data)
         {
@@ -1329,26 +1436,29 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             else if (serviceOption == "FilteringOption")
             {
-                if (path == "ListOfPendingEntries")
+                try
                 {
-                    var model = JsonConvert.DeserializeObject<QueryModel>(key);
-                    var dataModel = await GetEntries(model, "Pending");
+                    var settings = new JsonSerializerSettings
+                    {
+                        DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                        DateTimeZoneHandling = DateTimeZoneHandling.Unspecified,
+                        Culture = CultureInfo.InvariantCulture
+                    };
+                    var modelc = JsonConvert.DeserializeObject<QueryFilter>(key, settings);
+             
+                    var dataModel = await GetEntries(modelc, "Pending");
+                    ViewBag.IsAuthourized = true;
                     return PartialView(partialView, dataModel);
                 }
-                else if (path == "ListOfApprovedEntries")
+                catch (Exception EX)
                 {
-                    var model = JsonConvert.DeserializeObject<QueryModel>(key);
-                    var dataModel = await GetEntries(model, "Approved");
-                    return PartialView(partialView, dataModel);
+                    ViewBag.IsAuthourized = false;
+                    ViewBag.Error = _AccountServices.GetUserFullName() + ", You must select a date range you estimated the data was inputed";
 
+                    return PartialView(partialView, new ManuallyJournalEntryDataSet {  });
                 }
-                else if (path == "ListOfRejectedEntries")
-                {
-                    var model = JsonConvert.DeserializeObject<QueryModel>(key);
-                    var dataModel = await GetEntries(model, "Rejected");
-                    return PartialView(partialView, dataModel);
-
-                }
+                
+                
             }
             else if (serviceOption == "Account")
             {

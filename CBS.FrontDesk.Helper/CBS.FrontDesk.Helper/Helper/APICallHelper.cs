@@ -5,7 +5,17 @@ namespace CBS.FrontDesk.Helper
 {
     public abstract class APICallHelper
     {
-        //
+
+        //BlacklistAccounts
+        public static string Get_Update_Delete_BlacklistAccount = "/api/v1/BlacklistAccount/{0}";
+        public static string GetAllBlacklistAccount = "/api/v1/BlacklistAccounts";
+        public static string CreateBlacklistAccount = "/api/v1/BlacklistAccount";
+
+        //AccountBookingDirection
+        public static string Get_Update_Delete_AccountBookingDirection = "/api/v1/AccountBookingDirection/{0}";
+        public static string GetAllAccountBookingDirection = "/api/v1/AccountBookingDirections";
+        public static string CreateAccountBookingDirection = "/api/v1/AccountBookingDirection";
+
         public static string GetAllFinancialDocument = "/api/v1/Documents";
         public static string GetlocationInforUrl = "/api/v1/Country/Location/CMR";
         //TrialBalanceFile  
@@ -427,6 +437,7 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_OtherTransaction = "/api/v1/OtherTransaction/{0}";
         public static string GetAllOtherTransaction = "/api/v1/OtherTransaction";
         public static string CreateOtherTransaction = "/api/v1/OtherTransaction";
+        public static string GetMemberOnboardingDetails = "/api/v1/MemberOnboarding/GetDetail";
         public static string MobileMoneyNoneCashCashIn = "/api/v1/OtherTransaction/MobileMoney-None-Cash-Cash-In";
 
         public static string CreateOtherTransactionMobileMoney = "/api/v1/OtherTransaction/MobileMoney";
@@ -937,10 +948,11 @@ namespace CBS.FrontDesk.Helper
         public static string CleanAccountingEntryUrl = "/api/v1/AccountingEntry/CleanAccountAndAccountingEntriesCommand";
         public static string Url_Get_Update_delete_EntryTempData = "/api/v1/EntryTempData/{0}";
         public static string Url_Get_RefereceId = "api/v1/EntryTempDatas/{0}";
+        public static string Url_Get_PostedRefereceId = "/api/v1/EntryTempDatas/PostedEntry/{0}";
         public static string Post_AccountingEntry_Entries = "/api/v1/EntryTempData/PostManualEntries";
         public static string GetReferenceSequenceUrl = "/api/v1/EntryTempDatas/GetSequence";
         public static string Url_Get_AllPostedEntries = "/api/v1/EntryTempDatas/PostedEntry";
-        public static string Url_Get_AllPostedEntriesStatus = "/api/v1/EntryTempDatas/RetrieveManualEntriesWithFilter?status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}";
+        public static string Url_Get_AllPostedEntriesStatus = "/api/v1/EntryTempData/RetrieveEntriesByFilterOption";//?status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}";
 
         public static string Post_ManaulEntryApproval_Entries = "/api/v1/EntryTempData/ManaulEntryApproval";
         //BUdgetmanagement

@@ -341,7 +341,7 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<PostedEntry>>(string.Format(APICallHelper.Url_Get_RefereceId, Id));
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<PostedEntry>>(string.Format(APICallHelper.Url_Get_PostedRefereceId, Id));
                 if (couApiResponse.IsSuccess)
                 {
                     return couApiResponse.ApiResponseData.Data;
@@ -390,14 +390,16 @@ namespace CBS.BusinessService.Accounting
             }
         }
 
-        public async Task<List<PostedEntry>> RetrieveManualEntriesWithFilterAsync(QueryModel model)
+        public async Task<List<PostedEntry>> RetrieveManualEntriesWithFilterAsync(QueryFilter model)
         {
             try
             {
-                var cusResponseObject = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<PostedEntry>>>(APICallHelper.Url_Get_AllPostedEntriesStatus);
-                if (cusResponseObject.IsSuccess)
+                //status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}
+                string url = APICallHelper.Url_Get_AllPostedEntriesStatus;//, model.Status, model.FromDate,model.ToDate,model.BranchId,model.IssuedBy,model.ApprovedBy);
+                var cusResponseObject = await _accountingApiCallerHelper.PostServicesEntryAsync<ResponseObject<List<PostedEntry>>>(url, model);
+                if (cusResponseObject.ApiResponseData!=null)
                 {
-                    return cusResponseObject.ApiResponseData.Data;
+                    return cusResponseObject.ApiResponseData;
                 }
                 return null;
             }

@@ -64,13 +64,6 @@ function loadMemberData() {
     });
 }
 
-
-function exportMemberData() {
-    const filters = collectMemberExportParams();
-    const params = new URLSearchParams(filters).toString();
-    window.location.href = `/Individual/DownloadMembers?${params}`;
-}
-
 function collectMemberExportParams() {
     return {
         CustomerId: $('#customerId').val(),
@@ -92,6 +85,13 @@ function collectMemberExportParams() {
         options: {}
     };
 }
+
+function exportMemberData() {
+    const filters = collectMemberExportParams();
+    const params = new URLSearchParams(filters).toString();
+    window.location.href = `/Individual/DownloadMembers?${params}`;
+}
+
 
 function resetMemberFilters() {
     $('#memberFilterForm').trigger('reset');

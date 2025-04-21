@@ -1,6 +1,7 @@
 ﻿using CBS.FrontDesk.Data.Entity.Config;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -287,8 +288,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
     public class SystemQuery
     {
-
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime ToDate { get; set; } //= new DateTimeOffset();
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime FromDate { get; set; }// = new DateTimeOffset();
         public string FileType { get; set; }
         public string ReportType { get; set; }

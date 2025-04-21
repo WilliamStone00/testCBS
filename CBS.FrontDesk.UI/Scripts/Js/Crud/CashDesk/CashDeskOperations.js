@@ -41,15 +41,26 @@ function AddDepositor() {
 
 $(document).on('input', '.amount-input, .fee-input, .interest-input, .penalty-input, .loan-amount-input', function () {
     var $row = $(this).closest('tr');
+
     var amount = parseFloat($row.find('.amount-input').val()) || 0;
     var fee = parseFloat($row.find('.fee-input').val()) || 0;
     var interest = parseFloat($row.find('.interest-input').val()) || 0;
     var penalty = parseFloat($row.find('.penalty-input').val()) || 0;
-    var loan_amount_input = parseFloat($row.find('.loan-amount-input').val()) || 0;
-    var total = amount + fee + penalty + interest + loan_amount_input;
+    var loanAmount = parseFloat($row.find('.loan-amount-input').val()) || 0;
+    var vat = parseFloat($('#calculatedVat').text()) || 0;
+
+    // ✅ Add VAT only if checkbox is CHECKED
+    var isVatExclusive = $row.find('.vat-exclusive-check').prop('checked');
+
+    var total = amount + fee + interest + penalty + loanAmount;
+    if (isVatExclusive) {
+        total += vat;
+    }
+
     $row.find('.total-span').text(total.toFixed(2));
     calculateTableTotal();
 });
+
 function calculateTableTotal() {
     var total = 0;
     $('.total-span').each(function () {
@@ -550,57 +561,22 @@ function SearchByCustomerNumber(partialView, divToloadPV) {
     AddORUpdateGen($('#manualSearchInput').val(), divToloadPV, partialView, 'search', "CashDesk");
     //calculateBalance();
 }
+
+
 function GetMember() {
-    var operation = $("#currentselectedOperation").val();
     var memberId = $('#manualSearchInput').val();
+
+    // Set default operation
+    var operation = $("#currentselectedOperation").val();
+
+    // If the member ID contains 'PRM', override operation to 'newsubcription'
+    if (memberId && memberId.toUpperCase().includes("PRM")) {
+        operation = "newsubcription";
+        $("#currentselectedOperation").val(operation); // ✅ Save it back
+    }
+
+    // Now call the member loader
     GetMemberData(memberId, '_OperationDesk', 'datalistingview', operation);
-    /*GetMemberData(memberId, '_OperationDesk', 'datalistingview', 'cashin');*/
-}
-
-function GetMemberData(Key, partialView, divToloadPV, path) {
-    $("#currentselectedOperation").val(path);
-    var spanElement = document.getElementById('cashDeskOperations');
-
-    // Default style
-    spanElement.style.fontWeight = "bold";
-    spanElement.style.textDecoration = "underline";
-    spanElement.style.textDecorationThickness = "2px";
-
-    if (path == "cashin") {
-        spanElement.innerText = "CASH-IN OPERATIONS";
-        spanElement.style.color = "green";
-    }
-    else if (path == "cashout") {
-        spanElement.innerText = "CASH-OUT OPERATIONS";
-        spanElement.style.color = "red";
-    }
-    else if (path == "cashoutsws") {
-        spanElement.innerText = "SWS CASH-OUT OPERATIONS";
-        spanElement.style.color = "red";
-    }
-    else if (path == "repayment") {
-        spanElement.innerText = "LOAN REPAYMENT OPERATIONS";
-        spanElement.style.color = "green";
-    }
-    else if (path == "withdrawalnotification") {
-        spanElement.innerText = "SAVING WITHDRAWAL NOTIFICATION PAYMENT";
-        spanElement.style.color = "red";
-    }
-    else if (path == "loanapplicationfeepayment") {
-        spanElement.innerText = "LOAN APPLICATION FEE PAYMENT";
-        spanElement.style.color = "green";
-    }
-    else if (path == "search") {
-        spanElement.innerText = "MEMBER'S INFORMATION";
-        spanElement.style.color = "blue";
-    }
-    else {
-        spanElement.innerText = "CASH OPERATIONS";
-        spanElement.style.color = "blue"; // Default color for other paths
-    }
-
-    AddORUpdateGen(Key, divToloadPV, partialView, path, "CashDesk");
-    //calculateBalance();
 }
 
 function GetLoan(KEY) {
@@ -800,16 +776,90 @@ function previewVat(loanId, interestValue, vatRate, loanAmount) {
         });
     }
 }
-
-
 function applyVatAdjustment(loanId) {
     const interestInput = document.getElementById("interest-" + loanId);
+    const vatCheckbox = document.getElementById("vatExclusive-" + loanId);
+
+    // Validate existence
     if (!interestInput || !vatMap[loanId]) return;
 
     const { original, vat } = vatMap[loanId];
-    const netInterest = Math.round(original - vat);
-    interestInput.value = netInterest.toFixed(0);
+
+    // Only adjust if VAT checkbox is NOT checked
+    if (vatCheckbox && !vatCheckbox.checked) {
+        const netInterest = Math.round(original - vat);
+        interestInput.value = netInterest.toFixed(0);
+    }
 }
+function handleVatToggle(loanId) {
+    const interestInput = document.getElementById(`interest-${loanId}`);
+    const vatCheckbox = document.getElementById(`vatExclusive-${loanId}`);
+    const vatElement = document.getElementById("calculatedVat");
+
+    const capitalInput = document.getElementById(`capital-${loanId}`);
+    const penaltyInput = document.getElementById(`penalty-${loanId}`);
+    const totalSpan = document.getElementById(`total-${loanId}`);
+
+    if (!interestInput || !vatCheckbox || !vatElement || !capitalInput || !penaltyInput || !totalSpan)
+        return;
+
+    const vat = parseFloat(vatElement.textContent) || 0;
+    let interest = parseFloat(interestInput.value) || 0;
+    const capital = parseFloat(capitalInput.value) || 0;
+    const penalty = parseFloat(penaltyInput.value) || 0;
+
+    const isExclusive = vatCheckbox.checked;
+
+    // Update interest
+    if (isExclusive) {
+        interest += vat;
+    } else {
+        interest -= vat;
+    }
+    interestInput.value = interest.toFixed(2);
+
+    // Recalculate total
+    const total = interest + vat + penalty + capital;
+    totalSpan.textContent = total.toFixed(2);
+
+    // Format numbers with financial separators
+    const formatCurrency = (num) =>
+        num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    // Prepare message
+    const message = `
+🧾 ${isExclusive ? "VAT Exclusive Selected" : "VAT Inclusive Selected"}
+
+  [Capital]     : ${formatCurrency(capital)}
+  [Interest]    : ${formatCurrency(interest)}
+  [VAT]         : ${formatCurrency(vat)}
+  [Penalty]     : ${formatCurrency(penalty)}
+  -------------------------------
+  [Total Due]   : ${formatCurrency(total)}
+`.trim();
+
+    // Show notification
+    if (typeof appalert === "function") {
+        appalert(message, 2, 1);
+    } else {
+        alert(message);
+    }
+}
+
+
+
+
+
+
+
+//function applyVatAdjustment(loanId) {
+//    const interestInput = document.getElementById("interest-" + loanId);
+//    if (!interestInput || !vatMap[loanId]) return;
+
+//    const { original, vat } = vatMap[loanId];
+//    const netInterest = Math.round(original - vat);
+//    interestInput.value = netInterest.toFixed(0);
+//}
 
 
 // VAT calculation function

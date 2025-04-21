@@ -42,7 +42,7 @@ namespace CBS.FrontDesk.UI.Controllers
         public async Task<ActionResult> Login(AuthRequest model, string returnUrl = "")
         {
             var result = new ExecutionMessages();
-            var Geo=await GetGeoLocation();
+            var Geo = await GetGeoLocation();
             model.GeoLocationResponse = Geo;
             if (ModelState.IsValid)
             {
@@ -191,15 +191,25 @@ namespace CBS.FrontDesk.UI.Controllers
         [AllowAnonymous]
         public async Task<GeoLocationResponse> GetGeoLocation()
         {
-            using (var client = new HttpClient())
+            try
             {
-                // Set the Accept header to "application/json"
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.GetStringAsync($"https://ipinfo.io/geo");
-                var locationData = JsonConvert.DeserializeObject<GeoLocationResponse>(response);
-                return locationData;
 
+                using (var client = new HttpClient())
+                {
+                    // Set the Accept header to "application/json"
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    var response = await client.GetStringAsync($"https://ipinfo.io/geo");
+                    var locationData = JsonConvert.DeserializeObject<GeoLocationResponse>(response);
+                    return locationData;
+
+                }
             }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+             
         }
         [AllowAnonymous]
         public async Task<ActionResult> Logout()

@@ -433,6 +433,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         {
             try
             {
+                
                 var dataTable = await _individualProfileServices.GetDataTableAsync(query,"MyMembers");
 
                 var customerList = JsonConvert.DeserializeObject<List<CustomerLightDto>>(

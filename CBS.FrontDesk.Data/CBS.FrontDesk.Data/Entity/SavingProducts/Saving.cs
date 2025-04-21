@@ -436,10 +436,12 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
 
         public bool AutoVerifyRemittanceSender { get; set; }
         public bool AutoVerifyRemittanceReceiver { get; set; }
-        public decimal MinimumOpeningBalance { get; set; }
-        public decimal MaximumOpeningBalance { get; set; }
-        public bool RequiredOpeningBalance { get; set; }
-        public bool CanPayInInstallments { get; set; }
+        public decimal MinimumOpeningBalanceMoralPerson { get; set; }
+        public decimal MinimumOpeningBalancePhysicalPerson { get; set; }
+        public bool RequiredOpeningBalanceMoralPerson { get; set; }
+        public bool RequiredOpeningBalancePhysicalPerson { get; set; }
+        public bool CanPayInInstallmentPhysicalPerson { get; set; }
+        public bool CanPayInInstallmentMoralPerson { get; set; }
         public int DisplayOrder { get; set; }
         public bool AllowInterbranchWithdrawal { get; set; } = false;
         public bool AllowShareing { get; set; } = false;

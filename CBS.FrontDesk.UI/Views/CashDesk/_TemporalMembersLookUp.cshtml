@@ -1,0 +1,249 @@
+﻿<style>
+    .modal-loader-overlay {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1051;
+        background-color: rgba(255, 255, 255, 0.85);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+<div class="modal fade" id="tempMembersModal" tabindex="-1" aria-labelledby="tempMembersModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="row w-100">
+                    <div class="col-12">
+                        <div class="card bg-light mb-2">
+                            <div class="card-body text-center">
+                                <h1 class="card-title text-primary">
+                                    <i class="mdi mdi-account-search-outline me-2"></i> TEMPORARY MEMBERS LOOKUP
+                                </h1>
+                                <p class="card-text">
+                                    This panel allows the cashier to search, filter, and select temporarily registered members. These members may not have complete registration and often require final processing or conversion.
+                                </p>
+                                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <!-- Tips Section -->
+                <div class="card mb-3">
+                    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR USING THIS PANEL</span>
+                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h6>
+                    <div id="collapseTips" class="collapse">
+                        <div class="card-body">
+                            <ul class="mb-0">
+                                <li><i class="mdi mdi-account-plus-outline text-primary me-2"></i><strong>Temporary Members:</strong> These are members not fully registered but allowed to initiate limited operations.</li>
+                                <li><i class="mdi mdi-filter text-success me-2"></i><strong>Search Filters:</strong> Use filters to narrow down your search by name, gender, registration date, etc.</li>
+                                <li><i class="mdi mdi-clipboard-check-outline text-info me-2"></i><strong>Select Action:</strong> Once a member is identified, use the <strong>Select</strong> button to process them or initiate an action.</li>
+                                <li><i class="mdi mdi-account-clock-outline text-warning me-2"></i><strong>Member Status:</strong> Review approval and profile information before final onboarding or transactional decisions.</li>
+                                <li><i class="mdi mdi-alert-outline text-danger me-2"></i><strong>Note:</strong> Ensure member data is validated if they’re transitioning to full membership.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ✅ Advanced Filters -->
+                <div class="card shadow p-3 mb-4">
+                    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Member Filters</h5>
+                    <form id="memberFilterForm">
+                        <div class="card p-3 mb-3 bg-light">
+                            <!-- Toggle switches -->
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="toggleDemographics" onclick="document.getElementById('demographicFilters').classList.toggle('d-none')">
+                                        <label class="form-check-label fw-bold" for="toggleDemographics">Show Demographic Filters</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="toggleApproval" onclick="document.getElementById('approvalFilters').classList.toggle('d-none')">
+                                        <label class="form-check-label fw-bold" for="toggleApproval">Show Approval & Legal Filters</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="toggleDates" onclick="document.getElementById('dateFilters').classList.toggle('d-none')">
+                                        <label class="form-check-label fw-bold" for="toggleDates">Show Date Filters</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Default Filters -->
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label class="form-label fw-bold">Member Account Number</label>
+                                    <input type="text" id="memberReferenceId" class="form-control" placeholder="Member Account/Temporal Number" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">First Name</label>
+                                    <input type="text" id="firstName" class="form-control" placeholder="First Name" />
+                                </div>
+                                <div class="col-md-5">
+                                    <label class="form-label fw-bold">Last Name</label>
+                                    <input type="text" id="lastName" class="form-control" placeholder="Last Name" />
+                                </div>
+                            </div>
+                            <div class="row mb-3" style="display:none">
+                                <div class="col-md-12">
+                                    <label class="form-label fw-bold">Branch</label>
+                                    @*@Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", @id = "branchId" })*@
+                                </div>
+                            </div>
+
+                            <!-- Demographic Filters -->
+                            <div id="demographicFilters" class="d-none">
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-bold">Gender Or Groups</label>
+                                        <select id="gender" class="form-select">
+                                            <option value="">All</option>
+                                           
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-bold">Marital Status</label>
+                                        <select id="maritalStatus" class="form-select">
+                                            <option value="">All</option>
+                                       
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-bold">Working Status</label>
+                                        <select id="workingStatus" class="form-select">
+                                            <option value="">All</option>
+                                   
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Approval & Legal Filters -->
+                            <div id="approvalFilters" class="d-none">
+                                <div class="row mb-3">
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-bold">Membership Approval</label>
+                                        <select id="membershipApprovalStatus" class="form-select">
+                                            <option value="Awaits_Validation">Membership status [Awaits_Validation]</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-bold">Legal Form</label>
+                                        <select id="legalForm" class="form-select">
+                                            <option value="">All</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-bold">Member's Profile</label>
+                                        <select id="customerType" class="form-select">
+                                            <option value="PreRegistredMember">Pre-Registered Members (PRM)</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-bold">Age Category</label>
+                                        <select id="ageCategoryStatus" class="form-select">
+                                            <option value="">All</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Date Filters -->
+                            <div id="dateFilters" class="d-none">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold">Date of Birth (From)</label>
+                                        <input type="date" id="dobFrom" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold">Date of Birth (To)</label>
+                                        <input type="date" id="dobTo" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold">Created From</label>
+                                        <input type="date" id="createdFrom" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold">Created To</label>
+                                        <input type="date" id="createdTo" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="row mt-2">
+                            <div class="col-md-12 d-flex">
+                                <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                                    <i class="mdi mdi-magnify"></i> Apply Filter
+                                </button>
+                                <button id="resetFilterBtn" type="reset" class="btn btn-secondary w-100">
+                                    <i class="mdi mdi-refresh"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="modalLoader" class="modal-loader-overlay d-none">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary mb-3" role="status"></div>
+                        <p class="fw-bold text-primary">Loading filtered members...</p>
+                    </div>
+                </div>
+
+
+
+                <!-- Data Table -->
+                <div class="card p-3 shadow mb-4">
+                    <div class="table-responsive">
+                        <table id="tempMembersTable" class="table table-bordered table-striped w-100">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Date Registered</th>
+                                    <th>Full Name</th>
+                                    <th>Customer ID</th>
+                                    <th>Phone</th>
+                                    <th>Customer Type</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close"></i> Exit
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
