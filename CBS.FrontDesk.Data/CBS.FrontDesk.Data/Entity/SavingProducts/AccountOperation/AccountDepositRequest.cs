@@ -27,10 +27,41 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
        
 
     }
+    public class GetMemberOnboardingDetailQuery
+    {
+        public string BranchId { get; set; }
+        public bool IsMoralPerson { get; set; }
+    }
+    public class MemberOnboardingDetailDto
+    {
+        public string CustomerId { get; set; }
+
+        // Minimum account opening balances
+        public decimal MinSavingsOpening { get; set; }
+        public decimal MinSharesOpening { get; set; }
+        public decimal MinPrefSharesOpening { get; set; }
+        public decimal MinDepositOpening { get; set; }
+
+        // List of required items (passbook, form, ID, etc.)
+        public List<MemberItemRequirementDto> RequiredItems { get; set; } = new List<MemberItemRequirementDto>();
+
+        // Summary and computed totals
+        public decimal TotalAccountOpening => MinSavingsOpening + MinSharesOpening + MinPrefSharesOpening + MinDepositOpening;
+        public decimal TotalItemCost => RequiredItems.Sum(i => i.UnitPrice);
+        public decimal GrandTotal => TotalAccountOpening + TotalItemCost;
+    }
+
+    public class MemberItemRequirementDto
+    {
+        public string ItemName { get; set; }
+        public decimal UnitPrice { get; set; }
+    }
+
     public class CashDesk
     {
         public string CustomerId { get; set; }
         public string LoanId { get; set; }
+        public MemberOnboardingDetailDto MemberOnboardingDetailDto { get; set; } = new MemberOnboardingDetailDto();
         public Depositer Depositer { get; set; } = new Depositer();
         public BulkDeposit BulkDeposit { get; set; } = new BulkDeposit();
         public PrintDate PrintDate { get; set; } = new PrintDate();

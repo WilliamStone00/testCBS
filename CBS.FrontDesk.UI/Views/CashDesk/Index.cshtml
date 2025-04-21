@@ -355,9 +355,14 @@
 <!-- Modal to display customer information -->
 @Html.Partial("_model")
 
+@Html.Partial("_TemporalMembersLookUp")
+
+
+
+
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="~/Scripts/Js/Crud/CashDesk/PreMemberOnboarding.js"></script>
 <script src="~/Scripts/Js/Crud/CashDesk/CashDeskOperations.js"></script>
-@*<script src="~/Scripts/Js/Crud/Operation/Operation.js"></script>*@
 
 }

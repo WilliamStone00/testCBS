@@ -155,41 +155,82 @@
     </fieldset>
     <fieldset class="fieldset-custom">
         <legend>Default Account Opening Conditions</legend>
+
         <div class="row gy-3">
+            <!-- 🟢 Group: Moral Person -->
+            <div class="col-12">
+                <h6 class="text-primary border-bottom pb-1"><i class="bi bi-person-badge me-1"></i> Moral Person</h6>
+            </div>
+
+            <!-- Minimum Opening Balance - Moral -->
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.SavingProduct.MinimumOpeningBalance, new { @class = "form-control", type = "number", step = "0.01" })
-                    @Html.ValidationMessageFor(m => m.SavingProduct.MinimumOpeningBalance, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(m => m.SavingProduct.MinimumOpeningBalanceMoralPerson, new { @class = "form-control", type = "number", step = "0.01" })
+                    @Html.ValidationMessageFor(m => m.SavingProduct.MinimumOpeningBalanceMoralPerson, "", new { @class = "text-danger" })
                     <label>Minimum Opening Balance</label>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.SavingProduct.MaximumOpeningBalance, new { @class = "form-control", type = "number", step = "0.01" })
-                    @Html.ValidationMessageFor(m => m.SavingProduct.MaximumOpeningBalance, "", new { @class = "text-danger" })
-                    <label>Maximum Opening Balance</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.SavingProduct.RequiredOpeningBalance, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="SavingProduct_RequiredOpeningBalance">
-                        Required Opening Balance
-                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Specify if an opening balance is mandatory to activate the account."></i>
+
+            <!-- Required Opening Balance - Moral -->
+            <div class="col-md-3">
+                <div class="form-check mt-4 pt-2">
+                    @Html.CheckBoxFor(m => m.SavingProduct.RequiredOpeningBalanceMoralPerson, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="SavingProduct_RequiredOpeningBalanceMoralPerson">
+                        Required Opening
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Is opening balance mandatory for Moral Person?"></i>
                     </label>
                 </div>
             </div>
+
+            <!-- Installments - Moral -->
+            <div class="col-md-3">
+                <div class="form-check mt-4 pt-2">
+                    @Html.CheckBoxFor(m => m.SavingProduct.CanPayInInstallmentMoralPerson, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="SavingProduct_CanPayInInstallmentMoralPerson">
+                        Pay in Installments
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Allow installment payment for Moral Person."></i>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 🔵 Group: Physical Person -->
+            <div class="col-12 mt-4">
+                <h6 class="text-primary border-bottom pb-1"><i class="bi bi-person-lines-fill me-1"></i> Physical Person</h6>
+            </div>
+
+            <!-- Minimum Opening Balance - Physical -->
             <div class="col-md-6">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.SavingProduct.CanPayInInstallments, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="SavingProduct_CanPayInInstallments">
-                        Allow Payment in Installments
-                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Allow the account opening amount to be paid in installments."></i>
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.SavingProduct.MinimumOpeningBalancePhysicalPerson, new { @class = "form-control", type = "number", step = "0.01" })
+                    @Html.ValidationMessageFor(m => m.SavingProduct.MinimumOpeningBalancePhysicalPerson, "", new { @class = "text-danger" })
+                    <label>Minimum Opening Balance</label>
+                </div>
+            </div>
+
+            <!-- Required Opening Balance - Physical -->
+            <div class="col-md-3">
+                <div class="form-check mt-4 pt-2">
+                    @Html.CheckBoxFor(m => m.SavingProduct.RequiredOpeningBalancePhysicalPerson, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="SavingProduct_RequiredOpeningBalancePhysicalPerson">
+                        Required Opening
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Is opening balance mandatory for Physical Person?"></i>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Installments - Physical -->
+            <div class="col-md-3">
+                <div class="form-check mt-4 pt-2">
+                    @Html.CheckBoxFor(m => m.SavingProduct.CanPayInInstallmentPhysicalPerson, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="SavingProduct_CanPayInInstallmentPhysicalPerson">
+                        Pay in Installments
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Allow installment payment for Physical Person."></i>
                     </label>
                 </div>
             </div>
         </div>
     </fieldset>
+
 
     <fieldset class="fieldset-custom">
         <legend>Third Parties Account types</legend>

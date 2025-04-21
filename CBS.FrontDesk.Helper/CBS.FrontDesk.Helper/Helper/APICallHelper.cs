@@ -427,6 +427,7 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_OtherTransaction = "/api/v1/OtherTransaction/{0}";
         public static string GetAllOtherTransaction = "/api/v1/OtherTransaction";
         public static string CreateOtherTransaction = "/api/v1/OtherTransaction";
+        public static string GetMemberOnboardingDetails = "/api/v1/MemberOnboarding/GetDetail";
         public static string MobileMoneyNoneCashCashIn = "/api/v1/OtherTransaction/MobileMoney-None-Cash-Cash-In";
 
         public static string CreateOtherTransactionMobileMoney = "/api/v1/OtherTransaction/MobileMoney";

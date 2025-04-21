@@ -175,10 +175,12 @@ namespace CBS.BusinessService.Accounts
                     SavingProduct.ActivateFor3PPApp = model.ActivateFor3PPApp;
                     SavingProduct.AllowInterbranchDeposit = model.AllowInterbranchDeposit;
                     SavingProduct.AllowInterbranchTransfter = model.AllowInterbranchTransfter;
-                    SavingProduct.MinimumOpeningBalance = model.MinimumOpeningBalance;
-                    SavingProduct.MaximumOpeningBalance = model.MaximumOpeningBalance;
-                    SavingProduct.RequiredOpeningBalance = model.RequiredOpeningBalance;
-                    SavingProduct.CanPayInInstallments = model.CanPayInInstallments;
+                    SavingProduct.MinimumOpeningBalanceMoralPerson = model.MinimumOpeningBalanceMoralPerson;
+                    SavingProduct.MinimumOpeningBalancePhysicalPerson = model.MinimumOpeningBalancePhysicalPerson;
+                    SavingProduct.RequiredOpeningBalanceMoralPerson = model.RequiredOpeningBalanceMoralPerson;
+                    SavingProduct.RequiredOpeningBalancePhysicalPerson = model.RequiredOpeningBalancePhysicalPerson;
+                    SavingProduct.CanPayInInstallmentPhysicalPerson = model.CanPayInInstallmentPhysicalPerson;
+                    SavingProduct.CanPayInInstallmentMoralPerson = model.CanPayInInstallmentMoralPerson;
 
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.Id), SavingProduct);
                     if (response.IsSuccess)

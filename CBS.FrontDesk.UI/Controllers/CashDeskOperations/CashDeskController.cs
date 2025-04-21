@@ -9,6 +9,7 @@ using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -31,6 +32,14 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         }
         // GET: CashDesk
         public ActionResult Index()
+        {
+            return View();
+        }
+        public ActionResult Cashin()
+        {
+            return View();
+        }
+        public ActionResult Cashout()
         {
             return View();
         }
@@ -99,6 +108,11 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             try
             {
+                if (true)
+                {
+
+                }
+
                 ViewBag.KEY = KEY;
                 if (path=="")
                 {
@@ -121,8 +135,11 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 
 
                 }
-                else if (path == "cashin" ||path=="repayment"|| path == "cashout" || path == "cashoutsws" || path == "repayment" || path == "withdrawalnotification" || path== "loanapplicationfeepayment")
+                else if (path == "cashin" ||path=="repayment"|| path == "cashout" || path == "cashoutsws" || path == "repayment" || path == "withdrawalnotification" || path== "loanapplicationfeepayment" || path=="newsubcription")
                 {
+                    
+
+                    //newsubcription
                     if (KEY == null || KEY == "")
                     {
                         ViewBag.message = "Empty data was submited. Please enter search criterial";
@@ -235,6 +252,20 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             this.HttpContext.Session["rpttitle"] = $"MemberReceiptsOtherPayment";
             return Json(new { success = true, status = false, message = "Parameters OK." }, JsonRequestBehavior.AllowGet);
 
+        }
+        [HttpGet]
+        public async Task<ActionResult> GetOnboardingSummary(string customerId)
+        {
+            if (string.IsNullOrWhiteSpace(customerId))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Customer ID is required.");
+           // newsubcription
+            // Load your summary service (replace with actual logic or inject it)
+            var onboardingDetail = await _cashDeskService.GetOnboardingDetailsAsync(customerId);
+
+            if (onboardingDetail == null)
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Onboarding data not found.");
+           
+            return PartialView("_OperationDesk", onboardingDetail);
         }
 
     }
