@@ -40,7 +40,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
     public class AccountingConfigurationController : BaseController
     {
         private readonly AccountingEntryRuleService _Service;
-
+  
         private readonly OperationEventAttributeServices _OperationEventAttributeService;
         private readonly ChartOfAccountServices _chartOfAccountServices;
         private readonly AccountingEntryRuleService _accountingEntryRuleService;
@@ -58,6 +58,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private readonly AccountPolicyServices _accountPolicyServices;
      private readonly TrialBalanceFileServices _trialBalanceFileServices;
         private readonly UserManagementServices _userService;
+        private readonly BlacklistAccountServices _blacklistAccountServices;
         private const string CLASS_4 = "4"; //THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)
         private const string CLASS_4_Payabels = "THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)";
         private const string CLASS_4_Simple = "THIRD PARTY ACCOUNTS AND ACCRUALS";
@@ -81,7 +82,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             _trialBalanceUploudServices = new TrailBalanceUploudServices();
             _accountPolicyServices = new AccountPolicyServices();
             _trialBalanceFileServices = new TrialBalanceFileServices();
-            _userService = new UserManagementServices();    
+            _userService = new UserManagementServices();
+            _blacklistAccountServices = new BlacklistAccountServices();
         }
         // GET: AccountingConfiguration
 
@@ -96,7 +98,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return View(model);
         }
 
-   
+
+
+      
 
         private async Task<List<ChartofAccountManagementPosition>> BuildClass4AccountCartegory(List<ChartofAccountManagementPosition> chartofAccountManagementPositions)
         {
@@ -149,12 +153,54 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             return selectListItems;
         }
-
         public async Task<ActionResult> Index()
         {
-            await GetList();
+   
             return View(new AccountingConfiguration());
         }
+        public async Task<ActionResult> JournalEntryConfig()
+        {
+ 
+            ViewBag.ChartOfAccountManagementPositions = BuildChartofAccountManagementPositionViewBag(await GetAllAccountsExcludingOperationsAccountIncludingBlacklistedAccountAsync());
+
+            return View(new AccountingConfiguration());
+        }
+
+
+        private async Task<List<ChartofAccountManagementPosition>> GetAllAccountsExcludingOperationsAccountIncludingBlacklistedAccountAsync()
+        {
+            var accounts = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
+            var accountingRules = await _accountingEntryRuleService.GetAccountingEntryRules();
+            var blacklistedAccounts = await _blacklistAccountServices.GetBlacklistAccounts();
+
+            // Use HashSet for O(1) lookup time
+            var excludedFromRules = new HashSet<string>(accountingRules.Select(x => x.DeterminationAccountId));
+            var excludedFromBlacklist = new HashSet<string>(blacklistedAccounts.Select(x => x.Id));
+
+            var result = accounts
+                .Where(account => !excludedFromRules.Contains(account.Id) && !excludedFromBlacklist.Contains(account.Id))
+                .ToList();
+
+            return result;
+        }
+        private async Task<List<ChartofAccountManagementPosition>> GetAllAccountsExcludingOperationsAccountAsync()
+        {
+            var accounts = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
+            var accountingRules = await _accountingEntryRuleService.GetAccountingEntryRules();
+
+            // Use HashSet for O(1) lookups
+            var excludedAccountIds = new HashSet<string>(
+                accountingRules.Select(rule => rule.DeterminationAccountId)
+            );
+
+            var filteredAccounts = accounts
+                .Where(account => !excludedAccountIds.Contains(account.Id))
+                .ToList();
+
+            return filteredAccounts;
+        }
+
+   
         public async Task<ActionResult> IndexForEventConfiguration()
         {
             await GetList();
@@ -369,6 +415,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             foreach (var item in ListchartOfAccounts)
             {
                 selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.AccountNumber} - {item.LabelEn}" });
+            }
+            return selectListItems;
+        }
+
+        private dynamic BuildChartofAccountManagementPositionViewBag(List<ChartofAccountManagementPosition> ListchartOfAccounts)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+
+            foreach (var item in ListchartOfAccounts)
+            {
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.New_AccountNumber} - {item.Description}" });
             }
             return selectListItems;
         }
@@ -824,6 +881,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
 
             }
+            else if (model.ServiceOption == "blacklistAccount")
+            {
+                if (model.Action == "insert")
+                {
+                    serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
+                }
+                else
+                {
+
+                    serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+                }
+
+
+            }
             if (serviceAction != null)
             {
                 try
@@ -940,6 +1011,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                 return () => _accountPolicyServices.Create(model.AccountPolicy);
             }
+            else if (serviceOption == "blacklistAccount")
+            {
+              
+                return () => _blacklistAccountServices.Create(model.BlacklistedAccounts);
+            }
             else
             {
                 return null;
@@ -992,11 +1068,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
 
                 return () => _correspondingMappingServices.UpdateException(model.CorrespondingMappingException);
-            }
+            }//
             else if (serviceOption == "accountPolicy")
             {
 
                 return () => _accountPolicyServices.Update(model.AccountPolicy);
+            }
+            else if (serviceOption == "blacklistAccount")
+            {
+
+                return () => _blacklistAccountServices.Update(model.BlacklistAccount);
             }
             else
             {
@@ -1452,6 +1533,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var sysData = new AccountingConfiguration { TrialBalanceFiles = LoadedData.ToList() };
                 return PartialView(partialView, sysData);
             }
+            
             else if (serviceOption == "accountPolicy")
             {
                 if (path == "list")
@@ -1471,6 +1553,30 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 {
                     var data = await _accountPolicyServices.GetAccountPolicy(key);
                     return PartialView(partialView, new AccountingConfiguration { AccountPolicy = data });
+
+
+                }
+
+            }
+            else if (serviceOption == "blacklistAccount")
+            {
+                if (path == "list")
+                {
+
+
+
+                    var sysData = new AccountingConfiguration { BlacklistAccounts = (await _blacklistAccountServices.GetBlacklistAccounts()).ToList() };
+                    return PartialView(partialView, sysData);
+
+                }
+                else if (path == "new")
+                {
+                    return PartialView(partialView, new AccountingConfiguration { BlacklistAccount = new BlacklistAccount() });
+                }
+                else
+                {
+                    var data = await _blacklistAccountServices.GetBlacklistAccount(key);
+                    return PartialView(partialView, new AccountingConfiguration { BlacklistAccount = data });
 
 
                 }
@@ -1617,10 +1723,18 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
 
             }
+            
             else if (serviceOption == "accountPolicy")
             {
 
                 var data = await _accountPolicyServices.Delete(KEY);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+            }
+            else if (serviceOption == "blacklistAccount")
+            {
+
+                var data = await _blacklistAccountServices.Delete(KEY);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
 
             }

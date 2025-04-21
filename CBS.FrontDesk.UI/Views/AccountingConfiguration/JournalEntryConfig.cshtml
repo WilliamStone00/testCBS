@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewBag.Title = "Accounting Configurations";
+
+}
+
+
+<div class="card mb-12">
+
+     
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-light mb-2">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary">
+                        <i class="mdi mdi-account-check me-2"></i> MANUAL POSTING RULES
+                    </h1>
+                    <p class="card-text">
+                        This menu allows the financial manager to configure which accounts should be visible during manual journal entry.
+                        It provides flexibility for the accountant to control which accounts should not be used for manual journal entries.
+                    </p>
+                    <p class="card-text text-warning fw-bold">
+                        <i class="mdi mdi-alert-circle-outline me-1"></i> All account already mapped to a product are excluded from the manual entry.
+                    </p>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tips Section -->
+    <div class="card mb-3">
+        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+            <span><i class="mdi mdi-information-outline me-2"></i> TIPS </span>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+        </h6>
+        <div id="collapseTips" class="collapse">
+            <div class="card-body">
+                <ul>
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>select an account</strong> Just select an account an post.</li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="accordion mt-3" id="accordionExample">
+
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingsix">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionsix"
+                                aria-expanded="false"
+                                aria-controls="accordionsix">
+                            <i class="tf-icons mdi mdi-book-open-page-variant-outline me-1"></i>  &nbsp; &nbsp; &nbsp; &nbsp; Setting Account Visiblity
+                        </button>
+                    </h2>
+                    <div id="accordionsix"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingsix"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable','_BlacklistAccountData','datalistingview_blacklistAccount',0,'blacklistAccount','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_blacklistAccount','_CreateBlacklistAccountForJE','new','AccountingConfiguration','blacklistAccount')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div id="datalistingview_blacklistAccount">
+                                @Html.Partial("_CreateBlacklistAccountForJE")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+    </div>
+
+</div>
+
+<!--/ Accordion -->
+
+
+
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/AccountEventConfigurtion/MFIChartOfAccount.js"></script>
+<script src="~/Scripts/Js/main.js/Account.js"></script>
+
+}
+
+
+

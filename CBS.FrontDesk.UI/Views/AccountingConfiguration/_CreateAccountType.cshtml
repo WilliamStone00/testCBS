@@ -10,32 +10,16 @@
             <div class="card-body">
                 @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                 {<input type="hidden" name="ServiceOption" value="accountType" id="ServiceOption" />
-                  
-                    <div class="row mt-2 gy-4">
-                        <div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.TextBoxFor(m => m.AccountType.name, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Account.AccountNumber, "", new { @class = "text-danger" })
-                                <label>Type</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.TextBoxFor(m => m.AccountType.operationAccountTypeId, new { @class = "form-control" })
-                              @Html.ValidationMessageFor(m => m.AccountType.operationAccountTypeId, "", new { @class = "text-danger" })
-                                <label>Code</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.TextBoxFor(m => m.AccountType.operationAccountType, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.AccountType.operationAccountType, "", new { @class = "text-danger" })
-                                <label>DesCription</label>
-                            </div>
-                        </div>
 
-
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.AccountingRuleEntry.OperationEventId, new SelectList(ViewBag.OperationEvent == null ? "" : ViewBag.OperationEvent, "Id", "OperationEventName"), "---Select Operation Event---", new { @class = "form-control select2", @search = "true", id = "OperationEventId" })
+                            @Html.ValidationMessageFor(model => model.AccountingRuleEntry.OperationEventId, "", new { @class = "text-danger" })
+                            <label for="OperationEventId">Event</label>
+                        </div>
                     </div>
+
+              
                     <div class="mt-4">
                         @if (Model.AccountType.Id == null)
                         {
@@ -49,7 +33,7 @@
                         }
                     </div>
                 }
-
+ 
             </div>
         </div>
     </div>
