@@ -11,7 +11,10 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllBlacklistAccount = "/api/v1/BlacklistAccounts";
         public static string CreateBlacklistAccount = "/api/v1/BlacklistAccount";
 
-
+        //AccountBookingDirection
+        public static string Get_Update_Delete_AccountBookingDirection = "/api/v1/AccountBookingDirection/{0}";
+        public static string GetAllAccountBookingDirection = "/api/v1/AccountBookingDirections";
+        public static string CreateAccountBookingDirection = "/api/v1/AccountBookingDirection";
 
         public static string GetAllFinancialDocument = "/api/v1/Documents";
         public static string GetlocationInforUrl = "/api/v1/Country/Location/CMR";

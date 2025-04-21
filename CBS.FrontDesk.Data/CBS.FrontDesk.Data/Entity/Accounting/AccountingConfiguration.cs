@@ -12,7 +12,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public class AccountingConfiguration
     {
         //
+        public List<AccountBookingDirection> AccountBookingDirections { get; set; } = new List<AccountBookingDirection>();
 
+        public AccountBookingDirection AccountBookingDirection { get; set; } = new AccountBookingDirection();
         public TrialBalanceFile TrialBalanceFile { get; set; }
         public List<TrialBalanceFile> TrialBalanceFiles { get; set; } = new List<TrialBalanceFile>();
         public List<BlacklistAccount> BlacklistAccounts { get; set; } = new List<BlacklistAccount>();

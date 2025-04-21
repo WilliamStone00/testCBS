@@ -1,11 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+@using Resources
 <table class="table table-hover" id="myDataTable_Deposit">
     <thead class="table-light">
         <tr>
-            <th>Product name</th>
-            <th>Flat</th>
-            <th>Rate</th>
-            <th>Action</th>
+            <th>@Globals_ClossingFeeData.ProductName</th>
+            <th>@Globals_ClossingFeeData.Flat</th>
+            <th>@Globals_ClossingFeeData.Rate</th>
+            <th>@Globals_ClossingFeeData.Action</th>
         </tr>
     </thead>
     <tbody>
@@ -16,11 +17,10 @@
                 <td style="width:15%">@d.closeFeeFlat</td>
                 <td style="width:10%">@d.closeFeeRate %</td>
                 <td style="width:20%">
-                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview_ClossingFeeConfig','_ClossingFeeConfig','get','TransactionConfiguration','CloseFeeParameter')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.product.name to edit">Edit</a>
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.product.name" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.id','myDataTable_Deposit','ClossingFeeConfigData',0,'datalistingview_ClossingFeeConfig')">Delete</a>
+                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview_ClossingFeeConfig','_ClossingFeeConfig','get','TransactionConfiguration','CloseFeeParameter')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.product.name to edit"> @Globals_ClossingFeeData.Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.product.name" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.id','myDataTable_Deposit','ClossingFeeConfigData',0,'datalistingview_ClossingFeeConfig')"> @Globals_ClossingFeeData.Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
