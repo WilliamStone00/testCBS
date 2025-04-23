@@ -1,8 +1,13 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @{
-    ViewBag.Title = "Cash desk";
+    ViewBag.Title = "Cash Desk-Cashin";
 }
-
+<style>
+    .is-invalid {
+        border-color: red !important;
+        background-color: #fff0f0;
+    }
+</style>
 <link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
 <div class="row">
     <div class="col-12">
@@ -352,8 +357,81 @@
 
 
 
+<div class="modal fade" id="depositerModal" tabindex="-1" aria-labelledby="depositerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content position-relative">
+
+            <!-- 🔄 Loader Overlay -->
+            <div id="depositorLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                    <div class="spinner-border text-primary mb-3" role="status"></div>
+                    <p class="fw-semibold text-primary">Processing transaction, please wait...</p>
+                </div>
+            </div>
+
+            <!-- 🌐 Modal Header -->
+            <div class="modal-header">
+                <div class="w-100">
+                    <div class="card bg-light mb-2">
+                        <div class="card-body text-center">
+                            <h1 class="card-title text-primary" id="depositorModalTitle">
+                                <i class="mdi mdi-account-card-details-outline me-2"></i> DEPOSITOR INFORMATION REQUIRED
+                            </h1>
+                            <p class="card-text" id="depositorModalDescription">
+                                To complete this transaction, please enter the depositor's full information for regulatory and audit compliance.
+                            </p>
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 💡 Tips Section -->
+            <div class="card m-3">
+                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                    <span><i class="mdi mdi-information-outline me-2"></i> WHY THIS IS REQUIRED</span>
+                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDepositorTips">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                </h6>
+                <div id="collapseDepositorTips" class="collapse">
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li><i class="mdi mdi-account-check-outline text-primary me-2"></i><strong>Identity Tracking:</strong> Helps track who completed the transaction.</li>
+                            <li><i class="mdi mdi-shield-lock-outline text-success me-2"></i><strong>Compliance:</strong> Required for KYC and AML regulations.</li>
+                            <li><i class="mdi mdi-file-document-box-check-outline text-warning me-2"></i><strong>Audit Trail:</strong> Permanent proof of who deposited funds.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 🧾 Depositor Form Partial -->
+            @Html.Partial("_DepositerForm")
+
+            <!-- 🔘 Footer -->
+            <div class="modal-footer justify-content-between">
+                <div>
+                    <span class="text-muted fw-semibold">
+                        Member: <span class="text-dark" id="depositorCustomerName"></span> |
+                        ID: <span class="text-dark" id="depositorCustomerId"></span>
+                    </span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="mdi mdi-close"></i> Cancel
+                    </button>
+                    <button type="button" id="confirmDepositorBtn" class="btn btn-success ms-2">
+                        <i class="mdi mdi-check-circle-outline"></i> Confirm & Proceed
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- Modal to display customer information -->
-@Html.Partial("_model")
+@*@Html.Partial("_model")*@
 
 @Html.Partial("_TemporalMembersLookUp")
 
@@ -363,6 +441,6 @@
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 <script src="~/Scripts/Js/Crud/CashDesk/PreMemberOnboarding.js"></script>
-<script src="~/Scripts/Js/Crud/CashDesk/CashDeskOperations.js"></script>
+<script src="~/Scripts/Js/Crud/CashDesk/CashDeskCashin.js"></script>
 
 }

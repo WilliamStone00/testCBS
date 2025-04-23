@@ -31,10 +31,10 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             this.chartOfAccountServices=chartOfAccountServices;
         }
         // GET: CashDesk
-        public ActionResult Index()
-        {
-            return View();
-        }
+        //public ActionResult Index()
+        //{
+        //    return View();
+        //}
         public ActionResult Cashin()
         {
             return View();
@@ -112,7 +112,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 {
 
                 }
-
+                ViewBag.OperationType="cashin";
                 ViewBag.KEY = KEY;
                 if (path=="")
                 {
@@ -137,8 +137,11 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 }
                 else if (path == "cashin" ||path=="repayment"|| path == "cashout" || path == "cashoutsws" || path == "repayment" || path == "withdrawalnotification" || path== "loanapplicationfeepayment" || path=="newsubcription")
                 {
-                    
 
+                    if (path.Contains("cashout"))
+                    {
+                        ViewBag.OperationType="cashout";
+                    }
                     //newsubcription
                     if (KEY == null || KEY == "")
                     {
@@ -220,6 +223,40 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
             }
         }
+        [HttpPost]
+        public async Task<ActionResult> PostRequestCashTest(List<BulkDeposit> deposits)
+        {
+            try
+            {
+                if (deposits != null && deposits.Any())
+                {
+                    // Simulate a processing delay
+                    await Task.Delay(500); // Mock async wait
+
+                    // Simulate a successful result object
+                    var mockResult = new
+                    {
+                        Result = true,
+                        MessageStatus = true,
+                        Message = $"✅ Transaction simulated successfully for {deposits.Count} account(s)."
+                    };
+
+                    return Json(new
+                    {
+                        success = mockResult.Result,
+                        status = mockResult.MessageStatus,
+                        message = mockResult.Message
+                    });
+                }
+
+                return Json(new { success = false, status = false, message = "⚠️ No data was submitted." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"❌ An error occurred: {ex.Message}" });
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult> GetReport(string path)
         {

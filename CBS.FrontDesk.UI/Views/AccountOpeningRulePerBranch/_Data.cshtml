@@ -1,85 +1,22 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.VaultManagement.Vault>
-
-<fieldset class="fieldset-custom">
-    <legend id="select_base">VAULTS</legend>
-    @if (!Model.Any())
-    {
-        <div class="text-center my-3">
-            <p>No vaults have been configured yet.</p>
-        </div>
-    }
-    else
-    {
-        <div class="table-responsive mb-3">
-            <table class="table table-hover table-bordered align-middle" id="myDataTable">
-                <thead class="table-light">
-                    <tr>
-                        <th style="width: 27%;">Vault Name</th>
-                        <th style="width: 5%;">B.Code</th>
-                        <th style="width: 20%;" class="text-end">Maximum Capacity</th>
-                        <th style="width: 20%;" class="text-end">Current Balance</th>
-                        <th style="width: 8%;">Status</th>
-                        <th style="width: 20%;">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var vault in Model)
-                    {
-                        <tr>
-                            <td>@vault.Name</td>
-                            <td>@vault.BranchCode</td>
-                            <td class="text-end">@vault.MaximumCapacity.ToString("#,##0.0") FCFA</td>
-                            <td class="text-end">@vault.CurrentBalance.ToString("#,##0.0") FCFA</td>
-                            <td>
-                                @if (vault.IsActive)
-                                {
-                                    <span class="badge rounded-pill bg-success fs-6">
-                                        <i class="fas fa-check-circle"></i> Active
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="badge rounded-pill bg-danger fs-6">
-                                        <i class="fas fa-times-circle"></i> Inactive
-                                    </span>
-                                }
-                            </td>
-                            <td>
-                                <div class="d-flex justify-content-center align-items-center gap-2">
-                                    <!-- Edit Button -->
-                                    <button type="button"
-                                            class="btn btn-sm btn-outline-primary d-flex align-items-center"
-                                            onclick="AddORUpdateGen('@vault.Id', 'datalistingview', '_Create', 'update', 'Vault', null, null)"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="top"
-                                            title="Edit @vault.Name">
-                                        <i class="fas fa-edit me-1"></i> Edit
-                                    </button>
-
-                                    <!-- Details Button -->
-                                    <button type="button"
-                                            class="btn btn-sm btn-outline-info d-flex align-items-center"
-                                            onclick="showVaultDetails('@vault.Id')"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="top"
-                                            title="View Details">
-                                        <i class="fas fa-info-circle me-1"></i> Details
-                                    </button>
-
-                                    <!-- Init Button -->
-                                    <a type="button" href="/Vault/Initilization"
-                                       class="btn btn-sm btn-outline-warning d-flex align-items-center"
-                                       data-bs-toggle="tooltip"
-                                       data-bs-placement="top"
-                                       title="Initialization of @vault.Name">
-                                        <i class="fas fa-cogs me-1"></i> Init
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
-</fieldset>
+﻿<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0"><i class="mdi mdi-bank me-1"></i> Account Opening Rules Per Branch</h5>
+    </div>
+    <div class="card-body">
+        <table id="accountOpeningRulesTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Branch</th>
+                    <th>Branch Code</th>
+                    <th>Legal Form</th>
+                    <th>Saving Product</th>
+                    <th>Min Balance</th>
+                    <th>Max Balance</th>
+                    <th>Opening Required</th>
+                    <th>Pay in Installments</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
