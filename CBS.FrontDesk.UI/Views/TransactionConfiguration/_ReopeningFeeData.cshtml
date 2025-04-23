@@ -1,11 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+    @using Resources
 <table class="table table-hover" id="myDataTable_Deposit">
     <thead class="table-light">
         <tr>
-            <th>Product name</th>
-            <th>Flat</th>
-            <th>Rate</th>
-            <th>Action</th>
+            <th>@Globals_ReopeningFeeData.ProductName</th>
+            <th>@Globals_ReopeningFeeData.Flat</th>
+            <th>@Globals_ReopeningFeeData.Rate</th>
+            <th>@Globals_ReopeningFeeData.Action</th>
         </tr>
     </thead>
     <tbody>
@@ -16,8 +17,8 @@
                 <td style="width:15%">@d.reopenFeeFlat</td>
                 <td style="width:10%">@d.reopenFeeRate %</td>
                 <td style="width:20%">
-                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview_ReopenFeeConfig','_ReopenFeeConfig','get','TransactionConfiguration','ReopenFeeParameter')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.product.name to edit">Edit</a>
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.product.name" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.id','myDataTable_Deposit','ReopenFeeConfigData',0,'datalistingview_ReopenFeeConfig')">Delete</a>
+                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview_ReopenFeeConfig','_ReopenFeeConfig','get','TransactionConfiguration','ReopenFeeParameter')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@Globals_ReopeningFeeData.SelectToEdit @d.product.name "> @Globals_ReopeningFeeData.Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@Globals_ReopeningFeeData.Delete @d.product.name" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.id','myDataTable_Deposit','ReopenFeeConfigData',0,'datalistingview_ReopenFeeConfig')">@Globals_ReopeningFeeData.Delete</a>
                 </td>
             </tr>
         }
