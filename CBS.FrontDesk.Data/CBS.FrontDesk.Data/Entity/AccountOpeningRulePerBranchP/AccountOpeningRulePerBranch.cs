@@ -12,12 +12,13 @@ namespace CBS.FrontDesk.Data.Entity.AccountOpeningRulePerBranchP
 
     public class AccountOpeningRulePerBranch
     {
-       
+  
         public string Id { get; set; }
 
-        [Required(ErrorMessage = "Branch ID is required.")]
+        [Required(ErrorMessage = "Branch is required.")]
         public string BranchId { get; set; }
-
+        [Required(ErrorMessage = "Legal form is required.")]
+        public string LegalForm { get; set; }
         public string BranchName { get; set; }
 
         public string BranchCode { get; set; }
@@ -27,16 +28,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountOpeningRulePerBranchP
 
         [Range(0, double.MaxValue, ErrorMessage = "Minimum opening balance must be a non-negative number.")]
         public decimal MinimumOpeningBalance { get; set; }
-
-        [Range(0, double.MaxValue, ErrorMessage = "Maximum opening balance must be a non-negative number.")]
-        public decimal MaximumOpeningBalance { get; set; }
-
-        [Required]
-        public bool RequiredOpeningBalance { get; set; }
-
-        [Required]
-        public bool CanPayInInstallments { get; set; }
-
+        public string ProductName { get; set; }
         // Navigation property (optional in validation context)
         public SavingProduct SavingProduct { get; set; }
     }

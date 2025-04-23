@@ -1,8 +1,10 @@
 ﻿
 using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingDayObject;
 using CBS.FrontDesk.Data.Entity.AccountOpeningRulePerBranchP;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
@@ -19,11 +21,12 @@ namespace CBS.BusinessService.Accounts
     public class AccountOpeningRulePerBranchServices : BaseService
     {
         private readonly ApiCallerHelper _transactionApiHelper;
+        private readonly BranchServices _branchServices;
 
-        public AccountOpeningRulePerBranchServices()
+        public AccountOpeningRulePerBranchServices(BranchServices branchServices)
         {
             _transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
-
+            _branchServices=branchServices;
         }
 
         public async Task<ExecutionMessages> Delete(string id)
@@ -53,40 +56,40 @@ namespace CBS.BusinessService.Accounts
             return ExecutionMessage;
         }
 
-        //public async Task<IEnumerable<AccountOpeningRulePerBranch>> GetAccountOpeningRulePerBranches(GetAllAccountOpeningRulesQuery openingRulesQuery )
-        //{
-        //    try
-        //    {
-
-
-        //        if (IsHeadOffice())
-        //        {
-        //            openingRulesQuery.BranchId = "N/A";
-        //        }
-
-        //        var couApiResponse = await _transactionApiHelper.PostAsync<ServiceResponse<List<HolyDay>>>(APICallHelper.GetAllAccountOpeningRule, openingRulesQuery);
-        //        if (couApiResponse.IsSuccess)
-        //        {
-        //            return couApiResponse.ApiResponseData.Data;
-        //        }
-        //        return new List<HolyDay>();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log and handle exception
-        //        throw;
-        //    }
-        //}
-        public async Task<HolyDay> GetHolyDay(string id)
+        public async Task<IEnumerable<AccountOpeningRulePerBranch>> GetAccountOpeningRulePerBranches(GetAllAccountOpeningRulesQuery openingRulesQuery)
         {
             try
             {
-                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<HolyDay>>(string.Format(APICallHelper.Get_Update_Delete_HolyDay, id));
+
+
+                if (!IsHeadOffice())
+                {
+                    openingRulesQuery.BranchId = GetBranchID();
+                }
+                var queryString = ToQueryString(openingRulesQuery);
+                var fullUrl = $"{APICallHelper.GetAllAccountOpeningRule}?{queryString}";
+                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<List<AccountOpeningRulePerBranch>>>(fullUrl);
+
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new List<AccountOpeningRulePerBranch>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        public async Task<AccountOpeningRulePerBranch> GetAccountOpeningRule(string id)
+        {
+            try
+            {
+                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<AccountOpeningRulePerBranch>>(string.Format(APICallHelper.Get_Or_Delete_AccountOpeningRule, id));
                 if (cusResponseObject.IsSuccess)
                 {
                     var data= cusResponseObject.ApiResponseData.Data;
-                    data.DateFromStr = data.DateFrom.ToString();
-                    data.DateToStr = data.DateTo.ToString();
                     return data;
                 }
                 return null;
@@ -97,29 +100,26 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-        public async Task<ExecutionMessages> Create(HolyDay model)
+        public async Task<ExecutionMessages> Create(AccountOpeningRulePerBranch model)
         {
             try
             {
-                if (model.IsCentralisedConfiguration)
-                {
-                    model.BranchId = "N/A";
-                }
-                model.DateFrom = GetDateTime(model.DateFromStr);
-                model.DateTo = GetDateTime(model.DateToStr);
-                // Make an API call to create an individual profile
-                var response = await _transactionApiHelper.PostAsync<ServiceResponse<HolyDay>>(APICallHelper.CreateHolyDay, model);
+                var branch = await _branchServices.GetBranch(model.BranchId);
+                model.BranchCode=branch.BranchCode;
+                model.BranchName=branch.Name;
+             
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<AccountOpeningRulePerBranch>>(APICallHelper.AddAccountOpeningRule, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.EventName}", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.BranchName}", MessagesResults.Success,
                         ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, model.EventName, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.BranchName, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -131,45 +131,25 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> Update(HolyDay model)
+        public async Task<ExecutionMessages> Update(AccountOpeningRulePerBranch model)
         {
             try
             {
-                var HolyDay = await GetHolyDay(model.Id);
-                if (HolyDay != null)
-                {
-                    model.DateFrom = GetDateTime(model.DateFromStr);
-                    model.DateTo = GetDateTime(model.DateToStr);
-                    HolyDay.EventName = model.EventName;
-                    HolyDay.DateTo = model.DateTo;
-                    HolyDay.Description = model.Description;
-                    if (model.IsCentralisedConfiguration)
-                    {
-                        HolyDay.BranchId = "N/A";
-                    }
-                    else
-                    {
-                        HolyDay.BranchId = model.BranchId;
-                    }
-    
-                    HolyDay.DateFrom = model.DateFrom;
-                    HolyDay.IsActive = model.IsActive;
-                    HolyDay.IsCentralisedConfiguration = model.IsCentralisedConfiguration;
-                    var response = await _transactionApiHelper.PutAsync<ServiceResponse<HolyDay>>(string.Format(APICallHelper.Get_Update_Delete_HolyDay, model.Id), HolyDay);
+                    var response = await _transactionApiHelper.PutAsync<ServiceResponse<AccountOpeningRulePerBranch>>(APICallHelper.UpdateAccountOpeningRule, model);
                     if (response.IsSuccess)
                     {
                         // Successful creation
-                        GetExecutionMessages(response, true, $"{model.EventName}", MessagesResults.Success,
-                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, null);
+                        GetExecutionMessages(response, true, null, MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                         return ExecutionMessage;
                     }
                     else
                     {
                         // Failed creation
-                        GetExecutionMessages(model, false, model.EventName, MessagesResults.Failed,
+                        GetExecutionMessages(model, false, null, MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
-                }
+          
 
             }
             catch (Exception ex)

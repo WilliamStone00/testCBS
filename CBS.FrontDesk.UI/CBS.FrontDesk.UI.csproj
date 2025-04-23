@@ -792,6 +792,7 @@
     <Compile Include="Controllers\Support\HelpDeskController.cs" />
     <Compile Include="Controllers\ThirdPartyBankAccount\ThirdPartyBranchController.cs" />
     <Compile Include="Controllers\ThirdPartyBankAccount\ThirdPartyInstitutionController.cs" />
+    <Compile Include="Controllers\TransactionManagement\AccountOpeningRulePerBranchController.cs" />
     <Compile Include="Controllers\TransactionManagement\CashChangeManagementController.cs" />
     <Compile Include="Controllers\TransactionManagement\ChargesWaivedController.cs" />
     <Compile Include="Controllers\TransactionManagement\AccountingDayController.cs" />
@@ -3376,6 +3377,7 @@
     <Content Include="Scripts\Js\CMoney\cmoney.js" />
     <Content Include="Scripts\Js\CMoney\cmMembers.js" />
     <Content Include="Scripts\Js\Crud\AccountingDay\AccountingDayStatus.js" />
+    <Content Include="Scripts\Js\Crud\AccountOpeningRulePerBranch\AccountOpeningRulePerBranch.js" />
     <Content Include="Scripts\Js\Crud\AuditTrail\Audits.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\CashDeskCashin.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\PreMemberOnboarding.js" />
@@ -4370,12 +4372,8 @@
     <Content Include="Views\Shared\_MenuX.cshtml" />
     <Content Include="Views\Loan\LoanPortfolioReport.cshtml" />
     <Content Include="Views\Session\Locked.cshtml" />
-    <Content Include="Views\AccountOpeningRulePerBranch\_Create.cshtml" />
     <Content Include="Views\AccountOpeningRulePerBranch\_Data.cshtml" />
-    <Content Include="Views\AccountOpeningRulePerBranch\_VaultDetailsPartial.cshtml" />
-    <Content Include="Views\AccountOpeningRulePerBranch\_VaultInitializationForm.cshtml" />
     <Content Include="Views\AccountOpeningRulePerBranch\Index.cshtml" />
-    <Content Include="Views\AccountOpeningRulePerBranch\Initilization.cshtml" />
     <Content Include="Views\ManuallyJournalEntry\_SearchOptions.cshtml" />
     <Content Include="Views\ManuallyJournalEntry\_PendingEntries.cshtml" />
     <Content Include="Views\Shared\_LanguageSwitcher.cshtml" />
@@ -4392,6 +4390,7 @@
     <Content Include="Views\CashDesk\_TabsCashout.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CreateAccountBookingDirectionData.cshtml" />
     <Content Include="Views\AccountingConfiguration\_AccountBookingDirectionData.cshtml" />
+    <Content Include="Views\AccountOpeningRulePerBranch\_AccountOpeningRuleModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

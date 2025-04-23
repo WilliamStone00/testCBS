@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -66,6 +67,58 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
+        public async Task<List<SelectListItem>> GetSavingProductsDropdownAsync()
+        {
+            try
+            {
+                var savingProducts = await GetSavingProducts();
+
+                var items = savingProducts.Select(x => new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Name
+                }).ToList();
+
+                return items;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        public async Task<List<SelectListItem>> GetSavingProductsDropdownAsyncx()
+        {
+            try
+            {
+                var savingProducts = await GetSavingProducts();
+                var items = savingProducts
+                    .Where(x => x.RequiredOpeningBalanceMoralPerson || x.RequiredOpeningBalancePhysicalPerson)
+                    .Select(x =>
+                    {
+                        var legalForms = new List<string>();
+                        if (x.RequiredOpeningBalanceMoralPerson) legalForms.Add("Moral_Person");
+                        if (x.RequiredOpeningBalancePhysicalPerson) legalForms.Add("Physical_Person");
+
+                        return new SelectListItem
+                        {
+                            Value = x.Id.ToString(),
+                            Text = $"{x.Name} ({string.Join(" & ", legalForms)})"
+                        };
+                    })
+                    .ToList();
+
+                return items;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
+
+
         public async Task<SavingConfigurationAggregates> GetSavingConfigurationAggregates()
         {
             try

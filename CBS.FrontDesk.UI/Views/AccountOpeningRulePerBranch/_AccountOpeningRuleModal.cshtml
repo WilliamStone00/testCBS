@@ -1,0 +1,102 @@
+﻿<div class="modal fade" id="accountRuleModal" tabindex="-1" aria-labelledby="accountRuleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content position-relative">
+
+            <!-- 🔄 Loader Overlay -->
+            <div id="accountRuleLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                    <div class="spinner-border text-primary mb-3" role="status"></div>
+                    <p class="fw-semibold text-primary">Saving changes, please wait...</p>
+                </div>
+            </div>
+
+            <!-- 🌐 Modal Header -->
+            <div class="modal-header">
+                <div class="w-100">
+                    <div class="card bg-light mb-2">
+                        <div class="card-body text-center">
+                            <h1 class="card-title text-primary" id="accountRuleModalTitle">
+                                <i class="mdi mdi-bank-outline me-2"></i> ACCOUNT OPENING RULE SETUP
+                            </h1>
+                            <p class="card-text" id="accountRuleModalDescription">
+                                Define or update the rules required for account opening per branch and product.
+                            </p>
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 💡 Tips Section -->
+            <div class="card m-3">
+                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                    <span><i class="mdi mdi-information-outline me-2"></i> WHY YOU NEED THIS RULE</span>
+                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRuleTips">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                </h6>
+                <div id="collapseRuleTips" class="collapse">
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li><i class="mdi mdi-domain text-primary me-2"></i><strong>Branch Specific:</strong> Customize rules for each branch individually.</li>
+                            <li><i class="mdi mdi-currency-usd-circle text-success me-2"></i><strong>Opening Control:</strong> Set valid minimum and maximum balances per product.</li>
+                            <li><i class="mdi mdi-clipboard-check-outline text-warning me-2"></i><strong>Onboarding:</strong> Enforce legal form rules and installment permission on account creation.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 🧾 Rule Form -->
+            <form id="accountRuleForm" class="p-3">
+                <input type="hidden" id="ruleId" />
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Branch</label>
+                        <select class="form-select" id="branchId" disabled required>
+                            <option value="">-- Select Branch --</option>
+                            @foreach (var branch in ViewBag.Branches)
+                            {
+                                <option value="@branch.Id">@branch.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Legal Form</label>
+                        <select class="form-select" id="legalForm" required>
+                            <option value="Physical_Person">Physical Person</option>
+                            <option value="Moral_Person">Moral Person</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Saving Product</label>
+                        <select class="form-select" id="savingProductId" disabled required>
+                            <option value="">-- Select Product --</option>
+                            @foreach (var product in ViewBag.SavingProducts)
+                            {
+                                <option value="@product.Value">@product.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Min Balance</label>
+                        <input type="number" min="0" class="form-control" id="minBalance" required />
+                    </div>
+                </div>
+            </form>
+
+            <!-- 🔘 Footer -->
+            <div class="modal-footer justify-content-end">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close"></i> Cancel
+                </button>
+                <button type="button" id="saveRuleBtn" class="btn btn-primary ms-2">
+                    <i class="mdi mdi-content-save-outline"></i> Save Rule
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
