@@ -5,7 +5,9 @@ using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.ReportDataSetDto;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Wordprocessing;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -228,25 +230,35 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             }
             if (request.GetAllTellerOperationsQuery.IsPDF)
             {
+                string relativeReportPath = "/Transactions/Reciepts/TellerStatement.rpt";
+                string reportTitle = "TELLER'S CASH OPERATION STATEMENT";
                 // PDF generation logic (you can keep this unchanged)
-                this.HttpContext.Session["rptSource"] = data;
-                this.HttpContext.Session["param_size"] = "4";
-                this.HttpContext.Session["DateFrom"] = request.GetAllTellerOperationsQuery.DateFrom;
-                this.HttpContext.Session["DateTo"] = request.GetAllTellerOperationsQuery.DateTo;
-                this.HttpContext.Session["DatePrinted"] = DateTime.Now.ToLongDateString();
-                this.HttpContext.Session["rptType"] = "ReportWithParameter";
-                this.HttpContext.Session["ReportName"] = "TellerStatement.rpt";
-                this.HttpContext.Session["rptpath"] = "~/AppFiles/Reporting/Transactions/Reciepts/TellerStatement.rpt";
-                this.HttpContext.Session["rpttitle"] = $"Till_F5_{data.FirstOrDefault().TellerName}";
-                // Construct the URL to redirect to the PDF
-                string url = Url.Action("ReportWithParameter", "Reports"); // Adjust the controller Name if different
+                this.HttpContext.Session["MainData"] = data;
+                // Convert start and end date strings to DateTime safely
+                DateTime startDate = DateTime.TryParse(request.GetAllTellerOperationsQuery.DateFrom, out var sDate)
+                    ? sDate
+                    : DateTime.MinValue;
 
-                // Set the ViewBag variables for the URL to open the report
-                ViewBag.UrlToOpen = url;
-                ViewBag.CurrentUrl = "/DailyTellerAssignation/DownloadTellerOperationsToExcel"; // The current URL
-                ViewBag.ErrorMessage = string.Empty;
-                // Return the view that opens the report in a new window
-                return Json(new { success = true, ispdf = true, message = "Success." });
+                DateTime endDate = DateTime.TryParse(request.GetAllTellerOperationsQuery.DateTo, out var eDate)
+                    ? eDate
+                    : DateTime.MinValue;
+
+                // Format to dd/MM/yyyy
+                var parameters = new Dictionary<string, object>
+                {
+                    { "DateFrom", startDate.ToString("dd/MM/yyyy") },
+                    { "DateTo", endDate.ToString("dd/MM/yyyy") },
+                    { "CurrentYear", DateTime.Now.Year.ToString() },
+                    { "DateNow", DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss") },
+                    { "PrintedBy", Session["FullName"]?.ToString() ?? "System" }
+                };
+                //DateNow
+                Session["ReportParameters"] = parameters;
+                // ✅ Return viewer URL to the AJAX call
+                string reportPathParam = HttpUtility.UrlEncode(relativeReportPath);
+                string reportNameParam = HttpUtility.UrlEncode(reportTitle);
+                string viewerUrl = Url.Content($"/ReportForm/ReportViewer.aspx?reportPath={reportPathParam}&reportName={reportNameParam}");
+                return Json(new { success = true, redirectUrl = viewerUrl });
             }
             else /*if (request.GetAllTellerOperationsQuery.Excel)*/
             {
