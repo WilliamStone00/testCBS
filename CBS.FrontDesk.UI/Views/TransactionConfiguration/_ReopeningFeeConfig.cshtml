@@ -1,13 +1,14 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+@using Resources
 @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
     <input type="hidden" name="ServiceOption" value="ReopenFeeParameter" id="ServiceOption" />
     <div class="row mt-2 gy-4">
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.ReopenFeeParameter.productId, new SelectList(ViewBag.Products, "Id", "name"), "---Select product---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.ReopenFeeParameter.productId, new SelectList(ViewBag.Products, "Id", "name"), @Globals_ReopeningFeeConfig.SelectProductNote, new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.ReopenFeeParameter.productId, "", new { @class = "text-danger" })
-                <label>Select product</label>
+                <label>@Globals_ReopeningFeeConfig.SelectProduct</label>
             </div>
         </div>
 
@@ -15,56 +16,50 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.ReopenFeeParameter.reopenFeeFlat, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.ReopenFeeParameter.reopenFeeFlat, "", new { @class = "text-danger" })
-                <label>Flat fee</label>
+                <label>@Globals_ReopeningFeeConfig.FlatFee</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.ReopenFeeParameter.reopenFeeRate, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.ReopenFeeParameter.reopenFeeRate, "", new { @class = "text-danger" })
-                <label>Fee rate</label>
+                <label>@Globals_ReopeningFeeConfig.FeeRate</label>
             </div>
         </div>
-        <h3>Sharing</h3>
+        <h3>@Globals_ReopeningFeeConfig.Sharing</h3>
         <br />
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.ReopenFeeParameter.SourceBrachOfficeShare, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CloseFeeParameter.SourceBrachOfficeShare, "", new { @class = "text-danger" })
-                <label>Source branch share (in percentage %)</label>
+                @Html.ValidationMessageFor(m => m.ReopenFeeParameter.SourceBrachOfficeShare, "", new { @class = "text-danger" })
+                <label>@Globals_ReopeningFeeConfig.SourceBranchShare</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.ReopenFeeParameter.DestinationBranchOfficeShare, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CloseFeeParameter.DestinationBranchOfficeShare, "", new { @class = "text-danger" })
-                <label>Destination branch share (in percentage %)</label>
+                @Html.ValidationMessageFor(m => m.ReopenFeeParameter.DestinationBranchOfficeShare, "", new { @class = "text-danger" })
+                <label>@Globals_ReopeningFeeConfig.DestinationBranchShare</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.ReopenFeeParameter.HeadOfficeShare, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CloseFeeParameter.HeadOfficeShare, "", new { @class = "text-danger" })
-                <label>Head office share (in percentage %)</label>
+                @Html.ValidationMessageFor(m => m.ReopenFeeParameter.HeadOfficeShare, "", new { @class = "text-danger" })
+                <label>@Globals_ReopeningFeeConfig.HeadOfficeShare</label>
             </div>
         </div>
-        @*<div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CloseFeeParameter.PartnerShare, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CloseFeeParameter.PartnerShare, "", new { @class = "text-danger" })
-                <label>Partner branch share (in percentage %)</label>
-            </div>
-        </div>*@
     </div>
-    
+
     <div class="mt-4">
         @if (Model.ReopenFeeParameter.id == null)
         {
-            <button type="submit" class="btn btn-primary me-2">Save</button>
+            <button type="submit" class="btn btn-primary me-2">@Globals_ReopeningFeeConfig.Save</button>
             <input type="hidden" name="Action" value="insert" id="Action" />
         }
         else
-        { <button type="submit" class="btn btn-primary me-2">Update</button>
+        {
+            <button type="submit" class="btn btn-primary me-2">@Globals_ReopeningFeeConfig.Update</button>
             @Html.HiddenFor(m => m.ReopenFeeParameter.id)
             <input type="hidden" name="Action" value="update" id="Action" />
         }

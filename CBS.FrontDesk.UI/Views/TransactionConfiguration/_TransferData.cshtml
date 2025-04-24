@@ -1,10 +1,11 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+@using Resources
 <fieldset class="fieldset-custom">
-    <legend>TRUST CONFIG AND SHARING</legend>
+    <legend>@Globals_TransferData.TRUSTCONFIGANDSHARING</legend>
     @if (Model.TransferLimits.Count == 0)
     {
         <div class="text-center my-3">
-            <p>No transfer policy is configured.</p>
+            <p>@Globals_TransferData.NoTransferPolicyIsConfigured</p>
         </div>
     }
     else
@@ -13,14 +14,14 @@
             <table class="table table-hover" id="xmyDataTable">
                 <thead>
                     <tr>
-                        <th>Type</th>
-                        <th>Max Amount</th>
-                        <th>Source</th>
-                        <th>Destin</th>
-                        <th>CamCCUL</th>
-                        <th>HeadOffice</th>
-                        <th>FluxPTM</th>
-                        <th>Action</th>
+                        <th>@Globals_TransferData.Type</th>
+                        <th>@Globals_TransferData.MaxAmount</th>
+                        <th>@Globals_TransferData.Source</th>
+                        <th>@Globals_TransferData.Destin</th>
+                        <th>@Globals_TransferData.CamCCUL</th>
+                        <th>@Globals_TransferData.HeadOffice</th>
+                        <th>@Globals_TransferData.FluxPTM</th>
+                        <th>@Globals_TransferData.Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,8 +36,8 @@
                             <td>@d.HeadOfficeShare.ToString("#,##0") %</td>
                             <td>@d.FluxAndPTMShare.ToString("#,##0") %</td>
                             <td>
-                                <a href="#" onclick="AddORUpdateGen('@d.id','datalistingview_Transfer','_TransferConfig','get','TransactionConfiguration','transferlimit')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.product.Name @d.transferType to edit">Edit</a> |
-                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.product.Name @d.transferType" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.id','xmyDataTable','_TransferData',0,'datalistingview_Transfer',null,'cash_transfer_parameter')">Delete</a>
+                                <a href="#" onclick="AddORUpdateGen('@d.id','datalistingview_Transfer','_TransferConfig','get','TransactionConfiguration','transferlimit')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@Globals_TransferData.SelectToEdit @d.transferType">@Globals_TransferData.Edit</a> |
+                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@Globals_TransferData.Delete" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.id','xmyDataTable','_TransferData',0,'datalistingview_Transfer',null,'cash_transfer_parameter')">@Globals_TransferData.Delete</a>
                             </td>
                         </tr>
                     }
@@ -46,13 +47,12 @@
     }
 </fieldset>
 
-
 <fieldset class="fieldset-custom">
-    <legend>C-MONEY SHARING</legend>
+    <legend>@Globals_TransferData.CMONEYSHARING</legend>
     @if (Model.TransferLimits.Count == 0)
     {
         <div class="text-center my-3">
-            <p>No transfer policy is configured.</p>
+            <p>@Globals_TransferData.NoTransferPolicyIsConfigured</p>
         </div>
     }
     else
@@ -61,12 +61,12 @@
             <table class="table table-hover" id="xxmyDataTable">
                 <thead>
                     <tr>
-                        <th>Type</th>
-                        <th>Source</th>
-                        <th>Destin</th>
-                        <th>CamCCUL</th>
-                        <th>HeadOffice</th>
-                        <th>FluxPTM</th>
+                        <th>@Globals_TransferData.Type</th>
+                        <th>@Globals_TransferData.Source</th>
+                        <th>@Globals_TransferData.Destin</th>
+                        <th>@Globals_TransferData.CamCCUL</th>
+                        <th>@Globals_TransferData.HeadOffice</th>
+                        <th>@Globals_TransferData.FluxPTM</th>
                     </tr>
                 </thead>
                 <tbody>
