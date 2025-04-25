@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
-
+@using Resources
 @{
     ViewBag.Title = "Policies and Sharing";
 }
@@ -55,10 +55,9 @@
     <div class="col-xl-12 col-lg-12 col-md-12">
         <div class="card">
             <div class="card-header text-center">
-                <h4 class="card-title text-primary">Policies and Sharing Configuration</h4>
+                <h4 class="card-title text-primary">@GlobalsPolicyandSharing.PoliciesAndSharingConfiguration</h4>
                 <p class="card-text text-muted">
-                    Configure policies and sharing rules for <strong>@Model.SavingProduct.Name</strong>.
-                    These settings ensure accurate and consistent handling of account policies.
+                    @string.Format(@GlobalsPolicyandSharing.ConfigurePoliciesAndSharingRulesFor, @Model.SavingProduct.Name) @GlobalsPolicyandSharing.ConfigurePoliciesAndSharingRulesDesc
                 </p>
             </div>
             <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
@@ -72,7 +71,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-cog me-2"></i>
-                            Ordinary Account Configurations
+                            @GlobalsPolicyandSharing.OrdinaryAccountConfigurations
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -83,11 +82,9 @@
                                 <div class="change-group">
                                     <div class="card mb-4">
                                         <div class="card-body">
-                                            <h5 class="text-success">Ordinary Account Settings</h5>
+                                            <h5 class="text-success">@GlobalsPolicyandSharing.OrdinaryAccountSettings</h5>
                                             <p class="text-muted">
-                                                Manage and update policies, configurations, and sharing rules for
-                                                <strong>@Model.SavingProduct.Name</strong>. Ensure all configurations align
-                                                with your organizational standards.
+                                                @GlobalsPolicyandSharing.ManageAndUpdatePolicies <strong>@Model.SavingProduct.Name</strong>. @GlobalsPolicyandSharing.ManageAndUpdatePoliciesDesc
                                             </p>
                                         </div>
                                     </div>

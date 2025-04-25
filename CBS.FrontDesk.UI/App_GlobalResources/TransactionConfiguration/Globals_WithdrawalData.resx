@@ -117,46 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="String1" xml:space="preserve">
-    <value>No withdrawal policy is configured.</value>
-  </data>
-  <data name="String10" xml:space="preserve">
-    <value>FluxPTM</value>
-  </data>
-  <data name="String11" xml:space="preserve">
-    <value>SWN</value>
-  </data>
-  <data name="String12" xml:space="preserve">
+  <data name="Action" xml:space="preserve">
     <value>Action</value>
   </data>
-  <data name="String13" xml:space="preserve">
-    <value>Yes</value>
-  </data>
-  <data name="String14" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="String2" xml:space="preserve">
-    <value>Type</value>
-  </data>
-  <data name="String3" xml:space="preserve">
-    <value>Max Amount</value>
-  </data>
-  <data name="String4" xml:space="preserve">
-    <value>Form M</value>
-  </data>
-  <data name="String5" xml:space="preserve">
-    <value>From P</value>
-  </data>
-  <data name="String6" xml:space="preserve">
-    <value>Source</value>
-  </data>
-  <data name="String7" xml:space="preserve">
-    <value>Destin</value>
-  </data>
-  <data name="String8" xml:space="preserve">
+  <data name="CamCCUL" xml:space="preserve">
     <value>CamCCUL</value>
   </data>
-  <data name="String9" xml:space="preserve">
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Destin" xml:space="preserve">
+    <value>Destin</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="FluxPTM" xml:space="preserve">
+    <value>FluxPTM</value>
+  </data>
+  <data name="FormM" xml:space="preserve">
+    <value>Form M</value>
+  </data>
+  <data name="FromP" xml:space="preserve">
+    <value>From P</value>
+  </data>
+  <data name="HeadOffice" xml:space="preserve">
     <value>HeadOffice</value>
+  </data>
+  <data name="MaxAmount" xml:space="preserve">
+    <value>Max Amount</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="NoWithdrawalPolicyConfigured" xml:space="preserve">
+    <value>No withdrawal policy is configured.</value>
+  </data>
+  <data name="SelectToEdit" xml:space="preserve">
+    <value>SelectToEdit</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="SWN" xml:space="preserve">
+    <value>SWN</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="WithdrawalPoliciesData" xml:space="preserve">
+    <value>Withdrawal policies data</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>

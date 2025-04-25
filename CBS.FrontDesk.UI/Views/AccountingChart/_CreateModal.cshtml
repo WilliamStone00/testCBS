@@ -1,4 +1,4 @@
-﻿
+﻿@using Resources
 @model CBS.FrontDesk.Data.Entity.Accounting.ChartOfAccount
 
 
@@ -7,76 +7,58 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="accountHeader">Loading ***</h4>
+                    <h4 class="modal-title" id="accountHeader">@GlobalAccountingChart_CreateModal.ModalTitle</h4>
                     <p id="accountHeader2" class="p-5"></p>
                     <button type="button"
                             class="btn-close"
                             data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                            aria-label="@GlobalAccountingChart_CreateModal.Close"></button>
 
                 </div>
-                <hr/>
+                <hr />
                 <div class="modal-body">
                     <div class="card-body viewSelector">
                         @using (Html.BeginForm("Create", "AccountingChart", FormMethod.Post, new { id = "chartOfAccountForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateChartOfAccount(this);" }))
                         {
-                            @Html.HiddenFor(model => model.ParentAccountId) <!-- Hidden field for AccountNumber -->
+                            @Html.HiddenFor(model => model.ParentAccountId)
 
                             <div class="form-floating form-floating-outline mb-4">
-                                @Html.TextBoxFor(model => model.AccountNumber, new { @class = "form-control", placeholder = "Account Number" })
+                                @Html.TextBoxFor(model => model.AccountNumber, new { @class = "form-control", placeholder = @GlobalAccountingChart_CreateModal.AccountNumber })
                                 @Html.LabelFor(model => model.AccountNumber, new { @for = "accountNumber" })
                                 @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
                             </div>
 
                             <div class="form-floating form-floating-outline mb-4">
-                                @Html.TextBoxFor(model => model.LabelEn, new { @class = "form-control", placeholder = "Account Label" })
-                                <label>Account label(English)</label>
+                                @Html.TextBoxFor(model => model.LabelEn, new { @class = "form-control", placeholder = @GlobalAccountingChart_CreateModal.AccountLabelEnglish })
+                                <label>@GlobalAccountingChart_CreateModal.AccountLabelEnglish</label>
                                 @Html.ValidationMessageFor(model => model.LabelEn, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-floating form-floating-outline mb-4">
-                                @Html.TextBoxFor(model => model.LabelFr, new { @class = "form-control", placeholder = "Account Label" })
-                                <label>Account label(French)</label>
+                                @Html.TextBoxFor(model => model.LabelFr, new { @class = "form-control", placeholder = @GlobalAccountingChart_CreateModal.AccountLabelFrench })
+                                <label>@GlobalAccountingChart_CreateModal.AccountLabelFrench</label>
                                 @Html.ValidationMessageFor(model => model.LabelFr, "", new { @class = "text-danger" })
                             </div>
 
-                            @*<div class="form-floating form-floating-outline mb-4">
-                        @Html.DropDownListFor(model => model.OperationDirection, new SelectList(ViewBag.OperationDirection == null ? "" : ViewBag.OperationDirection, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
-                        @Html.ValidationMessageFor(model => model.OperationDirection, "", new { @class = "text-danger" })
-                        <label>BookingDirection</label>
-                    </div>*@
-
                             <div class="form-floating form-floating-outline mb-4">
-                                @Html.DropDownListFor(model => model.AccountCartegoryId, new SelectList(ViewBag.AccountCartegories == null ? "" : ViewBag.AccountCartegories, "Id", "Name"), "---Select Cartegory---", new { @class = "form-control select2", @search = "true" })
+                                @Html.DropDownListFor(model => model.AccountCartegoryId, new SelectList(ViewBag.AccountCartegories == null ? "" : ViewBag.AccountCartegories, "Id", "Name"), @GlobalAccountingChart_CreateModal.SelectCategory, new { @class = "form-control select2", @search = "true" })
                                 @Html.ValidationMessageFor(model => model.AccountCartegoryId, "", new { @class = "text-danger" })
-                                <label>AccountCartegory</label>
+                                <label>@GlobalAccountingChart_CreateModal.AccountCategory</label>
                             </div>
-                            @*<div class="form-check mb-4">
-                        @Html.CheckBoxFor(model => model.CanBeNegative, new { @class = "form-check-input" })
-                        @Html.LabelFor(model => model.CanBeNegative, new { @class = "form-check-label" })
-                    </div>
-                    <div class="form-check mb-4">
-                        @Html.CheckBoxFor(model => model.IsBalanceSheetAccount, new { @class = "form-check-input" })
-                        @Html.LabelFor(model => model.IsBalanceSheetAccount, new { @class = "form-check-label" })
-                    </div>*@
-                            <button type="submit" id="Add" class="btn btn-primary waves-effect waves-light">Save</button>
+                            <button type="submit" id="Add" class="btn btn-primary waves-effect waves-light">@GlobalAccountingChart_CreateModal.Save</button>
 
                         }
                     </div>
                 </div>
-                <hr/>
+                <hr />
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary waves-effect waves-light">Add account chart</button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light">@GlobalAccountingChart_CreateModal.AddAccountChart</button>
 
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Edit Account Chart
+                        @GlobalAccountingChart_CreateModal.EditAccountChart
                     </button>
-                    <button type="button" class="btn btn-primary waves-effect waves-light">Delete account chart</button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light">@GlobalAccountingChart_CreateModal.DeleteAccountChart</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-
-

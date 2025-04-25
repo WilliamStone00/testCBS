@@ -1,67 +1,51 @@
 ﻿@using CBS.FrontDesk.Data.Entity.Accounting
 @model CBS.FrontDesk.Data.Entity.Accounting.ChartOfAccount
+@using Resources
 
 @{
-    ViewBag.Title = "ChartOfAccount";
-
+    ViewBag.Title = @GlobalAccountingChart_Update.ChartOfAccount;
 }
 
 <div class="row">
-<!-- Context Menu -->
-<div class="col-12 card-body">
-    <div class="card mb-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Update Account Info: </h5>
-            <small class="text-body float-end">@Model.AccountNumber-@Model.LabelEn</small>
-        </div>
-        <div class="card-body">
-            @using (Html.BeginForm("Update", "AccountingChart", FormMethod.Post, new { id = "chartOfAccountForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-            {
-                @Html.HiddenFor(model => model.ParentAccountId) <!-- Hidden field for AccountNumber -->
-  
+    <!-- Context Menu -->
+    <div class="col-12 card-body">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">@GlobalAccountingChart_Update.UpdateAccountInfo: </h5>
+                <small class="text-body float-end">@Model.AccountNumber-@Model.LabelEn</small>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("Update", "AccountingChart", FormMethod.Post, new { id = "chartOfAccountForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                {
+                    @Html.HiddenFor(model => model.ParentAccountId)
 
-                <div class="form-floating form-floating-outline mb-4">
-                    @Html.TextBoxFor(model => model.AccountNumber, new { @class = "form-control", placeholder = "Account Number" })
-                    @Html.LabelFor(model => model.AccountNumber, new { @for = "accountNumber" })
-                    @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
-                </div>
+                    <div class="form-floating form-floating-outline mb-4">
+                        @Html.TextBoxFor(model => model.AccountNumber, new { @class = "form-control", placeholder = @GlobalAccountingChart_Update.AccountNumber })
+                        @Html.LabelFor(model => model.AccountNumber, new { @for = "accountNumber" })
+                        @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
+                    </div>
 
-                <div class="form-floating form-floating-outline mb-4">
-                    @Html.TextBoxFor(model => model.LabelEn, new { @class = "form-control", placeholder = "Account Label" })
-                    <label>Account label(English)</label>
-                    @Html.ValidationMessageFor(model => model.LabelEn, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-floating form-floating-outline mb-4">
-                    @Html.TextBoxFor(model => model.LabelFr, new { @class = "form-control", placeholder = "Account Label" })
-                    <label>Account label(French)</label>
-                    @Html.ValidationMessageFor(model => model.LabelFr, "", new { @class = "text-danger" })
-                </div>
+                    <div class="form-floating form-floating-outline mb-4">
+                        @Html.TextBoxFor(model => model.LabelEn, new { @class = "form-control", placeholder = @GlobalAccountingChart_Update.AccountLabel })
+                        <label>@GlobalAccountingChart_Update.AccountLabelEnglish</label>
+                        @Html.ValidationMessageFor(model => model.LabelEn, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4">
+                        @Html.TextBoxFor(model => model.LabelFr, new { @class = "form-control", placeholder = @GlobalAccountingChart_Update.AccountLabel })
+                        <label>@GlobalAccountingChart_Update.AccountLabelFrench</label>
+                        @Html.ValidationMessageFor(model => model.LabelFr, "", new { @class = "text-danger" })
+                    </div>
 
-                @*<div class="form-floating form-floating-outline mb-4">
-                    @Html.DropDownListFor(model => model.OperationDirection, new SelectList(ViewBag.OperationDirection == null ? "" : ViewBag.OperationDirection, "Text", "Value"), "---Select BookingDirection---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(model => model.OperationDirection, "", new { @class = "text-danger" })
-                    <label>BookingDirection</label>
-                </div>*@
+                    <div class="form-floating form-floating-outline mb-4">
+                        @Html.DropDownListFor(model => model.AccountCartegoryId, new SelectList(ViewBag.AccountCartegories == null ? "" : ViewBag.AccountCartegories, "Id", "Name"), @GlobalAccountingChart_Update.SelectCategory, new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(model => model.AccountCartegoryId, "", new { @class = "text-danger" })
+                        <label>@GlobalAccountingChart_Update.AccountCategory</label>
+                    </div>
 
-                <div class="form-floating form-floating-outline mb-4">
-                    @Html.DropDownListFor(model => model.AccountCartegoryId, new SelectList(ViewBag.AccountCartegories == null ? "" : ViewBag.AccountCartegories, "Id", "Name"), "---Select Cartegory---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(model => model.AccountCartegoryId, "", new { @class = "text-danger" })
-                    <label>AccountCartegory</label>
-                </div>
-                @*<div class="form-check mb-4">
-                    @Html.CheckBoxFor(model => model.CanBeNegative, new { @class = "form-check-input" })
-                    @Html.LabelFor(model => model.CanBeNegative, new { @class = "form-check-label" })
-                </div>
-                <div class="form-check mb-4">
-                    @Html.CheckBoxFor(model => model.IsBalanceSheetAccount, new { @class = "form-check-input" })
-                    @Html.LabelFor(model => model.IsBalanceSheetAccount, new { @class = "form-check-label" })
-                </div>*@
+                    <button type="submit" class="btn btn-default waves-effect waves-light">@GlobalAccountingChart_Update.UpdateButton</button>
 
-                <button type="submit" class="btn btn-default waves-effect waves-light">Update</button>
-
-            }
+                }
+            </div>
         </div>
     </div>
 </div>
-</div>
- 

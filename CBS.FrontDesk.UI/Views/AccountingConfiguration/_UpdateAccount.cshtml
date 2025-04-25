@@ -1,10 +1,11 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+    @using Resources
 <div class="row">
     <!-- Context Menu -->
     <div class="col-12 card-body">
         <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Add New Account:</h5>
+                <h5 class="mb-0">@GlobalAccount.AddNewAccount :</h5>
                 <small class="text-body float-end">@Model.ChartOfAccount.AccountNumber-@Model.ChartOfAccount.LabelEn</small>
             </div>
             <div class="card-body">
@@ -17,7 +18,7 @@
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextBoxFor(m => m.Account.AccountNumber, new { @class = "form-control" })
                                     @Html.ValidationMessageFor(m => m.Account.AccountNumber, "", new { @class = "text-danger" })
-                                    <label>AccountNumber</label>
+                                    <label>@GlobalAccount.AccountNumber</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -25,21 +26,21 @@
                                     @Html.TextBoxFor(m => m.Account.AccountName, new { @class = "form-control" })
                                     @Html.ValidationMessageFor(m => m.Account.AccountName, "", new { @class = "text-danger" })
                                  
-                                    <label>AccountLabel</label>
+                                    <label>@GlobalAccount.AccountLabel</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.Account.AccountTypeId, new SelectList(ViewBag.AccountTypes == null ? "" : ViewBag.AccountTypes, "Id", "name"), "---Select AccountType---", new { @class = "form-control select2", @search = "true" })
+                                    @Html.DropDownListFor(m => m.Account.AccountTypeId, new SelectList(ViewBag.AccountTypes == null ? "" : ViewBag.AccountTypes, "Id", "name"), ""+@GlobalAccount.SelectAccountType, new { @class = "form-control select2", @search = "true" })
                                     @Html.ValidationMessageFor(model => model.Account.AccountTypeId, "", new { @class = "text-danger" })
-                                    <label>AccountType</label>
+                                    <label>@GlobalAccount.AccountType</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.Account.AccountOwnerId, new SelectList(ViewBag.AccountOwners == null ? "" : ViewBag.AccountOwnerId, "Id", "name"), "---Select AccountOwner---", new { @class = "form-control select2", @search = "true" })
+                                    @Html.DropDownListFor(m => m.Account.AccountOwnerId, new SelectList(ViewBag.AccountOwners == null ? "" : ViewBag.AccountOwnerId, "Id", "name"), ""+@GlobalAccount.SelectAccountOwner , new { @class = "form-control select2", @search = "true" })
                                     @Html.ValidationMessageFor(m => m.Account.AccountOwnerId, "", new { @class = "text-danger" })
-                                    <label>Account owner</label>
+                                    <label>@GlobalAccount.AccountOwner</label>
                                 </div>
                             </div>
 
@@ -48,11 +49,11 @@
                     <div class="mt-4">
                         @if (Model.Account.Id == null)
                         {
-                            <button type="submit" class="btn btn-primary me-2">Save</button>
+                            <button type="submit" class="btn btn-primary me-2">@GlobalAccount.Save</button>
                             <input type="hidden" name="Action" value="insert" id="Action" />
                         }
                         else
-                        { <button type="submit" class="btn btn-primary me-2">Update</button>
+                        { <button type="submit" class="btn btn-primary me-2">@GlobalAccount.Update</button>
                             @Html.HiddenFor(m => m.Account.Id)
                             <input type="hidden" name="Action" value="update" id="Action" />
                         }
