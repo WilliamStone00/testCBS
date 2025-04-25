@@ -1,108 +1,108 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+@using Resources
 
 @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
     <fieldset class="fieldset-custom">
-        <legend>Ordinary account</legend>
+        <legend>@Globals_ProductConfig.OrdinaryAccount</legend>
         <input type="hidden" name="ServiceOption" value="savingproduct" id="ServiceOption" />
         <div class="row mt-2 gy-4">
             <div class="col-md-3">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.SavingProduct.Code, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.SavingProduct.Code, "", new { @class = "text-danger" })
-                    <label>Product Code</label>
+                    <label>@Globals_ProductConfig.ProductCode</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.SavingProduct.Name, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.SavingProduct.Name, "", new { @class = "text-danger" })
-                    <label>Product name</label>
+                    <label>@Globals_ProductConfig.ProductName</label>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.SavingProduct.CurrencyId, new SelectList(ViewBag.Currencies, "Value", "Text"), "---Select currency---", new { @class = "form-control select2", @search = "true" })
+                    @Html.DropDownListFor(m => m.SavingProduct.CurrencyId, new SelectList(ViewBag.Currencies, "Value", "Text"), @Globals_ProductConfig.SelectCurrency, new { @class = "form-control select2", @search = "true" })
                     @Html.ValidationMessageFor(m => m.SavingProduct.CurrencyId, "", new { @class = "text-danger" })
-                    <label>Currency</label>
+                    <label>@Globals_ProductConfig.Currency</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.SavingProduct.MinAmount, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.SavingProduct.MinAmount, "", new { @class = "text-danger" })
-                    <label>Minimum amount this account can hold</label>
+                    <label>@Globals_ProductConfig.MinimumAmount</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.SavingProduct.MaxAmount, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.SavingProduct.MaxAmount, "", new { @class = "text-danger" })
-                    <label>Maximum amount this account can hold</label>
+                    <label>@Globals_ProductConfig.MaximumAmount</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.SavingProduct.MinimumAccountBalanceMoralPerson, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.SavingProduct.MinimumAccountBalanceMoralPerson, "", new { @class = "text-danger" })
-                    <label>Minimum balance for a moral person</label>
+                    <label>@Globals_ProductConfig.MinimumBalanceMoralPerson</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.SavingProduct.MinimumAccountBalancePhysicalPerson, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.SavingProduct.MinimumAccountBalancePhysicalPerson, "", new { @class = "text-danger" })
-                    <label>Minimum balance for a physical person</label>
+                    <label>@Globals_ProductConfig.MinimumBalancePhysicalPerson</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.SavingProduct.InterestAccrualFrequency, new SelectList(ViewBag.Frequences, "Text", "Value"), "---Select interest calculation frequency---", new { @class = "form-control select2", @search = "true" })
+                    @Html.DropDownListFor(m => m.SavingProduct.InterestAccrualFrequency, new SelectList(ViewBag.Frequences, "Text", "Value"), @Globals_ProductConfig.SelectInterestCalculationFrequency, new { @class = "form-control select2", @search = "true" })
                     @Html.ValidationMessageFor(m => m.SavingProduct.InterestAccrualFrequency, "", new { @class = "text-danger" })
-                    <label>Interest accrual frequency</label>
+                    <label>@Globals_ProductConfig.InterestAccrualFrequency</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.SavingProduct.PostingFrequency, new SelectList(ViewBag.Frequences, "Text", "Value"), "---Select an account---", new { @class = "form-control select2", @search = "true" })
+                    @Html.DropDownListFor(m => m.SavingProduct.PostingFrequency, new SelectList(ViewBag.Frequences, "Text", "Value"), @Globals_ProductConfig.SelectAccount, new { @class = "form-control select2", @search = "true" })
                     @Html.ValidationMessageFor(m => m.SavingProduct.PostingFrequency, "", new { @class = "text-danger" })
-                    <label>Interest posting frequency</label>
+                    <label>@Globals_ProductConfig.InterestPostingFrequency</label>
                 </div>
             </div>
 
             <div class="col-12">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.AutoAddToMember, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="activeStatus">Add to members default ordinary account.</label>
+                    <label class="form-check-label" for="activeStatus">@Globals_ProductConfig.AddToMembersDefaultOrdinaryAccount</label>
                 </div>
             </div>
-
 
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.SavingProduct.Description, new { @class = "form-control", @style = "height: 75px;" })
                     @Html.ValidationMessageFor(m => m.SavingProduct.Description, "", new { @class = "text-danger" })
-                    <label>Description</label>
+                    <label>@Globals_ProductConfig.Description</label>
                 </div>
             </div>
         </div>
     </fieldset>
 
     <fieldset class="fieldset-custom">
-        <legend>Product Category</legend>
+        <legend>@Globals_ProductConfig.ProductCategory</legend>
         <div class="row">
             <div class="col-12">
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.ProductCategory, "Teller", new { id = "teller", @class = "form-check-input" })
-                    <label class="form-check-label" for="teller">Teller</label>
+                    <label class="form-check-label" for="teller">@Globals_ProductConfig.Teller</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.ProductCategory, "OrdinaryAccount", new { id = "ordinaryAccount", @class = "form-check-input" })
-                    <label class="form-check-label" for="ordinaryAccount">Ordinary Account</label>
+                    <label class="form-check-label" for="ordinaryAccount">@Globals_ProductConfig.OrdinaryAccount</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.ProductCategory, "Remittance", new { id = "remittance", @class = "form-check-input" })
-                    <label class="form-check-label" for="remittance">Remittance</label>
+                    <label class="form-check-label" for="remittance">@Globals_ProductConfig.Remittance</label>
                 </div>
             </div>
         </div>
@@ -112,119 +112,105 @@
         </div>
     </fieldset>
 
-
     <fieldset class="fieldset-custom">
-        <legend>Members Ordinary Account types</legend>
+        <legend>@Globals_ProductConfig.MembersOrdinaryAccountTypes</legend>
         <div class="row">
             <div class="col-12">
                 <div class="form-check form-check-inline" id="accountType">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "PreferenceShare", new { id = "preferenceShare", @class = "form-check-input" })
-                    <label class="form-check-label" for="preferenceShare">Preference share account.</label>
+                    <label class="form-check-label" for="preferenceShare">@Globals_ProductConfig.PreferenceShareAccount</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "MemberShare", new { id = "memberShare", @class = "form-check-input" })
-                    <label class="form-check-label" for="memberShare">Member share account.</label>
+                    <label class="form-check-label" for="memberShare">@Globals_ProductConfig.MemberShareAccount</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Deposit", new { id = "deposit", @class = "form-check-input" })
-                    <label class="form-check-label" for="deposit">Deposit account.</label>
+                    <label class="form-check-label" for="deposit">@Globals_ProductConfig.DepositAccount</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Saving", new { id = "saving", @class = "form-check-input" })
-                    <label class="form-check-label" for="saving">Saving account.</label>
+                    <label class="form-check-label" for="saving">@Globals_ProductConfig.SavingAccount</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Salary", new { id = "Salary", @class = "form-check-input" })
-                    <label class="form-check-label" for="Salary">Salary account.</label>
+                    <label class="form-check-label" for="Salary">@Globals_ProductConfig.SalaryAccount</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Loan", new { id = "loan", @class = "form-check-input" })
-                    <label class="form-check-label" for="loan">Loan account.</label>
+                    <label class="form-check-label" for="loan">@Globals_ProductConfig.LoanAccount</label>
                 </div>
-
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "DailyCollection", new { id = "dailyCollection", @class = "form-check-input" })
-                    <label class="form-check-label" for="dailyCollection">Daily collection.</label>
+                    <label class="form-check-label" for="dailyCollection">@Globals_ProductConfig.DailyCollection</label>
                 </div>
-                @*<div class="form-check form-check-inline">
-                        @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Other", new { id = "other", @class = "form-check-input" })
-                        <label class="form-check-label" for="other">Other</label>
-                    </div>*@
             </div>
         </div>
     </fieldset>
     <fieldset class="fieldset-custom">
-        <legend>Default Account Opening Conditions</legend>
-
+        <legend>@Globals_ProductConfig.DefaultAccountOpeningConditions</legend>
         <div class="row gy-3">
             <!-- 🟢 Group: Moral Person -->
             <div class="col-12">
-                <h6 class="text-primary border-bottom pb-1"><i class="bi bi-person-badge me-1"></i> Moral Person</h6>
+                <h6 class="text-primary border-bottom pb-1"><i class="bi bi-person-badge me-1"></i> @Globals_ProductConfig.MoralPerson</h6>
             </div>
-
             <!-- Minimum Opening Balance - Moral -->
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.SavingProduct.MinimumOpeningBalanceMoralPerson, new { @class = "form-control", type = "number", step = "0.01" })
                     @Html.ValidationMessageFor(m => m.SavingProduct.MinimumOpeningBalanceMoralPerson, "", new { @class = "text-danger" })
-                    <label>Minimum Opening Balance</label>
+                    <label>@Globals_ProductConfig.MinimumOpeningBalance</label>
                 </div>
             </div>
-
             <!-- Required Opening Balance - Moral -->
             <div class="col-md-3">
                 <div class="form-check mt-4 pt-2">
                     @Html.CheckBoxFor(m => m.SavingProduct.RequiredOpeningBalanceMoralPerson, new { @class = "form-check-input" })
                     <label class="form-check-label" for="SavingProduct_RequiredOpeningBalanceMoralPerson">
-                        Required Opening
-                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Is opening balance mandatory for Moral Person?"></i>
+                        @Globals_ProductConfig.RequiredOpening
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="@Globals_ProductConfig.IsOpeningBalanceMandatoryForMoralPerson"></i>
                     </label>
                 </div>
             </div>
-
             <!-- Installments - Moral -->
             <div class="col-md-3">
                 <div class="form-check mt-4 pt-2">
                     @Html.CheckBoxFor(m => m.SavingProduct.CanPayInInstallmentMoralPerson, new { @class = "form-check-input" })
                     <label class="form-check-label" for="SavingProduct_CanPayInInstallmentMoralPerson">
-                        Pay in Installments
-                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Allow installment payment for Moral Person."></i>
+                        @Globals_ProductConfig.PayInInstallments
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="@Globals_ProductConfig.AllowInstallmentPaymentForMoralPerson"></i>
                     </label>
                 </div>
             </div>
-
             <!-- 🔵 Group: Physical Person -->
             <div class="col-12 mt-4">
-                <h6 class="text-primary border-bottom pb-1"><i class="bi bi-person-lines-fill me-1"></i> Physical Person</h6>
+                <h6 class="text-primary border-bottom pb-1"><i class="bi bi-person-lines-fill me-1"></i> @Globals_ProductConfig.PhysicalPerson</h6>
             </div>
-
             <!-- Minimum Opening Balance - Physical -->
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.SavingProduct.MinimumOpeningBalancePhysicalPerson, new { @class = "form-control", type = "number", step = "0.01" })
                     @Html.ValidationMessageFor(m => m.SavingProduct.MinimumOpeningBalancePhysicalPerson, "", new { @class = "text-danger" })
-                    <label>Minimum Opening Balance</label>
+                    <label>@Globals_ProductConfig.MinimumOpeningBalance</label>
                 </div>
             </div>
-
             <!-- Required Opening Balance - Physical -->
             <div class="col-md-3">
                 <div class="form-check mt-4 pt-2">
                     @Html.CheckBoxFor(m => m.SavingProduct.RequiredOpeningBalancePhysicalPerson, new { @class = "form-check-input" })
                     <label class="form-check-label" for="SavingProduct_RequiredOpeningBalancePhysicalPerson">
-                        Required Opening
-                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Is opening balance mandatory for Physical Person?"></i>
+                        @Globals_ProductConfig.RequiredOpening
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="@Globals_ProductConfig.IsOpeningBalanceMandatoryForPhysicalPerson"></i>
                     </label>
                 </div>
             </div>
-
             <!-- Installments - Physical -->
             <div class="col-md-3">
                 <div class="form-check mt-4 pt-2">
                     @Html.CheckBoxFor(m => m.SavingProduct.CanPayInInstallmentPhysicalPerson, new { @class = "form-check-input" })
                     <label class="form-check-label" for="SavingProduct_CanPayInInstallmentPhysicalPerson">
-                        Pay in Installments
-                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Allow installment payment for Physical Person."></i>
+                        @Globals_ProductConfig.PayInInstallments
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="@Globals_ProductConfig.AllowInstallmentPaymentForPhysicalPerson"></i>
                     </label>
                 </div>
             </div>
@@ -233,97 +219,98 @@
 
 
     <fieldset class="fieldset-custom">
-        <legend>Third Parties Account types</legend>
+        <legend>@Globals_ProductConfig.ThirdPartiesAccountTypes</legend>
         <div class="row">
             <div class="col-12">
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Atm", new { id = "atm", @class = "form-check-input" })
-                    <label class="form-check-label" for="atm">Automatic Teller Machine (ATM).</label>
+                    <label class="form-check-label" for="atm">@Globals_ProductConfig.AutomaticTellerMachine</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Gav", new { id = "gav", @class = "form-check-input" })
-                    <label class="form-check-label" for="gav">Guichet Automatic Virtuel (GAV).</label>
+                    <label class="form-check-label" for="gav">@Globals_ProductConfig.GuichetAutomaticVirtuel</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "MobileMoneyMTN", new { id = "MobileMoneyMTN", @class = "form-check-input" })
-                    <label class="form-check-label" for="MobileMoneyMTN">Mobile Money MTN</label>
+                    <label class="form-check-label" for="MobileMoneyMTN">@Globals_ProductConfig.MobileMoneyMTN</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "MobileMoneyORANGE", new { id = "MobileMoneyORANGE", @class = "form-check-input" })
-                    <label class="form-check-label" for="MobileMoneyORANGE">Mobile Money Orange</label>
+                    <label class="form-check-label" for="MobileMoneyORANGE">@Globals_ProductConfig.MobileMoneyOrange</label>
                 </div>
             </div>
         </div>
     </fieldset>
+
     <fieldset class="fieldset-custom">
-        <legend>System Reserved Account types</legend>
+        <legend>@Globals_ProductConfig.SystemReservedAccountTypes</legend>
         <div class="row">
             <div class="col-12">
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Teller", new { id = "teller", @class = "form-check-input" })
-                    <label class="form-check-label" for="teller">Teller account (Reserved for operations).</label>
+                    <label class="form-check-label" for="teller">@Globals_ProductConfig.TellerAccountReservedForOperations</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Membership", new { id = "membership", @class = "form-check-input" })
-                    <label class="form-check-label" for="membership">Membership Account (Reserved to manage onboarding fee once per member upon registration)</label>
+                    <label class="form-check-label" for="membership">@Globals_ProductConfig.MembershipAccountReservedForOnboardingFee</label>
                 </div>
             </div>
         </div>
     </fieldset>
     <fieldset class="fieldset-custom">
-        <legend>Remittance Account types</legend>
+        <legend>@Globals_ProductConfig.RemittanceAccountTypes</legend>
         <div class="row">
             <div class="col-12">
                 <div class="form-check form-check-inline" id="accountType">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "WesternUnion", new { id = "westernUnion", @class = "form-check-input" })
-                    <label class="form-check-label" for="westernUnion">Western Union</label>
+                    <label class="form-check-label" for="westernUnion">@Globals_ProductConfig.WesternUnion</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "MoneyGram", new { id = "moneyGram", @class = "form-check-input" })
-                    <label class="form-check-label" for="moneyGram">Money Gram</label>
+                    <label class="form-check-label" for="moneyGram">@Globals_ProductConfig.MoneyGram</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Ria", new { id = "ria", @class = "form-check-input" })
-                    <label class="form-check-label" for="ria">Ria</label>
+                    <label class="form-check-label" for="ria">@Globals_ProductConfig.Ria</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "OFX", new { id = "ofx", @class = "form-check-input" })
-                    <label class="form-check-label" for="ofx">OFX</label>
+                    <label class="form-check-label" for="ofx">@Globals_ProductConfig.OFX</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "MPesa", new { id = "mPesa", @class = "form-check-input" })
-                    <label class="form-check-label" for="mPesa">M-Pesa</label>
+                    <label class="form-check-label" for="mPesa">@Globals_ProductConfig.MPesa</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Payoneer", new { id = "payoneer", @class = "form-check-input" })
-                    <label class="form-check-label" for="payoneer">Payoneer</label>
+                    <label class="form-check-label" for="payoneer">@Globals_ProductConfig.Payoneer</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "WorldRemit", new { id = "worldRemit", @class = "form-check-input" })
-                    <label class="form-check-label" for="worldRemit">World Remit</label>
+                    <label class="form-check-label" for="worldRemit">@Globals_ProductConfig.WorldRemit</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "TrustSoftCredit", new { id = "trustSoftCredit", @class = "form-check-input" })
-                    <label class="form-check-label" for="trustSoftCredit">Trust Soft Credit</label>
+                    <label class="form-check-label" for="trustSoftCredit">@Globals_ProductConfig.TrustSoftCredit</label>
                 </div>
             </div>
 
             <div class="col-12">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.AutoVerifyRemittanceReceiver, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="autoVerifyRemittanceReceiver">Automatically verify remittance receiver information.</label>
+                    <label class="form-check-label" for="autoVerifyRemittanceReceiver">@Globals_ProductConfig.AutomaticallyVerifyRemittanceReceiverInformation</label>
                 </div>
             </div>
             <div class="col-12">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.AutoVerifyRemittanceSender, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="autoVerifyRemittanceSender">Automatically verify remittance sender information.</label>
+                    <label class="form-check-label" for="autoVerifyRemittanceSender">@Globals_ProductConfig.AutomaticallyVerifyRemittanceSenderInformation</label>
                 </div>
             </div>
             <div class="col-12">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.OTPControl, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="oTPControl">Enable OTP control for transactions.</label>
+                    <label class="form-check-label" for="oTPControl">@Globals_ProductConfig.EnableOTPControlForTransactions</label>
                 </div>
             </div>
 
@@ -331,14 +318,14 @@
     </fieldset>
 
     <fieldset class="fieldset-custom">
-        <legend>Account Characteristics/Behaviour</legend>
+        <legend>@Globals_ProductConfig.AccountCharacteristicsBehaviour</legend>
         <div class="row">
             <div class="col-6">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.ActiveStatus, new { @class = "form-check-input" })
                     <label class="form-check-label" for="SavingProduct_ActiveStatus">
-                        Check to activate this product.
-                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Enable this option to activate the account for transactions."></i>
+                        @Globals_ProductConfig.CheckToActivateThisProduct
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="@Globals_ProductConfig.EnableThisOptionToActivateTheAccountForTransactions"></i>
                     </label>
                 </div>
             </div>
@@ -346,8 +333,8 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.IsUsedForTellerProvisioning, new { @class = "form-check-input" })
                     <label class="form-check-label" for="SavingProduct_IsUsedForTellerProvisioning">
-                        Check to reserve this product for teller management.
-                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Select this option to make the account accessible only to tellers for management purposes."></i>
+                        @Globals_ProductConfig.CheckToReserveThisProductForTellerManagement
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="@Globals_ProductConfig.SelectThisOptionToMakeTheAccountAccessibleOnlyToTellersForManagementPurposes"></i>
                     </label>
                 </div>
             </div>
@@ -355,8 +342,8 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.AllowInterbranchDeposit, new { @class = "form-check-input" })
                     <label class="form-check-label" for="SavingProduct_AllowInterbranchDeposit">
-                        Check to allow inter-branch deposit.
-                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Allow deposits to be made into this account from different branches."></i>
+                        @Globals_ProductConfig.CheckToAllowInterBranchDeposit
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="@Globals_ProductConfig.AllowDepositsToBeMadeIntoThisAccountFromDifferentBranches"></i>
                     </label>
                 </div>
             </div>
@@ -364,8 +351,8 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.IsWithdrawalAllowedDirectlyFromthisAccount, new { @class = "form-check-input" })
                     <label class="form-check-label" for="SavingProduct_IsWithdrawalAllowedDirectlyFromthisAccount">
-                        Check to allow direct withdrawal.
-                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Permit withdrawals directly from this account."></i>
+                        @Globals_ProductConfig.CheckToAllowDirectWithdrawal
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="@Globals_ProductConfig.PermitWithdrawalsDirectlyFromThisAccount"></i>
                     </label>
                 </div>
             </div>
@@ -373,8 +360,8 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.AllowInterbranchTransfter, new { @class = "form-check-input" })
                     <label class="form-check-label" for="SavingProduct_AllowInterbranchTransfter">
-                        Check to allow inter-branch transfer.
-                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Enable transfers to and from other branches for this account."></i>
+                        @Globals_ProductConfig.CheckToAllowInterBranchTransfer
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="@Globals_ProductConfig.EnableTransfersToAndFromOtherBranchesForThisAccount"></i>
                     </label>
                 </div>
             </div>
@@ -382,8 +369,8 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.IsDepositAllowedDirectlyTothisAccount, new { @class = "form-check-input" })
                     <label class="form-check-label" for="SavingProduct_IsDepositAllowedDirectlyTothisAccount">
-                        Check to allow direct deposit.
-                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Permit deposits directly into this account."></i>
+                        @Globals_ProductConfig.CheckToAllowDirectDeposit
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="@Globals_ProductConfig.PermitDepositsDirectlyIntoThisAccount"></i>
                     </label>
                 </div>
             </div>
@@ -391,8 +378,8 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.AllowInterbranchWithdrawal, new { @class = "form-check-input" })
                     <label class="form-check-label" for="SavingProduct_AllowInterbranchWithdrawal">
-                        Check to allow inter-branch withdrawal.
-                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Enable withdrawals from this account at different branches."></i>
+                        @Globals_ProductConfig.CheckToAllowInterBranchWithdrawal
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="@Globals_ProductConfig.EnableWithdrawalsFromThisAccountAtDifferentBranches"></i>
                     </label>
                 </div>
             </div>
@@ -400,8 +387,8 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.AllowShareing, new { @class = "form-check-input" })
                     <label class="form-check-label" for="SavingProduct_AllowShareing">
-                        Check to allow commission sharing.
-                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Permit sharing of commissions with other linked accounts."></i>
+                        @Globals_ProductConfig.CheckToAllowCommissionSharing
+                        <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="@Globals_ProductConfig.PermitSharingOfCommissionsWithOtherLinkedAccounts"></i>
                     </label>
                 </div>
             </div>
@@ -409,16 +396,16 @@
     </fieldset>
     <fieldset class="fieldset-custom">
         <legend>
-            Mobile Application Control For C-Money
-            <i class="bi bi-question-circle-fill" data-bs-toggle="tooltip" title="Control product settings for mobile application access, including activation, transfer, cashin, and cashout permissions."></i>
+            @Globals_ProductConfig.MobileApplicationControlForCMoney
+            <i class="bi bi-question-circle-fill" data-bs-toggle="tooltip" title="@Globals_ProductConfig.ControlProductSettingsForMobileApplicationAccess"></i>
         </legend>
         <div class="row">
             <div class="col-6">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.ActivateForMobileApp, new { @class = "form-check-input" })
                     <label class="form-check-label" for="ActivateForMobileApp">
-                        Check to activate this product for mobile app so that it can be visible to members
-                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Enable this option to make this product available on the mobile app."></i>
+                        @Globals_ProductConfig.CheckToActivateThisProductForMobileApp
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="@Globals_ProductConfig.EnableThisOptionToMakeThisProductAvailableOnTheMobileApp"></i>
                     </label>
                 </div>
             </div>
@@ -426,8 +413,8 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.CanPeformTransferMobileApp, new { @class = "form-check-input" })
                     <label class="form-check-label" for="CanPeformTransferMobileApp">
-                        Perform transfer
-                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Allow users to perform transfers via the mobile app."></i>
+                        @Globals_ProductConfig.PerformTransfer
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="@Globals_ProductConfig.AllowUsersToPerformTransfersViaTheMobileApp"></i>
                     </label>
                 </div>
             </div>
@@ -435,8 +422,8 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.CanPeformCashOutMobileApp, new { @class = "form-check-input" })
                     <label class="form-check-label" for="CanPeformCashoutMobileApp">
-                        Perform cashout
-                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Allow cash-out transactions through the mobile app."></i>
+                        @Globals_ProductConfig.PerformCashout
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="@Globals_ProductConfig.AllowCashOutTransactionsThroughTheMobileApp"></i>
                     </label>
                 </div>
             </div>
@@ -444,8 +431,8 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.CanPeformCashinMobileApp, new { @class = "form-check-input" })
                     <label class="form-check-label" for="CanPeformCashinMobileApp">
-                        Perform cashin
-                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Enable cash-in operations through the mobile app."></i>
+                        @Globals_ProductConfig.PerformCashin
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="@Globals_ProductConfig.EnableCashInOperationsThroughTheMobileApp"></i>
                     </label>
                 </div>
             </div>
@@ -453,8 +440,8 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.ActivateSavingWithdrawalNotificationForMobileApp, new { @class = "form-check-input" })
                     <label class="form-check-label" for="ActivateSavingWithdrawalNotificationForMobileApp">
-                        Activate Saving Withdrawal Notification
-                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Activate notifications for savings withdrawals in the mobile app."></i>
+                        @Globals_ProductConfig.ActivateSavingWithdrawalNotification
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="@Globals_ProductConfig.ActivateNotificationsForSavingsWithdrawalsInTheMobileApp"></i>
                     </label>
                 </div>
             </div>
@@ -462,25 +449,25 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.SavingProduct.DisplayOrder, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.SavingProduct.DisplayOrder, "", new { @class = "text-danger" })
-                    <label>Order of listing or display in C-Money App for Members Usage.</label>
+                    <label>@Globals_ProductConfig.OrderOfListingOrDisplayInCMoneyAppForMembersUsage</label>
                 </div>
             </div>
         </div>
     </fieldset>
 
-    if (Model.SavingProduct.AccountType=="Saving")
+    if (Model.SavingProduct.AccountType == "Saving")
     {
         <fieldset class="fieldset-custom">
             <legend>
-                Third Party Saving Withdrawal Form Charge
-                <i class="bi bi-question-circle-fill" data-bs-toggle="tooltip" title="Set the form charge for withdrawaing from saving account"></i>
+                @Globals_ProductConfig.ThirdPartySavingWithdrawalFormCharge
+                <i class="bi bi-question-circle-fill" data-bs-toggle="tooltip" title="@Globals_ProductConfig.SetTheFormChargeForWithdrawaingFromSavingAccount"></i>
             </legend>
             <div class="row">
                 <div class="col-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.SavingProduct.WithdrawalFormSavingFormFeeFor3PP, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.SavingProduct.WithdrawalFormSavingFormFeeFor3PP, "", new { @class = "text-danger" })
-                        <label>Form Charge</label>
+                        <label>@Globals_ProductConfig.FormCharge</label>
                     </div>
                 </div>
             </div>
@@ -489,16 +476,16 @@
 
     <fieldset class="fieldset-custom">
         <legend>
-            Third Party Application Control (Like GAV)
-            <i class="bi bi-question-circle-fill" data-bs-toggle="tooltip" title="Control settings for third-party application access, including activation and transaction permissions."></i>
+            @Globals_ProductConfig.ThirdPartyApplicationControl
+            <i class="bi bi-question-circle-fill" data-bs-toggle="tooltip" title="@Globals_ProductConfig.ControlSettingsForThirdPartyApplicationAccess"></i>
         </legend>
         <div class="row">
             <div class="col-6">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.ActivateFor3PPApp, new { @class = "form-check-input" })
                     <label class="form-check-label" for="ActivateFor3PPApp">
-                        Check to activate this product for 3PP app
-                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Enable this option to activate the product for third-party applications."></i>
+                        @Globals_ProductConfig.CheckToActivateThisProductFor3PPApp
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="@Globals_ProductConfig.EnableThisOptionToActivateTheProductForThirdPartyApplications"></i>
                     </label>
                 </div>
             </div>
@@ -506,8 +493,8 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.CanPeformTransfer3PP, new { @class = "form-check-input" })
                     <label class="form-check-label" for="CanPeformTransfer3PP">
-                        Perform transfer
-                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Allow transfer operations via third-party applications."></i>
+                        @Globals_ProductConfig.PerformTransfer
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="@Globals_ProductConfig.AllowTransferOperationsViaThirdPartyApplications"></i>
                     </label>
                 </div>
             </div>
@@ -515,8 +502,8 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.CanPeformCashOut3PP, new { @class = "form-check-input" })
                     <label class="form-check-label" for="CanPeformCashOut3PP">
-                        Perform cashout
-                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Enable cash-out transactions via third-party applications."></i>
+                        @Globals_ProductConfig.PerformCashout
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="@Globals_ProductConfig.EnableCashOutTransactionsViaThirdPartyApplications"></i>
                     </label>
                 </div>
             </div>
@@ -524,28 +511,26 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.SavingProduct.CanPeformCashin3PP, new { @class = "form-check-input" })
                     <label class="form-check-label" for="CanPeformCashin3PP">
-                        Perform cashin
-                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="Enable cash-in transactions via third-party applications."></i>
+                        @Globals_ProductConfig.PerformCashin
+                        <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" title="@Globals_ProductConfig.EnableCashInTransactionsViaThirdPartyApplications"></i>
                     </label>
                 </div>
             </div>
         </div>
     </fieldset>
 
-
-
     <div class="mt-4">
         @if (Model.SavingProduct.Id == null)
         {
-            <button type="submit" class="btn btn-primary me-2">Save</button>
+            <button type="submit" class="btn btn-primary me-2">@Globals_ProductConfig.Save</button>
             <input type="hidden" name="Action" value="insert" id="Action" />
         }
         else
-        { <button type="submit" class="btn btn-primary me-2">Update</button>
+        {
+            <button type="submit" class="btn btn-primary me-2">@Globals_ProductConfig.Update</button>
             @Html.HiddenFor(m => m.SavingProduct.Id)
             <input type="hidden" name="Action" value="update" id="Action" />
         }
-
     </div>
 }
 

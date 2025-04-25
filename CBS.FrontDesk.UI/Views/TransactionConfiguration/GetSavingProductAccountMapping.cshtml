@@ -1,10 +1,10 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+    @using Resources
 @{
-    ViewBag.Title = "Saving Product Accounting Configurations";
-
+    ViewBag.Title = @GlobalsGetSavingProductAccountMapping.SavingProductAccountingConfigurations;
 }
 
-<h2>Saving Product Accounting Configurations</h2>
+<h2>@GlobalsGetSavingProductAccountMapping.SavingProductAccountingConfigurations</h2>
 <fieldset class="fieldset-custom">
 
 
@@ -16,14 +16,14 @@
             <table class="table table-hover" id="myDataTable">
                 <thead>
                     <tr>
-                        <th>Operation Event</th>
-                        <th>Account Number</th>
-                        <th>Description</th>
-                        <th>Status</th>
+                        <th>@GlobalsGetSavingProductAccountMapping.OperationEvent</th>
+                        <th>@GlobalsGetSavingProductAccountMapping.AccountNumber</th>
+                        <th>@GlobalsGetSavingProductAccountMapping.Description</th>
+                        <th>@GlobalsGetSavingProductAccountMapping.Status</th>
                     </tr>
                 </thead>
 
-               @foreach (var d in @tab.AccountingChart)
+                @foreach (var d in @tab.AccountingChart)
                 {
 
                     <tbody>
@@ -41,6 +41,6 @@
             </table>
         </div>
 
-   
+
     }
 </fieldset>

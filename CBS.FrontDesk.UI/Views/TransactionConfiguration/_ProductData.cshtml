@@ -1,9 +1,10 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+@using Resources
 @if (Model.SavingProducts.Count == 0)
 {
     <div class="text-center my-3">
-        <p>No ordinary product created.</p>
-        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_ProductConfig','new','TransactionConfiguration','savingproduct')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+        <p>@Globals_ProductData.NoOrdinaryProductCreated</p>
+        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_ProductConfig','new','TransactionConfiguration','savingproduct')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@Globals_ProductData.AddNew">
             <span class="tf-icons mdi mdi-plus mdi-18px"></span>
         </a>
     </div>
@@ -11,17 +12,17 @@
 else
 {
     <fieldset class="fieldset-custom">
-        <legend>Ordinary account listings</legend>
+        <legend>@Globals_ProductData.OrdinaryAccountListings</legend>
         <div class="table-responsive mb-3">
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>Code</th>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Range</th>
-                        <th>Status</th>
-                        <th>Action</th>
+                        <th>@Globals_ProductData.Code</th>
+                        <th>@Globals_ProductData.Name</th>
+                        <th>@Globals_ProductData.Type</th>
+                        <th>@Globals_ProductData.Range</th>
+                        <th>@Globals_ProductData.Status</th>
+                        <th>@Globals_ProductData.Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,22 +36,22 @@ else
                             <td style="width:7%">
                                 @if (d.ActiveStatus)
                                 {
-                                    <span class="badge bg-info">Active</span>
+                                    <span class="badge bg-info">@Globals_ProductData.Active</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-warning">Inactive</span>
+                                    <span class="badge bg-warning">@Globals_ProductData.Inactive</span>
                                 }
                             </td>
                             <td style="width:15%">
                                 @if (!d.IsUsedForTellerProvisioning)
                                 {
-                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_ProductConfig','get','TransactionConfiguration','savingproduct')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit |</a>
-                                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.Id','myDataTable_product','_ProductData',0,'myDataTable')">Delete</a>
+                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_ProductConfig','get','TransactionConfiguration','savingproduct')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@Globals_ProductData.SelectToEdit @d.Name">@Globals_ProductData.Edit |</a>
+                                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@Globals_ProductData.Delete @d.Name " onclick="DeleteRecordDataTable('TransactionConfiguration','@d.Id','myDataTable_product','_ProductData',0,'myDataTable')">@Globals_ProductData.Delete</a>
                                 }
                                 else
                                 {
-                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_ProductConfig','get','TransactionConfiguration','savingproduct')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit</a>
+                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_ProductConfig','get','TransactionConfiguration','savingproduct')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@Globals_ProductData.SelectToEdit @d.Name">@Globals_ProductData.Edit</a>
 
                                 }
                             </td>
@@ -61,4 +62,3 @@ else
         </div>
     </fieldset>
 }
-

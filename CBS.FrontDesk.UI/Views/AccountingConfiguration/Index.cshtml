@@ -1,9 +1,9 @@
 ﻿
  
 
-
+@using Resources
 @{
-    ViewBag.Title = "Accounting Configurations";
+    ViewBag.Title = GlobalAccount.AccountingConfigurations;
 
 }
 
@@ -11,7 +11,7 @@
 <div class="row">
 
     <div class="card mb-12">
-        <h2> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Accounting Configuration Panel </h2>
+        <h2> @GlobalAccount.AccountingConfigurationPanel </h2>
 
         <div class="accordion mt-3" id="accordionExample">
             <div class="accordion-item">
@@ -22,7 +22,7 @@
                             data-bs-target="#accordionThree"
                             aria-expanded="false"
                             aria-controls="accordionThree">
-                        <i class="tf-icons mdi mdi-typewriter me-1"></i>       &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Account Type (Ordinary Account,Operations Account ...etc)
+                        <i class="tf-icons mdi mdi-typewriter me-1"></i>       &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;@GlobalAccount.AccountType
                     </button>
                 </h2>
                 <div id="accordionThree"
@@ -32,10 +32,10 @@
                     <div class="accordion-body">
                         <div class="row justify-content-end">
                             <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_AccountType','_AccountTypeData','datalistingview_AccountType',0,'accountType','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_AccountType','_AccountTypeData','datalistingview_AccountType',0,'accountType','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalAccount.ViewList">
                                     <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                 </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountType','_CreateAccountType','new','AccountingConfiguration','accountType')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountType','_CreateAccountType','new','AccountingConfiguration','accountType')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalAccount.AddNew">
                                     <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                 </a>
 
@@ -57,7 +57,7 @@
                             data-bs-target="#accordionfive"
                             aria-expanded="false"
                             aria-controls="accordionfive">
-                        <i class="tf-icons mdi mdi-file-account-outline me-1"></i>    &nbsp; &nbsp; &nbsp; &nbsp;   Account Management
+                        <i class="tf-icons mdi mdi-file-account-outline me-1"></i>    &nbsp; &nbsp; &nbsp; &nbsp;   @GlobalAccount.AccountManagement
                     </button>
                 </h2>
                 <div id="accordionfive"
@@ -67,13 +67,13 @@
                     <div class="accordion-body">
                         <div class="row justify-content-end">
                             <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_AccountData','_AccountData','datalistingview_Account',0,'account','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_AccountData','_AccountData','datalistingview_Account',0,'account','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalAccount.ViewList">
                                     <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                 </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Account','_CreateAccount','new','AccountingConfiguration','account')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Account','_CreateAccount','new','AccountingConfiguration','account')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalAccount.AddNew">
                                     <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                 </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Account','_AccountUploud','upload','AccountingConfiguration','account')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Account','_AccountUploud','upload','AccountingConfiguration','account')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalAccount.UploadAccount">
                                     <span class="tf-icons mdi mdi-upload mdi-18px"></span>
                                 </a>
                             </div>
@@ -85,94 +85,90 @@
                     </div>
                 </div>
             </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingeight">
-                    <button type="button"
-                            class="accordion-button collapsed"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#accordioneight"
-                            aria-expanded="false"
-                            aria-controls="accordioneight">
-                        <i class="tf-icons mdi mdi-book-account-outline me-1"></i>
-                        &nbsp; &nbsp; &nbsp; &nbsp;   MFI ChartOfAccount
-                    </button>
-                </h2>
-                <div id="accordioneight"
-                     class="accordion-collapse collapse"
-                     aria-labelledby="headingeight"
-                     data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <div class="row justify-content-end">
-                            <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','DataTablePosition','_ChartofAccountManagementPositionData','datalistingviewChartOfaccountManagementPosition',0,'chartOfAccountManagementPosition','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
-                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingviewChartOfaccountManagementPosition','_CreateChartOfaccountManagementPosition','new','AccountingConfiguration','chartOfAccountManagementPosition')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
-                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                </a>
-
-                                <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','DataTablePosition','_DownloadMFIChartOfAccount','datalistingviewChartOfaccountManagementPosition',0,'chartOfAccountManagementPosition','download')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Download MFI ChartOfAccount">
-                                    <span class="tf-icons mdi mdi-download-circle-outline mdi-18px"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <br />
-                        <div id="datalistingviewChartOfaccountManagementPosition">
-                            @Html.Partial("_CreateChartOfaccountManagementPosition")
-                        </div>
-                    </div>
-                </div>
-
-
-
-
-            </div>
-
-
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingnine">
-                    <button type="button"
-                            class="accordion-button collapsed"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#accordionnine"
-                            aria-expanded="false"
-                            aria-controls="accordionnine">
-                        <i class="tf-icons mdi mdi-toolbox-outline me-1"></i>
-                        &nbsp; &nbsp; &nbsp; &nbsp; Financial Statement Settings(Balance Sheet and Profit and Lost)
-                    </button>
-                </h2>
-                <div id="accordionnine"
-                     class="accordion-collapse collapse"
-                     aria-labelledby="headingnine"
-                     data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <div class="row justify-content-end">
-                            <div class="demo-inline-spacing text-end">
-                                <a onclick="LoadDataGeneration('AccountingConfiguration','DataTable_DocumentReference','_DocumentReferenceCodeData','datalistingview_DocumentReferenceCode',0,'documentReferenceCode','list')"
-                                   class="btn btn-icon btn-label-primary btn-sm btn-fab demo"
-                                   data-bs-toggle="tooltip"
-                                   title="View List">
-                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                </a>
-                                <a onclick="AddORUpdateGen(null,'datalistingview_DocumentReferenceCode','_CreateDocumentReferenceCode','new','AccountingConfiguration','documentReferenceCode')"
-                                   class="btn btn-icon btn-label-secondary btn-sm btn-fab demo"
-                                   data-bs-toggle="tooltip"
-                                   title="Add new">
-                                    <span class="tf-icons mdi mdi-plus mdi-18px"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <br />
-                        <div id="datalistingview_DocumentReferenceCode">
-                            @Html.Partial("_CreateDocumentReferenceCode")
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
         </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingeight">
+                <button type="button"
+                        class="accordion-button collapsed"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#accordioneight"
+                        aria-expanded="false"
+                        aria-controls="accordioneight">
+                    <i class="tf-icons mdi mdi-book-account-outline me-1"></i>
+                    &nbsp; &nbsp; &nbsp; &nbsp;   @GlobalAccount.MFIChartOfAccount
+                </button>
+            </h2>
+            <div id="accordioneight"
+                 class="accordion-collapse collapse"
+                 aria-labelledby="headingeight"
+                 data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div class="row justify-content-end">
+                        <div class="demo-inline-spacing text-end">
+                            <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','DataTablePosition','_ChartofAccountManagementPositionData','datalistingviewChartOfaccountManagementPosition',0,'chartOfAccountManagementPosition','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalAccount.ViewList">
+                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                            </a>
+                            <a type="button" onclick="AddORUpdateGen(null,'datalistingviewChartOfaccountManagementPosition','_CreateChartOfaccountManagementPosition','new','AccountingConfiguration','chartOfAccountManagementPosition')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalAccount.AddNew">
+                                <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                            </a>
+
+                            <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','DataTablePosition','_DownloadMFIChartOfAccount','datalistingviewChartOfaccountManagementPosition',0,'chartOfAccountManagementPosition','download')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalAccount.DownloadMFIChartOfAccount">
+                                <span class="tf-icons mdi mdi-download-circle-outline mdi-18px"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <br />
+                    <div id="datalistingviewChartOfaccountManagementPosition">
+                        @Html.Partial("_CreateChartOfaccountManagementPosition")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingnine">
+                <button type="button"
+                        class="accordion-button collapsed"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#accordionnine"
+                        aria-expanded="false"
+                        aria-controls="accordionnine">
+                    <i class="tf-icons mdi mdi-toolbox-outline me-1"></i>
+                    &nbsp; &nbsp; &nbsp; &nbsp; @GlobalAccount.FinancialStatementSettings
+                </button>
+            </h2>
+            <div id="accordionnine"
+                 class="accordion-collapse collapse"
+                 aria-labelledby="headingnine"
+                 data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div class="row justify-content-end">
+                        <div class="demo-inline-spacing text-end">
+                            <a onclick="LoadDataGeneration('AccountingConfiguration','DataTable_DocumentReference','_DocumentReferenceCodeData','datalistingview_DocumentReferenceCode',0,'documentReferenceCode','list')"
+                               class="btn btn-icon btn-label-primary btn-sm btn-fab demo"
+                               data-bs-toggle="tooltip"
+                               title="@GlobalAccount.ViewList">
+                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                            </a>
+                            <a onclick="AddORUpdateGen(null,'datalistingview_DocumentReferenceCode','_CreateDocumentReferenceCode','new','AccountingConfiguration','documentReferenceCode')"
+                               class="btn btn-icon btn-label-secondary btn-sm btn-fab demo"
+                               data-bs-toggle="tooltip"
+                               title="@GlobalAccount.AddNew">
+                                <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <br />
+                    <div id="datalistingview_DocumentReferenceCode">
+                        @Html.Partial("_CreateDocumentReferenceCode")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
 
     </div>
 

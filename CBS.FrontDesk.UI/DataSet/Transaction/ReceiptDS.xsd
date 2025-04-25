@@ -49,7 +49,9 @@
               <xs:element name="DepositorPhone" msprop:Generator_ColumnPropNameInTable="DepositorPhoneColumn" msprop:Generator_ColumnPropNameInRow="DepositorPhone" msprop:Generator_UserColumnName="DepositorPhone" msprop:Generator_ColumnVarNameInTable="columnDepositorPhone" type="xs:string" minOccurs="0" />
               <xs:element name="DepositorCNI" msprop:Generator_ColumnPropNameInTable="DepositorCNIColumn" msprop:Generator_ColumnPropNameInRow="DepositorCNI" msprop:Generator_UserColumnName="DepositorCNI" msprop:Generator_ColumnVarNameInTable="columnDepositorCNI" type="xs:string" minOccurs="0" />
               <xs:element name="BarcodeData" msprop:Generator_ColumnPropNameInTable="BarcodeDataColumn" msprop:Generator_ColumnPropNameInRow="BarcodeData" msprop:Generator_UserColumnName="BarcodeData" msprop:Generator_ColumnVarNameInTable="columnBarcodeData" type="xs:string" minOccurs="0" />
-              <xs:element name="BarcodeImagePath" msprop:Generator_ColumnPropNameInRow="BarcodeImagePath" msprop:Generator_ColumnPropNameInTable="BarcodeImagePathColumn" msprop:Generator_ColumnVarNameInTable="columnBarcodeImagePath" msprop:Generator_UserColumnName="BarcodeImagePath" type="xs:string" minOccurs="0" />
+              <xs:element name="BarcodeImagePath" msprop:Generator_UserColumnName="BarcodeImagePath" msprop:Generator_ColumnPropNameInTable="BarcodeImagePathColumn" msprop:Generator_ColumnPropNameInRow="BarcodeImagePath" msprop:Generator_ColumnVarNameInTable="columnBarcodeImagePath" type="xs:string" minOccurs="0" />
+              <xs:element name="TotalAccountBalances" msprop:Generator_ColumnPropNameInRow="TotalAccountBalances" msprop:Generator_ColumnPropNameInTable="TotalAccountBalancesColumn" msprop:Generator_ColumnVarNameInTable="columnTotalAccountBalances" msprop:Generator_UserColumnName="TotalAccountBalances" type="xs:string" minOccurs="0" />
+              <xs:element name="ReceiptType" msprop:Generator_ColumnPropNameInRow="ReceiptType" msprop:Generator_ColumnPropNameInTable="ReceiptTypeColumn" msprop:Generator_ColumnVarNameInTable="columnReceiptType" msprop:Generator_UserColumnName="ReceiptType" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -69,6 +71,7 @@
               <xs:element name="AccountNumber" msprop:Generator_ColumnPropNameInTable="AccountNumberColumn" msprop:Generator_ColumnPropNameInRow="AccountNumber" msprop:Generator_UserColumnName="AccountNumber" msprop:Generator_ColumnVarNameInTable="columnAccountNumber" type="xs:string" minOccurs="0" />
               <xs:element name="AccountingDay" msprop:Generator_ColumnPropNameInTable="AccountingDayColumn" msprop:Generator_ColumnPropNameInRow="AccountingDay" msprop:Generator_UserColumnName="AccountingDay" msprop:Generator_ColumnVarNameInTable="columnAccountingDay" type="xs:dateTime" minOccurs="0" />
               <xs:element name="Date" msprop:Generator_ColumnPropNameInTable="DateColumn" msprop:Generator_ColumnPropNameInRow="Date" msprop:Generator_UserColumnName="Date" msprop:Generator_ColumnVarNameInTable="columnDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="AccountBalance" msprop:Generator_ColumnPropNameInRow="AccountBalance" msprop:Generator_ColumnPropNameInTable="AccountBalanceColumn" msprop:Generator_ColumnVarNameInTable="columnAccountBalance" msprop:Generator_UserColumnName="AccountBalance" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

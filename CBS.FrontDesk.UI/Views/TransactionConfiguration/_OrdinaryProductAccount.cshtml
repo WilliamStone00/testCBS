@@ -1,26 +1,28 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+@using Resources
 @if (Model.SavingProducts.Count == 0)
 {
     <div class="text-center my-3">
-        <p>No ordinary product created.</p>
-        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_ProductConfig','new','TransactionConfiguration','savingproduct')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+        <p>@Globals_OrdinaryProductAccount.NoOrdinaryProductCreated</p>
+        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_ProductConfig','new','TransactionConfiguration','savingproduct')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@Globals_OrdinaryProductAccount.AddNew">
             <span class="tf-icons mdi mdi-plus mdi-18px"></span>
         </a>
     </div>
 }
 else
-{ <fieldset class="fieldset-custom">
-        <legend>Ordinary account listings for mapping and policies</legend>
+{
+    <fieldset class="fieldset-custom">
+        <legend>@Globals_OrdinaryProductAccount.OrdinaryAccountListings</legend>
         <div class="table-responsive mb-3">
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>Code</th>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Range</th>
-                        <th>Status</th>
-                        <th>Action</th>
+                        <th>@Globals_OrdinaryProductAccount.Code</th>
+                        <th>@Globals_OrdinaryProductAccount.Name</th>
+                        <th>@Globals_OrdinaryProductAccount.Type</th>
+                        <th>@Globals_OrdinaryProductAccount.Range</th>
+                        <th>@Globals_OrdinaryProductAccount.Status</th>
+                        <th>@Globals_OrdinaryProductAccount.Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,21 +36,21 @@ else
                             <td style="width:7%">
                                 @if (d.ActiveStatus)
                                 {
-                                    <span class="badge bg-info">Active</span>
+                                    <span class="badge bg-info">@Globals_OrdinaryProductAccount.Active</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-warning">Inactive</span>
+                                    <span class="badge bg-warning">@Globals_OrdinaryProductAccount.Inactive</span>
                                 }
                             </td>
                             <td style="width:20%">
                                 @if (!d.IsUsedForTellerProvisioning)
                                 {
-                                    <a href="/TransactionConfiguration/PolicyandSharing?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="Configure @d.Name operation policies">Policies |</a>
-                                    <a href="/TransactionConfiguration/AccountMapping?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="Configure @d.Name account mapping">Mappings |</a>
-                                    <a href="/TransactionConfiguration/AccountMappingInfo?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="Configure @d.Name account mapping">Simulation</a>
+                                    <a href="/TransactionConfiguration/PolicyandSharing?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_OrdinaryProductAccount.ConfigureOperationPolicies, @d.Name)">@Globals_OrdinaryProductAccount.Policies</a> |
+                                    <a href="/TransactionConfiguration/AccountMapping?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_OrdinaryProductAccount.ConfigureAccountMapping, @d.Name)">@Globals_OrdinaryProductAccount.Mappings</a> |
+                                    <a href="/TransactionConfiguration/AccountMappingInfo?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_OrdinaryProductAccount.ConfigureAccountMapping, @d.Name)">@Globals_OrdinaryProductAccount.Simulation</a>
 
-                                }
+}
                             </td>
                         </tr>
                     }
@@ -57,4 +59,3 @@ else
         </div>
     </fieldset>
 }
-

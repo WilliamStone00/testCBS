@@ -1,10 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+@using Resources
+
 <fieldset class="fieldset-custom">
-    <legend>Withdrawal policies data</legend>
+    <legend>@Globals_WithdrawalData.WithdrawalPoliciesData</legend>
     @if (Model.WithdrawalLimits.Count == 0)
     {
         <div class="text-center my-3">
-            <p>No withdrawal policy is configured.</p>
+            <p>@Globals_WithdrawalData.NoWithdrawalPolicyConfigured</p>
         </div>
     }
     else
@@ -13,17 +15,17 @@
             <table class="table table-hover" id="xmyDataTable">
                 <thead>
                     <tr>
-                        <th>Type</th>
-                        <th>Max Amount</th>
-                        <th>Form M</th>
-                        <th>From P</th>
-                        <th>Source</th>
-                        <th>Destin</th>
-                        <th>CamCCUL</th>
-                        <th>HeadOffice</th>
-                        <th>FluxPTM</th>
-                        <th>SWN</th>
-                        <th>Action</th>
+                        <th>@Globals_WithdrawalData.Type</th>
+                        <th>@Globals_WithdrawalData.MaxAmount</th>
+                        <th>@Globals_WithdrawalData.FormM</th>
+                        <th>@Globals_WithdrawalData.FromP</th>
+                        <th>@Globals_WithdrawalData.Source</th>
+                        <th>@Globals_WithdrawalData.Destin</th>
+                        <th>@Globals_WithdrawalData.CamCCUL</th>
+                        <th>@Globals_WithdrawalData.HeadOffice</th>
+                        <th>@Globals_WithdrawalData.FluxPTM</th>
+                        <th>@Globals_WithdrawalData.SWN</th>
+                        <th>@Globals_WithdrawalData.Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,16 +44,16 @@
                             <td>
                                 @if (d.MustNotifyOnWithdrawal)
                                 {
-                                    <span class="badge bg-info">Yes</span>
+                                    <span class="badge bg-info">@Globals_WithdrawalData.Yes</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-warning">No</span>
+                                    <span class="badge bg-warning">@Globals_WithdrawalData.No</span>
                                 }
                             </td>
                             <td>
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_Withdrawal','_WithdrawalConfig','get','TransactionConfiguration','withdrawallimit')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Product.Name @d.WithdrawalType to edit">Edit</a> |
-                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Product.Name @d.WithdrawalType" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.Id','xmyDataTable','_WithdrawalData',0,'datalistingview_Withdrawal',null,'cash_withdrawal_parameter')">Delete</a>
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_Withdrawal','_WithdrawalConfig','get','TransactionConfiguration','withdrawallimit')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_WithdrawalData.SelectToEdit, d.Product.Name, d.WithdrawalType)">@Globals_WithdrawalData.Edit</a> |
+                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_WithdrawalData.Delete, d.Product.Name, d.WithdrawalType)" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.Id','xmyDataTable','_WithdrawalData',0,'datalistingview_Withdrawal',null,'cash_withdrawal_parameter')">@Globals_WithdrawalData.Delete</a>
                             </td>
                         </tr>
                     }

@@ -8,7 +8,19 @@ document.querySelectorAll('input[type="number"]').forEach(input => {
 });
 
 
+function toggleHideBalance() {
+    const checkbox = document.getElementById('hideBalanceCheckbox');
+    const label = document.getElementById('hideBalanceLabel');
+    const hideBalanceInput = document.getElementById('HideBalance');
 
+    if (checkbox.checked) {
+        label.innerText = "Balance will be hidden on receipt";
+        hideBalanceInput.value = "true";
+    } else {
+        label.innerText = "Balance will be shown on receipt";
+        hideBalanceInput.value = "false";
+    }
+}
 
 $(document).ready(function () {
    

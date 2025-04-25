@@ -346,7 +346,7 @@ namespace CBS.BusinessService.Accounts
 
                 if (bulkDeposits.FirstOrDefault().OperationType == "Withdrawal")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Withdrawal" };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, HideBalance=bulkDeposits.FirstOrDefault().HideBalance, OperationType = "Withdrawal" };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.MakeWithdrawal, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
@@ -368,7 +368,7 @@ namespace CBS.BusinessService.Accounts
                 //SavingWithdrawalFormFee
                 else if (bulkDeposits.FirstOrDefault().OperationType == "WithdrawalSWS")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Withdrawal" };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, HideBalance=bulkDeposits.FirstOrDefault().HideBalance, OperationType = "Withdrawal" };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.MakeWithdrawal, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
@@ -417,7 +417,7 @@ namespace CBS.BusinessService.Accounts
                           : bulkDeposits.FirstOrDefault().CustomerAlphaNumber;
 
 
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Deposit", CustomerAlphaNumber=customerAlphaNumber };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Deposit", CustomerAlphaNumber=customerAlphaNumber, HideBalance=bulkDeposits.FirstOrDefault().HideBalance };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
@@ -964,7 +964,7 @@ namespace CBS.BusinessService.Accounts
                 {
                     case "newsubcription":
                         onboardingDetail = await GetOnboardingDetailsAsync(customer.LegalForm);
-                        subscriptionFee = onboardingDetail.GrandTotal;
+                        subscriptionFee = onboardingDetail.TotalItemCost;
                         break;
 
                     case "repayment":

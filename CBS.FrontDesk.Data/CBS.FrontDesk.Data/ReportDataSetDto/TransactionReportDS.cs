@@ -252,7 +252,8 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public string DepositorName { get; set; }
         public string DepositorPhone { get; set; }
         public string DepositorCNI { get; set; }
-
+        public string TotalAccountBalances { get; set; }
+        public string ReceiptType { get; set; }
         public string TillName { get; set; }
         public string ServiceType { get; set; }
         public string OperationType { get; set; }
@@ -288,6 +289,7 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public string SericeName { get; set; }
         public string DepositorName { get; set; }
         public string DepositorPhone { get; set; }
+        public string AccountBalance { get; set; }
         public string DepositorCNI { get; set; }
         public decimal Amount { get; set; } = 0;
         public decimal Fee { get; set; } = 0;

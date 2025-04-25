@@ -80,30 +80,18 @@
                         url: form.action,
                         data: formData,
                         success: function (response) {
-                            console.log("Response:", response);
-                            if (response.success) {
-                                if (response.ispdf) {
-                                    appalert(response.message, 1, 1);
-                                    var url = "/Reports/ReportWithParameter";
-                                    window.open(url, "_blank"); // Updated URL
-                                }
-                                else {
-                                    console.log("Url:", response.message);
-                                    window.location.href = response.message
-                                }
-                               
+                            if (response.success && response.redirectUrl) {
+                                // ✅ Open the viewer tab only after success
+                                window.open(response.redirectUrl, '_blank');
+                                appalert("✅ Viewer launched in a new tab.", 1, 1);
                             } else {
-                                appalert(response.message, 2, 1);
+                                appalert(response.message || "❌ Failed to launch report viewer.", 3, 1);
                             }
                         },
-                        error: function (err) {
-                            console.log("Error:", err);
-                            if (err.status === 401) { // Unauthorized
-                                window.location.href = '/Authentication/Login'; // Adjust the URL as needed
-                            } else {
-                                appalert(err.statusText, 0, 1);
-                            }
+                        error: function (xhr) {
+                            appalert("❌ Server error: " + (xhr.responseText || "Unexpected error."), 3, 1);
                         }
+                    
                     };
 
                     // Set enctype and content type for multipart form data

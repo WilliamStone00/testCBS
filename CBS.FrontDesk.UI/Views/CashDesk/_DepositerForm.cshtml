@@ -1,56 +1,64 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+﻿<div class="modal-body pt-0">
+    <form id="depositorForm">
+        <div class="row gy-3">
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="text" id="DepositorName" class="form-control" placeholder="Full name">
+                    <label for="DepositorName">Name</label>
+                    <div class="invalid-feedback">Please enter name.</div>
+                </div>
+            </div>
 
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="tel" id="DepositerTelephone" class="form-control" placeholder="Phone Number">
+                    <label for="DepositorTelephone">Phone Number</label>
+                    <div class="invalid-feedback">Phone number is required.</div>
+                </div>
+            </div>
 
-<div class="change-group">
-    <div class="row mt-2 gy-4">
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.Depositer.DepositorName, new { @class = "form-control", @id = "DepositorName" })
-                @Html.ValidationMessageFor(m => m.Depositer.DepositorName, "", new { @class = "text-danger" })
-                <label>Depositor name</label>
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="text" id="DepositorIDNumber" class="form-control" placeholder="ID Number">
+                    <label for="DepositorIDNumber">CNI / ID Number</label>
+                    <div class="invalid-feedback">Enter a valid ID number.</div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-floating">
+                    <input type="date" id="DepositorIDIssueDate" class="form-control">
+                    <label for="DepositorIDIssueDate">Issue Date</label>
+                    <div class="invalid-feedback">Issue date is required.</div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-floating">
+                    <input type="date" id="DepositorIDExpiryDate" class="form-control">
+                    <label for="DepositorIDExpiryDate">Expiry Date</label>
+                    <div class="invalid-feedback">Expiry date is required.</div>
+                    <div class="invalid-feedback">Please enter a valid date.</div>
+
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-floating">
+                    <input type="text" id="DepositorIDNumberPlaceOfIssue" class="form-control" placeholder="Place of Issue">
+                    <label for="DepositorIDNumberPlaceOfIssue">Place of Issue</label>
+                    <div class="invalid-feedback">Enter place of issue.</div>
+                    <div class="invalid-feedback">Please enter a valid date.</div>
+
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-floating">
+                    <textarea id="DepositerNote" class="form-control" placeholder="Optional note..." style="height: 75px;"></textarea>
+                    <label for="DepositerNote">Note</label>
+                </div>
             </div>
         </div>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.Depositer.DepositerTelephone, new { @class = "form-control", @id = "DepositorTelephone" })
-                @Html.ValidationMessageFor(m => m.Depositer.DepositerTelephone, "", new { @class = "text-danger" })
-                <label>Phone number</label>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.Depositer.DepositorIDNumber, new { @class = "form-control", @id = "DepositorIDNumber" })
-                @Html.ValidationMessageFor(m => m.Depositer.DepositorIDNumber, "", new { @class = "text-danger" })
-                <label>CNI</label>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.Depositer.DepositorIDIssueDate, new { @class = "form-control date-picker", @id = "DepositorIDIssueDate" })
-                @Html.ValidationMessageFor(m => m.Depositer.DepositorIDIssueDate, "", new { @class = "text-danger" })
-                <label>Date Issue</label>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.Depositer.DepositorIDExpiryDate, new { @class = "form-control date-picker", @id = "DepositorIDExpiryDate" })
-                @Html.ValidationMessageFor(m => m.Depositer.DepositorIDExpiryDate, "", new { @class = "text-danger" })
-                <label>Date Expire</label>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.Depositer.DepositorIDNumberPlaceOfIssue, new { @class = "form-control", @id = "DepositorIDNumberPlaceOfIssue" })
-                @Html.ValidationMessageFor(m => m.Depositer.DepositorIDNumberPlaceOfIssue, "", new { @class = "text-danger" })
-                <label>Place of issue</label>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.TextAreaFor(m => m.Depositer.DepositerNote, new { @class = "form-control", @style = "height: 75px;", @id = "DepositerNote" })
-                @Html.ValidationMessageFor(m => m.Depositer.DepositerNote, "", new { @class = "text-danger" })
-                <label>Depositer note</label>
-            </div>
-        </div>
-    </div>
+    </form>
 </div>

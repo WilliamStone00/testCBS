@@ -1,9 +1,7 @@
-﻿
+﻿@using Resources
 @{
-    ViewBag.Title = "Accounting Configurations";
-
+    ViewBag.Title = @GlobalJournalEntryConfig.AccountingConfigurations;
 }
-
 
 <div class="card mb-12">
 
@@ -13,14 +11,13 @@
             <div class="card bg-light mb-2">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary">
-                        <i class="mdi mdi-account-check me-2"></i> MANUAL POSTING RULES
+                        <i class="mdi mdi-account-check me-2"></i> @GlobalJournalEntryConfig.ManualPostingRulesTitle
                     </h1>
                     <p class="card-text">
-                        This menu allows the financial manager to configure which accounts should be visible during manual journal entry.
-                        It provides flexibility for the accountant to control which accounts should not be used for manual journal entries.
+                        @GlobalJournalEntryConfig.ManualPostingRulesDescription
                     </p>
                     <p class="card-text text-warning fw-bold">
-                        <i class="mdi mdi-alert-circle-outline me-1"></i> All account already mapped to a product are excluded from the manual entry.
+                        <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalJournalEntryConfig.WarningMessage
                     </p>
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
@@ -87,10 +84,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-
             <div class="accordion mt-3" id="accordionExample">
-
-
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingsix">
                         <button type="button"
@@ -99,7 +93,7 @@
                                 data-bs-target="#accordionsix"
                                 aria-expanded="false"
                                 aria-controls="accordionsix">
-                            <i class="tf-icons mdi mdi-book-open-page-variant-outline me-1"></i>  &nbsp; &nbsp; &nbsp; &nbsp; Setting account visiblity
+                            <i class="tf-icons mdi mdi-book-open-page-variant-outline me-1"></i>  &nbsp; &nbsp; &nbsp; &nbsp; @GlobalJournalEntryConfig.AccountVisibilitySettings
                         </button>
                     </h2>
                     <div id="accordionsix"
@@ -109,11 +103,11 @@
                         <div class="accordion-body">
                             <div class="row justify-content-end">
                                 <div class="demo-inline-spacing text-end">
-                                    <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable','_BlacklistAccountData','datalistingview_blacklistAccount',0,'blacklistAccount','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                    <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable','_BlacklistAccountData','datalistingview_blacklistAccount',0,'blacklistAccount','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalJournalEntryConfig.ViewList">
                                         <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                     </a>
 
-                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_blacklistAccount','_CreateBlacklistAccountForJE','new','AccountingConfiguration','blacklistAccount')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_blacklistAccount','_CreateBlacklistAccountForJE','new','AccountingConfiguration','blacklistAccount')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalJournalEntryConfig.AddNew">
                                         <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                     </a>
                                 </div>
@@ -126,20 +120,11 @@
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
-
-
-
         </div>
 
         <div class="col-md-12">
-
             <div class="accordion mt-3" id="accordionExample">
-
-
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
                         <button type="button"
@@ -148,7 +133,7 @@
                                 data-bs-target="#accordionOne"
                                 aria-expanded="false"
                                 aria-controls="accordionOne">
-                            <i class="tf-icons mdi mdi-book-open-page-variant-outline me-1"></i>  &nbsp; &nbsp; &nbsp; &nbsp; Setting account booking direction
+                            <i class="tf-icons mdi mdi-book-open-page-variant-outline me-1"></i>  &nbsp; &nbsp; &nbsp; &nbsp; @GlobalJournalEntryConfig.AccountBookingDirectionSettings
                         </button>
                     </h2>
                     <div id="accordionOne"
@@ -158,11 +143,11 @@
                         <div class="accordion-body">
                             <div class="row justify-content-end">
                                 <div class="demo-inline-spacing text-end">
-                                    <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable','_AccountBookingDirectionData','datalistingview_accountBookingDirection',0,'accountBookingDirection','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                    <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable','_AccountBookingDirectionData','datalistingview_accountBookingDirection',0,'accountBookingDirection','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalJournalEntryConfig.ViewList">
                                         <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                     </a>
 
-                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_accountBookingDirection','_CreateAccountBookingDirection','new','AccountingConfiguration','accountBookingDirection')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_accountBookingDirection','_CreateAccountBookingDirection','new','AccountingConfiguration','accountBookingDirection')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalJournalEntryConfig.AddNew">
                                         <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                     </a>
                                 </div>
@@ -175,16 +160,9 @@
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
-
-
-
         </div>
     </div>
-
 </div>
 
 <!--/ Accordion -->

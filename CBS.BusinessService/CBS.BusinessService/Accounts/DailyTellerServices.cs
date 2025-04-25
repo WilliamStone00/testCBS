@@ -81,7 +81,7 @@ namespace CBS.BusinessService.Accounts
 
         //        if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData!=null)
         //        {
-                    
+
 
         //            if (getTellerOpenning.ByBracnch)
         //            {
@@ -93,7 +93,7 @@ namespace CBS.BusinessService.Accounts
         //                var branches = _branchServices.GetBranches();
         //                return couApiResponse.ApiResponseData.Data;
         //            }
-                   
+
         //        }
         //        else
         //        {
@@ -205,7 +205,7 @@ namespace CBS.BusinessService.Accounts
                     }
 
                     var tellerProvioningHistories = couApiResponse.ApiResponseData.Data;
-                    var tillOpenAndClossingDs = _tellerProvissioningServices.MapToTillOpenAndClossingDS(tellerProvioningHistories,branches);
+                    var tillOpenAndClossingDs = _tellerProvissioningServices.MapToTillOpenAndClossingDS(tellerProvioningHistories, branches);
                     return tillOpenAndClossingDs;
                 }
                 else
@@ -321,7 +321,7 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 //operationsQuery.TellerId = "N/A";
-                operationsQuery.QueryString = operationsQuery.QueryString == null? "all": operationsQuery.QueryString;
+                operationsQuery.QueryString = operationsQuery.QueryString == null ? "all" : operationsQuery.QueryString;
                 operationsQuery.BranchId = operationsQuery.BranchId == null ? "N/A" : operationsQuery.BranchId;
                 operationsQuery.IsByBranch = true;
                 operationsQuery.IsByDate = true;
@@ -354,49 +354,92 @@ namespace CBS.BusinessService.Accounts
                 Balance = tellerOperationGL.Balance,
                 BranchName = branchName,
                 TellerName = tellerName,
+                AccountNumber=tellerOperationGL.AccountNumber,
+                AccountType=tellerOperationGL.AccountType,
                 UserName = userName
             };
         }
+        private string CleanMemberName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name)) return "N/A";
+
+            return name
+                .Replace("MobileMoneyMTN", "")
+                .Replace("OrangeMoney", "")
+                .Trim();
+        }
+
+        private string FormatAccountType(string accountType)
+        {
+            if (string.IsNullOrWhiteSpace(accountType)) return "N/A";
+
+            if (accountType.Contains("MTN"))
+                return "MoMo";
+            if (accountType.Contains("Orange"))
+                return "OM";
+            if (accountType.Contains("PreferenceShare"))
+                return "P-Share";
+            if (accountType.Contains("OrdinaryShare"))
+                return "O-Share";
+            if (accountType.Contains("Daily"))
+                return "DCA";
+
+            return accountType;
+        }
+        //
         public List<ExportTellerGL> MapToExportTellerGL(List<TellerOperationGL> tellerOperationGLList, Branch branch, string tellerName, string userName)
         {
             List<ExportTellerGL> exportTellerGLList = new List<ExportTellerGL>();
 
-            // Calculate summary values
             decimal openingBalance = tellerOperationGLList.FirstOrDefault()?.BalanceBF ?? 0;
             decimal totalCredit = tellerOperationGLList.Sum(item => item.Credit);
             decimal totalDebit = tellerOperationGLList.Sum(item => item.Debit);
             decimal closingBalance = openingBalance + totalCredit - totalDebit;
             int totalTransactions = tellerOperationGLList.Count;
 
-            foreach (var tellerOperationGL in tellerOperationGLList)
+            var orderedTellerOperations = tellerOperationGLList
+                .OrderBy(t => t.EntryDate)
+                .ThenBy(t => t.TransactionRef ?? "")
+                .ToList();
+
+            foreach (var tellerOperationGL in orderedTellerOperations)
             {
                 exportTellerGLList.Add(new ExportTellerGL
                 {
                     Date = tellerOperationGL.Date,
-                    Naration = tellerOperationGL.Naration,
+                    Naration = tellerOperationGL.Naration ?? "",
                     BalanceBF = tellerOperationGL.BalanceBF,
                     Debit = tellerOperationGL.Debit,
                     Credit = tellerOperationGL.Credit,
                     Balance = tellerOperationGL.Balance,
-                    BranchName = branch.Name,
-                    LogoUrl = branch.Bank.LogoUrl,
-                    TellerName = tellerName,
-                    AccountNumber = tellerOperationGL.AccountNumber,
-                    TransactionType = tellerOperationGL.TransactionType,
-                    Description = tellerOperationGL.Description,
-                    MemberAccountNumber = tellerOperationGL.MemberAccountNumber,
-                    MemberId = tellerOperationGL.MemberId,
-                    UserName = userName,
-                    BranchAddress = branch.Address,
-                    BranchCode = branch.BranchCode,
-                    BranchTel = branch.Telephone,
-                    HeadOffice = branch.Bank.Name,
-                    DailyReferences = tellerOperationGL.DailyReferences,
+                    BranchName = branch.Name ?? "N/A",
+                    LogoUrl = branch.Bank?.LogoUrl ?? "",
+                    TellerName = tellerOperationGL.TellerName ?? "N/A",
+                    AccountNumber = tellerOperationGL.AccountNumber ?? "N/A",
+                    TransactionType = tellerOperationGL.TransactionType ?? "N/A",
+                    Description = tellerOperationGL.Description ?? "",
+                    MemberAccountNumber = tellerOperationGL.MemberAccountNumber ?? "N/A",
+                    MemberId = tellerOperationGL.MemberId ?? "N/A",
+                    UserName = userName ?? "N/A",
+                    BranchAddress = branch.Address ?? "",
+                    BranchCode = branch.BranchCode ?? "N/A",
+                    BranchTel = branch.Telephone ?? "N/A",
+                    HeadOffice = branch.Bank?.Name ?? "N/A",
+                    DailyReferences = tellerOperationGL.DailyReferences ?? "N/A",
 
                     // Summary fields
                     OpeningBalance = openingBalance,
                     TotalCredit = totalCredit,
                     TotalDebit = totalDebit,
+                    AccountType = FormatAccountType(tellerOperationGL.AccountType),
+                    Amount = tellerOperationGL.Amount,
+                    BranchId = tellerOperationGL.BranchId ?? "N/A",
+                    CashierName = tellerOperationGL.CashierName ?? "N/A",
+                    EntryDate = tellerOperationGL.EntryDate,
+                    MemberName = CleanMemberName(tellerOperationGL.MemberName),
+                    TellerID = tellerOperationGL.TellerID ?? "N/A",
+                    TransactionRef = tellerOperationGL.TransactionRef ?? "N/A",
+                    TransactionReference = tellerOperationGL.TransactionReference ?? "N/A",
                     ClosingBalance = closingBalance,
                     TotalTransactions = totalTransactions
                 });

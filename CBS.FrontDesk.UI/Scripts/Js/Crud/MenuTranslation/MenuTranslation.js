@@ -119,8 +119,6 @@ function submitMenuTranslations() {
     $("#translationTableBody tr").each(function () {
         const translatedText = $(this).find('textarea[name="TranslatedText"]').val().trim();
         const menuMasterId = $(this).find('input[name="MenuMasterId"]').val();
-
-        const tooltip = $(this).find('textarea[name="Tooltip"]').val().trim();
         const description = $(this).find('textarea[name="Description"]').val().trim();
 
         if (translatedText !== "") {
@@ -128,10 +126,9 @@ function submitMenuTranslations() {
                 menuMasterId: parseInt(menuMasterId),
                 languageCode: lang,
                 translatedText: translatedText,
-                tooltip: tooltip,
                 description: description
             });
-        } else if (tooltip !== "" || description !== "") {
+        } else if (description !== "") {
             hasInvalid = true;
         }
     });
@@ -186,14 +183,12 @@ function submitUpdatedMenuTranslations() {
     $('#updateTranslationTableBody tr').each(function () {
         const id = $(this).find('input[name="Id"]').val();
         const translatedText = $(this).find('textarea[name="TranslatedText"]').val().trim();
-        const tooltip = $(this).find('textarea[name="Tooltip"]').val().trim();
         const description = $(this).find('textarea[name="Description"]').val().trim();
 
         if (translatedText !== '') {
             updates.push({
                 id: id,
                 translatedText: translatedText,
-                tooltip: tooltip,
                 description: description
             });
         }

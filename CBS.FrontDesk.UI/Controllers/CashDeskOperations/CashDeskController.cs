@@ -1,17 +1,23 @@
-﻿using CBS.BusinessService.Accounting;
+﻿using CBS.BusinessService;
+using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.ReportDataSetDto.LoanPortFolioDataSet;
+using CBS.FrontDesk.Data.ReportDataSetDto;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
+using DocumentFormat.OpenXml.Spreadsheet;
+using ZXing.Common;
 
 namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 {
@@ -31,10 +37,10 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             this.chartOfAccountServices=chartOfAccountServices;
         }
         // GET: CashDesk
-        public ActionResult Index()
-        {
-            return View();
-        }
+        //public ActionResult Index()
+        //{
+        //    return View();
+        //}
         public ActionResult Cashin()
         {
             return View();
@@ -55,7 +61,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             return View();
         }
-        
+
         public async Task<ActionResult> OtherCashTransactions()
         {
             ViewBag.Operation = "income_expense";
@@ -87,7 +93,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             ViewBag.EventCodes = await _accountingServices.GetEventNamesOtherCashIn(operationType);
 
         }
-        public async Task<ActionResult> Ajaxloader(string Key,string path)
+        public async Task<ActionResult> Ajaxloader(string Key, string path)
         {
             if (path== "getmember")
             {
@@ -102,7 +108,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 
             }
         }
-       
+
         //income_expense
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = "_DataNotFound", string path = null, string serviceOption = null)
         {
@@ -112,7 +118,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 {
 
                 }
-
+                ViewBag.OperationType="cashin";
                 ViewBag.KEY = KEY;
                 if (path=="")
                 {
@@ -137,8 +143,11 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 }
                 else if (path == "cashin" ||path=="repayment"|| path == "cashout" || path == "cashoutsws" || path == "repayment" || path == "withdrawalnotification" || path== "loanapplicationfeepayment" || path=="newsubcription")
                 {
-                    
 
+                    if (path.Contains("cashout"))
+                    {
+                        ViewBag.OperationType="cashout";
+                    }
                     //newsubcription
                     if (KEY == null || KEY == "")
                     {
@@ -167,7 +176,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                             if (string.IsNullOrWhiteSpace(acc.AccountNumber) || !acc.AccountNumber.Trim().ToUpper().StartsWith("MB"))
                             {
                                 allAccountsAreMB = false;
-                                
+
                             }
                             else
                             {
@@ -209,6 +218,12 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 if (deposits != null)
                 {
                     var data = await _cashDeskService.BulkDeposi(deposits);
+                    if (data.Result)
+                    {
+                        string operationtype = deposits.FirstOrDefault().OperationType.ToLower();
+                        string viewerUrl = PrepareReport(operationtype);
+                        return Json(new { success = data.Result, redirectUrl = viewerUrl, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                    }
                     return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
                 }
@@ -220,6 +235,109 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
             }
         }
+        public string PrepareReport(string mainReportType)
+        {
+            // STEP 1: Report title & path mapping
+            var reportMappings = new Dictionary<string, (string path, string title)>
+            {
+                { "cashin", ("Transactions/Payment/MainReport.rpt", "CASH-IN") },
+                { "cashout", ("Transactions/Payment/MainReport.rpt", "CASH-OUT") },
+                { "cashoutsws", ("Transactions/Payment/MainReport.rpt", "CASH-OUT SPECIAL WITHDRAWAL SLIPS") },
+                { "withdrawalnotification", ("Transactions/Payment/MainReport.rpt", "SAVING WITHDRAWAL NOTIFICATION FEE") },
+                { "repayment", ("Transactions/Payment/MainReport.rpt", "LOAN REPAYMENT") },
+                { "loanapplicationfeepayment", ("Transactions/Payment/MainReport.rpt", "LOAN APPLICATION FEE") },
+                { "paymentreceipt", ("Transactions/Payment/MainReport.rpt", "PAYMENT RECEIPT") }
+            };
+
+            mainReportType = mainReportType.ToLower();
+            var (relativeReportPath, reportTitle) = reportMappings.TryGetValue(mainReportType, out var mapping)
+                ? mapping
+                : ("NOTHING.rpt", "DEFAULTED");
+
+            // STEP 2: Identify reports that require PaymentReciptDS with subreports and parameters
+            var reportTypesWithSubReports = new HashSet<string>
+            {
+                "cashin", "cashout", "cashoutsws", "withdrawalnotification", "repayment", "loanapplicationfeepayment"
+            };
+
+            Dictionary<string, object> subReportData = null;
+            var rptSource = HttpContext.Session["rptSource"] as List<PaymentReciptDS> ?? new List<PaymentReciptDS>();
+            var firstItem = rptSource.FirstOrDefault() ?? new PaymentReciptDS();
+
+            if (reportTypesWithSubReports.Contains(mainReportType))
+            {
+                // Subreport binding
+                subReportData = new Dictionary<string, object>
+                {
+                    { "DenominationSubReport", firstItem.DenominationDs },
+                    { "PaymentDetailSubReport", firstItem.PaymentDetailDs },
+                    { "PaymentDetailSubReportLoan", firstItem.PaymentDetailDs }
+                };
+
+                Session["SubReportsData"] = subReportData;
+            }
+            else
+            {
+                // Report with no sub reports
+            }
+
+            // STEP 3: Parameter binding
+            var parameters = new Dictionary<string, object>
+            {
+                { "AccountingDate", firstItem.AccountingDay.ToString("dd/MM/yyyy") },
+                { "TransactionDate", firstItem.Date.ToString("dd/MM/yyyy hh:mm") },
+                { "CurrentDate", DateTime.Now.ToString("dd/MM/yyyy hh:mm") },
+                { "CurrentYear", DateTime.Now.Year.ToString() },
+                { "PrintedBy", Session["FullName"]?.ToString() ?? "System" }
+            };
+            this.HttpContext.Session["rptType"] = "ReportParameterLess";
+            this.HttpContext.Session["ReportName"] = $"MainReport.rpt";
+            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Transactions/Payment/MainReport.rpt";
+            this.HttpContext.Session["rpttitle"] = $"MemberReceipts";
+            // STEP 4: Final Session setup and return viewer URL
+            Session["MainData"] = rptSource;
+            Session["ReportParameters"] = parameters;
+
+            var reportPathParam = HttpUtility.UrlEncode(relativeReportPath);
+            var reportNameParam = HttpUtility.UrlEncode(reportTitle);
+
+            return Url.Content($"/ReportForm/ReportViewer.aspx?reportPath={reportPathParam}&reportName={reportNameParam}");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> PostRequestCashTest(List<BulkDeposit> deposits)
+        {
+            try
+            {
+                if (deposits != null && deposits.Any())
+                {
+                    // Simulate a processing delay
+                    await Task.Delay(500); // Mock async wait
+
+                    // Simulate a successful result object
+                    var mockResult = new
+                    {
+                        Result = true,
+                        MessageStatus = true,
+                        Message = $"✅ Transaction simulated successfully for {deposits.Count} account(s)."
+                    };
+
+                    return Json(new
+                    {
+                        success = mockResult.Result,
+                        status = mockResult.MessageStatus,
+                        message = mockResult.Message
+                    });
+                }
+
+                return Json(new { success = false, status = false, message = "⚠️ No data was submitted." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"❌ An error occurred: {ex.Message}" });
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult> GetReport(string path)
         {
@@ -258,13 +376,13 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             if (string.IsNullOrWhiteSpace(customerId))
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Customer ID is required.");
-           // newsubcription
+            // newsubcription
             // Load your summary service (replace with actual logic or inject it)
             var onboardingDetail = await _cashDeskService.GetOnboardingDetailsAsync(customerId);
 
             if (onboardingDetail == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Onboarding data not found.");
-           
+
             return PartialView("_OperationDesk", onboardingDetail);
         }
 

@@ -262,6 +262,27 @@ namespace CBS.FrontDesk.UI.Controllers
                 string strFromDate = HttpContext.Session["DateFrom"]?.ToString() ?? "Non";
                 string strToDate = HttpContext.Session["DateTo"]?.ToString() ?? "Non";
 
+                if (Session["ReportParameters"] is Dictionary<string, object> parameters && rd.DataDefinition.ParameterFields.Count > 0)
+                {
+                    foreach (var param in parameters)
+                    {
+                        try
+                        {
+                            // Only bind if parameter actually exists in the report
+                            if (rd.DataDefinition.ParameterFields.Cast<ParameterFieldDefinition>()
+                                .Any(p => p.Name.Equals(param.Key, StringComparison.OrdinalIgnoreCase)))
+                            {
+                                rd.SetParameterValue(param.Key, param.Value);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                       
+                            return;
+                        }
+                    }
+                }
+
                 if (year != "Non")
                 {
                     rd.SetParameterValue("param", $"Header summary: {year}");
