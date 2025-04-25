@@ -367,33 +367,22 @@ namespace CBS.BusinessService
                 throw (ex);
             }
         }
-        public async Task<BalanceSheetData> GetBalanceSheetDataEntries(BSQuery model)
+        public async Task<List<BalansheetRpt>> GetBalanceSheetDataEntriesRPT(BSQuery model)
         {
             //Task<ServiceResponseXX<BalanceSheetData>> apiCallTask = null;
-            BalanceSheetData balanceSheetData = new BalanceSheetData();
-            using (var cts = new CancellationTokenSource())
-            {
+            List<BalansheetRpt> balanceSheetData = new List<BalansheetRpt>();
+       
                 try
                 {
                     // Create a task for the API call
-                    var apiCallTask = await _accountingApiCallerHelper.PostAsync<ResponseObject<BalanceSheetData>>(APICallHelper.BalanceSheet_EntriesUrl,model, 300);
-                    if (apiCallTask.IsSuccess)
-                    {
-                        if (apiCallTask.ApiResponseData != null)
-                        {
-                            return apiCallTask.ApiResponseData.Data;
-                        }
-
-                    }
+                    var apiCallTask = await _accountingApiCallerHelper.PostBalansheetAsync(APICallHelper.BalanceSheet_EntriesUrlPDF, model);
+                return apiCallTask;
 
                 }
                 catch (OperationCanceledException)
                 {
                     // This could happen if the timeout occurs and the API call is cancelled
-                    balanceSheetData = new BalanceSheetData
-                    {
-                        //ErrorMessage = "The request was cancelled due to a timeout."
-                    };
+                    
                 }
                 catch (Exception ex)
                 {
@@ -401,16 +390,50 @@ namespace CBS.BusinessService
                     GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
                         SystemMessageStatus.Failed.ToString(), ex);
 
-                    balanceSheetData = new BalanceSheetData
-                    {
-                        //ErrorMessage = "An error occurred while processing the request."
-                    };
+                  
                 }
-            }
-
+          
             return balanceSheetData;
         }
+        public async Task<BalanceSheetData> GetBalanceSheetDataEntries(BSQuery model)
+        {
+            //Task<ServiceResponseXX<BalanceSheetData>> apiCallTask = null;
+     
 
+            try
+            {
+                // Create a task for the API call
+                var apiCallTask = await _accountingApiCallerHelper.PostAsync<ResponseObject<BalanceSheetData>>(APICallHelper.BalanceSheet_EntriesUrl, model, 300);
+                if (apiCallTask.IsSuccess)
+                {
+                   
+                        return apiCallTask.ApiResponseData.Data;
+
+
+                }
+                else
+                {
+                    return null; 
+                }
+
+            }
+            catch (OperationCanceledException)
+            {
+                // This could happen if the timeout occurs and the API call is cancelled
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+
+
+            }
+
+
+            return null;
+        }
         public async Task<List<AccountingEntry>> RetrieveAccountingEntries(JEQuery model)
         {
             try

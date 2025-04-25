@@ -35,23 +35,7 @@
             loadBranchAccounts(selectedId);
         } else {
 
-            //const targetReportTypes = ["BS", "PANDL", "TB6", "TB4"];
-
-       
-            //    const selectedValue = $(this).val();
-            //    const fromDateInput = $('input[name="SystemQuery.FromDate"]');
-
-            //    if (targetReportTypes.includes(selectedValue)) {
-            //        const currentYear = new Date().getFullYear();
-            //        const beginningOfYear = `${currentYear}-01-01`;
-
-            //        fromDateInput.val(beginningOfYear);
-            //        fromDateInput.prop('disabled', true);
-            //    } else {
-            //        fromDateInput.prop('disabled', false);
-            //    }
-         
-            // Hide the element
+    
             $('#AccountToHide').hide();
         }
 
@@ -172,7 +156,8 @@ function AjaxPostSearch(form) {
 
     $.validator.unobtrusive.parse(form);
     if ($(form).valid()) {
-      
+
+        console.log(form);
 
         alertify.confirm("TRUST SOFT CREDIT", "Are you sure you want to  generate " + getReportTitle(model.ReportType) + " for the period of " + $("input[name='SystemQuery.FromDate']").val() + " to " + $("input[name='SystemQuery.ToDate']").val() + " !!! ",
             function () {

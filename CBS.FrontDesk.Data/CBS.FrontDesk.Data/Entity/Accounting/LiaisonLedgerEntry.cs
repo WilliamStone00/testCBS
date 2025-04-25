@@ -24,4 +24,16 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public decimal TotalCrAmount { get; set; }
         public decimal Balance { get; set; }
     }
+
+    public class BalansheetServiceResponse
+    {
+        public List<BalansheetRpt> Data { get; set; }
+        public int StatusCode { get; set; }
+        public string Message { get; set; }
+        public string Status { get; set; }
+        public string Description { get; set; }
+        public List<string> Errors { get; set; }
+    }
 }
+
+   

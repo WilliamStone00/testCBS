@@ -334,7 +334,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public class BSQuery
     {
         public string BranchId { get; set; }
-        public DateTimeOffset Date { get; set; }
+        public DateTimeOffset ToDate { get; set; }
+        public DateTimeOffset FromDate { get; set; }
         public string FileType { get; set; }
         public string DocumentId { get; set; }
     }

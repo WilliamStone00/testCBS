@@ -61,7 +61,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string HeadOfficeTelePhone { get; set; }
         public string  Name { get; set; }
         public string  Location { get; set; }
- 
+        public string BeginningBookingDirection { get; set; }
+        public string EndingBookingDirection { get; set; }
         public string  Address { get; set; }
         public string  AccountNumber { get; set; }
         public string  AccountName { get; set; }
@@ -130,17 +131,32 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Auxilary { get;   set; }
         public string BranchCode { get;   set; }
     }
-
-    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
-    public class BSAccount
+    public class BalanceSheetAccount : BalanceSheet
     {
-        public string reference { get; set; }
-        public string description { get; set; }
-        public double amount { get; set; }
-        public string cartegory { get; set; }
+        public double Gross { get; set; } //Gross
+
+        public double Amort_Dep { get; set; } //Amort_Dep
     }
 
-    public class BalanceSheetData
+    public class BalanceSheet
+    {
+        public string Id { get; set; }
+        public string Reference { get; set; }
+        // Account Holder
+        public string Description { get; set; } //Naration
+
+
+        public double Net { get; set; } //NET
+
+        public double Net_1 { get; set; } //NET
+
+        public string Category { get; set; }
+    }
+
+    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
+   
+
+    public class BalanceSheetData :ReportHeader
     {
         public string name { get; set; }
         public string location { get; set; }
@@ -148,7 +164,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public DateTime date { get; set; }
         public double totalAsset { get; set; }
         public double totalLiabilityEquity { get; set; }
-        public List<BSAccount> accounts { get; set; }
+        public List<BalanceSheetAccount> Accounts { get; set; }
         public string branchCode { get; set; }
         public string branchName { get; set; }
         public string branchAddress { get; set; }
@@ -157,85 +173,152 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string branchTelephone { get; set; }
         public string headOfficeTelePhone { get; set; }
         public string webSite { get; set; }
-     
-        
+
+
 
         public List<BalanceSheetInfo> ConvertToBalanceSheetInfo(string PrintersName, string Date, string categoryA, string categoryB)
         {
-            var accountsA = this.accounts
-                .Where(a => a.cartegory.ToUpper().Contains(categoryA.ToUpper()))
+            var accountsA = this.Accounts
+                .Where(a => a.Category.ToUpper().Contains(categoryA.ToUpper()))
                 .Select(a => new
                 {
-                    JoinKey = a.reference.Substring(Math.Max(0, a.reference.Length - 2)),
-                    Amount = a.amount,
-                    Reference = a.reference,
-                    Description = a.description
-                }).OrderBy(x=>x.Reference);
+                    JoinKey = a.Reference.Substring(Math.Max(0, a.Reference.Length - 2)),
+                    ANet = a.Net,
+                    ANet_1 = a.Net_1,
+                    Gross = a.Gross,
+                    Amort_Prev = a.Amort_Dep,
+                    ACode = a.Reference,
+                    ANaration = a.Description,
+                }).OrderBy(x => x.ACode);
 
-            var accountsB = this.accounts
-                .Where(b => b.cartegory.ToUpper().Contains(categoryB.ToUpper()))
+            var accountsB = this.Accounts
+                .Where(b => b.Category.ToUpper().Contains(categoryB.ToUpper()))
                 .Select(b => new
                 {
-                    JoinKey = b.reference.Substring(Math.Max(0, b.reference.Length - 2)),
-                    Amount = b.amount,
-                    Reference = b.reference,
-                    Description = b.description
-                }).OrderBy(x => x.Reference); 
+                    JoinKey = b.Reference.Substring(Math.Max(0, b.Reference.Length - 2)),
+                    LNet = b.Net,
+                    LNet_1 = b.Net_1,
+                    LCode = b.Reference,
+                    LNaration = b.Description
+                }).OrderBy(x => x.LCode);
 
             return accountsA.GroupJoin(accountsB,
                 a => a.JoinKey,
                 b => b.JoinKey,
                 (a, bGroup) => new { A = a, BGroup = bGroup })
-            .SelectMany(
+                .SelectMany(
                 x => x.BGroup.DefaultIfEmpty(),
                 (a, b) => new BalanceSheetInfo
                 {
-                    AmountA = a.A.Amount,
-                    ReferenceA = a.A.Reference,
-                    DescriptionA = a.A.Description,
-                    AmountB = b?.Amount ?? 0,
-                    ReferenceB = b?.Reference,
-                    DescriptionB = b?.Description,
-                    Address = this.address,
-                    BranchCode = this.branchCode,
-                    BranchName = this.branchName,
-                    BranchTelephone = this.branchTelephone,
-                    Name= this.name,
-                    TotalAsset= this.totalAsset,
-                    TotalLiabilities=this.totalLiabilityEquity,
+                    ACode = a.A.ACode,
+                    Amort_Prev = (decimal)a.A.Amort_Prev,
+                    Gross = (decimal)a.A.Gross,
+                    ANaration = a.A.ANaration,
+                    LNet = (decimal)(b?.LNet ?? 0),
+                    LNet_1 = (decimal)(b?.LNet_1 ?? 0),
+                    ANet = (decimal)(a.A.ANet),
+                    ANet_1 = (decimal)(a.A.ANet_1),
+                    LCode = b?.LCode,
+                    LNaration = b?.LNaration,
+                    Address = this.Address,
+                    BranchCode = this.BranchCode,
+                    BranchName = this.BranchName,
+                    BranchTelephone = this.BranchTelephone,
+                    Name = this.Name,
+
                     PrintersName = PrintersName,
-                    ToDate = Date
+                    ToDate = this.ToDate
                 })
             .ToList();
         }
     }
-
-  
-    public class BalanceSheetInfo
+    public class BalansheetRpt
     {
+        // Entity Information
+        public string EntityId { get; set; }
         public string EntityType { get; set; }
         public string Name { get; set; }
-        public DateTime FromDate { get; set; }
         public string Address { get; set; }
-        public string ReferenceA { get; set; }
-        public string BranchName { get; set; }
-        public string ToDate { get; set; }
-        public string BranchAddress { get; set; }
-        public decimal Capital { get; set; }
+        public string Location { get; set; }
         public string ImmatriculationNumber { get; set; }
         public string WebSite { get; set; }
-        public string BranchTelephone { get; set; }
         public string HeadOfficeTelePhone { get; set; }
+        public decimal Capital { get; set; }
         public string LogoPath { get; set; }
-        public string DescriptionA { get; set; }
-        public double TotalLiabilities { get; set; }
-        public double TotalAsset { get; set; }
-        public string BranchCode { get; set; }
         public string PrintersName { get; set; }
-        public double AmountA { get; set; }
-    
-        public string DescriptionB { get; set; }
-        public string ReferenceB { get; set; }
-        public double AmountB { get; set; }
+        // Report Period
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+        public DateTime EntryDate { get; set; }
+        // Branch Information
+        public string BranchCode { get; set; }
+        public string BranchName { get; set; }
+        public string BranchLocation { get; set; }
+        public string BranchAddress { get; set; }
+        public string BranchTelephone { get; set; }
+
+
+
+        // Account Information
+        public string MainAccountNumber { get; set; }
+        public string Category { get; set; }
+
+        // Assets
+        public string ACode { get; set; }
+        public string ANaration { get; set; }
+        public decimal Gross { get; set; }
+        public decimal Amort_Prev { get; set; }
+        public decimal ANet { get; set; }
+        public decimal ANet_1 { get; set; }
+        public decimal TotalAsset { get; set; }
+
+        // Liabilities
+        public string LCode { get; set; }
+        public string LNaration { get; set; }
+        public decimal LNet { get; set; }
+        public decimal LNet_1 { get; set; }
+        public decimal TotalLiabilityEquity { get; set; }
+    }
+
+    public class BalanceSheetInfo
+    {
+        // Entity Information
+        public string EntityId { get; set; }
+        public string EntityType { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string Location { get; set; }
+        public string ImmatriculationNumber { get; set; }
+        public string WebSite { get; set; }
+        public string HeadOfficeTelePhone { get; set; }
+        public decimal Capital { get; set; }
+        public string LogoPath { get; set; }
+        public string PrintersName { get; set; }
+        // Report Period
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+        public DateTime EntryDate { get; set; }
+        // Branch Information
+        public string BranchCode { get; set; }
+        public string BranchName { get; set; }
+        public string BranchLocation { get; set; }
+        public string BranchAddress { get; set; }
+        public string BranchTelephone { get; set; }
+
+        // Assets
+        public string ACode { get; set; }
+        public string ANaration { get; set; }
+        public decimal Gross { get; set; }
+        public decimal Amort_Prev { get; set; }
+        public decimal ANet { get; set; }
+        public decimal ANet_1 { get; set; }
+        public decimal TotalAsset { get; set; }
+
+        // Liabilities
+        public string LCode { get; set; }
+        public string LNaration { get; set; }
+        public decimal LNet { get; set; }
+        public decimal LNet_1 { get; set; }
+        public decimal TotalLiabilityEquity { get; set; }
     }
 }

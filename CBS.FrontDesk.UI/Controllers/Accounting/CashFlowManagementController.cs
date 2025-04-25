@@ -36,8 +36,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private const string EventCode = "Vault_To_Liaison";
         private readonly AccountingServices _AccountServices;
         private readonly AccountingEntryServices _accountingEntryServices;
-        private readonly BranchServices branchServices; 
-                    private readonly BankZoneBranchServices _bankZoneBranchServices;
+        private readonly BranchServices branchServices;
+        private readonly ChartOfAccountManagementPositionService _chartOfAccountManagementPositionService;
+        private readonly BankZoneBranchServices _bankZoneBranchServices;
         private readonly AccountingEntryRuleService _Service;
         public CashFlowManagementController()
         {
@@ -46,6 +47,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             branchServices = new BranchServices();
             _Service = new AccountingEntryRuleService();
             _bankZoneBranchServices = new BankZoneBranchServices();
+            _chartOfAccountManagementPositionService = new ChartOfAccountManagementPositionService();
         }
         // GET: BankingOperation
 
@@ -59,6 +61,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             ViewBag.Accounts = BuildDropDown(GenerateAccountListView(DebitAccounts));
           
 
+        }
+        private IEnumerable<StringValues> GenerateAccountListView(List<ChartOfAccountStateDto> accounts)
+        {
+            List<StringValues> stringValues = new List<StringValues>();
+            foreach (var branch in accounts)
+            {
+
+                stringValues.Add(new StringValues(branch.Id, branch.GeneralRepresentation));
+            }
+            return stringValues;
         }
         private IEnumerable<StringValues> GenerateAccountListView(List<Data.Account> accounts)
         {
@@ -77,6 +89,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
 
                 stringValues.Add(new StringValues(branch.Id,branch.BranchCode+"-"+ branch.Name));
+            }
+            return stringValues;
+        }
+        private IEnumerable<StringValues> GenerateChartOfAccountStateDto(List<ChartOfAccountStateDto> ChartOfAccountStates)
+        {
+            List<StringValues> stringValues = new List<StringValues>();
+            //var collections = branches.Where(x => x.IsHavingBank == true);
+            foreach (var branch in ChartOfAccountStates)
+            {
+
+                stringValues.Add(new StringValues(branch.Id, branch.GeneralRepresentation));
             }
             return stringValues;
         }
@@ -180,21 +203,21 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             List<SelectListItem> list = new List<SelectListItem>();
 
-            if (branch.IsHavingBank)
-            {
+            //if (branch.IsHavingBank)
+            //{
                 list.Clear();
                 list.Add(new SelectListItem { Text = $"Rejected", Value = "Rejected" });
-                list.Add(new SelectListItem { Text = $"RedirectToBranchBCO", Value = "Redirected for bank cash out" });
+                //list.Add(new SelectListItem { Text = $"RedirectToBranchBCO", Value = "Redirected for bank cash out" });
                 list.Add(new SelectListItem { Text = $"RedirectToBranchBTB", Value = "Redirected for inter-branch-transfer" });
                 list.Add(new SelectListItem { Text = $"Approved", Value = "Approve for bank cash Out" });
-            }
-            else
-            {
-                list.Clear();
-                list.Add(new SelectListItem { Text = $"Rejected", Value = "Rejected" });
-                list.Add(new SelectListItem { Text = $"RedirectToBranchBCO", Value = "Redirected for bank cash out" });
-                list.Add(new SelectListItem { Text = $"RedirectToBranchBTB", Value = "Redirected for inter branch transfer" });
-            }
+            //}
+            //else
+            //{
+            //    list.Clear();
+            //    list.Add(new SelectListItem { Text = $"Rejected", Value = "Rejected" });
+            //    list.Add(new SelectListItem { Text = $"RedirectToBranchBCO", Value = "Redirected for bank cash out" });
+            //    list.Add(new SelectListItem { Text = $"RedirectToBranchBTB", Value = "Redirected for inter branch transfer" });
+            //}
 
            
        
@@ -429,6 +452,47 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
 
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetBranchAccountUsedToCreditCashFlow(string branchId, string optionQuery)
+        {
+
+            List<ChartOfAccountStateDto> listOfAccounts = new List<ChartOfAccountStateDto>();
+          
+                //  var listOfAccounts = await _chartOfAccountManagementPositionService.GetAllBranchAccountUsedToCreditCashFlow(branchId);
+
+                if (optionQuery.ToLower() == "RedirectToBranchBCO".ToLower())
+                {
+                    listOfAccounts = await _chartOfAccountManagementPositionService.GetAllBranchAccountUsedToCreditCashFlow("560", "3");
+                    var data = BuildDropDown(GenerateAccountListView(listOfAccounts));
+
+                    return Json(data, JsonRequestBehavior.AllowGet);
+                }
+                else if (optionQuery == "RedirectToBranchBTB".ToLower())
+                {
+                    listOfAccounts = await _chartOfAccountManagementPositionService.GetAllBranchAccountUsedToCreditCashFlow("571", "3");
+                    var data = BuildDropDown(GenerateAccountListView(listOfAccounts));
+
+                    return Json(data, JsonRequestBehavior.AllowGet);
+                }
+                else if (optionQuery.ToLower().Contains("Approved"))
+                {
+                    listOfAccounts = await _chartOfAccountManagementPositionService.GetAllBranchAccountUsedToCreditCashFlow("560", "3");
+                    var data = BuildDropDown(GenerateAccountListView(listOfAccounts));
+
+                    return Json(data, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, status = false, message = "Fill the required fields." });
+                }
+
+               
+
+            
+
+        }
+
 
         [HttpPost]
         public async Task<ActionResult> AddOrUpdate(CashDemandDataEntity model)
@@ -782,10 +846,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     return PartialView(partialView, cashDemandDataEntity);
                 }
                 ViewBag.IsAuthourized = true;
-                var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
-                ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
-                var listBranch = await _bankZoneBranchServices.GetAllBranchPresentInZoneByParticipant(cashDemandDataEntity.CashReplenimentRequestdto.BranchId, "BRANCH");
-                ViewBag.ZoneBranch = BuildDropDown(await GenerateBranchInZoneCode(listBranch, cashDemandDataEntity.CashReplenimentRequestdto.BranchId));
+                var listOfAccounts = await _chartOfAccountManagementPositionService.GetAllBranchAccountUsedToCreditCashFlow("560", "3"); //await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
+                ViewBag.Accounts = BuildDropDown(GenerateChartOfAccountStateDto(listOfAccounts));
+                var listBranch = await branchServices.GetBranches(); // await _bankZoneBranchServices.GetAllBranchPresentInZoneByParticipant(cashDemandDataEntity.CashReplenimentRequestdto.BranchId, "BRANCH");
+                ViewBag.ZoneBranch = BuildDropDown(GenerateBranchBranchCode( listBranch.ToList()));// BuildDropDown(await GenerateBranchInZoneCode(listBranch, cashDemandDataEntity.CashReplenimentRequestdto.BranchId));
                 ViewBag.Decisions = BuildMenuViewBag(branch);
                 return PartialView(partialView, cashDemandDataEntity);
 

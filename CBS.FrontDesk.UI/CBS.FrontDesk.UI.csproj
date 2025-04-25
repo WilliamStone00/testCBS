@@ -4740,6 +4740,7 @@
     <Content Include="Views\CashDesk\Cashout.cshtml" />
     <Content Include="Views\CashDesk\_TabsCashout.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CreateAccountBookingDirectionData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateAccountBookingDirection.cshtml" />
     <Content Include="Views\AccountingConfiguration\_AccountBookingDirectionData.cshtml" />
     <Content Include="Views\AccountOpeningRulePerBranch\_AccountOpeningRuleModal.cshtml" />
   </ItemGroup>
