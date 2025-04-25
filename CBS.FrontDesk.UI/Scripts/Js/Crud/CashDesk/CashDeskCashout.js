@@ -374,32 +374,58 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType) {
         }
     );
 }
-
 function successCallback(response, operationType) {
-    appalert(response.message || "✅ Operation completed successfully.", 1, 1);
 
     // Clean up
     resetDepositorForm();
     $("#depositerModal").modal("hide"); // Hide if not already hidden
 
-    const customerId = $("#customerId").val();
+    //const customerId = $("#customerId").val();
 
-    const actions = {
-        CashIn: "cashin",
-        Withdrawal: "cashout",
-        WithdrawalSWS: "cashoutsws",
-        SavingWithdrawalFormFee: "withdrawalnotification",
-        LoanRepayment: "repayment",
-        LoanFee: "loanapplicationfeepayment"
-    };
+    // ✅ Reload the entire page
+    location.reload();
 
-    const operation = actions[operationType];
-    if (operation) {
-        GetMemberData(customerId, '_OperationDesk', 'datalistingview', operation);
-    } else {
-        console.warn("❗ No operation handler defined for:", operationType);
-    }
+    //const actions = {
+    //    CashIn: "cashin",
+    //    Withdrawal: "cashout",
+    //    WithdrawalSWS: "cashoutsws",
+    //    SavingWithdrawalFormFee: "withdrawalnotification",
+    //    LoanRepayment: "repayment",
+    //    LoanFee: "loanapplicationfeepayment"
+    //};
+
+    //const operation = actions[operationType];
+    //if (operation) {
+    //    GetMemberData(customerId, '_OperationDesk', 'datalistingview', operation);
+    //} else {
+    //    console.warn("❗ No operation handler defined for:", operationType);
+    //}
 }
+//function successCallback(response, operationType) {
+//    appalert(response.message || "✅ Operation completed successfully.", 1, 1);
+
+//    // Clean up
+//    resetDepositorForm();
+//    $("#depositerModal").modal("hide"); // Hide if not already hidden
+
+//    const customerId = $("#customerId").val();
+
+//    const actions = {
+//        CashIn: "cashin",
+//        Withdrawal: "cashout",
+//        WithdrawalSWS: "cashoutsws",
+//        SavingWithdrawalFormFee: "withdrawalnotification",
+//        LoanRepayment: "repayment",
+//        LoanFee: "loanapplicationfeepayment"
+//    };
+
+//    const operation = actions[operationType];
+//    if (operation) {
+//        GetMemberData(customerId, '_OperationDesk', 'datalistingview', operation);
+//    } else {
+//        console.warn("❗ No operation handler defined for:", operationType);
+//    }
+//}
 
 
 function failureCallback(response) {
@@ -560,10 +586,15 @@ function PostTransaction(ajaxUrl, data, operationType) {
         success: function (response) {
             if (response && response.success) {
                 // ✅ Success: hide modal, notify and reprint
-                $("#depositerModal").modal("hide");
-                appalert(`✅ ${response.message}`, 1, 2);
-                successCallback(response, operationType);
-                Reprint();
+                //$("#depositerModal").modal("hide");
+                //appalert(`✅ ${response.message}`, 1, 2);
+                //successCallback(response, operationType);
+                //Reprint();
+                appalert(response.message, 1, 1);
+                resetDepositorForm();
+                $("#depositerModal").modal("hide"); // Hide if not already hidden
+                Reprint(response.redirectUrl);
+                location.reload();
             } else {
                 // ❌ Failure: show error inside modal
                 const errorMsg = response?.message || "An unknown error occurred.";

@@ -299,9 +299,12 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType) {
                 success: function (response) {
                     if (response && response.success) {
                         appalert(response.message, 1, 1);
-                        successCallback(response, operationType);
-                        $("#printURL").val(response.redirectUrl);
-                        Reprint();
+                        resetDepositorForm();
+                        $("#depositerModal").modal("hide"); // Hide if not already hidden
+                        Reprint(response.redirectUrl);
+                        location.reload();
+                        //successCallback(response, operationType);
+                        
                     } else {
                         if (!response) {
                             alert("Your session is expired.");
@@ -326,8 +329,11 @@ function successCallback(response, operationType) {
     // Clean up
     resetDepositorForm();
     $("#depositerModal").modal("hide"); // Hide if not already hidden
-
+    location.reload();
     const customerId = $("#customerId").val();
+
+     //✅ Reload the entire page
+    location.reload();
 
     const actions = {
         CashIn: "cashin",
@@ -484,7 +490,7 @@ function PostCashIn() {
             });
         },
         function () {
-            alertify.message("🚫 Operation cancelled.");
+            appalert("🚫 Operation cancelled.",2,1);
         }
     ).set('labels', { ok: 'Yes, Continue', cancel: 'Cancel' });
 }
@@ -505,10 +511,15 @@ function PostTransaction(ajaxUrl, data, operationType) {
         success: function (response) {
             if (response && response.success) {
                 // ✅ Success: hide modal, notify and reprint
-                $("#depositerModal").modal("hide");
-                appalert(`✅ ${response.message}`, 1, 2);
-                successCallback(response, operationType);
-                Reprint();
+                //$("#depositerModal").modal("hide");
+                //appalert(`✅ ${response.message}`, 1, 2);
+                //successCallback(response, operationType);
+                //Reprint();
+                appalert(response.message, 1, 1);
+                resetDepositorForm();
+                $("#depositerModal").modal("hide"); // Hide if not already hidden
+                Reprint(response.redirectUrl);
+                location.reload();
             } else {
                 // ❌ Failure: show error inside modal
                 const errorMsg = response?.message || "An unknown error occurred.";
