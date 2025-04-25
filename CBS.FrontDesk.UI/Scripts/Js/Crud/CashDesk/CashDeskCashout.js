@@ -486,7 +486,7 @@ function PostCashIn() {
 
     const message = `
         <div class="text-start">
-            <p><strong>Member:</strong> ${memberName}<br><strong>Customer ID:</strong> ${customerId}</p>
+            <p><strong>Member:</strong> ${memberName}<br><strong>Member Account Number:</strong> ${customerId}</p>
             <p>
                 ${isNewSubscription
             ? `You're about to complete a <strong>MEMBER ONBOARDING DEPOSIT</strong> of`
@@ -743,7 +743,7 @@ function PostFEE() {
     const confirmationTitle = "🧾 CONFIRM LOAN FEE PAYMENT";
     const message = `
         <div class="text-start">
-            <p><strong>Member:</strong> ${memberName}<br><strong>Customer ID:</strong> ${customerId}</p>
+            <p><strong>Member:</strong> ${memberName}<br><strong>Member Account Number:</strong> ${customerId}</p>
             <p>You are about to pay a <strong>LOAN APPLICATION FEE</strong> of <b>${totalInfo.total.toLocaleString('en-US')} FCFA</b>.</p>
             <p class="mt-3 fw-bold text-primary">Fee Summary</p>
             ${feeBreakdown}
@@ -859,7 +859,7 @@ function PostWithdrawalFromFee() {
     const confirmationTitle = "🔔 CONFIRM S.W.N PAYMENT";
     const message = `
         <div class="text-start">
-            <p><strong>Member:</strong> ${memberName}<br><strong>Customer ID:</strong> ${customerId}</p>
+            <p><strong>Member:</strong> ${memberName}<br><strong>Member Account Number:</strong> ${customerId}</p>
             <p>You are about to pay a <strong>Saving Withdrawal Notification Fee</strong> of <b>${totalInfo.total.toLocaleString('en-US')} FCFA</b>.</p>
             ${feeTable}
         </div>
@@ -952,7 +952,7 @@ function PostCashOut() {
 
     const message = `
         <div class="text-start">
-            <p><strong>Member:</strong> ${memberName}<br><strong>Customer ID:</strong> ${customerId}</p>
+            <p><strong>Member:</strong> ${memberName}<br><strong>Member Account Number:</strong> ${customerId}</p>
             <p>You are about to <strong>perform a CASH-OUT</strong> of <b>${totalInfo.total.toLocaleString('en-US')} FCFA</b>.</p>
             <p class="mt-3 fw-bold text-danger">Accounts Summary</p>
             ${accountSummaryHtml}
@@ -1063,7 +1063,7 @@ function PostCashOutSWS() {
 
     const message = `
         <div class="text-start">
-            <p><strong>Member:</strong> ${memberName}<br><strong>Customer ID:</strong> ${customerId}</p>
+            <p><strong>Member:</strong> ${memberName}<br><strong>Member Account Number:</strong> ${customerId}</p>
             <p>You are about to perform a <strong>SPECIAL WITHDRAWAL SLIP (SWS) CASH-OUT</strong> of <b>${totalInfo.total.toLocaleString('en-US')} FCFA</b>.</p>
             <p class="mt-3 fw-bold text-primary">Account Summary</p>
             ${accountSummaryHtml}
@@ -1085,7 +1085,32 @@ function PostCashOutSWS() {
             $("#depositorCustomerName").text(memberName);
             $("#depositorCustomerId").text(customerId);
 
-            setTimeout(() => $("#depositerModal").modal("show"), 100);
+
+            // Build account details string
+            let accountDetails = "";
+            $('#myDataTableT tbody tr').each(function () {
+                const accountType = $(this).find('td:eq(1)').text().trim();
+                const amount = parseFloat($(this).find('.amount-input').val()) || 0;
+                const fee = parseFloat($(this).find('.fee-input').val()) || 0;
+
+                if (amount > 0 || fee > 0) {
+                    accountDetails += `\n- ${accountType}: Amount ${amount.toLocaleString('en-US')} FCFA, Fee ${fee.toLocaleString('en-US')} FCFA`;
+                }
+            });
+
+            // Construct default note
+            const representativeNote = `
+            SWS Cash-out performed by authorized representative.
+            👤 Member: ${memberName} (${customerId})
+            💵 Total Amount: ${totalInfo.total.toLocaleString('en-US')} FCFA
+            📄 Accounts Involved:${accountDetails}
+            ✅ Operation complies with audit and withdrawal notification policies.
+            `.trim();
+            // Inject default note
+            setTimeout(() => {
+                $("#depositerModal").modal("show");
+                $("#RepresentativeNote").val(representativeNote);
+            }, 100);
 
             $("#confirmDepositorBtn").off("click").on("click", function () {
                 const depositor = collectDepositorInfo();

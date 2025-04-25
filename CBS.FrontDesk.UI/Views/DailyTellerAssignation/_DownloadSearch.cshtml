@@ -48,7 +48,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-check">
-                        @Html.CheckBoxFor(m => m.GetAllTellerOperationsQuery.IsByTeller, new { @class = "form-check-input", @id = "byTellerCheckbox" })
+                        @Html.CheckBoxFor(m => m.GetAllTellerOperationsQuery.IsByTeller, new { @class = "form-check-input", @id = "byTellerCheckbox", @checked = "checked", @disabled = "disabled" })
                         <label class="form-check-label" for="byTellerCheckbox">Filter by Till</label>
                     </div>
                 </div>

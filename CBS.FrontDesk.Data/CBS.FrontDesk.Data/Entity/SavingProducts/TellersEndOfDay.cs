@@ -322,27 +322,29 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     }
     public class TellerOperationGL
     {
-        public DateTime Date { get; set; }
-        public string Naration { get; set; }
         public decimal Amount { get; set; }
-        public decimal BalanceBF { get; set; }
-        public decimal Debit { get; set; }
-        public decimal Credit { get; set; }
-        public decimal Balance { get; set; }
-
         public string AccountNumber { get; set; }
         public string TransactionType { get; set; }
         public string TransactionRef { get; set; }
-
         public string DailyReferences { get; set; }
-
+        public decimal BalanceBF { get; set; }
         public string MemberId { get; set; }
         public string Description { get; set; }
         public string MemberAccountNumber { get; set; }
-
-
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
+        public string Naration { get; set; }
+        public string MemberName { get; set; }
+        public decimal Balance { get; set; }
         public string TellerID { get; set; }
-
+        public DateTime Date { get; set; }
+        public DateTime EntryDate { get; set; }
+        public string AccountType { get; set; }
+        public string CashierName { get; set; }
+        public string TellerName { get; set; }
+        public string TransactionReference { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
         public string BranchId { get; set; }
 
     }
@@ -374,6 +376,15 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public decimal ClosingBalance { get; set; }
         public int TotalTransactions { get; set; }
         public decimal TotalDebit { get; set; }
+        public decimal Amount { get; set; }
+        public string TransactionRef { get; set; }
+        public string MemberName { get; set; }
+        public string TellerID { get; set; }
+        public DateTime EntryDate { get; set; }
+        public string AccountType { get; set; }
+        public string CashierName { get; set; }
+        public string TransactionReference { get; set; }
+        public string BranchId { get; set; }
     }
 
 
