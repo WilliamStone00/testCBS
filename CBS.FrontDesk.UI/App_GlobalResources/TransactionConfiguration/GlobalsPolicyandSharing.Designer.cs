@@ -59,5 +59,68 @@ namespace Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to These settings ensure accurate and consistent handling of account policies..
+        /// </summary>
+        internal static string ConfigurePoliciesAndSharingRulesDesc {
+            get {
+                return ResourceManager.GetString("ConfigurePoliciesAndSharingRulesDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configure policies and sharing rules for &lt;strong&gt;@Model.SavingProduct.Name&lt;/strong&gt;..
+        /// </summary>
+        internal static string ConfigurePoliciesAndSharingRulesFor {
+            get {
+                return ResourceManager.GetString("ConfigurePoliciesAndSharingRulesFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage and update policies, configurations, and sharing rules for.
+        /// </summary>
+        internal static string ManageAndUpdatePolicies {
+            get {
+                return ResourceManager.GetString("ManageAndUpdatePolicies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ensure all configurations align with your organizational standards..
+        /// </summary>
+        internal static string ManageAndUpdatePoliciesDesc {
+            get {
+                return ResourceManager.GetString("ManageAndUpdatePoliciesDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ordinary Account Configurations.
+        /// </summary>
+        internal static string OrdinaryAccountConfigurations {
+            get {
+                return ResourceManager.GetString("OrdinaryAccountConfigurations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ordinary Account Settings.
+        /// </summary>
+        internal static string OrdinaryAccountSettings {
+            get {
+                return ResourceManager.GetString("OrdinaryAccountSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Policies and Sharing Configuration.
+        /// </summary>
+        internal static string PoliciesAndSharingConfiguration {
+            get {
+                return ResourceManager.GetString("PoliciesAndSharingConfiguration", resourceCulture);
+            }
+        }
     }
 }

@@ -630,6 +630,116 @@
       <DependentUpon>OpeningAndClossingOfTellersRPT.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="App_GlobalResources\AccountCategory\GlobalsAccountCategory.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalsAccountCategory.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountCategory\Globals_Create.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Globals_Create.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountCategory\Globals_Data.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Globals_Data.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountCategory\Globals_Update.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Globals_Update.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountClass\GlobalAccountClass.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAccountClass.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountClass\GlobalAccountClass_Create.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAccountClass_Create.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountClass\GlobalAccountClass_Data.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAccountClass_Data.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountClass\GlobalAccountClass_Update.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAccountClass_Update.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingChart\GlobalAccountingChart.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAccountingChart.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingChart\GlobalAccountingChart_Create.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAccountingChart_Create.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingChart\GlobalAccountingChart_CreateModal.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAccountingChart_CreateModal.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingChart\GlobalAccountingChart_Data.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAccountingChart_Data.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingChart\GlobalAccountingChart_Delete.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAccountingChart_Delete.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingChart\GlobalAccountingChart_Operation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAccountingChart_Operation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingChart\GlobalAccountingChart_Update.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAccountingChart_Update.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingChart\Global_AccountTree.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_AccountTree.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingConfiguration\GlobalAccount.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAccount.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingConfiguration\GlobalAccountPolicySetting.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAccountPolicySetting.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingConfiguration\GlobalAccountUpload.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAccountUpload.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingConfiguration\GlobalAdjustClass4AccountCartegory.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAdjustClass4AccountCartegory.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingConfiguration\GlobalIndexForEventConfiguration.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalIndexForEventConfiguration.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingConfiguration\GlobalJournalEntryConfig.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalJournalEntryConfig.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Bank\GlobalBank.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -3435,6 +3545,94 @@
     <Content Include="App_GlobalResources\Bank\GlobalBankData.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalBankData.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountCategory\Globals_Update.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Globals_Update.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountCategory\Globals_Data.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Globals_Data.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountCategory\Globals_Create.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Globals_Create.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountCategory\GlobalsAccountCategory.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalsAccountCategory.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountClass\GlobalAccountClass_Create.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAccountClass_Create.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountClass\GlobalAccountClass_Update.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAccountClass_Update.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountClass\GlobalAccountClass_Data.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAccountClass_Data.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountClass\GlobalAccountClass.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAccountClass.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingChart\Global_AccountTree.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_AccountTree.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingChart\GlobalAccountingChart_Create.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAccountingChart_Create.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingChart\GlobalAccountingChart_CreateModal.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAccountingChart_CreateModal.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingChart\GlobalAccountingChart_Data.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAccountingChart_Data.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingChart\GlobalAccountingChart_Delete.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAccountingChart_Delete.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingChart\GlobalAccountingChart_Operation.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAccountingChart_Operation.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingChart\GlobalAccountingChart_Update.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAccountingChart_Update.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingChart\GlobalAccountingChart.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAccountingChart.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingConfiguration\GlobalJournalEntryConfig.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalJournalEntryConfig.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingConfiguration\GlobalIndexForEventConfiguration.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalIndexForEventConfiguration.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingConfiguration\GlobalAdjustClass4AccountCartegory.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAdjustClass4AccountCartegory.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingConfiguration\GlobalAccountPolicySetting.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAccountPolicySetting.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingConfiguration\GlobalAccount.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAccount.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingConfiguration\GlobalAccountUpload.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAccountUpload.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -1,12 +1,12 @@
-﻿
+﻿@using Resources
 @{
-    ViewBag.Title = "Accounting Configurations";
+    ViewBag.Title = GlobalIndexForEventConfiguration.AccountingConfigurations;
 
 }
 
 <div class="card mb-12">
 
-    <h2 class="me-2"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Accounting Event Configuration Panel </h2>
+    <h2 class="me-2"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;@GlobalIndexForEventConfiguration.AccountingEventConfigurationPanel </h2>
     <div class="row">
         <div class="col-md-12">
 
@@ -21,7 +21,7 @@
                                     data-bs-target="#accordionsix"
                                     aria-expanded="false"
                                     aria-controls="accordionsix">
-                                <i class="tf-icons mdi mdi-book-open-page-variant-outline me-1"></i>  &nbsp; &nbsp; &nbsp; &nbsp;   Operation Event Management
+                                <i class="tf-icons mdi mdi-book-open-page-variant-outline me-1"></i>  &nbsp; &nbsp; &nbsp; &nbsp;  @GlobalIndexForEventConfiguration.OperationEventManagement
                             </button>
                         </h2>
                         <div id="accordionsix"
@@ -31,11 +31,11 @@
                             <div class="accordion-body">
                                 <div class="row justify-content-end">
                                     <div class="demo-inline-spacing text-end">
-                                        <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_OperationEvent','_OperationEventData','datalistingview_OperationEvent',0,'operationEvent','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_OperationEvent','_OperationEventData','datalistingview_OperationEvent',0,'operationEvent','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalIndexForEventConfiguration.ViewList">
                                             <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                         </a>
                                         
-                                        <a type="button" onclick="AddORUpdateGen(null,'datalistingview_OperationEvent','_CreateOperationEvent','new','AccountingConfiguration','operationEvent')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <a type="button" onclick="AddORUpdateGen(null,'datalistingview_OperationEvent','_CreateOperationEvent','new','AccountingConfiguration','operationEvent')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalIndexForEventConfiguration.AddNew">
                                             <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                         </a>
                                     </div>
@@ -55,7 +55,7 @@
                                     data-bs-target="#accordionseven"
                                     aria-expanded="false"
                                     aria-controls="accordionseven">
-                                <i class="tf-icons mdi mdi-book-lock-open-outline me-1"></i>   &nbsp; &nbsp; &nbsp; &nbsp;   Operation Event Attribute Management
+                                <i class="tf-icons mdi mdi-book-lock-open-outline me-1"></i>   &nbsp; &nbsp; &nbsp; &nbsp;   @GlobalIndexForEventConfiguration.OperationEventAttributeManagement
                             </button>
                         </h2>
                         <div id="accordionseven"
@@ -65,10 +65,10 @@
                             <div class="accordion-body">
                                 <div class="row justify-content-end">
                                     <div class="demo-inline-spacing text-end">
-                                        <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_OperationEventAttribute','_OperationEventAttributeData','datalistingview_OperationEventAttribute',0,'operationEventAttribute','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_OperationEventAttribute','_OperationEventAttributeData','datalistingview_OperationEventAttribute',0,'operationEventAttribute','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalIndexForEventConfiguration.ViewList">
                                             <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                         </a>
-                                        <a type="button" onclick="AddORUpdateGen(null,'datalistingview_OperationEventAttribute','_CreateOperationEventAttribute','new','AccountingConfiguration','operationEventAttribute')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <a type="button" onclick="AddORUpdateGen(null,'datalistingview_OperationEventAttribute','_CreateOperationEventAttribute','new','AccountingConfiguration','operationEventAttribute')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalIndexForEventConfiguration.AddNew">
                                             <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                         </a>
                                     </div>
@@ -89,7 +89,7 @@
                                     aria-expanded="false"
                                     aria-controls="accordiontwenty">
                                 <i class="tf-icons mdi mdi-book-account-outline me-1"></i>
-                                &nbsp; &nbsp; &nbsp; &nbsp;   Accounting Entry Rule Management
+                                &nbsp; &nbsp; &nbsp; &nbsp;   @GlobalIndexForEventConfiguration.AccountingEntryRuleManagement
                             </button>
                         </h2>
                         <div id="accordiontwenty"
@@ -99,13 +99,13 @@
                             <div class="accordion-body">
                                 <div class="row justify-content-end">
                                     <div class="demo-inline-spacing text-end">
-                                        <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_AccountingEntryRule','_AccountingEntryRuleData','datalistingview_AccountingEntryRule',0,'accountingEntryRule','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                        <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_AccountingEntryRule','_AccountingEntryRuleData','datalistingview_AccountingEntryRule',0,'accountingEntryRule','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalIndexForEventConfiguration.ViewList">
                                             <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                         </a>
-                                        <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountingEntryRule','_CreateAccountingEntryRule','new','AccountingConfiguration','accountingEntryRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                        <a type="button" onclick="AddORUpdateGen(null,'datalistingview_AccountingEntryRule','_CreateAccountingEntryRule','new','AccountingConfiguration','accountingEntryRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalIndexForEventConfiguration.AddNew">
                                             <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                         </a>
-                                        <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_AccountingEntryRule','_DownloadAccountingEntryRule','datalistingview_AccountingEntryRule',0,'accountingEntryRule','download')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Download EventRule">
+                                        <a type="button" onclick="LoadDataGeneration('AccountingConfiguration','myDataTable_AccountingEntryRule','_DownloadAccountingEntryRule','datalistingview_AccountingEntryRule',0,'accountingEntryRule','download')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalIndexForEventConfiguration.DownloadEventRule">
                                             <span class="tf-icons mdi mdi-download-circle-outline mdi-18px"></span>
                                         </a>
                                     </div>

@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+@using Resources
 @{
-    ViewBag.Title = "Setting account cartegory";
+    ViewBag.Title = @GlobalAdjustClass4AccountCartegory.SettingAccountCategory;
 }
 
 <div class="row">
@@ -17,7 +18,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
                         <i class="mdi mdi-file-document-outline me-2"></i>
-                        SETTING ACCOUNT CARTEGORY
+                        @GlobalAdjustClass4AccountCartegory.SettingAccountCategoryTitle
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"
@@ -29,15 +30,14 @@
                                 <div class="container">
                                     <div class="card-body">
                                         <fieldset class="fieldset-custom">
-                                            <legend>Customise class 4 accounts</legend>
+                                            <legend>@GlobalAdjustClass4AccountCartegory.CustomiseClass4Accounts</legend>
 
                                             <table id="myDataTable_accountCategory" class="display" style="width:100%">
                                                 <thead>
                                                     <tr>
-                                                        <th>Account Description</th>
-                                                        <th>Account Cartegory</th>
-                                                      
-                                                        <th>Action</th>
+                                                        <th>@GlobalAdjustClass4AccountCartegory.AccountDescription</th>
+                                                        <th>@GlobalAdjustClass4AccountCartegory.AccountCategory</th>
+                                                        <th>@GlobalAdjustClass4AccountCartegory.Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -50,29 +50,21 @@
                                                             <td style="width:30%">@d.Level_Management</td>
 
                                                             <td style="width:30%">
-                                                                @Html.DropDownListFor(m => d.Old_AccountNumber, new SelectList(ViewBag.LevelManagementList, "Value", "Text"), new { @id =d.Id+ "-AccountCartegory", @class = "form-control select2" })
+                                                                @Html.DropDownListFor(m => d.Old_AccountNumber, new SelectList(ViewBag.LevelManagementList, "Value", "Text"), new { @id = d.Id + "-AccountCartegory", @class = "form-control select2" })
                                                             </td>
                                                         </tr>
                                                     }
                                                 </tbody>
                                             </table>
-
-
-
                                         </fieldset>
-
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
 </div>
 
