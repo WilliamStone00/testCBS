@@ -2,7 +2,6 @@
 @{
     var isNewSubscription = ViewBag.Operation?.ToString()?.ToLower() == "newsubcription";
 }
-
 <span id="customerName" class="d-none">@Model.Customer.name</span>
 @if (ViewBag.Operation == "cashin" || isNewSubscription)
 {
@@ -26,7 +25,7 @@
                 <div class="row mt-2 gy-2">
                     <div class="col-md-8">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box float-start">
+                            <span class="formatted-amount shadow-box float-start mb-2">
                                 Member's name: @Model.Customer.name
                             </span>
                         </div>
@@ -34,8 +33,20 @@
 
                     <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: <b>@Model.MemberOnboardingDetailDto.GrandTotal.ToString("N0")</b></span>
+                            <span class="formatted-amount shadow-box mb-2" id="lblDepositRequest_amount">
+                                Total amount: <b>@Model.MemberOnboardingDetailDto.GrandTotal.ToString("N0")</b>
+                            </span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0" />
+                        </div>
+                    </div>
+
+                    <!-- ✅ Nice placement of the Hide Balance option below -->
+                    <div class="col-md-12">
+                        <div class="form-check form-switch d-flex align-items-center gap-2 mt-1">
+                            <input class="form-check-input" type="checkbox" id="hideBalanceCheckbox" onchange="toggleHideBalance()" />
+                            <label class="form-check-label fw-bold" id="hideBalanceLabel" for="hideBalanceCheckbox" style="font-size: 0.95rem;">
+                                Balance will be shown on receipt
+                            </label>
                         </div>
                     </div>
 
@@ -256,6 +267,15 @@ else if (ViewBag.Operation == "cashout")
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                         </div>
                     </div>
+                    <!-- ✅ Nice placement of the Hide Balance option below -->
+                    <div class="col-md-12">
+                        <div class="form-check form-switch d-flex align-items-center gap-2 mt-1">
+                            <input class="form-check-input" type="checkbox" id="hideBalanceCheckbox" onchange="toggleHideBalance()" />
+                            <label class="form-check-label fw-bold" id="hideBalanceLabel" for="hideBalanceCheckbox" style="font-size: 0.95rem;">
+                                Balance will be shown on receipt
+                            </label>
+                        </div>
+                    </div>
                     <hr style="border: 2px solid red;" />
                     <div class="table-responsive" style="width: 100%;">
                         <table class="table table-hover" id="myDataTableT">
@@ -355,7 +375,15 @@ else if (ViewBag.Operation == "cashoutsws")
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                         </div>
                     </div>
-
+                    <!-- ✅ Nice placement of the Hide Balance option below -->
+                    <div class="col-md-12">
+                        <div class="form-check form-switch d-flex align-items-center gap-2 mt-1">
+                            <input class="form-check-input" type="checkbox" id="hideBalanceCheckbox" onchange="toggleHideBalance()" />
+                            <label class="form-check-label fw-bold" id="hideBalanceLabel" for="hideBalanceCheckbox" style="font-size: 0.95rem;">
+                                Balance will be shown on receipt
+                            </label>
+                        </div>
+                    </div>
                     <hr style="border: 2px solid red;" />
                     <div class="row">
                         <div class="col-md-6">
@@ -944,11 +972,11 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
 
 <input type="hidden" id="totalProvision" value="0" />
 
-    <div class="col-md-12" style="display:none">
-        <div class="form-floating form-floating-outline">
-            <span class="formatted-amount shadow-box" id="lblBalance">Balance: 0</span>
-        </div>
-        <button type="submit" id="btnSave" class="btn btn-secondary me-2" onclick="Reprint()">
-            <i class="fas fa-print me-1"></i> Re-print
-        </button>
+<div class="col-md-12" style="display:none">
+    <div class="form-floating form-floating-outline">
+        <span class="formatted-amount shadow-box" id="lblBalance">Balance: 0</span>
     </div>
+    <button type="submit" id="btnSave" class="btn btn-secondary me-2" onclick="Reprint()">
+        <i class="fas fa-print me-1"></i> Re-print
+    </button>
+</div>

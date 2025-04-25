@@ -185,10 +185,11 @@ function collectDeposits() {
     const note = $('#Note')?.val() || '';
     const globalVat = parseFloat($('#calculatedVat').text().replace(/,/g, '')) || 0;
 
-    $('#myDataTableT tbody tr').each(function () {
-        const isChecked = $(this).find('.form-check-input').prop('checked');
+    const hideBalance = $('#hideBalanceCheckbox').is(':checked'); // ✅ FETCH OUTSIDE the loop once
 
-        // You may skip unchecked rows depending on operation type
+    $('#myDataTableT tbody tr').each(function () {
+        const isChecked = $(this).find('td input[type="checkbox"]').prop('checked'); // ✅ target only inside table cell, not global checkbox!
+
         if (!isChecked) return;
 
         const deposit = {
@@ -213,13 +214,14 @@ function collectDeposits() {
             PaymentChannel: 'Web_Portal',
             LoanApplicationId: $(this).find('.loan-application-id')?.val() || '',
             Period: $(this).find('.period')?.val() || '',
-            Vat: globalVat
+            Vat: globalVat,
+            HideBalance: hideBalance // ✅ correctly from the top hide balance checkbox!
         };
 
         deposits.push(deposit);
     });
 
-    console.log("✅ Collected Deposits with VAT:", deposits);
+    console.log("✅ Collected Deposits:", deposits);
     return deposits;
 }
 
@@ -331,9 +333,9 @@ function resetDepositorForm() {
     $('#DepositerNote').val('');
     $('#Note').val('')
 }
-function Reprint() {
+function Reprint(redirectUrl) {
+    window.open(redirectUrl, '_blank');
     ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLessWithSubReports");
-
 }
 function ReprintLoan() {
     ReportView("CashDesk", null, "GetReport", null, null, "loan", "ReportParameterLessWithSubReports");
@@ -353,7 +355,7 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType) {
                 success: function (response) {
                     if (response && response.success) {
                         successCallback(response, operationType);
-                        Reprint();
+                        Reprint(response.redirectUrl);
                     } else {
                         if (!response) {
                             alert("Your session is expired.");

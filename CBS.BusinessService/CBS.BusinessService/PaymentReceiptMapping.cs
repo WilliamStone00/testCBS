@@ -8,6 +8,8 @@ using System.Drawing;
 using System.IO;
 using ZXing;
 using ZXing.Common;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace CBS.BusinessService
 {
@@ -25,10 +27,10 @@ namespace CBS.BusinessService
                 throw new ArgumentNullException(nameof(branch));
 
             string barcodeData = $"{branch.Bank.BankCode}|{paymentReceipt.InternalReferenceNumber}|{paymentReceipt.MemberReference}|{paymentReceipt.Amount:N1}";
-           string barcodeImagePath = GenerateAndSaveBarcodeImage(barcodeData, paymentReceipt.MemberName, paymentReceipt.InternalReferenceNumber, branch.Name);
+            string barcodeImagePath = GenerateAndSaveBarcodeImage(barcodeData, paymentReceipt.MemberName, paymentReceipt.InternalReferenceNumber, branch.Name);
 
             // Generate DenominationDS list and filter out denominations with zero value
-        var denominations = new List<DenominationDS>
+            var denominations = new List<DenominationDS>
         {
             new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "10000 Note", Quantity = paymentReceipt.Note10000, Value = 10000m * paymentReceipt.Note10000, DenominationType = "Notes" },
             new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "5000 Note", Quantity = paymentReceipt.Note5000, Value = 5000m * paymentReceipt.Note5000, DenominationType = "Notes" },
@@ -43,8 +45,8 @@ namespace CBS.BusinessService
             new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "5 Coin", Quantity = paymentReceipt.Coin5, Value = 5m * paymentReceipt.Coin5, DenominationType = "Coins" },
             new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "1 Coin", Quantity = paymentReceipt.Coin1, Value = 1m * paymentReceipt.Coin1, DenominationType = "Coins" }
         }
-            .Where(d => d.Value > 0)
-            .ToList();
+                .Where(d => d.Value > 0)
+                .ToList();
 
             // Generate PaymentDetailDS
             var paymentDetails = paymentReceipt.PaymentDetails?.Select(pd => new PaymentDetailDS
@@ -54,6 +56,7 @@ namespace CBS.BusinessService
                 MemberReference = pd.MemberReference,
                 PaymentReceiptId = pd.PaymentReceiptId,
                 SericeName = pd.SericeName,
+                AccountBalance=pd.AccountBalance,
                 Amount = pd.Amount,
                 Fee = pd.Fee,
                 LoanCapital = pd.LoanCapital,
@@ -65,53 +68,55 @@ namespace CBS.BusinessService
             }).ToList() ?? new List<PaymentDetailDS>();
 
             return new List<PaymentReciptDS>
-        {
-            new PaymentReciptDS
             {
-                Id = paymentReceipt.Id,
-                MemberName = paymentReceipt.MemberName,
-                MemberReference = paymentReceipt.MemberReference,
-                Amount = paymentReceipt.Amount,
-                Charges = paymentReceipt.Charges,
-                TotalAmount = paymentReceipt.TotalAmount,
-                AmountInWord = paymentReceipt.AmountInWord,
-                ReceiptTitle = paymentReceipt.ReceiptTitle,
-                CashierName = paymentReceipt.CashierName,
-                TillName = paymentReceipt.TillName,
-                ServiceType = paymentReceipt.ServiceType,
-                OperationType = paymentReceipt.OperationType,
-                OperationTypeGrouping = paymentReceipt.OperationTypeGrouping,
-                AccountingDay = paymentReceipt.AccountingDay,
-                Date = paymentReceipt.Date,
-                BarcodeData = barcodeData,
-                BarcodeImagePath = barcodeImagePath,
-                InternalReferenceNumber = paymentReceipt.InternalReferenceNumber,
-                ExternalReferenceNumber = paymentReceipt.ExternalReferenceNumber,
-                SourceOfRequest = paymentReceipt.SourceOfRequest,
-                PortalUsed = paymentReceipt.PortalUsed,
-                DenominationDs = denominations,
-                DepositorCNI = paymentReceipt.DepositorCNI,
-                DepositorName = paymentReceipt.DepositorName,
-                DepositorPhone = paymentReceipt.DepositorPhone,
-                PaymentDetailDs = paymentDetails,
-                Logo = branch.Bank.LogoUrl,
-                BranchAddress = branch.Address,
-                BranchCode = branch.BranchCode,
-                BranchName = branch.Name,
-                BranchTelephone = branch.Telephone,
-                HeadOfficeAddress = branch.Bank.Address,
-                HeadOfficeCode = branch.Bank.BankCode,
-                HeadOfficeEmail = branch.Bank.Email,
-                HeadOfficeInitial = branch.Bank.BankInitial,
-                HeadOfficeName = branch.Bank.Name,
-                HeadOfficeTelephone = branch.Bank.Telephone,
-                HeadOfficeWebSite = branch.Bank.WebSite
-            }
-        };
+                new PaymentReciptDS
+                {
+                    Id = paymentReceipt.Id,
+                    MemberName = paymentReceipt.MemberName,
+                    MemberReference = paymentReceipt.MemberReference,
+                    Amount = paymentReceipt.Amount, ReceiptType=paymentReceipt.ReceiptType, TotalAccountBalances=paymentReceipt.TotalAccountBalances,
+                    Charges = paymentReceipt.Charges,
+                    TotalAmount = paymentReceipt.TotalAmount,
+                    AmountInWord = paymentReceipt.AmountInWord,
+                    ReceiptTitle = paymentReceipt.ReceiptTitle,
+                    CashierName = paymentReceipt.CashierName,
+                    TillName = paymentReceipt.TillName,
+                    ServiceType = paymentReceipt.ServiceType,
+                    OperationType = paymentReceipt.OperationType,
+                    OperationTypeGrouping = paymentReceipt.OperationTypeGrouping,
+                    AccountingDay = paymentReceipt.AccountingDay,
+                    Date = paymentReceipt.Date,
+                    BarcodeData = barcodeData,
+                    BarcodeImagePath = barcodeImagePath,
+                    InternalReferenceNumber = paymentReceipt.InternalReferenceNumber,
+                    ExternalReferenceNumber = paymentReceipt.ExternalReferenceNumber,
+                    SourceOfRequest = paymentReceipt.SourceOfRequest,
+                    PortalUsed = paymentReceipt.PortalUsed,
+                    DenominationDs = denominations,
+                    DepositorCNI = paymentReceipt.DepositorCNI,
+                    DepositorName = paymentReceipt.DepositorName,
+                    DepositorPhone = paymentReceipt.DepositorPhone,
+                    PaymentDetailDs = paymentDetails,
+                    Logo = branch.Bank.LogoUrl,
+                    BranchAddress = branch.Address,
+                    BranchCode = branch.BranchCode,
+                    BranchName = branch.Name,
+                    BranchTelephone = branch.Telephone,
+                    HeadOfficeAddress = branch.Bank.Address,
+                    HeadOfficeCode = branch.Bank.BankCode,
+                    HeadOfficeEmail = branch.Bank.Email,
+                    HeadOfficeInitial = branch.Bank.BankInitial,
+                    HeadOfficeName = branch.Bank.Name,
+                    HeadOfficeTelephone = branch.Bank.Telephone,
+                    HeadOfficeWebSite = branch.Bank.WebSite
+                }
+            };
         }
 
         public static string GenerateAndSaveBarcodeImage(string data, string memberName, string transactionRef, string branchName)
         {
+            string fullPath = string.Empty;
+
             var writer = new BarcodeWriterPixelData
             {
                 Format = BarcodeFormat.QR_CODE,
@@ -126,46 +131,56 @@ namespace CBS.BusinessService
 
             var pixelData = writer.Write(data);
 
-            using (Bitmap fullBitmap = new Bitmap(pixelData.Width, pixelData.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb))
+            using (Bitmap fullBitmap = new Bitmap(pixelData.Width, pixelData.Height, PixelFormat.Format32bppArgb))
             {
-                // Copy raw pixels
                 var bitmapData = fullBitmap.LockBits(
                     new Rectangle(0, 0, pixelData.Width, pixelData.Height),
-                    System.Drawing.Imaging.ImageLockMode.WriteOnly,
-                    System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                    ImageLockMode.WriteOnly,
+                    PixelFormat.Format32bppArgb);
 
-                System.Runtime.InteropServices.Marshal.Copy(pixelData.Pixels, 0, bitmapData.Scan0, pixelData.Pixels.Length);
+                Marshal.Copy(pixelData.Pixels, 0, bitmapData.Scan0, pixelData.Pixels.Length);
                 fullBitmap.UnlockBits(bitmapData);
 
-                // Trim whitespace
-                Bitmap trimmed = TrimBitmap(fullBitmap);
-
-                // Create full path
-                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                string year = DateTime.Now.Year.ToString();
-                string sanitizedBranch = branchName.Replace(" ", "_");
-                string sanitizedMember = memberName.Replace(" ", "_");
-                string folderPath = Path.Combine(baseDir, "AppFiles", "BarCodeImages", year, sanitizedBranch);
-
-                if (!Directory.Exists(folderPath))
-                    Directory.CreateDirectory(folderPath);
-
-                string fileName = $"{sanitizedMember}_{transactionRef}_{DateTime.Now:yyyyMMddHHmmss}.png";
-                string fullPath = Path.Combine(folderPath, fileName);
-
-                // 🔁 Check if file exists — delete before recreating
-                if (File.Exists(fullPath))
+                using (Bitmap trimmed = TrimBitmap(fullBitmap))
                 {
-                    File.Delete(fullPath);
+                    try
+                    {
+                        string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                        string year = DateTime.Now.Year.ToString();
+
+                        string sanitizedBranch = SanitizeFileName(branchName);
+                        string sanitizedMember = SanitizeFileName(memberName);
+
+                        string folderPath = Path.Combine(baseDir, "AppFiles", "BarCodeImages", year, sanitizedBranch);
+                        Directory.CreateDirectory(folderPath); // ensures all folders exist
+
+                        string fileName = $"{sanitizedMember}_{transactionRef}_{DateTime.Now:yyyyMMddHHmmss}.png";
+                        fullPath = Path.Combine(folderPath, fileName);
+
+                        if (File.Exists(fullPath))
+                            File.Delete(fullPath);
+
+                        trimmed.Save(fullPath, ImageFormat.Png);
+                        return fullPath;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[GDI+] Error saving barcode image: {ex.Message}");
+                        return fullPath;
+                    }
                 }
-
-                // 💾 Save trimmed, compressed PNG
-                trimmed.Save(fullPath, System.Drawing.Imaging.ImageFormat.Png);
-                trimmed.Dispose();
-
-                return fullPath;
             }
         }
+
+        public static string SanitizeFileName(string input)
+        {
+            foreach (char c in Path.GetInvalidFileNameChars())
+            {
+                input = input.Replace(c, '_');
+            }
+            return input.Replace(" ", "_");
+        }
+
         public static Bitmap TrimBitmap(Bitmap source)
         {
             int minX = source.Width;

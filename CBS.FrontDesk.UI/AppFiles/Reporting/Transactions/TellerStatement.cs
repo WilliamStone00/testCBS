@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Payment {
+namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Payment {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class MainReport : ReportClass {
+    public class TellerStatement : ReportClass {
         
-        public MainReport() {
+        public TellerStatement() {
         }
         
         public override string ResourceName {
             get {
-                return "MainReport.rpt";
+                return "TellerStatement.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Payment {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Payment.MainReport.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts.TellerStatement.rpt";
             }
             set {
                 // Do nothing
@@ -66,7 +66,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Payment {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section PageHeaderSection2 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection1 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -74,7 +74,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Payment {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection1 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -82,7 +82,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Payment {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection1 {
             get {
                 return this.ReportDefinition.Sections[4];
             }
@@ -90,7 +90,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Payment {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection1 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
             get {
                 return this.ReportDefinition.Sections[5];
             }
@@ -98,7 +98,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Payment {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
             get {
                 return this.ReportDefinition.Sections[6];
             }
@@ -106,15 +106,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Payment {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
-            get {
-                return this.ReportDefinition.Sections[7];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_PrintedBy {
+        public CrystalDecisions.Shared.IParameterField Parameter_DateFrom {
             get {
                 return this.DataDefinition.ParameterFields[0];
             }
@@ -122,7 +114,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Payment {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_AccountingDate {
+        public CrystalDecisions.Shared.IParameterField Parameter_DateTo {
             get {
                 return this.DataDefinition.ParameterFields[1];
             }
@@ -130,7 +122,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Payment {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_PrintDate {
+        public CrystalDecisions.Shared.IParameterField Parameter_PrintedBy {
             get {
                 return this.DataDefinition.ParameterFields[2];
             }
@@ -138,33 +130,17 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Payment {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_CurrentYear {
+        public CrystalDecisions.Shared.IParameterField Parameter_DateNow {
             get {
                 return this.DataDefinition.ParameterFields[3];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_TransactionDate {
-            get {
-                return this.DataDefinition.ParameterFields[4];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_CurrentDate {
-            get {
-                return this.DataDefinition.ParameterFields[5];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedMainReport : Component, ICachedReport {
+    public class CachedTellerStatement : Component, ICachedReport {
         
-        public CachedMainReport() {
+        public CachedTellerStatement() {
         }
         
         [Browsable(false)]
@@ -201,7 +177,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Payment {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            MainReport rpt = new MainReport();
+            TellerStatement rpt = new TellerStatement();
             rpt.Site = this.Site;
             return rpt;
         }

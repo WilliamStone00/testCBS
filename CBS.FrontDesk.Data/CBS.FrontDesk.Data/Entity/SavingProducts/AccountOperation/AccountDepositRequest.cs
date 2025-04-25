@@ -123,6 +123,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string ReceiverAddress { get; set; }
         public decimal RemittanceAmount { get; set; }
         public DateTime? RemittanceDate { get; set; }
+        public bool HideBalance { get; set; }
         public BulkOperation()
         {
             DepositType = "Normal";
@@ -189,7 +190,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public decimal VAT { get; set; }
         public decimal Principal { get; set; }
         public string PaymentChannel { get; set; }
-
+        public bool HideBalance { get; set; }
 
         public string ReceiverCNI { get; set; }
         public string ReceiverName { get; set; }

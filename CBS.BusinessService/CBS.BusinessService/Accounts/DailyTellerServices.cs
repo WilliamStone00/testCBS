@@ -414,7 +414,7 @@ namespace CBS.BusinessService.Accounts
                     Balance = tellerOperationGL.Balance,
                     BranchName = branch.Name ?? "N/A",
                     LogoUrl = branch.Bank?.LogoUrl ?? "",
-                    TellerName = tellerOperationGL.CashierName ?? "N/A",
+                    TellerName = tellerOperationGL.TellerName ?? "N/A",
                     AccountNumber = tellerOperationGL.AccountNumber ?? "N/A",
                     TransactionType = tellerOperationGL.TransactionType ?? "N/A",
                     Description = tellerOperationGL.Description ?? "",
