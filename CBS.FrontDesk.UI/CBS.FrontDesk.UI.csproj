@@ -4341,7 +4341,7 @@
     <Content Include="Views\AccountingConfiguration\JournalEntryConfig.cshtml" />
     <Content Include="Views\AccountingConfiguration\_CreateBlacklistAccountForJE.cshtml" />
     <Content Include="Views\AccountingConfiguration\_BlacklistAccountData.cshtml" />
-    <Content Include="Views\AccountingConfiguration\_CreateAccountBookingDirectionData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateAccountBookingDirection.cshtml" />
     <Content Include="Views\AccountingConfiguration\_AccountBookingDirectionData.cshtml" />
   </ItemGroup>
   <ItemGroup>

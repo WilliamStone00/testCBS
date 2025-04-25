@@ -1634,7 +1634,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 {
                     var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
                     ViewBag.ChartOfAccounts = BuildMenuAccountViewBag(listAccounts.ToList());
-                 
+                    ViewBag.BookingDirection = BuildMenuViewBagopside();
                     return PartialView(partialView, new AccountingConfiguration { AccountBookingDirection = new AccountBookingDirection() });
                 }
                 else

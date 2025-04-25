@@ -234,24 +234,22 @@ namespace CBS.BusinessService.Accounting
             List<AccountingEntry> filteredEntries = new List<AccountingEntry>();
             return await _Service.RetrieveTrialBalance6ColumnEntries(model);
         }
+    
         public async Task<BalanceSheetData> GenerateBalanceSheet(BSQuery model)
         {
   
             return await _Service.GetBalanceSheetDataEntries(model);
         }
 
-        public async Task<BalanceSheetData> GenerateIncomeStatement(BSQuery model)
-        {
+        //public async Task<BalanceSheetData> GenerateIncomeStatement(BSQuery model)
+        //{
        
 
-            return await _Service.GetBalanceSheetDataEntries(model);
-        }
+        //    return await _Service.GetBalanceSheetDataEntries(model);
+        //}
 
     
 
-        public async Task DownloadFile(string fileId)
-        {
-            throw new NotImplementedException();
-        }
+      
     }
 }

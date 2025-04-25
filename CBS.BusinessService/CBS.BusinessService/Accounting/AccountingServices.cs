@@ -376,6 +376,8 @@ namespace CBS.BusinessService.Accounting
                 throw (ex);
             }
         }
+      
+        
         public async Task<List<FrontDesk.Data.Account>> GetAllAccounting()
         {
             try

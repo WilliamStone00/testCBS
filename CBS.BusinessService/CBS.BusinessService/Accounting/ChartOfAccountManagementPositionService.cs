@@ -43,7 +43,7 @@ namespace CBS.BusinessService.Accounting
             try
             {
                 var objAccountCategory = await GetChartOfAccountManagementPosition(id);
-                var inResponse = await _loanConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_ChartOfAccountManagementPosition, id), id));
+                var inResponse = await _loanConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(APICallHelper.Get_Update_Delete_ChartOfAccountManagementPosition, id));
                 if (inResponse.IsSuccess)
                 {
 
@@ -64,6 +64,29 @@ namespace CBS.BusinessService.Accounting
                 // Log and handle exception
             }
             return ExecutionMessage;
+        }
+        public async Task<List<ChartOfAccountStateDto>> GetAllBranchAccountUsedToCreditCashFlow(string accountNumber,string accountRoot)
+        {
+            try
+            {
+
+                string Url = string.Format(APICallHelper.GetAllBankAccountChartUsedToCreditCashFlow, accountNumber,accountRoot);
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<ChartOfAccountStateDto>>>(Url);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData != null)
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<ChartOfAccountStateDto>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
         }
 
         public async Task<IEnumerable<ChartofAccountManagementPosition>> DownloadChartOfAccount()

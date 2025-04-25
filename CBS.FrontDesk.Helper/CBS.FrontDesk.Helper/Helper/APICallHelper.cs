@@ -868,6 +868,9 @@ namespace CBS.FrontDesk.Helper
         public static string GetAlAccounts = "/api/v1/Accounts";
         public static string GetAllLiaisonAccount = "/api/v1/Accounts/LiaisonAccount";
         public static string GetAllAccountByBranch = "/api/v1/Accounts/{0}";
+  
+        public static string GetAllBankAccountChartUsedToCreditCashFlow = "/api/v1/ChartOfAccountManagementPosition/{0}/{1}";
+
         public static string GetAllBranchAccountUsedToCreditCashFlow = "/api/v1/Account/GetAccountByMFIBankAccountNumberQuery/{0}";
         public static string CreateAccount = "/api/v1/Account";///api/v1/Account/ManualEntry
         public static string CreateAccountMET = "/api/v1/Account/ManualEntry";///api/v1/Account/ManualEntry
@@ -905,6 +908,7 @@ namespace CBS.FrontDesk.Helper
         public static string DepositNotificationUrl = "/api/v1/BankingOperation/AddDepositNotificationCommand";
         public static string ApproveDepositNotificationUrl = "/api/v1/BankingOperation/AddDepositApprovalCommand";
         public static string BalanceSheet_EntriesUrl = "/api/v1/AccountingEntries/GenerateBalanceSheet";
+        public static string BalanceSheet_EntriesUrlPDF = "/api/v1/AccountingEntries/GenerateBalanceSheetPDF";
         public static string GetCashBranchToBranchTransferUrl = "/api/v1/AccountingEntry/GetBranchToBranchTransferDto/{0}";
         public static string GeneralLedgerStatementUrl = "/api/v1/AccountingEntry/GetAccountStatementEntry";
         public static string GeneralLedgerStatementDetailUrl = "/api/v1/AccountingEntry/GetAccountGLEntry";
