@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Accounting {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class Income : ReportClass {
+    public class Profit_and_lost : ReportClass {
         
-        public Income() {
+        public Profit_and_lost() {
         }
         
         public override string ResourceName {
             get {
-                return "Income.rpt";
+                return "Profit and lost.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Accounting {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Reporting.Accounting.Income.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.Accounting.Profit and lost.rpt";
             }
             set {
                 // Do nothing
@@ -90,9 +90,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Accounting {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedIncome : Component, ICachedReport {
+    public class CachedProfit_and_lost : Component, ICachedReport {
         
-        public CachedIncome() {
+        public CachedProfit_and_lost() {
         }
         
         [Browsable(false)]
@@ -129,7 +129,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Accounting {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            Income rpt = new Income();
+            Profit_and_lost rpt = new Profit_and_lost();
             rpt.Site = this.Site;
             return rpt;
         }
