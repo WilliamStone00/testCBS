@@ -379,7 +379,7 @@ namespace CBS.BusinessService.Accounts
                 return "OM";
             if (accountType.Contains("PreferenceShare"))
                 return "P-Share";
-            if (accountType.Contains("OrdinaryShare"))
+            if (accountType.Contains("MemberShare"))
                 return "O-Share";
             if (accountType.Contains("Daily"))
                 return "DCA";
