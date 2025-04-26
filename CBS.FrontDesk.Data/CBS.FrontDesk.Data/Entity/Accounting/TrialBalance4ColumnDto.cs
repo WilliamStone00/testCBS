@@ -75,8 +75,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public double totalCreditBalance { get; set; }
         public double totalEndingBalance { get; set; }
     }
-
-
+    public class AccountLedgerDtosss
+    {
+        public double totalCreditBalance { get; set; }
+        public double totalEndingBalance { get; set; }
+    }
     public class AccountLedgerDto
     {
     
@@ -158,21 +161,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
     public class BalanceSheetData :ReportHeader
     {
-        public string name { get; set; }
-        public string location { get; set; }
-        public string address { get; set; }
-        public DateTime date { get; set; }
-        public double totalAsset { get; set; }
-        public double totalLiabilityEquity { get; set; }
+    
         public List<BalanceSheetAccount> Accounts { get; set; }
-        public string branchCode { get; set; }
-        public string branchName { get; set; }
-        public string branchAddress { get; set; }
-        public string immatriculationNumber { get; set; }
-        public string capital { get; set; }
-        public string branchTelephone { get; set; }
-        public string headOfficeTelePhone { get; set; }
-        public string webSite { get; set; }
+
 
 
 

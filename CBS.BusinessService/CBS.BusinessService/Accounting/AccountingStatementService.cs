@@ -241,15 +241,8 @@ namespace CBS.BusinessService.Accounting
             return await _Service.GetBalanceSheetDataEntries(model);
         }
 
-        //public async Task<BalanceSheetData> GenerateIncomeStatement(BSQuery model)
-        //{
+
        
 
-        //    return await _Service.GetBalanceSheetDataEntries(model);
-        //}
-
-    
-
-      
     }
 }
