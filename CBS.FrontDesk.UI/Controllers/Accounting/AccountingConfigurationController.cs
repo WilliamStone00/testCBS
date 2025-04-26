@@ -1860,7 +1860,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         }
                         else
                         {
-                            return Json($"Invalid file extension. Please check your input.{Path.GetExtension(model.ExcelFile.FileName)}", JsonRequestBehavior.AllowGet);
+                            string message = $"Invalid file extension. Please check your input.{Path.GetExtension(model.ExcelFile.FileName)}";
+                            return Json(new { success = true, status = false, message = message }, JsonRequestBehavior.AllowGet);
                         }
                     }
                     else
