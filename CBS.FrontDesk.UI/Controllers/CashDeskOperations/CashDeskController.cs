@@ -241,7 +241,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             var reportMappings = new Dictionary<string, (string path, string title)>
             {
                 { "cashin", ("Transactions/Payment/MainReport.rpt", "CASH-IN") },
-                { "cashout", ("Transactions/Payment/MainReport.rpt", "CASH-OUT") },
+                { "withdrawal", ("Transactions/Payment/MainReport.rpt", "CASH-OUT") },
                 { "cashoutsws", ("Transactions/Payment/MainReport.rpt", "CASH-OUT SPECIAL WITHDRAWAL SLIPS") },
                 { "withdrawalnotification", ("Transactions/Payment/MainReport.rpt", "SAVING WITHDRAWAL NOTIFICATION FEE") },
                 { "repayment", ("Transactions/Payment/MainReport.rpt", "LOAN REPAYMENT") },
@@ -257,7 +257,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             // STEP 2: Identify reports that require PaymentReciptDS with subreports and parameters
             var reportTypesWithSubReports = new HashSet<string>
             {
-                "cashin", "cashout", "cashoutsws", "withdrawalnotification", "repayment", "loanapplicationfeepayment"
+                "cashin", "withdrawal", "cashoutsws", "withdrawalnotification", "repayment", "loanapplicationfeepayment"
             };
 
             Dictionary<string, object> subReportData = null;
