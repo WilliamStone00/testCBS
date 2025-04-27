@@ -33,14 +33,57 @@ function AjaxPostAndUpdateMemberRegistration(form) {
 
         $(formElement).find('.is-invalid').removeClass('is-invalid');
 
+        const employerFields = ["EmployerName", "EmployerTelephone", "EmployerAddress", "Income"]; // ⬅️ Moved out for clarity
+
         $(formElement).find('input, select, textarea').each(function () {
             const field = $(this);
             const name = field.attr("name");
             const val = $.trim(field.val());
             const isRequired = field.prop('required') || field.hasClass('required');
+            const isEmployerField = employerFields.includes(name);
 
-            // General required check
+            const income = parseFloat($(formElement).find('[name="Income"]').val()) || 0;
+
+            // ✅ Updated Working Status Dependent Validation
+            if (workingStatus && isEmployerField) {
+                if (workingStatus === "Unemployed") {
+                    // If Unemployed, skip employer fields validation entirely
+                    return;
+                }
+
+                if (workingStatus === "Self_Employed" || workingStatus === "Other_Sources_Of_Income") {
+                    if (name === "Income" && (isNaN(income) || income <= 0)) {
+                        field.addClass('is-invalid');
+                        if (!firstInvalid) firstInvalid = field;
+                        isValid = false;
+                        appalert("❌ Income must be greater than 0 for Self-Employed or Other Sources of Income.", 2, 1);
+                        return;
+                    }
+                } else {
+                    // Normal Employed
+                    if (!val && name !== "Income") {
+                        field.addClass('is-invalid');
+                        if (!firstInvalid) firstInvalid = field;
+                        isValid = false;
+                        appalert("❌ Employer information is required for employed members.", 2, 1);
+                        return;
+                    }
+                    if (name === "Income" && (isNaN(income) || income <= 0)) {
+                        field.addClass('is-invalid');
+                        if (!firstInvalid) firstInvalid = field;
+                        isValid = false;
+                        appalert("❌ Income must be greater than 0 for employed members.", 2, 1);
+                        return;
+                    }
+                }
+            }
+
+            // ✅ General required check (smart)
             if (isRequired && (val === "" || val === null)) {
+                if (workingStatus === "Unemployed" && isEmployerField) {
+                    return; // ✅ Skip if unemployed and employer field
+                }
+
                 field.addClass('is-invalid');
                 if (!firstInvalid) firstInvalid = field;
                 isValid = false;
@@ -63,30 +106,6 @@ function AjaxPostAndUpdateMemberRegistration(form) {
                     isValid = false;
                     appalert("❌ Please complete all spouse-related fields for Married status.", 2, 1);
                     return;
-                }
-            }
-
-            // ✅ Working status dependent fields
-            const workFields = ["EmployerName", "EmployerTelephone", "EmployerAddress", "Income"];
-            if (workingStatus && workFields.includes(name)) {
-                if (!val) {
-                    field.addClass('is-invalid');
-                    if (!firstInvalid) firstInvalid = field;
-                    isValid = false;
-                    appalert("❌ Please complete all employer-related fields for selected Working Status.", 2, 1);
-                    return;
-                }
-
-                // ✅ Income must be > 0
-                if (name === "Income") {
-                    const income = parseFloat(val);
-                    if (isNaN(income) || income <= 0) {
-                        field.addClass('is-invalid');
-                        if (!firstInvalid) firstInvalid = field;
-                        isValid = false;
-                        appalert("❌ Income must be a number greater than 0.", 2, 1);
-                        return;
-                    }
                 }
             }
 
@@ -127,7 +146,6 @@ function AjaxPostAndUpdateMemberRegistration(form) {
                 }
             }
 
-
             // ✅ Email validation
             if (name === "Email" && val && !emailPattern.test(val)) {
                 field.addClass('is-invalid');
@@ -144,17 +162,18 @@ function AjaxPostAndUpdateMemberRegistration(form) {
                 appalert("❌ Please correct the highlighted fields before submitting.", 2, 1);
             }
         }
+
         // ✅ Validate Mother's Information: All required
-        const motherFields = ["MName", "MPhone", "MOccupation", "MAddress"];
-        if (motherFields.includes(name)) {
-            if (!val) {
+        $(formElement).find('input[name="MName"], input[name="MPhone"], input[name="MOccupation"], input[name="MAddress"]').each(function () {
+            const field = $(this);
+            if (!$.trim(field.val())) {
                 field.addClass('is-invalid');
                 if (!firstInvalid) firstInvalid = field;
                 isValid = false;
                 appalert("❌ Please complete all required Mother's information fields.", 2, 1);
-                return;
+                return false; // break the each
             }
-        }
+        });
 
         return isValid;
     }
