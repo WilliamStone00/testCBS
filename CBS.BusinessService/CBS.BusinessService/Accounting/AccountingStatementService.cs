@@ -242,7 +242,12 @@ namespace CBS.BusinessService.Accounting
         }
 
 
-       
+        public async Task<IncomeAndExpenseDto> GenerateIncomeStatement(BSQuery model)
+        {
+
+            return await _Service.GenerateIncomeStatementEntries(model);
+        }
+
 
     }
 }

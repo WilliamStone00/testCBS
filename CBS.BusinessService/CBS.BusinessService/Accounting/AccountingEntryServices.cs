@@ -395,6 +395,47 @@ namespace CBS.BusinessService
           
             return balanceSheetData;
         }
+        //
+
+        public async Task<IncomeAndExpenseDto> GenerateIncomeStatementEntries(BSQuery model)
+        {
+            //Task<ServiceResponseXX<BalanceSheetData>> apiCallTask = null;
+
+
+            try
+            {
+                // Create a task for the API call
+                var apiCallTask = await _accountingApiCallerHelper.PostAsync<ResponseObject<IncomeAndExpenseDto>>(APICallHelper.AccountingEntry_IncomeStatement, model, 300);
+                if (apiCallTask.IsSuccess)
+                {
+
+                    return apiCallTask.ApiResponseData.Data;
+
+
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch (OperationCanceledException)
+            {
+                // This could happen if the timeout occurs and the API call is cancelled
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+
+
+            }
+
+
+            return null;
+        }
         public async Task<BalanceSheetData> GetBalanceSheetDataEntries(BSQuery model)
         {
             //Task<ServiceResponseXX<BalanceSheetData>> apiCallTask = null;

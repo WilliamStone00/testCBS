@@ -271,6 +271,87 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public decimal TotalLiabilityEquity { get; set; }
     }
 
+    public class PandLInfo : ReportHeader
+    {
+        // Entity Information
+
+        public string LogoPath { get; set; }
+        public string PrintersName { get; set; }
+        // Report Period
+        public DateTime EntryDate { get; set; }
+        // Branch Information
+
+
+        public string Category { get; set; }
+        public string Code { get; set; }
+        public string Naration { get; set; }
+        public decimal AmountN { get; set; }
+        public decimal AmountN_1 { get; set; }
+
+    }
+    public class IncomeAndExpenseAccount
+    {
+
+        public string Code { get; set; }
+        // Account Holder
+        public string Naration { get; set; } //
+
+
+        public string Category { get; set; }
+        public decimal AmountN { get; set; }
+
+        public decimal AmountN_1 { get; set; }
+    }
+
+    public class IncomeAndExpenseDto : ReportHeader
+    {
+
+
+        public DateTime Date { get; set; }
+
+        public List<IncomeAndExpenseAccount> Accounts { get; set; } = new List<IncomeAndExpenseAccount>();
+
+        public List<PandLInfo> ConvertToIncomeStatementModel(string printersName)
+        {
+            // Common properties for projection
+            var commonProperties = new
+            {
+                ToDate = this.ToDate,
+                Address = this.Address,
+                BranchCode = this.BranchCode,
+                BranchName = this.BranchName,
+                BranchTelephone = this.BranchTelephone,
+                Name = this.Name,
+                PrintersName = printersName
+            };
+
+            // Single query for both income and expense accounts
+            var pandLInfos = this.Accounts
+                .Where(a => a.Category != null &&
+                           (a.Category.ToUpper().Contains("INCOME") ||
+                            a.Category.ToUpper().Contains("EXPENSE")))
+                .Select(p => new PandLInfo
+                {
+                    Code = p.Code,
+                    Naration = p.Naration,
+                    AmountN = p.AmountN,
+                    AmountN_1 = p.AmountN_1,
+                    Category = p.Category,
+                    PrintersName = commonProperties.PrintersName,
+                    ToDate = commonProperties.ToDate,
+                    Address = commonProperties.Address,
+                    BranchCode = commonProperties.BranchCode,
+                    BranchName = commonProperties.BranchName,
+                    BranchTelephone = commonProperties.BranchTelephone,
+                    Name = commonProperties.Name
+                })
+                .OrderBy(x => x.Code)
+                .ToList();
+
+            return pandLInfos;
+        }
+    }
+
     public class BalanceSheetInfo
     {
         // Entity Information

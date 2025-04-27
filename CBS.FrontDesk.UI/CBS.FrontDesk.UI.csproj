@@ -492,16 +492,16 @@
       <DependentUpon>LiaisonLedger.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Accounting\PandLReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PandLReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\PrintedManualJE.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PrintedManualJE.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="AppFiles\Reporting\Accounting\Profit and lost.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Profit and lost.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Loan\PortFolio\DelinquentLoansRPT.cs">
@@ -3622,9 +3622,9 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalAccountUpload.Designer.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="AppFiles\Reporting\Accounting\Profit and lost.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\PandLReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>Profit and lost.cs</LastGenOutput>
+      <LastGenOutput>PandLReport.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>

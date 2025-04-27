@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Accounting {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class Profit_and_lost : ReportClass {
+    public class PandLReport : ReportClass {
         
-        public Profit_and_lost() {
+        public PandLReport() {
         }
         
         public override string ResourceName {
             get {
-                return "Profit and lost.rpt";
+                return "PandLReport.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Accounting {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Reporting.Accounting.Profit and lost.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.Accounting.PandLReport.rpt";
             }
             set {
                 // Do nothing
@@ -66,7 +66,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Accounting {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection1 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -74,7 +74,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Accounting {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -82,17 +82,33 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Accounting {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection1 {
             get {
                 return this.ReportDefinition.Sections[4];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
+            get {
+                return this.ReportDefinition.Sections[5];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
+            get {
+                return this.ReportDefinition.Sections[6];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedProfit_and_lost : Component, ICachedReport {
+    public class CachedPandLReport : Component, ICachedReport {
         
-        public CachedProfit_and_lost() {
+        public CachedPandLReport() {
         }
         
         [Browsable(false)]
@@ -129,7 +145,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Accounting {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            Profit_and_lost rpt = new Profit_and_lost();
+            PandLReport rpt = new PandLReport();
             rpt.Site = this.Site;
             return rpt;
         }

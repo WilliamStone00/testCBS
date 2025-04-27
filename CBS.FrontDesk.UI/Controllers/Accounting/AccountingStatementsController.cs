@@ -638,13 +638,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 {
                                     string fileTitle = $"InComeStatement{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
                                     var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "PROFITANDLOSS").First();
-                                    var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate, DocumentId = DocModel.id, FileType = "pdf" };
-                                    //var account = await _acountServices.GenerateIncomeStatement(modelx);
-                                    //this.HttpContext.Session["rptSource"] = account;
-                                
-                                    string ReportName = $"Income and Expense.rpt";
+                                    var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate, FromDate = model.SystemQuery.FromDate, DocumentId = DocModel.id, FileType = "pdf" };
+                                    var account = await _acountServices.GenerateIncomeStatement(modelx);
+                                    this.HttpContext.Session["rptSource"] = account;
 
-                                    ReportName = $"Income and Expense.rpt";
+                      
+
+                                    string ReportName = $"PandLReport.rpt";
                                     this.HttpContext.Session["dtoPasser"] = modelx;
                                     this.HttpContext.Session["rptType"] = model.SystemQuery.ReportType;
                                     this.HttpContext.Session["fileType"] = $"PANDL";
@@ -654,6 +654,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 }
                                 else
                                 {
+                                    var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "PROFITANDLOSS").First();
+                                    var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate, FromDate = model.SystemQuery.FromDate, DocumentId = DocModel.id, FileType = "pdf" };
+                     
                                     var account = await _accountingServices.PostJE(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId }, APICallHelper.AccountingEntry_IncomeStatement);
 
                                 }
