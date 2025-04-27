@@ -907,6 +907,8 @@ namespace CBS.FrontDesk.Helper
         public static string CashReplenishmentRequest = "/api/v1/BankingOperation/RequestForCashReplenishment";
         public static string DepositNotificationUrl = "/api/v1/BankingOperation/AddDepositNotificationCommand";
         public static string ApproveDepositNotificationUrl = "/api/v1/BankingOperation/AddDepositApprovalCommand";
+
+ 
         public static string BalanceSheet_EntriesUrl = "/api/v1/AccountingEntries/GenerateBalanceSheet";
         public static string BalanceSheet_EntriesUrlPDF = "/api/v1/AccountingEntries/GenerateBalanceSheetPDF";
         public static string GetCashBranchToBranchTransferUrl = "/api/v1/AccountingEntry/GetBranchToBranchTransferDto/{0}";

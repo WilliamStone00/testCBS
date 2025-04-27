@@ -1013,11 +1013,12 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             else
             {
-                var model = (BalanceSheetData)rptSource;
-                if (rptSource != "empty")
+
+                if (rptSource != "empty" && rptSource !=null)
                 {
                     if (rpTType.ToUpper() == "BS")
                     {
+                        var model = (BalanceSheetData)rptSource;
                         var user = this.GetUserDto();
                         var modeli = (BSQuery)dtoPasser;
                         var assetsModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.ToDate.ToString("dd-MM-yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
@@ -1046,18 +1047,15 @@ namespace CBS.FrontDesk.UI.Controllers
                     }
                     else
                     {
+                        var model = (IncomeAndExpenseDto)rptSource;
                         var user = this.GetUserDto();
                         var modeli = (BSQuery)dtoPasser;
-                        //var assetsModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.ToDate.ToString("dd-MM-yyyy"), BSCartegory.Income, BSCartegory.Expense);
-                        //var LiabilityModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.ToDate.ToString("dd-MM-yyyy"), BSCartegory.Income, BSCartegory.Expense);
-                        //var DataList = new List<BalanceSheetInfo> { };
-                        //DataList.AddRange(assetsModel);
-                        //DataList.AddRange(LiabilityModel);
+                        var assetsModel = model.ConvertToIncomeStatementModel($"{user.firstName}");
                         ReportDocument rd = new ReportDocument();
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
-                        //rd.SetDataSource(DataList);
-
+                        rd.SetDataSource(assetsModel);
+        
                         string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
                         //Export the report to a byte array
                         Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
