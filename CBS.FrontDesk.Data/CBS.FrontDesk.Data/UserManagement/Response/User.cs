@@ -250,7 +250,8 @@ namespace CBS.FrontDesk.Data.UserManagement
         public string SessionRecoveryCode { get; set; }
         public bool IsDefaultSessionRecoveryCode { get; set; }
         public bool IsExpired { get; set; }
-
+        public string SessionIP { get; set; }
+        public string SessionUserAgent { get; set; }
         public string SessionStatus { get; set; }
         public User User { get; set; }
         public UserDto UserAuthDto { get; set; }

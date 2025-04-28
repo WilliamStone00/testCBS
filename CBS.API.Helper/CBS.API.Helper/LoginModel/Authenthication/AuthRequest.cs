@@ -130,6 +130,7 @@ namespace CBS.API.Helper
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters.")]
         public string Password { get; set; }
         public string SessionCode { get; set; }
+        public string UserAgent { get; set; }  // ✅ Add this field
         public GeoLocationResponse GeoLocationResponse { get; set; }
     }
 

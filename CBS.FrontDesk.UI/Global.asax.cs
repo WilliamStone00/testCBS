@@ -48,6 +48,10 @@ namespace CBS.FrontDesk.UI
         }
         protected void Application_BeginRequest()
         {
+            if (!Context.Request.IsSecureConnection)
+            {
+                Response.Redirect(Context.Request.Url.ToString().Replace("http:", "https:"));
+            }
             string lang = null;
 
             if (HttpContext.Current.Session != null)
@@ -100,63 +104,64 @@ namespace CBS.FrontDesk.UI
         //    }
         //}
 
-
         protected void Application_EndRequest()
         {
-            var response = HttpContext.Current.Response;
-            var request = HttpContext.Current.Request;
-
-            // Handle 401 Unauthorized
-            if (response.StatusCode == 401)
+            if (HttpContext.Current?.Response?.Cookies != null)
             {
-                response.Clear();
-                if (!request.Url.AbsolutePath.EndsWith("/Authentication/Logout", StringComparison.OrdinalIgnoreCase))
+                foreach (string cookieKey in HttpContext.Current.Response.Cookies.AllKeys)
                 {
-                    response.Redirect("~/Authentication/Logout");
+                    var cookie = HttpContext.Current.Response.Cookies[cookieKey];
+                    cookie.Secure = true;
+                    cookie.HttpOnly = true;
+                    cookie.SameSite = SameSiteMode.Strict;
                 }
-            }
-            // Log 500 Internal Server Errors
-            else if (response.StatusCode == 500)
-            {
-                var exception = Server.GetLastError(); // Get the last thrown exception
-                if (exception != null)
-                {
-                    string errorDetails = $"500 Error at {request.Url}\n" +
-                                        $"Exception: {exception.Message}\n" +
-                                        $"Stack Trace: {exception.StackTrace}\n" +
-                                        $"Inner Exception: {exception.InnerException?.Message}";
-
-
-                    // Optionally: Log to a file (ensure permissions)
-                    // File.AppendAllText(Server.MapPath("~/App_Data/ErrorLog.txt"), $"{DateTime.Now}: {errorDetails}\n\n");
-                }
-            }
-            // Log other 4xx/5xx errors (optional)
-            else if (response.StatusCode >= 400)
-            {
-                System.Diagnostics.Trace.TraceWarning($"HTTP {response.StatusCode} at {request.Url}");
             }
         }
 
         //protected void Application_EndRequest()
         //{
-        //    if (HttpContext.Current.Response.StatusCode == 401)
-        //    {
-        //        HttpContext.Current.Response.Clear();
-        //        HttpContext.Current.Response.Redirect("~/Authentication/Logout");
-        //    }
-        //    else
-        //    {
+        //    var response = HttpContext.Current.Response;
+        //    var request = HttpContext.Current.Request;
 
+        //    // Handle 401 Unauthorized
+        //    if (response.StatusCode == 401)
+        //    {
+        //        response.Clear();
+        //        if (!request.Url.AbsolutePath.EndsWith("/Authentication/Logout", StringComparison.OrdinalIgnoreCase))
+        //        {
+        //            response.Redirect("~/Authentication/Logout");
+        //        }
+        //    }
+        //    // Log 500 Internal Server Errors
+        //    else if (response.StatusCode == 500)
+        //    {
+        //        var exception = Server.GetLastError(); // Get the last thrown exception
+        //        if (exception != null)
+        //        {
+        //            string errorDetails = $"500 Error at {request.Url}\n" +
+        //                                $"Exception: {exception.Message}\n" +
+        //                                $"Stack Trace: {exception.StackTrace}\n" +
+        //                                $"Inner Exception: {exception.InnerException?.Message}";
+
+
+        //            // Optionally: Log to a file (ensure permissions)
+        //            // File.AppendAllText(Server.MapPath("~/App_Data/ErrorLog.txt"), $"{DateTime.Now}: {errorDetails}\n\n");
+        //        }
+        //    }
+        //    // Log other 4xx/5xx errors (optional)
+        //    else if (response.StatusCode >= 400)
+        //    {
+        //        System.Diagnostics.Trace.TraceWarning($"HTTP {response.StatusCode} at {request.Url}");
         //    }
         //}
+
 
         protected void Application_PreSendRequestHeaders()
         {
             // 🔄 Remove existing headers not removed by <remove> in web.config
             Response.Headers.Remove("Server");
             Response.Headers.Remove("X-AspNet-Version");
-
+            Response.Headers.Add("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
             // 🛡️ Add branding (not security-sensitive)
             Response.Headers.Add("Server", "SERVER FLUX TSC");
             Response.Headers.Add("X-Powered-By", "FLUXSAL CAMEROON"); // Only if you're OK showing brand
@@ -267,77 +272,51 @@ namespace CBS.FrontDesk.UI
         //}
 
 
-        //protected void Application_AcquireRequestState(Object sender, EventArgs e)
-        //{
-        //    var context = HttpContext.Current;
+        protected void Application_AcquireRequestState(object sender, EventArgs e)
+        {
+            var identity = HttpContext.Current?.User as CustomPrincipal;
+            if (HttpContext.Current?.Session != null && identity != null && identity.Identity != null && identity.Identity.IsAuthenticated)
+            {
+                // 1️⃣ Get Session values
+                string sessionIP = HttpContext.Current.Session["SessionIP"] as string;
+                string sessionUserAgent = HttpContext.Current.Session["SessionUserAgent"] as string;
 
-        //    if (context != null && context.Session != null)
-        //    {
-        //        var encryptedToken = context.Session["EncryptedJWToken"] as string;
+                // 2️⃣ Get Current Connection values (from CustomPrincipal)
+                string currentIP = identity.SessionIP;
+                string currentUserAgent = identity.SessionUserAgent;
 
-        //        // Check if the encrypted token is null or empty
-        //        if (string.IsNullOrEmpty(encryptedToken))
-        //        {
-        //            // Redirect to login if not MFA or Change Password
-        //            if (context.Request.Url.AbsolutePath != FormsAuthentication.LoginUrl)
-        //            {
-        //                FormsAuthentication.SignOut();
-        //                context.Session.Clear();
-        //                context.Session.Abandon();
-        //                context.Response.Clear(); // Clear any existing content
-        //                context.Response.Redirect(FormsAuthentication.LoginUrl, false); // Set endResponse to false
-        //                context.ApplicationInstance.CompleteRequest(); // Complete the request without aborting the thread
-        //                return;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            try
-        //            {
-        //                // Decrypt and validate the token
-        //                var token = TokenEncryptionHelper.DecryptToken(encryptedToken);
-        //                var handler = new JwtSecurityTokenHandler();
-        //                var jwtToken = handler.ReadJwtToken(token);
+                // 3️⃣ Compare IP and User Agent
+                if (!string.Equals(sessionIP, currentIP) || !string.Equals(sessionUserAgent, currentUserAgent))
+                {
+                    // ⚡ Session Hijack Detected: Kill Session
+                    HttpContext.Current.Session.Clear();
+                    HttpContext.Current.Session.Abandon();
+                    FormsAuthentication.SignOut();
+                    //HttpContext.Current.Response.Redirect("~/Authentication/Login?reason=sessionhijack");
+                }
 
-        //                if (jwtToken.ValidTo > DateTime.UtcNow)
-        //                {
-        //                    // Set up the user principal with the JWT claims
-        //                    SetupUserPrincipal(jwtToken);
+                // 4️⃣ Absolute Timeout check
+                DateTime? sessionStartTime = HttpContext.Current.Session["SessionStartTime"] as DateTime?;
+                int? maxLifetimeMinutes = HttpContext.Current.Session["SessionMaxLifetimeMinutes"] as int?;
 
-        //                    context.Session.Timeout = (int)(jwtToken.ValidTo - DateTime.UtcNow).TotalMinutes;
-        //                }
-        //                else
-        //                {
-        //                    // Token expired, remove session and redirect to login
-        //                    context.Session.Remove("EncryptedJWToken");
-        //                    FormsAuthentication.SignOut();
-        //                    context.Session.Clear();
-        //                    context.Session.Abandon();
-        //                    if (context.Request.Url.AbsolutePath != FormsAuthentication.LoginUrl)
-        //                    {
-        //                        context.Response.Clear(); // Clear any existing content
-        //                        context.Response.Redirect(FormsAuthentication.LoginUrl, false); // Set endResponse to false
-        //                        context.ApplicationInstance.CompleteRequest(); // Complete the request without aborting the thread
-        //                    }
-        //                }
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                // Handle exception, clean up session, and redirect to login
-        //                context.Session.Remove("EncryptedJWToken");
-        //                FormsAuthentication.SignOut();
-        //                context.Session.Clear();
-        //                context.Session.Abandon();
-        //                if (context.Request.Url.AbsolutePath != FormsAuthentication.LoginUrl)
-        //                {
-        //                    context.Response.Clear(); // Clear any existing content
-        //                    context.Response.Redirect(FormsAuthentication.LoginUrl, false); // Set endResponse to false
-        //                    context.ApplicationInstance.CompleteRequest(); // Complete the request without aborting the thread
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+                if (sessionStartTime.HasValue && maxLifetimeMinutes.HasValue)
+                {
+                    var now = DateTime.UtcNow;
+                    var elapsedMinutes = (now - sessionStartTime.Value).TotalMinutes;
+
+                    if (elapsedMinutes > maxLifetimeMinutes.Value)
+                    {
+                        // ⛔ Absolute Session Expired
+                        HttpContext.Current.Session.Clear();
+                        HttpContext.Current.Session.Abandon();
+                        FormsAuthentication.SignOut();
+                        //HttpContext.Current.Response.Redirect("~/Authentication/Logout?reason=sessionexpired");
+                        //return;
+                    }
+                }
+            }
+        }
+
 
 
         protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
@@ -356,6 +335,8 @@ namespace CBS.FrontDesk.UI
                         FullName = user.FullName,
                         UserName = user.UserName,
                         Roles = user.RoleName,
+                        SessionIP=user.SessionIP,
+                        SessionUserAgent=user.SessionUserAgent,
                         SessionID = user.SessionID,
                         Email = user.Email,
                         SessionCode = user.SessionCode,
@@ -364,7 +345,7 @@ namespace CBS.FrontDesk.UI
 
                     HttpContext.Current.User = principal;
 
-                
+
                 }
             }
         }

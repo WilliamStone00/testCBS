@@ -20,6 +20,11 @@ namespace CBS.FrontDesk.UI.Controllers.Session
         {
             _localSession = new LocalSession();
         }
+        [HttpGet]
+        public ActionResult KeepAlive()
+        {
+            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpGet]
         public async Task<JsonResult> GetIdleTimeout()
