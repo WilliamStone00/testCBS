@@ -21,6 +21,8 @@ namespace CBS.FrontDesk.Service
         public string RefresherID { get; set; }
         public string Password { get; set; }
         public string SessionCode { get; set; }
+        public string SessionIP { get; set; }
+        public string SessionUserAgent { get; set; }
         public UserSessionDto  UserSession { get; set; }
 
 

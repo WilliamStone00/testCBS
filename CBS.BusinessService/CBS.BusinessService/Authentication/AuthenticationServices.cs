@@ -30,12 +30,39 @@ namespace CBS.FrontDesk.Service
             _identityServer = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
             _BankServer = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
         }
+        private string GetClientIPAddress()
+        {
+            try
+            {
+                var request = HttpContext.Current?.Request;
+                string ip = request?.ServerVariables["HTTP_X_FORWARDED_FOR"];
+
+                if (!string.IsNullOrEmpty(ip))
+                {
+                    // If there are multiple IPs, take the first one
+                    var addresses = ip.Split(',');
+                    if (addresses.Length > 0)
+                    {
+                        return addresses[0].Trim();
+                    }
+                }
+
+                // Fallback to REMOTE_ADDR
+                return request?.ServerVariables["REMOTE_ADDR"];
+            }
+            catch
+            {
+                return "Unknown";
+            }
+        }
+
 
         public async Task<ExecutionMessages> AuthenticateUser(AuthRequest request)
         {
             string errormessage = null;
             try
             {
+                request.GeoLocationResponse.Ip=GetClientIPAddress();
                 var response = await _identityServer.PostAsync<ResponseObject<UserDto>>(APICallHelper.Authentication, request);
                 if (response.IsSuccess)
                 {

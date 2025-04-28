@@ -475,23 +475,22 @@ namespace CBS.API.Helper
         }
         public async Task<ApiResponse<T>> PostAsync<T>(string apiUrl, object data)
         {
-
             try
             {
                 apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
                 string jsonData = JsonConvert.SerializeObject(data);
                 StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                // 🛡️ Add Authorization Header
                 AddAuthorizationHeader(_httpClient);
                 HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
                 return await HandleResponse<T>(response);
             }
-            catch (Exception EX)
+            catch (Exception ex)
             {
-
-                throw (EX);
-
+                throw ex;
             }
         }
+
         public async Task<ApiResponse<List<PostedEntry>>> PostServicesEntryAsync<T>(string apiUrl, object data)
         {
 
