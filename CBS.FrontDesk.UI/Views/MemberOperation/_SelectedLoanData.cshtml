@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+    @using Resources
 
 <fieldset class="fieldset-custom">
     <div class="card mb-4">
@@ -6,19 +7,19 @@
             <table class="table table-hover" id="myDataTable_customer_loan">
                 <thead class="table-light">
                     <tr>
-                        <th style="width: 7%">Select</th>
-                        <th style="width: 8%">Maturity Date</th>
-                        <th style="width: 10%">Principal</th>
-                        <th style="width: 7%">Interest %</th>
-                        <th style="width: 8%">Interest</th>
-                        <th style="width: 8%">Due fee</th>
-                        <th style="width: 8%">Penalty</th>
-                        <th style="width: 8%">Due</th>
-                        <th style="width: 8%">Paid</th>
-                        <th style="width: 8%">Balance</th>
-                        <th style="width: 8%">Last Payment</th>
-                        <th style="width: 7%">Status</th>
-                        <th style="width: 7%">State</th>
+                        <th style="width: 7%">@Global_SelectedLoanData.Select</th>
+                        <th style="width: 8%">@Global_SelectedLoanData.MaturityDate</th>
+                        <th style="width: 10%">@Global_SelectedLoanData.Principal</th>
+                        <th style="width: 7%">@Global_SelectedLoanData.InterestPercentage</th>
+                        <th style="width: 8%">@Global_SelectedLoanData.Interest</th>
+                        <th style="width: 8%">@Global_SelectedLoanData.DueFee</th>
+                        <th style="width: 8%">@Global_SelectedLoanData.Penalty</th>
+                        <th style="width: 8%">@Global_SelectedLoanData.Due</th>
+                        <th style="width: 8%">@Global_SelectedLoanData.Paid</th>
+                        <th style="width: 8%">@Global_SelectedLoanData.Balance</th>
+                        <th style="width: 8%">@Global_SelectedLoanData.LastPayment</th>
+                        <th style="width: 7%">@Global_SelectedLoanData.Status</th>
+                        <th style="width: 7%">@Global_SelectedLoanData.State</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,8 +27,8 @@
                     {
                         <tr>
                             <td style="width: 7%">
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_LoanDetails','loan_detail','MemberOperation','applications')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select for detail">
-                                    Reload
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_LoanDetails','loan_detail','MemberOperation','applications')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@Global_SelectedLoanData.SelectForDetail">
+                                    @Global_SelectedLoanData.Reload
                                 </a>
                             </td>
                             <td style="width: 8%">@d.MaturityDate</td>
@@ -44,11 +45,11 @@
                             <td style="width: 7%">
                                 @if (d.IsCurrentLoan)
                                 {
-                                    <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Current</span>
+                                    <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@Global_SelectedLoanData.Current</span>
                                 }
                                 else
                                 {
-                                    <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Restructured</span>
+                                    <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@Global_SelectedLoanData.Restructured</span>
                                 }
                             </td>
 
@@ -58,11 +59,11 @@
                 <tfoot>
                     <tr>
                         <td colspan="1"></td>
-                        <td>Due:</td>
+                        <td>@Global_SelectedLoanData.Due:</td>
                         <td>@Model.SelectLoans.Sum(x => x.Principal).ToString("#,0.00")</td>
-                        <td>Paid:</td>
+                        <td>@Global_SelectedLoanData.Paid:</td>
                         <td>@Model.SelectLoans.Sum(x => x.Paid).ToString("#,0.00")</td>
-                        <td>P.Due:</td>
+                        <td>@Global_SelectedLoanData.PendingDue:</td>
                         <td>@Model.SelectLoans.Sum(x => x.Balance).ToString("#,0.00")</td>
                         <td></td> <!-- Placeholder for the last column -->
                     </tr>

@@ -1,13 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
-
+@using Resources
 @if (Model.Loans.Count == 0)
 {
     <div class="text-center my-3">
-        <p>No loans have been contracted by @Model.Customer.name</p>
-        <a type="button" onclick="AddORUpdateGen('@Model.Customer.CustomerId','datalistingview','_LoanApplication','loanapplication','MemberOperation',null)" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Apply for a new loan">
+        <p>@Global_LoanData.NoLoansHaveBeenContractedBy @Model.Customer.name</p>
+        <a type="button" onclick="AddORUpdateGen('@Model.Customer.CustomerId','datalistingview','_LoanApplication','loanapplication','MemberOperation',null)" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@Global_LoanData.ApplyForANewLoan">
             <span class="tf-icons mdi mdi-plus mdi-18px"></span>
         </a>
-        @*<button type="button" class="btn btn-primary" onclick="AddORUpdateGen('@Model.Customer.customerId','datalistingview','_LoanApplication','loanapplication','MemberOperation',null)">Apply for a Loan</button>*@
     </div>
 }
 else
@@ -16,20 +15,20 @@ else
         <table class="table table-hover" id="myDataTable_customer_loan">
             <thead class="table-light">
                 <tr>
-                    <th style="width: 7%">Date</th>
-                    <th style="width: 8%">Maturity Date</th>
-                    <th style="width: 10%">Principal</th>
-                    <th style="width: 7%">Interest Rate</th>
-                    <th style="width: 8%">Accrual interest</th>
-                    <th style="width: 8%">Tax</th>
-                    <th style="width: 8%">Charges</th>
-                    <th style="width: 8%">Due</th>
-                    <th style="width: 8%">Paid</th>
-                    <th style="width: 8%">Balance</th>
-                    <th style="width: 8%">Last Payment</th>
-                    <th style="width: 7%">Status</th>
-                    <th style="width: 7%">State</th>
-                    <th style="width: 7%">Action</th>
+                    <th style="width: 7%">@Global_LoanData.Date</th>
+                    <th style="width: 8%">@Global_LoanData.MaturityDate</th>
+                    <th style="width: 10%">@Global_LoanData.Principal</th>
+                    <th style="width: 7%">@Global_LoanData.InterestRate</th>
+                    <th style="width: 8%">@Global_LoanData.AccrualInterest</th>
+                    <th style="width: 8%">@Global_LoanData.Tax</th>
+                    <th style="width: 8%">@Global_LoanData.Charges</th>
+                    <th style="width: 8%">@Global_LoanData.Due</th>
+                    <th style="width: 8%">@Global_LoanData.Paid</th>
+                    <th style="width: 8%">@Global_LoanData.Balance</th>
+                    <th style="width: 8%">@Global_LoanData.LastPayment</th>
+                    <th style="width: 7%">@Global_LoanData.Status</th>
+                    <th style="width: 7%">@Global_LoanData.State</th>
+                    <th style="width: 7%">@Global_LoanData.Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -51,16 +50,16 @@ else
                         <td style="width: 7%">
                             @if (d.IsCurrentLoan)
                             {
-                                <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Current</span>
+                                <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@Global_LoanData.Current</span>
                             }
                             else
                             {
-                                <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Restructured</span>
+                                <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@Global_LoanData.Restructured</span>
                             }
                         </td>
                         <td style="width: 7%">
-                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_LoanDetails','loan_detail','MemberOperation','applications')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select for detail">
-                                Detail
+                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_LoanDetails','loan_detail','MemberOperation','applications')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@Global_LoanData.SelectForDetail">
+                                @Global_LoanData.Detail
                             </a>
                         </td>
                     </tr>
@@ -69,13 +68,13 @@ else
             <tfoot>
                 <tr>
                     <td colspan="1"></td>
-                    <td>Principal:</td>
+                    <td>@Global_LoanData.Principal:</td>
                     <td>@Model.Loans.Sum(x => x.Principal).ToString("#,0.00")</td>
-                    <td>Paid:</td>
+                    <td>@Global_LoanData.Paid:</td>
                     <td>@Model.Loans.Sum(x => x.Paid).ToString("#,0.00")</td>
-                    <td>Balance:</td>
+                    <td>@Global_LoanData.Balance:</td>
                     <td>@Model.Loans.Sum(x => x.Balance).ToString("#,0.00")</td>
-                    <td></td> <!-- Placeholder for the last column -->
+                    <td></td>
                 </tr>
             </tfoot>
         </table>

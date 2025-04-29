@@ -1,11 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+    @using Resources
 
 <div class="col">
     <div class="row my-4">
         <!-- Tips Section -->
         <div class="card mb-4">
             <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                <span><i class="mdi mdi-information-outline me-2"></i> VALIDATION TIPS</span>
+                <span><i class="mdi mdi-information-outline me-2"></i> @Global_LoanCommiteeValidations.ValidationTips</span>
                 <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseValidationTips" aria-expanded="false" aria-controls="collapseValidationTips">
                     <i class="mdi mdi-chevron-down"></i>
                 </button>
@@ -13,20 +14,19 @@
             <div id="collapseValidationTips" class="collapse">
                 <div class="card-body">
                     <ul>
-                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Loan duration must match the borrower's repayment ability and comply with the loan policy.</li>
-                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Repayment cycles should align with the member's income frequency to ensure smooth repayments.</li>
-                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Interest rates must follow loan product guidelines and be documented in case of variances.</li>
-                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> The first installment date must adhere to the defined grace period policy.</li>
-                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure all mandatory fees are recorded correctly, and VAT rates are applied automatically.</li>
-                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> All loan products have specific rules; ensure the borrower's savings and shares meet the requirements.</li>
-                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Grace periods must be verified against policy limits before approval.</li>
-                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Attached documents are mandatory for loan validation and approval processes.</li>
-                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Changes to approval status must reflect the actual progress of the application and be justified.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @Global_LoanCommiteeValidations.LoanDurationMustMatchTheBorrowersRepaymentAbility</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @Global_LoanCommiteeValidations.RepaymentCyclesShouldAlignWithTheMembersIncomeFrequency</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> @Global_LoanCommiteeValidations.InterestRatesMustFollowLoanProductGuidelines</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> @Global_LoanCommiteeValidations.TheFirstInstallmentDateMustAdhereToTheDefinedGracePeriodPolicy</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @Global_LoanCommiteeValidations.EnsureAllMandatoryFeesAreRecordedCorrectly</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> @Global_LoanCommiteeValidations.AllLoanProductsHaveSpecificRules</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @Global_LoanCommiteeValidations.GracePeriodsMustBeVerifiedAgainstPolicyLimits</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> @Global_LoanCommiteeValidations.AttachedDocumentsAreMandatoryForLoanValidation</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> @Global_LoanCommiteeValidations.ChangesToApprovalStatusMustReflectTheActualProgress</li>
                     </ul>
                 </div>
             </div>
         </div>
-
 
         <div class="accordion" id="collapsibleSection">
             <!-- Loan Application Validation Section -->
@@ -38,7 +38,7 @@
                             data-bs-target="#collapseDeliveryAddress"
                             aria-expanded="true"
                             aria-controls="collapseDeliveryAddress">
-                        Loan Application Validation
+                        @Global_LoanCommiteeValidations.LoanApplicationValidation
                     </button>
                 </h2>
                 <div id="collapseDeliveryAddress"
@@ -47,25 +47,28 @@
                     <div class="accordion-body">
                         @using (Html.BeginForm("Create", "MemberOperation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                         {
-                            @Html.HiddenFor(m => m.LoanCommiteeValidationHistory.LoanApplicationId)
+                            if (Model.LoanCommiteeValidationHistory != null)
+                            {
+                                @Html.HiddenFor(m => m.LoanCommiteeValidationHistory.LoanApplicationId)
+                            }
                             <div class="row g-4">
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.LoanCommiteeValidationHistory.Status, new SelectList(ViewBag.LoanCommiteeValidationStatuses, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeValidationHistory.Status, "", new { @class = "text-danger" })
-                                        <label>Status</label>
+                                        <label>@Global_LoanCommiteeValidations.Status</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextAreaFor(m => m.LoanCommiteeValidationHistory.Comment, new { @class = "form-control", @style = "height: 200px;" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeValidationHistory.Comment, "", new { @class = "text-danger" })
-                                        <label>Comment</label>
+                                        <label>@Global_LoanCommiteeValidations.Comment</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="mt-4">
-                                <button type="submit" class="btn btn-primary me-2">Add Validation</button>
+                                <button type="submit" class="btn btn-primary me-2">@Global_LoanCommiteeValidations.AddValidation</button>
                                 <input type="hidden" name="ServiceOption" value="loan_commitee_validation_history" id="ServiceOption" />
                             </div>
                         }
@@ -82,7 +85,7 @@
                             data-bs-target="#collapsePaymentMethod3"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod3">
-                        Loan Term
+                        @Global_LoanCommiteeValidations.LoanTerm
                     </button>
                 </h2>
                 <div id="collapsePaymentMethod3"
@@ -106,7 +109,7 @@
                             data-bs-target="#collapsePaymentMethod4"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod4">
-                        Loan Schedule
+                        @Global_LoanCommiteeValidations.LoanSchedule
                     </button>
                 </h2>
                 <div id="collapsePaymentMethod4"
@@ -135,7 +138,7 @@
                             data-bs-target="#collapseDeliveryOptions"
                             aria-expanded="false"
                             aria-controls="collapseDeliveryOptions">
-                        Loan Collateral
+                        @Global_LoanCommiteeValidations.LoanCollateral
                     </button>
                 </h2>
                 <div id="collapseDeliveryOptions"
@@ -159,7 +162,7 @@
                             data-bs-target="#collapsePaymentMethod"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod">
-                        Guarantor
+                        @Global_LoanCommiteeValidations.Guarantor
                     </button>
                 </h2>
                 <div id="collapsePaymentMethod"
@@ -183,7 +186,7 @@
                             data-bs-target="#collapsePaymentMethod7"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod7">
-                        Attached Files
+                        @Global_LoanCommiteeValidations.AttachedFiles
                     </button>
                 </h2>
                 <div id="collapsePaymentMethod7"
@@ -207,7 +210,7 @@
                             data-bs-target="#collapsePaymentMethod8"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod8">
-                        Committee Validations
+                        @Global_LoanCommiteeValidations.CommitteeValidations
                     </button>
                 </h2>
                 <div id="collapsePaymentMethod8"
