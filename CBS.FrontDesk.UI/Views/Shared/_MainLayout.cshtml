@@ -980,7 +980,9 @@
         #countdown {
             transition: color 0.5s ease, font-size 0.5s ease;
         }
-
+        #internetStatusBanner {
+            display: none; /* Hide it purely through CSS before any JS runs */
+        }
         /* Dark semi-transparent overlay */
         #darkOverlay {
             position: fixed;
@@ -1160,7 +1162,7 @@
         ⏳ Idle Timeout: <span id="floatingCountdownText">5:00</span>
     </div>
 
-    <!-- 🚫 Internet Lost Mini Banner (tight next to idle banner) -->
+    <!-- 🚫 Internet Lost Mini Banner -->
     <div id="internetStatusBanner" style="
     position: fixed;
     bottom: 10px;
@@ -1174,16 +1176,15 @@
     font-weight: 600;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     opacity: 0.95;
-    display: none; /* ✅ Default hidden */
     height: 38px;
     line-height: 20px;
-    display: flex;
     align-items: center;
     justify-content: center;
     white-space: nowrap;
 ">
         🚫 No Internet
     </div>
+
 
 
 

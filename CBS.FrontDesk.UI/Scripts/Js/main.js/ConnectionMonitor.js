@@ -73,7 +73,7 @@ function checkInternetConnection() {
         // 🚫 Offline - show internet banner
         if (banner) {
             banner.style.display = 'flex';
-            banner.innerHTML = '🚫 No Internet';
+            banner.innerHTML = '🚫 No Internet Connection';
             banner.style.backgroundColor = '#dc3545'; // Red
         }
     }
