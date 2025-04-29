@@ -444,9 +444,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                                     this.HttpContext.Session["rptSource"] = account;
                                     string ReportName = $"JournalEntries.rpt";
-
-
-
                                     if (account.AccountingEntries == null)
                                     {
                                         this.HttpContext.Session["rptSource"] = "empty";
@@ -470,8 +467,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 if (model.SystemQuery.FileType.ToLower() == "pdf")
                                 {
                                     string fileTitle = $"GeneralLedger_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
-
-
                                     string ReportName = $"GeneralLedger.rpt";
                                     var account = await _acountServices.GenerateAccountingLedgerForAnumber(model.SystemQuery);//new SystemQuery { BranchId = model.SystemQuery.BranchId, FileType = model.SystemQuery.FileType, AccountIds = model.SystemQuery.AccountIds, FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate });
 
@@ -500,10 +495,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 else
                                 {
                                     var account = await _acountServices.GenerateAccountingLedgerForAnumber(model.SystemQuery); //( model.SystemQuery);
-
                                 }
-
-
                             }
                             break;
                         case "LL":
@@ -606,10 +598,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 {
                                     string fileTitle = $"BalanceSheet_{model.SystemQuery.FromDate.ToString("ddMMyyyy")}_{model.SystemQuery.ToDate.ToString("ddMMyyyy")}";
                                     var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "BALANCESHEET").First();
-                                    var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, Date = model.SystemQuery.ToDate, DocumentId = DocModel.id, FileType="pdf" };
+                                    var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate,FromDate= model.SystemQuery.FromDate, DocumentId = DocModel.id, FileType="pdf" };
                                     var account = await _acountServices.GenerateBalanceSheet(modelx);
                                     this.HttpContext.Session["rptSource"] = account;
-                                    string ReportName = $"BalanceSheet.rpt";
+                                    string ReportName = $"BalanceSheet_Assets.rpt";
                                     if (account == null)
                                     {
                                         this.HttpContext.Session["rptSource"] = "empty";
@@ -620,12 +612,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     this.HttpContext.Session["rptType"] = model.SystemQuery.ReportType;
                                     this.HttpContext.Session["fileType"] = $"BS";
                                     this.HttpContext.Session["ReportName"] = $"{ReportName}";
+                                    this.HttpContext.Session["rptSource"] = account;
                                     this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
                                 }
                                 else
                                 {
                                     var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "BALANCESHEET").First();
-                                    var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, Date = model.SystemQuery.ToDate, DocumentId = DocModel.id, FileType = "Excel" };
+                                    var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate, FromDate = model.SystemQuery.FromDate, DocumentId = DocModel.id, FileType = "pdf" };
                                     var account = await _acountServices.GenerateBalanceSheet(modelx);
                                 }
 
@@ -637,13 +630,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 {
                                     string fileTitle = $"InComeStatement{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
                                     var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "PROFITANDLOSS").First();
-                                    var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, Date = model.SystemQuery.ToDate, DocumentId = DocModel.id, FileType = "pdf" };
+                                    var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate, FromDate = model.SystemQuery.FromDate, DocumentId = DocModel.id, FileType = "pdf" };
                                     var account = await _acountServices.GenerateIncomeStatement(modelx);
                                     this.HttpContext.Session["rptSource"] = account;
-                                
-                                    string ReportName = $"Income and Expense.rpt";
-
-                                    ReportName = $"Income and Expense.rpt";
+                                    string ReportName = $"PandLReport.rpt";
                                     this.HttpContext.Session["dtoPasser"] = modelx;
                                     this.HttpContext.Session["rptType"] = model.SystemQuery.ReportType;
                                     this.HttpContext.Session["fileType"] = $"PANDL";
@@ -653,6 +643,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 }
                                 else
                                 {
+                                    var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "PROFITANDLOSS").First();
+                                    var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate, FromDate = model.SystemQuery.FromDate, DocumentId = DocModel.id, FileType = "pdf" };
                                     var account = await _accountingServices.PostJE(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId }, APICallHelper.AccountingEntry_IncomeStatement);
 
                                 }
@@ -676,9 +668,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             catch (Exception ex)
             {
 
-                throw(ex);
+                return Json(new { success = false, message = "Error occured while generating the report" }, JsonRequestBehavior.AllowGet);
+
             }
-       
+
         }
         public async Task<ActionResult> DownloadFiles(string fileId = null)
         {
@@ -862,7 +855,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     {
                                         string fileTitle = $"BalanceSheet_{model.SystemQuery.FromDate.ToString("ddMMyyyy")}_{model.SystemQuery.ToDate.ToString("ddMMyyyy")}";
                                         var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "BALANCESHEET").First();
-                                        var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, Date = model.SystemQuery.ToDate, DocumentId = DocModel.id };
+                                        var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate, DocumentId = DocModel.id };
                                         var account = await _acountServices.GenerateBalanceSheet(modelx);
                                         this.HttpContext.Session["rptSource"] = account;
                                         string ReportName = $"BalanceSheet.rpt";
@@ -940,7 +933,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 {
                                     string fileTitle = $"BalanceSheet_{model.SystemQuery.FromDate.ToString("ddMMyyyy")}_{model.SystemQuery.ToDate.ToString("ddMMyyyy")}";
                                     var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "BALANCESHEET").First();
-                                    var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, Date = model.SystemQuery.ToDate, DocumentId = DocModel.id };
+                                    var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate, DocumentId = DocModel.id };
                                     var account = await _acountServices.GenerateBalanceSheet(modelx);
                                     this.HttpContext.Session["rptSource"] = account;
                                     string ReportName = $"BalanceSheet.rpt";
@@ -1119,7 +1112,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var branch= await _branchServices.GetBranch(branchId);
                 string fileTitle = $"BalanceSheet_{branch.Name}_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
 
-                var account = await _acountServices.GenerateBalanceSheet(new BSQuery { BranchId = branchId,Date = DateTo, DocumentId = "DOC298781794326" });
+                var account = await _acountServices.GenerateBalanceSheet(new BSQuery { BranchId = branchId,ToDate = DateTo, DocumentId = "DOC298781794326" });
                 this.HttpContext.Session["rptSource"] = account;
                 string ReportName = $"Balance Sheet.rpt";
                 if (account!=null)

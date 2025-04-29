@@ -379,7 +379,7 @@ namespace CBS.BusinessService.Accounts
                 return "OM";
             if (accountType.Contains("PreferenceShare"))
                 return "P-Share";
-            if (accountType.Contains("OrdinaryShare"))
+            if (accountType.Contains("MemberShare"))
                 return "O-Share";
             if (accountType.Contains("Daily"))
                 return "DCA";
@@ -414,7 +414,7 @@ namespace CBS.BusinessService.Accounts
                     Balance = tellerOperationGL.Balance,
                     BranchName = branch.Name ?? "N/A",
                     LogoUrl = branch.Bank?.LogoUrl ?? "",
-                    TellerName = tellerOperationGL.CashierName ?? "N/A",
+                    TellerName = tellerOperationGL.TellerName ?? "N/A",
                     AccountNumber = tellerOperationGL.AccountNumber ?? "N/A",
                     TransactionType = tellerOperationGL.TransactionType ?? "N/A",
                     Description = tellerOperationGL.Description ?? "",

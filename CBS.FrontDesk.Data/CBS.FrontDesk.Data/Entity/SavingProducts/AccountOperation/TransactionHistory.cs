@@ -93,7 +93,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public string DepositorName { get; set; }
         public string DepositorPhone { get; set; }
         public string DepositorCNI { get; set; }
-
+        public string TotalAccountBalances { get; set; }
+        public string ReceiptType { get; set; }
         public decimal Amount { get; set; }
         public decimal Charges { get; set; }
         public decimal TotalAmount { get; set; }
@@ -139,6 +140,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public decimal LoanCapital { get; set; } = 0;
         public decimal Interest { get; set; } = 0;
         public decimal VAT { get; set; } = 0;
+        public string AccountBalance { get; set; }
         public string AccountNumber { get; set; }
         public string BranchId { get; set; }
         public string BankId { get; set; }

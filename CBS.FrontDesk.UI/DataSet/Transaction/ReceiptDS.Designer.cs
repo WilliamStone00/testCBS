@@ -419,6 +419,10 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             private global::System.Data.DataColumn columnBarcodeImagePath;
             
+            private global::System.Data.DataColumn columnTotalAccountBalances;
+            
+            private global::System.Data.DataColumn columnReceiptType;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public PaymentReciptDSDataTable() {
@@ -734,6 +738,22 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalAccountBalancesColumn {
+                get {
+                    return this.columnTotalAccountBalances;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ReceiptTypeColumn {
+                get {
+                    return this.columnReceiptType;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -804,7 +824,9 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                         string DepositorPhone, 
                         string DepositorCNI, 
                         string BarcodeData, 
-                        string BarcodeImagePath) {
+                        string BarcodeImagePath, 
+                        string TotalAccountBalances, 
+                        string ReceiptType) {
                 PaymentReciptDSRow rowPaymentReciptDSRow = ((PaymentReciptDSRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -841,7 +863,9 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                         DepositorPhone,
                         DepositorCNI,
                         BarcodeData,
-                        BarcodeImagePath};
+                        BarcodeImagePath,
+                        TotalAccountBalances,
+                        ReceiptType};
                 rowPaymentReciptDSRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowPaymentReciptDSRow);
                 return rowPaymentReciptDSRow;
@@ -899,6 +923,8 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 this.columnDepositorCNI = base.Columns["DepositorCNI"];
                 this.columnBarcodeData = base.Columns["BarcodeData"];
                 this.columnBarcodeImagePath = base.Columns["BarcodeImagePath"];
+                this.columnTotalAccountBalances = base.Columns["TotalAccountBalances"];
+                this.columnReceiptType = base.Columns["ReceiptType"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -974,6 +1000,10 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 base.Columns.Add(this.columnBarcodeData);
                 this.columnBarcodeImagePath = new global::System.Data.DataColumn("BarcodeImagePath", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBarcodeImagePath);
+                this.columnTotalAccountBalances = new global::System.Data.DataColumn("TotalAccountBalances", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalAccountBalances);
+                this.columnReceiptType = new global::System.Data.DataColumn("ReceiptType", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReceiptType);
                 this.columnId.AllowDBNull = false;
             }
             
@@ -1134,6 +1164,8 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             private global::System.Data.DataColumn columnDate;
             
+            private global::System.Data.DataColumn columnAccountBalance;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public PaymentDetailDSDataTable() {
@@ -1273,6 +1305,14 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn AccountBalanceColumn {
+                get {
+                    return this.columnAccountBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1308,7 +1348,7 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public PaymentDetailDSRow AddPaymentDetailDSRow(string Id, string MemberName, string MemberReference, string PaymentReceiptId, string SericeName, decimal Amount, decimal Fee, decimal LoanCapital, decimal Interest, decimal VAT, string AccountNumber, System.DateTime AccountingDay, System.DateTime Date) {
+            public PaymentDetailDSRow AddPaymentDetailDSRow(string Id, string MemberName, string MemberReference, string PaymentReceiptId, string SericeName, decimal Amount, decimal Fee, decimal LoanCapital, decimal Interest, decimal VAT, string AccountNumber, System.DateTime AccountingDay, System.DateTime Date, string AccountBalance) {
                 PaymentDetailDSRow rowPaymentDetailDSRow = ((PaymentDetailDSRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -1323,7 +1363,8 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                         VAT,
                         AccountNumber,
                         AccountingDay,
-                        Date};
+                        Date,
+                        AccountBalance};
                 rowPaymentDetailDSRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowPaymentDetailDSRow);
                 return rowPaymentDetailDSRow;
@@ -1359,6 +1400,7 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 this.columnAccountNumber = base.Columns["AccountNumber"];
                 this.columnAccountingDay = base.Columns["AccountingDay"];
                 this.columnDate = base.Columns["Date"];
+                this.columnAccountBalance = base.Columns["AccountBalance"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1390,6 +1432,8 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 base.Columns.Add(this.columnAccountingDay);
                 this.columnDate = new global::System.Data.DataColumn("Date", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDate);
+                this.columnAccountBalance = new global::System.Data.DataColumn("AccountBalance", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAccountBalance);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2393,6 +2437,39 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string TotalAccountBalances {
+                get {
+                    try {
+                        return ((string)(this[this.tablePaymentReciptDS.TotalAccountBalancesColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalAccountBalances\' in table \'PaymentReciptDS\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tablePaymentReciptDS.TotalAccountBalancesColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string ReceiptType {
+                get {
+                    try {
+                        return ((string)(this[this.tablePaymentReciptDS.ReceiptTypeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ReceiptType\' in table \'PaymentReciptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePaymentReciptDS.ReceiptTypeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsMemberNameNull() {
                 return this.IsNull(this.tablePaymentReciptDS.MemberNameColumn);
             }
@@ -2798,6 +2875,30 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             public void SetBarcodeImagePathNull() {
                 this[this.tablePaymentReciptDS.BarcodeImagePathColumn] = global::System.Convert.DBNull;
             }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalAccountBalancesNull() {
+                return this.IsNull(this.tablePaymentReciptDS.TotalAccountBalancesColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalAccountBalancesNull() {
+                this[this.tablePaymentReciptDS.TotalAccountBalancesColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsReceiptTypeNull() {
+                return this.IsNull(this.tablePaymentReciptDS.ReceiptTypeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetReceiptTypeNull() {
+                this[this.tablePaymentReciptDS.ReceiptTypeColumn] = global::System.Convert.DBNull;
+            }
         }
         
         /// <summary>
@@ -3024,6 +3125,22 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string AccountBalance {
+                get {
+                    try {
+                        return ((string)(this[this.tablePaymentDetailDS.AccountBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AccountBalance\' in table \'PaymentDetailDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePaymentDetailDS.AccountBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsIdNull() {
                 return this.IsNull(this.tablePaymentDetailDS.IdColumn);
             }
@@ -3176,6 +3293,18 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetDateNull() {
                 this[this.tablePaymentDetailDS.DateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsAccountBalanceNull() {
+                return this.IsNull(this.tablePaymentDetailDS.AccountBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetAccountBalanceNull() {
+                this[this.tablePaymentDetailDS.AccountBalanceColumn] = global::System.Convert.DBNull;
             }
         }
         

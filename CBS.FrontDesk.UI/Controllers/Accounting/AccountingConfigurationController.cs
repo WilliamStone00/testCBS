@@ -244,7 +244,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
             ViewBag.OperationEvent = await _OperationEventService.GetOperationEvents();
             ViewBag.ChartOfAccountManagementPositions = BuildMenuAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList(), listAccounts.ToList());
-            ViewBag.BranchCode = BuildBranchCode((await _branchService.GetBranches()).ToList());
+            var BranList = (await _branchService.GetBranches()).ToList();
+            ViewBag.BranchCode = BuildBranchCode(BranList);
+
+            ViewBag.Branches = BuildBranch(BranList);
             ViewBag.ChartOfAccounts = BuildMenuAccountViewBag(listAccounts.ToList());
             ViewBag.AccountingRuleEntries = BuildAccountingRuleEntryViewBag((await _accountingEntryRuleService.GetAccountingRuleEntries()).ToList());
             ViewBag.BookingDirections = await this.GetBookingDirections();
@@ -295,7 +298,32 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return selectListItems;
 
         }
+        private dynamic BuildBranchChoice( )
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select Option" });
+           
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "true", Value = $"Created At Branch" });
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "false", Value = $"Created At HeadOffice" });
 
+            return selectListItems;
+
+        }
+        private dynamic BuildBranch(List<Branch> listOfItems)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select BranchCode" });
+            foreach (var item in listOfItems)
+            {
+                if (!item.BranchCode.Equals("000"))
+                {
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.BranchCode} - {item.Name}" });
+                }
+
+            }
+            return selectListItems;
+
+        }
         private dynamic BuildMenuISViewBag(List<Branch> listOfItems)
         {
            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
@@ -1423,11 +1451,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                                        }).ToList();
                     var sysData = new AccountingConfiguration { ChartofAccountManagementPositionDtos = listOfItems.ToList() };
+                  
                     return PartialView(partialView, sysData);
 
                 }
                 else if (path == "new")
                 {
+                    var BranList = (await _branchService.GetBranches()).ToList();
+                    ViewBag.Branches = BuildBranch(BranList);
+                    ViewBag.HeadOfficeAccount= BuildBranchChoice();
                     return PartialView(partialView, new AccountingConfiguration { });
                 }
                 else if (path == "download")
@@ -1634,7 +1666,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 {
                     var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
                     ViewBag.ChartOfAccounts = BuildMenuAccountViewBag(listAccounts.ToList());
-                 
+                    ViewBag.BookingDirection = BuildMenuViewBagopside();
                     return PartialView(partialView, new AccountingConfiguration { AccountBookingDirection = new AccountBookingDirection() });
                 }
                 else
@@ -1855,18 +1887,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             }
                             catch (Exception ex)
                             {
-                                return Json($"The file structure was not respected extension. Please check your input.{Path.GetExtension(model.ExcelFile.FileName)}", JsonRequestBehavior.AllowGet);
+                                string message = $"The file structure was not respected. Please check your input.{Path.GetExtension(model.ExcelFile.FileName)}";
+                                return Json(new { success = true, status = false, message = message }, JsonRequestBehavior.AllowGet);
                             }
                         }
                         else
                         {
-                            return Json($"Invalid file extension. Please check your input.{Path.GetExtension(model.ExcelFile.FileName)}", JsonRequestBehavior.AllowGet);
+                            string message = $"Invalid file extension. Please check your input.{Path.GetExtension(model.ExcelFile.FileName)}";
+                            return Json(new { success = true, status = false, message = message }, JsonRequestBehavior.AllowGet);
                         }
                     }
                     else
                     {
-                        //throw new InvalidOperationException("No file was uploaded.");
-                        return Json($"Empty file stream No file was uploaded", JsonRequestBehavior.AllowGet);
+                        string message = $"$Empty file stream No file was uploaded.{Path.GetExtension(model.ExcelFile.FileName)}";
+                              return Json(new { success = true, status = false, message = message }, JsonRequestBehavior.AllowGet);
 
                     }
 

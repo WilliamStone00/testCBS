@@ -185,10 +185,11 @@ function collectDeposits() {
     const note = $('#Note')?.val() || '';
     const globalVat = parseFloat($('#calculatedVat').text().replace(/,/g, '')) || 0;
 
-    $('#myDataTableT tbody tr').each(function () {
-        const isChecked = $(this).find('.form-check-input').prop('checked');
+    const hideBalance = $('#hideBalanceCheckbox').is(':checked'); // ✅ FETCH OUTSIDE the loop once
 
-        // You may skip unchecked rows depending on operation type
+    $('#myDataTableT tbody tr').each(function () {
+        const isChecked = $(this).find('td input[type="checkbox"]').prop('checked'); // ✅ target only inside table cell, not global checkbox!
+
         if (!isChecked) return;
 
         const deposit = {
@@ -213,13 +214,14 @@ function collectDeposits() {
             PaymentChannel: 'Web_Portal',
             LoanApplicationId: $(this).find('.loan-application-id')?.val() || '',
             Period: $(this).find('.period')?.val() || '',
-            Vat: globalVat
+            Vat: globalVat,
+            HideBalance: hideBalance // ✅ correctly from the top hide balance checkbox!
         };
 
         deposits.push(deposit);
     });
 
-    console.log("✅ Collected Deposits with VAT:", deposits);
+    console.log("✅ Collected Deposits:", deposits);
     return deposits;
 }
 
@@ -331,9 +333,9 @@ function resetDepositorForm() {
     $('#DepositerNote').val('');
     $('#Note').val('')
 }
-function Reprint() {
+function Reprint(redirectUrl) {
+    window.open(redirectUrl, '_blank');
     ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLessWithSubReports");
-
 }
 function ReprintLoan() {
     ReportView("CashDesk", null, "GetReport", null, null, "loan", "ReportParameterLessWithSubReports");
@@ -353,7 +355,7 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType) {
                 success: function (response) {
                     if (response && response.success) {
                         successCallback(response, operationType);
-                        Reprint();
+                        Reprint(response.redirectUrl);
                     } else {
                         if (!response) {
                             alert("Your session is expired.");
@@ -372,32 +374,58 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType) {
         }
     );
 }
-
 function successCallback(response, operationType) {
-    appalert(response.message || "✅ Operation completed successfully.", 1, 1);
 
     // Clean up
     resetDepositorForm();
     $("#depositerModal").modal("hide"); // Hide if not already hidden
 
-    const customerId = $("#customerId").val();
+    //const customerId = $("#customerId").val();
 
-    const actions = {
-        CashIn: "cashin",
-        Withdrawal: "cashout",
-        WithdrawalSWS: "cashoutsws",
-        SavingWithdrawalFormFee: "withdrawalnotification",
-        LoanRepayment: "repayment",
-        LoanFee: "loanapplicationfeepayment"
-    };
+    // ✅ Reload the entire page
+    location.reload();
 
-    const operation = actions[operationType];
-    if (operation) {
-        GetMemberData(customerId, '_OperationDesk', 'datalistingview', operation);
-    } else {
-        console.warn("❗ No operation handler defined for:", operationType);
-    }
+    //const actions = {
+    //    CashIn: "cashin",
+    //    Withdrawal: "cashout",
+    //    WithdrawalSWS: "cashoutsws",
+    //    SavingWithdrawalFormFee: "withdrawalnotification",
+    //    LoanRepayment: "repayment",
+    //    LoanFee: "loanapplicationfeepayment"
+    //};
+
+    //const operation = actions[operationType];
+    //if (operation) {
+    //    GetMemberData(customerId, '_OperationDesk', 'datalistingview', operation);
+    //} else {
+    //    console.warn("❗ No operation handler defined for:", operationType);
+    //}
 }
+//function successCallback(response, operationType) {
+//    appalert(response.message || "✅ Operation completed successfully.", 1, 1);
+
+//    // Clean up
+//    resetDepositorForm();
+//    $("#depositerModal").modal("hide"); // Hide if not already hidden
+
+//    const customerId = $("#customerId").val();
+
+//    const actions = {
+//        CashIn: "cashin",
+//        Withdrawal: "cashout",
+//        WithdrawalSWS: "cashoutsws",
+//        SavingWithdrawalFormFee: "withdrawalnotification",
+//        LoanRepayment: "repayment",
+//        LoanFee: "loanapplicationfeepayment"
+//    };
+
+//    const operation = actions[operationType];
+//    if (operation) {
+//        GetMemberData(customerId, '_OperationDesk', 'datalistingview', operation);
+//    } else {
+//        console.warn("❗ No operation handler defined for:", operationType);
+//    }
+//}
 
 
 function failureCallback(response) {
@@ -558,10 +586,15 @@ function PostTransaction(ajaxUrl, data, operationType) {
         success: function (response) {
             if (response && response.success) {
                 // ✅ Success: hide modal, notify and reprint
-                $("#depositerModal").modal("hide");
-                appalert(`✅ ${response.message}`, 1, 2);
-                successCallback(response, operationType);
-                Reprint();
+                //$("#depositerModal").modal("hide");
+                //appalert(`✅ ${response.message}`, 1, 2);
+                //successCallback(response, operationType);
+                //Reprint();
+                appalert(response.message, 1, 1);
+                resetDepositorForm();
+                $("#depositerModal").modal("hide"); // Hide if not already hidden
+                Reprint(response.redirectUrl);
+                location.reload();
             } else {
                 // ❌ Failure: show error inside modal
                 const errorMsg = response?.message || "An unknown error occurred.";

@@ -1,12 +1,12 @@
 ﻿let isHarmonizationActivated = false;
 $(document).ready(function () {
- 
-  
+
+
     // Trigger the processing simulation when needed
     $('#ReadUploadedFile').click(function () {
         simulateProcessing();
     });
- 
+
     $('#IsHarmonizationActivated').change(function () {
         if ($(this).is(':checked')) {
             isHarmonizationActivated = true;
@@ -35,7 +35,7 @@ $(document).ready(function () {
         $link.remove();
     });
 
-        $('#BrancheIds').select2({
+    $('#BrancheIds').select2({
         placeholder: "Select branches",
         allowClear: true,
         width: '100%'
@@ -62,10 +62,10 @@ function simulateProcessing() {
 }
 
 function DownloadFile(path) {
- window.open(path, "_blank");
+    window.open(path, "_blank");
 }
 
- 
+
 function CleanAccountingData(event) {
     if (event) {
         event.preventDefault();
@@ -74,7 +74,7 @@ function CleanAccountingData(event) {
     // Get selected branches
     const selectedBranches = $('#BrancheIds').val();
 
- 
+
     // Show loading state
     const cleanButton = document.getElementById('CleanAccountingData');
     const originalText = cleanButton.innerHTML;
@@ -146,7 +146,7 @@ function ReadExcelFile() {
     formData.append("ExcelFile", file);
     formData.append("BranchId", branchCode);
     formData.append("IsHarmonizationActivated", isHarmonizationActivated);
-       
+
     event.preventDefault();
     updateProgressBar(0);
     $('#progressBarContainer').show();
@@ -174,9 +174,19 @@ function ReadExcelFile() {
                     return xhr;
                 },
                 success: function (response) {
+
                     updateProgressBar(100);
-                    //appalert("File uploaded successfully", 1, 1);
-                    displayResults(response);
+                    if (response.success) {
+                        // appalert("File uploaded successfully", 1, 1);
+                        displayResults(response);
+                    }
+                    else {
+
+
+                        appalert(response.message, 1, 2);
+                    }
+
+
 
                 },
                 error: function (xhr, status, error) {
@@ -255,7 +265,7 @@ function displayResults(response) {
         } else {
             message = "Download non-matching accounts";
         }
-      
+
         var downloadUrl = filePath;
         //  window.open("", "_blank");
         $('#downloadLink').attr('href', downloadUrl);
@@ -274,7 +284,7 @@ function displayResults(response) {
         appalert(response.message, 1, 1);
     } else {
         console.log(response);
-      
+
         appalert(response.message, 3, 1);
     }
 }

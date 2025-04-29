@@ -16,6 +16,7 @@ using System.Net;
 using Newtonsoft.Json;
 using CBS.BusinessService.Session;
 using DocumentFormat.OpenXml.Wordprocessing;
+using System.Linq;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -36,11 +37,37 @@ namespace CBS.FrontDesk.UI.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-        
+        private async Task<bool> VerifyRecaptchaAsync(string recaptchaResponse)
+        {
+            var secretKey = "6Lev7iYrAAAAAJGDWuMIHIoV3x43EcYMLGXVg2-M";
+            using (var client = new HttpClient())
+            {
+                var response = await client.PostAsync($"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={recaptchaResponse}", null);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                dynamic result = JsonConvert.DeserializeObject(jsonResponse);
+                return result.success == true;
+            }
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult> Login(AuthRequest model, string returnUrl = "")
         {
+            // If user failed 3+ times, check reCAPTCHA
+            var failedAttempts = Session["FailedLoginAttempts"] != null ? (int)Session["FailedLoginAttempts"] : 0;
+
+            if (failedAttempts >= 1)
+            {
+                var recaptchaResponse = Request["g-recaptcha-response"];
+                var isCaptchaValid = await VerifyRecaptchaAsync(recaptchaResponse);
+
+                if (!isCaptchaValid)
+                {
+                    ViewBag.Success = false;
+                    ViewBag.Message = "Please complete the CAPTCHA verification.";
+                    return View(model);
+                }
+            }
             var result = new ExecutionMessages();
             var Geo = await GetGeoLocation();
             model.GeoLocationResponse = Geo;
@@ -86,6 +113,11 @@ namespace CBS.FrontDesk.UI.Controllers
                                         fullname = userDto.firstName,
                                         returnUrl
                                     });
+                                    // 🛡️ Reset failed attempts server-side
+                                    Session["FailedLoginAttempts"] = 0;
+
+                                    // 🛡️ Also reset client-side using TempData
+                                    TempData["ResetClientAttempts"] = true;
                                     Session["MFAUrl"] = url;
                                     return Redirect(url);
                                 }
@@ -96,12 +128,19 @@ namespace CBS.FrontDesk.UI.Controllers
                                     ViewBag.Success = true;
                                     ViewBag.StartSessionWarning = true;
                                     ViewBag.Message = Messaging.MessageResult(result);
+                                    // 🛡️ Reset failed attempts server-side
+                                    Session["FailedLoginAttempts"] = 0;
+
+                                    // 🛡️ Also reset client-side using TempData
+                                    TempData["ResetClientAttempts"] = true;
                                     return RedirectToLocal(returnUrl);
                                 }
                             }
+                            
                         }
                         catch (Exception ex)
                         {
+                            Session["FailedLoginAttempts"] = ((int?)Session["FailedLoginAttempts"] ?? 0) + 1;
                             ViewBag.Success = false;
                             ViewBag.Message = "An error occurred while processing your request. Please try again later.";
                             return View("Login", model);
@@ -109,13 +148,14 @@ namespace CBS.FrontDesk.UI.Controllers
                     }
                     else
                     {
+                        Session["FailedLoginAttempts"] = ((int?)Session["FailedLoginAttempts"] ?? 0) + 1;
                         ViewBag.Success = false;
                         ViewBag.Message = "Your account is blocked. Please contact support.";
                         return View("Login", model);
                     }
                 }
             }
-
+            Session["FailedLoginAttempts"] = ((int?)Session["FailedLoginAttempts"] ?? 0) + 1;
             // If we got this far, something failed, redisplay form with error message
             ViewBag.Success = false;
             ViewBag.Message = result.MessageString ?? "There was a connection issue. Please try again later.";
@@ -216,6 +256,8 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             await _helper.Logout();
             await PerformLogoutAsync();
+            // 🛡️ Tell client to reset failed attempts
+            TempData["ResetClientAttempts"] = true;
             return RedirectToAction("Login");
         }
 

@@ -25,6 +25,7 @@ using CBS.FrontDesk.Data.Entity.CMoney;
 using CBS.BusinessService.Session;
 using CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping;
 using DocumentFormat.OpenXml.Bibliography;
+using Microsoft.AspNet.SignalR.Hosting;
 
 namespace CBS.BusinessService.CustomerManagement
 {
@@ -1027,8 +1028,8 @@ namespace CBS.BusinessService.CustomerManagement
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.FirstName} {model.LastName}", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, null);
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
@@ -1057,8 +1058,8 @@ namespace CBS.BusinessService.CustomerManagement
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, null);
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
@@ -1084,8 +1085,8 @@ namespace CBS.BusinessService.CustomerManagement
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, null);
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
@@ -1116,8 +1117,8 @@ namespace CBS.BusinessService.CustomerManagement
                 if (inResponse.IsSuccess)
                 {
                     // Handle success scenario
-                    GetExecutionMessages(inResponse, true, $"{customer.FirstName} {customer.LastName}", MessagesResults.Success,
-                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                    GetExecutionMessages(inResponse, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
                 }
@@ -1152,8 +1153,8 @@ namespace CBS.BusinessService.CustomerManagement
                 if (inResponse.IsSuccess)
                 {
                     // Handle success scenario
-                    GetExecutionMessages(inResponse, true, $"{customer.FirstName} {customer.LastName}", MessagesResults.Success,
-                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                    GetExecutionMessages(inResponse, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
                 }
@@ -1186,8 +1187,8 @@ namespace CBS.BusinessService.CustomerManagement
                 if (inResponse.IsSuccess)
                 {
                     // Handle success scenario
-                    GetExecutionMessages(inResponse, true, $"{customer.FirstName} {customer.LastName}", MessagesResults.Success,
-                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                    GetExecutionMessages(inResponse, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
                 }

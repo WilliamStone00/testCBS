@@ -963,7 +963,38 @@
             }
     </style>
 
-
+    <style>
+        /* The blurred background effect */
+        .blur-background {
+            filter: blur(5px);
+            transition: filter 0.3s ease;
+        }
+        /* Only blur the page content, not the modal */
+        #pageContent.blur-background {
+            filter: blur(5px);
+            transition: filter 0.3s ease;
+        }
+        #floatingCountdownText, #countdown {
+            transition: color 0.5s ease;
+        }
+        #countdown {
+            transition: color 0.5s ease, font-size 0.5s ease;
+        }
+        #internetStatusBanner {
+            display: none; /* Hide it purely through CSS before any JS runs */
+        }
+        /* Dark semi-transparent overlay */
+        #darkOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Soft black overlay */
+            z-index: 1040; /* Just below the Bootstrap modal (z-index 1050) */
+            display: none;
+        }
+    </style>
 
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/typeahead-js/typeahead.css" />
@@ -1011,6 +1042,7 @@
 </head>
 
 <body style="position: relative;">
+
     <div id="google_translate_element" style="display: none;"></div>
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
@@ -1043,6 +1075,10 @@
 
 
                         @RenderBody()
+
+
+
+
                     </div>
                     @Html.Partial("_AjaxSpinner")
                     @Html.Partial("_Footer")
@@ -1059,6 +1095,105 @@
         <!-- Drag Target Area To SlideIn Menu On Small Screens -->
         <div class="drag-target"></div>
     </div>
+
+    <!-- ✨ Dark Overlay (Initially hidden) -->
+    <div id="darkOverlay" style="display:none;"></div>
+
+    <div class="modal fade" id="sessionTimeoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="sessionTimeoutLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content position-relative rounded-4 border-0">
+
+                <!-- 🌐 Modal Header -->
+                <div class="modal-header bg-light text-center border-0 flex-column">
+                    <h3 class="text-danger fw-bold mb-2" id="sessionTimeoutLabel">
+                        <i class="mdi mdi-timer-alert-outline me-2"></i> TSC: SESSION EXPIRATION WARNING
+                    </h3>
+                    <hr class="w-75 mt-2 mb-0" style="border: 2px solid rgba(128, 128, 128, 0.4);" />
+                </div>
+
+                <!-- 🧾 Countdown Section -->
+                <div class="card mx-3 mb-4 shadow-sm border-0">
+                    <div class="card-body text-center">
+                        <small class="text-black fw-semibold mb-2" style="font-size: 1.1rem;">
+                            Your session will expire soon due to inactivity.<br />
+                            Please confirm to stay connected.
+                        </small> <br />
+                        <h4 class="text-primary fw-bold mb-3">
+                            <i class="mdi mdi-timer-sand me-2"></i> Time Remaining: <span id="countdown" class="text-danger">30</span> seconds
+                        </h4>
+                    </div>
+                </div>
+
+                <!-- 🔘 Footer with Actions -->
+                <div class="modal-footer d-flex justify-content-center gap-4 border-0 mb-3">
+                    <button type="button" id="renewSessionBtn" class="btn btn-primary btn-lg px-5">
+                        <i class="mdi mdi-check-bold me-1"></i> Stay Signed In
+                    </button>
+                    <button type="button" id="logoutSessionBtn" class="btn btn-danger btn-lg px-5">
+                        <i class="mdi mdi-logout me-1"></i> Logout Now
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- 🌟 Floating Idle Countdown Timer -->
+    <div id="idleCountdownBanner" style="
+    position: fixed;
+    bottom: 10px;
+    right: 10px;  /* Extreme right */
+    z-index: 9999;
+    background: linear-gradient(to right, deepskyblue, limegreen);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    opacity: 0.95;
+    display: none;
+    height: 38px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+">
+        ⏳ Idle Timeout: <span id="floatingCountdownText">5:00</span>
+    </div>
+
+    <!-- 🚫 Internet Lost Mini Banner -->
+    <div id="internetStatusBanner" style="
+    position: fixed;
+    bottom: 10px;
+    right: 190px;
+    z-index: 9999;
+    background: #dc3545;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    opacity: 0.95;
+    height: 38px;
+    line-height: 20px;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+">
+        🚫 No Internet
+    </div>
+
+
+
+
+
+
+
+
+
+
     <!-- / Layout wrapper -->
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
@@ -1111,7 +1246,7 @@
     <script src="~/CBSTemp/ui/assets/js/form-validation.js"></script>
     <script src="~/CBSTemp/ui/assets/js/form-layouts.js"></script>
     <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
-    <script src="~/Scripts/Js/main.js/ConnectionMonitor.js"></script>
+
     @*<script src="~/Scripts/Js/main.js/NotificationMonitor.js"></script>*@
     <script src="~/signalr/hubs"></script>
     <script src="~/Scripts/Js/main.js/App.js"></script>
@@ -1149,92 +1284,7 @@
 
 
 
-    <script>
-        $(function () {
-            var connection = new signalR.HubConnectionBuilder().withUrl("/sessionHub").build();
-
-            connection.on("Logout", function (message) {
-                alert(message); // Notify the user
-                window.location.href = '/Authentication/Logout'; // Redirect to logout page
-            });
-
-            connection.start().then(function () {
-                console.log("Connected to SessionHub");
-            }).catch(function (err) {
-                console.error("Failed to connect to SessionHub: " + err.toString());
-            });
-        });
-
-    </script>
-
-
-
-    @*<script>
-
-            $(document).ready(function () {
-                $.ajaxSetup({
-                    complete: function (xhr) {
-                        if (xhr.status === 401) { // Unauthorized
-                            // Redirect to login page
-                            alert("Your session has expired. Please log in again.");
-                            window.location.href = '/Authentication/Login'; // Adjust the URL as needed
-                        }
-                    }
-                });
-            });
-
-        </script>*@
-    <script>
-        function fetchAccountingDate() {
-            $.ajax({
-                url: '/AccountingDay/GetCurrentAccountingDay',
-                type: 'GET',
-                global: false, // 👈 disables triggering #loading or global spinner
-                success: function (res) {
-                    const label = document.getElementById("accountingDayLabel");
-                    const icon = document.getElementById("accountingDayStatus");
-                    const error = document.getElementById("accountingDayError");
-
-                    if (res.success) {
-                        label.textContent = 'Accounting Day: ' + res.data;
-                        label.style.color = 'gray';
-                        label.style.fontWeight = 'normal';
-
-                        icon.style.display = 'inline';
-                        error.textContent = '';
-                    } else {
-                        label.textContent = 'Accounting Day: N/A';
-                        label.style.color = 'red';
-                        label.style.fontWeight = 'bold';
-
-                        icon.style.display = 'none';
-                        error.textContent = 'Error: Could not load accounting day.';
-                    }
-                },
-                error: function (xhr, status, errorThrown) {
-                    const label = document.getElementById("accountingDayLabel");
-                    const icon = document.getElementById("accountingDayStatus");
-                    const error = document.getElementById("accountingDayError");
-
-                    label.textContent = 'Accounting Day: Error';
-                    label.style.color = 'red';
-                    label.style.fontWeight = 'bold';
-
-                    icon.style.display = 'none';
-                    error.textContent = 'Error: ' + errorThrown;
-                }
-            });
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            if (document.getElementById("accountingDayLabel")) {
-                fetchAccountingDate();
-                setInterval(fetchAccountingDate, 60000);
-            }
-        });
-    </script>
-
-
+    <script src="~/Scripts/Js/main.js/ConnectionMonitor.js"></script>
 
     @RenderSection("scripts", required: false)
 </body>

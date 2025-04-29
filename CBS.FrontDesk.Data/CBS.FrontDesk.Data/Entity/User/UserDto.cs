@@ -36,6 +36,9 @@ namespace CBS.FrontDesk.Data.Entity
         public string password { get; set; }
         public bool isAuthenticated { get; set; }
         public bool isMFA { get; set; }
+        public string SessionIP { get; set; }
+        public string SessionUserAgent { get; set; }
+
         public bool IsBlocked { get; set; }
         public string SessionId { get; set; }
         public string SessionRecoveryCode { get; set; }
@@ -70,6 +73,8 @@ namespace CBS.FrontDesk.Data.Entity
         public string FullName { get; set; }
         public string SessionID { get; set; }
         public string SessionCode { get; set; }
+        public string SessionIP { get; set; }
+        public string SessionUserAgent { get; set; }
     }
     public class UserRoleDto
     {

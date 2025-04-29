@@ -109,7 +109,26 @@ function RejectCashRequisition(Key) {
 
 
 
+function loadBankAccountUsedToCreditCashFlow(branchId, option) {
+    console.log(branchId + ' ' + option);
+    $.ajax({
+        url: '/CashFlowManagement/GetBranchAccountUsedToCreditCashFlow',
+        type: 'GET',
+        dataType: 'json',
+        data: { branchId: branchId, optionQuery: option },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo 
+            $('#CashReplenimentRequestdto_TempId3').empty();
+            $.each(data, function (index, item) {
+                $('#CashReplenimentRequestdto_TempId3').append($('<option>').text(item.Value).attr('value', item.Text));
+            });
 
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
 function loadBranchAccountUsedToCreditCashFlow(branchId,option) {
     console.log(branchId +' '+  option);
     $.ajax({

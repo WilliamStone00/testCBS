@@ -1,6 +1,7 @@
 using CBS.BusinessService.Accounting;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.ReportDataSetDto;
+using CBS.FrontDesk.UI.AppFiles.Reporting.Accounting;
 using ClosedXML.Excel;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
@@ -260,6 +261,27 @@ namespace CBS.FrontDesk.UI.Controllers
                 string dates = HttpContext.Session["Dates"]?.ToString() ?? "Non";
                 string strFromDate = HttpContext.Session["DateFrom"]?.ToString() ?? "Non";
                 string strToDate = HttpContext.Session["DateTo"]?.ToString() ?? "Non";
+
+                if (Session["ReportParameters"] is Dictionary<string, object> parameters && rd.DataDefinition.ParameterFields.Count > 0)
+                {
+                    foreach (var param in parameters)
+                    {
+                        try
+                        {
+                            // Only bind if parameter actually exists in the report
+                            if (rd.DataDefinition.ParameterFields.Cast<ParameterFieldDefinition>()
+                                .Any(p => p.Name.Equals(param.Key, StringComparison.OrdinalIgnoreCase)))
+                            {
+                                rd.SetParameterValue(param.Key, param.Value);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                       
+                            return;
+                        }
+                    }
+                }
 
                 if (year != "Non")
                 {
@@ -981,26 +1003,27 @@ namespace CBS.FrontDesk.UI.Controllers
             string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
             string rpTType = System.Web.HttpContext.Current.Session["rptType"].ToString();
             string rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
-            var model = (BalanceSheetData)rptSource;
+           
 
             if (rpTType == "EXCEL")
             {
-                Export export = new Export();
-                export.ToExcel(Response, model as IEnumerable<object>, strtitle);
+                //Export export = new Export();
+                //export.ToExcel(Response, model as IEnumerable<object>, strtitle);
 
             }
             else
             {
 
-                if (rptSource != "empty")
+                if (rptSource != "empty" && rptSource !=null)
                 {
                     if (rpTType.ToUpper() == "BS")
                     {
+                        var model = (BalanceSheetData)rptSource;
                         var user = this.GetUserDto();
                         var modeli = (BSQuery)dtoPasser;
-                        var assetsModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
-                        var LiabilityModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
-
+                        var assetsModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.ToDate.ToString("dd-MM-yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
+                        var LiabilityModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.ToDate.ToString("dd-MM-yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
+               
                         ReportDocument rd = new ReportDocument();
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
@@ -1024,18 +1047,15 @@ namespace CBS.FrontDesk.UI.Controllers
                     }
                     else
                     {
+                        var model = (IncomeAndExpenseDto)rptSource;
                         var user = this.GetUserDto();
                         var modeli = (BSQuery)dtoPasser;
-                        var assetsModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Income, BSCartegory.Expense);
-                        var LiabilityModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.Date.ToString("dd-MM-yyyy"), BSCartegory.Income, BSCartegory.Expense);
-                        var DataList = new List<BalanceSheetInfo> { };
-                        DataList.AddRange(assetsModel);
-                        DataList.AddRange(LiabilityModel);
+                        var assetsModel = model.ConvertToIncomeStatementModel($"{user.firstName}");
                         ReportDocument rd = new ReportDocument();
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
-                        rd.SetDataSource(DataList);
-
+                        rd.SetDataSource(assetsModel);
+        
                         string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
                         //Export the report to a byte array
                         Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);

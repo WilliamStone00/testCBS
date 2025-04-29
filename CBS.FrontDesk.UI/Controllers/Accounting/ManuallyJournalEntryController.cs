@@ -1083,19 +1083,11 @@ namespace CBS.FrontDesk.UI.Controllers
                 string userKey = "postedEntryDetails" + _AccountServices.GetUserID();
                 List<PostedEntryX> listPosted = (List<PostedEntryX>)this.HttpContext.Session[userKey];
                 var branchModel = await _branchService.GetBranch(listPosted.ToArray()[0].EntryDetail.ToArray()[0].BranchId);
-
-                if (listPosted == null)
-                    throw new Exception("No posted entries found in session");
-
-                var entry = listPosted.FirstOrDefault(x => x.Id == id);
-                if (entry == null)
-                    throw new Exception($"Entry with ID {id} not found");
-
-                if (entry.EntryDetail == null || !entry.EntryDetail.Any())
-                    throw new Exception("Entry has no details");
-                var issuer = await _userService.GetUser(entry.IssuedBy);
-                var approver = await _userService.GetUser(entry.EndorseBy);
-                var modelData = PostedEntryX.ConvertToManualEntry(entry, branchModel, issuer, approver);
+                var entry = await _Service.GetPostedEntryReference(id);
+                var entryX = entry.ConvertToPostedEntry(entry);
+                var issuer = await _userService.GetUser(entryX.IssuedBy);
+                var approver = await _userService.GetUser(entryX.EndorseBy);
+                var modelData = PostedEntryX.ConvertToManualEntry(entryX, branchModel, issuer, approver);
                 // Set session values using the standard indexer 
                 //  string userPrefix = $"rpt_{_AccountServices.GetUserID()}_";
                 HttpContext.Session["rptSource"] = modelData;

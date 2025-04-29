@@ -480,24 +480,6 @@
       <DependentUpon>GeneralLedger.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Reporting\Accounting\Income and expense summary.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Income and expense summary.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="AppFiles\Reporting\Accounting\Income and Expense.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Income and Expense.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="AppFiles\Reporting\Accounting\Income.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Income.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\JournalEntries.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -508,6 +490,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LiaisonLedger.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Accounting\PandLReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PandLReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\PrintedManualJE.cs">
@@ -4134,6 +4122,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalAccountUpload.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\PandLReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PandLReport.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -5242,6 +5234,7 @@
     <Content Include="Views\AccountingConfiguration\_CreateAccountBookingDirectionData.cshtml" />
     <Content Include="Views\AccountingConfiguration\_AccountBookingDirectionData.cshtml" />
     <Content Include="Views\AccountOpeningRulePerBranch\_AccountOpeningRuleModal.cshtml" />
+    <Content Include="Views\Reports\AccountingPDFReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -5315,18 +5308,6 @@
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\GeneralLedger.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>GeneralLedger.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Reporting\Accounting\Income and expense summary.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>Income and expense summary.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Reporting\Accounting\Income and Expense.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>Income and Expense.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Reporting\Accounting\Income.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>Income.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\JournalEntries.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

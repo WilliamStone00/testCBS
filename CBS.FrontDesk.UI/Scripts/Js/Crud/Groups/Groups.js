@@ -29,73 +29,6 @@ function EditReset(KEY, ServiceOption) {
     EditResetMain(KEY, ServiceOption, "mainview", "Transactions", "InitializeData");
 }
 
-//function LoadUsers(search) {
-//    $("#myDataTable").DataTable({
-//        "destroy": true,
-//        "serverSide": true,
-//        "processing": false, // Display processing indicator during AJAX request
-//        "paging": true, // Enable pagination
-//        "info": true, // Enable table information display
-//        "stateSave": true,
-//        "lengthMenu": [[10, 20, 100, 500], [10, 20, 100, 500]],
-//        "searching": false, // Enable search bar
-//        "ajax": {
-//            "url": "/Individual/LoadData",
-//            "type": "GET",
-//            "dataType": "json",
-//            "data": function (d) {
-//                // Pass additional parameters to the server
-//                d.searchCriteria = search;
-//            },
-//            "dataSrc": function (json) {
-//                // Set total records count from the server response
-//                return json.data;
-//            }
-//        },
-//        "columns": [
-//            { "data": "name", "name": "userName", "autoWidth": true },
-//            { "data": "CustomerId", "name": "email", "autoWidth": true },
-//            { "data": "Phone", "name": "name", "autoWidth": true },
-//            { "data": "branch", "name": "phoneNumber", "autoWidth": true },
-//            { "data": "MembershipApprovalStatus", "name": "MembershipApprovalStatus", "autoWidth": true },
-//            {
-//                "data": "CustomerId", "orderable": false, "render": function (data) {
-//                    return "<a href='/Individual/CustomerProfile?KEY=" + data + "' target='_blank' class='mr-2' data-toggle='tooltip' data-placement='top' title='View " + data + " detail'>Profile</a>";
-//                }
-//            }
-//        ],
-//        "columnDefs": [
-//            { "targets": 0, "searchable": true, "orderable": true, "width": "40%" },
-//            { "targets": 1, "searchable": true, "orderable": true, "width": "8%" },
-//            { "targets": 2, "searchable": true, "orderable": true, "width": "8%" },
-//            { "targets": 3, "searchable": true, "orderable": true, "width": "29%" },
-//            { "targets": 4, "searchable": true, "orderable": true, "width": "8%" },
-//            { "targets": 5, "searchable": true, "orderable": true, "width": "7%" },
-
-//        ],
-//        "order": [[0, "asc"]],
-//        "orderFixed": [[0, "asc"]],
-//        "createdRow": function (row, data, dataIndex) {
-//            // Add a badge based on the membership approval status
-//            var approvalStatus = data.MembershipApprovalStatus;
-//            var badgeClass = approvalStatus === "Approved" ? "badge-success" : "badge-secondary";
-//            var badgeText = approvalStatus === "Approved" ? "Approved" : "Awaits Validation";
-//            $('td:eq(5)', row).html('<label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge ' + badgeClass + ' bg-label-primary fs-tiny py-1">' + badgeText + '</span></label>');
-//        }
-//    });
-//}
-
-
- //public string GroupId { get; set; }
- //       public string GroupName { get; set; }
- //       public string GroupTypeId { get; set; }
- //       public string ? RegistrationNumber { get; set; }
- //       public string ? TaxPayerNumber { get; set; }
- //       public string ? DateOfEstablishment { get; set; }
- //       public string ? PhotoSource { get; set; }
- //       public string GroupLeaderId { get; set; }
- //       public bool Active { get; set; }
- //       public virtual GroupType ? GroupType { get; set; }
 
 
 function LoadUsers(search) {
@@ -143,50 +76,6 @@ function LoadUsers(search) {
 }
 
 
-//function LoadUsers(searchObj) {
-//    $("#myDataTable").DataTable({
-//        "destroy": true,
-//        "serverSide": true,
-//        "info": true,
-//        "stateSave": true,
-//        "lengthMenu": [[10, 20, 100, 500], [10, 20, 100, 500]],
-//        "searching": false, // Hide the search bar
-//        "ajax": {
-//            "url": "/Individual/LoadData?searchCriteria=" + searchObj,
-//            "type": "GET",
-//            "datatype": "json"
-//        },
-//        "columns": [
-//            { "data": "name", "name": "FirstName", "autoWidth": true },
-//            { "data": "CustomerId", "name": "CustomerId", "autoWidth": true },
-//            { "data": "Phone", "name": "Phone", "autoWidth": true },
-//            { "data": "branch", "name": "Branch", "autoWidth": true },
-//            { "data": "MembershipApprovalStatus", "name": "MembershipApprovalStatus", "autoWidth": true },
-//            {
-//                "data": "CustomerId", "orderable": false, "render": function (data) {
-//                    return "<a href='/Individual/CustomerProfile?KEY=" + data + "' target='_blank' class='mr-2' data-toggle='tooltip' data-placement='top' title='View " + data + " detail'>Profile</a>";
-//                }
-//            }
-//        ],
-//        "columnDefs": [
-//            { "targets": 0, "searchable": true, "orderable": true, "width": "40%" },
-//            { "targets": 1, "searchable": true, "orderable": true, "width": "8%" },
-//            { "targets": 2, "searchable": true, "orderable": true, "width": "8%" },
-//            { "targets": 3, "searchable": true, "orderable": true, "width": "29%" },
-//            { "targets": 4, "searchable": true, "orderable": true, "width": "8%" },
-//            { "targets": 5, "searchable": true, "orderable": true, "width": "7%" },
-//        ],
-//        "order": [[0, "asc"]],
-//        "orderFixed": [[0, "asc"]],
-//        "createdRow": function (row, data, dataIndex) {
-//            // Add a badge based on the membership approval status
-//            var approvalStatus = data.MembershipApprovalStatus;
-//            var badgeClass = approvalStatus === "Approved" ? "badge-success" : "badge-secondary";
-//            var badgeText = approvalStatus === "Approved" ? "Approved" : "Awaits Validation";
-//            $('td:eq(4)', row).html('<label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge ' + badgeClass + ' bg-label-primary fs-tiny py-1">' + badgeText + '</span></label>');
-//        }
-//    });
-//}
 
 
 
@@ -198,5 +87,318 @@ function DownloadLoans(path) {
 
 }
 
+function AjaxPostAndUpdateGroupRegistration(form) {
+    console.log("Form Action:", form.action);
+
+    const today = new Date();
+    const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    let isValid = true;
+    let firstInvalid = null;
+
+    function markInvalid(field, message) {
+        field.addClass('is-invalid');
+        if (!firstInvalid) firstInvalid = field;
+        isValid = false;
+        if (message) appalert(message, 2, 1);
+    }
+
+    function clearValidation(formElement) {
+        $(formElement).find('.is-invalid').removeClass('is-invalid');
+    }
+
+    // --- Validate Profile Section ---
+    function validateProfileSection(formElement) {
+        console.log("🔍 Validating Profile Section...");
+
+        const requiredFields = [
+            "GroupTypeId", "GroupName", "CustomerType",
+            "RegistrationNumber", "DateOfEstablishment",
+            "Phone", "IDNumber", "IDNumberIssueDate", "IDNumberIssueAt"
+        ];
+
+        requiredFields.forEach(function (fieldName) {
+            const field = $(formElement).find(`[name="${fieldName}"]`);
+            if (field.length && ($.trim(field.val()) === "" || field.val() == null)) {
+                markInvalid(field);
+            }
+        });
+
+        const establishmentDate = new Date($(formElement).find('[name="DateOfEstablishment"]').val());
+        if (establishmentDate && establishmentDate > todayOnly) {
+            markInvalid($(formElement).find('[name="DateOfEstablishment"]'), "❌ Date of Establishment cannot be in the future.");
+        }
+
+        const idIssueDate = new Date($(formElement).find('[name="IDNumberIssueDate"]').val());
+        if (idIssueDate && idIssueDate > todayOnly) {
+            markInvalid($(formElement).find('[name="IDNumberIssueDate"]'), "❌ ID Issue Date cannot be in the future.");
+        }
+    }
+
+    // --- Validate Address Section ---
+    function validateAddressSection(formElement) {
+        console.log("🔍 Validating Address Section...");
+
+        const requiredDropdowns = ["CountryId", "RegionId", "DivisionId", "SubDivisionId", "TownId"];
+        requiredDropdowns.forEach(function (fieldName) {
+            const field = $(formElement).find(`[name="${fieldName}"]`);
+            if (field.length && (!field.val() || field.val() === "")) {
+                markInvalid(field);
+            }
+        });
+
+        const emailField = $(formElement).find('[name="Email"]');
+        const faxField = $(formElement).find('[name="Fax"]');
+        const addressField = $(formElement).find('[name="Address"]');
+        const poBoxField = $(formElement).find('[name="POBox"]');
+
+        const email = $.trim(emailField.val());
+        const fax = $.trim(faxField.val());
+        const address = $.trim(addressField.val());
+        const poBox = $.trim(poBoxField.val());
+
+        // ✅ Email is REQUIRED and Valid
+        if (email === "") {
+            markInvalid(emailField, "❌ Email address is required.");
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            markInvalid(emailField, "❌ Please enter a valid email address.");
+        }
+
+        if (fax === "") {
+            markInvalid(faxField, "❌ Fax Number is required.");
+        }
+        if (address === "") {
+            markInvalid(addressField, "❌ Address is required.");
+        }
+        if (poBox === "") {
+            markInvalid(poBoxField, "❌ Post Box is required.");
+        }
+    }
+
+    // --- Validate Activities Section ---
+    function validateActivitiesSection(formElement) {
+        console.log("🔍 Validating Activities Section...");
+
+        const requiredFields = [
+            "EconomicActivitiesId", "Occupation", "CustomerCategoryId", "FormalOrInformalSector"
+        ];
+
+        requiredFields.forEach(function (fieldName) {
+            const field = $(formElement).find(`[name="${fieldName}"]`);
+            if (field.length && ($.trim(field.val()) === "" || field.val() == null)) {
+                markInvalid(field);
+            }
+        });
+
+        const incomeField = $(formElement).find('[name="Income"]');
+        const income = parseFloat($.trim(incomeField.val())) || 0;
+        if (isNaN(income) || income <= 0) {
+            markInvalid(incomeField, "❌ Capital Amount must be greater than 0.");
+        }
+    }
+
+    // --- Clear all previous validations first
+    clearValidation(form);
+
+    // --- Validate All Sections
+    validateProfileSection(form);
+    validateAddressSection(form);
+    validateActivitiesSection(form);
+
+    if (!isValid) {
+        if (firstInvalid) firstInvalid.focus();
+        if (!$(".appalert:visible").length) {
+            appalert("❌ Please correct the highlighted fields before submitting.", 2, 1);
+        }
+        return false;
+    }
+
+    // --- Standard jQuery Unobtrusive
+    $.validator.unobtrusive.parse(form);
+    if (!$(form).valid()) {
+        appalert("❌ Please correct validation errors before submitting.", 2, 1);
+        return false;
+    }
+
+    // --- Confirmation and Submit
+    alertify.confirm("Confirmation", "Are you sure you want to perform this action?",
+        function () {
+            const ajaxConfig = {
+                type: 'POST',
+                url: form.action,
+                data: new FormData(form),
+                success: function (response) {
+                    console.log("Response:", response);
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+                        setTimeout(() => location.reload(), 1500);
+                    } else {
+                        appalert(response.message || "❌ Operation failed.", 2, 1);
+                    }
+                },
+                error: function (err) {
+                    console.log("Error:", err);
+                    if (err.status === 401) {
+                        window.location.href = '/Authentication/Login';
+                    } else {
+                        appalert(err.statusText, 0, 1);
+                    }
+                }
+            };
+
+            if ($(form).attr('enctype') === "multipart/form-data") {
+                ajaxConfig.contentType = false;
+                ajaxConfig.processData = false;
+            }
+
+            $.ajax(ajaxConfig);
+        },
+        function () {
+            appalert('Transaction cancelled.', 3, 1);
+        }
+    );
+
+    return false;
+}
 
 
+//function AjaxPostAndUpdateGroupRegistration(form) {
+//    console.log("📄 Submitting Group/Moral Person form:", form.action);
+
+//    var formData = new FormData(form);
+//    for (var pair of formData.entries()) {
+//        console.log(pair[0] + ": " + pair[1]);
+//    }
+
+//    // Custom Validation Function
+//    function validateGroupForm(formElement) {
+//        let isValid = true;
+//        let firstInvalid = null;
+
+//        const today = new Date();
+//        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+//        $(formElement).find('.is-invalid').removeClass('is-invalid');
+
+//        $(formElement).find('input, select, textarea').each(function () {
+//            const field = $(this);
+//            const name = field.attr("name");
+//            const val = $.trim(field.val());
+//            const isRequired = field.prop('required') || field.hasClass('required');
+
+//            // General required field check
+//            if (isRequired && (val === "" || val === null)) {
+//                field.addClass('is-invalid');
+//                if (!firstInvalid) firstInvalid = field;
+//                isValid = false;
+//                return;
+//            }
+
+//            // Email validation
+//            if (name === "Email" && val && !emailPattern.test(val)) {
+//                field.addClass('is-invalid');
+//                if (!firstInvalid) firstInvalid = field;
+//                isValid = false;
+//                appalert("❌ Please enter a valid email address.", 2, 1);
+//                return;
+//            }
+
+//            // Income (Capital) validation
+//            if (name === "Income" && val) {
+//                const income = parseFloat(val);
+//                if (isNaN(income) || income <= 0) {
+//                    field.addClass('is-invalid');
+//                    if (!firstInvalid) firstInvalid = field;
+//                    isValid = false;
+//                    appalert("❌ Capital/Income must be a number greater than 0.", 2, 1);
+//                    return;
+//                }
+//            }
+
+//            // Date of Establishment must not be in the future
+//            if (name === "DateOfEstablishment" && val) {
+//                const estDate = new Date(val);
+//                if (estDate > today) {
+//                    field.addClass('is-invalid');
+//                    if (!firstInvalid) firstInvalid = field;
+//                    isValid = false;
+//                    appalert("❌ Date of Establishment cannot be in the future.", 2, 1);
+//                    return;
+//                }
+//            }
+
+//            // ID Issue Date must not be in future
+//            if (name === "IDNumberIssueDate" && val) {
+//                const issueDate = new Date(val);
+//                if (issueDate > today) {
+//                    field.addClass('is-invalid');
+//                    if (!firstInvalid) firstInvalid = field;
+//                    isValid = false;
+//                    appalert("❌ ID Card Issue Date cannot be in the future.", 2, 1);
+//                    return;
+//                }
+//            }
+//        });
+
+//        if (!isValid && firstInvalid) {
+//            firstInvalid.focus();
+//            if (!$(".appalert:visible").length) {
+//                appalert("❌ Please correct the highlighted fields before submitting.", 2, 1);
+//            }
+//        }
+
+//        return isValid;
+//    }
+
+//    // 🔵 Run Validation
+//    if (!validateGroupForm(form)) {
+//        return false;
+//    }
+
+//    // 🔵 Also Run jQuery Validation
+//    $.validator.unobtrusive.parse(form);
+//    if (!$(form).valid()) {
+//        appalert("❌ Please fix all validation errors before submitting.", 2, 1);
+//        return false;
+//    }
+
+//    // 🟢 Confirmation and Ajax Submit
+//    alertify.confirm("Confirmation", "Are you sure you want to perform this action?",
+//        function () {
+//            const ajaxConfig = {
+//                type: 'POST',
+//                url: form.action,
+//                data: new FormData(form),
+//                success: function (response) {
+//                    console.log("✅ Server Response:", response);
+//                    if (response.success) {
+//                        appalert(response.message || "✔️ Operation successful.", 1, 1);
+//                        setTimeout(() => location.reload(), 1500);
+//                    } else {
+//                        appalert(response.message || "❌ Operation failed.", 2, 1);
+//                    }
+//                },
+//                error: function (err) {
+//                    console.error("❌ Error:", err);
+//                    if (err.status === 401) {
+//                        window.location.href = '/Authentication/Login';
+//                    } else {
+//                        appalert(err.statusText, 0, 1);
+//                    }
+//                }
+//            };
+
+//            if ($(form).attr('enctype') === "multipart/form-data") {
+//                ajaxConfig.contentType = false;
+//                ajaxConfig.processData = false;
+//            }
+
+//            $.ajax(ajaxConfig);
+//        },
+//        function () {
+//            appalert('⛔ Transaction cancelled.', 3, 1);
+//        }
+//    );
+
+//    return false;
+//}

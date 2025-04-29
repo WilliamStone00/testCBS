@@ -126,7 +126,7 @@ namespace CBS.FrontDesk.UI.Controllers
             catch (Exception ex)
             {
                 // Log the exception (optional) and rethrow for centralized handling
-               // throw(ex);
+                // throw(ex);
             }
         }
 
@@ -214,7 +214,7 @@ namespace CBS.FrontDesk.UI.Controllers
             return false; // Session does not exist
         }
 
-     
+
 
         public UserDto GetUserDto()
         {
@@ -279,12 +279,16 @@ namespace CBS.FrontDesk.UI.Controllers
                     Id = user.UserID,
                     UserName = reqDto.userName,
                     RoleName = roles,
+                    SessionIP=reqDto.SessionIP,
+                    SessionUserAgent=reqDto.SessionUserAgent,
                     FullName = user.FullName,
                     Email = user.Email,
                     Phonenumber = user.Phonenumber,
                     SessionID = reqDto.SessionId,
                     SessionCode=reqDto.SessionCode,
                 };
+                Session["SessionStartTime"] = DateTime.UtcNow;
+                Session["SessionMaxLifetimeMinutes"] = minutes_to_live; // Example: 4 hours
                 string userData = JsonConvert.SerializeObject(userModel);
                 FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(1, reqDto.SessionId, DateTime.Now, DateTime.Now.AddHours(minutes_to_live), false, userData);
                 string enTicket = FormsAuthentication.Encrypt(authTicket);
@@ -309,7 +313,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 "ASP.NET_SessionId", "EncryptedJWToken", "TSC"
             };
 
-                    foreach (var cookieName in cookieNames)
+            foreach (var cookieName in cookieNames)
             {
                 if (Request.Cookies[cookieName] != null)
                 {
@@ -452,6 +456,8 @@ namespace CBS.FrontDesk.UI.Controllers
             Session["Token"] = userSession.bearerToken;
             Session["UserName"] = userSession.userName;
             Session["Photo"] = userSession.profilePhoto ?? "No image";
+            Session["SessionIP"] = userSession.SessionIP;
+            Session["SessionUserAgent"] = userSession.SessionUserAgent;
 
             Session["LogoUrl"] = userSession.Branch.Bank?.LogoUrl ?? userSession.Branch.ImageVirtualPath;
 

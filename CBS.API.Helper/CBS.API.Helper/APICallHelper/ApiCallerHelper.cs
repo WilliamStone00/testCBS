@@ -475,23 +475,22 @@ namespace CBS.API.Helper
         }
         public async Task<ApiResponse<T>> PostAsync<T>(string apiUrl, object data)
         {
-
             try
             {
                 apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
                 string jsonData = JsonConvert.SerializeObject(data);
                 StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                // 🛡️ Add Authorization Header
                 AddAuthorizationHeader(_httpClient);
                 HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
                 return await HandleResponse<T>(response);
             }
-            catch (Exception EX)
+            catch (Exception ex)
             {
-
-                throw (EX);
-
+                throw ex;
             }
         }
+
         public async Task<ApiResponse<List<PostedEntry>>> PostServicesEntryAsync<T>(string apiUrl, object data)
         {
 
@@ -581,7 +580,16 @@ namespace CBS.API.Helper
             var Model = await HandleAccountingResponse(response);
             return Model.Data;
         }
-
+        public async Task<List<BalansheetRpt>> PostBalansheetAsync(string apiUrl, object data)
+        {
+            apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
+            string jsonData = JsonConvert.SerializeObject(data);
+            StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            AddAuthorizationHeader(_httpClient);
+            HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
+            var Model = await HandleBalansheetResponse(response);
+            return Model.Data;
+        }
         public async Task<List<LiaisonLedgerEntry>> PostLiaisonAccountAsync(string apiUrl, object data)
         {
             apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
@@ -847,7 +855,7 @@ namespace CBS.API.Helper
                 {
                     string responseData = await response.Content.ReadAsStringAsync();
 
-                    if (string.IsNullOrEmpty(responseData))
+                     if (string.IsNullOrEmpty(responseData))
                     {
 
                         if (response.StatusCode == HttpStatusCode.Unauthorized)
@@ -2315,6 +2323,7 @@ namespace CBS.API.Helper
                 throw (ex);
             }
         }
+        //
         private async Task<LiaisonLedgerEntryServiceResponse> HandleLiaisonResponse(HttpResponseMessage response)
         {
 
@@ -2326,6 +2335,25 @@ namespace CBS.API.Helper
                     string responseData = await response.Content.ReadAsStringAsync();
 
                     entries = JsonConvert.DeserializeObject<LiaisonLedgerEntryServiceResponse>(responseData);
+                }
+                return entries;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+        private async Task<BalansheetServiceResponse> HandleBalansheetResponse(HttpResponseMessage response)
+        {
+
+            BalansheetServiceResponse entries = new BalansheetServiceResponse();
+            try
+            {
+                if (response.Content != null)
+                {
+                    string responseData = await response.Content.ReadAsStringAsync();
+
+                    entries = JsonConvert.DeserializeObject<BalansheetServiceResponse>(responseData);
                 }
                 return entries;
             }

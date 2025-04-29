@@ -185,10 +185,11 @@ function collectDeposits() {
     const note = $('#Note')?.val() || '';
     const globalVat = parseFloat($('#calculatedVat').text().replace(/,/g, '')) || 0;
 
-    $('#myDataTableT tbody tr').each(function () {
-        const isChecked = $(this).find('.form-check-input').prop('checked');
+    const hideBalance = $('#hideBalanceCheckbox').is(':checked'); // ✅ FETCH OUTSIDE the loop once
 
-        // You may skip unchecked rows depending on operation type
+    $('#myDataTableT tbody tr').each(function () {
+        const isChecked = $(this).find('td input[type="checkbox"]').prop('checked'); // ✅ target only inside table cell, not global checkbox!
+
         if (!isChecked) return;
 
         const deposit = {
@@ -213,72 +214,17 @@ function collectDeposits() {
             PaymentChannel: 'Web_Portal',
             LoanApplicationId: $(this).find('.loan-application-id')?.val() || '',
             Period: $(this).find('.period')?.val() || '',
-            Vat: globalVat
+            Vat: globalVat,
+            HideBalance: hideBalance // ✅ correctly from the top hide balance checkbox!
         };
 
         deposits.push(deposit);
     });
 
-    console.log("✅ Collected Deposits with VAT:", deposits);
+    console.log("✅ Collected Deposits:", deposits);
     return deposits;
 }
 
-//function collectDeposits() {
-//    var deposits = [];
-
-//    var alphaNumber = $('#CustomerAlphaNumber').val();
-//    var customerId = $('#customerId').val();
-//    var operationType = $('#OperationType').val();
-//    var checkName = $('#CheckName')?.val() || '';
-//    var checkNumber = $('#CheckNumber')?.val() || '';
-//    var note = $('#Note')?.val() || '';
-
-//    // ✅ Capture the global calculated VAT from the footer element
-//    var globalVat = parseFloat($('#calculatedVat').text().replace(/,/g, '')) || 0;
-
-//    $('#myDataTableT tbody tr').each(function () {
-//        if ($(this).find('.form-check-input').prop('checked')) {
-//            var deposit = {};
-
-//            deposit.AccountNumber = $(this).find('td:eq(0)').text().trim();
-//            deposit.AccountType = $(this).find('td:eq(1)').text().trim();
-//            deposit.Balance = parseFloat($(this).find('td:eq(2)').text()) || 0;
-
-//            deposit.Amount = parseFloat($(this).find('.amount-input').val()) || 0;
-//            deposit.Fee = parseFloat($(this).find('.fee-input').val()) || 0;
-//            deposit.Penalty = parseFloat($(this).find('.penalty-input')?.val()) || 0;
-//            deposit.Interest = parseFloat($(this).find('.interest-input')?.val()) || 0;
-//            deposit.Total = parseFloat($(this).find('.total-span').text()) || 0;
-
-//            deposit.Note = note;
-//            deposit.CheckName = checkName;
-//            deposit.CheckNumber = checkNumber;
-
-//            deposit.CustomerAlphaNumber = alphaNumber;
-//            deposit.CustomerId = customerId;
-//            deposit.OperationType = operationType;
-
-//            deposit.isDepositDoneByAccountOwner = $(this).find('.form-check-input').prop('checked');
-//            deposit.IsChargesInclussive = $(this).find('.check-inclussive').prop('checked');
-
-//            deposit.IsSWS = true;
-//            deposit.PaymentMethod = 'Cash';
-//            deposit.PaymentChannel = 'Web_Portal';
-
-//            // Optional fields if present
-//            deposit.LoanApplicationId = $(this).find('.loan-application-id')?.val() || '';
-//            deposit.Period = $(this).find('.period')?.val() || '';
-
-//            // ✅ Add captured VAT
-//            deposit.Vat = globalVat;
-
-//            deposits.push(deposit);
-//        }
-//    });
-
-//    console.log("✅ Collected Deposits with VAT:", deposits);
-//    return deposits;
-//}
 
 function collectCurrencyNotes() {
     return {
@@ -331,9 +277,9 @@ function resetDepositorForm() {
     $('#DepositerNote').val('');
     $('#Note').val('')
 }
-function Reprint() {
+function Reprint(redirectUrl) {
+    window.open(redirectUrl, '_blank');
     ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLessWithSubReports");
-
 }
 function ReprintLoan() {
     ReportView("CashDesk", null, "GetReport", null, null, "loan", "ReportParameterLessWithSubReports");
@@ -352,8 +298,13 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType) {
                 data: JSON.stringify(data),
                 success: function (response) {
                     if (response && response.success) {
-                        successCallback(response, operationType);
-                        Reprint();
+                        appalert(response.message, 1, 1);
+                        resetDepositorForm();
+                        $("#depositerModal").modal("hide"); // Hide if not already hidden
+                        Reprint(response.redirectUrl);
+                        location.reload();
+                        //successCallback(response, operationType);
+                        
                     } else {
                         if (!response) {
                             alert("Your session is expired.");
@@ -374,13 +325,15 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType) {
 }
 
 function successCallback(response, operationType) {
-    appalert(response.message || "✅ Operation completed successfully.", 1, 1);
-
+   
     // Clean up
     resetDepositorForm();
     $("#depositerModal").modal("hide"); // Hide if not already hidden
-
+    location.reload();
     const customerId = $("#customerId").val();
+
+     //✅ Reload the entire page
+    location.reload();
 
     const actions = {
         CashIn: "cashin",
@@ -537,7 +490,7 @@ function PostCashIn() {
             });
         },
         function () {
-            alertify.message("🚫 Operation cancelled.");
+            appalert("🚫 Operation cancelled.",2,1);
         }
     ).set('labels', { ok: 'Yes, Continue', cancel: 'Cancel' });
 }
@@ -558,10 +511,15 @@ function PostTransaction(ajaxUrl, data, operationType) {
         success: function (response) {
             if (response && response.success) {
                 // ✅ Success: hide modal, notify and reprint
-                $("#depositerModal").modal("hide");
-                appalert(`✅ ${response.message}`, 1, 2);
-                successCallback(response, operationType);
-                Reprint();
+                //$("#depositerModal").modal("hide");
+                //appalert(`✅ ${response.message}`, 1, 2);
+                //successCallback(response, operationType);
+                //Reprint();
+                appalert(response.message, 1, 1);
+                resetDepositorForm();
+                $("#depositerModal").modal("hide"); // Hide if not already hidden
+                Reprint(response.redirectUrl);
+                location.reload();
             } else {
                 // ❌ Failure: show error inside modal
                 const errorMsg = response?.message || "An unknown error occurred.";
