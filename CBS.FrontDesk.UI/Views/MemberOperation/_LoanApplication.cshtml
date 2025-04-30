@@ -271,52 +271,53 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12" id="loanProductDiv">
-                                        <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductId, new SelectList(ViewBag.LoanProducts, "Value", "Text"), @Global_LoanApplication.SelectLoanProduct, new { @class = "form-control select2", @search = "true", @onchange = "LoanProductsProperties(this.value,'loanrepayment_cycles','RepaymentCircle')", @id = "loan_productid" })
-                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanProductId, "", new { @class = "text-danger " })
-                                            <label>@Global_LoanApplication.LoanProduct</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12" id="loanTypeDiv">
-                                        <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanType, new SelectList(ViewBag.LoanTypes, "Value", "Text"), @Global_LoanApplication.SelectLoanType, new { @class = "form-control select2", @search = "true" })
-                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanType, "", new { @class = "text-danger " })
-                                            <label>@Global_LoanApplication.SelectLoanType</label>
-                                        </div>
-                                    </div>
 
-                                    <div class="col-md-12" id="RAmountDiv">
-                                        <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.Amount, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.Amount, "", new { @class = "text-danger" })
-                                            <label id="amount">@Global_LoanApplication.Amount</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.AddLoanApplicationCommand.LoanDuration, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanDuration, "", new { @class = "text-danger" })
-                                            <label id="loanduration">@Global_LoanApplication.LoanDuration</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12" id="beforeProcessingDiv">
-                                        <div class="form-check">
-                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsPaidFeeBeforeProcessing, new { @class = "form-check-input", @id = "FeePaidBeforeProcessing" })
-                                            <label class="form-check-label" for="FeePaidBeforeProcessing">
-                                                @Global_LoanApplication.APartialFeeMustBePaidBeforeTheLoanCanBeProcessed
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12" id="afterProcessingDiv">
-                                        <div class="form-check">
-                                            @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsPaidFeeAfterProcessing, new { @class = "form-check-input", @id = "FeePaidAfterProcessing", @disabled = "disabled" })
-                                            <label class="form-check-label" for="FeePaidAfterProcessing">
-                                                @Global_LoanApplication.TheFeeCanEitherBePaidUpfront
-                                            </label>
-                                        </div>
-                                    </div>
 
+                                </div>
+                                <div class="col-md-12" id="loanProductDiv">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductId, new SelectList(ViewBag.LoanProducts, "Value", "Text"), @Global_LoanApplication.SelectLoanProduct, new { @class = "form-control select2", @search = "true", @onchange = "LoanProductsProperties(this.value,'loanrepayment_cycles','RepaymentCircle')", @id = "loan_productid" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanProductId, "", new { @class = "text-danger " })
+                                        <label>@Global_LoanApplication.LoanProduct</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" id="loanTypeDiv">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanType, new SelectList(ViewBag.LoanTypes, "Value", "Text"), @Global_LoanApplication.SelectLoanType, new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanType, "", new { @class = "text-danger " })
+                                        <label>@Global_LoanApplication.SelectLoanType</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12" id="RAmountDiv">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.Amount, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.Amount, "", new { @class = "text-danger" })
+                                        <label id="amount">@Global_LoanApplication.Amount</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.AddLoanApplicationCommand.LoanDuration, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.LoanDuration, "", new { @class = "text-danger" })
+                                        <label id="loanduration">@Global_LoanApplication.LoanDuration</label>
+                                    </div>
+                                </div>
+                                <div class="col-12" id="beforeProcessingDiv">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsPaidFeeBeforeProcessing, new { @class = "form-check-input", @id = "FeePaidBeforeProcessing" })
+                                        <label class="form-check-label" for="FeePaidBeforeProcessing">
+                                            @Global_LoanApplication.APartialFeeMustBePaidBeforeTheLoanCanBeProcessed
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12" id="afterProcessingDiv">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.IsPaidFeeAfterProcessing, new { @class = "form-check-input", @id = "FeePaidAfterProcessing", @disabled = "disabled" })
+                                        <label class="form-check-label" for="FeePaidAfterProcessing">
+                                            @Global_LoanApplication.TheFeeCanEitherBePaidUpfront
+                                        </label>
+                                    </div>
                                 </div>
                         </fieldset>
                     </div>

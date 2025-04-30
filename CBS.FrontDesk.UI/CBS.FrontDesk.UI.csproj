@@ -908,11 +908,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Global_LoanApplication.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanApplication1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Global_LoanApplication.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\MemberOperation\Global_LoanApplicationCancellation.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

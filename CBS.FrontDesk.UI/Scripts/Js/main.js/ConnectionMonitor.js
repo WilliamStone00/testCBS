@@ -233,10 +233,11 @@ function renewSession() {
         method: 'GET',
         success: function () {
             $('#sessionTimeoutModal').modal('hide');
+            clearTimeout(warningTimer);
+            clearTimeout(logoutTimer);
             clearInterval(countdownTimer);
             clearInterval(floatingCountdownTimer);
-            removeBlurAndOverlay();
-            startSessionTimers(); // ⬅ Load timeout from DB first
+            startSessionTimers();
         },
         error: function () {
             forceLogout();
