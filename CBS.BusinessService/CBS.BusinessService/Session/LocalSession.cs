@@ -5,6 +5,7 @@ using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.UserManagement;
 using CBS.FrontDesk.Helper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -22,6 +23,33 @@ namespace CBS.BusinessService.Session
         {
             _identityServerBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
 
+        }
+        public UserSessionDto GetCurrentUserSession(string sessionCode, string username)
+        {
+            var sessionData = HttpContext.Current?.Session?["UserSession"] as string;
+
+            if (!string.IsNullOrWhiteSpace(sessionData))
+            {
+                try
+                {
+                    return JsonConvert.DeserializeObject<UserSessionDto>(sessionData);
+                }
+                catch
+                {
+                    // Log or handle deserialization issue if needed
+                }
+            }
+
+            // ❗ Session is missing or invalid — fallback to database
+            var userSessionFromDb = GetUserCurrentsession(sessionCode, username);
+            if (userSessionFromDb != null)
+            {
+                // Store back into session for future use
+                HttpContext.Current.Session["UserSession"] = JsonConvert.SerializeObject(userSessionFromDb);
+                HttpContext.Current.Session.Timeout = 60; // 1 hour
+            }
+
+            return userSessionFromDb;
         }
 
         public UserSessionDto GetUserCurrentsession(string sessionCode, string username)
@@ -61,7 +89,6 @@ namespace CBS.BusinessService.Session
                 return null;
             }
         }
-
         //GetCurrentIdletimeByBranch
         public async Task<IdleTime> GetCurrentIdletimeByBranch()
         {

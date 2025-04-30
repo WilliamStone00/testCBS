@@ -269,6 +269,12 @@ namespace CBS.FrontDesk.Data.UserManagement
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public string Createdby { get; set; }
     }
+    public class SessionTimeoutConfigDto
+    {
+        public int Timeout { get; set; }      // total idle timeout in minutes
+        public int Warning { get; set; }      // warning threshold before timeout
+    }
+
     public class UserSessionDataTable
     {
         public string Id { get; set; }

@@ -1,5 +1,11 @@
 ﻿@{
-    var selectedLang = (Session["SelectedLanguage"]?.ToString() ?? "en").ToLower();
+    var selectedLang = "en"; // Default if session is missing
+
+    if (Session != null && Session["SelectedLanguage"] != null)
+    {
+        selectedLang = Session["SelectedLanguage"].ToString().ToLower();
+    }
+
     var langFlag = selectedLang == "fr"
         ? Url.Content("~/AppFiles/Images/Lang/france_64.png")
         : Url.Content("~/AppFiles/Images/Lang/united_kingdom_64.png");
@@ -33,5 +39,3 @@
         transition: opacity 0.3s ease-in-out;
     }
 </style>
-
-
