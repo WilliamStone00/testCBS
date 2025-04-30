@@ -264,7 +264,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public OperationFee Fee { get; set; }
         public FeePolicy()
         {
-            IsCentralised = true;
+            IsCentralised = false;
             AmountFrom = 0;
             AmountTo = 0;
             Value = 0;

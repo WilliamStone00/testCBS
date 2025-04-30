@@ -1264,23 +1264,6 @@
     </script>
 
 
-    <script>
-        function setLanguage(lang, flagPath) {
-            const flagElement = document.getElementById('current-lang-flag');
-            if (flagElement) {
-                flagElement.style.opacity = '0.3';
-            }
-
-            fetch(`/Localization/SetLanguage?lang=${lang}`)
-                .then(() => {
-                    if (flagElement) {
-                        flagElement.src = flagPath.replace('~', '');
-                        flagElement.style.opacity = '1';
-                    }
-                    location.reload();
-                });
-        }
-    </script>
 
 
 

@@ -146,12 +146,36 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         {
             try
             {
+                const string SessionKeyDate = "CurrentAccountingDate";
+                const string SessionKeyExpiry = "CurrentAccountingDateExpiry";
+
+                // Check if the accounting date is already in session and not expired
+                var sessionDate = HttpContext.Session[SessionKeyDate] as string;
+                var expiryObj = HttpContext.Session[SessionKeyExpiry] as DateTime?;
+
+                if (!string.IsNullOrEmpty(sessionDate) && expiryObj.HasValue && expiryObj.Value > DateTime.Now)
+                {
+                    return Json(new
+                    {
+                        success = true,
+                        status = "OK",
+                        data = sessionDate
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+                // If not found or expired, fetch new value from service
                 var date = await _services.GetCurrentAccountingDate();
+                var formattedDate = date.ToString("dd-MM-yyyy HH:mm:ss");
+
+                // Store in session with expiry 1 hour from now
+                HttpContext.Session[SessionKeyDate] = formattedDate;
+                HttpContext.Session[SessionKeyExpiry] = DateTime.Now.AddHours(1);
+
                 return Json(new
                 {
                     success = true,
                     status = "OK",
-                    data = date.ToString("dd-MM-yyyy hh:mm:ss")
+                    data = formattedDate
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -163,6 +187,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 }, JsonRequestBehavior.AllowGet);
             }
         }
+
 
 
         public async Task<ActionResult> GetAccountingDayDetails(string id)
