@@ -1,14 +1,15 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+@using Resources
 @if (Model != null && Model.LoanApplication.LoanCommiteeValidations.Any())
 {
     <div class="table-responsive mb-3">
         <table class="table table-hover" id="myDataTable_commitee_group">
             <thead class="table-light">
                 <tr>
-                    <th>Comment</th>
-                    <th>User</th>
-                    <th>Commitee member</th>
-                    <th>Date</th>
+                    <th>@Global_LoanCommiteeValidationData.Comment</th>
+                    <th>@Global_LoanCommiteeValidationData.User</th>
+                    <th>@Global_LoanCommiteeValidationData.CommiteeMember</th>
+                    <th>@Global_LoanCommiteeValidationData.Date</th>
                 </tr>
             </thead>
             <tbody>
@@ -18,7 +19,7 @@
                         <td style="width:55%">@d.Comment</td>
                         <td style="width:15%">@d.UserId</td>
                         <td style="width:10%">@d.Status</td>
-                       <td style="width:20%">@d.CreatedDate.ToLongDateString()</td>
+                        <td style="width:20%">@d.CreatedDate.ToLongDateString()</td>
                     </tr>
                 }
             </tbody>
@@ -28,6 +29,6 @@
 else
 {
     <div class="alert alert-info" role="alert">
-        No commitee groups validation is available at the moment.
+        @Global_LoanCommiteeValidationData.NoCommiteeGroupsValidationIsAvailableAtTheMoment
     </div>
 }

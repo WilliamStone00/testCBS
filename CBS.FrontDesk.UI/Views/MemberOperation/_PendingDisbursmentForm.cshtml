@@ -1,28 +1,29 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+@using Resources
 
 <!-- Tips Section -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> HELP TIPS</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalPendingDisbursment.HelpTipsTitle</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </h6>
     <div id="collapseHelpTips" class="collapse">
         <div class="card-body">
-            <p class="text-muted mb-2">Follow these tips for a smooth disbursement process:</p>
+            <p class="text-muted mb-2">@GlobalPendingDisbursment.FollowTheseTipsForASmoothDisbursementProcess</p>
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure that the loan has been approved before proceeding with disbursement.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use the dropdown to select the correct account for crediting the disbursed amount.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Check the "Already Managed" box if the money has already been disbursed, to prevent double disbursement.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Include detailed comments for better tracking and record-keeping.</li>
-                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Verify all entered details, including account numbers and customer information, before submitting.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalPendingDisbursment.EnsureThatTheLoanHasBeenApprovedBeforeProceedingWithDisbursement</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalPendingDisbursment.UseTheDropdownToSelectTheCorrectAccountForCreditingTheDisbursedAmount</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalPendingDisbursment.CheckTheAlreadyManagedBoxIfTheMoneyHasAlreadyBeenDisbursedToPreventDoubleDisbursement</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalPendingDisbursment.IncludeDetailedCommentsForBetterTrackingAndRecordKeeping</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalPendingDisbursment.VerifyAllEnteredDetailsIncludingAccountNumbersAndCustomerInformationBeforeSubmitting</li>
             </ul>
-            <p class="text-muted">Additional Notes:</p>
+            <p class="text-muted">@GlobalPendingDisbursment.AdditionalNotes</p>
             <ul>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> The system will automatically update the loan status once disbursement is completed.</li>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Ensure compliance with the organization's loan disbursement policies.</li>
-                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> For any discrepancies, consult the Loan Manager immediately.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalPendingDisbursment.TheSystemWillAutomaticallyUpdateTheLoanStatusOnceDisbursementIsCompleted</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalPendingDisbursment.EnsureComplianceWithTheOrganizationsLoanDisbursementPolicies</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalPendingDisbursment.ForAnyDiscrepanciesConsultTheLoanManagerImmediately</li>
             </ul>
         </div>
     </div>
@@ -40,7 +41,7 @@
                             data-bs-target="#collapseLoanDisbursement"
                             aria-expanded="true"
                             aria-controls="collapseLoanDisbursement">
-                        Loan Disbursement
+                        @GlobalPendingDisbursment.LoanDisbursement
                     </button>
                 </h2>
 
@@ -62,27 +63,27 @@
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.AddLoanDisbumentCommand.IsAlreadyManage, new { @class = "form-check-input", id = "isAlreadyManage", @disabled = "disabled" })
                                             <label class="form-check-label" for="isAlreadyManage">
-                                                Check if the customer already received the money. Then cash will not be affected.
+                                                @GlobalPendingDisbursment.CheckIfTheCustomerAlreadyReceivedTheMoneyThenCashWillNotBeAffected
                                             </label>
                                         </div>
                                     </div>
 
-                                   
+
                                     <!-- Status Dropdown -->
                                     <div class="col-md-12">
                                         <div class="form-floating">
-                                            @Html.DropDownListFor(m => m.AddLoanDisbumentCommand.Status, new SelectList(ViewBag.DisbursmentStatuses, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true", id = "statusDropdown" })
+                                            @Html.DropDownListFor(m => m.AddLoanDisbumentCommand.Status, new SelectList(ViewBag.DisbursmentStatuses, "Value", "Text"), "---@GlobalPendingDisbursment.Select---", new { @class = "form-control select2", @search = "true", id = "statusDropdown" })
                                             @Html.ValidationMessageFor(m => m.AddLoanDisbumentCommand.Status, "", new { @class = "text-danger" })
-                                            <label for="statusDropdown">Select Disbursed Status</label>
+                                            <label for="statusDropdown">@GlobalPendingDisbursment.SelectDisbursedStatus</label>
                                         </div>
                                     </div>
 
                                     <!-- Account Number Dropdown -->
                                     <div class="col-md-12">
                                         <div class="form-floating">
-                                            @Html.DropDownListFor(m => m.AddLoanDisbumentCommand.AccountNumber, new SelectList(ViewBag.CustomerAccounts, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true", id = "accountDropdown", onchange = "updateComment()" })
+                                            @Html.DropDownListFor(m => m.AddLoanDisbumentCommand.AccountNumber, new SelectList(ViewBag.CustomerAccounts, "Value", "Text"), "---"+@GlobalPendingDisbursment.SelectAccountToReceiveDisbursedAmount+"---", new { @class = "form-control select2", @search = "true", id = "accountDropdown", onchange = "updateComment()" })
                                             @Html.ValidationMessageFor(m => m.AddLoanDisbumentCommand.AccountNumber, "", new { @class = "text-danger" })
-                                            <label for="accountDropdown">Select Account (Deposit/Current or Saving) to Receive Disbursed Amount</label>
+                                            <label for="accountDropdown">@GlobalPendingDisbursment.SelectAccountToReceiveDisbursedAmount</label>
                                         </div>
                                     </div>
 
@@ -91,7 +92,7 @@
                                         <div class="form-floating">
                                             @Html.TextAreaFor(m => m.AddLoanDisbumentCommand.Comment, new { @class = "form-control", style = "height: 200px;", id = "commentTextArea" })
                                             @Html.ValidationMessageFor(m => m.AddLoanDisbumentCommand.Comment, "", new { @class = "text-danger" })
-                                            <label for="commentTextArea">Comment</label>
+                                            <label for="commentTextArea">@GlobalPendingDisbursment.Comment</label>
                                         </div>
                                     </div>
                                 </div>
@@ -99,7 +100,7 @@
                                 <!-- Submit Button -->
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary">
-                                        Disburse
+                                        @GlobalPendingDisbursment.Disburse
                                     </button>
                                 </div>
                             </fieldset>

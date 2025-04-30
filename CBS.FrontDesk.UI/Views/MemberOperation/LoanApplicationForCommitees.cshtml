@@ -1,6 +1,7 @@
 ﻿@{
-    ViewBag.Title = "Committee Validations";
+    ViewBag.Title = GlobalLoanApplicationForCommitees.CommitteeValidations;
 }
+@using Resources
 
 <div class="row">
     <div class="col-12">
@@ -8,10 +9,10 @@
         <div class="card bg-light">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account me-2"></i> Committee Loan Application Validations
+                    <i class="mdi mdi-account me-2"></i> @GlobalLoanApplicationForCommitees.CommitteeLoanApplicationValidations
                 </h1>
                 <p class="card-text text-muted">
-                    Review loan applications forwarded to the committee. Validate and approve requests based on the set criteria and ensure proper documentation is in place.
+                    @GlobalLoanApplicationForCommitees.CommitteeValidationsDescription
                 </p>
             </div>
         </div>
@@ -22,7 +23,7 @@
     <div class="col-12">
         <div class="card">
             <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                <span><i class="mdi mdi-information-outline me-2"></i> IMPORTANT NOTICE</span>
+                <span><i class="mdi mdi-information-outline me-2"></i> @GlobalLoanApplicationForCommitees.ImportantNotice</span>
                 <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
                     <i class="mdi mdi-chevron-down"></i>
                 </button>
@@ -30,12 +31,12 @@
             <div id="collapseHelpTips" class="collapse">
                 <div class="card-body">
                     <ul>
-                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Ensure all required documents are uploaded for each loan application.</li>
-                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Verify the applicant's eligibility based on savings, shares, and any set down payment criteria.</li>
-                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Confirm that co-obligors, if required, have sufficient balances to secure the loan.</li>
-                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Once a loan is approved by the committee, ensure it aligns with the organization's policies and board regulations.</li>
-                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Accounts used as guarantees are blocked until the loan is fully settled.</li>
-                        <li><i class="mdi mdi-information-outline text-primary me-2"></i> Use the tooltip icons for additional guidance on specific fields.</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> @GlobalLoanApplicationForCommitees.Tip1</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> @GlobalLoanApplicationForCommitees.Tip2</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> @GlobalLoanApplicationForCommitees.Tip3</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> @GlobalLoanApplicationForCommitees.Tip4</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> @GlobalLoanApplicationForCommitees.Tip5</li>
+                        <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalLoanApplicationForCommitees.Tip6</li>
                     </ul>
                 </div>
             </div>
@@ -57,7 +58,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
                         <i class="mdi mdi-account me-2"></i>
-                        @Session["BranchName"] LOAN APPLICATION REQUESTS
+                        @GlobalLoanApplicationForCommitees.LoanApplicationRequests @Session["BranchName"]
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"
@@ -70,7 +71,7 @@
                                     <div class="card-body d-sm-flex d-block">
                                         <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
                                             <div class="ms-3">
-                                                <a href="/MemberOperation/LoanApplicationForCommitees" type="button" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View list of loan applications">
+                                                <a href="/MemberOperation/LoanApplicationForCommitees" type="button" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalLoanApplicationForCommitees.ViewListOfLoanApplications">
                                                     <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                                 </a>
                                             </div>
@@ -98,6 +99,6 @@
     $(document).ready(function () {
         LoadDT("myDataTable", 0);
     });
-    
-    </script>
+
+</script>
 }

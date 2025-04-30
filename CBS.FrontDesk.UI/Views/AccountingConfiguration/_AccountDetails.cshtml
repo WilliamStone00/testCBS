@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
-
+@using Resources
 <div class="row invoice-preview">
     <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
 
@@ -13,7 +13,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    Account Information
+                    @GlobalAccount.AccountInformation
                 </button>
             </h2>
             <div class="card-body">
@@ -23,47 +23,47 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th colspan="2"> Account Information Details</th>
+                                <th colspan="2">  @GlobalAccount.AccountInformationDetails </th>
 
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
                             <tr>
-                                <td>Account Owner</td>
+                                <td>@GlobalAccount.AccountOwner</td>
                                 <td>@Model.Account.AccountOwnerId </td>
                             </tr>
 
                             <tr>
-                                <td>AccountNumber at level of the union</td>
+                                <td>@GlobalAccount.AccountNumberAtLevelOfTheUnion</td>
                                 <td>@Model.Account.AccountNumberCU </td>
                             </tr>
                             <tr>
-                                <td>AccountNumber at level of the network </td>
+                                <td>@GlobalAccount.AccountNumberAtLevelOfTheNetwork </td>
                                 <td> @Model.Account.AccountNumberNetwok </td>
                             </tr>
                             <tr>
-                                <td>Account Description</td>
+                                <td>@GlobalAccount.AccountDescription</td>
                                 <td>@Model.Account.AccountName </td>
                             </tr>
 
                             <tr>
-                                <td>Beginning Balance</td>
+                                <td>@GlobalAccount.BeginningBalance</td>
                                 <td>@Model.Account.BeginningBalance </td>
                             </tr>
                             <tr>
-                                <td>Current Balance </td>
+                                <td>@GlobalAccount.CurrentBalance </td>
                                 <td> @Model.Account.CurrentBalance  </td>
                             </tr>
                             <tr>
-                                <td>Credit Balance </td>
+                                <td>@GlobalAccount.CreditBalance </td>
                                 <td> @Model.Account.CreditBalance </td>
                             </tr>
                             <tr>
-                                <td>Debit Balance</td>
+                                <td>@GlobalAccount.DebitBalance</td>
                                 <td> @Model.Account.DebitBalance </td>
                             </tr>
                             <tr>
-                                <td>Last Balance</td>
+                                <td>@GlobalAccount.LastBalance</td>
                                 <td> @Model.Account.LastBalance </td>
                             </tr>
 

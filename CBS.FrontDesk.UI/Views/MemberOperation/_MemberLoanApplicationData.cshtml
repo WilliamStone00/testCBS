@@ -1,13 +1,14 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+@using Resources
 <div class="table-responsive mb-3">
     <table class="table table-hover table-striped" id="myDataTable">
         <thead class="table-light">
             <tr>
-                <th>Date</th>
-                <th>Loan Type</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th>@Global_MemberLoanApplicationData.Date</th>
+                <th>@Global_MemberLoanApplicationData.LoanType</th>
+                <th>@Global_MemberLoanApplicationData.Amount</th>
+                <th>@Global_MemberLoanApplicationData.Status</th>
+                <th>@Global_MemberLoanApplicationData.Action</th>
             </tr>
         </thead>
         <tbody>
@@ -40,8 +41,8 @@
                            class="btn btn-info btn-sm"
                            data-toggle="tooltip"
                            data-placement="top"
-                           title="View details of @d.LoanType">
-                            <i class="fas fa-info-circle me-1"></i> Detail
+                           title="@Global_MemberLoanApplicationData.ViewDetailsOf @d.LoanType">
+                            <i class="fas fa-info-circle me-1"></i> @Global_MemberLoanApplicationData.Detail
                         </a>
                     </td>
                 </tr>

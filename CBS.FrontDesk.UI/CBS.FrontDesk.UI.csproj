@@ -788,10 +788,290 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalLogin.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\GlobalLoanApplicationApproval.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanApplicationApproval.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\GlobalLoanApplicationApproval.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanApplicationApproval.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\GlobalLoanApplicationForCommitees.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanApplicationForCommitees.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\GlobalLoanApplicationForCommitees.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanApplicationForCommitees.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\GlobalLoanSimulation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanSimulation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\GlobalLoanSimulation.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanSimulation.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\GlobalMembers.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalMembers.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\GlobalMembers.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalMembers.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\GlobalMyMembers.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalMyMembers.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\GlobalMyMembers.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalMyMembers.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\GlobalOperationPanel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalOperationPanel.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\GlobalOperationPanel.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalOperationPanel.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\GlobalPendingDisbursment.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalPendingDisbursment.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\GlobalPendingDisbursment.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalPendingDisbursment.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_AddLoanCollateral.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_AddLoanCollateral.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_AddLoanCollateral.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_AddLoanCollateral.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_AddLoanGuarantor.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_AddLoanGuarantor.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_AddLoanGuarantor.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_AddLoanGuarantor.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_AddtachedLoanDocument.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_AddtachedLoanDocument.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_AddtachedLoanDocument.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_AddtachedLoanDocument.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanApplication.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanApplication.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanApplication.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanApplication.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanApplication1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanApplication.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanApplicationCancellation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanApplicationCancellation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanApplicationCancellation.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanApplicationCancellation.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanApplicationForCommiteeData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanApplicationForCommiteeData.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanApplicationForCommiteeData.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanApplicationForCommiteeData.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanCommiteeValidationData.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanCommiteeValidationData.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanCommiteeValidations.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanCommiteeValidations.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanCommiteeValidationData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanCommiteeValidationData.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanCommiteeValidations.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanCommiteeValidations.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanData.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanData.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanData.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanDetails.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanDetails.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanDetails.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanDetails.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanScheduleData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanScheduleData.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanScheduleData.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanScheduleData.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanSimulationScheduleData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanSimulationScheduleData.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanSimulationScheduleData.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_LoanSimulationScheduleData.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_MakeLoanSimulation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_MakeLoanSimulation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_MakeLoanSimulation.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_MakeLoanSimulation.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_MemberLoanApplicationData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_MemberLoanApplicationData.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_MemberLoanApplicationData.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_MemberLoanApplicationData.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_MemberLoanApplicationDetail.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_MemberLoanApplicationDetail.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_MemberLoanApplicationDetail.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_MemberLoanApplicationDetail.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_RefundForm.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_RefundForm.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_RefundForm.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_RefundForm.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_SearchBox.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_SearchBox.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_SearchBox.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_SearchBox.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_SelectedLoanData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_SelectedLoanData.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_SelectedLoanData.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_SelectedLoanData.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_SendOTP.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_SendOTP.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_SendOTP.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_SendOTP.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_SharedLoanTerm.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_SharedLoanTerm.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOperation\Global_SharedLoanTerm.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global_SharedLoanTerm.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\TransactionConfiguration\GlobalOrdinaryAccounts.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalOrdinaryAccounts.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\TransactionConfiguration\GlobalOrdinaryAccounts.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalOrdinaryAccounts.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\TransactionConfiguration\GlobalsAccountMapping.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -3486,6 +3766,226 @@
     <Content Include="App_GlobalResources\TransactionConfiguration\GlobalsPolicyandSharing.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalsPolicyandSharing.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\GlobalPendingDisbursment.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalPendingDisbursment.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\GlobalOperationPanel.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalOperationPanel.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\GlobalMembers.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalMembers.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\GlobalMyMembers.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalMyMembers.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\GlobalLoanSimulation.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanSimulation.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\GlobalLoanApplicationForCommitees.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanApplicationForCommitees.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\GlobalLoanApplicationApproval.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanApplicationApproval.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_AddLoanCollateral.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_AddLoanCollateral.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_AddLoanGuarantor.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_AddLoanGuarantor.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_AddtachedLoanDocument.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_AddtachedLoanDocument.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_LoanApplication.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_LoanApplication1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_SharedLoanTerm.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_SharedLoanTerm.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_SendOTP.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_SendOTP.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_SelectedLoanData.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_SelectedLoanData.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_RefundForm.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_RefundForm.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_SearchBox.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_SearchBox.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_MemberLoanApplicationDetail.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_MemberLoanApplicationDetail.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_MemberLoanApplicationData.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_MemberLoanApplicationData.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_MakeLoanSimulation.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_MakeLoanSimulation.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_LoanSimulationScheduleData.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_LoanSimulationScheduleData.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_LoanScheduleData.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_LoanScheduleData.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_LoanDetails.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_LoanDetails.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_LoanData.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_LoanData.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_LoanCommiteeValidationData.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_LoanCommiteeValidationData.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_LoanCommiteeValidations.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_LoanCommiteeValidations.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_LoanApplicationForCommiteeData.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_LoanApplicationForCommiteeData.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_LoanApplicationCancellation.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_LoanApplicationCancellation.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_SharedLoanTerm.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_SharedLoanTerm.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\GlobalLoanApplicationForCommitees.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanApplicationForCommitees.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\GlobalLoanApplicationApproval.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanApplicationApproval.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_LoanApplication.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_LoanApplication.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_AddLoanGuarantor.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_AddLoanGuarantor.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_AddLoanCollateral.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_AddLoanCollateral.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_LoanApplicationCancellation.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_LoanApplicationCancellation.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_AddtachedLoanDocument.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_AddtachedLoanDocument.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_LoanApplicationForCommiteeData.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_LoanApplicationForCommiteeData.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_LoanData.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_LoanData.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_LoanCommiteeValidations.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_LoanCommiteeValidations.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_MakeLoanSimulation.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_MakeLoanSimulation.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_LoanCommiteeValidationData.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_LoanCommiteeValidationData.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_LoanScheduleData.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_LoanScheduleData.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_LoanSimulationScheduleData.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_LoanSimulationScheduleData.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_LoanDetails.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_LoanDetails.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_MemberLoanApplicationData.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_MemberLoanApplicationData.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_MemberLoanApplicationDetail.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_MemberLoanApplicationDetail.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_RefundForm.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_RefundForm.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_SearchBox.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_SearchBox.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_SelectedLoanData.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_SelectedLoanData.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\Global_SendOTP.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Global_SendOTP.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\GlobalLoanSimulation.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanSimulation.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\GlobalMembers.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalMembers.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\GlobalMyMembers.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalMyMembers.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\GlobalOperationPanel.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalOperationPanel.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOperation\GlobalPendingDisbursment.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalPendingDisbursment.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\TransactionConfiguration\GlobalOrdinaryAccounts.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalOrdinaryAccounts.fr.designer.cs</LastGenOutput>
     </Content>
     <None Include="Resources\TextFile1.txt" />
     <Content Include="Scripts\bootstrap.bundle.js" />

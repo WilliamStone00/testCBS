@@ -1,19 +1,20 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+@using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base" style="font-size: 14px;">Simulated Repayment Data</legend>
+    <legend id="select_base" style="font-size: 14px;">@Global_LoanSimulationScheduleData.SimulatedRepaymentData</legend>
     <hr style="border: 2px solid blue;" />
     <div class="table-responsive mb-3">
         <table class="table table-hover" id="myDataTable">
             <thead class="table-light">
                 <tr>
-                    <th style="width: 3%">SN</th>
-                    <th style="width: 7%">Date</th>
-                    <th style="width: 7%">Begining Balance</th>
-                    <th style="width: 8%">Capital</th>
-                    <th style="width: 8%">Interest</th>
-                    <th style="width: 8%">Tax</th>
-                    <th style="width: 7%">Annuity</th>
-                    <th style="width: 20%">End Balance</th>
+                    <th style="width: 3%">@Global_LoanSimulationScheduleData.SerialNumber</th>
+                    <th style="width: 7%">@Global_LoanSimulationScheduleData.Date</th>
+                    <th style="width: 7%">@Global_LoanSimulationScheduleData.BeginningBalance</th>
+                    <th style="width: 8%">@Global_LoanSimulationScheduleData.Capital</th>
+                    <th style="width: 8%">@Global_LoanSimulationScheduleData.Interest</th>
+                    <th style="width: 8%">@Global_LoanSimulationScheduleData.Tax</th>
+                    <th style="width: 7%">@Global_LoanSimulationScheduleData.Annuity</th>
+                    <th style="width: 20%">@Global_LoanSimulationScheduleData.EndBalance</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,13 +25,13 @@
                         @if (Model.LoanAmortizations.Any())
                         {
                             <span>
-                                Loan amount: @Model.LoanAmortizations.FirstOrDefault().Amount.ToString("#,0.0")
+                                @Global_LoanSimulationScheduleData.LoanAmount: @Model.LoanAmortizations.FirstOrDefault().Amount.ToString("#,0.0")
                             </span>
                         }
                         else
                         {
                             <span>
-                                Principal: 0.0
+                                @Global_LoanSimulationScheduleData.Principal: 0.0
                             </span>
                         }
                     </td>
@@ -57,14 +58,13 @@
                 </tr>
                 <tr>
                     <td colspan="3"></td>
-                    <td style="width: 15%">T.Capital: @Model.LoanAmortizations.Sum(x => x.Principal).ToString("#,0.00")</td>
-                    <td style="width: 15%">T.Interest: @Model.LoanAmortizations.Sum(x => x.Interest).ToString("#,0.00")</td>
-                    <td style="width: 15%">T.Tax: @Model.LoanAmortizations.Sum(x => x.Tax).ToString("#,0.00")</td>
-                    <td style="width: 25%">T.Annuity: @Model.LoanAmortizations.Sum(x => x.TotalDue).ToString("#,0.00")</td>
+                    <td style="width: 15%">@Global_LoanSimulationScheduleData.TotalCapital: @Model.LoanAmortizations.Sum(x => x.Principal).ToString("#,0.00")</td>
+                    <td style="width: 15%">@Global_LoanSimulationScheduleData.TotalInterest: @Model.LoanAmortizations.Sum(x => x.Interest).ToString("#,0.00")</td>
+                    <td style="width: 15%">@Global_LoanSimulationScheduleData.TotalTax: @Model.LoanAmortizations.Sum(x => x.Tax).ToString("#,0.00")</td>
+                    <td style="width: 25%">@Global_LoanSimulationScheduleData.TotalAnnuity: @Model.LoanAmortizations.Sum(x => x.TotalDue).ToString("#,0.00")</td>
                     <td></td>
                 </tr>
             </tfoot>
         </table>
     </div>
 </fieldset>
-

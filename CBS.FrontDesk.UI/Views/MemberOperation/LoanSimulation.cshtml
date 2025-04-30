@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+    @using Resources
 @{
-    ViewBag.Title = "Simulation";
+    ViewBag.Title = GlobalLoanSimulation.Simulation;
 }
 
 
@@ -17,7 +18,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
                         <i class="mdi mdi-calculator me-2"> </i>
-                        LOAN SIMULATION
+                        @GlobalLoanSimulation.LoanSimulation
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"

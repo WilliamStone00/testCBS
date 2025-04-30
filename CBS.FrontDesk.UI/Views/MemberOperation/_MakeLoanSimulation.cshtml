@@ -1,11 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+@using Resources
 <fieldset class="fieldset-custom">
     <div class="change-group">
         <div class="card mb-4">
             <div class="card-body d-sm-flex d-block">
                 <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
                     <div class="ms-3">
-                        <a type="button" onclick="LoadLocalSchedule()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View schedule">
+                        <a type="button" onclick="LoadLocalSchedule()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Global_MakeLoanSimulation.ViewSchedule">
                             <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                         </a>
                     </div>
@@ -29,7 +30,7 @@
                                 data-bs-target="#collapseDeliveryAddress"
                                 aria-expanded="true"
                                 aria-controls="collapseDeliveryAddress">
-                            Enter parameters to simulate a loan
+                            Global_MakeLoanSimulation.EnterParametersToSimulateALoan
                         </button>
                     </h2>
                     <div id="collapseDeliveryAddress"
@@ -42,54 +43,54 @@
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.LoanParameter.Amount, new { @class = "form-control", @id = "financialInput", @oninput = "formatFinancialFigure(this.value)" })
                                             @Html.ValidationMessageFor(m => m.LoanParameter.Amount, "", new { @class = "text-danger" })
-                                            <label>Amount</label>
+                                            <label>Global_MakeLoanSimulation.Amount</label>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.LoanParameter.LoanDuration, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.LoanParameter.LoanDuration, "", new { @class = "text-danger" })
-                                            <label>Loan duration</label>
+                                            <label>Global_MakeLoanSimulation.LoanDuration</label>
                                         </div>
                                     </div>
                                     <div class="col-md-7">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.LoanParameter.LoanDurationType, new SelectList(ViewBag.LoanDurationPeriods, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.DropDownListFor(m => m.LoanParameter.LoanDurationType, new SelectList(ViewBag.LoanDurationPeriods, "Value", "Text"), "---"+Global_MakeLoanSimulation.LoanDurationType + "---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(m => m.LoanParameter.LoanDurationType, "", new { @class = "text-danger " })
-                                            <label>Loan duration type</label>
+                                            <label>Global_MakeLoanSimulation.LoanDurationType</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.LoanParameter.InterestRate, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.LoanParameter.InterestRate, "", new { @class = "text-danger" })
-                                            <label>Interest rate (In percentage %)</label>
+                                            <label>Global_MakeLoanSimulation.InterestRateInPercentage</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.LoanParameter.AmortizationType, new SelectList(ViewBag.AmortizationTypes, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.DropDownListFor(m => m.LoanParameter.AmortizationType, new SelectList(ViewBag.AmortizationTypes, "Value", "Text"), "---Global_MakeLoanSimulation.Select---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(m => m.LoanParameter.AmortizationType, "", new { @class = "text-danger " })
-                                            <label>Amortization type</label>
+                                            <label>Global_MakeLoanSimulation.AmortizationType</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.LoanParameter.RepaymentCycle, new SelectList(ViewBag.RepaymentCycles, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.DropDownListFor(m => m.LoanParameter.RepaymentCycle, new SelectList(ViewBag.RepaymentCycles, "Value", "Text"), "---Global_MakeLoanSimulation.Select---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(m => m.LoanParameter.RepaymentCycle, "", new { @class = "text-danger " })
-                                            <label>Repayment cycle</label>
+                                            <label>Global_MakeLoanSimulation.RepaymentCycle</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.LoanParameter.StrRepaymentStartDate, new { @class = "form-control date-picker", @placeholder = "Date of first repayment" })
+                                            @Html.TextBoxFor(m => m.LoanParameter.StrRepaymentStartDate, new { @class = "form-control date-picker", @placeholder = Global_MakeLoanSimulation.DateOfFirstRepayment })
                                             @Html.ValidationMessageFor(m => m.LoanParameter.StrRepaymentStartDate, "", new { @class = "text-danger" })
-                                            <label>Repayment start date</label>
+                                            <label>Global_MakeLoanSimulation.RepaymentStartDate</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary me-2">Generate schedule</button>
+                                    <button type="submit" class="btn btn-primary me-2">Global_MakeLoanSimulation.GenerateSchedule</button>
                                 </div>
                             </fieldset>
                         </div>
@@ -109,4 +110,3 @@
 
     </div>
 </div>
-
