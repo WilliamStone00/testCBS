@@ -758,6 +758,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalBranchManagement.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\OtherCashTransactions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OtherCashTransactions.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\OtherCashTransactions.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OtherCashTransactions.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\HomePage\GlobalAbout.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
