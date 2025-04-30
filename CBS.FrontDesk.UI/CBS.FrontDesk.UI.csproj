@@ -758,18 +758,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalBranchManagement.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\OtherCashTransactions.Designer.cs" />
-    <Compile Include="App_GlobalResources\CashDesk\OtherCashTransactions.fr.designer.cs" />
-    <Compile Include="App_GlobalResources\CashDesk\OtherCashTransactions.fr1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OtherCashTransactions.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\CashDesk\OtherCashTransactions1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OtherCashTransactions.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\HomePage\GlobalAbout.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -4133,14 +4121,6 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>PandLReport.cs</LastGenOutput>
     </EmbeddedResource>
-    <Content Include="App_GlobalResources\CashDesk\OtherCashTransactions.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>OtherCashTransactions.fr1.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\CashDesk\OtherCashTransactions.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>OtherCashTransactions1.designer.cs</LastGenOutput>
-    </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
