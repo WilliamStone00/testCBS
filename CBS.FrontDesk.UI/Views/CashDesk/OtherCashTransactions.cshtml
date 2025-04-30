@@ -1,7 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
-@using Resources
 @{
-    ViewBag.Title = @OtherCashTransactions.OtherCashInOperations;
+    ViewBag.Title = "Other Cash Operations";
 }
 
 <!-- 🔷 Page Title and Welcome Message -->
@@ -10,16 +9,16 @@
         <div class="card bg-light mb-3">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cash me-2"></i> @OtherCashTransactions.CashDeskManagement
+                    <i class="mdi mdi-cash me-2"></i> Cash Desk Management
                 </h1>
                 <p class="card-text">
-                    @OtherCashTransactions.WelcomeToTheCashDesk
+                    Welcome to the Cash Desk of <strong>TRUST SOFT CREDIT (TSC)</strong>. This interface manages <strong>Other Cash-In Operations</strong> that do not involve direct member accounts.
                 </p>
                 <p class="card-text">
-                    @OtherCashTransactions.OtherCashInRefersToCashPhysicallyReceived
+                    <strong>Other Cash-In</strong> refers to cash physically received at the teller desk and recorded against <strong>General Ledger (GL) accounts</strong> via configured <strong>accounting event items</strong>
                 </p>
                 <p class="card-text">
-                    💡 <strong>@OtherCashTransactions.Note:</strong> @OtherCashTransactions.ThisInterfaceIsStrictlyForCashInOperations
+                    💡 <strong>Note:</strong> This interface is strictly for <strong>cash-in</strong> operations posted to GL accounts. Use other modules for withdrawals or member-based deposits.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -34,20 +33,20 @@
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button class="accordion-button collapsed fw-bold text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
-                        <i class="mdi mdi-lightbulb-on-outline me-2"></i> @OtherCashTransactions.TipsAndGuidelinesForOtherCashIn
+                        <i class="mdi mdi-lightbulb-on-outline me-2"></i> Tips & Guidelines for Other Cash-In
                     </button>
                 </h2>
                 <div id="collapseTips" class="accordion-collapse collapse" data-bs-parent="#tipsAccordion">
                     <div class="accordion-body">
                         <ul class="mb-2">
-                            <li><strong>@OtherCashTransactions.GLIntegration:</strong> @OtherCashTransactions.EachOperationIsPostedToPredefinedGLAccounts</li>
-                            <li><strong>@OtherCashTransactions.EventItemRequired:</strong> @OtherCashTransactions.AlwaysSelectAValidEventItem</li>
-                            <li><strong>@OtherCashTransactions.NonMemberFocused:</strong> @OtherCashTransactions.UseThisInterfaceForCashFromNonMembers</li>
-                            <li><strong>@OtherCashTransactions.DenominationEntry:</strong> @OtherCashTransactions.EnsureCashDenominationsMatchTheActualAmountCollected</li>
-                            <li><strong>@OtherCashTransactions.ClearNarration:</strong> @OtherCashTransactions.ProvideDescriptiveNotesToSupportAuditTrails</li>
-                            <li><strong>@OtherCashTransactions.BranchSpecificConfiguration:</strong> @OtherCashTransactions.AvailableEventItemsMayDifferByBranch</li>
+                            <li><strong>GL Integration:</strong> Each operation is posted to predefined GL accounts based on the selected <strong>accounting event item</strong>.</li>
+                            <li><strong>Event Item Required:</strong> Always select a valid Event Item to ensure accurate GL mapping.</li>
+                            <li><strong>Non-Member Focused:</strong> Use this interface for cash from non-members, such as institutional income or public transactions.</li>
+                            <li><strong>Denomination Entry:</strong> Ensure cash denominations match the actual amount collected at the teller desk.</li>
+                            <li><strong>Clear Narration:</strong> Provide descriptive notes to support audit trails and cash reconciliations.</li>
+                            <li><strong>Branch-Specific Configuration:</strong> Available Event Items may differ by branch and are managed through centralized accounting settings.</li>
                         </ul>
-                        <p class="text"><strong>@OtherCashTransactions.Note:</strong> @OtherCashTransactions.ThisInterfaceHandlesCashInOnly</p>
+                        <p class="text"><strong>Note:</strong> This interface handles <strong>cash-in only</strong>. For withdrawals or customer cash transactions, please use the respective modules.</p>
                     </div>
                 </div>
             </div>
@@ -68,7 +67,7 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingDeliveryAddress">
                     <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseDeliveryAddress" aria-expanded="true" aria-controls="collapseDeliveryAddress">
-                        <i class="mdi mdi-bank me-2"></i> <span id="cashDeskOperations">@OtherCashTransactions.OtherCashInOperations</span>
+                        <i class="mdi mdi-bank me-2"></i> <span id="cashDeskOperations">OTHER CASH-IN OPERATIONS</span>
                     </button>
                 </h2>
                 <div id="collapseDeliveryAddress" class="accordion-collapse collapse show" data-bs-parent="#collapsibleSection">
