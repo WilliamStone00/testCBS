@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CBS.FrontDesk.Helper", "CBS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CBS.API.Helper", "CBS.API.Helper\CBS.API.Helper\CBS.API.Helper.csproj", "{7789DE1E-5232-46A6-9A96-1DD39E708EEB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedResources", "SharedResources\SharedResources.csproj", "{628FE9C3-A353-45DB-A0BD-3310D4800D57}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{7789DE1E-5232-46A6-9A96-1DD39E708EEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7789DE1E-5232-46A6-9A96-1DD39E708EEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7789DE1E-5232-46A6-9A96-1DD39E708EEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{628FE9C3-A353-45DB-A0BD-3310D4800D57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{628FE9C3-A353-45DB-A0BD-3310D4800D57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{628FE9C3-A353-45DB-A0BD-3310D4800D57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{628FE9C3-A353-45DB-A0BD-3310D4800D57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
