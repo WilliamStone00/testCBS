@@ -1672,6 +1672,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 else
                 {
                     var data = await _accountBookingDirectionServices.GetAccountBookingDirection(key);
+                    //var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
+                    //ViewBag.ChartOfAccounts = BuildMenuAccountViewBag(listAccounts.ToList());
+                    ViewBag.BookingDirection = BuildMenuViewBagopside();
                     return PartialView(partialView, new AccountingConfiguration { AccountBookingDirection = data });
 
                 }
@@ -1963,9 +1966,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
         private List<AccountModelX> ReadExcelFile(Stream stream)
         {
+            int i = 0;
             var dataList = new List<AccountModelX>();
             try
             {
+            
                 using (var workbook = new XLWorkbook(stream))
                 {
                     var worksheet = workbook.Worksheets.First();
@@ -1974,9 +1979,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                        // Skip rows with insufficient columns
                         if (row.CellsUsed().Count()==8)
                         {
+                            i++;
                             var AccountNumber = row.Cell(1).GetString();
                             var AccountName = row.Cell(2).GetString();
-                            var ChartofAccount = row.Cell(1).GetString().Substring(0, Math.Min(6, row.Cell(1).GetString().Length));
+                           var ChartofAccount = row.Cell(1).GetString().Substring(0, Math.Min(6, row.Cell(1).GetString().Length));
                             var CreatedDate = DateTime.Today.ToString("yyyy-MM-dd");
                             var BeginningDebitBalance = decimal.Parse(row.Cell(3).GetString());
                             var BeginningCreditBalance = decimal.Parse(row.Cell(4).GetString());

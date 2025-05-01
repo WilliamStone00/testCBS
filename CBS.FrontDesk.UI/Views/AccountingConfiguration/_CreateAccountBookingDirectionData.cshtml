@@ -7,12 +7,23 @@
         <div class="row mt-4 gy-4">
             <div class="col-md-6">
                 <div class="form-floating">
-                    @Html.DropDownListFor(
-                        m => m.AccountBookingDirection.Id,
-                        new SelectList(ViewBag.ChartOfAccounts ?? "", "Text", "Value"),
-                        new { @class = "form-control select2" })
-                    <label for="AccountBookingDirection_Id">Select Account</label>
-                    @Html.ValidationMessageFor(m => m.AccountBookingDirection.Id, "", new { @class = "text-danger mt-1 d-block" })
+                    @if (Model.AccountBookingDirection.Id == null)
+                    {
+                        @Html.DropDownListFor(
+    m => m.AccountBookingDirection.Id,
+    new SelectList(ViewBag.ChartOfAccounts ?? "", "Text", "Value"),
+    new { @class = "form-control select2" })
+                        <label for="AccountBookingDirection_Id">Select Account</label>
+                        @Html.ValidationMessageFor(m => m.AccountBookingDirection.Id, "", new { @class = "text-danger mt-1 d-block" })
+                    }
+                    else
+                    {
+                       
+                        @Html.TextBoxFor(m => m.AccountBookingDirection.Id, new { @class = "form-control" })
+                        @Html.HiddenFor(m => m.AccountBookingDirection.Id)
+
+                    }
+
                 </div>
             </div>
 

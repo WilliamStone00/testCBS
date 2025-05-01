@@ -430,7 +430,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 if (Request.IsAjaxRequest())
                 {
                     model.SystemQuery.BranchId = _accountingServices.IsHeadOffice() ? model.SystemQuery.BranchId : _accountingServices.GetBranchID();
-
+                    
                     // Process the data
                     // Generate the report or prepare the data
                     switch (model.SystemQuery.ReportType)

@@ -21,8 +21,8 @@
                     <td style="width:15%">@d.NormalBalance</td>
                     <td style="width:10%">
                         @*<a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_accountPolicy','_AccountDetails','details','AccountingConfiguration','accountPolicy')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.AccountName to edit">Details</a>|*@
-                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_blacklistAccount','_CreateBlacklistAccountForJE','update','AccountingConfiguration','blacklistAccount')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.AccountNumber to edit">Edit</a>|
-                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.AccountNumber" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable','_BlacklistAccountData',0,'datalistingview_blacklistAccount','blacklistAccount')">Delete</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_accountBookingDirection','_CreateAccountBookingDirectionData','update','AccountingConfiguration','accountBookingDirection')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.AccountNumber to edit">Edit</a>|
+                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.AccountNumber" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable','_AccountBookingDirectionData',0,'datalistingview_accountBookingDirection','accountBookingDirection')">Delete</a>
                     </td>
                 </tr>
             }
@@ -30,4 +30,4 @@
     </table>
 
 
-
+ 
