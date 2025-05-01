@@ -1,9 +1,10 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+    @using Resources
 <div id="loan_file_attached">
     @if (!Model.DocumentAttachedToLoans.Any())
     {
         <div class="text-center my-3">
-            <p>No file is attached to this application</p>
+            <p>@Global_AddtachedLoanDocument.NoFileAttached</p>
         </div>
     }
     else
@@ -38,7 +39,7 @@
                                         </div>
                                         <div class="file-actions">
                                             @*<button type="button" onclick="confirmDelete('@file.Id')" class="btn btn-sm btn-danger me-2">Delete</button>*@
-                                            <a href="@($"{file.FilePath}")" target="_blank" class="btn btn-sm btn-primary">Read</a>
+                                            <a href="@($"{file.FilePath}")" target="_blank" class="btn btn-sm btn-primary">@Global_AddtachedLoanDocument.Read</a>
                                         </div>
                                     </div>
                                 </div>

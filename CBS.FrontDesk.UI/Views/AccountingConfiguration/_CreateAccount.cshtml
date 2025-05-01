@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
-
+@using Resources
 <div class="row">
     <!-- Context Menu -->
     <div class="col-12 card-body">
@@ -12,23 +12,23 @@
                      @Html.HiddenFor(m => m.Account.BranchCode, new { @id = "BranchCode" })
                      <div class="col-md-12">
                          <div class="form-floating form-floating-outline">
-                             @Html.DropDownListFor(m => m.Account.ChartOfAccountManagementPositionId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), "---Select ChartOfAccount---", new { @class = "form-control select2", @search = "true", @id = "Account_ChartOfAccountManagementPositionId" })
+                             @Html.DropDownListFor(m => m.Account.ChartOfAccountManagementPositionId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), ""+ GlobalAccount.SelectMFIChartOfAccount, new { @class = "form-control select2", @search = "true", @id = "Account_ChartOfAccountManagementPositionId" })
                              @Html.ValidationMessageFor(m => m.Account.ChartOfAccountManagementPositionId, "", new { @class = "text-danger" })
-                             <label>Select MFI_ChartOfAccount</label>
+                             <label> @GlobalAccount.SelectMFIChartOfAccount</label>
                          </div>
                      </div>
                      <div class="col-md-12">
                          <div class="form-floating form-floating-outline">
-                             @Html.DropDownListFor(m => m.Account.AccountCategoryId, new SelectList(ViewBag.AccountCategories == null ? "" : ViewBag.AccountCategories, "Text", "Value"), "---Select Account Category---", new { @class = "form-control select2", @search = "true", @id = "Account_AccountCategoryId" })
+                             @Html.DropDownListFor(m => m.Account.AccountCategoryId, new SelectList(ViewBag.AccountCategories == null ? "" : ViewBag.AccountCategories, "Text", "Value"), ""+ @GlobalAccount.SelectAccountCategory, new { @class = "form-control select2", @search = "true", @id = "Account_AccountCategoryId" })
                              @Html.ValidationMessageFor(m => m.Account.AccountCategoryId, "", new { @class = "text-danger" })
-                             <label>Account category</label>
+                             <label>@GlobalAccount.AccountCategory</label>
                          </div>
                      </div>
                      <div class="col-md-12">
                          <div class="form-floating form-floating-outline">
-                             @Html.DropDownListFor(m => m.Account.AccountOwnerId, new SelectList(ViewBag.BranchCode == null ? "" : ViewBag.BranchCode, "Text", "Value"), "---Select AccountOwner---", new { @class = "form-control select2", @search = "true", @id = "AccountOwnerId" })
+                             @Html.DropDownListFor(m => m.Account.AccountOwnerId, new SelectList(ViewBag.BranchCode == null ? "" : ViewBag.BranchCode, "Text", "Value"), ""+ @GlobalAccount.SelectAccountOwner , new { @class = "form-control select2", @search = "true", @id = "AccountOwnerId" })
                              @Html.ValidationMessageFor(m => m.Account.AccountOwnerId, "", new { @class = "text-danger" })
-                             <label>Account Owner</label>
+                             <label>@GlobalAccount.AccountOwner</label>
                          </div>
                      </div>
                 
@@ -36,15 +36,15 @@
                          <div class="form-floating form-floating-outline">
                              @Html.TextBoxFor(m => m.Account.AccountNumber, new { @class = "form-control", @id = "AccountNumber" })
                              @Html.ValidationMessageFor(m => m.Account.AccountNumber, "", new { @class = "text-danger" })
-                             <label>Chart of account number</label>
+                             <label>@GlobalAccount.ChartOfAccountNumber</label>
                          </div>
                      </div>
                      <div id="LiaisonAccountOwnerToHide">
                          <div class="col-md-12">
                              <div class="form-floating form-floating-outline">
-                                 @Html.DropDownListFor(m => m.Account.AccountCounterPartId, new SelectList(ViewBag.BranchCode == null ? "" : ViewBag.BranchCode, "Text", "Value"), "---Select AccountCounterPart---", new { @class = "form-control select2", @search = "true", @id = "AccountCounterPartId" })
+                                 @Html.DropDownListFor(m => m.Account.AccountCounterPartId, new SelectList(ViewBag.BranchCode == null ? "" : ViewBag.BranchCode, "Text", "Value"), ""+ GlobalAccount.SelectAccountCounterPart , new { @class = "form-control select2", @search = "true", @id = "AccountCounterPartId" })
                                  @Html.ValidationMessageFor(m => m.Account.AccountCounterPartId, "", new { @class = "text-danger" })
-                                 <label>Select Liaison Branch</label>
+                                 <label>@GlobalAccount.SelectLiaisonBranch</label>
                              </div>
                          </div>
                      </div>
@@ -52,7 +52,7 @@
                          <div class="form-floating form-floating-outline">
                              @Html.TextBoxFor(m => m.Account.AccountNumberCU, new { @class = "form-control", @id = "AccountNumberCU" })
                              @Html.ValidationMessageFor(m => m.Account.AccountNumberCU, "", new { @class = "text-danger" })
-                             <label>Account number [(chart of account)(branchCode)(management position)] [(000000)(000)(000)]</label>
+                             <label>@GlobalAccount.AccountNumber [(chart of account)(branchCode)(management position)] [(000000)(000)(000)]</label>
 
                          </div>
                      </div>
@@ -60,7 +60,7 @@
                          <div class="form-floating form-floating-outline">
                              @Html.TextBoxFor(m => m.Account.AccountName, new { @class = "form-control", @id = "AccountName" })
                              @Html.ValidationMessageFor(m => m.Account.AccountName, "", new { @class = "text-danger" })
-                             <label>Account Label</label>
+                             <label>@GlobalAccount.AccountLabel</label>
                          </div>
                      </div>
 
@@ -70,11 +70,11 @@
                     <div class="mt-4">
                         @if (Model.Account.Id == null)
                         {
-                            <button type="submit" class="btn btn-primary me-2">Save</button>
+                            <button type="submit" class="btn btn-primary me-2">@GlobalAccount.Save</button>
                             <input type="hidden" name="Action" value="insert" id="Action" />
                         }
                         else
-                        { <button type="submit" class="btn btn-primary me-2">Update</button>
+                        { <button type="submit" class="btn btn-primary me-2">@GlobalAccount.Update</button>
                             @Html.HiddenFor(m => m.Account.Id)
                             <input type="hidden" name="Action" value="update" id="Action" />
                         }

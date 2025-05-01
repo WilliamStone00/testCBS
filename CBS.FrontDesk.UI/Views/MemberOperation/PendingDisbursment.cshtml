@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Pending Disbursement";
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalPendingDisbursment.PendingDisbursement;
 }
 
 <div class="row">
@@ -8,10 +9,10 @@
         <div class="card bg-light mb-4">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cash me-2"></i> Pending Disbursement
+                    <i class="mdi mdi-cash me-2"></i> @GlobalPendingDisbursment.PendingDisbursement
                 </h1>
                 <p class="card-text text-muted">
-                    View and manage pending loan disbursements for <strong>@Session["BranchName"]</strong>. Ensure timely action to process or resolve disbursement issues.
+                    @GlobalPendingDisbursment.PendingDisbursementDescription
                 </p>
             </div>
         </div>
@@ -22,7 +23,7 @@
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span>
-            <i class="mdi mdi-information-outline me-2"></i> HELP TIPS
+            <i class="mdi mdi-information-outline me-2"></i> @GlobalPendingDisbursment.HelpTipsTitle
         </span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
             <i class="mdi mdi-chevron-down"></i>
@@ -30,19 +31,19 @@
     </h6>
     <div id="collapseHelpTips" class="collapse">
         <div class="card-body">
-            <p class="text-muted mb-2">Follow these tips to manage pending disbursements efficiently:</p>
+            <p class="text-muted mb-2">@GlobalPendingDisbursment.HelpTipsDescription</p>
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Click the refresh button to load the latest pending disbursement applications.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Verify member details before proceeding with disbursements.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure all necessary approvals are in place for each application.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Regularly update the status of processed applications to keep the list current.</li>
-                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> If a member's application is incomplete, follow up with the member for the required details.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalPendingDisbursment.Tip1</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalPendingDisbursment.Tip2</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalPendingDisbursment.Tip3</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalPendingDisbursment.Tip4</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalPendingDisbursment.Tip5</li>
             </ul>
-            <p class="text-muted">Additional Notes:</p>
+            <p class="text-muted">@GlobalPendingDisbursment.AdditionalNotes</p>
             <ul>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Use the filters or search functionality to locate specific applications quickly.</li>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Always cross-check the disbursed amount with the approved loan amount to avoid discrepancies.</li>
-                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Disbursements should be done in accordance with the organization's financial policies.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalPendingDisbursment.Note1</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalPendingDisbursment.Note2</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalPendingDisbursment.Note3</li>
             </ul>
         </div>
     </div>
@@ -59,7 +60,7 @@
                             data-bs-target="#accordionPopoutIcon-3"
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
-                        <i class="mdi mdi-view-list me-2"></i> @Session["BranchName"] Pending Disbursements
+                        <i class="mdi mdi-view-list me-2"></i> @GlobalPendingDisbursment.PendingDisbursementsTitle @Session["BranchName"]
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3" class="accordion-collapse collapse show" data-bs-parent="#accordionPopoutIcon">
@@ -72,17 +73,17 @@
                                         <a href="/MemberOperation/PendingDisbursment"
                                            class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space"
                                            data-bs-toggle="tooltip"
-                                           title="Load applications from database">
+                                           title="@GlobalPendingDisbursment.RefreshButtonTooltip">
                                             <span class="tf-icons mdi mdi-refresh mdi-18px"></span>
                                         </a>
-                                        <span class="ms-3 text-muted">Click to load or refresh pending disbursement applications.</span>
+                                        <span class="ms-3 text-muted">@GlobalPendingDisbursment.RefreshButtonDescription</span>
                                     </div>
                                 </div>
                                 <!-- Data Listing View -->
                                 <div id="datalistingview">
                                     <!-- Data will be dynamically loaded here -->
                                     <p class="text-muted text-center">
-                                        No data to display. Click the refresh button to load pending disbursements.
+                                        @GlobalPendingDisbursment.NoDataMessage
                                     </p>
                                 </div>
                             </div>

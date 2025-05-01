@@ -55,10 +55,10 @@
     <script src="~/Scripts/Js/Crud/OperationPanel/Customers.js"></script>
     }*@
 
-
+@using Resources
 @model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @{
-    ViewBag.Title = "Loan application request";
+    ViewBag.Title = GlobalMembers.LoanApplicationRequest;
 }
 <div class="row">
     <div class="col">
@@ -74,7 +74,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-note-search-outline me-2"></i>
-                           Search Member to initiate loan application process
+                            @GlobalMembers.SearchMemberToInit
                         </button>
                     </h2>
                     <hr />

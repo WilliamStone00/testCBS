@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Caching;
 using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Session
@@ -29,18 +30,44 @@ namespace CBS.FrontDesk.UI.Controllers.Session
         [HttpGet]
         public async Task<JsonResult> GetIdleTimeout()
         {
-            
+            const string cacheKey = "TSC_SessionTimeoutConfig";
+
+            // 🧠 Check cache first
+            if (HttpRuntime.Cache[cacheKey] is SessionTimeoutConfigDto cachedDto)
+            {
+                return Json(cachedDto, JsonRequestBehavior.AllowGet);
+            }
+
+            // 🧠 Default values
+            int timeout = 5;
+            int warning = 2;
+
             var idleTime = await _localSession.GetCurrentIdletimeByBranch();
 
-            int timeout = 5; // fallback timeout in minutes
             if (idleTime != null && idleTime.IdleDuration.TotalMinutes > 0)
             {
                 timeout = (int)idleTime.IdleDuration.TotalMinutes;
-                _cachedTimeout = timeout; // store for reuse
             }
 
-            return Json(new { timeout }, JsonRequestBehavior.AllowGet);
+            var config = new SessionTimeoutConfigDto
+            {
+                Timeout = timeout,
+                Warning = warning
+            };
+
+            // 🧠 Cache the DTO for 10 minutes
+            HttpRuntime.Cache.Insert(
+                cacheKey,
+                config,
+                null,
+                DateTime.Now.AddHours(24),
+                Cache.NoSlidingExpiration
+            );
+
+            return Json(config, JsonRequestBehavior.AllowGet);
         }
+
+
 
         [HttpGet]
         public ActionResult ExtendSessionTimeout()

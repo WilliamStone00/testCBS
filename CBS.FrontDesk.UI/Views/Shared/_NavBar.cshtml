@@ -1,7 +1,4 @@
-﻿@{
-    var selectedLang = (Session["SelectedLanguage"]?.ToString() ?? "en").ToLower();
-    var langFlag = selectedLang == "fr" ? Url.Content("~/AppFiles/Images/Lang/france_64.png") : Url.Content("~/AppFiles/Images/Lang/united_kingdom_64.png");
-}
+﻿
 
 <style>
     .text-center label {
@@ -52,7 +49,7 @@
         display: none !important;
     }
 </style>
-@if (User.Identity.IsAuthenticated)
+@if (User.Identity.IsAuthenticated && Session != null && Session["UserID"] != null)
 {
 
     <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme mt-2" id="layout-navbar">
@@ -125,29 +122,6 @@
 
             <ul class="navbar-nav flex-row align-items-center ms-auto">
 
-                @*/ Language
-                    Style Switcher*@
-                <!-- 🌐 Language Selector -->
-                @*<li class="nav-item dropdown-language dropdown me-1 me-xl-0">
-                        <a class="nav-link btn btn-text-secondary rounded-pill btn-icon hide-arrow"
-                           href="javascript:void(0);" data-bs-toggle="dropdown">
-                            <img id="current-lang-flag" src="~/AppFiles/Images/Lang/united_kingdom_64.png" alt="Lang" width="24" height="16" />
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li>
-                                <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);" onclick="setLanguage('en', '~/AppFiles/Images/Lang/united_kingdom_64.png')">
-                                    <img src="~/AppFiles/Images/Lang/united_kingdom_64.png" alt="English" width="20" class="me-2" />
-                                    <span>English</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);" onclick="setLanguage('fr', '~/AppFiles/Images/Lang/france_64.png')">
-                                    <img src="~/AppFiles/Images/Lang/france_64.png" alt="French" width="20" class="me-2" />
-                                    <span>French</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>*@
 
                 @Html.Partial("_LanguageSwitcher")
 
@@ -380,5 +354,30 @@
     </nav>
 
 }
+else
+{
+    <div class="alert text-center shadow-sm p-4 rounded-4" style="
+    background: linear-gradient(135deg, #fff3cd, #ffeeba);
+    border: 1px solid #ffcc00;
+    color: #856404;
+    font-weight: 600;
+    font-size: 16px;
+    max-width: 500px;
+    margin: 50px auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+">
+        <i class="mdi mdi-alert-circle-outline" style="font-size: 30px; color: #f0ad4e;"></i>
+        <div class="mt-2">
+            Your session has expired or is invalid.<br />
+            <small class="d-block mt-1 text-muted">Redirecting you to login...</small>
+        </div>
+    </div>
 
+    <script>
+        // 🕒 Wait 2 seconds before redirecting nicely
+        setTimeout(function () {
+            window.location.href = '/Authentication/Logout';
+        }, 200000);
+    </script>
+}
 

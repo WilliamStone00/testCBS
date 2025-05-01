@@ -1,11 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+@using Resources
 <hr />
 <div class="change-group">
     <div class="card mb-4">
         <div class="card-body d-sm-flex d-block">
             <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
                 <div class="ms-3">
-                    <a type="button" onclick="LoadCollaterals()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Reload collaterals">
+                    <a type="button" onclick="LoadCollaterals()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@Global_AddLoanCollateral.ReloadCollaterals">
                         <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                     </a>
                 </div>
@@ -17,7 +18,7 @@
 @if (!Model.LoanCollateras.Any())
 {
     <div class="text-center my-3">
-        <p>No loan collateral is added</p>
+        <p>@Global_AddLoanCollateral.NoLoanCollateralAdded</p>
     </div>
 }
 else
@@ -28,12 +29,12 @@ else
             <table class="table table-hover" id="myDataTable_collateral">
                 <thead class="table-light">
                     <tr>
-                        <th>Tag</th>
-                        <th>Value</th>
-                        <th>Location</th>
-                        <th>Address</th>
-                        <th>References</th>
-                        <th>Action</th>
+                        <th>@Global_AddLoanCollateral.Tag</th>
+                        <th>@Global_AddLoanCollateral.Value</th>
+                        <th>@Global_AddLoanCollateral.Location</th>
+                        <th>@Global_AddLoanCollateral.Address</th>
+                        <th>@Global_AddLoanCollateral.References</th>
+                        <th>@Global_AddLoanCollateral.Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,11 +47,11 @@ else
                             <td style="width:20%">@d.Address</td>
                             <td style="width:10%">@d.Reference</td>
                             <td style="width:10%">
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_collateral_add','_AddLoanCollateral','get_collateral','MemberOperation','applications')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.LoanProductCollateral.LoanProductCollateralTag to edit">
-                                    Edit
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_collateral_add','_AddLoanCollateral','get_collateral','MemberOperation','applications')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@Global_AddLoanCollateral.Edit @d.LoanProductCollateral.LoanProductCollateralTag">
+                                    @Global_AddLoanCollateral.Edit
                                 </a>
 
-                                @*<a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.LoanProductCollateral.LoanProductCollateralTag" onclick="showConfirmMessage('@d.Id','myDataTable_gurantor')">Delete</a>*@
+                                @*<a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@Global_AddLoanCollateral.Delete @d.LoanProductCollateral.LoanProductCollateralTag" onclick="showConfirmMessage('@d.Id','myDataTable_gurantor')">@Global_AddLoanCollateral.Delete</a>*@
                             </td>
                         </tr>
                     }
@@ -65,11 +66,11 @@ else
             <table class="table table-hover" id="myDataTable_collateral">
                 <thead class="table-light">
                     <tr>
-                        <th>Tag</th>
-                        <th>Value</th>
-                        <th>Location</th>
-                        <th>Address</th>
-                        <th>References</th>
+                        <th>@Global_AddLoanCollateral.Tag</th>
+                        <th>@Global_AddLoanCollateral.Value</th>
+                        <th>@Global_AddLoanCollateral.Location</th>
+                        <th>@Global_AddLoanCollateral.Address</th>
+                        <th>@Global_AddLoanCollateral.References</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -81,7 +82,7 @@ else
                             <td style="width:15%">@d.Location</td>
                             <td style="width:20%">@d.Address</td>
                             <td style="width:10%">@d.Reference</td>
-                            
+
                         </tr>
                     }
                 </tbody>

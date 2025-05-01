@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="AdditionalNotes" xml:space="preserve">
+    <value>Additional Notes:</value>
+  </data>
+  <data name="Approved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="AwaitsDisbursement" xml:space="preserve">
+    <value>Awaits disbursement</value>
+  </data>
+  <data name="CheckIfTheCustomerAlreadyReceivedTheMoneyThenCashWillNotBeAffected" xml:space="preserve">
+    <value>Check if the customer already received the money. Then cash will not be affected.</value>
+  </data>
+  <data name="CheckTheAlreadyManagedBoxIfTheMoneyHasAlreadyBeenDisbursedToPreventDoubleDisbursement" xml:space="preserve">
+    <value>Check the "Already Managed" box if the money has already been disbursed, to prevent double disbursement.</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="Disburse" xml:space="preserve">
+    <value>Disburse</value>
+  </data>
+  <data name="Disbursed" xml:space="preserve">
+    <value>Disbursed</value>
+  </data>
+  <data name="EnsureComplianceWithTheOrganizationsLoanDisbursementPolicies" xml:space="preserve">
+    <value>Ensure compliance with the organization's loan disbursement policies.</value>
+  </data>
+  <data name="EnsureThatTheLoanHasBeenApprovedBeforeProceedingWithDisbursement" xml:space="preserve">
+    <value>Ensure that the loan has been approved before proceeding with disbursement.</value>
+  </data>
+  <data name="FeePaid" xml:space="preserve">
+    <value>Fee paid</value>
+  </data>
+  <data name="FollowTheseTipsForASmoothDisbursementProcess" xml:space="preserve">
+    <value>Follow these tips for a smooth disbursement process:</value>
+  </data>
+  <data name="ForAnyDiscrepanciesConsultTheLoanManagerImmediately" xml:space="preserve">
+    <value>For any discrepancies, consult the Loan Manager immediately.</value>
+  </data>
+  <data name="HelpTipsDescription" xml:space="preserve">
+    <value>Follow these tips to manage pending disbursements efficiently:</value>
+  </data>
+  <data name="HelpTipsTitle" xml:space="preserve">
+    <value>HELP TIPS</value>
+  </data>
+  <data name="IncludeDetailedCommentsForBetterTrackingAndRecordKeeping" xml:space="preserve">
+    <value>Include detailed comments for better tracking and record-keeping.</value>
+  </data>
+  <data name="LoanDate" xml:space="preserve">
+    <value>Loan date</value>
+  </data>
+  <data name="LoanDisbursement" xml:space="preserve">
+    <value>Loan Disbursement</value>
+  </data>
+  <data name="MemberReference" xml:space="preserve">
+    <value>Member reference</value>
+  </data>
+  <data name="NoDataMessage" xml:space="preserve">
+    <value>No data to display. Click the refresh button to load pending disbursements.</value>
+  </data>
+  <data name="Note1" xml:space="preserve">
+    <value>Use the filters or search functionality to locate specific applications quickly.</value>
+  </data>
+  <data name="Note2" xml:space="preserve">
+    <value>Always cross-check the disbursed amount with the approved loan amount to avoid discrepancies.</value>
+  </data>
+  <data name="Note3" xml:space="preserve">
+    <value>Disbursements should be done in accordance with the organization's financial policies.</value>
+  </data>
+  <data name="PendingDisbursement" xml:space="preserve">
+    <value>PendingDisbursement</value>
+  </data>
+  <data name="PendingDisbursementDescription" xml:space="preserve">
+    <value>View and manage pending loan disbursements for &lt;strong&gt;@Session["BranchName"]&lt;/strong&gt;. Ensure timely action to process or resolve disbursement issues.</value>
+  </data>
+  <data name="PendingDisbursementsTitle" xml:space="preserve">
+    <value>Pending Disbursements</value>
+  </data>
+  <data name="Principal" xml:space="preserve">
+    <value>Principal</value>
+  </data>
+  <data name="RefreshButtonDescription" xml:space="preserve">
+    <value>Click to load or refresh pending disbursement applications.</value>
+  </data>
+  <data name="RefreshButtonTooltip" xml:space="preserve">
+    <value>Load applications from database</value>
+  </data>
+  <data name="SelectAccountToReceiveDisbursedAmount" xml:space="preserve">
+    <value>Select Account (Deposit/Current or Saving) to Receive Disbursed Amount</value>
+  </data>
+  <data name="SelectDisbursedStatus" xml:space="preserve">
+    <value>Select disbursed status</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ThereAreNoPendingLoansForDisbursement" xml:space="preserve">
+    <value>There are no pending loans for disbursement.</value>
+  </data>
+  <data name="TheSystemWillAutomaticallyUpdateTheLoanStatusOnceDisbursementIsCompleted" xml:space="preserve">
+    <value>The system will automatically update the loan status once disbursement is completed.</value>
+  </data>
+  <data name="Tip1" xml:space="preserve">
+    <value>Click the refresh button to load the latest pending disbursement applications.</value>
+  </data>
+  <data name="Tip2" xml:space="preserve">
+    <value>Verify member details before proceeding with disbursements.</value>
+  </data>
+  <data name="Tip3" xml:space="preserve">
+    <value>Ensure all necessary approvals are in place for each application.</value>
+  </data>
+  <data name="Tip4" xml:space="preserve">
+    <value>Regularly update the status of processed applications to keep the list current.</value>
+  </data>
+  <data name="Tip5" xml:space="preserve">
+    <value>If a member's application is incomplete, follow up with the member for the required details.</value>
+  </data>
+  <data name="Totals" xml:space="preserve">
+    <value>Totals</value>
+  </data>
+  <data name="UseTheDropdownToSelectTheCorrectAccountForCreditingTheDisbursedAmount" xml:space="preserve">
+    <value>Use the dropdown to select the correct account for crediting the disbursed amount.</value>
+  </data>
+  <data name="VerifyAllEnteredDetailsIncludingAccountNumbersAndCustomerInformationBeforeSubmitting" xml:space="preserve">
+    <value>Verify all entered details, including account numbers and customer information, before submitting.</value>
+  </data>
+</root>

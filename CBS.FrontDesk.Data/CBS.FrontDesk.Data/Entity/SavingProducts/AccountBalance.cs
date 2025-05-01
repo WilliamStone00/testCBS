@@ -42,6 +42,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string BankId { get; set; }
         public string BranchId { get; set; }
         public string ModifiedBy { get; set; }
+        public string ProfileType { get; set; }
         public string CreatedBy { get; set; }
         public string ErrorMessage { get; set; }
         public bool HasError { get; set; }

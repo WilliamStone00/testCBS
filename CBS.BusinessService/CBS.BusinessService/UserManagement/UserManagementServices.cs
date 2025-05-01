@@ -351,7 +351,7 @@ namespace CBS.BusinessService.UserManagement
             try
             {
                 var sessionCode = GetSessionCode();
-                var username = GetUserNAme();
+                var username = GetUserName();
 
                 var queryParams = $"?SessionCode={HttpUtility.UrlEncode(sessionCode)}&Username={HttpUtility.UrlEncode(username)}";
                 var baseUrl = ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString();
@@ -703,7 +703,7 @@ namespace CBS.BusinessService.UserManagement
                 {
                     mFAActivation.Status = true;
                 }
-                mFAActivation.Email=GetUserNAme();
+                mFAActivation.Email=GetUserName();
                 mFAActivation.Id=ConvertStringToGuid(GetUserID());
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
                 var reUser = await ApiCallerHelper.PostAsync<ResponseObject<bool>>(APICallHelper.MFAActivation, mFAActivation);
