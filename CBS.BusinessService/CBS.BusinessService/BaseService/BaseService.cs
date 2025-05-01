@@ -1765,7 +1765,11 @@ namespace BusinessServices
             var data = HttpContext.Current?.Session?["BankCode"]?.ToString();
             return string.IsNullOrWhiteSpace(data) ? "NoBankCode" : data;
         }
-
+        public string GetLanguage()
+        {
+            var data = HttpContext.Current?.Session?["SelectedLanguage"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? "en" : data;
+        }
         public string GetRoleId()
         {
             var data = HttpContext.Current?.Session?["RoleId"]?.ToString();
