@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+    @using Resources
 @{
-    ViewBag.Title = "Momocash collection";
+    ViewBag.Title = @MomocashCollection.MomocashCollectionTitle;
 }
 <link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
 
@@ -19,7 +20,7 @@
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-bank me-2"></i>
                             @*<i class="mdi mdi-cash-bank me-2"></i>*@
-                            <span id="cashDeskOperations">MOMOCASH COLLECTION (NONE-CASH OPERATION)</span>
+                        <span id="cashDeskOperations">@MomocashCollection.MomocashCollectionNoneCashOperation</span>
                         </button>
                     </h2>
                   

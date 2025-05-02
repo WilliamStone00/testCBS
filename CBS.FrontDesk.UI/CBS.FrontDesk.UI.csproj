@@ -758,6 +758,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalBranchManagement.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\MomocashCollection.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MomocashCollection.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\CashDesk\OtherCashMobileMoney.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -4138,6 +4143,10 @@
     <Content Include="App_GlobalResources\CashDesk\OtherCashMobileMoney.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>OtherCashMobileMoney.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\MomocashCollection.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>MomocashCollection.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
