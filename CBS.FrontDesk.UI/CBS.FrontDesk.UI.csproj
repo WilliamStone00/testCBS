@@ -758,6 +758,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalBranchManagement.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\ExpenseOtherPayment.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExpenseOtherPayment.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\CashDesk\LoanRepaymentSimulation.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -4156,6 +4161,10 @@
     <Content Include="App_GlobalResources\CashDesk\LoanRepaymentSimulation.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>LoanRepaymentSimulation.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\ExpenseOtherPayment.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ExpenseOtherPayment.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>

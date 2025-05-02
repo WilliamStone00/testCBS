@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+    @using Resources
 @{
-    ViewBag.Title = "Other Expense Operations";
+    ViewBag.Title = @ExpenseOtherPayment.OtherExpenseOperations;
 }
 
 <!-- 🔷 Page Title and Welcome Message -->
@@ -9,16 +10,16 @@
         <div class="card bg-light mb-3">
             <div class="card-body text-center">
                 <h1 class="card-title text-danger">
-                    <i class="mdi mdi-cash-minus me-2"></i> Cash Desk Management
+                    <i class="mdi mdi-cash-minus me-2"></i> @ExpenseOtherPayment.CashDeskManagement
                 </h1>
                 <p class="card-text">
-                    Welcome to the Cash Desk of <strong>TRUST SOFT CREDIT (TSC)</strong>. This interface manages <strong>Other Cash-Out Operations</strong> including expenses made to <strong>members</strong>, <strong>staff</strong>, or <strong>non-members</strong>.
+                    @ExpenseOtherPayment.WelcomeToTheCashDeskOf <strong>@ExpenseOtherPayment.TRUSTSOFTCREDITTSC</strong>. @ExpenseOtherPayment.ThisInterfaceManages <strong>@ExpenseOtherPayment.OtherCashOutOperations</strong> @ExpenseOtherPayment.IncludingExpensesMadeTo <strong>@ExpenseOtherPayment.Members</strong>, <strong>@ExpenseOtherPayment.Staff</strong>, @ExpenseOtherPayment.Or <strong>@ExpenseOtherPayment.NonMembers</strong>.
                 </p>
                 <p class="card-text">
-                    <strong>Other Expenses</strong> refer to physical cash paid out at the teller desk and recorded directly against <strong>General Ledger (GL) accounts</strong> using predefined <strong>accounting event items</strong>.
+                    <strong>@ExpenseOtherPayment.OtherExpenses</strong> @ExpenseOtherPayment.RefersToPhysicalCashPaidOut <strong>@ExpenseOtherPayment.GeneralLedgerGLAccounts</strong> @ExpenseOtherPayment.UsingPredefined <strong>@ExpenseOtherPayment.AccountingEventItems</strong>.
                 </p>
                 <p class="card-text">
-                    💡 <strong>Note:</strong> This interface supports GL-linked <strong>cash-out payments</strong> with optional member association. Use other modules for standard member withdrawals or loan disbursements.
+                    💡 <strong>@ExpenseOtherPayment.Note:</strong> @ExpenseOtherPayment.ThisInterfaceSupportsGLLinked <strong>@ExpenseOtherPayment.CashOutPayments</strong> @ExpenseOtherPayment.WithOptionalMemberAssociation.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -26,29 +27,29 @@
     </div>
 </div>
 
-<!-- 🔷 Tips Section for Other Expenses -->
+<!-- Tips Section for Other Expenses -->
 <div class="row">
     <div class="col-12">
         <div class="accordion mb-4" id="tipsAccordion">
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button class="accordion-button collapsed fw-bold text-danger" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
-                        <i class="mdi mdi-alert-circle-outline me-2"></i> Tips & Guidelines for Other Expense
+                        <i class="mdi mdi-alert-circle-outline me-2"></i> @ExpenseOtherPayment.TipsAndGuidelinesForOtherExpense
                     </button>
                 </h2>
                 <div id="collapseTips" class="accordion-collapse collapse" data-bs-parent="#tipsAccordion">
                     <div class="accordion-body">
                         <ul class="mb-2">
-                            <li><strong>Member vs Non-Member:</strong> Use the radio buttons to indicate whether the recipient is a <strong>member</strong> (search required) or a <strong>non-member/staff</strong>.</li>
-                            <li><strong>GL Posting:</strong> Each transaction is recorded against a configured <strong>GL account</strong> tied to the selected <strong>event item</strong>.</li>
-                            <li><strong>Mandatory Event Item:</strong> Selecting an event item is <strong>required</strong> to ensure proper GL mapping and audit trail.</li>
-                            <li><strong>Clear Beneficiary Info:</strong> The recipient's name is required for all transactions—this ensures traceability and reporting accuracy.</li>
-                            <li><strong>Narration Matters:</strong> A meaningful narration or description is vital for accountability and financial clarity.</li>
-                            <li><strong>Denomination Breakdown:</strong> The actual amount disbursed should be broken down using the denomination interface to match the total cash-out.</li>
-                            <li><strong>Branch-Level Config:</strong> Only event items authorized for your branch will be visible in the dropdown.</li>
+                            <li><strong>@ExpenseOtherPayment.MemberVsNonMember:</strong> @ExpenseOtherPayment.UseTheRadioButtonsToIndicateWhetherTheRecipientIsA <strong>@ExpenseOtherPayment.Member</strong> (@ExpenseOtherPayment.SearchRequired) @ExpenseOtherPayment.OrA <strong>@ExpenseOtherPayment.NonMemberStaff</strong>.</li>
+                            <li><strong>@ExpenseOtherPayment.GLPosting:</strong> @ExpenseOtherPayment.EachTransactionIsRecordedAgainstAConfigured <strong>@ExpenseOtherPayment.GLAccount</strong> @ExpenseOtherPayment.TiedToTheSelected <strong>@ExpenseOtherPayment.EventItem</strong>.</li>
+                            <li><strong>@ExpenseOtherPayment.MandatoryEventItem:</strong> @ExpenseOtherPayment.SelectingAnEventItemIs <strong>@ExpenseOtherPayment.Required</strong> @ExpenseOtherPayment.ToEnsureProperGLMappingAndAuditTrail.</li>
+                            <li><strong>@ExpenseOtherPayment.ClearBeneficiaryInfo:</strong> @ExpenseOtherPayment.TheRecipientsNameIsRequiredForAllTransactions</li>
+                            <li><strong>@ExpenseOtherPayment.NarrationMatters:</strong> @ExpenseOtherPayment.AMeaningfulNarrationOrDescriptionIsVitalForAccountabilityAndFinancialClarity.</li>
+                            <li><strong>@ExpenseOtherPayment.DenominationBreakdown:</strong> @ExpenseOtherPayment.TheActualAmountDisbursedShouldBeBrokenDownUsingTheDenominationInterfaceToMatchTheTotalCashOut.</li>
+                            <li><strong>@ExpenseOtherPayment.BranchLevelConfig:</strong> @ExpenseOtherPayment.OnlyEventItemsAuthorizedForYourBranchWillBeVisibleInTheDropdown.</li>
                         </ul>
                         <p class="text">
-                            <strong>Reminder:</strong> This module is designed for <strong>non-loan and non-withdrawal cash-outs</strong>. For those operations, please use their respective modules.
+                            <strong>@ExpenseOtherPayment.Reminder:</strong> @ExpenseOtherPayment.ThisModuleIsDesignedFor <strong>@ExpenseOtherPayment.NonLoanAndNonWithdrawalCashOuts</strong>. @ExpenseOtherPayment.ForThoseOperationsPleaseUseTheirRespectiveModules.
                         </p>
                     </div>
                 </div>
