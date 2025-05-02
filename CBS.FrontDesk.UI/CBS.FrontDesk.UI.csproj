@@ -758,6 +758,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalBranchManagement.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDeskCashin.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDeskCashin.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDeskCashout.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDeskCashout.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_TemporalMembersLookUp.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_TemporalMembersLookUp.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\CashDesk\ExpenseOtherPayment.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -4165,6 +4180,18 @@
     <Content Include="App_GlobalResources\CashDesk\ExpenseOtherPayment.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ExpenseOtherPayment.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDeskCashout.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDeskCashout.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDeskCashin.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDeskCashin.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_TemporalMembersLookUp.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_TemporalMembersLookUp.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>

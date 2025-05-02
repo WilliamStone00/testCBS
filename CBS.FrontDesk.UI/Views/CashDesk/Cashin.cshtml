@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@using Resources
 @{
-    ViewBag.Title = "Cash Desk-Cashin";
+    ViewBag.Title = @CashDeskCashin.CashDeskCashinTitle;
 }
 <style>
     .is-invalid {
@@ -15,11 +16,11 @@
         <div class="card bg-light mb-1">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cash me-2"></i> Cash Desk Management
+                    <i class="mdi mdi-cash me-2"></i> @CashDeskCashin.CashDeskManagement
                 </h1>
 
                 <p class="card-text">
-                    Welcome to the Cash Desk TRUST SOFT CREDIT (TSC). This interface allows you to efficiently manage cash-related operations.
+                    @CashDeskCashin.WelcomeToTheCashDesk
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -33,7 +34,7 @@
             <div class="card">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
                     <span>
-                        <i class="mdi mdi-information-outline me-2"></i> HELP TIPS
+                        <i class="mdi mdi-information-outline me-2"></i> @CashDeskCashin.HelpTips
                     </span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
                         <i class="mdi mdi-chevron-down"></i>
@@ -46,21 +47,21 @@
                             <div class="accordion-item mt-2">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWithdrawalSavingAccount" aria-expanded="false" aria-controls="collapseWithdrawalSavingAccount">
-                                        Withdrawal From Saving Account Policies
+                                        @CashDeskCashin.WithdrawalFromSavingAccountPolicies
                                     </button>
                                 </h2>
                                 <div id="collapseWithdrawalSavingAccount" class="accordion-collapse collapse" data-bs-parent="#helpDetailsAccordion">
                                     <div class="accordion-body">
                                         <ul>
-                                            <li>To perform a withdrawal from a saving account, follow these guidelines:</li>
+                                            <li>@CashDeskCashin.ToPerformAWithdrawalFromASavingAccountFollowTheseGuidelines:</li>
                                             <ul>
-                                                <li>A member must notify weeks or days before the withdrawal.</li>
-                                                <li>Withdrawal incurs a service charge of 2% on a normal day and 2.5% on holidays or weekends.</li>
-                                                <li>A Withdrawal Form fee is applied: 300 XAF for Physical Persons and 1,000 XAF for Moral Persons.</li>
-                                                <li>If the member notifies before the withdrawal, only the form fee is applied. Otherwise, both the form fee and service fee are charged.</li>
-                                                <li>Ensure sufficient funds are available in the account to process the withdrawal.</li>
+                                                <li>@CashDeskCashin.AMemberMustNotifyWeeksOrDaysBeforeTheWithdrawal.</li>
+                                                <li>@CashDeskCashin.WithdrawalIncursAServiceChargeOf2PercentOnANormalDayAnd2Point5PercentOnHolidaysOrWeekends.</li>
+                                                <li>@CashDeskCashin.AWithdrawalFormFeeIsApplied <strong>(@CashDeskCashin.ThreeHundredXAFFromPhysical / @CashDeskCashin.OneThousandXAFFromMoral)</strong>.</li>
+                                                <li>@CashDeskCashin.IfTheMemberNotifiesBeforeTheWithdrawalOnlyTheFormFeeIsApplied.</li>
+                                                <li>@CashDeskCashin.EnsureSufficientFundsAreAvailableInTheAccountToProcessTheWithdrawal.</li>
                                             </ul>
-                                            <strong>NB:</strong> Always verify the account balance and fees before proceeding.
+                                            <strong>@CashDeskCashin.NB:</strong> @CashDeskCashin.AlwaysVerifyTheAccountBalanceAndFeesBeforeProceeding.
                                     </div>
                                 </div>
                             </div>
@@ -68,23 +69,23 @@
                             <div class="accordion-item mt-2">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCashOutSavingAccount" aria-expanded="false" aria-controls="collapseCashOutSavingAccount">
-                                        Cash Out From Saving Account
+                                        @CashDeskCashin.CashOutFromSavingAccount
                                     </button>
                                 </h2>
                                 <div id="collapseCashOutSavingAccount" class="accordion-collapse collapse" data-bs-parent="#helpDetailsAccordion">
                                     <div class="accordion-body">
                                         <ul>
-                                            <li>To perform a cash-out from a saving account, follow these steps:</li>
+                                            <li>@CashDeskCashin.ToPerformACashOutFromASavingAccountFollowTheseSteps:</li>
                                             <ul>
-                                                <li>a. Click the <strong>Cash-Out</strong> icon.</li>
-                                                <li>b. Enter denominations.</li>
-                                                <li>c. Enter the amount to be withdrawn in the <strong>Amount</strong> column.</li>
-                                                <li>d. If there are charges, enter the applicable charges in the <strong>Fee</strong> column.</li>
-                                                <li>e. Check the <strong>CONF</strong> checkbox to confirm the transaction.</li>
-                                                <li>f. Click <strong>Save</strong>. After a successful transaction, click <strong>Re-Print</strong> to print the receipt.</li>
+                                                <li>@CashDeskCashin.ClickThe <strong>@CashDeskCashin.CashOut</strong> @CashDeskCashin.Icon.</li>
+                                                <li>@CashDeskCashin.EnterDenominations.</li>
+                                                <li>@CashDeskCashin.EnterTheAmountToBeWithdrawnInThe <strong>@CashDeskCashin.Amount</strong> @CashDeskCashin.Column.</li>
+                                                <li>@CashDeskCashin.IfThereAreChargesEnterTheApplicableChargesInThe <strong>@CashDeskCashin.Fee</strong> @CashDeskCashin.Column.</li>
+                                                <li>@CashDeskCashin.CheckThe <strong>@CashDeskCashin.CONF</strong> @CashDeskCashin.CheckboxToConfirmTheTransaction.</li>
+                                                <li>@CashDeskCashin.Click <strong>@CashDeskCashin.Save</strong>. @CashDeskCashin.AfterASuccessfulTransactionClick <strong>@CashDeskCashin.RePrint</strong> @CashDeskCashin.ToPrintTheReceipt.</li>
                                             </ul>
                                         </ul>
-                                        <strong>NB:</strong> Ensure the member has sufficient balance to avoid transaction rejection.
+                                        <strong>@CashDeskCashin.NB:</strong> @CashDeskCashin.EnsureTheMemberHasSufficientBalanceToAvoidTransactionRejection.
                                     </div>
                                 </div>
                             </div>
@@ -92,21 +93,21 @@
                             <div class="accordion-item mt-2">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanRepayment" aria-expanded="false" aria-controls="collapseLoanRepayment">
-                                        Loan Repayment
+                                        @CashDeskCashin.LoanRepayment
                                     </button>
                                 </h2>
                                 <div id="collapseLoanRepayment" class="accordion-collapse collapse" data-bs-parent="#helpDetailsAccordion">
                                     <div class="accordion-body">
                                         <ul>
-                                            <li>To perform a loan repayment, click the icon []:</li>
+                                            <li>@CashDeskCashin.ToPerformALoanRepaymentClickTheIcon:</li>
                                             <ul>
-                                                <li>a. Enter denominations.</li>
-                                                <li>b. Enter Amount in the <strong>"Enter Capital"</strong> column.</li>
-                                                <li>c. Enter Interest in the <strong>"Enter Interest"</strong> column.</li>
-                                                <li>d. Enter Penalty in the <strong>"Enter Penalty"</strong> column.</li>
-                                                <li>e. If the loan has VAT, the VAT is automatically calculated on interest input.</li>
-                                                <li>f. Check the <strong>CONF</strong> checkbox.</li>
-                                                <li>g. Click <strong>Save</strong>. After a successful transaction, click <strong>Re-Print</strong> to print the receipt.</li>
+                                                <li>@CashDeskCashin.AEnterDenominations.</li>
+                                                <li>@CashDeskCashin.EnterAmountInThe <strong>@CashDeskCashin.EnterCapital</strong> @CashDeskCashin.Column.</li>
+                                                <li>@CashDeskCashin.EnterInterestInThe <strong>@CashDeskCashin.EnterInterest</strong> @CashDeskCashin.Column.</li>
+                                                <li>@CashDeskCashin.EnterPenaltyInThe <strong>@CashDeskCashin.EnterPenalty</strong> @CashDeskCashin.Column.</li>
+                                                <li>@CashDeskCashin.IfTheLoanHasVATTheVATIsAutomaticallyCalculatedOnInterestInput.</li>
+                                                <li>@CashDeskCashin.FCheckThe <strong>@CashDeskCashin.CONF</strong> @CashDeskCashin.Checkbox.</li>
+                                                <li>@CashDeskCashin.Click <strong>@CashDeskCashin.Save</strong>. @CashDeskCashin.AfterASuccessfulTransactionClick <strong>@CashDeskCashin.RePrint</strong> @CashDeskCashin.ToPrintTheReceipt.</li>
                                             </ul>
                                         </ul>
                                     </div>
@@ -116,32 +117,32 @@
                             <div class="accordion-item mt-2">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCashIn" aria-expanded="false" aria-controls="collapseCashIn">
-                                        Cash In
+                                        @CashDeskCashin.CashIn
                                     </button>
                                 </h2>
                                 <div id="collapseCashIn" class="accordion-collapse collapse" data-bs-parent="#helpDetailsAccordion">
                                     <div class="accordion-body">
                                         <ul>
                                             <li>
-                                                To perform a cash-in or deposit without charges, click the <strong>Cash-In</strong> icon:
+                                                @CashDeskCashin.ToPerformACashInOrDepositWithoutChargesClickThe <strong>@CashDeskCashin.CashIn</strong> @CashDeskCashin.Icon:
                                                 <ul>
-                                                    <li>Enter denominations.</li>
-                                                    <li>Enter the amount in the <strong>Amount</strong> column of any listed account of your choice.</li>
-                                                    <li>Check the <strong>CONF</strong> checkbox.</li>
-                                                    <li>Click <strong>Save</strong>. After a successful transaction, click <strong>Re-Print</strong> to print the receipt.</li>
+                                                    <li>@CashDeskCashin.EnterDenominations.</li>
+                                                    <li>@CashDeskCashin.EnterTheAmountInThe <strong>@CashDeskCashin.Amount</strong> @CashDeskCashin.ColumnOfAnyListedAccountOfYourChoice.</li>
+                                                    <li>@CashDeskCashin.CheckThe <strong>@CashDeskCashin.CONF</strong> @CashDeskCashin.Checkbox.</li>
+                                                    <li>@CashDeskCashin.Click <strong>@CashDeskCashin.Save</strong>. @CashDeskCashin.AfterASuccessfulTransactionClick <strong>@CashDeskCashin.RePrint</strong> @CashDeskCashin.ToPrintTheReceipt.</li>
                                                 </ul>
                                             </li>
                                             <li>
-                                                To perform a cash-in or deposit with charges, click the <strong>Cash-In</strong> icon:
+                                                @CashDeskCashin.ToPerformACashInOrDepositWithChargesClickThe <strong>@CashDeskCashin.CashIn</strong> @CashDeskCashin.Icon:
                                                 <ul>
-                                                    <li>Enter denominations.</li>
-                                                    <li>Enter the amount in the <strong>Amount</strong> column & charges in the <strong>Fee</strong> column of any listed account of your choice.</li>
-                                                    <li>Check the <strong>CONF</strong> checkbox.</li>
-                                                    <li>Click <strong>Save</strong>. After a successful transaction, click <strong>Re-Print</strong> to print the receipt.</li>
+                                                    <li>@CashDeskCashin.EnterDenominations.</li>
+                                                    <li>@CashDeskCashin.EnterTheAmountInThe <strong>@CashDeskCashin.Amount</strong> @CashDeskCashin.ColumnAndChargesInThe <strong>@CashDeskCashin.Fee</strong> @CashDeskCashin.ColumnOfAnyListedAccountOfYourChoice.</li>
+                                                    <li>@CashDeskCashin.CheckThe <strong>@CashDeskCashin.CONF</strong> @CashDeskCashin.Checkbox.</li>
+                                                    <li>@CashDeskCashin.Click <strong>@CashDeskCashin.Save</strong>. @CashDeskCashin.AfterASuccessfulTransactionClick <strong>@CashDeskCashin.RePrint</strong> @CashDeskCashin.ToPrintTheReceipt.</li>
                                                 </ul>
                                             </li>
                                         </ul>
-                                        <strong>NB:</strong> Any charge inputted incorrectly will be rejected because the system is configured to validate all necessary charges.
+                                        <strong>@CashDeskCashin.NB:</strong> @CashDeskCashin.AnyChargeInputtedIncorrectlyWillBeRejectedBecauseTheSystemIsConfiguredToValidateAllNecessaryCharges.
                                     </div>
                                 </div>
                             </div>
@@ -150,146 +151,115 @@
                             <div class="accordion-item mt-2">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCashOut" aria-expanded="false" aria-controls="collapseCashOut">
-                                        Cash Out
+                                        @CashDeskCashin.CashOut
                                     </button>
                                 </h2>
                                 <div id="collapseCashOut" class="accordion-collapse collapse" data-bs-parent="#helpDetailsAccordion">
                                     <div class="accordion-body">
-                                        <p>In cash-out, the fee can either be inclusive or exclusive.</p>
+                                        <p>@CashDeskCashin.InCashOutTheFeeCanEitherBeInclusiveOrExclusive.</p>
                                         <ul>
                                             <li>
-                                                To perform a cash-out without charges, click the <strong>Cash-Out</strong> icon:
+                                                @CashDeskCashin.ToPerformACashOutWithoutChargesClickThe <strong>@CashDeskCashin.CashOut</strong> @CashDeskCashin.Icon:
                                                 <ul>
-                                                    <li>Enter denominations.</li>
-                                                    <li>Enter the amount in the <strong>Amount</strong> column of any listed account of your choice.</li>
-                                                    <li>Check the <strong>CONF</strong> checkbox.</li>
-                                                    <li>Click <strong>Save</strong>. After a successful transaction, click <strong>Re-Print</strong> to print the receipt.</li>
+                                                    <li>@CashDeskCashin.EnterDenominations.</li>
+                                                    <li>@CashDeskCashin.EnterTheAmountInThe <strong>@CashDeskCashin.Amount</strong> @CashDeskCashin.ColumnOfAnyListedAccountOfYourChoice.</li>
+                                                    <li>@CashDeskCashin.CheckThe <strong>@CashDeskCashin.CONF</strong> @CashDeskCashin.Checkbox.</li>
+                                                    <li>@CashDeskCashin.Click <strong>@CashDeskCashin.Save</strong>. @CashDeskCashin.AfterASuccessfulTransactionClick <strong>@CashDeskCashin.RePrint</strong> @CashDeskCashin.ToPrintTheReceipt.</li>
                                                 </ul>
                                             </li>
                                             <li>
-                                                To perform a cash-out with charges, choose one of the following:
+                                                @CashDeskCashin.ToPerformACashOutWithChargesChooseOneOfTheFollowing:
                                                 <ul>
                                                     <li>
-                                                        <strong>Charges Inclusive:</strong> The charge is debited directly from the member's balance, and the full requested amount is given to the member:
+                                                        <strong>@CashDeskCashin.ChargesInclusive:</strong> @CashDeskCashin.TheChargeIsDebitedDirectlyFromTheMembersBalanceAndTheFullRequestedAmountIsGivenToTheMember:
                                                         <ul>
-                                                            <li>Enter denominations.</li>
-                                                            <li>Enter the amount in the <strong>Amount</strong> column & charges in the <strong>Fee</strong> column of any listed account of your choice.</li>
-                                                            <li>Check the <strong>CONF</strong> checkbox.</li>
-                                                            <li>Check the <strong>INC</strong> box.</li>
-                                                            <li>Click <strong>Save</strong>. After a successful transaction, click <strong>Re-Print</strong> to print the receipt.</li>
+                                                            <li>@CashDeskCashin.EnterDenominations.</li>
+                                                            <li>@CashDeskCashin.EnterTheAmountInThe <strong>@CashDeskCashin.Amount</strong> @CashDeskCashin.ColumnAndChargesInThe <strong>@CashDeskCashin.Fee</strong> @CashDeskCashin.ColumnOfAnyListedAccountOfYourChoice.</li>
+                                                            <li>@CashDeskCashin.CheckThe <strong>@CashDeskCashin.CONF</strong> @CashDeskCashin.Checkbox.</li>
+                                                            <li>@CashDeskCashin.CheckThe <strong>@CashDeskCashin.INC</strong> @CashDeskCashin.Box.</li>
+                                                            <li>@CashDeskCashin.Click <strong>@CashDeskCashin.Save</strong>. @CashDeskCashin.AfterASuccessfulTransactionClick <strong>@CashDeskCashin.RePrint</strong> @CashDeskCashin.ToPrintTheReceipt.</li>
                                                         </ul>
                                                     </li>
                                                     <li>
-                                                        <strong>Charges Exclusive:</strong> The cashier collects the charge from the member during the operation (cash operation):
+                                                        <strong>@CashDeskCashin.ChargesExclusive:</strong> @CashDeskCashin.TheCashierCollectsTheChargeFromTheMemberDuringTheOperationCashOperation:
                                                         <ul>
-                                                            <li>Enter denominations.</li>
-                                                            <li>Enter the amount in the <strong>Amount</strong> column & charges in the <strong>Fee</strong> column of any listed account of your choice.</li>
-                                                            <li>Check the <strong>CONF</strong> checkbox.</li>
-                                                            <li>Do not check the <strong>INC</strong> box.</li>
-                                                            <li>Click <strong>Save</strong>. After a successful transaction, click <strong>Re-Print</strong> to print the receipt.</li>
+                                                            <li>@CashDeskCashin.EnterDenominations.</li>
+                                                            <li>@CashDeskCashin.EnterTheAmountInThe <strong>@CashDeskCashin.Amount</strong> @CashDeskCashin.ColumnAndChargesInThe <strong>@CashDeskCashin.Fee</strong> @CashDeskCashin.ColumnOfAnyListedAccountOfYourChoice.</li>
+                                                            <li>@CashDeskCashin.CheckThe <strong>@CashDeskCashin.CONF</strong> @CashDeskCashin.Checkbox.</li>
+                                                            <li>@CashDeskCashin.DoNotCheckThe <strong>@CashDeskCashin.INC</strong> @CashDeskCashin.Box.</li>
+                                                            <li>@CashDeskCashin.Click <strong>@CashDeskCashin.Save</strong>. @CashDeskCashin.AfterASuccessfulTransactionClick <strong>@CashDeskCashin.RePrint</strong> @CashDeskCashin.ToPrintTheReceipt.</li>
                                                         </ul>
                                                     </li>
                                                 </ul>
                                             </li>
                                         </ul>
-                                        <strong>NB:</strong> Any charge inputted incorrectly will be rejected because the system is configured to validate all necessary charges.
+                                        <strong>@CashDeskCashin.NB:</strong> @CashDeskCashin.AnyChargeInputtedIncorrectlyWillBeRejectedBecauseTheSystemIsConfiguredToValidateAllNecessaryCharges.
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- Definitions Section -->
-                        <div class="card mt-4">
-                            <div class="card-header bg-primary text-white">
-                                <h6 class="mb-0">Definitions</h6>
-                            </div>
-                            <div class="card-body">
+                <!-- Definitions Section -->
+                <div class="card mt-4">
+                    <div class="card-header bg-primary text-white">
+                        <h6 class="mb-0">@CashDeskCashin.Definitions</h6>
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            <li><strong>@CashDeskCashin.InclusiveCharges:</strong> @CashDeskCashin.TheChargeIsDebitedDirectlyFromTheMembersBalanceAndTheRequestedAmountIsGivenInFull.</li>
+                            <li><strong>@CashDeskCashin.ExclusiveCharges:</strong> @CashDeskCashin.TheCashierCollectsTheChargeInCashDirectlyFromTheMemberDuringTheOperation.</li>
+                            <li>
+                                <strong>@CashDeskCashin.WithdrawalFromSavingAccount:</strong> @CashDeskCashin.AMemberWithdraws
                                 <ul>
-                                    <li><strong>Inclusive Charges:</strong> The charge is debited directly from the member's balance, and the requested amount is given in full. If the member has insufficient funds, the transaction will be rejected to avoid balance overdraft.</li>
-                                    <li><strong>Exclusive Charges:</strong> The cashier collects the charge in cash directly from the member during the operation.</li>
                                     <li>
-                                        <strong>Withdrawal From Saving Account:</strong> A member withdraws 50,000 XAF from their savings account.
-                                        <ul>
-                                            <li>
-                                                <strong>With Notification:</strong> The member notified the @Session["BranchName"] service in advance and pays only the form fee (300 XAF for Physical Persons or 1,000 XAF for Moral Persons). No service fee is charged.
-                                            </li>
-                                            <li>
-                                                <strong>Without Notification:</strong> The member did not notify the @Session["BranchName"] service and pays both the form fee and a service fee of 2% on a normal day (1,000 XAF) or 2.5% on a holiday/weekend (1,250 XAF). Additionally, the total cost will be 51,300 XAF for a normal day and 51,550 XAF for a holiday/weekend.
-                                            </li>
-                                        </ul>
-                                        <h6 class="text-primary mt-3">Scenario Examples:</h6>
-                                        <p>
-                                            <strong>Cash In:</strong> A member deposits 20,000 XAF with a charge of 500 XAF.
-                                        </p>
-                                        <ul>
-                                            <li>
-                                                <strong>Without Charges:</strong> The member's account is credited with 20,000 XAF. The system validates and confirms the transaction.
-                                            </li>
-                                            <li>
-                                                <strong>With Charges:</strong> The member's account is credited with 19,500 XAF after deducting 500 XAF as charges.
-                                            </li>
-                                        </ul>
-                                        <p>
-                                            <strong>Loan Repayment:</strong> A member repays a loan of 10,000 XAF with an interest of 500 XAF and a penalty of 200 XAF.
-                                        </p>
-                                        <ul>
-                                            <li>
-                                                <strong>With VAT:</strong> The VAT is automatically calculated on the interest, and the system debits the total amount (10,700 XAF + VAT) from the member's account.
-                                            </li>
-                                            <li>
-                                                <strong>Without VAT:</strong> The total repayment amount of 10,700 XAF is debited from the member's account.
-                                            </li>
-                                        </ul>
-                                        <p>
-                                            <strong>Cash Out:</strong> A member requests to withdraw 15,000 XAF with a charge of 300 XAF.
-                                        </p>
-                                        <ul>
-                                            <li>
-                                                <strong>Inclusive:</strong> The member receives 15,000 XAF, and their account is debited with 15,300 XAF.
-                                            </li>
-                                            <li>
-                                                <strong>Exclusive:</strong> The member pays the 300 XAF charge in cash and receives 15,000 XAF. Their account is debited with 15,000 XAF only.
-                                            </li>
-                                        </ul>
-                                        <p>
-                                            <strong>Withdrawal From Saving Account:</strong> A member withdraws 50,000 XAF from their savings account.
-                                        </p>
-                                        <ul>
-                                            <li>
-                                                <strong>With Notification:</strong> The member notified the bank in advance and pays only the form fee (300 XAF for Physical Persons or 1,000 XAF for Moral Persons). No service fee is charged.
-                                            </li>
-                                            <li>
-                                                <strong>Without Notification:</strong> The member did not notify the bank and pays both the form fee and a service fee of 2% on a normal day (1,000 XAF) or 2.5% on a holiday/weekend (1,250 XAF).
-                                            </li>
-                                        </ul>
-                                        <p>
-                                            <strong>Loan Repayment:</strong> A member repays a loan of 10,000 XAF with an interest of 500 XAF and a penalty of 200 XAF.
-                                        </p>
-                                        <ul>
-                                            <li>
-                                                <strong>With VAT:</strong> The VAT is automatically calculated on the interest, and the system debits the total amount (10,700 XAF + VAT) from the member's account.
-                                            </li>
-                                            <li>
-                                                <strong>Without VAT:</strong> The total repayment amount of 10,700 XAF is debited from the member's account.
-                                            </li>
-                                        </ul>
-                                        <p>
-                                            <strong>Cash Out:</strong> A member requests to withdraw 15,000 XAF with a charge of 300 XAF.
-                                        </p>
-                                        <ul>
-                                            <li>
-                                                <strong>Inclusive:</strong> The member receives 15,000 XAF, and their account is debited with 15,300 XAF.
-                                            </li>
-                                            <li>
-                                                <strong>Exclusive:</strong> The member pays the 300 XAF charge in cash and receives 15,000 XAF. Their account is debited with 15,000 XAF only.
-                                            </li>
-                                        </ul>
-                            </div>
-                        </div>
+                                        <strong>@CashDeskCashin.WithNotification:</strong> @CashDeskCashin.TheMemberNotifiedThe
+                                    </li>
+                                    <li>
+                                        <strong>@CashDeskCashin.WithoutNotification:</strong> @CashDeskCashin.TheMemberDidNotNotifyThe
+                                    </li>
+                                </ul>
+                                <h6 class="text-primary mt-3">@CashDeskCashin.ScenarioExamples:</h6>
+                                <p>
+                                    <strong>@CashDeskCashin.CashIn:</strong> @CashDeskCashin.AMemberDeposits
+                                </p>
+                                <ul>
+                                    <li>
+                                        <strong>@CashDeskCashin.WithoutCharges:</strong> @CashDeskCashin.TheMembersAccountIsCreditedWith
+                                    </li>
+                                    <li>
+                                        <strong>@CashDeskCashin.WithCharges:</strong> @CashDeskCashin.TheMembersAccountIsCreditedWith
+                                    </li>
+                                </ul>
+                                <p>
+                                    <strong>@CashDeskCashin.LoanRepayment:</strong> @CashDeskCashin.AMemberRepaysALoanOf
+                                </p>
+                                <ul>
+                                    <li>
+                                        <strong>@CashDeskCashin.WithVAT:</strong> @CashDeskCashin.TheVATIsAutomaticallyCalculatedOnTheInterestAndTheSystemDebitsTheTotalAmount.
+                                    </li>
+                                    <li>
+                                        <strong>@CashDeskCashin.WithoutVAT:</strong> @CashDeskCashin.TheTotalRepaymentAmountOf
+                                    </li>
+                                </ul>
+                                <p>
+                                    <strong>@CashDeskCashin.CashOut:</strong> @CashDeskCashin.AMemberRequestsToWithdraw
+                                </p>
+                                <ul>
+                                    <li>
+                                        <strong>@CashDeskCashin.Inclusive:</strong> @CashDeskCashin.TheMemberReceives
+                                    </li>
+                                    <li>
+                                        <strong>@CashDeskCashin.Exclusive:</strong> @CashDeskCashin.TheMemberPaysThe
+                                    </li>
+                                </ul>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
     </div>
 </div>
 <!-- 🔘 Action Panel Section -->
@@ -299,10 +269,10 @@
             <div class="card-body d-flex justify-content-end">
                 <a href="#"
                    class="btn btn-sm btn-outline-danger d-flex align-items-center gap-2"
-                   onclick="$('#tempMembersModal').modal('show'); setTimeout(loadMemberData, 300);"
+                   onclick="The modal('show'); setTimeout(loadMemberData, 300);"
                    data-bs-toggle="tooltip"
-                   title="Manage Pre-Registered Members who are awaiting final validation before full onboarding">
-                    <i class="mdi mdi-account-alert-outline fs-5"></i> Pre-Registered Members
+                   title="@CashDeskCashin.ManagePreRegisteredMembersWhoAreAwaitingFinalValidationBeforeFullOnboarding">
+                    <i class="mdi mdi-account-alert-outline fs-5"></i> @CashDeskCashin.PreRegisteredMembers
                 </a>
             </div>
         </div>
@@ -323,7 +293,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-bank me-2"></i>
-                            <span id="cashDeskOperations">CASH OPERATIONS</span>
+                            <span id="cashDeskOperations">@CashDeskCashin.CashOperations</span>
                         </button>
                     </h2>
                     <hr />
@@ -348,26 +318,26 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="paymentModalLabel">Loan Payment</h5>
+                <h5 class="modal-title" id="paymentModalLabel">@CashDeskCashin.LoanPayment</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="modalAmount">Enter Amount:</label>
-                    <input type="number" class="form-control" id="modalAmount" placeholder="Enter amount">
+                    <label for="modalAmount">@CashDeskCashin.EnterAmount:</label>
+                    <input type="number" class="form-control" id="modalAmount" placeholder="@CashDeskCashin.EnterAmount">
                 </div>
                 <div class="form-group">
-                    <label for="modalInterest">Enter Interest:</label>
-                    <input type="number" class="form-control" id="modalInterest" placeholder="Enter interest">
+                    <label for="modalInterest">@CashDeskCashin.EnterInterest:</label>
+                    <input type="number" class="form-control" id="modalInterest" placeholder="@CashDeskCashin.EnterInterest">
                 </div>
                 <div class="form-group">
-                    <label for="modalPenalty">Enter Penalty:</label>
-                    <input type="number" class="form-control" id="modalPenalty" placeholder="Enter penalty">
+                    <label for="modalPenalty">@CashDeskCashin.EnterPenalty:</label>
+                    <input type="number" class="form-control" id="modalPenalty" placeholder="@CashDeskCashin.EnterPenalty">
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="modalOkButton" onclick="applyPayment()">OK</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@CashDeskCashin.Close</button>
+                <button type="button" class="btn btn-primary" id="modalOkButton" onclick="applyPayment()">@CashDeskCashin.OK</button>
             </div>
         </div>
     </div>
@@ -378,24 +348,24 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content position-relative">
 
-            <!-- 🔄 Loader Overlay -->
+            <!-- Loader Overlay -->
             <div id="depositorLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
                 <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
                     <div class="spinner-border text-primary mb-3" role="status"></div>
-                    <p class="fw-semibold text-primary">Processing transaction, please wait...</p>
+                    <p class="fw-semibold text-primary">@CashDeskCashin.ProcessingTransactionPleaseWait</p>
                 </div>
             </div>
 
-            <!-- 🌐 Modal Header -->
+            <!-- Modal Header -->
             <div class="modal-header">
                 <div class="w-100">
                     <div class="card bg-light mb-2">
                         <div class="card-body text-center">
                             <h1 class="card-title text-primary" id="depositorModalTitle">
-                                <i class="mdi mdi-account-card-details-outline me-2"></i> DEPOSITOR INFORMATION REQUIRED
+                                <i class="mdi mdi-account-card-details-outline me-2"></i> @CashDeskCashin.DepositorInformationRequired
                             </h1>
                             <p class="card-text" id="depositorModalDescription">
-                                To complete this transaction, please enter the depositor's full information for regulatory and audit compliance.
+                                @CashDeskCashin.ToCompleteThisTransactionPleaseEnterTheDepositorsFullInformationForRegulatoryAndAuditCompliance.
                             </p>
                             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                         </div>
@@ -403,10 +373,10 @@
                 </div>
             </div>
 
-            <!-- 💡 Tips Section -->
+            <!-- Tips Section -->
             <div class="card m-3">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-information-outline me-2"></i> WHY THIS IS REQUIRED</span>
+                    <span><i class="mdi mdi-information-outline me-2"></i> @CashDeskCashin.WhyThisIsRequired</span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDepositorTips">
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
@@ -414,31 +384,31 @@
                 <div id="collapseDepositorTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-account-check-outline text-primary me-2"></i><strong>Identity Tracking:</strong> Helps track who completed the transaction.</li>
-                            <li><i class="mdi mdi-shield-lock-outline text-success me-2"></i><strong>Compliance:</strong> Required for KYC and AML regulations.</li>
-                            <li><i class="mdi mdi-file-document-box-check-outline text-warning me-2"></i><strong>Audit Trail:</strong> Permanent proof of who deposited funds.</li>
+                            <li><i class="mdi mdi-account-check-outline text-primary me-2"></i><strong>@CashDeskCashin.IdentityTracking:</strong> @CashDeskCashin.HelpsTrackWhoCompletedTheTransaction.</li>
+                            <li><i class="mdi mdi-shield-lock-outline text-success me-2"></i><strong>@CashDeskCashin.Compliance:</strong> @CashDeskCashin.RequiredForKYCAndAMLRegulations.</li>
+                            <li><i class="mdi mdi-file-document-box-check-outline text-warning me-2"></i><strong>@CashDeskCashin.AuditTrail:</strong> @CashDeskCashin.PermanentProofOfWhoDepositedFunds.</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <!-- 🧾 Depositor Form Partial -->
+            <!-- Depositor Form Partial -->
             @Html.Partial("_DepositerForm")
 
-            <!-- 🔘 Footer -->
+            <!-- Footer -->
             <div class="modal-footer justify-content-between">
                 <div>
                     <span class="text-muted fw-semibold">
-                        Member: <span class="text-dark" id="depositorCustomerName"></span> |
-                        ID: <span class="text-dark" id="depositorCustomerId"></span>
+                        @CashDeskCashin.Member: <span class="text-dark" id="depositorCustomerName"></span> |
+                        @CashDeskCashin.ID: <span class="text-dark" id="depositorCustomerId"></span>
                     </span>
                 </div>
                 <div class="d-flex align-items-center">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        <i class="mdi mdi-close"></i> Cancel
+                        <i class="mdi mdi-close"></i> @CashDeskCashin.Cancel
                     </button>
                     <button type="button" id="confirmDepositorBtn" class="btn btn-success ms-2">
-                        <i class="mdi mdi-check-circle-outline"></i> Confirm & Proceed
+                        <i class="mdi mdi-check-circle-outline"></i> @CashDeskCashin.ConfirmAndProceed
                     </button>
                 </div>
             </div>
