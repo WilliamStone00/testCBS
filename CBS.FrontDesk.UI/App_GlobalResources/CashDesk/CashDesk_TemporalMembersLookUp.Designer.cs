@@ -59,5 +59,419 @@ namespace Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Action.
+        /// </summary>
+        internal static string Action {
+            get {
+                return ResourceManager.GetString("Action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Age Category.
+        /// </summary>
+        internal static string AgeCategory {
+            get {
+                return ResourceManager.GetString("AgeCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        internal static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply Filter.
+        /// </summary>
+        internal static string ApplyFilter {
+            get {
+                return ResourceManager.GetString("ApplyFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Branch.
+        /// </summary>
+        internal static string Branch {
+            get {
+                return ResourceManager.GetString("Branch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created From.
+        /// </summary>
+        internal static string CreatedFrom {
+            get {
+                return ResourceManager.GetString("CreatedFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created To.
+        /// </summary>
+        internal static string CreatedTo {
+            get {
+                return ResourceManager.GetString("CreatedTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customer ID.
+        /// </summary>
+        internal static string CustomerID {
+            get {
+                return ResourceManager.GetString("CustomerID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customer Type.
+        /// </summary>
+        internal static string CustomerType {
+            get {
+                return ResourceManager.GetString("CustomerType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date of Birth (From).
+        /// </summary>
+        internal static string DateOfBirthFrom {
+            get {
+                return ResourceManager.GetString("DateOfBirthFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date of Birth (To).
+        /// </summary>
+        internal static string DateOfBirthTo {
+            get {
+                return ResourceManager.GetString("DateOfBirthTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date Registered.
+        /// </summary>
+        internal static string DateRegistered {
+            get {
+                return ResourceManager.GetString("DateRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        internal static string Exit {
+            get {
+                return ResourceManager.GetString("Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First Name.
+        /// </summary>
+        internal static string FirstName {
+            get {
+                return ResourceManager.GetString("FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Name.
+        /// </summary>
+        internal static string FullName {
+            get {
+                return ResourceManager.GetString("FullName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gender Or Groups.
+        /// </summary>
+        internal static string GenderOrGroups {
+            get {
+                return ResourceManager.GetString("GenderOrGroups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Name.
+        /// </summary>
+        internal static string LastName {
+            get {
+                return ResourceManager.GetString("LastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Legal Form.
+        /// </summary>
+        internal static string LegalForm {
+            get {
+                return ResourceManager.GetString("LegalForm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading filtered members....
+        /// </summary>
+        internal static string LoadingFilteredMembers {
+            get {
+                return ResourceManager.GetString("LoadingFilteredMembers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Marital Status.
+        /// </summary>
+        internal static string MaritalStatus {
+            get {
+                return ResourceManager.GetString("MaritalStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member Account Number.
+        /// </summary>
+        internal static string MemberAccountNumber {
+            get {
+                return ResourceManager.GetString("MemberAccountNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member Account/Temporal Number.
+        /// </summary>
+        internal static string MemberAccountTemporalNumber {
+            get {
+                return ResourceManager.GetString("MemberAccountTemporalNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member Filters.
+        /// </summary>
+        internal static string MemberFilters {
+            get {
+                return ResourceManager.GetString("MemberFilters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Membership Approval.
+        /// </summary>
+        internal static string MembershipApproval {
+            get {
+                return ResourceManager.GetString("MembershipApproval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Membership status [Awaits_Validation].
+        /// </summary>
+        internal static string MembershipStatusAwaitsValidation {
+            get {
+                return ResourceManager.GetString("MembershipStatusAwaitsValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member&apos;s Profile.
+        /// </summary>
+        internal static string MembersProfile {
+            get {
+                return ResourceManager.GetString("MembersProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member Status.
+        /// </summary>
+        internal static string MemberStatus {
+            get {
+                return ResourceManager.GetString("MemberStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Review approval and profile information before final onboarding or transactional decisions..
+        /// </summary>
+        internal static string MemberStatusDescription {
+            get {
+                return ResourceManager.GetString("MemberStatusDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Note.
+        /// </summary>
+        internal static string Note {
+            get {
+                return ResourceManager.GetString("Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ensure member data is validated if they’re transitioning to full membership..
+        /// </summary>
+        internal static string NoteDescription {
+            get {
+                return ResourceManager.GetString("NoteDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone.
+        /// </summary>
+        internal static string Phone {
+            get {
+                return ResourceManager.GetString("Phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pre-Registered Members (PRM).
+        /// </summary>
+        internal static string PreRegisteredMembersPRM {
+            get {
+                return ResourceManager.GetString("PreRegisteredMembersPRM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset.
+        /// </summary>
+        internal static string Reset {
+            get {
+                return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Filters.
+        /// </summary>
+        internal static string SearchFilters {
+            get {
+                return ResourceManager.GetString("SearchFilters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Action.
+        /// </summary>
+        internal static string SelectAction {
+            get {
+                return ResourceManager.GetString("SelectAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Once a member is identified, use the Select button to process them or initiate an action..
+        /// </summary>
+        internal static string SelectActionDescription {
+            get {
+                return ResourceManager.GetString("SelectActionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Approval &amp; Legal Filters.
+        /// </summary>
+        internal static string ShowApprovalAndLegalFilters {
+            get {
+                return ResourceManager.GetString("ShowApprovalAndLegalFilters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Date Filters.
+        /// </summary>
+        internal static string ShowDateFilters {
+            get {
+                return ResourceManager.GetString("ShowDateFilters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Demographic Filters.
+        /// </summary>
+        internal static string ShowDemographicFilters {
+            get {
+                return ResourceManager.GetString("ShowDemographicFilters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TEMPORARY MEMBERS LOOKUP.
+        /// </summary>
+        internal static string TemporalMembersLookup {
+            get {
+                return ResourceManager.GetString("TemporalMembersLookup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Temporary Members.
+        /// </summary>
+        internal static string TemporaryMembers {
+            get {
+                return ResourceManager.GetString("TemporaryMembers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to These are members not fully registered but allowed to initiate limited operations..
+        /// </summary>
+        internal static string TemporaryMembersDescription {
+            get {
+                return ResourceManager.GetString("TemporaryMembersDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This panel allows the cashier to search, filter, and select temporarily registered members. These members may not have complete registration and often require final processing or conversion..
+        /// </summary>
+        internal static string ThisPanelAllowsTheCashierToSearchFilterAndSelectTemporarilyRegisteredMembers {
+            get {
+                return ResourceManager.GetString("ThisPanelAllowsTheCashierToSearchFilterAndSelectTemporarilyRegisteredMembers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TIPS FOR USING THIS PANEL.
+        /// </summary>
+        internal static string TipsForUsingThisPanel {
+            get {
+                return ResourceManager.GetString("TipsForUsingThisPanel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use filters to narrow down your search by name, gender, registration date, etc..
+        /// </summary>
+        internal static string UseFiltersToNarrowDownYourSearch {
+            get {
+                return ResourceManager.GetString("UseFiltersToNarrowDownYourSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Working Status.
+        /// </summary>
+        internal static string WorkingStatus {
+            get {
+                return ResourceManager.GetString("WorkingStatus", resourceCulture);
+            }
+        }
     }
 }
