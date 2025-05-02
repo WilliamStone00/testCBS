@@ -1,16 +1,17 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@using Resources
 @{
-    ViewBag.Title = "Loan Repayment Simulation";
+    ViewBag.Title = @LoanRepaymentSimulation.LoanRepaymentSimulationTitle;
 }
 
 <!-- Page Header -->
-<div class="card bg-light mb-1">
+<div class="card` bg-light mb-1">
     <div class="card-body text-center">
         <h1 class="card-title text-primary">
-            <i class="mdi mdi-cash me-2"></i> Loan Repayment Simulation at Member Service Desk
+            <i class="mdi mdi-cash me-2"></i> @LoanRepaymentSimulation.LoanRepaymentSimulationAtMemberServiceDesk
         </h1>
         <p class="card-text">
-            This simulation is done at the Member Service Desk to help members know the total loan repayment amount—including capital, interest, penalties, and VAT—before proceeding to the Cash Desk for the actual payment.
+            @LoanRepaymentSimulation.LoanRepaymentSimulationDescription
         </p>
         <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
     </div>
@@ -20,7 +21,7 @@
 <div class="card mb-1">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span>
-            <i class="mdi mdi-information-outline me-2"></i> Tips for Accurate Loan Repayment Simulation
+            <i class="mdi mdi-information-outline me-2"></i> @LoanRepaymentSimulation.TipsForAccurateLoanRepaymentSimulation
         </span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanRepaymentTips" aria-expanded="false" aria-controls="collapseLoanRepaymentTips">
             <i class="mdi mdi-chevron-down"></i>
@@ -29,41 +30,34 @@
     <div id="collapseLoanRepaymentTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> **Purpose:** This simulation is only for projection purposes. The actual payment is made at the Cash Desk based on the computed repayment amount provided here.</li>
-
-                <li><i class="mdi mdi-cash-plus text-success me-2"></i> **Accurate Input:** Enter the correct amounts under <strong>Capital</strong>, <strong>Interest</strong>, and <strong>Penalty</strong> to project the correct repayment total.</li>
-
-                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> **VAT Applicability:** VAT is automatically applied to loans of 2,000,000 XAF or more. Select the <strong>VAT-Inclusive</strong> checkbox if VAT is already part of the interest entered.</li>
-
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @LoanRepaymentSimulation.PurposeOfSimulation</li>
+                <li><i class="mdi mdi-cash-plus text-success me-2"></i> <strong>@LoanRepaymentSimulation.AccurateInput:</strong> @LoanRepaymentSimulation.EnterTheCorrectAmountsUnder <strong>@LoanRepaymentSimulation.Capital</strong>, <strong>@LoanRepaymentSimulation.Interest</strong>, @LoanRepaymentSimulation.And <strong>@LoanRepaymentSimulation.Penalty</strong> @LoanRepaymentSimulation.ToProjectTheCorrectRepaymentTotal.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> <strong>@LoanRepaymentSimulation.VATApplicability:</strong> @LoanRepaymentSimulation.VATIsAutomaticallyAppliedToLoansOf <strong>@LoanRepaymentSimulation.TwoMillionXAFOrMore</strong>. @LoanRepaymentSimulation.SelectThe <strong>@LoanRepaymentSimulation.VATInclusive</strong> @LoanRepaymentSimulation.CheckboxIfVATIsAlreadyPartOfTheInterestEntered.</li>
                 <li>
-                    <i class="mdi mdi-check-circle-outline text-primary me-2"></i> **Summary Verification:** Review the computed totals in the summary section before sending the member to the Cash Desk:
+                    <i class="mdi mdi-check-circle-outline text-primary me-2"></i> @LoanRepaymentSimulation.SummaryVerification
                     <ul>
-                        <li>Ensure the total repayment (capital, interest, penalty, and VAT) matches expectations.</li>
-                        <li>Double-check the breakdown of individual components like interest and penalties to avoid discrepancies.</li>
+                        <li>@LoanRepaymentSimulation.EnsureTotalRepaymentMatchesExpectations</li>
+                        <li>@LoanRepaymentSimulation.DoubleCheckBreakdownOfIndividualComponents</li>
                     </ul>
                 </li>
-
-                <li><i class="mdi mdi-note-edit-outline text-info me-2"></i> **Guidance for Members:** Provide the member with the breakdown of repayment amounts, including applicable fees and VAT. This will help them avoid surprises at the Cash Desk.</li>
-
-                <li><i class="mdi mdi-content-save-edit-outline text-warning me-2"></i> **Adjustments:** If any discrepancies are found, adjust capital, interest, or penalties before providing the final repayment details to the member.</li>
-
-                <li><i class="mdi mdi-account-multiple-check-outline text-primary me-2"></i> **Multiple Loans:** If the member has multiple loans, process each loan individually to ensure accurate calculations.</li>
-
+                <li><i class="mdi mdi-note-edit-outline text-info me-2"></i> @LoanRepaymentSimulation.GuidanceForMembers</li>
+                <li><i class="mdi mdi-content-save-edit-outline text-warning me-2"></i> @LoanRepaymentSimulation.Adjustments</li>
+                <li><i class="mdi mdi-account-multiple-check-outline text-primary me-2"></i> @LoanRepaymentSimulation.MultipleLoans</li>
                 <li>
-                    <i class="mdi mdi-alert-circle-check-outline text-danger me-2"></i> **Scenario Examples:**
+                    <i class="mdi mdi-alert-circle-check-outline text-danger me-2"></i> @LoanRepaymentSimulation.ScenarioExamples
                     <ul>
                         <li>
-                            <strong>Scenario 1 (VAT Included):</strong> A loan of 3,000,000 XAF with 100,000 XAF interest and VAT included.
+                            <strong>@LoanRepaymentSimulation.Scenario1VATIncluded</strong> @LoanRepaymentSimulation.Scenario1VATIncludedDescription
                             <ul>
-                                <li>VAT is calculated as part of the interest using the formula: <em>Interest / (1 + VAT rate)</em>.</li>
-                                <li>Total repayment reflects the computed VAT without double charging.</li>
+                                <li>@LoanRepaymentSimulation.VATCalculationFormula <em>@LoanRepaymentSimulation.formula</em></li>
+                                <li>@LoanRepaymentSimulation.TotalRepaymentReflectsComputedVAT</li>
                             </ul>
                         </li>
                         <li>
-                            <strong>Scenario 2 (Separate VAT):</strong> A loan of 3,000,000 XAF with 100,000 XAF interest, where VAT is applied on top.
+                            <strong>@LoanRepaymentSimulation.Scenario2SeparateVAT</strong> @LoanRepaymentSimulation.Scenario2SeparateVATDescription
                             <ul>
-                                <li>VAT is calculated as 19.25% of the interest (19,250 XAF).</li>
-                                <li>Total repayment includes the interest plus the VAT amount (119,250 XAF).</li>
+                                <li>@LoanRepaymentSimulation.VATCalculation</li>
+                                <li>@LoanRepaymentSimulation.TotalRepaymentIncludesInterestPlusVAT</li>
                             </ul>
                         </li>
                     </ul>

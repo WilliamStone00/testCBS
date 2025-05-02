@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccurateInput" xml:space="preserve">
+    <value>Accurate Input</value>
+  </data>
+  <data name="Adjustments" xml:space="preserve">
+    <value>**Adjustments:** If any discrepancies are found, adjust capital, interest, or penalties before providing the final repayment details to the member.</value>
+  </data>
+  <data name="And" xml:space="preserve">
+    <value>and</value>
+  </data>
+  <data name="Capital" xml:space="preserve">
+    <value>Capital</value>
+  </data>
+  <data name="CheckboxIfVATIsAlreadyPartOfTheInterestEntered" xml:space="preserve">
+    <value>checkbox if VAT is already part of the interest entered.</value>
+  </data>
+  <data name="DoubleCheckBreakdownOfIndividualComponents" xml:space="preserve">
+    <value>Double-check the breakdown of individual components like interest and penalties to avoid discrepancies.</value>
+  </data>
+  <data name="EnsureTotalRepaymentMatchesExpectations" xml:space="preserve">
+    <value>Ensure the total repayment (capital, interest, penalty, and VAT) matches expectations.</value>
+  </data>
+  <data name="EnterTheCorrectAmountsUnder" xml:space="preserve">
+    <value>Enter the correct amounts under</value>
+  </data>
+  <data name="formula" xml:space="preserve">
+    <value>Interest / (1 + VAT rate).</value>
+  </data>
+  <data name="GuidanceForMembers" xml:space="preserve">
+    <value>**Guidance for Members:** Provide the member with the breakdown of repayment amounts, including applicable fees and VAT. This will help them avoid surprises at the Cash Desk.</value>
+  </data>
+  <data name="Interest" xml:space="preserve">
+    <value>Interest</value>
+  </data>
+  <data name="LoanRepaymentSimulationAtMemberServiceDesk" xml:space="preserve">
+    <value>Loan Repayment Simulation at Member Service Desk</value>
+  </data>
+  <data name="LoanRepaymentSimulationDescription" xml:space="preserve">
+    <value>This simulation is done at the Member Service Desk to help members know the total loan repayment amount—including capital, interest, penalties, and VAT—before proceeding to the Cash Desk for the actual payment.</value>
+  </data>
+  <data name="LoanRepaymentSimulationTitle" xml:space="preserve">
+    <value>Loan Repayment Simulation</value>
+  </data>
+  <data name="MultipleLoans" xml:space="preserve">
+    <value>**Multiple Loans:** If the member has multiple loans, process each loan individually to ensure accurate calculations.</value>
+  </data>
+  <data name="Penalty" xml:space="preserve">
+    <value>Penalty</value>
+  </data>
+  <data name="PurposeOfSimulation" xml:space="preserve">
+    <value>Purpose: This simulation is only for projection purposes. The actual payment is made at the Cash Desk based on the computed repayment amount provided here.</value>
+  </data>
+  <data name="Scenario1VATIncluded" xml:space="preserve">
+    <value>Scenario 1 (VAT Included): A loan of 3,000,000 XAF with 100,000 XAF interest and VAT included.</value>
+  </data>
+  <data name="Scenario1VATIncludedDescription" xml:space="preserve">
+    <value>A loan of 3,000,000 XAF with 100,000 XAF interest, where VAT is applied on top.</value>
+  </data>
+  <data name="Scenario2SeparateVAT" xml:space="preserve">
+    <value>Scenario 2 (Separate VAT): </value>
+  </data>
+  <data name="Scenario2SeparateVATDescription" xml:space="preserve">
+    <value>A loan of 3,000,000 XAF with 100,000 XAF interest, where VAT is applied on top.</value>
+  </data>
+  <data name="ScenarioExamples" xml:space="preserve">
+    <value>**Scenario Examples:**</value>
+  </data>
+  <data name="SelectThe" xml:space="preserve">
+    <value>Select the</value>
+  </data>
+  <data name="SummaryVerification" xml:space="preserve">
+    <value>**Summary Verification:** Review the computed totals in the summary section before sending the member to the Cash Desk:</value>
+  </data>
+  <data name="TipsForAccurateLoanRepaymentSimulation" xml:space="preserve">
+    <value>Tips for Accurate Loan Repayment Simulation</value>
+  </data>
+  <data name="ToProjectTheCorrectRepaymentTotal" xml:space="preserve">
+    <value>to project the correct repayment total.</value>
+  </data>
+  <data name="TotalRepaymentIncludesInterestPlusVAT" xml:space="preserve">
+    <value>Total repayment includes the interest plus the VAT amount (119,250 XAF).</value>
+  </data>
+  <data name="TotalRepaymentReflectsComputedVAT" xml:space="preserve">
+    <value>Total repayment reflects the computed VAT without double charging.</value>
+  </data>
+  <data name="TwoMillionXAFOrMore" xml:space="preserve">
+    <value>2,000,000 XAF or more</value>
+  </data>
+  <data name="VATApplicability" xml:space="preserve">
+    <value>VAT Applicability: VAT is automatically applied to loans of 2,000,000 XAF or more. Select the VAT-Inclusive checkbox if VAT is already part of the interest entered.</value>
+  </data>
+  <data name="VATCalculation" xml:space="preserve">
+    <value>VAT is calculated as 19.25% of the interest (19,250 XAF).</value>
+  </data>
+  <data name="VATCalculationFormula" xml:space="preserve">
+    <value>VAT is calculated as part of the interest using the formula: </value>
+  </data>
+  <data name="VATInclusive" xml:space="preserve">
+    <value>VAT-Inclusive</value>
+  </data>
+  <data name="VATIsAutomaticallyAppliedToLoansOf" xml:space="preserve">
+    <value>VAT is automatically applied to loans of</value>
+  </data>
+</root>
