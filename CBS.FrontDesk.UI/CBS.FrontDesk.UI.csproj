@@ -918,6 +918,7 @@
     <Compile Include="Controllers\Accounting\CashMovementTrackerController.cs" />
     <Compile Include="Controllers\AuditTrailData\AuditTrailController.cs" />
     <Compile Include="Controllers\AndriodVersioning\AndriodAppVersioningController.cs" />
+    <Compile Include="Controllers\BulkOperation\BulkOperationController.cs" />
     <Compile Include="Controllers\ChangeCustomerNumber\ChangeNumberController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectorManagementController.cs" />
     <Compile Include="Controllers\Localization\LocalizationController.cs" />
@@ -3712,6 +3713,7 @@
     <Content Include="Scripts\Js\Crud\AccountingDay\AccountingDayStatus.js" />
     <Content Include="Scripts\Js\Crud\AccountOpeningRulePerBranch\AccountOpeningRulePerBranch.js" />
     <Content Include="Scripts\Js\Crud\AuditTrail\Audits.js" />
+    <Content Include="Scripts\Js\Crud\BulkOperation\BulkTransactions\BulkOperationQuery.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\CashDeskCashin.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\PreMemberOnboarding.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\LoanRefpaymentSimulation.js" />
@@ -4725,6 +4727,8 @@
     <Content Include="Views\AccountingConfiguration\_AccountBookingDirectionData.cshtml" />
     <Content Include="Views\AccountOpeningRulePerBranch\_AccountOpeningRuleModal.cshtml" />
     <Content Include="Views\Reports\AccountingPDFReport.cshtml" />
+    <Content Include="Views\BulkOperation\Index.cshtml" />
+    <Content Include="Views\BulkOperation\_BulkOperationData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

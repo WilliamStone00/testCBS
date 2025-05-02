@@ -1,0 +1,23 @@
+﻿namespace CBS.FrontDesk.Data.Entity.BulkOPerations
+{
+    public class MemberAccountsBulkOperationDetails
+    {
+        public string MemberName { get; set; }
+        public string MemberReference { get; set; }
+        public string SourceAccountId { get; set; }
+        public string SourceAccountType { get; set; }
+        public decimal SourceAccountBalance { get; set; }
+        public string DestinationAccountId { get; set; }
+        public string DestinationAccountType { get; set; }
+        public decimal DestinationBalance { get; set; }
+        public decimal AmountToDebit { get; set; }
+        public string BranchId { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+        public decimal TotalBalance { get; set; }
+        public decimal NetBalance { get; set; }
+        public string RequestUniqueKey { get; set; }
+        public string Status { get; set; }
+
+    }
+}
