@@ -768,6 +768,51 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CashDeskCashout.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OtherCashMobileMoneyForm.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_OtherCashMobileMoneyForm.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OtherPaymentForm.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_OtherPaymentForm.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OtherTransactionForm.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_OtherTransactionForm.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OtherTransactionTabs.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_OtherTransactionTabs.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_PreMemberOnboardingSummary.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_PreMemberOnboardingSummary.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_SearchBox.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_SearchBox.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_SearchBoxLoanRepaymentSimulation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_SearchBoxLoanRepaymentSimulation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_Tabs.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_Tabs.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_TabsCashout.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_TabsCashout.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\CashDesk\CashDesk_TemporalMembersLookUp.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -4192,6 +4237,42 @@
     <Content Include="App_GlobalResources\CashDesk\CashDesk_TemporalMembersLookUp.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>CashDesk_TemporalMembersLookUp.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_TabsCashout.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_TabsCashout.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_Tabs.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_Tabs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_SearchBoxLoanRepaymentSimulation.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_SearchBoxLoanRepaymentSimulation.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_SearchBox.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_SearchBox.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_PreMemberOnboardingSummary.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_PreMemberOnboardingSummary.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_OtherTransactionTabs.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_OtherTransactionTabs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_OtherTransactionForm.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_OtherTransactionForm.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_OtherPaymentForm.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_OtherPaymentForm.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_OtherCashMobileMoneyForm.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_OtherCashMobileMoneyForm.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
