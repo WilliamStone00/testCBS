@@ -1,10 +1,11 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+    @using Resources
 <div class="change-group">
     <div class="card mb-4">
         <div class="card-body d-sm-flex d-block">
             <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
                 <div class="ms-3">
-                    <a type="button" onclick="LoadDocuments()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Documents">
+                    <a type="button" onclick="LoadDocuments()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@Global_AddtachedLoanDocument.Documents">
                         <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                     </a>
                 </div>
@@ -24,23 +25,23 @@
             <div class="row g-4">
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.DocumentAttachedToLoan.DocumentId, new SelectList(ViewBag.DocumentTypes, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.DocumentAttachedToLoan.DocumentId, new SelectList(ViewBag.DocumentTypes, "Value", "Text"), "---"+@Global_AddtachedLoanDocument.SelectDocumentType + "---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.DocumentAttachedToLoan.DocumentId, "", new { @class = "text-danger " })
-                        <label>Select document type</label>
+                        <label>@Global_AddtachedLoanDocument.SelectDocumentType</label>
                     </div>
                 </div>
                 <div class="input-group">
-                    <button type="submit" class="input-group-text" for="inputGroupFile02">Upload</button>
+                    <button type="submit" class="input-group-text" for="inputGroupFile02">@Global_AddtachedLoanDocument.Upload</button>
                     <input type="file" name="DocumentAttachedToLoan.AttachedFiles"
                            class="form-control"
                            id="inputGroupFile03"
                            aria-describedby="inputGroupFile02"
-                           aria-label="Upload" accept=".pdf,.doc,.docx,.txt,.xlsx,.xls,.ppt,.pptx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation" />
+                           aria-label="@Global_AddtachedLoanDocument.Upload" accept=".pdf,.doc,.docx,.txt,.xlsx,.xls,.ppt,.pptx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation" />
                 </div>
 
             </div>
             <div class="mt-4">
-                <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                <button type="reset" class="btn btn-outline-secondary">@Global_AddtachedLoanDocument.Reset</button>
             </div>
         }
 
@@ -48,6 +49,3 @@
     </div>
 
 </div>
-
-
-

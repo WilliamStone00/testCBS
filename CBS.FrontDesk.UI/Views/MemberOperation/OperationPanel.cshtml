@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+    @using Resources
 @{
     ViewBag.Title = "Loan Application Panel";
 }
@@ -9,10 +10,10 @@
         <div class="card bg-light mb-4">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-bank-outline me-2"></i> Loan Application Process
+                    <i class="mdi mdi-bank-outline me-2"></i> @GlobalOperationPanel.LoanApplicationProcess
                 </h1>
                 <p class="card-text">
-                    Complete the loan application process by providing accurate details and ensuring all sections are properly filled. Follow the provided tips for a smooth and efficient process.
+                    @GlobalOperationPanel.LoanApplicationProcessDescription
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -29,7 +30,7 @@
                 aria-controls="accordionPopoutIcon-3">
             <i class="mdi mdi-file me-2"></i>
             <div class="d-flex justify-content-center">
-                <div class="fw-bold fs-4" id="panelTitle">NEW LOAN APPLICATION FORM</div>
+                <div class="fw-bold fs-4" id="panelTitle">@GlobalOperationPanel.NewLoanApplicationForm</div>
             </div>
         </button>
     </h2>
@@ -40,11 +41,11 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="group-title">
-                        MEMBER REFERENCE # <span class="highlight-text">@Model.Customer.CustomerId</span><br />
+                        @GlobalOperationPanel.MemberReference #: <span class="highlight-text">@Model.Customer.CustomerId</span><br />
                         <hr />
-                        <small>Member code: Last 4 digits</small><br />
-                        <small>Bank Code: @Session["BankCode"].ToString()</small><br />
-                        <small>Branch Code: @Session["BranchCode"].ToString()</small>
+                        <small>@GlobalOperationPanel.MemberCode:</small><br />
+                        <small>@GlobalOperationPanel.BankCode: @Session["BankCode"].ToString()</small><br />
+                        <small>@GlobalOperationPanel.BranchCode: @Session["BranchCode"].ToString()</small>
                     </h4>
                 </div>
             </div>
@@ -54,7 +55,7 @@
                     <!-- Aligning the card title and Member text in the same row -->
                     <div class="d-flex justify-content-between align-items-center">
                         <!-- Card title aligned to the left -->
-                        <h5 class="card-title text-left mb-0">Member: @Model.Customer.name</h5>
+                        <h5 class="card-title text-left mb-0">@GlobalOperationPanel.Member: @Model.Customer.name</h5>
                         <hr />
                         <!-- Member name aligned to the right -->
                         <!--<span class="text-end"></span>-->
@@ -65,14 +66,14 @@
                         {
                             <!-- Clickable photo for preview -->
                             <a href="#" data-bs-toggle="modal" data-bs-target="#photoPreviewModal">
-                                <img src="@Model.Customer.photoUrl" class="img-fluid preview-image" alt="Uploaded Image">
+                                <img src="@Model.Customer.photoUrl" class="img-fluid preview-image" alt="@GlobalOperationPanel.UploadedImage">
                             </a>
                             <!-- Modal for photo preview -->
                             <div class="modal fade" id="photoPreviewModal" tabindex="-1" aria-labelledby="photoPreviewModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-body">
-                                            <img src="@Model.Customer.photoUrl" class="img-fluid" alt="Uploaded Image">
+                                            <img src="@Model.Customer.photoUrl" class="img-fluid" alt="@GlobalOperationPanel.UploadedImage">
                                         </div>
                                     </div>
                                 </div>
@@ -80,7 +81,7 @@
                         }
                         else
                         {
-                            <img src="@Url.Content(Model.Customer.ImageNoVirtualPath)" class="img-fluid preview-image" alt="No Signature Found" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
+                            <img src="@Url.Content(Model.Customer.ImageNoVirtualPath)" class="img-fluid preview-image" alt="@GlobalOperationPanel.NoImageFound" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
 
                         }
                         <!-- ... Other content ... -->
@@ -89,21 +90,21 @@
             </div>
             <div class="card mt-3">
                 <div class="card-body">
-                    <h5 class="card-title">Signature</h5>
+                    <h5 class="card-title">@GlobalOperationPanel.Signature</h5>
                     <div class="image-upload-container">
                         <!-- Image for signature -->
                         @if (Model.Customer.signatureUrl != null)
                         {
                             <!-- Clickable signature for preview -->
                             <a href="#" data-bs-toggle="modal" data-bs-target="#signaturePreviewModal">
-                                <img src="@Model.Customer.signatureUrl" class="img-fluid preview-image" alt="Uploaded Signature">
+                                <img src="@Model.Customer.signatureUrl" class="img-fluid preview-image" alt="@GlobalOperationPanel.UploadedSignature">
                             </a>
                             <!-- Modal for signature preview -->
                             <div class="modal fade" id="signaturePreviewModal" tabindex="-1" aria-labelledby="signaturePreviewModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-body">
-                                            <img src="@Model.Customer.signatureUrl" class="img-fluid" alt="Uploaded Signature">
+                                            <img src="@Model.Customer.signatureUrl" class="img-fluid" alt="@GlobalOperationPanel.UploadedSignature">
                                         </div>
                                     </div>
                                 </div>
@@ -111,7 +112,7 @@
                         }
                         else
                         {
-                            <img src="@Url.Content(Model.Customer.ImageVirtualNoSignaturePath)" class="img-fluid preview-image" alt="No Signature Found" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
+                            <img src="@Url.Content(Model.Customer.ImageVirtualNoSignaturePath)" class="img-fluid preview-image" alt="@GlobalOperationPanel.NoSignatureFound" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
 
                         }
                         <!-- ... Other content ... -->
@@ -131,17 +132,17 @@
                     <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
 
                         <div class="ms-3">
-                            <a href="/MemberOperation/OperationPanel?KEY=@Model.Customer.CustomerId" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Apply for a new loan">
+                            <a href="/MemberOperation/OperationPanel?KEY=@Model.Customer.CustomerId" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalOperationPanel.ApplyForNewLoan">
                                 <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                             </a>
                         </div>
                         <div class="ms-3">
-                            <a type="button" onclick="LoadDataGen('MemberOperation','myDataTable','_MemberLoanApplicationData',0,'datalistingview','@Model.Customer.CustomerId','applications','list_of_members_loan_application')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View listing of loan applications">
+                            <a type="button" onclick="LoadDataGen('MemberOperation','myDataTable','_MemberLoanApplicationData',0,'datalistingview','@Model.Customer.CustomerId','applications','list_of_members_loan_application')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalOperationPanel.ViewListingOfLoanApplications">
                                 <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                             </a>
                         </div>
                         <div class="ms-3">
-                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_MakeLoanSimulation','create_loan_simulation','MemberOperation','applications')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Peform loan simuation">
+                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_MakeLoanSimulation','create_loan_simulation','MemberOperation','applications')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalOperationPanel.PerformLoanSimulation">
                                 <span class="tf-icons mdi mdi-calculator mdi-18px"></span>
                             </a>
                         </div>
@@ -168,26 +169,26 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="imagePreviewModalLabel">@Model.Customer.FirstName @Model.Customer.LastName photo preview.</h5>
+                <h5 class="modal-title" id="imagePreviewModalLabel">@GlobalOperationPanel.PhotoPreview @Model.Customer.FirstName @Model.Customer.LastName.</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">
                 @if (Model.Customer.photoUrl != null)
                 {
                     <div class="image-upload-container">
-                        <img src="@Model.Customer.photoUrl" class="img-fluid" alt="Preview Image">
+                        <img src="@Model.Customer.photoUrl" class="img-fluid" alt="@GlobalOperationPanel.PreviewImage">
                     </div>
                 }
                 else
                 {
                     <div class="image-upload-container">
-                        <img src="@Url.Content(Model.Customer.ImageVirtualPath)" class="img-fluid" alt="Preview Image">
+                        <img src="@Url.Content(Model.Customer.ImageVirtualPath)" class="img-fluid" alt="@GlobalOperationPanel.PreviewImage">
                     </div>
                 }
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalOperationPanel.Close</button>
             </div>
         </div>
     </div>

@@ -1,14 +1,15 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+@using Resources
 <div class="table-responsive mb-3">
     <table class="table table-hover" id="myDataTable">
         <thead class="table-light">
             <tr>
-                <th>Name</th>
-                <th>Reference</th>
-                <th>Active status</th>
-                <th>phone</th>
-                <th>Branch</th>
-                <th>Action</th>
+                <th>@GlobalMembers.Name</th>
+                <th>@GlobalMembers.Reference</th>
+                <th>@GlobalMembers.ActiveStatus</th>
+                <th>@GlobalMembers.Phone</th>
+                <th>@GlobalMembers.Branch</th>
+                <th>@GlobalMembers.Action</th>
             </tr>
         </thead>
         <tbody>
@@ -20,19 +21,19 @@
                     <td style="width:8%">
                         @if (d.ActiveStatus == "Active")
                         {
-                            <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@d.ActiveStatus</span>
+                            <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalMembers.Active</span>
                         }
                         else
                         {
-                            <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Blocked</span>
+                            <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalMembers.Blocked</span>
                         }
                     </td>
                     <td style="width:8%">@d.Phone</td>
                     <td style="width:33%">@d.branch</td>
                     <td style="width:15%">
-                        <a href="/MemberOperation/OperationPanel?KEY=@d.CustomerId" target="_blank" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to visit his/her loan panel">
-                            <i class="mdi mdi-folder mr-1"></i> <!-- Icon of a folder -->
-                            Loan panel
+                        <a href="/MemberOperation/OperationPanel?KEY=@d.CustomerId" target="_blank" class="mr-2" data-toggle="tooltip" data-placement="top" title="@d.name @GlobalMembers.SelectToVisitLoanPanel ">
+                            <i class="mdi mdi-folder mr-1"></i>
+                            @GlobalMembers.LoanPanel
                         </a>
                     </td>
                 </tr>
@@ -40,7 +41,6 @@
         </tbody>
     </table>
 </div>
-
 
 
 

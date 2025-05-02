@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account Category.
+        /// </summary>
+        internal static string AccountCategory {
+            get {
+                return ResourceManager.GetString("AccountCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Account Description.
         /// </summary>
         internal static string AccountDescription {
@@ -205,6 +214,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chart Of Account Number.
+        /// </summary>
+        internal static string ChartOfAccountNumber {
+            get {
+                return ResourceManager.GetString("ChartOfAccountNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Credit Balance.
         /// </summary>
         internal static string CreditBalance {
@@ -304,6 +322,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View List.
+        /// </summary>
+        internal static string Select {
+            get {
+                return ResourceManager.GetString("Select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ---Select Account Category---.
+        /// </summary>
+        internal static string SelectAccountCategory {
+            get {
+                return ResourceManager.GetString("SelectAccountCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ---Select AccountCounterPart---.
+        /// </summary>
+        internal static string SelectAccountCounterPart {
+            get {
+                return ResourceManager.GetString("SelectAccountCounterPart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ---Select AccountOwner---.
         /// </summary>
         internal static string SelectAccountOwner {
@@ -318,6 +363,33 @@ namespace Resources {
         internal static string SelectAccountType {
             get {
                 return ResourceManager.GetString("SelectAccountType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ---Select ChartOfAccount---.
+        /// </summary>
+        internal static string SelectChartOfAccount {
+            get {
+                return ResourceManager.GetString("SelectChartOfAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Liaison Branch.
+        /// </summary>
+        internal static string SelectLiaisonBranch {
+            get {
+                return ResourceManager.GetString("SelectLiaisonBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select MFI Chart Of Account.
+        /// </summary>
+        internal static string SelectMFIChartOfAccount {
+            get {
+                return ResourceManager.GetString("SelectMFIChartOfAccount", resourceCulture);
             }
         }
         
@@ -345,15 +417,6 @@ namespace Resources {
         internal static string UploadAccount {
             get {
                 return ResourceManager.GetString("UploadAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to View List.
-        /// </summary>
-        internal static string ViewList {
-            get {
-                return ResourceManager.GetString("ViewList", resourceCulture);
             }
         }
     }

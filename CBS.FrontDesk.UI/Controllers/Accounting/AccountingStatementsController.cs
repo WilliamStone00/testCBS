@@ -430,7 +430,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 if (Request.IsAjaxRequest())
                 {
                     model.SystemQuery.BranchId = _accountingServices.IsHeadOffice() ? model.SystemQuery.BranchId : _accountingServices.GetBranchID();
-
+                    
                     // Process the data
                     // Generate the report or prepare the data
                     switch (model.SystemQuery.ReportType)
@@ -444,9 +444,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                                     this.HttpContext.Session["rptSource"] = account;
                                     string ReportName = $"JournalEntries.rpt";
-
-
-
                                     if (account.AccountingEntries == null)
                                     {
                                         this.HttpContext.Session["rptSource"] = "empty";
@@ -470,8 +467,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 if (model.SystemQuery.FileType.ToLower() == "pdf")
                                 {
                                     string fileTitle = $"GeneralLedger_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
-
-
                                     string ReportName = $"GeneralLedger.rpt";
                                     var account = await _acountServices.GenerateAccountingLedgerForAnumber(model.SystemQuery);//new SystemQuery { BranchId = model.SystemQuery.BranchId, FileType = model.SystemQuery.FileType, AccountIds = model.SystemQuery.AccountIds, FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate });
 
@@ -500,10 +495,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 else
                                 {
                                     var account = await _acountServices.GenerateAccountingLedgerForAnumber(model.SystemQuery); //( model.SystemQuery);
-
                                 }
-
-
                             }
                             break;
                         case "LL":
@@ -641,9 +633,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate, FromDate = model.SystemQuery.FromDate, DocumentId = DocModel.id, FileType = "pdf" };
                                     var account = await _acountServices.GenerateIncomeStatement(modelx);
                                     this.HttpContext.Session["rptSource"] = account;
-
-                      
-
                                     string ReportName = $"PandLReport.rpt";
                                     this.HttpContext.Session["dtoPasser"] = modelx;
                                     this.HttpContext.Session["rptType"] = model.SystemQuery.ReportType;
@@ -656,7 +645,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 {
                                     var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "PROFITANDLOSS").First();
                                     var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate, FromDate = model.SystemQuery.FromDate, DocumentId = DocModel.id, FileType = "pdf" };
-                     
                                     var account = await _accountingServices.PostJE(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId }, APICallHelper.AccountingEntry_IncomeStatement);
 
                                 }
@@ -680,9 +668,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             catch (Exception ex)
             {
 
-                throw(ex);
+                return Json(new { success = false, message = "Error occured while generating the report" }, JsonRequestBehavior.AllowGet);
+
             }
-       
+
         }
         public async Task<ActionResult> DownloadFiles(string fileId = null)
         {

@@ -1726,90 +1726,80 @@ namespace BusinessServices
         }
         public string GetUserFullName()
         {
-            string data = HttpContext.Current.Session["FullName"].ToString();
-            if (data == null)
-            {
-                data = "NoNe";
-            }
-            return data;
+            var data = HttpContext.Current?.Session?["FullName"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? "None" : data;
         }
-        public string GetUserNAme()
+
+        public string GetUserName()
         {
-            return HttpContext.Current.Session["UserName"].ToString();
+            var data = HttpContext.Current?.Session?["UserName"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? "UnknownUser" : data;
         }
+
         public string GetSessionCode()
         {
-            return HttpContext.Current.Session["SessionCode"].ToString();
+            var data = HttpContext.Current?.Session?["SessionCode"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? "NoSession" : data;
         }
+
         public string GetGroup()
         {
-            string str = HttpContext.Current.Session["GroupName"].ToString();
-            return str;
+            var data = HttpContext.Current?.Session?["GroupName"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? "NoGroup" : data;
         }
+
         public string GetBankID()
         {
-        
-            string str = "";
-            if (HttpContext.Current.Session["BankID"] != null)
-            {
-                str = HttpContext.Current.Session["BankID"].ToString();
-            }
-
-            return str;
+            var data = HttpContext.Current?.Session?["BankID"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? string.Empty : data;
         }
+
         public bool IsHeadOffice()
         {
-            object value = HttpContext.Current.Session["IsHeadOffice"];
-            if (value != null && value is bool)
-            {
-                return (bool)value;
-            }
-            // Default value if the value is null or not a boolean
-            return false;
+            var value = HttpContext.Current?.Session?["IsHeadOffice"];
+            return value is bool booleanValue && booleanValue;
         }
 
-        //Session["IsHeadOffice"] = "True";
         public string GetBankCode()
         {
-            string str = HttpContext.Current.Session["BankCode"].ToString();
-            return str;
+            var data = HttpContext.Current?.Session?["BankCode"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? "NoBankCode" : data;
+        }
+        public string GetLanguage()
+        {
+            var data = HttpContext.Current?.Session?["SelectedLanguage"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? "en" : data;
         }
         public string GetRoleId()
         {
-            string str = HttpContext.Current.Session["RoleId"].ToString();
-            return str;
+            var data = HttpContext.Current?.Session?["RoleId"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? "NoRoleId" : data;
         }
+
         public string GetBranchCode()
         {
-            string str = HttpContext.Current.Session["BranchCode"].ToString();
-            return str;
+            var data = HttpContext.Current?.Session?["BranchCode"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? "NoBranchCode" : data;
         }
+
         public string GetBranchName()
         {
-            string str = HttpContext.Current.Session["BranchName"].ToString();
-            return str;
+            var data = HttpContext.Current?.Session?["BranchName"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? "NoBranchName" : data;
         }
+
         public string GetBranchID()
         {
-            string str = "";
-            if (HttpContext.Current.Session["BranchID"]!=null)
-            {
-                str = HttpContext.Current.Session["BranchID"].ToString();
-                //str = str == "1" ? "DEFAULTID" : str;
-            }
-      
-            return str;
+            var data = HttpContext.Current?.Session?["BranchID"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? string.Empty : data;
         }
+
         public bool IsMainBranch()
         {
-            bool str = false;
-            if (HttpContext.Current.Session["IsHavingBank"] != null)
-            {
-                str = Convert.ToBoolean(  HttpContext.Current.Session["IsHavingBank"]);
-            }
-
-            return str;
+            var value = HttpContext.Current?.Session?["IsHavingBank"];
+            return value != null && Convert.ToBoolean(value);
         }
+
         public static string CleanTelephoneNumber(string phoneNumber)
         {
             // Remove any non-numeric characters
@@ -1849,24 +1839,32 @@ namespace BusinessServices
             return str;
         }
 
-       
+
         public string GetBankName()
         {
-            return HttpContext.Current.Session["BankName"].ToString();
+            var data = HttpContext.Current?.Session?["BankName"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? "UnknownBank" : data;
         }
+
         public string GetField(string field)
         {
-            return HttpContext.Current.Session[field].ToString();
+            if (string.IsNullOrWhiteSpace(field)) return "InvalidField";
+            var data = HttpContext.Current?.Session?[field]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? $"NoValueFor:{field}" : data;
         }
+
         public string GetUserID()
         {
-            return HttpContext.Current.Session["UserID"].ToString();
+            var data = HttpContext.Current?.Session?["UserID"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? "NoUser" : data;
         }
 
         public string GetGroupID()
         {
-            return HttpContext.Current.Session["GroupID"].ToString();
+            var data = HttpContext.Current?.Session?["GroupID"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? "NoGroupID" : data;
         }
+
         public string RearrangeRegistrationDateToDateFormatOld(string date, int state)
         {
 

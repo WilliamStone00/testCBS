@@ -1,10 +1,11 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+@using Resources
 <div class="change-group">
     <div class="card mb-4">
         <div class="card-body d-sm-flex d-block">
             <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
                 <div class="ms-3">
-                    <a type="button" onclick="LoadGuarantors()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Reload guarantors">
+                    <a type="button" onclick="LoadGuarantors()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@Global_AddLoanGuarantor.ReloadGuarantors">
                         <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                     </a>
                 </div>
@@ -16,7 +17,7 @@
 @if (!Model.LoanApplication.Guarantors.Any())
 {
     <div class="text-center my-3">
-        <p>No loan gurantor is added</p>
+        <p>@Global_AddLoanGuarantor.NoLoanGuarantorAdded</p>
     </div>
 }
 else
@@ -27,14 +28,14 @@ else
             <table class="table table-hover" id="myDataTable_gurantor">
                 <thead class="table-light">
                     <tr>
-                        <th>Name</th>
-                        <th>Account Number</th>
-                        <th>Phone</th>
-                        <th>Amount</th>
-                        <th>Email</th>
-                        <th>Is Co-Member</th>
+                        <th>@Global_AddLoanGuarantor.Name</th>
+                        <th>@Global_AddLoanGuarantor.AccountNumber</th>
+                        <th>@Global_AddLoanGuarantor.Phone</th>
+                        <th>@Global_AddLoanGuarantor.Amount</th>
+                        <th>@Global_AddLoanGuarantor.Email</th>
+                        <th>@Global_AddLoanGuarantor.IsCoMember</th>
 
-                        <th>Action</th>
+                        <th>@Global_AddLoanGuarantor.Action</th>
 
                     </tr>
                 </thead>
@@ -50,20 +51,20 @@ else
                             <td style="width:10%">
                                 @if (d.IsCoMember)
                                 {
-                                    <span class="badge rounded-pill rounded-2 badge-dark bg-label-hover-info fs-tiny py-1">Co-Member</span>
+                                    <span class="badge rounded-pill rounded-2 badge-dark bg-label-hover-info fs-tiny py-1">@Global_AddLoanGuarantor.CoMember</span>
                                 }
                                 else
                                 {
-                                    <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Not a member</span>
+                                    <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@Global_AddLoanGuarantor.NotAMember</span>
 
                                 }
                             </td>
                             <td style="width:10%">
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_gurantor_add','_AddLoanGuarantor','get_guarantor','MemberOperation','applications')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.GuarantorName to edit">
-                                    Edit
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_gurantor_add','_AddLoanGuarantor','get_guarantor','MemberOperation','applications')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@Global_AddLoanGuarantor.Edit @d.GuarantorName">
+                                    @Global_AddLoanGuarantor.Edit
                                 </a>
 
-                                @*<a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.GuarantorName" onclick="showConfirmMessage('@d.Id','myDataTable_gurantor')">Delete</a>*@
+                                @*<a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@Global_AddLoanGuarantor.Delete @d.GuarantorName" onclick="showConfirmMessage('@d.Id','myDataTable_gurantor')">@Global_AddLoanGuarantor.Delete</a>*@
                             </td>
                         </tr>
                     }
@@ -78,12 +79,12 @@ else
             <table class="table table-hover" id="myDataTable_gurantor">
                 <thead class="table-light">
                     <tr>
-                        <th>Name</th>
-                        <th>Account Number</th>
-                        <th>Phone</th>
-                        <th>Amount</th>
-                        <th>Email</th>
-                        <th>Is Co-Member</th>
+                        <th>@Global_AddLoanGuarantor.Name</th>
+                        <th>@Global_AddLoanGuarantor.AccountNumber</th>
+                        <th>@Global_AddLoanGuarantor.Phone</th>
+                        <th>@Global_AddLoanGuarantor.Amount</th>
+                        <th>@Global_AddLoanGuarantor.Email</th>
+                        <th>@Global_AddLoanGuarantor.IsCoMember</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -98,15 +99,15 @@ else
                             <td style="width:10%">
                                 @if (d.IsCoMember)
                                 {
-                                    <span class="badge rounded-pill rounded-2 badge-dark bg-label-hover-info fs-tiny py-1">Co-Member</span>
+                                    <span class="badge rounded-pill rounded-2 badge-dark bg-label-hover-info fs-tiny py-1">@Global_AddLoanGuarantor.CoMember</span>
                                 }
                                 else
                                 {
-                                    <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Not a member</span>
+                                    <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@Global_AddLoanGuarantor.NotAMember</span>
 
                                 }
                             </td>
-                           
+
                         </tr>
                     }
                 </tbody>

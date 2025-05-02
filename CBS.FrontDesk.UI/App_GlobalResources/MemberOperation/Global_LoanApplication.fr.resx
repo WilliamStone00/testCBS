@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountsUsedAsGuarantees" xml:space="preserve">
+    <value>Les comptes utilisés comme garanties sont bloqués jusqu'à ce que le prêt soit entièrement réglé.</value>
+  </data>
+  <data name="AdditionalNotes" xml:space="preserve">
+    <value>Notes supplémentaires :</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Montant</value>
+  </data>
+  <data name="AnyChangeInBalanceInformation" xml:space="preserve">
+    <value>Toute modification apportée aux informations de solde remplacera les informations de solde existantes. Procédez avec prudence et assurez-vous que les valeurs sont exactes avant d'enregistrer.</value>
+  </data>
+  <data name="AnyChangesToLoanBalances" xml:space="preserve">
+    <value>Toute modification apportée aux soldes des prêts doit être justifiée par une documentation appropriée.</value>
+  </data>
+  <data name="APartialFeeMustBePaidBeforeTheLoanCanBeProcessed" xml:space="preserve">
+    <value>Un frais partiel doit être payé avant que le prêt puisse être traité.</value>
+  </data>
+  <data name="ChangesMadeToBalanceInformation" xml:space="preserve">
+    <value>Les modifications apportées aux informations de solde ne peuvent pas être annulées. Vérifiez toutes les entrées avant de finaliser la demande.</value>
+  </data>
+  <data name="ChangesToLoanBalances" xml:space="preserve">
+    <value>Toute modification apportée aux soldes des prêts, aux taux d'intérêt ou aux pénalités doit être étayée par des preuves valides et autorisée par le gestionnaire de prêt.</value>
+  </data>
+  <data name="ApplicationType" xml:space="preserve">
+    <value>Type de demande</value>
+  </data>
+  <data name="Capital" xml:space="preserve">
+    <value>Capital</value>
+  </data>
+  <data name="CoobligorsMustBeProvided" xml:space="preserve">
+    <value>Des co-obligés doivent être fournis pour les prêts de la Facilité d'épargne spéciale (FES). Le co-obligé doit avoir un solde suffisant pour garantir le prêt.</value>
+  </data>
+  <data name="ConsultLoanManager" xml:space="preserve">
+    <value>Consultez le gestionnaire de prêt en cas de divergence.</value>
+  </data>
+  <data name="CheckToPlaceStandingOrderOnSalaryAccount" xml:space="preserve">
+    <value>Cochez pour placer un ordre permanent sur le compte de salaire</value>
+  </data>
+  <data name="DefaultLoanRequirements" xml:space="preserve">
+    <value>Exigences de prêt par défaut : 20 % de l'épargne et 75 000 en actions.</value>
+  </data>
+  <data name="DepositAccount" xml:space="preserve">
+    <value>Compte de dépôt</value>
+  </data>
+  <data name="DepositCoverageAmount" xml:space="preserve">
+    <value>Montant de couverture du dépôt</value>
+  </data>
+  <data name="DoesThisApplicationRequireDownPayment" xml:space="preserve">
+    <value>Cette demande nécessite-t-elle un acompte ?</value>
+  </data>
+  <data name="EconomicActivity" xml:space="preserve">
+    <value>Activité économique</value>
+  </data>
+  <data name="EnableStopFurtherInterestCalculations" xml:space="preserve">
+    <value>Activez l'arrêt des calculs d'intérêts supplémentaires uniquement lorsque le prêt a été entièrement réglé.</value>
+  </data>
+  <data name="EnsureAllLoanDetails" xml:space="preserve">
+    <value>Assurez-vous que tous les détails du prêt, y compris le type de prêt, la durée et le cycle de remboursement, sont sélectionnés avec précision.</value>
+  </data>
+  <data name="EnsureAllMandatoryFields" xml:space="preserve">
+    <value>Assurez-vous que tous les champs obligatoires, y compris le montant du prêt, le calendrier de remboursement et les mesures d'atténuation des risques, sont remplis avec précision pour éviter les retards.</value>
+  </data>
+  <data name="EnsureAllRepaymentDetails" xml:space="preserve">
+    <value>Assurez-vous que tous les détails de remboursement sont exacts.</value>
+  </data>
+  <data name="EnsureBlockedAccounts" xml:space="preserve">
+    <value>Assurez-vous que tous les comptes bloqués utilisés comme garanties sont conformes aux politiques de prêt.</value>
+  </data>
+  <data name="EnsureRequiredDocuments" xml:space="preserve">
+    <value>Assurez-vous que tous les documents requis pour l'approbation du prêt sont téléchargés pour éviter le rejet.</value>
+  </data>
+  <data name="EnterGracePeriodAfterEntireLoanIsOverdue" xml:space="preserve">
+    <value>Entrer la période de grâce après que le prêt entier est en retard</value>
+  </data>
+  <data name="EnterStandingOrderAmount" xml:space="preserve">
+    <value>Entrer le montant de l'ordre permanent</value>
+  </data>
+  <data name="EveryLoanProcessRequires" xml:space="preserve">
+    <value>Chaque processus de prêt nécessite des documents justificatifs. Assurez-vous que tous les documents nécessaires sont téléchargés avant de soumettre la demande de prêt.</value>
+  </data>
+  <data name="Fee" xml:space="preserve">
+    <value>Frais</value>
+  </data>
+  <data name="FillOutRepaymentDetailsAccurately" xml:space="preserve">
+    <value>Remplissez les détails de remboursement avec précision.</value>
+  </data>
+  <data name="FollowTheseTips" xml:space="preserve">
+    <value>Suivez ces conseils pour assurer un processus de demande de prêt réussi :</value>
+  </data>
+  <data name="FollowTheseTipsSmoothRefinancing" xml:space="preserve">
+    <value>Suivez ces conseils pour assurer un processus de refinancement fluide :</value>
+  </data>
+  <data name="ForLoansRequiringUpfrontFees" xml:space="preserve">
+    <value>Pour les prêts nécessitant des frais initiaux, assurez-vous que les frais sont payés avant le traitement ou le décaissement pour éviter le rejet.</value>
+  </data>
+  <data name="GracePeriodAndCharges" xml:space="preserve">
+    <value>Période de grâce et frais</value>
+  </data>
+  <data name="HasMemberProvidedCollateral" xml:space="preserve">
+    <value>Le membre a-t-il fourni une garantie ?</value>
+  </data>
+  <data name="HasTheMemberProvidedAGuarantorOrCoobligator" xml:space="preserve">
+    <value>Le membre a-t-il fourni un garant ou un co-obligé ?</value>
+  </data>
+  <data name="ImportantNotices" xml:space="preserve">
+    <value>Avis importants</value>
+  </data>
+  <data name="Interest" xml:space="preserve">
+    <value>Intérêt</value>
+  </data>
+  <data name="InterestRate" xml:space="preserve">
+    <value>Taux d'intérêt</value>
+  </data>
+  <data name="LoanApplicationTips" xml:space="preserve">
+    <value>Conseils pour les demandes de prêt</value>
+  </data>
+  <data name="LoanApprovalAndProcessing" xml:space="preserve">
+    <value>L'approbation et le traitement des prêts sont soumis à la vérification des informations d'identification de l'emprunteur et à la conformité aux exigences réglementaires.</value>
+  </data>
+  <data name="LoanDuration" xml:space="preserve">
+    <value>Durée du prêt</value>
+  </data>
+  <data name="MainLoan" xml:space="preserve">
+    <value>Prêt principal</value>
+  </data>
+  <data name="MemberCurrentLoans" xml:space="preserve">
+    <value>Prêts actuels du membre</value>
+  </data>
+  <data name="MinimumSavings" xml:space="preserve">
+    <value>Épargne minimale : par exemple, 20 % du montant du prêt</value>
+  </data>
+  <data name="MinimumShares" xml:space="preserve">
+    <value>Actions minimales : par exemple, 75 000</value>
+  </data>
+  <data name="OrdinaryShareAccountCoverageAmount" xml:space="preserve">
+    <value>Montant de couverture du compte d'actions ordinaires</value>
+  </data>
+  <data name="OrdinaryShares" xml:space="preserve">
+    <value>Actions ordinaires</value>
+  </data>
+  <data name="OverrideBalance" xml:space="preserve">
+    <value>Remplacer le solde</value>
+  </data>
+  <data name="OverrideBalanceSectionShouldOnlyBeUsed" xml:space="preserve">
+    <value>La section 'Remplacement du solde' ne doit être utilisée que lors du refinancement ou du rééchelonnement d'un prêt, avec une documentation et une approbation appropriées.</value>
+  </data>
+  <data name="OverrideInterest" xml:space="preserve">
+    <value>Remplacer les intérêts</value>
+  </data>
+  <data name="OverrideLoanBalanceProcessRepayment" xml:space="preserve">
+    <value>Remplacer le solde du prêt et traiter le remboursement</value>
+  </data>
+  <data name="OverridePenalty" xml:space="preserve">
+    <value>Remplacer la pénalité</value>
+  </data>
+  <data name="OverrideVAT" xml:space="preserve">
+    <value>Remplacer la TVA</value>
+  </data>
+  <data name="PlaceDepositAsGuarantee" xml:space="preserve">
+    <value>Placer le dépôt comme garantie</value>
+  </data>
+  <data name="PlacePreferenceShareAsGuarantee" xml:space="preserve">
+    <value>Placer les actions privilégiées comme garantie</value>
+  </data>
+  <data name="PreferenceCoverageAmount" xml:space="preserve">
+    <value>Montant de couverture préférentiel</value>
+  </data>
+  <data name="PreferredFirstPaymentDate" xml:space="preserve">
+    <value>Date de premier paiement préférée</value>
+  </data>
+  <data name="RiskMitigation" xml:space="preserve">
+    <value>Atténuation des risques</value>
+  </data>
+  <data name="SalaryAccount" xml:space="preserve">
+    <value>Compte de salaire</value>
+  </data>
+  <data name="RiskMitigationMeasures" xml:space="preserve">
+    <value>Les mesures d'atténuation des risques, telles que les garanties et les garants, doivent être détaillées avec précision dans la demande.</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Sauvegarder</value>
+  </data>
+  <data name="SavingAccountCoverageRate" xml:space="preserve">
+    <value>Taux de couverture du compte d'épargne</value>
+  </data>
+  <data name="SavingsAccount" xml:space="preserve">
+    <value>Compte d'épargne</value>
+  </data>
+  <data name="SelectLoanApplicationTypes" xml:space="preserve">
+    <value>Sélectionner le type de demande de prêt</value>
+  </data>
+  <data name="SelectLoanProductCategory" xml:space="preserve">
+    <value>Sélectionner la catégorie de produit de prêt</value>
+  </data>
+  <data name="SelectLoanTerm" xml:space="preserve">
+    <value>Sélectionner la durée du prêt</value>
+  </data>
+  <data name="SelectLoanToRefinance" xml:space="preserve">
+    <value>Sélectionner le prêt à refinancer</value>
+  </data>
+  <data name="SelectLoanToRefinanceFromDropdown" xml:space="preserve">
+    <value>Sélectionnez le prêt à refinancer dans la liste déroulante.</value>
+  </data>
+  <data name="SpecialSavingFacility" xml:space="preserve">
+    <value>Facilité d'épargne spéciale</value>
+  </data>
+  <data name="StopFurtherInterestCalculations" xml:space="preserve">
+    <value>Arrêter les calculs d'intérêts supplémentaires.</value>
+  </data>
+  <data name="TargetedPopulation" xml:space="preserve">
+    <value>Population ciblée</value>
+  </data>
+  <data name="TheFeeCanEitherBePaidUpfront" xml:space="preserve">
+    <value>Le frais peut être payé d'avance au guichet avant le décaissement ou déduit directement du prêt après qu'il ait été décaissé sur le compte de dépôt du membre.</value>
+  </data>
+  <data name="Tips" xml:space="preserve">
+    <value>Conseils</value>
+  </data>
+  <data name="TrustWillNotGrantLoan" xml:space="preserve">
+    <value>La confiance n'accordera pas de prêt si le membre ne répond pas aux exigences fixées par le conseil d'administration de gestion des prêts:</value>
+  </data>
+  <data name="UseOverrideBalanceSection" xml:space="preserve">
+    <value>Utilisez la section 'Remplacement du solde' de manière responsable lors du refinancement ou du rééchelonnement d'un prêt et assurez-vous que la documentation appropriée est fournie.</value>
+  </data>
+  <data name="UseOverrideBalanceSection2" xml:space="preserve">
+    <value>Utilisez la section 'Remplacement du solde' uniquement si nécessaire.</value>
+  </data>
+  <data name="ValidateFees" xml:space="preserve">
+    <value>Validez que tous les frais, y compris les frais de traitement et d'inspection, sont clairement définis et approuvés par le gestionnaire de prêt.</value>
+  </data>
+  <data name="ValidateMembersEligibility" xml:space="preserve">
+    <value>Validez l'éligibilité du membre avant de procéder. Vérifiez si le membre répond aux exigences minimales en matière d'actions et d'épargne.</value>
+  </data>
+  <data name="VAT" xml:space="preserve">
+    <value>TVA</value>
+  </data>
+  <data name="VatIsCalculatedAutomatically" xml:space="preserve">
+    <value>La TVA est calculée automatiquement en fonction des intérêts saisis. Assurez-vous que le taux d'intérêt est exact pour éviter les écarts.</value>
+  </data>
+  <data name="VatRate" xml:space="preserve">
+    <value>Taux de TVA</value>
+  </data>
+  <data name="VerifyCoobligorsAccountBalance" xml:space="preserve">
+    <value>Vérifiez le solde du compte du co-obligé si le prêt nécessite un co-obligé. Les comptes de co-obligés doivent avoir des soldes suffisants pour garantir le prêt.</value>
+  </data>
+  <data name="VerifyLoanReference" xml:space="preserve">
+    <value>Vérifiez la référence du prêt.</value>
+  </data>
+  <data name="SelectRepaymentCycle" xml:space="preserve">
+    <value>---Sélectionner le cycle de remboursement---</value>
+  </data>
+  <data name="SelectLoanType" xml:space="preserve">
+    <value>Sélectionner le type de prêt</value>
+  </data>
+  <data name="SelectLoanPurpose" xml:space="preserve">
+    <value>---Sélectionner l'objet du prêt contracté---</value>
+  </data>
+  <data name="SelectLoanProduct" xml:space="preserve">
+    <value>---Sélectionner le produit de prêt---</value>
+  </data>
+  <data name="SelectLoanFees" xml:space="preserve">
+    <value>Sélectionner les frais de prêt</value>
+  </data>
+  <data name="SelectLoanCategory" xml:space="preserve">
+    <value>Sélectionner la catégorie de prêt</value>
+  </data>
+  <data name="SelectLoan" xml:space="preserve">
+    <value>Sélectionner le prêt</value>
+  </data>
+  <data name="SelectEconomicActivity" xml:space="preserve">
+    <value>---Sélectionner l'activité économique---</value>
+  </data>
+  <data name="SaveHelp" xml:space="preserve">
+    <value>Sauvegarder: Cliquer sur ce bouton pour sauvegarder.</value>
+  </data>
+  <data name="DAmount" xml:space="preserve">
+    <value>Montant.D</value>
+  </data>
+  <data name="DownPaymentRequired" xml:space="preserve">
+    <value>Si un acompte est exigé, il doit être rempli selon les critères du conseil d'administration. L'acompte couvre généralement :</value>
+  </data>
+  <data name="Penalty" xml:space="preserve">
+    <value>Pénalité</value>
+  </data>
+  <data name="PurposeAndActivities" xml:space="preserve">
+    <value>Objet et activités</value>
+  </data>
+  <data name="PurposeOfTakenLoan" xml:space="preserve">
+    <value>Objet du prêt contracté</value>
+  </data>
+  <data name="RepaymentAndLoanDuration" xml:space="preserve">
+    <value>Remboursement et durée du prêt</value>
+  </data>
+  <data name="FeeHelp" xml:space="preserve">
+    <value>Frais: Cette section vous permet de définir divers frais associés à la demande de prêt. Voici un aperçu des éléments clés :
+Points clés :
+1.Frais de traitement : Saisissez le taux des frais de traitement pour le prêt.
+2.Frais d'inspection : Spécifiez les frais d'inspection, le cas échéant.
+En fournissant des informations transparentes sur les frais, vous assurez la clarté pour l'emprunteur et le prêteur concernant les coûts supplémentaires associés à la demande de prêt.</value>
+  </data>
+  <data name="GracePeriodAndChargesHelp" xml:space="preserve">
+    <value>Période de grâce et frais : Cette section vous permet de spécifier la période de grâce et les frais associés à la demande de prêt. Voici un aperçu des éléments clés :
+Points clés :
+1.Appliquer des frais : Cochez cette case si des frais sont applicables à ce prêt.
+2.Taux de frais (%) : Saisissez le pourcentage de frais applicable au montant du prêt.
+3.Nombre de jours pour appliquer les frais : Saisissez le nombre de jours dans lequel les frais doivent être appliqués après la date d'échéance.
+4.Période de grâce avant le premier paiement : Saisissez la période de grâce, en mois, avant que le premier versement de remboursement ne soit dû.
+5.Période de grâce après la date d'échéance : Saisissez la période de grâce, en jours, après que l'ensemble du prêt soit devenu en retard.</value>
+  </data>
+  <data name="LoanProduct" xml:space="preserve">
+    <value>Produit du prêt</value>
+  </data>
+  <data name="LoanReference" xml:space="preserve">
+    <value>Référence du prêt</value>
+  </data>
+  <data name="LoanProductHelp" xml:space="preserve">
+    <value>Produit de prêt : Cette section vous permet de sélectionner le produit de prêt approprié pour la demande de prêt. Voici une description détaillée des éléments clés :
+Points clés :
+1.Menu déroulant de sélection du produit de prêt : Utilisez ce menu déroulant pour choisir le produit de prêt spécifique qui convient le mieux aux besoins de l'emprunteur. Les options disponibles sont renseignées en fonction des produits de prêt disponibles dans le système.
+2.Menu déroulant de sélection du type de prêt : Ce menu déroulant vous permet de spécifier le type de prêt demandé. Il peut s'agir d'un prêt personnel, d'un prêt professionnel, d'une hypothèque, etc.
+3.Montant : Saisissez le montant de prêt souhaité dans ce champ.
+4.Durée du prêt : Spécifiez la durée prévue du prêt en mois ou en années.
+5.Icône d'aide : Cliquez sur l'icône d'aide (ℹ️) à côté du titre "Produit de prêt" pour obtenir une assistance et des conseils supplémentaires sur la sélection du produit de prêt le plus approprié aux besoins de l'emprunteur.
+En sélectionnant soigneusement le produit de prêt et les conditions appropriés dans cette section, vous pouvez vous assurer que le prêt répond aux besoins de l'emprunteur tout en étant conforme à ses capacités financières et à ses objectifs.</value>
+  </data>
+  <data name="InterestHelp" xml:space="preserve">
+    <value>Intérêts : Cette section vous permet de spécifier les détails liés aux intérêts pour la demande de prêt. Voici un aperçu des éléments clés :
+Points clés :
+1.Type d'amortissement : Sélectionnez le type d'amortissement pour le prêt.
+2.Taux d'intérêt : Saisissez le taux d'intérêt applicable au prêt.
+3.Appliquer une exonération d'intérêts : Cochez cette case si une exonération d'intérêts est applicable à cette demande.
+4.Taux d'exonération (%) : Si applicable, saisissez le pourcentage d'exonération d'intérêts.
+En spécifiant ces détails avec précision, vous pouvez assurer la transparence et la clarté concernant les conditions liées aux intérêts, facilitant ainsi la prise de décision éclairée pour l'emprunteur et le prêteur.</value>
+  </data>
+  <data name="PurposeAndActivitiesHelp" xml:space="preserve">
+    <value>Objet et activités : Cette section vous permet de spécifier l'objet du prêt et les activités économiques associées. Voici un aperçu des éléments clés :
+Points clés :
+1.Objet du prêt contracté : Sélectionnez l'objet pour lequel le prêt est contracté.
+2.Activité économique : Choisissez l'activité économique associée au prêt.
+En définissant avec précision l'objet et les activités, vous assurez l'alignement entre les objectifs du prêt et l'utilisation prévue des fonds par l'emprunteur.</value>
+  </data>
+  <data name="RepaymentCycle" xml:space="preserve">
+    <value>Cycle de remboursement</value>
+  </data>
+  <data name="RiskMitigationHelp" xml:space="preserve">
+    <value>Atténuation des risques : Cette section vous permet de spécifier les mesures d'atténuation des risques associées à la demande de prêt. Voici un aperçu des éléments clés :
+Points clés :
+1.Garantie : Cochez cette case si l'emprunteur a fourni une garantie pour le prêt.
+2.Garant : Cochez cette case si l'emprunteur a fourni un garant pour le prêt.
+3.Montant de couverture du compte d'actions : Saisissez le montant couvert par le compte d'actions de l'emprunteur, si applicable.
+4.Taux de couverture du compte d'épargne : Spécifiez le taux de couverture fourni par le compte d'épargne de l'emprunteur, si applicable.
+5.Taux de couverture du compte de salaire : Saisissez le taux de couverture fourni par le compte de salaire de l'emprunteur, si applicable.
+En considérant et en mettant en œuvre soigneusement des mesures appropriées d'atténuation des risques dans cette section, vous pouvez minimiser les pertes potentielles associées au prêt et protéger les intérêts du prêteur.</value>
+  </data>
+  <data name="RepaymentAndLoanDurationHelp" xml:space="preserve">
+    <value>Remboursement et durée du prêt : Cette section vous permet de spécifier les détails liés au remboursement et la durée du prêt. Voici un aperçu des éléments clés :
+Points clés :
+1.Cycle de remboursement : Sélectionnez le cycle de remboursement pour le prêt.
+2.Nombre de remboursements : Saisissez le nombre total de remboursements, si applicable.
+En spécifiant ces détails avec précision, vous pouvez établir des conditions de remboursement claires et vous assurer que la durée du prêt correspond aux capacités financières et aux préférences de l'emprunteur.</value>
+  </data>
+  <data name="RepaymentDetails" xml:space="preserve">
+    <value>Détails de remboursement</value>
+  </data>
+</root>

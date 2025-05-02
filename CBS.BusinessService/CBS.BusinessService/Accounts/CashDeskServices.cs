@@ -938,13 +938,16 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
+                var customer = await GetCustomer(customerId);
+                if (customer == null)
+                    return null;
+                
+                
                 var accounts = await GetCustomerAccounts(customerId);
                 if (accounts == null || !accounts.Any())
                     return null;
 
-                var customer = await GetCustomer(customerId);
-                if (customer == null)
-                    return null;
+
 
                 var firstAccount = accounts.First();
                 var branch = await _branchServices.GetBranch(firstAccount.branchId);

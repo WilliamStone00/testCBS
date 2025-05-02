@@ -1,5 +1,7 @@
 ﻿$(document).ready(function () {
 
+    // Or to monitor changes in real-time
+    
     $('#document').change(function () {
         var selectedValue = $(this).val();
         console.log(selectedValue);
@@ -25,6 +27,9 @@
         });
 
     });
+
+  
+
 });
 
 
@@ -97,6 +102,31 @@ function LoadDataTableNewVersion(controller, tableID, action, KEY, partialView, 
     });
 }
 
+function readChartOfAccountCheckbox() {
+    console.log('Checkbox not found');
+    // Get the checkbox element by ID
+    var checkbox = $('#IsActiveCheckbox');
+
+    // Check if the checkbox exists
+    if (checkbox.length) {
+        // Get the checked status
+        var isChecked = checkbox.is(':checked');
+
+        // Get the value (though for checkboxes, this might not change with user interaction)
+        var checkboxValue = checkbox.val();
+
+        // You can return these values or use them as needed
+        return {
+            isChecked: isChecked,
+            value: checkboxValue
+        };
+    } else {
+        console.log('Checkbox not found');
+        return null;
+    }
+}
+
+ 
 /**
  * Initializes a DataTable with specific configuration.
  * @param {string} tableID - The ID of the table element to be transformed into a DataTable.

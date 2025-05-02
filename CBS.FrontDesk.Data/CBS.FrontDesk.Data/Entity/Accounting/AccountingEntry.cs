@@ -291,7 +291,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime ToDate { get; set; } //= new DateTimeOffset();
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
-        public DateTime FromDate { get; set; }// = new DateTimeOffset();
+        public DateTime FromDate { get; set; }
+ 
         public string FileType { get; set; }
         public string ReportType { get; set; }
         public List<string> AccountIds { get; set; }
