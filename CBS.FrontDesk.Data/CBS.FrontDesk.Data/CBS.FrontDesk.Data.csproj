@@ -80,6 +80,10 @@
     <Compile Include="Entity\AccountOpeningRulePerBranchP\AccountOpeningRulePerBranch.cs" />
     <Compile Include="Entity\AndriodApp\AndriodVersionConfiguration.cs" />
     <Compile Include="Entity\AuditTralP\AuditTrailDto.cs" />
+    <Compile Include="Entity\BulkOperation\CreateBulkOperationSimulation.cs" />
+    <Compile Include="Entity\BulkOperation\MemberAccountsBulkOperations.cs" />
+    <Compile Include="Entity\BulkOperation\MemberAccountsBulkOperationDetails.cs" />
+    <Compile Include="Entity\BulkOperation\SimulateBulkOperation.cs" />
     <Compile Include="Entity\CashCeilingManagement\CashCeilingRequest.cs" />
     <Compile Include="Entity\CashChangeManagement\CashChangeHistory.cs" />
     <Compile Include="Entity\ChangeNumber\PhoneNumberChangeHistory.cs" />

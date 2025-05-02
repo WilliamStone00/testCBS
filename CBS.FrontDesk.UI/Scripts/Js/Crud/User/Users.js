@@ -1,11 +1,11 @@
 ﻿$(document).ready(function () {
     initFilterToggles();
-    loadUserDataTable();
+    loadBulkOperationDataTable();
     bindFilterActions();
 });
 
 // 📊 Initialize DataTable
-function loadUserDataTable() {
+function loadBulkOperationDataTable() {
     $('#myDataTable').DataTable({
         serverSide: true,
         destroy: true,
