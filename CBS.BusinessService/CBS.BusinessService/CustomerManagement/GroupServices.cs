@@ -7,6 +7,7 @@ using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -195,6 +196,7 @@ namespace CBS.BusinessService.CustomerManagement
                 model.BranchName = GetBranchName();
                 model.PhotoSource = "N/A";
                 model.GroupLeaderId = "N/A";
+
                 // Make an API call to create an individual profile
                 var response = await _customerConfigApiHelper.PostAsync<ServiceResponse<Group>>(APICallHelper.CreateGroup, model);
                 if (response.ApiResponseData != null)

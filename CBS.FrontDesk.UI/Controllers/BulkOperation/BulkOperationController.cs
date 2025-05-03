@@ -1,8 +1,10 @@
 ﻿using CBS.BusinessService;
+using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounts;
 using CBS.BusinessService.BulkOperations;
 using CBS.BusinessService.Config;
-using CBS.FrontDesk.Data.Entity.BulkOPerations;
-using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.BulkOperation;
+using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,7 +13,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-namespace CBS.FrontDesk.UI.Controllers.BulkOperations
+namespace CBS.FrontDesk.UI.Controllers.BulkOperation
 {
 
     [CheckSessionTimeOutAttribute]
@@ -19,22 +21,37 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperations
     {
          private readonly BranchServices _branchServices;
          private readonly BulkOperationService _bulkOperationService;
+        private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
+        private readonly SavingProductServices _savingProductServices;
 
 
 
-        public BulkOperationController(BranchServices branchServices, BulkOperationService bulkOperationService)
+        public BulkOperationController(BranchServices branchServices, BulkOperationService bulkOperationService, ChartOfAccountServicesAnnex chartOfAccountServices, SavingProductServices savingProductServices)
         {
             _branchServices = branchServices;
             _bulkOperationService = bulkOperationService;
+            this.chartOfAccountServices = chartOfAccountServices;
+            _savingProductServices = savingProductServices;
+        }
+
+        public async Task<ActionResult> Index()
+        {
+            var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
+            ViewBag.chartOfAccounts = chartOfAccounts.ToList();
+            var savingProduct = await _savingProductServices.GetSavingProducts();
+            var savingOrdinaryProduct = savingProduct.Where(x => x.ProductCategory == "OrdinaryAccount").ToList();
+            return View(new SimulateBulkOperation() { BulkOperationSelectionModel = new BulkOperationSelectionModel() , SavingProducts = savingOrdinaryProduct });
         }
 
         // GET: BulkOperation
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Listing()
         {
             var Branches = await _branchServices.GetBranches();
             ViewBag.Branches = Branches;
             return View();
         }
+
+       
 
 
         public async Task<ActionResult> LoadBulkOperationData(string searchCriteria, string dateFrom= null, string dateTo=null, string operationStatus = "Pending", string branchid = null)
@@ -64,7 +81,7 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperations
             };
 
             var dataTable = await _bulkOperationService.GetBulkOperationDataTableAsync(query, searchCriteria);
-            var loanList = JsonConvert.DeserializeObject<List<MemberAccountsBulkOperations>>(JsonConvert.SerializeObject(dataTable.data));
+            var loanList = JsonConvert.DeserializeObject<List<Data.Entity.BulkOperation.BulkOperations>>(JsonConvert.SerializeObject(dataTable.data));
 
             return Json(new
             {
@@ -73,6 +90,30 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperations
                 recordsFiltered = dataTable.recordsFiltered,
                 data = loanList
             }, JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        [HttpPost]
+        public async Task<ActionResult> AddOrUpdate(SimulateBulkOperation model)
+        {
+            Func<Task<ExecutionMessages>> serviceAction = null;
+
+            serviceAction =  () =>  _bulkOperationService.SimulateOperation(model);
+
+            if (serviceAction != null)
+            {
+                try
+                {
+                    var data = await serviceAction();
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+                }
+            }
+
+            return Json(new { success = false, status = false, message = "Invalid option selected." });
         }
 
     }

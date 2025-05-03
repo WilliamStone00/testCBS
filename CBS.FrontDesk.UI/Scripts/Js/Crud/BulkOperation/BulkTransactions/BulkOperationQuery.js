@@ -1,6 +1,5 @@
 ﻿
 $(document).ready(function () {
-    console.log("Is he Ready...");
     initFilterToggles();
     loadBulkOperationDataTable();
     bindFilterActions();

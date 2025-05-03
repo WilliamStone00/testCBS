@@ -1,9 +1,9 @@
 ﻿using CBS.FrontDesk.Data.Entity.DataTable;
 using System;
 
-namespace CBS.FrontDesk.Data.Entity.BulkOPerations
+namespace CBS.FrontDesk.Data.Entity.BulkOperation
 {
-    public class MemberAccountsBulkOperations
+    public class BulkOperations
     {
         public string Id { get; set; }
         public string BranchId { get; set; }
