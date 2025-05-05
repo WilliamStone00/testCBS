@@ -1,0 +1,19 @@
+﻿@model  CBS.FrontDesk.Data.Entity.BulkOperation.SimulateBulkOperation
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mb-3">
+                    @Html.LabelFor(m => m.SimulationType, "Simulation Type", new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.SimulationType, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="mb-3">
+                    @Html.LabelFor(m => m.Description, "Description", new { @class = "form-label" })
+                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = "3", placeholder = "Enter a description for this bulk operation..." })
+                </div>
+            </div>
+        </div>
+    </div>
+

@@ -1,6 +1,6 @@
-﻿namespace CBS.FrontDesk.Data.Entity.BulkOPerations
+﻿namespace CBS.FrontDesk.Data.Entity.BulkOperation
 {
-    public class MemberAccountsBulkOperationDetails
+    public class BulkOperationDetails
     {
         public string MemberName { get; set; }
         public string MemberReference { get; set; }

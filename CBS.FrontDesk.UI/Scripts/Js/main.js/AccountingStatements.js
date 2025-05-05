@@ -1,5 +1,27 @@
 ﻿$(document).ready(function () {
-    
+
+    // Cache elements
+    const $auditCheckbox = $('#ActivateAuditId');
+    const $branchList = $('#ListOfBranchToHide');
+    const $branchSelect = $('#SystemQuery_BranchIds'); // Your select2 element
+    $('#ListOfBranchToHide').hide();
+    $('#SystemQuery_BranchIds').hide();
+    //// Initialize - hide branch list if checkbox is checked
+    toggleBranchList(!$auditCheckbox.is(':checked'));
+
+    // Handle checkbox change
+    $auditCheckbox.change(function () {
+        toggleBranchList($(this).is(':checked'));
+    });
+    function toggleBranchList(shouldHide) {
+        if (shouldHide) {
+            $branchList.slideUp(300);
+            // Clear selection when hiding
+            $branchSelect.val(null).trigger('change');
+        } else {
+            $branchList.slideDown(300);
+        }
+    }
     LoadDownloadedReportByUser("myDataTable");
     LoadBranchAndAccountDataSetDT("BranchDataTable");
     LoadAccountDataSetDT("AccountDataTable");
@@ -42,6 +64,7 @@
     });
   
 });
+
 
 function LoadBranchAndAccountDataSetDT(tableID) {
 

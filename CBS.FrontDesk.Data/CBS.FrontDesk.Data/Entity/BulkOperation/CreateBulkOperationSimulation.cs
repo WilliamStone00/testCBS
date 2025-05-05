@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using CBS.FrontDesk.Data.Entity.BulkOperation;
+using System.Collections.Generic;
 
-namespace CBS.FrontDesk.Data.Entity.BulkOPerations
+namespace CBS.FrontDesk.Data.Entity.BulkOPeration
 {
     public class CreateBulkOperationSimulation
     {
         public int TotalMember { get; set; }
         public decimal OperationVolume { get; set; }
-        public List<MemberAccountsBulkOperationDetails> memberAccounts { get; set; }
+        public List<BulkOperationDetails> memberAccounts { get; set; }
     }
 }

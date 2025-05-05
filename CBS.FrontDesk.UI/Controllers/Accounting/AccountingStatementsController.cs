@@ -440,7 +440,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 if (model.SystemQuery.FileType.ToLower()=="pdf")
                                 {
                                     string fileTitle = $"JournalEntries_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
-                                    var account = await _accountingServices.PostJournalEntries(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId }, APICallHelper.JournalEntryUrl);
+                                    var account = await _accountingServices.PostJournalEntries(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId , BranchIds = model.SystemQuery.BranchIds }, APICallHelper.JournalEntryUrl);
 
                                     this.HttpContext.Session["rptSource"] = account;
                                     string ReportName = $"JournalEntries.rpt";
@@ -457,7 +457,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                 else
                                 {
                                     string fileTitle = $"JournalEntries_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
-                                    var account = await _accountingServices.PostJE(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId }, APICallHelper.JournalEntryUrl);
+                                    var account = await _accountingServices.PostJE(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId, BranchIds = model.SystemQuery.BranchIds }, APICallHelper.JournalEntryUrl);
 
                                 }
                             }

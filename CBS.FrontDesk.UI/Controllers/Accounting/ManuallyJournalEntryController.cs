@@ -67,7 +67,13 @@ namespace CBS.FrontDesk.UI.Controllers
             _blacklistAccountServices = new BlacklistAccountServices();
         }
         // GET:ManuallyJournalEntry/PendingAccountingEntries
-
+        public async Task<ActionResult> ExceptionalEntry()
+        {
+ 
+              await GetExInfoList();
+                return View();
+           
+        }
         public async Task<ActionResult> Index()
         {
             await GetList();
@@ -210,7 +216,17 @@ namespace CBS.FrontDesk.UI.Controllers
             ViewBag.IsChainEntry = await GetEntrySystem();
             ViewBag.AccountingEventRuleIds = BuildAccountingRuleViewBag((await _AccountingRuleServices.GetAccountingRules()).ToList());
         }
+        private async Task GetExInfoList()
+        {
 
+
+            var listAccounts =  await _AccountServices.GetAllAccounting();
+
+            var CreditAccounts = BuildMenuViewBag(listAccounts);
+            ViewBag.Accounts = CreditAccounts;
+            ViewBag.BookingDirections = await GetBookingDirections();
+
+        }
         private dynamic BuildIsInterBranchTransactionViewBag()
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
@@ -390,7 +406,7 @@ namespace CBS.FrontDesk.UI.Controllers
         }
 
 
-
+     
 
         private Task<List<System.Web.WebPages.Html.SelectListItem>> GetBookingDirections()
         {
