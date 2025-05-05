@@ -279,6 +279,91 @@ Key Points:
                     </div>
                 </div>
             </div>
+
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingMortgage">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseMortgage"
+                            aria-expanded="false"
+                            aria-controls="collapseMortgage">
+                        Mortgage Configuration
+                        <i class="mdi mdi-home-lock text-primary ms-2" data-bs-toggle="tooltip" title="Mortgage Settings: Configure specific parameters for mortgage loan products such as insurance requirement, LTV ratio, grace period, and property ownership rules."></i>
+                    </button>
+                </h2>
+                <div id="collapseMortgage"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="headingMortgage"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                        {
+                            <fieldset class="fieldset-custom">
+                                <legend>Mortgage Rules</legend>
+                                <div class="row g-4">
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.IsMortgage, new { @class = "form-check-input" })
+                                            <label class="form-check-label">Is this a mortgage loan product?</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.RequireInsurance, new { @class = "form-check-input" })
+                                            <label class="form-check-label">Require insurance before disbursement</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.RequireTitleRegistration, new { @class = "form-check-input" })
+                                            <label class="form-check-label">Require land title registration</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.GracePeriodMonths, new { @class = "form-control" })
+                                            <label>Grace period (months)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MaxLoanToValueRatio, new { @class = "form-control" })
+                                            <label>Max LTV Ratio (e.g. 0.80 = 80%)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinCollateralCoveragePercent, new { @class = "form-control" })
+                                            <label>Min Collateral Coverage (e.g. 1.25 = 125%)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.EnablePhasedDisbursement, new { @class = "form-check-input" })
+                                            <label class="form-check-label">Enable phased disbursement</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.AllowThirdPartyOwnership, new { @class = "form-check-input" })
+                                            <label class="form-check-label">Allow third-party property ownership</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                                    @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
+                                    @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanProductCategoryId)
+                                    <input type="hidden" name="ServiceOption" value="mortgage" id="ServiceOption" />
+                                </div>
+                            </fieldset>
+                        }
+                    </div>
+                </div>
+            </div>
+
+
             <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingPaymentMethod5">
                     <button type="button"
@@ -367,12 +452,12 @@ Key Points:
                                 <legend>Interest settings</legend>
                                 <div class="row g-4">
                                     @*<div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.UpdateLoanProductCommand.LoanInterestPeriod, new SelectList(ViewBag.LoanInterestPeriods, "Value", "Text"), "---Select interest periods---", new { @class = "form-control select2", @search = "true" })
-                @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.LoanInterestPeriod, "", new { @class = "text-danger " })
-                <label>Interest period</label>
-            </div>
-        </div>*@
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.UpdateLoanProductCommand.LoanInterestPeriod, new SelectList(ViewBag.LoanInterestPeriods, "Value", "Text"), "---Select interest periods---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.LoanInterestPeriod, "", new { @class = "text-danger " })
+                                        <label>Interest period</label>
+                                    </div>
+                                </div>*@
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumInterestRate, new { @class = "form-control" })
@@ -519,12 +604,12 @@ Key Points:
                                 </div>
 
                                 @*<div class="mt-4">
-                                    <button type="submit" class="btn btn-primary me-2">Update</button>
-                                    @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
-                                    @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanTermId)
-                                    @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanProductCategoryId)
-                                    <input type="hidden" name="ServiceOption" value="duration" id="ServiceOption" />
-                                </div>*@
+                                <button type="submit" class="btn btn-primary me-2">Update</button>
+                                @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
+                                @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanTermId)
+                                @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanProductCategoryId)
+                                <input type="hidden" name="ServiceOption" value="duration" id="ServiceOption" />
+                            </div>*@
                             </fieldset>
                         }
                     </div>
@@ -645,96 +730,96 @@ Key Points:
                 </div>
             </div>
             @*<div class="card accordion-item mb-3">
-                                <h2 class="accordion-header" id="headingPaymentMethod8">
-                                    <button type="button"
-                                            class="accordion-button collapsed"
-                                            data-bs-toggle="collapse"
-                                            data-bs-target="#collapsePaymentMethod8"
-                                            aria-expanded="false"
-                                            aria-controls="collapsePaymentMethod8">
-                                        Fee
-                                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="Fee: Define the fees associated with the loan product, including processing fees, service charges, and other applicable fees.
-                Key Points:
-                1. Processing Fees: Specify fees charged for processing the loan application.
-                2. Service Charges: Define service charges applicable during the loan tenure.
-                3. Late Payment Fees: Set penalties for late repayments to encourage timely repayment behavior.
-                4. Prepayment Charges: Determine charges for early repayment of the loan amount.
-                5. Other Fees: Include any additional fees associated with the loan product, such as insurance premiums or documentation fees.
-                6. Transparency: Clearly communicate all applicable fees to borrowers to ensure transparency and avoid surprises.
-                7. Compliance: Ensure that fee structures comply with regulatory requirements and industry standards to protect borrower interests."></i>
+                        <h2 class="accordion-header" id="headingPaymentMethod8">
+                            <button type="button"
+                                    class="accordion-button collapsed"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapsePaymentMethod8"
+                                    aria-expanded="false"
+                                    aria-controls="collapsePaymentMethod8">
+                                Fee
+                                <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="Fee: Define the fees associated with the loan product, including processing fees, service charges, and other applicable fees.
+        Key Points:
+        1. Processing Fees: Specify fees charged for processing the loan application.
+        2. Service Charges: Define service charges applicable during the loan tenure.
+        3. Late Payment Fees: Set penalties for late repayments to encourage timely repayment behavior.
+        4. Prepayment Charges: Determine charges for early repayment of the loan amount.
+        5. Other Fees: Include any additional fees associated with the loan product, such as insurance premiums or documentation fees.
+        6. Transparency: Clearly communicate all applicable fees to borrowers to ensure transparency and avoid surprises.
+        7. Compliance: Ensure that fee structures comply with regulatory requirements and industry standards to protect borrower interests."></i>
 
-                                    </button>
-                                </h2>
-                                <div id="collapsePaymentMethod8"
-                                     class="accordion-collapse collapse"
-                                     aria-labelledby="headingPaymentMethod8"
-                                     data-bs-parent="#collapsibleSection">
+                            </button>
+                        </h2>
+                        <div id="collapsePaymentMethod8"
+                             class="accordion-collapse collapse"
+                             aria-labelledby="headingPaymentMethod8"
+                             data-bs-parent="#collapsibleSection">
 
-                                    <div class="accordion-body">
-                                        @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-                                        {
+                            <div class="accordion-body">
+                                @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                                {
 
-                                            <fieldset class="fieldset-custom">
-                                                <legend>FEE POLICIES</legend>
-                                                <div class="row g-4">
+                                    <fieldset class="fieldset-custom">
+                                        <legend>FEE POLICIES</legend>
+                                        <div class="row g-4">
 
 
-                                                    <div class="col-md-4">
-                                                        <div class="form-floating form-floating-outline">
-                                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumProcessingFeeRate, new { @class = "form-control" })
-                                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumProcessingFeeRate, "", new { @class = "text-danger" })
-                                                            <label>Minimum processing fee rate</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-floating form-floating-outline">
-                                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.DefaultProcessingFeeRate, new { @class = "form-control" })
-                                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.DefaultProcessingFeeRate, "", new { @class = "text-danger" })
-                                                            <label>Default processing fee rate</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-floating form-floating-outline">
-                                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MaximumProcessingFeeRate, new { @class = "form-control" })
-                                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MaximumProcessingFeeRate, "", new { @class = "text-danger" })
-                                                            <label>Maximum processing fee rate</label>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="form-floating form-floating-outline">
-                                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumInspectionFeeRate, new { @class = "form-control" })
-                                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumInspectionFeeRate, "", new { @class = "text-danger" })
-                                                            <label>Minimum inspection fee rate</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-floating form-floating-outline">
-                                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.DefaultInspectionFeeRate, new { @class = "form-control" })
-                                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.DefaultInspectionFeeRate, "", new { @class = "text-danger" })
-                                                            <label>Default inspection fee rate</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-floating form-floating-outline">
-                                                            @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MaximumInspectionFeeRate, new { @class = "form-control" })
-                                                            @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MaximumInspectionFeeRate, "", new { @class = "text-danger" })
-                                                            <label>Maximum inspection fee rate</label>
-                                                        </div>
-                                                    </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumProcessingFeeRate, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumProcessingFeeRate, "", new { @class = "text-danger" })
+                                                    <label>Minimum processing fee rate</label>
                                                 </div>
-
-                                                <div class="mt-4">
-                                                    <button type="submit" class="btn btn-primary me-2">Update</button>
-                                                    @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
-                                                    <input type="hidden" name="ServiceOption" value="fee" id="ServiceOption" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.UpdateLoanProductCommand.DefaultProcessingFeeRate, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.DefaultProcessingFeeRate, "", new { @class = "text-danger" })
+                                                    <label>Default processing fee rate</label>
                                                 </div>
-                                            </fieldset>
-                                        }
-                                    </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MaximumProcessingFeeRate, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MaximumProcessingFeeRate, "", new { @class = "text-danger" })
+                                                    <label>Maximum processing fee rate</label>
+                                                </div>
+                                            </div>
 
-                                </div>
-                            </div>*@
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumInspectionFeeRate, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumInspectionFeeRate, "", new { @class = "text-danger" })
+                                                    <label>Minimum inspection fee rate</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.UpdateLoanProductCommand.DefaultInspectionFeeRate, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.DefaultInspectionFeeRate, "", new { @class = "text-danger" })
+                                                    <label>Default inspection fee rate</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MaximumInspectionFeeRate, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MaximumInspectionFeeRate, "", new { @class = "text-danger" })
+                                                    <label>Maximum inspection fee rate</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-4">
+                                            <button type="submit" class="btn btn-primary me-2">Update</button>
+                                            @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
+                                            <input type="hidden" name="ServiceOption" value="fee" id="ServiceOption" />
+                                        </div>
+                                    </fieldset>
+                                }
+                            </div>
+
+                        </div>
+                    </div>*@
 
 
             <div class="card accordion-item mb-3">

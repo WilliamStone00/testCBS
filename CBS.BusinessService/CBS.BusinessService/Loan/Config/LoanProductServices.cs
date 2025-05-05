@@ -512,9 +512,7 @@ namespace CBS.BusinessService.Config
                     ChartOfAccountIdForWriteOffPrincipal = product.ChartOfAccountIdForWriteOffPrincipal,
                     ChartOfAccountIdForProvisionMoreThanTwoYear = product.ChartOfAccountIdForProvisionMoreThanTwoYear,
                     ChartOfAccountIdForProvisionMoreThanThreeYear = product.ChartOfAccountIdForProvisionMoreThanThreeYear,
-
                     ChartOfAccountIdForProvisionMoreThanFourYear = product.ChartOfAccountIdForProvisionMoreThanFourYear,
-
                     RepaymentCycles = product.RepaymentCycles,
                     ServiceOption = ServiceOption,
                     UpdateOption = UpdateOption,
@@ -526,6 +524,14 @@ namespace CBS.BusinessService.Config
                     CapitalRate = product.CapitalRate,
                     LoanDeliquencyPeriod = "N/A",
                     RepaymentTypeName = "N/A",
+                    IsMortgage = product.IsMortgage,
+                    RequireInsurance = product.RequireInsurance,
+                    RequireTitleRegistration = product.RequireTitleRegistration,
+                    GracePeriodMonths = product.GracePeriodMonths,
+                    MaxLoanToValueRatio = product.MaxLoanToValueRatio,
+                    MinCollateralCoveragePercent = product.MinCollateralCoveragePercent,
+                    EnablePhasedDisbursement = product.EnablePhasedDisbursement,
+                    AllowThirdPartyOwnership = product.AllowThirdPartyOwnership
                 };
 
                 return updateCommand;
@@ -560,6 +566,18 @@ namespace CBS.BusinessService.Config
 
 
                     }
+                    else if (model.ServiceOption == "mortgage")
+                    {
+                        LoanProduct.IsMortgage = model.IsMortgage;
+                        LoanProduct.RequireInsurance = model.RequireInsurance;
+                        LoanProduct.RequireTitleRegistration = model.RequireTitleRegistration;
+                        LoanProduct.GracePeriodMonths = model.GracePeriodMonths;
+                        LoanProduct.MaxLoanToValueRatio = model.MaxLoanToValueRatio;
+                        LoanProduct.MinCollateralCoveragePercent = model.MinCollateralCoveragePercent;
+                        LoanProduct.EnablePhasedDisbursement = model.EnablePhasedDisbursement;
+                        LoanProduct.AllowThirdPartyOwnership = model.AllowThirdPartyOwnership;
+                    }
+
                     else if (model.ServiceOption == "gurantee")
                     {
                         LoanProduct.RequiresGuarantor = model.RequiresGuarantor;

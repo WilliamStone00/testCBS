@@ -17,6 +17,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string FeeBase { get; set; }//Percentage Or Range
         public string AccountingEventCode { get; set; }
         public bool IsBoforeProcesing { get; set; }
+        public string LoanFeeType { get; set; }// Processing_Fee_Limit Or Operation_Fee
 
         public List<FeeRange> FeeRanges { get; set; }
     }

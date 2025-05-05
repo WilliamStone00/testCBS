@@ -24,5 +24,6 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
         public decimal Charge { get; set; }
         public Fee Fee { get; set; }
+
     }
 }
