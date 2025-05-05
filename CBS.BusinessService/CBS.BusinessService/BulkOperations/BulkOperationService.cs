@@ -3,6 +3,8 @@ using CBS.API.Helper;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.BulkOperation;
+using CBS.FrontDesk.Data.Entity.BulkOPeration;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
@@ -118,18 +120,16 @@ namespace CBS.BusinessService.BulkOperations
         {
             try
             {
-                model.BranchCode = GetBranchCode();
-                model.BankCode = GetBankCode();
-                model.BranchId = GetBranchID();
-                model.BankId = GetBankID();
-                model.BankName = GetBankName();
-                model.BranchName = GetBranchName();
+            
 
-                if (model.IsTransferToUniqueAccount)
+                Branch branch= model.Branches.Where(x=>x.Id==model.BranchId).FirstOrDefault();
+                   
+
+                if (model.IsContribution=="true")
                 {
-                    SimulateBulkOperationToUniqueAccountType simulateModel= new SimulateBulkOperationToUniqueAccountType(model);
+                    SimulateBulkOperationToUniqueAccountType simulateModel= new SimulateBulkOperationToUniqueAccountType(model,branch);
                     // Make an API call to create an individual profile
-                    var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<Group>>(APICallHelper.CreateGroup, simulateModel);
+                    var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<CreateBulkOperationSimulation>>(APICallHelper.SimulateContribution, simulateModel);
                     if (response.ApiResponseData != null)
                     {
                         // Successful creation
@@ -148,9 +148,9 @@ namespace CBS.BusinessService.BulkOperations
                 else
                 {
 
-                    SimulateBulkOperationToSpecificAccountType simulateModel = new SimulateBulkOperationToSpecificAccountType(model);
+                    SimulateBulkOperationToSpecificAccountType simulateModel = new SimulateBulkOperationToSpecificAccountType(model, branch);
                     // Make an API call to create an individual profile
-                    var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<Group>>(APICallHelper.CreateGroup, simulateModel);
+                    var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<CreateBulkOperationSimulation>>(APICallHelper.SimulateAccountTopup, simulateModel);
                     if (response.ApiResponseData != null)
                     {
                         // Successful creation

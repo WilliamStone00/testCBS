@@ -7,9 +7,9 @@
             <div class="mb-3">
                 @Html.LabelFor(m => m.SourceAccountType, "Destination Account", new { @class = "form-label" })
                 @Html.DropDownListFor(m => m.SourceAccountType,
-                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                    new SelectList(ViewBag.chartOfAccounts, "Text", "Text"),
                     "Select Account",
-                    new { @class = "form-select" })
+                    new { @class = "form-select select2" })
             </div>
             <div class="col-md-12">
                 <div class="mb-3">

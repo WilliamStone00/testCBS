@@ -5378,12 +5378,12 @@
     <Content Include="Views\Reports\AccountingPDFReport.cshtml" />
     <Content Include="Views\BulkOperation\Index.cshtml" />
     <Content Include="Views\BulkOperation\_BulkOperationData.cshtml" />
-    <Content Include="Views\BulkOperation\_SimulateToUniqueAccount.cshtml" />
-    <Content Include="Views\BulkOperation\_SimulateToSpecificAccountType.cshtml" />
+    <Content Include="Views\BulkOperation\_SimulateAccountContribution.cshtml" />
+    <Content Include="Views\BulkOperation\_SimulateToAccountTopUp.cshtml" />
     <Content Include="Views\BulkOperation\Listing.cshtml" />
-    <Content Include="Views\BulkOperation\_BulkOperationSelection.cshtml" />
-    <Content Include="Views\BulkOperation\_SourceAccountsConfiguration.cshtml" />
-    <Content Include="Views\BulkOperation\_SimulationTypeAndDescription.cshtml" />
+    <Content Include="Views\BulkOperation\_SimulationOptions.cshtml" />
+    <Content Include="Views\BulkOperation\_SourceAccountConfiguration.cshtml" />
+    <Content Include="Views\BulkOperation\_SimulationTitleInfos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

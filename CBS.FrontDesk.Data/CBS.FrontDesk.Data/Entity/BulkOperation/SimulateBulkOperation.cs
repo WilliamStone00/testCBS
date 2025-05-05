@@ -1,4 +1,5 @@
-﻿using CBS.FrontDesk.Data.Entity.SavingProducts;
+﻿using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -39,22 +40,23 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
 
         public string Description { get; set; }
 
-        public bool IsTransferToUniqueAccount { get; set; }
+        public string IsContribution { get; set; }
 
         public string SimulationType { get; set; }
+        public string BranchId { get; set; }
 
-        public string BankCode { get; set; }
+      /*  public string BankCode { get; set; }
         public string BranchCode { get; set; }
         public string BranchId { get; set; }
         public string BankId { get; set; }
         public string BankName { get; set; }
-        public string BranchName { get; set; }
+        public string BranchName { get; set; }*/
         public List<SavingProduct> SavingProducts { get; set; } = new List<SavingProduct>();
+        public List<Branch> Branches { get; set; } = new List<Branch>();
         public BulkOperationSelectionModel BulkOperationSelectionModel { get; set; }
 
 
     }
-
 
     public class BulkOperationSelectionModel
     {

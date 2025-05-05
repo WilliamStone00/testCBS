@@ -1,5 +1,7 @@
 ﻿
 
+using CBS.FrontDesk.Data.Entity.Config;
+
 namespace CBS.FrontDesk.Data.Entity.BulkOperation
 {
     public class SimulateBulkOperationToSpecificAccountType
@@ -20,14 +22,14 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
         public string BankName { get; set; }
         public string BranchName { get; set; }
 
-        public SimulateBulkOperationToSpecificAccountType(SimulateBulkOperation simulate)
+        public SimulateBulkOperationToSpecificAccountType(SimulateBulkOperation simulate,Branch branch)
         {
-            BankCode = simulate.BankCode;
-            BranchCode = simulate.BranchCode;
-            BranchId = simulate.BranchId;
-            BankId = simulate.BankId;
-            BankName = simulate.BankName;
-            BranchName = simulate.BranchName;
+            BankCode = branch.Bank.BankCode;
+            BranchCode = branch.BranchCode;
+            BranchId = branch.Id;
+            BankId = branch.Bank.Id;
+            BankName = branch.Bank.Name;
+            BranchName = branch.Name;
             SimulationType = simulate.SimulationType;
             SourceAccountMaxAmount = simulate.SourceAccountMaxAmount;
             Description = simulate.Description;

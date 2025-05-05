@@ -40,7 +40,16 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             ViewBag.chartOfAccounts = chartOfAccounts.ToList();
             var savingProduct = await _savingProductServices.GetSavingProducts();
             var savingOrdinaryProduct = savingProduct.Where(x => x.ProductCategory == "OrdinaryAccount").ToList();
-            return View(new SimulateBulkOperation() { BulkOperationSelectionModel = new BulkOperationSelectionModel() , SavingProducts = savingOrdinaryProduct });
+            var Branches = await _branchServices.GetBranches();
+            return View(new SimulateBulkOperation()
+            {
+                BulkOperationSelectionModel = new BulkOperationSelectionModel()
+                {
+                    SelectedOperationType = "specific"
+                },
+                SavingProducts = savingOrdinaryProduct,
+                Branches = Branches.ToList()
+            });
         }
 
         // GET: BulkOperation
@@ -92,13 +101,15 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             }, JsonRequestBehavior.AllowGet);
         }
 
-        //
+        
         [HttpPost]
-        public async Task<ActionResult> AddOrUpdate(SimulateBulkOperation model)
+        public async Task<ActionResult> Simulate(SimulateBulkOperation model)
         {
             Func<Task<ExecutionMessages>> serviceAction = null;
 
-            serviceAction =  () =>  _bulkOperationService.SimulateOperation(model);
+            var Branches = await _branchServices.GetBranches();
+            model.Branches=Branches.ToList();
+            serviceAction =  async () =>await  _bulkOperationService.SimulateOperation(model);
 
             if (serviceAction != null)
             {
