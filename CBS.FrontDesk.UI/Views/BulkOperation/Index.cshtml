@@ -1,0 +1,167 @@
+﻿@model CBS.FrontDesk.Data.Entity.BulkOperation.SimulateBulkOperation
+
+@{
+    ViewBag.Title = "Simulate Bulk Operation";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+
+        <!-- Header Section -->
+        <div class="card bg-light mb-3 shadow-sm">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-account-group-outline me-2"></i> BULK OPERATIONS
+                </h1>
+                <p class="card-text">
+                    Create and manage user accounts, define access roles, and ensure strong security posture. This interface provides full visibility and control over user identity, activity, and protection mechanisms.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="card shadow-sm mb-4">
+            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUserTips" aria-expanded="false" aria-controls="collapseUserTips">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </h6>
+            <div id="collapseUserTips" class="collapse">
+                <div class="card-body">
+                    <div class="row gy-2">
+                        <div class="col-md-6">
+                            <div class="alert alert-primary d-flex align-items-center" role="alert">
+                                <i class="mdi mdi-account-edit-outline me-2"></i>
+                                Fill all required fields accurately.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-1">
+            <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+                <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+                    <!-- Bulk Operation Simulation Form -->
+                    <div class="accordion-item active">
+                        <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconBulk">
+                            <button type="button"
+                                    class="accordion-button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#accordionPopoutIcon-bulk"
+                                    aria-expanded="true"
+                                    aria-controls="accordionPopoutIcon-bulk">
+                                <i class="fas fa-user-plus me-2"></i> Bulk Operation Simulation
+                            </button>
+
+                            <!-- Added elements between title and view button -->
+                            <div class="d-flex align-items-center">
+                                <div class="me-3"></div>
+
+                                <a href="/BulkOperation/Listing" class="btn btn-sm btn-outline-secondary align-self-center me-3" data-bs-toggle="tooltip" title="Go to executed bulk operation list">
+                                    <i class="mdi mdi-view-list me-1"></i> View Bulk Operations
+                                </a>
+                            </div>
+                        </h2>
+                        <div id="accordionPopoutIcon-bulk"
+                             class="accordion-collapse collapse show"
+                             data-bs-parent="#accordionPopoutIcon">
+                            <div class="accordion-body">
+                                @using (Html.BeginForm("Simulate", "BulkOperation", FormMethod.Post, new { id = "bulkOperationForm" }))
+                                {
+                                    <!-- Simulation Type and Description - Now Collapsible -->
+                                    <div class="accordion mb-4" id="simulationTypeAccordion">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingSimulationType">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSimulationType" aria-expanded="true" aria-controls="collapseSimulationType">
+                                                    <i class="mdi mdi-cog-outline me-2"></i> Simulation Details
+                                                </button>
+                                            </h2>
+                                            <div id="collapseSimulationType" class="accordion-collapse collapse show" aria-labelledby="headingSimulationType">
+                                                <div class="accordion-body">
+                                                    @Html.Partial("_SimulationTypeAndDescription", Model)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Operation Type Selection - Now Collapsible -->
+                                    <div class="accordion mb-4" id="operationTypeAccordion">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingOperationType">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOperationType" aria-expanded="true" aria-controls="collapseOperationType">
+                                                    <i class="mdi mdi-format-list-bulleted-type me-2"></i> Operation Type
+                                                </button>
+                                            </h2>
+                                            <div id="collapseOperationType" class="accordion-collapse collapse show" aria-labelledby="headingOperationType">
+                                                <div class="accordion-body">
+                                                    @Html.Partial("_BulkOperationSelection", Model.BulkOperationSelectionModel)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Source Accounts Configuration - Now Collapsible -->
+                                    <div class="accordion mb-4" id="sourceAccountsAccordion">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingSourceAccounts">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSourceAccounts" aria-expanded="true" aria-controls="collapseSourceAccounts">
+                                                    <i class="mdi mdi-database-outline me-2"></i> Source Accounts Configuration
+                                                </button>
+                                            </h2>
+                                            <div id="collapseSourceAccounts" class="accordion-collapse collapse show" aria-labelledby="headingSourceAccounts">
+                                                <div class="accordion-body">
+                                                    @Html.Partial("_SourceAccountsConfiguration", Model)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Dynamic Views - Now Collapsible -->
+                                    <div class="accordion mb-4" id="dynamicViewsAccordion">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingDynamicViews">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDynamicViews" aria-expanded="true" aria-controls="collapseDynamicViews">
+                                                    <i class="mdi mdi-page-layout-body me-2"></i> Destination Configuration
+                                                </button>
+                                            </h2>
+                                            <div id="collapseDynamicViews" class="accordion-collapse collapse show" aria-labelledby="headingDynamicViews">
+                                                <div class="accordion-body">
+                                                    <div id="mainviewChange">
+                                                        <div class="change-group">
+                                                            <div id="mainview1">
+                                                                @Html.Partial("_SimulateToSpecificAccountType", Model)
+                                                            </div>
+                                                            <div id="mainview2">
+                                                                @Html.Partial("_SimulateToUniqueAccount", Model)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Form Actions -->
+                                    <div class="mt-4 d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="mdi mdi-play me-1"></i> Simulate Bulk Operation
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/BulkOperation/Simulation.js"></script>
+}

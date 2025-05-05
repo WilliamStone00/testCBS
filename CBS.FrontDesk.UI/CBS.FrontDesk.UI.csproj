@@ -56,50 +56,40 @@
       <HintPath>..\packages\ClosedXML.0.102.2\lib\netstandard2.0\ClosedXML.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.CrystalReports.Engine">
-      <HintPath>..\..\..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.ReportAppServer.ClientDoc, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <HintPath>..\packages\CrystalReports.ReportAppServer.ClientDoc.13.0.4000\lib\net40\CrystalDecisions.ReportAppServer.ClientDoc.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <Private>True</Private>
+    <Reference Include="CrystalDecisions.ReportAppServer.ClientDoc">
+      <HintPath>..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.ReportAppServer.ClientDoc.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.ReportAppServer.CommLayer, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <HintPath>..\packages\CrystalReports.ReportAppServer.CommLayer.13.0.4003\lib\net40\CrystalDecisions.ReportAppServer.CommLayer.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CrystalDecisions.ReportAppServer.CommLayer">
+      <HintPath>..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.ReportAppServer.CommLayer.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.ReportAppServer.CommonControls, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <HintPath>..\packages\CrystalReports.ReportAppServer.CommonControls.13.0.4003\lib\net40\CrystalDecisions.ReportAppServer.CommonControls.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CrystalDecisions.ReportAppServer.CommonControls">
+      <HintPath>..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.ReportAppServer.CommonControls.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.ReportAppServer.CommonObjectModel, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <HintPath>..\packages\CrystalReports.ReportAppServer.CommonObjectModel.13.0.4003\lib\net40\CrystalDecisions.ReportAppServer.CommonObjectModel.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CrystalDecisions.ReportAppServer.CommonObjectModel">
+      <HintPath>..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.ReportAppServer.CommonObjectModel.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.ReportAppServer.Controllers, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <HintPath>..\packages\CrystalReports.ReportAppServer.Controllers.13.0.4003\lib\net40\CrystalDecisions.ReportAppServer.Controllers.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CrystalDecisions.ReportAppServer.Controllers">
+      <HintPath>..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.ReportAppServer.Controllers.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.ReportAppServer.CubeDefModel, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <HintPath>..\packages\CrystalReports.ReportAppServer.CubeDefModel.13.0.4003\lib\net40\CrystalDecisions.ReportAppServer.CubeDefModel.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CrystalDecisions.ReportAppServer.CubeDefModel">
+      <HintPath>..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.ReportAppServer.CubeDefModel.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.ReportAppServer.DataDefModel, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <HintPath>..\packages\CrystalReports.ReportAppServer.DataDefModel.13.0.4003\lib\net40\CrystalDecisions.ReportAppServer.DataDefModel.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CrystalDecisions.ReportAppServer.DataDefModel">
+      <HintPath>..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.ReportAppServer.DataDefModel.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.ReportAppServer.ReportDefModel, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <HintPath>..\packages\CrystalReports.ReportAppServer.ReportDefModel.13.0.4003\lib\net40\CrystalDecisions.ReportAppServer.ReportDefModel.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CrystalDecisions.ReportAppServer.ReportDefModel">
+      <HintPath>..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.ReportAppServer.ReportDefModel.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.ReportSource">
-      <HintPath>..\..\..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.ReportSource.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.ReportSource.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.Shared">
-      <HintPath>..\..\..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.Shared.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.Shared.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.Web, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files (x86)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win64_x64\dotnet\CrystalDecisions.Web.dll</HintPath>
+    <Reference Include="CrystalDecisions.Web">
+      <HintPath>..\..\..\..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win64_x64\dotnet\CrystalDecisions.Web.dll</HintPath>
     </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=2.16.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.2.16.0\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
@@ -758,6 +748,91 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalBranchManagement.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDeskCashin.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDeskCashin.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDeskCashout.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDeskCashout.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OtherCashMobileMoneyForm.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_OtherCashMobileMoneyForm.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OtherPaymentForm.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_OtherPaymentForm.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OtherTransactionForm.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_OtherTransactionForm.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OtherTransactionTabs.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_OtherTransactionTabs.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_PreMemberOnboardingSummary.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_PreMemberOnboardingSummary.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_SearchBox.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_SearchBox.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_SearchBoxLoanRepaymentSimulation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_SearchBoxLoanRepaymentSimulation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_Tabs.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_Tabs.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_TabsCashout.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_TabsCashout.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_TemporalMembersLookUp.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_TemporalMembersLookUp.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\ExpenseOtherPayment.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExpenseOtherPayment.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\LoanRepaymentSimulation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LoanRepaymentSimulation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\MomocashCollection.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MomocashCollection.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\OtherCashMobileMoney.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OtherCashMobileMoney.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\OtherCashTransactions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OtherCashTransactions.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\HomePage\GlobalAbout.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1203,6 +1278,7 @@
     <Compile Include="Controllers\Accounting\CashMovementTrackerController.cs" />
     <Compile Include="Controllers\AuditTrailData\AuditTrailController.cs" />
     <Compile Include="Controllers\AndriodVersioning\AndriodAppVersioningController.cs" />
+    <Compile Include="Controllers\BulkOperation\BulkOperationController.cs" />
     <Compile Include="Controllers\ChangeCustomerNumber\ChangeNumberController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectorManagementController.cs" />
     <Compile Include="Controllers\Localization\LocalizationController.cs" />
@@ -4121,6 +4197,74 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>PandLReport.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="App_GlobalResources\CashDesk\OtherCashTransactions.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>OtherCashTransactions.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\OtherCashMobileMoney.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>OtherCashMobileMoney.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\MomocashCollection.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>MomocashCollection.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\LoanRepaymentSimulation.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>LoanRepaymentSimulation.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\ExpenseOtherPayment.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ExpenseOtherPayment.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDeskCashout.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDeskCashout.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDeskCashin.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDeskCashin.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_TemporalMembersLookUp.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_TemporalMembersLookUp.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_TabsCashout.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_TabsCashout.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_Tabs.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_Tabs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_SearchBoxLoanRepaymentSimulation.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_SearchBoxLoanRepaymentSimulation.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_SearchBox.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_SearchBox.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_PreMemberOnboardingSummary.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_PreMemberOnboardingSummary.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_OtherTransactionTabs.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_OtherTransactionTabs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_OtherTransactionForm.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_OtherTransactionForm.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_OtherPaymentForm.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_OtherPaymentForm.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_OtherCashMobileMoneyForm.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_OtherCashMobileMoneyForm.Designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -4217,6 +4361,8 @@
     <Content Include="Scripts\Js\Crud\AccountingDay\AccountingDayStatus.js" />
     <Content Include="Scripts\Js\Crud\AccountOpeningRulePerBranch\AccountOpeningRulePerBranch.js" />
     <Content Include="Scripts\Js\Crud\AuditTrail\Audits.js" />
+    <Content Include="Scripts\Js\Crud\BulkOperation\BulkTransactions\BulkOperationQuery.js" />
+    <Content Include="Scripts\Js\Crud\BulkOperation\Simulation.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\CashDeskCashin.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\PreMemberOnboarding.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\LoanRefpaymentSimulation.js" />
@@ -5230,14 +5376,20 @@
     <Content Include="Views\AccountingConfiguration\_AccountBookingDirectionData.cshtml" />
     <Content Include="Views\AccountOpeningRulePerBranch\_AccountOpeningRuleModal.cshtml" />
     <Content Include="Views\Reports\AccountingPDFReport.cshtml" />
-    <Content Include="Views\ManuallyJournalEntry\ExceptionalEntry.cshtml" />
+    <Content Include="Views\BulkOperation\Index.cshtml" />
+    <Content Include="Views\BulkOperation\_BulkOperationData.cshtml" />
+    <Content Include="Views\BulkOperation\_SimulateToUniqueAccount.cshtml" />
+    <Content Include="Views\BulkOperation\_SimulateToSpecificAccountType.cshtml" />
+    <Content Include="Views\BulkOperation\Listing.cshtml" />
+    <Content Include="Views\BulkOperation\_BulkOperationSelection.cshtml" />
+    <Content Include="Views\BulkOperation\_SourceAccountsConfiguration.cshtml" />
+    <Content Include="Views\BulkOperation\_SimulationTypeAndDescription.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
     <Folder Include="AppFiles\Images\BarCodes\" />
     <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
-    <Folder Include="App_GlobalResources\CashDesk\" />
     <Folder Include="Controllers\CustomerManagement\MemberActivation\" />
     <Folder Include="Hub\" />
     <Folder Include="Views\CorrespondingBank\" />

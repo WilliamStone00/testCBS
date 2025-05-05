@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@using Resources
 @{
-    ViewBag.Title = "Cash Desk-Cashout";
+    ViewBag.Title = @CashDeskCashout.CashDeskCashoutTitle;
 }
 
 <link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
@@ -10,24 +11,25 @@
         <div class="card bg-light mb-1">
             <div class="card-body text-center">
                 <h1 class="card-title text-danger">
-                    <i class="mdi mdi-cash-multiple me-2"></i> Cash Desk Withdrawal Operations
+                    <i class="mdi mdi-cash-multiple me-2"></i> @CashDeskCashout.CashDeskWithdrawalOperations
                 </h1>
                 <p class="card-text">
-                    Manage member cash withdrawal operations (Normal, Special Withdrawal Slip - SWS, or Saving Withdrawal Notification) in TRUST SOFT CREDIT (TSC). Ensure charges, documentation, and identity are properly validated before confirming the transaction.
+                    @CashDeskCashout.ManageMemberCashWithdrawalOperations
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
     </div>
 </div>
+
+<!-- Collapsible Description Section -->
 <div class="row">
-    <!-- Collapsible Description Section -->
     <div class="col-12">
         <div class="accordion" id="helpTipsAccordion">
             <div class="card">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-danger">
                     <span>
-                        <i class="mdi mdi-lightbulb-on-outline me-2"></i> WITHDRAWAL TIPS & INSTRUCTIONS
+                        <i class="mdi mdi-lightbulb-on-outline me-2"></i> @CashDeskCashout.WithdrawalTipsAndInstructions
                     </span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="true" aria-controls="collapseHelpTips">
                         <i class="mdi mdi-chevron-up"></i>
@@ -37,32 +39,32 @@
                     <div class="card-body">
                         <ul class="mb-2">
                             <li>
-                                <strong><i class="mdi mdi-cash me-1"></i> Normal Withdrawal:</strong>
+                                <strong><i class="mdi mdi-cash me-1"></i> @CashDeskCashout.NormalWithdrawal:</strong>
                                 <ul>
-                                    <li>Enter denominations.</li>
-                                    <li>Input <strong>Amount</strong> and <strong>Fee</strong>.</li>
-                                    <li>Use <strong>CONF</strong> to confirm and <strong>INC</strong> for inclusive charges.</li>
-                                    <li>Click <strong>Save</strong> then <strong>Re-Print</strong>.</li>
+                                    <li>@CashDeskCashout.EnterDenominations.</li>
+                                    <li>@CashDeskCashout.Input <strong>@CashDeskCashout.Amount</strong> @CashDeskCashout.And <strong>@CashDeskCashout.Fee</strong>.</li>
+                                    <li>@CashDeskCashout.Use <strong>@CashDeskCashout.CONF</strong> @CashDeskCashout.ToConfirmAnd <strong>@CashDeskCashout.INC</strong> @CashDeskCashout.ForInclusiveCharges.</li>
+                                    <li>@CashDeskCashout.Click <strong>@CashDeskCashout.Save</strong> @CashDeskCashout.Then <strong>@CashDeskCashout.RePrint</strong>.</li>
                                 </ul>
                             </li>
                             <li>
-                                <strong><i class="mdi mdi-file-document-edit-outline me-1"></i> SWS Withdrawal:</strong>
+                                <strong><i class="mdi mdi-file-document-edit-outline me-1"></i> @CashDeskCashout.SWSWithdrawal:</strong>
                                 <ul>
-                                    <li>Provide <strong>Check Name</strong> and <strong>Check Number</strong>.</li>
-                                    <li>Use one account only with <strong>Amount</strong> and <strong>Form Fee</strong>.</li>
-                                    <li>Check <strong>CONF</strong> and provide <strong>Representative Info</strong>.</li>
-                                    <li>Click <strong>Save</strong> then <strong>Re-Print</strong>.</li>
+                                    <li>@CashDeskCashout.Provide <strong>@CashDeskCashout.CheckName</strong> @CashDeskCashout.And <strong>@CashDeskCashout.CheckNumber</strong>.</li>
+                                    <li>@CashDeskCashout.UseOneAccountOnlyWith <strong>@CashDeskCashout.Amount</strong> @CashDeskCashout.And <strong>@CashDeskCashout.FormFee</strong>.</li>
+                                    <li>@CashDeskCashout.Check <strong>@CashDeskCashout.CONF</strong> @CashDeskCashout.AndProvide <strong>@CashDeskCashout.RepresentativeInfo</strong>.</li>
+                                    <li>@CashDeskCashout.Click <strong>@CashDeskCashout.Save</strong> @CashDeskCashout.Then <strong>@CashDeskCashout.RePrint</strong>.</li>
                                 </ul>
                             </li>
                             <li>
-                                <strong><i class="mdi mdi-bell-alert-outline me-1"></i> Withdrawal from Saving (Notification Policy):</strong>
+                                <strong><i class="mdi mdi-bell-alert-outline me-1"></i> @CashDeskCashout.WithdrawalFromSavingNotificationPolicy:</strong>
                                 <ul>
-                                    <li><strong>With Notification:</strong> Only form fee applies (300 XAF Physical / 1,000 XAF Moral).</li>
-                                    <li><strong>Without Notification:</strong> Form fee + service charge (2% weekday or 2.5% weekend).</li>
+                                    <li><strong>@CashDeskCashout.WithNotification:</strong> @CashDeskCashout.OnlyFormFeeApplies</li>
+                                    <li><strong>@CashDeskCashout.WithoutNotification:</strong> @CashDeskCashout.FormFeePlusServiceCharge</li>
                                 </ul>
                             </li>
                         </ul>
-                        <p class="text-muted mb-0"><strong>Note:</strong> Always validate account balance, service fees, and representative information before proceeding.</p>
+                        <p class="text-muted mb-0"><strong>@CashDeskCashout.Note:</strong> @CashDeskCashout.AlwaysValidateAccountBalanceServiceFeesAndRepresentativeInformationBeforeProceeding.</p>
                     </div>
                 </div>
             </div>
@@ -70,20 +72,16 @@
     </div>
 </div>
 
+<!-- Main Transaction Area -->
 <div class="row">
     <div class="col">
         <div class="row my-3">
             <div class="accordion" id="collapsibleSection">
                 <div class="card accordion-item mb-3">
                     <h2 class="accordion-header" id="headingDeliveryAddress">
-                        <button type="button"
-                                class="accordion-button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#accordionPopoutIcon-3"
-                                aria-expanded="true"
-                                aria-controls="accordionPopoutIcon-3">
+                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionPopoutIcon-3" aria-expanded="true" aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-bank me-2"></i>
-                            <span id="cashDeskOperations">WITHDRAWAL OPERATIONS</span>
+                            <span id="cashDeskOperations">@CashDeskCashout.WithdrawalOperations</span>
                         </button>
                     </h2>
                     <hr />
@@ -98,29 +96,30 @@
         </div>
     </div>
 </div>
+
+<!-- Modal for Depositor Information -->
 <div class="modal fade" id="depositerModal" tabindex="-1" aria-labelledby="depositerModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content position-relative">
-
-            <!-- 🔄 Loader Overlay -->
+            <!-- Loader Overlay -->
             <div id="depositorLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
                 <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
                     <div class="spinner-border text-primary mb-3" role="status"></div>
-                    <p class="fw-semibold text-primary">Processing transaction, please wait...</p>
+                    <p class="fw-semibold text-primary">@CashDeskCashout.ProcessingTransactionPleaseWait...</p>
                 </div>
             </div>
 
-            <!-- 🌐 Modal Header -->
+            <!-- Modal Header -->
             <div class="modal-header">
                 <div class="w-100">
                     <div class="card bg-light mb-2">
                         <div class="card-body text-center">
                             <h1 class="card-title text-primary" id="depositorModalTitle">
-                                <i class="mdi mdi-account-card-details-outline me-2"></i> DEPOSITOR INFORMATION REQUIRED
+                                <i class="mdi mdi-account-card-details-outline me-2"></i> @CashDeskCashout.DepositorInformationRequired
                             </h1>
                             <span id="operationTypeTag" class="ms-2"></span>
                             <p class="card-text" id="depositorModalDescription">
-                                To complete this transaction, please enter the depositor's full information for regulatory and audit compliance.
+                                @CashDeskCashout.ToCompleteThisTransactionPleaseEnterTheDepositorsFullInformationForRegulatoryAndAuditCompliance.
                             </p>
                             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                         </div>
@@ -128,10 +127,10 @@
                 </div>
             </div>
 
-            <!-- 💡 Tips Section -->
+            <!-- Tips Section -->
             <div class="card m-3">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-information-outline me-2"></i> WHY THIS IS REQUIRED</span>
+                    <span><i class="mdi mdi-information-outline me-2"></i> @CashDeskCashout.WhyThisIsRequired</span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDepositorTips">
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
@@ -139,31 +138,31 @@
                 <div id="collapseDepositorTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-account-check-outline text-primary me-2"></i><strong>Identity Tracking:</strong> Helps track who completed the transaction.</li>
-                            <li><i class="mdi mdi-shield-lock-outline text-success me-2"></i><strong>Compliance:</strong> Required for KYC and AML regulations.</li>
-                            <li><i class="mdi mdi-file-document-box-check-outline text-warning me-2"></i><strong>Audit Trail:</strong> Permanent proof of who deposited funds.</li>
+                            <li><i class="mdi mdi-account-check-outline text-primary me-2"></i><strong>@CashDeskCashout.IdentityTracking:</strong> @CashDeskCashout.HelpsTrackWhoCompletedTheTransaction.</li>
+                            <li><i class="mdi mdi-shield-lock-outline text-success me-2"></i><strong>@CashDeskCashout.Compliance:</strong> @CashDeskCashout.RequiredForKYCAndAMLRegulations.</li>
+                            <li><i class="mdi mdi-file-document-box-check-outline text-warning me-2"></i><strong>@CashDeskCashout.AuditTrail:</strong> @CashDeskCashout.PermanentProofOfWhoDepositedFunds.</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <!-- 🧾 Depositor Form Partial -->
+            <!-- Depositor Form Partial -->
             @Html.Partial("_DepositerForm")
 
-            <!-- 🔘 Footer -->
+            <!-- Footer -->
             <div class="modal-footer justify-content-between">
                 <div>
                     <span class="text-muted fw-semibold">
-                        Member: <span class="text-dark" id="depositorCustomerName"></span> |
-                        ID: <span class="text-dark" id="depositorCustomerId"></span>
+                        @CashDeskCashout.Member: <span class="text-dark" id="depositorCustomerName"></span> |
+                        @CashDeskCashout.ID: <span class="text-dark" id="depositorCustomerId"></span>
                     </span>
                 </div>
                 <div class="d-flex align-items-center">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        <i class="mdi mdi-close"></i> Cancel
+                        <i class="mdi mdi-close"></i> @CashDeskCashout.Cancel
                     </button>
                     <button type="button" id="confirmDepositorBtn" class="btn btn-success ms-2">
-                        <i class="mdi mdi-check-circle-outline"></i> Confirm & Proceed
+                        <i class="mdi mdi-check-circle-outline"></i> @CashDeskCashout.ConfirmAndProceed
                     </button>
                 </div>
             </div>
@@ -173,7 +172,5 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-    <script src="~/Scripts/Js/Crud/CashDesk/PreMemberOnboarding.js"></script>
     <script src="~/Scripts/Js/Crud/CashDesk/CashDeskCashout.js"></script>
 }

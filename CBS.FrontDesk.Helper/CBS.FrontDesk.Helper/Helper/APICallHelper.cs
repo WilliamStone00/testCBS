@@ -1024,5 +1024,9 @@ namespace CBS.FrontDesk.Helper
         public static string Delete_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation/{0}";
         public static string Get_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation/{0}";
         public static string Create_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation";
+
+        //Bulk Operation
+        public static string SimulateBulkOperationRangeBetweenAccountSimulation="" ;
+        public static string GetAllBulkOperations = "/api/v1/BulkOperations";
     }
 }

@@ -5,7 +5,7 @@ function exportLoanData() {
     // Replace the alert with your actual export logic.
 }
 
-function initializeLoanDataTable() {
+function initializeBulkOperationDataTable() {
     $('#myDataTable').DataTable({
         destroy: true,
         serverSide: true,
@@ -164,7 +164,7 @@ $(document).ready(function () {
 
     // Reinitialize DataTable on search button click
     $('#searchButton').on('click', function () {
-        initializeLoanDataTable();
+        initializeBulkOperationDataTable();
     });
 
     // Initially hide the filter section

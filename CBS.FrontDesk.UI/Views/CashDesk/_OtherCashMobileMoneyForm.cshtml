@@ -1,8 +1,9 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@using Resources
 
 <div class="form-wrapper">
     <fieldset class="fieldset-custom">
-        <legend>MOBILE MONEY OPERATIONS</legend>
+        <legend>@CashDesk_OtherCashMobileMoneyForm.MobileMoneyOperations</legend>
         <hr style="border: 2px solid green;" />
         <div class="change-group">
             <div class="row mt-2 gy-4">
@@ -10,13 +11,13 @@
                     <div class="col-6">
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.AddOtherTransactionMobileMoneyCommand.SourceType, "MobileMoneyMTN", new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyMTN" })
-                            <label class="form-check-label shadow-input-boxes" for="MobileMoneyMTN" style="background-color: yellow; color: black;">Mobile Money MTN</label>
+                            <label class="form-check-label shadow-input-boxes" for="MobileMoneyMTN">@CashDesk_OtherCashMobileMoneyForm.MobileMoneyMTN</label>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.AddOtherTransactionMobileMoneyCommand.SourceType, "MobileMoneyORANGE", new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyORANGE" })
-                            <label class="form-check-label shadow-input-boxes" for="MobileMoneyORANGE" style="background-color: orange; color: white;">Mobile Money Orange</label>
+                            <label class="form-check-label shadow-input-boxes" for="MobileMoneyORANGE">@CashDesk_OtherCashMobileMoneyForm.MobileMoneyOrange</label>
                         </div>
                     </div>
                 </div>
@@ -26,20 +27,20 @@
                         <div class="col-6">
                             <div class="form-check">
                                 @Html.RadioButtonFor(m => m.AddOtherTransactionMobileMoneyCommand.BookingDirection, "Deposit", new { @class = "form-check-input shadow-input-boxes", @id = "deposit" })
-                                <label class="form-check-label shadow-input-boxes" for="Deposit" style="background-color: green; color: white;">Cash-In</label>
+                                <label class="form-check-label shadow-input-boxes" for="Deposit">@CashDesk_OtherCashMobileMoneyForm.CashIn</label>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-check">
                                 @Html.RadioButtonFor(m => m.AddOtherTransactionMobileMoneyCommand.BookingDirection, "Withdrawal", new { @class = "form-check-input shadow-input-boxes" })
-                                <label class="form-check-label shadow-input-boxes" for="Withdrawal" style="background-color: red; color: white;">Cash-Out</label>
+                                <label class="form-check-label shadow-input-boxes" for="Withdrawal">@CashDesk_OtherCashMobileMoneyForm.CashOut</label>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
-                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@CashDesk_OtherCashMobileMoneyForm.TotalAmount: 0.0</span>
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                     </div>
                 </div>
@@ -48,7 +49,7 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.AddOtherTransactionMobileMoneyCommand.MemberReference, new { @class = "form-control shadow-input-boxes", @id = "customerId" })
                         @Html.ValidationMessageFor(m => m.AddOtherTransactionMobileMoneyCommand.MemberReference, "", new { @class = "text-danger " })
-                        <label>None Member Ref.</label>
+                        <label>@CashDesk_OtherCashMobileMoneyForm.NoneMemberRef</label>
                     </div>
                 </div>
 
@@ -56,7 +57,7 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.AddOtherTransactionMobileMoneyCommand.CustomerName, new { @class = "form-control shadow-input-boxes", @id = "MemberName" })
                         @Html.ValidationMessageFor(m => m.AddOtherTransactionMobileMoneyCommand.CustomerName, "", new { @class = "text-danger " })
-                        <label>Representative Name</label>
+                        <label>@CashDesk_OtherCashMobileMoneyForm.RepresentativeName</label>
                     </div>
                 </div>
 
@@ -64,33 +65,33 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.AddOtherTransactionMobileMoneyCommand.TelephoneNumber, new { @class = "form-control shadow-input-boxes", @id = "TelephoneNumber" })
                         @Html.ValidationMessageFor(m => m.AddOtherTransactionMobileMoneyCommand.TelephoneNumber, "", new { @class = "text-danger " })
-                        <label>Number</label>
+                        <label>@CashDesk_OtherCashMobileMoneyForm.Number</label>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.AddOtherTransactionMobileMoneyCommand.CNI, new { @class = "form-control shadow-input-boxes", @id = "CNI" })
                         @Html.ValidationMessageFor(m => m.AddOtherTransactionMobileMoneyCommand.CNI, "", new { @class = "text-danger " })
-                        <label>CNI</label>
+                        <label>@CashDesk_OtherCashMobileMoneyForm.CNI</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.AddOtherTransactionMobileMoneyCommand.TellerCode, new { @class = "form-control shadow-input-boxes", @id = "TellerCode" })
                         @Html.ValidationMessageFor(m => m.AddOtherTransactionMobileMoneyCommand.TellerCode, "", new { @class = "text-danger " })
-                        <label>Till Code</label>
+                        <label>@CashDesk_OtherCashMobileMoneyForm.TillCode</label>
                     </div>
                 </div>
                 <div class="table-responsive" id="cash_collected" style="width: 100%;">
                     <table class="table table-hover" id="myDataTableT">
                         <thead class="table-light">
                             <tr>
-                                <th style="display:none;">ProductID</th>
-                                <th style="display:none;">Ordinary accounts</th>
-                                <th>Amount</th>
-                                <th style="display:none;">Fee</th>
-                                <th>Total</th>
-                                <th>confirm</th>
+                                <th style="display:none;">@CashDesk_OtherCashMobileMoneyForm.ProductID</th>
+                                <th style="display:none;">@CashDesk_OtherCashMobileMoneyForm.OrdinaryAccounts</th>
+                                <th>@CashDesk_OtherCashMobileMoneyForm.Amount</th>
+                                <th style="display:none;">@CashDesk_OtherCashMobileMoneyForm.Fee</th>
+                                <th>@CashDesk_OtherCashMobileMoneyForm.Total</th>
+                                <th>@CashDesk_OtherCashMobileMoneyForm.Confirm</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -118,13 +119,13 @@
                             <tr>
                                 <td style="display:none;"></td>
                                 <td style="display:none;"></td>
-                                <td colspan="1" style="text-align: right;"><strong>Total:</strong></td>
+                                <td colspan="1" style="text-align: right;"><strong>@CashDesk_OtherCashMobileMoneyForm.Total:</strong></td>
                                 <td id="tableTotal">0</td>
                             </tr>
                             <tr>
                                 <td style="display:none;"></td>
                                 <td style="display:none;"></td>
-                                <td colspan="1" style="text-align: right;"><strong>Difference:</strong></td>
+                                <td colspan="1" style="text-align: right;"><strong>@CashDesk_OtherCashMobileMoneyForm.Difference:</strong></td>
                                 <td id="tableBalance">0</td>
                             </tr>
                         </tfoot>
@@ -134,13 +135,13 @@
             <div class="header-buttons mt-4 float-end">
                 <input type="hidden" name="OperationType" value="MobileMoney" id="OperationType" />
                 <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostMobileMoney()">
-                    <i class="fas fa-save me-1"></i> Post
+                    <i class="fas fa-save me-1"></i> @CashDesk_OtherCashMobileMoneyForm.Post
                 </button>
                 <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
-                    <i class="fas fa-print me-1"></i> Re-print
+                    <i class="fas fa-print me-1"></i> @CashDesk_OtherCashMobileMoneyForm.Reprint
                 </button>
                 <button type="reset" class="btn btn-outline-secondary">
-                    <i class="fas fa-sync-alt me-1"></i> Reset
+                    <i class="fas fa-sync-alt me-1"></i> @CashDesk_OtherCashMobileMoneyForm.Reset
                 </button>
             </div>
         </div>
