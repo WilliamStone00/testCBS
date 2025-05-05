@@ -32,7 +32,7 @@ namespace CBS.BusinessService.Accounting
                 if (inResponse.IsSuccess)
                 {
 
-                    GetExecutionMessages(inResponse, true, $"Black listing Account", MessagesResults.Success,
+                    GetExecutionMessages(inResponse, true, $"Accounting Booking Direction", MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
@@ -40,7 +40,7 @@ namespace CBS.BusinessService.Accounting
                 else
                 {
                     // Handle failure scenario
-                    GetExecutionMessages(null, false, $"Black listing Account", MessagesResults.Failed,
+                    GetExecutionMessages(null, false, $"Accounting Booking Direction", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
             }

@@ -427,8 +427,14 @@ function ApprovePostedEntriesTransactions(title, message, ajaxUrl, serviceoption
                 data: { Id: Id, HasApproved: Response, Comment: comment },
                 success: function (response) {
 
-                    appalert(response.message, 3, 1);
-                    PrintDataEntries(true);
+                    if (response.status) {
+                        appalert(response.message, 1, 1);
+                        PrintDataEntries(true);
+                    } else {
+                        appalert(response.message, 2, 1);
+                      
+                    }
+                 
                     //setTimeout(function () {
                     //    window.location.reload();
                     //}, 20000);

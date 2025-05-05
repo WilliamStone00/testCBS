@@ -296,6 +296,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string FileType { get; set; }
         public string ReportType { get; set; }
         public List<string> AccountIds { get; set; }
+        public List<string> BranchIds { get; set; }
         public string BranchId { get; set; }
     }
     public class ReportDto
@@ -324,6 +325,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
         public string FileType { get; set; }
         public string BranchId { get; set; }
+        public List<string> BranchIds { get; set; }
     }
     public class JEQuery
     {
@@ -331,6 +333,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public DateTimeOffset FromDate { get; set; }
         public string FileType { get; set; }
         public string BranchId { get; set; }
+        public List<string> BranchIds { get; set; }
     }
     public class BSQuery
     {
