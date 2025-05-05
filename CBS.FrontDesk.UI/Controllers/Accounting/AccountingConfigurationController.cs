@@ -1830,6 +1830,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
 
             }
+            else if (serviceOption == "accountBookingDirection")
+            {
+
+                var data = await _accountBookingDirectionServices.Delete(KEY);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+            }
             else if (serviceOption == "blacklistAccount")
             {
 

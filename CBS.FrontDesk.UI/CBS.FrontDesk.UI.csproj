@@ -5230,6 +5230,7 @@
     <Content Include="Views\AccountingConfiguration\_AccountBookingDirectionData.cshtml" />
     <Content Include="Views\AccountOpeningRulePerBranch\_AccountOpeningRuleModal.cshtml" />
     <Content Include="Views\Reports\AccountingPDFReport.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\ExceptionalEntry.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
