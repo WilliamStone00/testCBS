@@ -104,6 +104,8 @@
                     <a class="nav-link" id="vtab-session" data-bs-toggle="pill" href="#tab-session" role="tab" aria-selected="false">User Sessions</a>
                     <a class="nav-link" id="vtab-recovery" data-bs-toggle="pill" href="#tab-recovery" role="tab" aria-selected="false">Recovery Code</a>
                     <a class="nav-link" id="vtab-permission" data-bs-toggle="pill" href="#tab-permission" role="tab" aria-selected="false">User Permissions</a>
+                    <a class="nav-link" id="vtab-actions" data-bs-toggle="pill" href="#tab-actions" role="tab" aria-selected="false">Action Logs</a>
+
                 </div>
             </div>
         </div>
@@ -124,6 +126,9 @@
                     <div class="tab-pane fade" id="tab-session" role="tabpanel">@Html.Partial("_UserSessions")</div>
                     <div class="tab-pane fade" id="tab-recovery" role="tabpanel">@Html.Partial("_UserGenerateNewRecoveryCode")</div>
                     <div class="tab-pane fade" id="tab-permission" role="tabpanel">@Html.Partial("_UserManagePermissions")</div>
+                    <div class="tab-pane fade" id="tab-actions" role="tabpanel">
+                        @Html.Partial("_UserActionLogs")
+                    </div>
                 </div>
             </div>
         </div>

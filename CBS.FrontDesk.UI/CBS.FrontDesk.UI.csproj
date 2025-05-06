@@ -5381,6 +5381,10 @@
     <Content Include="Views\BulkOperation\_SimulateAccountContribution.cshtml" />
     <Content Include="Views\BulkOperation\_SimulateToAccountTopUp.cshtml" />
     <Content Include="Views\BulkOperation\Listing.cshtml" />
+    <Content Include="Views\BulkOperation\_BulkOperationSelection.cshtml" />
+    <Content Include="Views\BulkOperation\_SourceAccountsConfiguration.cshtml" />
+    <Content Include="Views\BulkOperation\_SimulationTypeAndDescription.cshtml" />
+    <Content Include="Views\UserManagement\_UserActionLogs.cshtml" />
     <Content Include="Views\BulkOperation\_SimulationOptions.cshtml" />
     <Content Include="Views\BulkOperation\_SourceAccountConfiguration.cshtml" />
     <Content Include="Views\BulkOperation\_SimulationTitleInfos.cshtml" />
