@@ -14,6 +14,17 @@
                     @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = "3", placeholder = "Enter a description for this bulk operation..." })
                 </div>
             </div>
+
+            <div class="col-md-12">
+
+                @Html.LabelFor(m => m.BranchId, "Select Branch", new { @class = "form-label" })
+                @Html.DropDownListFor(m => m.BranchId,  // Bind to Branch.Id
+                    new SelectList(Model.Branches, "Id", "Name"),
+                    "--- Select Branch ---",
+                    new { @class = "form-select select2", id = "branchDropdown" })
+                @Html.HiddenFor(m => m.Branches, new { id = "branchObject" })
+            </div>
+            
         </div>
     </div>
 

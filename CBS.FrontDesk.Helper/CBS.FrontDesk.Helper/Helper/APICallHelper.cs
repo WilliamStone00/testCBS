@@ -1026,7 +1026,8 @@ namespace CBS.FrontDesk.Helper
         public static string Create_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation";
 
         //Bulk Operation
-        public static string SimulateBulkOperationRangeBetweenAccountSimulation="" ;
+        public static string SimulateAccountTopup= "/api/v1/BulkOperations/Topup";
+        public static string SimulateContribution = "/api/v1/BulkOperations/Contribution";
         public static string GetAllBulkOperations = "/api/v1/BulkOperations";
     }
 }
