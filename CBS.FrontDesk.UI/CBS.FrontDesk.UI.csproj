@@ -5384,6 +5384,7 @@
     <Content Include="Views\BulkOperation\_BulkOperationSelection.cshtml" />
     <Content Include="Views\BulkOperation\_SourceAccountsConfiguration.cshtml" />
     <Content Include="Views\BulkOperation\_SimulationTypeAndDescription.cshtml" />
+    <Content Include="Views\UserManagement\_UserActionLogs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
