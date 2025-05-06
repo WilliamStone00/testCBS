@@ -60,7 +60,32 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             return View();
         }
 
-       
+        public async Task<ActionResult> Details(string KEY)
+        {
+            var bulkOperationData = await _bulkOperationService.GetBulkOperationById(KEY);
+            bulkOperationData.ApprovalStatusBadge = GetBadge(bulkOperationData.ApprovalStatus);
+            var addDetailStatusBadge = bulkOperationData.BulkOperationSimulationDetails.Select(x =>
+            {
+                x.ApprovalStatusBadge = GetBadge(x.ApprovalStatus);
+                x.TransferStatusBadge = GetBadge(x.TransferStatus);
+                return x;
+            }).ToList();
+            bulkOperationData.BulkOperationSimulationDetails = addDetailStatusBadge;
+            return View(bulkOperationData);
+        }
+
+        public string GetBadge(string status)
+        {
+            switch (status)
+            {
+                case "Pending": return "bg-warning text-dark";
+                case "Review": return "bg-info text-white";
+                case "Approved": return "bg-success text-white";
+                default: return "bg-secondary text-white";
+              }
+
+        }
+
 
 
         public async Task<ActionResult> LoadBulkOperationData(string searchCriteria, string dateFrom= null, string dateTo=null, string operationStatus = "Pending", string branchid = null)
@@ -90,7 +115,7 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             };
 
             var dataTable = await _bulkOperationService.GetBulkOperationDataTableAsync(query, searchCriteria);
-            var loanList = JsonConvert.DeserializeObject<List<Data.Entity.BulkOperation.BulkOperations>>(JsonConvert.SerializeObject(dataTable.data));
+            var loanList = JsonConvert.DeserializeObject<List<Data.Entity.BulkOperation.BulkOperationData>>(JsonConvert.SerializeObject(dataTable.data));
 
             return Json(new
             {

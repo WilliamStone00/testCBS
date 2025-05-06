@@ -7,6 +7,6 @@ namespace CBS.FrontDesk.Data.Entity.BulkOPeration
     {
         public int TotalMember { get; set; }
         public decimal OperationVolume { get; set; }
-        public List<BulkOperationDetails> memberAccounts { get; set; }
+        public List<BulkOperationDataDetails> memberAccounts { get; set; }
     }
 }

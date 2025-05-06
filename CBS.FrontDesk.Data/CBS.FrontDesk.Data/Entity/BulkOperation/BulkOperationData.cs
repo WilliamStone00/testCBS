@@ -1,9 +1,10 @@
 ﻿using CBS.FrontDesk.Data.Entity.DataTable;
 using System;
+using System.Collections.Generic;
 
 namespace CBS.FrontDesk.Data.Entity.BulkOperation
 {
-    public class BulkOperations
+    public class BulkOperationData
     {
         public string Id { get; set; }
         public string BranchId { get; set; }
@@ -13,8 +14,15 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
         public decimal TotalVolume { get; set; }
         public int TotalMembers { get; set; }
         public string ApprovalStatus { get; set; }
+        public string ApprovalStatusBadge { get; set; }
         public string ApprovalValidationDescription { get; set; }
+        public string ApprovalBy { get; set; }
+        public string CreatedBy { get; set; }
         public DateTime ApprovalValidationDate { get; set; }
+        public string BankCode { get; set; }
+        public string BankId { get; set; }
+        public string BankName { get; set; }
+        public List<BulkOperationDataDetails> BulkOperationSimulationDetails { get; set; }
 
     }
 
