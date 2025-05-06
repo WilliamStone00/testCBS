@@ -10,6 +10,7 @@ using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNet.SignalR.Hosting;
 using System;
 using System.Collections.Generic;
@@ -83,7 +84,7 @@ namespace CBS.BusinessService.BulkOperations
                   loansDataTableQuery
               );*/
 
-            var couApiResponse = await _transactionConfigApiHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Entity.BulkOperation.BulkOperations>>>(
+            var couApiResponse = await _transactionConfigApiHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Entity.BulkOperation.BulkOperationData>>>(
                APICallHelper.GetAllBulkOperations
            );
 
@@ -116,12 +117,29 @@ namespace CBS.BusinessService.BulkOperations
             );
         }
 
+        public async Task<BulkOperationData> GetBulkOperationById(string id)
+        {
+                try
+                {
+                    var response = await _transactionConfigApiHelper.GetAsync<ResponseObject<BulkOperationData>>(string.Concat(APICallHelper.GetAllBulkOperations, "/" ,id));
+                    if (response.ApiResponseData != null)
+                    {
+                        return response.ApiResponseData.Data;
+                    }
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    // Log and handle exception
+                    throw ex;
+                }
+        }
+
         public async Task<ExecutionMessages> SimulateOperation(SimulateBulkOperation model)
         {
             try
             {
-            
-
+           
                 Branch branch= model.Branches.Where(x=>x.Id==model.BranchId).FirstOrDefault();
                    
 

@@ -4361,7 +4361,7 @@
     <Content Include="Scripts\Js\Crud\AccountingDay\AccountingDayStatus.js" />
     <Content Include="Scripts\Js\Crud\AccountOpeningRulePerBranch\AccountOpeningRulePerBranch.js" />
     <Content Include="Scripts\Js\Crud\AuditTrail\Audits.js" />
-    <Content Include="Scripts\Js\Crud\BulkOperation\BulkTransactions\BulkOperationQuery.js" />
+    <Content Include="Scripts\Js\Crud\BulkOperation\BulkOperationQuery.js" />
     <Content Include="Scripts\Js\Crud\BulkOperation\Simulation.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\CashDeskCashin.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\PreMemberOnboarding.js" />
@@ -5377,7 +5377,7 @@
     <Content Include="Views\AccountOpeningRulePerBranch\_AccountOpeningRuleModal.cshtml" />
     <Content Include="Views\Reports\AccountingPDFReport.cshtml" />
     <Content Include="Views\BulkOperation\Index.cshtml" />
-    <Content Include="Views\BulkOperation\_BulkOperationData.cshtml" />
+    <Content Include="Views\BulkOperation\_Data.cshtml" />
     <Content Include="Views\BulkOperation\_SimulateAccountContribution.cshtml" />
     <Content Include="Views\BulkOperation\_SimulateToAccountTopUp.cshtml" />
     <Content Include="Views\BulkOperation\Listing.cshtml" />
@@ -5388,6 +5388,9 @@
     <Content Include="Views\BulkOperation\_SimulationOptions.cshtml" />
     <Content Include="Views\BulkOperation\_SourceAccountConfiguration.cshtml" />
     <Content Include="Views\BulkOperation\_SimulationTitleInfos.cshtml" />
+    <Content Include="Views\BulkOperation\Details.cshtml" />
+    <Content Include="Views\BulkOperation\_Details.cshtml" />
+    <Content Include="Views\BulkOperation\_AccountDataTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

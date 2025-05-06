@@ -6,7 +6,7 @@ $(document).ready(function () {
 });
 
 function resetFilterForm() {
-    $('#userName, #firstName, #lastName, #phoneNumber, #email, #role, #createdFrom, #createdTo').val('');
+    $(' #createdFrom, #createdTo').val('');
     $('#isActive, #isBlocked, #isVerified').val('');
     $('#branchInput').val('').trigger('change');
     $('#byBranch, #byUser, #byDate').prop('checked', false);
@@ -124,7 +124,12 @@ function loadBulkOperationDataTable() {
             {
                 data: 'SimulationType',
                 title: 'Simulation Type',
-                render: (data) => `${data}%`
+                render: (data) => data
+            },
+            {
+                data: 'TotalMembers',
+                title: 'Total Accounts',
+                render: (data) => data
             },
             {
                 data: 'TotalVolume',
@@ -132,24 +137,40 @@ function loadBulkOperationDataTable() {
                 render: (data) => formatCurrency(data)
             },
             {
-                data: 'TotalMembers',
-                title: 'Total Members',
+                data: 'CreatedBy',
+                title: 'Created By',
                 render: (data) => data
             },
             {
                 data: 'ApprovalStatus',
                 title: 'Approval Status',
-                render: (data) => data
+                render: (data) => {
+                    let badgeClass = '';
+                    switch (data) {
+                        case 'Pending':
+                            badgeClass = 'bg-warning text-dark';
+                            break;
+                        case 'Review':
+                            badgeClass = 'bg-info text-white';
+                            break;
+                        case 'Approved':
+                            badgeClass = 'bg-success text-white';
+                            break;
+                        default:
+                            badgeClass = 'bg-secondary text-white';
+                    }
+                    return `<span class="badge ${badgeClass}">${data}</span>`;
+                }
             },
             {
-                data: 'ApprovalValidationDescription',
-                title: 'Approval Description',
-                render: (data) => data
+                data: 'ApprovalBy',
+                title: 'Approval By',
+                render: (data) => data || 'N/A'
             },
             {
                 data: 'ApprovalValidationDate',
                 title: 'Approval Date',
-                render: (data) => data
+                render: (data) => data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : 'N/A'
             },
             {
                 data: 'Id',
@@ -157,18 +178,18 @@ function loadBulkOperationDataTable() {
                 searchable: false,
                 render: function (id) {
                     return `
-            <div class="text-center">
-                <a href="/BulkOperation/Details?KEY=${id}" class="btn btn-sm btn-outline-primary" title="Details Simulation">
-                    <i class="fas fa-user-cog me-1"></i> View Simulation Details
-                </a>
-            </div>`;
+                        <div class="text-center">
+                            <a href="/BulkOperation/Details?KEY=${id}" class="btn btn-sm btn-outline-primary" title="Details Simulation">
+                                <i class="fas fa-user-cog me-1"></i> View Simulation Details
+                            </a>
+                        </div>`;
                 }
             }
         ],
-        //language: {
-        //    emptyTable: "No Bulk Oprations available for the selected criteria."
-        //},
-        //dom: 'rtip'
+        language: {
+            emptyTable: "No Bulk Oprations available for the selected criteria."
+        },
+        dom: 'rtip'
     });
 }
 
@@ -181,6 +202,6 @@ function formatCurrency(amount) {
     }).format(amount);
 }
 
-function viewBulkOperationDetails(data) {
+//function viewBulkOperationDetails(data) {
 
-}
+//}

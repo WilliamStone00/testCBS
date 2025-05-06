@@ -1,0 +1,83 @@
+﻿@using Newtonsoft.Json
+@model  CBS.FrontDesk.Data.Entity.BulkOperation.BulkOperationData
+
+<div id="collapseMembers"
+     class="accordion-collapse collapse show"
+     data-bs-parent="#collapsibleSection">
+    <div class="accordion-body">
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered align-middle" id="memberDataTable">
+                <thead class="table-light">
+                    <tr>
+                        @*<th>Member Name</th>
+                        <th>Reference</th>*@
+                        <th>Source Account</th>
+                        <th>Source Type</th>
+                        <th>Source Balance</th>
+                        <th>Destination Account</th>
+                        <th>Destination Type</th>
+                        <th>Amount To Debit</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                @*<tbody>*@
+                    @*@if (Model.BulkOperationSimulationDetails != null && Model.BulkOperationSimulationDetails.Any())
+                        {
+                            foreach (var member in Model.BulkOperationSimulationDetails)
+                            {
+                                <tr>
+                                    <td>@member.MemberName</td>
+                                    <td>@member.MemberReference</td>
+                                    <td>@member.SourceAccountNumber</td>
+                                    <td>@member.SourceAccountType</td>
+                                    <td class="text-end">@member.SourceAccountBalance.ToString("C")</td>
+                                    <td>@member.DestinationAccountNumber</td>
+                                    <td>@member.DestinationAccountType</td>
+                                    <td class="text-end">@member.AmountToDebit.ToString("C")</td>
+                                    <td>
+                                        <span class="badge @member.ApprovalStatusBadge">@member.ApprovalStatus</span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="9" class="text-center">No members found in this operation</td>
+                            </tr>
+                        }*@
+                @*</tbody>*@
+                @if (Model.BulkOperationSimulationDetails != null && Model.BulkOperationSimulationDetails.Any())
+                {
+                    <tfoot>
+                        <tr class="table-active">
+                            <td colspan="4" class="text-end"><strong>Totals:</strong></td>
+                            <td class="text-end"><strong>@Model.BulkOperationSimulationDetails.Sum(m => m.SourceAccountBalance).ToString("C")</strong></td>
+                            <td colspan="2"></td>
+                            <td class="text-end"><strong>@Model.BulkOperationSimulationDetails.Sum(m => m.AmountToDebit).ToString("C")</strong></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                }
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between mt-3">
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-primary">
+                    <i class="fas fa-file-excel me-1"></i> Export to Excel
+                </button>
+                <button type="button" class="btn btn-outline-secondary">
+                    <i class="fas fa-print me-1"></i> Print
+                </button>
+            </div>
+
+            <div class="text-muted">
+                Showing @(Model.BulkOperationSimulationDetails?.Count ?? 0) members
+            </div>
+        </div>
+    </div>
+</div>
+
+

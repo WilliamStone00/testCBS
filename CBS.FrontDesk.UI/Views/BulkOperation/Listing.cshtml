@@ -57,7 +57,7 @@
 
 <div class="row mb-3">
     <div class="col-12 text-end">
-        <a href="@Url.Action("Create", "SimulateBulkOperation")" class="btn btn-primary shadow-sm">
+        <a href="/BulkOperation" class="btn btn-primary shadow-sm">
             <i class="mdi mdi-account-plus-outline me-1"></i> Simulate A Bulk Operation
         </a>
     </div>
@@ -111,34 +111,6 @@
                 <input type="date" id="createdTo" class="form-control" placeholder="Created To" />
             </div>
         </div>
-
-        @*<div class="row mb-3">
-                    <div class="col-md-3">
-                        <select id="isActive" class="form-select">
-                            <option value="">Active Status [Blocked By Administrator]</option>
-                            <option value="true">Active</option>
-                            <option value="false">Inactive</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <select id="isBlocked" class="form-select">
-                            <option value="">Account Blocked Due to Multiple Attpemts</option>
-                            <option value="true">Yes</option>
-                            <option value="false">No</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <select id="isVerified" class="form-select">
-                            <option value="">Email Verified</option>
-                            <option value="true">Yes</option>
-                            <option value="false">No</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="text" id="role" class="form-control" placeholder="Role (optional)" />
-                    </div>
-                </div>
-            </div>*@
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
                 <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
@@ -151,13 +123,12 @@
     @Html.Partial("_model")
     <!-- DataTable Partial -->
     <div id="userTableView">
-        @Html.Partial("_BulkOperationData")
+        @Html.Partial("_Data")
     </div>
 
 
-    @section Scripts {
-        @*@Scripts.Render("~/bundles/jqueryval")*@
-        <script src="~/Scripts/Js/Crud/BulkOperation/BulkTransactions/BulkOperationQuery.js"></script>
+   @section Scripts {
+        <script src="~/Scripts/Js/Crud/BulkOperation/BulkOperationQuery.js"></script>
     }
 
 

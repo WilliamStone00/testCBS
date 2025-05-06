@@ -6,7 +6,7 @@
                 <div class="mb-3">
                     @Html.LabelFor(m => m.SourceAccountType, "Source Account Type", new { @class = "form-label" })
                     @Html.DropDownListFor(m => m.SourceAccountType,
-                        new SelectList(Model.SavingProducts, "Id", "Name"),
+                        new SelectList(Model.SavingProducts, "Name", "Name"),
                         "Select Account Type",
                         new { @class = "form-select" })
                 </div>
