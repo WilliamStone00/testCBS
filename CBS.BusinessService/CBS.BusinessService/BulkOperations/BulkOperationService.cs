@@ -43,7 +43,7 @@ namespace CBS.BusinessService.BulkOperations
             try
             {
                 // Make an API call to create an individual profile
-                var response = await _loanConfigApiHelper.PostAsync<ResponseObject<CreateBulkOperationSimulation>>(APICallHelper.SimulateBulkOperationRangeBetweenAccountSimulation, command);
+                var response = await _smsConfigApiHelper.PostAsync<ResponseObject<CreateBulkOperationSimulation>>(APICallHelper.SimulateBulkOperationRangeBetweenAccountSimulation, command);
                 if (response.IsSuccess)
                 {
                     HttpContext.Current.Session["bulk_operation"] = response.ApiResponseData.Data;
@@ -79,7 +79,7 @@ namespace CBS.BusinessService.BulkOperations
                 loansDataTableQuery.BranchId = GetBranchID();
             }
             // Make API call to fetch the DataTable result
-            /*  var couApiResponse = await _loanConfigApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+            /*  var couApiResponse = await _smsConfigApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
                   APICallHelper.LoaDataTablePaggination,
                   loansDataTableQuery
               );*/

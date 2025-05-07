@@ -1,0 +1,193 @@
+﻿@{
+    ViewBag.Title = "SMS Activities Log";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-message-text-outline me-2"></i> SMS ACTIVITIES LOG
+                </h1>
+                <p class="card-text">
+                    Monitor, search, and analyze SMS activities across branches. Utilize filters to view SMS logs by sender, recipient, operation type, and status.
+                </p>
+                <p class="card-text fw-bold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use advanced search, date ranges, and status filters to pinpoint key SMS records. Export data for reporting and audit purposes.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR USING SMS LOG FILTERS EFFECTIVELY</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Filter by Operation Type:</strong> Narrow down SMS logs by selecting a specific operation type (e.g., Notification, Alert).</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Filter by Branch:</strong> Use branch code or name to view SMS logs from a specific branch.</li>
+                <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>Date Range:</strong> Specify a start and end date to filter SMS logs within a particular period.</li>
+                <li><i class="mdi mdi-account-outline text-success me-2"></i> <strong>Filter by Sender:</strong> Enter a sender ID to view messages sent by a specific user.</li>
+                <li><i class="mdi mdi-phone-outline text-primary me-2"></i> <strong>Filter by Recipient:</strong> Search by recipient's phone number (Msisdn) to see messages sent to a specific number.</li>
+                <li><i class="mdi mdi-comment-check-outline text-primary me-2"></i> <strong>Filter by Status:</strong> View SMS logs by status (Sent, Failed, Pending) for detailed analysis.</li>
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>Export:</strong> Export filtered SMS logs to Excel for reporting and archiving purposes.</li>
+                <li><i class="mdi mdi-reload text-info me-2"></i> <strong>Refresh Often:</strong> Regularly refresh the data to get the most recent SMS log updates.</li>
+                <li><i class="mdi mdi-magnify text-info me-2"></i> <strong>Advanced Search:</strong> Combine multiple filters for more precise data retrieval.</li>
+                <li><i class="mdi mdi-history text-primary me-2"></i> <strong>View Log Details:</strong> Click the view button to see the full SMS log information, including the message content and timestamp.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Advanced Filters -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Advanced Filters</h5>
+    <div class="card p-3 mb-3 bg-light">
+        <div class="row mb-3">
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="byBranch" />
+                <label class="form-check-label fw-bold" for="byBranch">Filter By Branch</label>
+            </div>
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="bySender" />
+                <label class="form-check-label fw-bold" for="bySender">Filter By Sender</label>
+            </div>
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="byDate" />
+                <label class="form-check-label fw-bold" for="byDate">Filter By Date Range</label>
+            </div>
+        </div>
+
+        <div id="branchFilterSection" class="row mb-3" style="display:none;">
+            <div class="col-md-12">
+                <label for="branchInput" class="form-label fw-bold">Select Branch</label>
+                @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "All", new { @class = "form-control select2" })
+            </div>
+        </div>
+
+        <div id="senderFilterSection" class="row mb-3" style="display:none;">
+            <div class="col-md-12">
+                <label class="form-label fw-bold">Sender ID</label>
+                <input type="text" id="senderId" class="form-control" placeholder="Sender ID" />
+            </div>
+        </div>
+
+        <div id="dateRangeSection" class="row mb-3" style="display:none;">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Date From</label>
+                <input type="date" id="smsDateFrom" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Date To</label>
+                <input type="date" id="smsDateTo" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Operation Type</label>
+                @Html.DropDownList("operationType", new SelectList(ViewBag.OperationTypes, "", ""), new { @class = "form-control select2" })
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Status</label>
+                @Html.DropDownList("status", new SelectList(ViewBag.Statuses, "", ""), new { @class = "form-control select2" })
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-12 d-flex">
+            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
+            <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+            @*<button id="exportBtn" class="btn btn-primary w-100"><i class="mdi mdi-file-excel"></i> Export</button>*@
+        </div>
+    </div>
+</div>
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    @Html.Partial("_SmsLogsData")
+</div>
+<div class="modal fade" id="smsDetailsModal" tabindex="-1" aria-labelledby="smsDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content position-relative">
+
+            <!-- Loader Overlay -->
+            <div id="smsLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                    <div class="spinner-border text-primary mb-3" role="status"></div>
+                    <p class="fw-semibold text-primary">Loading SMS Details, Please Wait...</p>
+                </div>
+            </div>
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="w-100">
+                    <div class="card bg-light mb-2">
+                        <div class="card-body text-center">
+                            <h1 class="card-title text-primary" id="smsDetailsModalTitle">
+                                <i class="mdi mdi-message-text-outline me-2"></i> SMS Details
+                            </h1>
+                            <p class="card-text" id="smsDetailsModalDescription">
+                                View complete SMS transaction details for regulatory and audit compliance.
+                            </p>
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tips Section -->
+            <div class="card m-3">
+                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                    <span><i class="mdi mdi-information-outline me-2"></i> Why This Is Important</span>
+                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSmsTips">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                </h6>
+                <div id="collapseSmsTips" class="collapse">
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li><i class="mdi mdi-check-circle-outline text-primary me-2"></i><strong>Audit Trail:</strong> Provides a permanent record of the SMS transaction.</li>
+                            <li><i class="mdi mdi-shield-check-outline text-success me-2"></i><strong>Compliance:</strong> Ensures regulatory requirements are met.</li>
+                            <li><i class="mdi mdi-file-document-outline text-warning me-2"></i><strong>Transaction Details:</strong> Verify sender, recipient, cost, and message content.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SMS Details Partial -->
+            <div class="modal-body" id="smsDetailsContent">
+                @*@Html.Partial("_SmsDetailsPartial")*@
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer justify-content-between">
+                <div>
+                    <span class="text-muted fw-semibold">
+                        Transaction ID: <span class="text-dark" id="smsTransactionId"></span>
+                    </span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="mdi mdi-close"></i> Close
+                    </button>
+                    <button type="button" class="btn btn-info ms-2" onclick="printSmsDetails()">
+                        <i class="mdi mdi-printer"></i> Print
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/SMSActivityLog/SMSActivityLog.js"></script>
+}
