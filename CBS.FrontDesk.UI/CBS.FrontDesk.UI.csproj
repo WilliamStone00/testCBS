@@ -1350,6 +1350,7 @@
     <Compile Include="Controllers\AndriodVersioning\AndriodAppVersioningController.cs" />
     <Compile Include="Controllers\BulkOperation\BulkOperationController.cs" />
     <Compile Include="Controllers\ChangeCustomerNumber\ChangeNumberController.cs" />
+    <Compile Include="Controllers\SMSP\SMSActivityLogController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectorManagementController.cs" />
     <Compile Include="Controllers\Localization\LocalizationController.cs" />
     <Compile Include="Controllers\LoanApplicationP\LoanApplicationController.cs" />
@@ -4522,6 +4523,7 @@
     <Content Include="Scripts\Js\Crud\Remittance\RemittancePending.js" />
     <Content Include="Scripts\Js\Crud\Remittance\RemittanceQuery.js" />
     <Content Include="Scripts\Js\Crud\Remittance\RemittanceRequest.js" />
+    <Content Include="Scripts\Js\Crud\SMSActivityLog\SMSActivityLog.js" />
     <Content Include="Scripts\Js\Crud\User\UserConnected.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\Pending.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\Requests.js" />
@@ -5507,9 +5509,6 @@
     <Content Include="Views\BulkOperation\_SimulateAccountContribution.cshtml" />
     <Content Include="Views\BulkOperation\_SimulateToAccountTopUp.cshtml" />
     <Content Include="Views\BulkOperation\Listing.cshtml" />
-    <Content Include="Views\BulkOperation\_BulkOperationSelection.cshtml" />
-    <Content Include="Views\BulkOperation\_SourceAccountsConfiguration.cshtml" />
-    <Content Include="Views\BulkOperation\_SimulationTypeAndDescription.cshtml" />
     <Content Include="Views\UserManagement\_UserActionLogs.cshtml" />
     <Content Include="Views\BulkOperation\_SimulationOptions.cshtml" />
     <Content Include="Views\BulkOperation\_SourceAccountConfiguration.cshtml" />
@@ -5517,6 +5516,9 @@
     <Content Include="Views\BulkOperation\Details.cshtml" />
     <Content Include="Views\BulkOperation\_Details.cshtml" />
     <Content Include="Views\BulkOperation\_AccountDataTable.cshtml" />
+    <Content Include="Views\SMSActivityLog\Index.cshtml" />
+    <Content Include="Views\SMSActivityLog\_SmsLogsData.cshtml" />
+    <Content Include="Views\SMSActivityLog\_SmsDetailsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

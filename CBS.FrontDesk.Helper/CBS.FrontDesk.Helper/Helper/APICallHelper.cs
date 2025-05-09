@@ -588,6 +588,10 @@ namespace CBS.FrontDesk.Helper
         public static string LoadDataTablePagginationForUserSessions = "/api/Session/datatable";
         public static string LoadDataTablePagginationForUserSession = "/api/Session/datatable";
 
+        public static string GetSMSLogs = "/api/v1/sms/logs";
+        public static string GetSMSLogDetail = "/api/v1/sms/logs/{0}";
+
+
         ///api/v1/FileDownloadInfos/GetAllFileDownloadInfoByUserIdQuery/{userid}
         ///api/v1/Loan/SearchByAnyCriterialQuery
         public static string GetAllLoanByBranchIdQuery = "/api/v1/Loan/GetAllLoanByBranchIdQuery/{id}";

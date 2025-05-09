@@ -158,60 +158,69 @@ namespace CBS.BusinessService.Accounts
                 var Fee = await GetFeePolicy(model.Id);
                 if (Fee != null)
                 {
-                    if (!model.IsCentralised)
+                    // Manage Centralization and Branch Selection
+                    if (model.IsCentralised)
                     {
-                        model.IsCentralised = true;
                         model.BranchId = "N/A";
                     }
-                    if (Fee.Fee.FeeType=="Range")
+                    else if (!string.IsNullOrEmpty(model.BranchId))
+                    {
+                        model.IsCentralised = false;
+                    }
+
+                    // Check for Centralization and Branch Conflict
+                    if (model.IsCentralised && !string.IsNullOrEmpty(model.BranchId) && model.BranchId != "N/A")
+                    {
+                        model.BranchId = "N/A"; // Reset the BranchId to N/A when Centralized
+                    }
+
+                    // Update based on Fee Type
+                    if (Fee.Fee.FeeType == "Range")
                     {
                         Fee.AmountFrom = model.AmountFrom;
                         Fee.AmountTo = model.AmountTo;
                         Fee.Charge = model.Charge;
-                        Fee.BranchId = model.BranchId;
-                        Fee.BankId = model.BankId;
-                        Fee.IsCentralised = model.IsCentralised;
-                        if (model.EventCode!=string.Empty)
-                        {
-                            Fee.EventCode = model.EventCode;
-
-                        }
                     }
                     else
                     {
                         Fee.Value = model.Value;
-                        Fee.BranchId = model.BranchId;
-                        Fee.BankId = model.BankId;
-                        Fee.IsCentralised = model.IsCentralised;
-                        if (model.EventCode != string.Empty)
-                        {
-                            Fee.EventCode = model.EventCode;
-
-                        }
                     }
-                    var response = await _transactionApiHelper.PutAsync<ServiceResponse<FeePolicy>>(string.Format(APICallHelper.Get_Update_Delete_FeePolicy, model.Id), Fee);
+
+                    // Common Updates
+                    Fee.BranchId = model.BranchId;
+                    Fee.BankId = model.BankId;
+                    Fee.IsCentralised = model.IsCentralised;
+
+                    if (!string.IsNullOrEmpty(model.EventCode))
+                    {
+                        Fee.EventCode = model.EventCode;
+                    }
+
+                    // Execute Update API Call
+                    var response = await _transactionApiHelper.PutAsync<ServiceResponse<FeePolicy>>(
+                        string.Format(APICallHelper.Get_Update_Delete_FeePolicy, model.Id), Fee);
+
                     if (response.IsSuccess)
                     {
-                        // Successful creation
-                        GetExecutionMessages(response, true, $"{Fee.Fee.Name}", MessagesResults.Success,
+                        GetExecutionMessages(response, true, Fee.Fee.Name, MessagesResults.Success,
                             ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
-                        return ExecutionMessage;
                     }
                     else
                     {
-                        // Failed creation
                         GetExecutionMessages(model, false, Fee.Fee.Name, MessagesResults.Failed,
                             ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
-                }
 
+                    return ExecutionMessage;
+                }
             }
             catch (Exception ex)
             {
-                // Log and handle exception
+                // Exception Handling
                 GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
                     SystemMessageStatus.Failed.ToString(), ex);
             }
+
             return ExecutionMessage;
         }
 
