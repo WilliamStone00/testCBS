@@ -37,7 +37,7 @@ function bindFilterActions() {
     const table = $('#myDataTable').DataTable();
 
     $('#applyFilterBtn').click(() => {
-        if (!isDateRangeValid()) return;
+        //if (!isDateRangeValid()) return;
         table.ajax.reload();
     });
 
@@ -52,37 +52,6 @@ function bindFilterActions() {
         window.location.href = `/UserManagement/DownloadUsers?${query}`;
     });
 }
-
-//$(document).ready(function () {
-//    // Initialize date pickers
-//    $('#dateFrom, #dateTo').datepicker({
-//        format: 'dd/mm/yyyy',
-//        autoclose: true,
-//        todayHighlight: true
-//    });
-
-//    // Initialize DataTable
-//    //initializeLoanDataTable();
-
-//    // Reinitialize DataTable on search button click
-//    $('#searchButton').on('click', function () {
-//        initializeBulkOperationDataTable();
-//    });
-
-//    // Initially hide the filter section
-//    $('#filterContent').hide();
-
-//    // Toggle the visibility of the filter section
-//    $('#toggleFilterButton').on('click', function () {
-//        $('#filterContent').slideToggle(300, function () {
-//            if ($(this).is(':visible')) {
-//                $('#toggleFilterButton').html('<i class="mdi mdi-chevron-up"></i> Hide Filters');
-//            } else {
-//                $('#toggleFilterButton').html('<i class="mdi mdi-chevron-down"></i> Show Filters');
-//            }
-//        });
-//    });
-//});
 
 function getSearchParameters(d) {
     d.searchCriteria = $('#searchCriteria').val();

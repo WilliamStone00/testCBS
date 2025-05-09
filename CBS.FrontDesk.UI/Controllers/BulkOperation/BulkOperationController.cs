@@ -4,6 +4,7 @@ using CBS.BusinessService.Accounts;
 using CBS.BusinessService.BulkOperations;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.BulkOperation;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
 using System;
@@ -12,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace CBS.FrontDesk.UI.Controllers.BulkOperation
 {
@@ -60,18 +62,66 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             return View();
         }
 
+        public async Task<ActionResult> GetBulkOperationDetails(string KEY)
+        {
+
+            if (string.IsNullOrEmpty(KEY))
+            {
+                return RedirectToAction("Listing", new { error = "Invalid operation ID" });
+            }
+
+        
+
+            try
+            {
+                var bulkOperationDetailsData = await _bulkOperationService.GetBulkOperationDetailsById(KEY);
+                if (bulkOperationDetailsData == null)
+                {
+                    return HttpNotFound();
+                }
+
+                bulkOperationDetailsData.ApprovalStatusBadge = GetBadge(bulkOperationDetailsData.ApprovalStatus);
+                return   PartialView("_TransferDetails", bulkOperationDetailsData);
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                return View("Error");
+            }
+
+        }
+
         public async Task<ActionResult> Details(string KEY)
         {
-            var bulkOperationData = await _bulkOperationService.GetBulkOperationById(KEY);
-            bulkOperationData.ApprovalStatusBadge = GetBadge(bulkOperationData.ApprovalStatus);
-            var addDetailStatusBadge = bulkOperationData.BulkOperationSimulationDetails.Select(x =>
+            if (string.IsNullOrEmpty(KEY))
             {
-                x.ApprovalStatusBadge = GetBadge(x.ApprovalStatus);
-                x.TransferStatusBadge = GetBadge(x.TransferStatus);
-                return x;
-            }).ToList();
-            bulkOperationData.BulkOperationSimulationDetails = addDetailStatusBadge;
-            return View(bulkOperationData);
+                return RedirectToAction("Listing", new { error = "Invalid operation ID" });
+            }
+
+            try
+            {
+                var bulkOperationData = await _bulkOperationService.GetBulkOperationById(KEY);
+                if (bulkOperationData == null)
+                {
+                    return HttpNotFound();
+                }
+
+                bulkOperationData.ApprovalStatusBadge = GetBadge(bulkOperationData.ApprovalStatus);
+             /*   var addDetailStatusBadge = bulkOperationData.BulkOperationSimulationDetails?.Select(x =>
+                {
+                    x.ApprovalStatusBadge = GetBadge(x.ApprovalStatus);
+                    x.TransferStatusBadge = GetBadge(x.TransferStatus);
+                    return x;
+                }).ToList();*/
+
+               // bulkOperationData.BulkOperationSimulationDetails = bulkOperationData.BulkOperationSimulationDetails ?? new List<BulkOperationDataDetails>();
+                return View(bulkOperationData);
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                return View("Error");
+            }
         }
 
         public string GetBadge(string status)
@@ -126,7 +176,35 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             }, JsonRequestBehavior.AllowGet);
         }
 
-        
+        [HttpPost]
+        public async Task<ActionResult> LoadBulkOperationDetailsData(string simulationId)
+        {
+            try
+            {
+
+                var query = new GetAllSimulationDetailBySimulationIdRequestQuery
+                {
+                    Options = PostDataTableOptions(),
+                    simulationId = simulationId
+                };
+
+                var data = await _bulkOperationService.GetBulkOperationDetailsDataTableAsync(query);
+
+                return Json(new
+                {
+                    draw = query.Options.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = data.data
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                return Json(new { error = "Error loading data" });
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult> Simulate(SimulateBulkOperation model)
         {

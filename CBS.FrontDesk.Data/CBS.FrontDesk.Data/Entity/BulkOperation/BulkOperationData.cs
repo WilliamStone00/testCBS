@@ -26,6 +26,12 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
 
     }
 
+    public class GetAllSimulationDetailBySimulationIdRequestQuery
+    {
+        public DataTableOptions Options { get; set; }
+        public string simulationId { get; set; }
+    }
+
     /// <summary>
     /// Query to retrieve paginated, filtered, and sortable bulk operation data for DataTable.
     /// </summary>

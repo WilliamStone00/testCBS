@@ -1,8 +1,10 @@
 ﻿@model  CBS.FrontDesk.Data.Entity.BulkOperation.BulkOperationData
-@using Newtonsoft.Json
+
 @{
     ViewBag.Title = "Bulk Operation Details";
 }
+
+
 
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
@@ -28,7 +30,7 @@
                             <div id="mainviewChange">
                                 <div class="change-group">
                                     <div id="datalistingview">
-                                        @Html.Partial("_Details", Model)
+                                        @Html.Partial("_SimulationDetails", @Model)
                                     </div>
                                 </div>
                             </div>
@@ -40,117 +42,11 @@
     </div>
 </div>
 
+
+
+
 @section Scripts {
-    <script>
-             function initializeMemberDataTable() {
-                 //if ($.fn.DataTable.isDataTable('#memberDataTable')) {
-                 //    $('#memberDataTable').DataTable().destroy();
-                 //}
-
-                     $('#memberDataTable').DataTable({
-                 data: @Html.Raw(JsonConvert.SerializeObject(Model.BulkOperationSimulationDetails)),
-                 columns: [
-                     //{ data: 'memberName' },
-                     //{ data: 'memberReference' },
-                     {
-                         data: 'SourceAccountNumber',
-                         title: 'Source Account',
-                         render: (data) => data
-                     },
-                     {
-                         data: 'SourceAccountType',
-                         title: 'Source Type',
-                         render: (data) => data
-                     },
-                     {
-                         data: 'SourceAccountBalance',
-                         title: 'Source Balance',
-                         className: 'text-end',
-                         render: (data) => formatCurrency(data)
-                     },
-                     {
-                         data: 'DestinationAccountNumber',
-                         title: 'Destination Account',
-                         render: (data) => data
-                     },
-                     {
-                         data: 'DestinationAccountType',
-                         title: 'Destination Type',
-                         render: (data) => data
-                     },
-                     {
-                         data: 'AmountToDebit',
-                         title: 'Amount To Debit',
-                         className: 'text-end',
-                         render: (data) => formatCurrency(data)
-                     },
-                     {
-                         data: 'ApprovalStatus',
-                         title: 'Status',
-                         render: function(data, type, row) {
-                             return `<span class="badge ${row.ApprovalStatusBadge}">${data}</span>`;
-                         }
-                     },
-                     {
-                         data: 'Id',
-                         orderable: false,
-                         searchable: false,
-                         render: function (id) {
-                             return `
-                                 <div class="text-center">
-                                     <a href="/BulkOperation/TransferDataDetails?KEY=${id}" class="btn btn-sm btn-outline-primary" title="Transfer Details">
-                                         <i class="fas fa-user-cog me-1"></i> View Account Transfer Details
-                                     </a>
-                                 </div>`;
-                         }
-                     }
-                 ],
-                 pageLength: 10, // Default items per page
-                 lengthMenu: [10, 25, 50, 100], // Page size options
-                 dom: '<"top"lf>rt<"bottom"ip><"clear">', // Layout with pagination controls
-                 language: {
-                     emptyTable: "No members found in this operation",
-                     info: "Showing _START_ to _END_ of _TOTAL_ members",
-                     infoEmpty: "Showing 0 to 0 of 0 members",
-                     infoFiltered: "(filtered from _MAX_ total members)",
-                     lengthMenu: "Show _MENU_ members per page",
-                     paginate: {
-                         first: "First",
-                         last: "Last",
-                         next: "Next",
-                         previous: "Previous"
-                     }
-                 },
-                 initComplete: function() {
-                     // Hide the original static tbody content
-                    // $('#memberDataTable tbody').empty();
-
-                     // Style the DataTables controls
-                     $('.dataTables_length select').addClass('form-select form-select-sm');
-                     $('.dataTables_filter input').addClass('form-control form-control-sm');
-                 }
-         });
-
-         }
-
-         $(document).on('page-loaded', function () {
-             initializeMemberDataTable();
-         });
-
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('en-NG', {
-                minimumFractionDigits: 1,
-                maximumFractionDigits: 1
-            }).format(amount);
-        }
-
-         // Initialize immediately if already loaded
-         $(function () {
-             if ($('#memberDataTable').length) {
-                 initializeMemberDataTable();
-             }
-         });
-    </script>
-    @*@Scripts.Render("~/bundles/jqueryval")*@
+    <script src="~/Scripts/Js/Crud/BulkOperation/BulkSimulationDetailsQuery.js"></script>
 }
+
 

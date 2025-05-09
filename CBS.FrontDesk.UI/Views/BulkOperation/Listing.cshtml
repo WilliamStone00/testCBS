@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "Bulk Operation Query Overview";
 }
+@using Newtonsoft.Json;
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
@@ -15,21 +16,7 @@
                     <i class="mdi mdi-alert-circle-outline me-1"></i> Use filters (role, branch, date) to refine selections before applying bulk changes.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
-                <!-- Bulk Action Buttons -->
-                @*<div class="mt-3">
-                        <button class="btn btn-primary me-2">
-                            <i class="mdi mdi-account-multiple-plus me-1"></i>Bulk Add Users
-                        </button>
-                        <button class="btn btn-warning me-2">
-                            <i class="mdi mdi-account-convert me-1"></i>Bulk Update Roles
-                        </button>
-                        <button class="btn btn-danger me-2">
-                            <i class="mdi mdi-account-remove me-1"></i>Bulk Deactivate
-                        </button>
-                        <button class="btn btn-success">
-                            <i class="mdi mdi-database-export me-1"></i>Export Selected
-                        </button>
-                    </div>*@
+             
             </div>
         </div>
     </div>
@@ -37,7 +24,7 @@
 
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-filter-outline me-2"></i> TIPS FOR USER FILTERING</span>
+        <span><i class="mdi mdi-filter-outline me-2"></i> TIPS FOR Bulk OPERATIONS FILTERING</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -123,13 +110,14 @@
     @Html.Partial("_model")
     <!-- DataTable Partial -->
     <div id="userTableView">
-        @Html.Partial("_Data")
+        @Html.Partial("_SimulationDataTable")
     </div>
 
 
-   @section Scripts {
-        <script src="~/Scripts/Js/Crud/BulkOperation/BulkOperationQuery.js"></script>
+    @section Scripts {
+        <script src="~/Scripts/Js/Crud/BulkOperation/BulkSimulationQuery.js"></script>
     }
+
 
 
 
