@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+    @using Resources
 
 <div class="form-wrapper">
     <!-- Member Information Section -->
@@ -10,9 +11,9 @@
 
     <!-- Dynamic Summary Section -->
     <fieldset class="fieldset-custom mt-2">
-        <legend class="text-primary">COMPUTED DETAILS</legend>
+        <legend class="text-primary">@CashDesk_LoanRepaymentSimulationForm.ComputedDetails</legend>
         <button class="btn btn-outline-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#computedDetailsSection" aria-expanded="false" aria-controls="computedDetailsSection">
-            Toggle Summary
+            @CashDesk_LoanRepaymentSimulationForm.ToggleSummary
         </button>
         <div class="collapse" id="computedDetailsSection">
             <div class="row g-3">
@@ -20,30 +21,30 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="card shadow-sm p-3 mb-2">
-                                <h6 class="text-primary">Refund Amount (Capital)</h6>
-                                <p class="text-dark fw-bold mb-0" id="summaryCapital">0.0 XAF</p>
+                                <h6 class="text-primary">@CashDesk_LoanRepaymentSimulationForm.RefundAmount</h6>
+                                <p class="text-dark fw-bold mb-0" id="summaryCapital">0.0 @CashDesk_LoanRepaymentSimulationForm.XAF</p>
                             </div>
                             <div class="card shadow-sm p-3 mb-2">
-                                <h6 class="text-primary">Interest Amount</h6>
-                                <p class="text-dark fw-bold mb-0" id="summaryInterest">0.0 XAF</p>
+                                <h6 class="text-primary">@CashDesk_LoanRepaymentSimulationForm.InterestAmount</h6>
+                                <p class="text-dark fw-bold mb-0" id="summaryInterest">0.0 @CashDesk_LoanRepaymentSimulationForm.XAF</p>
                             </div>
                             <div class="card shadow-sm p-3">
-                                <h6 class="text-primary">Penalty Amount</h6>
-                                <p class="text-dark fw-bold mb-0" id="summaryPenalty">0.0 XAF</p>
+                                <h6 class="text-primary">@CashDesk_LoanRepaymentSimulationForm.PenaltyAmount</h6>
+                                <p class="text-dark fw-bold mb-0" id="summaryPenalty">0.0 @CashDesk_LoanRepaymentSimulationForm.XAF</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="card shadow-sm p-3 mb-2">
-                                <h6 class="text-primary">VAT Amount (on Interest)</h6>
-                                <p class="text-dark fw-bold mb-0" id="summaryVat">0.0 XAF</p>
+                                <h6 class="text-primary">@CashDesk_LoanRepaymentSimulationForm.VAT Amount (on Interest)</h6>
+                                <p class="text-dark fw-bold mb-0" id="summaryVat">0.0 @CashDesk_LoanRepaymentSimulationForm.XAF</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card shadow-lg p-4 h-100 d-flex align-items-center justify-content-center" style="background-color: #e9f7fd; border-left: 5px solid #007bff;">
-                        <h5 class="text-primary fw-bold mb-2">Total Repayment Amount</h5>
-                        <p class="display-4 text-secondary fw-bold" style="font-size: 2rem;" id="summaryTotal">0.0 XAF</p>
+                        <h5 class="text-primary fw-bold mb-2">@CashDesk_LoanRepaymentSimulationForm.TotalRepaymentAmount</h5>
+                        <p class="display-4 text-secondary fw-bold" style="font-size: 2rem;" id="summaryTotal">0.0 @CashDesk_LoanRepaymentSimulationForm.XAF</p>
                     </div>
                 </div>
             </div>
@@ -52,7 +53,7 @@
 </div>
 
 <fieldset class="fieldset-custom">
-    <legend class="text-primary">LOAN REPAYMENT SIMULATION FORM</legend>
+    <legend class="text-primary">@CashDesk_LoanRepaymentSimulationForm.LoanRepaymentFrom</legend>
     <hr style="border: 2px solid green;" />
 
     <div class="change-group">
@@ -60,18 +61,18 @@
             <table class="table table-hover table-bordered align-middle" id="myDataTableT">
                 <thead class="table-light">
                     <tr>
-                        <th style="display:none;">LoanId</th>
-                        <th>Date</th>
-                        <th>Loan Amount</th>
-                        <th>Balance</th>
-                        <th>Interest</th>
-                        <th>VAT</th>
-                        <th>Penalty</th>
-                        <th>Enter Capital</th>
-                        <th>Enter Interest</th>
-                        <th>Enter Penalty</th>
-                        <th>Total</th>
-                        <th>V-INC</th>
+                        <th style="display:none;">@CashDesk_LoanRepaymentSimulationForm.LoanId</th>
+                        <th>@CashDesk_LoanRepaymentSimulationForm.Date</th>
+                        <th>@CashDesk_LoanRepaymentSimulationForm.LoanAmount</th>
+                        <th>@CashDesk_LoanRepaymentSimulationForm.Balance</th>
+                        <th>@CashDesk_LoanRepaymentSimulationForm.Interest</th>
+                        <th>@CashDesk_LoanRepaymentSimulationForm.VAT</th>
+                        <th>@CashDesk_LoanRepaymentSimulationForm.Penalty</th>
+                        <th>@CashDesk_LoanRepaymentSimulationForm.EnterCapital</th>
+                        <th>@CashDesk_LoanRepaymentSimulationForm.EnterInterest</th>
+                        <th>@CashDesk_LoanRepaymentSimulationForm.EnterPenalty</th>
+                        <th>@CashDesk_LoanRepaymentSimulationForm.Total</th>
+                        <th>@CashDesk_LoanRepaymentSimulationForm.VINC</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -95,7 +96,7 @@
                                 <input type="number" class="form-control penalty-input" id="penalty-@d.Id" value="0" oninput="calculateTotalRepayment()">
                             </td>
                             <td>
-                                <span class="total-span" id="total-@d.Id">0.0 XAF</span>
+                                <span class="total-span" id="total-@d.Id">0.0 @CashDesk_LoanRepaymentSimulationForm.XAF</span>
                             </td>
                             <td>
                                 <input type="checkbox" class="form-check-input vat-checkbox" id="vatInclusive-@d.Id" disabled>

@@ -1,23 +1,23 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
-
+@using Resources
 <div class="form-wrapper">
     <fieldset class="fieldset-custom">
-        <legend>OTHER PAYMENTS EXPENSE</legend>
+        <legend>@CashDesk_ExpenseOtherPaymentForm.OtherPaymentExpenses</legend>
         <hr />
         <div class="change-group">
             <div class="row mt-2 gy-4">
 
                 <div class="col-md-6">
                     <div class="input-group mb-3">
-                        <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="Enter member's account number">
+                        <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="@CashDesk_ExpenseOtherPaymentForm.EnterMemberAccountNumber">
                         <button class="btn btn-outline-secondary" type="button" id="manualSearchInputbutton" onclick="LoadMembersAccounts('account_number')">
-                            Search
+                            @CashDesk_ExpenseOtherPaymentForm.Search
                         </button>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
-                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@CashDesk_ExpenseOtherPaymentForm.TotalAmount: 0.0</span>
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                     <div class="col-6">
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.BulkDeposit.OtherTransaction.SourceType, "Member_Account", new { @class = "form-check-input", id = "memberAccountOption" })
-                            <label class="form-check-label" for="memberAccountOption">From member's account</label>
+                            <label class="form-check-label" for="memberAccountOption">@CashDesk_ExpenseOtherPaymentForm.FromMemberAccount</label>
                         </div>
                     </div>
                 </div>
@@ -39,9 +39,9 @@
                 </div>*@
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.BulkDeposit.OtherTransaction.AccountNumber, new SelectList(ViewBag.MemberAccounts, "Value", "Text"), "---Member's account---", new { @class = "form-control select2", @id = "account_number", @search = "true" })
+                        @Html.DropDownListFor(m => m.BulkDeposit.OtherTransaction.AccountNumber, new SelectList(ViewBag.MemberAccounts, "Value", "Text"), @CashDesk_ExpenseOtherPaymentForm.SelectMemberAccount , new { @class = "form-control select2", @id = "account_number", @search = "true" })
                         @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.AccountNumber, "", new { @class = "text-danger " })
-                        <label for="formValidationDob">Select account to perform the operation</label>
+                        <label for="formValidationDob">@CashDesk_ExpenseOtherPaymentForm.SelectAccountToPerformTheOperation</label>
                     </div>
                 </div>
 
@@ -53,13 +53,13 @@
                 <input type="hidden" name="OperationType" value="Expense" id="OperationType" />
                 <input type="hidden" name="customerId" value="" id="customerId" />
                 <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostOtherCashIn()">
-                    <i class="fas fa-save me-1"></i> Post
+                    <i class="fas fa-save me-1"></i> @CashDesk_ExpenseOtherPaymentForm.Post
                 </button>
                 <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
-                    <i class="fas fa-print me-1"></i> Re-print
+                    <i class="fas fa-print me-1"></i> @CashDesk_ExpenseOtherPaymentForm.Reprint
                 </button>
                 <button type="reset" class="btn btn-outline-secondary">
-                    <i class="fas fa-sync-alt me-1"></i> Reset
+                    <i class="fas fa-sync-alt me-1"></i> @CashDesk_ExpenseOtherPaymentForm.Reset
                 </button>
             </div>
         </div>
