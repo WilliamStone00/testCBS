@@ -28,20 +28,26 @@
                  <label class="form-check-label" for="isActive">Before processing</label>
              </div>
          </div>
-         @*<div class="col-md-12">
-             <div class="form-floating form-floating-outline">
-                 @Html.DropDownListFor(m => m.AccountingEventCode, new SelectList(ViewBag.Roles, "id", "ruleName"), "---Select accounting roles---", new { @class = "form-control select2", @search = "true" })
-                 @Html.ValidationMessageFor(m => m.AccountingEventCode, "", new { @class = "text-danger " })
-                 <label>Accounting role</label>
-             </div>
-         </div>*@
          <div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.AccountingEventCode, new SelectList(ViewBag.EventCodes, "Value", "Text"), "---Select Event Item---", new { @class = "form-control select2", @search = "true"})
-                @Html.ValidationMessageFor(m => m.AccountingEventCode, "", new { @class = "text-danger" })
-                <label>Select an accounting event</label>
-            </div>
-        </div>
+             <div class="form-floating form-floating-outline">
+                 @Html.DropDownListFor(m => m.AccountingEventCode, new SelectList(ViewBag.EventCodes, "Value", "Text"), "---Select Event Item---", new { @class = "form-control select2", @search = "true" })
+                 @Html.ValidationMessageFor(m => m.AccountingEventCode, "", new { @class = "text-danger" })
+                 <label>Select an accounting event</label>
+             </div>
+         </div>
+         <div class="col-12 mt-2">
+             <label class="form-label fw-semibold">Fee Type</label>
+             <div class="form-check">
+                 @Html.RadioButtonFor(m => m.LoanFeeType, "Processing_Fee_Limit", new { @class = "form-check-input", id = "processingFeeLimitOption" })
+                 <label class="form-check-label" for="processingFeeLimitOption">Processing Fee Limit</label>
+             </div>
+             <div class="form-check">
+                 @Html.RadioButtonFor(m => m.LoanFeeType, "Operation_Fee", new { @class = "form-check-input", id = "operationFeeOption" })
+                 <label class="form-check-label" for="operationFeeOption">Operation Fee</label>
+             </div>
+             @Html.ValidationMessageFor(m => m.LoanFeeType, "", new { @class = "text-danger" })
+         </div>
+
      </div>
             <div class="mt-4">
                 @if (ViewBag.Key != null)

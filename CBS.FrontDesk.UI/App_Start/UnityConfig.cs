@@ -48,10 +48,11 @@ namespace CBS.FrontDesk.UI
             container.RegisterType<INotificationServices, NotificationServices>();
             container.RegisterType<ApiCallerHelper>("TransactionApiCallerHelper",
                 new InjectionConstructor(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString()));
-
+            //CommunicationBaseUrl
             // Register ApiCallerHelper for BankConfigurationBaseUrl
             container.RegisterType<ApiCallerHelper>("BankConfigApiCallerHelper",
                 new InjectionConstructor(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString()));
+
             container.RegisterType<ApiCallerHelper>(new InjectionConstructor(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString()));
             container.RegisterType<ApiCallerHelper>(
     new InjectionConstructor(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString()));

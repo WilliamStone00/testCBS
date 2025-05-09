@@ -1,0 +1,101 @@
+﻿@model CBS.FrontDesk.Data.Entity.SMSP.Sms
+
+<div class="card-body">
+    <table class="table table-bordered table-striped" id="smsDetailsTable">
+        <tbody>
+            <!-- General Information -->
+            <tr class="table-primary">
+                <td colspan="2" class="font-weight-bold text-center">General Information</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">SMS ID:</td>
+                <td>@Model.Id</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Operation Type:</td>
+                <td>@Model.OperationType</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Branch Code:</td>
+                <td>@Model.BranchCode</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Branch Name:</td>
+                <td>@Model.BranchName</td>
+            </tr>
+
+            <!-- Sender Information -->
+            <tr class="table-primary">
+                <td colspan="2" class="font-weight-bold text-center">Sender Information</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Sender:</td>
+                <td>@Model.Sender</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Send By:</td>
+                <td>@Model.SendBy</td>
+            </tr>
+
+            <!-- Recipient Information -->
+            <tr class="table-primary">
+                <td colspan="2" class="font-weight-bold text-center">Recipient Information</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Member Name:</td>
+                <td>@Model.MemberName</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Member Reference:</td>
+                <td>@Model.MemberReference</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">MSISDN:</td>
+                <td>@Model.Msisdn</td>
+            </tr>
+
+            <!-- Message Details -->
+            <tr class="table-primary">
+                <td colspan="2" class="font-weight-bold text-center">Message Details</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Message:</td>
+                <td>@Model.Message</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Service Name:</td>
+                <td>@Model.ServiceName</td>
+            </tr>
+
+            <!-- Cost & Status -->
+            <tr class="table-primary">
+                <td colspan="2" class="font-weight-bold text-center">Cost & Status</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Cost:</td>
+                <td>XAF @Model.Cost.ToString("#,##0.00")</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Status:</td>
+                <td>
+                    <span class="badge bg-@(Model.Status == "Successful" ? "success" : "danger")">
+                        @Model.Status
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Status Description:</td>
+                <td>@Model.StatusDescription</td>
+            </tr>
+
+            <!-- Dates -->
+            <tr class="table-primary">
+                <td colspan="2" class="font-weight-bold text-center">Dates</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Created Date:</td>
+                <td>@Model.CreatedDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

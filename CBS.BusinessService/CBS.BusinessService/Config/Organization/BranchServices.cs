@@ -69,6 +69,16 @@ namespace CBS.BusinessService.Config
                     branches = branches.Where(b => b.Id == currentBranchId).ToList();
                 }
 
+                // Add "All" option as the default
+                var defaultBranch = new Branch
+                {
+                    Id = "x",
+                    BranchCode = "All",
+                    Name = "All Branches"
+                };
+
+                branches.Insert(0, defaultBranch);
+
                 // Format the Name and order by BranchCode
                 return branches
                     .Select(branch =>
@@ -91,17 +101,42 @@ namespace CBS.BusinessService.Config
             try
             {
                 var couApiResponse = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(string.Format(APICallHelper.GetAllBranch));
+                var branches = new List<Branch>();
+
                 if (IsHeadOffice())
                 {
-                    var BRANCHES = couApiResponse.ApiResponseData.Data.Where(x => x.BankId == id).ToList();
-                    return ProcessApiResponseResponse(BRANCHES);
+                    branches = couApiResponse.ApiResponseData.Data
+                        .Where(x => x.BankId == id)
+                        .ToList();
                 }
                 else
                 {
-                    var BRANCHES = couApiResponse.ApiResponseData.Data.Where(x => x.BankId == id && x.Id==GetBranchID()).ToList();
-                    return ProcessApiResponseResponse(BRANCHES);
-
+                    branches = couApiResponse.ApiResponseData.Data
+                        .Where(x => x.BankId == id && x.Id == GetBranchID())
+                        .ToList();
                 }
+
+                // Add "All" option as the default
+                var defaultBranch = new Branch
+                {
+                    Id = "x",
+                    BranchCode = "All",
+                    Name = "All Branches"
+                };
+
+                branches.Insert(0, defaultBranch);
+
+                // Format and order branches
+                var formattedBranches = branches
+                    .Select(branch => new
+                    {
+                        Id = branch.Id,
+                        Name = $"[{branch.BranchCode}] [{branch.Name}]"
+                    })
+                    .OrderBy(branch => branch.Name)
+                    .ToList();
+
+                return new SelectList(formattedBranches, "Id", "Name");
             }
             catch (Exception ex)
             {
@@ -109,6 +144,7 @@ namespace CBS.BusinessService.Config
                 throw;
             }
         }
+
 
 
         private SelectList ProcessApiResponseResponse(List<Branch> branches)

@@ -121,6 +121,21 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
 
         public bool HasTopUp { get; set; }
+        public bool IsMortgage { get; set; }  // 🆕 Flag to identify mortgage
+        // Require insurance before disbursement
+        public bool? RequireInsurance { get; set; } = true;
+        // Enforce registered land title
+        public bool? RequireTitleRegistration { get; set; } = true;
+        // Grace period in months (common for construction loans)
+        public int? GracePeriodMonths { get; set; } = 3;
+        // Maximum loan amount as a percentage of the property's value (LTV)
+        public decimal? MaxLoanToValueRatio { get; set; } = 0.80M; // 80%
+        // Whether to enable staged/phased disbursement
+        public bool? EnablePhasedDisbursement { get; set; } = true;
+        // Property value should be at least 125% of loan (safety margin)
+        public decimal? MinCollateralCoveragePercent { get; set; } = 1.25M;
+        // Allow a third party (e.g., family member) to offer the property as collateral
+        public bool? AllowThirdPartyOwnership { get; set; } = false;
 
         public decimal MaxTopUpLoanAmount { get; set; }
 
@@ -285,6 +300,15 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal MinimumShareAccountBalanceForTheRequestAmount { get; set; }
         public bool ActiveStatus { get; set; }
         public bool HasTopUp { get; set; }
+        public bool IsMortgage { get; set; }
+        public bool RequireInsurance { get; set; }
+        public bool RequireTitleRegistration { get; set; }
+        public int GracePeriodMonths { get; set; }
+        public decimal MaxLoanToValueRatio { get; set; }
+        public bool EnablePhasedDisbursement { get; set; }
+        public decimal MinCollateralCoveragePercent { get; set; }
+        public bool AllowThirdPartyOwnership { get; set; }
+
         public string ChartOfAccountIdForPrincipalAmount { get; set; }
         public string ChartOfAccountIdForPenalty { get; set; }
         public string ChartOfAccountIdForTax { get; set; }
@@ -426,6 +450,15 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal MinimumShareAccountBalanceForTheRequestAmount { get; set; }
         public bool ActiveStatus { get; set; }
         public bool HasTopUp { get; set; }
+        public bool IsMortgage { get; set; }
+        public bool RequireInsurance { get; set; }
+        public bool RequireTitleRegistration { get; set; }
+        public int GracePeriodMonths { get; set; }
+        public decimal MaxLoanToValueRatio { get; set; }
+        public bool EnablePhasedDisbursement { get; set; }
+        public decimal MinCollateralCoveragePercent { get; set; }
+        public bool AllowThirdPartyOwnership { get; set; }
+
         public string ChartOfAccountIdForPrincipalAmount { get; set; }
         public string ChartOfAccountIdForPenalty { get; set; }
         public string ChartOfAccountIdForTax { get; set; }

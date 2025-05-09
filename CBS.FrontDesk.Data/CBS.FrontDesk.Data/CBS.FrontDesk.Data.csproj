@@ -81,8 +81,8 @@
     <Compile Include="Entity\AndriodApp\AndriodVersionConfiguration.cs" />
     <Compile Include="Entity\AuditTralP\AuditTrailDto.cs" />
     <Compile Include="Entity\BulkOperation\CreateBulkOperationSimulation.cs" />
-    <Compile Include="Entity\BulkOperation\BulkOperations.cs" />
-    <Compile Include="Entity\BulkOperation\BulkOperationDetails.cs" />
+    <Compile Include="Entity\BulkOperation\BulkOperationData.cs" />
+    <Compile Include="Entity\BulkOperation\BulkOperationDataDetails.cs" />
     <Compile Include="Entity\BulkOperation\SimulateBulkOperation.cs" />
     <Compile Include="Entity\BulkOperation\SimulateBulkOperationToSpecificAccountType.cs" />
     <Compile Include="Entity\BulkOperation\SimulateBulkOperationToUniqueAccountType.cs" />
@@ -107,6 +107,7 @@
     <Compile Include="Entity\SalaryManagement\SalaryExecutionModel.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryUploadModel.cs" />
     <Compile Include="Entity\SalaryManagement\StandingOrder.cs" />
+    <Compile Include="Entity\SMSP\Sms.cs" />
     <Compile Include="Entity\VaultManagement\VaultAuthorisedPersonP\VaultAuthorisedPerson.cs" />
     <Compile Include="Entity\VaultManagement\VaultOperationP\VaultOperation.cs" />
     <Compile Include="Entity\VaultManagement\VaultP\Vault.cs" />

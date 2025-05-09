@@ -588,6 +588,10 @@ namespace CBS.FrontDesk.Helper
         public static string LoadDataTablePagginationForUserSessions = "/api/Session/datatable";
         public static string LoadDataTablePagginationForUserSession = "/api/Session/datatable";
 
+        public static string GetSMSLogs = "/api/v1/sms/logs";
+        public static string GetSMSLogDetail = "/api/v1/sms/logs/{0}";
+
+
         ///api/v1/FileDownloadInfos/GetAllFileDownloadInfoByUserIdQuery/{userid}
         ///api/v1/Loan/SearchByAnyCriterialQuery
         public static string GetAllLoanByBranchIdQuery = "/api/v1/Loan/GetAllLoanByBranchIdQuery/{id}";
@@ -1029,7 +1033,8 @@ namespace CBS.FrontDesk.Helper
         public static string Create_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation";
 
         //Bulk Operation
-        public static string SimulateBulkOperationRangeBetweenAccountSimulation="" ;
+        public static string SimulateAccountTopup= "/api/v1/BulkOperations/Topup";
+        public static string SimulateContribution = "/api/v1/BulkOperations/Contribution";
         public static string GetAllBulkOperations = "/api/v1/BulkOperations";
     }
 }

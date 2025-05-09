@@ -682,7 +682,34 @@ namespace BusinessServices
                 return data;
             }
         }
+        public List<string> GetOperationTypes()
+        {
+            return new List<string>
+            {   "All",
+                "CASH_IN",
+                "WITHDRAWAL",
+                "Transfer",
+                "CASH_IN_Remittance",
+                "CASH_W_Remittance",
+                "CASH_IN_MOMO_CASH",
+                "LOAN_RECOVERY",
+                "LOAN_REPAYMENT_MOMO_CASH",
+                "LOAN_REPAYMENT",
+                "CASHIN_MOBILEMONEY",
+                "OTP_CASHOUT_THIRD_PARTY",
+                "GAV_TRANSFER_RECEIVED",
+                "GAV_TRANSFER",
+                "Loan_Disbursement",
+                "Mobile_Money_Topup",
+                "Orange_Money_Topup",
+                "OTP_GENERATION_TRANSACTION"
+            };
+        }
 
+        public List<string> GetStatuses()
+        {
+            return new List<string> { "All", "Failed", "Successful" };
+        }
         public int MonthStringToIntegerMMMM(string month)
         {
             int I = DateTime.ParseExact(month, "MMMM", CultureInfo.CurrentCulture).Month;

@@ -350,6 +350,7 @@
     <Compile Include="Session\SessionHub.cs" />
     <Compile Include="CorrespondingBankBranchServices\CorrespondingBankBranchServices.cs" />
     <Compile Include="CorrespondingBankServices\CorrespondingBankServices.cs" />
+    <Compile Include="SMSP\SMSServices.cs" />
     <Compile Include="UserManagement\IUserManagementServices.cs" />
     <Compile Include="UserManagement\UserManagementServices.cs" />
     <Compile Include="UserManagement\UserPermissionServices.cs" />

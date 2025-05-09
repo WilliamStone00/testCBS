@@ -3,11 +3,14 @@ using CBS.API.Helper;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.BulkOperation;
+using CBS.FrontDesk.Data.Entity.BulkOPeration;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNet.SignalR.Hosting;
 using System;
 using System.Collections.Generic;
@@ -40,7 +43,7 @@ namespace CBS.BusinessService.BulkOperations
             try
             {
                 // Make an API call to create an individual profile
-                var response = await _loanConfigApiHelper.PostAsync<ResponseObject<CreateBulkOperationSimulation>>(APICallHelper.SimulateBulkOperationRangeBetweenAccountSimulation, command);
+                var response = await _smsConfigApiHelper.PostAsync<ResponseObject<CreateBulkOperationSimulation>>(APICallHelper.SimulateBulkOperationRangeBetweenAccountSimulation, command);
                 if (response.IsSuccess)
                 {
                     HttpContext.Current.Session["bulk_operation"] = response.ApiResponseData.Data;
@@ -76,12 +79,12 @@ namespace CBS.BusinessService.BulkOperations
                 loansDataTableQuery.BranchId = GetBranchID();
             }
             // Make API call to fetch the DataTable result
-            /*  var couApiResponse = await _loanConfigApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+            /*  var couApiResponse = await _smsConfigApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
                   APICallHelper.LoaDataTablePaggination,
                   loansDataTableQuery
               );*/
 
-            var couApiResponse = await _transactionConfigApiHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Entity.BulkOperation.BulkOperations>>>(
+            var couApiResponse = await _transactionConfigApiHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Entity.BulkOperation.BulkOperationData>>>(
                APICallHelper.GetAllBulkOperations
            );
 
@@ -114,22 +117,37 @@ namespace CBS.BusinessService.BulkOperations
             );
         }
 
+        public async Task<BulkOperationData> GetBulkOperationById(string id)
+        {
+                try
+                {
+                    var response = await _transactionConfigApiHelper.GetAsync<ResponseObject<BulkOperationData>>(string.Concat(APICallHelper.GetAllBulkOperations, "/" ,id));
+                    if (response.ApiResponseData != null)
+                    {
+                        return response.ApiResponseData.Data;
+                    }
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    // Log and handle exception
+                    throw ex;
+                }
+        }
+
         public async Task<ExecutionMessages> SimulateOperation(SimulateBulkOperation model)
         {
             try
             {
-                model.BranchCode = GetBranchCode();
-                model.BankCode = GetBankCode();
-                model.BranchId = GetBranchID();
-                model.BankId = GetBankID();
-                model.BankName = GetBankName();
-                model.BranchName = GetBranchName();
+           
+                Branch branch= model.Branches.Where(x=>x.Id==model.BranchId).FirstOrDefault();
+                   
 
-                if (model.IsTransferToUniqueAccount)
+                if (model.IsContribution=="true")
                 {
-                    SimulateBulkOperationToUniqueAccountType simulateModel= new SimulateBulkOperationToUniqueAccountType(model);
+                    SimulateBulkOperationToUniqueAccountType simulateModel= new SimulateBulkOperationToUniqueAccountType(model,branch);
                     // Make an API call to create an individual profile
-                    var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<Group>>(APICallHelper.CreateGroup, simulateModel);
+                    var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<CreateBulkOperationSimulation>>(APICallHelper.SimulateContribution, simulateModel);
                     if (response.ApiResponseData != null)
                     {
                         // Successful creation
@@ -148,9 +166,9 @@ namespace CBS.BusinessService.BulkOperations
                 else
                 {
 
-                    SimulateBulkOperationToSpecificAccountType simulateModel = new SimulateBulkOperationToSpecificAccountType(model);
+                    SimulateBulkOperationToSpecificAccountType simulateModel = new SimulateBulkOperationToSpecificAccountType(model, branch);
                     // Make an API call to create an individual profile
-                    var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<Group>>(APICallHelper.CreateGroup, simulateModel);
+                    var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<CreateBulkOperationSimulation>>(APICallHelper.SimulateAccountTopup, simulateModel);
                     if (response.ApiResponseData != null)
                     {
                         // Successful creation

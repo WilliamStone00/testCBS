@@ -14,7 +14,7 @@
                     <i class="mdi mdi-account-group-outline me-2"></i> BULK OPERATIONS
                 </h1>
                 <p class="card-text">
-                    Create and manage user accounts, define access roles, and ensure strong security posture. This interface provides full visibility and control over user identity, activity, and protection mechanisms.
+                  Bulk Operation Management mechanisms.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -70,8 +70,9 @@
                              class="accordion-collapse collapse show"
                              data-bs-parent="#accordionPopoutIcon">
                             <div class="accordion-body">
-                                @using (Html.BeginForm("Simulate", "BulkOperation", FormMethod.Post, new { id = "bulkOperationForm" }))
+                                @using (Html.BeginForm("Simulate", "BulkOperation", FormMethod.Post, new { enctype = "multipart/form-data", id = "bulkOperationForm", onsubmit = "return AjaxPostAndUpdateBulkOperation(this);" }))
                                 {
+                                    @Html.HiddenFor(m => m.IsContribution, new { id = "isContribution" })
                                     <!-- Simulation Type and Description - Now Collapsible -->
                                     <div class="accordion mb-4" id="simulationTypeAccordion">
                                         <div class="accordion-item">
@@ -82,7 +83,7 @@
                                             </h2>
                                             <div id="collapseSimulationType" class="accordion-collapse collapse show" aria-labelledby="headingSimulationType">
                                                 <div class="accordion-body">
-                                                    @Html.Partial("_SimulationTypeAndDescription", Model)
+                                                    @Html.Partial("_SimulationTitleInfos", Model)
                                                 </div>
                                             </div>
                                         </div>
@@ -93,12 +94,12 @@
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="headingOperationType">
                                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOperationType" aria-expanded="true" aria-controls="collapseOperationType">
-                                                    <i class="mdi mdi-format-list-bulleted-type me-2"></i> Operation Type
+                                                    <i class="mdi mdi-format-list-bulleted-type me-2"></i> Simulation Type
                                                 </button>
                                             </h2>
                                             <div id="collapseOperationType" class="accordion-collapse collapse show" aria-labelledby="headingOperationType">
                                                 <div class="accordion-body">
-                                                    @Html.Partial("_BulkOperationSelection", Model.BulkOperationSelectionModel)
+                                                    @Html.Partial("_SimulationOptions", Model.BulkOperationSelectionModel)
                                                 </div>
                                             </div>
                                         </div>
@@ -114,7 +115,7 @@
                                             </h2>
                                             <div id="collapseSourceAccounts" class="accordion-collapse collapse show" aria-labelledby="headingSourceAccounts">
                                                 <div class="accordion-body">
-                                                    @Html.Partial("_SourceAccountsConfiguration", Model)
+                                                    @Html.Partial("_SourceAccountConfiguration", Model)
                                                 </div>
                                             </div>
                                         </div>
@@ -133,10 +134,10 @@
                                                     <div id="mainviewChange">
                                                         <div class="change-group">
                                                             <div id="mainview1">
-                                                                @Html.Partial("_SimulateToSpecificAccountType", Model)
+                                                                @Html.Partial("_SimulateToAccountTopUp", Model)
                                                             </div>
                                                             <div id="mainview2">
-                                                                @Html.Partial("_SimulateToUniqueAccount", Model)
+                                                                @Html.Partial("_SimulateAccountContribution", Model)
                                                             </div>
                                                         </div>
                                                     </div>

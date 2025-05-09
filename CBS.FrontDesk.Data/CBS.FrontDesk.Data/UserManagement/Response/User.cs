@@ -89,6 +89,7 @@ namespace CBS.FrontDesk.Data.UserManagement
         public string ImageVirtualPath { get; set; }
         public MFAActivation MFAActivation { get; set; }
         public List<PermissionMenuLoader> PermissionMenuLoaders { get; set; }=new List<PermissionMenuLoader>();
+        public List<AccountSystemActionLog> AccountSystemActionLogs { get; set; } = new List<AccountSystemActionLog>();
 
         public User()
         {
@@ -96,6 +97,22 @@ namespace CBS.FrontDesk.Data.UserManagement
             MFAActivation = new MFAActivation();
             ImageVirtualPath = "~/Appfiles/Images/p.jpg";
         }
+    }
+    public class AccountSystemActionLog
+    {
+        public string ActionType { get; set; } // e.g., "Suspension", "ForcePwdChange", "SessionCleanup"
+        public string Description { get; set; }
+        public string PerformedBy { get; set; } // "System", or Admin ID/User ID
+        public DateTime ActionDate { get; set; }
+        public string Comments { get; set; }
+        public string UserFullName { get; set; }
+        public string UserId { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchName { get; set; }
+        public string BranchId { get; set; }
+        public string PerformedByBranchId { get; set; }
+        public string PerformedByBranchName { get; set; }
+        public string PerformedByBranchCode { get; set; }
     }
     public class GetAllUserSessionsDataTableQuery
     {

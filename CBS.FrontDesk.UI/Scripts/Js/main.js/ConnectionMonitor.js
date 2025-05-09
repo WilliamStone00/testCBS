@@ -6,7 +6,7 @@ let countdownTimer;
 let countdownSeconds = 30;
 let sessionRemainingSeconds = sessionTimeoutMinutes * 60;
 let floatingCountdownTimer;
-
+let lastStorageSync = 0;
 
 
 async function fetchSessionConfigAndStart() {
@@ -36,16 +36,28 @@ async function fetchSessionConfigAndStart() {
 function setSessionExpireAt() {
     const expireAt = Date.now() + (sessionTimeoutMinutes * 60 * 1000);
     localStorage.setItem('sessionExpireAt', expireAt);
+    lastStorageSync = Date.now(); // 💡 flag we initiated change
 }
+
+
+
 window.addEventListener('storage', function (e) {
     if (e.key === 'sessionExpireAt') {
+        const now = Date.now();
+
+        // Prevent reinitializing if we just reset ourselves (within 1s)
+        if (now - lastStorageSync < 1000) return;
+        lastStorageSync = now;
+
         clearTimeout(warningTimer);
         clearTimeout(logoutTimer);
         clearInterval(countdownTimer);
         clearInterval(floatingCountdownTimer);
+
         startSessionTimers();
     }
 });
+
 function startSessionTimers() {
     clearInterval(floatingCountdownTimer);
 
@@ -81,33 +93,6 @@ function startSessionTimers() {
 }
 
 
-//function startSessionTimers() {
-//    if (sessionRemainingSeconds <= 0) {
-//        console.warn("⛔ Session already expired before timers started.");
-//        forceLogout();
-//        return;
-//    }
-
-//    clearInterval(floatingCountdownTimer);
-
-//    let expireAt = localStorage.getItem('sessionExpireAt');
-
-//    if (!expireAt) {
-//        setSessionExpireAt();
-//        expireAt = localStorage.getItem('sessionExpireAt');
-//    }
-
-//    sessionRemainingSeconds = Math.max(0, Math.floor((new Date(expireAt) - Date.now()) / 1000));
-//    // 🕐 Only warn if remaining time > warning time
-//    if (sessionRemainingSeconds > sessionWarningMinutes * 60) {
-//        const warningTime = (sessionRemainingSeconds - sessionWarningMinutes * 60) * 1000;
-//        warningTimer = setTimeout(showWarningModal, warningTime);
-//    }
-//    logoutTimer = setTimeout(forceLogout, logoutTime);
-
-//    startFloatingCountdown();
-//}
-// 🌟 Background ping every 2 minutes to refresh session automatically
 setInterval(function () {
     fetch('/Session/KeepAlive', {
         method: 'GET',
@@ -139,19 +124,21 @@ function showWarningModal() {
 }
 
 function startCountdown() {
-    updateCountdownDisplay();
-
     countdownTimer = setInterval(function () {
-        sessionRemainingSeconds--;
+        const expireAt = localStorage.getItem('sessionExpireAt');
+        const remaining = Math.floor((expireAt - Date.now()) / 1000);
 
-        if (sessionRemainingSeconds <= 0) {
+        if (remaining <= 0) {
             clearInterval(countdownTimer);
             forceLogout();
         } else {
-            updateCountdownDisplay();
+            updateCountdownDisplay(remaining);
         }
     }, 1000);
+
+    updateCountdownDisplay(); // First display
 }
+
 
 
 function checkInternetConnection() {
@@ -228,50 +215,62 @@ function forceLogout() {
 }
 
 function renewSession() {
-    $.ajax({
-        url: '/Session/KeepAlive',
+    fetch('/Session/KeepAlive', {
         method: 'GET',
-        success: function () {
+        cache: 'no-store'
+    })
+        .then(response => {
+            if (!response.ok) throw new Error();
+
             $('#sessionTimeoutModal').modal('hide');
             clearTimeout(warningTimer);
             clearTimeout(logoutTimer);
             clearInterval(countdownTimer);
             clearInterval(floatingCountdownTimer);
-            startSessionTimers();
-        },
-        error: function () {
+
+            removeBlurAndOverlay();
+
+            setSessionExpireAt(); // ✅ This was missing
+            startSessionTimers(); // Restart countdown
+        })
+        .catch(() => {
             forceLogout();
-        }
-    });
+        });
 }
+
 $('#sessionTimeoutModal').on('hidden.bs.modal', function () {
     removeBlurAndOverlay();
     clearInterval(countdownTimer);
     clearInterval(floatingCountdownTimer);
 });
 
-function updateCountdownDisplay() {
+function updateCountdownDisplay(remainingSeconds = null) {
     const countdownElement = document.getElementById('countdown');
 
-    if (countdownElement) {
-        const minutes = Math.floor(sessionRemainingSeconds / 60);
-        const seconds = sessionRemainingSeconds % 60;
+    const expireAt = localStorage.getItem('sessionExpireAt');
+    const secondsLeft = remainingSeconds !== null
+        ? remainingSeconds
+        : Math.floor((expireAt - Date.now()) / 1000);
 
+    const minutes = Math.floor(secondsLeft / 60);
+    const seconds = secondsLeft % 60;
+
+    if (countdownElement) {
         countdownElement.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
-        // Style & color transitions
         countdownElement.style.fontSize = '2.5rem';
         countdownElement.style.fontWeight = 'bold';
 
-        if (sessionRemainingSeconds > 180) {
-            countdownElement.style.color = '#003366'; // Blue
-        } else if (sessionRemainingSeconds > 60) {
-            countdownElement.style.color = '#ff9900'; // Orange
+        if (secondsLeft > 180) {
+            countdownElement.style.color = '#003366';
+        } else if (secondsLeft > 60) {
+            countdownElement.style.color = '#ff9900';
         } else {
-            countdownElement.style.color = '#ff0000'; // Red
+            countdownElement.style.color = '#ff0000';
         }
     }
 }
+
 
 
 

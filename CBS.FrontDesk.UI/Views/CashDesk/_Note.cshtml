@@ -1,11 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+    @using Resources
 <div class="change-group">
     <div class="row mt-2 gy-4">
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
                 @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control", @style = "height: 200px;", @id = "Note" })
                 @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
-                <label for="formValidationDob">Enter note here</label>
+                <label for="formValidationDob">@CashDeskNote.EnterNoteHere</label>
             </div>
         </div>
     </div>

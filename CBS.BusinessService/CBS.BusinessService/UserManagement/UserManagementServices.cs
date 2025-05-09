@@ -17,6 +17,7 @@ using CBS.FrontDesk.Data.Entity.CMoney;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.Session;
 using DocumentFormat.OpenXml.EMMA;
+using Microsoft.Owin.Logging;
 
 namespace CBS.BusinessService.UserManagement
 {
@@ -413,7 +414,7 @@ namespace CBS.BusinessService.UserManagement
                     user.strlastLoginDate = user.LastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
                     user.status = user.isActive ? "Active" : "In-active";
                     user.ChangePassword.userName = user.userName;
-                    user.roleID = user.userRoles.Select(role => role.roleId).First();
+                    user.roleID = user.userRoles?.FirstOrDefault()?.roleId ?? Guid.Empty;
                     user.MFAActivation = new MFAActivation { Code = null, Email = user.email, Status = user.IsGoogleAuthenticatorEnabled };
                     return user;
                 }
@@ -575,6 +576,7 @@ namespace CBS.BusinessService.UserManagement
                 else if (model.Option == "ActivateDeactivateAccount")
                 {
                     userModel.isActive=userModel.isActive ? false : true;
+                    userModel.IsBlocked=userModel.isActive ? true : false;
                     userModel.ReasonForBlockingAccount=model.ReasonForBlockingAccount;
                 }
                 else if (model.Option == "ChangeBranch")
