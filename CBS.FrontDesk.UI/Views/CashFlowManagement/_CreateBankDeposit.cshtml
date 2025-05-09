@@ -167,10 +167,10 @@
                         else
                         {
                             <span class="formatted-amount shadow-box">
-                                Balance In Vault: XFA @Model.DepositNotification.AmountInVault
+                                Balance In Vault: FCFA @Model.DepositNotification.AmountInVault
                             </span>
                         }
-                        <input type="hidden" class="form-control amount-input shadow-input-boxes" id="lblAmountInVault" value="@Model.DepositNotification.Amount">
+                        @Html.HiddenFor(model => model.DepositNotification.AmountInVault, new { @class = "form-control amount-input shadow-input-boxes" })
                     </div>
 
                     <div class="form-floating form-floating-outline">

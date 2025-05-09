@@ -3,64 +3,57 @@
     ViewBag.Title = "View Cash Replenishment Details";
 
 }
-
 <div class="row invoice-preview">
     <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
 
         <div class="accordion-item active">
-            <h2 class="accordion-header text-body d-flex justify-content-between"
-                id="accordionPopoutIconThree">
-                <button type="button"
-                        class="accordion-button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#accordionPopoutIcon-3"
-                        aria-expanded="true"
-                        aria-controls="accordionPopoutIcon-3">
+            <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconThree">
+                <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionPopoutIcon-3" aria-expanded="true" aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
                     @{
-                        var formatedAmount = Convert.ToDecimal(Model.DepositNotificationDto.Amount).ToString("N");}
-                    Request ReferenceId :@Model.DepositNotificationDto.Id Amount : XFA @formatedAmount
+                        var formatedAmount = Convert.ToDecimal(Model.DepositNotificationDto.Amount).ToString("N");
+                    }
+                    Request ReferenceId: @Model.DepositNotificationDto.Id Amount: XFA @formatedAmount
                 </button>
             </h2>
             <div class="card-body">
-
                 <br />
                 <div class="collapse show">
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th colspan="2"> <h5 class="card-title">Bank Deposit Request Details</h5></th>
-
+                                <th colspan="2">
+                                    <h5 class="card-title">Bank Deposit Request Details</h5>
+                                </th>
                             </tr>
-
                         </thead>
                         <tbody class="table-border-bottom-0">
                             @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
                             {
                                 <tr>
                                     <td>Branch Office</td>
-                                    <td id="branchName">@Model.DepositNotificationDto.BranchOffice </td>
+                                    <td id="branchName">@Model.DepositNotificationDto.BranchOffice</td>
                                 </tr>
                             }
                             <tr>
                                 <td>Invoice Number</td>
-                                <td id="referenceId">@Model.DepositNotificationDto.Id </td>
+                                <td id="referenceId">@Model.DepositNotificationDto.Id</td>
                             </tr>
                             <tr>
                                 <td>Amount Requested</td>
-                                <td id="amountRequested">XAF @formatedAmount </td>
+                                <td id="amountRequested">XAF @formatedAmount</td>
                             </tr>
                             <tr>
                                 <td>Request Message</td>
-                                <td>@Model.DepositNotificationDto.Message </td>
+                                <td>@Model.DepositNotificationDto.Message</td>
                             </tr>
                             <tr>
-                                <td>Requested By </td>
-                                <td id="IssuedBy"> @Model.DepositNotificationDto.IssuedBy </td>
+                                <td>Requested By</td>
+                                <td id="IssuedBy">@Model.DepositNotificationDto.IssuedBy</td>
                             </tr>
                             <tr>
                                 <td>Requested Date</td>
-                                <td id="IssuedDate">@Model.DepositNotificationDto.IssueDate </td>
+                                <td id="IssuedDate">@Model.DepositNotificationDto.IssueDate</td>
                             </tr>
 
                             @if (@Model.DepositNotificationDto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Approved.ToString()))
@@ -68,150 +61,115 @@
                                 <tr>
                                     <td>Status</td>
                                     <td class="badge bg-label-success rounded-pill text-uppercase">
-                                        @Model.DepositNotificationDto.Status,but  waiting for action from manager
+                                        @Model.DepositNotificationDto.Status, but waiting for action from manager
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Approved Message</td>
-                                    <td>@Model.DepositNotificationDto.ApprovedMessage </td>
+                                    <td>@Model.DepositNotificationDto.ApprovedMessage</td>
                                 </tr>
                                 <tr>
-                                    <td>Approved By </td>
-                                    <td id="ApprovedBy"> @Model.DepositNotificationDto.ApprovedBy </td>
+                                    <td>Approved By</td>
+                                    <td id="ApprovedBy">@Model.DepositNotificationDto.ApprovedBy</td>
                                 </tr>
                                 <tr>
                                     <td>Approved Date</td>
-                                    <td id="ApprovedBy">@Model.DepositNotificationDto.ApprovedDate </td>
+                                    <td id="ApprovedDate">@Model.DepositNotificationDto.ApprovedDate</td>
                                 </tr>
-
-
-                                if (@Model.DepositNotificationDto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Completed.ToString()))
-                                {
-
-
-
-                                }
-
                             }
-                            else
-                            {
-                                if (@Model.DepositNotificationDto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Pending.ToString()))
-                                {
-                                    <tr>
-                                        <td>Status</td>
-                                        <td class="badge bg-label-primary rounded-pill text-uppercase">
-                                            @Model.DepositNotificationDto.Status,Has not yet been approved by head office
-                                        </td>
-                                    </tr>
-                                }
-                                else
-                                {
-                                    if (@Model.DepositNotificationDto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Completed.ToString()))
-                                    {
-                                        <tr>
-                                            <td>Status</td>
-                                            <td class="badge bg-label-success rounded-pill text-uppercase">
-                                                @Model.DepositNotificationDto.Status
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Approved Message</td>
-                                            <td>@Model.DepositNotificationDto.ApprovedMessage </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Approved By </td>
-                                            <td id="ApprovedBy"> @Model.DepositNotificationDto.ApprovedBy </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Approved Date</td>
-                                            <td id="ApprovedBy">@Model.DepositNotificationDto.ApprovedDate </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bank Transaction</td>
-                                            <td>
-                                                @*  <a href="#" onclick="LoadInfomation('@Model.DepositNotificationDto.ReferenceId')" class="mr-2" id="exLargeModal" data-toggle="tooltip" data-placement="top" title="View @Model.DepositNotificationDto.ReferenceId Cash Request">Bank Transaction Details</a>*@
-                                                <a href="#" onclick="LoadInfomation('@Model.DepositNotificationDto.Id')" class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="View @Model.DepositNotificationDto.IssuedBy BankDeposit Request">Bank Transaction Details</a>
-                                            </td>
-                                        </tr>
-                                    }
-                                    else
-                                    {
-                                        if (@Model.DepositNotificationDto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Approved.ToString()))
-                                        {
-                                            <tr>
-                                                <td>Status</td>
-                                                <td class="badge bg-label-primary rounded-pill text-uppercase">
-                                                    @Model.DepositNotificationDto.Status,Awaiting for fund transfer
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Status</td>
-                                                <td class="badge bg-label-success rounded-pill text-uppercase">
-                                                    @Model.DepositNotificationDto.Status,but  waiting for action from manager
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Approved Message</td>
-                                                <td>@Model.DepositNotificationDto.ApprovedMessage </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Approved By </td>
-                                                <td id="ApprovedBy"> @Model.DepositNotificationDto.ApprovedBy </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Approved Date</td>
-                                                <td id="ApprovedBy">@Model.DepositNotificationDto.ApprovedDate </td>
-                                            </tr>
-                                        }
-                                        else if (@Model.DepositNotificationDto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Awaiting_uploaded_bank_deposit_receipt.ToString()))
-
-                                        {
-                                            <tr>
-                                                <td>Status</td>
-                                                <td class="badge bg-label-danger rounded-pill text-uppercase">
-                                                    @Model.DepositNotificationDto.Status 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Approved Message</td>
-                                                <td>@Model.DepositNotificationDto.ApprovedMessage </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Approved By </td>
-                                                <td id="ApprovedBy"> @Model.DepositNotificationDto.ApprovedBy </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Approved Date</td>
-                                                <td id="ApprovedBy">@Model.DepositNotificationDto.ApprovedDate </td>
-                                            </tr>
-                                        }
-
-                                    }
-                                }
-
-                            }
-
-
-                            @if (@Model.DepositNotificationDto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Awaiting_uploaded_bank_deposit_receipt.ToString()))
+                            else if (@Model.DepositNotificationDto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Completed.ToString()))
                             {
                                 <tr>
-                                    <td></td>
-                                    <td>
+                                    <td>Status</td>
+                                    <td class="badge bg-label-success rounded-pill text-uppercase">
+                                        @Model.DepositNotificationDto.Status
                                     </td>
                                 </tr>
-                            }
-                            else
-                            {
+                                <tr>
+                                    <td>Approved Message</td>
+                                    <td>@Model.DepositNotificationDto.ApprovedMessage</td>
+                                </tr>
+                                <tr>
+                                    <td>Approved By</td>
+                                    <td id="ApprovedBy">@Model.DepositNotificationDto.ApprovedBy</td>
+                                </tr>
+                                <tr>
+                                    <td>Approved Date</td>
+                                    <td id="ApprovedDate">@Model.DepositNotificationDto.ApprovedDate</td>
+                                </tr>
                                 <tr>
                                     <td>Bank Transaction</td>
                                     <td>
-                                        @*  <a href="#" onclick="LoadInfomation('@Model.DepositNotificationDto.ReferenceId')" class="mr-2" id="exLargeModal" data-toggle="tooltip" data-placement="top" title="View @Model.DepositNotificationDto.ReferenceId Cash Request">Bank Transaction Details</a>*@
-                                        <a href="#" onclick="LoadInfomation('@Model.DepositNotificationDto.Id')" class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="View @Model.DepositNotificationDto.Id Cash Request">Bank Transaction Details</a>
+                                        <a href="#" onclick="LoadInfomation('@Model.DepositNotificationDto.Id')" class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="View @Model.DepositNotificationDto.IssuedBy BankDeposit Request">Bank Transaction Details</a>
                                     </td>
                                 </tr>
-
-
                             }
+                            else if (@Model.DepositNotificationDto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Pending.ToString()))
+                            {
+                                <tr>
+                                    <td>Status</td>
+                                    <td class="badge bg-label-primary rounded-pill text-uppercase">
+                                        @Model.DepositNotificationDto.Status, Has not yet been approved by head office
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        @using (Html.BeginForm("AddOrUpdate", "CashFlowManagement", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
+                                        {
+                                            <input type="hidden" name="option" value="Status" id="option" />
+                                            <input type="hidden" name="ServiceOption" value="DepositNotification" id="ServiceOption" />
+                                            <input type="hidden" name="Id" value="@Model.DepositNotificationDto.Id" id="Id" />
+                                            <div class="col-12 text-end">
+                                                <button type="submit" class="btn btn-danger me-2">Cancel Cash Deposit Request</button>
+                                                <input type="hidden" name="Action" value="update" id="Action" />
+                                            </div>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                            else if (@Model.DepositNotificationDto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Awaiting_uploaded_bank_deposit_receipt.ToString()))
+                            {
+                                <tr>
+                                    <td>Status</td>
+                                    <td class="badge bg-label-danger rounded-pill text-uppercase">
+                                        @Model.DepositNotificationDto.Status
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Approved Message</td>
+                                    <td>@Model.DepositNotificationDto.ApprovedMessage</td>
+                                </tr>
+                                <tr>
+                                    <td>Approved By</td>
+                                    <td id="ApprovedBy">@Model.DepositNotificationDto.ApprovedBy</td>
+                                </tr>
+                                <tr>
+                                    <td>Approved Date</td>
+                                    <td id="ApprovedDate">@Model.DepositNotificationDto.ApprovedDate</td>
+                                </tr>
+                            }
+                            else if (@Model.DepositNotificationDto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Cancel.ToString()))
+                            {
+                                <tr>
+                                    <td>Status</td>
+                                    <td class="badge bg-label-danger rounded-pill text-uppercase">
+                                        @Model.DepositNotificationDto.Status
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Approved Message</td>
+                                    <td>@Model.DepositNotificationDto.ApprovedMessage</td>
+                                </tr>
+                                <tr>
+                                    <td>Approved By</td>
+                                    <td id="ApprovedBy">@Model.DepositNotificationDto.ApprovedBy</td>
+                                </tr>
+                                <tr>
+                                    <td>Approved Date</td>
+                                    <td id="ApprovedDate">@Model.DepositNotificationDto.ApprovedDate</td>
+                                </tr>
+                            }
+
 
                         </tbody>
                     </table>
@@ -219,78 +177,15 @@
                         <span class="tf-icons mdi mdi-close mdi-18px"></span>
                     </a>
                 </div>
-                @*@if (@Model.DepositNotificationDto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Approved.ToString()))
-                    {
-                        <td class="badge bg-label-success rounded-pill text-uppercase">
-                            @Model.DepositNotificationDto.Status,but  waiting for action from manager
-                        </td>
-
-                    }
-                    else
-                    {
-                        if (@Model.DepositNotificationDto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Pending.ToString()))
-                        {
-                            <td class="badge bg-label-primary rounded-pill text-uppercase">
-                                @Model.DepositNotificationDto.Status,Has not yet been approved by head office
-                            </td>
-                        }
-                        else
-                        {
-                            if (@Model.DepositNotificationDto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Completed.ToString()))
-                            {
-                                <div class="card card-action mb-5">
-                                    <h5 class="card-title">Cash Replenishment Request Status</h5>
-                                    <div class="card-body">
-                                        <div class="mb-3 col-12 mb-0">
-
-                                                <div class="alert alert-outline-primary" role="alert">
-                                                    <h6 class="alert-heading mb-1">ReferenceId :@Model.DepositNotificationDto.Id  with Amount XFA @Model.DepositNotificationDto.AmountRequested.ToString("N") has been approved</h6>
-
-                                                </div>
-
-                                            <div class="text-end" style="padding-right:2em">
-
-
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                            }
-                            else
-                            {
-                                if (@Model.DepositNotificationDto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.awaiting_corresponding_entry_posting.ToString()))
-                                {
-                                    <td class="badge bg-label-primary rounded-pill text-uppercase">
-                                        @Model.DepositNotificationDto.Status,Awaiting for bank transfer
-                                    </td>
-                                }
-                                else
-                                {
-                                    <td class="badge bg-label-danger rounded-pill text-uppercase">
-                                        @Model.DepositNotificationDto.Status and aborted
-                                    </td>
-
-                                }
-
-                            }
-                        }
-
-                    }
-                    @if (@Model.DepositNotificationDto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Approved.ToString()))
-                    {
-
-                    }
-                    else
-                    {
-
-                    }*@
-
             </div>
         </div>
 
-        @Html.Partial("_ViewBankDepositTransaction")
+        @if (@Model.DepositNotificationDto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Completed.ToString()))
+        {
+            @Html.Partial("_ViewBankDepositTransaction")
+        }
+
     </div>
 </div>
+
+

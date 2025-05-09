@@ -133,7 +133,7 @@ namespace CBS.BusinessService.Accounting
                     // Successful creation
                     //GetExecutionMessages(response, true, $"Account {model.AccountNumber + " " + model.AccountName} has been created successfully", MessagesResults.Success,
                     //    ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, "");
-                    responseDto= response.ApiResponseData;
+                    responseDto = response.ApiResponseData;
                 }
                 else
                 {
@@ -155,7 +155,7 @@ namespace CBS.BusinessService.Accounting
         /// </summary>
         public async Task<bool> CheckAccountBalance(FrontDesk.Data.Account account, decimal amount, OperationTypes operationType)
         {
-            if (account==null)
+            if (account == null)
             {
                 return false;
             }
@@ -192,7 +192,7 @@ namespace CBS.BusinessService.Accounting
                 else // CREDIT
                 {
                     account.CreditBalance += amount;
-             
+
                     return (account.DebitBalance - account.CreditBalance) > 0;
                 }
             }
@@ -213,7 +213,7 @@ namespace CBS.BusinessService.Accounting
                 }
             }
 
-   
+
         }
 
         public async Task<FrontDesk.Data.Account> GetAccountWithAccountCartegorieStatus(string id)
@@ -221,12 +221,12 @@ namespace CBS.BusinessService.Accounting
             try
             {
                 var listOfCategories = (await accountCartegorieService.GetAccountCategory()).ToList();
-                    var account = (await GetAllAccounting()).Where(i => i.Id.Equals(id)).FirstOrDefault();
+                var account = (await GetAllAccounting()).Where(i => i.Id.Equals(id)).FirstOrDefault();
                 var modelVal = listOfCategories.Find(x => x.Id == account.AccountCategoryId);
-                if (modelVal.Name== CLASS_4_Recievabels||account.AccountNumber.StartsWith("2") || // Fixed Assets
-                                                                                                //   || // Inventory
+                if (modelVal.Name == CLASS_4_Recievabels || account.AccountNumber.StartsWith("2") || // Fixed Assets
+                                                                                                     //   || // Inventory
                                 account.AccountNumber.StartsWith("5") || // Financial
-                                account.AccountNumber.StartsWith("6") )  // Expenses)
+                                account.AccountNumber.StartsWith("6"))  // Expenses)
                 {
                     account.AccountCategoryId = "debit";
                 }
@@ -376,8 +376,8 @@ namespace CBS.BusinessService.Accounting
                 throw (ex);
             }
         }
-      
-        
+
+
         public async Task<List<FrontDesk.Data.Account>> GetAllAccounting()
         {
             try
@@ -424,7 +424,7 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
-                  branchId = branchId.Equals("DEFAULTID") ? (await _branchService.GetBranches()).Where(x => x.BranchCode == "001").FirstOrDefault().Id:branchId;
+                branchId = branchId.Equals("DEFAULTID") ? (await _branchService.GetBranches()).Where(x => x.BranchCode == "001").FirstOrDefault().Id : branchId;
                 var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Account>>>(string.Format(APICallHelper.GetAllAccountByBranch, branchId));
                 if (couApiResponse.IsSuccess)
                 {
@@ -572,7 +572,7 @@ namespace CBS.BusinessService.Accounting
                 }
                 else
                 {
-   
+
                     return GetExecutionMessages(account, false, $"{account.AccountNumber + " " + account.AccountName}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
                 }
@@ -580,7 +580,7 @@ namespace CBS.BusinessService.Accounting
             }
             catch (Exception ex)
             {
-    
+
             }
             return null;
         }
@@ -624,13 +624,23 @@ namespace CBS.BusinessService.Accounting
                 {
 
 
-                    return GetExecutionMessages(inResponse, true, $"{account.ReportType + " " + account.FileName}", MessagesResults.Success,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
+                    if (id== "XXXXXX")
+                    {
+                        return GetExecutionMessages(inResponse, true, $"Download history has been downloaded successfully", MessagesResults.Success,
+                                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
 
+                    }
+                    else
+                    {
+                        return GetExecutionMessages(inResponse, true, $"{account.ReportType + " " + account.FileName}", MessagesResults.Success,
+                                       ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
+
+                    }
 
                 }
                 else
                 {
+
                     // Handle failure scenario
                     return GetExecutionMessages(account, false, $"{account.ReportType + " " + account.ReportType}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
@@ -702,7 +712,7 @@ namespace CBS.BusinessService.Accounting
 
 
                 var response = await _accountingApiCallerHelper.PostJOurnalEntriesAsync(url, model);
-                if (response.StatusCode==200)
+                if (response.StatusCode == 200)
                 {
                     // Successful creation
                     //GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
@@ -835,7 +845,7 @@ namespace CBS.BusinessService.Accounting
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, $"No branchId was selected");
                 }
 
-                var model = new { BranchIds =Newtonsoft.Json. JsonConvert.DeserializeObject< List<string> > (listOfBranchIds[0]) };
+                var model = new { BranchIds = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(listOfBranchIds[0]) };
                 var response = await _accountingApiCallerHelper.PostUploadAccountResultResponseAsync(APICallHelper.CleanAccountingEntryUrl, model);
                 if (response != null)
                 {
@@ -873,19 +883,19 @@ namespace CBS.BusinessService.Accounting
 
         }
 
-   
+
 
         public async Task<FrontDesk.Data.Account> GetAccountItemForBranch(List<FrontDesk.Data.Account> branchAccounts, List<ChartofAccountManagementPosition> chartOfAccountMps, AccountModel item)
         {
             FrontDesk.Data.Account accountData = new FrontDesk.Data.Account();
-            var account = branchAccounts.Where(x=>x.ChartOfAccountManagementPositionId.Equals(item.Id));
+            var account = branchAccounts.Where(x => x.ChartOfAccountManagementPositionId.Equals(item.Id));
             if (account.Any())
             {
                 accountData = account.FirstOrDefault();
             }
             else
             {
-                var modell =   chartOfAccountMps.Find(x=>x.Id==item.Id);
+                var modell = chartOfAccountMps.Find(x => x.Id == item.Id);
 
                 var response = await this.CreateAccountOnProcessing(new FrontDesk.Data.Account
                 {
@@ -901,19 +911,19 @@ namespace CBS.BusinessService.Accounting
                     ChartOfAccountManagementPositionId = modell.Id,
                     BranchCode = GetBranchCode(),
                     OwnerBranchCode = GetBranchCode(),
-                    
-                    Id="XXX",
+
+                    Id = "XXX",
                     LiaisonBranchCode = item.AccountNumber.Substring(item.AccountNumber.Length - 3),
 
                     IsNormalCreation = false,
-                   
+
                 });
 
-                accountData = await this.GetAccount(response.Id);   
+                accountData = await this.GetAccount(response.Id);
 
                 return accountData;
             }
-              //await this.CreateAccountOnProcessing(FrontDesk.Data.Account.CreateAccountModel(item))).Data: account;
+            //await this.CreateAccountOnProcessing(FrontDesk.Data.Account.CreateAccountModel(item))).Data: account;
             return accountData;
 
         }

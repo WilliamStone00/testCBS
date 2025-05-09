@@ -403,7 +403,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
             new System.Web.WebPages.Html.SelectListItem { Value = "DEBIT", Text = "DEBIT" },
             new System.Web.WebPages.Html.SelectListItem { Value = "CREDIT", Text = "CREDIT" },
-
+                new System.Web.WebPages.Html.SelectListItem { Value = "NONE", Text = "NONE" },
             };
             return selectListItems;
         }

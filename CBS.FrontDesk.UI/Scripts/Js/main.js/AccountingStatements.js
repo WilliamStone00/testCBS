@@ -9,7 +9,7 @@
     //// Initialize - hide branch list if checkbox is checked
     toggleBranchList(!$auditCheckbox.is(':checked'));
 
-    // Handle checkbox change
+    // Handle checkbox change DeleteBtn
     $auditCheckbox.change(function () {
         toggleBranchList($(this).is(':checked'));
     });
@@ -62,7 +62,15 @@
         }
 
     });
-  
+    $('#DeleteBtn a').on('click', function (e) {
+        // Optional: prevent the default link behavior if needed
+        e.preventDefault();
+
+        // Hide the entire <th> element with ID DeleteBtn
+        $('#DeleteBtn').hide();
+
+ 
+    });
 });
 
 
@@ -196,11 +204,12 @@ function AjaxPostSearch(form) {
                         if (model.FileType.toLowerCase() === "pdf")
                         {
                             openReportWindow(model.FileType, model.ReportType);
+                            LoadDataGen('AccountingStatements', 'myDataTable', '_DownloadedReportData', 'DESC', 'datalistingview', 'xxx', 'Reports', 'list');
+
                         } else {
-                            window.location.reload();
+                            LoadDataGen('AccountingStatements', 'myDataTable', '_DownloadedReportData', 'DESC', 'datalistingview', 'xxx', 'Reports', 'list');
                         }
-                    
-             
+      
                     }
                     , error: function (err) {
                         console.log(err.statusText);
