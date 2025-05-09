@@ -758,6 +758,76 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CashDeskCashout.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDeskNote.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDeskNote.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_CustomerCard.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_CustomerCard.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_DenominationBreakDown.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_DenominationBreakDown.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_DepositerForm.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_DepositerForm.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_ExpenseOtherPaymentForm.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_ExpenseOtherPaymentForm.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_ExpenseOtherTransactionForm.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_ExpenseOtherTransactionForm.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_ExpenseOtherTransactionTabs.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_ExpenseOtherTransactionTabs.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_LoanRepaymentSimulationForm.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_LoanRepaymentSimulationForm.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_MemberPayment.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_MemberPayment.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_MomocashCollectionForm.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_MomocashCollectionForm.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_MomocashCollectionSearchBox.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_MomocashCollectionSearchBox.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_MomocashCollectionTabs.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_MomocashCollectionTabs.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_NoneMemberPayment.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_NoneMemberPayment.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashDesk\CashDesk_OperationForm.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashDesk_OperationForm.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\CashDesk\CashDesk_OtherCashMobileMoneyForm.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1280,6 +1350,7 @@
     <Compile Include="Controllers\AndriodVersioning\AndriodAppVersioningController.cs" />
     <Compile Include="Controllers\BulkOperation\BulkOperationController.cs" />
     <Compile Include="Controllers\ChangeCustomerNumber\ChangeNumberController.cs" />
+    <Compile Include="Controllers\SMSP\SMSActivityLogController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectorManagementController.cs" />
     <Compile Include="Controllers\Localization\LocalizationController.cs" />
     <Compile Include="Controllers\LoanApplicationP\LoanApplicationController.cs" />
@@ -4265,6 +4336,62 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>CashDesk_OtherCashMobileMoneyForm.Designer.cs</LastGenOutput>
     </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_OperationForm.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_OperationForm.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDeskNote.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDeskNote.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_NoneMemberPayment.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_NoneMemberPayment.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_MomocashCollectionTabs.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_MomocashCollectionTabs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_MomocashCollectionSearchBox.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_MomocashCollectionSearchBox.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_MomocashCollectionForm.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_MomocashCollectionForm.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_MemberPayment.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_MemberPayment.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_LoanRepaymentSimulationForm.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_LoanRepaymentSimulationForm.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_ExpenseOtherTransactionTabs.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_ExpenseOtherTransactionTabs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_ExpenseOtherTransactionForm.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_ExpenseOtherTransactionForm.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_ExpenseOtherPaymentForm.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_ExpenseOtherPaymentForm.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_DepositerForm.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_DepositerForm.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_DenominationBreakDown.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_DenominationBreakDown.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashDesk\CashDesk_CustomerCard.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashDesk_CustomerCard.Designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -4398,6 +4525,7 @@
     <Content Include="Scripts\Js\Crud\Remittance\RemittancePending.js" />
     <Content Include="Scripts\Js\Crud\Remittance\RemittanceQuery.js" />
     <Content Include="Scripts\Js\Crud\Remittance\RemittanceRequest.js" />
+    <Content Include="Scripts\Js\Crud\SMSActivityLog\SMSActivityLog.js" />
     <Content Include="Scripts\Js\Crud\User\UserConnected.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\Pending.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\Requests.js" />
@@ -5383,9 +5511,6 @@
     <Content Include="Views\BulkOperation\_SimulateAccountContribution.cshtml" />
     <Content Include="Views\BulkOperation\_SimulateToAccountTopUp.cshtml" />
     <Content Include="Views\BulkOperation\Listing.cshtml" />
-    <Content Include="Views\BulkOperation\_BulkOperationSelection.cshtml" />
-    <Content Include="Views\BulkOperation\_SourceAccountsConfiguration.cshtml" />
-    <Content Include="Views\BulkOperation\_SimulationTypeAndDescription.cshtml" />
     <Content Include="Views\UserManagement\_UserActionLogs.cshtml" />
     <Content Include="Views\BulkOperation\_SimulationOptions.cshtml" />
     <Content Include="Views\BulkOperation\_SourceAccountConfiguration.cshtml" />

@@ -1,54 +1,55 @@
-﻿<div class="modal-body pt-0">
+﻿@using Resources
+<div class="modal-body pt-0">
     <form id="depositorForm">
         <div class="row gy-3">
             <div class="col-md-6">
                 <div class="form-floating">
-                    <input type="text" id="DepositorName" class="form-control" placeholder="Full name">
-                    <label for="DepositorName">Name</label>
-                    <div class="invalid-feedback">Please enter name.</div>
+                    <input type="text" id="DepositorName" class="form-control" placeholder="@CashDesk_DepositerForm.FullName">
+                    <label for="DepositorName">@CashDesk_DepositerForm.Name</label>
+                    <div class="invalid-feedback">@CashDesk_DepositerForm.PleaseEnterName.</div>
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="form-floating">
-                    <input type="tel" id="DepositerTelephone" class="form-control" placeholder="Phone Number">
-                    <label for="DepositorTelephone">Phone Number</label>
-                    <div class="invalid-feedback">Phone number is required.</div>
+                    <input type="tel" id="DepositerTelephone" class="form-control" placeholder="@CashDesk_DepositerForm.PhoneNumber">
+                    <label for="DepositorTelephone">@CashDesk_DepositerForm.PhoneNumber</label>
+                    <div class="invalid-feedback">@CashDesk_DepositerForm.PhoneNumberIsRequired.</div>
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="form-floating">
-                    <input type="text" id="DepositorIDNumber" class="form-control" placeholder="ID Number">
-                    <label for="DepositorIDNumber">CNI / ID Number</label>
-                    <div class="invalid-feedback">Enter a valid ID number.</div>
+                    <input type="text" id="DepositorIDNumber" class="form-control" placeholder="@CashDesk_DepositerForm.IDNumber">
+                    <label for="DepositorIDNumber">@CashDesk_DepositerForm.CNIIDNumber</label>
+                    <div class="invalid-feedback">@CashDesk_DepositerForm.EnterAValidIDNumber.</div>
                 </div>
             </div>
 
             <div class="col-md-3">
                 <div class="form-floating">
                     <input type="date" id="DepositorIDIssueDate" class="form-control">
-                    <label for="DepositorIDIssueDate">Issue Date</label>
-                    <div class="invalid-feedback">Issue date is required.</div>
+                    <label for="DepositorIDIssueDate">@CashDesk_DepositerForm.IssueDate</label>
+                    <div class="invalid-feedback">@CashDesk_DepositerForm.IssueDateRequired.</div>
                 </div>
             </div>
 
             <div class="col-md-3">
                 <div class="form-floating">
                     <input type="date" id="DepositorIDExpiryDate" class="form-control">
-                    <label for="DepositorIDExpiryDate">Expiry Date</label>
-                    <div class="invalid-feedback">Expiry date is required.</div>
-                    <div class="invalid-feedback">Please enter a valid date.</div>
+                    <label for="DepositorIDExpiryDate">@CashDesk_DepositerForm.ExpiryDate</label>
+                    <div class="invalid-feedback">@CashDesk_DepositerForm.ExpiryDateIsRequired.</div>
+                    <div class="invalid-feedback">@CashDesk_DepositerForm.PleaseEnterValidDate.</div>
 
                 </div>
             </div>
 
             <div class="col-md-12">
                 <div class="form-floating">
-                    <input type="text" id="DepositorIDNumberPlaceOfIssue" class="form-control" placeholder="Place of Issue">
-                    <label for="DepositorIDNumberPlaceOfIssue">Place of Issue</label>
-                    <div class="invalid-feedback">Enter place of issue.</div>
-                    <div class="invalid-feedback">Please enter a valid date.</div>
+                    <input type="text" id="DepositorIDNumberPlaceOfIssue" class="form-control" placeholder="@CashDesk_DepositerForm.PlaceOfIssue">
+                    <label for="DepositorIDNumberPlaceOfIssue">@CashDesk_DepositerForm.PlaceOfIssue</label>
+                    <div class="invalid-feedback">@CashDesk_DepositerForm.PlaceOfIssue.</div>
+                    <div class="invalid-feedback">@CashDesk_DepositerForm.PleaseEnterValidPlace.</div>
 
                 </div>
             </div>
@@ -56,7 +57,7 @@
             <div class="col-md-12">
                 <div class="form-floating">
                     <textarea id="DepositerNote" class="form-control" placeholder="Optional note..." style="height: 75px;"></textarea>
-                    <label for="DepositerNote">Note</label>
+                    <label for="DepositerNote">@CashDesk_DepositerForm.Note</label>
                 </div>
             </div>
         </div>

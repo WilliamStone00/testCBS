@@ -21,7 +21,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    Request ReferenceId :@Model.DepositNotificationDto.Id Amount : XFA @Model.DepositNotificationDto.Amount
+                    Request ReferenceId :@Model.DepositNotificationDto.Id Amount : FCFA  @Convert.ToDecimal(Model.DepositNotificationDto.Amount).ToString("N")
                 </button>
             </h2>
             <div class="card-body">
@@ -44,10 +44,10 @@
                                 </tr>
                             }
 
-                            <tr>
-                                <td>Amount to deposit</td>
-                                <td>XAF @{ (Convert.ToDecimal(Model.DepositNotificationDto.Amount)).ToString("N");} </td>
-                            </tr>
+                        <tr>
+                            <td>Amount to deposit</td>
+                            <td>FCFA @Convert.ToDecimal(Model.DepositNotificationDto.Amount).ToString("N")</td>
+                        </tr>>
                             <tr>
                                 <td> Message</td>
                                 <td>@Model.DepositNotificationDto.Message </td>
@@ -147,8 +147,8 @@
                                             <label for="Account">Make decision</label>
                                         </div>
                                     </div>
-                                    <div id="hideBranchID">
-                                        <div class="form-check mb-3">
+                              
+                                        <div class="form-check mb-3" id="hideBranchID">
                                             <div class="form-floating form-floating-outline">
 
                                                 @Html.DropDownListFor(m => m.DepositNotificationDto.correpondingBranchId, new SelectList(ViewBag.ZoneBranch == null ? "" : ViewBag.ZoneBranch, "Text", "Value"), "", new { @class = "form-control select2", @search = "true", @id = "CorrespondingBranchID" })
@@ -156,17 +156,18 @@
                                                 <label for="Account">Select Branch</label>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div id="hideAccountId">
-                                        <div class="form-check mb-3">
+                                  
+                                 
+                           
+                                        <div class="form-check mb-3" id="hideAccountId">
                                             <div class="form-floating form-floating-outline">
 
-                                                @Html.DropDownListFor(m => m.DepositNotificationDto.Temp3, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
+                                                @Html.DropDownListFor(m => m.DepositNotificationDto.Temp3, new SelectList(ViewBag.BankAccounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
                                                 @Html.ValidationMessageFor(model => model.DepositNotificationDto.Temp3, "", new { @class = "text-danger" })
-                                                <label for="Account">Select crediting account</label>
+                                                <label for="Account">Select Bank Account</label>
                                             </div>
                                         </div>
-                                    </div>
+                                   
                                
 
                                     <div class="form-check mb-3">

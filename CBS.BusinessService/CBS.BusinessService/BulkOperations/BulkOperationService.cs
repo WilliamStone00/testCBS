@@ -43,7 +43,7 @@ namespace CBS.BusinessService.BulkOperations
             try
             {
                 // Make an API call to create an individual profile
-                var response = await _loanConfigApiHelper.PostAsync<ResponseObject<CreateBulkOperationSimulation>>(APICallHelper.SimulateBulkOperationRangeBetweenAccountSimulation, command);
+                var response = await _smsConfigApiHelper.PostAsync<ResponseObject<CreateBulkOperationSimulation>>(APICallHelper.SimulateBulkOperationRangeBetweenAccountSimulation, command);
                 if (response.IsSuccess)
                 {
                     HttpContext.Current.Session["bulk_operation"] = response.ApiResponseData.Data;

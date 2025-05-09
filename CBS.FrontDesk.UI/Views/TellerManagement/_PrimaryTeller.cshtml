@@ -201,28 +201,28 @@
 
                                 <div class="col-md-3">
                                     <div class="form-check">
-                                        @Html.CheckBoxFor(m => m.Teller.IsBlockedDueToCashCeilling, new { @class = "form-check-input"})
+                                        @Html.CheckBoxFor(m => m.Teller.IsBlockedDueToCashCeilling, new { @class = "form-check-input" })
                                         <label class="form-check-label">Blocked Due to Ceiling</label>
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Teller.DateOfBlocked, "{0:yyyy-MM-dd HH:mm}", new { @class = "form-control", @readonly = "readonly", type = "datetime-local" })
                                         <label>Date Blocked</label>
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-5">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Teller.Blockedby, new { @class = "form-control", @readonly = "readonly" })
                                         <label>Blocked By</label>
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-12 mt-2">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.Teller.Comment, new { @class = "form-control", placeholder = "Reason or Notes" })
+                                        @Html.TextAreaFor(m => m.Teller.Comment, new { @class = "form-control", @readonly = "readonly", rows = "5", placeholder = "Reason or Notes" })
                                         @Html.ValidationMessageFor(m => m.Teller.Comment, "", new { @class = "text-danger" })
                                         <label>Comment</label>
                                     </div>

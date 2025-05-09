@@ -21,7 +21,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         RedirectToBranchBTB,
         Rejected,
         Awaiting_uploaded_bank_deposit_receipt,
- 
+ Cancel,
         Completed
     }
     public enum CashRequisitionType

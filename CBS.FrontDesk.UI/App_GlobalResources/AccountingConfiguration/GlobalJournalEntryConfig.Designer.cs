@@ -97,6 +97,60 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Best Practice.
+        /// </summary>
+        internal static string BestPractice {
+            get {
+                return ResourceManager.GetString("BestPractice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click Post to apply the setting.
+        /// </summary>
+        internal static string ClickPostToApplyTheSetting {
+            get {
+                return ResourceManager.GetString("ClickPostToApplyTheSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ensure that hiding the account won&apos;t interfere with required reporting or reconciliation.
+        /// </summary>
+        internal static string EnsureThatHidingTheAccountWontInterfere {
+            get {
+                return ResourceManager.GetString("EnsureThatHidingTheAccountWontInterfere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How to Configure.
+        /// </summary>
+        internal static string HowToConfigure {
+            get {
+                return ResourceManager.GetString("HowToConfigure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Important Note.
+        /// </summary>
+        internal static string ImportantNote {
+            get {
+                return ResourceManager.GetString("ImportantNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is reserved for internal/system operations.
+        /// </summary>
+        internal static string IsReservedForInternalSystemOperations {
+            get {
+                return ResourceManager.GetString("IsReservedForInternalSystemOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This menu allows the financial manager to configure which accounts should be visible during manual journal entry.It provides flexibility for the accountant to control which accounts should not be used for manual journal entries..
         /// </summary>
         internal static string ManualPostingRulesDescription {
@@ -111,6 +165,33 @@ namespace Resources {
         internal static string ManualPostingRulesTitle {
             get {
                 return ResourceManager.GetString("ManualPostingRulesTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Needs to be restricted for security or operational reasons.
+        /// </summary>
+        internal static string NeedsToBeRestrictedForSecurity {
+            get {
+                return ResourceManager.GetString("NeedsToBeRestrictedForSecurity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Once posted, the account will no longer appear in the GL to GL Journal screen.
+        /// </summary>
+        internal static string OncePostedTheAccountWillNoLongerAppear {
+            get {
+                return ResourceManager.GetString("OncePostedTheAccountWillNoLongerAppear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purpose of This Menu.
+        /// </summary>
+        internal static string PurposeOfThisMenu {
+            get {
+                return ResourceManager.GetString("PurposeOfThisMenu", resourceCulture);
             }
         }
         
@@ -133,11 +214,65 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the account you want to hide from the provided list.
+        /// </summary>
+        internal static string SelectTheAccountYouWantToHideFromTheProvidedList {
+            get {
+                return ResourceManager.GetString("SelectTheAccountYouWantToHideFromTheProvidedList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Should not be manually posted to via GL to GL.
+        /// </summary>
+        internal static string ShouldNotBeManuallyPostedToViaGL {
+            get {
+                return ResourceManager.GetString("ShouldNotBeManuallyPostedToViaGL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The account is not deleted or deactivated—it simply becomes invisible for GL to GL journal entries. You can make it visible again by removing it from the hidden list at any time.
+        /// </summary>
+        internal static string TheAccountIsNotDeletedOrDeactivated {
+            get {
+                return ResourceManager.GetString("TheAccountIsNotDeletedOrDeactivated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This configuration allows the System Administrator to hide specific General Ledger (GL) accounts from appearing in the GL to GL Journal interface. It helps control visibility of sensitive or system accounts.
+        /// </summary>
+        internal static string ThisConfigurationAllowsTheSystemAdministratorToHideSpecificGeneralLedgerAccounts {
+            get {
+                return ResourceManager.GetString("ThisConfigurationAllowsTheSystemAdministratorToHideSpecificGeneralLedgerAccounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tips for Using the “Hide from GL to GL Journals.
+        /// </summary>
+        internal static string TipsForUsingTheHideFromGLToGLJournals {
+            get {
+                return ResourceManager.GetString("TipsForUsingTheHideFromGLToGLJournals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TIPS.
         /// </summary>
         internal static string TipsTitle {
             get {
                 return ResourceManager.GetString("TipsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use this menu if the GL account.
+        /// </summary>
+        internal static string UseThisMenuIfTheGLAccount {
+            get {
+                return ResourceManager.GetString("UseThisMenuIfTheGLAccount", resourceCulture);
             }
         }
         
@@ -156,6 +291,24 @@ namespace Resources {
         internal static string WarningMessage {
             get {
                 return ResourceManager.GetString("WarningMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When to Use This Feature.
+        /// </summary>
+        internal static string WhenToUseThisFeature {
+            get {
+                return ResourceManager.GetString("WhenToUseThisFeature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work closely with your finance or audit team before hiding any accounts.
+        /// </summary>
+        internal static string WorkCloselyWithYourFinanceOrAuditTeamBeforeHidingAnyAccounts {
+            get {
+                return ResourceManager.GetString("WorkCloselyWithYourFinanceOrAuditTeamBeforeHidingAnyAccounts", resourceCulture);
             }
         }
     }

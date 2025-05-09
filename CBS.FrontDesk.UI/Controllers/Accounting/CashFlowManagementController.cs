@@ -110,7 +110,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             foreach (var branch in branches)
             {
 
-                stringValues.Add(new StringValues(branch.Id, branch.BranchCode + "-" + branch.Name));
+                stringValues.Add(new StringValues(branch.Id,    branch.Name));
             }
             return stringValues;
         }
@@ -253,7 +253,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(_AccountServices.GetBranchID());
             var model = new DepositNotification();
-            var AccModel = listOfAccounts.Where(c => c.Account2 == "57101").ToList();
+            var AccModel = listOfAccounts.Where(c => c.Account5 == "57101").ToList();
             model.HasBankAccount = listOfAccounts.Any();
             model.AmountInVault = AccModel.Count > 0 ? (AccModel.Sum(c => c.CurrentBalance)) : 0;
             ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
@@ -414,6 +414,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             await GetList();
             return View(new CashDemandDataEntity());
         }
+
+
+        [HttpGet]
+        public async Task<ActionResult> GetAllBranch()
+        {
+
+            var listOfBranchs =await branchServices.GetBranches();
+         var data = BuildDropDown(GenerateBranchBranchCode(listOfBranchs.ToList()));
+           return Json(data, JsonRequestBehavior.AllowGet);
+        }
         [HttpGet]
         public async Task<ActionResult> GetAllBranchAccountUsedToCreditCashFlow(string branchId,string optionQuery)
         {
@@ -424,15 +434,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(branchId);
                 if (optionQuery!=null)
                 {
-                    if (optionQuery.ToLower() == "RedirectToBranchBCO".ToLower())
+                    if (optionQuery.Contains("RedirectToBranchBCO"))
                     {
                         listOfAccounts = listOfAccounts.Where(c => c.Account2 == "56").ToList();
                     }
-                    else if (optionQuery == "RedirectToBranchBTB".ToLower())
+                    else if (optionQuery.Contains( "RedirectToBranchBTB"))
                     {
                         listOfAccounts = listOfAccounts.Where(c => c.AccountNumber == "57101").ToList();
                     }
-                    else if (optionQuery.ToLower().Contains("Approved"))
+                    else if (optionQuery.Contains("Approved"))
                     {
                         listOfAccounts = listOfAccounts.Where(c => c.Account2 == "56").ToList();
                     }
@@ -494,6 +504,38 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         }
 
 
+        [HttpGet]
+        public async Task<ActionResult> GetBranchBankAccount(string branchId)
+        {
+
+            List<ChartOfAccountStateDto> listOfAccounts = new List<ChartOfAccountStateDto>();
+            listOfAccounts = await _chartOfAccountManagementPositionService.GetAllBranchAccountUsedToCreditCashFlow("560", "3");
+            
+            var listOfBankAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(branchId);
+
+            listOfBankAccounts = listOfBankAccounts.Where(c => c.Account2 == "56").ToList();
+            if (listOfBankAccounts.Any())
+            {
+                foreach (var item in listOfBankAccounts)
+                {
+                     var model = listOfAccounts.Find(m => m.Id == item.ChartOfAccountManagementPositionId);
+                    if (model!=null)
+                    {
+                        listOfAccounts.Remove(model);
+                    }
+                    listOfAccounts.Add(new ChartOfAccountStateDto { Id = $"{item.ChartOfAccountManagementPositionId}-{item.Id}", GeneralRepresentation = $"[{item.AccountNumberCU}-{item.AccountName}-{item.CurrentBalance}]" });
+
+                }
+            }
+
+            var data = BuildDropDown(GenerateAccountListView(listOfAccounts));
+            return Json(data, JsonRequestBehavior.AllowGet);
+       
+        }
+
+
+
+
         [HttpPost]
         public async Task<ActionResult> AddOrUpdate(CashDemandDataEntity model)
         {
@@ -539,9 +581,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
                 else
                 {
-                    //update
-                    var datac = await _accountingEntryServices.UpdateDepositNotificationRequest(model.DepositNotification);
-                    return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
+                    model.DepositNotification.Id = model.Id;
+                      var datac = await _accountingEntryServices.UpdateDepositNotificationRequest(model.DepositNotification);
+                    return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) },JsonRequestBehavior.AllowGet);
 
                 }
             }
@@ -1375,38 +1417,63 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
             }
 
-            var dataUser = (await _accountingEntryServices.GetUserList()).ToList();
-            var result = from request in datas
-                         join user in dataUser on request.ApprovedBy equals user.id.ToString()
-                         select new DepositNotificationDto
-                         {
-                             Id = request.Id,
+            var dataUserList = (await _accountingEntryServices.GetUserList()).ToList();
+           var branchList= await branchServices.GetBranches();
+            //var result = from request in datas
+            //             join user in dataUser on request.ApprovedBy equals user.id.ToString()
+            //             select new DepositNotificationDto
+            //             {
+            //                 Id = request.Id,
 
-                             Message = request.Message,
-                             IssuedBy = request.IssuedBy,
-                             IssueDate = request.IssueDate,
-                             ApprovedBy = request.ApprovedBy,
-                             IsApproved = request.IsApproved,
-                             Amount = request.Amount,
-                             ApprovedDate = request.ApprovedDate,
-                             Status = request.Status,
-                             BranchId = request.BranchId,
-                             ApprovedMessage = request.ApprovedMessage
-                         };
+            //                 Message = request.Message,
+            //                 IssuedBy = request.IssuedBy,
+            //                 IssueDate = request.IssueDate,
+            //                 ApprovedBy = request.ApprovedBy,
+            //                 IsApproved = request.IsApproved,
+            //                 Amount = request.Amount,
+            //                 ApprovedDate = request.ApprovedDate,
+            //                 Status = request.Status,
+            //                 BranchId = request.BranchId,
+            //                 IsOwner = request.BranchId== _accountingEntryServices.GetBranchID(),
+            //                 ApprovedMessage = request.ApprovedMessage
+            //             };
+           
             CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
             foreach (var item in datas.ToList())
             {
-                item.BranchOffice = (await branchServices.GetBranch(item.BranchId)).Name;
-                item.HasBankAccount = await CheckIfBranchHasBankAccountAsync(item.BranchId);
-                var userx = await _accountingEntryServices.GetUser(item.IssuedBy);
-                item.Temp1 = userx.firstName + "," + userx.lastName;
-                if (item.IsApproved)
+                if (item.BranchId == _accountingEntryServices.GetBranchID())
                 {
-                    var user0x = await _accountingEntryServices.GetUser(item.ApprovedBy);
-                    item.Temp2 = user0x.firstName + "," + user0x.lastName;
-                }
+                    var branch = branchList.FirstOrDefault(x => x.Id.Equals(item.BranchId));
+                    item.BranchOffice = branch.Name;
+                    item.HasBankAccount = branch.IsHavingBank;
+                    var userx = dataUserList.Find(x => x.id.ToString() == item.IssuedBy);
+                    item.Temp1 = userx.firstName + " " + userx.lastName;
+                    item.IsOwner = item.BranchId == _accountingEntryServices.GetBranchID();
+                    if (item.IsApproved)
+                    {
+                        var user0x = dataUserList.Find(x => x.id.ToString() == item.ApprovedBy);
+                        item.Temp2 = user0x.firstName + "," + user0x.lastName;
+                    }
 
-                DepositNotificationDtos.Add(item);
+                    DepositNotificationDtos.Add(item);
+                }
+                else
+                {
+                    var branch = branchList.FirstOrDefault(x => x.Id.Equals(item.correpondingBranchId));
+                    item.BranchOffice = branch.Name;
+                    item.HasBankAccount = branch.IsHavingBank;
+                    var userx = dataUserList.Find(x => x.id.ToString() == item.IssuedBy);
+                    item.Temp1 = userx.firstName + " " + userx.lastName;
+                    item.IsOwner = item.BranchId == _accountingEntryServices.GetBranchID();
+                    if (item.IsApproved)
+                    {
+                        var user0x = dataUserList.Find(x => x.id.ToString() == item.ApprovedBy);
+                        item.Temp2 = user0x.firstName + "," + user0x.lastName;
+                    }
+
+                    DepositNotificationDtos.Add(item);
+                }
+              
             }
             cashDemandDataEntity.ListDepositNotificationDto = DepositNotificationDtos;
 

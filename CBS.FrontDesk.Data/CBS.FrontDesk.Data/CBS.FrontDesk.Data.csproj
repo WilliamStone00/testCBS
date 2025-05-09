@@ -107,6 +107,7 @@
     <Compile Include="Entity\SalaryManagement\SalaryExecutionModel.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryUploadModel.cs" />
     <Compile Include="Entity\SalaryManagement\StandingOrder.cs" />
+    <Compile Include="Entity\SMSP\Sms.cs" />
     <Compile Include="Entity\VaultManagement\VaultAuthorisedPersonP\VaultAuthorisedPerson.cs" />
     <Compile Include="Entity\VaultManagement\VaultOperationP\VaultOperation.cs" />
     <Compile Include="Entity\VaultManagement\VaultP\Vault.cs" />

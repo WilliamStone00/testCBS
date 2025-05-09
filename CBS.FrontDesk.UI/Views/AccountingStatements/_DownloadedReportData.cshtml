@@ -4,43 +4,68 @@
         <fieldset class="fieldset-custom">
             <legend>Downloaded History</legend>
             <table class="table table-hover table-bordered table-sm" id="myDataTable">
-                 
+
+                <thead>
+                    <tr>
+                        <th>Report Type</th>
+                        <th>Branch Office</th>
+                        <th>DateCreated</th>
+                        <th>File Name</th>
+                        <th>File size</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be dynamically added here -->
+                    @foreach (var d in Model.ReportDownloadInfo)
+                    {
+                        string file = d.FileName + d.Extension;
+                        <tr>
+                            <td style="width:17%">@d.ReportType</td>
+                            <td style="width:20%">@d.BranchName</td>
+                            <td style="width:13%">@d.CreatedDate</td>
+                            <td style="width:30%">@file </td>
+                            <td style="width:10%">@d.Size</td>
+                            <td style="width:10%">
+                                <a href="/AccountingStatements/DownloadById?fileId=@d.Id" onclick="" class="mr-2 btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.FileName to download"><i class="mdi mdi-download"></i>  </a> |
+                                <a href="#"
+                                   class="mr-2 btn btn-danger"
+                                   data-toggle="tooltip"
+                                   data-placement="top"
+                                   title="Delete @d.FileName"
+                                   onclick="DeleteRecordPage('AccountingStatements', '@d.Id', '_DownloadedReportData')">
+                                    <i class="mdi mdi-delete"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+            @if (Model.ReportDownloadInfo.Count() > 0)
+            {
+                <table class="table table-hover table-bordered table-sm" id="m00">
+
                     <thead>
                         <tr>
-                            <th>Report Type</th>
-                            <th>Branch Office</th>
-                            <th>DateCreated</th>
-                            <th>File Name</th>
-                            <th>File size</th>
-                            <th>Action</th>
+
+                            <th colspan="6" id="DeleteBtn">
+                                <a href="#"
+                                   class="mr-2 btn btn-danger"
+                                   data-toggle="tooltip"
+                                   data-placement="top"
+                                   title="Delete download history"
+                                   onclick="DeleteRecordPage('AccountingStatements', 'XXXXXX', '_DownloadedReportData')">
+                                    <i class="mdi mdi-delete"></i>Delete download history
+                                </a>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Rows will be dynamically added here -->
-                        @foreach (var d in Model.ReportDownloadInfo)
-                        {
-                            string file = d.FileName + d.Extension;
-                            <tr>
-                                <td style="width:17%">@d.ReportType</td>
-                                <td style="width:20%">@d.BranchName</td>
-                                <td style="width:13%">@d.CreatedDate</td>
-                                <td style="width:30%">@file </td>
-                                <td style="width:10%">@d.Size</td>
-                                <td style="width:10%">
-                                    <a href="/AccountingStatements/DownloadById?fileId=@d.Id" onclick="" class="mr-2 btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.FileName to download"><i class="mdi mdi-download"></i>  </a> |
-                                    <a href="#"
-                                       class="mr-2 btn btn-danger"
-                                       data-toggle="tooltip"
-                                       data-placement="top"
-                                       title="Delete @d.FileName"
-                                       onclick="DeleteRecordPage('AccountingStatements', '@d.Id', '_DownloadedReportData')">
-                                        <i class="mdi mdi-delete"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        }
                     </tbody>
                 </table>
+            }
 
 
         </fieldset>

@@ -104,7 +104,7 @@ namespace CBS.BusinessService.Config
         {
             try
             {
-                //var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<LoanProduct>>>(APICallHelper.GetAllLoanProduct);
+                //var couApiResponse = await _smsConfigApiHelper.GetAsync<ResponseObject<List<LoanProduct>>>(APICallHelper.GetAllLoanProduct);
                 //if (couApiResponse.IsSuccess)
                 //{
                 //    var data = couApiResponse.ApiResponseData.Data.Select(x => new StringValues { Text = $"{x.ProductName}, [Min: {x.LoanMinimumAmount.ToString("#,##0.0")} : Max: {x.LoanMaximumAmount.ToString("#,##0.0")}]", Value = x.Id }).ToList();

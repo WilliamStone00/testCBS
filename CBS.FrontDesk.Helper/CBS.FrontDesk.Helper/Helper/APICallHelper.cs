@@ -588,6 +588,10 @@ namespace CBS.FrontDesk.Helper
         public static string LoadDataTablePagginationForUserSessions = "/api/Session/datatable";
         public static string LoadDataTablePagginationForUserSession = "/api/Session/datatable";
 
+        public static string GetSMSLogs = "/api/v1/sms/logs";
+        public static string GetSMSLogDetail = "/api/v1/sms/logs/{0}";
+
+
         ///api/v1/FileDownloadInfos/GetAllFileDownloadInfoByUserIdQuery/{userid}
         ///api/v1/Loan/SearchByAnyCriterialQuery
         public static string GetAllLoanByBranchIdQuery = "/api/v1/Loan/GetAllLoanByBranchIdQuery/{id}";
@@ -907,8 +911,11 @@ namespace CBS.FrontDesk.Helper
         public static string CashReplenishmentRequest = "/api/v1/BankingOperation/RequestForCashReplenishment";
         public static string DepositNotificationUrl = "/api/v1/BankingOperation/AddDepositNotificationCommand";
         public static string ApproveDepositNotificationUrl = "/api/v1/BankingOperation/AddDepositApprovalCommand";
+        public static string CancelDepositNotificationCommandUrl = "/api/v1/BankingOperation/CancelDepositNotificationCommand/{0}";
 
- 
+        /// <summary>
+        ///   BankingOperation/CancelDepositNotificationCommand/{Id}
+        /// </summary>
         public static string BalanceSheet_EntriesUrl = "/api/v1/AccountingEntries/GenerateBalanceSheet";
         public static string BalanceSheet_EntriesUrlPDF = "/api/v1/AccountingEntries/GenerateBalanceSheetPDF";
         public static string GetCashBranchToBranchTransferUrl = "/api/v1/AccountingEntry/GetBranchToBranchTransferDto/{0}";
