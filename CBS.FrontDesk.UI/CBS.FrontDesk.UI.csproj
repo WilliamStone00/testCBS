@@ -4488,6 +4488,7 @@
     <Content Include="Scripts\Js\Crud\AccountingDay\AccountingDayStatus.js" />
     <Content Include="Scripts\Js\Crud\AccountOpeningRulePerBranch\AccountOpeningRulePerBranch.js" />
     <Content Include="Scripts\Js\Crud\AuditTrail\Audits.js" />
+    <Content Include="Scripts\Js\Crud\BulkOperation\BulkOperationValidation.js" />
     <Content Include="Scripts\Js\Crud\BulkOperation\BulkSimulationDetailsQuery.js" />
     <Content Include="Scripts\Js\Crud\BulkOperation\BulkSimulationQuery.js" />
     <Content Include="Scripts\Js\Crud\BulkOperation\MemberOperation.js" />

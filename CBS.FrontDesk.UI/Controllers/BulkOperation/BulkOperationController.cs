@@ -6,6 +6,8 @@ using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.BulkOperation;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
+using DocumentFormat.OpenXml.EMMA;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -60,6 +62,37 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             var Branches = await _branchServices.GetBranches();
             ViewBag.Branches = Branches;
             return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Validation(ConfirmBulkOperationCommand command )
+        {
+            if (string.IsNullOrEmpty(command.BulkOperationSimulationId))
+            {
+                return RedirectToAction("Listing", new { error = "Invalid operation ID" });
+            }
+
+            Func<Task<ExecutionMessages>> serviceAction = null;
+
+            serviceAction = async () => await _bulkOperationService.ValidateOperation(command);
+
+            if (serviceAction != null)
+            {
+                try
+                {
+                    var data = await serviceAction();
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+                }
+            }
+
+            return Json(new { success = false, status = false, message = "Invalid option selected." });
+
+
+
         }
 
         public async Task<ActionResult> GetBulkOperationDetails(string KEY)

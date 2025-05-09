@@ -60,11 +60,11 @@
             </div>
             <div class="col-md-4 form-check">
                 <input type="checkbox" class="form-check-input" id="byStatus" />
-                <label class="form-check-label fw-bold" for="byUser">Filter by status</label>
+                <label class="form-check-label fw-bold" for="byStatus">Filter by status</label>
             </div>
             <div class="col-md-4 form-check">
                 <input type="checkbox" class="form-check-input" id="byDate" />
-                <label class="form-check-label fw-bold" for="byDate">Filter By last login dates</label>
+                <label class="form-check-label fw-bold" for="byDate">Filter By Between dates</label>
             </div>
         </div>
 
@@ -75,18 +75,16 @@
             </div>
         </div>
 
-        <div id="userFilterSection" class="row mb-3" style="display:none;">
-            <div class="col-md-4">
-                <label class="form-label fw-bold">Search by username</label>
-                <input type="text" id="userName" class="form-control" placeholder="Username" />
-            </div>
-            <div class="col-md-4">
-                <label class="form-label fw-bold">Search by firstname</label>
-                <input type="text" id="firstName" class="form-control" placeholder="First Name" />
-            </div>
-            <div class="col-md-4">
-                <label class="form-label fw-bold">Search by lastname</label>
-                <input type="text" id="lastName" class="form-control" placeholder="Last Name" />
+        <div id="statusFilterSection" class="row mb-3" style="display:none;">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Select Status</label>
+                <select class="form-control select2" id="statusInput">
+                    <option value="">--- All Statuses ---</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Reviewed">Reviewed</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
             </div>
         </div>
 
@@ -114,9 +112,9 @@
     </div>
 
 
-    @section Scripts {
+  @*  @section Scripts {
         <script src="~/Scripts/Js/Crud/BulkOperation/BulkSimulationQuery.js"></script>
-    }
+    }*@
 
 
 

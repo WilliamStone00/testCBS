@@ -37,38 +37,6 @@ namespace CBS.BusinessService.BulkOperations
 
 
 
-/*
-        public async Task<ExecutionMessages> GenerateLoanAmortizationSchedule(BulkOperationRangeBetweenAccountSimulationCommand command)
-        {
-            try
-            {
-                // Make an API call to create an individual profile
-                var response = await _smsConfigApiHelper.PostAsync<ResponseObject<CreateBulkOperationSimulation>>(APICallHelper.SimulateBulkOperationRangeBetweenAccountSimulation, command);
-                if (response.IsSuccess)
-                {
-                    HttpContext.Current.Session["bulk_operation"] = response.ApiResponseData.Data;
-                    // Successful creation
-                    GetExecutionMessages(response, true, $"bulk_operation", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
-                    return ExecutionMessage;
-                }
-                else
-                {
-                    // Failed creation
-                    GetExecutionMessages(response, false, "bulk_operation", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
-                }
-            }
-            catch (Exception ex)
-            {
-                // Log and handle exception
-                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
-                    SystemMessageStatus.Failed.ToString(), ex);
-            }
-            return ExecutionMessage;
-        }*/
-
-
         public async Task<CustomDataTable<List<BulkOperationDataDetails>>> GetBulkOperationDetailsDataTableAsync(GetAllSimulationDetailBySimulationIdRequestQuery query)
         {
             // Make API call to fetch the DataTable result
@@ -90,7 +58,7 @@ namespace CBS.BusinessService.BulkOperations
             );
         }
         
-        public async Task<CustomDataTable> GetBulkOperationDataTableAsync(GetBulkOperationDataTableQuery loansDataTableQuery, string searchCriterial)
+        public async Task<CustomDataTable<List<BulkOperationData>>> GetBulkOperationDataTableAsync(GetBulkOperationDataTableQuery loansDataTableQuery, string searchCriterial)
         {
             loansDataTableQuery.DataTableOptions.searchValue = searchCriterial;
             loansDataTableQuery.DataTableOptions.search = searchCriterial;
@@ -100,40 +68,23 @@ namespace CBS.BusinessService.BulkOperations
                 loansDataTableQuery.BranchId = GetBranchID();
             }
             // Make API call to fetch the DataTable result
-            var couApiResponse = await _transactionConfigApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+            var couApiResponse = await _transactionConfigApiHelper.PostAsync<ResponseObject<CustomDataTable<List<BulkOperationData>>>>(
                 APICallHelper.BulkOperationDataTablePaggination,
                 loansDataTableQuery
             );
 
-            /*  var couApiResponse = await _transactionConfigApiHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Entity.BulkOperation.BulkOperationData>>>(
-                 APICallHelper.GetAllBulkOperations
-             );*/
-
-
-
-            // Return response if successful
+           // Return response if successful
             if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
             {
-
-                /*//For Now
-                var customisedCustomDataTable = new CustomDataTable(
-                    draw: Convert.ToInt32(loansDataTableQuery.DataTableOptions.draw),
-                    recordsTotal: couApiResponse.ApiResponseData.Data.Count,
-                    recordsFiltered: couApiResponse.ApiResponseData.Data.Count,
-                    data: couApiResponse.ApiResponseData.Data, // No data
-                    dataTableOptions: loansDataTableQuery.DataTableOptions
-                );
-
-                return customisedCustomDataTable;*/
                 return couApiResponse.ApiResponseData.Data;
             }
 
             // Return an empty DataTable if the request fails
-            return new CustomDataTable(
+            return new CustomDataTable<List<BulkOperationData>>(
                 draw: Convert.ToInt32(loansDataTableQuery.DataTableOptions.draw),
                 recordsTotal: 0,
                 recordsFiltered: 0,
-                data: new List<object>(), // No data
+                data: new List<BulkOperationData>(), // No data
                 dataTableOptions: loansDataTableQuery.DataTableOptions
             );
         }
@@ -235,6 +186,38 @@ namespace CBS.BusinessService.BulkOperations
             return ExecutionMessage;
         }
 
+        public async Task<ExecutionMessages> ValidateOperation(ConfirmBulkOperationCommand command)
+        {
+            try
+            {
+                  
+                    // Make an API call to create an individual profile
+                    var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.ConfirmBulkOperation, command);
+                    if (response.ApiResponseData.Data)
+                    {
+                        // Successful creation
+                        GetExecutionMessages(response, true, $"{command.ApprovalStatus}", MessagesResults.Success,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(command, false, command.ApprovalStatus, MessagesResults.Failed,
+                            ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
         public string GetBankID()
         {
             var data = HttpContext.Current?.Session?["BankID"]?.ToString();
@@ -281,10 +264,6 @@ namespace CBS.BusinessService.BulkOperations
             return string.IsNullOrWhiteSpace(data) ? string.Empty : data;
         }
 
-
-
-
-
-
+       
     }
 }

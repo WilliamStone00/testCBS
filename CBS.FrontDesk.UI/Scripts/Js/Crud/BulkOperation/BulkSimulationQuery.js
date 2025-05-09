@@ -10,7 +10,7 @@ function resetFilterForm() {
     $('#isActive, #isBlocked, #isVerified').val('');
     $('#branchInput').val('').trigger('change');
     $('#byBranch, #byUser, #byDate').prop('checked', false);
-    $('#branchFilterSection, #userFilterSection, #dateRangeSection').hide();
+    $('#branchFilterSection, #statusFilterSection, #dateRangeSection').hide();
 }
 
 // ✅ Filter toggle control
@@ -21,10 +21,11 @@ function initFilterToggles() {
         if (!this.checked) $('#branchInput').val('').trigger('change');
     });
 
-    $('#byUser').change(function () {
-        $('#userFilterSection').slideToggle(this.checked);
-        if (!this.checked) $('#userName, #firstName, #lastName').val('');
+    $('#byStatus').change(function () {
+        $('#statusFilterSection').slideToggle(this.checked);
+        if (!this.checked) $('#statusInput').val('').trigger('change');
     });
+
 
     $('#byDate').change(function () {
         $('#dateRangeSection').slideToggle(this.checked);
@@ -71,11 +72,6 @@ function loadBulkOperationDataTable() {
             type: 'POST',
             data: getSearchParameters,
             dataSrc: function (json) {
-                //if (json.data.length > 0) {
-                //    $('#bulkOperationDataCard').fadeIn();
-                //} else {
-                //    $('#bulkOperationDataCard').fadeOut();
-                //}
                 return json.data;
             }
         },
@@ -88,12 +84,12 @@ function loadBulkOperationDataTable() {
             {
                 data: 'BranchName',
                 title: 'Branch Name',
-                render: (data) => data
+                render: (data) => data || 'N/A'
             },
             {
                 data: 'SimulationType',
                 title: 'Simulation Type',
-                render: (data) => data
+                render: (data) => data || 'N/A'
             },
             {
                 data: 'TotalMembers',
@@ -108,7 +104,7 @@ function loadBulkOperationDataTable() {
             {
                 data: 'CreatedBy',
                 title: 'Created By',
-                render: (data) => data
+                render: (data) => data || 'N/A'
             },
             {
                 data: 'ApprovalStatus',
@@ -119,7 +115,7 @@ function loadBulkOperationDataTable() {
                         case 'Pending':
                             badgeClass = 'bg-warning text-dark';
                             break;
-                        case 'Review':
+                        case 'Reviewed':
                             badgeClass = 'bg-info text-white';
                             break;
                         case 'Approved':
@@ -139,7 +135,13 @@ function loadBulkOperationDataTable() {
             {
                 data: 'ApprovalValidationDate',
                 title: 'Approval Date',
-                render: (data) => data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : 'N/A'
+                render: (data) => {
+                    const csharpMinDate = new Date('0001-01-01T00:00:00');
+                    if (!data || new Date(data).getTime() <= csharpMinDate.getTime()) {
+                        return 'N/A';
+                    }
+                    return moment(data).format('DD/MM/YYYY HH:mm:ss');
+                }
             },
             {
                 data: 'Id',
@@ -148,9 +150,8 @@ function loadBulkOperationDataTable() {
                 render: function (id) {
                     return `
                         <div class="text-center">
-                            <a href="/BulkOperation/Details?KEY=${id}" class="btn btn-sm btn-outline-primary" title="Details Simulation">
-                                <i class="fas fa-user-cog me-1"></i> View Simulation Details
-                            </a>
+                            <a href="/BulkOperation/Details?KEY=${id}" class="btn btn-sm btn-outline-primary" title="Detail Simulation">
+                            <i class="fas fa-user-cog me-1"></i> View </a>
                         </div>`;
                 }
             }

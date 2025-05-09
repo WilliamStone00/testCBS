@@ -6,10 +6,10 @@
    /* $('#myDataTable').wrap('<div class="position-relative"></div>')
         .parent().append('<div class="datatable-loader"><div class="spinner-border"></div></div>');
 */
-    loadBulkOperationDataTable(simulationId);
+    loadBulkOperationDetailsDataTable(simulationId);
 });
 
-function loadBulkOperationDataTable(simulationId) {
+function loadBulkOperationDetailsDataTable(simulationId) {
     $('#myDataTable').DataTable({
         destroy: true,
         serverSide: true,
@@ -162,82 +162,4 @@ function showLoading(modal,contentDiv,message) {
     modal.show();
 }
 
-function hideLoading() {
-    const loadingModal = bootstrap.Modal.getInstance(document.getElementById('loadingModal'));
-    if (loadingModal) {
-        loadingModal.hide();
-    }
-}
-
-function showDetailsPopup(details) {
-    // Format dates
-    const transferDate = new Date(details.TransferDate).toLocaleString();
-    const approvalDate = details.ApprovalDate ? new Date(details.ApprovalDate).toLocaleString() : 'N/A';
-
-    // Create the HTML content for the popup
-    const content = `
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5>Member Information</h5>
-                    <table class="table table-sm">
-                        <tr><th>Member Name:</th><td>${details.MemberName || 'N/A'}</td></tr>
-                        <tr><th>Member Reference:</th><td>${details.MemberReference || 'N/A'}</td></tr>
-                        <tr><th>Branch:</th><td>${details.BranchName || 'N/A'} (${details.BranchCode || 'N/A'})</td></tr>
-                    </table>
-                    
-                    <h5>Source Account</h5>
-                    <table class="table table-sm">
-                        <tr><th>Account Number:</th><td>${details.SourceAccountNumber || 'N/A'}</td></tr>
-                        <tr><th>Account Type:</th><td>${details.SourceAccountType || 'N/A'}</td></tr>
-                        <tr><th>Balance:</th><td>${formatCurrency(details.SourceAccountBalance)}</td></tr>
-                    </table>
-                </div>
-                <div class="col-md-6">
-                    <h5>Destination Account</h5>
-                    <table class="table table-sm">
-                        <tr><th>Account Number:</th><td>${details.DestinationAccountNumber || 'N/A'}</td></tr>
-                        <tr><th>Account Type:</th><td>${details.DestinationAccountType || 'N/A'}</td></tr>
-                        <tr><th>Balance:</th><td>${formatCurrency(details.DestinationBalance)}</td></tr>
-                    </table>
-                    
-                    <h5>Transfer Details</h5>
-                    <table class="table table-sm">
-                        <tr><th>Amount:</th><td>${formatCurrency(details.AmountToDebit)}</td></tr>
-                        <tr><th>Status:</th><td>${details.TransferStatus || 'N/A'}</td></tr>
-                        <tr><th>Transfer Date:</th><td>${transferDate}</td></tr>
-                        <tr><th>Approval Status:</th><td>${details.ApprovalStatus || 'N/A'}</td></tr>
-                        <tr><th>Approval Date:</th><td>${approvalDate}</td></tr>
-                        ${details.TransferErrorMessage ? `<tr><th>Error:</th><td class="text-danger">${details.TransferErrorMessage}</td></tr>` : ''}
-                    </table>
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-                    <h5>Balance Information</h5>
-                    <table class="table table-sm">
-                        <tr><th>Total Balance:</th><td>${formatCurrency(details.TotalBalance)}</td></tr>
-                        <tr><th>Net Balance:</th><td>${formatCurrency(details.NetBalance)}</td></tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-    `;
-
-    // Set the content and show the modal
-    document.getElementById('detailsModalBody').innerHTML = content;
-    const detailsModal = new bootstrap.Modal(document.getElementById('detailsModal'));
-    detailsModal.show();
-
-    // Show the popup using SweetAlert (or you can use Bootstrap modal)
-  /*  Swal.fire({
-        title: 'Transfer Details',
-        html: content,
-        width: '90%',
-        confirmButtonText: 'Close',
-        customClass: {
-            popup: 'text-start'
-        }
-    });*/
-}
 

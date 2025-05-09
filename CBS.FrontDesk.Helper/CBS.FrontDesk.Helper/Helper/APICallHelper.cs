@@ -1034,6 +1034,7 @@ namespace CBS.FrontDesk.Helper
 
         //Bulk Operation
         public static string SimulateAccountTopup= "/api/v1/BulkOperations/top-up/simulation";
+        public static string ConfirmBulkOperation= "/api/v1/BulkOperations/validation";
         public static string SimulateContribution = "/api/v1/BulkOperations/contribution/simulation";
         public static string GetAllBulkOperations = "/api/v1/BulkOperations";
         public static string BulkOperationDataDetails = "/api/v1/BulkOperations/simulation/details/";
