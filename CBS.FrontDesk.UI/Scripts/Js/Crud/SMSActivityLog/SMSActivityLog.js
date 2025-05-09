@@ -44,6 +44,7 @@ function loadSMSData() {
         serverSide: true,
         destroy: true,
         searching: false,
+        order: [[6, 'desc']],
         ajax: {
             url: '/SMSActivityLog/LoadSMSActivityLogData',
             type: 'POST',
