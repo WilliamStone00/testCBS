@@ -23,6 +23,7 @@ using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -50,11 +51,32 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             //listAccount.Add(new Account { Id = "XXXXXX", AccountNumber = "000000", AccountName = "ALL" });
             //ViewBag.Accounts = BuildDropDown(GenerateAccountsListView(listAccount));
             var listBranches = (await _branchServices.GetBranches()).ToList();
-            listBranches.Add(new Branch { Id = "XXXXXX", Name = "[x]ALL" });
+            listBranches.Add(new Branch { Id = "XXXXXX", Name = "[BapCCUL-Network]ALL" });
             ViewBag.Branches = BuildDropDown(GenerateBranchListView(listBranches));
             var reportData = await _accountingServices.GetAllFileDownloadInfoPerUser();
             return View(new AccountingEntryQuery { ReportDownloadInfo = reportData.OrderByDescending(x=>x.CreatedDate).ToList() });
         }
+
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+        {
+           
+            var partialResult = await GetServiceAction(path, partialView, KEY, serviceOption);
+
+            return partialResult;
+        }
+
+        private async Task<PartialViewResult> GetServiceAction(string path, string partialView, string key, string serviceOption)
+        {
+
+            var reportData = await _accountingServices.GetAllFileDownloadInfoPerUser();
+            return PartialView(partialView, new AccountingEntryQuery { ReportDownloadInfo = reportData.OrderByDescending(x => x.CreatedDate).ToList() });
+
+         
+
+
+        }
+
+
         public async Task<ActionResult> DownloadById(string fileId)
         {
             try
@@ -405,23 +427,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return list;
         }
 
-        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
-        {
-            try
-            {
-               
-                    var reportData = await _accountingServices.GetAllFileDownloadInfoPerUser();
-              
-
-                return PartialView(partialView, new AccountingEntryQuery { ReportDownloadInfo = reportData.OrderByDescending(x => x.CreatedDate).ToList() });
-            }
-            catch (Exception ex)
-            {
-
-                TempData["ErrorMessage"] = ex.Message; // Store error message
-                return RedirectToAction("Index", "Error"); // Redirect to error page
-            }
-        }
+      
         [HttpPost]
         public async Task<ActionResult> PostSearch(AccountingEntryQuery model)
         {

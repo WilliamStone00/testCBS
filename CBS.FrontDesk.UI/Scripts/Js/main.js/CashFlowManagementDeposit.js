@@ -24,9 +24,9 @@
                 $('#hideBranchID').hide();
                 $('#hideAccountId').show();
                
-                loadBankAccountForBranch(branchId);
+                GetBranchBankAccount(branchId);
             } else {
-              
+                loadBranch();
                 console.log("has taged :"+selectedValue+"for options");
             }
         } else {
@@ -35,21 +35,21 @@
             $('#hideAccountId').hide();
         }
     });
-    $(document).on('change', '#CorrespondingBranchID', function () {
+    //$(document).on('change', '#CorrespondingBranchID', function () {
 
-        // Get the selected value
-        var selectedValue = $(this).val();
-        var selectedID = $('#option').val();
-        console.log(selectedValue);
-        console.log(selectedID);
-        if (selectedID === 'RedirectToBranchBTB') {
-            console.log("do not load bank account");
-        } else {
+    //    // Get the selected value
+    //    var selectedValue = $(this).val();
+    //    var selectedID = $('#option').val();
+    //    console.log(selectedValue);
+    //    console.log(selectedID);
+    //    if (selectedID === 'RedirectToBranchBTB') {
+    //        console.log("do not load bank account");
+    //    } else {
             
-            loadBankAccountForBranch(selectedValue);
-        }
+    //        loadBankAccountForBranch(selectedValue);
+    //    }
 
-    });
+    //});
     $(document).on('change', '#AccountId', function () {
 
         // Get the selected value
@@ -58,14 +58,14 @@
     });
 
 });
-function loadBankAccountForBranch(BranchId)
+function loadBankAccountForBranch(BranchId, Option)
 {
  
     $.ajax({
         url: '/CashFlowManagement/GetAllBranchAccountUsedToCreditCashFlow',
         type: 'GET',
         dataType: 'json',
-        data: { branchId: BranchId },
+        data: { branchId: BranchId ,optionQuery:Option },
         success: function (data) {
             // Clear existing options in the OperationEventAttributeId combo  DepositNotificationDto_Temp3
             $('#DepositNotificationDto_Temp3').empty();
@@ -81,6 +81,52 @@ function loadBankAccountForBranch(BranchId)
         }
     });
 }
+
+function loadBranch() {
+
+    $.ajax({
+        url: '/CashFlowManagement/GetAllBranch',
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo  DepositNotificationDto_Temp3
+            $('#CorrespondingBranchID').empty();
+            $.each(data, function (index, item) {
+                $('#CorrespondingBranchID').append($('<option>').text(item.Value).attr('value', item.Text));
+            });
+
+            // Add new options based on the fetched data
+            console.log(data);
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+function GetBranchBankAccount(BranchId) {
+
+    $.ajax({
+        url: '/CashFlowManagement/GetBranchBankAccount',
+        type: 'GET',
+        dataType: 'json',
+        data: { branchId: BranchId},
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo  DepositNotificationDto_Temp3
+            $('#DepositNotificationDto_Temp3').empty();
+            $.each(data, function (index, item) {
+                $('#DepositNotificationDto_Temp3').append($('<option>').text(item.Value).attr('value', item.Text));
+            });
+
+            // Add new options based on the fetched data
+            console.log(data);
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
 function loadAccountBalance(accountId) {
     console.log(accountId);
     $.ajax({

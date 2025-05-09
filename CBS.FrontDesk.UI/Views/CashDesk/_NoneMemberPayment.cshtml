@@ -1,14 +1,15 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+    @using Resources
 <div class="table-responsive" id="cash_collected" style="width: 100%;">
     <table class="table table-hover" id="myDataTableT">
         <thead class="table-light">
             <tr>
-                <th style="display:none;">ProductID</th>
-                <th style="display:none;">Ordinary accounts</th>
-                <th>Amount</th>
-                <th style="display:none;">Fee</th>
-                <th>Total</th>
-                <th>confirm</th>
+                <th style="display:none;">@CashDesk_NoneMemberPayment.ProductID</th>
+                <th style="display:none;">@CashDesk_NoneMemberPayment.OrdinaryAccounts</th>
+                <th>@CashDesk_NoneMemberPayment.Amount</th>
+                <th style="display:none;">@CashDesk_NoneMemberPayment.Fee</th>
+                <th>@CashDesk_NoneMemberPayment.Total</th>
+                <th>@CashDesk_NoneMemberPayment.Confirm</th>
             </tr>
         </thead>
         <tbody>
@@ -36,14 +37,14 @@
             <tr>
                 <td style="display:none;"></td>
                 <td style="display:none;"></td>
-                <td colspan="1" style="text-align: right;"><strong>Total:</strong></td>
+                <td colspan="1" style="text-align: right;"><strong>@CashDesk_NoneMemberPayment.Total:</strong></td>
                 <td id="tableTotal">0</td>
                 <td></td>
             </tr>
             <tr>
                 <td style="display:none;"></td>
                 <td style="display:none;"></td>
-                <td colspan="1" style="text-align: right;"><strong>Difference:</strong></td>
+                <td colspan="1" style="text-align: right;"><strong>@CashDesk_NoneMemberPayment.Difference:</strong></td>
                 <td id="tableBalance">0</td>
             </tr>
         </tfoot>
