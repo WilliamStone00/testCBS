@@ -1398,6 +1398,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
         [HttpGet]
         public async Task<ActionResult> GetCashDepositDataAwaitingApproval()
+        
         {
             List<DepositNotificationDto> datas = new List<DepositNotificationDto>();
             List<DepositNotificationDto> DepositNotificationDtos = new List<DepositNotificationDto>();
@@ -1412,7 +1413,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 //datas = (await _accountingEntryServices.GetAllDepositNotificationRequest());//.Where(pi => pi.BranchId.Equals(Id)&&pi.Status==CashReplishmentRequestStatus.Pending.ToString());
                 //Redirected request 
-                datas.AddRange((await _accountingEntryServices.GetAllDepositNotificationRedirectionRequest()).Where(x => x.correpondingBranchId.Equals(_accountingEntryServices.GetBranchID())));
+                 
+                    datas.AddRange((await _accountingEntryServices.GetAllDepositNotificationRequest()).Where(x => x.correpondingBranchId.Equals(_accountingEntryServices.GetBranchID())));
+                datas.AddRange((await _accountingEntryServices.GetAllDepositNotificationRequest()).Where(x => x.BranchId.Equals(_accountingEntryServices.GetBranchID())));
+ 
 
 
             }

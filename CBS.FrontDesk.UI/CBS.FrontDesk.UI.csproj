@@ -4488,7 +4488,10 @@
     <Content Include="Scripts\Js\Crud\AccountingDay\AccountingDayStatus.js" />
     <Content Include="Scripts\Js\Crud\AccountOpeningRulePerBranch\AccountOpeningRulePerBranch.js" />
     <Content Include="Scripts\Js\Crud\AuditTrail\Audits.js" />
-    <Content Include="Scripts\Js\Crud\BulkOperation\BulkOperationQuery.js" />
+    <Content Include="Scripts\Js\Crud\BulkOperation\BulkOperationValidation.js" />
+    <Content Include="Scripts\Js\Crud\BulkOperation\BulkSimulationDetailsQuery.js" />
+    <Content Include="Scripts\Js\Crud\BulkOperation\BulkSimulationQuery.js" />
+    <Content Include="Scripts\Js\Crud\BulkOperation\MemberOperation.js" />
     <Content Include="Scripts\Js\Crud\BulkOperation\Simulation.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\CashDeskCashin.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\PreMemberOnboarding.js" />
@@ -5505,7 +5508,7 @@
     <Content Include="Views\AccountOpeningRulePerBranch\_AccountOpeningRuleModal.cshtml" />
     <Content Include="Views\Reports\AccountingPDFReport.cshtml" />
     <Content Include="Views\BulkOperation\Index.cshtml" />
-    <Content Include="Views\BulkOperation\_Data.cshtml" />
+    <Content Include="Views\BulkOperation\_SimulationDataTable.cshtml" />
     <Content Include="Views\BulkOperation\_SimulateAccountContribution.cshtml" />
     <Content Include="Views\BulkOperation\_SimulateToAccountTopUp.cshtml" />
     <Content Include="Views\BulkOperation\Listing.cshtml" />
@@ -5521,6 +5524,9 @@
     <Content Include="Views\SMSActivityLog\_SmsDetailsPartial.cshtml" />
     <Content Include="Views\ManuallyJournalEntry\ExceptionalEntry.cshtml" />
     <Content Include="Views\ManuallyJournalEntry\GetAccountingEventToDelete.cshtml" />
+    <Content Include="Views\BulkOperation\_SimulationDetails.cshtml" />
+    <Content Include="Views\BulkOperation\_SimulationDetailsDataTable.cshtml" />
+    <Content Include="Views\BulkOperation\_TransferDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
