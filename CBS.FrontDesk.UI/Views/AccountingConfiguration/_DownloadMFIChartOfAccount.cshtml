@@ -1,13 +1,13 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
-
+@using Resources
 <table class="table table-hover" id="DataTablePosition">
     <thead class="table-light">
         <tr>
             @*<th>ChartofAccount<</th>*@
-            <th>Old AccountNumber</th>
+            <th>@AccountingConfig_DownloadMFIChartOfAccount.OldAccountNumber</th>
             @*<th>Account Formular</th>*@
-            <th>New AccountNumber</th>
-            <th>Description</th>
+            <th>@AccountingConfig_DownloadMFIChartOfAccount.NewAccountNumber</th>
+            <th>@AccountingConfig_DownloadMFIChartOfAccount.Description</th>
 
         </tr>
     </thead>
@@ -27,5 +27,5 @@
 
     </tbody>
 </table>
-<button type="button"  onclick="DownloadMFIChartOfAccount()" class="btn btn-primary me-2 mdi-download-circle-outline">Download-MFI ChartOfAccount</button>
+<button type="button" onclick="DownloadMFIChartOfAccount()" class="btn btn-primary me-2 mdi-download-circle-outline">@AccountingConfig_DownloadMFIChartOfAccount.DownloadMFIChartOfAccount</button>
 

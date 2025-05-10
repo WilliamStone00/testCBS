@@ -117,7 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountPolicySettings" xml:space="preserve">
-    <value>Account Policy Settings</value>
+  <data name="BalancingAccount" xml:space="preserve">
+    <value>Balancing account</value>
+  </data>
+  <data name="BalancingAccountNumber" xml:space="preserve">
+    <value>Balancing AccountNumber</value>
+  </data>
+  <data name="Booking" xml:space="preserve">
+    <value>Booking</value>
+  </data>
+  <data name="Derterminant" xml:space="preserve">
+    <value>Derterminant</value>
+  </data>
+  <data name="DerterminantAccountNumber" xml:space="preserve">
+    <value>Derterminant account number</value>
+  </data>
+  <data name="DownloadAccountingEvent" xml:space="preserve">
+    <value>Download-AccountingEvent</value>
+  </data>
+  <data name="EntryRule" xml:space="preserve">
+    <value>Entry rule</value>
   </data>
 </root>

@@ -49,11 +49,11 @@
                     <div class="mt-4">
                         @if (Model.Account.Id == null)
                         {
-                            <button type="submit" class="btn btn-primary me-2">@GlobalAccount.Save</button>
+                            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
                             <input type="hidden" name="Action" value="insert" id="Action" />
                         }
                         else
-                        { <button type="submit" class="btn btn-primary me-2">@GlobalAccount.Update</button>
+                        { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                             @Html.HiddenFor(m => m.Account.Id)
                             <input type="hidden" name="Action" value="update" id="Action" />
                         }

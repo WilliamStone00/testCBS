@@ -1,9 +1,10 @@
 ﻿@model  CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+    @using Resources
 <table class="table table-hover" id="myDataTable_OperationEvent">
     <thead class="table-light">
         <tr>
-            <th>OperationEventName</th>
-            <th>Description</th>
+            <th>@AccountingConfig_OperationEventData.OperationEventName</th>
+            <th>@AccountingConfig_OperationEventData.Description</th>
 
         </tr>
     </thead>

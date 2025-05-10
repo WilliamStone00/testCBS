@@ -1,15 +1,15 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
-
+@using Resources
 @if (true)
 {
     <table class="table table-hover" id="myDataTable_AccountingRuleData">
         <thead class="table-light">
             <tr>
-                <th>Rule Name</th>
-                <th>Chart ofAccount</th>
-                <th>Booking Direction</th>
-                <th>Description</th>
-                <th>Action</th>
+                <th>@AccountingConfig_EntryRuleData.RuleName</th>
+                <th>@AccountingConfig_EntryRuleData.ChartOfAccount</th>
+                <th>@AccountingConfig_EntryRuleData.BookingDirection</th>
+                <th>@AccountingConfig_EntryRuleData.Description</th>
+                <th>@AccountingConfig_EntryRuleData.Action</th>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +23,7 @@
                     <td style="width:50%" id="Description-@d.Id">@d.Description</td>
                     <td style="width:5%">
 
-                        <a href="#" onclick="DeleteAccountingRole('@d.Id','AccountingConfiguration','DeleteAccountingRole')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.RuleName to edit">Delete</a>
+                        <a href="#" onclick="DeleteAccountingRole('@d.Id','AccountingConfiguration','DeleteAccountingRole')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.SelectToEdit @d.RuleName">@GlobalShared.Delete</a>
 
                     </td>
                 </tr>
@@ -35,7 +35,7 @@
     <table class="table table-hover" id="myDataTable_XXX">
         <thead class="table-light">
             <tr>
-                <th colspan="5" class="shift-right"> <a href="#" onclick="RegisterEntryRule()" class="btn btn-primary">Register Rule</a></th>
+                <th colspan="5" class="shift-right"> <a href="#" onclick="RegisterEntryRule()" class="btn btn-primary">@AccountingConfig_EntryRuleData.RegisterRule</a></th>
                 
             </tr>
         </thead>
@@ -53,11 +53,11 @@ else
     <table class="table table-hover" id="myDataTable_AccountingRuleData">
         <thead class="table-light">
             <tr>
-                <th>Rule Name</th>
-                <th>Determinant Account</th>
-                <th>Booking Direction</th>
-                <th>Balancing Account</th>
-                <th>Action</th>
+                <th>@AccountingConfig_EntryRuleData.RuleName</th>
+                <th>@AccountingConfig_EntryRuleData.DeterminantAccount</th>
+                <th>@AccountingConfig_EntryRuleData.BookingDirection</th>
+                <th>@AccountingConfig_EntryRuleData.BalancingAccount</th>
+                <th>@AccountingConfig_EntryRuleData.Action</th>
             </tr>
         </thead>
         <tbody>
