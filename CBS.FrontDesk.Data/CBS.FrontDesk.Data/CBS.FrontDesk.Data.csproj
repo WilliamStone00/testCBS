@@ -80,6 +80,7 @@
     <Compile Include="Entity\AccountOpeningRulePerBranchP\AccountOpeningRulePerBranch.cs" />
     <Compile Include="Entity\AndriodApp\AndriodVersionConfiguration.cs" />
     <Compile Include="Entity\AuditTralP\AuditTrailDto.cs" />
+    <Compile Include="Entity\BulkOperation\ConfirmBulkOperationCommand.cs" />
     <Compile Include="Entity\BulkOperation\CreateBulkOperationSimulation.cs" />
     <Compile Include="Entity\BulkOperation\BulkOperationData.cs" />
     <Compile Include="Entity\BulkOperation\BulkOperationDataDetails.cs" />

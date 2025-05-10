@@ -911,8 +911,11 @@ namespace CBS.FrontDesk.Helper
         public static string CashReplenishmentRequest = "/api/v1/BankingOperation/RequestForCashReplenishment";
         public static string DepositNotificationUrl = "/api/v1/BankingOperation/AddDepositNotificationCommand";
         public static string ApproveDepositNotificationUrl = "/api/v1/BankingOperation/AddDepositApprovalCommand";
+        public static string CancelDepositNotificationCommandUrl = "/api/v1/BankingOperation/CancelDepositNotificationCommand/{0}";
 
- 
+        /// <summary>
+        ///   BankingOperation/CancelDepositNotificationCommand/{Id}
+        /// </summary>
         public static string BalanceSheet_EntriesUrl = "/api/v1/AccountingEntries/GenerateBalanceSheet";
         public static string BalanceSheet_EntriesUrlPDF = "/api/v1/AccountingEntries/GenerateBalanceSheetPDF";
         public static string GetCashBranchToBranchTransferUrl = "/api/v1/AccountingEntry/GetBranchToBranchTransferDto/{0}";
@@ -1030,8 +1033,12 @@ namespace CBS.FrontDesk.Helper
         public static string Create_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation";
 
         //Bulk Operation
-        public static string SimulateAccountTopup= "/api/v1/BulkOperations/Topup";
-        public static string SimulateContribution = "/api/v1/BulkOperations/Contribution";
+        public static string SimulateAccountTopup= "/api/v1/BulkOperations/top-up/simulation";
+        public static string ConfirmBulkOperation= "/api/v1/BulkOperations/validation";
+        public static string SimulateContribution = "/api/v1/BulkOperations/contribution/simulation";
         public static string GetAllBulkOperations = "/api/v1/BulkOperations";
+        public static string BulkOperationDataDetails = "/api/v1/BulkOperations/simulation/details/";
+        public static string BulkOperationDataTablePaggination = "/api/v1/BulkOperations/simulation/data-table";
+        public static string BulkOperationDetailsDataTablePaggination = "/api/v1/BulkOperations/simulation/details";
     }
 }

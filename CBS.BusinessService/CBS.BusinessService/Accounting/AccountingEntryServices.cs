@@ -182,7 +182,13 @@ namespace CBS.BusinessService
         {
             try
             {
+                if (string.IsNullOrEmpty( model.Message))
+                {
+                    string message = "The Bank Deposit Request message is required opertion failed";
+                    GetExecutionMessages(model, false, message, MessagesResults.Failed,
+                       ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, message);
 
+                }
                 // Make an API call to create an individual profile
 
 
@@ -280,15 +286,12 @@ namespace CBS.BusinessService
                 if (OperationEvent != null)
                 {
 
-                    OperationEvent.Amount = model.Amount.ToString();
-                    OperationEvent.Message = model.Message;
+               
 
-                    OperationEvent.Id = model.Id;
-
-                    var response = await _accountingApiCallerHelper.PutAsync<ServiceResponse<CashInfusion>>(string.Format(APICallHelper.UpdateCashReplenishmentRequest, model.Id), model);
+                    var response = await _accountingApiCallerHelper.PutAsync<ServiceResponse<bool>>(string.Format(APICallHelper.CancelDepositNotificationCommandUrl, model.Id), new {Id=model.Id});
                     if (response.IsSuccess)
                     {
-                        // Successful creation
+                        // Successful creation.
                         GetExecutionMessages(response, true, $"{model.Id} Transaction was successfull", MessagesResults.Success,
                             ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
                         return ExecutionMessage;
