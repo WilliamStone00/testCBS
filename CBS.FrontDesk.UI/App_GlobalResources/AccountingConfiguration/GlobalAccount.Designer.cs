@@ -322,7 +322,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View List.
+        ///   Looks up a localized string similar to Select.
         /// </summary>
         internal static string Select {
             get {
@@ -417,6 +417,15 @@ namespace Resources {
         internal static string UploadAccount {
             get {
                 return ResourceManager.GetString("UploadAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View List.
+        /// </summary>
+        internal static string ViewList {
+            get {
+                return ResourceManager.GetString("ViewList", resourceCulture);
             }
         }
     }

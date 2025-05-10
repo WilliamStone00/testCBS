@@ -22,14 +22,14 @@ namespace Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class GlobalAccountPolicySetting {
+    internal class AccountingConfig_DownloadAccountingEntryRule {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal GlobalAccountPolicySetting() {
+        internal AccountingConfig_DownloadAccountingEntryRule() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.GlobalAccountPolicySetting", global::System.Reflection.Assembly.Load("App_GlobalResources"));
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.AccountingConfig_DownloadAccountingEntryRule", global::System.Reflection.Assembly.Load("App_GlobalResources"));
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,65 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account Policy Settings.
+        ///   Looks up a localized string similar to Balancing account.
         /// </summary>
-        internal static string AccountPolicySettings {
+        internal static string BalancingAccount {
             get {
-                return ResourceManager.GetString("AccountPolicySettings", resourceCulture);
+                return ResourceManager.GetString("BalancingAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Balancing AccountNumber.
+        /// </summary>
+        internal static string BalancingAccountNumber {
+            get {
+                return ResourceManager.GetString("BalancingAccountNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Booking.
+        /// </summary>
+        internal static string Booking {
+            get {
+                return ResourceManager.GetString("Booking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Derterminant.
+        /// </summary>
+        internal static string Derterminant {
+            get {
+                return ResourceManager.GetString("Derterminant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Derterminant account number.
+        /// </summary>
+        internal static string DerterminantAccountNumber {
+            get {
+                return ResourceManager.GetString("DerterminantAccountNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download-AccountingEvent.
+        /// </summary>
+        internal static string DownloadAccountingEvent {
+            get {
+                return ResourceManager.GetString("DownloadAccountingEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entry rule.
+        /// </summary>
+        internal static string EntryRule {
+            get {
+                return ResourceManager.GetString("EntryRule", resourceCulture);
             }
         }
     }

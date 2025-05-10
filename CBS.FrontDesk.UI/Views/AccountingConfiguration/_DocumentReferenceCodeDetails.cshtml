@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
-
+@using Resources
 
 <table class="table table-hover">
     <thead>
@@ -10,11 +10,11 @@
     </thead>
     <tbody class="table-border-bottom-0">
         <tr>
-            <td style="width: 30%;">Heading</td>
+            <td style="width: 30%;">@AccountingConfig_DocumentReferenceCodeDetails.Heading</td>
             <td style="width: 70%;">@Model.DocumentReferenceCodeDto.ReferenceCode</td>
         </tr>
         <tr>
-            <td style="width: 30%;">Reference code</td>
+            <td style="width: 30%;">@AccountingConfig_DocumentReferenceCodeDetails.ReferenceCode</td>
             <td style="width: 70%;">@Model.DocumentReferenceCodeDto.Description</td>
         </tr>
     </tbody>
@@ -33,7 +33,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-file-document-plus-outline me-2"></i>
-                    Manage corresponding account reference
+                    @AccountingConfig_DocumentReferenceCodeDetails.ManageCorrespondingAccountReference
                 </button>
             </h2>
             <div class="card-body">
@@ -43,9 +43,9 @@
                     <table class="table table-hover" id="myDataTable_correspondingMapping">
                         <thead class="table-light">
                             <tr>
-                                <th>AccountNumber</th>
-                                <th>Cartegory</th>
-                                <th>Action</th>
+                                <th>@AccountingConfig_DocumentReferenceCodeDetails.AccountNumber</th>
+                                <th>@AccountingConfig_DocumentReferenceCodeDetails.Category</th>
+                                <th>@AccountingConfig_DocumentReferenceCodeDetails.Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,7 +77,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
                         <i class="mdi mdi-file-document-plus-outline me-2"></i>
-                        Manage corresponding account reference exceptions
+                        @AccountingConfig_DocumentReferenceCodeDetails.ManageCorrespondingAccountReferenceExceptions
                     </button>
                 </h2>
                 <div class="card-body">
@@ -87,8 +87,8 @@
                         <table class="table table-hover" id="myDataTable_trialbalancereference">
                             <thead class="table-light">
                                 <tr>
-                                    <th>AccountNumber</th>
-                                    <th>Booking Direction</th>
+                                    <th>@AccountingConfig_DocumentReferenceCodeDetails.AccountNumber</th>
+                                    <th>@AccountingConfig_DocumentReferenceCodeDetails.BookingDirection</th>
 
                                 </tr>
                             </thead>

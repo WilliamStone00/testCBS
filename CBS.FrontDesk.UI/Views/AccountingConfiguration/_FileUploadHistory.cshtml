@@ -1,15 +1,15 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
-
+@using Resources
  
 <div class="table-responsive mb-3">
     <table class="table table-hover" id="FileUploadDataTable">
         <thead class="table-light" >
             <tr>
-                <th>Branch Name</th>
-                <th>File size</th>
-                <th>Created By</th>
-                <th>Uploaded Date</th>
-                <th>Action</th>
+                <th>@AccountingConfig_FileUploadHistory.BranchName</th>
+                <th>@AccountingConfig_FileUploadHistory.FileSize</th>
+                <th>@AccountingConfig_FileUploadHistory.CreatedBy</th>
+                <th>@AccountingConfig_FileUploadHistory.UploadedDate</th>
+                <th>@AccountingConfig_FileUploadHistory.Action</th>
             </tr>
         </thead>
         <tbody>
@@ -21,7 +21,7 @@
                     <td style="width:25%">@d.CreatedBy</td>
                     <td style="width:20%">@d.CreatedDate</td>
                     <td style="width:10%">
-                        <a href="#" onclick="DownloadFile('@d.FilePath')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Owner TrialBalance">  Download </a>
+                        <a href="#" onclick="DownloadFile('@d.FilePath')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@AccountingConfig_FileUploadHistory.SelectTrialBalance @d.Owner"> @GlobalShared.Download </a>
  
                     </td>
                 </tr>

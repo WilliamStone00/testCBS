@@ -22,14 +22,14 @@ namespace Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class GlobalAccountPolicySetting {
+    internal class AccountingConfig_EntryRuleData {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal GlobalAccountPolicySetting() {
+        internal AccountingConfig_EntryRuleData() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.GlobalAccountPolicySetting", global::System.Reflection.Assembly.Load("App_GlobalResources"));
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.AccountingConfig_EntryRuleData", global::System.Reflection.Assembly.Load("App_GlobalResources"));
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,74 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account Policy Settings.
+        ///   Looks up a localized string similar to Action.
         /// </summary>
-        internal static string AccountPolicySettings {
+        internal static string Action {
             get {
-                return ResourceManager.GetString("AccountPolicySettings", resourceCulture);
+                return ResourceManager.GetString("Action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Balancing account.
+        /// </summary>
+        internal static string BalancingAccount {
+            get {
+                return ResourceManager.GetString("BalancingAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Booking Direction.
+        /// </summary>
+        internal static string BookingDirection {
+            get {
+                return ResourceManager.GetString("BookingDirection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chart of account.
+        /// </summary>
+        internal static string ChartOfAccount {
+            get {
+                return ResourceManager.GetString("ChartOfAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        internal static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Determinant account.
+        /// </summary>
+        internal static string DeterminantAccount {
+            get {
+                return ResourceManager.GetString("DeterminantAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register rule.
+        /// </summary>
+        internal static string RegisterRule {
+            get {
+                return ResourceManager.GetString("RegisterRule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rule Name.
+        /// </summary>
+        internal static string RuleName {
+            get {
+                return ResourceManager.GetString("RuleName", resourceCulture);
             }
         }
     }

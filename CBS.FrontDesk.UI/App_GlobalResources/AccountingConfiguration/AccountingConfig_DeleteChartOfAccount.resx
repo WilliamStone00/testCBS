@@ -117,7 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountPolicySettings" xml:space="preserve">
-    <value>Account Policy Settings</value>
+  <data name="ChartOfAccount" xml:space="preserve">
+    <value>Chart of account</value>
+  </data>
+  <data name="Label" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="Number" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="PleaseConfirmThatYouWouldLike" xml:space="preserve">
+    <value>Please confirm that you would like to permanently delete this account and its associated data</value>
+  </data>
+  <data name="PleaseReloadThePageAndRestartOperation" xml:space="preserve">
+    <value>Please Reload the page and restart operation</value>
+  </data>
+  <data name="ThisActionCannotBeUndone" xml:space="preserve">
+    <value>This action cannot be undone</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>YES</value>
+  </data>
+  <data name="YouHaveRequestedToDelete" xml:space="preserve">
+    <value>You have requested to delete the account with the following details</value>
   </data>
 </root>
