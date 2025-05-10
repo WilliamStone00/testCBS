@@ -5519,6 +5519,8 @@
     <Content Include="Views\SMSActivityLog\Index.cshtml" />
     <Content Include="Views\SMSActivityLog\_SmsLogsData.cshtml" />
     <Content Include="Views\SMSActivityLog\_SmsDetailsPartial.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\ExceptionalEntry.cshtml" />
+    <Content Include="Views\ManuallyJournalEntry\GetAccountingEventToDelete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

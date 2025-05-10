@@ -84,8 +84,27 @@ namespace CBS.FrontDesk.UI.ReportForm
                 string exportAction = Request.QueryString["action"];
                 if (!string.IsNullOrWhiteSpace(exportAction) && Session["ReportDocument"] is ReportDocument exportDoc)
                 {
+                    // Retrieve the report path and main data from the session
+                    string reportPath = Session["reportPath"]?.ToString();
+                    var mainData = Session["MainData"];
+
+                    if (string.IsNullOrEmpty(reportPath) || mainData == null)
+                    {
+                        ShowError("❌ <strong>Export Error:</strong> Report data is no longer available.");
+                        return;
+                    }
+
+                    // Re-create the ReportDocument
+                    ReportDocument reportDoc = new ReportDocument();
+                    reportDoc.Load(Server.MapPath(reportPath));
+                    reportDoc.SetDataSource(mainData);
+
+                    // Apply parameters (if any)
+                    ApplyReportParameters(reportDoc);
+
+                    // Determine the export format
                     ExportFormatType format;
-                    switch (exportAction.ToLowerInvariant())
+                    switch (exportAction.ToLower())
                     {
                         case "exportpdf":
                             format = ExportFormatType.PortableDocFormat;
@@ -97,22 +116,20 @@ namespace CBS.FrontDesk.UI.ReportForm
                             format = ExportFormatType.WordForWindows;
                             break;
                         default:
-                            ShowError("❌ <strong>Invalid Export Type:</strong><br/>Supported types: exportpdf, exportexcel, exportword.");
+                            ShowError("❌ <strong>Invalid Export Type:</strong> exportpdf, exportexcel, exportword.");
                             return;
                     }
 
-                    // ✅ Clear all previous content BEFORE exporting
-                    Response.Clear();
-                    Response.Buffer = true;
-                    Response.ContentType = "";
-
+                    // Export the report
                     string reportName = (Session["displayName"]?.ToString() ?? "TSCReport").Replace(" ", "_");
                     string filename = $"{reportName}_{DateTime.Now:yyyyMMdd_HHmmss}";
-                    exportDoc.ExportToHttpResponse(format, Response, false, filename);
+                    reportDoc.ExportToHttpResponse(format, Response, false, filename);
 
-                    // ✅ Do NOT call Response.End (deprecated), use CompleteRequest instead
-                    Context.ApplicationInstance.CompleteRequest();
-                    return;
+                    // Cleanup
+                    reportDoc.Close();
+                    reportDoc.Dispose();
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
                 }
 
 
@@ -125,6 +142,32 @@ namespace CBS.FrontDesk.UI.ReportForm
             catch (Exception ex)
             {
                 ShowError($"❌ <strong>Unexpected Error:</strong> Failed during export or load.<br/>Details: {ex.Message}");
+            }
+            finally
+            {
+                // Explicitly call cleanup after export
+                //DisposeReportDocument();
+            }
+        }
+        private void ApplyReportParameters(ReportDocument reportDoc)
+        {
+            if (Session["ReportParameters"] is Dictionary<string, object> parameters)
+            {
+                foreach (var param in parameters)
+                {
+                    try
+                    {
+                        if (reportDoc.DataDefinition.ParameterFields.Cast<ParameterFieldDefinition>()
+                            .Any(p => p.Name.Equals(param.Key, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            reportDoc.SetParameterValue(param.Key, param.Value);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ShowError($"❌ Parameter Error: {ex.Message}");
+                    }
+                }
             }
         }
 
@@ -235,13 +278,15 @@ namespace CBS.FrontDesk.UI.ReportForm
               
                 // 🧠 Cache the document in session for paging/export/postback
                 Session["ReportDocument"] = rd;
+                // Store report path and data in session for later export
+                Session["reportPath"] = relativePath;
                 Session["displayName"] = displayName;
-    
             }
             catch (Exception ex)
             {
                 ShowError($"❌ <strong>Unexpected Error:</strong> An unexpected issue occurred while loading the report.<br/>Details: {ex.Message}");
             }
+       
         }
 
         // 🚨 Helper to show styled error messages in full HTML view
@@ -349,11 +394,11 @@ namespace CBS.FrontDesk.UI.ReportForm
                     {
                         reportDoc.Close();
                         reportDoc.Dispose();
-                        Session["ReportDocument"] = null;
+                        //Session["ReportDocument"] = null;
                     }
 
                     // Clear the export action flag
-                    Session["action"] = null;
+                    //Session["action"] = null;
                 }
             }
             catch (Exception ex)
@@ -363,6 +408,33 @@ namespace CBS.FrontDesk.UI.ReportForm
             finally
             {
                 // Ensure that memory is released
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+        }
+        /// <summary>
+        /// Disposes the report document and clears the session object.
+        /// This method ensures that the report processing jobs are terminated to prevent memory leaks.
+        /// </summary>
+        private void DisposeReportDocument()
+        {
+            try
+            {
+                if (Session["ReportDocument"] is ReportDocument reportDoc)
+                {
+                    reportDoc.Close();
+                    reportDoc.Dispose();
+                    //Session["ReportDocument"] = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Optional: Log the cleanup exception
+                ShowError($"⚠️ <strong>Cleanup Error:</strong> {ex.Message}");
+            }
+            finally
+            {
+                // Ensure garbage collection
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
             }
