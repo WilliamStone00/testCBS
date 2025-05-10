@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Web;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting
@@ -76,6 +77,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public decimal AmountInVault { get; set; }
         public bool HasBankAccount { get; set; }
         public string BankAccountId { get; set; }
+        [Required]
         public string Message { get; set; }
 
         public CurrencyNotesRequest CurrencyNotes { get; set; }

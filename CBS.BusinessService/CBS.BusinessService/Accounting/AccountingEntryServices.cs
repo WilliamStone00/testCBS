@@ -182,7 +182,13 @@ namespace CBS.BusinessService
         {
             try
             {
+                if (string.IsNullOrEmpty( model.Message))
+                {
+                    string message = "The Bank Deposit Request message is required opertion failed";
+                    GetExecutionMessages(model, false, message, MessagesResults.Failed,
+                       ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, message);
 
+                }
                 // Make an API call to create an individual profile
 
 
