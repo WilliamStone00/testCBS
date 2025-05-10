@@ -5520,6 +5520,7 @@
     <Content Include="Views\BulkOperation\_SimulationDetails.cshtml" />
     <Content Include="Views\BulkOperation\_SimulationDetailsDataTable.cshtml" />
     <Content Include="Views\BulkOperation\_TransferDetails.cshtml" />
+    <Content Include="Views\CashFlowManagement\_CreateBankDepositCashClearing.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

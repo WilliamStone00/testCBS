@@ -112,7 +112,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public decimal Amount { get; set; }
         [Required]
         public string  Id { get; set; }
-
+        public string ReferenceId { get; set; }
         public string Description { get; set; }
         [Required]
         public CurrencyNotesRequest CurrencyNotes { get; set; }
@@ -124,7 +124,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 ToAccountId = ToAccountId,
                 CurrencyNotesRequest = CurrencyNotes,
                 Amount = CurrencyNotes.GetAmountValue(),
-                ReferenceId = Id,
+                ReferenceId = ReferenceId
             };
         }
 
