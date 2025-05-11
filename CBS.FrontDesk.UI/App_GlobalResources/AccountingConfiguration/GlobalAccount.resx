@@ -205,7 +205,7 @@
     <value>Save</value>
   </data>
   <data name="Select" xml:space="preserve">
-    <value>View List</value>
+    <value>Select</value>
   </data>
   <data name="SelectAccountCategory" xml:space="preserve">
     <value>---Select Account Category---</value>
@@ -236,5 +236,8 @@
   </data>
   <data name="UploadAccount" xml:space="preserve">
     <value>Upload Account</value>
+  </data>
+  <data name="ViewList" xml:space="preserve">
+    <value>View List</value>
   </data>
 </root>

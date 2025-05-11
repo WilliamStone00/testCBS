@@ -20,7 +20,7 @@
                 </div>
 
                     <div class="form-floating form-floating-outline mb-4">
-                        @Html.DropDownListFor(model => model.Account.AccountTypeId, new SelectList(ViewBag.AccountTypes == null ? "" : ViewBag.AccountTypes, "Id", "Name"), "---Select AccountTypes---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(model => model.Account.AccountTypeId, new SelectList(ViewBag.AccountTypes == null ? "" : ViewBag.AccountTypes, "Id", "Name"), @GlobalAccount.SelectAccountType, new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(model => model.Account.AccountTypeId, "", new { @class = "text-danger" })
                         <label for="AccountTypeId">@GlobalAccount.AccountType</label>
                     </div>

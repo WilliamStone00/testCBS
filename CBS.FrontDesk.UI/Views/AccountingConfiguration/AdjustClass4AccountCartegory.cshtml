@@ -50,7 +50,7 @@
                                                             <td style="width:30%">@d.Level_Management</td>
 
                                                             <td style="width:30%">
-                                                                @Html.DropDownListFor(m => d.Old_AccountNumber, new SelectList(ViewBag.LevelManagementList, "Value", "Text"), new { @id = d.Id + "-AccountCartegory", @class = "form-control select2" })
+                                                                @Html.DropDownListFor(m => d.Old_AccountNumber, new SelectList(ViewBag.LevelManagementList, "Value", "Text"), new { @id = d.Id + "---" + @GlobalAdjustClass4AccountCartegory.AccountCategory + "---", @class = "form-control select2" })
                                                             </td>
                                                         </tr>
                                                     }

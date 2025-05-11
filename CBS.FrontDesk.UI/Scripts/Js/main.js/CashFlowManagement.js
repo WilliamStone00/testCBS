@@ -10,27 +10,30 @@
     $(document).on('change', '#MakeDecision', function () {
 
       
-        // Get the selected value 
+        // Get the selected value  
         var selectedValue = $(this).val();
         console.log(selectedValue);
+        var branchId = $('#branchID').val();
+
+        // Log the value to the console
+        console.log("Branch ID:", branchId);
         $('#selectedDecision').val(selectedValue);
-        if (selectedValue === 'RedirectToBranchBTB' || selectedValue === 'RedirectToBranchBCO' || selectedValue === 'Approved') {
+        if (selectedValue === 'RedirectToBranchBTB' ||  selectedValue === 'Approved') {
             // Show the element 
             console.log(selectedValue);
         
-            $('#hideBranchID').show();
-            $('#hideAmount').show();
-            $('#hideAccountId').hide();
-            if (selectedValue === 'RedirectToBranchBCO' || selectedValue === 'Approved') {
-                $('#hideBranchID').show();
-                $('#hideAmount').show();
-                $('#hideAccountId').show();
+            loadBranch(branchId)
+         
                 if (selectedValue === 'Approved') {
                     $('#hideBranchID').hide();
                     $('#hideAmount').show();
                     $('#hideAccountId').show();
+                } else {
+                    $('#hideBranchID').show();
+                    $('#hideAmount').show();
+                    $('#hideAccountId').hide();
                 }
-            }
+             
         } else {
             // Hide the element
             $('#hideBranchID').hide();
@@ -57,7 +60,28 @@
 
 });
 //GetAllBranchAccountUsedToCreditCashFlow BankingOperation/UpdateRequestForCashReplenishment/{Id}
+function loadBranch(BranchId) {
 
+    $.ajax({
+        url: '/CashFlowManagement/GetAllBranch',
+        type: 'GET',
+        dataType: 'json',
+        data: { branchId: BranchId },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo  DepositNotificationDto_Temp3
+            $('#CorrespondingBranchID').empty();
+            $.each(data, function (index, item) {
+                $('#CorrespondingBranchID').append($('<option>').text(item.Value).attr('value', item.Text));
+            });
+
+            // Add new options based on the fetched data
+            console.log(data);
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
 function createCashDemandDataEntity() {
     return {
         usersNotifications: [],
