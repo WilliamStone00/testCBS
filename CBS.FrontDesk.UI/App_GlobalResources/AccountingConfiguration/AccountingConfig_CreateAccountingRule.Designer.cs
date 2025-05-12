@@ -22,14 +22,14 @@ namespace Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class GlobalShared {
+    internal class AccountingConfig_CreateAccountingRule {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal GlobalShared() {
+        internal AccountingConfig_CreateAccountingRule() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.GlobalShared", global::System.Reflection.Assembly.Load("App_GlobalResources"));
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.AccountingConfig_CreateAccountingRule", global::System.Reflection.Assembly.Load("App_GlobalResources"));
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accounting entry rule.
+        /// </summary>
+        internal static string AccountingEntryRule {
+            get {
+                return ResourceManager.GetString("AccountingEntryRule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Action.
         /// </summary>
         internal static string Action {
@@ -70,128 +79,92 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add new.
+        ///   Looks up a localized string similar to Add entry rule.
         /// </summary>
-        internal static string AddNew {
+        internal static string AddEntryRule {
             get {
-                return ResourceManager.GetString("AddNew", resourceCulture);
+                return ResourceManager.GetString("AddEntryRule", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete.
+        ///   Looks up a localized string similar to Booking direction.
         /// </summary>
-        internal static string Delete {
+        internal static string BookingDirection {
             get {
-                return ResourceManager.GetString("Delete", resourceCulture);
+                return ResourceManager.GetString("BookingDirection", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Details.
+        ///   Looks up a localized string similar to Chart of account.
         /// </summary>
-        internal static string Details {
+        internal static string ChartOfAccount {
             get {
-                return ResourceManager.GetString("Details", resourceCulture);
+                return ResourceManager.GetString("ChartOfAccount", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download.
+        ///   Looks up a localized string similar to Description.
         /// </summary>
-        internal static string Download {
+        internal static string Description {
             get {
-                return ResourceManager.GetString("Download", resourceCulture);
+                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit.
+        ///   Looks up a localized string similar to Entry rule event code.
         /// </summary>
-        internal static string Edit {
+        internal static string EntryRuleEventCode {
             get {
-                return ResourceManager.GetString("Edit", resourceCulture);
+                return ResourceManager.GetString("EntryRuleEventCode", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insert.
+        ///   Looks up a localized string similar to Rule name.
         /// </summary>
-        internal static string Insert {
+        internal static string RuleName {
             get {
-                return ResourceManager.GetString("Insert", resourceCulture);
+                return ResourceManager.GetString("RuleName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New.
+        ///   Looks up a localized string similar to Save entry rule.
         /// </summary>
-        internal static string New {
+        internal static string SaveEntryRule {
             get {
-                return ResourceManager.GetString("New", resourceCulture);
+                return ResourceManager.GetString("SaveEntryRule", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reset.
+        ///   Looks up a localized string similar to Select direction.
         /// </summary>
-        internal static string Reset {
+        internal static string SelectDirection {
             get {
-                return ResourceManager.GetString("Reset", resourceCulture);
+                return ResourceManager.GetString("SelectDirection", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save.
+        ///   Looks up a localized string similar to Select entry rule.
         /// </summary>
-        internal static string Save {
+        internal static string SelectEntryRule {
             get {
-                return ResourceManager.GetString("Save", resourceCulture);
+                return ResourceManager.GetString("SelectEntryRule", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select.
+        ///   Looks up a localized string similar to Setting Multiple Accounting Entry Rule.
         /// </summary>
-        internal static string Select {
+        internal static string SettingMultipleAccountingEntryRule {
             get {
-                return ResourceManager.GetString("Select", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select to edit.
-        /// </summary>
-        internal static string SelectToEdit {
-            get {
-                return ResourceManager.GetString("SelectToEdit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To edit.
-        /// </summary>
-        internal static string ToEdit {
-            get {
-                return ResourceManager.GetString("ToEdit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Update.
-        /// </summary>
-        internal static string Update {
-            get {
-                return ResourceManager.GetString("Update", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to View list.
-        /// </summary>
-        internal static string ViewList {
-            get {
-                return ResourceManager.GetString("ViewList", resourceCulture);
+                return ResourceManager.GetString("SettingMultipleAccountingEntryRule", resourceCulture);
             }
         }
     }

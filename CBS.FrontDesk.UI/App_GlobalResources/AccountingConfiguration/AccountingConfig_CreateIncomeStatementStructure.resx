@@ -117,145 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountCategory" xml:space="preserve">
-    <value>Account Category</value>
+  <data name="BalancingAccount" xml:space="preserve">
+    <value>Balancing account</value>
   </data>
-  <data name="AccountDescription" xml:space="preserve">
-    <value>Account Description</value>
+  <data name="BookingDirection" xml:space="preserve">
+    <value>Booking direction</value>
   </data>
-  <data name="AccountInformation" xml:space="preserve">
-    <value>Account Information</value>
-  </data>
-  <data name="AccountInformationDetails" xml:space="preserve">
-    <value>Account Information Details</value>
-  </data>
-  <data name="AccountingConfigurationPanel" xml:space="preserve">
-    <value>Accounting Configuration Panel</value>
-  </data>
-  <data name="AccountingConfigurations" xml:space="preserve">
-    <value>Accounting Configurations</value>
-  </data>
-  <data name="AccountLabel" xml:space="preserve">
-    <value>Account Label</value>
-  </data>
-  <data name="AccountManagement" xml:space="preserve">
-    <value>Account Management</value>
-  </data>
-  <data name="AccountNumber" xml:space="preserve">
-    <value>Account Number</value>
-  </data>
-  <data name="AccountNumberAtLevelOfTheNetwork" xml:space="preserve">
-    <value>Account number at level of the network</value>
-  </data>
-  <data name="AccountNumberAtLevelOfTheUnion" xml:space="preserve">
-    <value>Account number at level of the union</value>
-  </data>
-  <data name="AccountOwner" xml:space="preserve">
-    <value>Account Owner</value>
-  </data>
-  <data name="AccountType" xml:space="preserve">
-    <value>Account Type (Ordinary Account,Operations Account ...etc)</value>
-  </data>
-  <data name="Action" xml:space="preserve">
-    <value>Action</value>
-  </data>
-  <data name="AddNew" xml:space="preserve">
-    <value>Add New</value>
-  </data>
-  <data name="AddNewAccount" xml:space="preserve">
-    <value>Add New Account</value>
-  </data>
-  <data name="BeginningBalance" xml:space="preserve">
-    <value>Beginning Balance</value>
-  </data>
-  <data name="ChartOfAccountNumber" xml:space="preserve">
-    <value>Chart Of Account Number</value>
-  </data>
-  <data name="CreateNewAccountType" xml:space="preserve">
-    <value>Create new account type</value>
-  </data>
-  <data name="CreditBalance" xml:space="preserve">
-    <value>Credit Balance</value>
-  </data>
-  <data name="CurrentBalance" xml:space="preserve">
-    <value>Current Balance</value>
-  </data>
-  <data name="DebitBalance" xml:space="preserve">
-    <value>Debit Balance</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="Details" xml:space="preserve">
-    <value>Details</value>
-  </data>
-  <data name="DownloadMFIChartOfAccount" xml:space="preserve">
-    <value>Download MFI Chart Of Account</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
+  <data name="DeterminationAccount" xml:space="preserve">
+    <value>Determination account</value>
   </data>
   <data name="Event" xml:space="preserve">
-    <value>Event</value>
+    <value />
   </data>
-  <data name="FinancialStatementSettings" xml:space="preserve">
-    <value>Financial Statement Settings(Balance Sheet and Profit and Lost)</value>
+  <data name="Name" xml:space="preserve">
+    <value />
   </data>
-  <data name="LastBalance" xml:space="preserve">
-    <value>Last Balance</value>
-  </data>
-  <data name="MFIChartOfAccount" xml:space="preserve">
-    <value>MFI Chart Of Account</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="Select" xml:space="preserve">
-    <value>Select</value>
+  <data name="OperationEventAttribute" xml:space="preserve">
+    <value>Operation eventAttribute</value>
   </data>
   <data name="SelectAccount" xml:space="preserve">
-    <value>---Select Account---</value>
+    <value>---Select Account ---</value>
   </data>
-  <data name="SelectAccountCategory" xml:space="preserve">
-    <value>---Select Account Category---</value>
-  </data>
-  <data name="SelectAccountCounterPart" xml:space="preserve">
-    <value>---Select AccountCounterPart---</value>
-  </data>
-  <data name="SelectAccountLbl" xml:space="preserve">
-    <value>Select account</value>
-  </data>
-  <data name="SelectAccountOwner" xml:space="preserve">
-    <value>---Select AccountOwner---</value>
-  </data>
-  <data name="SelectAccountType" xml:space="preserve">
-    <value>---Select AccountType---</value>
-  </data>
-  <data name="SelectChartOfAccount" xml:space="preserve">
-    <value>---Select ChartOfAccount---</value>
-  </data>
-  <data name="SelectLiaisonBranch" xml:space="preserve">
-    <value>Select Liaison Branch</value>
-  </data>
-  <data name="SelectMFIChartOfAccount" xml:space="preserve">
-    <value>Select MFI Chart Of Account</value>
+  <data name="SelectBookingDirection" xml:space="preserve">
+    <value>---Select BookingDirection---</value>
   </data>
   <data name="SelectOperationEvent" xml:space="preserve">
-    <value>Select operation event</value>
-  </data>
-  <data name="SelectToEdit" xml:space="preserve">
-    <value>Select to edit</value>
-  </data>
-  <data name="Update" xml:space="preserve">
-    <value>Update</value>
-  </data>
-  <data name="UploadAccount" xml:space="preserve">
-    <value>Upload Account</value>
-  </data>
-  <data name="ViewList" xml:space="preserve">
-    <value>View List</value>
-  </data>
-  <data name="YouAreAboutToAndCreateAccountUnderChart" xml:space="preserve">
-    <value>You are about to and create account under chart</value>
+    <value>---Select Operation Event---</value>
   </data>
 </root>

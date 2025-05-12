@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+    @using Resources
 <div class="card-body">
     @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {<input type="hidden" name="ServiceOption" value="operationEventAttribute" id="ServiceOption" />
@@ -6,16 +7,16 @@
      <div class="row mt-2 gy-4">
          <div class="col-6">
              <div class="form-floating form-floating-outline">
-                 @Html.DropDownListFor(m => m.OperationEventAttribute.OperationEventId, new SelectList(ViewBag.OperationEvent == null ? "" : ViewBag.OperationEvent, "Id", "OperationEventName"), "---Select AccountType---", new { @class = "form-control select2", @search = "true" })
+                 @Html.DropDownListFor(m => m.OperationEventAttribute.OperationEventId, new SelectList(ViewBag.OperationEvent == null ? "" : ViewBag.OperationEvent, "Id", "OperationEventName"), "---" + @AccountingConfig_CreateOperationEventAttribute.SelectAccountType + "---", new { @class = "form-control select2", @search = "true" })
                  @Html.ValidationMessageFor(m => m.OperationEventAttribute.OperationEventId, "", new { @class = "text-danger" })
-                 <label>OperationEvent</label>
+                 <label>@AccountingConfig_CreateOperationEventAttribute.OperationEvent</label>
              </div>
          </div>
          <div class="col-6">
              <div class="form-floating form-floating-outline">
                  @Html.TextBoxFor(m => m.OperationEventAttribute.Name, new { @class = "form-control" })
                  @Html.ValidationMessageFor(m => m.OperationEventAttribute.Name, "", new { @class = "text-danger" })
-                 <label>Name</label>
+                 <label>@AccountingConfig_CreateOperationEventAttribute.Name</label>
              </div>
          </div>
 
@@ -30,15 +31,15 @@
         <div class="mt-4">
             @if (Model.OperationEvent.Id == null)
             {
-                <button type="submit" class="btn btn-primary me-2">Save</button>
+                <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
                 <input type="hidden" name="Action" value="insert" id="Action" />
             }
             else
-            { <button type="submit" class="btn btn-primary me-2">Update</button>
+            { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                 @Html.HiddenFor(m => m.OperationEvent.Id)
                 <input type="hidden" name="Action" value="update" id="Action" />
             }            
-            <div class="text-center text-muted"><small>C B S 4 U user account (@Session["FullName"])</small></div>
+            <div class="text-center text-muted"><small>@AccountingConfig_CreateOperationEventAttribute.CBS4UUserAccount (@Session["FullName"])</small></div>
         </div>
 
     }

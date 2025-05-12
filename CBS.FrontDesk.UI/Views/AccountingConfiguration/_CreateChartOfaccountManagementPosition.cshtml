@@ -1,6 +1,6 @@
 ﻿
 @model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
-
+@using Resources
 <div class="row">
     <!-- Context Menu -->
     <div class="col-12 card-body">
@@ -12,9 +12,9 @@
                  <div class="row mt-2 gy-4">
                      <div class="col-md-12">
                          <div class="form-floating form-floating-outline">
-                             @Html.DropDownListFor(m => m.ChartofAccountManagementPosition.ChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? "" : ViewBag.ChartOfAccounts, "Text", "Value"), "---Select ChartOfAccount---", new { @class = "form-control select2", @search = "true", @id = "Account_ChartOfAccountId" })
+                             @Html.DropDownListFor(m => m.ChartofAccountManagementPosition.ChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? "" : ViewBag.ChartOfAccounts, "Text", "Value"), @AccountingConfig_CreateChartOfaccountManagementPosition.SelectChartOfAccount, new { @class = "form-control select2", @search = "true", @id = "Account_ChartOfAccountId" })
                              @Html.ValidationMessageFor(m => m.ChartofAccountManagementPosition.ChartOfAccountId, "", new { @class = "text-danger" })
-                             <label>Chart of account management position</label>
+                             <label>@AccountingConfig_CreateChartOfaccountManagementPosition.ChartOfAccountManagementPosition</label>
                          </div>
                      </div>
                      <div class="col-md-12">
@@ -22,14 +22,14 @@
 
                              @Html.TextBoxFor(m => m.ChartofAccountManagementPosition.Description, new { @class = "form-control" })
                              @Html.ValidationMessageFor(m => m.ChartofAccountManagementPosition.Description, "", new { @class = "text-danger" })
-                             <label>Account Descrption</label>
+                             <label>@AccountingConfig_CreateChartOfaccountManagementPosition.AccountDescrption</label>
                          </div>
                      </div>
                      <div class="col-md-12">
                          <div class="form-floating form-floating-outline">
                              @Html.TextBoxFor(m => m.ChartofAccountManagementPosition.PositionNumber, new { @class = "form-control" })
                              @Html.ValidationMessageFor(m => m.ChartofAccountManagementPosition.PositionNumber, "", new { @class = "text-danger" })
-                             <label>Management Number</label>
+                             <label>@AccountingConfig_CreateChartOfaccountManagementPosition.ManagementNumber</label>
                          </div>
                      </div>
 
@@ -37,19 +37,19 @@
                          <div class="form-floating form-floating-outline">
                              @Html.TextBoxFor(m => m.ChartofAccountManagementPosition.Old_AccountNumber, new { @class = "form-control" })
                              @Html.ValidationMessageFor(m => m.ChartofAccountManagementPosition.Old_AccountNumber, "", new { @class = "text-danger" })
-                             <label>Old Account Number</label>
+                             <label>@AccountingConfig_CreateChartOfaccountManagementPosition.OldAccountNumber</label>
                          </div>
                      </div>
                      <div class="col-md-12">
-                           @Html.DropDownListFor(m => m.ChartofAccountManagementPosition.IsHeadOfficeAccount, new SelectList(ViewBag.HeadOfficeAccount == null ? "" : ViewBag.HeadOfficeAccount, "Text", "Value"), "---Select source branch---", new { @class = "form-control select2", @search = "true" })
+                           @Html.DropDownListFor(m => m.ChartofAccountManagementPosition.IsHeadOfficeAccount, new SelectList(ViewBag.HeadOfficeAccount == null ? "" : ViewBag.HeadOfficeAccount, "Text", "Value"), @AccountingConfig_CreateChartOfaccountManagementPosition.SelectTheSourceBranch, new { @class = "form-control select2", @search = "true" })
                          @*@Html.ValidationMessageFor(m => m.ChartofAccountManagementPosition.BranchId, "", new { @class = "text-danger" })*@
-                         <label>Select the branch initiator for this account</label>
+                         <label>@AccountingConfig_CreateChartOfaccountManagementPosition.SelectTheBranchInitiatorForThisAccount</label>
                      </div>
                      <div class="col-md-12">
                          <div class="form-floating form-floating-outline">
-                             @Html.DropDownListFor(m => m.ChartofAccountManagementPosition.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select source branch---", new { @class = "form-control select2", @search = "true" })
+                             @Html.DropDownListFor(m => m.ChartofAccountManagementPosition.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), @AccountingConfig_CreateChartOfaccountManagementPosition.SelectTheSourceBranch, new { @class = "form-control select2", @search = "true" })
                              @*@Html.ValidationMessageFor(m => m.ChartofAccountManagementPosition.BranchId, "", new { @class = "text-danger" })*@
-                             <label>Select the branch initiator for this account</label>
+                             <label>@AccountingConfig_CreateChartOfaccountManagementPosition.SelectTheBranchInitiatorForThisAccount</label>
                          </div>
                      </div>
 
@@ -57,11 +57,11 @@
                     <div class="mt-4">
                         @if (Model.ChartofAccountManagementPosition.Id == null)
                         {
-                            <button type="submit" class="btn btn-primary me-2" id="btnSave">Save</button>
+                            <button type="submit" class="btn btn-primary me-2" id="btnSave">@GlobalShared.Save</button>
                             <input type="hidden" name="Action" value="insert" id="Action" />
                         }
                         else
-                        { <button type="submit" class="btn btn-primary me-2">Update</button>
+                        { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                             @Html.HiddenFor(m => m.ChartofAccountManagementPosition.Id)
                             <input type="hidden" name="Action" value="update" id="Action" />
                         }
