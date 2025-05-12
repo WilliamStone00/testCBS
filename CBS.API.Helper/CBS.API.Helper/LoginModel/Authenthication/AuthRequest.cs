@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using CBS.FrontDesk.UI.Filter;
 
 namespace CBS.API.Helper
 {
@@ -124,10 +125,12 @@ namespace CBS.API.Helper
         [StringLength(17, MinimumLength = 3, ErrorMessage = "Username must be between 6 and 17 characters.")]
         // Updated RegularExpression to allow alphabets, digits, underscores, and dots
         [RegularExpression(@"^[a-zA-Z0-9_.@]+$", ErrorMessage = "Username can only contain alphanumeric characters, underscores, @ and dots.")]
+        [InputSanitizer(ErrorMessage = "Input contains prohibited characters.")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Password is required.")]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters.")]
+        [InputSanitizer(ErrorMessage = "Input contains prohibited characters.")]
         public string Password { get; set; }
         public string SessionCode { get; set; }
         public string UserAgent { get; set; }  // ✅ Add this field

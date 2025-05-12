@@ -1596,6 +1596,7 @@
       <DependentUpon>TransactionDS.xsd</DependentUpon>
     </Compile>
     <Compile Include="Filter\AuthorizeAttributeEASIMS.cs" />
+    <Compile Include="Filter\InputSanitizerAttribute.cs" />
     <Compile Include="Filter\GlobalExceptionFilter.cs" />
     <Compile Include="Filter\SessionLockCheckAttribute.cs" />
     <Compile Include="Filter\UserAuditFilter.cs" />
@@ -5715,8 +5716,6 @@
     <Content Include="Views\BulkOperation\_SourceAccountConfiguration.cshtml" />
     <Content Include="Views\BulkOperation\_SimulationTitleInfos.cshtml" />
     <Content Include="Views\BulkOperation\Details.cshtml" />
-    <Content Include="Views\BulkOperation\_Details.cshtml" />
-    <Content Include="Views\BulkOperation\_AccountDataTable.cshtml" />
     <Content Include="Views\SMSActivityLog\Index.cshtml" />
     <Content Include="Views\SMSActivityLog\_SmsLogsData.cshtml" />
     <Content Include="Views\SMSActivityLog\_SmsDetailsPartial.cshtml" />
@@ -5725,6 +5724,7 @@
     <Content Include="Views\BulkOperation\_SimulationDetails.cshtml" />
     <Content Include="Views\BulkOperation\_SimulationDetailsDataTable.cshtml" />
     <Content Include="Views\BulkOperation\_TransferDetails.cshtml" />
+    <Content Include="Views\CashFlowManagement\_CreateBankDepositCashClearing.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

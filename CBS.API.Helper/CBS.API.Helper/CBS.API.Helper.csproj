@@ -116,8 +116,8 @@
     <Compile Include="LoginModel\Authenthication\AuthRequest.cs" />
     <Compile Include="LoginModel\Authenthication\AuthResponse.cs" />
     <Compile Include="LoginModel\Authenthication\Claim.cs" />
-    <Compile Include="LoginModel\Authenthication\Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XSSProtectionPatterns\InputSanitizerAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
