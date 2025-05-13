@@ -79,5 +79,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration.Localization
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
 
         }
+
+
     }
 }

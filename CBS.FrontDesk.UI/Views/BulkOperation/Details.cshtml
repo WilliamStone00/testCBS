@@ -42,12 +42,215 @@
     </div>
 </div>
 
+<!-- Confirm Bulk Operation Modal -->
+<div class="modal fade" id="confirmBulkOperationModal" tabindex="-1" aria-labelledby="confirmBulkOperationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content position-relative">
+
+            <!-- Loader Overlay -->
+            <div id="confirmBulkOperationLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                    <div class="spinner-border text-primary mb-3" role="status"></div>
+                    <p class="fw-semibold text-primary">Processing bulk operation...</p>
+                </div>
+            </div>
+
+            <!-- Modal Header -->
+            <div class="modal-header border-0">
+                <div class="w-100">
+                    <div class="card bg-light mb-2">
+                        <div class="card-body text-center">
+                            <h1 class="card-title text-primary">
+                                <i class="mdi mdi-checkbox-marked-circle-outline me-2"></i> Confirm Bulk Operation
+                            </h1>
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tips Section -->
+            <div class="card m-3">
+                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                    <span><i class="mdi mdi-information-outline me-2"></i> About This Operation</span>
+                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBulkOperationTips">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                </h6>
+                <div id="collapseBulkOperationTips" class="collapse">
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i><strong>Important:</strong> This action will affect multiple records.</li>
+                            <li><i class="mdi mdi-shield-check-outline text-success me-2"></i><strong>Secure:</strong> All changes are logged for audit purposes.</li>
+                            <li><i class="mdi mdi-undo text-danger me-2"></i><strong>Irreversible:</strong> This operation cannot be undone.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="modal-body p-4">
+                <form id="confirmBulkOperationForm">
+                    <input type="hidden" id="bulkOperationSimulationId" name="BulkOperationSimulationId" />
+
+                    <div class="mb-3">
+                        <label for="approvalStatus" class="form-label text-primary fw-semibold">
+                            <i class="mdi mdi-check-decagram me-2"></i>Approval Status
+                        </label>
+                        <select class="form-select" id="approvalStatus" name="ApprovalStatus" required>
+                            <option value="Pending">Pending</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Reviewed">Reviewed</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="approvalStatusDescription" class="form-label text-primary fw-semibold">
+                            <i class="mdi mdi-text-box-outline me-2"></i>Description
+                        </label>
+                        <textarea class="form-control" id="approvalStatusDescription" name="ApprovalStatusDescription" rows="3" placeholder="Enter description or comments..."></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="approvalBy" class="form-label text-primary fw-semibold">
+                            <i class="mdi mdi-account-check-outline me-2"></i>Approved By
+                        </label>
+                        <input type="text" class="form-control" id="approvalBy" name="ApprovalBy" placeholder="Enter approver name" required>
+                    </div>
+
+                    <div class="alert alert-warning mt-4">
+                        <i class="mdi mdi-alert-outline me-2"></i>
+                        <strong>Warning:</strong> Please review all details carefully before confirming this bulk operation.
+                    </div>
+                </form>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer border-0 justify-content-between">
+                <div>
+                    <span class="text-muted fw-semibold">
+                        Simulation ID: <span class="text-dark" id="bulkOperationSimulationIdDisplay">Not provided</span>
+                    </span>
+                </div>
+                <div class="text-center w-100">
+                    <small class="text-muted">Powered by FLX-CBS</small>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">
+                        <i class="mdi mdi-close"></i> Cancel
+                    </button>
+                    <button type="button" class="btn btn-primary" id="confirmBulkOperationBtn">
+                        <i class="mdi mdi-check-circle-outline"></i> Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
 @section Scripts {
     <script src="~/Scripts/Js/Crud/BulkOperation/BulkSimulationDetailsQuery.js"></script>
-    <script src="~/Scripts/Js/Crud/BulkOperation/BulkOperationValidation.js"></script>
+
+    <script>
+        $('#approveBulkOperation').click(function () {
+            var simulationId = $(this).data('simulation-id') || '';
+            console.log("SimulationId", simulationId);
+
+            // Call the function with the simulation ID and default status
+            showConfirmBulkOperationModal(simulationId);
+        });
+
+
+        function showConfirmBulkOperationModal(simulationId) {
+            // Set the simulation ID
+            $('#bulkOperationSimulationId').val(simulationId);
+            $('#bulkOperationSimulationIdDisplay').text(simulationId);
+
+            // Reset form
+            $('#confirmBulkOperationForm')[0].reset();
+
+            // Show modal
+            $('#confirmBulkOperationModal').modal('show');
+        }
+
+
+        // Handle confirm button click
+        $('#confirmBulkOperationBtn').click(function () {
+            // Show loader
+            $('#confirmBulkOperationLoader').removeClass('d-none');
+
+            // Get form data
+            let BulkOperationSimulationId = $('#bulkOperationSimulationId').val();
+            let ApprovalStatus = $('#approvalStatus').val();
+            let ApprovalStatusDescription = $('#approvalStatusDescription').val();
+            let ApprovalBy = $('#approvalBy').val();
+
+            let confirmationMessage;
+            let actionVerb;
+
+            switch (ApprovalStatus.toLowerCase()) {
+                case 'approved':
+                    actionVerb = 'approve';
+                    confirmationMessage = `Are you sure you want to approve this bulk operation?`;
+                    break;
+                case 'reviewed':
+                    actionVerb = 'send for review';
+                    confirmationMessage = `Are you sure you want to send this bulk operation for review?`;
+                    break;
+                case 'rejected':
+                    actionVerb = 'reject';
+                    confirmationMessage = `Are you sure you want to reject this bulk operation?`;
+                    break;
+                default:
+                    actionVerb = 'set as pending';
+                    confirmationMessage = `Are you sure you want to mark this bulk operation as pending?`;
+            }
+
+            // Confirmation prompt
+            alertify.confirm("Confirmation", confirmationMessage,
+                function () {
+                    $.ajax({
+                        url: '/BulkOperation/Validation',
+                        type: 'POST',
+                        data: {
+                            stimulationId: BulkOperationSimulationId,
+                            approvalStatus: ApprovalStatus,
+                            description: ApprovalStatusDescription,
+                            approvedBy: ApprovalBy
+                        },
+                        success: function (response) {
+                            $('#confirmBulkOperationLoader').addClass('d-none');
+
+                            if (response.success) {
+                                appalert(response.message, 1, 1);
+                                $('#confirmBulkOperationModal').modal('hide');
+                                $('#confirmBulkOperationForm')[0].reset();
+                            } else {
+                                appalert(response.message || `❌ Failed to ${actionVerb} the operation.`, 2, 1);
+                            }
+                        },
+                        error: function (err) {
+                            $('#confirmBulkOperationLoader').addClass('d-none');
+
+                            if (err.status === 401) {
+                                window.location.href = '/Authentication/Login';
+                            } else {
+                                appalert(err.statusText || `❌ An error occurred while trying to ${actionVerb}.`, 0, 1);
+                            }
+                        }
+                    });
+                },
+                function () {
+                    $('#confirmBulkOperationLoader').addClass('d-none');
+                    appalert(`Operation to ${actionVerb} was cancelled.`, 3, 1);
+                }
+            );
+        });
+    </script>
+    @*<script src="~/Scripts/Js/Crud/BulkOperation/BulkOperationValidation.js"></script>*@
 }
 
 

@@ -4,23 +4,14 @@ $('#approveBulkOperation').click(function () {
     console.log("SimulationId", simulationId);
 
     // Call the function with the simulation ID and default status
-    showConfirmBulkOperationModal(simulationId, 'Approved');
-});
-
-$('#reviewBulkOperation').click(function () {
-    var simulationId = $(this).data('simulation-id') || '';
-    console.log("SimulationId", simulationId);
-
-    // Call the function with the simulation ID and default status
-    showConfirmBulkOperationModal(simulationId, 'Reviewed');
+    showConfirmBulkOperationModal(simulationId);
 });
 
 
-function showConfirmBulkOperationModal(simulationId,status) {
+function showConfirmBulkOperationModal(simulationId) {
     // Set the simulation ID
     $('#bulkOperationSimulationId').val(simulationId);
     $('#bulkOperationSimulationIdDisplay').text(simulationId);
-    $('#approvalStatus').val(status),
 
     // Reset form
     $('#confirmBulkOperationForm')[0].reset();
@@ -29,43 +20,29 @@ function showConfirmBulkOperationModal(simulationId,status) {
     $('#confirmBulkOperationModal').modal('show');
 }
 
+
 // Handle confirm button click
 $('#confirmBulkOperationBtn').click(function () {
     // Show loader
     $('#confirmBulkOperationLoader').removeClass('d-none');
 
     // Get form data
-    const formData = {
-        BulkOperationSimulationId: $('#bulkOperationSimulationId').val(),
-        ApprovalStatus: $('#approvalStatus').val(),
-        ApprovalStatusDescription: $('#approvalStatusDescription').val(),
-        ApprovalBy: $('#approvalBy').val()
-    };
+ 
+    let BulkOperationSimulationId = $('#bulkOperationSimulationId').val();
+    let ApprovalStatus = $('#approvalStatus').val();
+    let ApprovalStatusDescription = $('#approvalStatusDescription').val();
+    let ApprovalBy = $('#approvalBy').val();
+
 
     // Here you would typically make an AJAX call to your API
     console.log('Submitting bulk operation confirmation:', formData);
 
-    approveBulkOperation(formData);
-
-  /*  // Simulate API call
-    setTimeout(function () {
-        // Hide loader
-        $('#confirmBulkOperationLoader').addClass('d-none');
-
-        // Close modal
-        $('#confirmBulkOperationModal').modal('hide');
-
-        // Show success message
-        alert('Bulk operation confirmed successfully!');
-    }, 1500);*/
-});
-
-function approveBulkOperation(formData) {
-    // Determine confirmation message based on status
     let confirmationMessage;
     let actionVerb;
+    console.log(BulkOperationSimulationId, ApprovalStatus, ApprovalStatusDescription, ApprovalBy);
 
-    switch (formData.ApprovalStatus.toLowerCase()) {
+  
+    switch (ApprovalStatus.toLowerCase()) {
         case 'approved':
             actionVerb = 'approve';
             confirmationMessage = `Are you sure you want to approve this bulk operation?`;
@@ -78,28 +55,28 @@ function approveBulkOperation(formData) {
             actionVerb = 'set as pending';
             confirmationMessage = `Are you sure you want to mark this bulk operation as pending?`;
     }
+    console.log(actionVerb);
 
     // --- Confirmation and Submit
     alertify.confirm("Confirmation", confirmationMessage,
         function () {
             const ajaxConfig = {
-                type: 'POST',
                 url: 'BulkOperation/Validation',
-                data: formData,
+                type: 'POST',
+                data: function (d) {
+                    d.stimulationId = BulkOperationSimulationId;
+                    d.approvalStatus = ApprovalStatus;
+                    d.description = ApprovalStatusDescription;
+                    d.approvedBy = ApprovalBy;
+                },
                 success: function (response) {
                     console.log("Response:", response);
                     if (response.success) {
                         appalert(response.message, 1, 1);
-                        setTimeout(() => {
-                            if (response.redirectUrl) {
-                                window.location.href = response.redirectUrl;
-                            } else {
-                                location.reload();
-                            }
-                        }, 1500);
                     } else {
                         appalert(response.message || `❌ Failed to ${actionVerb} the operation.`, 2, 1);
                     }
+                    $('#confirmBulkOperationForm')[0].reset();
                 },
                 error: function (err) {
                     console.log("Error:", err);
@@ -117,4 +94,4 @@ function approveBulkOperation(formData) {
             appalert(`Operation to ${actionVerb} was cancelled.`, 3, 1);
         }
     );
-}
+});
