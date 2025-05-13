@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
-
+@using Resources
 <div class="row">
     <!-- Context Menu -->
     <div class="col-12 card-body">
@@ -11,30 +11,30 @@
                  <div class="row mt-2 gy-4">
                      <div class="col-md-12">
                          <div class="form-floating form-floating-outline">
-                             @Html.DropDownListFor(m => m.AccountPolicy.PolicyOwner, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select Branch---", new { @class = "form-control select2", @search = "true" })
+                             @Html.DropDownListFor(m => m.AccountPolicy.PolicyOwner, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---"+@AccountingConfig_CreateAccountPolicy.SelectBranch+"---", new { @class = "form-control select2", @search = "true" })
                              @Html.ValidationMessageFor(m => m.AccountPolicy.PolicyOwner, "", new { @class = "text-danger" })
-                             <label>Branch</label>
+                             <label>@AccountingConfig_CreateAccountPolicy.Branch</label>
                          </div>
                      </div>
                      <div class="col-md-6">
                          <div class="form-floating form-floating-outline">
-                             @Html.DropDownListFor(m => m.AccountPolicy.AccountId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), "---Select Account---", new { @class = "form-control select2", @search = "true" })
+                             @Html.DropDownListFor(m => m.AccountPolicy.AccountId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), "---"+ @AccountingConfig_CreateAccountPolicy.SelectAccount+"---", new { @class = "form-control select2", @search = "true" })
                              @Html.ValidationMessageFor(m => m.AccountPolicy.AccountId, "", new { @class = "text-danger" })
-                             <label>Account</label>
+                             <label>@AccountingConfig_CreateAccountPolicy.Account</label>
                          </div>
                      </div>
                      <div class="col-md-6">
                          <div class="form-floating form-floating-outline">
                              @Html.TextBoxFor(m => m.AccountPolicy.Name, new { @class = "form-control" })
                              @Html.ValidationMessageFor(m => m.AccountPolicy.Name, "", new { @class = "text-danger" })
-                             <label>Policy Name</label>
+                             <label>@AccountingConfig_CreateAccountPolicy.PolicyName</label>
                          </div>
                      </div>
                      <div class="col-md-6">
                          <div class="form-floating form-floating-outline">
                              @Html.TextBoxFor(m => m.AccountPolicy.MinimumAlert, new { @class = "form-control" })
                              @Html.ValidationMessageFor(m => m.AccountPolicy.MinimumAlert, "", new { @class = "text-danger" })
-                             <label>Account Minimum Alert</label>
+                             <label>@AccountingConfig_CreateAccountPolicy.AccountMinimumAlert</label>
 
                          </div>
                      </div>
@@ -42,7 +42,7 @@
                          <div class="form-floating form-floating-outline">
                              @Html.TextBoxFor(m => m.AccountPolicy.MaximumAlert, new { @class = "form-control" })
                              @Html.ValidationMessageFor(m => m.AccountPolicy.MaximumAlert, "", new { @class = "text-danger" })
-                             <label>Account Maximum Alert</label>
+                             <label>@AccountingConfig_CreateAccountPolicy.AccountMaximumAlert</label>
                          </div>
                      </div>
                      <div class="col-md-6">
@@ -50,7 +50,7 @@
 
                              @Html.TextAreaFor(m => m.AccountPolicy.MinMessage, new { @class = "form-control", @style = "height: 200px;" })
                              @Html.ValidationMessageFor(m => m.AccountPolicy.MinMessage, "", new { @class = "text-danger" })
-                             <label>Minimum Message to be send</label>
+                             <label>@AccountingConfig_CreateAccountPolicy.MinimumMessageToBeSend</label>
 
                          </div>
                      </div>
@@ -61,7 +61,7 @@
 
                              @Html.TextAreaFor(m => m.AccountPolicy.MaxMessage, new { @class = "form-control", @style = "height: 200px;" })
                              @Html.ValidationMessageFor(m => m.AccountPolicy.MaxMessage, "", new { @class = "text-danger" })
-                             <label>Maximum Message to be send</label>
+                             <label>@AccountingConfig_CreateAccountPolicy.MinimumMessageToBeSend</label>
 
                          </div>
                      </div>
@@ -70,11 +70,11 @@
                     <div class="mt-4">
                         @if (Model.AccountPolicy.Id == null)
                         {
-                            <button type="submit" class="btn btn-primary me-2">Save</button>
+                            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
                             <input type="hidden" name="Action" value="insert" id="Action" />
                         }
                         else
-                        { <button type="submit" class="btn btn-primary me-2">Update</button>
+                        { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                             @Html.HiddenFor(m => m.AccountPolicy.Id)
                             <input type="hidden" name="Action" value="update" id="Action" />
                         }

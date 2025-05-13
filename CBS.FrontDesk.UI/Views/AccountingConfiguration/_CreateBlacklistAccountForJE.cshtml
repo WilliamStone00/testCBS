@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+    @using Resources
 <div class="card-body">
     @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {<input type="hidden" name="ServiceOption" value="blacklistAccount" id="ServiceOption" />
@@ -9,7 +10,7 @@
                     @Html.ListBoxFor(m => m.BlacklistedAccounts.Id, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? new List<SelectListItem>() : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple" })
                
                  @Html.ValidationMessageFor(m => m.BlacklistedAccounts.Id, "", new { @class = "text-danger" })
-                 <label>Select Account</label>
+                 <label>@GlobalAccount.SelectAccountLbl</label>
              </div>
 
          </div>
@@ -19,11 +20,11 @@
         <div class="mt-4 d-flex justify-content-end">
             @if (Model.BlacklistedAccounts.Id == null)
             {
-                <button type="submit" class="btn btn-primary me-2">Save</button>
+                <button type="submit" class="btn btn-primary me-2">>@GlobalShared.Save</button>
                 <input type="hidden" name="Action" value="insert" id="Action" />
             }
             else
-            { <button type="submit" class="btn btn-primary me-2">Update</button>
+            { <button type="submit" class="btn btn-primary me-2">>@GlobalShared.Update</button>
                 @Html.HiddenFor(m => m.BlacklistAccount.Id)
                 <input type="hidden" name="Action" value="update" id="Action" />
             }
