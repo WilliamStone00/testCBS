@@ -602,7 +602,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             {
                                 if (model.SystemQuery.FileType.ToLower() == "pdf")
                                 {
-                                    string fileTitle = $"BalanceSheet_{model.SystemQuery.FromDate.ToString("ddMMyyyy")}_{model.SystemQuery.ToDate.ToString("ddMMyyyy")}";
+                                    string fileTitle = $"BalanceSheet_{model.SystemQuery.FromDate.ToString("ddMMyyyy")}";
                                     var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "BALANCESHEET").First();
                                     var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate,FromDate= model.SystemQuery.FromDate, DocumentId = DocModel.id, FileType="pdf" };
                                     var account = await _acountServices.GenerateBalanceSheet(modelx);
