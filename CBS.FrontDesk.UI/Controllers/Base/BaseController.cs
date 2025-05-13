@@ -33,30 +33,252 @@ namespace CBS.FrontDesk.UI.Controllers
         private string domain = ConfigurationManager.AppSettings["domain"];
         private string timetoExpire = ConfigurationManager.AppSettings["timetoExpire"];
         private readonly LocalSession _userManagementServices;
+        //protected override void OnActionExecutingxxxx(ActionExecutingContext filterContext)
+        //{
+        //    try
+        //    {
+        //        var actionName = filterContext.ActionDescriptor.ActionName;
+        //        var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+        //        var requestUrl = filterContext.HttpContext.Request.RawUrl.ToLower();
+
+        //        // 🌐 Check Internet Connectivity (Exclude NoInternet page to prevent redirection loop)
+        //        if (!actionName.Equals("NoInternet", StringComparison.OrdinalIgnoreCase) &&
+        //            !controllerName.Equals("Home", StringComparison.OrdinalIgnoreCase))
+        //        {
+        //            if (!IsInternetAvailable())
+        //            {
+        //                filterContext.Result = new RedirectResult("~/Home/NoInternet");
+        //                return;
+        //            }
+        //        }
+
+        //        // 🔒 Redirect to Login if user is not authenticated and not on login page
+        //        if (!requestUrl.StartsWith("/authentication/login") && Session["UserID"] == null)
+        //        {
+        //            filterContext.Result = new RedirectResult("~/Authentication/Login");
+        //            return;
+        //        }
+
+        //        // 👤 Load user session for authenticated users
+        //        if (User.Identity.IsAuthenticated && !actionName.Equals("Login", StringComparison.OrdinalIgnoreCase))
+        //        {
+        //            GetUserSession();
+        //        }
+
+        //        // ✅ MFA enforcement
+        //        if (User.Identity.IsAuthenticated && VerifyIfSessionExist("MFA"))
+        //        {
+        //            if (!requestUrl.Contains("/MFAVerification") &&
+        //                !requestUrl.Contains("/Authentication/Logout"))
+        //            {
+        //                string mfaUrl = Session["MFAUrl"]?.ToString();
+        //                if (!string.IsNullOrEmpty(mfaUrl))
+        //                {
+        //                    filterContext.Result = new RedirectResult(mfaUrl);
+        //                    return;
+        //                }
+        //            }
+        //        }
+
+        //        // ✅ Password Change enforcement
+        //        if (User.Identity.IsAuthenticated && VerifyIfSessionExist("PWD"))
+        //        {
+        //            if (!requestUrl.Contains("/UserManagement/FLoginChangePassword") &&
+        //                !requestUrl.Contains("/Authentication/Logout"))
+        //            {
+        //                string pwdUrl = Session["CHPWDUrl"]?.ToString();
+        //                if (!string.IsNullOrEmpty(pwdUrl))
+        //                {
+        //                    filterContext.Result = new RedirectResult(pwdUrl);
+        //                    return;
+        //                }
+        //            }
+        //        }
+
+        //        // ⚠️ IP Address check for session hijacking
+        //        var userIp = Request.UserHostAddress;
+        //        if (Session["UserIP"] != null && Session["UserIP"].ToString() != userIp)
+        //        {
+        //            Session.Abandon();
+        //            filterContext.Result = new RedirectResult("~/Authentication/Logout");
+        //            return;
+        //        }
+        //        else
+        //        {
+        //            Session["UserIP"] = userIp;
+        //        }
+
+        //        // 🚫 Prevent authenticated users from accessing Login page again
+        //        if (User.Identity.IsAuthenticated &&
+        //            controllerName.Equals("Authentication", StringComparison.OrdinalIgnoreCase) &&
+        //            actionName.Equals("Login", StringComparison.OrdinalIgnoreCase))
+        //        {
+        //            filterContext.Result = new RedirectResult("~/Home/Index");
+        //            return;
+        //        }
+
+        //        // ✅ Continue with action
+        //        base.OnActionExecuting(filterContext);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Optional: Handle exception and log error
+        //        filterContext.Result = new RedirectResult("~/Home/Error");
+        //    }
+        //}
+
+        //protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        //{
+        //    try
+        //    {
+        //        // 🌐 Check Internet Connectivity
+        //        if (!IsInternetAvailable())
+        //        {
+        //            // Handle offline scenario
+        //            filterContext.Result = new RedirectResult("~/Home/NoInternet"); // Redirect to a "No Internet" page or handle it appropriately
+        //            return;
+        //        }
+
+        //        var request = filterContext.HttpContext.Request;
+        //        var url = request.RawUrl;
+        //        var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+        //        var actionName = filterContext.ActionDescriptor.ActionName;
+
+        //        // 🔒 Redirect to Login if user is not authenticated and not on login page
+        //        if (!url.StartsWith("/Authentication/Login", StringComparison.OrdinalIgnoreCase) &&
+        //            Session["UserID"] == null)
+        //        {
+        //            filterContext.Result = new RedirectResult("~/Authentication/Login");
+        //            return;
+        //        }
+
+        //        // ✅ MFA enforcement
+        //        if (User.Identity.IsAuthenticated && VerifyIfSessionExist("MFA"))
+        //        {
+        //            if (!url.Contains("/MFAVerification?serviceoption=MFA") &&
+        //                url != "/Authentication/Logout" &&
+        //                url != "/MFAVerification/MFACodeVerification")
+        //            {
+        //                string mfaUrl = Session["MFAUrl"]?.ToString();
+        //                if (!string.IsNullOrEmpty(mfaUrl))
+        //                {
+        //                    filterContext.Result = new RedirectResult(mfaUrl);
+        //                    return;
+        //                }
+        //            }
+        //        }
+
+        //        // ✅ Password Change enforcement
+        //        if (User.Identity.IsAuthenticated && VerifyIfSessionExist("PWD"))
+        //        {
+        //            if (!url.Contains("/UserManagement/FLoginChangePassword?serviceoption=USER") &&
+        //                url != "/Authentication/Logout" &&
+        //                url != "/UserManagement/FLoginChangePassword")
+        //            {
+        //                string pwdUrl = Session["CHPWDUrl"]?.ToString();
+        //                if (!string.IsNullOrEmpty(pwdUrl))
+        //                {
+        //                    filterContext.Result = new RedirectResult(pwdUrl);
+        //                    return;
+        //                }
+        //            }
+        //        }
+
+        //        // ⚠️ IP Address check for session hijacking
+        //        var userIp = Request.UserHostAddress;
+        //        if (Session["UserIP"] != null && Session["UserIP"].ToString() != userIp)
+        //        {
+        //            Session.Abandon();
+        //            Session.RemoveAll();
+        //            filterContext.Result = new RedirectResult("~/Authentication/Logout");
+        //            return;
+        //        }
+        //        else
+        //        {
+        //            Session["UserIP"] = userIp;
+        //        }
+
+        //        // 👤 Load user session if not in Login/Logout/ResolveMultipleSessions
+        //        if (!actionName.Equals("ResolveMultipleSessions", StringComparison.OrdinalIgnoreCase) &&
+        //            !actionName.Equals("Login", StringComparison.OrdinalIgnoreCase) &&
+        //            !actionName.Equals("Logout", StringComparison.OrdinalIgnoreCase))
+        //        {
+        //            GetUserSession();
+        //        }
+
+        //        // 🚫 Prevent authenticated users from accessing Login page again
+        //        if (User.Identity.IsAuthenticated &&
+        //            controllerName.Equals("Authentication", StringComparison.OrdinalIgnoreCase) &&
+        //            (actionName.Equals("Login", StringComparison.OrdinalIgnoreCase) ||
+        //             actionName.Equals("Index", StringComparison.OrdinalIgnoreCase)))
+        //        {
+        //            filterContext.Result = new RedirectResult("~/Home/Index");
+        //            return;
+        //        }
+
+        //        // ✅ Continue with action
+        //        base.OnActionExecuting(filterContext);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception (optional) and handle the error
+        //    }
+        //}
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             try
             {
-                var request = filterContext.HttpContext.Request;
-                var url = request.RawUrl;
-                var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
-                var actionName = filterContext.ActionDescriptor.ActionName;
+                var actionName = filterContext.ActionDescriptor.ActionName.ToLower();
+                var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName.ToLower();
+                var requestUrl = filterContext.HttpContext.Request.RawUrl.ToLower();
+                bool isAuthenticated = User.Identity.IsAuthenticated;
 
-                // 🔒 Redirect to Login if user is not authenticated and not on login page
-                //if (!url.StartsWith("/Authentication/Login", StringComparison.OrdinalIgnoreCase) &&
-                //    Session["UserID"] == null)
-                //{
-                //    filterContext.Result = new RedirectResult("~/Authentication/Login");
-                //    return;
-                //}
-
-                // ✅ MFA enforcement
-                if (User.Identity.IsAuthenticated && VerifyIfSessionExist("MFA"))
+                // ✅ 1. INTERNET CHECK (Exclude NoInternet and Home/Index to prevent looping)
+                if (!actionName.Equals("nointernet") && !actionName.Equals("index") && !controllerName.Equals("home"))
                 {
-                    if (!url.Contains("/MFAVerification?serviceoption=MFA") &&
-                        url != "/Authentication/Logout" &&
-                        url != "/MFAVerification/MFACodeVerification")
+                    if (!IsInternetAvailable())
+                    {
+                        filterContext.Result = new RedirectResult("~/Home/NoInternet");
+                        return;
+                    }
+                }
+
+                // ✅ 2. AUTHENTICATION CHECK
+                if (Session["UserID"] == null)
+                {
+                    if (isAuthenticated)
+                    {
+                        // Attempt to rebuild session if user is authenticated but session data is missing
+                        GetUserSession();
+
+                        // Recheck the session after rebuilding
+                        if (Session["UserID"] == null)
+                        {
+                            filterContext.Result = new RedirectResult("~/Authentication/Login");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        //filterContext.Result = new RedirectResult("~/Authentication/Login");
+                        return;
+                    }
+                }
+                else
+                {
+
+                    // ✅ 3. SESSION VALIDATION (Rebuilding session if required)
+                    if (isAuthenticated)
+                    {
+                        GetUserSession();
+                    }
+                }
+
+                // ✅ 4. MFA ENFORCEMENT
+                if (isAuthenticated && VerifyIfSessionExist("MFA"))
+                {
+                    if (!requestUrl.Contains("/mfaverification") && !requestUrl.Contains("/authentication/logout"))
                     {
                         string mfaUrl = Session["MFAUrl"]?.ToString();
                         if (!string.IsNullOrEmpty(mfaUrl))
@@ -67,12 +289,10 @@ namespace CBS.FrontDesk.UI.Controllers
                     }
                 }
 
-                // ✅ Password Change enforcement
-                if (User.Identity.IsAuthenticated && VerifyIfSessionExist("PWD"))
+                // ✅ 5. PASSWORD CHANGE ENFORCEMENT
+                if (isAuthenticated && VerifyIfSessionExist("PWD"))
                 {
-                    if (!url.Contains("/UserManagement/FLoginChangePassword?serviceoption=USER") &&
-                        url != "/Authentication/Logout" &&
-                        url != "/UserManagement/FLoginChangePassword")
+                    if (!requestUrl.Contains("/usermanagement/floginchangepassword") && !requestUrl.Contains("/authentication/logout"))
                     {
                         string pwdUrl = Session["CHPWDUrl"]?.ToString();
                         if (!string.IsNullOrEmpty(pwdUrl))
@@ -83,12 +303,11 @@ namespace CBS.FrontDesk.UI.Controllers
                     }
                 }
 
-                // ⚠️ IP Address check for session hijacking
+                // ✅ 6. IP ADDRESS CHECK (Session Hijacking Prevention)
                 var userIp = Request.UserHostAddress;
                 if (Session["UserIP"] != null && Session["UserIP"].ToString() != userIp)
                 {
                     Session.Abandon();
-                    Session.RemoveAll();
                     filterContext.Result = new RedirectResult("~/Authentication/Logout");
                     return;
                 }
@@ -97,38 +316,124 @@ namespace CBS.FrontDesk.UI.Controllers
                     Session["UserIP"] = userIp;
                 }
 
-                // 👤 Load user session if not in Login/Logout/ResolveMultipleSessions
-                if (!actionName.Equals("ResolveMultipleSessions", StringComparison.OrdinalIgnoreCase) &&
-                    !actionName.Equals("Login", StringComparison.OrdinalIgnoreCase) &&
-                    !actionName.Equals("Logout", StringComparison.OrdinalIgnoreCase))
+                // ✅ 7. PREVENT ACCESS TO LOGIN PAGE FOR AUTHENTICATED USERS
+                if (isAuthenticated &&
+                    controllerName.Equals("authentication") &&
+                    actionName.Equals("login"))
                 {
-                    GetUserSession();
-                }
-
-                // 🚫 Prevent authenticated users from accessing Login page again
-                if (User.Identity.IsAuthenticated &&
-                    controllerName.Equals("Authentication", StringComparison.OrdinalIgnoreCase) &&
-                    (actionName.Equals("Login", StringComparison.OrdinalIgnoreCase) ||
-                     actionName.Equals("Index", StringComparison.OrdinalIgnoreCase)))
-                {
-                    if (!actionName.Equals("ResolveMultipleSessions", StringComparison.OrdinalIgnoreCase))
-                    {
-                        GetUserSession();
-                    }
-
                     filterContext.Result = new RedirectResult("~/Home/Index");
                     return;
                 }
 
-                // ✅ Continue with action
+                // Proceed with the requested action
                 base.OnActionExecuting(filterContext);
             }
             catch (Exception ex)
             {
-                // Log the exception (optional) and rethrow for centralized handling
-                // throw(ex);
+                // Handle exception and log the error
+                filterContext.Result = new RedirectResult("~/Home/Error");
             }
         }
+
+
+        //protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        //{
+        //    try
+        //    {
+        //        var request = filterContext.HttpContext.Request;
+        //        var url = request.RawUrl;
+        //        var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+        //        var actionName = filterContext.ActionDescriptor.ActionName;
+        //        if (!actionName.Equals("NoInternet", StringComparison.OrdinalIgnoreCase) &&
+        //        !actionName.Equals("Index", StringComparison.OrdinalIgnoreCase) &&
+        //        !controllerName.Equals("Home", StringComparison.OrdinalIgnoreCase))
+        //                    {
+        //            if (!IsInternetAvailable())
+        //            {
+        //                filterContext.Result = new RedirectResult("~/Home/NoInternet");
+        //                return;
+        //            }
+        //        }
+
+
+        //        // ✅ MFA enforcement
+        //        if (User.Identity.IsAuthenticated && VerifyIfSessionExist("MFA"))
+        //        {
+        //            if (!url.Contains("/MFAVerification?serviceoption=MFA") &&
+        //                url != "/Authentication/Logout" &&
+        //                url != "/MFAVerification/MFACodeVerification")
+        //            {
+        //                string mfaUrl = Session["MFAUrl"]?.ToString();
+        //                if (!string.IsNullOrEmpty(mfaUrl))
+        //                {
+        //                    filterContext.Result = new RedirectResult(mfaUrl);
+        //                    return;
+        //                }
+        //            }
+        //        }
+
+        //        // ✅ Password Change enforcement
+        //        if (User.Identity.IsAuthenticated && VerifyIfSessionExist("PWD"))
+        //        {
+        //            if (!url.Contains("/UserManagement/FLoginChangePassword?serviceoption=USER") &&
+        //                url != "/Authentication/Logout" &&
+        //                url != "/UserManagement/FLoginChangePassword")
+        //            {
+        //                string pwdUrl = Session["CHPWDUrl"]?.ToString();
+        //                if (!string.IsNullOrEmpty(pwdUrl))
+        //                {
+        //                    filterContext.Result = new RedirectResult(pwdUrl);
+        //                    return;
+        //                }
+        //            }
+        //        }
+
+        //        // ⚠️ IP Address check for session hijacking
+        //        var userIp = Request.UserHostAddress;
+        //        if (Session["UserIP"] != null && Session["UserIP"].ToString() != userIp)
+        //        {
+        //            Session.Abandon();
+        //            Session.RemoveAll();
+        //            filterContext.Result = new RedirectResult("~/Authentication/Logout");
+        //            return;
+        //        }
+        //        else
+        //        {
+        //            Session["UserIP"] = userIp;
+        //        }
+
+        //        // 👤 Load user session if not in Login/Logout/ResolveMultipleSessions
+        //        if (!actionName.Equals("ResolveMultipleSessions", StringComparison.OrdinalIgnoreCase) &&
+        //            !actionName.Equals("Login", StringComparison.OrdinalIgnoreCase) &&
+        //            !actionName.Equals("Logout", StringComparison.OrdinalIgnoreCase))
+        //        {
+        //            GetUserSession();
+        //        }
+
+        //        // 🚫 Prevent authenticated users from accessing Login page again
+        //        if (User.Identity.IsAuthenticated &&
+        //            controllerName.Equals("Authentication", StringComparison.OrdinalIgnoreCase) &&
+        //            (actionName.Equals("Login", StringComparison.OrdinalIgnoreCase) ||
+        //             actionName.Equals("Index", StringComparison.OrdinalIgnoreCase)))
+        //        {
+        //            if (!actionName.Equals("ResolveMultipleSessions", StringComparison.OrdinalIgnoreCase))
+        //            {
+        //                GetUserSession();
+        //            }
+
+        //            filterContext.Result = new RedirectResult("~/Home/Index");
+        //            return;
+        //        }
+
+        //        // ✅ Continue with action
+        //        base.OnActionExecuting(filterContext);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception (optional) and rethrow for centralized handling
+        //        // throw(ex);
+        //    }
+        //}
 
         private bool IsInternetAvailable()
         {
@@ -380,16 +685,17 @@ namespace CBS.FrontDesk.UI.Controllers
                     Response.Redirect(redirectUrl, true);
                     return;
                 }
+                if (userSession == null || string.Equals(userSession.SessionStatus, "Invalid", StringComparison.OrdinalIgnoreCase))
+                {
+                    PerformLogoutAsync(); // 👈 Shared logout method
+                    Response.Redirect("~/Authentication/Login", true);
+                    return;
+                }
                 BuildLocalSession(userSession.UserAuthDto);
 
             }
 
-            //if (userSession == null || string.Equals(userSession.SessionStatus, "Invalid", StringComparison.OrdinalIgnoreCase))
-            //{
-            //    PerformLogoutAsync(); // 👈 Shared logout method
-            //    Response.Redirect("~/Authentication/Login", true);
-            //    return;
-            //}
+  
 
             // ✅ Valid single session
             //SetMenuFromSession();

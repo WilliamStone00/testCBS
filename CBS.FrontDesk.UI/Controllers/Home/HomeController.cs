@@ -16,6 +16,7 @@ namespace CBS.FrontDesk.UI.Controllers
             
             return View();
         }
+        
 
         public ActionResult About()
         {
@@ -24,6 +25,17 @@ namespace CBS.FrontDesk.UI.Controllers
             return View();
         }
 
+        public ActionResult NoInternet()
+        {
+
+            return View();
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult Ping()
+        {
+            return Content("Pong");
+        }
         public ActionResult Contact()
         {
             ViewBag.Message = Resources.GlobalAbout.AboutInformation;

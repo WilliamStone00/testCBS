@@ -699,14 +699,9 @@
       <DependentUpon>AccountingConfig_CreateAccountPolicy.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateChartOfAccount.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>AccountingConfig_CreateChartOfAccount.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateChartOfaccountManagementPosition.Designer.cs">
-      <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AccountingConfig_CreateChartOfaccountManagementPosition.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateCorrespondingMapping.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -1665,6 +1660,10 @@
     <Content Include="AppFiles\Images\s.jpg" />
     <Content Include="AppFiles\Images\TrusBank_LoginBG.png" />
     <Content Include="AppFiles\Images\TrustBankTitle.png" />
+    <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateChartOfAccount.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingConfig_CreateChartOfAccount.Designer.cs</LastGenOutput>
+    </Content>
     <Content Include="aspnet_client\system_web\4_0_30319\crystalreportviewers13\ActiveXControls\PrintControl.cab" />
     <Content Include="aspnet_client\system_web\4_0_30319\crystalreportviewers13\ActiveXControls\PrintControl_res_cs.cab" />
     <Content Include="aspnet_client\system_web\4_0_30319\crystalreportviewers13\ActiveXControls\PrintControl_res_da.cab" />
@@ -4575,14 +4574,6 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>AccountingConfig_CreateCorrespondingMapping.Designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateChartOfaccountManagementPosition.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AccountingConfig_CreateChartOfaccountManagementPosition.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateChartOfAccount.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AccountingConfig_CreateChartOfAccount.Designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateAccountPolicy.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>AccountingConfig_CreateAccountPolicy.Designer.cs</LastGenOutput>
@@ -5725,6 +5716,7 @@
     <Content Include="Views\BulkOperation\_SimulationDetailsDataTable.cshtml" />
     <Content Include="Views\BulkOperation\_TransferDetails.cshtml" />
     <Content Include="Views\CashFlowManagement\_CreateBankDepositCashClearing.cshtml" />
+    <Content Include="Views\Home\NoInternet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -21,7 +21,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.SMSP
 {
-    //[CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
     public class SMSActivityLogController : BaseController
     {
         // GET: SMSActivityLog
