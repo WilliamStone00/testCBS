@@ -1,143 +1,143 @@
-﻿let sessionTimeoutMinutes = 15; // Total allowed idle time
-let sessionWarningMinutes = 2; // Warning before timeout
-let warningTimer;
-let logoutTimer;
-let countdownTimer;
-let countdownSeconds = 30;
-let sessionRemainingSeconds = sessionTimeoutMinutes * 60;
-let floatingCountdownTimer;
-let lastStorageSync = 0;
+﻿//let sessionTimeoutMinutes = 15; // Total allowed idle time
+//let sessionWarningMinutes = 2; // Warning before timeout
+//let warningTimer;
+//let logoutTimer;
+//let countdownTimer;
+//let countdownSeconds = 30;
+//let sessionRemainingSeconds = sessionTimeoutMinutes * 60;
+//let floatingCountdownTimer;
+//let lastStorageSync = 0;
 
 
-async function fetchSessionConfigAndStart() {
-    try {
-        console.log("Fetching session config...");
-        const response = await fetch('/Session/GetIdleTimeout', { cache: 'no-store' });
+//async function fetchSessionConfigAndStart() {
+//    try {
+//        console.log("Fetching session config...");
+//        const response = await fetch('/Session/GetIdleTimeout', { cache: 'no-store' });
 
-        if (!response.ok) throw new Error('Failed to fetch session timeout config.');
+//        if (!response.ok) throw new Error('Failed to fetch session timeout config.');
 
-        const config = await response.json(); // ✅ await this too
-        console.log("Session config loaded:", config);
+//        const config = await response.json(); // ✅ await this too
+//        console.log("Session config loaded:", config);
 
-        sessionTimeoutMinutes = config.Timeout || 5;
-        sessionWarningMinutes = config.Warning || 2;
+//        sessionTimeoutMinutes = config.Timeout || 5;
+//        sessionWarningMinutes = config.Warning || 2;
 
-        setSessionExpireAt();
-        startSessionTimers();
-    } catch (err) {
-        console.error('⚠️ Could not load session config:', err);
-        setSessionExpireAt(); // ✅ don't skip these
-        startSessionTimers();
-    }
-}
-
-
-
-function setSessionExpireAt() {
-    const expireAt = Date.now() + (sessionTimeoutMinutes * 60 * 1000);
-    localStorage.setItem('sessionExpireAt', expireAt);
-    lastStorageSync = Date.now(); // 💡 flag we initiated change
-}
+//        setSessionExpireAt();
+//        startSessionTimers();
+//    } catch (err) {
+//        console.error('⚠️ Could not load session config:', err);
+//        setSessionExpireAt(); // ✅ don't skip these
+//        startSessionTimers();
+//    }
+//}
 
 
 
-window.addEventListener('storage', function (e) {
-    if (e.key === 'sessionExpireAt') {
-        const now = Date.now();
-
-        // Prevent reinitializing if we just reset ourselves (within 1s)
-        if (now - lastStorageSync < 1000) return;
-        lastStorageSync = now;
-
-        clearTimeout(warningTimer);
-        clearTimeout(logoutTimer);
-        clearInterval(countdownTimer);
-        clearInterval(floatingCountdownTimer);
-
-        startSessionTimers();
-    }
-});
-
-function startSessionTimers() {
-    clearInterval(floatingCountdownTimer);
-
-    let expireAt = localStorage.getItem('sessionExpireAt');
-
-    // ✅ Validate and reset if missing or expired
-    if (!expireAt || isNaN(expireAt) || Date.now() >= parseInt(expireAt)) {
-        console.warn("⚠️ Invalid or expired sessionExpireAt found, resetting...");
-        setSessionExpireAt();
-        expireAt = localStorage.getItem('sessionExpireAt');
-    }
-
-    sessionRemainingSeconds = Math.max(0, Math.floor((parseInt(expireAt) - Date.now()) / 1000));
-
-    // ⛔ If still expired or bad timing, force logout
-    if (sessionRemainingSeconds <= 0) {
-        console.warn("⛔ Session already expired or invalid.");
-        forceLogout();
-        return;
-    }
-
-    const warningTime = (sessionRemainingSeconds - sessionWarningMinutes * 60) * 1000;
-    const logoutTime = sessionRemainingSeconds * 1000;
-
-    // ⏳ Schedule modal only if enough time remains
-    if (warningTime > 0) {
-        warningTimer = setTimeout(showWarningModal, warningTime);
-    }
-
-    logoutTimer = setTimeout(forceLogout, logoutTime);
-
-    startFloatingCountdown();
-}
+//function setSessionExpireAt() {
+//    const expireAt = Date.now() + (sessionTimeoutMinutes * 60 * 1000);
+//    localStorage.setItem('sessionExpireAt', expireAt);
+//    lastStorageSync = Date.now(); // 💡 flag we initiated change
+//}
 
 
-setInterval(function () {
-    fetch('/Session/KeepAlive', {
-        method: 'GET',
-        cache: 'no-store'
-    }).catch(() => {
-        // Optionally handle error silently
-        console.warn('Background session ping failed');
-    });
-}, 2 * 60 * 1000); // every 2 minutes
+
+//window.addEventListener('storage', function (e) {
+//    if (e.key === 'sessionExpireAt') {
+//        const now = Date.now();
+
+//        // Prevent reinitializing if we just reset ourselves (within 1s)
+//        if (now - lastStorageSync < 1000) return;
+//        lastStorageSync = now;
+
+//        clearTimeout(warningTimer);
+//        clearTimeout(logoutTimer);
+//        clearInterval(countdownTimer);
+//        clearInterval(floatingCountdownTimer);
+
+//        startSessionTimers();
+//    }
+//});
+
+//function startSessionTimers() {
+//    clearInterval(floatingCountdownTimer);
+
+//    let expireAt = localStorage.getItem('sessionExpireAt');
+
+//    // ✅ Validate and reset if missing or expired
+//    if (!expireAt || isNaN(expireAt) || Date.now() >= parseInt(expireAt)) {
+//        console.warn("⚠️ Invalid or expired sessionExpireAt found, resetting...");
+//        setSessionExpireAt();
+//        expireAt = localStorage.getItem('sessionExpireAt');
+//    }
+
+//    sessionRemainingSeconds = Math.max(0, Math.floor((parseInt(expireAt) - Date.now()) / 1000));
+
+//    // ⛔ If still expired or bad timing, force logout
+//    if (sessionRemainingSeconds <= 0) {
+//        console.warn("⛔ Session already expired or invalid.");
+//        forceLogout();
+//        return;
+//    }
+
+//    const warningTime = (sessionRemainingSeconds - sessionWarningMinutes * 60) * 1000;
+//    const logoutTime = sessionRemainingSeconds * 1000;
+
+//    // ⏳ Schedule modal only if enough time remains
+//    if (warningTime > 0) {
+//        warningTimer = setTimeout(showWarningModal, warningTime);
+//    }
+
+//    logoutTimer = setTimeout(forceLogout, logoutTime);
+
+//    startFloatingCountdown();
+//}
 
 
-function resetSessionTimers() {
-    clearTimeout(warningTimer);
-    clearTimeout(logoutTimer);
-    clearInterval(countdownTimer);
-    clearInterval(floatingCountdownTimer);
-
-    removeBlurAndOverlay();
-
-    setSessionExpireAt(); // updates localStorage and resets expiration
-    startSessionTimers(); // restarts countdown and modal trigger logic
-}
+//setInterval(function () {
+//    fetch('/Session/KeepAlive', {
+//        method: 'GET',
+//        cache: 'no-store'
+//    }).catch(() => {
+//        // Optionally handle error silently
+//        console.warn('Background session ping failed');
+//    });
+//}, 2 * 60 * 1000); // every 2 minutes
 
 
-function showWarningModal() {
-    $('#sessionTimeoutModal').modal('show');
-    addBlurAndOverlay();
-    startCountdown();
-}
+//function resetSessionTimers() {
+//    clearTimeout(warningTimer);
+//    clearTimeout(logoutTimer);
+//    clearInterval(countdownTimer);
+//    clearInterval(floatingCountdownTimer);
 
-function startCountdown() {
-    countdownTimer = setInterval(function () {
-        const expireAt = localStorage.getItem('sessionExpireAt');
-        const remaining = Math.floor((expireAt - Date.now()) / 1000);
+//    removeBlurAndOverlay();
 
-        if (remaining <= 0) {
-            clearInterval(countdownTimer);
-            forceLogout();
-        } else {
-            updateCountdownDisplay(remaining);
-        }
-    }, 1000);
+//    setSessionExpireAt(); // updates localStorage and resets expiration
+//    startSessionTimers(); // restarts countdown and modal trigger logic
+//}
 
-    updateCountdownDisplay(); // First display
-}
+
+//function showWarningModal() {
+//    $('#sessionTimeoutModal').modal('show');
+//    addBlurAndOverlay();
+//    startCountdown();
+//}
+
+//function startCountdown() {
+//    countdownTimer = setInterval(function () {
+//        const expireAt = localStorage.getItem('sessionExpireAt');
+//        const remaining = Math.floor((expireAt - Date.now()) / 1000);
+
+//        if (remaining <= 0) {
+//            clearInterval(countdownTimer);
+//            forceLogout();
+//        } else {
+//            updateCountdownDisplay(remaining);
+//        }
+//    }, 1000);
+
+//    updateCountdownDisplay(); // First display
+//}
 
 
 
@@ -162,114 +162,114 @@ function checkInternetConnection() {
 
 
 
-function startFloatingCountdown() {
-    const banner = document.getElementById('idleCountdownBanner');
-    if (banner) {
-        banner.style.display = 'block';
-    }
+//function startFloatingCountdown() {
+//    const banner = document.getElementById('idleCountdownBanner');
+//    if (banner) {
+//        banner.style.display = 'block';
+//    }
 
-    floatingCountdownTimer = setInterval(function () {
-        const expireAt = localStorage.getItem('sessionExpireAt');
-        sessionRemainingSeconds = Math.floor((expireAt - Date.now()) / 1000);
+//    floatingCountdownTimer = setInterval(function () {
+//        const expireAt = localStorage.getItem('sessionExpireAt');
+//        sessionRemainingSeconds = Math.floor((expireAt - Date.now()) / 1000);
 
-        if (sessionRemainingSeconds <= 0) {
-            clearInterval(floatingCountdownTimer);
-            if (banner) banner.style.display = 'none';
-            forceLogout();
-        } else {
-            updateFloatingCountdown();
-        }
-    }, 1000);
+//        if (sessionRemainingSeconds <= 0) {
+//            clearInterval(floatingCountdownTimer);
+//            if (banner) banner.style.display = 'none';
+//            forceLogout();
+//        } else {
+//            updateFloatingCountdown();
+//        }
+//    }, 1000);
 
-    updateFloatingCountdown();
-}
-
-
-function updateFloatingCountdown() {
-    const textElement = document.getElementById('floatingCountdownText');
-
-    if (textElement) {
-        const minutes = Math.floor(sessionRemainingSeconds / 60);
-        const seconds = sessionRemainingSeconds % 60;
-        textElement.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-
-        // 🎨 Color Transition based on time
-        if (sessionRemainingSeconds > 180) { // > 3 min
-            textElement.style.color = '#28a745'; // Green
-        } else if (sessionRemainingSeconds > 60) { // > 1 min
-            textElement.style.color = '#fd7e14'; // Orange
-        } else {
-            textElement.style.color = '#dc3545'; // Red
-        }
-    }
-}
+//    updateFloatingCountdown();
+//}
 
 
-function forceLogout() {
-    removeBlurAndOverlay();
-    const banner = document.getElementById('idleCountdownBanner');
-    if (banner) {
-        banner.style.display = 'none';
-    }
-    window.location.href = '/Authentication/Logout?reason=sessiontimeout';
-}
+//function updateFloatingCountdown() {
+//    const textElement = document.getElementById('floatingCountdownText');
 
-function renewSession() {
-    fetch('/Session/KeepAlive', {
-        method: 'GET',
-        cache: 'no-store'
-    })
-        .then(response => {
-            if (!response.ok) throw new Error();
+//    if (textElement) {
+//        const minutes = Math.floor(sessionRemainingSeconds / 60);
+//        const seconds = sessionRemainingSeconds % 60;
+//        textElement.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
-            $('#sessionTimeoutModal').modal('hide');
-            clearTimeout(warningTimer);
-            clearTimeout(logoutTimer);
-            clearInterval(countdownTimer);
-            clearInterval(floatingCountdownTimer);
+//        // 🎨 Color Transition based on time
+//        if (sessionRemainingSeconds > 180) { // > 3 min
+//            textElement.style.color = '#28a745'; // Green
+//        } else if (sessionRemainingSeconds > 60) { // > 1 min
+//            textElement.style.color = '#fd7e14'; // Orange
+//        } else {
+//            textElement.style.color = '#dc3545'; // Red
+//        }
+//    }
+//}
 
-            removeBlurAndOverlay();
 
-            setSessionExpireAt(); // ✅ This was missing
-            startSessionTimers(); // Restart countdown
-        })
-        .catch(() => {
-            forceLogout();
-        });
-}
+//function forceLogout() {
+//    removeBlurAndOverlay();
+//    const banner = document.getElementById('idleCountdownBanner');
+//    if (banner) {
+//        banner.style.display = 'none';
+//    }
+//    window.location.href = '/Authentication/Logout?reason=sessiontimeout';
+//}
 
-$('#sessionTimeoutModal').on('hidden.bs.modal', function () {
-    removeBlurAndOverlay();
-    clearInterval(countdownTimer);
-    clearInterval(floatingCountdownTimer);
-});
+//function renewSession() {
+//    fetch('/Session/KeepAlive', {
+//        method: 'GET',
+//        cache: 'no-store'
+//    })
+//        .then(response => {
+//            if (!response.ok) throw new Error();
 
-function updateCountdownDisplay(remainingSeconds = null) {
-    const countdownElement = document.getElementById('countdown');
+//            $('#sessionTimeoutModal').modal('hide');
+//            clearTimeout(warningTimer);
+//            clearTimeout(logoutTimer);
+//            clearInterval(countdownTimer);
+//            clearInterval(floatingCountdownTimer);
 
-    const expireAt = localStorage.getItem('sessionExpireAt');
-    const secondsLeft = remainingSeconds !== null
-        ? remainingSeconds
-        : Math.floor((expireAt - Date.now()) / 1000);
+//            removeBlurAndOverlay();
 
-    const minutes = Math.floor(secondsLeft / 60);
-    const seconds = secondsLeft % 60;
+//            setSessionExpireAt(); // ✅ This was missing
+//            startSessionTimers(); // Restart countdown
+//        })
+//        .catch(() => {
+//            forceLogout();
+//        });
+//}
 
-    if (countdownElement) {
-        countdownElement.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+//$('#sessionTimeoutModal').on('hidden.bs.modal', function () {
+//    removeBlurAndOverlay();
+//    clearInterval(countdownTimer);
+//    clearInterval(floatingCountdownTimer);
+//});
 
-        countdownElement.style.fontSize = '2.5rem';
-        countdownElement.style.fontWeight = 'bold';
+//function updateCountdownDisplay(remainingSeconds = null) {
+//    const countdownElement = document.getElementById('countdown');
 
-        if (secondsLeft > 180) {
-            countdownElement.style.color = '#003366';
-        } else if (secondsLeft > 60) {
-            countdownElement.style.color = '#ff9900';
-        } else {
-            countdownElement.style.color = '#ff0000';
-        }
-    }
-}
+//    const expireAt = localStorage.getItem('sessionExpireAt');
+//    const secondsLeft = remainingSeconds !== null
+//        ? remainingSeconds
+//        : Math.floor((expireAt - Date.now()) / 1000);
+
+//    const minutes = Math.floor(secondsLeft / 60);
+//    const seconds = secondsLeft % 60;
+
+//    if (countdownElement) {
+//        countdownElement.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+//        countdownElement.style.fontSize = '2.5rem';
+//        countdownElement.style.fontWeight = 'bold';
+
+//        if (secondsLeft > 180) {
+//            countdownElement.style.color = '#003366';
+//        } else if (secondsLeft > 60) {
+//            countdownElement.style.color = '#ff9900';
+//        } else {
+//            countdownElement.style.color = '#ff0000';
+//        }
+//    }
+//}
 
 
 
@@ -300,33 +300,33 @@ function removeBlurAndOverlay() {
 $(document).ready(function () {
     // 🌐 Check Internet on load
     checkInternetConnection();
-    fetchSessionConfigAndStart(); // ⬅ Load timeout from DB first
+    //fetchSessionConfigAndStart(); // ⬅ Load timeout from DB first
     // 🌐 Listen to online/offline events
     window.addEventListener('online', checkInternetConnection);
     window.addEventListener('offline', checkInternetConnection);
 
-    $('#renewSessionBtn').click(function () {
-        renewSession();
-    });
+    //$('#renewSessionBtn').click(function () {
+    //    renewSession();
+    //});
 
-    $('#logoutSessionBtn').click(function () {
-        forceLogout();
-    });
+    //$('#logoutSessionBtn').click(function () {
+    //    forceLogout();
+    //});
 
     // 🛡️ Reset session timers on any user activity
     //const events = ['click', 'mousemove', 'keypress', 'scroll', 'touchstart'];
-    const events = ['click', 'keypress', 'scroll', 'touchstart'];
+    //const events = ['click', 'keypress', 'scroll', 'touchstart'];
 
-    events.forEach(event => {
-        document.addEventListener(event, function () {
-            resetSessionTimers();
-        });
-    });
+    //events.forEach(event => {
+    //    document.addEventListener(event, function () {
+    //        resetSessionTimers();
+    //    });
+    //});
 
-    // Clean up if modal is manually closed
-    $('#sessionTimeoutModal').on('hidden.bs.modal', function () {
-        removeBlurAndOverlay();
-    });
+    //// Clean up if modal is manually closed
+    //$('#sessionTimeoutModal').on('hidden.bs.modal', function () {
+    //    removeBlurAndOverlay();
+    //});
 });
 
 

@@ -130,6 +130,24 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
 
+        private bool IsInternetAvailable()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    using (client.OpenRead("http://www.google.com"))
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         protected CultureInfo GetUserCultureInfo()
         {
             var lang = Session["SelectedLanguage"]?.ToString()?.ToLower();
@@ -350,24 +368,29 @@ namespace CBS.FrontDesk.UI.Controllers
                 Response.Redirect("~/Authentication/Login", true);
                 return;
             }
-            var userSession = _userManagementServices.GetUserCurrentsession(identity.SessionCode, identity.UserName);
-
-            if (userSession == null || string.Equals(userSession.SessionStatus, "Invalid", StringComparison.OrdinalIgnoreCase))
+            var userSession = new UserSessionDto();
+            if (IsInternetAvailable())
             {
-                PerformLogoutAsync(); // 👈 Shared logout method
-                Response.Redirect("~/Authentication/Login", true);
-                return;
+                userSession = _userManagementServices.GetUserCurrentsession(identity.SessionCode, identity.UserName);
+                if (userSession.SessionStatus == "Multiple_Sessions")
+                {
+                    string redirectUrl = $"~/Authentication/ResolveMultipleSessions?username={HttpUtility.UrlEncode(userSession.UserName)}" +
+                                         $"&message={HttpUtility.UrlEncode(userSession.ErrorMessage)}" +
+                                         $"&count={userSession.NumberOfSessionsOpen}";
+                    Response.Redirect(redirectUrl, true);
+                    return;
+                }
+                BuildLocalSession(userSession.UserAuthDto);
+
             }
 
-            if (userSession.SessionStatus == "Multiple_Sessions")
-            {
-                string redirectUrl = $"~/Authentication/ResolveMultipleSessions?username={HttpUtility.UrlEncode(userSession.UserName)}" +
-                                     $"&message={HttpUtility.UrlEncode(userSession.ErrorMessage)}" +
-                                     $"&count={userSession.NumberOfSessionsOpen}";
-                Response.Redirect(redirectUrl, true);
-                return;
-            }
-            BuildLocalSession(userSession.UserAuthDto);
+            //if (userSession == null || string.Equals(userSession.SessionStatus, "Invalid", StringComparison.OrdinalIgnoreCase))
+            //{
+            //    PerformLogoutAsync(); // 👈 Shared logout method
+            //    Response.Redirect("~/Authentication/Login", true);
+            //    return;
+            //}
+
             // ✅ Valid single session
             //SetMenuFromSession();
         }
