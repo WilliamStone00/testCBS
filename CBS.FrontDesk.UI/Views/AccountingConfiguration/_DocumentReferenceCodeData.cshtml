@@ -1,13 +1,13 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
-
+@using Resources
 <table class="table table-hover" id="DataTable_DocumentReference">
     <thead class="table-light">
         <tr>
-            <th>Reference</th>
-            <th>Heading</th>
-            <th>Document</th>
-            <th>Cartegory </th>
-            <th>Action</th>
+            <th>@AccountingConfig_DocumentReferenceCodeData.Reference</th>
+            <th>@AccountingConfig_DocumentReferenceCodeData.Heading</th>
+            <th>@AccountingConfig_DocumentReferenceCodeData.Document</th>
+            <th>@AccountingConfig_DocumentReferenceCodeData.Cartegory </th>
+            <th>@AccountingConfig_DocumentReferenceCodeData.Action</th>
         </tr>
       
     </thead>
@@ -20,9 +20,9 @@
                 <td style="width:20%">@d.Document</td>
                 <td style="width:20%">@d.DocumentType</td>
                 <td style="width:20%">
-                    <a href="#" onclick="GetData('AccountingConfiguration','@d.Id','DataTable_DocumentReference','_CreateDocumentReferenceCode','desc','update','datalistingview_DocumentReferenceCode','documentReferenceCode')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.ReferenceCode account to edit">Edit</a>|
-                    <a href="#" onclick="GetData('AccountingConfiguration','@d.Id','DataTable_DocumentReference','_DocumentReferenceCodeDetails','desc','details','datalistingview_DocumentReferenceCode','documentReferenceCode')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.ReferenceCode account to edit">Details</a>|
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.ReferenceCode" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','DataTable_DocumentReference','_DocumentReferenceCodeData',0,'datalistingview_DocumentReferenceCode','documentReferenceCode')">Delete</a>
+                    <a href="#" onclick="GetData('AccountingConfiguration','@d.Id','DataTable_DocumentReference','_CreateDocumentReferenceCode','desc','update','datalistingview_DocumentReferenceCode','documentReferenceCode')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ReferenceCode @GlobalShared.ToEdit">@GlobalShared.Edit</a>|
+                    <a href="#" onclick="GetData('AccountingConfiguration','@d.Id','DataTable_DocumentReference','_DocumentReferenceCodeDetails','desc','details','datalistingview_DocumentReferenceCode','documentReferenceCode')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ReferenceCode @GlobalShared.ToEdit">@GlobalShared.Details</a>|
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.ReferenceCode" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','DataTable_DocumentReference','_DocumentReferenceCodeData',0,'datalistingview_DocumentReferenceCode','documentReferenceCode')">@GlobalShared.Delete</a>
                 </td>
             </tr>
         }

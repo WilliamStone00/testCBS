@@ -59,5 +59,14 @@ namespace Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account Policy Settings.
+        /// </summary>
+        internal static string AccountPolicySettings {
+            get {
+                return ResourceManager.GetString("AccountPolicySettings", resourceCulture);
+            }
+        }
     }
 }

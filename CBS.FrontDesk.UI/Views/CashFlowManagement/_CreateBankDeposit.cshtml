@@ -42,7 +42,7 @@
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
-                            <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.DepositNotification.Amount">
+                            <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@($"FCFA {Convert.ToDecimal(Model.DepositNotificationDto.Amount).ToString("N2")}")">
 
                         </div>
                     </div>
@@ -166,9 +166,9 @@
                         }
                         else
                         {
-                            <span class="formatted-amount shadow-box">
-                                Balance In Vault: FCFA @Model.DepositNotification.AmountInVault
-                            </span>
+                    <span class="formatted-amount shadow-box">
+                        Balance In Vault: @($"FCFA {Convert.ToDecimal(Model.DepositNotification.AmountInVault).ToString("N2")}")
+                    </span>
                         }
                         @Html.HiddenFor(model => model.DepositNotification.AmountInVault, new { @class = "form-control amount-input shadow-input-boxes" })
                     </div>

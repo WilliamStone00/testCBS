@@ -1,15 +1,16 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+    @using Resources
 <div class="table-responsive mb-3">
  
         <table class="table table-hover" id="myDataTable_AccountingEntryRule">
             <thead class="table-light">
                 <tr>
-                    <th>EntryRule</th>
-                    <th>Derterminant</th>
-                    <th>Derterminant AccountNumber</th>
-                    <th>Balancing Account</th>
-                    <th>Balancing AccountNumber</th>
-                    <th>Booking</th>
+                    <th>@AccountingConfig_DownloadAccountingEntryRule.EntryRule</th>
+                    <th>@AccountingConfig_DownloadAccountingEntryRule.Derterminant</th>
+                    <th>@AccountingConfig_DownloadAccountingEntryRule.DerterminantAccountNumber</th>
+                    <th>@AccountingConfig_DownloadAccountingEntryRule.BalancingAccount</th>
+                    <th>@AccountingConfig_DownloadAccountingEntryRule.BalancingAccountNumber</th>
+                    <th>@AccountingConfig_DownloadAccountingEntryRule.Booking</th>
 
                 </tr>
             </thead>
@@ -33,7 +34,7 @@
         </table>
  
 
-    <button type="button" onclick="DownloadAccountingEntryRule()" class="btn btn-primary me-2 mdi-download-circle-outline">Download-AccountingEvent</button>
+        <button type="button" onclick="DownloadAccountingEntryRule()" class="btn btn-primary me-2 mdi-download-circle-outline">@AccountingConfig_DownloadAccountingEntryRule.DownloadAccountingEvent</button>
 
 
 </div>

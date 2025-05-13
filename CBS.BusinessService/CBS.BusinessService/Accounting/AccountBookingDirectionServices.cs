@@ -124,7 +124,7 @@ namespace CBS.BusinessService.Accounting
                 if (AccountBookingDirection != null)
                 {
                    
-                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<AccountBookingDirection>>(string.Format(APICallHelper.Get_Update_Delete_AccountBookingDirection, model.Id), AccountBookingDirection);
+                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<AccountBookingDirection>>(string.Format(APICallHelper.Get_Update_Delete_AccountBookingDirection, model.Id), model);
                     if (response.IsSuccess)
                     {
                         // Successful creation

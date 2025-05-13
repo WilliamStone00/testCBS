@@ -35,7 +35,7 @@ function loadMemberData() {
                 data: 'CreateDate',
                 name: 'CreateDate',
                 render: function (data) {
-                    return moment(data).format('DD/MM/YYYY');
+                    return moment(data).format('DD/MM/YYYY HH:mm:ss');
                 }
             },
             { data: 'FullName', name: 'FullName' },
@@ -56,8 +56,8 @@ function loadMemberData() {
                 orderable: false,
                 render: function (data, type, row) {
                     return `<a href='/Individual/CustomerProfile?KEY=${row.CustomerId}' target='_blank' class='btn btn-sm btn-info'>
-                                <i class="mdi mdi-account-circle"></i> Profile
-                            </a>`;
+                        <i class="mdi mdi-account-circle"></i> Profile
+                    </a>`;
                 }
             }
         ]
