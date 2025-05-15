@@ -26,23 +26,22 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
          private readonly BranchServices _branchServices;
          private readonly BulkOperationService _bulkOperationService;
         private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
-        private readonly SavingProductServices _savingProductServices;
 
 
 
-        public BulkOperationController(BranchServices branchServices, BulkOperationService bulkOperationService, ChartOfAccountServicesAnnex chartOfAccountServices, SavingProductServices savingProductServices)
+
+        public BulkOperationController(BranchServices branchServices, BulkOperationService bulkOperationService, ChartOfAccountServicesAnnex chartOfAccountServices)
         {
             _branchServices = branchServices;
             _bulkOperationService = bulkOperationService;
             this.chartOfAccountServices = chartOfAccountServices;
-            _savingProductServices = savingProductServices;
         }
 
         public async Task<ActionResult> Index()
         {
             var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
             ViewBag.chartOfAccounts = chartOfAccounts.ToList();
-            var savingProduct = await _savingProductServices.GetSavingProducts();
+            var savingProduct = await _bulkOperationService.GetSavingProducts();
             var savingOrdinaryProduct = savingProduct.Where(x => x.ProductCategory == "OrdinaryAccount").ToList();
             var Branches = await _branchServices.GetBranches();
             return View(new SimulateBulkOperation()
@@ -56,6 +55,34 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             });
         }
 
+
+        [HttpPost]
+        public async Task<ActionResult> Simulate(SimulateBulkOperation model)
+        {
+            Func<Task<ExecutionMessages>> serviceAction = null;
+
+            var Branches = await _branchServices.GetBranches();
+            model.Branches = Branches.ToList();
+            serviceAction = async () => await _bulkOperationService.SimulateOperation(model);
+
+            if (serviceAction != null)
+            {
+                try
+                {
+                    var data = await serviceAction();
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+                }
+            }
+
+            return Json(new { success = false, status = false, message = "Invalid option selected." });
+        }
+
+
+
         // GET: BulkOperation
         public async Task<ActionResult> Listing()
         {
@@ -64,9 +91,16 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             return View();
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Validation(ConfirmBulkOperationCommand command )
+        public async Task<ActionResult> Validation( string stimulationId, string approvalStatus,string description,string approvedBy)
         {
+
+            ConfirmBulkOperationCommand command = new ConfirmBulkOperationCommand
+            {
+                BulkOperationSimulationId = stimulationId,
+                ApprovalStatusDescription=description,
+                ApprovalStatus=approvalStatus,
+                ApprovalBy=approvedBy
+            };
             if (string.IsNullOrEmpty(command.BulkOperationSimulationId))
             {
                 return RedirectToAction("Listing", new { error = "Invalid operation ID" });
@@ -238,30 +272,6 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             }
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Simulate(SimulateBulkOperation model)
-        {
-            Func<Task<ExecutionMessages>> serviceAction = null;
-
-            var Branches = await _branchServices.GetBranches();
-            model.Branches=Branches.ToList();
-            serviceAction =  async () =>await  _bulkOperationService.SimulateOperation(model);
-
-            if (serviceAction != null)
-            {
-                try
-                {
-                    var data = await serviceAction();
-                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-                }
-                catch (Exception ex)
-                {
-                    return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
-                }
-            }
-
-            return Json(new { success = false, status = false, message = "Invalid option selected." });
-        }
-
+      
     }
 }

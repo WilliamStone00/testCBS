@@ -132,11 +132,11 @@
                         @if (@Model.ApprovalStatus != "Approved")
                         {
                             <button type="button" class="btn btn-primary" id="approveBulkOperation" data-simulation-id="@Model.Id">
-                                <i class="fas fa-check me-1"></i> Approve
+                                <i class="fas fa-check me-1"></i> Perform Actions
                             </button>
-                            <button type="button" class="btn btn-warning" id="reviewBulkOperation" data-simulation-id="@Model.Id">
+                           @* <button type="button" class="btn btn-warning" id="reviewBulkOperation" data-simulation-id="@Model.Id">
                                 <i class="fas fa-search me-1"></i> Send for Review
-                            </button>
+                            </button>*@
                         }
                         <button type="button" class="btn btn-info">
                             <i class="fas fa-download me-1"></i> Export Data
@@ -231,110 +231,3 @@
     </div>
 </div>
 
-<!-- Confirm Bulk Operation Modal -->
-<div class="modal fade" id="confirmBulkOperationModal" tabindex="-1" aria-labelledby="confirmBulkOperationModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content position-relative">
-
-            <!-- Loader Overlay -->
-            <div id="confirmBulkOperationLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
-                <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
-                    <div class="spinner-border text-primary mb-3" role="status"></div>
-                    <p class="fw-semibold text-primary">Processing bulk operation...</p>
-                </div>
-            </div>
-
-            <!-- Modal Header -->
-            <div class="modal-header border-0">
-                <div class="w-100">
-                    <div class="card bg-light mb-2">
-                        <div class="card-body text-center">
-                            <h1 class="card-title text-primary">
-                                <i class="mdi mdi-checkbox-marked-circle-outline me-2"></i> Confirm Bulk Operation
-                            </h1>
-                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tips Section -->
-            <div class="card m-3">
-                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-information-outline me-2"></i> About This Operation</span>
-                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBulkOperationTips">
-                        <i class="mdi mdi-chevron-down"></i>
-                    </button>
-                </h6>
-                <div id="collapseBulkOperationTips" class="collapse">
-                    <div class="card-body">
-                        <ul class="mb-0">
-                            <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i><strong>Important:</strong> This action will affect multiple records.</li>
-                            <li><i class="mdi mdi-shield-check-outline text-success me-2"></i><strong>Secure:</strong> All changes are logged for audit purposes.</li>
-                            <li><i class="mdi mdi-undo text-danger me-2"></i><strong>Irreversible:</strong> This operation cannot be undone.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Main Content -->
-            <div class="modal-body p-4">
-                <form id="confirmBulkOperationForm">
-                    <input type="hidden" id="bulkOperationSimulationId" name="BulkOperationSimulationId"  />
-
-                    <div class="mb-3">
-                        <label for="approvalStatus" class="form-label text-primary fw-semibold">
-                            <i class="mdi mdi-check-decagram me-2"></i>Approval Status
-                        </label>
-                        <select class="form-select" id="approvalStatus" name="ApprovalStatus" required>
-                            <option value="">Select status...</option>
-                            <option value="Approved">Approved</option>
-                            <option value="Rejected">Reviewed</option>
-                            <option value="Rejected">Rejected</option>
-                            <option value="Pending">Pending</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="approvalStatusDescription" class="form-label text-primary fw-semibold">
-                            <i class="mdi mdi-text-box-outline me-2"></i>Description
-                        </label>
-                        <textarea class="form-control" id="approvalStatusDescription" name="ApprovalStatusDescription" rows="3" placeholder="Enter description or comments..."></textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="approvalBy" class="form-label text-primary fw-semibold">
-                            <i class="mdi mdi-account-check-outline me-2"></i>Approved By
-                        </label>
-                        <input type="text" class="form-control" id="approvalBy" name="ApprovalBy" placeholder="Enter approver name" required>
-                    </div>
-
-                    <div class="alert alert-warning mt-4">
-                        <i class="mdi mdi-alert-outline me-2"></i>
-                        <strong>Warning:</strong> Please review all details carefully before confirming this bulk operation.
-                    </div>
-                </form>
-            </div>
-
-            <!-- Footer -->
-            <div class="modal-footer border-0 justify-content-between">
-                <div>
-                    <span class="text-muted fw-semibold">
-                        Simulation ID: <span class="text-dark" id="bulkOperationSimulationIdDisplay">Not provided</span>
-                    </span>
-                </div>
-                <div class="text-center w-100">
-                    <small class="text-muted">Powered by FLX-CBS</small>
-                </div>
-                <div>
-                    <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">
-                        <i class="mdi mdi-close"></i> Cancel
-                    </button>
-                    <button type="button" class="btn btn-primary" id="confirmBulkOperationBtn">
-                        <i class="mdi mdi-check-circle-outline"></i> Confirm
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
