@@ -1,5 +1,5 @@
 ﻿@model  CBS.FrontDesk.Data.Entity.Accounting.AccountingStatementDto
-
+@using Resources
 @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
 {
     <div class="row">
@@ -17,7 +17,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-file-document-outline me-2"></i>
-                           JOURNAL ENTRY PER BRANCH
+                           @JournalEntries.JOURNALENTRYPERBRANCH
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -31,10 +31,10 @@
                                         <table class="table table-hover" id="BranchDataTable">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th>Code</th>
-                                                    <th>BranchName</th>
-                                                    <th>Location</th>
-                                                    <th>Action</th>
+                                                    <th>@LiaisonLedger.Code</th>
+                                                    <th>@LiaisonLedger.BranchName</th>
+                                                    <th>@LiaisonLedger.Location</th>
+                                                    <th>@LiaisonLedger.Action</th>
 
                                                 </tr>
                                             </thead>
@@ -47,7 +47,7 @@
                                                         <td style="width:50%" id="@d.Id-Name">@d.Name</td>
                                                         <td style="width:25%" id="@d.Id-Location">@d.Location</td>
                                                         <td style="width:15%">
-                                                            <a href="#" onclick="ShareBranchID(@d.Id)" class="mr-2 btn btn-primary" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#largeModal" title="Select @d.Name to view journal entry">View</a>
+                                                            <a href="#" onclick="ShareBranchID(@d.Id)" class="mr-2 btn btn-primary" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#largeModal" title="@GlobalShared.Select @d.Name @JournalEntries.ToViewJournalEntry">@GlobalShared.View</a>
 
                                                         </td>
                                                     </tr>
@@ -91,7 +91,7 @@ else
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-file-document-outline me-2"></i>
-                            JOURNAL ENTRY FOR  @Session["BranchName"]
+                            @JournalEntries.JOURNALENTRYFOR  @Session["BranchName"]
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -105,11 +105,11 @@ else
                                         <table class="table table-hover" id="AccountDataTable">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th>AccountNumber</th>
-                                                    <th>Description</th>
-                                                    <th>Debit Balance</th>
-                                                    <th>Credit Balance</th>
-                                                    <th>Current Balance</th>
+                                                    <th>@JournalEntries.AccountNumber</th>
+                                                    <th>@JournalEntries.Description</th>
+                                                    <th>@JournalEntries.DebitBalance</th>
+                                                    <th>@JournalEntries.CreditBalance</th>
+                                                    <th>@JournalEntries.CurrentBalance</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

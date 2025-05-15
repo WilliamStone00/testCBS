@@ -127,10 +127,10 @@
     <value>Determination account</value>
   </data>
   <data name="Event" xml:space="preserve">
-    <value />
+    <value>Event</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value />
+    <value>Name</value>
   </data>
   <data name="OperationEventAttribute" xml:space="preserve">
     <value>Operation eventAttribute</value>

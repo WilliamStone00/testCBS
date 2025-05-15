@@ -1,5 +1,6 @@
 ﻿
 @model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+    @using Resources
 <!-- Basic  -->
 <div class="col-12">
     <div class="card mb-4">
@@ -14,7 +15,7 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select Branch---", new { @class = "form-control select2", @search = "true", @id = "branchCodeDropdown" })
                                 @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                                <label>Select Branch</label>
+                                <label>@AccountingConfig_AccountUploud.SelectBranch</label>
                             </div>
                         </div>
 
@@ -22,25 +23,25 @@
                     <div class="dz-message needsclick">
 
                         <span class="note needsclick">
-                            The format of this file should be .XLSX and should have the following column.
-                            <span class="fw-medium">Respect </span>Column as mention below
+                            @AccountingConfig_AccountUploud.TheformatOfThisFile.
+                            <span class="fw-medium">@AccountingConfig_AccountUploud.Respect </span>@AccountingConfig_AccountUploud.ColumnAsMentionBelow
                         </span>
                         <div class="table-responsive mb-3">
                             <table class="table table-hover">
                                 <thead class="table-light">
                                     <tr>
-                                        <th  colspan="8"><button class="btn btn-warning" id="downloadExcelButton">Download Sample Excel TrialBalance Format</button></th>
+                                        <th  colspan="8"><button class="btn btn-warning" id="downloadExcelButton">@AccountingConfig_AccountUploud.DownloadSampleExcelTrialBalanceFormat</button></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td class="mdi-cloud-download" id="ResultFile" colspan="8">
                                             <div id="resultContainer" style="display: none;">
-                                                <h3>Upload Results:</h3>
-                                                <p>Accounts not existing : <span id="accountsPresent"></span></p>
-                                                <p>Total Accounts: <span id="totalAccounts"></span></p>
-                                                <p>Accounts Existing: <span id="accountsNotMatching"></span></p>
-                                                <a id="downloadLink" href="#" target="_blank">Download Excel</a>
+                                                <h3>@AccountingConfig_AccountUploud.UploadResults:</h3>
+                                                <p>@AccountingConfig_AccountUploud.AccountsNotExisting : <span id="accountsPresent"></span></p>
+                                                <p>@AccountingConfig_AccountUploud.TotalAccounts: <span id="totalAccounts"></span></p>
+                                                <p>@AccountingConfig_AccountUploud.AccountsExisting: <span id="accountsNotMatching"></span></p>
+                                                <a id="downloadLink" href="#" target="_blank">@AccountingConfig_AccountUploud.DownloadExcel</a>
                                             </div>
                                             <div id="progressBarContainer" style="display:none;">
                                                 <div class="progress">
@@ -59,12 +60,12 @@
                     </div>
                     <div class="fallback">
                         <input name="file" type="file" class="btn btn-primary" id="uploadedFile" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <button onclick="ReadExcelFile()" Id="ReadUploadedFile" class="btn btn-primary me-2">Upload File</button>
+                        <button onclick="ReadExcelFile()" Id="ReadUploadedFile" class="btn btn-primary me-2">@AccountingConfig_AccountUploud.UploadFile</button>
 
                     </div>
                     <div class="col-md-12">
                         <input type="checkbox" class="form-check-input" id="IsHarmonizationActivated" value="false" />
-                        <label for="IsHarmonizationActivated">Check this box if you wish to harmonised your existing trial balance with the centralise accounting</label>
+                        <label for="IsHarmonizationActivated">@AccountingConfig_AccountUploud.CheckThisBoxIfYouWishToHarmonise</label>
                     </div>
 
                 </form>

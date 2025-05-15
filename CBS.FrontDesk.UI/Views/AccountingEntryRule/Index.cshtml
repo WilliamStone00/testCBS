@@ -1,14 +1,16 @@
 ﻿
 
 @{
-    ViewBag.Title = "Accounting Entry Rule";
+    ViewBag.Title = @GlobalAccountingEntryRule.AccountingEntryRule;
 }
+@using Resources
+
 <div class="row justify-content-end">
     <div class="demo-inline-spacing text-end">
-        <a type="button" onclick="LoadDataGen('AccountingEntryRule','myDataTable','_Data',0,'datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+        <a type="button" onclick="LoadDataGen('AccountingEntryRule','myDataTable','_Data',0,'datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
             <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
         </a>
-        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','AccountingEntryRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','AccountingEntryRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
             <span class="tf-icons mdi mdi-plus mdi-18px"></span>
         </a>
     </div>
@@ -19,7 +21,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="modalCenterTitle">Modal title</h4>
+                <h4 class="modal-title" id="modalCenterTitle">@GlobalAccountingEntryRule.ModalTitle</h4>
                 <button type="button"
                         class="btn-close"
                         data-bs-dismiss="modal"
@@ -33,7 +35,7 @@
                                    id="nameWithTitle"
                                    class="form-control"
                                    placeholder="Enter Name" />
-                            <label for="nameWithTitle">Name</label>
+                            <label for="nameWithTitle">@GlobalAccountingEntryRule.Name</label>
                         </div>
                     </div>
                 </div>
@@ -44,22 +46,22 @@
                                    id="emailWithTitle"
                                    class="form-control"
                                    placeholder="xxxx@xxx.xx" />
-                            <label for="emailWithTitle">Email</label>
+                            <label for="emailWithTitle">@GlobalAccountingEntryRule.Email</label>
                         </div>
                     </div>
                     <div class="col mb-2">
                         <div class="form-floating form-floating-outline">
                             <input type="date" id="dobWithTitle" class="form-control" />
-                            <label for="dobWithTitle">DOB</label>
+                            <label for="dobWithTitle">@GlobalAccountingEntryRule.DOB</label>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                    Close
+                    @GlobalShared.Close
                 </button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary">@GlobalShared.SaveChanges</button>
             </div>
         </div>
     </div>

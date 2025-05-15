@@ -688,6 +688,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Global_AccountTree.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_AccountUploud.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingConfig_AccountUploud.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_ChartOfAccount.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingConfig_ChartOfAccount.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateAccountBookingDirectionData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingConfig_CreateAccountBookingDirectionData.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateAccountingEntryRule.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingConfig_CreateAccountingEntryRule.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateAccountingRule.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -788,6 +808,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingConfig_UpdateStatementModel.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_AccountingEntryRule.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingConfig_AccountingEntryRule.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\AccountingConfiguration\GlobalAccount.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -822,6 +847,81 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingConfig_DeleteChartOfAccount.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingDay\AccountingDay_AccountingDayDetails.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingDay_AccountingDayDetails.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingDay\AccountingDay_Create.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingDay_Create.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingDay\AccountingDay_StatusData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingDay_StatusData.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingDay\AccountingDay_StatusQuery.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingDay_StatusQuery.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingEntryRule\GlobalAccountingEntryRule.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAccountingEntryRule.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingRule\GlobalAccountingRule.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAccountingRule.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingStatements\AccountingStatements_DateRange.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingStatements_DateRange.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingStatements\AccountingStatements_DownloadedReportData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingStatements_DownloadedReportData.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingStatements\AccountingStatements_Index.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingStatements_Index.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingStatements\AccountingStatements_JournalEntries.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingStatements_JournalEntries.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingStatements\AccountingStatements_LiaisonLedger.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingStatements_LiaisonLedger.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingStatements\AccountingStatements_SearchOptions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingStatements_SearchOptions.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingStatements\GeneralLedger.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeneralLedger.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingStatements\JournalEntries.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JournalEntries.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingStatements\LiaisonLedger.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LiaisonLedger.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Bank\GlobalBank.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -4590,6 +4690,86 @@
     <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateAccountingRule.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>AccountingConfig_CreateAccountingRule.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateAccountingEntryRule.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingConfig_CreateAccountingEntryRule.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateAccountBookingDirectionData.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingConfig_CreateAccountBookingDirectionData.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_ChartOfAccount.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingConfig_ChartOfAccount.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_AccountUploud.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingConfig_AccountUploud.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_AccountingEntryRule.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingConfig_AccountingEntryRule.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingDay\AccountingDay_AccountingDayDetails.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingDay_AccountingDayDetails.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingDay\AccountingDay_Create.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingDay_Create.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingDay\AccountingDay_StatusData.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingDay_StatusData.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingDay\AccountingDay_StatusQuery.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingDay_StatusQuery.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingEntryRule\GlobalAccountingEntryRule.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAccountingEntryRule.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingRule\GlobalAccountingRule.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAccountingRule.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingStatements\LiaisonLedger.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>LiaisonLedger.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingStatements\JournalEntries.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>JournalEntries.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingStatements\AccountingStatements_DateRange.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingStatements_DateRange.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingStatements\GeneralLedger.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GeneralLedger.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingStatements\AccountingStatements_JournalEntries.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingStatements_JournalEntries.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingStatements\AccountingStatements_LiaisonLedger.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingStatements_LiaisonLedger.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingStatements\AccountingStatements_DownloadedReportData.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingStatements_DownloadedReportData.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingStatements\AccountingStatements_SearchOptions.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingStatements_SearchOptions.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingStatements\AccountingStatements_Index.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingStatements_Index.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>

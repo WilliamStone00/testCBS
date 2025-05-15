@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingEntryQuery
+    @using Resources
 <div class="container">
     @*<fieldset class="fieldset">*@
         <div class="card-body">
@@ -9,16 +10,16 @@
                     {
                         <div class="col-6 mb-sm-1">
                             <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(model => model.SystemQuery.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select Branch---", new { @class = "form-control select2", @search = "true" })
+                                @Html.DropDownListFor(model => model.SystemQuery.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---"+@AccountingStatements_SearchOptions.SelectBranch+"---", new { @class = "form-control select2", @search = "true" })
                                 @Html.ValidationMessageFor(model => model.SystemQuery.BranchId, "", new { @class = "text-danger" })
-                                <label>Branch Office</label>
+                                <label>@AccountingStatements_SearchOptions.BranchOffice</label>
                             </div>
                         </div>
                         <div class="col-md-6 mb-sm-1">
                             <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(model => model.SystemQuery.ReportType, new SelectList(ViewBag.ReportTypes == null ? "" : ViewBag.ReportTypes, "Text", "Value"), "---Select ReportTypes---", new { @class = "form-control select2", @search = "true", @id = "SystemQuery_ReportType" })
+                                @Html.DropDownListFor(model => model.SystemQuery.ReportType, new SelectList(ViewBag.ReportTypes == null ? "" : ViewBag.ReportTypes, "Text", "Value"), "---"+ @AccountingStatements_SearchOptions.SelectReportTypes+"---", new { @class = "form-control select2", @search = "true", @id = "SystemQuery_ReportType" })
                                 @Html.ValidationMessageFor(model => model.SystemQuery.ReportType, "", new { @class = "text-danger" })
-                                <label>Select ReportType</label>
+                                <label>@AccountingStatements_SearchOptions.SelectReportType</label>
                             </div>
                         </div>
 
@@ -28,7 +29,7 @@
 
                                     @Html.ListBoxFor(model => model.SystemQuery.AccountIds, new SelectList(ViewBag.Accounts == null ? new List<SelectListItem>() : ViewBag.Accounts, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple", @id = "SystemQuery_AccountId" })
                                     @Html.ValidationMessageFor(model => model.SystemQuery.AccountIds, "", new { @class = "text-danger" })
-                                    <label>Select Account</label>
+                                    <label>@AccountingStatements_SearchOptions.SelectAccount</label>
                                 </div>
                             </div>
                         </div>
@@ -42,7 +43,7 @@
                                      id = "fromDate"
                                  })   @*@Html.TextBoxFor(model => model.SystemQuery.FromDate, new { @class = "form-control", @id = "dateFrom", @autocomplete = "off" })*@
                                 @Html.ValidationMessageFor(model => model.SystemQuery.FromDate, "", new { @class = "text-danger" })
-                                <label>From Date</label>
+                                <label>@AccountingStatements_SearchOptions.FromDate</label>
                             </div>
                         </div>
 
@@ -59,19 +60,19 @@
  })
                                 @Html.ValidationMessageFor(model => model.SystemQuery.ToDate, "", new { @class = "text-danger" })
 
-                                <label>To Date</label>
+                                <label>@AccountingStatements_SearchOptions.ToDate</label>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(model => model.SystemQuery.FileType, new SelectList(ViewBag.FileTypes == null ? "" : ViewBag.FileTypes, "Text", "Value"), "---Select FileTypes---", new { @class = "form-control select2", @search = "true" })
                                 @Html.ValidationMessageFor(model => model.SystemQuery.FileType, "", new { @class = "text-danger" })
-                                <label>Select FileType</label>
+                                <label>@AccountingStatements_SearchOptions.SelectFileType</label>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <input type="checkbox" class="form-check-input" id="ActivateAuditId" value="false" />
-                            <label for="IsHarmonizationActivated">UnCheck if you which to aggregate two or more branch financial statement</label>
+                            <label for="IsHarmonizationActivated">@AccountingStatements_SearchOptions.UnCheckIfYouWich</label>
                         </div>
                         <div class="col-12">
                             <div id="ListOfBranchToHide">
@@ -79,7 +80,7 @@
 
                                     @Html.ListBoxFor(model => model.SystemQuery.BranchIds, new SelectList(ViewBag.Branches == null ? new List<SelectListItem>() : ViewBag.Branches, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple", @id = "SystemQuery_BranchIds" })
                                     @Html.ValidationMessageFor(model => model.SystemQuery.BranchIds, "", new { @class = "text-danger" })
-                                    <label>Select Branch</label>
+                                    <label>@AccountingStatements_SearchOptions.SelectBranch</label>
                                 </div>
                             </div>
                         </div>
@@ -89,16 +90,16 @@
                     {
                         <div class="col-md-6 mb-sm-1">
                             <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(model => model.SystemQuery.ReportType, new SelectList(ViewBag.ReportTypes == null ? "" : ViewBag.ReportTypes, "Text", "Value"), "---Select ReportTypes---", new { @class = "form-control select2", @search = "true", @id = "SystemQuery_ReportType" })
+                                @Html.DropDownListFor(model => model.SystemQuery.ReportType, new SelectList(ViewBag.ReportTypes == null ? "" : ViewBag.ReportTypes, "Text", "Value"), "---"+ @AccountingStatements_SearchOptions.SelectReportTypes+"---", new { @class = "form-control select2", @search = "true", @id = "SystemQuery_ReportType" })
                                 @Html.ValidationMessageFor(model => model.SystemQuery.ReportType, "", new { @class = "text-danger" })
-                                <label>Select ReportType</label>
+                                <label>@AccountingStatements_SearchOptions.SelectReportType</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(model => model.SystemQuery.FileType, new SelectList(ViewBag.FileTypes == null ? "" : ViewBag.FileTypes, "Text", "Value"), "---Select FileTypes---", new { @class = "form-control select2", @search = "true" })
+                                @Html.DropDownListFor(model => model.SystemQuery.FileType, new SelectList(ViewBag.FileTypes == null ? "" : ViewBag.FileTypes, "Text", "Value"), "---"+ @AccountingStatements_SearchOptions.SelectFileType +"---", new { @class = "form-control select2", @search = "true" })
                                 @Html.ValidationMessageFor(model => model.SystemQuery.FileType, "", new { @class = "text-danger" })
-                                <label>Select FileType</label>
+                                <label>@AccountingStatements_SearchOptions.SelectFileType</label>
                             </div>
                         </div>
                         <div class="col-12">
@@ -107,7 +108,7 @@
 
                                     @Html.ListBoxFor(model => model.SystemQuery.AccountIds, new SelectList(ViewBag.Accounts == null ? new List<SelectListItem>() : ViewBag.Accounts, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple", @id = "SystemQuery_AccountId" })
                                     @Html.ValidationMessageFor(model => model.SystemQuery.AccountIds, "", new { @class = "text-danger" })
-                                    <label>Select Account</label>
+                                    <label>@AccountingStatements_SearchOptions.SelectAccount</label>
                                 </div>
                             </div>
                         </div>
@@ -116,13 +117,13 @@
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(model => model.SystemQuery.FromDate, new
-                                 {
-                                     @class = "form-control",
-                                     type = "datetime-local",
-                                     id = "fromDate"
-                                 })   @*@Html.TextBoxFor(model => model.SystemQuery.FromDate, new { @class = "form-control", @id = "dateFrom", @autocomplete = "off" })*@
+                                {
+                                    @class = "form-control",
+                                    type = "datetime-local",
+                                    id = "fromDate"
+                                })   @*@Html.TextBoxFor(model => model.SystemQuery.FromDate, new { @class = "form-control", @id = "dateFrom", @autocomplete = "off" })*@
                                 @Html.ValidationMessageFor(model => model.SystemQuery.FromDate, "", new { @class = "text-danger" })
-                                <label>From Date</label>
+                                <label>@AccountingStatements_SearchOptions.FromDate</label>
                             </div>
                         </div>
 
@@ -139,7 +140,7 @@
  })
                                 @Html.ValidationMessageFor(model => model.SystemQuery.ToDate, "", new { @class = "text-danger" })
 
-                                <label>To Date</label>
+                                <label>@AccountingStatements_SearchOptions.ToDate</label>
                             </div>
                         </div>
 
@@ -149,7 +150,7 @@
                 <br>
                 <div class="col-md-12">
                    
-                        <button type="submit" class="btn btn-primary me-2 mdi mdi-printer-pos-alert mdi-24px"  id="print_btn" onsubmit="AjaxPostSearch()">Print</button>
+                    <button type="submit" class="btn btn-primary me-2 mdi mdi-printer-pos-alert mdi-24px" id="print_btn" onsubmit="AjaxPostSearch()">@GlobalShared.Print</button>
 
                      
                 </div>
