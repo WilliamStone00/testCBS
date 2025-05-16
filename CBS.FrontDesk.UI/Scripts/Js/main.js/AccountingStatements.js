@@ -1,11 +1,12 @@
 ﻿$(document).ready(function () {
-
+  
     // Cache elements
     const $auditCheckbox = $('#ActivateAuditId');
     const $branchList = $('#ListOfBranchToHide');
     const $branchSelect = $('#SystemQuery_BranchIds'); // Your select2 element
     $('#ListOfBranchToHide').hide();
     $('#SystemQuery_BranchIds').hide();
+    $('#lunchBalanceSheetBuilder').hide();
     //// Initialize - hide branch list if checkbox is checked
     toggleBranchList(!$auditCheckbox.is(':checked'));
 
@@ -26,6 +27,7 @@
     LoadBranchAndAccountDataSetDT("BranchDataTable");
     LoadAccountDataSetDT("AccountDataTable");
     $('#AccountToHide').hide();
+
     $("#btnData").click(function () {
         LoadData();
     });
@@ -48,13 +50,16 @@
 
     $(document).on('change', '#SystemQuery_ReportType', function () {
         var selectedValue = $(this).val();
-
+        $('#lunchBalanceSheetBuilder').hide();
+        $('#AccountToHide').hide();
         // Check if the selected value matches the specific value
         if (selectedValue === 'GL') {
             // Show the element
             $('#AccountToHide').show();
             var selectedId = $("#selectedBranchID").val();
             loadBranchAccounts(selectedId);
+        } else if (selectedValue === 'BS') {
+            $('#lunchBalanceSheetBuilder').show();
         } else {
 
     
@@ -66,13 +71,12 @@
         // Optional: prevent the default link behavior if needed
         e.preventDefault();
 
-        // Hide the entire <th> element with ID DeleteBtn
+        // Hide the entire <th> element with ID DeleteBtn LunchBalanceSheetBuilder
         $('#DeleteBtn').hide();
 
  
     });
 });
-
 
 function LoadBranchAndAccountDataSetDT(tableID) {
 
@@ -114,7 +118,69 @@ function LoadBranchAndAccountDataSetDT(tableID) {
 
     });
 }
+function launchBalanceSheetBuilder() {
+    try {
+        const model = collectSystemQueryData();
 
+        // Validate required fields
+        if (!model.BranchId || !model.FromDate || !model.ToDate) {
+            appalert('Branch ID, From Date, and To Date are required fields.', 2, 1);
+            return;
+        }
+
+        $.ajax({
+            url: 'AccountingStatements/GenerateBalanceSheet',
+            type: 'GET',
+            contentType: 'application/json',
+            data: {
+                BranchId: model.BranchId,
+                FromDate: model.FromDate,
+                ToDate: model.ToDate,
+                FileType: model.FileType,
+            },
+            success: function (response) {
+                if (!response) {
+                    appalert('No response received from server', 2, 1);
+                    return;
+                }
+
+                if (response.status) {
+                    appalert(response.message, 1, 1);
+                } else {
+                    appalert(response.message || 'Operation failed without specific error message', 2, 1);
+                }
+            },
+            error: function (xhr, status, error) {
+                const errorMessage = xhr.responseJSON?.message || error || 'An unknown error occurred';
+                appalert(errorMessage, 0, 3);
+            }
+        });
+    } catch (error) {
+        console.error('Error in launchBalanceSheetBuilder:', error);
+        appalert('An unexpected error occurred: ' + error.message, 0, 3);
+    }
+}
+
+function collectSystemQueryData() {
+    try {
+        const systemQueryData = {
+            BranchId: $('#SystemQuery_BranchId').val(),
+            BranchIds: $('#SystemQuery_BranchIds').val(), // Multi-select
+            AccountIds: $('#SystemQuery_AccountId').val(), // Multi-select
+            ReportType: $('#SystemQuery_ReportType').val(),
+            FileType: $('[name="SystemQuery.FileType"]').val(),
+            FromDate: $('#fromDate').val(),
+            ToDate: $('#toDate').val(),
+            ActivateAudit: $('#ActivateAuditId').is(':checked')
+        };
+
+        console.log("Collected SystemQuery Data:", systemQueryData);
+        return systemQueryData;
+    } catch (error) {
+        console.error('Error in collectSystemQueryData:', error);
+        throw error; // Re-throw to be caught by the calling function
+    }
+}
 function LoadAccountDataSetDT(tableID) {
 
 

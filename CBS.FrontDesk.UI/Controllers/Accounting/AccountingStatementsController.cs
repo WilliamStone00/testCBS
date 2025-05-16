@@ -12,6 +12,7 @@ using CBS.FrontDesk.Helper;
 using CBS.FrontDesk.UI.AppFiles.Reporting.Accounting;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.ExtendedProperties;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OfficeOpenXml;
 using System;
@@ -24,6 +25,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Services.Description;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
+using Branch = CBS.FrontDesk.Data.Entity.Config.Branch;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -35,6 +38,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private readonly AccountingServices _accountingServices;
         private readonly AccountingEntryServices _accountingEntryServices;
         private const string UniversalId = "XXXXXX";
+
+      
+
         public AccountingStatementsController()
         {
             _acountServices = new AccountingStatementService();
@@ -984,6 +990,37 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     return RedirectToAction("Index");
                 }
 
+
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GenerateBalanceSheet(string BranchId, string FromDate, string ToDate,string FileType)
+        {
+            try
+            {
+          
+
+
+                    var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "BALANCESHEET").First();
+                BSQuery modelx = new BSQuery
+                {
+                    BranchId = BranchId,
+                    DocumentId = DocModel.id,
+                    FromDate=Convert.ToDateTime( FromDate),
+                    ToDate = Convert.ToDateTime(ToDate),
+ 
+                    FileType= FileType
+                };
+                    var account = await _acountServices.GenerateBalanceSheet(modelx);
+               
+                return Json(account, JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception ex)

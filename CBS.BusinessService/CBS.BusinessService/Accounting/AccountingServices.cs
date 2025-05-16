@@ -89,7 +89,8 @@ namespace CBS.BusinessService.Accounting
                 model.AccountNumberManagementPosition = "0";
 
                 // Make an API call to create an individual profile
-
+                model.OwnerBranchCode = model.BranchCode;
+                model.LiaisonBranchCode = model.AccountNumber.Equals("45100") ? model.LiaisonId : "NO-LIAISONID";
                 // model.AccountOwnerId=GetBranchID();
                 var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.CreateAccount, model);
                 if (response.IsSuccess)
