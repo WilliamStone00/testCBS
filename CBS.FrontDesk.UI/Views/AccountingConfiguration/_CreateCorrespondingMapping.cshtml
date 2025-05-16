@@ -1,21 +1,21 @@
 ﻿
 @model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
-
+@using Resources
 <div class="card-body">
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>Financial document </th>
+                <th>@AccountingConfig_CreateCorrespondingMapping.FinancialDocument </th>
                 <th>@Model.DocumentReferenceCodeDto.Document - @Model.DocumentReferenceCodeDto.DocumentType</th>
             </tr>
         </thead>
         <tbody class="table-border-bottom-0">
             <tr>
-                <td style="width: 30%;">Description</td>
+                <td style="width: 30%;">@AccountingConfig_CreateCorrespondingMapping.Description</td>
                 <td style="width: 70%;">@Model.DocumentReferenceCodeDto.Description</td>
             </tr>
             <tr>
-                <td style="width: 30%;">Reference code</td>
+                <td style="width: 30%;">@AccountingConfig_CreateCorrespondingMapping.ReferenceCode</td>
                 <td style="width: 70%;">@Model.DocumentReferenceCodeDto.ReferenceCode</td>
             </tr>
         </tbody>
@@ -30,16 +30,16 @@
 
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.CorrespondingMapping.ChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? "" : ViewBag.ChartOfAccounts, "Text", "Value"), "---Select chartOfaccount---", new { @class = "form-control select2", @search = "true" })
+                    @Html.DropDownListFor(m => m.CorrespondingMapping.ChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? "" : ViewBag.ChartOfAccounts, "Text", "Value"), @AccountingConfig_CreateCorrespondingMapping.SelectChartOfAccount, new { @class = "form-control select2", @search = "true" })
                     @Html.ValidationMessageFor(model => model.CorrespondingMapping.ChartOfAccountId, "", new { @class = "text-danger" })
-                    <label for="Document_type">Select Account number</label>
+                    <label for="Document_type">@AccountingConfig_CreateCorrespondingMapping.SelectAccountNumber</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(model => model.CorrespondingMapping.AccountNumber, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.CorrespondingMapping.AccountNumber, "", new { @class = "text-danger" })
-                    <label for="Document_type">Select Opertation side</label>
+                    <label for="Document_type">@AccountingConfig_CreateCorrespondingMapping.SelectOpertationSide</label>
                 </div>
             </div>
      
@@ -49,11 +49,11 @@
         <div class="mt-4">
             @if (Model.CorrespondingMapping.Id == null)
             {
-                <button type="submit" class="btn btn-primary me-2">Save</button>
+                <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
                 <input type="hidden" name="Action" value="insert" id="Action" />
             }
             else
-            { <button type="submit" class="btn btn-primary me-2">Update</button>
+            { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                 @Html.HiddenFor(m => m.CorrespondingMapping.Id)
                 <input type="hidden" name="Action" value="update" id="Action" />
 

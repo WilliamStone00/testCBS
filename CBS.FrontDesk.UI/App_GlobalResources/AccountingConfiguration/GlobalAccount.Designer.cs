@@ -223,6 +223,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clean Entrie.
+        /// </summary>
+        internal static string CleanEntrie {
+            get {
+                return ResourceManager.GetString("CleanEntrie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new account type.
+        /// </summary>
+        internal static string CreateNewAccountType {
+            get {
+                return ResourceManager.GetString("CreateNewAccountType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Credit Balance.
         /// </summary>
         internal static string CreditBalance {
@@ -259,6 +277,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        internal static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Details.
         /// </summary>
         internal static string Details {
@@ -286,6 +313,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Event.
+        /// </summary>
+        internal static string Event {
+            get {
+                return ResourceManager.GetString("Event", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Financial Statement Settings(Balance Sheet and Profit and Lost).
         /// </summary>
         internal static string FinancialStatementSettings {
@@ -304,11 +340,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max alert.
+        /// </summary>
+        internal static string MaxAlert {
+            get {
+                return ResourceManager.GetString("MaxAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MFI Chart Of Account.
         /// </summary>
         internal static string MFIChartOfAccount {
             get {
                 return ResourceManager.GetString("MFIChartOfAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Min alert.
+        /// </summary>
+        internal static string MinAlert {
+            get {
+                return ResourceManager.GetString("MinAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Policy Nam.
+        /// </summary>
+        internal static string PolicyName {
+            get {
+                return ResourceManager.GetString("PolicyName", resourceCulture);
             }
         }
         
@@ -331,6 +403,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ---Select Account---.
+        /// </summary>
+        internal static string SelectAccount {
+            get {
+                return ResourceManager.GetString("SelectAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ---Select Account Category---.
         /// </summary>
         internal static string SelectAccountCategory {
@@ -345,6 +426,15 @@ namespace Resources {
         internal static string SelectAccountCounterPart {
             get {
                 return ResourceManager.GetString("SelectAccountCounterPart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select account.
+        /// </summary>
+        internal static string SelectAccountLbl {
+            get {
+                return ResourceManager.GetString("SelectAccountLbl", resourceCulture);
             }
         }
         
@@ -394,6 +484,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select operation event.
+        /// </summary>
+        internal static string SelectOperationEvent {
+            get {
+                return ResourceManager.GetString("SelectOperationEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select to edit.
         /// </summary>
         internal static string SelectToEdit {
@@ -426,6 +525,15 @@ namespace Resources {
         internal static string ViewList {
             get {
                 return ResourceManager.GetString("ViewList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are about to and create account under chart.
+        /// </summary>
+        internal static string YouAreAboutToAndCreateAccountUnderChart {
+            get {
+                return ResourceManager.GetString("YouAreAboutToAndCreateAccountUnderChart", resourceCulture);
             }
         }
     }

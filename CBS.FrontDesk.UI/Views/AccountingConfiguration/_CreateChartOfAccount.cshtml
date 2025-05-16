@@ -1,6 +1,6 @@
 ﻿ 
 @model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
- 
+ @using Resources
 <div class="row">
     <!-- Context Menu -->
     <div class="col-12 card-body">
@@ -14,12 +14,12 @@
                     <div class="misc-wrapper text-center">
                         <br /> <br />    <br /> <br />
                         <h1 class="mb-2 mx-2" style="font-size: 3rem">422</h1>
-                        <h4 class="mb-2">Internal server error</h4>
-                        <p class="mb-2 mx-2">Makesure the chart of account you are creating if found under an existing chart of account.</p>
+                        <h4 class="mb-2">@AccountingConfig_CreateChartOfAccount.InternalServerError</h4>
+                        <p class="mb-2 mx-2">@AccountingConfig_CreateChartOfAccount.MakesureTheChartOfAccount</p>
                         <div class="d-flex justify-content-center mt-5">
 
                             <div>
-                                <a href="/AccountingConfiguration" class="btn btn-primary text-center my-5">Click to Reload Page</a>
+                                <a href="/AccountingConfiguration" class="btn btn-primary text-center my-5">@AccountingConfig_CreateChartOfAccount.ClickToReloadPage</a>
                             </div>
                         </div>
                     </div>
@@ -31,8 +31,7 @@
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h5 class="mb-0"></h5>
                             <small class="text-body float-end">
-                                You are about to create a new item on your accounting chart kindly makesure you follow the strictly the chart Of Account
-                                applied in COBAC Zone
+                                @AccountingConfig_CreateChartOfAccount.YouAreAboutTCreateANewItem
                             </small>
                         </div>
                         <div class="card-body">
@@ -42,18 +41,18 @@
                             @Html.HiddenFor(model => model.ChartOfAccount.ParentAccountId) <!-- Hidden field for AccountNumber -->
 
                             <div class="form-floating form-floating-outline mb-4">
-                                @Html.TextBoxFor(model => model.ChartOfAccount.AccountNumber, new { @class = "form-control", placeholder = "Account Number" })
+                                @Html.TextBoxFor(model => model.ChartOfAccount.AccountNumber, new { @class = "form-control", placeholder = @AccountingConfig_CreateChartOfAccount.AccountNumber })
                                 @Html.LabelFor(model => model.ChartOfAccount.AccountNumber, new { @for = "accountNumber" })
                                 @Html.ValidationMessageFor(model => model.ChartOfAccount.AccountNumber, "", new { @class = "text-danger" })
                             </div>
 
                             <div class="form-floating form-floating-outline mb-4">
-                                @Html.TextBoxFor(model => model.ChartOfAccount.LabelEn, new { @class = "form-control", placeholder = "Account Label" })
+                                @Html.TextBoxFor(model => model.ChartOfAccount.LabelEn, new { @class = "form-control", placeholder = @AccountingConfig_CreateChartOfAccount.AccountLabel })
                                 <label>Account label(English)</label>
                                 @Html.ValidationMessageFor(model => model.ChartOfAccount.LabelEn, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-floating form-floating-outline mb-4">
-                                @Html.TextBoxFor(model => model.ChartOfAccount.LabelFr, new { @class = "form-control", placeholder = "Account Label" })
+                                @Html.TextBoxFor(model => model.ChartOfAccount.LabelFr, new { @class = "form-control", placeholder = @AccountingConfig_CreateChartOfAccount.AccountLabel })
                                 <label>Account label(French)</label>
                                 @Html.ValidationMessageFor(model => model.ChartOfAccount.LabelFr, "", new { @class = "text-danger" })
                             </div>
@@ -65,9 +64,9 @@
                             </div>*@
 
                             <div class="form-floating form-floating-outline mb-4">
-                                @Html.DropDownListFor(model => model.ChartOfAccount.AccountCartegoryId, new SelectList(ViewBag.AccountCartegories == null ? "" : ViewBag.AccountCartegories, "Id", "Name"), "---Select Cartegory---", new { @class = "form-control select2", @search = "true" })
+                                @Html.DropDownListFor(model => model.ChartOfAccount.AccountCartegoryId, new SelectList(ViewBag.AccountCartegories == null ? "" : ViewBag.AccountCartegories, "Id", "Name"), @AccountingConfig_CreateChartOfAccount.SelectCategory, new { @class = "form-control select2", @search = "true" })
                                 @Html.ValidationMessageFor(model => model.ChartOfAccount.AccountCartegoryId, "", new { @class = "text-danger" })
-                                <label>AccountCartegory</label>
+                                <label>@AccountingConfig_CreateChartOfAccount.AccountCategory</label>
                             </div>
                             <div class="form-check mb-4">
                                 @Html.CheckBoxFor(model => model.ChartOfAccount.CanBeNegative, new { @class = "form-check-input" })
@@ -77,12 +76,12 @@
                         
                             @if (@Model.ChartOfAccount == null)
                             {
-                                <button type="submit" id="Add" class="btn btn-primary waves-effect waves-light">Save</button>
+                                <button type="submit" id="Add" class="btn btn-primary waves-effect waves-light">@GlobalShared.Save</button>
                                 @Html.HiddenFor(model => model.ChartOfAccount.ParentAccountId)
                                 <input type="hidden" name="Action" value="insert" id="Action" />
                             }
                             else
-                            { <button type="submit" class="btn btn-primary me-2">Update</button>
+                            { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                                 @Html.HiddenFor(model => model.ChartOfAccount.AccountNumber)
                                 <input type="hidden" name="Action" value="update" id="Action" />
                             }
@@ -105,18 +104,18 @@
                                 @Html.HiddenFor(model => model.ChartOfAccount.ParentAccountId) <!-- Hidden field for AccountNumber -->
 
                                 <div class="form-floating form-floating-outline mb-4">
-                                    @Html.TextBoxFor(model => model.ChartOfAccount.AccountNumber, new { @class = "form-control", placeholder = "Account Number" })
+                                    @Html.TextBoxFor(model => model.ChartOfAccount.AccountNumber, new { @class = "form-control", placeholder = @AccountingConfig_CreateChartOfAccount.AccountNumber })
                                     @Html.LabelFor(model => model.ChartOfAccount.AccountNumber, new { @for = "accountNumber" })
                                     @Html.ValidationMessageFor(model => model.ChartOfAccount.AccountNumber, "", new { @class = "text-danger" })
                                 </div>
 
                                 <div class="form-floating form-floating-outline mb-4">
-                                    @Html.TextBoxFor(model => model.ChartOfAccount.LabelEn, new { @class = "form-control", placeholder = "Account Label" })
+                                    @Html.TextBoxFor(model => model.ChartOfAccount.LabelEn, new { @class = "form-control", placeholder = @AccountingConfig_CreateChartOfAccount.AccountLabel })
                                     <label>Account label(English)</label>
                                     @Html.ValidationMessageFor(model => model.ChartOfAccount.LabelEn, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-floating form-floating-outline mb-4">
-                                    @Html.TextBoxFor(model => model.ChartOfAccount.LabelFr, new { @class = "form-control", placeholder = "Account Label" })
+                                    @Html.TextBoxFor(model => model.ChartOfAccount.LabelFr, new { @class = "form-control", placeholder = @AccountingConfig_CreateChartOfAccount.AccountLabel })
                                     <label>Account label(French)</label>
                                     @Html.ValidationMessageFor(model => model.ChartOfAccount.LabelFr, "", new { @class = "text-danger" })
                                 </div>
@@ -128,9 +127,9 @@
                                 </div>
 
                                 <div class="form-floating form-floating-outline mb-4">
-                                    @Html.DropDownListFor(model => model.ChartOfAccount.AccountCartegoryId, new SelectList(ViewBag.AccountCartegories == null ? "" : ViewBag.AccountCartegories, "Id", "Name"), "---Select Cartegory---", new { @class = "form-control select2", @search = "true" })
+                                    @Html.DropDownListFor(model => model.ChartOfAccount.AccountCartegoryId, new SelectList(ViewBag.AccountCartegories == null ? "" : ViewBag.AccountCartegories, "Id", "Name"), @AccountingConfig_CreateChartOfAccount.SelectCategory, new { @class = "form-control select2", @search = "true" })
                                     @Html.ValidationMessageFor(model => model.ChartOfAccount.AccountCartegoryId, "", new { @class = "text-danger" })
-                                    <label>AccountCartegory</label>
+                                    <label>@AccountingConfig_CreateChartOfAccount.AccountCategory</label>
                                 </div>
                                 <div class="form-check mb-4">
                                     @Html.CheckBoxFor(model => model.ChartOfAccount.CanBeNegative, new { @class = "form-check-input" })
@@ -145,12 +144,12 @@
                             </div>
                             @if (@Model.ChartOfAccount == null)
                             {
-                                <button type="submit" id="Add" class="btn btn-primary waves-effect waves-light">Save</button>
+                                <button type="submit" id="Add" class="btn btn-primary waves-effect waves-light">@GlobalShared.Save</button>
                                 @Html.HiddenFor(model => model.ChartOfAccount.ParentAccountId)
                                 <input type="hidden" name="Action" value="insert" id="Action" />
                             }
                             else
-                            { <button type="submit" class="btn btn-primary me-2">Update</button>
+                            { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                                 @Html.HiddenFor(model => model.ChartOfAccount.AccountNumber)
                                 <input type="hidden" name="Action" value="update" id="Action" />
                             }

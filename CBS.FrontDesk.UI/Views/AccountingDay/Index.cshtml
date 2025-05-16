@@ -1,8 +1,10 @@
 ﻿
 
 @{
-    ViewBag.Title = "Open or Close Accounting Day";
+    ViewBag.Title = @AccountingDay_Create.OpenOrCloseAccountingDay;
 }
+@using Resources
+
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
         <div class="card">
@@ -16,7 +18,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-cash-multiple me-2"></i> Open or Close Accounting Day
+                            <i class="mdi mdi-cash-multiple me-2"></i>@AccountingDay_Create.OpenOrCloseAccountingDay
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"

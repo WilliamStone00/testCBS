@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.BulkOperation;
@@ -7,6 +8,7 @@ using CBS.FrontDesk.Data.Entity.BulkOPeration;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.EMMA;
@@ -26,13 +28,15 @@ namespace CBS.BusinessService.BulkOperations
     {
         private readonly ApiCallerHelper _transactionConfigApiHelper;
         private readonly BranchServices _branchServices;
+        private readonly SavingProductServices _savingProductServices;
         private readonly IndividualProfileServices _individualProfileServices;
 
-        public BulkOperationService(BranchServices branchServices = null, IndividualProfileServices individualProfileServices = null)
+        public BulkOperationService(BranchServices branchServices = null, IndividualProfileServices individualProfileServices = null, SavingProductServices savingProductServices = null)
         {
             _transactionConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
             _branchServices = branchServices;
             _individualProfileServices = individualProfileServices;
+            _savingProductServices = savingProductServices;
         }
 
 
@@ -57,7 +61,27 @@ namespace CBS.BusinessService.BulkOperations
                 dataTableOptions: new DataTableOptions()
             );
         }
-        
+
+        public async Task<List<SavingProduct>> GetSavingProducts()
+        {
+            var savingProducts = await _savingProductServices.GetSavingProducts();
+
+            // Using HashSet for faster lookups (O(1) complexity)
+            var validProductTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "deposit",
+                "savings",
+                "salary",
+                "preference shares"
+            };
+
+            // Filter products where Name exists in validProductTypes
+            return savingProducts
+                .Where(product => product.Name != null &&
+                       validProductTypes.Contains(product.Name.Trim()))
+                .ToList();
+        }
+
         public async Task<CustomDataTable<List<BulkOperationData>>> GetBulkOperationDataTableAsync(GetBulkOperationDataTableQuery loansDataTableQuery, string searchCriterial)
         {
             loansDataTableQuery.DataTableOptions.searchValue = searchCriterial;

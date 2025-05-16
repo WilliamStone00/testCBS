@@ -61,11 +61,56 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accounting Entry Rule.
+        /// </summary>
+        internal static string AccountingEntryRule {
+            get {
+                return ResourceManager.GetString("AccountingEntryRule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Action.
+        /// </summary>
+        internal static string Action {
+            get {
+                return ResourceManager.GetString("Action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add new.
         /// </summary>
         internal static string AddNew {
             get {
                 return ResourceManager.GetString("AddNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clean entries.
+        /// </summary>
+        internal static string CleanEntries {
+            get {
+                return ResourceManager.GetString("CleanEntries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        internal static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Closed.
+        /// </summary>
+        internal static string Closed {
+            get {
+                return ResourceManager.GetString("Closed", resourceCulture);
             }
         }
         
@@ -106,6 +151,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In Excel Format.
+        /// </summary>
+        internal static string InExcelFormat {
+            get {
+                return ResourceManager.GetString("InExcelFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In PDF Format.
+        /// </summary>
+        internal static string InPDFFormat {
+            get {
+                return ResourceManager.GetString("InPDFFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Insert.
         /// </summary>
         internal static string Insert {
@@ -120,6 +183,33 @@ namespace Resources {
         internal static string New {
             get {
                 return ResourceManager.GetString("New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open.
+        /// </summary>
+        internal static string Open {
+            get {
+                return ResourceManager.GetString("Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Print.
+        /// </summary>
+        internal static string Print {
+            get {
+                return ResourceManager.GetString("Print", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reopen.
+        /// </summary>
+        internal static string Reopen {
+            get {
+                return ResourceManager.GetString("Reopen", resourceCulture);
             }
         }
         
@@ -142,6 +232,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save changes.
+        /// </summary>
+        internal static string SaveChanges {
+            get {
+                return ResourceManager.GetString("SaveChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        internal static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select.
         /// </summary>
         internal static string Select {
@@ -160,6 +268,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To download.
+        /// </summary>
+        internal static string ToDownload {
+            get {
+                return ResourceManager.GetString("ToDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To edit.
         /// </summary>
         internal static string ToEdit {
@@ -174,6 +291,24 @@ namespace Resources {
         internal static string Update {
             get {
                 return ResourceManager.GetString("Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View.
+        /// </summary>
+        internal static string View {
+            get {
+                return ResourceManager.GetString("View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View in Datatable.
+        /// </summary>
+        internal static string ViewInDatatable {
+            get {
+                return ResourceManager.GetString("ViewInDatatable", resourceCulture);
             }
         }
         

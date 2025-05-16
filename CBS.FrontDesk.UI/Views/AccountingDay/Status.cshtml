@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = "Accounting Day Status";
 }
-
+@using Resources
 
 
 
@@ -12,7 +12,7 @@
                 <div class="accordion-item active">
                     <h2 class="accordion-header d-flex justify-content-between align-items-center" id="accordionPopoutIconThree">
                         <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionPopoutIcon-3" aria-expanded="true" aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-file-excel me-2"></i> Accounting Day Status
+                            <i class="mdi mdi-file-excel me-2"></i> @AccountingDay_StatusData.AccountingDayStatus
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3" class="accordion-collapse collapse show" data-bs-parent="#accordionPopoutIcon">
@@ -41,7 +41,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content p-4">
             <div class="modal-header border-0">
-                <h4 class="modal-title text-center w-100" id="modalLabel">ACCOUNTING DAY DETAILS</h4>
+                <h4 class="modal-title text-center w-100" id="modalLabel"> @AccountingDay_StatusData.ACCOUNTINGDAYDETAILS</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <hr />
@@ -53,7 +53,7 @@
             <hr />
             <div class="modal-footer border-0">
                 <div class="text-center w-100">
-                    <small class="text-muted">Powered by FLX-CBS</small>
+                    <small class="text-muted"> @AccountingDay_StatusData.PoweredByFLXCBS</small>
                 </div>
             </div>
         </div>

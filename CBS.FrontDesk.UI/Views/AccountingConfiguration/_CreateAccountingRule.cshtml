@@ -1,13 +1,13 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
-
+@using Resources
 
 @{
-    ViewBag.Title = "Accounting  Rule";
+    ViewBag.Title = AccountingConfig_CreateAccountingRule.AccountingRule;
 }
 
 <div class="card mb-12">
     <div class="card-header">
-        <h5 class="card-title mb-0">Setting Multiple Accounting Entry Rule </h5>
+        <h5 class="card-title mb-0">@AccountingConfig_CreateAccountingRule.SettingMultipleAccountingEntryRule </h5>
     </div>
     <div class="card-body">
         <div class="row">
@@ -25,7 +25,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <h5 class="card-title">
-                                            Entry Rule EventCode: @Html.TextBoxFor(m => m.AccountingRule.RuleName, new { @class = "form-control" })
+                                            @AccountingConfig_CreateAccountingRule.EntryRuleEventCode: @Html.TextBoxFor(m => m.AccountingRule.RuleName, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.AccountingRule.RuleName, "", new { @class = "text-danger" })
                                         </h5>
                                     </div>
@@ -33,16 +33,16 @@
                                         <div class="row mt-2 gy-4">
                                             <div class="col-md-12">
                                                 <div class="form-floating form-floating-outline">
-                                                    @Html.DropDownListFor(m => m.AccountingRule.MFI_ChartOfAccountId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), "---Select Entry Rule---", new { @class = "form-control select2", @search = "true" })
+                                                    @Html.DropDownListFor(m => m.AccountingRule.MFI_ChartOfAccountId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), "---"+@AccountingConfig_CreateAccountingRule.SelectEntryRule+"---", new { @class = "form-control select2", @search = "true" })
                                                     @Html.ValidationMessageFor(m => m.AccountingRule.MFI_ChartOfAccountId, "", new { @class = "text-danger" })
-                                                    <label>Accounting Entry Rule</label>
+                                                    <label>@AccountingConfig_CreateAccountingRule.AccountingEntryRule</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-floating form-floating-outline">
-                                                    @Html.DropDownListFor(m => m.AccountingRule.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---Select Direction---", new { @class = "form-control select2", @search = "true" })
+                                                    @Html.DropDownListFor(m => m.AccountingRule.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---"+@AccountingConfig_CreateAccountingRule.SelectDirection+"---", new { @class = "form-control select2", @search = "true" })
                                                     @Html.ValidationMessageFor(m => m.AccountingRule.BookingDirection, "", new { @class = "text-danger" })
-                                                    <label>Booking Direction</label>
+                                                    <label>@AccountingConfig_CreateAccountingRule.BookingDirection</label>
                                                 </div>
                                             </div>
 
@@ -50,13 +50,13 @@
                                                 <div class="form-floating form-floating-outline">
                                                     @Html.TextAreaFor(m => m.AccountingRule.Description, new { @class = "form-control", @style = "height: 100px;" })
                                                     @Html.ValidationMessageFor(m => m.AccountingRule.Description, "", new { @class = "text-danger" })
-                                                    <label>Description</label>
+                                                    <label>@AccountingConfig_CreateAccountingRule.Description</label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="mt-4">
-                                            <button type="button" onclick="addToBasket()" class="btn btn-primary" >
-                                                Add Entry Rule&nbsp; &nbsp; <i class="mdi mdi-plus-box-multiple"></i>
+                                            <button type="button" onclick="addToBasket()" class="btn btn-primary">
+                                                @AccountingConfig_CreateAccountingRule.AddEntryRule&nbsp; &nbsp; <i class="mdi mdi-plus-box-multiple"></i>
                                             </button>
                                             <input type="hidden" name="Action" value="insert" id="Action" />
                                         </div>
@@ -84,18 +84,18 @@
                     <table id="AccountingRulebasketTable" class="display" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Rule Name</th>
-                                <th>Chart of Account</th>
-                                <th>Booking Direction</th>
-                                <th>Description</th>
-                                <th>Action</th>
+                                <th>@AccountingConfig_CreateAccountingRule.RuleName</th>
+                                <th>@AccountingConfig_CreateAccountingRule.ChartOfAccount</th>
+                                <th>@AccountingConfig_CreateAccountingRule.BookingDirection</th>
+                                <th>@AccountingConfig_CreateAccountingRule.Description</th>
+                                <th>@AccountingConfig_CreateAccountingRule.Action</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
 
                     <button type="button" onclick="submitBasket()" class="btn btn-danger" id="saveToDB">
-                        Save Entry Rule&nbsp; &nbsp; <i class="mdi mdi-database"></i>
+                        @AccountingConfig_CreateAccountingRule.SaveEntryRule&nbsp; &nbsp; <i class="mdi mdi-database"></i>
                     </button>
                     
                     <br />

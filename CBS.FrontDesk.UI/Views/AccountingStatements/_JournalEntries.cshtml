@@ -1,9 +1,9 @@
-﻿
+﻿@using Resources
 <div class="modal fade" id="superposedModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog  modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title text-center" id="JournalEntryHeading" style="text-align: center;"> Loading ...</h4>
+                <h4 class="modal-title text-center" id="JournalEntryHeading" style="text-align: center;"> @AccountingStatements_JournalEntries.Loading ...</h4>
                 <button type="button"
                         class="btn-close"
                         data-bs-dismiss="modal"
@@ -15,12 +15,12 @@
                     <table class="table table-hover" id="JournalEntriesTable">
                         <thead class="table-light">
                             <tr>
-                                <th>EntryDate</th>
-                                <th>Reference Number</th>
-                                <th>Account Number</th>
-                                <th>Description</th>
-                                <th>Debit</th>
-                                <th>Credit</th>
+                                <th>@AccountingStatements_JournalEntries.EntryDate</th>
+                                <th>@AccountingStatements_JournalEntries.ReferenceNumber</th>
+                                <th>@AccountingStatements_JournalEntries.AccountNumber</th>
+                                <th>@AccountingStatements_JournalEntries.Description</th>
+                                <th>@AccountingStatements_JournalEntries.Debit</th>
+                                <th>@AccountingStatements_JournalEntries.Credit</th>
 
                             </tr>
                         </thead>
@@ -45,14 +45,14 @@
                                         class="btn btn-primary dropdown-toggle"
                                         data-bs-toggle="dropdown"
                                         aria-expanded="false">
-                                    <i class="mdi mdi-cloud-download-outline me-1"></i>  Download Journal Entry
+                                    <i class="mdi mdi-cloud-download-outline me-1"></i>  @AccountingStatements_JournalEntries.DownloadJournalEntry
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="javascript:void(0);" onclick="DownLoadJE('EXCEL')" class="dropdown-item d-flex align-items-center"><i class="mdi mdi-chevron-right scaleX-n1-rtl"></i>In Excel Format</a>
+                                        <a href="javascript:void(0);" onclick="DownLoadJE('EXCEL')" class="dropdown-item d-flex align-items-center"><i class="mdi mdi-chevron-right scaleX-n1-rtl"></i>@GlobalShared.InExcelFormat</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" onclick="DownLoadJE('PDF')" class="dropdown-item d-flex align-items-center"><i class="mdi mdi-chevron-right scaleX-n1-rtl"></i>In PDF Format</a>
+                                        <a href="javascript:void(0);" onclick="DownLoadJE('PDF')" class="dropdown-item d-flex align-items-center"><i class="mdi mdi-chevron-right scaleX-n1-rtl"></i>@GlobalShared.InPDFFormat</a>
                                     </li>
                                 </ul>
                             </div>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Close
+                        @GlobalShared.Close
                     </button>
                 </div>
 

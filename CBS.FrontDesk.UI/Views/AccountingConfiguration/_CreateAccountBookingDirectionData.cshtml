@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+    @using Resources
 <div class="card-body">
     @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
@@ -10,10 +11,10 @@
                     @if (Model.AccountBookingDirection.Id == null)
                     {
                         @Html.DropDownListFor(
-    m => m.AccountBookingDirection.Id,
-    new SelectList(ViewBag.ChartOfAccounts ?? "", "Text", "Value"),
-    new { @class = "form-control select2" })
-                        <label for="AccountBookingDirection_Id">Select Account</label>
+                            m => m.AccountBookingDirection.Id,
+                            new SelectList(ViewBag.ChartOfAccounts ?? "", "Text", "Value"),
+                            new { @class = "form-control select2" })
+                    <label for="AccountBookingDirection_Id">@AccountingConfig_CreateAccountBookingDirectionData.SelectAccount</label>
                         @Html.ValidationMessageFor(m => m.AccountBookingDirection.Id, "", new { @class = "text-danger mt-1 d-block" })
                     }
                     else
@@ -33,7 +34,7 @@
                         m => m.AccountBookingDirection.IncreaseDirection,
                         new SelectList(ViewBag.BookingDirection ?? "", "Text", "Value"),
                         new { @class = "form-control select2" })
-                    <label for="AccountBookingDirection_IncreaseDirection">Account Increases In (DEBIT / CREDIT)</label>
+                    <label for="AccountBookingDirection_IncreaseDirection"> @AccountingConfig_CreateAccountBookingDirectionData.AccountIncreasesIn</label>
                     @Html.ValidationMessageFor(m => m.AccountBookingDirection.IncreaseDirection, "", new { @class = "text-danger mt-1 d-block" })
                 </div>
             </div>
@@ -44,7 +45,7 @@
                         m => m.AccountBookingDirection.DecreaseDirection,
                         new SelectList(ViewBag.BookingDirection ?? "", "Text", "Value"),
                         new { @class = "form-control select2" })
-                    <label for="AccountBookingDirection_DecreaseDirection">Account Decreases In (DEBIT / CREDIT)</label>
+                    <label for="AccountBookingDirection_DecreaseDirection">@AccountingConfig_CreateAccountBookingDirectionData.AccountDecreasesIn)</label>
                     @Html.ValidationMessageFor(m => m.AccountBookingDirection.DecreaseDirection, "", new { @class = "text-danger mt-1 d-block" })
                 </div>
             </div>
@@ -55,7 +56,7 @@
                         m => m.AccountBookingDirection.NormalBalance,
                         new SelectList(ViewBag.BookingDirection ?? "", "Text", "Value"),
                         new { @class = "form-control select2" })
-                    <label for="AccountBookingDirection_NormalBalance">Normal Account Balance (DEBIT / CREDIT)</label>
+                    <label for="AccountBookingDirection_NormalBalance">@AccountingConfig_CreateAccountBookingDirectionData.NormalAccountBalance</label>
                     @Html.ValidationMessageFor(m => m.AccountBookingDirection.NormalBalance, "", new { @class = "text-danger mt-1 d-block" })
                 </div>
             </div>
@@ -64,12 +65,12 @@
         <div class="mt-4 d-flex justify-content-end">
             @if (Model.AccountBookingDirection.Id == null)
             {
-                <button type="submit" class="btn btn-success px-4">Save</button>
+                <button type="submit" class="btn btn-success px-4">@GlobalShared.Save</button>
                 <input type="hidden" name="Action" value="insert" id="Action" />
             }
             else
             {
-                <button type="submit" class="btn btn-primary px-4">Update</button>
+        <button type="submit" class="btn btn-primary px-4">@GlobalShared.Update</button>
                 @Html.HiddenFor(m => m.AccountBookingDirection.Id)
                 <input type="hidden" name="Action" value="update" id="Action" />
             }

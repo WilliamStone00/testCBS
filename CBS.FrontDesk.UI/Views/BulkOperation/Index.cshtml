@@ -83,7 +83,7 @@
                                             </h2>
                                             <div id="collapseSimulationType" class="accordion-collapse collapse show" aria-labelledby="headingSimulationType">
                                                 <div class="accordion-body">
-                                                    @Html.Partial("_SimulationTitleInfos", Model)
+                                                    @Html.Partial("_SimulationTitleInfos", @Model)
                                                 </div>
                                             </div>
                                         </div>
@@ -99,7 +99,7 @@
                                             </h2>
                                             <div id="collapseOperationType" class="accordion-collapse collapse show" aria-labelledby="headingOperationType">
                                                 <div class="accordion-body">
-                                                    @Html.Partial("_SimulationOptions", Model.BulkOperationSelectionModel)
+                                                    @Html.Partial("_SimulationOptions", @Model.BulkOperationSelectionModel)
                                                 </div>
                                             </div>
                                         </div>
@@ -115,7 +115,7 @@
                                             </h2>
                                             <div id="collapseSourceAccounts" class="accordion-collapse collapse show" aria-labelledby="headingSourceAccounts">
                                                 <div class="accordion-body">
-                                                    @Html.Partial("_SourceAccountConfiguration", Model)
+                                                    @Html.Partial("_SourceAccountConfiguration", @Model)
                                                 </div>
                                             </div>
                                         </div>
@@ -134,10 +134,10 @@
                                                     <div id="mainviewChange">
                                                         <div class="change-group">
                                                             <div id="mainview1">
-                                                                @Html.Partial("_SimulateToAccountTopUp", Model)
+                                                                @Html.Partial("_SimulateToAccountTopUp", @Model)
                                                             </div>
                                                             <div id="mainview2">
-                                                                @Html.Partial("_SimulateAccountContribution", Model)
+                                                                @Html.Partial("_SimulateAccountContribution", @Model)
                                                             </div>
                                                         </div>
                                                     </div>
