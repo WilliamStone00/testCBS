@@ -223,6 +223,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clean Entrie.
+        /// </summary>
+        internal static string CleanEntrie {
+            get {
+                return ResourceManager.GetString("CleanEntrie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create new account type.
         /// </summary>
         internal static string CreateNewAccountType {
@@ -264,6 +273,15 @@ namespace Resources {
         internal static string Delete {
             get {
                 return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        internal static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
@@ -322,11 +340,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max alert.
+        /// </summary>
+        internal static string MaxAlert {
+            get {
+                return ResourceManager.GetString("MaxAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MFI Chart Of Account.
         /// </summary>
         internal static string MFIChartOfAccount {
             get {
                 return ResourceManager.GetString("MFIChartOfAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Min alert.
+        /// </summary>
+        internal static string MinAlert {
+            get {
+                return ResourceManager.GetString("MinAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Policy Nam.
+        /// </summary>
+        internal static string PolicyName {
+            get {
+                return ResourceManager.GetString("PolicyName", resourceCulture);
             }
         }
         

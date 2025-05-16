@@ -171,6 +171,9 @@
   <data name="ChartOfAccountNumber" xml:space="preserve">
     <value>Chart Of Account Number</value>
   </data>
+  <data name="CleanEntrie" xml:space="preserve">
+    <value>Clean Entrie</value>
+  </data>
   <data name="CreateNewAccountType" xml:space="preserve">
     <value>Create new account type</value>
   </data>
@@ -185,6 +188,9 @@
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
   </data>
   <data name="Details" xml:space="preserve">
     <value>Details</value>
@@ -204,8 +210,20 @@
   <data name="LastBalance" xml:space="preserve">
     <value>Last Balance</value>
   </data>
+  <data name="MaxAlert" xml:space="preserve">
+    <value>Max alert</value>
+  </data>
   <data name="MFIChartOfAccount" xml:space="preserve">
     <value>MFI Chart Of Account</value>
+  </data>
+  <data name="MinAlert" xml:space="preserve">
+    <value>Min alert</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="PolicyName" xml:space="preserve">
+    <value>Policy Nam</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>

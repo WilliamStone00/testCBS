@@ -15,8 +15,8 @@
                 <td style="width:35%">@d.Name</td>
                 <td style="width:35%">@d.Description</td>
                 <td style="width:30%">
-                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Update','update','AccountCategory')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@string.Format(@Globals_Data.SelectToEdit, d.Name)">@Globals_Data.Edit</a>
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@string.Format(@Globals_Data.Delete, d.Name)" onclick="DeleteRecordDataTable('AccountCategory','@d.Id','myDataTable','_Data',0,'datalistingview')">@Globals_Data.Delete</a>
+                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Update','update','AccountCategory')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select d.Name @GlobalShared.ToEdit">@GlobalShared.Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@string.Format(GlobalShared.Delete, d.Name)" onclick="DeleteRecordDataTable('AccountCategory','@d.Id','myDataTable','_Data',0,'datalistingview')">@GlobalShared.Delete</a>
                 </td>
             </tr>
         }

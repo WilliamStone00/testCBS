@@ -117,11 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccountingEntryRule" xml:space="preserve">
+    <value>Accounting Entry Rule</value>
+  </data>
   <data name="Action" xml:space="preserve">
     <value>Action</value>
   </data>
   <data name="AddNew" xml:space="preserve">
     <value>Add new</value>
+  </data>
+  <data name="CleanEntries" xml:space="preserve">
+    <value>Clean entries</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>Closed</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
@@ -135,11 +147,26 @@
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="InExcelFormat" xml:space="preserve">
+    <value>In Excel Format</value>
+  </data>
+  <data name="InPDFFormat" xml:space="preserve">
+    <value>In PDF Format</value>
+  </data>
   <data name="Insert" xml:space="preserve">
     <value>Insert</value>
   </data>
   <data name="New" xml:space="preserve">
     <value>New</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="Reopen" xml:space="preserve">
+    <value>Reopen</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
@@ -147,17 +174,32 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="SaveChanges" xml:space="preserve">
+    <value>Save changes</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
   <data name="Select" xml:space="preserve">
     <value>Select</value>
   </data>
   <data name="SelectToEdit" xml:space="preserve">
     <value>Select to edit</value>
   </data>
+  <data name="ToDownload" xml:space="preserve">
+    <value>To download</value>
+  </data>
   <data name="ToEdit" xml:space="preserve">
     <value>To edit</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>Update</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="ViewInDatatable" xml:space="preserve">
+    <value>View in Datatable</value>
   </data>
   <data name="ViewList" xml:space="preserve">
     <value>View list</value>

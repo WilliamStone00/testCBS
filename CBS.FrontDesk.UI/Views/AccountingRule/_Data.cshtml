@@ -1,10 +1,11 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.Accounting.AccountingRuleDto>
+    @using Resources
 <table class="table table-hover" id="myDataTable">
     <thead class="table-light">
         <tr>
-            <th>Rule Name</th>
-            <th>Operation Name</th> 
-            <th>Action</th>
+            <th>@GlobalAccountingRule.RuleName</th>
+            <th>@GlobalAccountingRule.OperationName</th> 
+            <th>@GlobalAccountingRule.Action</th>
         </tr>
     </thead>
     <tbody>
@@ -14,8 +15,8 @@
                 <td style="width:20%">@d.RuleName</td>
                 <td style="width:20%">@d.OperationName</td>
                 <td style="width:50%">
-                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Update','update','AccountingRule')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.RuleName to edit">Edit</a>
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.OperationName" onclick="DeleteRecordDataTable('OperationEvent','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Update','update','AccountingRule')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.RuleName @GlobalShared.ToEdit">@GlobalShared.Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.OperationName" onclick="DeleteRecordDataTable('OperationEvent','@d.Id','myDataTable','_Data',0,'datalistingview')">@GlobalShared.Delete</a>
                 </td>
             </tr>
         }

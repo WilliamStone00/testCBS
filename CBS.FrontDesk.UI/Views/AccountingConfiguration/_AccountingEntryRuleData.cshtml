@@ -1,14 +1,15 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+    @using Resources
 <div class="table-responsive mb-3">
     <table class="table table-hover" id="myDataTable_AccountingEntryRule">
         <thead class="table-light">
             <tr>
-                <th>EntryRule</th>
-                <th>Derterminant</th>
-                <th>Derterminant AccountNumber</th>
-                <th>Balancing Account</th>
-                <th>Balancing AccountNumber</th>
-                <th>Booking</th>
+                <th>@AccountingConfig_AccountingEntryRule.EntryRule</th>
+                <th>@AccountingConfig_AccountingEntryRule.Derterminant</th>
+                <th>@AccountingConfig_AccountingEntryRule.DerterminantAccountNumber</th>
+                <th>@AccountingConfig_AccountingEntryRule.BalancingAccount</th>
+                <th>@AccountingConfig_AccountingEntryRule.BalancingAccountNumber</th>
+                <th>@AccountingConfig_AccountingEntryRule.Booking</th>
     
             </tr>
         </thead>

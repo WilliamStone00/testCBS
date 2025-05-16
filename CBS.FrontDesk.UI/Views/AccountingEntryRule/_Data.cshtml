@@ -1,14 +1,15 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.Accounting.AccountingRuleEntryDto>
+    @using Resources
 <table class="table table-hover" id="myDataTable">
     <thead class="table-light">
         <tr>
-            <th>AccountingEntry</th>
-            <th>BookingDirection</th>
-            <th>DebitAccount</th>
-            <th>CreditAccount</th>
-            <th>EventAttributeName</th>
-            <th>EventName</th>
-            <th>Action</th>
+            <th>@GlobalAccountingEntryRule.AccountingEntry</th>
+            <th>@GlobalAccountingEntryRule.BookingDirection</th>
+            <th>@GlobalAccountingEntryRule.DebitAccount</th>
+            <th>@GlobalAccountingEntryRule.CreditAccount</th>
+            <th>@GlobalAccountingEntryRule.EventAttributeName</th>
+            <th>@GlobalAccountingEntryRule.EventName</th>
+            <th>@GlobalAccountingEntryRule.Action</th>
         </tr>
     </thead>
     <tbody>
@@ -23,8 +24,8 @@
                 <td style="width:10%">@d.OperationEventAttributeName</td>
                 <td style="width:10%">@d.OperationEventName</td>
                 <td style="width:20%">
-                    <a href="#" onclick="AddORUpdateGen('@d.Id'','datalistingview','_Update','update','AccountingEntryRule')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.OperationEventName to edit">Edit</a>
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.OperationEventName" onclick="DeleteRecordDataTable('AccountingEntryRule','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                    <a href="#" onclick="AddORUpdateGen('@d.Id'','datalistingview','_Update','update','AccountingEntryRule')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.OperationEventName @GlobalShared.ToEdit">@GlobalShared.Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.OperationEventName" onclick="DeleteRecordDataTable('AccountingEntryRule','@d.Id','myDataTable','_Data',0,'datalistingview')">@GlobalShared.Delete</a>
                 </td>
             </tr>
                 }
