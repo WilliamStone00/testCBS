@@ -56,7 +56,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
             ViewBag.Branches = Branches;
             return View();
         }
-        
+
         public async Task<ActionResult> InitializeData(string partialView = null, string KEY = null, string path = null)
         {
 
@@ -77,14 +77,14 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
                 var data = await _userManagementServices.GetUser(_userManagementServices.ConvertStringToGuid(KEY));
                 string view = null;
                 //var roles = await _userManagementServices.GetRoles();
-                var branch= await _branchServices.GetBranch(data.BranchID);
+                var branch = await _branchServices.GetBranch(data.BranchID);
                 var role = await _roleServices.GetRole(data.roleID.ToString());
                 data.Brancch=branch;
                 data.roleName=role.Name;
                 return PartialView(partialView, data);
             }
 
-         
+
         }
         // MyProfile
         public async Task<ActionResult> MyProfile(string serviceoption = null, string KEY = null, string ReadOptions = null, string path = null, string group = null, string datefrom = null, string dateto = null)
@@ -101,8 +101,8 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
             Session["userid_action"] = KEY;
             var data = await _userManagementServices.GetUser(_userManagementServices.ConvertStringToGuid(KEY));
             data.ResetPassword=new ResetPassword { userName=data.userName, password="000000", ResetPasswordReason=data.ResetPasswordReason };
-            var permissionMenuLoaders = await _rolePermissionServices.GetAssignPermissions();
-            data.PermissionMenuLoaders = permissionMenuLoaders.ToList();
+            //var permissionMenuLoaders = await _rolePermissionServices.GetAssignPermissions();
+            //data.PermissionMenuLoaders = permissionMenuLoaders.ToList();
             ViewBag.Languages = LanguageHelper.GetLanguages(); // Call and assign the list of languages
             await GetList();
             ViewBag.Branches = await _userManagementServices.GetBranches();
@@ -186,7 +186,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
             }
             else if (model.Option == "TerminateActiveSessions")
             {
-                var data = await _localSession.InvalidateAllActivetUsers(new SessionAuth { SessionRecoveryCode=model.SessionRecoveryCode});
+                var data = await _localSession.InvalidateAllActivetUsers(new SessionAuth { SessionRecoveryCode=model.SessionRecoveryCode });
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
             }
             else
@@ -231,6 +231,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
                 if (!query.IsActive && !query.IsBlocked && !query.IsVerified)
                 {
                     query.IsActive=true;
+                    query.IsVerified=false;
                 }
                 var dataTable = await _userManagementServices.GetDataTableAsync(query);
 
@@ -257,7 +258,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
         {
             try
             {
-               
+
                 var dataTable = await _userManagementServices.GetDataTableAsync(query);
 
                 var userList = JsonConvert.DeserializeObject<List<UserSessionDto>>(
@@ -323,13 +324,12 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
                 );
 
                 string exportedBy = Session["FullName"]?.ToString() ?? "System Export";
-
-                //var file = ExportUtilityUser.GenerateUsersExcel(
-                //    userList,
-                //    exportedBy,
-                //    query.StartDate?.ToString("dd/MM/yyyy"),
-                //    query.EndDate?.ToString("dd/MM/yyyy")
-                //);
+                var userDownloadDtos = _userManagementServices.MapToUserDownloadDtos(userList);
+                var file = ExportUtilityUser.ConvertToExcel(
+                    userDownloadDtos,
+                    query.StartDate,
+                    query.EndDate, null
+                );
                 return null;
                 //return File(file.Content, file.ContentType, file.FileName);
             }
@@ -338,7 +338,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error exporting user data.");
             }
         }
-  
+
         [HttpPost]
         public async Task<ActionResult> UpdateUser(User model)
         {
@@ -468,8 +468,8 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
                 if (selectedMenus == null || !selectedMenus.Any())
                     return Json(new { success = false, message = "No roles selected." });
 
-                
-              var data=  await _userPermissionServices.AddUserRole(userId, selectedMenus);
+
+                var data = await _userPermissionServices.AddUserRole(userId, selectedMenus);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -486,7 +486,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
                 if (userPermissionIds == null || !userPermissionIds.Any())
                     return Json(new { success = false, message = "No permissions selected." });
 
-               var data= await _userPermissionServices.Delete(userPermissionIds);
+                var data = await _userPermissionServices.Delete(userPermissionIds);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

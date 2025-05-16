@@ -145,6 +145,7 @@ namespace CBS.FrontDesk.Data.UserManagement
         public string ProfilePhoto { get; set; }
         public string Address { get; set; }
         public string FullName { get; set; }
+        public string ReasonForBlockingAccount { get; set; }
 
         // === Security & Login ===
         public bool IsVerified { get; set; }
@@ -184,6 +185,27 @@ namespace CBS.FrontDesk.Data.UserManagement
         public string UserName { get; set; }
         public string PhoneNumber { get; set; }
     }
+    public class UserDownloadDto
+    {
+        public string UserName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string FullName { get; set; }
+        public string RoleName { get; set; }
+        public string PhoneNumber { get; set; }
+        public bool IsVerified { get; set; }
+        public bool IsBlocked { get; set; }
+        public int LoginAttempts { get; set; }
+        public bool ChangePasswordOnFirstLogin { get; set; }
+        public DateTime? LastLoginDate { get; set; }
+        public bool IsActive { get; set; }
+        public string SessionRecoveryCode { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchName { get; set; }
+        public int NumberOfDaysSinceLastLogin { get; set; }
+        public string ReasonForBlockingAccount { get; set; }
+    }
 
     public class GetAllUsersDataTableQuery
     {
@@ -201,8 +223,8 @@ namespace CBS.FrontDesk.Data.UserManagement
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
 
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
 
         public GetAllUsersDataTableQuery()
         {

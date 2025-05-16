@@ -103,24 +103,28 @@
                     <table class="table table-bordered table-striped">
                         <tbody>
                             @foreach (var denomination in new[] {
-                        new { Name = "Note 10,000", Value = Model.ClosingNote10000 },
-                        new { Name = "Note 5,000", Value = Model.ClosingNote5000 },
-                        new { Name = "Note 2,000", Value = Model.ClosingNote2000 },
-                        new { Name = "Note 1,000", Value = Model.ClosingNote1000 },
-                        new { Name = "Note 500", Value = Model.ClosingNote500 },
-                        new { Name = "Coin 500", Value = Model.ClosingCoin500 },
-                        new { Name = "Coin 100", Value = Model.ClosingCoin100 },
-                        new { Name = "Coin 50", Value = Model.ClosingCoin50 },
-                        new { Name = "Coin 25", Value = Model.ClosingCoin25 },
-                        new { Name = "Coin 10", Value = Model.ClosingCoin10 },
-                        new { Name = "Coin 5", Value = Model.ClosingCoin5 },
-                        new { Name = "Coin 1", Value = Model.ClosingCoin1 }
-                    })
+                    new { Name = "Note 10,000", Value = Model.ClosingNote10000 },
+                    new { Name = "Note 5,000", Value = Model.ClosingNote5000 },
+                    new { Name = "Note 2,000", Value = Model.ClosingNote2000 },
+                    new { Name = "Note 1,000", Value = Model.ClosingNote1000 },
+                    new { Name = "Note 500", Value = Model.ClosingNote500 },
+                    new { Name = "Coin 500", Value = Model.ClosingCoin500 },
+                    new { Name = "Coin 350", Value = Model.ClosingCoin350 },
+                    new { Name = "Coin 250", Value = Model.ClosingCoin250 },
+                    new { Name = "Coin 200", Value = Model.ClosingCoin200 },
+                    new { Name = "Coin 150", Value = Model.ClosingCoin150 },
+                    new { Name = "Coin 100", Value = Model.ClosingCoin100 },
+                    new { Name = "Coin 50", Value = Model.ClosingCoin50 },
+                    new { Name = "Coin 25", Value = Model.ClosingCoin25 },
+                    new { Name = "Coin 10", Value = Model.ClosingCoin10 },
+                    new { Name = "Coin 5", Value = Model.ClosingCoin5 },
+                    new { Name = "Coin 1", Value = Model.ClosingCoin1 }
+                })
                             {
-                               <tr>
-                                   <td class="font-weight-bold text-center" style="width: 50%;">@denomination.Name:</td>
-                                   <td class="text-center" style="width: 50%;">@denomination.Value.ToString("#,##0")</td>
-                               </tr>
+                                <tr>
+                                    <td class="font-weight-bold text-center" style="width: 50%;">@denomination.Name:</td>
+                                    <td class="text-center" style="width: 50%;">@denomination.Value.ToString("#,##0")</td>
+                                </tr>
                             }
                         </tbody>
                         <tfoot>
@@ -128,17 +132,21 @@
                                 <td class="font-weight-bold text-end">Current Balance:</td>
                                 <td class="text-center">
                                     @{
-                                        var total = Model.ClosingNote10000 * 10000 +
-                                                    Model.ClosingNote5000 * 5000 +
-                                                    Model.ClosingNote2000 * 2000 +
-                                                    Model.ClosingNote1000 * 1000 +
-                                                    Model.ClosingNote500 * 500 +
-                                                    Model.ClosingCoin500 * 500 +
-                                                    Model.ClosingCoin100 * 100 +
-                                                    Model.ClosingCoin50 * 50 +
-                                                    Model.ClosingCoin25 * 25 +
-                                                    Model.ClosingCoin10 * 10 +
-                                                    Model.ClosingCoin5 * 5 +
+                                        var total = (Model.ClosingNote10000 * 10000) +
+                                                    (Model.ClosingNote5000 * 5000) +
+                                                    (Model.ClosingNote2000 * 2000) +
+                                                    (Model.ClosingNote1000 * 1000) +
+                                                    (Model.ClosingNote500 * 500) +
+                                                    (Model.ClosingCoin500 * 500) +
+                                                    (Model.ClosingCoin350 * 350) +
+                                                    (Model.ClosingCoin250 * 250) +
+                                                    (Model.ClosingCoin200 * 200) +
+                                                    (Model.ClosingCoin150 * 150) +
+                                                    (Model.ClosingCoin100 * 100) +
+                                                    (Model.ClosingCoin50 * 50) +
+                                                    (Model.ClosingCoin25 * 25) +
+                                                    (Model.ClosingCoin10 * 10) +
+                                                    (Model.ClosingCoin5 * 5) +
                                                     Model.ClosingCoin1;
                                         @total.ToString("#,##0.0 FCFA")
                                     }

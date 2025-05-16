@@ -72,22 +72,21 @@
                 @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", id = "branchInput" })
             </div>
         </div>
-
+        <input type="hidden" id="userName" class="form-control" placeholder="Username" />
         <div id="userFilterSection" class="row mb-3" style="display:none;">
-            <div class="col-md-4">
+            @*<div class="col-md-4">
                 <label class="form-label fw-bold">Search by username</label>
                 <input type="text" id="userName" class="form-control" placeholder="Username" />
+            </div>*@
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Search by firstname [or user name or full name]</label>
+                <input type="text" id="firstName" class="form-control" placeholder="Search by firstname [or user name or full name]" />
             </div>
-            <div class="col-md-4">
-                <label class="form-label fw-bold">Search by firstname</label>
-                <input type="text" id="firstName" class="form-control" placeholder="First Name" />
-            </div>
-            <div class="col-md-4">
-                <label class="form-label fw-bold">Search by lastname</label>
-                <input type="text" id="lastName" class="form-control" placeholder="Last Name" />
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Search by lastname [or user name or full name]</label>
+                <input type="text" id="lastName" class="form-control" placeholder="Search by lastname [or user name or full name]" />
             </div>
         </div>
-
         <div id="dateRangeSection" class="row mb-3" style="display:none;">
             <div class="col-md-6">
                 <input type="date" id="createdFrom" class="form-control" placeholder="Created From" />
@@ -100,23 +99,20 @@
         <div class="row mb-3">
             <div class="col-md-3">
                 <select id="isActive" class="form-select">
-                    <option value="">Active Status [Blocked By Administrator]</option>
-                    <option value="true">Active</option>
-                    <option value="false">Inactive</option>
+                    <option value="true">Active Status [Yes]</option>
+                    <option value="false">Active Status [No]</option>
                 </select>
             </div>
             <div class="col-md-3">
                 <select id="isBlocked" class="form-select">
-                    <option value="">Account Blocked Due to Multiple Attpemts</option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
+                    <option value="false">Account Blocked [No]</option>
+                    <option value="true">Account Blocked [Yes]</option>
                 </select>
             </div>
             <div class="col-md-3">
                 <select id="isVerified" class="form-select">
-                    <option value="">Email Verified</option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
+                    <option value="false">Email Verified [No]</option>
+                    <option value="true">Email Verified [Yes]</option>
                 </select>
             </div>
             <div class="col-md-3">
@@ -128,7 +124,7 @@
         <div class="col-md-12 d-flex">
             <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
             <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
-            @*<button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-export"></i> Export</button>*@
+            <button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-export"></i> Export</button>
         </div>
     </div>
 </div>

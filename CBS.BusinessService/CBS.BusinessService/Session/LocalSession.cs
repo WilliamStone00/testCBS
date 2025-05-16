@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Caching;
 
 namespace CBS.BusinessService.Session
 {
@@ -26,27 +27,26 @@ namespace CBS.BusinessService.Session
         }
         public UserSessionDto GetCurrentUserSession(string sessionCode, string username)
         {
-            var sessionData = HttpContext.Current?.Session?["UserSession"] as string;
+            string cacheKey = "UserSessionCache_" + sessionCode;
 
-            if (!string.IsNullOrWhiteSpace(sessionData))
+            // 🧠 Check cache first
+            if (HttpRuntime.Cache[cacheKey] is UserSessionDto cachedSession)
             {
-                try
-                {
-                    return JsonConvert.DeserializeObject<UserSessionDto>(sessionData);
-                }
-                catch
-                {
-                    // Log or handle deserialization issue if needed
-                }
+                return cachedSession;
             }
 
             // ❗ Session is missing or invalid — fallback to database
             var userSessionFromDb = GetUserCurrentsession(sessionCode, username);
             if (userSessionFromDb != null)
             {
-                // Store back into session for future use
-                HttpContext.Current.Session["UserSession"] = JsonConvert.SerializeObject(userSessionFromDb);
-                HttpContext.Current.Session.Timeout = 60; // 1 hour
+                // Store back into cache for future use
+                HttpRuntime.Cache.Insert(
+                    cacheKey,
+                    userSessionFromDb,
+                    null,
+                    DateTime.Now.AddMinutes(10),
+                    Cache.NoSlidingExpiration
+                );
             }
 
             return userSessionFromDb;
