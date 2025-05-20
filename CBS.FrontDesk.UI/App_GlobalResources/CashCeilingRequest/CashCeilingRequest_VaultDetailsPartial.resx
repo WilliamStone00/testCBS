@@ -117,121 +117,88 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountingEntryRule" xml:space="preserve">
-    <value>Accounting Entry Rule</value>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
   </data>
-  <data name="Action" xml:space="preserve">
-    <value>Action</value>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
   </data>
-  <data name="AddNew" xml:space="preserve">
-    <value>Add new</value>
+  <data name="AuthorizedPersons" xml:space="preserve">
+    <value>Authorized persons</value>
   </data>
-  <data name="ChooseLogoImage" xml:space="preserve">
-    <value>Choose logo image</value>
+  <data name="BranchCode" xml:space="preserve">
+    <value>Branch code</value>
   </data>
-  <data name="CleanEntries" xml:space="preserve">
-    <value>Clean entries</value>
+  <data name="BranchID" xml:space="preserve">
+    <value>Branch id</value>
   </data>
-  <data name="Close" xml:space="preserve">
-    <value>Close</value>
+  <data name="CurrentBalance" xml:space="preserve">
+    <value>Current balance</value>
   </data>
-  <data name="Closed" xml:space="preserve">
-    <value>Closed</value>
+  <data name="Denominations" xml:space="preserve">
+    <value>Denominations</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>Create</value>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
+  <data name="Dimensions" xml:space="preserve">
+    <value>Dimensions</value>
   </data>
-  <data name="Details" xml:space="preserve">
-    <value>Details</value>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inactive</value>
   </data>
-  <data name="Download" xml:space="preserve">
-    <value>Download</value>
+  <data name="IsActive" xml:space="preserve">
+    <value>Is active</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
+  <data name="LastOperation" xml:space="preserve">
+    <value>Last operation</value>
   </data>
-  <data name="Export" xml:space="preserve">
-    <value>Export</value>
+  <data name="LastOperationAmount" xml:space="preserve">
+    <value>Last operation amount</value>
   </data>
-  <data name="InExcelFormat" xml:space="preserve">
-    <value>In Excel Format</value>
+  <data name="Location" xml:space="preserve">
+    <value>Location</value>
   </data>
-  <data name="InPDFFormat" xml:space="preserve">
-    <value>In PDF Format</value>
+  <data name="MaximumCapacity" xml:space="preserve">
+    <value>Maximum capacity</value>
   </data>
-  <data name="Insert" xml:space="preserve">
-    <value>Insert</value>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
+  <data name="NoAuthorizedPersons" xml:space="preserve">
+    <value>No authorized persons</value>
   </data>
-  <data name="LogoPreview" xml:space="preserve">
-    <value>Logo preview</value>
+  <data name="OperationType" xml:space="preserve">
+    <value>Operation type</value>
   </data>
-  <data name="New" xml:space="preserve">
-    <value>New</value>
+  <data name="PreviousBalance" xml:space="preserve">
+    <value>Previous balance</value>
   </data>
-  <data name="Open" xml:space="preserve">
-    <value>Open</value>
+  <data name="VaultDetails" xml:space="preserve">
+    <value>Vault details</value>
   </data>
-  <data name="Print" xml:space="preserve">
-    <value>Print</value>
+  <data name="VaultID" xml:space="preserve">
+    <value>Vault id</value>
   </data>
-  <data name="Reopen" xml:space="preserve">
-    <value>Reopen</value>
+  <data name="VaultInformations" xml:space="preserve">
+    <value>Vault informations</value>
   </data>
-  <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
+  <data name="VaultOperations" xml:space="preserve">
+    <value>Vault operations</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
   </data>
-  <data name="SaveChanges" xml:space="preserve">
-    <value>Save changes</value>
+  <data name="DoneBy" xml:space="preserve">
+    <value>DoneBy</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Search</value>
+  <data name="Reference" xml:space="preserve">
+    <value>Reference</value>
   </data>
-  <data name="Select" xml:space="preserve">
-    <value>Select</value>
+  <data name="ViewMore" xml:space="preserve">
+    <value>View more</value>
   </data>
-  <data name="SelectFiles" xml:space="preserve">
-    <value>Select files</value>
-  </data>
-  <data name="SelectToEdit" xml:space="preserve">
-    <value>Select to edit</value>
-  </data>
-  <data name="Submit" xml:space="preserve">
-    <value>Submit</value>
-  </data>
-  <data name="ToDownload" xml:space="preserve">
-    <value>To download</value>
-  </data>
-  <data name="ToEdit" xml:space="preserve">
-    <value>To edit</value>
-  </data>
-  <data name="Update" xml:space="preserve">
-    <value>Update</value>
-  </data>
-  <data name="Upload" xml:space="preserve">
-    <value>Upload</value>
-  </data>
-  <data name="UploadLogo" xml:space="preserve">
-    <value>Upload logo</value>
-  </data>
-  <data name="Validate" xml:space="preserve">
-    <value>Validate</value>
-  </data>
-  <data name="View" xml:space="preserve">
-    <value>View</value>
-  </data>
-  <data name="ViewInDatatable" xml:space="preserve">
-    <value>View in Datatable</value>
-  </data>
-  <data name="ViewList" xml:space="preserve">
-    <value>View list</value>
+  <data name="NoOperationsPerformed" xml:space="preserve">
+    <value>No operations performed</value>
   </data>
 </root>

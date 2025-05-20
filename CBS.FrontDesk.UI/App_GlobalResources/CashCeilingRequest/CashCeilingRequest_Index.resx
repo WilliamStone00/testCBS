@@ -117,121 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountingEntryRule" xml:space="preserve">
-    <value>Accounting Entry Rule</value>
+  <data name="AddNewRequest" xml:space="preserve">
+    <value>Add new request</value>
   </data>
-  <data name="Action" xml:space="preserve">
-    <value>Action</value>
+  <data name="AddRequest" xml:space="preserve">
+    <value>Add request</value>
   </data>
-  <data name="AddNew" xml:space="preserve">
-    <value>Add new</value>
+  <data name="ApprovedRequestsShouldBeProcessed" xml:space="preserve">
+    <value>Approved requests should be processed promptly to avoid operational delays</value>
   </data>
-  <data name="ChooseLogoImage" xml:space="preserve">
-    <value>Choose logo image</value>
+  <data name="CashCeilingCashoutManagement" xml:space="preserve">
+    <value>Cash Ceiling Cashout Management</value>
   </data>
-  <data name="CleanEntries" xml:space="preserve">
-    <value>Clean entries</value>
+  <data name="CASHCEILINGDETAILS" xml:space="preserve">
+    <value>CASH CEILING DETAILS</value>
   </data>
-  <data name="Close" xml:space="preserve">
-    <value>Close</value>
+  <data name="CashCeilingRequests" xml:space="preserve">
+    <value>Cash Ceiling Requests</value>
   </data>
-  <data name="Closed" xml:space="preserve">
-    <value>Closed</value>
+  <data name="EnsureAllCashoutRequestsAreAuthorized" xml:space="preserve">
+    <value>Ensure all cashout requests are authorized before submission</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>Create</value>
+  <data name="ManageCashCeilingRequestsAndApprovals" xml:space="preserve">
+    <value>Manage cash ceiling requests and approvals efficiently. Use the tools below to process requests for cashouts from tills or transfers between vaults</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
+  <data name="TIPS" xml:space="preserve">
+    <value>TIPS</value>
   </data>
-  <data name="Details" xml:space="preserve">
-    <value>Details</value>
+  <data name="UseTheStatusColumnToMonitorTheState" xml:space="preserve">
+    <value>Use the "Status" column to monitor the state of requests (Pending, Approved, or Rejected)</value>
   </data>
-  <data name="Download" xml:space="preserve">
-    <value>Download</value>
+  <data name="VerifyTheRequestedCashoutAmount" xml:space="preserve">
+    <value>Verify the requested cashout amount and its purpose to align with branch policies</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
+  <data name="ViewAndManageCashCeilingRequest" xml:space="preserve">
+    <value>View and manage cash ceiling request details efficiently</value>
   </data>
-  <data name="Export" xml:space="preserve">
-    <value>Export</value>
-  </data>
-  <data name="InExcelFormat" xml:space="preserve">
-    <value>In Excel Format</value>
-  </data>
-  <data name="InPDFFormat" xml:space="preserve">
-    <value>In PDF Format</value>
-  </data>
-  <data name="Insert" xml:space="preserve">
-    <value>Insert</value>
-  </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
-  </data>
-  <data name="LogoPreview" xml:space="preserve">
-    <value>Logo preview</value>
-  </data>
-  <data name="New" xml:space="preserve">
-    <value>New</value>
-  </data>
-  <data name="Open" xml:space="preserve">
-    <value>Open</value>
-  </data>
-  <data name="Print" xml:space="preserve">
-    <value>Print</value>
-  </data>
-  <data name="Reopen" xml:space="preserve">
-    <value>Reopen</value>
-  </data>
-  <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="SaveChanges" xml:space="preserve">
-    <value>Save changes</value>
-  </data>
-  <data name="Search" xml:space="preserve">
-    <value>Search</value>
-  </data>
-  <data name="Select" xml:space="preserve">
-    <value>Select</value>
-  </data>
-  <data name="SelectFiles" xml:space="preserve">
-    <value>Select files</value>
-  </data>
-  <data name="SelectToEdit" xml:space="preserve">
-    <value>Select to edit</value>
-  </data>
-  <data name="Submit" xml:space="preserve">
-    <value>Submit</value>
-  </data>
-  <data name="ToDownload" xml:space="preserve">
-    <value>To download</value>
-  </data>
-  <data name="ToEdit" xml:space="preserve">
-    <value>To edit</value>
-  </data>
-  <data name="Update" xml:space="preserve">
-    <value>Update</value>
-  </data>
-  <data name="Upload" xml:space="preserve">
-    <value>Upload</value>
-  </data>
-  <data name="UploadLogo" xml:space="preserve">
-    <value>Upload logo</value>
-  </data>
-  <data name="Validate" xml:space="preserve">
-    <value>Validate</value>
-  </data>
-  <data name="View" xml:space="preserve">
-    <value>View</value>
-  </data>
-  <data name="ViewInDatatable" xml:space="preserve">
-    <value>View in Datatable</value>
-  </data>
-  <data name="ViewList" xml:space="preserve">
-    <value>View list</value>
+  <data name="ViewRequests" xml:space="preserve">
+    <value>View requests</value>
   </data>
 </root>

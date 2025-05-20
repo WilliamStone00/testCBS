@@ -117,121 +117,100 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountingEntryRule" xml:space="preserve">
-    <value>Accounting Entry Rule</value>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
   </data>
-  <data name="Action" xml:space="preserve">
-    <value>Action</value>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
   </data>
-  <data name="AddNew" xml:space="preserve">
-    <value>Add new</value>
+  <data name="AddCashChange" xml:space="preserve">
+    <value>Add cash change</value>
   </data>
-  <data name="ChooseLogoImage" xml:space="preserve">
-    <value>Choose logo image</value>
+  <data name="AddNewVault" xml:space="preserve">
+    <value>Add new vault</value>
   </data>
-  <data name="CleanEntries" xml:space="preserve">
-    <value>Clean entries</value>
+  <data name="AmountGiven" xml:space="preserve">
+    <value>Amount given</value>
   </data>
-  <data name="Close" xml:space="preserve">
-    <value>Close</value>
+  <data name="AmountReceived" xml:space="preserve">
+    <value>Amount received</value>
   </data>
-  <data name="Closed" xml:space="preserve">
-    <value>Closed</value>
+  <data name="BCode" xml:space="preserve">
+    <value>B.Code</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>Create</value>
+  <data name="ChangeDenominations" xml:space="preserve">
+    <value>Change denominations</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
+  <data name="ChangeToBeGiven" xml:space="preserve">
+    <value>Change to be given</value>
   </data>
-  <data name="Details" xml:space="preserve">
-    <value>Details</value>
+  <data name="ControlBalance" xml:space="preserve">
+    <value>Control balance</value>
   </data>
-  <data name="Download" xml:space="preserve">
-    <value>Download</value>
+  <data name="CurrentBalance" xml:space="preserve">
+    <value>Current balance</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
+  <data name="DenominationChangeManagement" xml:space="preserve">
+    <value>Denomination change management</value>
   </data>
-  <data name="Export" xml:space="preserve">
-    <value>Export</value>
+  <data name="DenominationsCanOnlyBeUpdated" xml:space="preserve">
+    <value>Denominations can only be updated by authorized personnel</value>
   </data>
-  <data name="InExcelFormat" xml:space="preserve">
-    <value>In Excel Format</value>
+  <data name="DoubleCheckTotalsToMatchTheRequiredAmounts" xml:space="preserve">
+    <value>Double-check totals to match the required amounts</value>
   </data>
-  <data name="InPDFFormat" xml:space="preserve">
-    <value>In PDF Format</value>
+  <data name="EnsureAllDenominationInputsAreAccurate" xml:space="preserve">
+    <value>Ensure all denomination inputs are accurate before submission</value>
   </data>
-  <data name="Insert" xml:space="preserve">
-    <value>Insert</value>
+  <data name="EnterTheDenominationsForTheTotalCashAmountReceived" xml:space="preserve">
+    <value>Enter the denominations for the total cash amount received. Ensure the values match the physical cash received for accurate records</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
+  <data name="EnterTheDenominationsForTheTotalChangeAmount" xml:space="preserve">
+    <value>Enter the denominations for the total change amount to be given. These values will reflect the total cash distributed back to the customer</value>
   </data>
-  <data name="LogoPreview" xml:space="preserve">
-    <value>Logo preview</value>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inactive</value>
   </data>
-  <data name="New" xml:space="preserve">
-    <value>New</value>
+  <data name="ManageDenominationsEfficiently" xml:space="preserve">
+    <value>Manage denominations efficiently for vault operations in your branch. Use the options below to update or review denominations</value>
   </data>
-  <data name="Open" xml:space="preserve">
-    <value>Open</value>
+  <data name="ManageDenominationsEfficientlyFor" xml:space="preserve">
+    <value>Manage denominations efficiently for</value>
   </data>
-  <data name="Print" xml:space="preserve">
-    <value>Print</value>
+  <data name="MANAGEMENTOFDENOMINATIONS" xml:space="preserve">
+    <value>MANAGEMENT OF DENOMINATIONS</value>
   </data>
-  <data name="Reopen" xml:space="preserve">
-    <value>Reopen</value>
+  <data name="MaximumCapacity" xml:space="preserve">
+    <value>Maximum capacity</value>
   </data>
-  <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
+  <data name="NoVaultsHaveBeenConfiguredYet" xml:space="preserve">
+    <value>No vaults have been configured yet</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
+  <data name="OperationsInYourBranchUseTheOptions" xml:space="preserve">
+    <value>operations in your branch. Use the options below to update or review denominations</value>
   </data>
-  <data name="SaveChanges" xml:space="preserve">
-    <value>Save changes</value>
+  <data name="ReasonForTheCashChange" xml:space="preserve">
+    <value>Reason for the cash change</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Search</value>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
   </data>
-  <data name="Select" xml:space="preserve">
-    <value>Select</value>
+  <data name="TIPS" xml:space="preserve">
+    <value>TIPS</value>
   </data>
-  <data name="SelectFiles" xml:space="preserve">
-    <value>Select files</value>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>Total amount</value>
   </data>
-  <data name="SelectToEdit" xml:space="preserve">
-    <value>Select to edit</value>
+  <data name="UseNumericValuesOnlyForDenominations" xml:space="preserve">
+    <value>Use numeric values only for denominations and quantities</value>
   </data>
-  <data name="Submit" xml:space="preserve">
-    <value>Submit</value>
+  <data name="VaultDenominationChangeManagement" xml:space="preserve">
+    <value>Vault Denomination Change Management</value>
   </data>
-  <data name="ToDownload" xml:space="preserve">
-    <value>To download</value>
+  <data name="VaultName" xml:space="preserve">
+    <value>Vault name</value>
   </data>
-  <data name="ToEdit" xml:space="preserve">
-    <value>To edit</value>
-  </data>
-  <data name="Update" xml:space="preserve">
-    <value>Update</value>
-  </data>
-  <data name="Upload" xml:space="preserve">
-    <value>Upload</value>
-  </data>
-  <data name="UploadLogo" xml:space="preserve">
-    <value>Upload logo</value>
-  </data>
-  <data name="Validate" xml:space="preserve">
-    <value>Validate</value>
-  </data>
-  <data name="View" xml:space="preserve">
-    <value>View</value>
-  </data>
-  <data name="ViewInDatatable" xml:space="preserve">
-    <value>View in Datatable</value>
-  </data>
-  <data name="ViewList" xml:space="preserve">
-    <value>View list</value>
+  <data name="VAULTS" xml:space="preserve">
+    <value>VAULTS</value>
   </data>
 </root>

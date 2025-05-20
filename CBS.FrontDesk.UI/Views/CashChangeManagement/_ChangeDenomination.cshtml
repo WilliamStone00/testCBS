@@ -1,16 +1,16 @@
 ﻿
 @model CBS.FrontDesk.Data.Entity.CashChangeManagement.CashChangeHistory
-
+@using Resources
 <fieldset class="fieldset-custom">
     <div class="card-body">
         @using (Html.BeginForm("Create", "CashChangeManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
             <fieldset class="fieldset-custom" id="denominationreceived">
                 <legend class="text-primary">
-                    Amount Received
+                    @GlobalCashChangeManagement.AmountReceived
                 </legend>
                 <p class="text-muted">
-                    Enter the denominations for the total cash amount received. Ensure the values match the physical cash received for accurate records.
+                    @GlobalCashChangeManagement.EnterTheDenominationsForTheTotalCashAmountReceived.
                 </p>
                 <div class="row mt-2 gy-4">
                     <!-- Amount Received -->
@@ -18,20 +18,20 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.CashChangeCommand.CashReceived, new { @class = "form-control formatted-amount shadow-box", @id = "AmountReceived", @oninput = "updateGivenAndTotal()" })
                             @Html.ValidationMessageFor(m => m.CashChangeCommand.CashReceived, "", new { @class = "text-danger" })
-                            <label for="AmountReceived">Amount Received</label>
+                            <label for="AmountReceived">@GlobalCashChangeManagement.AmountReceived</label>
                         </div>
                     </div>
                     <!-- Dynamic Totals Display -->
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box float-start" id="balanceBroughtForward_Received">
-                                Amount Received: 0 XAF
+                                @GlobalCashChangeManagement.AmountReceived: 0 XAF
                             </span>
                         </div>
                     </div>
                     <div class="col-md-6" style="display:none">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount_Received">Total amount: 0.0</span>
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount_Received">@GlobalCashChangeManagement.TotalAmount: 0.0</span>
                             <input type="hidden" id="totalNoteAmount_Received" value="0">
                             <input type="hidden" id="totalProvision_Received" value="0">
                         </div>
@@ -39,7 +39,7 @@
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box" id="lblBalance_Received">
-                                Control Balance: 0 XAF
+                                @GlobalCashChangeManagement.ControlBalance: 0 XAF
                             </span>
                         </div>
                     </div>
@@ -164,23 +164,23 @@
             <input type="hidden" name="Action" value="@ViewBag.Context" />
             <fieldset class="fieldset-custom" id="denominationtobegiven">
                 <legend class="text-primary">
-                    Change to Be Given
+                    @GlobalCashChangeManagement.ChangeToBeGiven
                 </legend>
                 <p class="text-muted">
-                    Enter the denominations for the total change amount to be given. These values will reflect the total cash distributed back to the customer.
+                    @GlobalCashChangeManagement.EnterTheDenominationsForTheTotalChangeAmount.
                 </p>
                 <div class="row mt-2 gy-4">
                     <!-- Dynamic Totals Display -->
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box float-start" id="balanceBroughtForward">
-                                Change To Be Given: FCFA 0
+                                @GlobalCashChangeManagement.ChangeToBeGiven: FCFA 0
                             </span>
                         </div>
                     </div>
                     <div class="col-md-6" style="display:none">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalCashChangeManagement.TotalAmount: 0.0</span>
                             <input type="hidden" id="totalNoteAmount" value="0">
                             <input type="hidden" id="totalProvision" value="0">
                         </div>
@@ -188,7 +188,7 @@
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box" id="lblBalance">
-                                Control Balance: FCFA 0
+                                @GlobalCashChangeManagement.ControlBalance: FCFA 0
                             </span>
                         </div>
                     </div>
@@ -196,7 +196,7 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.CashChangeCommand.CashEntered, new { @class = "form-control formatted-amount shadow-box", @id = "AmountGiven", @readonly = "readonly" })
                             @Html.ValidationMessageFor(m => m.CashChangeCommand.CashEntered, "", new { @class = "text-danger" })
-                            <label for="AmountGiven">Amount Given</label>
+                            <label for="AmountGiven">@GlobalCashChangeManagement.AmountGiven</label>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -320,12 +320,12 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextAreaFor(m => m.CashChangeCommand.ChangeReason, new { @class = "form-control", @style = "height: 90px;" })
                             @Html.ValidationMessageFor(m => m.CashChangeCommand.ChangeReason, "", new { @class = "text-danger " })
-                            <label for="formValidationDob">Reason for the cash change</label>
+                            <label for="formValidationDob">@GlobalCashChangeManagement.ReasonForTheCashChange</label>
                         </div>
                     </div>
                 </div>
                 <div class="mt-4">
-                    <button type="submit" id="btnSave" class="btn btn-primary me-2">Submit</button>
+                    <button type="submit" id="btnSave" class="btn btn-primary me-2">@GlobalShared.Submit</button>
                 </div>
             </fieldset>
         }

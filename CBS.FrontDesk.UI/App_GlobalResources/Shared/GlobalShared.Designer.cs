@@ -322,6 +322,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Submit.
+        /// </summary>
+        internal static string Submit {
+            get {
+                return ResourceManager.GetString("Submit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To download.
         /// </summary>
         internal static string ToDownload {
@@ -363,6 +372,15 @@ namespace Resources {
         internal static string UploadLogo {
             get {
                 return ResourceManager.GetString("UploadLogo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validate.
+        /// </summary>
+        internal static string Validate {
+            get {
+                return ResourceManager.GetString("Validate", resourceCulture);
             }
         }
         

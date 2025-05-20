@@ -1104,10 +1104,40 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalBulkOperation.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Create.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashCeilingRequest_Create.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Index.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashCeilingRequest_Index.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_InitiatorData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashCeilingRequest_InitiatorData.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_RequestValidation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashCeilingRequest_RequestValidation.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Validation.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CashCeilingRequest_Validation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_VaultDetailsPartial.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashCeilingRequest_VaultDetailsPartial.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashCeilingRequest\CashToVault.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashToVault.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\CashCeilingRequest\InitiatorListing.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -1123,6 +1153,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SubTillToPrimaryTill.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashChangeManagement\GlobalCashChangeManagement.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCashChangeManagement.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\CashDesk\CashDeskCashin.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -5040,6 +5075,34 @@
     <Content Include="App_GlobalResources\CashCeilingRequest\InitiatorListing.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>InitiatorListing.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Index.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashCeilingRequest_Index.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashCeilingRequest\CashToVault.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashToVault.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_VaultDetailsPartial.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashCeilingRequest_VaultDetailsPartial.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_RequestValidation.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashCeilingRequest_RequestValidation.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_InitiatorData.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashCeilingRequest_InitiatorData.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Create.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashCeilingRequest_Create.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashChangeManagement\GlobalCashChangeManagement.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCashChangeManagement.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
