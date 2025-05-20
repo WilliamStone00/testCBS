@@ -417,9 +417,9 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             //        
             var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[]
-            { new System.Web.WebPages.Html.SelectListItem { Text = "List Of Pending Entries", Value = "Pending" },
-                new System.Web.WebPages.Html.SelectListItem { Text = "List Of Approved Entries", Value = "Approved" },
-                new System.Web.WebPages.Html.SelectListItem { Text = "List Of Rejected Entries", Value = "Rejected" } }.ToList();
+            { new System.Web.WebPages.Html.SelectListItem { Text = "Pending", Value = "Pending" },
+                new System.Web.WebPages.Html.SelectListItem { Text = "Approved", Value = "Approved" },
+                new System.Web.WebPages.Html.SelectListItem { Text = "Rejected", Value = "Rejected" } }.ToList();
             return doubbleEntryValidations;
         }
         private Task<List<System.Web.WebPages.Html.SelectListItem>> GetDoubbleEntryValidation()

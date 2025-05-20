@@ -21,32 +21,63 @@ namespace CBS.FrontDesk.Data.Entity.VaultManagement
         public bool IsActive { get; set; }
         public decimal LastOperationAmount { get; set; }
         public string LastOperation { get; set; }
+
+        // Closing Notes
         public int ClosingNote10000 { get; set; }
         public int ClosingNote5000 { get; set; }
         public int ClosingNote2000 { get; set; }
         public int ClosingNote1000 { get; set; }
         public int ClosingNote500 { get; set; }
+
+        // Closing Coins
         public int ClosingCoin500 { get; set; }
+        public int ClosingCoin350 { get; set; }
+        public int ClosingCoin250 { get; set; }
+        public int ClosingCoin200 { get; set; }
+        public int ClosingCoin150 { get; set; }
         public int ClosingCoin100 { get; set; }
         public int ClosingCoin50 { get; set; }
         public int ClosingCoin25 { get; set; }
         public int ClosingCoin10 { get; set; }
         public int ClosingCoin5 { get; set; }
         public int ClosingCoin1 { get; set; }
+
+        // Operations and Authorization
         public List<VaultOperation> VaultOperations { get; set; }
         public List<VaultAuthorisedPerson> VaultAuthorisedPersons { get; set; }
         public AddVaultCommand AddVaultCommand { get; set; }
         public VaultInitializationCommand VaultInitializationCommand { get; set; }
+
+        // Constructor
         public Vault()
         {
-            AddVaultCommand=new AddVaultCommand();
-            VaultOperations=new List<VaultOperation>();
-            VaultAuthorisedPersons=new List<VaultAuthorisedPerson>();
-            VaultInitializationCommand=new VaultInitializationCommand();
+            AddVaultCommand = new AddVaultCommand();
+            VaultOperations = new List<VaultOperation>();
+            VaultAuthorisedPersons = new List<VaultAuthorisedPerson>();
+            VaultInitializationCommand = new VaultInitializationCommand();
         }
+
+        // Calculated Property for Total Balance
+        public decimal TotalBalance =>
+            (ClosingNote10000 * 10000) +
+            (ClosingNote5000 * 5000) +
+            (ClosingNote2000 * 2000) +
+            (ClosingNote1000 * 1000) +
+            (ClosingNote500 * 500) +
+            (ClosingCoin500 * 500) +
+            (ClosingCoin350 * 350) +
+            (ClosingCoin250 * 250) +
+            (ClosingCoin200 * 200) +
+            (ClosingCoin150 * 150) +
+            (ClosingCoin100 * 100) +
+            (ClosingCoin50 * 50) +
+            (ClosingCoin25 * 25) +
+            (ClosingCoin10 * 10) +
+            (ClosingCoin5 * 5) +
+            ClosingCoin1;
     }
 
-  public class AddVaultCommand
+    public class AddVaultCommand
     {
         public string Id { get; set; }
 

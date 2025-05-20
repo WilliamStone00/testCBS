@@ -103,30 +103,68 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public string CashierName { get; set; }
         public string TillName { get; set; }
         public string TellerId { get; set; }
-        public string ServiceType { get; set; }//Loan_Disburstment, Loan_Repayment, Cash_In, Cash_Out, Transfer, Other_CashIn, Other_Payments, Momo_Cash_Collection
-        public string OperationType { get; set; }//Cash_Operation, None_Cash_Operation
-        public string OperationTypeGrouping { get; set; }//Cash_In, Cash_Out, Transfer, Others
+        public string ServiceType { get; set; } // Loan_Disbursement, Loan_Repayment, Cash_In, Cash_Out, Transfer, Other_CashIn, Other_Payments, Momo_Cash_Collection
+        public string OperationType { get; set; } // Cash_Operation, None_Cash_Operation
+        public string OperationTypeGrouping { get; set; } // Cash_In, Cash_Out, Transfer, Others
         public DateTime AccountingDay { get; set; }
         public DateTime Date { get; set; }
         public string InternalReferenceNumber { get; set; }
         public string ExternalReferenceNumber { get; set; }
-        public string SourceOfRequest { get; set; }//Daily_Collection_Service, GAV, C_Money, Teller, BackOffice
+        public string SourceOfRequest { get; set; } // Daily_Collection_Service, GAV, C_Money, Teller, BackOffice
         public string PortalUsed { get; set; }
         public string BranchId { get; set; }
         public string BankId { get; set; }
+
+        // Notes
         public int Note10000 { get; set; } = 0;
         public int Note5000 { get; set; } = 0;
         public int Note2000 { get; set; } = 0;
         public int Note1000 { get; set; } = 0;
         public int Note500 { get; set; } = 0;
+
+        // Coins
         public int Coin500 { get; set; } = 0;
+        public int Coin350 { get; set; } = 0;
+        public int Coin250 { get; set; } = 0;
+        public int Coin200 { get; set; } = 0;
+        public int Coin150 { get; set; } = 0;
         public int Coin100 { get; set; } = 0;
         public int Coin50 { get; set; } = 0;
         public int Coin25 { get; set; } = 0;
         public int Coin10 { get; set; } = 0;
         public int Coin5 { get; set; } = 0;
         public int Coin1 { get; set; } = 0;
+
         public virtual ICollection<PaymentDetail> PaymentDetails { get; set; }
+
+        public PaymentReceipt()
+        {
+            PaymentDetails = new HashSet<PaymentDetail>();
+        }
+
+        /// <summary>
+        /// Calculates the total amount of all denominations.
+        /// </summary>
+        /// <returns>Total calculated amount.</returns>
+        public decimal CalculateTotalDenominations()
+        {
+            return (Note10000 * 10000) +
+                   (Note5000 * 5000) +
+                   (Note2000 * 2000) +
+                   (Note1000 * 1000) +
+                   (Note500 * 500) +
+                   (Coin500 * 500) +
+                   (Coin350 * 350) +
+                   (Coin250 * 250) +
+                   (Coin200 * 200) +
+                   (Coin150 * 150) +
+                   (Coin100 * 100) +
+                   (Coin50 * 50) +
+                   (Coin25 * 25) +
+                   (Coin10 * 10) +
+                   (Coin5 * 5) +
+                   Coin1;
+        }
     }
     public class PaymentDetail
     {

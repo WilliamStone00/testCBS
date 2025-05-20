@@ -36,6 +36,7 @@ namespace CBS.BusinessService.UserManagement
 
         Task<CustomDataTable> GetDataTableAsync(GetAllUserSessionsDataTableQuery getAllUsersDataTableQuery);
         Task<CustomDataTable> GetDataTableAsync(GetAllUsersDataTableQuery getAllUsersDataTableQuery);
+        List<UserDownloadDto> MapToUserDownloadDtos(IEnumerable<UserLightDto> users);
 
     }
 }

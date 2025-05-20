@@ -1000,10 +1000,10 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
             var dtoPasser = System.Web.HttpContext.Current.Session["dtoPasser"];
-            string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
-            string rpTType = System.Web.HttpContext.Current.Session["rptType"].ToString();
-            string rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
-           
+            var strtitle = System.Web.HttpContext.Current.Session["rpttitle"];
+            var rpTType = System.Web.HttpContext.Current.Session["rptType"];
+            var rptpath = System.Web.HttpContext.Current.Session["rptpath"];
+
 
             if (rpTType == "EXCEL")
             {
@@ -1016,7 +1016,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 if (rptSource != "empty" && rptSource !=null)
                 {
-                    if (rpTType.ToUpper() == "BS")
+                    if (rpTType.ToString().ToUpper() == "BS")
                     {
                         var model = (BalanceSheetData)rptSource;
                         var user = this.GetUserDto();
@@ -1025,7 +1025,7 @@ namespace CBS.FrontDesk.UI.Controllers
                         var LiabilityModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.ToDate.ToString("dd-MM-yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
                
                         ReportDocument rd = new ReportDocument();
-                        string strRptPath = Server.MapPath(rptpath);
+                        string strRptPath = Server.MapPath(rptpath.ToString());
                         rd.Load(strRptPath);
                         rd.SetDataSource(assetsModel);
                         rd.SetDataSource(LiabilityModel);
@@ -1052,7 +1052,7 @@ namespace CBS.FrontDesk.UI.Controllers
                         var modeli = (BSQuery)dtoPasser;
                         var assetsModel = model.ConvertToIncomeStatementModel($"{user.firstName}");
                         ReportDocument rd = new ReportDocument();
-                        string strRptPath = Server.MapPath(rptpath);
+                        string strRptPath = Server.MapPath(rptpath.ToString());
                         rd.Load(strRptPath);
                         rd.SetDataSource(assetsModel);
         

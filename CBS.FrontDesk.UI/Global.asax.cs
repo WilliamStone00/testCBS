@@ -42,11 +42,11 @@ namespace CBS.FrontDesk.UI
             GlobalFilters.Filters.Add(new System.Web.Mvc.AuthorizeAttribute());
             UnityConfig.RegisterComponents();
             MvcHandler.DisableMvcResponseHeader = true;
-            GlobalFilters.Filters.Add(new UserAuditFilter()); // Register UserAuditFilter
+            //GlobalFilters.Filters.Add(new UserAuditFilter()); // Register UserAuditFilter
             ValueProviderFactories.Factories.Add(new JsonValueProviderFactory());
             ConnectionMonitoringService connectionService = new ConnectionMonitoringService();
-
-
+            // Start IP Unblock Service
+            //new UnblockIpService();
         }
         protected void Application_BeginRequest()
         {
@@ -206,29 +206,17 @@ namespace CBS.FrontDesk.UI
                 }
             }
         }
-        //protected void Application_Error(object sender, EventArgs e)
-        //{
-        //    var exception = Server.GetLastError();
-        //    Response.Clear();
-
-        //    // Log the exception (optional)
-        //    // Log.Error(exception);
-
-        //    // Display detailed error for local machine only (ensure it's not exposed in production)
-        //    if (HttpContext.Current.IsDebuggingEnabled)
-        //    {
-        //        // Show the error page in debug mode (locally)
-        //        Response.Write("<h2>Error Occurred</h2>");
-        //        Response.Write("<pre>" + exception.ToString() + "</pre>");
-        //        Server.ClearError();
-        //    }
-        //    else
-        //    {
-        //        // Redirect to custom error page in production
-        //        Server.ClearError();
-        //        Response.Redirect("~/Error");
-        //    }
-        //}
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            Exception ex = Server.GetLastError();
+            if (ex is HttpException httpEx && httpEx.GetHttpCode() == 429)
+            {
+                Response.Clear();
+                Response.StatusCode = 429;
+                Response.Write("Too Many Requests. Please try again later.");
+                Response.End();
+            }
+        }
 
         //protected void Application_Error(object sender, EventArgs e)
         //{
@@ -276,47 +264,47 @@ namespace CBS.FrontDesk.UI
 
         protected void Application_AcquireRequestState(object sender, EventArgs e)
         {
-            var identity = HttpContext.Current?.User as CustomPrincipal;
-            if (HttpContext.Current?.Session != null && identity != null && identity.Identity != null && identity.Identity.IsAuthenticated)
-            {
-                // 1️⃣ Get Session values
-                string sessionIP = HttpContext.Current.Session["SessionIP"] as string;
-                string sessionUserAgent = HttpContext.Current.Session["SessionUserAgent"] as string;
+            //var identity = HttpContext.Current?.User as CustomPrincipal;
+            //if (HttpContext.Current?.Session != null && identity != null && identity.Identity != null && identity.Identity.IsAuthenticated)
+            //{
+            //    // 1️⃣ Get Session values
+            //    string sessionIP = HttpContext.Current.Session["SessionIP"] as string;
+            //    string sessionUserAgent = HttpContext.Current.Session["SessionUserAgent"] as string;
 
-                // 2️⃣ Get Current Connection values (from CustomPrincipal)
-                string currentIP = identity.SessionIP;
-                string currentUserAgent = identity.SessionUserAgent;
+            //    // 2️⃣ Get Current Connection values (from CustomPrincipal)
+            //    string currentIP = identity.SessionIP;
+            //    string currentUserAgent = identity.SessionUserAgent;
 
-                // 3️⃣ Compare IP and User Agent
-                if (!string.Equals(sessionIP, currentIP) || !string.Equals(sessionUserAgent, currentUserAgent))
-                {
-                    // ⚡ Session Hijack Detected: Kill Session
-                    HttpContext.Current.Session.Clear();
-                    HttpContext.Current.Session.Abandon();
-                    FormsAuthentication.SignOut();
-                    //HttpContext.Current.Response.Redirect("~/Authentication/Login?reason=sessionhijack");
-                }
+            //    // 3️⃣ Compare IP and User Agent
+            //    if (!string.Equals(sessionIP, currentIP) || !string.Equals(sessionUserAgent, currentUserAgent))
+            //    {
+            //        // ⚡ Session Hijack Detected: Kill Session
+            //        HttpContext.Current.Session.Clear();
+            //        HttpContext.Current.Session.Abandon();
+            //        FormsAuthentication.SignOut();
+            //        //HttpContext.Current.Response.Redirect("~/Authentication/Login?reason=sessionhijack");
+            //    }
 
-                // 4️⃣ Absolute Timeout check
-                DateTime? sessionStartTime = HttpContext.Current.Session["SessionStartTime"] as DateTime?;
-                int? maxLifetimeMinutes = HttpContext.Current.Session["SessionMaxLifetimeMinutes"] as int?;
+            //    // 4️⃣ Absolute Timeout check
+            //    DateTime? sessionStartTime = HttpContext.Current.Session["SessionStartTime"] as DateTime?;
+            //    int? maxLifetimeMinutes = HttpContext.Current.Session["SessionMaxLifetimeMinutes"] as int?;
 
-                if (sessionStartTime.HasValue && maxLifetimeMinutes.HasValue)
-                {
-                    var now = DateTime.UtcNow;
-                    var elapsedMinutes = (now - sessionStartTime.Value).TotalMinutes;
+            //    if (sessionStartTime.HasValue && maxLifetimeMinutes.HasValue)
+            //    {
+            //        var now = DateTime.UtcNow;
+            //        var elapsedMinutes = (now - sessionStartTime.Value).TotalMinutes;
 
-                    if (elapsedMinutes > maxLifetimeMinutes.Value)
-                    {
-                        // ⛔ Absolute Session Expired
-                        HttpContext.Current.Session.Clear();
-                        HttpContext.Current.Session.Abandon();
-                        FormsAuthentication.SignOut();
-                        //HttpContext.Current.Response.Redirect("~/Authentication/Logout?reason=sessionexpired");
-                        //return;
-                    }
-                }
-            }
+            //        if (elapsedMinutes > maxLifetimeMinutes.Value)
+            //        {
+            //            // ⛔ Absolute Session Expired
+            //            HttpContext.Current.Session.Clear();
+            //            HttpContext.Current.Session.Abandon();
+            //            FormsAuthentication.SignOut();
+            //            //HttpContext.Current.Response.Redirect("~/Authentication/Logout?reason=sessionexpired");
+            //            //return;
+            //        }
+            //    }
+            //}
         }
 
 
@@ -324,9 +312,11 @@ namespace CBS.FrontDesk.UI
         protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
         {
             HttpCookie authCookie = Request.Cookies["TSC"];
+
             if (authCookie != null)
             {
                 FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+
                 if (!authTicket.Expired)
                 {
                     var user = JsonConvert.DeserializeObject<CustomSerializeModel>(authTicket.UserData);
@@ -337,22 +327,53 @@ namespace CBS.FrontDesk.UI
                         FullName = user.FullName,
                         UserName = user.UserName,
                         Roles = user.RoleName,
-                        SessionIP=user.SessionIP,
-                        SessionUserAgent=user.SessionUserAgent,
+                        SessionIP = user.SessionIP,
+                        SessionUserAgent = user.SessionUserAgent,
                         SessionID = user.SessionID,
                         Email = user.Email,
                         SessionCode = user.SessionCode,
-                        Phonenumber = user.Phonenumber
+                        Phonenumber = user.Phonenumber,
+                        IsAuthenticated = true
                     };
 
                     HttpContext.Current.User = principal;
+                    System.Threading.Thread.CurrentPrincipal = principal;
 
+                    // ✅ Rehydrate session if missing
+                    if (HttpContext.Current == null || HttpContext.Current.Session == null)
+                    {
+                        System.Diagnostics.Debug.WriteLine("HttpContext or Session is null. Skipping session rehydration.");
+                        return;
+                    }
+
+                    if (HttpContext.Current.Session["UserID"] == null)
+                    {
+                        RehydrateSession(user);
+                    }
 
                 }
             }
         }
 
 
+        private void RehydrateSession(CustomSerializeModel user)
+        {
+            HttpContext.Current.Session["UserID"] = user.Id;
+            HttpContext.Current.Session["FullName"] = user.FullName;
+            HttpContext.Current.Session["UserName"] = user.UserName;
+            HttpContext.Current.Session["SessionIP"] = user.SessionIP;
+            HttpContext.Current.Session["SessionUserAgent"] = user.SessionUserAgent;
+            HttpContext.Current.Session["SessionID"] = user.SessionID;
+            HttpContext.Current.Session["Email"] = user.Email;
+            HttpContext.Current.Session["SessionCode"] = user.SessionCode;
+            HttpContext.Current.Session["Phonenumber"] = user.Phonenumber;
+            HttpContext.Current.Session["Roles"] = user.RoleName;
+
+            // Additional data (if any)
+            // HttpContext.Current.Session["SomeKey"] = user.SomeData;
+
+            System.Diagnostics.Debug.WriteLine($"Session rehydrated for UserID: {user.Id}");
+        }
 
 
     }

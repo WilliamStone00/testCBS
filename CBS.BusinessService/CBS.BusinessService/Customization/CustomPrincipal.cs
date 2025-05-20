@@ -32,6 +32,7 @@ namespace CBS.FrontDesk.Service
         {
             get; private set;
         }
+        public bool IsAuthenticated { get; set; }
 
         public bool IsInRole(string role)
         {

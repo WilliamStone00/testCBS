@@ -28,6 +28,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<CashReplenimentRequest> ListCashReplenimentRequest { get; set; } = new List<CashReplenimentRequest>();
         public List<CashReplenimentRequestDto> ListCashReplenimentRequestDto { get; set; } = new List<CashReplenimentRequestDto>();
         public List<DetailsDto> DetailsDtos { get; set; } = new List<DetailsDto>();
+        public QueryModel QueryModel { get; set; }
         public string ServiceOption { get; set; }
         public string Id { get; set; }
         public string Action { get; set; }

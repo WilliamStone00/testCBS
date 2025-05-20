@@ -1257,7 +1257,7 @@
 
 
     <script src="~/Scripts/Js/main.js/ConnectionMonitor.js"></script>
-    <script>
+    @*<script>
         function checkInternetConnection() {
             if (!navigator.onLine) {
                 redirectToNoInternet();
@@ -1285,7 +1285,7 @@
         // Listen for connectivity changes
         window.addEventListener('offline', redirectToNoInternet);
         window.addEventListener('online', checkInternetConnection);
-    </script>
+    </script>*@
 
 
     @RenderSection("scripts", required: false)

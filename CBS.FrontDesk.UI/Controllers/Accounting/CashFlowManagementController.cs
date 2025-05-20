@@ -1338,40 +1338,59 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             cashDemandDataEntity.ListCashReplenimentRequest = result.ToList();
             return View(cashDemandDataEntity);
         }
-
-
+        private List<System.Web.WebPages.Html.SelectListItem> GetFilteringOptions()
+        {
+            //        
+            var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[]
+            { new System.Web.WebPages.Html.SelectListItem { Text = "Pending", Value = "Pending" },
+                new System.Web.WebPages.Html.SelectListItem { Text = "Approved", Value = "Approved" },
+                new System.Web.WebPages.Html.SelectListItem { Text = "Rejected", Value = "Rejected" } }.ToList();
+            return doubbleEntryValidations;
+        }
+        private dynamic BuildBranchViewBag(List<Branch> listOfItems)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            //     listOfItems.Remove(listOfItems.Where(x => x.BranchCode == "000").FirstOrDefault());
+            foreach (var item in listOfItems)
+            {
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = item.Id, Text = $"{item.Name}" });
+            }
+            return selectListItems;
+        }
         [HttpGet]
         public async Task<ActionResult> GetAllDepositRequestData()
         {
-            var datasList = (await _accountingEntryServices.GetBranches()).ToList();
+            ViewBag.Branches = BuildBranchViewBag((await branchServices.GetBranches()).ToList());
+            ViewBag.filteringOptions = GetFilteringOptions();
+            //var datasList = (await _accountingEntryServices.GetBranches()).ToList();
 
-            var datas = await _accountingEntryServices.GetAllDepositNotificationRequest();
-            var dataUser = (await _accountingEntryServices.GetUserList()).ToList();
-            var result = from request in datas
-                         join user in dataUser on request.IssuedBy equals user.id.ToString()
-                         select new DepositNotificationDto
+            //var datas = await _accountingEntryServices.GetAllDepositNotificationRequest();
+            //var dataUser = (await _accountingEntryServices.GetUserList()).ToList();
+            //var result = from request in datas
+            //             join user in dataUser on request.IssuedBy equals user.id.ToString()
+            //             select new DepositNotificationDto
 
-                         {
-                             Id = request.Id,
-                     
-                             Amount = request.Amount,
-                            
-                             Message = request.Message,
-                             IssuedBy = user.name + "," + user.roleName,
-                            IssueDate = request.IssueDate,
-                             IsOwner = _accountingEntryServices.GetBranchID() == request.BranchId,
-                             HasAccount56 = datasList.Find(x => x.Id == request.BranchId).IsHavingBank,
-                             ApprovedBy = request.ApprovedBy,
-                             ApprovedDate = request.ApprovedDate,
-                             IsApproved = request.IsApproved,
-                             //CurrencyCode = request.CurrencyCode,
-                             BranchOffice = datasList.Find(x => x.Id == request.BranchId).Name,
-                             Status = request.Status,
-                             ApprovedMessage = request.ApprovedMessage
-                         };
-            CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
-            cashDemandDataEntity.ListDepositNotificationDto = result.ToList();
-            return View(cashDemandDataEntity);
+            //             {
+            //                 Id = request.Id,
+
+            //                 Amount = request.Amount,
+
+            //                 Message = request.Message,
+            //                 IssuedBy = user.name + "," + user.roleName,
+            //                IssueDate = request.IssueDate,
+            //                 IsOwner = _accountingEntryServices.GetBranchID() == request.BranchId,
+            //                 HasAccount56 = datasList.Find(x => x.Id == request.BranchId).IsHavingBank,
+            //                 ApprovedBy = request.ApprovedBy,
+            //                 ApprovedDate = request.ApprovedDate,
+            //                 IsApproved = request.IsApproved,
+            //                 //CurrencyCode = request.CurrencyCode,
+            //                 BranchOffice = datasList.Find(x => x.Id == request.BranchId).Name,
+            //                 Status = request.Status,
+            //                 ApprovedMessage = request.ApprovedMessage
+            //             };
+            //CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
+            //cashDemandDataEntity.ListDepositNotificationDto = result.ToList();
+            return View( );
         }
 
         [HttpGet]
@@ -1407,29 +1426,30 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         public async Task<ActionResult> GetCashDepositDataAwaitingApproval()
         
         {
-            List<DepositNotificationDto> datas = new List<DepositNotificationDto>();
-            List<DepositNotificationDto> DepositNotificationDtos = new List<DepositNotificationDto>();
+            #region MyRegion
+            //List<DepositNotificationDto> datas = new List<DepositNotificationDto>();
+            //List<DepositNotificationDto> DepositNotificationDtos = new List<DepositNotificationDto>();
             //CreateBankCashOut
-            var Id = _AccountServices.GetBranchID();
-            if (_accountingEntryServices.IsHeadOffice())
-            {
-                datas = (await _accountingEntryServices.GetAllDepositNotificationRequest());
+            // var Id = _AccountServices.GetBranchID();
+            // if (_accountingEntryServices.IsHeadOffice())
+            // {
+            //     datas = (await _accountingEntryServices.GetAllDepositNotificationRequest());
 
-            }
-            else
-            {
-                //datas = (await _accountingEntryServices.GetAllDepositNotificationRequest());//.Where(pi => pi.BranchId.Equals(Id)&&pi.Status==CashReplishmentRequestStatus.Pending.ToString());
-                //Redirected request 
-                 
-                //    datas.AddRange((await _accountingEntryServices.GetAllDepositNotificationRequest()).Where(x => x.BranchId.Equals(_accountingEntryServices.GetBranchID())));
-                datas.AddRange((await _accountingEntryServices.GetAllDepositNotificationRequest()).Where(x => x.correpondingBranchId.Equals(_accountingEntryServices.GetBranchID())));
- 
+            // }
+            // else
+            // {
+            //     //datas = (await _accountingEntryServices.GetAllDepositNotificationRequest());//.Where(pi => pi.BranchId.Equals(Id)&&pi.Status==CashReplishmentRequestStatus.Pending.ToString());
+            //     //Redirected request 
+
+            //     //    datas.AddRange((await _accountingEntryServices.GetAllDepositNotificationRequest()).Where(x => x.BranchId.Equals(_accountingEntryServices.GetBranchID())));
+            //     datas.AddRange((await _accountingEntryServices.GetAllDepositNotificationRequest()).Where(x => x.correpondingBranchId.Equals(_accountingEntryServices.GetBranchID())));
 
 
-            }
 
-            var dataUserList = (await _accountingEntryServices.GetUserList()).ToList();
-           var branchList= await branchServices.GetBranches();
+            // }
+
+            // var dataUserList = (await _accountingEntryServices.GetUserList()).ToList();
+            //var branchList= await branchServices.GetBranches();
             //var result = from request in datas
             //             join user in dataUser on request.ApprovedBy equals user.id.ToString()
             //             select new DepositNotificationDto
@@ -1448,49 +1468,51 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             //                 IsOwner = request.BranchId== _accountingEntryServices.GetBranchID(),
             //                 ApprovedMessage = request.ApprovedMessage
             //             };
-           
-            CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
-            foreach (var item in datas.ToList())
-            {
-                if (item.BranchId == _accountingEntryServices.GetBranchID())
-                {
-                    var branch = branchList.FirstOrDefault(x => x.Id.Equals(item.BranchId));
-                    item.BranchOffice = branch.Name;
-                    item.HasBankAccount = branch.IsHavingBank;
-                    var userx = dataUserList.Find(x => x.id.ToString() == item.IssuedBy);
-                    item.Temp1 = userx.firstName + " " + userx.lastName;
-                    item.IsOwner = item.BranchId == _accountingEntryServices.GetBranchID();
-                    if (item.IsApproved)
-                    {
-                        var user0x = dataUserList.Find(x => x.id.ToString() == item.ApprovedBy);
-                        item.Temp2 = user0x.firstName + "," + user0x.lastName;
-                    }
 
-                    DepositNotificationDtos.Add(item);
-                }
-                else
-                {
-                    var branch = branchList.FirstOrDefault(x => x.Id.Equals(item.correpondingBranchId));
-                    item.BranchOffice = branch.Name;
-                    item.HasBankAccount = branch.IsHavingBank;
-                    var userx = dataUserList.Find(x => x.id.ToString() == item.IssuedBy);
-                    item.Temp1 = userx.firstName + " " + userx.lastName;
-                    item.IsOwner = item.BranchId == _accountingEntryServices.GetBranchID();
-                    if (item.IsApproved)
-                    {
-                        var user0x = dataUserList.Find(x => x.id.ToString() == item.ApprovedBy);
-                        item.Temp2 = user0x.firstName + "," + user0x.lastName;
-                    }
+            //CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
+            //foreach (var item in datas.ToList())
+            //{
+            //    if (item.BranchId == _accountingEntryServices.GetBranchID())
+            //    {
+            //        var branch = branchList.FirstOrDefault(x => x.Id.Equals(item.BranchId));
+            //        item.BranchOffice = branch.Name;
+            //        item.HasBankAccount = branch.IsHavingBank;
+            //        var userx = dataUserList.Find(x => x.id.ToString() == item.IssuedBy);
+            //        item.Temp1 = userx.firstName + " " + userx.lastName;
+            //        item.IsOwner = item.BranchId == _accountingEntryServices.GetBranchID();
+            //        if (item.IsApproved)
+            //        {
+            //            var user0x = dataUserList.Find(x => x.id.ToString() == item.ApprovedBy);
+            //            item.Temp2 = user0x.firstName + "," + user0x.lastName;
+            //        }
 
-                    DepositNotificationDtos.Add(item);
-                }
-              
-            }
-            cashDemandDataEntity.ListDepositNotificationDto = DepositNotificationDtos;
+            //        DepositNotificationDtos.Add(item);
+            //    }
+            //    else
+            //    {
+            //        var branch = branchList.FirstOrDefault(x => x.Id.Equals(item.correpondingBranchId));
+            //        item.BranchOffice = branch.Name;
+            //        item.HasBankAccount = branch.IsHavingBank;
+            //        var userx = dataUserList.Find(x => x.id.ToString() == item.IssuedBy);
+            //        item.Temp1 = userx.firstName + " " + userx.lastName;
+            //        item.IsOwner = item.BranchId == _accountingEntryServices.GetBranchID();
+            //        if (item.IsApproved)
+            //        {
+            //            var user0x = dataUserList.Find(x => x.id.ToString() == item.ApprovedBy);
+            //            item.Temp2 = user0x.firstName + "," + user0x.lastName;
+            //        }
 
-            ViewBag.IsAuthourized = true;
+            //        DepositNotificationDtos.Add(item);
+            //    }
 
-            return View(cashDemandDataEntity);
+            //}
+            //cashDemandDataEntity.ListDepositNotificationDto = DepositNotificationDtos;
+
+            //ViewBag.IsAuthourized = true; 
+            #endregion
+            ViewBag.Branches = BuildBranchViewBag((await branchServices.GetBranches()).ToList());
+            ViewBag.filteringOptions = GetFilteringOptions();
+            return View();
         }
 
         private async Task<bool> CheckIfBranchHasBankAccountAsync(string vBranchId)
@@ -1544,11 +1566,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 item.BranchOffice = (await branchServices.GetBranch(item.BranchId)).Name;
                 item.HasBankAccount = await CheckIfBranchHasBankAccountAsync(item.BranchId);
                 var userx = await _accountingEntryServices.GetUser(item.IssuedBy);
-                item.Temp1 = userx.firstName + "," + userx.lastName;
+                item.Temp1 = userx.firstName + " " + userx.lastName;
                 if (item.IsApproved)
                 {
                     var user0x = await _accountingEntryServices.GetUser(item.ApprovedBy);
-                    item.Temp2 = user0x.firstName + "," + user0x.lastName;
+                    item.Temp2 = user0x.firstName + " " + user0x.lastName;
                 }
 
                 DepositNotificationDtos.Add(item);
