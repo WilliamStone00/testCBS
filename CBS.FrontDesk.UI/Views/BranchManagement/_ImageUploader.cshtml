@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Config.BankConfig
-
+@using Resources
 <div class="card-body">
     @using (Html.BeginForm("AddOrUpdate", "BranchManagement", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
     {
@@ -11,13 +11,13 @@
                     <img src="@Url.Content(Model.Branch.ImageVirtualPath)" alt="No Image Found" id="previewimage" class="img-fluid" />
                 </div>
                 <label for="imageuploadSignature" class="custom-file-upload">
-                    <i class="fas fa-cloud-upload-alt"></i> Choose Logo Image
+                    <i class="fas fa-cloud-upload-alt"></i> @GlobalShared.ChooseLogoImage
                 </label>
                 <input type="file" name="CustomerDocumentRequest.AttachedFiles" accept="image/jpeg,image/png,image/JPG" id="imageuploadSignature" onchange="ShowImagePreview(this, document.getElementById('previewimage'))" />
             </div>
         </div>
         <div class="col-12">
-            <button type="submit" class="btn btn-primary">Upload Logo</button>
+            <button type="submit" class="btn btn-primary">@GlobalShared.UploadLogo</button>
         </div>
     }
 

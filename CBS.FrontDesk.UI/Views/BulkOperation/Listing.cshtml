@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Bulk Operation Query Overview";
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalBulkOperation.BulkOperationQueryOverview;
 }
 @using Newtonsoft.Json;
 <div class="row">
@@ -7,13 +8,13 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-database-export me-2"></i>Bulk Operation Management
+                    <i class="mdi mdi-database-export me-2"></i>@GlobalBulkOperation.BulkOperationManagement
                 </h1>
                 <p class="card-text">
-                    Execute batch actions on users, roles, or organizational units. Import/export data, update permissions, or modify statuses in bulk.
+                    @GlobalBulkOperation.ExecuteBatchActionsOnUsersRolesOrOrganizational.
                 </p>
                 <p class="card-text text-black fw-bold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use filters (role, branch, date) to refine selections before applying bulk changes.
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalBulkOperation.UseFiltersToRefineSelectionsBeforeApplyingBulkChanges.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
              
@@ -24,7 +25,7 @@
 
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-filter-outline me-2"></i> TIPS FOR Bulk OPERATIONS FILTERING</span>
+        <span><i class="mdi mdi-filter-outline me-2"></i> @GlobalBulkOperation.TIPSFORBulkOPERATIONSFILTERING</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -32,11 +33,11 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-office-building text-primary me-2"></i><strong>Branch:</strong> Filter users by organizational branch or location.</li>
-                <li><i class="mdi mdi-toggle-switch text-warning me-2"></i><strong>Status:</strong> Filter by active, inactive,completed, or suspended accounts.</li>
-                <li><i class="mdi mdi-calendar-start text-info me-2"></i><strong>From Date:</strong> Set the start date range for user registration/activity.</li>
-                <li><i class="mdi mdi-calendar-end text-info me-2"></i><strong>To Date:</strong> Set the end date range for user registration/activity.</li>
-                <li><i class="mdi mdi-refresh text-success me-2"></i><strong>Apply Filters:</strong> Combine filters (e.g., "Active users in Branch X between Jan-Mar 2024").</li>
+                <li><i class="mdi mdi-office-building text-primary me-2"></i><strong>@GlobalBulkOperation.Branch:</strong> @GlobalBulkOperation.FilterUsersByOrganizationalBranchOrLocation.</li>
+                <li><i class="mdi mdi-toggle-switch text-warning me-2"></i><strong>@GlobalBulkOperation.Status:</strong> @GlobalBulkOperation.FilterByActiveInactiveCompletedOrSuspendedAccounts.</li>
+                <li><i class="mdi mdi-calendar-start text-info me-2"></i><strong>@GlobalBulkOperation.FromDate:</strong> @GlobalBulkOperation.SetTheStartDateRangeForUserRegistrationActivity.</li>
+                <li><i class="mdi mdi-calendar-end text-info me-2"></i><strong>@GlobalBulkOperation.ToDate:</strong> @GlobalBulkOperation.SetTheEndDateRangeForUserRegistrationActivity.</li>
+                <li><i class="mdi mdi-refresh text-success me-2"></i><strong>@GlobalBulkOperation.ApplyFilters:</strong> @GlobalBulkOperation.CombineFilters.</li>
             </ul>
         </div>
     </div>
@@ -45,61 +46,61 @@
 <div class="row mb-3">
     <div class="col-12 text-end">
         <a href="/BulkOperation" class="btn btn-primary shadow-sm">
-            <i class="mdi mdi-account-plus-outline me-1"></i> Simulate A Bulk Operation
+            <i class="mdi mdi-account-plus-outline me-1"></i> @GlobalBulkOperation.SimulateABulkOperation
         </a>
     </div>
 </div>
 
 <div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Advanced User Filters</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalBulkOperation.AdvancedUserFilters</h5>
     <div class="card p-3 mb-3 bg-light">
         <div class="row mb-3">
             <div class="col-md-4 form-check">
                 <input type="checkbox" class="form-check-input" id="byBranch" />
-                <label class="form-check-label fw-bold" for="byBranch">Filter by branch name</label>
+                <label class="form-check-label fw-bold" for="byBranch">@GlobalBulkOperation.FilterByBranchName</label>
             </div>
             <div class="col-md-4 form-check">
                 <input type="checkbox" class="form-check-input" id="byStatus" />
-                <label class="form-check-label fw-bold" for="byStatus">Filter by status</label>
+                <label class="form-check-label fw-bold" for="byStatus">@GlobalBulkOperation.FilterByStatus</label>
             </div>
             <div class="col-md-4 form-check">
                 <input type="checkbox" class="form-check-input" id="byDate" />
-                <label class="form-check-label fw-bold" for="byDate">Filter By Between dates</label>
+                <label class="form-check-label fw-bold" for="byDate">@GlobalBulkOperation.FilterByBetweenDates</label>
             </div>
         </div>
 
         <div id="branchFilterSection" class="row mb-3" style="display:none;">
             <div class="col-md-12">
-                <label class="form-label fw-bold">Select Branch</label>
-                @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", id = "branchInput" })
+                <label class="form-label fw-bold">@GlobalBulkOperation.SelectBranch</label>
+                @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "---"+ @GlobalBulkOperation.SelectBranch +"---", new { @class = "form-control select2", id = "branchInput" })
             </div>
         </div>
 
         <div id="statusFilterSection" class="row mb-3" style="display:none;">
             <div class="col-md-6">
-                <label class="form-label fw-bold">Select Status</label>
+                <label class="form-label fw-bold">@GlobalBulkOperation.SelectStatus</label>
                 <select class="form-control select2" id="statusInput">
-                    <option value="">--- All Statuses ---</option>
-                    <option value="Approved">Approved</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Reviewed">Reviewed</option>
-                    <option value="Rejected">Rejected</option>
+                    <option value="">--- @GlobalBulkOperation.AllStatuses ---</option>
+                    <option value="Approved">@GlobalBulkOperation.Approved</option>
+                    <option value="Pending">@GlobalBulkOperation.Pending</option>
+                    <option value="Reviewed">@GlobalBulkOperation.Reviewed</option>
+                    <option value="Rejected">@GlobalBulkOperation.Rejected</option>
                 </select>
             </div>
         </div>
 
         <div id="dateRangeSection" class="row mb-3" style="display:none;">
             <div class="col-md-6">
-                <input type="date" id="createdFrom" class="form-control" placeholder="Created From" />
+                <input type="date" id="createdFrom" class="form-control" placeholder="@GlobalBulkOperation.CreatedFrom" />
             </div>
             <div class="col-md-6">
-                <input type="date" id="createdTo" class="form-control" placeholder="Created To" />
+                <input type="date" id="createdTo" class="form-control" placeholder="@GlobalBulkOperation.CreatedTo" />
             </div>
         </div>
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
-                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
-                <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalBulkOperation.ApplyFilter</button>
+                <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset</button>
                 @*<button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-export"></i> Export</button>*@
             </div>
         </div>

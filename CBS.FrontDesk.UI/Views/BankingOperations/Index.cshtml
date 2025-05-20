@@ -1,11 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.BankingOperations
+    @using Resources
 @{
-    ViewBag.Title = "BankOperations";
+    ViewBag.Title = @GlobalBankingOperations.BankOperations;
 }
 
 <div class="card mb-12">
     <div class="card-header">
-        <h5 class="card-title mb-0">BANKING OPERATIONS-CASH MANAGEMENT</h5>
+        <h5 class="card-title mb-0">@GlobalBankingOperations.BANKINGOPERATIONSCASHMANAGEMENT</h5>
     </div>
     <div class="card-body">
         <div class="row">

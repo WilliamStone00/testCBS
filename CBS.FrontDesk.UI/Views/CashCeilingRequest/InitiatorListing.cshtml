@@ -1,14 +1,15 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.CashCeilingManagement.CashCeilingRequest>
+    @using Resources
 @{
-    ViewBag.Title = "My Cash Ceiling Requests";
+    ViewBag.Title = @InitiatorListing.MyCashCeilingRequests;
 }
 <div class="container mt-4">
     <header class="mb-3 text-center">
         <h1 class="text-primary fw-bold">
-            <i class="mdi mdi-cash-multiple me-2"></i> My Cash Ceiling Requests
+            <i class="mdi mdi-cash-multiple me-2"></i> @InitiatorListing.MyCashCeilingRequests
         </h1>
         <p class="text-muted">
-            Manage your submitted cash ceiling requests efficiently. Use the options below to view, edit, or delete your requests.
+            @InitiatorListing.ManageYourSubmittedCashCeiling.
         </p>
         <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
     </header>
@@ -16,7 +17,7 @@
     <!-- Tips Section -->
     <div class="card mb-4">
         <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-            <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+            <span><i class="mdi mdi-information-outline me-2"></i> @InitiatorListing.TIPS</span>
             <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRequestTips" aria-expanded="false" aria-controls="collapseRequestTips">
                 <i class="mdi mdi-chevron-down"></i>
             </button>
@@ -24,9 +25,9 @@
         <div id="collapseRequestTips" class="collapse">
             <div class="card-body">
                 <ul class="mb-0">
-                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> You can edit requests with a "Pending" status.</li>
-                    <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Deleting a request removes it permanently.</li>
-                    <li><i class="mdi mdi-information-outline text-primary me-2"></i> Ensure your request details are accurate before submitting.</li>
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @InitiatorListing.YouCanEditRequestsWithAPendingStatus.</li>
+                    <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @InitiatorListing.DeletingARequestRemovesItPermanently.</li>
+                    <li><i class="mdi mdi-information-outline text-primary me-2"></i> @InitiatorListing.EnsureYourRequestDetailsAreAccurateBeforeSubmitting.</li>
                 </ul>
             </div>
         </div>
@@ -36,7 +37,7 @@
     @if (!Model.Any())
     {
         <div class="text-center my-3">
-            <p class="text-muted">You haven't created any cash ceiling requests yet.</p>
+            <p class="text-muted">@InitiatorListing.YouHaventCreatedAnyCashCeilingRequestsYet.</p>
         </div>
     }
     else
@@ -45,11 +46,11 @@
             <table class="table table-hover table-bordered text-center">
                 <thead class="table-light">
                     <tr>
-                        <th>Branch</th>
-                        <th>Request Type</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th>@InitiatorListing.Branch</th>
+                        <th>@InitiatorListing.RequestType</th>
+                        <th>@InitiatorListing.Amount</th>
+                        <th>@InitiatorListing.Status</th>
+                        <th>@InitiatorListing.Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -60,34 +61,34 @@
                             <td>
                                 @if (request.RequestType == "Cash_To_Vault")
                                 {
-                                    <span class="badge bg-primary">Cash to Vault</span>
+                                    <span class="badge bg-primary">@InitiatorListing.CashToVault</span>
                                 }
                                 else if (request.RequestType == "Subteller_Cash_To_PrimaryTeller")
                                 {
-                                    <span class="badge bg-warning">Subteller to Primary Teller</span>
+                            <span class="badge bg-warning">@InitiatorListing.SubtellerToPrimaryTeller</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">Unknown</span>
+                            <span class="badge bg-secondary">@InitiatorListing.Unknown</span>
                                 }
                             </td>
                             <td>@request.CashoutRequestAmount.ToString("#,##0.0") FCFA</td>
                             <td>
                                 @if (request.ApprovedStatus == "Pending")
                                 {
-                                    <span class="badge bg-warning">Pending</span>
+                                    <span class="badge bg-warning">@InitiatorListing.Pending</span>
                                 }
                                 else if (request.ApprovedStatus == "Approved")
                                 {
-                                    <span class="badge bg-success">Approved</span>
+                            <span class="badge bg-success">@InitiatorListing.Approved</span>
                                 }
                                 else if (request.ApprovedStatus == "Rejected")
                                 {
-                                    <span class="badge bg-danger">Rejected</span>
+                            <span class="badge bg-danger">@InitiatorListing.Rejected</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">Unknown</span>
+                            <span class="badge bg-secondary">@InitiatorListing.Unknown</span>
                                 }
                             </td>
                             <td>
@@ -95,22 +96,22 @@
                                     @if (request.ApprovedStatus == "Pending")
                                     {
                                         <!-- Edit Button -->
-                                        <button type="button"
-                                                class="btn btn-sm btn-outline-primary"
-                                                onclick="editRequest('@request.Id')"
-                                                data-bs-toggle="tooltip"
-                                                title="Edit Request">
-                                            <i class="fas fa-edit"></i> Edit
-                                        </button>
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-primary"
+                                            onclick="editRequest('@request.Id')"
+                                            data-bs-toggle="tooltip"
+                                            title="Edit Request">
+                                        <i class="fas fa-edit"></i> @GlobalShared.Edit
+                                    </button>
                                     }
                                     <!-- Delete Button -->
-                                    <button type="button"
-                                            class="btn btn-sm btn-outline-danger"
-                                            onclick="deleteRequest('@request.Id')"
-                                            data-bs-toggle="tooltip"
-                                            title="Delete Request">
-                                        <i class="fas fa-trash-alt"></i> Delete
-                                    </button>
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-danger"
+                                        onclick="deleteRequest('@request.Id')"
+                                        data-bs-toggle="tooltip"
+                                        title="Delete Request">
+                                    <i class="fas fa-trash-alt"></i> @GlobalShared.Delete
+                                </button>
                                 </div>
                             </td>
                         </tr>

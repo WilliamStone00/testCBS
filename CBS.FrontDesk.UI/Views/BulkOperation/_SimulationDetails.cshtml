@@ -1,5 +1,5 @@
 ﻿@model  CBS.FrontDesk.Data.Entity.BulkOperation.BulkOperationData
-
+@using Resources
 <style>
     .is-invalid {
         border-color: red !important;
@@ -13,35 +13,35 @@
         <div class="col-md-6">
             <div class="card mb-4">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="mb-0">Operation Information</h5>
+                    <h5 class="mb-0">@GlobalBulkOperation.OperationInformation</h5>
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">Simulation Type</label>
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.SimulationType</label>
                         <div class="col-sm-8">
                             <div class="form-control">@Model.SimulationType</div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">Branch</label>
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Branch</label>
                         <div class="col-sm-8">
                             <div class="form-control">@Model.BranchName (@Model.BranchCode)</div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">Bank</label>
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Bank</label>
                         <div class="col-sm-8">
                             <div class="form-control">@Model.BankName (@Model.BankCode)</div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">Total Volume</label>
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.TotalVolume</label>
                         <div class="col-sm-8">
                             <div class="form-control">@Model.TotalVolume</div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">Total Members</label>
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.TotalMembers</label>
                         <div class="col-sm-8">
                             <div class="form-control">@Model.TotalMembers</div>
                         </div>
@@ -53,11 +53,11 @@
         <div class="col-md-6">
             <div class="card mb-4">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="mb-0">Approval Information</h5>
+                    <h5 class="mb-0">@GlobalBulkOperation.ApprovalInformation</h5>
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">Status</label>
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Status</label>
                         <div class="col-sm-8">
                             <span class="badge @Model.ApprovalStatusBadge">@Model.ApprovalStatus</span>
                         </div>
@@ -65,25 +65,25 @@
 
 
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">Created By</label>
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.CreatedBy</label>
                         <div class="col-sm-8">
                             <div class="form-control">@(string.IsNullOrEmpty(Model.CreatedBy) ? "N/A" : Model.CreatedBy)</div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">Approved By</label>
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.ApprovedBy</label>
                         <div class="col-sm-8">
                             <div class="form-control">@(string.IsNullOrEmpty(Model.ApprovalBy) ? "N/A" : Model.ApprovalBy)</div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">Approval Date</label>
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.ApprovalDate</label>
                         <div class="col-sm-8">
                             <div class="form-control">@(Model.ApprovalValidationDate == default(DateTime) ? "N/A" : Model.ApprovalValidationDate.ToString("dd/MM/yyyy HH:mm:ss"))</div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">Description</label>
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Description</label>
                         <div class="col-sm-8">
                             <div class="form-control">@(string.IsNullOrEmpty(Model.ApprovalValidationDescription) ? "N/A" : Model.ApprovalValidationDescription)</div>
                         </div>
@@ -102,7 +102,7 @@
                         data-bs-target="#collapseMembers"
                         aria-expanded="false"
                         aria-controls="collapseMembers">
-                    <i class="fas fa-users me-2"></i>Operation Members (@Model.TotalMembers)
+                    <i class="fas fa-users me-2"></i>@GlobalBulkOperation.OperationMembers (@Model.TotalMembers)
                 </button>
             </h2>
             <div id="collapseMembers" class="accordion-collapse collapse" aria-labelledby="headingMembers">
@@ -120,7 +120,7 @@
                         data-bs-target="#collapseActions"
                         aria-expanded="false"
                         aria-controls="collapseActions">
-                    <i class="fas fa-tasks me-2"></i>Available Actions
+                    <i class="fas fa-tasks me-2"></i>@GlobalBulkOperation.AvailableActions
                 </button>
             </h2>
             <div id="collapseActions"
@@ -132,18 +132,18 @@
                         @if (@Model.ApprovalStatus != "Approved")
                         {
                             <button type="button" class="btn btn-primary" id="approveBulkOperation" data-simulation-id="@Model.Id">
-                                <i class="fas fa-check me-1"></i> Perform Actions
+                                <i class="fas fa-check me-1"></i> @GlobalBulkOperation.PerformActions
                             </button>
                            @* <button type="button" class="btn btn-warning" id="reviewBulkOperation" data-simulation-id="@Model.Id">
                                 <i class="fas fa-search me-1"></i> Send for Review
                             </button>*@
                         }
-                        <button type="button" class="btn btn-info">
-                            <i class="fas fa-download me-1"></i> Export Data
-                        </button>
-                        <button type="button" class="btn btn-danger">
-                            <i class="fas fa-trash me-1"></i> Delete
-                        </button>
+                    <button type="button" class="btn btn-info">
+                        <i class="fas fa-download me-1"></i> @GlobalBulkOperation.ExportData
+                    </button>
+                    <button type="button" class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i> @GlobalBulkOperation.Delete
+                    </button>
                     </div>
                 </div>
             </div>
@@ -161,7 +161,7 @@
             <div id="transferDetailsLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
                 <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
                     <div class="spinner-border text-primary mb-3" role="status"></div>
-                    <p class="fw-semibold text-primary">Loading transfer details...</p>
+                    <p class="fw-semibold text-primary">@GlobalBulkOperation.LoadingTransferDetails...</p>
                 </div>
             </div>
 
@@ -171,7 +171,7 @@
                     <div class="card bg-light mb-2">
                         <div class="card-body text-center">
                             <h1 class="card-title text-primary">
-                                <i class="mdi mdi-bank-transfer me-2"></i> Transfer Details
+                                <i class="mdi mdi-bank-transfer me-2"></i>@GlobalBulkOperation.TransferDetails
                             </h1>
                             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                         </div>
@@ -182,7 +182,7 @@
             <!-- Tips Section (optional) -->
             <div class="card m-3">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-information-outline me-2"></i> About This Transfer</span>
+                    <span><i class="mdi mdi-information-outline me-2"></i> @GlobalBulkOperation.AboutThisTransfer</span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTransferTips">
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
@@ -190,9 +190,9 @@
                 <div id="collapseTransferTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-clock-outline text-primary me-2"></i><strong>Real-time:</strong> Shows the most current transfer status.</li>
-                            <li><i class="mdi mdi-shield-check-outline text-success me-2"></i><strong>Secure:</strong> All information is encrypted.</li>
-                            <li><i class="mdi mdi-history text-warning me-2"></i><strong>Complete History:</strong> Shows full transaction details.</li>
+                            <li><i class="mdi mdi-clock-outline text-primary me-2"></i><strong>@GlobalBulkOperation.RealTime:</strong> @GlobalBulkOperation.ShowsTheMostCurrentTransferStatus.</li>
+                            <li><i class="mdi mdi-shield-check-outline text-success me-2"></i><strong>@GlobalBulkOperation.Secure:</strong> @GlobalBulkOperation.AllInformationIsEncrypted.</li>
+                            <li><i class="mdi mdi-history text-warning me-2"></i><strong>@GlobalBulkOperation.CompleteHistory:</strong> @GlobalBulkOperation.ShowsFullTransactionDetails.</li>
                         </ul>
                     </div>
                 </div>
@@ -204,9 +204,9 @@
                     <!-- Content will be loaded dynamically -->
                     <div class="loading-container text-center">
                         <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                            <span class="visually-hidden">@GlobalBulkOperation.Loading...</span>
                         </div>
-                        <p class="mt-2">Loading transfer details...</p>
+                        <p class="mt-2">@GlobalBulkOperation.LoadingTransferDetails...</p>
                     </div>
                 </div>
             </div>
@@ -215,15 +215,15 @@
             <div class="modal-footer border-0 justify-content-between">
                 <div>
                     <span class="text-muted fw-semibold">
-                        Transaction ID: <span class="text-dark" id="transferTransactionId">@Model.Id</span>
+                        @GlobalBulkOperation.TransactionID: <span class="text-dark" id="transferTransactionId">@Model.Id</span>
                     </span>
                 </div>
                 <div class="text-center w-100">
-                    <small class="text-muted">Powered by FLX-CBS</small>
+                    <small class="text-muted">@GlobalBulkOperation.PoweredBy FLX-CBS</small>
                 </div>
                 <div>
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        <i class="mdi mdi-close"></i> Close
+                        <i class="mdi mdi-close"></i> @GlobalShared.Close
                     </button>
                 </div>
             </div>

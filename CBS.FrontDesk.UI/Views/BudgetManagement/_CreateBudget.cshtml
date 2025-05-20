@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.BudgetConfiguration
+    @using Resources
 <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
 
     <div class="accordion-item active">
@@ -11,7 +12,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-bank-plus me-2"></i>
-                Budget Creation
+                @GlobalBudgetManagement.BudgetCreation
             </button>
         </h2>
         <div id="accordionPopoutIcon-3"
@@ -29,14 +30,14 @@
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
 
-                                        @Html.DropDownListFor(m => m.Budget.BudgetPeriodId, new SelectList(ViewBag.BudgetPeriods == null ? "" : ViewBag.BudgetPeriods, "Text", "Value"), "---Select BudgetPeriods ---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.DropDownListFor(m => m.Budget.BudgetPeriodId, new SelectList(ViewBag.BudgetPeriods == null ? "" : ViewBag.BudgetPeriods, "Text", "Value"), "---"+ @GlobalBudgetManagement.SelectBudgetPeriods +"---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(model => model.Budget.BudgetPeriodId, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
 
-                                        @Html.DropDownListFor(m => m.Budget.UnitId, new SelectList(ViewBag.OrganizationalUnits == null ? "" : ViewBag.OrganizationalUnits, "Text", "Value"), "---Select Organizational Unit---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.DropDownListFor(m => m.Budget.UnitId, new SelectList(ViewBag.OrganizationalUnits == null ? "" : ViewBag.OrganizationalUnits, "Text", "Value"), "---"+ @GlobalBudgetManagement.SelectOrganizationalUnit+"---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(model => model.Budget.UnitId, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -47,7 +48,7 @@
                                         @Html.TextAreaFor(m => m.Budget.Description, new { @class = "form-control", @style = "height: 200px;" })
                                         @Html.ValidationMessageFor(model => model.Budget.Description, "", new { @class = "text-danger" })
 
-                                        <label for="Description"> Description</label>
+                                        <label for="Description"> @GlobalBudgetManagement.Description</label>
                                     </div>
                                 </div>
 
@@ -55,14 +56,14 @@
 
                             if (Model.Budget.Id == null)
                             {
-                                <button type="submit" class="btn btn-primary me-2">Save</button>
+                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
                                 <input type="hidden" name="Action" value="insert" id="Action" />
 
                             }
                             else
-                            { <button type="submit" class="btn btn-primary me-2">Update</button>
+                            { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                                 @Html.HiddenFor(m => m.Budget.Id)
-                                <input type="hidden" name="Action" value="update" id="Action" />
+                                <input type="hidden" name="Action" value="@GlobalShared.Update" id="Action" />
                             }
                         }
 

@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.TransactionReversalRequest
-
+@using Resources
 @{
-    ViewBag.Title = "Transaction Reversal Request";
+    ViewBag.Title = @GlobalBankingOperations.TransactionReversalRequest;
 
 }
 
@@ -18,9 +18,9 @@
                     data-bs-target="#accordionPopoutIcon-3"
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
-                
+
                 <i class="mdi mdi-bank-plus me-2"></i>
-                ACCOUNTING ENTRY ADJUSTMENT
+                @GlobalBankingOperations.ACCOUNTINGENTRYADJUSTMENT
             </button>
         </h2>
         <div id="accordionPopoutIcon-3"
@@ -37,7 +37,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(model => model.ReferenceNumber, new { @class = "form-control", placeholder = "XFA 0.0" })
                                         @Html.ValidationMessageFor(model => model.ReferenceNumber, "", new { @class = "text-danger" })
-                                        <label for="ReferenceNumber">Transaction Reference</label>
+                                        <label for="ReferenceNumber">@GlobalBankingOperations.TransactionReference</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -45,15 +45,15 @@
                                         @Html.TextAreaFor(m => m.RequestMessage, new { @class = "form-control", @style = "height: 200px;" })
                                         @Html.ValidationMessageFor(model => model.ReferenceNumber, "", new { @class = "text-danger" })
 
-                                        <label for="RequestMessage"> RequestMessage</label>
+                                        <label for="RequestMessage"> @GlobalBankingOperations.RequestMessage</label>
                                     </div>
                                 </div>
 
                             </div>
 
                             <div class="mt-4">
-                                <button type="submit" class="btn btn-primary me-2">Send Request</button>
-                                <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                                <button type="submit" class="btn btn-primary me-2">@GlobalBankingOperations.SendRequest</button>
+                                <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
                             </div>
                         }
 

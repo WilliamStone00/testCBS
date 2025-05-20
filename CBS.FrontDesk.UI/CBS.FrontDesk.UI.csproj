@@ -918,6 +918,61 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LiaisonLedger.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\AccountOpeningRulePerBranch\AccountOpeningRuleModal.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountOpeningRuleModal.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountOpeningRulePerBranch\AccountOpeningRuleModal_Data.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountOpeningRuleModal_Data.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountOpeningRulePerBranch\AccountOpeningRulePerBranch_Index.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountOpeningRulePerBranch_Index.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AlertProfile\GlobalAlertProfile.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAlertProfile.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Create.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndriodAppVersioning_Create.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Data.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndriodAppVersioning_Data.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Index.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndriodAppVersioning_Index.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AuditTrail\GlobalAuditTrail.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAuditTrail.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AuditTrail\GlobalAuditTrail.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAuditTrail.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\BankingOperations\GlobalBankingOperations.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalBankingOperations.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Bank\GlobalBank.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -947,6 +1002,36 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalBranchManagement.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\BudgetManagement\GlobalBudgetManagement.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalBudgetManagement.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\BulkOperation\GlobalBulkOperation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalBulkOperation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Validation.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashCeilingRequest_Validation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashCeilingRequest\InitiatorListing.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InitiatorListing.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashCeilingRequest\RequestValidation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RequestValidation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashCeilingRequest\SubTillToPrimaryTill.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubTillToPrimaryTill.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\CashDesk\CashDeskCashin.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -1132,6 +1217,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalLogin.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Login\LoginBasic.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LoginBasic.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Login\ResolveMultipleSessions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResolveMultipleSessions.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\MemberOperation\GlobalLoanApplicationApproval.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -4343,6 +4438,14 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalShared.Designer.cs</LastGenOutput>
     </Content>
+    <Content Include="App_GlobalResources\Login\LoginBasic.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>LoginBasic.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Login\ResolveMultipleSessions.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ResolveMultipleSessions.Designer.cs</LastGenOutput>
+    </Content>
     <None Include="Resources\TextFile1.txt" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -4761,6 +4864,75 @@
     <Content Include="App_GlobalResources\AccountingStatements\AccountingStatements_Index.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>AccountingStatements_Index.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountOpeningRulePerBranch\AccountOpeningRuleModal.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountOpeningRuleModal.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountOpeningRulePerBranch\AccountOpeningRuleModal_Data.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountOpeningRuleModal_Data.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountOpeningRulePerBranch\AccountOpeningRulePerBranch_Index.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountOpeningRulePerBranch_Index.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AlertProfile\GlobalAlertProfile.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAlertProfile.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Index.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndriodAppVersioning_Index.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Data.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndriodAppVersioning_Data.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Create.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndriodAppVersioning_Create.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AndriodAppVersioning\AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AuditTrail\GlobalAuditTrail.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAuditTrail.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\AuditTrail\GlobalAuditTrail.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalAuditTrail.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\BankingOperations\GlobalBankingOperations.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalBankingOperations.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\BudgetManagement\GlobalBudgetManagement.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalBudgetManagement.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\BulkOperation\GlobalBulkOperation.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalBulkOperation.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Validation.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>CashCeilingRequest_Validation.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashCeilingRequest\SubTillToPrimaryTill.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>SubTillToPrimaryTill.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashCeilingRequest\RequestValidation.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>RequestValidation.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashCeilingRequest\InitiatorListing.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>InitiatorListing.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -5903,6 +6075,7 @@
     <Folder Include="AppFiles\Images\BarCodes\" />
     <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
+    <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
     <Folder Include="Controllers\CustomerManagement\MemberActivation\" />
     <Folder Include="Hub\" />
     <Folder Include="Views\CorrespondingBank\" />

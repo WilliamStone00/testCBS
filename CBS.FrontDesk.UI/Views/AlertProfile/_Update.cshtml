@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.AlertProfile
+    @using Resources
 <div class="card-body">
 
     @using (Html.BeginForm("Update", "AlertProfile", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
@@ -8,58 +9,58 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
-                <label>Name</label>
+                <label>@GlobalAlertProfile.Name</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.msisdn, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.msisdn, "", new { @class = "text-danger" })
-                <label>Msisdn</label>
+                <label>@GlobalAlertProfile.Msisdn</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.language, new SelectList(ViewBag.Languages, "Text", "Value"), "---Select language---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.language, new SelectList(ViewBag.Languages, "Text", "Value"), "---"+ @GlobalAlertProfile.SelectLanguage+"---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.language, "", new { @class = "text-danger " })
-                <label>Language</label>
+                <label>@GlobalAlertProfile.Language</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.serviceId, new SelectList(ViewBag.Services, "Text", "Value"), "---Select language---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.serviceId, new SelectList(ViewBag.Services, "Text", "Value"), "---"+ @GlobalAlertProfile.SelectService+ "---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.serviceId, "", new { @class = "text-danger " })
-                <label>Service</label>
+                <label>@GlobalAlertProfile.Service</label>
             </div>
         </div>
         <div class="col-6">
             <div class="form-check">
                 @Html.CheckBoxFor(m => m.sendSMS, new { @class = "form-check-input" })
-                <label class="form-check-label">Send sms</label>
+                <label class="form-check-label">@GlobalAlertProfile.SendSms</label>
             </div>
         </div>
         <div class="col-6">
             <div class="form-check">
                 @Html.CheckBoxFor(m => m.sendEmail, new { @class = "form-check-input" })
-                <label class="form-check-label">Send mail</label>
+                <label class="form-check-label">@GlobalAlertProfile.SendMail</label>
             </div>
         </div>
         <div class="col-6">
             <div class="form-check">
                 @Html.CheckBoxFor(m => m.isSupperAdmin, new { @class = "form-check-input" })
-                <label class="form-check-label">Is supper admin</label>
+                <label class="form-check-label">@GlobalAlertProfile.IsSuperAdmin</label>
             </div>
         </div>
         <div class="col-6">
             <div class="form-check">
                 @Html.CheckBoxFor(m => m.activeStatus, new { @class = "form-check-input" })
-                <label class="form-check-label">Active status</label>
+                <label class="form-check-label">@GlobalAlertProfile.ActiveStatus</label>
             </div>
         </div>
     </div>
     <div class="mt-4">
 
-        <button type="submit" class="btn btn-primary me-2">Update</button>
+        <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
 
     </div>
 }
