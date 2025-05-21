@@ -1,14 +1,14 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.AndriodApp.AndriodVersionConfiguration>
-
+@using Resources
 <fieldset class="fieldset-custom p-3 rounded shadow-sm">
     <legend class="fw-bold text-primary">
-        <i class="mdi mdi-android me-2"></i> ANDROID VERSION LISTING
+        <i class="mdi mdi-android me-2"></i> @AndriodAppVersioning_Data.ANDROIDVERSIONLISTING
     </legend>
 
     @if (!Model.Any())
     {
         <div class="text-center my-3">
-            <p class="text-muted">No Android versions have been configured yet.</p>
+            <p class="text-muted">@AndriodAppVersioning_Data.NoAndroidVersionsHaveBeenConfigured.</p>
         </div>
     }
     else
@@ -17,13 +17,13 @@
             <table class="table table-hover table-bordered align-middle" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th style="width: 20%;">Application Name</th>
-                        <th style="width: 10%;">Version</th>
-                        <th style="width: 15%;">Version Status</th>
-                        <th style="width: 25%;">APK URL</th>
-                        <th style="width: 10%;">Environment</th>
-                        <th style="width: 10%;">App Code</th>
-                        <th style="width: 15%;">Actions</th>
+                        <th style="width: 20%;">@AndriodAppVersioning_Data.ApplicationName</th>
+                        <th style="width: 10%;">@AndriodAppVersioning_Data.Version</th>
+                        <th style="width: 15%;">@AndriodAppVersioning_Data.VersionStatus</th>
+                        <th style="width: 25%;">@AndriodAppVersioning_Data.APKURL</th>
+                        <th style="width: 10%;">@AndriodAppVersioning_Data.Environment</th>
+                        <th style="width: 10%;">@AndriodAppVersioning_Data.AppCode</th>
+                        <th style="width: 15%;">@AndriodAppVersioning_Data.Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,7 +41,7 @@
                             <td>
                                 <a href="@version.ApkUrl" target="_blank" class="text-primary"
                                    data-bs-toggle="tooltip" title="@version.ApkUrl">
-                                    <i class="mdi mdi-link-variant"></i> Download
+                                    <i class="mdi mdi-link-variant"></i> @GlobalShared.Download
                                 </a>
                             </td>
                             <td>
@@ -59,7 +59,7 @@
                                             onclick="AddORUpdateGen('@version.Id', 'versionListing', '_Create', 'update', 'AndriodAppVersioning', null, null)"
                                             data-bs-toggle="tooltip"
                                             title="Edit @version.AppName">
-                                        <i class="mdi mdi-pencil me-1"></i> Edit
+                                        <i class="mdi mdi-pencil me-1"></i>@GlobalShared.Edit
                                     </button>
 
                                     <!-- Details Button -->

@@ -36,7 +36,7 @@
                                     </div>
                                     <div class="row justify-content-end">
                                         <div class="demo-inline-spacing text-end">
-                                            <a type="button" onclick="LoadBanks()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                            <a type="button" onclick="LoadBanks()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
                                                 <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                             </a>
                                         </div>
@@ -59,7 +59,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="imagePreviewModalLabel">@Model.Bank.BankCode @Model.Bank.Name Logo preview.</h5>
+                <h5 class="modal-title" id="imagePreviewModalLabel">@Model.Bank.BankCode @Model.Bank.Name @GlobalShared.LogoPreview.</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <a href="~/Views/Bank/Index.cshtml">~/Views/Bank/Index.cshtml</a>
@@ -79,7 +79,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
             </div>
         </div>
     </div>

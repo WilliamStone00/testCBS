@@ -1,7 +1,8 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AndriodApp.AndriodVersionConfiguration
+    @using Resources
 
 <fieldset class="fieldset-custom p-3 rounded shadow-sm">
-    <legend class="fw-bold text-primary"><i class="mdi mdi-android me-2"></i> ANDROID VERSION MANAGEMENT</legend>
+    <legend class="fw-bold text-primary"><i class="mdi mdi-android me-2"></i>@AndriodAppVersioning_Create.ANDROIDVERSIONMANAGEMENT</legend>
     <div class="card-body">
         @using (Html.BeginForm("Create", "AndriodAppVersioning", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
@@ -12,7 +13,7 @@
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.AppName, new { @class = "form-control", id = "AppName", placeholder = "Enter Application Name" })
-                        <label for="AppName"><i class="mdi mdi-cellphone-android me-1"></i> Application Name</label>
+                        <label for="AppName"><i class="mdi mdi-cellphone-android me-1"></i> @AndriodAppVersioning_Create.ApplicationName</label>
                     </div>
                 </div>
 
@@ -20,7 +21,7 @@
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.AppCode, new { @class = "form-control", placeholder = "Enter App Code Example: CMONEY" })
-                        <label for="AppCode"><i class="mdi mdi-code-tags me-1"></i> App Code</label>
+                        <label for="AppCode"><i class="mdi mdi-code-tags me-1"></i> @AndriodAppVersioning_Create.AppCode</label>
                     </div>
                 </div>
 
@@ -28,7 +29,7 @@
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.AppSecretcode, new { @class = "form-control", placeholder = "Enter Secret Code" })
-                        <label for="AppSecretcode"><i class="mdi mdi-key me-1"></i> Secret Code</label>
+                        <label for="AppSecretcode"><i class="mdi mdi-key me-1"></i> @AndriodAppVersioning_Create.SecretCode</label>
                     </div>
                 </div>
 
@@ -36,7 +37,7 @@
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Version, new { @class = "form-control", placeholder = "e.g. V1.2" })
-                        <label for="Version"><i class="mdi mdi-tag me-1"></i> Version</label>
+                        <label for="Version"><i class="mdi mdi-tag me-1"></i> @AndriodAppVersioning_Create.Version</label>
                     </div>
                 </div>
 
@@ -45,31 +46,31 @@
                     <div class="form-floating form-floating-outline">
                         @Html.DropDownListFor(m => m.VersionStatus,
                             new SelectList(new[] { "Active", "Deprecated" }),
-                            "--- Select Version Status ---",
+                            "---"+ @AndriodAppVersioning_Create.SelectVersionStatus +"---",
                             new { @class = "form-control" })
-                        <label for="VersionStatus"><i class="mdi mdi-check-circle me-1"></i> Version Status</label>
+                        <label for="VersionStatus"><i class="mdi mdi-check-circle me-1"></i> @AndriodAppVersioning_Create.VersionStatus</label>
                     </div>
                 </div>
 
                 <!-- APK Download URL -->
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.ApkUrl, new { @class = "form-control", type = "url", placeholder = "Enter APK Download URL" })
-                        <label for="ApkUrl"><i class="mdi mdi-link me-1"></i> APK Download URL</label>
+                        @Html.TextBoxFor(m => m.ApkUrl, new { @class = "form-control", type = "url", placeholder = @AndriodAppVersioning_Create.EnterAPKDownloadURL })
+                        <label for="ApkUrl"><i class="mdi mdi-link me-1"></i> @AndriodAppVersioning_Create.APKDownloadURL</label>
                     </div>
                 </div>
 
                 <!-- Environment Selection (Radio Buttons) -->
                 <div class="col-md-12">
-                    <label class="fw-bold mb-2"><i class="mdi mdi-earth me-1"></i> Environment</label>
+                    <label class="fw-bold mb-2"><i class="mdi mdi-earth me-1"></i> @AndriodAppVersioning_Create.Environment</label>
                     <div class="d-flex gap-3">
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.Environment, "Test", new { @class = "form-check-input", id = "EnvTest" })
-                            <label class="form-check-label" for="EnvTest">Test</label>
+                            <label class="form-check-label" for="EnvTest">@AndriodAppVersioning_Create.Test</label>
                         </div>
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.Environment, "Production", new { @class = "form-check-input", id = "EnvProduction" })
-                            <label class="form-check-label" for="EnvProduction">Production</label>
+                            <label class="form-check-label" for="EnvProduction">@AndriodAppVersioning_Create.Production</label>
                         </div>
                     </div>
                 </div>
@@ -78,20 +79,20 @@
             <!-- Action Buttons -->
             <div class="mt-4 d-flex justify-content-end">
                 <button type="reset" class="btn btn-outline-secondary me-2">
-                    <i class="mdi mdi-refresh"></i> Reset
+                    <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                 </button>
 
                 @if (!string.IsNullOrEmpty(Model.Id))
                 {
                     <button type="submit" class="btn btn-warning me-2">
-                        <i class="mdi mdi-pencil"></i> Update
+                        <i class="mdi mdi-pencil"></i> @GlobalShared.Update
                     </button>
                 }
                 else
                 {
-                    <button type="submit" class="btn btn-primary">
-                        <i class="mdi mdi-content-save"></i> Save
-                    </button>
+            <button type="submit" class="btn btn-primary">
+                <i class="mdi mdi-content-save"></i> @GlobalShared.Save
+            </button>
                 }
             </div>
         }

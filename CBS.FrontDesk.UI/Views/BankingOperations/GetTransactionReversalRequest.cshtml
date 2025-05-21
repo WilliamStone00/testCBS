@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.TransactionReversalDetailRequestDto
+    @using Resources
 @{
-    ViewBag.Title = "View Transaction Reversal Request";
+    ViewBag.Title = @GlobalBankingOperations.ViewTransactionReversalRequest;
 
 }
 
@@ -17,7 +18,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    Transaction ReferenceId : @Model.ReferenceId
+                    @GlobalBankingOperations.TransactionReferenceId : @Model.ReferenceId
                 </button>
             </h2>
             <div class="card-body">
@@ -28,23 +29,23 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Transaction Reversal Request Details</th>
+                                <th>@GlobalBankingOperations.TransactionReversalRequestDetails</th>
 
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
 
                             <tr>
-                                <td>Request Message</td>
+                                <td>@GlobalBankingOperations.RequestMessage</td>
                                 <td>@Model.RequestMessage </td>
                             </tr>
                             <tr>
-                                <td>Requested By </td>
+                                <td>@GlobalBankingOperations.RequestedBy </td>
                                 <td> @Model.IssuedBy </td>
                             </tr>
                              
                             <tr>
-                                <td> Status</td>
+                                <td> @GlobalBankingOperations.Status</td>
                                 @if (@Model.Status.ToString().ToUpper().Equals("PENDING"))
                                 {
                                     <td class="badge bg-label-primary rounded-pill text-uppercase">
@@ -73,16 +74,16 @@
                     </table>
                 </div>
                 <div class="card card-action mb-5">
-                    <h5 class="card-header">Transaction Reversal Request Status</h5>
+                    <h5 class="card-header">@GlobalBankingOperations.TransactionReversalRequestStatus</h5>
                     <div class="card-body">
                         <div class="mb-3 col-12 mb-0">
                             @if (@Model.Status.ToUpper().Equals("APPROVE"))
                             {
                                 <div class="alert alert-outline-success" role="alert">
-                                    <h6 class="alert-heading mb-1">The transaction reversal request issued by  @Model.IssuedBy with reference :@Model.ReferenceId has already been approved.</h6>
+                                    <h6 class="alert-heading mb-1">@GlobalBankingOperations.TheTransactionReversalRequestIssuedBy  @Model.IssuedBy @GlobalBankingOperations.WithReference :@Model.ReferenceId @GlobalBankingOperations.hasBeenSuccesfullyApproved .</h6>
                                 </div>
                                 <div class="col-12 shift-right">
-                                    <a href="/TellerCashDemand/GetAllTransasctionReversalRequest" class="btn btn-primary click-to-go-back-to-menu">Click to view pending transaction reversal request. </a>
+                                    <a href="/TellerCashDemand/GetAllTransasctionReversalRequest" class="btn btn-primary click-to-go-back-to-menu">@GlobalBankingOperations.ClickToViewPendingTransactionReversalRequest. </a>
                                 </div>
 
                             }
@@ -91,20 +92,20 @@
                                 if (@Model.Status.ToUpper().Equals("REJECTED"))
                                 {
                                     <div class="alert alert-outline-danger" role="alert">
-                                        <h6 class="alert-heading mb-1">The transaction reversal request issued by @Model.IssuedBy with reference :@Model.ReferenceId has already been rejected.</h6>
+                                        <h6 class="alert-heading mb-1">@GlobalBankingOperations.TheTransactionReversalRequestIssuedBy @Model.IssuedBy @GlobalBankingOperations.WithReference :@Model.ReferenceId @GlobalBankingOperations.HasAlreadyBeenRejected.</h6>
                                     </div>
                                     <div class="col-12 shift-right">
-                                        <a href="/BankingOperations/GetAllTransasctionReversalRequest" class="btn btn-primary ">Click to view pending transaction reversal request. </a>
+                                        <a href="/BankingOperations/GetAllTransasctionReversalRequest" class="btn btn-primary ">@GlobalBankingOperations.ClickToViewPendingTransactionReversalRequest. </a>
                                     </div>
 
                                 }
                                 else
                                 {
                                     <div class="alert alert-outline-primary" role="alert">
-                                        <h6 class="alert-heading mb-1">Transaction reversal request with transaction referenceId :@Model.ReferenceId is pending for approval</h6>
+                                        <h6 class="alert-heading mb-1">@GlobalBankingOperations.TransactionReversalRequestWithTransactionReferenceId :@Model.ReferenceId @GlobalBankingOperations.IsPendingForApproval</h6>
                                       
                                         
-                                        <p class="mb-0">Select your decision and click on Approved Account Replenishment button to approved the request</p>
+                                        <p class="mb-0">@GlobalBankingOperations.SelectYourDecisionAndClickOnApprovedAccount</p>
                                     </div>
                                     @*<div class="col-12 shift-right">
                                         <a href="/BankingOperations/GetAllTransasctionReversalRequest" class="btn btn-primary">Click to view pending transaction reversal request. </a>
@@ -136,8 +137,8 @@
                                 else
                                 {<div class="form-check mb-3">
                                         <div class="form-floating form-floating-outline">
-                                            <label for="Account">Make decision</label>
-                                            @Html.DropDownListFor(m => m.Status, new SelectList(ViewBag.Decisions == null ? "" : ViewBag.Decisions, "Text", "Value"), "---Select Decision ---", new { @class = "form-control select2", @search = "true" })
+                                            <label for="Account">@GlobalBankingOperations.MakeDecision</label>
+                                            @Html.DropDownListFor(m => m.Status, new SelectList(ViewBag.Decisions == null ? "" : ViewBag.Decisions, "Text", "Value"), "---" + @GlobalBankingOperations.SelectDecision +"---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -147,12 +148,12 @@
                                             @Html.TextAreaFor(m => m.ApprovedMessage, new { @class = "form-control", @style = "height: 200px;" })
                                             @Html.ValidationMessageFor(model => model.ApprovedMessage, "", new { @class = "text-danger" })
 
-                                            <label for="Description"> Approved Message Description</label>
+                                            <label for="Description"> @GlobalBankingOperations.ApprovedMessageDescription</label>
                                         </div>
 
                                     </div>
                                     <div class="col-12 shift-right">
-                                        <button type="submit" class="btn btn-primary deactivate-account">Click to approve to transaction reversal request.</button>
+                                        <button type="submit" class="btn btn-primary deactivate-account">@GlobalBankingOperations.ClickToApproveToTransactionReversalRequest.</button>
                                     </div>
                                 }
 

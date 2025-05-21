@@ -1,12 +1,12 @@
-﻿
+﻿@using Resources
 @{
-    ViewBag.Title = "Accounting Configurations";
+    ViewBag.Title = @GlobalBudgetManagement.AccountingConfigurations;
 
 }
 
 <div class="card mb-12">
     <div class="card-header">
-        <h5 class="card-title mb-0">BUDGET CONFIGURATIONS</h5>
+        <h5 class="card-title mb-0">@GlobalBudgetManagement.BUDGETCONFIGURATIONS</h5>
     </div>
     <div class="card-body">
         <div class="row">
@@ -19,13 +19,13 @@
                         <li class="nav-item">
                             <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#restock">
                                 <i class="mdi mdi-book-open-page-variant me-2"></i>
-                                <span class="align-middle">Budget</span>
+                                <span class="align-middle">@GlobalBudgetManagement.Budget</span>
                             </button>
                         </li>
                         <li class="nav-item">
                             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#shippingBudgetCategory">
                                 <i class="mdi mdi-book-edit me-2"></i>
-                                <span class="align-middle">BudgetCategory</span>
+                                <span class="align-middle">@GlobalBudgetManagement.BudgetCategory</span>
                             </button>
                         </li>
 
@@ -46,10 +46,10 @@
                         <div class="row justify-content-end">
                             <div class="demo-inline-spacing text-end">
 
-                                <a type="button" onclick="LoadDataTable('BudgetManagement','myDataTable_Budget','InitializeData',0,'_BudgetData','desc','list','datalistingview_Budget','budget')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                <a type="button" onclick="LoadDataTable('BudgetManagement','myDataTable_Budget','InitializeData',0,'_BudgetData','desc','list','datalistingview_Budget','budget')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
                                     <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                 </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Budget','_CreateBudget','new','BudgetManagement','budget')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_Budget','_CreateBudget','new','BudgetManagement','budget')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
 
                                     <span class="tf-icons mdi mdi-bank-plus mdi-18px"></span>
                                 </a>
@@ -65,10 +65,10 @@
                     <div class="tab-pane fade" id="shippingBudgetCategory" role="tabpanel">
                         <div class="row justify-content-end">
                             <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataTable('BudgetManagement','myDataTable_BudgetCategory','InitializeData',0,'_BudgetCategoryData','desc','list','datalistingview_BudgetCategory','budgetCategory')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                <a type="button" onclick="LoadDataTable('BudgetManagement','myDataTable_BudgetCategory','InitializeData',0,'_BudgetCategoryData','desc','list','datalistingview_BudgetCategory','budgetCategory')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
                                     <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                 </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_BudgetCategory','_CreateBudgetCategory','new','BudgetManagement','budgetCategory')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_BudgetCategory','_CreateBudgetCategory','new','BudgetManagement','budgetCategory')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
                                     <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                 </a>
                             </div>
@@ -81,10 +81,10 @@
                     <div class="tab-pane fade" id="shippingBudgetCategory" role="tabpanel">
                         <div class="row justify-content-end">
                             <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataTable('BudgetManagement','myDataTable_BudgetItem','InitializeData',0,'_BudgetItemData','desc','list','datalistingview_BudgetItem','budgetItem')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                <a type="button" onclick="LoadDataTable('BudgetManagement','myDataTable_BudgetItem','InitializeData',0,'_BudgetItemData','desc','list','datalistingview_BudgetItem','budgetItem')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
                                     <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                 </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_BudgetItem','_CreateBudgetItem','new','BudgetManagement','budgetItem')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_BudgetItem','_CreateBudgetItem','new','BudgetManagement','budgetItem')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
                                     <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                 </a>
                             </div>

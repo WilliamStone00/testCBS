@@ -1,6 +1,6 @@
-﻿
+﻿@using Resources
 @{
-    ViewBag.Title = "Failed_RequestApproval_View";
+    ViewBag.Title = @GlobalBankingOperations.FailedRequestApprovalView;
 
 }
 
@@ -18,7 +18,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    <span style="color:red"> There is no entry with referenceId : @Model.ReferenceId in the system. Please kindly contact system admin for support </span>
+                    <span style="color:red"> @GlobalBankingOperations.ThereIsNoEntryWithReferenceId : @Model.ReferenceId @GlobalBankingOperations.InTheSystemPleasekindlyContactSystemAdmin </span>
                 </button>
             </h2>
             <div class="card-body">
@@ -30,36 +30,36 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Transaction Reversal Request Details</th>
+                                <th>@GlobalBankingOperations.TransactionReversalRequestDetails</th>
 
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
 
                             <tr>
-                                <td>Requested Date</td>
+                                <td>@GlobalBankingOperations.RequestedDate</td>
                                 <td>@Model.IssuedDate </td>
                             </tr>
                             <tr>
-                                <td>Request Message</td>
+                                <td>@GlobalBankingOperations.RequestMessage</td>
                                 <td>@Model.RequestMessage </td>
                             </tr>
                             <tr>
-                                <td>Requested By </td>
+                                <td>@GlobalBankingOperations.RequestedBy </td>
                                 <td> @Model.IssuedBy </td>
                             </tr>
                             <tr>
-                                <td>Approved By </td>
+                                <td>@GlobalBankingOperations.ApprovedBy </td>
                                 <td> @Model.ApprovedBy </td>
                             </tr>
                             <tr>
-                                <td>Approved Message</td>
+                                <td>@GlobalBankingOperations.ApprovedMessage</td>
                                 <td>@Model.ApprovedMessage </td>
                             </tr>
 
 
                             <tr>
-                                <td>Approved Date</td>
+                                <td>@GlobalBankingOperations.ApprovedDate</td>
                                 <td>@Model.ApprovedDate </td>
                             </tr>
                           
@@ -98,11 +98,11 @@
 
                 </div>
                 <div class="card card-action mb-5">
-                    <h5 class="card-header" style="color:red">Your Transaction reversal request Failed. Kindly contact your technical support desk for assistance  </h5>
+                    <h5 class="card-header" style="color:red">@GlobalBankingOperations.YourTransactionReversalRequestFailed.  </h5>
                     <br>
                     <div class="col-12 shift-right">
                         <br>
-                        <button type="submit" class="btn btn-primary click-to-go-back-to-menu" onclick="refreshPageHome()">Back to home. </button>
+                        <button type="submit" class="btn btn-primary click-to-go-back-to-menu" onclick="refreshPageHome()">@GlobalBankingOperations.BackToHome. </button>
 
                     </div>
                     <br>

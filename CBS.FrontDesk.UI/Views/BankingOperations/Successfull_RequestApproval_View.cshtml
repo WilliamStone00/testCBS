@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.TransactionReversalDetailRequestDto
+    @using Resources
 @{
-    ViewBag.Title = "Successfull Transaction reversal request approval";
+    ViewBag.Title = @GlobalBankingOperations.SuccessfullTransactionReversalRequestApproval;
 
 }
 
@@ -19,7 +20,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    <span style="color:forestgreen">Transaction reversal request  with referenceId : @Model.ReferenceId  has been succesfully approved  </span>
+                    <span style="color:forestgreen">@GlobalBankingOperations.TransactionReversalRequestWithReferenceId : @Model.ReferenceId  @GlobalBankingOperations.hasBeenSuccesfullyApproved  </span>
                 </button>
             </h2>
             <div class="card-body">
@@ -29,46 +30,46 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Transaction Reversal Request Details</th>
+                                <th>@GlobalBankingOperations.TransactionReversalRequestDetails</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
 
                             <tr>
-                                <td>Requested Date</td>
+                                <td>@GlobalBankingOperations.RequestedDate</td>
                                 <td>@Model.IssuedDate </td>
                             </tr>
                             <tr>
-                                <td>Request Message</td>
+                                <td>@GlobalBankingOperations.RequestMessage</td>
                                 <td>@Model.RequestMessage </td>
                             </tr>
                             <tr>
-                                <td>Requested By </td>
+                                <td>@GlobalBankingOperations.RequestedBy </td>
                                 <td> @Model.IssuedBy </td>
                             </tr>
                             <tr>
-                                <td>Approved By </td>
+                                <td>@GlobalBankingOperations.ApprovedBy </td>
                                 <td> @Model.ApprovedBy </td>
                             </tr>
                             <tr>
-                                <td>Approved Message</td>
+                                <td>@GlobalBankingOperations.ApprovedMessage</td>
                                 <td>@Model.ApprovedMessage </td>
                             </tr>
 
 
                             <tr>
-                                <td>Approved Date</td>
+                                <td>@GlobalBankingOperations.ApprovedDate</td>
                                 <td>@Model.ApprovedDate </td>
                             </tr>
                             <tr>
-                                <td>Approved Message</td>
+                                <td>@GlobalBankingOperations.ApprovedMessage</td>
                                 <td>@Model.ApprovedMessage </td>
                             </tr>
                             <tr>
 
 
-                                <td> Status</td>
+                                <td> @GlobalBankingOperations.Status</td>
                                 @if (@Model.Status.ToUpper().Equals("PENDING"))
                                 {
                                     <td class="badge bg-label-primary rounded-pill text-uppercase">
@@ -102,24 +103,24 @@
 
                     @if (@Model.Status.ToUpper().Equals("PENDING"))
                     {
-                        <h5 class="card-header">You have just rejected the transaction reversal request issued by @Model.IssuedBy having transaction referenceId:@Model.ReferenceId.</h5>
+                        <h5 class="card-header">@GlobalBankingOperations.YouHaveJustRejectedTheTransactionReversalRequestIssuedBy @Model.IssuedBy @GlobalBankingOperations.havingTransactionReferenceId:@Model.ReferenceId.</h5>
                     }
                     else
                     {
                         if (@Model.Status.ToUpper().Equals("APPROVE"))
                         {
-                            <h5 class="card-header" style="color:forestgreen">You have just the approved transaction reversal request issued by @Model.IssuedBy having referenceId:@Model.ReferenceId</h5>
+                <h5 class="card-header" style="color:forestgreen">@GlobalBankingOperations.YouHaveJustTheApprovedTransactionReversalRequestIssuedBy @Model.IssuedBy @GlobalBankingOperations.HavingReferenceId:@Model.ReferenceId</h5>
 
                         }
                         else
                         {
-                <h5 class="card-header" style="color:firebrick">You have just rejected the transaction reversal request issued by @Model.IssuedBy having referenceId:@Model.ReferenceId.</h5>
+                <h5 class="card-header" style="color:firebrick">@GlobalBankingOperations.YouHaveJustRejectedTheTransactionReversalRequestIssuedBy @Model.IssuedBy @GlobalBankingOperations.HavingReferenceId:@Model.ReferenceId.</h5>
                         }
 
                     }
                     <div class="col-12 shift-right">
 
-                        <a href="/TellerCashDemand/GetAllCashReplenimentRequestData" class="btn btn-primary click-to-go-back-to-menu">Click to view pending transaction reversal request. </a>
+                        <a href="/TellerCashDemand/GetAllCashReplenimentRequestData" class="btn btn-primary click-to-go-back-to-menu">@GlobalBankingOperations.ClickToViewPendingTransactionReversalRequest. </a>
 
 
                     </div>
