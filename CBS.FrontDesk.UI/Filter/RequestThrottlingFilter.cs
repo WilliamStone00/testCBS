@@ -21,10 +21,10 @@ namespace CBS.FrontDesk.UI.Filter
     public class RequestThrottlingFilter : ActionFilterAttribute
     {
 
-        private const int REQUEST_LIMIT = 50;
-        private static readonly TimeSpan TIME_WINDOW = TimeSpan.FromSeconds(20);
-        private static readonly TimeSpan BLOCK_DURATION = TimeSpan.FromMinutes(30);
-        private static readonly MemoryCache RequestCache = MemoryCache.Default;
+        //private const int REQUEST_LIMIT = 100;
+        //private static readonly TimeSpan TIME_WINDOW = TimeSpan.FromSeconds(20);
+        //private static readonly TimeSpan BLOCK_DURATION = TimeSpan.FromMinutes(30);
+        //private static readonly MemoryCache RequestCache = MemoryCache.Default;
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -51,36 +51,36 @@ namespace CBS.FrontDesk.UI.Filter
                     return;
                 }
             }
-            // ✅ Exclude AJAX Requests
-            if (request.IsAjaxRequest())
-            {
-                base.OnActionExecuting(filterContext);
-                return;
-            }
+            //// ✅ Exclude AJAX Requests
+            //if (request.IsAjaxRequest())
+            //{
+            //    base.OnActionExecuting(filterContext);
+            //    return;
+            //}
 
-            // ✅ Check if IP is blocked
-            string blockKey = $"BLOCK_{ipAddress}";
-            if (RequestCache.Contains(blockKey))
-            {
-                filterContext.Result = new HttpStatusCodeResult(429, "Too Many Requests - IP Blocked");
-                return;
-            }
+            //// ✅ Check if IP is blocked
+            //string blockKey = $"BLOCK_{ipAddress}";
+            //if (RequestCache.Contains(blockKey))
+            //{
+            //    filterContext.Result = new HttpStatusCodeResult(429, "Too Many Requests - IP Blocked");
+            //    return;
+            //}
 
-            // ✅ Log the request and update count
-            string requestKey = $"REQ_{ipAddress}";
-            int requestCount = (int)(RequestCache.Get(requestKey) ?? 0);
+            //// ✅ Log the request and update count
+            //string requestKey = $"REQ_{ipAddress}";
+            //int requestCount = (int)(RequestCache.Get(requestKey) ?? 0);
 
-            // ✅ Block further processing if limit exceeded
-            if (requestCount >= REQUEST_LIMIT)
-            {
-                RequestCache.Set(blockKey, true, DateTimeOffset.Now.Add(BLOCK_DURATION));
-                filterContext.Result = new HttpStatusCodeResult(429, "Too Many Requests - You have been blocked.");
-                return;
-            }
+            //// ✅ Block further processing if limit exceeded
+            //if (requestCount >= REQUEST_LIMIT)
+            //{
+            //    RequestCache.Set(blockKey, true, DateTimeOffset.Now.Add(BLOCK_DURATION));
+            //    filterContext.Result = new HttpStatusCodeResult(429, "Too Many Requests - You have been blocked.");
+            //    return;
+            //}
 
-            // ✅ Increment the request count
-            requestCount++;
-            RequestCache.Set(requestKey, requestCount, DateTimeOffset.Now.Add(TIME_WINDOW));
+            //// ✅ Increment the request count
+            //requestCount++;
+            //RequestCache.Set(requestKey, requestCount, DateTimeOffset.Now.Add(TIME_WINDOW));
 
             try
             {

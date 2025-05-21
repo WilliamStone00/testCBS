@@ -1646,6 +1646,7 @@
     <Compile Include="Controllers\AndriodVersioning\AndriodAppVersioningController.cs" />
     <Compile Include="Controllers\BulkOperation\BulkOperationController.cs" />
     <Compile Include="Controllers\ChangeCustomerNumber\ChangeNumberController.cs" />
+    <Compile Include="Controllers\ConnectedUserData\ClientData.cs" />
     <Compile Include="Controllers\SMSP\SMSActivityLogController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectorManagementController.cs" />
     <Compile Include="Controllers\Localization\LocalizationController.cs" />
@@ -1750,7 +1751,7 @@
     <Compile Include="Controllers\TransactionManagement\TellerManagementController.cs" />
     <Compile Include="Controllers\TransactionManagement\TellerProvissioingController.cs" />
     <Compile Include="Controllers\TransactionManagement\TransactionConfigurationController.cs" />
-    <Compile Include="Controllers\UnauthorizedH\ErrorController.cs" />
+    <Compile Include="Controllers\Error\ErrorController.cs" />
     <Compile Include="Controllers\UserManagement\MFAVerificationController.cs" />
     <Compile Include="Controllers\UserManagement\UserManagementController.cs" />
     <Compile Include="DataSet\Accounting\AccountingDataSet.cs">
@@ -1784,6 +1785,7 @@
     <Compile Include="Filter\AuthorizeAttributeEASIMS.cs" />
     <Compile Include="Filter\InputSanitizerAttribute.cs" />
     <Compile Include="Filter\GlobalExceptionFilter.cs" />
+    <Compile Include="Filter\RateLimitingMiddleware.cs" />
     <Compile Include="Filter\RequestThrottlingFilter.cs" />
     <Compile Include="Filter\SessionLockCheckAttribute.cs" />
     <Compile Include="Filter\UserAuditFilter.cs" />
@@ -5046,6 +5048,8 @@
     <Content Include="Scripts\Js\main.js\CashTracker.js" />
     <Content Include="Scripts\Js\main.js\ConnectionMonitor.js" />
     <Content Include="Scripts\Js\main.js\Connection_checker.js" />
+    <Content Include="Scripts\Js\main.js\clientDataAfterLogin.js" />
+    <Content Include="Scripts\Js\main.js\clintLoginData.js" />
     <Content Include="Scripts\Js\main.js\StaticAutomatedJournalEntry.js" />
     <Content Include="Scripts\Js\main.js\Account_Upload.js" />
     <Content Include="Scripts\Js\main.js\Account.js" />

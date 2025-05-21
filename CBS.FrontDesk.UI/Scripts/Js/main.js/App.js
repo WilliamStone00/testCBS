@@ -428,6 +428,27 @@ function calculateBalance() {
     balanceLabel.style.color = balance !== 0 ? "red" : "black";
 }
 
+function collectCurrencyNotes() {
+    return {
+        note10000: parseFloat($('#Notes_note10000').val()),
+        note5000: parseFloat($('#Notes_note5000').val()),
+        note2000: parseFloat($('#Notes_note2000').val()),
+        note1000: parseFloat($('#Notes_note1000').val()),
+        note500: parseFloat($('#Notes_note500').val()),
+        coin500: parseFloat($('#Notes_coin500').val()),
+        coin350: parseFloat($('#Notes_coin350').val()),
+        coin250: parseFloat($('#Notes_coin250').val()),
+        coin200: parseFloat($('#Notes_coin200').val()),
+        coin150: parseFloat($('#Notes_coin150').val()),
+        coin100: parseFloat($('#Notes_coin100').val()),
+        coin50: parseFloat($('#Notes_coin50').val()),
+        coin25: parseFloat($('#Notes_coin25').val()),
+        coin10: parseFloat($('#Notes_coin10').val()),
+        coin5: parseFloat($('#Notes_coin5').val()),
+        coin1: parseFloat($('#Notes_coin1').val())
+    };
+}
+
 function calculateBalanceAmountReceived() {
     // Get the total amount of currency notes and coins
     var note10000 = parseInt(document.getElementById('Notes_note10000_Received').value) || 0;

@@ -217,6 +217,44 @@ namespace BusinessServices
             }
             return true;
         }
+        /// <summary>
+        /// Validates that the sum of denominations in a `BulkDeposit` object matches the entered amount.
+        /// </summary>
+        /// <param name="currencyNotes">The `CurrencyNotes` object containing denomination counts.</param>
+        /// <param name="amount">The entered amount in the `BulkDeposit` object.</param>
+        /// <returns>A tuple containing a boolean indicating validation success and a discrepancy message if any.</returns>
+        public (bool, string) ValidateDenominations(CurrencyNotes currencyNotes, decimal amount)
+        {
+            decimal calculatedAmount =
+                (currencyNotes.note10000 * 10000) +
+                (currencyNotes.note5000 * 5000) +
+                (currencyNotes.note2000 * 2000) +
+                (currencyNotes.note1000 * 1000) +
+                (currencyNotes.note500 * 500) +
+                (currencyNotes.coin500 * 500) +
+                (currencyNotes.coin350 * 350) +
+                (currencyNotes.coin250 * 250) +
+                (currencyNotes.coin200 * 200) +
+                (currencyNotes.coin150 * 150) +
+                (currencyNotes.coin100 * 100) +
+                (currencyNotes.coin50 * 50) +
+                (currencyNotes.coin25 * 25) +
+                (currencyNotes.coin10 * 10) +
+                (currencyNotes.coin5 * 5) +
+                (currencyNotes.coin1 * 1);
+
+            if (calculatedAmount == amount)
+            {
+                return (true, string.Empty);
+            }
+
+            decimal discrepancy = calculatedAmount - amount;
+            string discrepancyType = discrepancy > 0 ? "Excess" : "Shortage";
+            string discrepancyMessage = $"Denomination sum is {discrepancyType} by {Math.Abs(discrepancy):N2}. Entered Amount: {amount:N2}, Calculated Amount: {calculatedAmount:N2}.";
+
+            return (false, discrepancyMessage);
+        }
+
         public static DataTable ConvertToDataTable<T>(T obj, string tableName)
         {
             var table = new DataTable(tableName);

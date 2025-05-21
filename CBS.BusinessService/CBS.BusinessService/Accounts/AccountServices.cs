@@ -643,6 +643,10 @@ namespace CBS.BusinessService.Accounts
             tellerProvioningHistory.OpeningNote1000 = 0;
             tellerProvioningHistory.OpeningNote500 = 0;
             tellerProvioningHistory.OpeningCoin500 = 0;
+            tellerProvioningHistory.OpeningCoin350 = 0;
+            tellerProvioningHistory.OpeningCoin250 = 0;
+            tellerProvioningHistory.OpeningCoin200 = 0;
+            tellerProvioningHistory.OpeningCoin150 = 0;
             tellerProvioningHistory.OpeningCoin100 = 0;
             tellerProvioningHistory.OpeningCoin50 = 0;
             tellerProvioningHistory.OpeningCoin25 = 0;
@@ -657,6 +661,10 @@ namespace CBS.BusinessService.Accounts
             tellerProvioningHistory.ClosingNote1000 = 0;
             tellerProvioningHistory.ClosingNote500 = 0;
             tellerProvioningHistory.ClosingCoin500 = 0;
+            tellerProvioningHistory.ClosingCoin350 = 0;
+            tellerProvioningHistory.ClosingCoin250 = 0;
+            tellerProvioningHistory.ClosingCoin200 = 0;
+            tellerProvioningHistory.ClosingCoin150 = 0;
             tellerProvioningHistory.ClosingCoin100 = 0;
             tellerProvioningHistory.ClosingCoin50 = 0;
             tellerProvioningHistory.ClosingCoin25 = 0;
@@ -664,64 +672,40 @@ namespace CBS.BusinessService.Accounts
             tellerProvioningHistory.ClosingCoin5 = 0;
             tellerProvioningHistory.ClosingCoin1 = 0;
 
-            // Optionally reset other denomination-related properties if needed
             return tellerProvioningHistory;
         }
 
+
         public CloseOfDayRequest Mapper(TellerProvioningHistory history, bool isOpen)
         {
-            if (isOpen)
+            var currencyNotes = new CurrencyNotes
             {
-                var data = new CloseOfDayRequest
-                {
-                    Amount = history.CashAtHand,
-                    CashAtHand = history.CashAtHand,
-                    ClossedStatus = history.ClossedStatus,
-                    Comment = history.SubTellerComment,
-                    CurrencyNotes = new CurrencyNotes
-                    {
-                        coin1 = history.OpeningCoin1,
-                        coin10 = history.OpeningCoin10,
-                        coin100 = history.OpeningCoin100,
-                        coin25 = history.OpeningCoin25,
-                        coin5 = history.OpeningCoin5,
-                        coin50 = history.OpeningCoin50,
-                        coin500 = history.OpeningCoin500,
-                        note1000 = history.OpeningNote1000,
-                        note10000 = history.OpeningNote10000,
-                        note2000 = history.OpeningNote2000,
-                        note500 = history.OpeningNote500,
-                        note5000 = history.OpeningNote5000
-                    },
-                };
-                return data;
-            }
-            else
+                coin1 = isOpen ? history.OpeningCoin1 : history.ClosingCoin1,
+                coin5 = isOpen ? history.OpeningCoin5 : history.ClosingCoin5,
+                coin10 = isOpen ? history.OpeningCoin10 : history.ClosingCoin10,
+                coin25 = isOpen ? history.OpeningCoin25 : history.ClosingCoin25,
+                coin50 = isOpen ? history.OpeningCoin50 : history.ClosingCoin50,
+                coin100 = isOpen ? history.OpeningCoin100 : history.ClosingCoin100,
+                coin150 = isOpen ? history.OpeningCoin150 : history.ClosingCoin150,
+                coin200 = isOpen ? history.OpeningCoin200 : history.ClosingCoin200,
+                coin250 = isOpen ? history.OpeningCoin250 : history.ClosingCoin250,
+                coin350 = isOpen ? history.OpeningCoin350 : history.ClosingCoin350,
+                coin500 = isOpen ? history.OpeningCoin500 : history.ClosingCoin500,
+                note500 = isOpen ? history.OpeningNote500 : history.ClosingNote500,
+                note1000 = isOpen ? history.OpeningNote1000 : history.ClosingNote1000,
+                note2000 = isOpen ? history.OpeningNote2000 : history.ClosingNote2000,
+                note5000 = isOpen ? history.OpeningNote5000 : history.ClosingNote5000,
+                note10000 = isOpen ? history.OpeningNote10000 : history.ClosingNote10000
+            };
+
+            return new CloseOfDayRequest
             {
-                var data = new CloseOfDayRequest
-                {
-                    Amount = history.CashAtHand,
-                    CashAtHand = history.CashAtHand,
-                    ClossedStatus = history.ClossedStatus,
-                    Comment = history.SubTellerComment,
-                    CurrencyNotes = new CurrencyNotes
-                    {
-                        coin1 = history.ClosingCoin1,
-                        coin10 = history.ClosingCoin10,
-                        coin100 = history.ClosingCoin100,
-                        coin25 = history.ClosingCoin25,
-                        coin5 = history.ClosingCoin5,
-                        coin50 = history.ClosingCoin50,
-                        coin500 = history.ClosingCoin500,
-                        note1000 = history.ClosingNote1000,
-                        note10000 = history.ClosingNote10000,
-                        note2000 = history.ClosingNote2000,
-                        note500 = history.ClosingNote500,
-                        note5000 = history.ClosingNote5000
-                    },
-                };
-                return data;
-            }
+                Amount = history.CashAtHand,
+                CashAtHand = history.CashAtHand,
+                ClossedStatus = history.ClossedStatus,
+                Comment = history.SubTellerComment,
+                CurrencyNotes = currencyNotes
+            };
         }
         public async Task<List<TransactionHistory>> GetCustomerTransactionsByAccountNumber(string accountNumber)
         {
@@ -831,6 +815,11 @@ namespace CBS.BusinessService.Accounts
                     Note10000 = t.currencyNote.note10000,
                     Coin500 = t.currencyNote.coin500,
                     Coin100 = t.currencyNote.coin100,
+                    Coin150 = t.currencyNote.coin150,
+                    Coin200 = t.currencyNote.coin200,
+                    Coin250 = t.currencyNote.coin250,
+                    Coin350 = t.currencyNote.coin350,
+
                     FeeType = t.FeeType,
                     OriginalDepositAmount = t.OriginalDepositAmount,
                     HeadOfficeAddress = b.Bank.Address,
@@ -932,6 +921,11 @@ namespace CBS.BusinessService.Accounts
                         Coin500 = t.currencyNote.coin500,
                         Coin100 = t.currencyNote.coin100,
                         FeeType = t.FeeType,
+                        Coin150 = t.currencyNote.coin150,
+                        Coin200 = t.currencyNote.coin200,
+                        Coin250 = t.currencyNote.coin250,
+                        Coin350 = t.currencyNote.coin350,
+
                         OriginalDepositAmount = t.OriginalDepositAmount,
                         HeadOfficeAddress = b.Bank.Address,
                         HeadOfficeInitial = b.Bank.BankInitial,

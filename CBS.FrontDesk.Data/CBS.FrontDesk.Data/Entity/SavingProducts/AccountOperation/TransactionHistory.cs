@@ -241,6 +241,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public virtual Teller Teller { get; set; }
         public string InitialPrinting { get; set; }
         public bool IsPrimaryTeller { get; set; }
+
         // Opening Notes and Coins Counts
         public int OpeningNote10000 { get; set; }
         public int OpeningNote5000 { get; set; }
@@ -248,6 +249,10 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public int OpeningNote1000 { get; set; }
         public int OpeningNote500 { get; set; }
         public int OpeningCoin500 { get; set; }
+        public int OpeningCoin350 { get; set; }
+        public int OpeningCoin250 { get; set; }
+        public int OpeningCoin200 { get; set; }
+        public int OpeningCoin150 { get; set; }
         public int OpeningCoin100 { get; set; }
         public int OpeningCoin50 { get; set; }
         public int OpeningCoin25 { get; set; }
@@ -262,6 +267,10 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public int ClosingNote1000 { get; set; }
         public int ClosingNote500 { get; set; }
         public int ClosingCoin500 { get; set; }
+        public int ClosingCoin350 { get; set; }
+        public int ClosingCoin250 { get; set; }
+        public int ClosingCoin200 { get; set; }
+        public int ClosingCoin150 { get; set; }
         public int ClosingCoin100 { get; set; }
         public int ClosingCoin50 { get; set; }
         public int ClosingCoin25 { get; set; }
@@ -276,6 +285,10 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public decimal OpeningTotal1000 => OpeningNote1000 * 1000;
         public decimal OpeningTotal500 => OpeningNote500 * 500;
         public decimal OpeningTotalCoin500 => OpeningCoin500 * 500;
+        public decimal OpeningTotalCoin350 => OpeningCoin350 * 350;
+        public decimal OpeningTotalCoin250 => OpeningCoin250 * 250;
+        public decimal OpeningTotalCoin200 => OpeningCoin200 * 200;
+        public decimal OpeningTotalCoin150 => OpeningCoin150 * 150;
         public decimal OpeningTotalCoin100 => OpeningCoin100 * 100;
         public decimal OpeningTotalCoin50 => OpeningCoin50 * 50;
         public decimal OpeningTotalCoin25 => OpeningCoin25 * 25;
@@ -290,27 +303,30 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         public decimal ClosingTotal1000 => ClosingNote1000 * 1000;
         public decimal ClosingTotal500 => ClosingNote500 * 500;
         public decimal ClosingTotalCoin500 => ClosingCoin500 * 500;
+        public decimal ClosingTotalCoin350 => ClosingCoin350 * 350;
+        public decimal ClosingTotalCoin250 => ClosingCoin250 * 250;
+        public decimal ClosingTotalCoin200 => ClosingCoin200 * 200;
+        public decimal ClosingTotalCoin150 => ClosingCoin150 * 150;
         public decimal ClosingTotalCoin100 => ClosingCoin100 * 100;
         public decimal ClosingTotalCoin50 => ClosingCoin50 * 50;
         public decimal ClosingTotalCoin25 => ClosingCoin25 * 25;
         public decimal ClosingTotalCoin10 => ClosingCoin10 * 10;
         public decimal ClosingTotalCoin5 => ClosingCoin5 * 5;
         public decimal ClosingTotalCoin1 => ClosingCoin1 * 1;
-        public bool HasError { get; set; }
-        public string ErrorMessage { get; set; }
+
         // Total Opening and Closing Amounts
         public decimal TotalOpeningAmount =>
             OpeningTotal10000 + OpeningTotal5000 + OpeningTotal2000 + OpeningTotal1000 + OpeningTotal500 +
-            OpeningTotalCoin500 + OpeningTotalCoin100 + OpeningTotalCoin50 + OpeningTotalCoin25 +
-            OpeningTotalCoin10 + OpeningTotalCoin5 + OpeningTotalCoin1;
+            OpeningTotalCoin500 + OpeningTotalCoin350 + OpeningTotalCoin250 + OpeningTotalCoin200 + OpeningTotalCoin150 +
+            OpeningTotalCoin100 + OpeningTotalCoin50 + OpeningTotalCoin25 + OpeningTotalCoin10 +
+            OpeningTotalCoin5 + OpeningTotalCoin1;
 
         public decimal TotalClosingAmount =>
             ClosingTotal10000 + ClosingTotal5000 + ClosingTotal2000 + ClosingTotal1000 + ClosingTotal500 +
-            ClosingTotalCoin500 + ClosingTotalCoin100 + ClosingTotalCoin50 + ClosingTotalCoin25 +
-            ClosingTotalCoin10 + ClosingTotalCoin5 + ClosingTotalCoin1;
-
+            ClosingTotalCoin500 + ClosingTotalCoin350 + ClosingTotalCoin250 + ClosingTotalCoin200 + ClosingTotalCoin150 +
+            ClosingTotalCoin100 + ClosingTotalCoin50 + ClosingTotalCoin25 + ClosingTotalCoin10 +
+            ClosingTotalCoin5 + ClosingTotalCoin1;
     }
-
     public class PrimaryTellerProvisioningHistory
     {
 
