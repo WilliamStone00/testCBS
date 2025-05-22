@@ -5,6 +5,7 @@ using CBS.BusinessService.Config;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Service;
+using CBS.FrontDesk.UI.Controllers.ErrorHandler;
 using CBS.FrontDesk.UI.Filter;
 using CBS.FrontDesk.UI.Filters;
 using DocumentFormat.OpenXml.Spreadsheet;
@@ -157,29 +158,50 @@ namespace CBS.FrontDesk.UI
         //    }
         //}
 
-
         protected void Application_PreSendRequestHeaders()
         {
             // 🔄 Remove existing headers not removed by <remove> in web.config
             Response.Headers.Remove("Server");
             Response.Headers.Remove("X-AspNet-Version");
-            Response.Headers.Add("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+
             // 🛡️ Add branding (not security-sensitive)
             Response.Headers.Add("Server", "SERVER FLUX TSC");
-            Response.Headers.Add("X-Powered-By", "FLUXSAL CAMEROON"); // Only if you're OK showing brand
+            Response.Headers.Add("X-Powered-By", "FLUXSAL CAMEROON");
 
-            // ✅ These are already defined in web.config, so DO NOT add them again:
-            // • Strict-Transport-Security
-            // • X-Frame-Options
-            // • X-Content-Type-Options
-            // • X-XSS-Protection
+            // ✅ Strict-Transport-Security (Already configured in web.config, included for redundancy)
+            Response.Headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
 
-            // 🔒 Additional secure headers (not present in web.config)
+            // ✅ Content Security Policy (CSP)
+            string contentSecurityPolicy = "default-src 'self'; " +
+                                           "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+                                           "connect-src 'self' https://localhost:44346; " +
+                                           "img-src 'self' data:; " +
+                                           "style-src 'self' 'unsafe-inline'; " +
+                                           "frame-src 'self'; " +
+                                           "font-src 'self';";
+
+            if (!Response.Headers.AllKeys.Contains("Content-Security-Policy"))
+                Response.Headers.Add("Content-Security-Policy", contentSecurityPolicy);
+
+            // ✅ Referrer-Policy
             if (!Response.Headers.AllKeys.Contains("Referrer-Policy"))
                 Response.Headers.Add("Referrer-Policy", "no-referrer");
 
+            // ✅ Permissions Policy
             if (!Response.Headers.AllKeys.Contains("Permissions-Policy"))
                 Response.Headers.Add("Permissions-Policy", "geolocation=(), microphone=(), camera=(), payment=()");
+
+            // ✅ X-Frame-Options (Prevent Clickjacking)
+            if (!Response.Headers.AllKeys.Contains("X-Frame-Options"))
+                Response.Headers.Add("X-Frame-Options", "DENY");
+
+            // ✅ X-Content-Type-Options (Prevent MIME Sniffing)
+            if (!Response.Headers.AllKeys.Contains("X-Content-Type-Options"))
+                Response.Headers.Add("X-Content-Type-Options", "nosniff");
+
+            // ✅ X-XSS-Protection (Cross-Site Scripting Protection)
+            if (!Response.Headers.AllKeys.Contains("X-XSS-Protection"))
+                Response.Headers.Add("X-XSS-Protection", "1; mode=block");
 
             // 🍪 Secure cookies with best practices
             foreach (var cookieKey in Response.Cookies.AllKeys)
@@ -192,6 +214,41 @@ namespace CBS.FrontDesk.UI
                 cookie.SameSite = SameSiteMode.Strict; // CSRF protection
             }
         }
+
+        //protected void Application_PreSendRequestHeaders()
+        //{
+        //    // 🔄 Remove existing headers not removed by <remove> in web.config
+        //    Response.Headers.Remove("Server");
+        //    Response.Headers.Remove("X-AspNet-Version");
+        //    Response.Headers.Add("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+        //    // 🛡️ Add branding (not security-sensitive)
+        //    Response.Headers.Add("Server", "SERVER FLUX TSC");
+        //    Response.Headers.Add("X-Powered-By", "FLUXSAL CAMEROON"); // Only if you're OK showing brand
+
+        //    // ✅ These are already defined in web.config, so DO NOT add them again:
+        //    // • Strict-Transport-Security
+        //    // • X-Frame-Options
+        //    // • X-Content-Type-Options
+        //    // • X-XSS-Protection
+
+        //    // 🔒 Additional secure headers (not present in web.config)
+        //    if (!Response.Headers.AllKeys.Contains("Referrer-Policy"))
+        //        Response.Headers.Add("Referrer-Policy", "no-referrer");
+
+        //    if (!Response.Headers.AllKeys.Contains("Permissions-Policy"))
+        //        Response.Headers.Add("Permissions-Policy", "geolocation=(), microphone=(), camera=(), payment=()");
+
+        //    // 🍪 Secure cookies with best practices
+        //    foreach (var cookieKey in Response.Cookies.AllKeys)
+        //    {
+        //        var cookie = Response.Cookies[cookieKey];
+        //        if (cookie == null) continue;
+
+        //        cookie.Secure = true; // HTTPS only
+        //        cookie.HttpOnly = true; // No access from JS
+        //        cookie.SameSite = SameSiteMode.Strict; // CSRF protection
+        //    }
+        //}
 
         protected void Application_AuthenticateRequest(Object sender, EventArgs e)
         {
@@ -217,6 +274,39 @@ namespace CBS.FrontDesk.UI
                 Response.End();
             }
         }
+        //protected void Application_Error(object sender, EventArgs e)
+        //{
+        //    var exception = Server.GetLastError();
+        //    Response.Clear();
+        //    Server.ClearError();
+
+        //    var httpException = exception as HttpException;
+        //    int statusCode = httpException != null ? httpException.GetHttpCode() : 500;
+
+        //    // Handle Missing Resources Separately
+        //    if (statusCode == 404 && HttpContext.Current.Request.Url.ToString().Contains("/Scripts/"))
+        //    {
+        //        Response.StatusCode = 404;
+        //        Response.End();
+        //        return;
+        //    }
+
+        //    var routeData = new System.Web.Routing.RouteData();
+        //    routeData.Values["controller"] = "Error";
+        //    routeData.Values["action"] = "Index";
+        //    routeData.Values["statusCode"] = statusCode;
+        //    routeData.Values["message"] = exception.Message;
+        //    routeData.Values["stackTrace"] = exception.StackTrace;
+
+        //    // Set the response status code
+        //    Response.StatusCode = statusCode;
+
+        //    // Pass error details to the Error View
+        //    IController errorController = new ErrorController();
+        //    var rc = new RequestContext(new HttpContextWrapper(Context), routeData);
+        //    errorController.Execute(rc);
+        //}
+
 
         //protected void Application_Error(object sender, EventArgs e)
         //{
