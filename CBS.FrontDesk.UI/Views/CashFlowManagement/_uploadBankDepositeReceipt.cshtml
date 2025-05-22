@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
-
+@using Resources
 <div class="card-body">
 
 
@@ -19,14 +19,14 @@
         <input type="hidden" name="ServiceOption" value="UploadBankDepositReceipt" id="ServiceOption" />
 
         <fieldset class="fieldset-custom">
-            <legend id="select_base">Bank Deposit Reciept Identification</legend>
+            <legend id="select_base">@GlobalCashFlowManagement.BankDepositRecieptIdentification</legend>
             <div class="row">
                 <div class="col-md-6 mb-sm-4">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.UploadBankReciept.BankTransactionReference, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.UploadBankReciept.BankTransactionReference, "", new { @class = "text-danger" })
 
-                        <label for="Amount"> Bank Transaction Reference</label>
+                        <label for="Amount"> @GlobalCashFlowManagement.BankTransactionReference</label>
                     </div>
                 </div>
                 <div class="col-md-6 mb-sm-4">
@@ -35,7 +35,7 @@
                         @Html.TextBoxFor(model => model.UploadBankReciept.ValueDate, new { @class = "form-control date-picker", @type = "datetime-local", @id = "html5-datetime-local-input" })
                         @Html.ValidationMessageFor(model => model.UploadBankReciept.ValueDate, "", new { @class = "text-danger" })
 
-                        <label for="ValueDate">Date Of Bank CashOut</label>
+                        <label for="ValueDate">@GlobalCashFlowManagement.DateOfBankCashOut</label>
                     </div>
 
                 </div>
@@ -48,7 +48,7 @@
                         @Html.ValidationMessageFor(model => model.UploadBankReciept.Description, "", new { @class = "text-danger" })
 
 
-                        <label>Naration</label>
+                        <label>@GlobalCashFlowManagement.Naration</label>
                     </div>
                 </div>
                 <div class="col-md-6 mb-sm-4">
@@ -57,7 +57,7 @@
                             <img src="@Url.Content(Model.UploadBankReciept.FileUpload)" alt="No Image Found" id="previewimage" class="img-fluid" />
                         </div>
                         <label for="imageuploadSignature" class="custom-file-upload">
-                            <i class="fas fa-cloud-upload-alt"></i> Choose Photo
+                            <i class="fas fa-cloud-upload-alt"></i> @GlobalCashFlowManagement.ChoosePhoto
                         </label>
                         <input type="file" name="UploadBankReciept.UploadedFile" accept="image/jpeg,image/png,image/JPG" id="imageuploadSignature" onchange="ShowImagePreview(this, document.getElementById('previewimage'))" />
                     </div>
@@ -65,7 +65,7 @@
             </div>
         </fieldset>
         <div class="col-12 text-end">
-            <button type="submit" class="btn btn-primary me-2" id="btnSave">Validate</button>
+            <button type="submit" class="btn btn-primary me-2" id="btnSave">@GlobalShared.Validate</button>
             <input type="hidden" name="Action" value="insert" id="Action" />
 
         </div>

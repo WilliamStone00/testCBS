@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+    @using Resources
 @{
-    ViewBag.Title = "Successfull_RequestApproval_View";
+    ViewBag.Title = @GlobalCashFlowManagement.Successfull_RequestApproval_View;
 
 }
 
@@ -17,7 +18,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    Request ReferenceId : @Model.CashReplenimentRequest.Id
+                    @GlobalCashFlowManagement.RequestReferenceId : @Model.CashReplenimentRequest.Id
                 </button>
             </h2>
             <div class="card-body">
@@ -27,25 +28,25 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Cash Replenishment Details</th>
+                                <th>@GlobalCashFlowManagement.CashReplenishmentDetails</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
                             <tr>
-                                <td>Daily Operation Reference </td>
+                                <td>@GlobalCashFlowManagement.DailyOperationReference </td>
                                 <td>@Model.CashReplenimentRequest.CurrentOpenOfDayHistoryId </td>
                             </tr>
                             <tr>
-                                <td>Amount Requested</td>
+                                <td>@GlobalCashFlowManagement.AmountRequested</td>
                                 <td>XAF @Model.CashReplenimentRequest.AmountRequested.ToString("N") </td>
                             </tr>
                             <tr>
-                                <td>Request Message</td>
+                                <td>@GlobalCashFlowManagement.RequestMessage</td>
                                 <td>@Model.CashReplenimentRequest.RequestMessage </td>
                             </tr>
                             <tr>
-                                <td>Requested By </td>
+                                <td>@GlobalCashFlowManagement.RequestedBy </td>
                                 <td> @Model.CashReplenimentRequest.IssuedBy </td>
                             </tr>
                             <tr>
@@ -53,7 +54,7 @@
                                 <td>@Model.CashReplenimentRequest.IssuedDate </td>
                             </tr>
                             <tr>
-                                <td> Status</td>
+                                <td> @GlobalCashFlowManagement.Status</td>
                                 @if (@Model.CashReplenimentRequest.IsApproved)
                                 {
                                     <td class="badge bg-label-success rounded-pill text-uppercase">
@@ -84,7 +85,7 @@
                 <div class="card card-action mb-5">
                     @if (@Model.CashReplenimentRequest.IsApproved)
                     {
-                        <h5 class="card-header" style="color:forestgreen">You have just approved cash replenishment request of XAF @Model.CashReplenimentRequest.AmountRequested.ToString("N") Issued by @Model.CashReplenimentRequest.IssuedBy on @Model.CashReplenimentRequest.IssuedDate successfully.</h5>
+                        <h5 class="card-header" style="color:forestgreen">@GlobalCashFlowManagement.YouHaveJustApprovedCashReplenishment @Model.CashReplenimentRequest.AmountRequested.ToString("N") @GlobalCashFlowManagement.IssuedBy @Model.CashReplenimentRequest.IssuedBy @GlobalCashFlowManagement.On @Model.CashReplenimentRequest.IssuedDate @GlobalCashFlowManagement.Successfully.</h5>
 
 
                     }
@@ -94,19 +95,19 @@
                         if (@Model.CashReplenimentRequest.Status.ToUpper().Equals("PENDING"))
                         {
                 <td class="badge bg-label-primary rounded-pill text-uppercase">
-                    <h5 class="card-header" style="color:firebrick">You have just rejected the cash replenishment request of XAF @Model.CashReplenimentRequest.AmountRequested.ToString("N") Issued by @Model.CashReplenimentRequest.IssuedBy on @Model.CashReplenimentRequest.IssuedDate successfully.</h5>
+                    <h5 class="card-header" style="color:firebrick">@GlobalCashFlowManagement.YouHaveJustRejectedTheCashReplenishment @Model.CashReplenimentRequest.AmountRequested.ToString("N") @GlobalCashFlowManagement.IssuedBy @Model.CashReplenimentRequest.IssuedBy @GlobalCashFlowManagement.On @Model.CashReplenimentRequest.IssuedDate @GlobalCashFlowManagement.Successfully.</h5>
 
                 </td>
                         }
                         else
                         {
-                            <h5 class="card-header" style="color:firebrick">You have just rejected the cash replenishment request of XAF @Model.CashReplenimentRequest.AmountRequested.ToString("N") Issued by @Model.CashReplenimentRequest.IssuedBy on @Model.CashReplenimentRequest.IssuedDate successfully.</h5>
+                <h5 class="card-header" style="color:firebrick">@GlobalCashFlowManagement.YouHaveJustRejectedTheCashReplenishment @Model.CashReplenimentRequest.AmountRequested.ToString("N") @GlobalCashFlowManagement.IssuedBy @Model.CashReplenimentRequest.IssuedBy @GlobalCashFlowManagement.On @Model.CashReplenimentRequest.IssuedDate @GlobalCashFlowManagement.Successfully.</h5>
 
                         }
                     }
                     <div class="col-12 shift-right">
 
-                        <button type="submit" class="btn btn-primary click-to-go-back-to-menu" onclick="refreshPage()">Click to view pending cash replenishment request. </button>
+                        <button type="submit" class="btn btn-primary click-to-go-back-to-menu" onclick="refreshPage()">@GlobalCashFlowManagement.ClickToViewPendingCashReplenishmentRequest. </button>
 
 
                     </div>

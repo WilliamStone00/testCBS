@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CashChangeManagement.CashChangeHistory
+    @using Resources
 @{
-    ViewBag.Title = "Denomination Change Management";
+    ViewBag.Title = @GlobalCashChangeManagement.DenominationChangeManagement;
 }
 <div class="row">
     <div class="col-12">
@@ -8,10 +9,10 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cash-register me-2"></i>@ViewBag.Context Denomination Change Management
+                    <i class="mdi mdi-cash-register me-2"></i>@ViewBag.Context @GlobalCashChangeManagement.DenominationChangeManagement
                 </h1>
                 <p class="card-text text-muted">
-                    Manage denominations efficiently for @ViewBag.Context operations in your branch. Use the options below to update or review denominations.
+                    @GlobalCashChangeManagement.ManageDenominationsEfficientlyFor @ViewBag.Context @GlobalCashChangeManagement.OperationsInYourBranchUseTheOptions.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -22,7 +23,7 @@
 <!-- Tips Card -->
 <div class="card mb-1">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalCashChangeManagement.TIPS</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDenominationTips" aria-expanded="false" aria-controls="collapseDenominationTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -30,10 +31,10 @@
     <div id="collapseDenominationTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure all denomination inputs are accurate before submission.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use numeric values only for denominations and quantities.</li>
-                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Denominations can only be updated by authorized personnel.</li>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Double-check totals to match the required amounts.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalCashChangeManagement.EnsureAllDenominationInputsAreAccurate.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalCashChangeManagement.UseNumericValuesOnlyForDenominations.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalCashChangeManagement.DenominationsCanOnlyBeUpdated.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalCashChangeManagement.DoubleCheckTotalsToMatchTheRequiredAmounts.</li>
             </ul>
         </div>
     </div>
@@ -46,7 +47,7 @@
                 <div class="accordion-item active">
                     <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconDenominations">
                         <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionPopoutIcon-Denominations" aria-expanded="true" aria-controls="accordionPopoutIcon-Denominations">
-                            <i class="mdi mdi-cash-multiple me-2"></i> @ViewBag.Context.ToUpper() MANAGEMENT OF DENOMINATIONS
+                            <i class="mdi mdi-cash-multiple me-2"></i> @ViewBag.Context.ToUpper() @GlobalCashChangeManagement.MANAGEMENTOFDENOMINATIONS
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-Denominations" class="accordion-collapse collapse show" data-bs-parent="#accordionPopoutIcon">

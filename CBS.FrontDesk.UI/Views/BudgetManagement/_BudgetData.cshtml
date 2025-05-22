@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.BudgetConfiguration
+    @using Resources
 @{
-    ViewBag.Title = "_BudgetData";
+    ViewBag.Title = @GlobalBudgetManagement.BudgetData;
 }
 
 
@@ -8,11 +9,11 @@
     <table class="table table-hover" id="myDataTable_BudgetData">
         <thead class="table-light">
             <tr>
-                <th>Budget Code</th>
-                <th>Organization Unit</th>
-                <th>Budget</th>
+                <th>@GlobalBudgetManagement.BudgetCode</th>
+                <th>@GlobalBudgetManagement.OrganizationUnit</th>
+                <th>@GlobalBudgetManagement.Budget</th>
  
-                <th>Action</th>
+                <th>@GlobalBudgetManagement.Action</th>
             </tr>
         </thead>
         <tbody>
@@ -24,11 +25,11 @@
                     <td style="width:25%">@d.TotalBudgetAmount.ToString("N")</td>
                   
                     <td style="width:30%">
-                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_Budget','_CreateBudget','update','BudgetManagement','budget')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.BudgetPeriodId to edit">Edit</a>|
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_Budget','_CreateBudget','update','BudgetManagement','budget')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.BudgetPeriodId @GlobalShared.ToEdit">@GlobalShared.Edit</a>|
 
-                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Details @d.BudgetPeriodId" onclick="ViewDataDetails('BudgetManagement','@d.Id','myDataTable_BudgetData','_BudgetData',0,'datalistingview_Budget','budget')">Details</a>|
+                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Details @d.BudgetPeriodId" onclick="ViewDataDetails('BudgetManagement','@d.Id','myDataTable_BudgetData','_BudgetData',0,'datalistingview_Budget','budget')">@GlobalShared.Details</a>|
 
-                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.BudgetPeriodId" onclick="DeleteDataConfiguration('BudgetManagement','@d.Id','myDataTable_BudgetData','_BudgetData',0,'datalistingview_Budget','budget')">Delete</a>
+                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.BudgetPeriodId" onclick="DeleteDataConfiguration('BudgetManagement','@d.Id','myDataTable_BudgetData','_BudgetData',0,'datalistingview_Budget','budget')">@GlobalShared.Delete</a>
                     </td>
                 </tr>
             }

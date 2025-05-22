@@ -77,8 +77,14 @@
 </head>
 <body>
     @{
-        string bankName = Session["BankName"]?.ToString(); // Check if Session["BankName"] is null
+        string bankName = "Bank Name Not Available";
+
+        if (Session != null && Session["BranchName"] != null)
+        {
+            bankName = Session["BranchName"].ToString();
+        }
     }
+
     <div class="header">
         <!-- Header Content Goes Here -->
         <h1>T R U S T S O F T C R E D I T - ERROR PAGE</h1>

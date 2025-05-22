@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.Accounting.TransactionReversalDetailRequestDto>
+    @using Resources
 @{
-    ViewBag.Title = "Transaction Reversal Detail Data";
+    ViewBag.Title = @GlobalBankingOperations.TransactionReversalDetailData;
 
 }
 <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
@@ -15,7 +16,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-bank-plus me-2"></i>
-               ACCOUNTING TRANSACTION REVERSAL REQUEST.
+                @GlobalBankingOperations.ACCOUNTINGTRANSACTIONREVERSALREQUEST.
             </button>
         </h2>
         <div id="accordionPopoutIcon-3"
@@ -24,17 +25,17 @@
             <div class="accordion-body">
                 <div id="mainviewChange">
                     <div class="change-group">
-                        <h2>List Of Transaction Reversal Request</h2>
+                        <h2>@GlobalBankingOperations.ListOfTransactionReversalRequest</h2>
 
                         <table class="table table-hover" id="ListOfTransactionReversalRequestData">
                             <thead class="table-light">
                                 <tr>
-                                    <th>ReferenceId</th>
-                                    <th>RequestMessage</th>
-                                    <th>IssuedBy</th>
-                                    <th>IssuedDate</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th>@GlobalBankingOperations.ReferenceId</th>
+                                    <th>@GlobalBankingOperations.RequestMessage</th>
+                                    <th>@GlobalBankingOperations.IssuedBy</th>
+                                    <th>@GlobalBankingOperations.IssuedDate</th>
+                                    <th>@GlobalBankingOperations.Status</th>
+                                    <th>@GlobalBankingOperations.Action</th>
                                 </tr>
                             </thead>
                             <tbody>

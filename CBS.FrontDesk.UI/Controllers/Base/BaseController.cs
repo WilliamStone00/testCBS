@@ -225,115 +225,117 @@ namespace CBS.FrontDesk.UI.Controllers
         //    }
         //}
 
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            try
-            {
-                var actionName = filterContext.ActionDescriptor.ActionName.ToLower();
-                var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName.ToLower();
-                var requestUrl = filterContext.HttpContext.Request.RawUrl.ToLower();
-                bool isAuthenticated = User.Identity.IsAuthenticated;
+        //////protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        //////{
+        //////    try
+        //////    {
+        //////        var actionName = filterContext.ActionDescriptor.ActionName.ToLower();
+        //////        var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName.ToLower();
+        //////        var requestUrl = filterContext.HttpContext.Request.RawUrl.ToLower();
+        //////        bool isAuthenticated = User.Identity.IsAuthenticated;
+        //////        bool isAjaxRequest = filterContext.HttpContext.Request.IsAjaxRequest();
 
-                // ✅ 1. INTERNET CHECK (Exclude NoInternet and Home/Index to prevent looping)
-                if (!actionName.Equals("nointernet") && !actionName.Equals("index") && !controllerName.Equals("home"))
-                {
-                    if (!IsInternetAvailable())
-                    {
-                        filterContext.Result = new RedirectResult("~/Home/NoInternet");
-                        return;
-                    }
-                }
+        //////        // ✅ 1. INTERNET CHECK (Exclude NoInternet and Home/Index to prevent looping)
+        //////        if (!actionName.Equals("nointernet") && !actionName.Equals("index") && !controllerName.Equals("home"))
+        //////        {
+        //////            if (!IsInternetAvailable())
+        //////            {
+        //////                filterContext.Result = new RedirectResult("~/Home/NoInternet");
+        //////                return;
+        //////            }
+        //////        }
 
-                // ✅ 2. AUTHENTICATION CHECK
-                if (Session["UserID"] == null)
-                {
-                    if (isAuthenticated)
-                    {
-                        // Attempt to rebuild session if user is authenticated but session data is missing
-                        GetUserSession();
+        //////        // ✅ 2. AUTHENTICATION CHECK
+        //////        if (Session["UserID"] == null)
+        //////        {
+        //////            if (isAuthenticated)
+        //////            {
+        //////                // If not AJAX, attempt to rebuild session
+        //////                if (!isAjaxRequest)
+        //////                {
+        //////                    GetUserSession();
+        //////                    // Recheck the session after rebuilding
+        //////                    if (Session["UserID"] == null)
+        //////                    {
+        //////                        filterContext.Result = new RedirectResult("~/Authentication/Login");
+        //////                        return;
+        //////                    }
+        //////                }
 
-                        // Recheck the session after rebuilding
-                        if (Session["UserID"] == null)
-                        {
-                            filterContext.Result = new RedirectResult("~/Authentication/Login");
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        //filterContext.Result = new RedirectResult("~/Authentication/Login");
-                        return;
-                    }
-                }
-                else
-                {
+              
+        //////            }
+        //////            else
+        //////            {
+        //////                return;
+        //////            }
+        //////        }
+        //////        else
+        //////        {
+        //////            // ✅ 3. SESSION VALIDATION (Rebuilding session if required)
+        //////            if (isAuthenticated && !isAjaxRequest)
+        //////            {
+        //////                GetUserSession();
+        //////            }
+        //////        }
 
-                    // ✅ 3. SESSION VALIDATION (Rebuilding session if required)
-                    if (isAuthenticated)
-                    {
-                        GetUserSession();
-                    }
-                }
+        //////        // ✅ 4. MFA ENFORCEMENT
+        //////        if (isAuthenticated && VerifyIfSessionExist("MFA"))
+        //////        {
+        //////            if (!requestUrl.Contains("/mfaverification") && !requestUrl.Contains("/authentication/logout"))
+        //////            {
+        //////                string mfaUrl = Session["MFAUrl"]?.ToString();
+        //////                if (!string.IsNullOrEmpty(mfaUrl))
+        //////                {
+        //////                    filterContext.Result = new RedirectResult(mfaUrl);
+        //////                    return;
+        //////                }
+        //////            }
+        //////        }
 
-                // ✅ 4. MFA ENFORCEMENT
-                if (isAuthenticated && VerifyIfSessionExist("MFA"))
-                {
-                    if (!requestUrl.Contains("/mfaverification") && !requestUrl.Contains("/authentication/logout"))
-                    {
-                        string mfaUrl = Session["MFAUrl"]?.ToString();
-                        if (!string.IsNullOrEmpty(mfaUrl))
-                        {
-                            filterContext.Result = new RedirectResult(mfaUrl);
-                            return;
-                        }
-                    }
-                }
+        //////        // ✅ 5. PASSWORD CHANGE ENFORCEMENT
+        //////        if (isAuthenticated && VerifyIfSessionExist("PWD"))
+        //////        {
+        //////            if (!requestUrl.Contains("/usermanagement/floginchangepassword") && !requestUrl.Contains("/authentication/logout"))
+        //////            {
+        //////                string pwdUrl = Session["CHPWDUrl"]?.ToString();
+        //////                if (!string.IsNullOrEmpty(pwdUrl))
+        //////                {
+        //////                    filterContext.Result = new RedirectResult(pwdUrl);
+        //////                    return;
+        //////                }
+        //////            }
+        //////        }
 
-                // ✅ 5. PASSWORD CHANGE ENFORCEMENT
-                if (isAuthenticated && VerifyIfSessionExist("PWD"))
-                {
-                    if (!requestUrl.Contains("/usermanagement/floginchangepassword") && !requestUrl.Contains("/authentication/logout"))
-                    {
-                        string pwdUrl = Session["CHPWDUrl"]?.ToString();
-                        if (!string.IsNullOrEmpty(pwdUrl))
-                        {
-                            filterContext.Result = new RedirectResult(pwdUrl);
-                            return;
-                        }
-                    }
-                }
+        //////        // ✅ 6. IP ADDRESS CHECK (Session Hijacking Prevention)
+        //////        var userIp = Request.UserHostAddress;
+        //////        if (Session["UserIP"] != null && Session["UserIP"].ToString() != userIp)
+        //////        {
+        //////            Session.Abandon();
+        //////            filterContext.Result = new RedirectResult("~/Authentication/Logout");
+        //////            return;
+        //////        }
+        //////        else
+        //////        {
+        //////            Session["UserIP"] = userIp;
+        //////        }
 
-                // ✅ 6. IP ADDRESS CHECK (Session Hijacking Prevention)
-                var userIp = Request.UserHostAddress;
-                if (Session["UserIP"] != null && Session["UserIP"].ToString() != userIp)
-                {
-                    Session.Abandon();
-                    filterContext.Result = new RedirectResult("~/Authentication/Logout");
-                    return;
-                }
-                else
-                {
-                    Session["UserIP"] = userIp;
-                }
+        //////        // ✅ 7. PREVENT ACCESS TO LOGIN PAGE FOR AUTHENTICATED USERS
+        //////        if (isAuthenticated &&
+        //////            controllerName.Equals("authentication") && actionName.Equals("login"))
+        //////        {
+        //////            filterContext.Result = new RedirectResult("~/Home/Index");
+        //////            return;
+        //////        }
+        //////    }
+        //////    catch (Exception ex)
+        //////    {
+        //////        // Handle exception and log the error
+        //////        // filterContext.Result = new RedirectResult("~/Home/Error");
+        //////        // LogException(ex); // Implement logging as needed
+        //////    }
 
-                // ✅ 7. PREVENT ACCESS TO LOGIN PAGE FOR AUTHENTICATED USERS
-                if (isAuthenticated &&
-                    controllerName.Equals("authentication") &&
-                    actionName.Equals("login"))
-                {
-                    filterContext.Result = new RedirectResult("~/Home/Index");
-                    return;
-                }
-
-                // Proceed with the requested action
-                base.OnActionExecuting(filterContext);
-            }
-            catch (Exception ex)
-            {
-                // Handle exception and log the error
-                filterContext.Result = new RedirectResult("~/Home/Error");
-            }
-        }
+        //////    base.OnActionExecuting(filterContext);
+        //////}
 
 
         //protected override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -628,6 +630,7 @@ namespace CBS.FrontDesk.UI.Controllers
         }
         protected Task PerformLogoutAsync()
         {
+            // Sign out from Forms Authentication
             FormsAuthentication.SignOut();
 
             var cookieNames = new[]
@@ -636,6 +639,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 "ASP.NET_SessionId", "EncryptedJWToken", "TSC"
             };
 
+            // Expire all specified cookies
             foreach (var cookieName in cookieNames)
             {
                 if (Request.Cookies[cookieName] != null)
@@ -650,11 +654,19 @@ namespace CBS.FrontDesk.UI.Controllers
                 }
             }
 
+            // Clear session
             Session.Clear();
             Session.RemoveAll();
             Session.Abandon();
 
-            // ✅ No need to manually set HttpContext.User = null here
+            // ✅ Explicitly clear the user in the controller context
+            HttpContext.User = null;
+
+            // ✅ Also clear the user in the global context (for background services or utility methods)
+            if (System.Web.HttpContext.Current != null)
+            {
+                System.Web.HttpContext.Current.User = null;
+            }
 
             return Task.CompletedTask;
         }
@@ -663,52 +675,45 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             if (!User.Identity.IsAuthenticated) return;
 
-            if (VerifyIfSessionExist("MFA")) { }
-            if (VerifyIfSessionExist("PWD")) { }
-
+            bool isAjaxRequest = Request.IsAjaxRequest();
             var _userManagementServices = new LocalSession();
             var identity = HttpContext.User as CustomPrincipal;
+
             if (identity == null || string.IsNullOrWhiteSpace(identity.SessionCode) || string.IsNullOrWhiteSpace(identity.UserName))
             {
-                Response.Redirect("~/Authentication/Login", true);
+                if (!isAjaxRequest)
+                {
+                    Response.Redirect("~/Authentication/Login", true);
+                }
                 return;
             }
+
             var userSession = new UserSessionDto();
+
             if (IsInternetAvailable())
             {
                 userSession = _userManagementServices.GetUserCurrentsession(identity.SessionCode, identity.UserName);
-                if (userSession==null)
+                if (userSession.SessionStatus == "Multiple_Sessions")
+                {
+                    string redirectUrl = $"~/Authentication/ResolveMultipleSessions?username={HttpUtility.UrlEncode(userSession.UserName)}" +
+                                         $"&message={HttpUtility.UrlEncode(userSession.ErrorMessage)}" +
+                                         $"&count={userSession.NumberOfSessionsOpen}";
+                    Response.Redirect(redirectUrl, true);
+                    return;
+                }
+                if (userSession == null || string.Equals(userSession.SessionStatus, "Invalid", StringComparison.OrdinalIgnoreCase))
                 {
                     PerformLogoutAsync(); // 👈 Shared logout method
                     Response.Redirect("~/Authentication/Login", true);
                     return;
                 }
-                else
-                {
-                    if (userSession.SessionStatus == "Multiple_Sessions")
-                    {
-                        string redirectUrl = $"~/Authentication/ResolveMultipleSessions?username={HttpUtility.UrlEncode(userSession.UserName)}" +
-                                             $"&message={HttpUtility.UrlEncode(userSession.ErrorMessage)}" +
-                                             $"&count={userSession.NumberOfSessionsOpen}";
-                        Response.Redirect(redirectUrl, true);
-                        return;
-                    }
-                    if ( string.Equals(userSession.SessionStatus, "Invalid", StringComparison.OrdinalIgnoreCase))
-                    {
-                        PerformLogoutAsync(); // 👈 Shared logout method
-                        Response.Redirect("~/Authentication/Login", true);
-                        return;
-                    }
-                }
-                
                 BuildLocalSession(userSession.UserAuthDto);
 
             }
 
-  
-
-            // ✅ Valid single session
-            //SetMenuFromSession();
+                // ✅ Valid single session
+                BuildLocalSession(userSession.UserAuthDto);
+            }
         }
 
 
@@ -818,7 +823,7 @@ namespace CBS.FrontDesk.UI.Controllers
             Session["EncryptedJWToken"] = TokenEncryptionHelper.EncryptToken(userSession.bearerToken);
             Session["BranchObject"] = userSession.Branch;
             Session["AuthUser"] = userSession;
-            Session["UserIP"] = Request.UserHostAddress;
+            Session["UserIP"] = userSession.SessionIP;
 
             // 🌐 Set language in session and cookie
             var selectedLang = !string.IsNullOrWhiteSpace(userSession.UserPreferedLanguage)

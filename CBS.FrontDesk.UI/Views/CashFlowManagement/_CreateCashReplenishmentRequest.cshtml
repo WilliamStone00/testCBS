@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
-
+@using Resources
 @{
-    ViewBag.Title = "Cash Replenishment Request";
+    ViewBag.Title = @GlobalCashFlowManagement.CashReplenishmentRequest;
 
 }
 @if (Convert.ToBoolean(ViewBag.IsAuthourized) == false)
@@ -22,7 +22,7 @@ else
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(model => model.CashInfusionModel.Amount, new { @class = "form-control", placeholder = "XFA 0.0" })
                         @Html.ValidationMessageFor(model => model.CashInfusionModel.Amount, "", new { @class = "text-danger" })
-                        <label for="Amount">Amount</label>
+                        <label for="Amount">@GlobalCashFlowManagement.Amount</label>
                     </div>
                 </div>
 
@@ -32,7 +32,7 @@ else
                         @Html.TextAreaFor(m => m.CashInfusionModel.RequestMessage, new { @class = "form-control", @style = "height: 200px;" })
                         @Html.ValidationMessageFor(model => model.CashInfusionModel.RequestMessage, "", new { @class = "text-danger" })
 
-                        <label for="Description"> RequestMessage</label>
+                        <label for="Description"> @GlobalCashFlowManagement.RequestMessage</label>
                     </div>
                 </div>
 
@@ -41,11 +41,11 @@ else
             <div class="mt-4">
                 @if (Model.CashInfusionModel.Id == null)
                 {
-                    <button type="submit" class="btn btn-primary me-2">Save</button>
+                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
                     <input type="hidden" name="Action" value="insert" id="Action" />
                 }
                 else
-                { <button type="submit" class="btn btn-primary me-2">Update</button>
+                { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                     @Html.HiddenFor(m => m.CashInfusionModel.Id)
                     <input type="hidden" name="Action" value="update" id="Action" />
                 }

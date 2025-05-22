@@ -48,7 +48,7 @@
             </div>
             <div class="col-md-2">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.OpenningOfDayRequest.CurrencyNotes.note2000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note2000", @oninput = "calculateBalance()",@readonly=true })
+                    @Html.TextBoxFor(m => m.OpenningOfDayRequest.CurrencyNotes.note2000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note2000", @oninput = "calculateBalance()", @readonly = true })
                     @Html.ValidationMessageFor(m => m.OpenningOfDayRequest.CurrencyNotes.note2000, "", new { @class = "text-danger " })
                     <label>N2,000</label>
                 </div>
@@ -74,6 +74,38 @@
                     <label>C500</label>
                 </div>
             </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.OpenningOfDayRequest.CurrencyNotes.coin350, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin350", @oninput = "calculateBalance()", @readonly = true })
+                    @Html.ValidationMessageFor(m => m.OpenningOfDayRequest.CurrencyNotes.coin350, "", new { @class = "text-danger " })
+                    <label>C350</label>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.OpenningOfDayRequest.CurrencyNotes.coin250, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin250", @oninput = "calculateBalance()", @readonly = true })
+                    @Html.ValidationMessageFor(m => m.OpenningOfDayRequest.CurrencyNotes.coin250, "", new { @class = "text-danger " })
+                    <label>C250</label>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.OpenningOfDayRequest.CurrencyNotes.coin200, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin200", @oninput = "calculateBalance()", @readonly = true })
+                    @Html.ValidationMessageFor(m => m.OpenningOfDayRequest.CurrencyNotes.coin200, "", new { @class = "text-danger " })
+                    <label>C200</label>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.OpenningOfDayRequest.CurrencyNotes.coin150, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin150", @oninput = "calculateBalance()", @readonly = true })
+                    @Html.ValidationMessageFor(m => m.OpenningOfDayRequest.CurrencyNotes.coin150, "", new { @class = "text-danger " })
+                    <label>C150</label>
+                </div>
+            </div>
+
             <div class="col-md-2">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.OpenningOfDayRequest.CurrencyNotes.coin100, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin100", @oninput = "calculateBalance()", @readonly = true })

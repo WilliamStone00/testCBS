@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CashMovementTracker.CashMovementConfiguration
+    @using Resources
 
 <div class="row">
     <!-- Context Menu -->
@@ -12,30 +13,30 @@
                     <div class="row mt-2 gy-4">
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.BankingZoneId, new SelectList(ViewBag.BankingZoneId == null ? "" : ViewBag.BankingZoneId, "Text", "Value"), "---Select Movement---", new { @class = "form-control select2", @search = "true" })
+                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.BankingZoneId, new SelectList(ViewBag.BankingZoneId == null ? "" : ViewBag.BankingZoneId, "Text", "Value"), "---"+@GlobalCashMovementTrackerConfiguration.SelectMovement+"---", new { @class = "form-control select2", @search = "true" })
                                 @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.BankingZoneId, "", new { @class = "text-danger" })
-                                <label>Select Banking Zone</label>
+                                <label>@GlobalCashMovementTrackerConfiguration.SelectBankingZone</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.MovementType, new SelectList(ViewBag.MovementTypes == null ? "" : ViewBag.MovementTypes, "Text", "Value"), "---Select Movement---", new { @class = "form-control select2", @search = "true" })
+                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.MovementType, new SelectList(ViewBag.MovementTypes == null ? "" : ViewBag.MovementTypes, "Text", "Value"), "---"+@GlobalCashMovementTrackerConfiguration.SelectMovement+"---", new { @class = "form-control select2", @search = "true" })
                                 @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.MovementType, "", new { @class = "text-danger" })
-                                <label>Select Movement Type</label>
+                                <label>@GlobalCashMovementTrackerConfiguration.SelectMovementType</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.From, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select Branch---", new { @class = "form-control select2", @search = "true" })
+                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.From, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---"+ @GlobalCashMovementTrackerConfiguration.SelectBranch+"---", new { @class = "form-control select2", @search = "true" })
                                 @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.From, "", new { @class = "text-danger" })
-                                <label>Select Source Branch</label>
+                                <label>@GlobalCashMovementTrackerConfiguration.SelectSourceBranch</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.To, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select Branch---", new { @class = "form-control select2", @search = "true" })
+                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.To, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---"+ @GlobalCashMovementTrackerConfiguration.SelectBranch+"---", new { @class = "form-control select2", @search = "true" })
                                 @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.To, "", new { @class = "text-danger" })
-                                <label>Select Destination Branch</label>
+                                <label>@GlobalCashMovementTrackerConfiguration.SelectDestinationBranch</label>
                             </div>
                         </div>
 
@@ -43,7 +44,7 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.CashMovementTrackingConfiguration.Duration, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.Duration, "", new { @class = "text-danger" })
-                                <label>Duration for Movement (In minutes)</label>
+                                <label>@GlobalCashMovementTrackerConfiguration.DurationForMovement</label>
                             </div>
 
                         </div>
@@ -51,7 +52,7 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.CashMovementTrackingConfiguration.Distance, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.Distance, "", new { @class = "text-danger" })
-                                <label>Distance to cover (In Kilometers)</label>
+                                <label>@GlobalCashMovementTrackerConfiguration.DistanceToCover</label>
                             </div>
 
                         </div>
@@ -61,7 +62,7 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.CashMovementTrackingConfiguration.AlertTimeBefore, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.AlertTimeBefore, "", new { @class = "text-danger" })
-                                <label>Alert time before timespan elapse's  in minutes</label>
+                                <label>@GlobalCashMovementTrackerConfiguration.AlertTimeBeforeTimespanElapseInMinutes</label>
 
                             </div>
                         </div>
@@ -69,7 +70,7 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.CashMovementTrackingConfiguration.AlertTimeAfter, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.AlertTimeAfter, "", new { @class = "text-danger" })
-                                <label>Alert time after timespan elapse's in minutes</label>
+                                <label>@GlobalCashMovementTrackerConfiguration.AlertTimeBeforeTimespanElapseInMinutes</label>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -77,7 +78,7 @@
 
                                 @Html.TextAreaFor(m => m.CashMovementTrackingConfiguration.MessageBeforeAlertTime, new { @class = "form-control", @style = "height: 200px;" })
                                 @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.MessageBeforeAlertTime, "", new { @class = "text-danger" })
-                                <label>Sample Message to be send before timespan elapse's</label>
+                                <label>@GlobalCashMovementTrackerConfiguration.SampleMessageToBeSendBeforeTimespanElapse</label>
 
                             </div>
                         </div>
@@ -88,7 +89,7 @@
 
                                 @Html.TextAreaFor(m => m.CashMovementTrackingConfiguration.MessageAfterAlertTime, new { @class = "form-control", @style = "height: 200px;" })
                                 @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.MessageAfterAlertTime, "", new { @class = "text-danger" })
-                                <label>Sample Message to be send after timespan elapse's</label>
+                                <label>@GlobalCashMovementTrackerConfiguration.SampleMessageToBeSendBeforeTimespanElapse</label>
 
                             </div>
                         </div>
@@ -97,11 +98,11 @@
                     <div class="mt-4">
                         @if (Model.CashMovementTrackingConfiguration.Id == null)
                         {
-                            <button type="submit" class="btn btn-primary me-2">Save</button>
+                            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
                             <input type="hidden" name="Action" value="insert" id="Action" />
                         }
                         else
-                        { <button type="submit" class="btn btn-primary me-2">Update</button>
+                        { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                             @Html.HiddenFor(m => m.CashMovementTrackingConfiguration.Id)
                             <input type="hidden" name="Action" value="update" id="Action" />
                         }

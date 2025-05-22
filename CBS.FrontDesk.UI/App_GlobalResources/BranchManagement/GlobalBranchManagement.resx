@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
   <data name="Active" xml:space="preserve">
     <value>Active</value>
   </data>
@@ -138,11 +141,20 @@
   <data name="BranchName" xml:space="preserve">
     <value>Branch name</value>
   </data>
+  <data name="BranchOffice" xml:space="preserve">
+    <value>Branch-Office</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
   <data name="DateOfCreation" xml:space="preserve">
     <value>Date of creation</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>Email</value>
+  </data>
+  <data name="HeadOffice" xml:space="preserve">
+    <value>Head-Office</value>
   </data>
   <data name="HeadOfficeAddress" xml:space="preserve">
     <value>Head office address</value>
@@ -153,6 +165,9 @@
   <data name="ImmatriculationNumber" xml:space="preserve">
     <value>Immatriculation number</value>
   </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
   <data name="IsThisBranchLinkedToAnyBank" xml:space="preserve">
     <value>Is this branch linked to any bank ?</value>
   </data>
@@ -161,6 +176,12 @@
   </data>
   <data name="Motto" xml:space="preserve">
     <value>Motto</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="OfficeType" xml:space="preserve">
+    <value>OfficeType</value>
   </data>
   <data name="PageTitle" xml:space="preserve">
     <value>Branch Management</value>
@@ -177,11 +198,17 @@
   <data name="SetAsHeadOfficeBranch" xml:space="preserve">
     <value>Set as head office branch</value>
   </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
   <data name="TaxPayerNumber" xml:space="preserve">
     <value>TaxPayerNumber</value>
   </data>
   <data name="Telephone" xml:space="preserve">
     <value>Telephone</value>
+  </data>
+  <data name="Tell" xml:space="preserve">
+    <value>Tell</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>Update</value>

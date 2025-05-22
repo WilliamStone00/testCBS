@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
-
+@using Resources
 <div class="card-body">
 
 
@@ -40,7 +40,7 @@
                         </div>*@
                     <div class="col-md-12" hidden="hidden">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalCashFlowManagement.TotalAmount: 0.0</span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@($"FCFA {Convert.ToDecimal(Model.DepositNotificationDto.Amount).ToString("N2")}")">
 
@@ -58,7 +58,7 @@
         }
    
 <fieldset class="fieldset-custom">
-    <legend id="select_base">Cash Denomination Present</legend>
+    <legend id="select_base">@GlobalCashFlowManagement.CashDenominationPresent</legend>
 
     <div class="row">
 
@@ -161,20 +161,20 @@
                         @if (Model.DepositNotification.AmountInVault == 0)
                         {
                             <span class="text-danger fw-bold formatted-amount shadow-box">
-                                There are no funds in the vault
+                                @GlobalCashFlowManagement.ThereAreNoFundsInTheVault
                             </span>
                         }
                         else
                         {
                     <span class="formatted-amount shadow-box">
-                        Balance In Vault: @($"FCFA {Convert.ToDecimal(Model.DepositNotification.AmountInVault).ToString("N2")}")
+                        @GlobalCashFlowManagement.Balance In Vault: @($"FCFA {Convert.ToDecimal(Model.DepositNotification.AmountInVault).ToString("N2")}")
                     </span>
                         }
                         @Html.HiddenFor(model => model.DepositNotification.AmountInVault, new { @class = "form-control amount-input shadow-input-boxes" })
                     </div>
 
                     <div class="form-floating form-floating-outline">
-                        <span class="formatted-amount shadow-box" id="lblBalanceDeposit">Balance: 0</span>
+                        <span class="formatted-amount shadow-box" id="lblBalanceDeposit">@GlobalCashFlowManagement.Balance: 0</span>
                     </div>
                 </div>
             </div>
@@ -183,7 +183,7 @@
     </div>
 </fieldset>
         <fieldset class="fieldset-custom">
-            <legend id="select_base">Bank Deposit Request message</legend>
+            <legend id="select_base">@GlobalCashFlowManagement.BankDepositRequestMessage</legend>
 
             <div class="row">
                 <div class="col-md-12 mb-sm-4">
@@ -198,7 +198,7 @@
             </div>
         </fieldset>
         <div class="col-12 text-end">
-            <button type="submit" class="btn btn-primary me-2" id="btnSave">Validate</button>
+            <button type="submit" class="btn btn-primary me-2" id="btnSave">@GlobalShared.Validate</button>
             <input type="hidden" name="Action" value="insert" id="Action" />
 
         </div>

@@ -12,7 +12,7 @@ using System.Web.Mvc;
 namespace CBS.FrontDesk.UI.Controllers.Session
 {
     // Controller: SessionController.cs
-    public class SessionController : BaseController
+    public class SessionController : Controller
     {
         private readonly LocalSession _localSession;
         private static int _cachedTimeout = 5; // Default in case DB call fails
@@ -67,7 +67,12 @@ namespace CBS.FrontDesk.UI.Controllers.Session
             return Json(config, JsonRequestBehavior.AllowGet);
         }
 
-
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult Ping()
+        {
+            return Content("Pong");
+        }
 
         [HttpGet]
         public ActionResult ExtendSessionTimeout()
@@ -109,7 +114,7 @@ namespace CBS.FrontDesk.UI.Controllers.Session
                 });
             }
 
-            var sessionResult = _localSession.GetUserCurrentsession(sessionCode, username);
+            var sessionResult = _localSession.GetCurrentUserSession(sessionCode, username);
 
             if (sessionResult == null)
             {

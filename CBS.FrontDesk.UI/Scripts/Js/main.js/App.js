@@ -337,34 +337,35 @@ function DownloadFile(url) {
 
 
 //}
-function calculateBalance() {
-    // Get the total amount of currency notes and coins
-    var note10000 = parseInt(document.getElementById('Notes_note10000').value) || 0;
-    var note5000 = parseInt(document.getElementById('Notes_note5000').value) || 0;
-    var note2000 = parseInt(document.getElementById('Notes_note2000').value) || 0;
-    var note1000 = parseInt(document.getElementById('Notes_note1000').value) || 0;
-    var note500 = parseInt(document.getElementById('Notes_note500').value) || 0;
-    var coin500 = parseInt(document.getElementById('Notes_coin500').value) || 0;
-    var coin100 = parseInt(document.getElementById('Notes_coin100').value) || 0;
-    var coin50 = parseInt(document.getElementById('Notes_coin50').value) || 0;
-    var coin25 = parseInt(document.getElementById('Notes_coin25').value) || 0;
-    var coin10 = parseInt(document.getElementById('Notes_coin10').value) || 0;
-    var coin5 = parseInt(document.getElementById('Notes_coin5').value) || 0;
-    var coin1 = parseInt(document.getElementById('Notes_coin1').value) || 0;
+//function calculateBalance() {
+//    // Get the total amount of currency notes and coins
+//    var note10000 = parseInt(document.getElementById('Notes_note10000').value) || 0;
+//    var note5000 = parseInt(document.getElementById('Notes_note5000').value) || 0;
+//    var note2000 = parseInt(document.getElementById('Notes_note2000').value) || 0;
+//    var note1000 = parseInt(document.getElementById('Notes_note1000').value) || 0;
+//    var note500 = parseInt(document.getElementById('Notes_note500').value) || 0;
+//    var coin500 = parseInt(document.getElementById('Notes_coin500').value) || 0;
+//    var coin100 = parseInt(document.getElementById('Notes_coin100').value) || 0;
+//    var coin50 = parseInt(document.getElementById('Notes_coin50').value) || 0;
+//    var coin25 = parseInt(document.getElementById('Notes_coin25').value) || 0;
+//    var coin10 = parseInt(document.getElementById('Notes_coin10').value) || 0;
+//    var coin5 = parseInt(document.getElementById('Notes_coin5').value) || 0;
+//    var coin1 = parseInt(document.getElementById('Notes_coin1').value) || 0;
 
-    // Calculate total amount
-    var totalAmount = (note10000 * 10000) + (note5000 * 5000) + (note2000 * 2000) + (note1000 * 1000) +
-        (note500 * 500) + (coin500 * 500) + (coin100 * 100) + (coin50 * 50) + (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
+//    // Calculate total amount
+//    var totalAmount = (note10000 * 10000) + (note5000 * 5000) + (note2000 * 2000) + (note1000 * 1000) +
+//        (note500 * 500) + (coin500 * 500) + (coin100 * 100) + (coin50 * 50) + (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
 
-    // Update the DepositRequest_amount input field with the total amount
-    document.getElementById("DepositRequest_amount").value = totalAmount.toFixed(2);
+//    // Update the DepositRequest_amount input field with the total amount
+//    document.getElementById("DepositRequest_amount").value = totalAmount.toFixed(2);
 
-}
+//}
 
 function calculateBalance() {
     const elements = [
         'Notes_note10000', 'Notes_note5000', 'Notes_note2000', 'Notes_note1000',
-        'Notes_note500', 'Notes_coin500', 'Notes_coin100', 'Notes_coin50',
+        'Notes_note500', 'Notes_coin500', 'Notes_coin350', 'Notes_coin250',
+        'Notes_coin200', 'Notes_coin150', 'Notes_coin100', 'Notes_coin50',
         'Notes_coin25', 'Notes_coin10', 'Notes_coin5', 'Notes_coin1'
     ];
 
@@ -387,7 +388,12 @@ function calculateBalance() {
     var note2000 = parseInt(document.getElementById('Notes_note2000').value) || 0;
     var note1000 = parseInt(document.getElementById('Notes_note1000').value) || 0;
     var note500 = parseInt(document.getElementById('Notes_note500').value) || 0;
+
     var coin500 = parseInt(document.getElementById('Notes_coin500').value) || 0;
+    var coin350 = parseInt(document.getElementById('Notes_coin350').value) || 0;
+    var coin250 = parseInt(document.getElementById('Notes_coin250').value) || 0;
+    var coin200 = parseInt(document.getElementById('Notes_coin200').value) || 0;
+    var coin150 = parseInt(document.getElementById('Notes_coin150').value) || 0;
     var coin100 = parseInt(document.getElementById('Notes_coin100').value) || 0;
     var coin50 = parseInt(document.getElementById('Notes_coin50').value) || 0;
     var coin25 = parseInt(document.getElementById('Notes_coin25').value) || 0;
@@ -397,15 +403,16 @@ function calculateBalance() {
 
     // Calculate total amount
     totalAmount = (note10000 * 10000) + (note5000 * 5000) + (note2000 * 2000) + (note1000 * 1000) +
-        (note500 * 500) + (coin500 * 500) + (coin100 * 100) + (coin50 * 50) + (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
-
+        (note500 * 500) + (coin500 * 500) + (coin350 * 350) + (coin250 * 250) +
+        (coin200 * 200) + (coin150 * 150) + (coin100 * 100) + (coin50 * 50) +
+        (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
 
     // Format total amount as currency
     const formattedTotalAmount = totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
     document.getElementById("totalNoteAmount").value = totalAmount;
     document.getElementById("lblDepositRequest_amount").textContent = "Total Amount: " + formattedTotalAmount;
 
-    //Primary teller calculations
+    // Primary teller calculations
     const totalProvision = parseFloat(document.getElementById("totalProvision").value) || 0;
     const balance = totalProvision - totalAmount;
 
@@ -421,6 +428,27 @@ function calculateBalance() {
     balanceLabel.style.color = balance !== 0 ? "red" : "black";
 }
 
+function collectCurrencyNotes() {
+    return {
+        note10000: parseFloat($('#Notes_note10000').val()),
+        note5000: parseFloat($('#Notes_note5000').val()),
+        note2000: parseFloat($('#Notes_note2000').val()),
+        note1000: parseFloat($('#Notes_note1000').val()),
+        note500: parseFloat($('#Notes_note500').val()),
+        coin500: parseFloat($('#Notes_coin500').val()),
+        coin350: parseFloat($('#Notes_coin350').val()),
+        coin250: parseFloat($('#Notes_coin250').val()),
+        coin200: parseFloat($('#Notes_coin200').val()),
+        coin150: parseFloat($('#Notes_coin150').val()),
+        coin100: parseFloat($('#Notes_coin100').val()),
+        coin50: parseFloat($('#Notes_coin50').val()),
+        coin25: parseFloat($('#Notes_coin25').val()),
+        coin10: parseFloat($('#Notes_coin10').val()),
+        coin5: parseFloat($('#Notes_coin5').val()),
+        coin1: parseFloat($('#Notes_coin1').val())
+    };
+}
+
 function calculateBalanceAmountReceived() {
     // Get the total amount of currency notes and coins
     var note10000 = parseInt(document.getElementById('Notes_note10000_Received').value) || 0;
@@ -428,7 +456,12 @@ function calculateBalanceAmountReceived() {
     var note2000 = parseInt(document.getElementById('Notes_note2000_Received').value) || 0;
     var note1000 = parseInt(document.getElementById('Notes_note1000_Received').value) || 0;
     var note500 = parseInt(document.getElementById('Notes_note500_Received').value) || 0;
+
     var coin500 = parseInt(document.getElementById('Notes_coin500_Received').value) || 0;
+    var coin350 = parseInt(document.getElementById('Notes_coin350_Received').value) || 0;
+    var coin250 = parseInt(document.getElementById('Notes_coin250_Received').value) || 0;
+    var coin200 = parseInt(document.getElementById('Notes_coin200_Received').value) || 0;
+    var coin150 = parseInt(document.getElementById('Notes_coin150_Received').value) || 0;
     var coin100 = parseInt(document.getElementById('Notes_coin100_Received').value) || 0;
     var coin50 = parseInt(document.getElementById('Notes_coin50_Received').value) || 0;
     var coin25 = parseInt(document.getElementById('Notes_coin25_Received').value) || 0;
@@ -438,17 +471,19 @@ function calculateBalanceAmountReceived() {
 
     // Calculate total amount
     var totalAmount = (note10000 * 10000) + (note5000 * 5000) + (note2000 * 2000) + (note1000 * 1000) +
-        (note500 * 500) + (coin500 * 500) + (coin100 * 100) + (coin50 * 50) + (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
+        (note500 * 500) + (coin500 * 500) + (coin350 * 350) + (coin250 * 250) +
+        (coin200 * 200) + (coin150 * 150) + (coin100 * 100) + (coin50 * 50) +
+        (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
 
     // Update the DepositRequest_amount input field with the total amount
     document.getElementById("DepositRequest_amount").value = totalAmount.toFixed(2);
-
 }
 
 function calculateBalanceAmountReceived() {
     const elements = [
         'Notes_note10000_Received', 'Notes_note5000_Received', 'Notes_note2000_Received', 'Notes_note1000_Received',
-        'Notes_note500_Received', 'Notes_coin500_Received', 'Notes_coin100_Received', 'Notes_coin50_Received',
+        'Notes_note500_Received', 'Notes_coin500_Received', 'Notes_coin350_Received', 'Notes_coin250_Received',
+        'Notes_coin200_Received', 'Notes_coin150_Received', 'Notes_coin100_Received', 'Notes_coin50_Received',
         'Notes_coin25_Received', 'Notes_coin10_Received', 'Notes_coin5_Received', 'Notes_coin1_Received'
     ];
 
@@ -471,7 +506,12 @@ function calculateBalanceAmountReceived() {
     var note2000 = parseInt(document.getElementById('Notes_note2000_Received').value) || 0;
     var note1000 = parseInt(document.getElementById('Notes_note1000_Received').value) || 0;
     var note500 = parseInt(document.getElementById('Notes_note500_Received').value) || 0;
+
     var coin500 = parseInt(document.getElementById('Notes_coin500_Received').value) || 0;
+    var coin350 = parseInt(document.getElementById('Notes_coin350_Received').value) || 0;
+    var coin250 = parseInt(document.getElementById('Notes_coin250_Received').value) || 0;
+    var coin200 = parseInt(document.getElementById('Notes_coin200_Received').value) || 0;
+    var coin150 = parseInt(document.getElementById('Notes_coin150_Received').value) || 0;
     var coin100 = parseInt(document.getElementById('Notes_coin100_Received').value) || 0;
     var coin50 = parseInt(document.getElementById('Notes_coin50_Received').value) || 0;
     var coin25 = parseInt(document.getElementById('Notes_coin25_Received').value) || 0;
@@ -481,15 +521,16 @@ function calculateBalanceAmountReceived() {
 
     // Calculate total amount
     totalAmount = (note10000 * 10000) + (note5000 * 5000) + (note2000 * 2000) + (note1000 * 1000) +
-        (note500 * 500) + (coin500 * 500) + (coin100 * 100) + (coin50 * 50) + (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
-
+        (note500 * 500) + (coin500 * 500) + (coin350 * 350) + (coin250 * 250) +
+        (coin200 * 200) + (coin150 * 150) + (coin100 * 100) + (coin50 * 50) +
+        (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
 
     // Format total amount as currency
     const formattedTotalAmount = totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
     document.getElementById("totalNoteAmount_Received").value = totalAmount;
     document.getElementById("lblDepositRequest_amount_Received").textContent = "Total Amount: " + formattedTotalAmount;
 
-    //Primary teller calculations
+    // Primary teller calculations
     const totalProvision = parseFloat(document.getElementById("totalProvision_Received").value) || 0;
     const balance = totalProvision - totalAmount;
 

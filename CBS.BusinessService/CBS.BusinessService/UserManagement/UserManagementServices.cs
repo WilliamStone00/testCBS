@@ -471,6 +471,35 @@ namespace CBS.BusinessService.UserManagement
                 throw ex;
             }
         }
+        public List<UserDownloadDto> MapToUserDownloadDtos(IEnumerable<UserLightDto> users)
+        {
+            return users.Select(MapToUserDownloadDto).ToList();
+        }
+        public UserDownloadDto MapToUserDownloadDto(UserLightDto user)
+        {
+            return new UserDownloadDto
+            {
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                FullName = user.FullName,
+                RoleName = user.RoleName ?? "N/A",
+                PhoneNumber = user.PhoneNumber ?? "N/A",
+                IsVerified = user.IsVerified,
+                IsBlocked = user.IsBlocked,
+                LoginAttempts = user.LoginAttempts,
+                ChangePasswordOnFirstLogin = user.ChangePasswordOnFirstLogin,
+                LastLoginDate = user.LastLoginDate,
+                IsActive = user.IsActive,
+                SessionRecoveryCode = user.SessionRecoveryCode ?? "N/A",
+                CreatedDate = user.CreatedDate,
+                BranchCode = user.BranchId ?? "N/A", // Mapping BranchId to BranchCode
+                BranchName = "N/A", // No direct mapping available, set to "N/A"
+                NumberOfDaysSinceLastLogin = user.LastLoginDate.HasValue ? (DateTime.Now - user.LastLoginDate.Value).Days : 0,
+                ReasonForBlockingAccount = user.IsBlocked ? user.ReasonForBlockingAccount : "-"
+            };
+        }
+
         public async Task<CustomDataTable> GetDataTableAsync(GetAllUsersDataTableQuery getAllUsersDataTableQuery)
         {
             if (!IsHeadOffice())

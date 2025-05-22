@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.EntryTempData
-
+@using Resources
 
 
  
@@ -9,14 +9,14 @@
     <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
         <div class="col-12">
             <div class="card">
-                <h5 class="card-header">Add Journal Entries</h5>
+                <h5 class="card-header">@GlobalBankingOperations.AddJournalEntries</h5>
                 <div class="card-body">
                     <div id="show-entry">
                         <div class="row">
                           
                             <div class="mb-3">
-                                @Html.DropDownListFor(model => model.AccountName, new SelectList(ViewBag.AccountNames as System.Collections.IEnumerable, "Value", "Text"), "Select Account", new { @class = "form-control select2", id = "account-name" })
-                                <label for="account-name">Account Name</label>
+                                @Html.DropDownListFor(model => model.AccountName, new SelectList(ViewBag.AccountNames as System.Collections.IEnumerable, "Value", "Text"), "---"+@GlobalBankingOperations.SelectAccount+"---", new { @class = "form-control select2", id = "account-name" })
+                                <label for="account-name">@GlobalBankingOperations.AccountName</label>
                             </div>
                             @*<div class="mb-3">
                                 @Html.EditorFor(model => model.Debit, new { htmlAttributes = new { @class = "form-control", placeholder = "Debit Amount" } })
@@ -27,8 +27,8 @@
                                 <label for="credit-amount">Credit Amount</label>
                             </div>*@
                             <div class="mb-3">
-                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", placeholder = "Description" } })
-                                <label for="description">Description</label>
+                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", placeholder = @GlobalBankingOperations.Description } })
+                                <label for="description">@GlobalBankingOperations.Description</label>
                             </div>
                          
                         </div>
@@ -36,7 +36,7 @@
                     </div>
                     <div class="mb-0">
                         <button type="submit" class="btn btn-primary" id="post-entries">
-                            Add Entries <i class="mdi mdi-database-plus"></i>
+                            @GlobalBankingOperations.AddEntries <i class="mdi mdi-database-plus"></i>
                         </button>
                     </div>
                 </div>

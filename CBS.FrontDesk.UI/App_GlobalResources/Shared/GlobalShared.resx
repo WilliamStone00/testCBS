@@ -126,6 +126,12 @@
   <data name="AddNew" xml:space="preserve">
     <value>Add new</value>
   </data>
+  <data name="BackToHome" xml:space="preserve">
+    <value>Back to home</value>
+  </data>
+  <data name="ChooseLogoImage" xml:space="preserve">
+    <value>Choose logo image</value>
+  </data>
   <data name="CleanEntries" xml:space="preserve">
     <value>Clean entries</value>
   </data>
@@ -134,6 +140,9 @@
   </data>
   <data name="Closed" xml:space="preserve">
     <value>Closed</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Create</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
@@ -147,6 +156,9 @@
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
   <data name="InExcelFormat" xml:space="preserve">
     <value>In Excel Format</value>
   </data>
@@ -155,6 +167,12 @@
   </data>
   <data name="Insert" xml:space="preserve">
     <value>Insert</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="LogoPreview" xml:space="preserve">
+    <value>Logo preview</value>
   </data>
   <data name="New" xml:space="preserve">
     <value>New</value>
@@ -183,8 +201,14 @@
   <data name="Select" xml:space="preserve">
     <value>Select</value>
   </data>
+  <data name="SelectFiles" xml:space="preserve">
+    <value>Select files</value>
+  </data>
   <data name="SelectToEdit" xml:space="preserve">
     <value>Select to edit</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
   </data>
   <data name="ToDownload" xml:space="preserve">
     <value>To download</value>
@@ -194,6 +218,15 @@
   </data>
   <data name="Update" xml:space="preserve">
     <value>Update</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="UploadLogo" xml:space="preserve">
+    <value>Upload logo</value>
+  </data>
+  <data name="Validate" xml:space="preserve">
+    <value>Validate</value>
   </data>
   <data name="View" xml:space="preserve">
     <value>View</value>

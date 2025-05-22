@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.BudgetConfiguration
+    @using Resources
 <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
 
     <div class="accordion-item active">
@@ -11,7 +12,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-bank-plus me-2"></i>
-                Budget Creation
+                @GlobalBudgetManagement.BudgetCreation
             </button>
         </h2>
         <div id="accordionPopoutIcon-3"
@@ -29,15 +30,15 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.BudgetCategory.CategoryName, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.BudgetCategory.CategoryName, "", new { @class = "text-danger" })
-                                        <label>CategoryName</label>
+                                        <label>@GlobalBudgetManagement.CategoryName</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
 
-                                        @Html.DropDownListFor(m => m.BudgetCategory.ChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? "" : ViewBag.ChartOfAccounts, "Text", "Value"), "---Select ChartOfAccount ---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.DropDownListFor(m => m.BudgetCategory.ChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? "" : ViewBag.ChartOfAccounts, "Text", "Value"), "---"+ @GlobalBudgetManagement.SelectChartOfAccount +"---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(model => model.BudgetCategory.ChartOfAccountId, "", new { @class = "text-danger" })
-                                        <label>Chart Of Account</label>
+                                        <label>@GlobalBudgetManagement.ChartOfAccount</label>
                                     </div>
                                 </div>
 
@@ -46,7 +47,7 @@
                                         @Html.TextAreaFor(m => m.BudgetCategory.Description, new { @class = "form-control", @style = "height: 200px;" })
                                         @Html.ValidationMessageFor(model => model.BudgetCategory.Description, "", new { @class = "text-danger" })
 
-                                        <label for="Description"> Description</label>
+                                        <label for="Description"> @GlobalBudgetManagement.Description</label>
                                     </div>
                                 </div>
                             </div>
@@ -54,14 +55,14 @@
 
                             if (Model.BudgetCategory.Id == null)
                             {
-                                <button type="submit" class="btn btn-primary me-2">Save</button>
-                                <input type="hidden" name="Action" value="insert" id="Action" />
+                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                                <input type="hidden" name="Action" value="@GlobalShared.Insert" id="Action" />
 
                             }
                             else
-                            { <button type="submit" class="btn btn-primary me-2">Update</button>
+                            { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                                 @Html.HiddenFor(m => m.BudgetCategory.Id)
-                                <input type="hidden" name="Action" value="update" id="Action" />
+                                <input type="hidden" name="Action" value="@GlobalShared.Update" id="Action" />
                             }
                         }
 

@@ -1,17 +1,18 @@
-﻿<div class="row">
+﻿@using Resources
+<div class="row">
     <div class="col-12">
         <!-- Page Header -->
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cash-multiple me-2"></i> Sub-Till Cash Transfer to Primary Till
+                    <i class="mdi mdi-cash-multiple me-2"></i> @SubTillToPrimaryTill.SubTillCashTransferToPrimaryTill
                 </h1>
                 <p class="card-text text-muted">
-                    Manage cash transfers efficiently when the till reaches its operational limit. Ensure all excess funds are promptly transferred to the primary till to avoid disruptions.
+                    @SubTillToPrimaryTill.ManageCashTransfersEfficiently.
                 </p>
                 <p class="card-text text-danger fw-bold">
                     <i class="mdi mdi-alert-circle-outline me-2"></i>
-                    Please note: When the sub-till exceeds its operational limit, all cash-in operations are automatically halted until the excess funds are transferred to the primary till.
+                    @SubTillToPrimaryTill.PleaseNoteWhenTheSubTill.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -23,7 +24,7 @@
 <div class="card mb-1">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span>
-            <i class="mdi mdi-information-outline me-2"></i> HELP TIPS
+            <i class="mdi mdi-information-outline me-2"></i> @SubTillToPrimaryTill.HELPTIPS
         </span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCashCeilingTips" aria-expanded="false" aria-controls="collapseCashCeilingTips">
             <i class="mdi mdi-chevron-down"></i>
@@ -32,10 +33,10 @@
     <div id="collapseCashCeilingTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure all cash transfers are authorized and validated before submission.</li>
-                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Monitor the till's operational limit daily to avoid halting cash-in operations.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Approved transfers must be processed promptly to resume normal operations.</li>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Use the "Status" column to track the state of requests (Pending, Approved, or Rejected).</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @SubTillToPrimaryTill.EnsureAllCashTransfersAreAuthorized.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @SubTillToPrimaryTill.MonitorTheTillsOperationalLimitDaily.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @SubTillToPrimaryTill.ApprovedTransfersMustBeProcessedPromptly.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @SubTillToPrimaryTill.UseTheStatusColumnToTrack.</li>
             </ul>
         </div>
     </div>
@@ -48,7 +49,7 @@
                 <div class="accordion-item active">
                     <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconThree">
                         <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionPopoutIcon-3" aria-expanded="true" aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-cash-multiple me-2"></i> Cash Ceiling Transfers
+                            <i class="mdi mdi-cash-multiple me-2"></i> @SubTillToPrimaryTill.CashCeilingTransfers
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3" class="accordion-collapse collapse show" data-bs-parent="#accordionPopoutIcon">
@@ -56,11 +57,11 @@
                             <div id="mainviewChange">
                                 <div class="card mb-1">
                                     <div class="card-body d-flex justify-content-end align-items-center">
-                                        <a type="button" onclick="LoadDataGen('CashCeilingRequest','myDataTable','_InitiatorData',0,'datalistingview',null,'Subteller_Cash_To_PrimaryTeller','initiator_data')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="View Requests">
-                                            <i class="mdi mdi-view-list mdi-18px"></i> View Requests
+                                        <a type="button" onclick="LoadDataGen('CashCeilingRequest','myDataTable','_InitiatorData',0,'datalistingview',null,'Subteller_Cash_To_PrimaryTeller','initiator_data')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@SubTillToPrimaryTill.ViewRequests">
+                                            <i class="mdi mdi-view-list mdi-18px"></i> @SubTillToPrimaryTill.ViewRequests
                                         </a>
-                                        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','CashCeilingRequest')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="Add New Request">
-                                            <i class="mdi mdi-plus mdi-18px"></i> Add Request
+                                        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','CashCeilingRequest')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@SubTillToPrimaryTill.AddNewRequest">
+                                            <i class="mdi mdi-plus mdi-18px"></i> @SubTillToPrimaryTill.AddRequest
                                         </a>
                                     </div>
                                 </div>
@@ -89,10 +90,10 @@
             <div class="modal-header p-2">
                 <header class="w-100 text-center">
                     <h4 class="text-primary fw-bold mb-1">
-                        <i class="mdi mdi-cash me-2"></i> CASH CEILING DETAILS
+                        <i class="mdi mdi-cash me-2"></i> @SubTillToPrimaryTill.CASHCEILINGDETAILS
                     </h4>
                     <p class="text-muted mb-0">
-                        View and manage cash ceiling request details efficiently.
+                        @SubTillToPrimaryTill.ViewAndManageCashCeilingRequestDetailsEfficiently.
                     </p>
                     <hr style="border: 1px solid rgba(128, 128, 128, 0.5);" />
                 </header>
@@ -103,7 +104,7 @@
                 </div>
             </div>
             <div class="modal-footer py-2">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">@GlobalShared.Close</button>
             </div>
         </div>
     </div>
