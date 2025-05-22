@@ -1,6 +1,6 @@
-﻿
+﻿@using Resources
 @{
-    ViewBag.Title = "Pending Accounting Entry";
+    ViewBag.Title = @GlobalCashFlowManagement.PendingAccountingEntry;
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
@@ -9,13 +9,13 @@
     <table class="table table-hover" id="HeadOfficeDataTable">
         <thead class="table-light">
             <tr>
-                <th>Branch Office</th>
-                <th>Issued By</th>
-                <th>Amount(FCFA)</th>
-                <th>Issued Date</th>
-                <th>Status</th>
-                <th>Message</th>
-                <th>Action</th>
+                <th>@GlobalCashFlowManagement.BranchOffice</th>
+                <th>@GlobalCashFlowManagement.IssuedBy</th>
+                <th>@GlobalCashFlowManagement.Amount (FCFA)</th>
+                <th>@GlobalCashFlowManagement.IssuedDate</th>
+                <th>@GlobalCashFlowManagement.Status</th>
+                <th>@GlobalCashFlowManagement.Message</th>
+                <th>@GlobalCashFlowManagement.Action</th>
             </tr>
         </thead>
         <tbody>
@@ -154,7 +154,7 @@
                             @if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Approved.ToString()))
                             {
 
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_uploadBankDepositeReceipt','uploadBankDepositReceipt','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to Upload">Upload Deposit Reciept </a>
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_uploadBankDepositeReceipt','uploadBankDepositReceipt','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToUpload">@GlobalCashFlowManagement.UploadDepositReciept </a>
 
 
                                 @*<a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_CreateCashInfusion','cashInFusion','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Cash Clearing</a>*@
@@ -162,12 +162,12 @@
 
                             else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Rejected.ToString()))
                             {
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.View</a>
 
                             }
                             else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Cancel.ToString()))
                             {
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.View</a>
 
                             }
                             else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Pending.ToString()))
@@ -175,28 +175,28 @@
 
                                 if (d.IsOwner)
                                 {
-                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.View</a>
                                 }
                                 else
                                 {
-                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ApproveCashDepositRequest','approveDepositNotification','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to approve">Approve</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ApproveCashDepositRequest','approveDepositNotification','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToApprove">@GlobalCashFlowManagement.Approve</a>
 
                                 }
 
                             }
                             else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Completed.ToString()))
                             {
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.View</a>
 
                             }
                             else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Awaiting_Bank_CashOut.ToString()))
                             {
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_uploadBankDepositeReceipt','uploadBankDepositReceipt','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to Upload">Upload Deposit Reciept </a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_uploadBankDepositeReceipt','uploadBankDepositReceipt','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToUpload">@GlobalCashFlowManagement.UploadDepositReciept </a>
 
                             }
                             else
                             {
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequestStatus','CashFlowManagement')" class="mr-2 btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequestStatus','CashFlowManagement')" class="mr-2 btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.View</a>
 
                             }
 
@@ -221,12 +221,12 @@ else
         <thead class="table-light">
             <tr>
 
-                <th>Issued By</th>
-                <th>Amount</th>
-                <th>Issued Date</th>
-                <th>Status</th>
-                <th>Approved By</th>
-                <th>Action</th>
+                <th>@GlobalCashFlowManagement.IssuedBy</th>
+                <th>@GlobalCashFlowManagement.Amount</th>
+                <th>@GlobalCashFlowManagement.IssuedDate</th>
+                <th>@GlobalCashFlowManagement.Status</th>
+                <th>@GlobalCashFlowManagement.ApprovedBy</th>
+                <th>@GlobalCashFlowManagement.Action</th>
             </tr>
         </thead>
 
@@ -369,7 +369,7 @@ else
                             @if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Approved.ToString()))
                             {
 
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_uploadBankDepositeReceipt','uploadBankDepositReceipt','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to Upload">Upload Deposit Reciept </a>
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_uploadBankDepositeReceipt','uploadBankDepositReceipt','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToUpload">@GlobalCashFlowManagement.UploadDepositReciept </a>
 
 
                                 @*<a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_CreateCashInfusion','cashInFusion','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Cash Clearing</a>*@
@@ -377,12 +377,12 @@ else
 
                             else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Rejected.ToString()))
                             {
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.View</a>
 
                             }
                             else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Cancel.ToString()))
                             {
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.View</a>
 
                             }
                             else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Pending.ToString()))
@@ -390,29 +390,29 @@ else
 
                                 if (d.IsOwner)
                                 {
-                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.View</a>
                                 }
                                 else
                                 {
-                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ApproveCashDepositRequest','approveDepositNotification','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to approve">Approve</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ApproveCashDepositRequest','approveDepositNotification','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToApprove">@GlobalCashFlowManagement.Approve</a>
 
                                 }
 
                             }
                             else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Completed.ToString()))
                             {
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.View</a>
 
                             }
                             else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.RedirectToBranchBTB.ToString()))
                             {
                                 if (d.IsOwner)
                                 {
-                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.View</a>
                                 }
                                 else
                                 {
-                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_CreateBankDepositCashClearing','bankDepositCashClearing','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to approve">Cash Clearing</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_CreateBankDepositCashClearing','bankDepositCashClearing','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToApprove">@GlobalCashFlowManagement.CashClearing</a>
 
                                 }
 
@@ -421,17 +421,17 @@ else
                             {
                                 if (d.IsOwner)
                                 {
-                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_uploadBankDepositeReceipt','uploadBankDepositReceipt','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to Upload">Upload Deposit Reciept </a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_uploadBankDepositeReceipt','uploadBankDepositReceipt','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToUpload">@GlobalCashFlowManagement.UploadDepositReciept </a>
                                 }
                                 else
                                 {
-                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.View</a>
 
                                 }
                             }
                             else
                             {
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequestStatus','CashFlowManagement')" class="mr-2 btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequestStatus','CashFlowManagement')" class="mr-2 btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.View</a>
 
                             }
 

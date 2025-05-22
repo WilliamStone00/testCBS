@@ -117,124 +117,67 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountingEntryRule" xml:space="preserve">
-    <value>Accounting Entry Rule</value>
-  </data>
   <data name="Action" xml:space="preserve">
     <value>Action</value>
   </data>
-  <data name="AddNew" xml:space="preserve">
-    <value>Add new</value>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
   </data>
-  <data name="BackToHome" xml:space="preserve">
-    <value>Back to home</value>
+  <data name="ApprovedBy" xml:space="preserve">
+    <value>Approved by</value>
   </data>
-  <data name="ChooseLogoImage" xml:space="preserve">
-    <value>Choose logo image</value>
+  <data name="BankCashOut" xml:space="preserve">
+    <value>Bank cashout</value>
   </data>
-  <data name="CleanEntries" xml:space="preserve">
-    <value>Clean entries</value>
+  <data name="BankDeposit" xml:space="preserve">
+    <value>Bank deposit</value>
   </data>
-  <data name="Close" xml:space="preserve">
-    <value>Close</value>
+  <data name="Branch" xml:space="preserve">
+    <value>Branch</value>
   </data>
-  <data name="Closed" xml:space="preserve">
-    <value>Closed</value>
+  <data name="CashMovementTracker" xml:space="preserve">
+    <value>Cash movement tracker</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>Create</value>
+  <data name="DoneBy" xml:space="preserve">
+    <value>Done by</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading</value>
   </data>
-  <data name="Details" xml:space="preserve">
-    <value>Details</value>
+  <data name="Message" xml:space="preserve">
+    <value>Message</value>
   </data>
-  <data name="Download" xml:space="preserve">
-    <value>Download</value>
+  <data name="Movement" xml:space="preserve">
+    <value>Movement</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
+  <data name="OperaRetionType" xml:space="preserve">
+    <value>OperaRetion type</value>
   </data>
-  <data name="Export" xml:space="preserve">
-    <value>Export</value>
+  <data name="RegisterBy" xml:space="preserve">
+    <value>Register by</value>
   </data>
-  <data name="InExcelFormat" xml:space="preserve">
-    <value>In Excel Format</value>
+  <data name="RequestedBy" xml:space="preserve">
+    <value>Requested by</value>
   </data>
-  <data name="InPDFFormat" xml:space="preserve">
-    <value>In PDF Format</value>
+  <data name="SelectPersonel" xml:space="preserve">
+    <value>Select personel</value>
   </data>
-  <data name="Insert" xml:space="preserve">
-    <value>Insert</value>
+  <data name="SelectPersonelResponsible" xml:space="preserve">
+    <value>Select personel responsible</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
+  <data name="SetTracker" xml:space="preserve">
+    <value>Set tracker</value>
   </data>
-  <data name="LogoPreview" xml:space="preserve">
-    <value>Logo preview</value>
+  <data name="ToSetTracker" xml:space="preserve">
+    <value>to set tracker</value>
   </data>
-  <data name="New" xml:space="preserve">
-    <value>New</value>
+  <data name="DistanceToCover" xml:space="preserve">
+    <value>Distance to cover (In Kilometers)</value>
   </data>
-  <data name="Open" xml:space="preserve">
-    <value>Open</value>
+  <data name="SampleMessageToBeSendBeforeTimespanElapse" xml:space="preserve">
+    <value>Sample Message to be send before timespan elapse's</value>
   </data>
-  <data name="Print" xml:space="preserve">
-    <value>Print</value>
-  </data>
-  <data name="Reopen" xml:space="preserve">
-    <value>Reopen</value>
-  </data>
-  <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="SaveChanges" xml:space="preserve">
-    <value>Save changes</value>
-  </data>
-  <data name="Search" xml:space="preserve">
-    <value>Search</value>
-  </data>
-  <data name="Select" xml:space="preserve">
-    <value>Select</value>
-  </data>
-  <data name="SelectFiles" xml:space="preserve">
-    <value>Select files</value>
-  </data>
-  <data name="SelectToEdit" xml:space="preserve">
-    <value>Select to edit</value>
-  </data>
-  <data name="Submit" xml:space="preserve">
-    <value>Submit</value>
-  </data>
-  <data name="ToDownload" xml:space="preserve">
-    <value>To download</value>
-  </data>
-  <data name="ToEdit" xml:space="preserve">
-    <value>To edit</value>
-  </data>
-  <data name="Update" xml:space="preserve">
-    <value>Update</value>
-  </data>
-  <data name="Upload" xml:space="preserve">
-    <value>Upload</value>
-  </data>
-  <data name="UploadLogo" xml:space="preserve">
-    <value>Upload logo</value>
-  </data>
-  <data name="Validate" xml:space="preserve">
-    <value>Validate</value>
-  </data>
-  <data name="View" xml:space="preserve">
-    <value>View</value>
-  </data>
-  <data name="ViewInDatatable" xml:space="preserve">
-    <value>View in Datatable</value>
-  </data>
-  <data name="ViewList" xml:space="preserve">
-    <value>View list</value>
+  <data name="SelectBankingZone" xml:space="preserve">
+    <value>Select banking zone</value>
   </data>
 </root>

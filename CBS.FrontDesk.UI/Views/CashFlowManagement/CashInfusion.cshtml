@@ -1,8 +1,8 @@
 ﻿
 
-
+@using Resources
 @{
-    ViewBag.Title = "Cash Replenishment Request";
+    ViewBag.Title = @GlobalCashFlowManagement.CashReplenishmentRequest;
 
 }
 
@@ -18,7 +18,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-bank-plus me-2"></i>
-                BRANCH TO CASH IN FUSION
+                @GlobalCashFlowManagement.BRANCHTOCASHINFUSION
             </button>
         </h2>
     

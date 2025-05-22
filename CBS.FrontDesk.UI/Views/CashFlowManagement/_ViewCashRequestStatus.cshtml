@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+    @using Resources
 @{
-    ViewBag.Title = "View Cash Replenishment Details";
+    ViewBag.Title = @GlobalCashFlowManagement.ViewCashReplenishmentDetails;
 
 }
 
@@ -18,7 +19,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    Request ReferenceId :@Model.CashReplenimentRequestdto.Id Amount : XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N")
+                    @GlobalCashFlowManagement.RequestReferenceId :@Model.CashReplenimentRequestdto.Id @GlobalCashFlowManagement.Amount : XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N")
                 </button>
             </h2>
             <div class="card-body">
@@ -28,7 +29,7 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th colspan="2"> <h5 class="card-title">Cash Replenishment Request Details</h5></th>
+                                <th colspan="2"> <h5 class="card-title">@GlobalCashFlowManagement.CashReplenishmentRequestDetails</h5></th>
 
                             </tr>
                         </thead>
@@ -36,70 +37,70 @@
                             @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
                             {
                                 <tr>
-                                    <td>Branch Office</td>
+                                    <td>@GlobalCashFlowManagement.BranchOffice</td>
                                     <td>@Model.CashReplenimentRequestdto.BranchOffice </td>
                                 </tr>
                             }
                             <tr>
-                                <td>Invoice Number</td>
+                                <td>@GlobalCashFlowManagement.InvoiceNumber</td>
                                 <td id="referenceId">@Model.CashReplenimentRequestdto.ReferenceId </td>
                             </tr>
                             <tr>
-                                <td>Amount Requested</td>
+                                <td>@GlobalCashFlowManagement.AmountRequested</td>
                                 <td id="amountRequested">XAF @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") </td>
                             </tr>
                             <tr>
-                                <td>Request Message</td>
+                                <td>@GlobalCashFlowManagement.RequestMessage</td>
                                 <td>@Model.CashReplenimentRequestdto.RequestMessage </td>
                             </tr>
                             <tr>
-                                <td>Requested By </td>
+                                <td>@GlobalCashFlowManagement.RequestedBy </td>
                                 <td id="IssuedBy"> @Model.CashReplenimentRequestdto.TempId1 </td>
                             </tr>
                             <tr>
-                                <td>Requested Date</td>
+                                <td>@GlobalCashFlowManagement.RequestedDate</td>
                                 <td id="IssuedDate">@Model.CashReplenimentRequestdto.IssuedDate </td>
                             </tr>
 
                             @if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Approved.ToString()))
                             {
                                 <tr>
-                                    <td>Status</td>
+                                    <td>@GlobalCashFlowManagement.Status</td>
                                     <td class="badge bg-label-success  text-lowercase">
                                         @Model.CashReplenimentRequestdto.Status
 
                                         @if (Model.CashReplenimentRequestdto.CorrespondingBranchId == "xxx")
                                         {
-                                            <div> Authourized for cash out</div>
+                                            <div> @GlobalCashFlowManagement.AuthourizedForCashOut</div>
                                         }
                                         else
                                         {
-                                            <div> Request has been redirected to @Model.CashReplenimentRequestdto.CorrespondingBranch</div>
+                                    <div> @GlobalCashFlowManagement.RequestHasBeenRedirectedTo @Model.CashReplenimentRequestdto.CorrespondingBranch</div>
                                         }
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Approved Message</td>
+                                    <td>@GlobalCashFlowManagement.ApprovedMessage</td>
                                     <td>@Model.CashReplenimentRequestdto.ApprovedMessage </td>
                                 </tr>
                                 <tr>
-                                    <td>Approved By </td>
+                                    <td>@GlobalCashFlowManagement.ApprovedBy </td>
                                     <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.TempId2 </td>
                                 </tr>
                                 <tr>
-                                    <td>Approved Date</td>
+                                    <td>@GlobalCashFlowManagement.ApprovedDate</td>
                                     <td id="ApprovedBy">@Model.CashReplenimentRequestdto.ApprovedDate </td>
                                 </tr>
                                 <tr>
-                                    <td>Approved Amount</td>
+                                    <td>@GlobalCashFlowManagement.ApprovedAmount</td>
                                     <td id="ApprovedBy">@Model.CashReplenimentRequestdto.AmountApproved </td>
                                 </tr>
 
                                 <tr>
-                                    <td>Bank Transaction</td>
+                                    <td>@GlobalCashFlowManagement.BankTransaction</td>
                                     <td>
                                         @*  <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.ReferenceId')" class="mr-2" id="exLargeModal" data-toggle="tooltip" data-placement="top" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>*@
-                                        <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.Id')" class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>
+                                        <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.Id')" class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">@GlobalCashFlowManagement.BankTransactionDetails</a>
                                     </td>
                                 </tr>
 
@@ -109,9 +110,9 @@
                             {
 
                                 <tr>
-                                    <td>Status</td>
+                                    <td>@GlobalCashFlowManagement.Status</td>
                                     <td class="badge bg-label-primary rounded-pill">
-                                        @Model.CashReplenimentRequestdto.Status,Has not yet been approved by head office
+                                        @Model.CashReplenimentRequestdto.Status, @GlobalCashFlowManagement.HasNotYetBeenApprovedByHeadOffice
                                     </td>
                                 </tr>
                                 <tr>
@@ -123,7 +124,7 @@
                                             <input type="hidden" name="ServiceOption" value="CashInfusionModel" id="ServiceOption" />
                                             <input type="hidden" name="Id" value="@Model.CashReplenimentRequestdto.Id" id="Id" />
                                             <div class="col-12 text-end">
-                                                <button type="submit" class="btn btn-danger me-2">Cancel Cash Requisition Request</button>
+                                                <button type="submit" class="btn btn-danger me-2">@GlobalCashFlowManagement.CancelCashRequisitionRequest</button>
                                                 <input type="hidden" name="Action" value="update" id="Action" />
 
                                             </div>
@@ -189,21 +190,21 @@
                             {
 
                                 <tr>
-                                    <td>Status</td>
+                                    <td>@GlobalCashFlowManagement.Status</td>
                                     <td class="badge bg-label-warning nav-pills">
-                                        @Model.CashReplenimentRequestdto.Status Has been redirected to @Model.CashReplenimentRequestdto.CorrespondingBranch for Branch Transfer
+                                        @Model.CashReplenimentRequestdto.Status @GlobalCashFlowManagement.HasBeenRedirectedTo @Model.CashReplenimentRequestdto.CorrespondingBranch @GlobalCashFlowManagement.ForBranchTransfer
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Approved Message</td>
+                                    <td>@GlobalCashFlowManagement.ApprovedMessage</td>
                                     <td>@Model.CashReplenimentRequestdto.ApprovedMessage </td>
                                 </tr>
                                 <tr>
-                                    <td>Approved By </td>
+                                    <td>@GlobalCashFlowManagement.ApprovedBy </td>
                                     <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.TempId2 </td>
                                 </tr>
                                 <tr>
-                                    <td>Approved Date</td>
+                                    <td>@GlobalCashFlowManagement.ApprovedDate</td>
                                     <td id="ApprovedBy">@Model.CashReplenimentRequestdto.ApprovedDate </td>
                                 </tr>
                             }
@@ -213,10 +214,10 @@
 
 
                                 <tr>
-                                    <td>Bank Transaction</td>
+                                    <td>@GlobalCashFlowManagement.BankTransaction</td>
                                     <td>
                                         @*  <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.ReferenceId')" class="mr-2" id="exLargeModal" data-toggle="tooltip" data-placement="top" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>*@
-                                        <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.Id')" class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>
+                                        <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.Id')" class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="@GlobalCashFlowManagement.View @Model.CashReplenimentRequestdto.ReferenceId @GlobalCashFlowManagement.CashRequest">@GlobalCashFlowManagement.BankTransactionDetails</a>
                                     </td>
                                 </tr>
                             }
@@ -232,7 +233,7 @@
 
                         </tbody>
                     </table>
-                    <a type="button" onclick="LoadDataGen('CashFlowManagement','ListOfCashReplenishmentData','_CashReplenishmentRequestDataWithOutApproval',0,'datalistingview_CashReplenishmentRequest')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Close">
+                    <a type="button" onclick="LoadDataGen('CashFlowManagement','ListOfCashReplenishmentData','_CashReplenishmentRequestDataWithOutApproval',0,'datalistingview_CashReplenishmentRequest')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.Close">
                         <span class="tf-icons mdi mdi-close mdi-18px"></span>
                     </a>
                 </div>

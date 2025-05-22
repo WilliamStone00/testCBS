@@ -1,8 +1,8 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
-
+@using Resources
 
 @{
-    ViewBag.Title = "Cash Request-Listing";
+    ViewBag.Title = @GlobalCashFlowManagement.CashRequestListing;
 
 }
 <div class="row">
@@ -10,14 +10,13 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cash-check me-2"></i> CASH MOVEMENT [CASH REQUISITION FOR VAULT]
+                    <i class="mdi mdi-cash-check me-2"></i> @GlobalCashFlowManagement.CASHMOVEMENTFORVAULT
                 </h1>
                 <p class="card-text">
-                    All cash movement in TSC are validated by the person that has the role. When requesting to move cash to the bank the user issue a request
-                    at the level branch and need to be approved by the management.
+                    @GlobalCashFlowManagement.AllCashMovementInTSCAreValidatedByThePersonThatHasTheRole.
                 </p>
                 <p class="card-text text-warning fw-bold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> In case they are limited resources in the branch  kindly contact system administrator.
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalCashFlowManagement.InCaseTheyAreLimitedResourcesInTheBranch.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -28,7 +27,7 @@
 <!-- Tips Section -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR CASH REQUISITION FOR VAULT</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalCashFlowManagement.TIPSFORCASHREQUISITIONFORVAULT</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -36,9 +35,9 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Scenario:</strong> I have cash in my office i want to deposit into bank account.</li>
-                <li><i class="mdi mdi-check-circle-outline  text-primary me-2"></i> <strong>Action:  </strong> Fill in the cash denomination in which you want to deposit it in the bank.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Reason:</strong> Enter the reason why you which to deposit cash to the bank.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalCashFlowManagement.Scenario:</strong> @GlobalCashFlowManagement.IHaveCashInMyOffice.</li>
+                <li><i class="mdi mdi-check-circle-outline  text-primary me-2"></i> <strong>@GlobalCashFlowManagement.Action:  </strong> @GlobalCashFlowManagement.FillInTheCashDenomination.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalCashFlowManagement.Reason:</strong> @GlobalCashFlowManagement.EnterTheReasonWhyYouWhichToDeposit.</li>
 
             </ul>
         </div>
@@ -57,7 +56,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-bank-plus me-2"></i>
-                CASH REQUISITION FOR VAULT
+                @GlobalCashFlowManagement.CASHREQUISITIONFORVAULT
             </button>
         </h2>
 
@@ -67,7 +66,7 @@
             <div class="accordion-body">
 
                 <div class="demo-inline-spacing text-end">
-                    <a href="/CashFlowManagement/Index" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo left" data-bs-toggle="tooltip" title="Add new">
+                    <a href="/CashFlowManagement/Index" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo left" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
                         <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                     </a>
                
@@ -82,12 +81,12 @@
                             <table class="table table-hover" id="GetAllCashRequestDataTable">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Branch Office</th>
-                                        <th>Amount Requested(FCFA)</th>
-                                        <th>Status</th>
-                                        <th>IssuedBy</th>
-                                        <th>IssuedDate</th>
-                                        <th>Action</th>
+                                        <th>@GlobalCashFlowManagement.BranchOffice</th>
+                                        <th>@GlobalCashFlowManagement.AmountRequested</th>
+                                        <th>@GlobalCashFlowManagement.Status</th>
+                                        <th>@GlobalCashFlowManagement.IssuedBy</th>
+                                        <th>@GlobalCashFlowManagement.IssuedDate</th>
+                                        <th>@GlobalCashFlowManagement.Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -231,19 +230,19 @@
                                                         {
                                                             if (d.HasAccount56)
                                                             {
-                                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateBankCashOutApproval','bankCashOutApproval','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Bank Cash Out</a>
+                                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateBankCashOutApproval','bankCashOutApproval','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.BankCashOut</a>
 
                                                             }
                                                             else
                                                             {
-                                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View Status</a>
+                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.ViewStatus</a>
 
                                                             }
                                                         }
                                                         else
                                                         {
 
-                                                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateBankCashOutApproval','bankCashOutApproval','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Bank Cash Out</a>
+                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateBankCashOutApproval','bankCashOutApproval','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.BankCashOut</a>
 
                                                         }
 
@@ -254,11 +253,11 @@
 
                                                         if (d.IsOwner)
                                                         {
-                                                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateCashInfusion','cashInFusion','CashFlowManagement')" class="mr-2 btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Cash Clearing</a>
+                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateCashInfusion','cashInFusion','CashFlowManagement')" class="mr-2 btn btn-primary" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.CashClearing</a>
                                                         }
                                                         else
                                                         {
-                                                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View Status</a>
+                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.ViewStatus</a>
 
 
                                                         }
@@ -266,7 +265,7 @@
                                                     }
                                                     else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Rejected.ToString()))
                                                     {
-                                                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View</a>
+                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.View</a>
 
                                                     }
                                                     else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Pending.ToString()))
@@ -275,20 +274,20 @@
 
                                                         if (d.IsOwner)
                                                         {
-                                                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View Status</a>
+                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.ViewStatus</a>
 
 
                                                         }
                                                         else
                                                         {
 
-                                                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ApproveCashRequest','approve','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Approve</a>
+                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ApproveCashRequest','approve','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.Approve</a>
 
                                                         }
                                                     }
                                                     else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Completed.ToString()))
                                                     {
-                                                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','complete_status','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Complete</a>
+                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','complete_status','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.Complete</a>
 
                                                     }
                                                     else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.RedirectToBranchBCO.ToString()))
@@ -296,7 +295,7 @@
 
                                                         if (d.IsRedirectedTo)
                                                         {
-                                                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateBankCashOutApproval','bankCashOutApproval','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Bank Cash Out</a>
+                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateBankCashOutApproval','bankCashOutApproval','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.BankCashOut</a>
 
 
                                                         }
@@ -304,14 +303,14 @@
                                                         {
                                                             if (d.IsOwner)
                                                             {
-                                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View Status</a>
+                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.ViewStatus</a>
 
                                                             }
                                                             else
                                                             {
                                                                 if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
                                                                 {
-                                                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View Status</a>
+                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.ViewStatus</a>
 
                                                                 }
                                                             }
@@ -324,20 +323,20 @@
                                                         if (d.IsRedirectedTo)
                                                         {
 
-                                                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_branchToBranchTransfer','BranchToBranchTransfer','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Branch Transfer</a>
+                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_branchToBranchTransfer','BranchToBranchTransfer','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.BranchTransfer</a>
 
 
                                                         }
                                                         else
                                                         {
-                                                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">View Status</a>
+                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','cashreplenishmentstatus','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.ViewStatus</a>
 
                                                         }
 
                                                     }
                                                     else if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Awaiting_Bank_CashOut.ToString()))
                                                     {
-                                                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateBankCashOutApproval','bankCashOutApproval','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to edit">Bank Cash Out</a>
+                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateBankCashOutApproval','bankCashOutApproval','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.BankCashOut</a>
                                                     }
 
                                                 </td>

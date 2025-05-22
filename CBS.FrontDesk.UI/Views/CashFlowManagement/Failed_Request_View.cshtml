@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+    @using Resources
 @{
-    ViewBag.Title = "Failed -Cash Replenishment Request";
+    ViewBag.Title = @GlobalCashFlowManagement.FailedCashReplenishmentRequest;
 
 }
 
@@ -17,7 +18,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    <span style="color:red"> Request ReferenceId :  not sent </span>
+                    <span style="color:red"> @GlobalCashFlowManagement.RequestReferenceId :  @GlobalCashFlowManagement.NotSent </span>
                 </button>
             </h2>
             <div class="card-body">
@@ -27,35 +28,35 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Cash Replenishment Details</th>
+                                <th>@GlobalCashFlowManagement.CashReplenishmentDetails</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
                             <tr>
-                                <td>Daily Operation Reference </td>
-                                <td>not sent  </td>
+                                <td>@GlobalCashFlowManagement.DailyOperationReference </td>
+                                <td>@GlobalCashFlowManagement.NotSent  </td>
                             </tr>
                             <tr>
-                                <td>Amount Requested</td>
+                                <td>@GlobalCashFlowManagement.AmountRequested</td>
                                 <td>@Model.CashReplenimentRequest.AmountRequested.ToString("N") </td>
                             </tr>
                             <tr>
-                                <td>Request Message</td>
+                                <td>@GlobalCashFlowManagement.RequestMessage</td>
                                 <td>@Model.CashReplenimentRequest.RequestMessage </td>
                             </tr>
                             <tr>
-                                <td>Requested By </td>
+                                <td>@GlobalCashFlowManagement.RequestedBy </td>
                                 <td> @Model.CashReplenimentRequest.IssuedBy </td>
                             </tr>
                             <tr>
-                                <td>Requested Date</td>
+                                <td>@GlobalCashFlowManagement.RequestedDate</td>
                                 <td>@Model.CashReplenimentRequest.IssuedDate </td>
                             </tr>
                             <tr>
                               
 
-                                <td> Status</td>
+                                <td> @GlobalCashFlowManagement.Status</td>
                                 @if (@Model.CashReplenimentRequest.IsApproved)
                                 {
                                     <td class="badge bg-label-success rounded-pill text-uppercase">
@@ -85,11 +86,11 @@
                     </table>
                 </div>
                 <div class="card card-action mb-5">
-                    <h5 class="card-header" style="color:red">Your cash replenishment request Failed. Kindly contact your technical support desk for assistance  </h5>
+                    <h5 class="card-header" style="color:red">@GlobalCashFlowManagement.YourCashReplenishmentRequestFailed  </h5>
                     <br>
                     <div class="col-12 shift-right">
                         <br>
-                        <button type="submit" class="btn btn-primary click-to-go-back-to-menu" onclick="refreshPageHome()">Back to home. </button>
+                        <button type="submit" class="btn btn-primary click-to-go-back-to-menu" onclick="refreshPageHome()">@GlobalShared.BackToHome. </button>
 
                     </div>
                     <br>

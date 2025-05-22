@@ -1,4 +1,4 @@
-﻿
+﻿@using Resources
 @model  CBS.FrontDesk.Data.Entity.CashMovementTracker.CashMovementConfiguration
 
 @if (Convert.ToBoolean(Session["IsHeadOffice"]))
@@ -6,12 +6,12 @@
     <table class="table table-hover" id="DataTableCashMovementTrackerDataHO">
         <thead class="table-light">
             <tr>
-                <th>Branch</th>
-                <th>Requested By</th>
-                <th>Approved By</th>
-                <th>OperaRetionType</th>
-                <th>Amount</th>
-                <th>Action</th>
+                <th>@GlobalCashMovementTracker.Branch</th>
+                <th>@GlobalCashMovementTracker.RequestedBy</th>
+                <th>@GlobalCashMovementTracker.ApprovedBy</th>
+                <th>@GlobalCashMovementTracker.OperaRetionType</th>
+                <th>@GlobalCashMovementTracker.Amount</th>
+                <th>@GlobalCashMovementTracker.Action</th>
             </tr>
         </thead>
         <tbody>
@@ -43,11 +43,11 @@ else
         <thead class="table-light">
             <tr>
            
-                <th>Requested By</th>
-                <th>Approved By</th>
-                <th>OperaRetionType</th>
-                <th>Amount</th>
-                <th>Action</th>
+                <th>@GlobalCashMovementTracker.RequestedBy</th>
+                <th>@GlobalCashMovementTracker.ApprovedBy</th>
+                <th>@GlobalCashMovementTracker.OperaRetionType</th>
+                <th>@GlobalCashMovementTracker.Amount</th>
+                <th>@GlobalCashMovementTracker.Action</th>
             </tr>
         </thead>
         <tbody>

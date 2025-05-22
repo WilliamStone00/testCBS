@@ -1314,6 +1314,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>OtherCashTransactions.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\CashFlowManagement\GlobalCashFlowManagement.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCashFlowManagement.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashMovementTrackerConfiguration\GlobalCashMovementTrackerConfiguration.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCashMovementTrackerConfiguration.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\CashMovementTracker\GlobalCashMovementTracker.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalCashMovementTracker.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\HomePage\GlobalAbout.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -5104,6 +5119,18 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalCashChangeManagement.Designer.cs</LastGenOutput>
     </Content>
+    <Content Include="App_GlobalResources\CashFlowManagement\GlobalCashFlowManagement.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCashFlowManagement.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashMovementTracker\GlobalCashMovementTracker.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCashMovementTracker.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\CashMovementTrackerConfiguration\GlobalCashMovementTrackerConfiguration.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalCashMovementTrackerConfiguration.Designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -6257,6 +6284,7 @@
     <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
+    <Folder Include="App_GlobalResources\ChangeNumber\" />
     <Folder Include="Controllers\CustomerManagement\MemberActivation\" />
     <Folder Include="Hub\" />
     <Folder Include="Views\CorrespondingBank\" />

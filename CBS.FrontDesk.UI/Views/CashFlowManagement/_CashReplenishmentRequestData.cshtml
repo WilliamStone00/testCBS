@@ -1,7 +1,7 @@
 ﻿@model  CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
-
+@using Resources
 @{
-    ViewBag.Title = "Cash Replenishment Data";
+    ViewBag.Title = @GlobalCashFlowManagement.CashReplenishmentData;
 
 }
 
@@ -10,12 +10,12 @@
     {
         <thead class="table-light">
             <tr>
-                <th>BranchOffice</th>
-                <th>IssuedBy</th>
-                <th>Amount Requested</th>
+                <th>@GlobalCashFlowManagement.BranchOffice</th>
+                <th>@GlobalCashFlowManagement.IssuedBy</th>
+                <th>@GlobalCashFlowManagement.AmountRequested</th>
         
-                <th>IssuedDate</th>
-                <th>Action</th>
+                <th>@GlobalCashFlowManagement.IssuedDate</th>
+                <th>@GlobalCashFlowManagement.Action</th>
             </tr>
         </thead>
 
@@ -24,11 +24,11 @@
     {
         <thead class="table-light">
             <tr>
-                <th>IssuedBy</th>
-                <th>Amount Requested</th>
+                <th>@GlobalCashFlowManagement.IssuedBy</th>
+                <th>@GlobalCashFlowManagement.AmountRequested</th>
               
-                <th>IssuedDate</th>
-                <th>Action</th>
+                <th>@GlobalCashFlowManagement.IssuedDate</th>
+                <th>@GlobalCashFlowManagement.Action</th>
             </tr>
         </thead>
     }
@@ -49,9 +49,9 @@
 
                     <td style="width:25%">
 
-                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateCashReplenishmentRequest','update','CashFlowManagement')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.IssuedBy Cash Request to edit">Edit|</a>
-                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','status','CashFlowManagement')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.IssuedBy Cash Request to edit">Status|</a>
-                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ApproveCashReplenimentRequest','approve','CashFlowManagement')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Approve @d.IssuedBy Cash Request">Approve|</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateCashReplenishmentRequest','update','CashFlowManagement')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.IssuedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalShared.Edit|</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','status','CashFlowManagement')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.IssuedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.Status|</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ApproveCashReplenimentRequest','approve','CashFlowManagement')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalCashFlowManagement.Approve @d.IssuedBy @GlobalCashFlowManagement.CashRequest">@GlobalCashFlowManagement.Approve|</a>
                         @*<a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Approve @d.AmountRequested" onclick="DeleteRecordDataTable('CashFlowManagement','@d.Id','ListOfCashReplenishmentData','_CashReplenishmentRequestData',0,'datalistingview_CashReplenimentRequest')">Delete</a>*@
                     </td>
                 </tr>
@@ -65,9 +65,9 @@
 
                     <td style="width:35%">
 
-                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateCashReplenishmentRequest','update','CashFlowManagement')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.IssuedBy Cash Request to edit">Edit|</a>
-                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','status','CashFlowManagement')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.IssuedBy Cash Request to edit">Status|</a>
-                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ApproveCashReplenimentRequest','approve','CashFlowManagement')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Approve @d.IssuedBy Cash Request">Approve|</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateCashReplenishmentRequest','update','CashFlowManagement')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.IssuedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalShared.Edit|</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ViewCashRequestStatus','status','CashFlowManagement')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.IssuedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.Status|</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ApproveCashReplenimentRequest','approve','CashFlowManagement')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalCashFlowManagement.Approve @d.IssuedBy @GlobalCashFlowManagement.CashRequest">@GlobalCashFlowManagement.Approve|</a>
                       @*  <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Approve @d.AmountRequested" onclick="DeleteRecordDataTable('CashFlowManagement','@d.Id','ListOfCashReplenishmentData','_CashReplenishmentRequestData',0,'datalistingview_CashReplenimentRequest')">Delete</a>*@
                     </td>
                 </tr>
