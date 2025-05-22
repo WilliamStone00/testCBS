@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
 <div class="container">
     @*<fieldset class="fieldset">*@
     <div class="card-body">
@@ -115,31 +115,26 @@
                 <!-- Hidden Input -->
                 <input type="hidden" id="selectedBranchID" value="" />
 
-                <!-- Submit Button -->
+                <!-- Submit Button   onclick="Search('ManuallyJournalEntry','myDataTable','_PendingEntries','datalistingview_pendingEntries','FilteringOption')"-->
                 <div class="col-md-12 text-end mt-3">
                     <a href="javascript:void(0);"
                        class="btn btn-primary d-inline-flex align-items-center gap-2"
                        id="print_btn"
-                       onclick="Search('ManuallyJournalEntry', 'myDataTable', '_PendingEntries', 'datalistingview_pendingEntries', 'FilteringOption')">
+                       onclick="Search('CashFlowManagement','myDataTable','_CashDepositData','datalistingview_pendingCashMovement','FilteringBankDepositOption')">
                         <i class="mdi mdi-magnify"></i>
-                        Search Journal Entry
+                        Search BANK DEPOSIT Request
                     </a>
                 </div>
 
             </div>
-            //              //,
-            //, //  ,
-            //,// ,
-            //datalistViewDIV, //
-            //jsonDataj,
-            ////filterOption// ,
+
 
         }
 
-                </div>
-                @*</fieldset>*@
+    </div>
+    @*</fieldset>*@
 
-            </div>
+</div>
 
 
 

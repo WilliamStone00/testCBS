@@ -938,6 +938,9 @@ namespace CBS.FrontDesk.Helper
         public static string GetCashReplenishmentRequestById = "/api/v1/BankingOperation/GetCashReplenishmentRequestById/{0}";
         public static string GetAllDepositNotificationRequestRequests = "/api/v1/BankingOperation/GetAllDepositNotificationQuery";
         ///BankingOperation/GetAllDepositNotificationRedirectionQuery   
+        public static string Url_Get_AllCashRelenishmentRequest = "/api/v1/BankingOperation/CashReplenishmentQueryFilter";//?status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}";
+        public static string Url_Get_AllBankDepositeRequest = "/api/v1/BankingOperation/GetDepositNotificationQueryFilter";//?status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}";
+
         public static string GetDepositNotificationRequestRequests = "/api/v1/BankingOperation/GetDepositNotificationQuery/{0}";
         public static string GetAllDepositNotificationRequestQueryAsBranch = "/api/v1/BankingOperation/GetAllCashReplenishmentQueryAsBranch/{0}";
         public static string GetAllDepositNotificationRedirectionQuery = "/api/v1/BankingOperation/GetAllDepositNotificationRedirectionQuery";

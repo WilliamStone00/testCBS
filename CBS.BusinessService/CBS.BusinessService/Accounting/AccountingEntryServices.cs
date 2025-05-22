@@ -1687,7 +1687,45 @@ namespace CBS.BusinessService
             }
         }
 
-     
+        public async Task<List<CashReplenimentRequestDto>> GetCashReplenishmentEntries(QueryFilter model)
+        {
+            try
+            {
+                //status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}
+                string url = APICallHelper.Url_Get_AllCashRelenishmentRequest;//, model.Status, model.FromDate,model.ToDate,model.BranchId,model.IssuedBy,model.ApprovedBy);
+                var cusResponseObject = await _accountingApiCallerHelper.PostCashReplenishmentEntriesAsync<ResponseObject<List<CashReplenimentRequestDto>>>(url, model);
+                if (cusResponseObject.ApiResponseData != null)
+                {
+                    return cusResponseObject.ApiResponseData;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+
+        public async Task<List<DepositNotificationDto>> GetBankDepositEntries(QueryFilter model)
+        {
+            try
+            {
+                //status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}
+                string url = APICallHelper.Url_Get_AllBankDepositeRequest;//, model.Status, model.FromDate,model.ToDate,model.BranchId,model.IssuedBy,model.ApprovedBy);
+                var cusResponseObject = await _accountingApiCallerHelper.PostDepositNotificationAsync<ResponseObject<List<DepositNotificationDto>>>(url, model);
+                if (cusResponseObject.ApiResponseData != null)
+                {
+                    return cusResponseObject.ApiResponseData;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
     }
 
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);

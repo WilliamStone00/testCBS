@@ -1,0 +1,75 @@
+﻿
+<div class="modal fade" id="fullscreenModal" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalFullTitle">Balance Sheet Builder</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               
+                <div class="accordion mt-3">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#trialBalance" aria-expanded="false">
+                                <i class="mdi mdi-bank-plus me-2"></i> Trial Balance
+                            </button>
+                        </h2>
+                        <div id="trialBalance" class="accordion-collapse collapse">
+                            <div class="accordion-body p-0">
+                                <div class="trialBalance-sheet-container">
+                                    <div class="row">
+                                        <div class="col-md-6 trialBalance-sheet-section">
+                                            <h4>Trial Balance</h4>
+                                            <div class="accordion-table-container">
+
+                                            </div>
+                                        </div>
+                                         
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion mt-3">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#balanceSheet" aria-expanded="false">
+                                <i class="mdi mdi-bank-plus me-2"></i> Balance Sheet
+                            </button>
+                        </h2>
+                        <div id="balanceSheet" class="accordion-collapse collapse">
+                            <div class="accordion-body p-0">
+                                <div class="balance-sheet-container">
+                                    <div class="row">
+                                        <div class="col-md-6 balance-sheet-asset-section">
+                                            <h4>Assets</h4>
+                                            <div class="accordion-table-container">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 balance-sheet-liabilities-section">
+                                            <h4>Liabilities</h4>
+                                            <div class="accordion-table-container">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary waves-effect" data-bs-dismiss="modal">
+                    Close
+                </button>
+               
+            </div>
+        </div>
+    </div>
+</div>

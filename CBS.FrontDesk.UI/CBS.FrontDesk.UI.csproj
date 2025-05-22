@@ -5896,9 +5896,12 @@
     <Content Include="Views\BulkOperation\_SimulationDetailsDataTable.cshtml" />
     <Content Include="Views\BulkOperation\_TransferDetails.cshtml" />
     <Content Include="Views\CashFlowManagement\_CreateBankDepositCashClearing.cshtml" />
-    <Content Include="Views\CashFlowManagement\_SearchOptions.cshtml" />
+    <Content Include="Views\CashFlowManagement\_SearchOptionDeposit.cshtml" />
     <Content Include="Views\CashFlowManagement\_CashDepositData.cshtml" />
     <Content Include="Views\Home\NoInternet.cshtml" />
+    <Content Include="Views\AccountingStatements\_BalanceSheetBuilder.cshtml" />
+    <Content Include="Views\CashFlowManagement\_SearchOptionCashReplenishment.cshtml" />
+    <Content Include="Views\CashFlowManagement\_CashReplenishmentData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

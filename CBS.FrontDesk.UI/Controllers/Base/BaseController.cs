@@ -677,20 +677,30 @@ namespace CBS.FrontDesk.UI.Controllers
             if (IsInternetAvailable())
             {
                 userSession = _userManagementServices.GetUserCurrentsession(identity.SessionCode, identity.UserName);
-                if (userSession.SessionStatus == "Multiple_Sessions")
-                {
-                    string redirectUrl = $"~/Authentication/ResolveMultipleSessions?username={HttpUtility.UrlEncode(userSession.UserName)}" +
-                                         $"&message={HttpUtility.UrlEncode(userSession.ErrorMessage)}" +
-                                         $"&count={userSession.NumberOfSessionsOpen}";
-                    Response.Redirect(redirectUrl, true);
-                    return;
-                }
-                if (userSession == null || string.Equals(userSession.SessionStatus, "Invalid", StringComparison.OrdinalIgnoreCase))
+                if (userSession==null)
                 {
                     PerformLogoutAsync(); // 👈 Shared logout method
                     Response.Redirect("~/Authentication/Login", true);
                     return;
                 }
+                else
+                {
+                    if (userSession.SessionStatus == "Multiple_Sessions")
+                    {
+                        string redirectUrl = $"~/Authentication/ResolveMultipleSessions?username={HttpUtility.UrlEncode(userSession.UserName)}" +
+                                             $"&message={HttpUtility.UrlEncode(userSession.ErrorMessage)}" +
+                                             $"&count={userSession.NumberOfSessionsOpen}";
+                        Response.Redirect(redirectUrl, true);
+                        return;
+                    }
+                    if ( string.Equals(userSession.SessionStatus, "Invalid", StringComparison.OrdinalIgnoreCase))
+                    {
+                        PerformLogoutAsync(); // 👈 Shared logout method
+                        Response.Redirect("~/Authentication/Login", true);
+                        return;
+                    }
+                }
+                
                 BuildLocalSession(userSession.UserAuthDto);
 
             }

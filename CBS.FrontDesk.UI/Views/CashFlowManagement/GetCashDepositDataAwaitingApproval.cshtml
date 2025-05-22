@@ -2,7 +2,7 @@
 @model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
 
 @{
-    ViewBag.Title = "Cash Replenishment Request";
+    ViewBag.Title = "Cash Deposit Request";
 
 }
 
@@ -72,9 +72,9 @@
                          class="accordion-collapse collapse show"
                          data-bs-parent="#accordionPopoutIcon">
                         <div class="accordion-body">
-                            @Html.Partial("_SearchOptions")
+                            @Html.Partial("_SearchOptionDeposit")
                   
-                            <div id="datalistingview_pendingEntries">
+                            <div id="datalistingview_pendingCashMovement">
 
                             </div>
                         </div>
@@ -86,9 +86,7 @@
     </div>
 
 
-
 </div>
-
 
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
