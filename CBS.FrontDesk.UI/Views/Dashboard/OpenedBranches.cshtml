@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Online Branches";
+﻿´@using Resources
+@{
+    ViewBag.Title = @GlobalDashboard.OnlineBranches;
 }
 
 <div class="row">
@@ -16,7 +17,7 @@
                                     <div class="card mb-4">
                                         <div class="card-body d-sm-flex d-block">
                                             <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                                <i class="mdi mdi-bank-circle me-2"></i> Online BRANCHES
+                                                <i class="mdi mdi-bank-circle me-2"></i> @GlobalDashboard.OnlineBranches
                                             </div>
                                         </div>
                                     </div>

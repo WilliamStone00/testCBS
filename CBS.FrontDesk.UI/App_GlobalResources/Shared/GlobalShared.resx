@@ -138,6 +138,9 @@
   <data name="ChooseLogoImage" xml:space="preserve">
     <value>Choose logo image</value>
   </data>
+  <data name="ChoosePhoto" xml:space="preserve">
+    <value>Choose photo</value>
+  </data>
   <data name="CleanEntries" xml:space="preserve">
     <value>Clean entries</value>
   </data>
@@ -146,6 +149,9 @@
   </data>
   <data name="Closed" xml:space="preserve">
     <value>Closed</value>
+  </data>
+  <data name="CMoneyMemberActivationsOverview" xml:space="preserve">
+    <value>C-Money Member Activations Overview</value>
   </data>
   <data name="CNIImage" xml:space="preserve">
     <value>CNI image</value>
@@ -168,8 +174,17 @@
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="EnterAccountNumber" xml:space="preserve">
+    <value>Enter account number</value>
+  </data>
+  <data name="EnterMemberReferenceNumber" xml:space="preserve">
+    <value>Enter member reference number</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Export</value>
+  </data>
+  <data name="FilterByBranch" xml:space="preserve">
+    <value>Filter by Branch</value>
   </data>
   <data name="InExcelFormat" xml:space="preserve">
     <value>In Excel Format</value>
@@ -188,6 +203,15 @@
   </data>
   <data name="New" xml:space="preserve">
     <value>New</value>
+  </data>
+  <data name="NoImageFound" xml:space="preserve">
+    <value>No image found</value>
+  </data>
+  <data name="NoPhotoFound" xml:space="preserve">
+    <value>No photo found</value>
+  </data>
+  <data name="NoSignatureFound" xml:space="preserve">
+    <value>No Signature Found</value>
   </data>
   <data name="Open" xml:space="preserve">
     <value>Open</value>
@@ -212,6 +236,9 @@
   </data>
   <data name="SaveChanges" xml:space="preserve">
     <value>Save changes</value>
+  </data>
+  <data name="SAVEUC" xml:space="preserve">
+    <value>SAVE</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Search</value>
@@ -246,14 +273,29 @@
   <data name="Upload" xml:space="preserve">
     <value>Upload</value>
   </data>
+  <data name="UploadedImage" xml:space="preserve">
+    <value>UploadedImage</value>
+  </data>
+  <data name="UploadedSignature" xml:space="preserve">
+    <value>UploadedSignature</value>
+  </data>
   <data name="UploadLogo" xml:space="preserve">
     <value>Upload logo</value>
+  </data>
+  <data name="UploadPhoto" xml:space="preserve">
+    <value>Upload photo</value>
+  </data>
+  <data name="UseCamera" xml:space="preserve">
+    <value>Use camera</value>
   </data>
   <data name="Validate" xml:space="preserve">
     <value>Validate</value>
   </data>
   <data name="View" xml:space="preserve">
     <value>View</value>
+  </data>
+  <data name="ViewDetails" xml:space="preserve">
+    <value>View details</value>
   </data>
   <data name="ViewImage" xml:space="preserve">
     <value>View image</value>

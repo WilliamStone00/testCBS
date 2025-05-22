@@ -1,4 +1,5 @@
-﻿<div class="section-header">LOAN</div>
+﻿@using Resources
+<div class="section-header">@GlobalDashboard.LOANUC</div>
 
 <div class="row">
     <!-- Number of Loans Card -->
@@ -16,7 +17,7 @@
                         <span id="totalNumberOfLoans"></span>
                     </h5>
                 </div>
-                <p class="mb-0 text-heading" style="font-size: 0.85rem;">Number of loans</p>
+                <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalDashboard.NumberOfLoans</p>
             </div>
         </div>
     </div>
@@ -36,7 +37,7 @@
                         <span id="totalVolumeOfLoanGranted"></span>
                     </h5>
                 </div>
-                <p class="mb-0 text-heading" style="font-size: 0.85rem;">Volume granted</p>
+                <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalDashboard.VolumeGranted</p>
             </div>
         </div>
     </div>
@@ -56,7 +57,7 @@
                         <span id="totalRemainingBalance"></span>
                     </h5>
                 </div>
-                <p class="mb-0 text-heading" style="font-size: 0.85rem;">Remaining Volume</p>
+                <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalDashboard.RemainingVolume</p>
             </div>
         </div>
     </div>

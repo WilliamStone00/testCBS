@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Export daily operations";
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalDailyTellerAssignation.ExportDailyOperations;
 }
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
@@ -14,7 +15,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-file-excel me-2"></i> Statement of account (Teller Daily Operations F5)
+                            <i class="mdi mdi-file-excel me-2"></i> @GlobalDailyTellerAssignation.StatementOfAccount
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"

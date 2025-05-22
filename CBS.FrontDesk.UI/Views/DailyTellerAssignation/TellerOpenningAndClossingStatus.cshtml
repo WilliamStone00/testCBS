@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Teller Status";
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalDailyTellerAssignation.TellerStatus;
 }
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
@@ -14,7 +15,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-file-excel me-2"></i> Teller Openning and Clossing Status
+                            <i class="mdi mdi-file-excel me-2"></i> @GlobalDailyTellerAssignation.TellerOpenningAndClossingStatus
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"

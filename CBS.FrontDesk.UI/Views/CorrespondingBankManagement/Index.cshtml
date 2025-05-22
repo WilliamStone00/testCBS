@@ -1,6 +1,6 @@
-﻿
+﻿@using Resources
 @{
-    ViewBag.Title = "Corresponding Bank Management";
+    ViewBag.Title = @GlobalCorrespondingBankManagement.CorrespondingBankManagement;
 }
 
 <div class="row">
@@ -17,7 +17,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
                         <i class="mdi mdi-bank-outline me-2"></i>
-                        3pp Bank Management
+                        @GlobalCorrespondingBankManagement.txt3ppBankManagement
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"
@@ -32,7 +32,7 @@
                                        onclick="LoadDataView('CorrespondingBankManagement', 'myDataTable', '_CorrespondingBankData', 'datalistingview_bank', 0, 'correspondingBank', 'list');"
                                        class="btn btn-icon btn-label-primary btn-sm btn-fab demo"
                                        data-bs-toggle="tooltip"
-                                       title="View List">
+                                       title="@GlobalShared.ViewList">
                                         <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                     </a>
 
@@ -42,7 +42,7 @@
                                        onclick="AddORUpdateGen(null, 'datalistingview_bank', '_CreateCorrespondingBank', 'new', 'CorrespondingBankManagement', 'correspondingBank');"
                                        class="btn btn-icon btn-label-secondary btn-sm btn-fab demo"
                                        data-bs-toggle="tooltip"
-                                       title="Add New Corresponding Bank">
+                                       title="@GlobalShared.AddNewCorrespondingBank">
                                         <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                     </a>
                                 </div>
@@ -77,7 +77,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-4">
                         <i class="mdi mdi-bank-circle-outline me-2"></i>
-                        3pp Bank Branch Management
+                        @GlobalCorrespondingBankManagement.txt3ppBankBranchManagement
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-4"
@@ -92,7 +92,7 @@
                                        onclick="LoadDataView('CorrespondingBankManagement', 'myDataTable', '_CorrespondingBankBranchData', 'datalistingview_branch', 0, 'correspondingBankBranch', 'list');"
                                        class="btn btn-icon btn-label-primary btn-sm btn-fab demo"
                                        data-bs-toggle="tooltip"
-                                       title="View List">
+                                       title="@GlobalShared.ViewList">
                                         <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                     </a>
 
@@ -102,7 +102,7 @@
                                        onclick="AddORUpdateGen(null, 'datalistingview_branch', '_CreateCorrespondingBankBranch', 'new', 'CorrespondingBankManagement', 'correspondingBankBranch');"
                                        class="btn btn-icon btn-label-secondary btn-sm btn-fab demo"
                                        data-bs-toggle="tooltip"
-                                       title="Add New 3PP Bank Branch">
+                                       title="@GlobalCorrespondingBankManagement.AddNew3PPBankBranch">
                                         <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                     </a>
                                 </div>
@@ -137,7 +137,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-5">
                         <i class="mdi mdi-map-outline me-2"></i>
-                        Banking Zone Management
+                        @GlobalCorrespondingBankManagement.BankingZoneManagement
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-5"
@@ -152,7 +152,7 @@
                                        onclick="LoadDataView('CorrespondingBankManagement', 'myDataTable', '_BankingZoneData', 'datalistingview_bankingZone', 0, 'bankingZone', 'list');"
                                        class="btn btn-icon btn-label-primary btn-sm btn-fab demo"
                                        data-bs-toggle="tooltip"
-                                       title="View List">
+                                       title="@GlobalShared.ViewList">
                                         <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                     </a>
 
@@ -162,7 +162,7 @@
                                        onclick="AddORUpdateGen(null, 'datalistingview_bankingZone', '_CreateBankingZone', 'new', 'CorrespondingBankManagement', 'bankingZone');"
                                        class="btn btn-icon btn-label-secondary btn-sm btn-fab demo"
                                        data-bs-toggle="tooltip"
-                                       title="Add New BankingZone">
+                                       title="@GlobalCorrespondingBankManagement.AddNewBankingZone">
                                         <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                     </a>
                                 </div>
@@ -197,7 +197,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-6">
                         <i class="mdi mdi-hexagon-outline me-2"></i>
-                        Management of Banking Zone Branches
+                        @GlobalCorrespondingBankManagement.ManagementOfBankingZoneBranches
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-6"
@@ -212,7 +212,7 @@
                                        onclick="LoadDataView('CorrespondingBankManagement', 'myDataTable', '_BankZoneBranchData', 'datalistingview_bankZoneBranch', 0, 'bankZoneBranch', 'list');"
                                        class="btn btn-icon btn-label-primary btn-sm btn-fab demo"
                                        data-bs-toggle="tooltip"
-                                       title="View List">
+                                       title="@GlobalShared.ViewList">
                                         <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                     </a>
 
@@ -222,7 +222,7 @@
                                        onclick="AddORUpdateGen(null, 'datalistingview_bankZoneBranch', '_CreateBankZoneBranch', 'new', 'CorrespondingBankManagement', 'bankZoneBranch');"
                                        class="btn btn-icon btn-label-secondary btn-sm btn-fab demo"
                                        data-bs-toggle="tooltip"
-                                       title="Add New Branch in Zone">
+                                       title="@GlobalCorrespondingBankManagement.AddNewBranchInZone">
                                         <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                     </a>
                                 </div>

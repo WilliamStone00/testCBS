@@ -1,19 +1,19 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.WithdrawalNotificationForm
-
+@using Resources
 
 @if (Model.ChargesWaiveds.Any())
 {<div class="table-responsive mb-3">
         <table class="table table-hover" id="myDataTable">
             <thead class="table-light">
                 <tr>
-                    <th>Date</th>
-                    <th>Member account</th>
-                    <th>Waived Charge</th>
-                    <th>Normal Charge</th>
-                    <th>Status</th>
-                    <th>Expired date</th>
-                    <th>Reference</th>
-                    <th>Action</th>
+                    <th>@GlobalChargesWaived.Date</th>
+                    <th>@GlobalChargesWaived.MemberAccount</th>
+                    <th>@GlobalChargesWaived.WaivedCharge</th>
+                    <th>@GlobalChargesWaived.NormalCharge</th>
+                    <th>@GlobalShared.Status</th>
+                    <th>@GlobalChargesWaived.ExpiredDate</th>
+                    <th>@GlobalChargesWaived.Reference</th>
+                    <th>@GlobalShared.Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,26 +27,26 @@
                         <td style="width:10%">
                             @if (d.IsWaiverDone)
                             {
-                                <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Already Paid</span>
+                                <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalChargesWaived.AlreadyPaid</span>
                             }
                             else
                             {
-                                <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Pending...</span>
+                        <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalChargesWaived.Pending...</span>
                             }
                         </td>
                         <td style="width:20%">@d.TransactionReference</td>
                         <td style="width:10%">
                             @if (DateTime.Now.Date > d.DateOfWaiverRequest.Date)
                             {
-                                <span class="badge rounded-pill rounded-2 badge-danger bg-label-danger fs-tiny py-1">Expired</span>
+                                <span class="badge rounded-pill rounded-2 badge-danger bg-label-danger fs-tiny py-1">@GlobalChargesWaived.Expired</span>
                             }
                             else
                             {
-                                <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">OK</span>
+                        <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalChargesWaived.OK</span>
                             }
                         </td>
                         <td style="width:10%">
-                            <a href="#" onclick="ViewDetail('@d.Id')" data-toggle="modal" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="View Details">
+                            <a href="#" onclick="ViewDetail('@d.Id')" data-toggle="modal" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="@GlobalShared.ViewDetails">
                                 <i class="mdi mdi-information"></i>
                             </a>
                         </td>
@@ -59,7 +59,7 @@
 else
 {
     <div class="text-center my-3">
-        <p> No Data was found at the moment..</p>
+        <p> @GlobalChargesWaived.NoDataWasFoundAtTheMoment..</p>
     </div>
 }
 

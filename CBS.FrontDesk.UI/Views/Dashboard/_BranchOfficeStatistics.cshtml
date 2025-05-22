@@ -1,5 +1,5 @@
 ﻿
-
+@using Resources
 <div class="row">
     <div class="col-sm-6 col-lg-3 mb-4">
         <div class="card card-border-shadow-primary h-100">
@@ -12,7 +12,7 @@
                     </div>
                     <h4 class="ms-1 mb-0 display-6">0</h4>
                 </div>
-                <p class="mb-0 text-heading">Total Members</p>
+                <p class="mb-0 text-heading">@GlobalDashboard.TotalMembers</p>
             </div>
         </div>
     </div>
@@ -27,7 +27,7 @@
                     </div>
                     <h4 class="ms-1 mb-0 display-6">0</h4>
                 </div>
-                <p class="mb-0 text-heading">Active members</p>
+                <p class="mb-0 text-heading">@GlobalDashboard.ActiveMembers</p>
             </div>
         </div>
     </div>
@@ -42,7 +42,7 @@
                     </div>
                     <h4 class="ms-1 mb-0 display-6">0</h4>
                 </div>
-                <p class="mb-0 text-heading">Total Shares</p>
+                <p class="mb-0 text-heading">@GlobalDashboard.TotalShares</p>
                 @*<p class="mb-0">
                         <span class="me-1">+4.3%</span>
                         <small class="text-muted">than last week</small>
@@ -61,7 +61,7 @@
                     </div>
                     <h4 class="ms-1 mb-0 display-6">13</h4>
                 </div>
-                <p class="mb-0 text-heading">Total Savings</p>
+                <p class="mb-0 text-heading">@GlobalDashboard.TotalSavings</p>
                 @*<p class="mb-0">
                         <span class="me-1">-2.5%</span>
                         <small class="text-muted">than last week</small>
@@ -82,7 +82,7 @@
                     </div>
                     <h4 class="ms-1 mb-0 display-6">0</h4>
                 </div>
-                <p class="mb-0 text-heading">Total Liquidity</p>
+                <p class="mb-0 text-heading">@GlobalDashboard.TotalLiquidity</p>
             </div>
         </div>
     </div>
@@ -97,7 +97,7 @@
                     </div>
                     <h4 class="ms-1 mb-0 display-6">0</h4>
                 </div>
-                <p class="mb-0 text-heading">Cash in Bank</p>
+                <p class="mb-0 text-heading">@GlobalDashboard.CashInBank</p>
             </div>
         </div>
     </div>
@@ -112,7 +112,7 @@
                     </div>
                     <h4 class="ms-1 mb-0 display-6">0</h4>
                 </div>
-                <p class="mb-0 text-heading">Cash in hand Account 56</p>
+                <p class="mb-0 text-heading">@GlobalDashboard.CashInHandAccount 56</p>
                 @*<p class="mb-0">
                         <span class="me-1">+4.3%</span>
                         <small class="text-muted">than last week</small>
@@ -131,7 +131,7 @@
                     </div>
                     <h4 class="ms-1 mb-0 display-6">13</h4>
                 </div>
-                <p class="mb-0 text-heading">Cash in hand Account 57</p>
+                <p class="mb-0 text-heading">@GlobalDashboard.CashInHandAccount 57</p>
                 @*<p class="mb-0">
                         <span class="me-1">-2.5%</span>
                         <small class="text-muted">than last week</small>
@@ -153,7 +153,7 @@
                     </div>
                     <h4 class="ms-1 mb-0 display-6">0</h4>
                 </div>
-                <p class="mb-0 text-heading">Total Income</p>
+                <p class="mb-0 text-heading">@GlobalDashboard.TotalIncome</p>
             </div>
         </div>
     </div>
@@ -168,7 +168,7 @@
                     </div>
                     <h4 class="ms-1 mb-0 display-6">0</h4>
                 </div>
-                <p class="mb-0 text-heading">Total Expenses</p>
+                <p class="mb-0 text-heading">@GlobalDashboard.TotalExpenses</p>
             </div>
         </div>
     </div>
@@ -181,7 +181,7 @@
     <div class="col-xxl-6 mb-4 order-5 order-xxl-0">
         <div class="card h-100">
             <div class="card-header d-flex align-items-center justify-content-between">
-                <h5 class="card-title mb-0 me-2">Daily operations</h5>
+                <h5 class="card-title mb-0 me-2">@GlobalDashboard.DailyOperations</h5>
                 <div class="dropdown">
                     <button class="btn p-0"
                             type="button"
@@ -192,8 +192,8 @@
                         <i class="mdi mdi-dots-vertical mdi-24px"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="topic">
-                        <a class="dropdown-item" href="javascript:void(0);">Highest Views</a>
-                        <a class="dropdown-item" href="javascript:void(0);">See All</a>
+                        <a class="dropdown-item" href="javascript:void(0);">@GlobalDashboard.HighestViews</a>
+                        <a class="dropdown-item" href="javascript:void(0);">@GlobalDashboard.SeeAll</a>
                     </div>
                 </div>
             </div>
@@ -241,7 +241,7 @@
                                         <div class="me-2">
                                             <i class="text-heading mdi mdi-group"></i>
                                         </div>
-                                        <h6 class="mb-0 fw-normal">New members</h6>
+                                        <h6 class="mb-0 fw-normal">@GlobalDashboard.NewMembers</h6>
                                     </div>
                                 </td>
                                 <td class="text-end pe-0">
@@ -254,7 +254,7 @@
                                         <div class="me-2">
                                             <i class="text-heading mdi mdi-progress-download"></i>
                                         </div>
-                                        <h6 class="mb-0 fw-normal">Initial deposis</h6>
+                                        <h6 class="mb-0 fw-normal">@GlobalDashboard.InitialDeposits</h6>
                                     </div>
                                 </td>
                                 <td class="text-end pe-0">
@@ -267,7 +267,7 @@
                                         <div class="me-2">
                                             <i class="text-heading mdi mdi-upload"></i>
                                         </div>
-                                        <h6 class="mb-0 fw-normal">Deposits</h6>
+                                        <h6 class="mb-0 fw-normal">@GlobalDashboard.Deposits</h6>
                                     </div>
                                 </td>
 
@@ -281,7 +281,7 @@
                                         <div class="me-2">
                                             <i class="text-heading mdi mdi-timer-outline"></i>
                                         </div>
-                                        <h6 class="mb-0 fw-normal">Withdrawals</h6>
+                                        <h6 class="mb-0 fw-normal">@GlobalDashboard.Withdrawals</h6>
                                     </div>
                                 </td>
                                 <td class="text-end pe-0">
@@ -294,7 +294,7 @@
                                         <div class="me-2">
                                             <i class="text-heading mdi mdi-transfer"></i>
                                         </div>
-                                        <h6 class="mb-0 fw-normal">Transfer</h6>
+                                        <h6 class="mb-0 fw-normal">@GlobalDashboard.Transfer</h6>
                                     </div>
                                 </td>
                                 <td class="text-end pe-0">
@@ -307,7 +307,7 @@
                                         <div class="me-2">
                                             <i class="text-heading mdi mdi-desktop-tower-monitor"></i>
                                         </div>
-                                        <h6 class="mb-0 fw-normal">Loan</h6>
+                                        <h6 class="mb-0 fw-normal">@GlobalDashboard.Loan</h6>
                                     </div>
                                 </td>
                                 <td class="text-end pe-0">
@@ -320,7 +320,7 @@
                                         <div class="me-2">
                                             <i class="text-heading mdi mdi-desktop-tower-monitor"></i>
                                         </div>
-                                        <h6 class="mb-0 fw-normal">Refund</h6>
+                                        <h6 class="mb-0 fw-normal">@GlobalDashboard.Refund</h6>
                                     </div>
                                 </td>
                                 <td class="text-end pe-0">
@@ -339,28 +339,28 @@
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between">
                 <div class="card-title mb-0">
-                    <h5 class="m-0 me-2 mb-1">Loan Deliquencies</h5>
+                    <h5 class="m-0 me-2 mb-1">@GlobalDashboard.LoanDeliquencies</h5>
                 </div>
                 <div class="dropdown">
                     <button type="button"
                             class="btn btn-outline-primary dropdown-toggle"
                             data-bs-toggle="dropdown"
                             aria-expanded="false">
-                        January
+                        @GlobalDashboard.January
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="javascript:void(0);">January</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0);">February</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0);">March</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0);">April</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0);">May</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0);">June</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0);">July</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0);">August</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0);">September</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0);">October</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0);">November</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0);">December</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);">@GlobalDashboard.January</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);">@GlobalDashboard.February</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);">@GlobalDashboard.March</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);">@GlobalDashboard.April</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);">@GlobalDashboard.May</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);">@GlobalDashboard.June</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);">@GlobalDashboard.July</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);">@GlobalDashboard.August</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);">@GlobalDashboard.September</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);">@GlobalDashboard.October</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);">@GlobalDashboard.November</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);">@GlobalDashboard.December</a></li>
                     </ul>
                 </div>
             </div>

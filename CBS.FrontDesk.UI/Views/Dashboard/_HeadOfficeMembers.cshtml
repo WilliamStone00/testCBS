@@ -1,4 +1,5 @@
-﻿<div class="section-header">MEMBERSHIP</div>
+﻿@using Resources
+<div class="section-header">@GlobalDashboard.MEMBERSHIP</div>
 
 <div class="row">
     <!-- Total Members Card -->
@@ -13,7 +14,7 @@
                     </div>
                     <h5 class="ms-1 mb-0" style="font-size: 1.2rem;"><span id="mtotalMembers"></span></h5> <!-- Reduced font size -->
                 </div>
-                <p class="mb-0 text-heading" style="font-size: 0.85rem;">Total Members</p> <!-- Reduced font size -->
+                <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalDashboard.TotalMembers</p> <!-- Reduced font size -->
             </div>
         </div>
     </div>
@@ -30,7 +31,7 @@
                     </div>
                     <h5 class="ms-1 mb-0" style="font-size: 1.2rem;"><span id="mtotalMoralMembers"></span></h5>
                 </div>
-                <p class="mb-0 text-heading" style="font-size: 0.85rem;">Moral Persons</p>
+                <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalDashboard.MoralPersons</p>
             </div>
         </div>
     </div>
@@ -47,7 +48,7 @@
                     </div>
                     <h5 class="ms-1 mb-0" style="font-size: 1.2rem;"><span id="mtotalPhysicalMembers"></span></h5>
                 </div>
-                <p class="mb-0 text-heading" style="font-size: 0.85rem;">Physical Persons</p>
+                <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalDashboard.PhysicalPersons</p>
             </div>
         </div>
     </div>
@@ -64,7 +65,7 @@
                     </div>
                     <h5 class="ms-1 mb-0" style="font-size: 1.2rem;"><span id="mtotalBranches"></span></h5>
                 </div>
-                <p class="mb-0 text-heading" style="font-size: 0.85rem;">Total Branches</p>
+                <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalDashboard.TotalBranches</p>
             </div>
         </div>
     </div>

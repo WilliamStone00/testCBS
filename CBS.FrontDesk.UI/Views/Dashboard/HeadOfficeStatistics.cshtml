@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "HO Dashboard";
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalDashboard.HODashboard;
 }
 <style>
     /* Dashboard Title */
@@ -34,7 +35,7 @@
     <!-- Dashboard Title -->
     <div class="mb-4">
         <hr style="border: 2px solid green;" />
-        <h2 class="dashboard-title"><span>FINANCIAL ANALITIC DASHBOARD (HEAD OFFICE)</span></h2>
+        <h2 class="dashboard-title"><span>@GlobalDashboard.FINANCIALANALITICDASHBOARD</span></h2>
         <hr style="border: 2px solid blue;" />
     </div>
     @Html.Partial("_HeadOfficeMembers")
