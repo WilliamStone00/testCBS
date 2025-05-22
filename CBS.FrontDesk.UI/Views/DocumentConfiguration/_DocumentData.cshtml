@@ -1,10 +1,11 @@
 ﻿@model  CBS.FrontDesk.Data.Entity.Accounting.DocumentConfiguration
+    @using Resources
 <table class="table table-hover" id="myDataTable_Document">
     <thead class="table-light">
         <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Action</th>
+            <th>@GlobalDocumentConfiguration.Name</th>
+            <th>@GlobalDocumentConfiguration.Description</th>
+            <th>@GlobalShared.Action</th>
         </tr>
     </thead>
     <tbody>
@@ -16,8 +17,8 @@
                 <td style="width:45%">@d.description</td>
 
                 <td style="width:20%">
-                    <a href="#" onclick="AddORUpdateGen('@d.id','datalistingview_Document','_CreateDocument','update','AccountingConfiguration','Document')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">Edit</a>
-                    <a href="#" class="mr-2 " data-toggle="tooltip" data-placement="top" title="Delete @d.name" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.id','myDataTable_Document','_DocumentData',0,'datalistingview_Document','Document')">Delete</a>
+                    <a href="#" onclick="AddORUpdateGen('@d.id','datalistingview_Document','_CreateDocument','update','AccountingConfiguration','Document')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.name @GlobalShared.ToEdit">@GlobalShared.Edit</a>
+                    <a href="#" class="mr-2 " data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.name" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.id','myDataTable_Document','_DocumentData',0,'datalistingview_Document','Document')">@GlobalShared.Delete</a>
 
                 </td>
 

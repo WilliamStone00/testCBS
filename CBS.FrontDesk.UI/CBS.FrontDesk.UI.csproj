@@ -1374,6 +1374,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalDashboard.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\DocumentConfiguration\GlobalDocumentConfiguration.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalDocumentConfiguration.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Document\GlobalDocument.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalDocument.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\EconomicActivity\GlobalEconomicActivity.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalEconomicActivity.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\EndOfDayOperation\GlobalEndOfDayOperation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalEndOfDayOperation.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\HomePage\GlobalAbout.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -5214,6 +5234,22 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalDashboard.Designer.cs</LastGenOutput>
     </Content>
+    <Content Include="App_GlobalResources\Document\GlobalDocument.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalDocument.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\DocumentConfiguration\GlobalDocumentConfiguration.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalDocumentConfiguration.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\EconomicActivity\GlobalEconomicActivity.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalEconomicActivity.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\EndOfDayOperation\GlobalEndOfDayOperation.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalEndOfDayOperation.Designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -6369,7 +6405,6 @@
     <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
-    <Folder Include="App_GlobalResources\Document\" />
     <Folder Include="Controllers\CustomerManagement\MemberActivation\" />
     <Folder Include="Hub\" />
     <Folder Include="Views\CorrespondingBank\" />
