@@ -123,11 +123,17 @@
   <data name="Action" xml:space="preserve">
     <value>Action</value>
   </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
   <data name="AddNew" xml:space="preserve">
     <value>Add new</value>
   </data>
   <data name="BackToHome" xml:space="preserve">
     <value>Back to home</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
   </data>
   <data name="ChooseLogoImage" xml:space="preserve">
     <value>Choose logo image</value>
@@ -141,8 +147,14 @@
   <data name="Closed" xml:space="preserve">
     <value>Closed</value>
   </data>
+  <data name="CNIImage" xml:space="preserve">
+    <value>CNI image</value>
+  </data>
   <data name="Create" xml:space="preserve">
     <value>Create</value>
+  </data>
+  <data name="Decision" xml:space="preserve">
+    <value>Decision</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
@@ -183,6 +195,12 @@
   <data name="Print" xml:space="preserve">
     <value>Print</value>
   </data>
+  <data name="ProfileImage" xml:space="preserve">
+    <value>Profile image</value>
+  </data>
+  <data name="Rejected" xml:space="preserve">
+    <value>Rejected</value>
+  </data>
   <data name="Reopen" xml:space="preserve">
     <value>Reopen</value>
   </data>
@@ -207,8 +225,14 @@
   <data name="SelectToEdit" xml:space="preserve">
     <value>Select to edit</value>
   </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
   <data name="Submit" xml:space="preserve">
     <value>Submit</value>
+  </data>
+  <data name="SubmitRequest" xml:space="preserve">
+    <value>Submit request</value>
   </data>
   <data name="ToDownload" xml:space="preserve">
     <value>To download</value>
@@ -230,6 +254,9 @@
   </data>
   <data name="View" xml:space="preserve">
     <value>View</value>
+  </data>
+  <data name="ViewImage" xml:space="preserve">
+    <value>View image</value>
   </data>
   <data name="ViewInDatatable" xml:space="preserve">
     <value>View in Datatable</value>

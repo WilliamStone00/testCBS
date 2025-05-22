@@ -1329,6 +1329,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalCashMovementTracker.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\ChangeNumber\GlobalChangeNumber.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalChangeNumber.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\HomePage\GlobalAbout.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -5133,6 +5138,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalCashMovementTrackerConfiguration.Designer.cs</LastGenOutput>
     </Content>
+    <Content Include="App_GlobalResources\ChangeNumber\GlobalChangeNumber.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalChangeNumber.Designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -6288,7 +6297,7 @@
     <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
-    <Folder Include="App_GlobalResources\ChangeNumber\" />
+    <Folder Include="App_GlobalResources\ChargesWaived\" />
     <Folder Include="Controllers\CustomerManagement\MemberActivation\" />
     <Folder Include="Hub\" />
     <Folder Include="Views\CorrespondingBank\" />
