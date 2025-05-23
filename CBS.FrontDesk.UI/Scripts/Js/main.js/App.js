@@ -2120,7 +2120,6 @@ function AjaxPostAndUpdateChangePassword(form) {
 
 
 
-
 //    (function () {
 //        let idleTimeoutMinutes = 5; // fallback
 //    let idleCounter = 0;

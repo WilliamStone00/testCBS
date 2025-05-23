@@ -1,8 +1,8 @@
 ﻿
 @model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
-@using Resources
+
 @{
-    ViewBag.Title = @GlobalCashFlowManagement.CashReplenishmentRequest;
+    ViewBag.Title = "Cash Deposit Request";
 
 }
 
@@ -11,10 +11,11 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cash-check me-2"></i> @GlobalCashFlowManagement.CASHMOVEMENT
+                    <i class="mdi mdi-cash-check me-2"></i> CASH MOVEMENT [ BANK CASH DEPOSIT VALIDATION]
                 </h1>
                 <p class="card-text">
-                    @GlobalCashFlowManagement.AllCashMovementInTSCAreValidated.
+                    All cash movement in TSC are validated by the person that has the role. When requesting to move cash to the bank the user issue a request
+                    at the level branch and need to be approved by the management.
                 </p>
                 <p class="card-text text-warning fw-bold">
                     <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalCashFlowManagement.InCaseTheyAreLimitedResources.
@@ -57,7 +58,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-bank-plus me-2"></i>
-                @GlobalCashFlowManagement.BANKCASHDEPOSITVALIDATIONHISTORY
+                BANK CASH DEPOSIT VALIDATION HISTORY
             </button>
         </h2>
 
@@ -71,9 +72,9 @@
                          class="accordion-collapse collapse show"
                          data-bs-parent="#accordionPopoutIcon">
                         <div class="accordion-body">
-                            @Html.Partial("_SearchOptions")
+                            @Html.Partial("_SearchOptionDeposit")
                   
-                            <div id="datalistingview_pendingEntries">
+                            <div id="datalistingview_pendingCashMovement">
 
                             </div>
                         </div>
@@ -85,9 +86,7 @@
     </div>
 
 
-
 </div>
-
 
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")

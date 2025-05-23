@@ -116,14 +116,14 @@
                 <!-- Hidden Input -->
                 <input type="hidden" id="selectedBranchID" value="" />
 
-                <!-- Submit Button -->
+                <!-- Submit Button   onclick="Search('ManuallyJournalEntry','myDataTable','_PendingEntries','datalistingview_pendingEntries','FilteringOption')"-->
                 <div class="col-md-12 text-end mt-3">
                     <a href="javascript:void(0);"
                        class="btn btn-primary d-inline-flex align-items-center gap-2"
                        id="print_btn"
-                       onclick="Search()">
+                       onclick="Search('CashFlowManagement','myDataTable','_CashDepositData','datalistingview_pendingCashMovement','FilteringBankDepositOption')">
                         <i class="mdi mdi-magnify"></i>
-                        @GlobalCashFlowManagement.SearchJournalEntry
+                        Search BANK DEPOSIT Request
                     </a>
                 </div>
 

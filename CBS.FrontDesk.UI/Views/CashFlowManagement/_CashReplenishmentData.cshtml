@@ -1,8 +1,10 @@
-﻿@using Resources
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+
 @{
     ViewBag.Title = "Pending Cash Deposit Request";
  
 }
+
 <div class="table-responsive mb-3">
     @if (Convert.ToBoolean(ViewBag.IsAuthourized) == false)
     {
@@ -28,20 +30,20 @@
                     <tbody>
                         @{
 
-                            foreach (var d in Model.ListDepositNotificationDto)
+                            foreach (var d in Model.ListCashReplenimentRequestDto)
                             {
 
 
                                 <tr>
                                     <td style="width:15%">@d.BranchOffice</td>
-                                    <td style="width:15%">@d.Temp1</td>
+                                    <td style="width:15%">@d.TempId1</td>
                                     <td style="width:15%">
                                         @{
-                                            var formatedAmount = Convert.ToDecimal(d.Amount).ToString("N");
+                                            var formatedAmount = Convert.ToDecimal(d.AmountRequested).ToString("N");
                                             @formatedAmount
                                         }
                                     </td>
-                                    <td style="width:15%">@d.IssueDate</td>
+                                    <td style="width:15%">@d.IssuedDate</td>
                                     @if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Approved.ToString()))
                                     {
                                         if (d.IsOwner)
@@ -153,7 +155,7 @@
 
                                     }
 
-                                    <td style="width:15%">@d.Message</td>
+                                    <td style="width:15%">@d.RequestMessage</td>
 
 
                                     <td style="width:10%">
@@ -242,7 +244,7 @@
                     <tbody>
                         @{
 
-                            foreach (var d in Model.ListDepositNotificationDto)
+                            foreach (var d in Model.ListCashReplenimentRequestDto)
                             {
                                 if (d.BranchOffice.ToLower().Contains("head office"))
                                 {
@@ -250,14 +252,14 @@
                                 }
                                 <tr>
 
-                                    <td style="width:15%">@d.Temp1</td>
+                                    <td style="width:15%">@d.TempId1</td>
                                     <td style="width:15%">
                                         @{
-                                            var formatedAmount = Convert.ToDecimal(d.Amount).ToString("N");
+                                            var formatedAmount = Convert.ToDecimal(d.AmountRequested).ToString("N");
                                             @formatedAmount
                                         }
                                     </td>
-                                    <td style="width:15%">@d.IssueDate</td>
+                                    <td style="width:15%">@d.IssuedDate</td>
                                     @if (d.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Approved.ToString()))
                                     {
                                         if (d.IsOwner)
@@ -368,7 +370,7 @@
                                         </td>
                                     }
 
-                                    <td style="width:15%">@d.Message</td>
+                                    <td style="width:15%">@d.RequestMessage</td>
 
 
                                     <td style="width:10%">

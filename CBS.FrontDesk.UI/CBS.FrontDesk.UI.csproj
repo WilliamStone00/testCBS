@@ -6379,7 +6379,7 @@
     <Content Include="Views\BulkOperation\_SimulationDetailsDataTable.cshtml" />
     <Content Include="Views\BulkOperation\_TransferDetails.cshtml" />
     <Content Include="Views\CashFlowManagement\_CreateBankDepositCashClearing.cshtml" />
-    <Content Include="Views\CashFlowManagement\_SearchOptions.cshtml" />
+    <Content Include="Views\CashFlowManagement\_SearchOptionDeposit.cshtml" />
     <Content Include="Views\CashFlowManagement\_CashDepositData.cshtml" />
     <Content Include="Views\Home\NoInternet.cshtml" />
     <Content Include="Scripts\bootstrap.min.js.map" />

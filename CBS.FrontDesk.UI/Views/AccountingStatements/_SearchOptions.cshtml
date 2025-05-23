@@ -152,23 +152,25 @@
 
                 <!-- Left-aligned button -->
                 <div id="lunchBalanceSheetBuilder">
-                    <button type="button" class="btn btn-primary mdi mdi-play-box mdi-24px" onclick="LunchBalanceSheetBuilder()">
+                     
+                    <button type="button" class="btn btn-primary mdi mdi-play-box mdi-24px" data-bs-toggle="modal" data-bs-target="#fullscreenModal" onclick="launchBalanceSheetBuilder()">
                         Lunch Balance Sheet Builder
                     </button>
                 </div>
 
                 <!-- Right-aligned button -->
-                <button type="button" class="btn btn-primary mdi mdi-printer-pos-alert mdi-24px" id="print_btn" onclick="AjaxPostSearch()">
-                    Print
-                </button>
+                <button type="submit" class="btn btn-primary mdi mdi-printer-pos-alert mdi-24px me-2">Print</button>
+
+
+
+
+
+
 
             </div>
-
+            @*</fieldset>*@
         }
-
     </div>
-    @*</fieldset>*@
-
 </div>
 
 
