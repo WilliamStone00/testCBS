@@ -3,6 +3,7 @@ using CBS.BusinessService;
 using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.Config.Localization;
+using CBS.BusinessService.RequestLoggerServicesP;
 using CBS.BusinessService.Session;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Helper;
@@ -28,6 +29,8 @@ namespace CBS.FrontDesk.UI
             // Register your dependencies here using container.RegisterType<>()
             container.RegisterType<IAuthenticationServices, AuthenticationServices>();
             container.RegisterType<IUserManagementServices, UserManagementServices>();
+            container.RegisterType<RateLimitConfigService, RateLimitConfigService>();
+            
             //container.RegisterType<IMemberAccountJob, MemberAccountJob>();
             container.RegisterType<IBranchServices, BranchServices>();
 
@@ -35,7 +38,7 @@ namespace CBS.FrontDesk.UI
             container.RegisterType<RegionServices, RegionServices>();
             container.RegisterType<AccountingServices, AccountingServices>();
             //container.RegisterType<IAccountingEntryServices, AccountingEntryServices>();
-            container.RegisterType<IUserManagementServices, UserManagementServices>();
+            container.RegisterType<RateLimiteTrackerLoggerServices, RateLimiteTrackerLoggerServices>();
 
             container.RegisterType<SubDivisionServices, SubDivisionServices>();
             container.RegisterType<IBranchServices, BranchServices>();

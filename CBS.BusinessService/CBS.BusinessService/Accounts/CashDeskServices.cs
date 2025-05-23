@@ -344,11 +344,12 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 var bulkDeposits = FilterByAmountGreaterThanZero(bulkDeposits1);
+                var TotalAmount = bulkDeposits.Sum(x=>x.Total);
                 // Take only the first BulkDeposit object
                 var deposit = bulkDeposits.FirstOrDefault();
                 if (bulkDeposits.FirstOrDefault().OperationType == "Withdrawal")
                 {
-                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, deposit.Amount);
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
 
                     if (!isValid)
                     {
@@ -379,7 +380,7 @@ namespace CBS.BusinessService.Accounts
                 //SavingWithdrawalFormFee
                 else if (bulkDeposits.FirstOrDefault().OperationType == "WithdrawalSWS")
                 {
-                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, deposit.Amount);
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
 
                     if (!isValid)
                     {
@@ -409,7 +410,7 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "SavingWithdrawalFormFee")
                 {
-                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, deposit.Amount);
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
 
                     if (!isValid)
                     {
@@ -440,7 +441,7 @@ namespace CBS.BusinessService.Accounts
                 //LoanRepayment
                 else if (bulkDeposits.FirstOrDefault().OperationType == "CashIn")
                 {
-                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, deposit.Amount);
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
 
                     if (!isValid)
                     {
@@ -476,7 +477,7 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "RemittanceIN")
                 {
-                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, deposit.Amount);
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
 
                     if (!isValid)
                     {
@@ -510,7 +511,7 @@ namespace CBS.BusinessService.Accounts
                 //MobileMoneyNoneCashIn
                 else if (bulkDeposits.FirstOrDefault().OperationType == "RemittanceOUT")
                 {
-                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, deposit.Amount);
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
 
                     if (!isValid)
                     {
@@ -679,7 +680,7 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "LoanRepayment")
                 {
-                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, deposit.Amount);
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
 
                     if (!isValid)
                     {
@@ -710,7 +711,7 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "LoanFee")
                 {
-                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, deposit.Amount);
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
 
                     if (!isValid)
                     {
@@ -751,7 +752,7 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "OtherCashIn")
                 {
-                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, deposit.Amount);
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
 
                     if (!isValid)
                     {
@@ -800,7 +801,7 @@ namespace CBS.BusinessService.Accounts
 
                 else if (bulkDeposits.FirstOrDefault().OperationType == "MobileMoney")
                 {
-                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, deposit.Amount);
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
 
                     if (!isValid)
                     {
@@ -868,7 +869,7 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "OtherCashInExpense")
                 {
-                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, deposit.Amount);
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
 
                     if (!isValid)
                     {

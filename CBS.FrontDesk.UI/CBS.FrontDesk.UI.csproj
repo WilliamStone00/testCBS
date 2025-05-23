@@ -1029,26 +1029,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalAlertProfile.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Create.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AndriodAppVersioning_Create.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Data.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AndriodAppVersioning_Data.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Index.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AndriodAppVersioning_Index.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\AuditTrail\GlobalAuditTrail.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -5024,22 +5004,6 @@
     <Content Include="App_GlobalResources\AlertProfile\GlobalAlertProfile.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalAlertProfile.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Index.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AndriodAppVersioning_Index.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Data.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AndriodAppVersioning_Data.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Create.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AndriodAppVersioning_Create.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\AndriodAppVersioning\AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\AuditTrail\GlobalAuditTrail.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
