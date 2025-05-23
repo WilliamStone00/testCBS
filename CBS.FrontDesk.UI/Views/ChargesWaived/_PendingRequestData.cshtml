@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.WithdrawalNotificationForm
-
+@using Resources
 
     @if (Model.WithdrawalNotifications.Any())
     {
@@ -7,13 +7,13 @@
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>Reference</th>
-                        <th>Amount</th>
-                        <th>I Date</th>
-                        <th>G Date</th>
-                        <th>Status</th>
-                        <th>Reason</th>
-                        <th>Action</th>
+                        <th>@GlobalChargesWaived.Reference</th>
+                        <th>@GlobalChargesWaived.Amount</th>
+                        <th>@GlobalChargesWaived.IDate</th>
+                        <th>@GlobalChargesWaived.GDate</th>
+                        <th>@GlobalShared.Status</th>
+                        <th>@GlobalChargesWaived.Reason</th>
+                        <th>@GlobalShared.Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,7 +28,7 @@
                             <td style="width:10%">@d.ApprovalStatus</td>
                             <td style="width:10%">@d.ReasonForWithdrawal</td>
                             <td style="width:10%">
-                                <a href="#" onclick="ValidateRequest('@d.Id')" data-toggle="modal" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="Validate">
+                                <a href="#" onclick="ValidateRequest('@d.Id')" data-toggle="modal" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="@GlobalShared.Validate">
                                     <i class="fas fa-check-circle"></i>
                                 </a>
                             </td>
@@ -41,7 +41,7 @@
     else
     {
         <div class="text-center my-3">
-            <p> No Data was found at the moment..</p>
+            <p> @GlobalChargesWaived.NoDataWasFoundAtTheMoment..</p>
         </div>
     }
 

@@ -1,8 +1,8 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.GetTillStatusQuery
-
+@using Resources
 
 <fieldset class="fieldset-custom">
-    <legend id="select_base">Till Cash Status Printing Parameters</legend>
+    <legend id="select_base">@GlobalDailyTellerAssignation.TillCashStatusPrintingParameters</legend>
     <div class="card-body">
         @using (Html.BeginForm("TillCashStatusDownload", "DailyTellerAssignation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdatePrintTillStatus(this);" }))
         {
@@ -12,13 +12,13 @@
                 <div class="col-md-6">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.ByBranch, new { @class = "form-check-input", @id = "byBranchCheckbox" })
-                        <label class="form-check-label" for="byBranchCheckbox">Check to print By Branch</label>
+                        <label class="form-check-label" for="byBranchCheckbox">@GlobalDailyTellerAssignation.CheckToPrintByBranch</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.ByTeller, new { @class = "form-check-input", @id = "byTellerCheckbox" })
-                        <label class="form-check-label" for="byTellerCheckbox">Check to print by Till</label>
+                        <label class="form-check-label" for="byTellerCheckbox">@GlobalDailyTellerAssignation.CheckToPrintByTill</label>
                     </div>
                 </div>
             </div>
@@ -26,25 +26,25 @@
             <div class="row g-4">
                 <div class="col-md-4" id="branchDiv" style="display:block">
                     <label for="branchInput">Branch</label>
-                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---Select Branch---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
+                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalDailyTellerAssignation.SelectBranch +"---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
                     @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
                 </div>
                 <div class="col-md-4" id="tellerDiv" style="display:none">
                     <label for="tellerInput">Select a till</label>
-                    @Html.DropDownListFor(m => m.TellerId, new SelectList(ViewBag.Tellers, "Value", "Text"), "---Select till---", new { @class = "form-control shadow-box select2", @id = "tellerInput" })
+                    @Html.DropDownListFor(m => m.TellerId, new SelectList(ViewBag.Tellers, "Value", "Text"), "---"+ @GlobalDailyTellerAssignation.SelectTill+"---", new { @class = "form-control shadow-box select2", @id = "tellerInput" })
                     @Html.ValidationMessageFor(m => m.TellerId, "", new { @class = "text-danger" })
                 </div>
                 <div class="col-md-8">
                     <div class="row g-4">
                         <div class="col-md-6">
-                            <label for="dateFromInput">Date From</label>
+                            <label for="dateFromInput">@GlobalDailyTellerAssignation.DateFrom</label>
                             <div class="input-group">
                                 @Html.TextBoxFor(m => m.DateFrom, new { @class = "form-control shadow-box date-picker", @id = "dateFromInput", @placeholder = "Date From" })
                             </div>
                             @Html.ValidationMessageFor(m => m.DateFrom, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-md-6">
-                            <label for="dateToInput">Date To</label>
+                            <label for="dateToInput">@GlobalDailyTellerAssignation.DateTo</label>
                             <div class="input-group">
                                 @Html.TextBoxFor(m => m.DateTo, new { @class = "form-control shadow-box date-picker", @id = "dateToInput", @placeholder = "Date To" })
                             </div>
@@ -56,7 +56,7 @@
             <hr />
             <div class="text-center">
                 <button type="submit" class="btn btn-primary btn-sm">
-                    <i class="fa fa-print me-2"></i> Print
+                    <i class="fa fa-print me-2"></i> @GlobalShared.Print
                 </button>
             </div>
         }

@@ -1,6 +1,6 @@
-﻿
+﻿@using Resources
 @{
-    ViewBag.Title = "Corresponding Bank Management";
+    ViewBag.Title = @GlobalCorrespondingBankManagement.CorrespondingBankManagement;
 }
 
 <div class="row">
@@ -17,7 +17,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
                         <i class="mdi mdi-bank-outline me-2"></i>
-                        Corresponding Bank Management
+                        @GlobalCorrespondingBankManagement.CorrespondingBankManagement
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"
@@ -26,10 +26,10 @@
                     <div class="accordion-body">
                         <div class="row justify-content-end">
                             <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataView('CorrespondingBankManagement','DataTableCorrespondingBankBranch','_CorrespondingBankBranchData','datalistingview',0,'correspondingBankBranch','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                <a type="button" onclick="LoadDataView('CorrespondingBankManagement','DataTableCorrespondingBankBranch','_CorrespondingBankBranchData','datalistingview',0,'correspondingBankBranch','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title=" @GlobalShared.ViewList">
                                     <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                 </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_CreateCorrespondingBankBranch','new','CorrespondingBankManagement','correspondingBankBranch')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_CreateCorrespondingBankBranch','new','CorrespondingBankManagement','correspondingBankBranch')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title=" @GlobalShared.AddNew">
                                     <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                 </a>
                             </div>

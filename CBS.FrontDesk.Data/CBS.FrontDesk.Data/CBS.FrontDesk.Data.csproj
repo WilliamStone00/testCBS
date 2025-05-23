@@ -95,6 +95,7 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Entity\Accounting\BlacklistAccount.cs" />
     <Compile Include="Entity\Accounting\Enumeration.cs" />
+    <Compile Include="Entity\Accounting\TrialBalanceDt.cs" />
     <Compile Include="Entity\AccountOpeningRulePerBranchP\AccountOpeningRulePerBranch.cs" />
     <Compile Include="Entity\AndriodApp\AndriodVersionConfiguration.cs" />
     <Compile Include="Entity\AuditTralP\AuditTrailDto.cs" />

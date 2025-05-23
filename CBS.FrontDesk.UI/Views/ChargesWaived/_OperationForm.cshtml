@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.WithdrawalNotificationForm
+    @using Resources
 @using (Html.BeginForm("Create", "ChargesWaived", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithdrawalFromRequest(this);" }))
 {
 
@@ -7,38 +8,38 @@
     <input type="hidden" value="@Model.Customer.CustomerId" id="customerid" />
     <div class="form-wrapper">
         <fieldset class="fieldset-custom">
-            <legend>Charge Waiver Request</legend>
+            <legend>@GlobalChargesWaived.ChargeWaiverRequest</legend>
             <hr />
             <div class="change-group">
                 <div class="row mt-2 gy-4">
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
+                            <span class="formatted-amount shadow-box float-start">@GlobalChargesWaived.MemberName: @Model.Customer.name</span>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.ChargesWaived.CustomCharge, new { @class = "form-control"})
                             @Html.ValidationMessageFor(m => m.ChargesWaived.CustomCharge, "", new { @class = "text-danger" })
-                            <label>Enter charge to waive. (Note that this is valid only for a day.)</label>
+                            <label>@GlobalChargesWaived.EnterChargeToWaive</label>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating form-floating-outline">
                             @Html.TextAreaFor(m => m.ChargesWaived.Comment, new { @class = "form-control", @style = "height: 75px;" })
                             @Html.ValidationMessageFor(m => m.ChargesWaived.Comment, "", new { @class = "text-danger" })
-                            <label>Reason for waiving charges</label>
+                            <label>@GlobalChargesWaived.ReasonForWaivingCharges</label>
                         </div>
                     </div>
                 </div>
                 <div class="mt-4">
                     @if (ViewBag.Key != null)
                     {
-                        <button type="submit" class="btn btn-primary me-2">Update</button>
+                        <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                     }
                     else
                     {
-                        <button type="submit" class="btn btn-primary me-2">Save</button>
+                <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
                     }
                 </div>
             </div>

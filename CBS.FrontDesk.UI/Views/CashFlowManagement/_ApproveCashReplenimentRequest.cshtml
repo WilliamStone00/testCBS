@@ -1,7 +1,8 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+    @using Resources
 @{
 
-    ViewBag.Title = "Cash Request- Action to be taken";
+    ViewBag.Title = @GlobalCashFlowManagement.CashRequestActionToBeTaken;
 
 }
 
@@ -29,7 +30,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Cash Replenishment Details</th>
+                            <th>@GlobalCashFlowManagement.CashReplenishmentDetails</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -38,32 +39,32 @@
                         {
 
                             <tr>
-                                <td>Branch Office</td>
+                                <td>@GlobalCashFlowManagement.BranchOffice</td>
                                 <td>@Model.CashReplenimentRequestdto.BranchOffice </td>
                             </tr>
                         }
                         <tr>
-                            <td>Invoice Number</td>
+                            <td>@GlobalCashFlowManagement.InvoiceNumber</td>
                             <td>@Model.CashReplenimentRequestdto.ReferenceId </td>
                         </tr>
                         <tr>
-                            <td>Amount Requested</td>
+                            <td>@GlobalCashFlowManagement.AmountRequested</td>
                             <td>XAF @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") </td>
                         </tr>
                         <tr>
-                            <td>Request Message</td>
+                            <td>@GlobalCashFlowManagement.RequestMessage</td>
                             <td>@Model.CashReplenimentRequestdto.RequestMessage </td>
                         </tr>
                         <tr>
-                            <td>Requested By </td>
+                            <td>@GlobalCashFlowManagement.RequestedBy </td>
                             <td> @Model.CashReplenimentRequestdto.TempId1 </td>
                         </tr>
                         <tr>
-                            <td>Requested Date</td>
+                            <td>@GlobalCashFlowManagement.RequestedDate</td>
                             <td>@Model.CashReplenimentRequestdto.IssuedDate </td>
                         </tr>
                         <tr>
-                            <td>Status</td>
+                            <td>@GlobalCashFlowManagement.Status</td>
                             @if (@Model.CashReplenimentRequestdto.IsApproved)
                             {
                                 <td class="badge bg-label-success rounded-pill text-uppercase">
@@ -93,20 +94,20 @@
                 </table>
             </div>
             <div class="card card-action mb-5">
-                <h5 class="card-title">Cash Replenishment Request Status</h5>
+                <h5 class="card-title">@GlobalCashFlowManagement.CashReplenishmentRequestStatus</h5>
                 <div class="card-body">
                     <div class="mb-3 col-12 mb-0">
                         @if (@Model.CashReplenimentRequestdto.IsApproved)
                         {
                             <div class="alert alert-outline-success" role="alert">
-                                <h6 class="alert-heading mb-1">The cash replenishment request of @Model.CashReplenimentRequestdto.TempId1 is already approved by @Model.CashReplenimentRequestdto.TempId2 .</h6>
-                                <p class="mb-0">@{(Convert.ToDecimal(Model.CashReplenimentRequestdto.AmountApproved)).ToString("N");} was replenished</p>
+                                <h6 class="alert-heading mb-1">@GlobalCashFlowManagement.TheCashReplenishmentRequestOf @Model.CashReplenimentRequestdto.TempId1 @GlobalCashFlowManagement.IsAlreadyApprovedBy @Model.CashReplenimentRequestdto.TempId2 .</h6>
+                                <p class="mb-0">@{(Convert.ToDecimal(Model.CashReplenimentRequestdto.AmountApproved)).ToString("N");} @GlobalCashFlowManagement.WasReplenished</p>
                             </div>
                         }
                         else
                         {<div class="alert alert-outline-primary" role="alert">
-                                <h6 class="alert-heading mb-1">ReferenceId :@Model.CashReplenimentRequestdto.Id  with Amount XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") has not yet been approved</h6>
-                                <p class="mb-0">Select source account to which the vault will be </p>
+                             <h6 class="alert-heading mb-1">@GlobalCashFlowManagement.ReferenceId :@Model.CashReplenimentRequestdto.Id  @GlobalCashFlowManagement.withAmount XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") @GlobalCashFlowManagement.HasNotYetBeenApproved</h6>
+                             <p class="mb-0">@GlobalCashFlowManagement.SelectSourceAccountToWhichTheVaultWillBe </p>
                             </div>
                         }
 
@@ -129,11 +130,11 @@
                                 <div class="form-check mb-3">
                                     <div class="form-check">
                                         @Html.CheckBoxFor(m => m.CashReplenimentRequestdto.IsApproved, new { @class = "form-check-input" })
-                                        <label class="form-check-label" for="isActive">The cash replenishment request of issued by @Model.CashReplenimentRequestdto.TempId1 has been approved</label>
+                                        <label class="form-check-label" for="isActive">@GlobalCashFlowManagement.TheCashReplenishmentRequestOfIssuedBy @Model.CashReplenimentRequestdto.TempId1 @GlobalCashFlowManagement.HasBeenApproved</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <button type="submit" class="btn btn-primary">Already Approved Account Replenishment</button>
+                                    <button type="submit" class="btn btn-primary">@GlobalCashFlowManagement.AlreadyApprovedAccountReplenishment</button>
                                 </div>
 
                             }
@@ -157,7 +158,7 @@
 
                                         @Html.DropDownListFor(m => m.CashReplenimentRequestdto.TempId2, new SelectList(ViewBag.Decisions, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.TempId2, "", new { @class = "text-danger" })
-                                        <label for="Account">Make decision</label>
+                                        <label for="Account">@GlobalCashFlowManagement.MakeDecision</label>
                                     </div>
                                 </div>
                                 <div class="form-check mb-3" id="hideBranchID">
@@ -165,7 +166,7 @@
 
                                         @Html.DropDownListFor(m => m.CashReplenimentRequestdto.CorrespondingBranchId, new SelectList(ViewBag.ZoneBranch == null ? "" : ViewBag.ZoneBranch, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.CorrespondingBranchId, "", new { @class = "text-danger" })
-                                        <label for="Account">Select Branch</label>
+                                        <label for="Account">@GlobalCashFlowManagement.SelectBranch</label>
                                     </div>
                                 </div>
                                 <div class="form-check mb-3">
@@ -173,7 +174,7 @@
                                         @Html.TextBoxFor(m => m.CashReplenimentRequestdto.AmountApproved, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.AmountApproved, "", new { @class = "text-danger" })
 
-                                        <label for="Description"> Approved Amount</label>
+                                        <label for="Description"> @GlobalCashFlowManagement.ApprovedAmount</label>
                                     </div>
                                 </div>
                                 <div class="form-check mb-3">
@@ -181,12 +182,12 @@
                                         @Html.TextAreaFor(m => m.CashReplenimentRequestdto.ApprovedMessage, new { @class = "form-control", @style = "height: 200px;" })
                                         @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.ApprovedMessage, "", new { @class = "text-danger" })
 
-                                        <label for="Description"> Approved Message Description</label>
+                                        <label for="Description"> @GlobalCashFlowManagement.ApprovedMessageDescription</label>
                                     </div>
                                 </div>
                                 <div class="col-12 text-end">
 
-                                    <button type="submit" class="btn btn-primary me-2">Validate</button>
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Validate</button>
                                     <input type="hidden" name="Action" value="insert" id="Action" />
 
                                 </div>

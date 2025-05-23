@@ -1,61 +1,61 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.DailyTeller
-
+@using Resources
 
 <fieldset class="fieldset-custom">
-    <legend id="select_base">Tills F5 Operations</legend>
+    <legend id="select_base">@GlobalDailyTellerAssignation.TillsF5Operations</legend>
     <div class="card-body">
         @using (Html.BeginForm("DownloadTellerOperationsToExcel", "DailyTellerAssignation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdatePrintTillOperations(this);" }))
         {
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <!-- PDF Option -->
             <div class="col-12 mb-2">
-                <legend id="select_base">EXPORT OPTIONS</legend>
+                <legend id="select_base">@GlobalDailyTellerAssignation.EXPORTOPTIONS</legend>
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.GetAllTellerOperationsQuery.IsPDF, new { @class = "form-check-input", @id = "isPDF", @checked = "checked" })
-                    <label class="form-check-label" for="isPDF">Check to print in PDF</label>
+                    <label class="form-check-label" for="isPDF">@GlobalDailyTellerAssignation.CheckToPrintInPDF</label>
                 </div>
             </div>
             <hr />
 
             <!-- Operation Type Section -->
             <div class="col-12 mb-2">
-                <legend id="select_base">OPERATION TYPES</legend>
+                <legend id="select_base">@GlobalDailyTellerAssignation.OPERATIONTYPES</legend>
                 <div class="d-flex mb-3">
                     <div class="form-check me-3">
                         @Html.RadioButtonFor(m => m.GetAllTellerOperationsQuery.QueryString, "CashOperations", new { @class = "form-check-input", @id = "cashOperations", @checked = "checked" })
-                        <label class="form-check-label" for="cashOperations">Cash Operations</label>
+                        <label class="form-check-label" for="cashOperations">@GlobalDailyTellerAssignation.CashOperations</label>
                     </div>
                     <div class="form-check me-3">
                         @Html.RadioButtonFor(m => m.GetAllTellerOperationsQuery.QueryString, "NoneCashOperations", new { @class = "form-check-input", @id = "noneCashOperation" })
-                        <label class="form-check-label" for="noneCashOperation">None Cash Operation</label>
+                        <label class="form-check-label" for="noneCashOperation">@GlobalDailyTellerAssignation.NoneCashOperation</label>
                     </div>
                     <div class="form-check">
                         @Html.RadioButtonFor(m => m.GetAllTellerOperationsQuery.QueryString, "All", new { @class = "form-check-input", @id = "all" })
-                        <label class="form-check-label" for="all">Both</label>
+                        <label class="form-check-label" for="all">@GlobalDailyTellerAssignation.Both</label>
                     </div>
                     @Html.ValidationMessageFor(m => m.GetAllTellerOperationsQuery.BranchId, "", new { @class = "text-danger" })
 
                 </div>
             </div>
             <hr />
-            <legend id="select_base">EXPORT FILTER</legend>
+            <legend id="select_base">@GlobalDailyTellerAssignation.EXPORTFILTER</legend>
             <div class="row g-4">
                 <div class="col-md-4">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.GetAllTellerOperationsQuery.IsByBranch, new { @class = "form-check-input", @id = "byBranchCheckbox", @disabled = "disabled", @checked = "checked" })
-                        <label class="form-check-label" for="byBranchCheckbox">Filter by branch</label>
+                        <label class="form-check-label" for="byBranchCheckbox">@GlobalDailyTellerAssignation.FilterByBranch</label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.GetAllTellerOperationsQuery.IsByTeller, new { @class = "form-check-input", @id = "byTellerCheckbox", @checked = "checked", @disabled = "disabled" })
-                        <label class="form-check-label" for="byTellerCheckbox">Filter by Till</label>
+                        <label class="form-check-label" for="byTellerCheckbox">@GlobalDailyTellerAssignation.FilterByTill</label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.GetAllTellerOperationsQuery.IsByDate, new { @class = "form-check-input", @id = "byDateCheckbox", @disabled = "disabled", @checked = "checked" })
-                        <label class="form-check-label" for="byDateCheckbox">Filtered by date</label>
+                        <label class="form-check-label" for="byDateCheckbox">@GlobalDailyTellerAssignation.FilteredByDate</label>
                     </div>
                 </div>
 
@@ -65,27 +65,27 @@
             <div class="row g-4">
                 <div class="col-md-12" id="branchDiv">
                     <label for="branchInput">Branch</label>
-                    @Html.DropDownListFor(m => m.GetAllTellerOperationsQuery.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---Select Branch---", new { @class = "form-control shadow-box select2", @id = "branchInput", @onchange = "LoadTilles(this.value)" })
+                    @Html.DropDownListFor(m => m.GetAllTellerOperationsQuery.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalDailyTellerAssignation.SelectBranch+"---", new { @class = "form-control shadow-box select2", @id = "branchInput", @onchange = "LoadTilles(this.value)" })
                     @Html.ValidationMessageFor(m => m.GetAllTellerOperationsQuery.BranchId, "", new { @class = "text-danger" })
                 </div>
                 <div class="col-md-12" id="tellerDiv">
                     <label for="tellerInput">Select a till</label>
-                    @Html.DropDownListFor(m => m.GetAllTellerOperationsQuery.TellerId, new SelectList(ViewBag.Tellers, "Value", "Text"), "---Select till---", new { @class = "form-control shadow-box select2", @id = "tellerInput" })
+                    @Html.DropDownListFor(m => m.GetAllTellerOperationsQuery.TellerId, new SelectList(ViewBag.Tellers, "Value", "Text"), "---"+ @GlobalDailyTellerAssignation.SelectTeller+"---", new { @class = "form-control shadow-box select2", @id = "tellerInput" })
                     @Html.ValidationMessageFor(m => m.GetAllTellerOperationsQuery.TellerId, "", new { @class = "text-danger" })
                 </div>
                 <div class="col-md-12">
                     <div class="row g-4">
                         <div class="col-md-6">
-                            <label for="dateFromInput">Date From</label>
+                            <label for="dateFromInput">@GlobalDailyTellerAssignation.DateFrom</label>
                             <div class="input-group">
-                                @Html.TextBoxFor(m => m.GetAllTellerOperationsQuery.DateFrom, new { @class = "form-control shadow-box date-picker", @id = "dateFromInput", @placeholder = "Date From" })
+                                @Html.TextBoxFor(m => m.GetAllTellerOperationsQuery.DateFrom, new { @class = "form-control shadow-box date-picker", @id = "dateFromInput", @placeholder = @GlobalDailyTellerAssignation.DateFrom })
                             </div>
                             @Html.ValidationMessageFor(m => m.GetAllTellerOperationsQuery.DateFrom, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-md-6">
-                            <label for="dateToInput">Date To</label>
+                            <label for="dateToInput">@GlobalDailyTellerAssignation.DateTo</label>
                             <div class="input-group">
-                                @Html.TextBoxFor(m => m.GetAllTellerOperationsQuery.DateTo, new { @class = "form-control shadow-box date-picker", @id = "dateToInput", @placeholder = "Date To" })
+                                @Html.TextBoxFor(m => m.GetAllTellerOperationsQuery.DateTo, new { @class = "form-control shadow-box date-picker", @id = "dateToInput", @placeholder = @GlobalDailyTellerAssignation.DateTo })
                             </div>
                             @Html.ValidationMessageFor(m => m.GetAllTellerOperationsQuery.DateTo, "", new { @class = "text-danger" })
                         </div>
@@ -95,7 +95,7 @@
             <hr />
             <div class="text-center">
                 <button type="submit" class="btn btn-primary btn-sm">
-                    <i class="fa fa-print me-2"></i> Print
+                    <i class="fa fa-print me-2"></i> @GlobalShared.Print
                 </button>
             </div>
         }

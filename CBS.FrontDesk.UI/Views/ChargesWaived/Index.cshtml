@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.ChargesWaived
+    @using Resources
 @{
-    ViewBag.Title = "Charges Waiver";
+    ViewBag.Title = @GlobalChargesWaived.ChargesWaiver;
 }
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <div class="row">
@@ -17,7 +18,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="fas fa-bell me-2"></i>
-                            CHARGES WAIVER
+                            @GlobalChargesWaived.CHARGESWAIVERUC
                         </button>
                     </h2>
                     <div id="collapseDeliveryAddress"

@@ -1,11 +1,11 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.SavingProducts.DailyTeller>
-
+@using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">Daily Teller Data Set</legend>
+    <legend id="select_base">@GlobalDailyTellerAssignation.DailyTellerDataSet</legend>
 
     <!-- Button aligned to the right -->
     <div class="d-flex justify-content-end mb-2">
-        <a type="button" href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" onclick="LoadTellerrsAssigned()" data-bs-toggle="tooltip" title="View Assigned Tellers">
+        <a type="button" href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" onclick="LoadTellerrsAssigned()" data-bs-toggle="tooltip" title="@GlobalDailyTellerAssignation.ViewAssignedTellers">
             <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
         </a>
     </div>
@@ -13,7 +13,7 @@
     @if (Model.Count == 0)
     {
         <div class="text-center my-3">
-            <p>No daily teller is set</p>
+            <p>@GlobalDailyTellerAssignation.NoDailyTellerIsSet</p>
         </div>
     }
     else
@@ -22,12 +22,12 @@
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>Users</th>
-                        <th>Branch</th>
-                        <th>Tills</th>
-                        <th>Status</th>
-                        <th>Type</th>
-                        <th>Action</th>
+                        <th>@GlobalDailyTellerAssignation.Users</th>
+                        <th>@GlobalDailyTellerAssignation.Branch</th>
+                        <th>@GlobalDailyTellerAssignation.Tills</th>
+                        <th>@GlobalDailyTellerAssignation.Status</th>
+                        <th>@GlobalDailyTellerAssignation.Type</th>
+                        <th>@GlobalShared.Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,25 +40,25 @@
                             <td style="width:5%">
                                 @if (d.Status)
                                 {
-                                    <span class="badge bg-info">Active</span>
+                                    <span class="badge bg-info">@GlobalDailyTellerAssignation.Active</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-danger">Inactive</span>
+                            <span class="badge bg-danger">@GlobalDailyTellerAssignation.Inactive</span>
                                 }
                             </td>
                             <td style="width:10%">
                                 @if (d.IsPrimary)
                                 {
-                                    <span class="badge bg-info">Primary-T</span>
+                                    <span class="badge bg-info">@GlobalDailyTellerAssignation.PrimaryT</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-warning">Sub-T</span>
+                            <span class="badge bg-warning">@GlobalDailyTellerAssignation.SubT</span>
                                 }
                             </td>
                             <td style="width:7%">
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Create','update','DailyTellerAssignation',null,'@d.Id')" class="mr-2" data-bs-toggle="tooltip" title="Reassign @d.Teller.name">Reassign</a>
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Create','update','DailyTellerAssignation',null,'@d.Id')" class="mr-2" data-bs-toggle="tooltip" title="Reassign @d.Teller.name">@GlobalDailyTellerAssignation.Reassign</a>
                                 <!-- Uncomment if needed -->
                                 <!-- <a href="#" class="mr-2" data-bs-toggle="tooltip" title="Delete @d.Teller.name" onclick="DeleteAssignedTeller('DailyTellerAssignation','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a> -->
                             </td>

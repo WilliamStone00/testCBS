@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.DocumentConfiguration
+    @using Resources
 <div class="card-body">
     @using (Html.BeginForm("AddOrUpdate", "DocumentConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {<input type="hidden" name="ServiceOption" value="operationEvent" id="ServiceOption" />
@@ -7,7 +8,7 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Document.name, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Document.name, "", new { @class = "text-danger" })
-                    <label>Name</label>
+                    <label>@GlobalDocumentConfiguration.Name</label>
                 </div>
             </div>
        
@@ -17,7 +18,7 @@
 
                     @Html.TextAreaFor(m => m.Document.description, new { @class = "form-control", @style = "height: 200px;" })
                     @Html.ValidationMessageFor(m => m.Document.description, "", new { @class = "text-danger" })
-                    <label>Description</label>
+                    <label>@GlobalDocumentConfiguration.Description</label>
 
                 </div>
             </div>
@@ -32,11 +33,11 @@
         <div class="mt-4">
             @if (Model.Document.id == null)
             {
-                <button type="submit" class="btn btn-primary me-2">Save</button>
+                <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
                 <input type="hidden" name="Action" value="insert" id="Action" />
             }
             else
-            { <button type="submit" class="btn btn-primary me-2">Update</button>
+            { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                 @Html.HiddenFor(m => m.Document.id)
                 <input type="hidden" name="Action" value="update" id="Action" />
             }

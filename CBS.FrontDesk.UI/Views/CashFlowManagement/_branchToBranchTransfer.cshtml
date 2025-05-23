@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
-
+@using Resources
 
 <div class="card-body">
 
@@ -18,7 +18,7 @@
         <input type="hidden" name="ServiceOption" value="BranchToBranchTransfer" id="ServiceOption" />
 
         <fieldset class="fieldset-custom">
-            <legend id="select_base">Branch To Branch Cash Transfer @Model.BranchToBranchTransfer.Accountinfor</legend>
+            <legend id="select_base">@GlobalCashFlowManagement.BranchToBranchCashTransferLc @Model.BranchToBranchTransfer.Accountinfor</legend>
             <div class="row mt-2 gy-4">
 
                 <div class="col-md-6">
@@ -30,7 +30,7 @@
                                         var formattedAmount = Convert.ToDecimal(Model.CashReplenimentRequestdto.AmountApproved).ToString("N");
                                     }
                                     <h3 class="mb-3">XAF @formattedAmount</h3>
-                                    <p class="mb-0">Amount authorized by @Model.CashReplenimentRequestdto.TempId2 </p>
+                                    <p class="mb-0">@GlobalCashFlowManagement.AmountAuthorizedBy @Model.CashReplenimentRequestdto.TempId2 </p>
 
                                 </div>
                                 <div class="avatar me-sm-6">
@@ -44,7 +44,7 @@
                 </div>
                 <div class="col-md-6" hidden="hidden">
                     <div class="form-floating form-floating-outline">
-                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalCashFlowManagement.TotalAmount: 0.0</span>
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.CashReplenimentRequestdto.AmountApproved">
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="BranchToBranchTransfer.ReferenceId" value="@Model.BranchToBranchTransfer.ReferenceId">
@@ -52,13 +52,13 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
-                        <span class="formatted-amount shadow-box" id="lblBalance">Balance: 0</span>
+                        <span class="formatted-amount shadow-box" id="lblBalance">@GlobalCashFlowManagement.Balance: 0</span>
                     </div>
                 </div>
                 @Html.HiddenFor(m => m.BranchToBranchTransfer.ReferenceId)
                 @Html.HiddenFor(m => m.BranchToBranchTransfer.ToAccountId)
                 @Html.HiddenFor(m => m.BranchToBranchTransfer.FromAccountId)
-                <legend>Denomination</legend>
+            <legend>@GlobalCashFlowManagement.Denomination</legend>
                 <div class="col-md-2">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.BranchToBranchTransfer.CurrencyNotesRequest.note10000, new { @class = "form-control", @id = "Notes_note10000", @oninput = "calculateCashBalance()", @Value = "0" })
@@ -148,13 +148,13 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.BranchToBranchTransfer.Description, new { @class = "form-control", @style = "height: 70px;" })
                         @Html.ValidationMessageFor(m => m.BranchToBranchTransfer.Description, "", new { @class = "text-danger " })
-                        <label for="formValidationDob">Branch to branch transfer description</label>
+                        <label for="formValidationDob">@GlobalCashFlowManagement.BranchToBranchTransferDescription</label>
                     </div>
                 </div>
 
             </div>
             <div class="mt-4">
-                <button type="submit" id="btnSave" class="btn btn-primary me-2">Validate</button>
+                <button type="submit" id="btnSave" class="btn btn-primary me-2">@GlobalShared.Validate</button>
             </div>
         </fieldset>
     }

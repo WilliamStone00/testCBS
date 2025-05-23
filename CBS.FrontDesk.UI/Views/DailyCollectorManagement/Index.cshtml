@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.DailyCollectorManagement.DailyCollectorManagementData
+    @using Resources
 @{
-    ViewBag.Title = "Profile";
+    ViewBag.Title = @GlobalDailyCollectorManagement.Profile;
 }
 
 
@@ -14,10 +15,10 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-circle me-2"></i> Daily Agent Profile Management <strong>@Session["BranchName"]</strong>
+                    <i class="mdi mdi-account-circle me-2"></i> @GlobalDailyCollectorManagement.DailyAgentProfileManagement <strong>@Session["BranchName"]</strong>
                 </h1>
                 <p class="card-text text-muted">
-                    Manage Daily Agent profiles efficiently by updating personal details, security information, and account settings. Follow the tips provided below for a seamless experience.
+                    @GlobalDailyCollectorManagement.ManageDailyAgentprofilesefficiently.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -31,11 +32,11 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="group-title">
-                        AGENT REFERENCE # <span class="highlight-text">@Model.Agent.Id</span>
+                        @GlobalDailyCollectorManagement.AGENTREFERENCE # <span class="highlight-text">@Model.Agent.Id</span>
                         <hr />
                         @*<small>Daily Agent code: Last 4 digits</small><br />*@
-                        <small>Bank Code: @Session["BankCode"].ToString()</small><br />
-                        <small>Branch Code: @Session["BranchCode"].ToString()</small>
+                    <small>@GlobalDailyCollectorManagement.BankCode: @Session["BankCode"].ToString()</small><br />
+                        <small>@GlobalDailyCollectorManagement.BranchCode: @Session["BranchCode"].ToString()</small>
                     </h4>
                 </div>
             </div>
@@ -44,11 +45,11 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="group-title">
-                        Daily Agent Working Information
+                        @GlobalDailyCollectorManagement.DailyAgentWorkingInformation
                         <hr />
-                            <small>Registered By: @Model.AgentDto.CreatedBy</small><br />
-                            <small>Registered Date: @Model.AgentDto.CreatedDate</small><br />
-                            <small>Working Zone: <span class="highlight-text">@Model.AgentDto.ZoneName</span></small>                     
+                        <small>@GlobalDailyCollectorManagement.RegisteredBy: @Model.AgentDto.CreatedBy</small><br />
+                        <small>@GlobalDailyCollectorManagement.RegisteredDate: @Model.AgentDto.CreatedDate</small><br />
+                        <small>@GlobalDailyCollectorManagement.WorkingZone: <span class="highlight-text">@Model.AgentDto.ZoneName</span></small>
                     </h4>
                 </div>
             </div>
@@ -61,12 +62,12 @@
                         @if (Model.AgentDto.ProfilePicture != null)
                         {
                             <a href="#" data-bs-toggle="modal" data-bs-target="#photoPreviewModal">
-                                <img src="@Model.AgentDto.ProfilePicture" class="img-fluid preview-image" alt="Uploaded Image">
+                                <img src="@Model.AgentDto.ProfilePicture" class="img-fluid preview-image" alt="@GlobalShared.UploadedImage">
                             </a>
                         }
                         else
                         {
-                            <img src="@Url.Content(Model.AgentDto.ImageNoVirtualPath)" class="img-fluid preview-image" alt="No Photo Found">
+                            <img src="@Url.Content(Model.AgentDto.ImageNoVirtualPath)" class="img-fluid preview-image" alt="@GlobalShared.NoPhotoFound">
                         }
                     </div>
                 </div>
@@ -80,12 +81,12 @@
                         @if (Model.AgentDto.Signature != null)
                         {
                             <a href="#" data-bs-toggle="modal" data-bs-target="#signaturePreviewModal">
-                                <img src="@Model.AgentDto.Signature" class="img-fluid preview-image" alt="Uploaded Signature">
+                                <img src="@Model.AgentDto.Signature" class="img-fluid preview-image" alt="@GlobalShared.UploadedSignature">
                             </a>
                         }
                         else
                         {
-                            <img src="@Url.Content(Model.AgentDto.ImageVirtualNoSignaturePath)" class="img-fluid preview-image" alt="No Signature Found">
+                            <img src="@Url.Content(Model.AgentDto.ImageVirtualNoSignaturePath)" class="img-fluid preview-image" alt="@GlobalShared.NoSignatureFound">
                         }
                     </div>
                 </div>
@@ -97,25 +98,25 @@
         <!-- Tips Section -->
         <div class="card mb-4">
             <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                <span><i class="mdi mdi-information-outline me-2"></i> HELP TIPS</span>
+                <span><i class="mdi mdi-information-outline me-2"></i> @GlobalDailyCollectorManagement.HELPTIPS</span>
                 <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
                     <i class="mdi mdi-chevron-down"></i>
                 </button>
             </h6>
             <div id="collapseHelpTips" class="collapse">
                 <div class="card-body">
-                    <p class="text-muted mb-2">Follow these tips to manage Daily Agent profiles effectively:</p>
+                    <p class="text-muted mb-2">@GlobalDailyCollectorManagement.FollowTheseTipsToManageDailyAgentProfilesEffectively:</p>
                     <ul>
-                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure all Daily Agent details, such as name, ID, and address, are accurate.</li>
-                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Daily Agent reference numbers are auto-generated unless customized.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalDailyCollectorManagement.EnsureAllDailyAgentDetails.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalDailyCollectorManagement.DailyAgentReferenceNumbersAreAutoGeneratedUnlessCustomized.</li>
               
-                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Photo and signature uploads are mandatory for identification purposes.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalDailyCollectorManagement.PhotoAndSignatureUploadsAreMandatory.</li>
                
                     </ul>
-                    <p class="text-muted">Additional Notes:</p>
+                    <p class="text-muted">@GlobalDailyCollectorManagement.AdditionalNotes:</p>
                     <ul>
-                        <li><i class="mdi mdi-information-outline text-primary me-2"></i> Daily Agent references consist of a Branch Code and a 7-digit Daily Agent Code.</li>
-                        <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Ensure proper documentation is uploaded for verification purposes.</li>
+                        <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalDailyCollectorManagement.DailyAgentreferencesConsistOfABranchCode.</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalDailyCollectorManagement.EnsureProperDocumentationIsUploadedForVerificationPurposes.</li>
                     </ul>
                 </div>
             </div>
@@ -127,22 +128,22 @@
                     <ul class="nav nav-tabs nav-fill" role="tablist">
                         <li class="nav-item">
                             <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-profile" aria-controls="navs-profile" aria-selected="true">
-                                <i class="tf-icons mdi mdi-account-outline me-1"></i> Profile Details
+                                <i class="tf-icons mdi mdi-account-outline me-1"></i> @GlobalDailyCollectorManagement.ProfileDetails
                             </button>
                         </li>
                         <li class="nav-item">
                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-account" aria-controls="navs-account" aria-selected="false">
-                                <i class="tf-icons mdi mdi-account-circle-outline me-1"></i> Account View
+                                <i class="tf-icons mdi mdi-account-circle-outline me-1"></i> @GlobalDailyCollectorManagement.AccountView
                             </button>
                         </li>
                         <li class="nav-item">
                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-document" aria-controls="navs-document" aria-selected="false">
-                                <i class="tf-icons mdi mdi-file-document-outline me-1"></i> Document Management
+                                <i class="tf-icons mdi mdi-file-document-outline me-1"></i> @GlobalDailyCollectorManagement.DocumentManagement
                             </button>
                         </li>
                         <li class="nav-item">
                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-signatory" aria-controls="navs-signatory" aria-selected="false">
-                                <i class="tf-icons mdi mdi-pen me-1"></i> Signatory Management
+                                <i class="tf-icons mdi mdi-pen me-1"></i> @GlobalDailyCollectorManagement.SignatoryManagement
                             </button>
                         </li>
                     </ul>
@@ -174,21 +175,21 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="photoPreviewModalLabel">@Model.AgentDto.FirstName @Model.AgentDto.LastName - Photo Preview</h5>
+                <h5 class="modal-title" id="photoPreviewModalLabel">@Model.AgentDto.FirstName @Model.AgentDto.LastName - @GlobalDailyCollectorManagement.PhotoPreview</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">
                 @if (Model.AgentDto.ProfilePicture != null)
                 {
-                    <img src="@Model.AgentDto.ProfilePicture" class="img-fluid" alt="Preview Image">
+                    <img src="@Model.AgentDto.ProfilePicture" class="img-fluid" alt="@GlobalDailyCollectorManagement.PreviewImage">
                 }
                 else
                 {
-                    <img src="@Url.Content(Model.AgentDto.ImageVirtualPath)" class="img-fluid" alt="No Image Found">
+                    <img src="@Url.Content(Model.AgentDto.ImageVirtualPath)" class="img-fluid" alt="@GlobalShared.NoImageFound">
                 }
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
             </div>
         </div>
     </div>
@@ -199,21 +200,21 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="signaturePreviewModalLabel">@Model.AgentDto.FirstName @Model.AgentDto.LastName - Signature Preview</h5>
+                <h5 class="modal-title" id="signaturePreviewModalLabel">@Model.AgentDto.FirstName @Model.AgentDto.LastName - @GlobalDailyCollectorManagement.SignaturePreview</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">
                 @if (Model.AgentDto.Signature != null)
                 {
-                    <img src="@Model.AgentDto.Signature" class="img-fluid" alt="Preview Signature">
+                    <img src="@Model.AgentDto.Signature" class="img-fluid" alt="@GlobalDailyCollectorManagement.PreviewSignature">
                 }
                 else
                 {
-                    <img src="@Url.Content(Model.AgentDto.ImageVirtualNoSignaturePath)" class="img-fluid" alt="No Signature Found">
+                    <img src="@Url.Content(Model.AgentDto.ImageVirtualNoSignaturePath)" class="img-fluid" alt="@GlobalShared.NoSignatureFound">
                 }
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
             </div>
         </div>
     </div>
@@ -224,7 +225,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Account Details</h5>
+                <h5 class="modal-title">@GlobalDailyCollectorManagement.AccountDetails</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="accountDetailContent">

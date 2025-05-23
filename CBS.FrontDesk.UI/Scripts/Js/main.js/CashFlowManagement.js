@@ -4,7 +4,7 @@
     
     $('#hideAccountId').hide();
     LoadCashRequestDataBranch("CashRequestDataTable")
-    //LoadCashRequestDataHo("myRequestDataTable")
+    //LoadCashRequestDataHo("myRequestDataTable") QueryModel_BranchId
     LoadCashReplenishmentDataDT("GetAllCashRequestDataTable")
     
     $(document).on('change', '#MakeDecision', function () {
@@ -58,7 +58,222 @@
         loadAccountBalance(selectedValue);
     });
 
+    $(document).on('change', '#QueryModel_BranchId', function () {
+        // Get the selected value (AccountId) from the dropdown
+        var selectedValue = $(this).val();
+        // Call the `loadAccountById` function with the selected AccountId
+        loadIssuingBranchUsers(selectedValue);
+    });
+ 
+
+    $('#ValidateApproverUnionWide').change(function () {
+        // Check if the checkbox is checked
+        if ($(this).is(':checked')) {
+            // ✅ Checkbox is checked – perform your data loading logic here
+            loadApproverBranchUsers("XXXXX");
+        } else {
+            // Optionally handle when it's unchecked
+            console.log("Checkbox unchecked");
+        }
+    });
+
 });
+function Search(controller, tableDiv, partialView, datalistViewDIV, filterOption) {
+    // if (e) e.preventDefault(); // Prevent default if the event is passed
+
+    const jsonData = {
+        ServiceOption: $('#ServiceOption').val(),
+        Action: $('#Action').val(),
+        BranchId: $('select[name="QueryModel.BranchId"]').val(),
+        IssuedBy: $('#QueryModel_IssuedBy').val(),
+        ValidateApproverUnionWide: $('#ValidateApproverUnionWide').is(':checked'),
+        ApprovedBy: $('#QueryModel_ApprovedBy').val(),
+        Status: $('#QueryModel_Status').val(),
+        FromDate: $('#fromDate').val(),
+        ToDate: $('#toDate').val(),
+        SelectedBranchID: $('#selectedBranchID').val()
+    };
+    var jsonDataj = JSON.stringify(jsonData);
+    console.log("Collected Form Data:", jsonData);
+
+    LoadSearchData(
+        controller,  //'ManuallyJournalEntry',
+        tableDiv, //  'myDataTable',
+        partialView,// '_PendingEntries',
+        datalistViewDIV, //'datalistingview_pendingEntries',
+        jsonDataj,
+        filterOption,// 'FilteringOption',
+        $('select[name="QueryModel.FilteringOption"]').val()
+    );
+
+    return false;
+}
+function LoadSearchData(controller, tableID, partialView, datalistingview, KEY, serviceOption, path = "list") {
+    path = serviceOption;
+    // Call LoadDataTableNewVersion with predefined action "InitializeData" and other parameters
+    LoadDataTableNewVersion(
+        controller,
+        tableID,
+        "InitializeData",
+        KEY,
+        partialView,
+        path,
+        datalistingview,
+        serviceOption
+    );
+}
+/**
+ * Loads data into a table via AJAX and initializes it as a DataTable.
+ * 
+ * @param {string} controller - The controller name for the AJAX request.
+ * @param {string} tableID - The ID of the table to be initialized as a DataTable.
+ * @param {string} action - The action name for the AJAX request.
+ * @param {string} KEY - A key parameter for the request.
+ * @param {string} partialView - The name of the partial view to be loaded.
+ * @param {string} path - A path parameter for the request.
+ * @param {string} diveToloadtheData - The ID of the div where the loaded data will be inserted.
+ * @param {string} serviceOption - An option parameter for the service.
+ */
+function LoadDataTableNewVersion(controller, tableID, action, KEY, partialView, path, diveToloadtheData, serviceOption) {
+    // Construct the URL for the AJAX request
+    var encodedURL = '/' + controller + '/' + action +
+        '?KEY=' + encodeURIComponent(KEY) +
+        '&partialView=' + encodeURIComponent(partialView) +
+        '&serviceOption=' + encodeURIComponent(serviceOption) +
+        '&path=' + encodeURIComponent(path);
+
+    // Log the constructed URL and other details
+    console.log(encodedURL + " tableId= " + tableID + " divloader:" + diveToloadtheData);
+
+    // Perform the AJAX request
+    $.ajax({
+        type: "GET",
+        url: encodedURL,
+        success: function (data) {
+            // Insert the received data into the specified div
+            $('#' + diveToloadtheData).html(data);
+
+            // Log the presence of the table element
+            //console.log($('#' + tableID));
+
+            // Initialize the DataTable
+            LoadDataInfo(tableID);
+        },
+        error: function (err) {
+            // Display an error alert if the request fails
+            appalert(err.statusText, 1, 3);
+        }
+    });
+}
+function LoadDataInfo(tableID) {
+    var tableSelector = '#' + tableID;
+    console.log("Initializing DataTable for:", tableSelector);
+
+    try {
+        // Check if the table exists
+        if ($(tableSelector).length === 0) {
+            throw new Error("Table not found: " + tableSelector);
+        }
+
+        // Get the number of columns in the table
+        var columnCount = $(tableSelector + ' thead th').length;
+        console.log("Number of columns detected:", columnCount);
+
+        // Prepare column definitions based on the actual number of columns
+        var columnDefs = [];
+        for (var i = 0; i < columnCount; i++) {
+            columnDefs.push({
+                targets: i,
+                searchable: true,
+                orderable: true
+            });
+        }
+
+        var dataThumbView = $(tableSelector).DataTable({
+            responsive: false,
+            columns: Array(columnCount).fill(null),  // Create empty column definitions
+            columnDefs: columnDefs,
+            language: {
+                lengthMenu: "_MENU_",
+                search: ""
+            },
+            lengthMenu: [[10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
+            order: [[0, "asc"]],
+            info: true,
+            pageLength: 10
+        });
+
+        console.log("DataTable initialized successfully");
+        return dataThumbView;
+    } catch (error) {
+        console.error("Error initializing DataTable:", error);
+        console.log("Table HTML:", $(tableSelector).prop('outerHTML'));
+    }
+}
+function loadIssuingBranchUsers(branchId) {
+    console.log(branchId);
+    // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
+    $.ajax({
+        url: '/CashFlowManagement/GetBranchUsersByBranchId',
+        type: 'GET',
+        dataType: 'json',
+        data: { branchId: branchId },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo
+            $('#QueryModel_IssuedBy').empty();
+            $('#QueryModel_ApprovedBy').empty();
+            // Add new options based on the fetched data
+            if (branchId === "XXXXX") {
+
+                $.each(data, function (index, item) {
+                    $('#QueryModel_ApprovedBy').append($('<option>').text(item.Text).attr('value', item.Value));
+                });
+            } else {
+                $.each(data, function (index, item) {
+                    $('#QueryModel_IssuedBy').append($('<option>').text(item.Text).attr('value', item.Value));
+                });
+                $.each(data, function (index, item) {
+                    $('#QueryModel_ApprovedBy').append($('<option>').text(item.Text).attr('value', item.Value));
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+function loadApproverBranchUsers(branchId) {
+    console.log(branchId);
+    // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
+    $.ajax({
+        url: '/CashFlowManagement/GetBranchUsersByBranchId',
+        type: 'GET',
+        dataType: 'json',
+        data: { branchId: branchId },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo
+
+            $('#QueryModel_ApprovedBy').empty();
+            // Add new options based on the fetched data
+            /*   if (branchId === "XXXXX") {*/
+
+            $.each(data, function (index, item) {
+                $('#QueryModel_ApprovedBy').append($('<option>').text(item.Text).attr('value', item.Value));
+            });
+            //} else {
+            //    $.each(data, function (index, item) {
+            //        $('#QueryModel_IssuedBy').append($('<option>').text(item.Value).attr('value', item.Text));
+            //    });
+            //    $.each(data, function (index, item) {
+            //        $('#QueryModel_ApprovedBy').append($('<option>').text(item.Value).attr('value', item.Text));
+            //    });
+            //}
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
 //GetAllBranchAccountUsedToCreditCashFlow BankingOperation/UpdateRequestForCashReplenishment/{Id}
 function loadBranch(BranchId) {
 
