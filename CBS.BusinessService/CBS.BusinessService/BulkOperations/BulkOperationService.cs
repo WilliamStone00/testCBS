@@ -149,6 +149,37 @@ namespace CBS.BusinessService.BulkOperations
                 }
         }
 
+        public async Task<ExecutionMessages> DeleteBulkOperationById(string id,string simulationType)
+        {
+            try
+            {
+                var response = await _transactionConfigApiHelper.GetAsync<ResponseObject<BulkOperationData>>(string.Concat(APICallHelper.DeleteBulkOperations, "/", id));
+                if (response.ApiResponseData != null && response.ApiResponseData.StatusCode==200)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"{id}", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(id, false, simulationType, MessagesResults.Failed,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+                // Log and handle exception
+                
+            }
+
+            return ExecutionMessage;
+        }
+
         public async Task<ExecutionMessages> SimulateOperation(SimulateBulkOperation model)
         {
             try
@@ -157,7 +188,7 @@ namespace CBS.BusinessService.BulkOperations
                 Branch branch= model.Branches.Where(x=>x.Id==model.BranchId).FirstOrDefault();
                    
 
-                if (model.IsContribution=="true")
+                if (model.ContributionAmount>0)
                 {
                     SimulateBulkOperationToUniqueAccountType simulateModel= new SimulateBulkOperationToUniqueAccountType(model,branch);
                     // Make an API call to create an individual profile
@@ -166,7 +197,7 @@ namespace CBS.BusinessService.BulkOperations
                     {
                         // Successful creation
                         GetExecutionMessages(response, true, $"{simulateModel.SimulationType}", MessagesResults.Success,
-                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                         return ExecutionMessage;
                     }
                     else
@@ -217,11 +248,11 @@ namespace CBS.BusinessService.BulkOperations
                   
                     // Make an API call to create an individual profile
                     var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.ConfirmBulkOperation, command);
-                    if (response.ApiResponseData.Data)
+                    if (response.ApiResponseData != null && response.ApiResponseData.Data)
                     {
                         // Successful creation
                         GetExecutionMessages(response, true, $"{command.ApprovalStatus}", MessagesResults.Success,
-                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                         return ExecutionMessage;
                     }
                     else
@@ -274,6 +305,13 @@ namespace CBS.BusinessService.BulkOperations
         {
             var data = HttpContext.Current?.Session?["BranchCode"]?.ToString();
             return string.IsNullOrWhiteSpace(data) ? "NoBranchCode" : data;
+        } 
+        
+        
+        public string GetConnectedUser()
+        {
+            var data = HttpContext.Current?.Session?["FullName"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? "N0 Name" : data;
         }
 
         public string GetBranchName()

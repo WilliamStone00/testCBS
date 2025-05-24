@@ -262,6 +262,7 @@
     <Compile Include="AuditTrailP\AuditTrailServices.cs" />
     <Compile Include="AndriodVersioning\ChangeNumberServices.cs" />
     <Compile Include="AndriodAppVersioning\AndriodVersionConfigurationServices.cs" />
+    <Compile Include="BulkOperations\BulkOperationResultDetailExcelGenerator.cs" />
     <Compile Include="BulkOperations\BulkOperationService.cs" />
     <Compile Include="ChangeNumber\ChangeNumberServices.cs" />
     <Compile Include="CorrespondingBankBranchServices\BankZoneBranchServices.cs" />

@@ -1754,7 +1754,7 @@ namespace BusinessServices
         public string GetUserFullName()
         {
             var data = HttpContext.Current?.Session?["FullName"]?.ToString();
-            return string.IsNullOrWhiteSpace(data) ? "None" : data;
+            return string.IsNullOrWhiteSpace(data) ? "No Name" : data;
         }
 
         public string GetUserName()

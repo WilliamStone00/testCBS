@@ -29,6 +29,7 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
                 [Required(ErrorMessage = "Transfer amount is required.")]
                 [Range(1, double.MaxValue, ErrorMessage = "Transfer Amount must be greater than zero.")]*/
         public decimal TargetAmount { get; set; }
+        public decimal ContributionAmount { get; set; }
 
      /*   [Required(ErrorMessage = "Expected Source Account Minimum Balance is required.")]
         [Range(0, double.MaxValue, ErrorMessage = "Expected Source Account Minimum Balance must be greater than or equal zero.")]*/

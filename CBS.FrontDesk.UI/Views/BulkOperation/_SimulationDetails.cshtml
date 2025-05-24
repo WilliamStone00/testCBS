@@ -134,15 +134,15 @@
                             <button type="button" class="btn btn-primary" id="approveBulkOperation" data-simulation-id="@Model.Id">
                                 <i class="fas fa-check me-1"></i> Perform Actions
                             </button>
-                           @* <button type="button" class="btn btn-warning" id="reviewBulkOperation" data-simulation-id="@Model.Id">
-                                <i class="fas fa-search me-1"></i> Send for Review
-                            </button>*@
+                            @* <button type="button" class="btn btn-warning" id="reviewBulkOperation" data-simulation-id="@Model.Id">
+                                    <i class="fas fa-search me-1"></i> Send for Review
+                                </button>*@
                         }
-                        <button type="button" class="btn btn-info">
-                            <i class="fas fa-download me-1"></i> Export Data
+                        <button type="button" class="btn btn-info" data-bs-toggle="tooltip" title="Export bulk operation Analysis to Excel" onclick="exportBulkOperation('@Model.Id')">
+                            <i class="fas fa-download me-1"></i> Export Bulk Operation to Excel
                         </button>
-                        <button type="button" class="btn btn-danger">
-                            <i class="fas fa-trash me-1"></i> Delete
+                        <button type="button" class="btn btn-danger"  data-bs-toggle="tooltip" title="Delete bulk operation Analysis to Excel" onclick="deleteBulkOperation('@Model.Id','@Model.SimulationType')">
+                            <i class="fas fa-trash me-1"></i> Delete Simulation 
                         </button>
                     </div>
                 </div>
@@ -230,4 +230,50 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        function exportBulkOperation(simulationId) {
+            const url = `@Url.Action("DownloadBulkOperationExcel", "BulkOperation")?simulationId=${simulationId}`;
+           window.location.href = url;
+        }
+
+        async function deleteBulkOperation(simulationId, simulationType) {
+            // Confirm before deleting
+            if (!confirm('Are you sure you want to delete this operation? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                // Using fetch API for proper HTTP DELETE
+                const response = await fetch(`/BulkOperation/DeleteBulkOperation`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // 'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify({
+                        simulationId: simulationId,
+                        simulationType: simulationType
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                // Show success message and optionally reload the page
+                alert(result.message || 'Operation deleted successfully');
+                window.location.reload(); // Or update UI as needed
+
+            } catch (error) {
+                console.error('Error deleting operation:', error);
+                alert('Failed to delete operation. Please try again.');
+            }
+        }
+    </script>
+}
+
 
