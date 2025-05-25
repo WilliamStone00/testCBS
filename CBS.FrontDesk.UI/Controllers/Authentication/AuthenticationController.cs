@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using CBS.BusinessService.Session;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Linq;
+using System.Runtime.Caching;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -24,6 +25,7 @@ namespace CBS.FrontDesk.UI.Controllers
     {
         private readonly IAuthenticationServices _helper;
         private readonly LocalSession _localSession;
+        private static readonly MemoryCache _geoCache = MemoryCache.Default;
 
         public AuthenticationController(IAuthenticationServices helper, LocalSession localSession)
         {
@@ -69,7 +71,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 }
             }
             var result = new ExecutionMessages();
-            var Geo = await GetGeoLocation();
+            var Geo =  await GetGeoLocation();
             model.GeoLocationResponse = Geo;
             if (ModelState.IsValid)
             {
@@ -228,29 +230,95 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+
+
         [AllowAnonymous]
         public async Task<GeoLocationResponse> GetGeoLocation()
         {
+            string ip = null;
+
             try
             {
+                // Step 1: Get the IP only (no geo info) for caching key
+                using (var tempClient = new HttpClient())
+                {
+                    var tempResponse = await tempClient.GetStringAsync("https://ipinfo.io/ip");
+                    ip = tempResponse?.Trim();
+                }
 
+                if (string.IsNullOrWhiteSpace(ip))
+                    ip = "unknown";
+
+                // Step 2: Check cache first
+                if (_geoCache.Contains(ip))
+                {
+                    System.Diagnostics.Debug.WriteLine($"🟢 Using cached geo for IP: {ip}");
+                    return (GeoLocationResponse)_geoCache.Get(ip);
+                }
+
+                // Step 3: Fetch full geo data
                 using (var client = new HttpClient())
                 {
-                    // Set the Accept header to "application/json"
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    var response = await client.GetStringAsync($"https://ipinfo.io/geo");
-                    var locationData = JsonConvert.DeserializeObject<GeoLocationResponse>(response);
-                    return locationData;
+                    var response = await client.GetAsync("https://ipinfo.io/geo");
 
+                    if ((int)response.StatusCode == 429)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"⚠️ Rate limit exceeded for ipinfo.io at IP: {ip}");
+                        return new GeoLocationResponse { City = "Unknown", Country = "Unknown", Ip = ip };
+                    }
+
+                    response.EnsureSuccessStatusCode();
+                    var content = await response.Content.ReadAsStringAsync();
+                    var geo = JsonConvert.DeserializeObject<GeoLocationResponse>(content);
+
+                    // Ensure IP is set
+                    geo.Ip = ip;
+
+                    // Step 4: Cache result for 2 hours
+                    _geoCache.Set(geo.Ip, geo, DateTimeOffset.Now.AddHours(2));
+                    System.Diagnostics.Debug.WriteLine($"✅ Cached geo for IP: {geo.Ip}");
+
+                    return geo;
                 }
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                System.Diagnostics.Debug.WriteLine($"❌ GeoLocation error: {ex.Message}");
+                return new GeoLocationResponse { City = "Unknown", Country = "Unknown", Ip = ip ?? "unknown" };
             }
-             
         }
+        //[AllowAnonymous]
+        //public async Task<GeoLocationResponse> GetGeoLocation()
+        //{
+        //    try
+        //    {
+        //        using (var client = new HttpClient())
+        //        {
+        //            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //            var response = await client.GetAsync("https://ipinfo.io/geo");
+
+        //            if ((int)response.StatusCode == 429)
+        //            {
+        //                // Log rate limit hit and return dummy location
+        //                System.Diagnostics.Debug.WriteLine("Rate limit exceeded for ipinfo.io");
+        //                return new GeoLocationResponse { City = "Unknown", Country = "Unknown" };
+        //            }
+
+        //            response.EnsureSuccessStatusCode();
+
+        //            var content = await response.Content.ReadAsStringAsync();
+        //            return JsonConvert.DeserializeObject<GeoLocationResponse>(content);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Handle all network errors gracefully
+        //        System.Diagnostics.Debug.WriteLine($"GeoLocation error: {ex.Message}");
+        //        return new GeoLocationResponse { City = "Unknown", Country = "Unknown" };
+        //    }
+        //}
+
         [AllowAnonymous]
         public async Task<ActionResult> Logout()
         {
@@ -266,7 +334,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
         //    FormsAuthentication.SignOut();
         //    // List of all cookies to clear
-        //    var cookieNames = new[]{ "BranchObject", "AuthUser", "CBS4U", "CBS4U_MFA", "MFA", "PWD", "ASP.NET_SessionId", "EncryptedJWToken"};
+        //    var cookieNames = new[] { "BranchObject", "AuthUser", "CBS4U", "CBS4U_MFA", "MFA", "PWD", "ASP.NET_SessionId", "EncryptedJWToken" };
         //    await _helper.Logout();
 
         //    foreach (var cookieName in cookieNames)

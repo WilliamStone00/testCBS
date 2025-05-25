@@ -1,11 +1,11 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
-
+@using Resources
 
     <table class="table table-hover" id="myDataTable">
         <thead class="table-light">
             <tr>
-                <th> Name</th>
-                <th>Action</th>
+                <th>@AccountingConfig_ChartOfAccount.Name</th>
+                <th>@AccountingConfig_ChartOfAccount.Action</th>
             </tr>
         </thead>
         <tbody>
@@ -16,8 +16,8 @@
 
                     <td style="width:20%">
                         @*<a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_accountPolicy','_AccountDetails','details','AccountingConfiguration','accountPolicy')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.AccountName to edit">Details</a>|*@
-                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_blacklistAccount','_CreateBlacklistAccountForJE','update','AccountingConfiguration','blacklistAccount')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.AccountNumber to edit">Edit</a>|
-                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.AccountNumber" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable','_BlacklistAccountData',0,'datalistingview_blacklistAccount','blacklistAccount')">Delete</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_blacklistAccount','_CreateBlacklistAccountForJE','update','AccountingConfiguration','blacklistAccount')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.AccountNumber to edit">@GlobalShared.Edit</a>|
+                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.AccountNumber" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable','_BlacklistAccountData',0,'datalistingview_blacklistAccount','blacklistAccount')">@GlobalShared.Delete</a>
                     </td>
                 </tr>
             }

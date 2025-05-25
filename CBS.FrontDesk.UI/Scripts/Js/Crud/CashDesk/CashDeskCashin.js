@@ -176,7 +176,7 @@ function validateTotalAmount(total, totalNotes) {
 }
 function collectDeposits() {
     const deposits = [];
-
+    const totalInfo = calculateTotalAmount();
     const alphaNumber = $('#CustomerAlphaNumber').val();
     const customerId = $('#customerId').val();
     const operationType = $('#OperationType').val();
@@ -201,6 +201,7 @@ function collectDeposits() {
             Penalty: parseFloat($(this).find('.penalty-input')?.val()) || 0,
             Interest: parseFloat($(this).find('.interest-input')?.val()) || 0,
             Total: parseFloat($(this).find('.total-span').text()) || 0,
+            //Total: totalInfo.total //parseFloat($(this).find('.total-span').text()) || 0,
             Note: note,
             CheckName: checkName,
             CheckNumber: checkNumber,
@@ -226,22 +227,7 @@ function collectDeposits() {
 }
 
 
-function collectCurrencyNotes() {
-    return {
-        note10000: parseFloat($('#Notes_note10000').val()),
-        note5000: parseFloat($('#Notes_note5000').val()),
-        note2000: parseFloat($('#Notes_note2000').val()),
-        note1000: parseFloat($('#Notes_note1000').val()),
-        note500: parseFloat($('#Notes_note500').val()),
-        coin500: parseFloat($('#Notes_coin500').val()),
-        coin100: parseFloat($('#Notes_coin100').val()),
-        coin50: parseFloat($('#Notes_coin50').val()),
-        coin25: parseFloat($('#Notes_coin25').val()),
-        coin10: parseFloat($('#Notes_coin10').val()),
-        coin5: parseFloat($('#Notes_coin5').val()),
-        coin1: parseFloat($('#Notes_coin1').val())
-    };
-}
+
 function autoCheckDeposits() {
     $('#myDataTableT tbody tr').each(function () {
         const amount = parseFloat($(this).find('.amount-input').val()) || 0;

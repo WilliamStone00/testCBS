@@ -1,24 +1,24 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingDayObject.OpenOrCloseOfAccountingDayCommand
-
+@using Resources
 <div class="card-body">
     @using (Html.BeginForm("OpenOrClose", "AccountingDay", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateOpenCloseOfDay(this);" }))
     {
         <fieldset class="fieldset-custom">
-            <legend>Open or Close Accounting Day</legend>
+            <legend>@AccountingDay_Create.OpenOrCloseAccountingDay</legend>
             <div class="row mt-2 gy-4">
 
                 <!-- Submit and Reset Buttons -->
                 <div class="col-md-12">
-                    <button type="submit" class="btn btn-primary me-2">Save</button>
-                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                    <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
                 </div>
 
                 <!-- Date Input -->
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline border p-3 rounded">
-                        @Html.TextBoxFor(m => m.Date, new { @class = "form-control datetimepicker", @type = "datetime-local", placeholder = "Select Date and Time", id = "dateInput" })
+                        @Html.TextBoxFor(m => m.Date, new { @class = "form-control datetimepicker", @type = "datetime-local", placeholder = @AccountingDay_Create.SelectDateAndTime, id = "dateInput" })
                         @Html.ValidationMessageFor(m => m.Date, "", new { @class = "text-danger" })
-                        <label for="dateInput">Date and Time</label>
+                        <label for="dateInput">@AccountingDay_Create.DateAndTime</label>
                     </div>
                 </div>
 
@@ -28,7 +28,7 @@
                         <div class="d-flex flex-row">
                             <div class="form-check me-3">
                                 @Html.RadioButtonFor(m => m.OpenOrCloseAccountingDay, "Open", new { @class = "form-check-input", id = "openOption" })
-                                <label class="form-check-label" for="openOption">Open Accounting Day</label>
+                                <label class="form-check-label" for="openOption">@AccountingDay_Create.OpenAccountingDay</label>
                             </div>
                             @*<div class="form-check">
                                 @Html.RadioButtonFor(m => m.OpenOrCloseAccountingDay, "Close", new { @class = "form-check-input", id = "closeOption" })
@@ -43,7 +43,7 @@
                 <div class="col-md-12" id="centralizeOptionWrapper">
                     <div class="form-check" id="centralizeOption">
                         @Html.CheckBoxFor(m => m.IsCentraliseOpening, new { @class = "form-check-input", id = "centralizeOptionCheckbox" })
-                        <label class="form-check-label" for="centralizeOptionCheckbox">Centralized Opening for All Branches</label>
+                        <label class="form-check-label" for="centralizeOptionCheckbox">@AccountingDay_Create.CentralizedOpeningForAllBranches</label>
                     </div>
                     @Html.ValidationMessageFor(m => m.IsCentraliseOpening, "", new { @class = "text-danger" })
                 </div>
@@ -52,12 +52,12 @@
                 <div class="col-md-12" id="branchesSelection">
                     <div class="border p-3 rounded">
                         <div class="mb-3" id="branchSearchWrapper">
-                            <input type="text" id="branchSearch" class="form-control" placeholder="Search branches" />
+                            <input type="text" id="branchSearch" class="form-control" placeholder="@AccountingDay_Create.SearchBranches" />
                         </div>
 
                         <div class="form-check mb-3" id="selectAll">
                             @Html.CheckBox("checkAllBranches", false, new { @class = "form-check-input", id = "checkAllBranches" })
-                            <label class="form-check-label" for="checkAllBranches">Select All Branches</label>
+                            <label class="form-check-label" for="checkAllBranches">@AccountingDay_Create.SelectAllBranches</label>
                         </div>
 
                         @{

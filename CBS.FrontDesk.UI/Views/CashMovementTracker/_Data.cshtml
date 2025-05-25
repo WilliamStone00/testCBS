@@ -1,14 +1,14 @@
 ﻿@model  CBS.FrontDesk.Data.Entity.CashMovementTracker.CashMovementConfiguration
-
+@using Resources
     <table class="table table-hover" id="DataTableCashMovementTrackerData">
         <thead class="table-light">
             <tr>
-                <th>Branch</th>
-                <th>Done  By</th>
-                <th>Register  By</th>
-                <th>Movement</th>
-                <th>Amount</th>
-                <th>Action</th>
+                <th>@GlobalCashMovementTracker.Branch</th>
+                <th>@GlobalCashMovementTracker.DoneBy</th>
+                <th>@GlobalCashMovementTracker.RegisterBy</th>
+                <th>@GlobalCashMovementTracker.Movement</th>
+                <th>@GlobalCashMovementTracker.Amount</th>
+                <th>@GlobalCashMovementTracker.Action</th>
             </tr>
         </thead>
         <tbody>

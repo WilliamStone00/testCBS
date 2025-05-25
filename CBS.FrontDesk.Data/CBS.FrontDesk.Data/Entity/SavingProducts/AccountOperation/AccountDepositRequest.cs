@@ -378,41 +378,67 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
         [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
         public int note10000 { get; set; }
+
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
         [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
         public int note5000 { get; set; }
+
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
         [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
         public int note2000 { get; set; }
+
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
         [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
         public int note1000 { get; set; }
+
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
         [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
         public int note500 { get; set; }
+
+        // Coins
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
         [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
         public int coin500 { get; set; }
+
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public int coin350 { get; set; }
+
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public int coin250 { get; set; }
+
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public int coin200 { get; set; }
+
+        [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
+        public int coin150 { get; set; }
+
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
         [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
         public int coin100 { get; set; }
+
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
         [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
         public int coin50 { get; set; }
+
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
         [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
         public int coin25 { get; set; }
+
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
         [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
         public int coin10 { get; set; }
+
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
         [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
         public int coin5 { get; set; }
+
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
         [Range(0, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
         public int coin1 { get; set; }
-
-
     }
     public class CurrencyNotesDto
     {

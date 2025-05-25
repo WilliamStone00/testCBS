@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+    @using Resources
 <!-- Basic  -->
 <div class="col-12">
     <div class="card mb-4">
@@ -22,7 +23,7 @@
                     <br />
                     <div class="fallback">
                       
-                        <button onclick="CleanAccountingData()" Id="CleanAccountingData" class="btn btn-primary me-2">Clean Entries</button>
+                        <button onclick="CleanAccountingData()" Id="CleanAccountingData" class="btn btn-primary me-2">@GlobalShared.CleanEntries</button>
 
                     </div>
               

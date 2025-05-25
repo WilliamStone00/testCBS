@@ -28,6 +28,7 @@ using CBS.BusinessService.Application;
 using DocumentFormat.OpenXml.Bibliography;
 using CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP;
 using Microsoft.Owin.Logging;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -339,13 +340,24 @@ namespace CBS.BusinessService.Accounts
         }
 
         public async Task<ExecutionMessages> BulkDeposi(List<BulkDeposit> bulkDeposits1)
-        {
+        { 
             try
             {
                 var bulkDeposits = FilterByAmountGreaterThanZero(bulkDeposits1);
-
+                var TotalAmount = bulkDeposits.Sum(x=>x.Total);
+                // Take only the first BulkDeposit object
+                var deposit = bulkDeposits.FirstOrDefault();
                 if (bulkDeposits.FirstOrDefault().OperationType == "Withdrawal")
                 {
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
+
+                    if (!isValid)
+                    {
+                        string errorMessage = $"Transaction for Account: {deposit.AccountNumber} has a discrepancy. {discrepancyMessage}";
+                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                           ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
+                        return ExecutionMessage;
+                    }
                     var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, HideBalance=bulkDeposits.FirstOrDefault().HideBalance, OperationType = "Withdrawal" };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.MakeWithdrawal, BulkOperation);
                     if (response.ApiResponseData != null)
@@ -368,6 +380,15 @@ namespace CBS.BusinessService.Accounts
                 //SavingWithdrawalFormFee
                 else if (bulkDeposits.FirstOrDefault().OperationType == "WithdrawalSWS")
                 {
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
+
+                    if (!isValid)
+                    {
+                        string errorMessage = $"Transaction for Account: {deposit.AccountNumber} has a discrepancy. {discrepancyMessage}";
+                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                           ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
+                        return ExecutionMessage;
+                    }
                     var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, HideBalance=bulkDeposits.FirstOrDefault().HideBalance, OperationType = "Withdrawal" };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.MakeWithdrawal, BulkOperation);
                     if (response.ApiResponseData != null)
@@ -389,6 +410,15 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "SavingWithdrawalFormFee")
                 {
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
+
+                    if (!isValid)
+                    {
+                        string errorMessage = $"Transaction for Account: {deposit.AccountNumber} has a discrepancy. {discrepancyMessage}";
+                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                           ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
+                        return ExecutionMessage;
+                    }
                     var cash = new CashDeskWithdrawalNotificationCommand { Id = bulkDeposits.FirstOrDefault().AccountNumber };
                     var response = await _transactionApiHelper.PutAsync<ServiceResponse<PaymentReceipt>>(string.Format(APICallHelper.PayinSavingWithdrawalNotification, cash.Id), cash);
                     if (response.ApiResponseData != null)
@@ -411,6 +441,15 @@ namespace CBS.BusinessService.Accounts
                 //LoanRepayment
                 else if (bulkDeposits.FirstOrDefault().OperationType == "CashIn")
                 {
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
+
+                    if (!isValid)
+                    {
+                        string errorMessage = $"Transaction for Account: {deposit.AccountNumber} has a discrepancy. {discrepancyMessage}";
+                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                           ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
+                        return ExecutionMessage;
+                    }
                     var customerAlphaNumber = string.IsNullOrWhiteSpace(bulkDeposits.FirstOrDefault()?.CustomerAlphaNumber) ||
                           bulkDeposits.FirstOrDefault()?.CustomerAlphaNumber == "0"
                           ? "n/a"
@@ -438,6 +477,15 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "RemittanceIN")
                 {
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
+
+                    if (!isValid)
+                    {
+                        string errorMessage = $"Transaction for Account: {deposit.AccountNumber} has a discrepancy. {discrepancyMessage}";
+                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                           ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
+                        return ExecutionMessage;
+                    }
                     var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Deposit", Id=bulkDeposits.FirstOrDefault().RemittanceId, DepositType="RemittanceIN" };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
@@ -463,6 +511,15 @@ namespace CBS.BusinessService.Accounts
                 //MobileMoneyNoneCashIn
                 else if (bulkDeposits.FirstOrDefault().OperationType == "RemittanceOUT")
                 {
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
+
+                    if (!isValid)
+                    {
+                        string errorMessage = $"Transaction for Account: {deposit.AccountNumber} has a discrepancy. {discrepancyMessage}";
+                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                           ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
+                        return ExecutionMessage;
+                    }
                     string N = "N/A";
                     var remOut = bulkDeposits.FirstOrDefault();
                     var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "RemittanceOUT", Id=remOut.RemittanceId, OTP=remOut.OTP, ReceiverPhoneNumber=remOut.ReceiverPhoneNumber, DepositType=N, Period=N, ReceiverAddress=remOut.ReceiverAddress, ReceiverCNI=remOut.ReceiverCNI, ReceiverCNIDateOfExpiration=remOut.ReceiverCNIDateOfExpiration, ReceiverCNIDateOfIssue=remOut.ReceiverCNIDateOfIssue, ReceiverCNIPlcaceOfIssue=remOut.ReceiverCNIPlcaceOfIssue, ReceiverName=remOut.ReceiverName, RemittanceAmount=remOut.RemittanceAmount, RemittanceDate=remOut.RemittanceDate, SenderAddress=remOut.SenderAddress, SenderName=remOut.SenderName, SenderPhoneNumber=remOut.SenderPhoneNumber, SenderSecretCode=remOut.SenderSecretCode };
@@ -623,6 +680,15 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "LoanRepayment")
                 {
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
+
+                    if (!isValid)
+                    {
+                        string errorMessage = $"Transaction for Account: {deposit.AccountNumber} has a discrepancy. {discrepancyMessage}";
+                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                           ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
+                        return ExecutionMessage;
+                    }
                     var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepayment", IsCashOperation = true, OperationType = "Deposit", };
 
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
@@ -645,6 +711,15 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "LoanFee")
                 {
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
+
+                    if (!isValid)
+                    {
+                        string errorMessage = $"Transaction for Account: {deposit.AccountNumber} has a discrepancy. {discrepancyMessage}";
+                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                           ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
+                        return ExecutionMessage;
+                    }
                     if (IsSinglePeriodKind(bulkDeposits))
                     {
                         var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanFeePayment", Period = bulkDeposits.FirstOrDefault().Period, IsCashOperation = true, OperationType = "Deposit" };
@@ -677,6 +752,15 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "OtherCashIn")
                 {
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
+
+                    if (!isValid)
+                    {
+                        string errorMessage = $"Transaction for Account: {deposit.AccountNumber} has a discrepancy. {discrepancyMessage}";
+                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                           ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
+                        return ExecutionMessage;
+                    }
                     var a = bulkDeposits.FirstOrDefault();
                     var addOtherTransaction = new AddOtherTransactionCommand
                     {
@@ -717,6 +801,15 @@ namespace CBS.BusinessService.Accounts
 
                 else if (bulkDeposits.FirstOrDefault().OperationType == "MobileMoney")
                 {
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
+
+                    if (!isValid)
+                    {
+                        string errorMessage = $"Transaction for Account: {deposit.AccountNumber} has a discrepancy. {discrepancyMessage}";
+                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                           ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
+                        return ExecutionMessage;
+                    }
                     var a = bulkDeposits.FirstOrDefault();
                     var addOtherTransaction = new AddOtherTransactionMobileMoneyCommand
                     {
@@ -776,6 +869,15 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "OtherCashInExpense")
                 {
+                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
+
+                    if (!isValid)
+                    {
+                        string errorMessage = $"Transaction for Account: {deposit.AccountNumber} has a discrepancy. {discrepancyMessage}";
+                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                           ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
+                        return ExecutionMessage;
+                    }
                     var a = bulkDeposits.FirstOrDefault();
                     var addOtherTransaction = new AddOtherTransactionCommand
                     {

@@ -1,13 +1,13 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
-
+@using Resources
     <table class="table table-hover" id="DataTablePosition">
         <thead class="table-light">
             <tr>
-                <th>Position</th>
-                <th>Chart of Account</th>
-                <th>General Representation</th>
-                <th>Description</th>
-                <th>Action</th>
+                <th>@AccountingConfig_ChartOfAccount.Position</th>
+                <th>@AccountingConfig_ChartOfAccount.ChartOfAccount</th>
+                <th>@AccountingConfig_ChartOfAccount.General Representation</th>
+                <th>@AccountingConfig_ChartOfAccount.Description</th>
+                <th>@AccountingConfig_ChartOfAccount.Action</th>
             </tr>
         </thead>
         <tbody>
@@ -19,8 +19,8 @@
                     <td style="width:25%">@d.GeneralRepresentation</td>
                     <td style="width:20%">@d.Description</td>
                     <td style="width:20%">
-                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingviewChartOfaccountManagementPosition','_CreateChartOfaccountManagementPosition','update','AccountingConfiguration','chartOfAccountManagementPosition')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.PositionNumber to edit">Edit</a>|
-                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.PositionNumber" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','DataTablePosition','_ChartofAccountManagementPositionData',0,'datalistingviewChartOfaccountManagementPosition','chartOfAccountManagementPosition')">Delete</a>
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingviewChartOfaccountManagementPosition','_CreateChartOfaccountManagementPosition','update','AccountingConfiguration','chartOfAccountManagementPosition')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.PositionNumber to edit">@GlobalShared.Edit</a>|
+                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.PositionNumber" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','DataTablePosition','_ChartofAccountManagementPositionData',0,'datalistingviewChartOfaccountManagementPosition','chartOfAccountManagementPosition')">@GlobalShared.Delete</a>
                     </td>
                 </tr>
             }

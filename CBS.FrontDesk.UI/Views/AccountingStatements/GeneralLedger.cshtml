@@ -1,5 +1,5 @@
 ﻿@model  CBS.FrontDesk.Data.Entity.Accounting.AccountingStatementDto
-
+@using Resources
 @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
 {
     <div class="row">
@@ -17,7 +17,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-file-document-outline me-2"></i>
-                            GENERAL LEDGER PER BRANCH
+                            @GeneralLedger.GENERALLEDGERPERBRANCH
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -31,10 +31,10 @@
                                         <table class="table table-hover" id="BranchDataTable">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th>Code</th>
-                                                    <th>BranchName</th>
-                                                    <th>Location</th>
-                                                    <th>Action</th>
+                                                    <th>@GeneralLedger.Code</th>
+                                                    <th>@GeneralLedger.BranchName</th>
+                                                    <th>@GeneralLedger.Location</th>
+                                                    <th>@GeneralLedger.Action</th>
 
                                                 </tr>
                                             </thead>
@@ -47,8 +47,7 @@
                                                         <td style="width:50%" id="@d.Id-Name">@d.Name</td>
                                                         <td style="width:25%" id="@d.Id-Location">@d.Location</td>
                                                         <td style="width:15%">
-                                                            <a href="#" onclick="loadBranchGeneralLedgerByBranchId(@d.Id)" class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="Select @d.Name to View General Ledger">View</a>
-
+                                                            <a href="#" onclick="loadBranchGeneralLedgerByBranchId(@d.Id)" class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="@GlobalShared.Select @d.Name @GeneralLedger.ToViewGeneralLedger">@GlobalShared.View</a>
                                                         </td>
                                                     </tr>
                                                 }
@@ -92,7 +91,7 @@ else
                                     aria-expanded="true"
                                     aria-controls="accordionPopoutIcon-3">
                                 <i class="mdi mdi-file-document-outline me-2"></i>
-                                GENERAL LEDGER FOR  @Session["BranchName"]
+                                @GeneralLedger.GENERALLEDGERFOR  @Session["BranchName"]
                             </button>
                         </h2>
 
@@ -117,7 +116,7 @@ else
                                                             aria-expanded="true"
                                                             aria-controls="accordionPopoutIcon-3">
                                                         <i class="mdi mdi-table-alert me-2"></i>
-                                                        Classic View
+                                                        @GeneralLedger.ClassicView
                                                     </button>
                                                 </h2>
 
@@ -134,10 +133,9 @@ else
                                                                     <table class="table table-hover" id="AccountDataTable">
                                                                         <thead class="table-light">
                                                                             <tr>
-                                                                                <th>AccountNumber</th>
-                                                                                <th>Description</th>
-
-                                                                                <th>Current Balance</th>
+                                                                                <th>@GeneralLedger.AccountNumber</th>
+                                                                                <th>@GeneralLedger.Description</th>
+                                                                                <th>@GeneralLedger.CurrentBalance</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
@@ -166,14 +164,14 @@ else
                                                                                         class="btn btn-primary dropdown-toggle"
                                                                                         data-bs-toggle="dropdown"
                                                                                         aria-expanded="false">
-                                                                                    <i class="mdi mdi-cloud-download-outline me-1"></i>  Download General Ledger
+                                                                                    <i class="mdi mdi-cloud-download-outline me-1"></i>  @GeneralLedger.DownloadGeneralLedger
                                                                                 </button>
                                                                                 <ul class="dropdown-menu">
                                                                                     <li>
-                                                                                        <a href="javascript:void(0);" onclick="DownLoadGL('EXCEL')" class="dropdown-item d-flex align-items-center"><i class="mdi mdi-chevron-right scaleX-n1-rtl"></i>In Excel Format</a>
+                                                                                        <a href="javascript:void(0);" onclick="DownLoadGL('EXCEL')" class="dropdown-item d-flex align-items-center"><i class="mdi mdi-chevron-right scaleX-n1-rtl"></i>@GeneralLedger.InExcelFormat</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a href="javascript:void(0);" onclick="DownLoadGL('PDF')" class="dropdown-item d-flex align-items-center"><i class="mdi mdi-chevron-right scaleX-n1-rtl"></i>In PDF Format</a>
+                                                                                        <a href="javascript:void(0);" onclick="DownLoadGL('PDF')" class="dropdown-item d-flex align-items-center"><i class="mdi mdi-chevron-right scaleX-n1-rtl"></i>@GeneralLedger.InPDFFormat</a>
                                                                                     </li>
                                                                                 </ul>
                                                                             </div>
@@ -191,8 +189,8 @@ else
 
                                         </div>
 
-                          
-                                    
+
+
                                     </div>
                                 </div>
                             </div>

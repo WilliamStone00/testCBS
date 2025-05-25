@@ -1,7 +1,8 @@
 ﻿@model CBS.FrontDesk.Data.Entity.BulkOperation.SimulateBulkOperation
+@using Resources
 
 @{
-    ViewBag.Title = "Simulate Bulk Operation";
+    ViewBag.Title = @GlobalBulkOperation.SimulateBulkOperation;
 }
 
 <div class="row">
@@ -11,10 +12,10 @@
         <div class="card bg-light mb-3 shadow-sm">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-group-outline me-2"></i> BULK OPERATIONS
+                    <i class="mdi mdi-account-group-outline me-2"></i> @GlobalBulkOperation.BULKOPERATIONS
                 </h1>
                 <p class="card-text">
-                  Bulk Operation Management mechanisms.
+                    @GlobalBulkOperation.BulkOperationManagementMechanisms.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -23,7 +24,7 @@
         <!-- Tips Section -->
         <div class="card shadow-sm mb-4">
             <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+                <span><i class="mdi mdi-information-outline me-2"></i> @GlobalBulkOperation.TIPS</span>
                 <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUserTips" aria-expanded="false" aria-controls="collapseUserTips">
                     <i class="mdi mdi-chevron-down"></i>
                 </button>
@@ -34,7 +35,7 @@
                         <div class="col-md-6">
                             <div class="alert alert-primary d-flex align-items-center" role="alert">
                                 <i class="mdi mdi-account-edit-outline me-2"></i>
-                                Fill all required fields accurately.
+                                @GlobalBulkOperation.FillAllRequiredFieldsAccurately.
                             </div>
                         </div>
                     </div>
@@ -54,15 +55,15 @@
                                     data-bs-target="#accordionPopoutIcon-bulk"
                                     aria-expanded="true"
                                     aria-controls="accordionPopoutIcon-bulk">
-                                <i class="fas fa-user-plus me-2"></i> Bulk Operation Simulation
+                                <i class="fas fa-user-plus me-2"></i> @GlobalBulkOperation.BulkOperationSimulation
                             </button>
 
                             <!-- Added elements between title and view button -->
                             <div class="d-flex align-items-center">
                                 <div class="me-3"></div>
 
-                                <a href="/BulkOperation/Listing" class="btn btn-sm btn-outline-secondary align-self-center me-3" data-bs-toggle="tooltip" title="Go to executed bulk operation list">
-                                    <i class="mdi mdi-view-list me-1"></i> View Bulk Operations
+                                <a href="/BulkOperation/Listing" class="btn btn-sm btn-outline-secondary align-self-center me-3" data-bs-toggle="tooltip" title="@GlobalBulkOperation.GoToExecutedBulkOperationList">
+                                    <i class="mdi mdi-view-list me-1"></i> @GlobalBulkOperation.ViewBulkOperations
                                 </a>
                             </div>
                         </h2>
@@ -78,7 +79,7 @@
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="headingSimulationType">
                                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSimulationType" aria-expanded="true" aria-controls="collapseSimulationType">
-                                                    <i class="mdi mdi-cog-outline me-2"></i> Simulation Details
+                                                    <i class="mdi mdi-cog-outline me-2"></i> @GlobalBulkOperation.SimulationDetails
                                                 </button>
                                             </h2>
                                             <div id="collapseSimulationType" class="accordion-collapse collapse show" aria-labelledby="headingSimulationType">
@@ -94,7 +95,7 @@
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="headingOperationType">
                                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOperationType" aria-expanded="true" aria-controls="collapseOperationType">
-                                                    <i class="mdi mdi-format-list-bulleted-type me-2"></i> Simulation Type
+                                                    <i class="mdi mdi-format-list-bulleted-type me-2"></i> @GlobalBulkOperation.SimulationType
                                                 </button>
                                             </h2>
                                             <div id="collapseOperationType" class="accordion-collapse collapse show" aria-labelledby="headingOperationType">
@@ -110,7 +111,7 @@
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="headingSourceAccounts">
                                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSourceAccounts" aria-expanded="true" aria-controls="collapseSourceAccounts">
-                                                    <i class="mdi mdi-database-outline me-2"></i> Source Accounts Configuration
+                                                    <i class="mdi mdi-database-outline me-2"></i> @GlobalBulkOperation.SourceAccountsConfiguration
                                                 </button>
                                             </h2>
                                             <div id="collapseSourceAccounts" class="accordion-collapse collapse show" aria-labelledby="headingSourceAccounts">
@@ -126,7 +127,7 @@
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="headingDynamicViews">
                                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDynamicViews" aria-expanded="true" aria-controls="collapseDynamicViews">
-                                                    <i class="mdi mdi-page-layout-body me-2"></i> Destination Configuration
+                                                    <i class="mdi mdi-page-layout-body me-2"></i> @GlobalBulkOperation.DestinationConfiguration
                                                 </button>
                                             </h2>
                                             <div id="collapseDynamicViews" class="accordion-collapse collapse show" aria-labelledby="headingDynamicViews">
@@ -149,7 +150,7 @@
                                     <!-- Form Actions -->
                                     <div class="mt-4 d-flex justify-content-end">
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="mdi mdi-play me-1"></i> Simulate Bulk Operation
+                                            <i class="mdi mdi-play me-1"></i> @GlobalBulkOperation.SimulateBulkOperation
                                         </button>
                                     </div>
                                 }

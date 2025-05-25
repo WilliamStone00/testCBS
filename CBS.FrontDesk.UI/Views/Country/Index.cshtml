@@ -1,15 +1,15 @@
 ﻿
-
+@using Resources
 @{
-    ViewBag.Title = "Country";
+    ViewBag.Title = @GlobalCountry.Country;
 }
 <div class="row justify-content-end">
     <div class="col-lg-6 p-4">
         <div class="demo-inline-spacing text-end">
-            <button type="button" id="btnData" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+            <button type="button" id="btnData" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
                 <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
             </button>
-            <button type="button" onclick="AddORUpdate(null,'datalistingview','_Create','new')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+            <button type="button" onclick="AddORUpdate(null,'datalistingview','_Create','new')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
                 <span class="tf-icons mdi mdi-plus mdi-18px"></span>
             </button>
         </div>

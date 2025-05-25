@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Charges Waiver Requests";
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalChargesWaived.ChargesWaiverRequests;
 }
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
@@ -15,7 +16,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-cash-multiple  me-2"></i>
-                            Waived Requests
+                            @GlobalChargesWaived.WaivedRequests
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -28,7 +29,7 @@
                                         <div class="card-body d-sm-flex d-block">
                                             <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0 ms-auto">
                                                 <div class="ms-3">
-                                                    <a type="button" onclick="LoadAllTransactions()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                                    <a type="button" onclick="LoadAllTransactions()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
                                                         <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                                     </a>
                                                 </div>

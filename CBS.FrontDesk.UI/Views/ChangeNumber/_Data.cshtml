@@ -1,15 +1,15 @@
-﻿
+﻿@using Resources
 @model CBS.FrontDesk.Data.Entity.ChangeNumber.ChangeNumberCarrier
 
 <fieldset class="fieldset-custom p-3 rounded shadow-sm">
     <legend class="fw-bold text-primary">
-        <i class="mdi mdi-phone me-2"></i> PENDING PHONE NUMBER CHANGE REQUESTS
+        <i class="mdi mdi-phone me-2"></i> @GlobalChangeNumber.PENDINGPHONENUMBERCHANGEREQUESTS
     </legend>
 
     @if (!Model.PhoneNumberChangeHistories.Any())
     {
         <div class="text-center my-3">
-            <p class="text-muted">No pending phone number change requests.</p>
+            <p class="text-muted">@GlobalChangeNumber.NoPendingPhoneNumberChangeRequests.</p>
         </div>
     }
     else
@@ -18,13 +18,13 @@
             <table class="table table-hover table-bordered align-middle" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>Customer ID</th>
-                        <th>Member Name</th>
-                        <th>Old Phone Number</th>
-                        <th>New Phone Number</th>
-                        <th>Request Date</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th>@GlobalChangeNumber.CustomerID</th>
+                        <th>@GlobalChangeNumber.MemberName</th>
+                        <th>@GlobalChangeNumber.OldPhoneNumber</th>
+                        <th>@GlobalChangeNumber.NewPhoneNumber</th>
+                        <th>@GlobalChangeNumber.RequestDate</th>
+                        <th>@GlobalShared.Status</th>
+                        <th>@GlobalShared.Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,13 +47,13 @@
                                     @if (request.Status != "Approved")
                                     {
                                         <!-- Approve Button -->
-                                        <button type="button"
-                                                class="btn btn-sm btn-outline-success approve-phone-change"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#phoneChangeModal"
-                                                data-id="@request.Id">
-                                            <i class="mdi mdi-check-circle-outline me-1"></i> Desision
-                                        </button>
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-success approve-phone-change"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#phoneChangeModal"
+                                            data-id="@request.Id">
+                                        <i class="mdi mdi-check-circle-outline me-1"></i> @GlobalShared.Decision
+                                    </button>
                                     }
 
                                     <!-- View Details Button -->

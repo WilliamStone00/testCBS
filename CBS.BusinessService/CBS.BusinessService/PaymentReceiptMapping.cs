@@ -31,22 +31,28 @@ namespace CBS.BusinessService
 
             // Generate DenominationDS list and filter out denominations with zero value
             var denominations = new List<DenominationDS>
-        {
-            new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "10000 Note", Quantity = paymentReceipt.Note10000, Value = 10000m * paymentReceipt.Note10000, DenominationType = "Notes" },
-            new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "5000 Note", Quantity = paymentReceipt.Note5000, Value = 5000m * paymentReceipt.Note5000, DenominationType = "Notes" },
-            new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "2000 Note", Quantity = paymentReceipt.Note2000, Value = 2000m * paymentReceipt.Note2000, DenominationType = "Notes" },
-            new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "1000 Note", Quantity = paymentReceipt.Note1000, Value = 1000m * paymentReceipt.Note1000, DenominationType = "Notes" },
-            new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "500 Note", Quantity = paymentReceipt.Note500, Value = 500m * paymentReceipt.Note500, DenominationType = "Notes" },
-            new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "500 Coin", Quantity = paymentReceipt.Coin500, Value = 500m * paymentReceipt.Coin500, DenominationType = "Coins" },
-            new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "100 Coin", Quantity = paymentReceipt.Coin100, Value = 100m * paymentReceipt.Coin100, DenominationType = "Coins" },
-            new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "50 Coin", Quantity = paymentReceipt.Coin50, Value = 50m * paymentReceipt.Coin50, DenominationType = "Coins" },
-            new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "25 Coin", Quantity = paymentReceipt.Coin25, Value = 25m * paymentReceipt.Coin25, DenominationType = "Coins" },
-            new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "10 Coin", Quantity = paymentReceipt.Coin10, Value = 10m * paymentReceipt.Coin10, DenominationType = "Coins" },
-            new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "5 Coin", Quantity = paymentReceipt.Coin5, Value = 5m * paymentReceipt.Coin5, DenominationType = "Coins" },
-            new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "1 Coin", Quantity = paymentReceipt.Coin1, Value = 1m * paymentReceipt.Coin1, DenominationType = "Coins" }
-        }
-                .Where(d => d.Value > 0)
-                .ToList();
+    {
+        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "10000 Note", Quantity = paymentReceipt.Note10000, Value = 10000m * paymentReceipt.Note10000, DenominationType = "Notes" },
+        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "5000 Note", Quantity = paymentReceipt.Note5000, Value = 5000m * paymentReceipt.Note5000, DenominationType = "Notes" },
+        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "2000 Note", Quantity = paymentReceipt.Note2000, Value = 2000m * paymentReceipt.Note2000, DenominationType = "Notes" },
+        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "1000 Note", Quantity = paymentReceipt.Note1000, Value = 1000m * paymentReceipt.Note1000, DenominationType = "Notes" },
+        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "500 Note", Quantity = paymentReceipt.Note500, Value = 500m * paymentReceipt.Note500, DenominationType = "Notes" },
+
+        // Coins
+        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "500 Coin", Quantity = paymentReceipt.Coin500, Value = 500m * paymentReceipt.Coin500, DenominationType = "Coins" },
+        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "350 Coin", Quantity = paymentReceipt.Coin350, Value = 350m * paymentReceipt.Coin350, DenominationType = "Coins" },
+        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "250 Coin", Quantity = paymentReceipt.Coin250, Value = 250m * paymentReceipt.Coin250, DenominationType = "Coins" },
+        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "200 Coin", Quantity = paymentReceipt.Coin200, Value = 200m * paymentReceipt.Coin200, DenominationType = "Coins" },
+        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "150 Coin", Quantity = paymentReceipt.Coin150, Value = 150m * paymentReceipt.Coin150, DenominationType = "Coins" },
+        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "100 Coin", Quantity = paymentReceipt.Coin100, Value = 100m * paymentReceipt.Coin100, DenominationType = "Coins" },
+        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "50 Coin", Quantity = paymentReceipt.Coin50, Value = 50m * paymentReceipt.Coin50, DenominationType = "Coins" },
+        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "25 Coin", Quantity = paymentReceipt.Coin25, Value = 25m * paymentReceipt.Coin25, DenominationType = "Coins" },
+        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "10 Coin", Quantity = paymentReceipt.Coin10, Value = 10m * paymentReceipt.Coin10, DenominationType = "Coins" },
+        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "5 Coin", Quantity = paymentReceipt.Coin5, Value = 5m * paymentReceipt.Coin5, DenominationType = "Coins" },
+        new DenominationDS { PaymentReceiptId = paymentReceipt.Id, NoteOrCoins = "1 Coin", Quantity = paymentReceipt.Coin1, Value = 1m * paymentReceipt.Coin1, DenominationType = "Coins" }
+    }
+            .Where(d => d.Value > 0)
+            .ToList();
 
             // Generate PaymentDetailDS
             var paymentDetails = paymentReceipt.PaymentDetails?.Select(pd => new PaymentDetailDS
@@ -56,7 +62,7 @@ namespace CBS.BusinessService
                 MemberReference = pd.MemberReference,
                 PaymentReceiptId = pd.PaymentReceiptId,
                 SericeName = pd.SericeName,
-                AccountBalance=pd.AccountBalance,
+                AccountBalance = pd.AccountBalance,
                 Amount = pd.Amount,
                 Fee = pd.Fee,
                 LoanCapital = pd.LoanCapital,
@@ -68,49 +74,51 @@ namespace CBS.BusinessService
             }).ToList() ?? new List<PaymentDetailDS>();
 
             return new List<PaymentReciptDS>
-            {
-                new PaymentReciptDS
-                {
-                    Id = paymentReceipt.Id,
-                    MemberName = paymentReceipt.MemberName,
-                    MemberReference = paymentReceipt.MemberReference,
-                    Amount = paymentReceipt.Amount, ReceiptType=paymentReceipt.ReceiptType, TotalAccountBalances=paymentReceipt.TotalAccountBalances,
-                    Charges = paymentReceipt.Charges,
-                    TotalAmount = paymentReceipt.TotalAmount,
-                    AmountInWord = paymentReceipt.AmountInWord,
-                    ReceiptTitle = paymentReceipt.ReceiptTitle,
-                    CashierName = paymentReceipt.CashierName,
-                    TillName = paymentReceipt.TillName,
-                    ServiceType = paymentReceipt.ServiceType,
-                    OperationType = paymentReceipt.OperationType,
-                    OperationTypeGrouping = paymentReceipt.OperationTypeGrouping,
-                    AccountingDay = paymentReceipt.AccountingDay,
-                    Date = paymentReceipt.Date,
-                    BarcodeData = barcodeData,
-                    BarcodeImagePath = barcodeImagePath,
-                    InternalReferenceNumber = paymentReceipt.InternalReferenceNumber,
-                    ExternalReferenceNumber = paymentReceipt.ExternalReferenceNumber,
-                    SourceOfRequest = paymentReceipt.SourceOfRequest,
-                    PortalUsed = paymentReceipt.PortalUsed,
-                    DenominationDs = denominations,
-                    DepositorCNI = paymentReceipt.DepositorCNI,
-                    DepositorName = paymentReceipt.DepositorName,
-                    DepositorPhone = paymentReceipt.DepositorPhone,
-                    PaymentDetailDs = paymentDetails,
-                    Logo = branch.Bank.LogoUrl,
-                    BranchAddress = branch.Address,
-                    BranchCode = branch.BranchCode,
-                    BranchName = branch.Name,
-                    BranchTelephone = branch.Telephone,
-                    HeadOfficeAddress = branch.Bank.Address,
-                    HeadOfficeCode = branch.Bank.BankCode,
-                    HeadOfficeEmail = branch.Bank.Email,
-                    HeadOfficeInitial = branch.Bank.BankInitial,
-                    HeadOfficeName = branch.Bank.Name,
-                    HeadOfficeTelephone = branch.Bank.Telephone,
-                    HeadOfficeWebSite = branch.Bank.WebSite
-                }
-            };
+    {
+        new PaymentReciptDS
+        {
+            Id = paymentReceipt.Id,
+            MemberName = paymentReceipt.MemberName,
+            MemberReference = paymentReceipt.MemberReference,
+            Amount = paymentReceipt.Amount,
+            ReceiptType = paymentReceipt.ReceiptType,
+            TotalAccountBalances = paymentReceipt.TotalAccountBalances,
+            Charges = paymentReceipt.Charges,
+            TotalAmount = paymentReceipt.TotalAmount,
+            AmountInWord = paymentReceipt.AmountInWord,
+            ReceiptTitle = paymentReceipt.ReceiptTitle,
+            CashierName = paymentReceipt.CashierName,
+            TillName = paymentReceipt.TillName,
+            ServiceType = paymentReceipt.ServiceType,
+            OperationType = paymentReceipt.OperationType,
+            OperationTypeGrouping = paymentReceipt.OperationTypeGrouping,
+            AccountingDay = paymentReceipt.AccountingDay,
+            Date = paymentReceipt.Date,
+            BarcodeData = barcodeData,
+            BarcodeImagePath = barcodeImagePath,
+            InternalReferenceNumber = paymentReceipt.InternalReferenceNumber,
+            ExternalReferenceNumber = paymentReceipt.ExternalReferenceNumber,
+            SourceOfRequest = paymentReceipt.SourceOfRequest,
+            PortalUsed = paymentReceipt.PortalUsed,
+            DenominationDs = denominations,
+            DepositorCNI = paymentReceipt.DepositorCNI,
+            DepositorName = paymentReceipt.DepositorName,
+            DepositorPhone = paymentReceipt.DepositorPhone,
+            PaymentDetailDs = paymentDetails,
+            Logo = branch.Bank.LogoUrl,
+            BranchAddress = branch.Address,
+            BranchCode = branch.BranchCode,
+            BranchName = branch.Name,
+            BranchTelephone = branch.Telephone,
+            HeadOfficeAddress = branch.Bank.Address,
+            HeadOfficeCode = branch.Bank.BankCode,
+            HeadOfficeEmail = branch.Bank.Email,
+            HeadOfficeInitial = branch.Bank.BankInitial,
+            HeadOfficeName = branch.Bank.Name,
+            HeadOfficeTelephone = branch.Bank.Telephone,
+            HeadOfficeWebSite = branch.Bank.WebSite
+        }
+    };
         }
 
         public static string GenerateAndSaveBarcodeImage(string data, string memberName, string transactionRef, string branchName)

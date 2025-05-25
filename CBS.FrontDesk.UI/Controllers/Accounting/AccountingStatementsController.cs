@@ -7,11 +7,13 @@ using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using CBS.FrontDesk.UI.AppFiles.Reporting.Accounting;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.ExtendedProperties;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OfficeOpenXml;
 using System;
@@ -24,6 +26,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Services.Description;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
+using Branch = CBS.FrontDesk.Data.Entity.Config.Branch;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -35,6 +39,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private readonly AccountingServices _accountingServices;
         private readonly AccountingEntryServices _accountingEntryServices;
         private const string UniversalId = "XXXXXX";
+
+      
+
         public AccountingStatementsController()
         {
             _acountServices = new AccountingStatementService();
@@ -51,7 +58,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             //listAccount.Add(new Account { Id = "XXXXXX", AccountNumber = "000000", AccountName = "ALL" });
             //ViewBag.Accounts = BuildDropDown(GenerateAccountsListView(listAccount));
             var listBranches = (await _branchServices.GetBranches()).ToList();
-            listBranches.Add(new Branch { Id = "XXXXXX", Name = "[BapCCUL-Network]ALL" });
+            listBranches.Add(new Branch { Id = "XXXXXX", Name = "[BapCCUL-Network]" });
             ViewBag.Branches = BuildDropDown(GenerateBranchListView(listBranches));
             var reportData = await _accountingServices.GetAllFileDownloadInfoPerUser();
             return View(new AccountingEntryQuery { ReportDownloadInfo = reportData.OrderByDescending(x=>x.CreatedDate).ToList() });
@@ -128,7 +135,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return Json(new { success = "Data deleted successfully", status = "Success", message = "Data deleted successfully" }, JsonRequestBehavior.AllowGet);
         }
 
-        private IEnumerable<StringValues> GenerateAccountsListView(List<Account> accounts)
+        private IEnumerable<StringValues> GenerateAccountsListView(List<Data.Account> accounts)
         {
             List<StringValues> stringValues = new List<StringValues>();
             foreach (var branch in accounts)
@@ -383,7 +390,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 var listOfAccounts = (await _accountingServices.GetAllAccountForABranch(branchId));
                  var data = (from account in listOfAccounts
-                            select new Account
+                            select new Data. Account
                             {
                                 AccountNumber= account.TempData,
                             AccountName = account.AccountName,
@@ -602,7 +609,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             {
                                 if (model.SystemQuery.FileType.ToLower() == "pdf")
                                 {
-                                    string fileTitle = $"BalanceSheet_{model.SystemQuery.FromDate.ToString("ddMMyyyy")}_{model.SystemQuery.ToDate.ToString("ddMMyyyy")}";
+                                    string fileTitle = $"BalanceSheet_{model.SystemQuery.FromDate.ToString("ddMMyyyy")}";
                                     var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "BALANCESHEET").First();
                                     var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate,FromDate= model.SystemQuery.FromDate, DocumentId = DocModel.id, FileType="pdf" };
                                     var account = await _acountServices.GenerateBalanceSheet(modelx);
@@ -985,6 +992,74 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
 
 
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> GenerateBalanceSheet(string BranchId, string FromDate, string ToDate,string FileType)
+        {
+            try
+            {
+          
+
+
+                    var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "BALANCESHEET").First();
+                BSQuery modelx = new BSQuery
+                {
+                    BranchId = BranchId,
+                    DocumentId = DocModel.id,
+                    FromDate=Convert.ToDateTime( FromDate),
+                    ToDate = Convert.ToDateTime(ToDate),
+ 
+                    FileType= FileType
+                };
+                var account = await _acountServices.GenerateBalanceSheet(modelx);
+                this.HttpContext.Session["rptSource"] = account;
+                this.HttpContext.Session["dtoPasser"] = modelx;
+                var TrialBalance = account.TrialBalanceDt;
+                var Assets = account.Accounts.Where(x => x.Category == BSCartegory.Assets).ToList();
+                var Liabilities = account.Accounts.Where(x => x.Category == BSCartegory.LIABILITIES).ToList();
+                return Json( new { Liabilities= Liabilities, Assets = Assets, TrialBalance = TrialBalance, status =account.TrialBalanceDt.Count()>0,message= $"Kindly be patient, TSC preparing Balance sheet builder interface" } , JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw (ex);
+            }
+
+        }
+        [HttpPost]
+        public async Task<ActionResult> GenerateBSReport(List<BalanceSheetAccount> model)
+        {
+            try
+            {
+    
+                var account000 =(BalanceSheetData)this.HttpContext.Session["rptSource"];
+                string ReportName = $"BalanceSheet_Assets.rpt";
+                if (account000 == null)
+                {
+                    this.HttpContext.Session["rptSource"] = "empty";
+
+                }
+                account000.Accounts = model;
+                this.HttpContext.Session["rptSource"] = account000;
+                this.HttpContext.Session["rpttitle"] = $"BalanceSheet";
+
+                this.HttpContext.Session["rptType"] = "BS";
+                this.HttpContext.Session["fileType"] = $"BS";
+                this.HttpContext.Session["ReportName"] = $"{ReportName}";
+  
+                this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
+                return Json(new { status =true, message = $"Report designing on going, Please be patient" , reportUrl = "/Reports/DownloadBSFile", }, JsonRequestBehavior.AllowGet);
+
+       
             }
             catch (Exception ex)
             {

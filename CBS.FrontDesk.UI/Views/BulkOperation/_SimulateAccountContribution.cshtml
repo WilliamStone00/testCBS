@@ -1,5 +1,6 @@
 ﻿
 @model CBS.FrontDesk.Data.Entity.BulkOperation.SimulateBulkOperation
+@using Resources
 
 <div class="card-body">
     <div class="row">
@@ -8,7 +9,7 @@
                 @Html.LabelFor(m => m.DestinationAccountId, "Destination Account", new { @class = "form-label" })
                 @Html.DropDownListFor(m => m.DestinationAccountId,
                     new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
-                    "Select Account",
+                    @GlobalBulkOperation.SelectAccount,
                     new { @class = "form-select select2" })
             </div>
             <div class="col-md-12">

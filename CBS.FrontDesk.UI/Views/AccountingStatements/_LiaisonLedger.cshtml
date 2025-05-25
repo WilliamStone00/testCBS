@@ -1,9 +1,10 @@
 ﻿
+@using Resources
 <div class="modal fade" id="exLargeModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title text-center" id="LiaisonLedgerHeading" style="text-align: center;"> Loading ...</h4>
+                <h4 class="modal-title text-center" id="LiaisonLedgerHeading" style="text-align: center;"> @AccountingStatements_LiaisonLedger.Loading ...</h4>
                 <button type="button"
                         class="btn-close"
                         data-bs-dismiss="modal"
@@ -17,11 +18,11 @@
                                     <table class="table table-hover" id="LiaisonLadgerDataTable">
                                         <thead class="table-light">
                                             <tr>
-                                                <th>AccountNumber</th>
-                                                <th>Description</th>
-                                                <th>Debit Balance</th>
-                                                <th>Credit Balance</th>
-                                                <th>Current Balance</th>
+                                                <th>@AccountingStatements_LiaisonLedger.AccountNumber</th>
+                                                <th>@AccountingStatements_LiaisonLedger.Description</th>
+                                                <th>@AccountingStatements_LiaisonLedger.DebitBalance</th>
+                                                <th>@AccountingStatements_LiaisonLedger.CreditBalance</th>
+                                                <th>@AccountingStatements_LiaisonLedger.CurrentBalance</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -51,14 +52,14 @@
                                         class="btn btn-primary dropdown-toggle"
                                         data-bs-toggle="dropdown"
                                         aria-expanded="false">
-                                    <i class="mdi mdi-cloud-download-outline me-1"></i>  Download Liaison Ledger
+                                    <i class="mdi mdi-cloud-download-outline me-1"></i>  @AccountingStatements_LiaisonLedger.DownloadLiaisonLedger
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="javascript:void(0);" onclick="DownLoadLL('EXCEL')" class="dropdown-item d-flex align-items-center"><i class="mdi mdi-chevron-right scaleX-n1-rtl"></i>In Excel Format</a>
+                                        <a href="javascript:void(0);" onclick="DownLoadLL('EXCEL')" class="dropdown-item d-flex align-items-center"><i class="mdi mdi-chevron-right scaleX-n1-rtl"></i>@GlobalShared.InExcelFormat</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" onclick="DownLoadLL('PDF')" class="dropdown-item d-flex align-items-center"><i class="mdi mdi-chevron-right scaleX-n1-rtl"></i>In PDF Format</a>
+                                        <a href="javascript:void(0);" onclick="DownLoadLL('PDF')" class="dropdown-item d-flex align-items-center"><i class="mdi mdi-chevron-right scaleX-n1-rtl"></i>@GlobalShared.InPDFFormat</a>
                                     </li>
                                 </ul>
                             </div>
@@ -68,7 +69,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Close
+                        @GlobalShared.Close
                     </button>
                 </div>
 

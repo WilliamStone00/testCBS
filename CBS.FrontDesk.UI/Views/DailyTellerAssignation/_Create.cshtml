@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.DailyTeller
+    @using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">Set Tellers for the day</legend>
+    <legend id="select_base">@GlobalDailyTellerAssignation.SetTellersForTheDay</legend>
     <div class="card-body">
         @using (Html.BeginForm("Create", "DailyTellerAssignation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
@@ -12,16 +13,16 @@
             {
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---Select Branch---", new { @class = "form-control select2", @disabled = "disabled" })
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalDailyTellerAssignation.SelectBranch+ "---", new { @class = "form-control select2", @disabled = "disabled" })
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                        <label>Branch</label>
+                        <label>@GlobalDailyTellerAssignation.Branch</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.TellerId, new SelectList(ViewBag.Tellers, "Value", "Text"), "---Select Teller---", new { @class = "form-control select2", @search = "true", @disabled = "disabled" })
+                        @Html.DropDownListFor(m => m.TellerId, new SelectList(ViewBag.Tellers, "Value", "Text"), "---"+ @GlobalDailyTellerAssignation.SelectTeller+ "---", new { @class = "form-control select2", @search = "true", @disabled = "disabled" })
                         @Html.ValidationMessageFor(m => m.TellerId, "", new { @class = "text-danger" })
-                        <label>Teller</label>
+                        <label>@GlobalDailyTellerAssignation.Teller</label>
                     </div>
                 </div>
             }
@@ -29,31 +30,31 @@
             {
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---Select Branch---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalDailyTellerAssignation.SelectBranch+ "---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                        <label>Branch</label>
+                        <label>@GlobalDailyTellerAssignation.Branch</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.TellerId, new SelectList(ViewBag.Tellers, "Value", "Text"), "---Select Teller---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.TellerId, new SelectList(ViewBag.Tellers, "Value", "Text"), "---"+ @GlobalDailyTellerAssignation.SelectTeller +"---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.TellerId, "", new { @class = "text-danger" })
-                        <label>Teller</label>
+                        <label>@GlobalDailyTellerAssignation.Teller</label>
                     </div>
                 </div>
 
             }
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.UserId, new SelectList(ViewBag.Users, "Value", "Text"), "---Select User---", new { @class = "form-control select2", @search = "true" })
+                    @Html.DropDownListFor(m => m.UserId, new SelectList(ViewBag.Users, "Value", "Text"), "---" + @GlobalDailyTellerAssignation.SelectUser +"---", new { @class = "form-control select2", @search = "true" })
                     @Html.ValidationMessageFor(m => m.UserId, "", new { @class = "text-danger" })
-                    <label>User</label>
+                    <label>@GlobalDailyTellerAssignation.User</label>
                 </div>
             </div>
             <div class="col-12">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.Status, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="isActive">Check to keep active</label>
+                    <label class="form-check-label" for="isActive">@GlobalDailyTellerAssignation.CheckToKeepActive</label>
                 </div>
             </div>
             @*<div class="col-md-6">
@@ -76,16 +77,16 @@
         <div class="mt-4">
             @if (ViewBag.Key != null)
             {
-                <button type="submit" class="btn btn-primary me-2">Update</button>
+                <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
 
             }
             else
             {
-                <button type="submit" class="btn btn-primary me-2">Save</button>
-                <button type="reset" class="btn btn-outline-secondary">Reset</button>
+        <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+        <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
 
             }
-            <a type="button" href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" onclick="LoadTellerrsAssigned()" data-bs-toggle="tooltip" title="View Assigned tellers">
+            <a type="button" href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" onclick="LoadTellerrsAssigned()" data-bs-toggle="tooltip" title="@GlobalDailyTellerAssignation.ViewAssignedTellers">
                 <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
             </a>
         </div>

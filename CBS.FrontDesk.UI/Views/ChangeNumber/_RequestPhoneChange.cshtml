@@ -1,11 +1,11 @@
 ﻿@model CBS.FrontDesk.Data.Entity.ChangeNumber.ChangeNumberCarrier
-
+@using Resources
 <div class="row">
     <!-- Right Section: Profile & CNI Image (3 cols) -->
     <div class="col-md-3">
         <fieldset class="fieldset-custom p-3 rounded shadow-sm">
             <legend class="fw-bold text-primary">
-                <i class="mdi mdi-account-box me-2"></i> MEMBER DETAILS
+                <i class="mdi mdi-account-box me-2"></i> @GlobalChangeNumber.MEMBERDETAILS
             </legend>
             <div class="card-body text-center">
                 <!-- Profile Image -->
@@ -13,14 +13,14 @@
                     <img src="@Model.Customer.photoUrl" id="profileImage" class="img-fluid rounded shadow-sm"
                          style="width: 100%; height: auto; cursor: pointer;" alt="Profile Image"
                          onclick="viewImage('@Model.Customer.photoUrl')">
-                    <p class="fw-bold text-muted mt-2">Profile Image</p>
+                    <p class="fw-bold text-muted mt-2">@GlobalShared.ProfileImage</p>
                 </div>
                 <!-- CNI Image -->
                 <div>
                     <img src="@Model.Customer.signatureUrl" id="cniImage" class="img-fluid rounded shadow-sm"
                          style="width: 100%; height: auto; cursor: pointer;" alt="CNI Image"
                          onclick="viewImage('@Model.Customer.signatureUrl')">
-                    <p class="fw-bold text-muted mt-2">CNI Image</p>
+                    <p class="fw-bold text-muted mt-2">@GlobalShared.CNIImage</p>
                 </div>
             </div>
         </fieldset>
@@ -30,7 +30,7 @@
     <div class="col-md-9">
         <fieldset class="fieldset-custom p-3 rounded shadow-sm">
             <legend class="fw-bold text-primary">
-                <i class="mdi mdi-phone-edit me-2"></i> REQUEST PHONE NUMBER CHANGE
+                <i class="mdi mdi-phone-edit me-2"></i> @GlobalChangeNumber.REQUESTPHONENUMBERCHANGE
             </legend>
 
             <div class="card-body">
@@ -39,7 +39,7 @@
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline mb-3">
                             @Html.TextBoxFor(m => m.ChangePhoneNumberRequestCommand.CustomerId, new { @class = "form-control", @readonly = "readonly", @id = "CustomerId" })
-                            <label for="CustomerId"><i class="mdi mdi-account me-1"></i> Member ID</label>
+                            <label for="CustomerId"><i class="mdi mdi-account me-1"></i> @GlobalChangeNumber.MemberID</label>
                         </div>
                     </div>
 
@@ -47,7 +47,7 @@
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline mb-3">
                             @Html.TextBoxFor(m => m.Customer.name, new { @class = "form-control", @readonly = "readonly" })
-                            <label for="MemberName"><i class="mdi mdi-account-circle me-1"></i> Member Name</label>
+                            <label for="MemberName"><i class="mdi mdi-account-circle me-1"></i> @GlobalChangeNumber.MemberName</label>
                         </div>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                     <div class="col-md-12">
                         <div class="form-floating form-floating-outline mb-3">
                             @Html.TextBoxFor(m => m.Customer.branch, new { @class = "form-control", @readonly = "readonly" })
-                            <label for="Branch"><i class="mdi mdi-domain me-1"></i> Branch Name</label>
+                            <label for="Branch"><i class="mdi mdi-domain me-1"></i> @GlobalChangeNumber.BranchName</label>
                         </div>
                     </div>
 
@@ -73,10 +73,10 @@
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline mb-3">
                                 @Html.TextBoxFor(m => m.ChangePhoneNumberRequestCommand.NewPhoneNumber, new
-                                    { @class = "form-control", type = "tel", id = "NewPhoneNumber", placeholder = "Enter New Phone Number", required = "required" })
+                                    { @class = "form-control", type = "tel", id = "NewPhoneNumber", placeholder = @GlobalChangeNumber.EnterNewPhoneNumber , required = "required" })
                                 @Html.ValidationMessageFor(m => m.ChangePhoneNumberRequestCommand.NewPhoneNumber, "", new { @class = "text-danger" })
 
-                                <label for="NewPhoneNumber"><i class="mdi mdi-phone-incoming me-1"></i> New Phone Number</label>
+                                <label for="NewPhoneNumber"><i class="mdi mdi-phone-incoming me-1"></i> @GlobalChangeNumber.NewPhoneNumber</label>
                                 <span class="text-danger" id="newPhoneError"></span>
                             </div>
                         </div>
@@ -88,7 +88,7 @@
                            { @class = "form-control", @readonly = "readonly", type = "tel", id = "OldPhoneNumber", required = "required" })
                                 @Html.ValidationMessageFor(m => m.ChangePhoneNumberRequestCommand.OldPhoneNumber, "", new { @class = "text-danger" })
 
-                                <label for="OldPhoneNumber"><i class="mdi mdi-phone-classic me-1"></i> Old Phone Number</label>
+                                <label for="OldPhoneNumber"><i class="mdi mdi-phone-classic me-1"></i> @GlobalChangeNumber.OldPhoneNumber</label>
                             </div>
                         </div>
                     </div>
@@ -104,16 +104,16 @@
                         </div>*@
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline mb-3">
-                                @Html.TextBoxFor(m => m.ChangePhoneNumberRequestCommand.OtpCode, new { @class = "form-control", id = "OtpCode", @placeholder = "Enter OTP", required = "required" })
+                                @Html.TextBoxFor(m => m.ChangePhoneNumberRequestCommand.OtpCode, new { @class = "form-control", id = "OtpCode", @placeholder = @GlobalChangeNumber.EnterOTP, required = "required" })
                                 @Html.ValidationMessageFor(m => m.ChangePhoneNumberRequestCommand.OtpCode, "", new { @class = "text-danger" })
 
-                                <label for="OtpCode"><i class="mdi mdi-phone-classic me-1"></i> Enter OTP Code</label>
+                                <label for="OtpCode"><i class="mdi mdi-phone-classic me-1"></i> @GlobalChangeNumber.EnterOTPCode</label>
                             </div>
                         </div>
                         <!-- Send OTP Button -->
                         <div class="col-md-6 d-flex align-items-center">
                             <button type="button" class="btn btn-warning w-100" onclick="sendOTP()">
-                                <i class="mdi mdi-send"></i> Send OTP
+                                <i class="mdi mdi-send"></i> @GlobalChangeNumber.SendOTP
                             </button>
                         </div>
                     </div>
@@ -123,8 +123,8 @@
                         <div class="col-md-12">
                             <div class="form-floating form-floating-outline mb-3">
                                 @Html.TextAreaFor(m => m.ChangePhoneNumberRequestCommand.RequestComment, new
-                                    { @class = "form-control", style = "height: 120px; width: 100%; resize: none;", placeholder = "Enter Request Reason", required = "required" })
-                                <label for="RequestComment"><i class="mdi mdi-comment-text me-1"></i> Request Comment</label>
+                                    { @class = "form-control", style = "height: 120px; width: 100%; resize: none;", placeholder = @GlobalChangeNumber.EnterRequestReason, required = "required" })
+                                <label for="RequestComment"><i class="mdi mdi-comment-text me-1"></i> @GlobalChangeNumber.RequestComment</label>
                                 <span class="text-danger" id="commentError"></span>
                             </div>
                         </div>
@@ -134,10 +134,10 @@
                     <div class="row mt-4">
                         <div class="col-md-12 d-flex justify-content-end">
                             <button type="reset" class="btn btn-outline-secondary me-2">
-                                <i class="mdi mdi-refresh"></i> Reset
+                                <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                             </button>
                             <button type="submit" class="btn btn-primary">
-                                <i class="mdi mdi-content-save"></i> Submit Request
+                                <i class="mdi mdi-content-save"></i> @GlobalShared.SubmitRequest
                             </button>
                         </div>
                     </div>
@@ -152,7 +152,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-primary"><i class="mdi mdi-image me-1"></i> View Image</h5>
+                <h5 class="modal-title text-primary"><i class="mdi mdi-image me-1"></i> @GlobalShared.ViewImage</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">

@@ -1,5 +1,7 @@
 ﻿@model  CBS.FrontDesk.Data.Entity.Accounting.AccountingStatementDto
 
+@using Resources
+
 @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
 {
     <div class="row">
@@ -17,7 +19,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-file-document-outline me-2"></i>
-                            LIAISON LEDGER PER BRANCH
+                            @LiaisonLedger.LIAISONLEDGERPERBRANCH
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -31,10 +33,10 @@
                                         <table class="table table-hover" id="BranchDataTable">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th>Code</th>
-                                                    <th>BranchName</th>
-                                                    <th>Location</th>
-                                                    <th>Action</th>
+                                                    <th> @LiaisonLedger.Code</th>
+                                                    <th> @LiaisonLedger.BranchName</th>
+                                                    <th> @LiaisonLedger.Location</th>
+                                                    <th> @LiaisonLedger.Action</th>
 
                                                 </tr>
                                             </thead>
@@ -47,7 +49,7 @@
                                                         <td style="width:50%" id="@d.Id-Name">@d.Name</td>
                                                         <td style="width:25%" id="@d.Id-Location">@d.Location</td>
                                                         <td style="width:15%">
-                                                            <a href="#" onclick="LoadLiaionLedgerByBranchID('@d.Id')" class="mr-2 btn btn-primary" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="Select @d.Name to view liaison ledger">View</a>
+                                                            <a href="#" onclick="LoadLiaionLedgerByBranchID('@d.Id')" class="mr-2 btn btn-primary" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title=" @GlobalShared.Select @d.Name  @LiaisonLedger.ToViewLiaisonLedger"> @GlobalShared.View</a>
 
                                                         </td>
                                                     </tr>

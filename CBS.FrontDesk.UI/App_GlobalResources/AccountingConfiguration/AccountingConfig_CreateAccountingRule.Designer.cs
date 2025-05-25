@@ -70,6 +70,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accounting  Rule.
+        /// </summary>
+        internal static string AccountingRule {
+            get {
+                return ResourceManager.GetString("AccountingRule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Action.
         /// </summary>
         internal static string Action {

@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+    @using Resources
 @{
-    ViewBag.Title = "View Cash Replenishment Details";
+    ViewBag.Title = @GlobalCashFlowManagement.ViewCashReplenishmentDetails;
 
 }
 <div class="table-responsive">
@@ -9,7 +10,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="exampleModalLabel3">
-                        Bank Deposit Receipt Information :Loading ...
+                        @GlobalCashFlowManagement.BankDepositReceiptInformation :@GlobalCashFlowManagement.Loading ...
                     </h4>
                     <button type="button"
                             class="btn-close"
@@ -30,7 +31,7 @@
                                         <table class="table table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th colspan="2"> <h5 class="card-title">Bank Deposit Receipt Information Details</h5></th>
+                                                    <th colspan="2"> <h5 class="card-title">@GlobalCashFlowManagement.BankDepositReceiptInformationDetails</h5></th>
 
                                                 </tr>
                                             </thead>
@@ -38,30 +39,30 @@
                                                 @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
                                                 {
                                                     <tr>
-                                                        <td>Branch Office</td>
-                                                        <td id="BranchName">Loading ...</td>
+                                                        <td>@GlobalCashFlowManagement.BranchOffice</td>
+                                                        <td id="BranchName">@GlobalCashFlowManagement.Loading ...</td>
                                                     </tr>
                                                 }
 
                                                 <tr>
-                                                    <td>Balance Before Transaction </td>
-                                                    <td id="Balance">Loading ... </td>
+                                                    <td>@GlobalCashFlowManagement.BalanceBeforeTransaction </td>
+                                                    <td id="Balance">@GlobalCashFlowManagement.Loading ... </td>
                                                 </tr>
 
                                                 <tr>
-                                                    <td>Amount </td>
-                                                    <td id="Amount">Loading ... </td>
+                                                    <td>@GlobalCashFlowManagement.Amount </td>
+                                                    <td id="Amount">@GlobalCashFlowManagement.Loading ... </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Bank Transaction Date</td>
-                                                    <td id="BankTransactionDate"> Loading ... </td>
+                                                    <td>@GlobalCashFlowManagement.BankTransactionDate</td>
+                                                    <td id="BankTransactionDate"> @GlobalCashFlowManagement.Loading ... </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Bank Transaction Reference</td>
-                                                    <td id="TransactionId">Loading ... </td>
+                                                    <td>@GlobalCashFlowManagement.BankTransactionReference</td>
+                                                    <td id="TransactionId">@GlobalCashFlowManagement.Loading ... </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Bank Deposit Reciept</td>
+                                                    <td>@GlobalCashFlowManagement.BankDepositReciept</td>
                                                     <td>
                                                         <div class="image-preview">
                                                             <img src="@Url.Content(Model.BankCashOut.FileUpload)" alt="No Image Found" id="previewimage" class="img-fluid" />
@@ -82,7 +83,7 @@
       
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Close
+                        @GlobalShared.Close
                     </button>
                 </div>
             </div>

@@ -157,7 +157,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         }
         public async Task<ActionResult> Index()
         {
-   
+            await GetList();
             return View(new AccountingConfiguration());
         }
         public async Task<ActionResult> JournalEntryConfig()
@@ -963,7 +963,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var chartOfAccount = await _chartOfAccountServices.GetChartOfAccountByAccountNumber(model.Account.AccountNumber.Substring(0, model.Account.AccountNumber.Length - 1));
                 if (chartOfAccount == null)
                 {
-
+                    return () => _AccountServices.Create(model.Account);
                 }
                 else
                 {

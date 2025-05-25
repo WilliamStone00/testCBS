@@ -1,11 +1,12 @@
 ﻿
 @model List<CBS.FrontDesk.Data.Entity.CashCeilingManagement.CashCeilingRequest>
+    @using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">My Cash Ceiling Requests</legend>
+    <legend id="select_base">@CashCeilingRequest_InitiatorData.MyCashCeilingRequests</legend>
     @if (!Model.Any())
     {
         <div class="text-center my-3">
-            <p class="text-muted">You haven't created any cash ceiling requests yet.</p>
+            <p class="text-muted">@CashCeilingRequest_InitiatorData.YouHaventCreatedAnyCashCeilingRequestsYet.</p>
         </div>
 
     }
@@ -15,11 +16,11 @@
             <table class="table table-hover table-bordered text-center" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th style="width: 47%;">Branch</th>
-                        <th style="width: 10%;">Request Type</th>
-                        <th style="width: 20%;">Amount</th>
-                        <th style="width: 8%;">Status</th>
-                        <th style="width: 15%;">Actions</th>
+                        <th style="width: 47%;">@CashCeilingRequest_InitiatorData.Branch</th>
+                        <th style="width: 10%;">@CashCeilingRequest_InitiatorData.RequestType</th>
+                        <th style="width: 20%;">@CashCeilingRequest_InitiatorData.Amount</th>
+                        <th style="width: 8%;">@CashCeilingRequest_InitiatorData.Status</th>
+                        <th style="width: 15%;">@CashCeilingRequest_InitiatorData.Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,34 +31,34 @@
                             <td>
                                 @if (request.RequestType == "Cash_To_Vault")
                                 {
-                                    <span class="badge bg-primary">CASH TO VAULT</span>
+                                    <span class="badge bg-primary">@CashCeilingRequest_InitiatorData.CASHTOVAULT</span>
                                 }
                                 else if (request.RequestType == "Subteller_Cash_To_PrimaryTeller")
                                 {
-                                    <span class="badge bg-warning">S To P TILL</span>
+                            <span class="badge bg-warning">@CashCeilingRequest_InitiatorData.SToPTILL</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">Unknown</span>
+                            <span class="badge bg-secondary">@CashCeilingRequest_InitiatorData.Unknown</span>
                                 }
                             </td>
                             <td>@request.CashoutRequestAmount.ToString("#,##0.0") FCFA</td>
                             <td>
                                 @if (request.ApprovedStatus == "Pending")
                                 {
-                                    <span class="badge bg-warning">Pending</span>
+                                    <span class="badge bg-warning">@CashCeilingRequest_RequestValidation.Pending</span>
                                 }
                                 else if (request.ApprovedStatus == "Approved")
                                 {
-                                    <span class="badge bg-success">Approved</span>
+                            <span class="badge bg-success">@CashCeilingRequest_RequestValidation.Approved</span>
                                 }
                                 else if (request.ApprovedStatus == "Rejected")
                                 {
-                                    <span class="badge bg-danger">Rejected</span>
+                            <span class="badge bg-danger">@CashCeilingRequest_RequestValidation.Rejected</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">Unknown</span>
+                            <span class="badge bg-secondary">@CashCeilingRequest_InitiatorData.Unknown</span>
                                 }
                             </td>
                             <td>
@@ -71,19 +72,19 @@
                                                 data-bs-toggle="tooltip"
                                                 data-bs-placement="top"
                                                 title="Edit Request">
-                                            <i class="fas fa-edit"></i> Edit
+                                            <i class="fas fa-edit"></i> @GlobalShared.Edit
                                         </button>
                                     }
 
                                     <!-- Delete Button -->
-                                    <button type="button"
-                                            class="btn btn-sm btn-outline-danger"
-                                            onclick="DeleteRecordDataTable('CashCeilingRequest', '@request.Id', 'myDataTable', '_InitiatorData', 0, 'datalistingview',null,'initiator_data')"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="top"
-                                            title="Delete Request">
-                                        <i class="fas fa-trash-alt"></i> Delete
-                                    </button>
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-danger"
+                                        onclick="DeleteRecordDataTable('CashCeilingRequest', '@request.Id', 'myDataTable', '_InitiatorData', 0, 'datalistingview',null,'initiator_data')"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Delete Request">
+                                    <i class="fas fa-trash-alt"></i> @GlobalShared.Delete
+                                </button>
                                 </div>
                             </td>
                         </tr>

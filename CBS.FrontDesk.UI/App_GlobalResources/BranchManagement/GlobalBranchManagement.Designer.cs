@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Action.
+        /// </summary>
+        internal static string Action {
+            get {
+                return ResourceManager.GetString("Action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Active.
         /// </summary>
         internal static string Active {
@@ -124,6 +133,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Branch-Office.
+        /// </summary>
+        internal static string BranchOffice {
+            get {
+                return ResourceManager.GetString("BranchOffice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Code.
+        /// </summary>
+        internal static string Code {
+            get {
+                return ResourceManager.GetString("Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date of creation.
         /// </summary>
         internal static string DateOfCreation {
@@ -138,6 +165,15 @@ namespace Resources {
         internal static string Email {
             get {
                 return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Head-Office.
+        /// </summary>
+        internal static string HeadOffice {
+            get {
+                return ResourceManager.GetString("HeadOffice", resourceCulture);
             }
         }
         
@@ -169,6 +205,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inactive.
+        /// </summary>
+        internal static string Inactive {
+            get {
+                return ResourceManager.GetString("Inactive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is this branch linked to any bank ?.
         /// </summary>
         internal static string IsThisBranchLinkedToAnyBank {
@@ -192,6 +237,24 @@ namespace Resources {
         internal static string Motto {
             get {
                 return ResourceManager.GetString("Motto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OfficeType.
+        /// </summary>
+        internal static string OfficeType {
+            get {
+                return ResourceManager.GetString("OfficeType", resourceCulture);
             }
         }
         
@@ -241,6 +304,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        internal static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TaxPayerNumber.
         /// </summary>
         internal static string TaxPayerNumber {
@@ -255,6 +327,15 @@ namespace Resources {
         internal static string Telephone {
             get {
                 return ResourceManager.GetString("Telephone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tell.
+        /// </summary>
+        internal static string Tell {
+            get {
+                return ResourceManager.GetString("Tell", resourceCulture);
             }
         }
         

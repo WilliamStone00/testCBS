@@ -89,6 +89,10 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public decimal ClosingBalance { get; set; }
         public decimal OpeningBalance { get; set; }
         public string ReceiptTitle { get; set; }
+        public int Coin150 { get; set; }
+        public int Coin200 { get; set; }
+        public int Coin250 { get; set; }
+        public int Coin350 { get; set; }
     }
     public class OtherTransactionDto
     {
@@ -208,6 +212,7 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public string InitialPrinting { get; set; }
         public bool IsPrimaryTeller { get; set; }
         public string TellerType { get; set; }
+
         // Opening Notes and Coins Counts
         public int OpeningNote10000 { get; set; }
         public int OpeningNote5000 { get; set; }
@@ -215,12 +220,17 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public int OpeningNote1000 { get; set; }
         public int OpeningNote500 { get; set; }
         public int OpeningCoin500 { get; set; }
+        public int OpeningCoin350 { get; set; }
+        public int OpeningCoin250 { get; set; }
+        public int OpeningCoin200 { get; set; }
+        public int OpeningCoin150 { get; set; }
         public int OpeningCoin100 { get; set; }
         public int OpeningCoin50 { get; set; }
         public int OpeningCoin25 { get; set; }
         public int OpeningCoin10 { get; set; }
         public int OpeningCoin5 { get; set; }
         public int OpeningCoin1 { get; set; }
+
         // Closing Notes and Coins Counts
         public int ClosingNote10000 { get; set; }
         public int ClosingNote5000 { get; set; }
@@ -228,14 +238,35 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public int ClosingNote1000 { get; set; }
         public int ClosingNote500 { get; set; }
         public int ClosingCoin500 { get; set; }
+        public int ClosingCoin350 { get; set; }
+        public int ClosingCoin250 { get; set; }
+        public int ClosingCoin200 { get; set; }
+        public int ClosingCoin150 { get; set; }
         public int ClosingCoin100 { get; set; }
         public int ClosingCoin50 { get; set; }
         public int ClosingCoin25 { get; set; }
         public int ClosingCoin10 { get; set; }
         public int ClosingCoin5 { get; set; }
         public int ClosingCoin1 { get; set; }
-        public decimal TotalOpeningAmount { get; set; }
-        public decimal TotalClosingAmount { get; set; }
+
+        // Calculated Total Opening Amount
+        public decimal TotalOpeningAmount =>
+            (OpeningNote10000 * 10000) + (OpeningNote5000 * 5000) + (OpeningNote2000 * 2000) +
+            (OpeningNote1000 * 1000) + (OpeningNote500 * 500) +
+            (OpeningCoin500 * 500) + (OpeningCoin350 * 350) + (OpeningCoin250 * 250) +
+            (OpeningCoin200 * 200) + (OpeningCoin150 * 150) +
+            (OpeningCoin100 * 100) + (OpeningCoin50 * 50) + (OpeningCoin25 * 25) +
+            (OpeningCoin10 * 10) + (OpeningCoin5 * 5) + OpeningCoin1;
+
+        // Calculated Total Closing Amount
+        public decimal TotalClosingAmount =>
+            (ClosingNote10000 * 10000) + (ClosingNote5000 * 5000) + (ClosingNote2000 * 2000) +
+            (ClosingNote1000 * 1000) + (ClosingNote500 * 500) +
+            (ClosingCoin500 * 500) + (ClosingCoin350 * 350) + (ClosingCoin250 * 250) +
+            (ClosingCoin200 * 200) + (ClosingCoin150 * 150) +
+            (ClosingCoin100 * 100) + (ClosingCoin50 * 50) + (ClosingCoin25 * 25) +
+            (ClosingCoin10 * 10) + (ClosingCoin5 * 5) + ClosingCoin1;
+
         public string Id { get; set; }
     }
     public class PaymentReciptDS: HeadOffice

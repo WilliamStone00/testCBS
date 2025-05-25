@@ -5,6 +5,11 @@ namespace CBS.FrontDesk.Helper
 {
     public abstract class APICallHelper
     {
+        public const string AddRateLimitedUser = "/api/v1/blocked-users/block";
+        public const string Get_Delete_RateLimitedUser = "/api/v1/blocked-users/{0}";         // ✅ GET by ID or DELETE
+        public const string GetAllRateLimitedUsers = "/api/v1/blocked-users/all";
+        public const string CheckRateLimitBlock = "api/v1/blocked-users/is-blocked/{0}";     // ✅ NEW ENDPOINT FOR CHECK
+
 
         //BlacklistAccounts
         public static string Get_Update_Delete_BlacklistAccount = "/api/v1/BlacklistAccount/{0}";
@@ -188,6 +193,19 @@ namespace CBS.FrontDesk.Helper
         public static string DeleteUserPermission = "/api/UserPermission/Delete";
         public static string GetUserPermissions = "/api/UserPermission/User/{0}";
         public static string GetAllUserRoles = "/api/RoleUsers/GetAllUserRoles";
+
+
+        //RateLimiteTrackerLogger
+        public static string Get_Delete_RateLimiteTrackerLogger = "/api/v1/rate-limit-tracker/{0}";
+        public static string AddRateLimiteTrackerLogger = "/api/v1/rate-limit-tracker/log";
+        public static string GetAllRateLimiteTrackerLogger = "/api/v1/rate-limit-tracker/datatable";
+
+
+        //RateLimitConfig
+        public static string Get_Delete_RateLimitConfig = "/api/v1/ratelimit-config/{0}";
+        public static string AddOrUpdateRateLimitConfig = "/api/v1/ratelimit-config/add-or-update";
+        public static string GetAllRateLimitConfig = "/api/v1/ratelimit-config/all";
+
 
         //RolePermission
         public static string Get_Update_Delete_RolePermission = "/api/RolePermission/{0}";
@@ -938,6 +956,9 @@ namespace CBS.FrontDesk.Helper
         public static string GetCashReplenishmentRequestById = "/api/v1/BankingOperation/GetCashReplenishmentRequestById/{0}";
         public static string GetAllDepositNotificationRequestRequests = "/api/v1/BankingOperation/GetAllDepositNotificationQuery";
         ///BankingOperation/GetAllDepositNotificationRedirectionQuery   
+        public static string Url_Get_AllCashRelenishmentRequest = "/api/v1/BankingOperation/CashReplenishmentQueryFilter";//?status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}";
+        public static string Url_Get_AllBankDepositeRequest = "/api/v1/BankingOperation/GetDepositNotificationQueryFilter";//?status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}";
+
         public static string GetDepositNotificationRequestRequests = "/api/v1/BankingOperation/GetDepositNotificationQuery/{0}";
         public static string GetAllDepositNotificationRequestQueryAsBranch = "/api/v1/BankingOperation/GetAllCashReplenishmentQueryAsBranch/{0}";
         public static string GetAllDepositNotificationRedirectionQuery = "/api/v1/BankingOperation/GetAllDepositNotificationRedirectionQuery";

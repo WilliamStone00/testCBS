@@ -163,7 +163,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
     
         public List<BalanceSheetAccount> Accounts { get; set; }
-
+        public List<TrialBalanceDt> TrialBalanceDt { get; set; }
 
 
 

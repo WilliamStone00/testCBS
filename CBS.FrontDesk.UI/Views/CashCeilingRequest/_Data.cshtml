@@ -1,10 +1,11 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.CashCeilingManagement.CashCeilingRequest>
+    @using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">Cash Ceiling Requests</legend>
+    <legend id="select_base">@CashCeilingRequest_InitiatorData.CashCeilingRequests</legend>
     @if (!Model.Any())
     {
         <div class="text-center my-3">
-            <p class="text-muted">No cash ceiling requests have been made yet.</p>
+            <p class="text-muted">@CashCeilingRequest_InitiatorData.NoCashCeilingRequestsHaveBeenMadeYet.</p>
         </div>
     }
     else
@@ -13,12 +14,12 @@
             <table class="table table-hover table-bordered text-center" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th style="width: 20%;">Branch</th>
+                        <th style="width: 20%;">@CashCeilingRequest_InitiatorData.Branch</th>
                         <th style="width: 15%;">Requested By</th>
-                        <th style="width: 15%;">Request Type</th>
-                        <th style="width: 15%;">Amount</th>
-                        <th style="width: 15%;">Status</th>
-                        <th style="width: 20%;">Actions</th>
+                        <th style="width: 15%;">@CashCeilingRequest_InitiatorData.RequestType</th>
+                        <th style="width: 15%;">@CashCeilingRequest_InitiatorData.Amount</th>
+                        <th style="width: 15%;">@CashCeilingRequest_InitiatorData.Status</th>
+                        <th style="width: 20%;">@CashCeilingRequest_InitiatorData.Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,34 +31,34 @@
                             <td>
                                 @if (request.RequestType == "Cash_To_Vault")
                                 {
-                                    <span class="badge bg-primary">Cash to Vault</span>
+                                    <span class="badge bg-primary">@CashCeilingRequest_InitiatorData.CashToVaultt</span>
                                 }
                                 else if (request.RequestType == "Subteller_Cash_To_PrimaryTeller")
                                 {
-                                    <span class="badge bg-warning">Sub-Teller to Primary Teller</span>
+                            <span class="badge bg-warning">@CashCeilingRequest_InitiatorData.SubTellerToPrimaryTeller</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">Unknown</span>
+                            <span class="badge bg-secondary">@CashCeilingRequest_InitiatorData.Unknown</span>
                                 }
                             </td>
                             <td>@request.CashoutRequestAmount.ToString("#,##0.0") FCFA</td>
                             <td>
                                 @if (request.ApprovedStatus == "Pending")
                                 {
-                                    <span class="badge bg-warning">Pending</span>
+                                    <span class="badge bg-warning">@CashCeilingRequest_RequestValidation.Pending</span>
                                 }
                                 else if (request.ApprovedStatus == "Approved")
                                 {
-                                    <span class="badge bg-success">Approved</span>
+                            <span class="badge bg-success">@CashCeilingRequest_RequestValidation.Approved</span>
                                 }
                                 else if (request.ApprovedStatus == "Rejected")
                                 {
-                                    <span class="badge bg-danger">Rejected</span>
+                            <span class="badge bg-danger">@CashCeilingRequest_RequestValidation.Rejected</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">Unknown</span>
+                            <span class="badge bg-secondary">@CashCeilingRequest_InitiatorData.Unknown</span>
                                 }
                             </td>
                             <td>
@@ -69,7 +70,7 @@
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="top"
                                             title="Validate Request">
-                                        <i class="fas fa-check"></i> Validate
+                                        <i class="fas fa-check"></i> @GlobalShared.Validate
                                     </button>
 
                                     <!-- Details Button -->
@@ -79,7 +80,7 @@
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="top"
                                             title="View Details">
-                                        <i class="fas fa-info-circle"></i> Details
+                                        <i class="fas fa-info-circle"></i> @GlobalShared.Details
                                     </button>
                                 </div>
                             </td>

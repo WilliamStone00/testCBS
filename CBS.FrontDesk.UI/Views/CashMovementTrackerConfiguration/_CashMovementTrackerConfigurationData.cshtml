@@ -1,16 +1,17 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CashMovementTracker.CashMovementConfiguration
+    @using Resources
 <div id="datalistingview_CashMovementTrackerConfiguration">
 
     <table class="table table-hover" id="DataTable_CashMovementTrackerConfiguration">
         <thead class="table-light">
             <tr>
-                <th>Movement</th>
+                <th>@GlobalCashMovementTrackerConfiguration.Movement</th>
 
-                <th>Source Branch</th>
+                <th>@GlobalCashMovementTrackerConfiguration.SourceBranch</th>
 
-                <th>Destination</th>
-                <th>Duration(In Mins)</th>
-                <th>Action</th>
+                <th>@GlobalCashMovementTrackerConfiguration.Destination</th>
+                <th>@GlobalCashMovementTrackerConfiguration.Duration</th>
+                <th>@GlobalCashMovementTrackerConfiguration.Action</th>
             </tr>
         </thead>
         <tbody>
@@ -25,7 +26,7 @@
                         <td style="width:15%">@d.Duration</td>
                         <td style="width:15%">
  
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashMovementTrackerConfiguration','_ViewCashMovementTrackingConfiguration','cashMovementTrackerConfiguration','CashMovementTrackerConfiguration')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select entry">View Status</a>
+                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashMovementTrackerConfiguration','_ViewCashMovementTrackingConfiguration','cashMovementTrackerConfiguration','CashMovementTrackerConfiguration')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select entry">@GlobalCashMovementTrackerConfiguration.ViewStatus</a>
  
 
                         </td>

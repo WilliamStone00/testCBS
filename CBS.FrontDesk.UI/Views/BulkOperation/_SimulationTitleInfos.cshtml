@@ -1,26 +1,26 @@
 ﻿@model  CBS.FrontDesk.Data.Entity.BulkOperation.SimulateBulkOperation
-
+@using Resources
     <div class="card-body">
         <div class="row">
             <div class="col-md-12">
                 <div class="mb-3">
-                    @Html.LabelFor(m => m.SimulationType, "Simulation Type", new { @class = "form-label" })
+                    @Html.LabelFor(m => m.SimulationType, @GlobalBulkOperation.SimulationType, new { @class = "form-label" })
                     @Html.TextBoxFor(m => m.SimulationType, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="mb-3">
-                    @Html.LabelFor(m => m.Description, "Description", new { @class = "form-label" })
-                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = "3", placeholder = "Enter a description for this bulk operation..." })
+                    @Html.LabelFor(m => m.Description, @GlobalBulkOperation.Description , new { @class = "form-label" })
+                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = "3", placeholder = @GlobalBulkOperation.EnterADescriptionForThisBulkOperation })
                 </div>
             </div>
 
             <div class="col-md-12">
 
-                @Html.LabelFor(m => m.BranchId, "Select Branch", new { @class = "form-label" })
+                @Html.LabelFor(m => m.BranchId, @GlobalBulkOperation.SelectBranch , new { @class = "form-label" })
                 @Html.DropDownListFor(m => m.BranchId,  // Bind to Branch.Id
                     new SelectList(Model.Branches, "Id", "Name"),
-                    "--- Select Branch ---",
+                    "---" +@GlobalBulkOperation.SelectBranch+ "---",
                     new { @class = "form-select select2", id = "branchDropdown" })
                 @Html.HiddenFor(m => m.Branches, new { id = "branchObject" })
             </div>

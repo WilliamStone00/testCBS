@@ -1,0 +1,651 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountBalanceBeforeOperation" xml:space="preserve">
+    <value>Account Balance Before Operation</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="AllCashMovementInTSCAreValidated" xml:space="preserve">
+    <value>All cash movement in TSC are validated by the person that has the role. When requesting to move cash to the bank the user issue a request
+                    at the level branch and need to be approved by the management</value>
+  </data>
+  <data name="AllCashMovementInTSCAreValidatedByThePersonThatHasTheRole" xml:space="preserve">
+    <value>All cash movement in TSC are validated by the person that has the role. When requesting to move cash to the bank the user issue a request
+                    at the level branch and need to be approved by the management</value>
+  </data>
+  <data name="AllCashMovementInTSCAreValidatedWhenRequestingToMoveCash" xml:space="preserve">
+    <value>All cash movement in TSC are validated by the person that has the role. When requesting to move cash to the bank the user issue a request
+                    at the level branch and need to be approved by the management</value>
+  </data>
+  <data name="AlreadyApprovedAccountReplenishment" xml:space="preserve">
+    <value>Already approved account replenishment</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="AmountApproved" xml:space="preserve">
+    <value>Amount approved</value>
+  </data>
+  <data name="AmountAuthorizedBy" xml:space="preserve">
+    <value>Amount authorized by</value>
+  </data>
+  <data name="AmountRequested" xml:space="preserve">
+    <value>Amount requested</value>
+  </data>
+  <data name="AmountRequested(FCFA)" xml:space="preserve">
+    <value>Amount requested (FCFA)</value>
+  </data>
+  <data name="AmountWithdrawn" xml:space="preserve">
+    <value>Amount withdrawn</value>
+  </data>
+  <data name="ApprovalRequestFailedReferenceId" xml:space="preserve">
+    <value>Approval Request Failed ReferenceId</value>
+  </data>
+  <data name="Approve" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="ApprovedAmount" xml:space="preserve">
+    <value>Approved amount</value>
+  </data>
+  <data name="ApprovedBy" xml:space="preserve">
+    <value>Approved by</value>
+  </data>
+  <data name="ApprovedDate" xml:space="preserve">
+    <value>Approved date</value>
+  </data>
+  <data name="ApprovedMessage" xml:space="preserve">
+    <value>Approved message</value>
+  </data>
+  <data name="ApprovedMessageDescription" xml:space="preserve">
+    <value>Approved message description</value>
+  </data>
+  <data name="ApproveRequest" xml:space="preserve">
+    <value>Approve request</value>
+  </data>
+  <data name="AuthorizedBy" xml:space="preserve">
+    <value>Authorized by</value>
+  </data>
+  <data name="AuthourizedForCashOut" xml:space="preserve">
+    <value>Authourized for cash out</value>
+  </data>
+  <data name="AwaitingBranchTransfer" xml:space="preserve">
+    <value>Awaiting branch transfer</value>
+  </data>
+  <data name="AwaitingTransfer" xml:space="preserve">
+    <value>Awaiting transfer</value>
+  </data>
+  <data name="Balance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="BalanceBeforeTransaction" xml:space="preserve">
+    <value>Balance Before Transaction</value>
+  </data>
+  <data name="BankAccountsInformationPresent" xml:space="preserve">
+    <value>Bank accounts information present</value>
+  </data>
+  <data name="BANKCASHDEPOSITVALIDATIONHISTORY" xml:space="preserve">
+    <value>BANK CASH DEPOSIT VALIDATION HISTORY</value>
+  </data>
+  <data name="BankCashOut" xml:space="preserve">
+    <value>Bank Cash Out</value>
+  </data>
+  <data name="BankCashOutIdentification" xml:space="preserve">
+    <value>Bank cashout identification</value>
+  </data>
+  <data name="BankCashOutTransactionDetails" xml:space="preserve">
+    <value>Bank Cash Out Transaction Details</value>
+  </data>
+  <data name="BankDepositReceiptInformation" xml:space="preserve">
+    <value>Bank Deposit Receipt Information</value>
+  </data>
+  <data name="BankDepositReceiptInformationDetails" xml:space="preserve">
+    <value>Bank Deposit Receipt Information Details</value>
+  </data>
+  <data name="BankDepositReciept" xml:space="preserve">
+    <value>Bank deposit reciept</value>
+  </data>
+  <data name="BankDepositRecieptIdentification" xml:space="preserve">
+    <value>Bank deposit reciept identification</value>
+  </data>
+  <data name="BANKDEPOSITREQUEST" xml:space="preserve">
+    <value>BANK DEPOSIT REQUEST</value>
+  </data>
+  <data name="BankDepositRequestDetails" xml:space="preserve">
+    <value>Bank deposit request details</value>
+  </data>
+  <data name="BankDepositRequestlc" xml:space="preserve">
+    <value>Bank deposit request</value>
+  </data>
+  <data name="BankDepositRequestMessage" xml:space="preserve">
+    <value>Bank deposit request message</value>
+  </data>
+  <data name="BankDepositRequestStatus" xml:space="preserve">
+    <value>Bank deposit request status</value>
+  </data>
+  <data name="BankDepositTracking" xml:space="preserve">
+    <value>Bank deposit tracking</value>
+  </data>
+  <data name="BankReciept" xml:space="preserve">
+    <value>Bank reciept</value>
+  </data>
+  <data name="BankTransaction" xml:space="preserve">
+    <value>Bank transaction</value>
+  </data>
+  <data name="BankTransactionDate" xml:space="preserve">
+    <value>Bank transaction date</value>
+  </data>
+  <data name="BankTransactionDetails" xml:space="preserve">
+    <value>Bank transaction details</value>
+  </data>
+  <data name="BankTransactionInformation" xml:space="preserve">
+    <value>Bank transactionI information</value>
+  </data>
+  <data name="BankTransactionReference" xml:space="preserve">
+    <value>Bank transaction reference</value>
+  </data>
+  <data name="BranchOffice" xml:space="preserve">
+    <value>Branch office</value>
+  </data>
+  <data name="BranchToBranchCash ransfer" xml:space="preserve">
+    <value>Branch To Branch Cash Transfer</value>
+  </data>
+  <data name="BRANCHTOBRANCHCASHTRANSFER" xml:space="preserve">
+    <value>BRANCH TO BRANCH CASH TRANSFER</value>
+  </data>
+  <data name="BranchToBranchCashTransferLc" xml:space="preserve">
+    <value>Branch to branch cash transfer</value>
+  </data>
+  <data name="BranchToBranchTransferDescription" xml:space="preserve">
+    <value>Branch to branch transfer description</value>
+  </data>
+  <data name="BRANCHTOCASHINFUSION" xml:space="preserve">
+    <value>BRANCH TO CASH INFUSION</value>
+  </data>
+  <data name="BranchTransfer" xml:space="preserve">
+    <value>Branch transfer</value>
+  </data>
+  <data name="CancelCashDepositRequest" xml:space="preserve">
+    <value>Cancel Cash Deposit Request</value>
+  </data>
+  <data name="CancelCashRequisitionRequest" xml:space="preserve">
+    <value>Cancel Cash Requisition Request</value>
+  </data>
+  <data name="CashClearing" xml:space="preserve">
+    <value>Cash clearing</value>
+  </data>
+  <data name="CashClearingDescription" xml:space="preserve">
+    <value>Cash clearing description</value>
+  </data>
+  <data name="CashDenominationPresent" xml:space="preserve">
+    <value>Cash denomination present</value>
+  </data>
+  <data name="CashDenominationRecieveFromBank" xml:space="preserve">
+    <value>Cash denomination recieve from bank</value>
+  </data>
+  <data name="CASHMOVEMENT" xml:space="preserve">
+    <value>CASH MOVEMENT [CASH INTO VAULT FROM BANK]</value>
+  </data>
+  <data name="CASHMOVEMENTBANKDEPOSITREQUEST" xml:space="preserve">
+    <value>CASH MOVEMENT [BANK DEPOSIT REQUEST]</value>
+  </data>
+  <data name="CASHMOVEMENTFORVAULT" xml:space="preserve">
+    <value>CASH MOVEMENT [CASH REQUISITION FOR VAULT]</value>
+  </data>
+  <data name="CASHMOVEMENTVAULTTOBANKINITIATION" xml:space="preserve">
+    <value>CASH MOVEMENT VAULT TO BANK INITIATION</value>
+  </data>
+  <data name="CashReplenishmentData" xml:space="preserve">
+    <value>Cash replenishment data</value>
+  </data>
+  <data name="CashReplenishmentDetails" xml:space="preserve">
+    <value>Cash replenishment details</value>
+  </data>
+  <data name="CashReplenishmentRequest" xml:space="preserve">
+    <value>Cash replenishment request</value>
+  </data>
+  <data name="CashReplenishmentRequestDetails" xml:space="preserve">
+    <value>Cash replenishment request details</value>
+  </data>
+  <data name="CashReplenishmentRequestStatus" xml:space="preserve">
+    <value>Cash replenishment request status</value>
+  </data>
+  <data name="CashRequest" xml:space="preserve">
+    <value>Cash request</value>
+  </data>
+  <data name="CashRequestActionToBeTaken" xml:space="preserve">
+    <value>Cash request action to be taken</value>
+  </data>
+  <data name="CashRequestApprovedBy" xml:space="preserve">
+    <value>Cash request approved by</value>
+  </data>
+  <data name="CashRequestApprovedDate" xml:space="preserve">
+    <value>Cash request approved date</value>
+  </data>
+  <data name="CashRequestedBy" xml:space="preserve">
+    <value>Cash requested by</value>
+  </data>
+  <data name="CashRequestedDate" xml:space="preserve">
+    <value>Cash requested date</value>
+  </data>
+  <data name="CashRequestListing" xml:space="preserve">
+    <value>Cash Request-Listing</value>
+  </data>
+  <data name="CashRequestToApprove" xml:space="preserve">
+    <value>Cash request to approve</value>
+  </data>
+  <data name="CashRequestToEdit" xml:space="preserve">
+    <value>Cash request to edit</value>
+  </data>
+  <data name="CashRequestToUpload" xml:space="preserve">
+    <value>Cash request to upload</value>
+  </data>
+  <data name="CASHREQUISITIONFORVAULT" xml:space="preserve">
+    <value>CASH REQUISITION FOR VAULT</value>
+  </data>
+  <data name="CashRequisitionType" xml:space="preserve">
+    <value>Cash requisition type</value>
+  </data>
+  <data name="CheckIfTheApproverIsOutOfTheIssuingBranch" xml:space="preserve">
+    <value>Check if the approver is out of the issuing branch</value>
+  </data>
+  <data name="ChoosePhoto" xml:space="preserve">
+    <value>Choose photo</value>
+  </data>
+  <data name="ClickToViewPendingCashReplenishmentRequest" xml:space="preserve">
+    <value>Click to view pending cash replenishment request</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="COMPLETEBANKDEPOSITOPERATION" xml:space="preserve">
+    <value>COMPLETE BANK DEPOSIT OPERATION</value>
+  </data>
+  <data name="CompleteStatus" xml:space="preserve">
+    <value>Complete status</value>
+  </data>
+  <data name="CreatedBy" xml:space="preserve">
+    <value>Created by</value>
+  </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>Created date</value>
+  </data>
+  <data name="DailyOperationReference" xml:space="preserve">
+    <value>Daily operation reference</value>
+  </data>
+  <data name="DateOfBankCashOut" xml:space="preserve">
+    <value>Date of bank cashOut</value>
+  </data>
+  <data name="DecisionMessage" xml:space="preserve">
+    <value>Decision message</value>
+  </data>
+  <data name="Denomination" xml:space="preserve">
+    <value>Denomination</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="EnterTheReasonWhyYouWhich" xml:space="preserve">
+    <value>Enter the reason why you which to deposit cash to the bank</value>
+  </data>
+  <data name="EnterTheReasonWhyYouWhichToDeposit" xml:space="preserve">
+    <value>Enter the reason why you which to deposit cash to the bank</value>
+  </data>
+  <data name="EntryType" xml:space="preserve">
+    <value>Entry type</value>
+  </data>
+  <data name="FailedCashReplenishmentRequest" xml:space="preserve">
+    <value>Failed -Cash Replenishment Request</value>
+  </data>
+  <data name="FaileRRequestApprovalView" xml:space="preserve">
+    <value>Failed_RequestApproval_View</value>
+  </data>
+  <data name="FillInTheCashDenomination" xml:space="preserve">
+    <value>Fill in the cash denomination in which you want to deposit it in the bank</value>
+  </data>
+  <data name="FillInTheCashDenominationInWhich" xml:space="preserve">
+    <value>Fill in the cash denomination in which you want to deposit it in the bank</value>
+  </data>
+  <data name="ForBranchTransfer" xml:space="preserve">
+    <value>for branch transfer</value>
+  </data>
+  <data name="FromDate" xml:space="preserve">
+    <value>From date</value>
+  </data>
+  <data name="HasBeenApproved" xml:space="preserve">
+    <value>has been approved</value>
+  </data>
+  <data name="HasBeenRedirectedTo" xml:space="preserve">
+    <value>Has been redirected to</value>
+  </data>
+  <data name="HasNotYetBeenApproved" xml:space="preserve">
+    <value>has not yet been approved</value>
+  </data>
+  <data name="HasNotYetBeenApprovedByHeadOffice" xml:space="preserve">
+    <value>Has not yet been approved by head office</value>
+  </data>
+  <data name="IHaveCashInMyOffice" xml:space="preserve">
+    <value>I have cash in my office i want to deposit into bank account</value>
+  </data>
+  <data name="IHaveCashInMyOfficeIWant" xml:space="preserve">
+    <value>I have cash in my office i want to deposit into bank account</value>
+  </data>
+  <data name="InCaseTheyAreLimitedResources" xml:space="preserve">
+    <value>In case they are limited resources in the branch  kindly contact system administrator</value>
+  </data>
+  <data name="InCaseTheyAreLimitedResourcesInTheBranch" xml:space="preserve">
+    <value>In case they are limited resources in the branch  kindly contact system administrator</value>
+  </data>
+  <data name="InvoiceNumber" xml:space="preserve">
+    <value>Invoice number</value>
+  </data>
+  <data name="IsAlreadyApproved" xml:space="preserve">
+    <value>is already approved</value>
+  </data>
+  <data name="IsAlreadyApprovedBy" xml:space="preserve">
+    <value>is already approved by</value>
+  </data>
+  <data name="IsAlreadyBeenApprovedBy" xml:space="preserve">
+    <value>is already been approved by</value>
+  </data>
+  <data name="IssuedBy" xml:space="preserve">
+    <value>Issued by</value>
+  </data>
+  <data name="IssuedDate" xml:space="preserve">
+    <value>IssuedDate</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading</value>
+  </data>
+  <data name="MakeDecision" xml:space="preserve">
+    <value>Make decision</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="Naration" xml:space="preserve">
+    <value>Naration</value>
+  </data>
+  <data name="NotSent" xml:space="preserve">
+    <value>not sent</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>on</value>
+  </data>
+  <data name="PendingAccountingEntry" xml:space="preserve">
+    <value>Pending accounting entry</value>
+  </data>
+  <data name="PROVISIONBANKTOVAULT" xml:space="preserve">
+    <value>PROVISION BANK TO VAULT</value>
+  </data>
+  <data name="Reason" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="ReferenceId" xml:space="preserve">
+    <value>Reference id</value>
+  </data>
+  <data name="ReferenceNumber" xml:space="preserve">
+    <value>Reference number</value>
+  </data>
+  <data name="RequestedAmount" xml:space="preserve">
+    <value>Requested amount</value>
+  </data>
+  <data name="RequestedBy" xml:space="preserve">
+    <value>Requested by</value>
+  </data>
+  <data name="RequestedDate" xml:space="preserve">
+    <value>Requested date</value>
+  </data>
+  <data name="RequestHasBeenRedirectedTo" xml:space="preserve">
+    <value>Request has been redirected to</value>
+  </data>
+  <data name="RequestMessage" xml:space="preserve">
+    <value>Request message</value>
+  </data>
+  <data name="RequestReferenceId" xml:space="preserve">
+    <value>Request reference id</value>
+  </data>
+  <data name="Scenario" xml:space="preserve">
+    <value>Scenario</value>
+  </data>
+  <data name="SearchJournalEntry" xml:space="preserve">
+    <value>Search journal entry</value>
+  </data>
+  <data name="SelectAccount" xml:space="preserve">
+    <value>Select account</value>
+  </data>
+  <data name="SelectBankAccount" xml:space="preserve">
+    <value>Select bank account</value>
+  </data>
+  <data name="SelectBookingDirection" xml:space="preserve">
+    <value>Select booking direction</value>
+  </data>
+  <data name="SelectBranch" xml:space="preserve">
+    <value>Select branch</value>
+  </data>
+  <data name="SelectBranchOffice" xml:space="preserve">
+    <value>Select branch office</value>
+  </data>
+  <data name="SelectDebitingAccount" xml:space="preserve">
+    <value>Select debiting account</value>
+  </data>
+  <data name="SelectFilteringOption" xml:space="preserve">
+    <value>Select filtering option</value>
+  </data>
+  <data name="SelectSourceAccount" xml:space="preserve">
+    <value>Select source account</value>
+  </data>
+  <data name="SelectSourceAccountToWhichTheVaultWillBe" xml:space="preserve">
+    <value>Select source account to which the vault will be</value>
+  </data>
+  <data name="SelectUsersInTheBranch" xml:space="preserve">
+    <value>Select users in the branch</value>
+  </data>
+  <data name="SelectUsersInTheSystem" xml:space="preserve">
+    <value>Select users in the system</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Successfully" xml:space="preserve">
+    <value>successfully</value>
+  </data>
+  <data name="SuccessfullyCashReplenishmentRequest" xml:space="preserve">
+    <value>Successfully -Cash Replenishment Request</value>
+  </data>
+  <data name="Successfull_RequestApproval_View" xml:space="preserve">
+    <value>Successfull_RequestApproval_View</value>
+  </data>
+  <data name="TheCashReplenishmentRequestOf" xml:space="preserve">
+    <value>The cash replenishment request of</value>
+  </data>
+  <data name="TheCashReplenishmentRequestOfIssuedBy" xml:space="preserve">
+    <value>The cash replenishment request of issued by</value>
+  </data>
+  <data name="TheDepositCashRequestOf" xml:space="preserve">
+    <value>The deposit cash request of</value>
+  </data>
+  <data name="ThereAreNoFundsInTheVault" xml:space="preserve">
+    <value>There are no funds in the vault</value>
+  </data>
+  <data name="ThisIsAManualEntryTransactionReferenceWhichShallBeTracked" xml:space="preserve">
+    <value>This is a manual entry transaction reference which shall be tracked in the system concerning this specific operation</value>
+  </data>
+  <data name="TIPSFORCASHMOVEMENTVAULTTOBANK" xml:space="preserve">
+    <value>TIPS FOR CASH MOVEMENT VAULT TO BANK</value>
+  </data>
+  <data name="TIPSFORCASHREQUISITIONFORVAULT" xml:space="preserve">
+    <value>TIPS FOR CASH REQUISITION FOR VAULT</value>
+  </data>
+  <data name="ToDate" xml:space="preserve">
+    <value>To date</value>
+  </data>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>Total amount</value>
+  </data>
+  <data name="TRACKBANKDEPOSITREQUEST" xml:space="preserve">
+    <value>TRACK BANK DEPOSIT REQUEST</value>
+  </data>
+  <data name="TransactionDoneOnThe" xml:space="preserve">
+    <value>Transaction done on the</value>
+  </data>
+  <data name="TransferBy" xml:space="preserve">
+    <value>Transfer by</value>
+  </data>
+  <data name="UploadDepositReciept" xml:space="preserve">
+    <value>Upload deposit reciept</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="ViewCashDepositRequestDetails" xml:space="preserve">
+    <value>View cash deposit request details</value>
+  </data>
+  <data name="ViewCashReplenishmentDetails" xml:space="preserve">
+    <value>View Cash Replenishment Details</value>
+  </data>
+  <data name="ViewRequestStatus" xml:space="preserve">
+    <value>View request status</value>
+  </data>
+  <data name="ViewStatus" xml:space="preserve">
+    <value>View status</value>
+  </data>
+  <data name="WasReplenished" xml:space="preserve">
+    <value>was replenished</value>
+  </data>
+  <data name="withAmount" xml:space="preserve">
+    <value>with amount</value>
+  </data>
+  <data name="YouHaveJustApprovedCashReplenishment" xml:space="preserve">
+    <value>You have just approved cash replenishment request of XAF</value>
+  </data>
+  <data name="YouHaveJustRejectedTheCashReplenishment" xml:space="preserve">
+    <value>You have just rejected the cash replenishment request of XAF</value>
+  </data>
+  <data name="YourCashReplenishmentApprovalRequestFailed" xml:space="preserve">
+    <value>Your cash replenishment approval request Failed. Kindly contact your technical support desk for assistance</value>
+  </data>
+  <data name="YourCashReplenishmentRequestFailed" xml:space="preserve">
+    <value>Your cash replenishment request Failed. Kindly contact your technical support desk for assistance</value>
+  </data>
+  <data name="YourCashReplenishmentRequestHasBeenSent" xml:space="preserve">
+    <value>Your cash replenishment request has been sent succesfully. Patiently wait for your managers approval</value>
+  </data>
+</root>

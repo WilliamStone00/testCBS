@@ -194,10 +194,10 @@ function updatePageActionButton(status) {
         $("#approved").show();
     }
 }
-function Search() {
+function Search(controller, tableDiv, partialView, datalistViewDIV, filterOption) {
     // if (e) e.preventDefault(); // Prevent default if the event is passed
 
-    const jsonData ={
+    const jsonData = {
         ServiceOption: $('#ServiceOption').val(),
         Action: $('#Action').val(),
         BranchId: $('select[name="QueryModel.BranchId"]').val(),
@@ -213,16 +213,117 @@ function Search() {
     console.log("Collected Form Data:", jsonData);
 
     LoadSearchData(
-        'ManuallyJournalEntry',
-        'myDataTable',
-        '_PendingEntries',
-        'datalistingview_pendingEntries',
+        controller,  //'ManuallyJournalEntry',
+        tableDiv, //  'myDataTable',
+        partialView,// '_PendingEntries',
+        datalistViewDIV, //'datalistingview_pendingEntries',
         jsonDataj,
-        'FilteringOption',
+        filterOption,// 'FilteringOption',
         $('select[name="QueryModel.FilteringOption"]').val()
     );
 
     return false;
+}
+function LoadSearchData(controller, tableID, partialView, datalistingview, KEY, serviceOption, path = 'list') {
+    // Call LoadDataTableNewVersion with predefined action "InitializeData" and other parameters
+    LoadDataTableNewVersion(
+        controller,
+        tableID,
+        "InitializeData",
+        KEY,
+        partialView,
+        path,
+        datalistingview,
+        serviceOption
+    );
+}
+/**
+ * Loads data into a table via AJAX and initializes it as a DataTable.
+ * 
+ * @param {string} controller - The controller name for the AJAX request.
+ * @param {string} tableID - The ID of the table to be initialized as a DataTable.
+ * @param {string} action - The action name for the AJAX request.
+ * @param {string} KEY - A key parameter for the request.
+ * @param {string} partialView - The name of the partial view to be loaded.
+ * @param {string} path - A path parameter for the request.
+ * @param {string} diveToloadtheData - The ID of the div where the loaded data will be inserted.
+ * @param {string} serviceOption - An option parameter for the service.
+ */
+function LoadDataTableNewVersion(controller, tableID, action, KEY, partialView, path, diveToloadtheData, serviceOption) {
+    // Construct the URL for the AJAX request
+    var encodedURL = '/' + controller + '/' + action +
+        '?KEY=' + encodeURIComponent(KEY) +
+        '&partialView=' + encodeURIComponent(partialView) +
+        '&serviceOption=' + encodeURIComponent(serviceOption) +
+        '&path=' + encodeURIComponent(path);
+
+    // Log the constructed URL and other details
+    console.log(encodedURL + " tableId= " + tableID + " divloader:" + diveToloadtheData);
+
+    // Perform the AJAX request
+    $.ajax({
+        type: "GET",
+        url: encodedURL,
+        success: function (data) {
+            // Insert the received data into the specified div
+            $('#' + diveToloadtheData).html(data);
+
+            // Log the presence of the table element
+            console.log($('#' + tableID).length);
+
+            // Initialize the DataTable
+            LoadDataInfo(tableID);
+        },
+        error: function (err) {
+            // Display an error alert if the request fails
+            appalert(err.statusText, 1, 3);
+        }
+    });
+}
+function LoadDataInfo(tableID) {
+    var tableSelector = '#' + tableID;
+    console.log("Initializing DataTable for:", tableSelector);
+
+    try {
+        // Check if the table exists
+        if ($(tableSelector).length === 0) {
+            throw new Error("Table not found: " + tableSelector);
+        }
+
+        // Get the number of columns in the table
+        var columnCount = $(tableSelector + ' thead th').length;
+        console.log("Number of columns detected:", columnCount);
+
+        // Prepare column definitions based on the actual number of columns
+        var columnDefs = [];
+        for (var i = 0; i < columnCount; i++) {
+            columnDefs.push({
+                targets: i,
+                searchable: true,
+                orderable: true
+            });
+        }
+
+        var dataThumbView = $(tableSelector).DataTable({
+            responsive: false,
+            columns: Array(columnCount).fill(null),  // Create empty column definitions
+            columnDefs: columnDefs,
+            language: {
+                lengthMenu: "_MENU_",
+                search: ""
+            },
+            lengthMenu: [[10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
+            order: [[0, "asc"]],
+            info: true,
+            pageLength: 10
+        });
+
+        console.log("DataTable initialized successfully");
+        return dataThumbView;
+    } catch (error) {
+        console.error("Error initializing DataTable:", error);
+        console.log("Table HTML:", $(tableSelector).prop('outerHTML'));
+    }
 }
 function GetSequenceReference() {
 
@@ -451,108 +552,7 @@ function ApprovePostedEntriesTransactions(title, message, ajaxUrl, serviceoption
     );
 }
 
-function LoadSearchData(controller, tableID, partialView, datalistingview, KEY, serviceOption, path = 'list') {
-    // Call LoadDataTableNewVersion with predefined action "InitializeData" and other parameters
-    LoadDataTableNewVersion(
-        controller,
-        tableID,
-        "InitializeData",
-        KEY,
-        partialView,
-        path,
-        datalistingview,
-        serviceOption
-    );
-}
-/**
- * Loads data into a table via AJAX and initializes it as a DataTable.
- * 
- * @param {string} controller - The controller name for the AJAX request.
- * @param {string} tableID - The ID of the table to be initialized as a DataTable.
- * @param {string} action - The action name for the AJAX request.
- * @param {string} KEY - A key parameter for the request.
- * @param {string} partialView - The name of the partial view to be loaded.
- * @param {string} path - A path parameter for the request.
- * @param {string} diveToloadtheData - The ID of the div where the loaded data will be inserted.
- * @param {string} serviceOption - An option parameter for the service.
- */
-function LoadDataTableNewVersion(controller, tableID, action, KEY, partialView, path, diveToloadtheData, serviceOption) {
-    // Construct the URL for the AJAX request
-    var encodedURL = '/' + controller + '/' + action +
-        '?KEY=' + encodeURIComponent(KEY) +
-        '&partialView=' + encodeURIComponent(partialView) +
-        '&serviceOption=' + encodeURIComponent(serviceOption) +
-        '&path=' + encodeURIComponent(path);
 
-    // Log the constructed URL and other details
-    console.log(encodedURL + " tableId= " + tableID + " divloader:" + diveToloadtheData);
-
-    // Perform the AJAX request
-    $.ajax({
-        type: "GET",
-        url: encodedURL,
-        success: function (data) {
-            // Insert the received data into the specified div
-            $('#' + diveToloadtheData).html(data);
-
-            // Log the presence of the table element
-            console.log($('#' + tableID).length);
-
-            // Initialize the DataTable
-            LoadDataInfo(tableID);
-        },
-        error: function (err) {
-            // Display an error alert if the request fails
-            appalert(err.statusText, 1, 3);
-        }
-    });
-}
-function LoadDataInfo(tableID)
-{
-    var tableSelector = '#' + tableID;
-    console.log("Initializing DataTable for:", tableSelector);
-
-    try {
-        // Check if the table exists
-        if ($(tableSelector).length === 0) {
-            throw new Error("Table not found: " + tableSelector);
-        }
-
-        // Get the number of columns in the table
-        var columnCount = $(tableSelector + ' thead th').length;
-        console.log("Number of columns detected:", columnCount);
-
-        // Prepare column definitions based on the actual number of columns
-        var columnDefs = [];
-        for (var i = 0; i < columnCount; i++) {
-            columnDefs.push({
-                targets: i,
-                searchable: true,
-                orderable: true
-            });
-        }
-
-        var dataThumbView = $(tableSelector).DataTable({
-            responsive: false,
-            columns: Array(columnCount).fill(null),  // Create empty column definitions
-            columnDefs: columnDefs,
-            language: {
-                lengthMenu: "_MENU_",
-                search: ""
-            },
-            lengthMenu: [[10, 15, 20, 100, 500, 1000, 2000, 5000, 10000], [4, 10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
-            order: [[0, "asc"]],
-            info: true,
-            pageLength: 10
-        });
-
-        console.log("DataTable initialized successfully");
-        return dataThumbView;
-    } catch (error) {
-        console.error("Error initializing DataTable:", error);
-        console.log("Table HTML:", $(tableSelector).prop('outerHTML'));
-    }
-}
     // Helper function to show toast notifications
     function showToast(message, type = 'success') {
         // Example using Bootstrap toast (make sure you have toast container in your layout)

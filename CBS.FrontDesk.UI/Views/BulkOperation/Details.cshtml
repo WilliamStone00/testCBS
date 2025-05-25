@@ -1,5 +1,5 @@
 ﻿@model  CBS.FrontDesk.Data.Entity.BulkOperation.BulkOperationData
-
+ @using Resources
 @{
     ViewBag.Title = "Bulk Operation Details";
 
@@ -22,7 +22,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="fas fa-cogs me-2"></i>
-                            Bulk Operation Details - @Model.SimulationType
+                            @GlobalBulkOperation.BulkOperationDetails - @Model.SimulationType
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -53,7 +53,7 @@
             <div id="confirmBulkOperationLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
                 <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
                     <div class="spinner-border text-primary mb-3" role="status"></div>
-                    <p class="fw-semibold text-primary">Processing bulk operation...</p>
+                    <p class="fw-semibold text-primary">@GlobalBulkOperation.ProcessingBulkOperation...</p>
                 </div>
             </div>
 
@@ -63,7 +63,7 @@
                     <div class="card bg-light mb-2">
                         <div class="card-body text-center">
                             <h1 class="card-title text-primary">
-                                <i class="mdi mdi-checkbox-marked-circle-outline me-2"></i> Confirm Bulk Operation
+                                <i class="mdi mdi-checkbox-marked-circle-outline me-2"></i> @GlobalBulkOperation.ConfirmBulkOperation
                             </h1>
                             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                         </div>
@@ -74,7 +74,7 @@
             <!-- Tips Section -->
             <div class="card m-3">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-information-outline me-2"></i> About This Operation</span>
+                    <span><i class="mdi mdi-information-outline me-2"></i> @GlobalBulkOperation.AboutThisOperation</span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBulkOperationTips">
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
@@ -82,9 +82,9 @@
                 <div id="collapseBulkOperationTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i><strong>Important:</strong> This action will affect multiple records.</li>
-                            <li><i class="mdi mdi-shield-check-outline text-success me-2"></i><strong>Secure:</strong> All changes are logged for audit purposes.</li>
-                            <li><i class="mdi mdi-undo text-danger me-2"></i><strong>Irreversible:</strong> This operation cannot be undone.</li>
+                            <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i><strong>@GlobalBulkOperation.Important:</strong> @GlobalBulkOperation.ThisActionWillAffectMultipleRecords.</li>
+                            <li><i class="mdi mdi-shield-check-outline text-success me-2"></i><strong>@GlobalBulkOperation.Secure:</strong> @GlobalBulkOperation.AllChangesAreLoggedForAuditPurposes.</li>
+                            <li><i class="mdi mdi-undo text-danger me-2"></i><strong>@GlobalBulkOperation.Irreversible:</strong> @GlobalBulkOperation.ThisOperationCannotBeUndone.</li>
                         </ul>
                     </div>
                 </div>
@@ -97,7 +97,7 @@
 
                     <div class="mb-3">
                         <label for="approvalStatus" class="form-label text-primary fw-semibold">
-                            <i class="mdi mdi-check-decagram me-2"></i>Approval Status
+                            <i class="mdi mdi-check-decagram me-2"></i>@GlobalBulkOperation.ApprovalStatus
                         </label>
                         <select class="form-select" id="approvalStatus" name="ApprovalStatus" required>
                             <option value="Pending" @(status == "Pending" ? "selected" : "")>Pending</option>
@@ -109,21 +109,21 @@
 
                     <div class="mb-3">
                         <label for="approvalStatusDescription" class="form-label text-primary fw-semibold">
-                            <i class="mdi mdi-text-box-outline me-2"></i>Description
+                            <i class="mdi mdi-text-box-outline me-2"></i>@GlobalBulkOperation.Description
                         </label>
-                        <textarea class="form-control" id="approvalStatusDescription" name="ApprovalStatusDescription" rows="3" placeholder="Enter description or comments..."></textarea>
+                        <textarea class="form-control" id="approvalStatusDescription" name="ApprovalStatusDescription" rows="3" placeholder="@GlobalBulkOperation.EnterDescriptionOrComments..."></textarea>
                     </div>
 
                     <div class="mb-3">
                         <label for="approvalBy" class="form-label text-primary fw-semibold">
-                            <i class="mdi mdi-account-check-outline me-2"></i>Approved By
+                            <i class="mdi mdi-account-check-outline me-2"></i>@GlobalBulkOperation.ApprovedBy
                         </label>
                         <input type="text" class="form-control" id="approvalBy" name="ApprovalBy" value="@ViewBag.FullName" readonly>
                     </div>
 
                     <div class="alert alert-warning mt-4">
                         <i class="mdi mdi-alert-outline me-2"></i>
-                        <strong>Warning:</strong> Please review all details carefully before confirming this bulk operation.
+                        <strong>@GlobalBulkOperation.Warning:</strong> @GlobalBulkOperation.PleaseReviewAllDetailsCarefullyBeforeConfirmingThisBulkOperation.
                     </div>
                 </form>
             </div>
@@ -132,18 +132,18 @@
             <div class="modal-footer border-0 justify-content-between">
                 <div>
                     <span class="text-muted fw-semibold">
-                        Simulation ID: <span class="text-dark" id="bulkOperationSimulationIdDisplay">Not provided</span>
+                        Simulation ID: <span class="text-dark" id="bulkOperationSimulationIdDisplay">@GlobalBulkOperation.NotProvided</span>
                     </span>
                 </div>
                 <div class="text-center w-100">
-                    <small class="text-muted">Powered by FLX-CBS</small>
+                    <small class="text-muted">@GlobalBulkOperation.PoweredBy FLX-CBS</small>
                 </div>
                 <div>
                     <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">
-                        <i class="mdi mdi-close"></i> Cancel
+                        <i class="mdi mdi-close"></i> @GlobalBulkOperation.Cancel
                     </button>
                     <button type="button" class="btn btn-primary" id="confirmBulkOperationBtn">
-                        <i class="mdi mdi-check-circle-outline"></i> Confirm
+                        <i class="mdi mdi-check-circle-outline"></i> @GlobalBulkOperation.Confirm
                     </button>
                 </div>
             </div>
