@@ -22,7 +22,7 @@ namespace Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class GlobalShared {
+    internal class GlobalShared {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -144,7 +144,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
-        public static string Close {
+        internal static string Close {
             get {
                 return ResourceManager.GetString("Close", resourceCulture);
             }
