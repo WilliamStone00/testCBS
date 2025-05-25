@@ -151,6 +151,10 @@ namespace CBS.BusinessService.RequestLoggerServicesP
                     string.Format(APICallHelper.CheckRateLimitBlock, ipOrUsername)
                 );
 
+                if (response == null || response.ApiResponseData== null)
+                {
+                    return false;
+                }
                 return response.ApiResponseData.Data == true;
             }
             catch (Exception ex)
