@@ -1,101 +1,453 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
-		Microsoft ResX Schema
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
 
-		Version 1.3
-
-		The primary goals of this format is to allow a simple XML format 
-		that is mostly human readable. The generation and parsing of the 
-		various data types are done through the TypeConverter classes 
-		associated with the data types.
-
-		Example:
-
-		... ado.net/XML headers & schema ...
-		<resheader name="resmimetype">text/microsoft-resx</resheader>
-		<resheader name="version">1.3</resheader>
-		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-		<data name="Name1">this is my long string</data>
-		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-			[base64 mime encoded serialized .NET Framework object]
-		</data>
-		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-			[base64 mime encoded string representing a byte array form of the .NET Framework object]
-		</data>
-
-		There are any number of "resheader" rows that contain simple 
-		name/value pairs.
-
-		Each data row contains a name, and value. The row also contains a 
-		type or mimetype. Type corresponds to a .NET class that support 
-		text/value conversion through the TypeConverter architecture. 
-		Classes that don't support this are serialized and stored with the 
-		mimetype set.
-
-		The mimetype is used for serialized objects, and tells the 
-		ResXResourceReader how to depersist the object. This is currently not 
-		extensible. For a given mimetype the value must be set accordingly:
-
-		Note - application/x-microsoft.net.object.binary.base64 is the format 
-		that the ResXResourceWriter will generate, however the reader can 
-		read any of the formats listed below.
-
-		mimetype: application/x-microsoft.net.object.binary.base64
-		value   : The object must be serialized with 
-			: System.Serialization.Formatters.Binary.BinaryFormatter
-			: and then encoded with base64 encoding.
-
-		mimetype: application/x-microsoft.net.object.soap.base64
-		value   : The object must be serialized with 
-			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-			: and then encoded with base64 encoding.
-
-		mimetype: application/x-microsoft.net.object.bytearray.base64
-		value   : The object must be serialized into a byte array 
-			: using a System.ComponentModel.TypeConverter
-			: and then encoded with base64 encoding.
-	-->
-	
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>1.3</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccounantNote" xml:space="preserve">
+    <value>Accounant note</value>
+  </data>
+  <data name="AccountantNote" xml:space="preserve">
+    <value>Accountant note</value>
+  </data>
+  <data name="AccountantStatus" xml:space="preserve">
+    <value>Accountant status</value>
+  </data>
+  <data name="AdditionalNotes" xml:space="preserve">
+    <value>Additional notes</value>
+  </data>
+  <data name="AfterCompletingTheProcess" xml:space="preserve">
+    <value>after completing the process</value>
+  </data>
+  <data name="Attribute" xml:space="preserve">
+    <value>Attribute</value>
+  </data>
+  <data name="Balance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="CashAtHand" xml:space="preserve">
+    <value>Cash at hand</value>
+  </data>
+  <data name="CashAtHandt" xml:space="preserve">
+    <value>Cash at handt</value>
+  </data>
+  <data name="Charges" xml:space="preserve">
+    <value>Charges</value>
+  </data>
+  <data name="ClosedAmountOfPreviouseDay" xml:space="preserve">
+    <value>Closed amount of previouse day</value>
+  </data>
+  <data name="ClosedDate" xml:space="preserve">
+    <value>Closed date</value>
+  </data>
+  <data name="ClosedStatus" xml:space="preserve">
+    <value>Closed status</value>
+  </data>
+  <data name="CloseEndTheDayOperation" xml:space="preserve">
+    <value>Close (End the day operation)</value>
+  </data>
+  <data name="CloseOfDaButtonIsGreyedOut" xml:space="preserve">
+    <value>close of day button is greyed out</value>
+  </data>
+  <data name="CloseOfDayAmount" xml:space="preserve">
+    <value>Close of day amount</value>
+  </data>
+  <data name="CloseOfDayBalance" xml:space="preserve">
+    <value>Close of day balance</value>
+  </data>
+  <data name="CloseOfDayBy" xml:space="preserve">
+    <value>Close of day by</value>
+  </data>
+  <data name="CLOSEOFDAYDETAILS" xml:space="preserve">
+    <value>CLOSE OF DAY DETAILS</value>
+  </data>
+  <data name="CLOSEOFDAYMainTill" xml:space="preserve">
+    <value>CLOSE OF DAY Main-Till</value>
+  </data>
+  <data name="CloseOfDayStatus" xml:space="preserve">
+    <value>Close of day status</value>
+  </data>
+  <data name="CLOSEOFTHETILLASOFACCOUNTINGDAY" xml:space="preserve">
+    <value>CLOSE OF THE TILL AS OF ACCOUNTING DAY</value>
+  </data>
+  <data name="CloseOperationsOf" xml:space="preserve">
+    <value>Close operations of</value>
+  </data>
+  <data name="CloseTheDay" xml:space="preserve">
+    <value>Close the day</value>
+  </data>
+  <data name="CloseTheOperationOf" xml:space="preserve">
+    <value>Close the operation of</value>
+  </data>
+  <data name="CLOSE_OF_DAY_ST" xml:space="preserve">
+    <value>CLOSE OF DAY S.T</value>
+  </data>
+  <data name="ClosingOfMainTill" xml:space="preserve">
+    <value>Closing of Main-Till</value>
+  </data>
+  <data name="ClosingOfSubTill" xml:space="preserve">
+    <value>Closing of Sub-Till</value>
+  </data>
+  <data name="ConfirmAnyDiscrepanciesAreResolvedBeforeProceeding" xml:space="preserve">
+    <value>Confirm any discrepancies are resolved before proceeding</value>
+  </data>
+  <data name="ConfirmationStatus" xml:space="preserve">
+    <value>Confirmation status</value>
+  </data>
+  <data name="ConfirmationTheOperationsOf" xml:space="preserve">
+    <value>Confirmation the operations of</value>
+  </data>
+  <data name="ConfirmSubtellerOperations" xml:space="preserve">
+    <value>Confirm subteller operations</value>
+  </data>
+  <data name="ConfirmTheTotalBalanceMatchesTheExpectedAmount" xml:space="preserve">
+    <value>Confirm the total balance matches the expected amount</value>
+  </data>
+  <data name="Credit" xml:space="preserve">
+    <value>Credit</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="DateClosed" xml:space="preserve">
+    <value>Date closed</value>
+  </data>
+  <data name="DateCloses" xml:space="preserve">
+    <value>Date closes</value>
+  </data>
+  <data name="DateOpen" xml:space="preserve">
+    <value>Date open</value>
+  </data>
+  <data name="DateToClose" xml:space="preserve">
+    <value>Date to close</value>
+  </data>
+  <data name="Debit" xml:space="preserve">
+    <value>Debit</value>
+  </data>
+  <data name="DetailsOfOperationsOf" xml:space="preserve">
+    <value>Details of operations of</value>
+  </data>
+  <data name="EnsureAllBalancesMatchTheExpectedTotals" xml:space="preserve">
+    <value>Ensure all balances match the expected totals</value>
+  </data>
+  <data name="ensureAllConditionsForClosureAreMet" xml:space="preserve">
+    <value>ensure all conditions for closure are met</value>
+  </data>
+  <data name="ensureAllSubTillsAreClosed" xml:space="preserve">
+    <value>ensure all sub-tills are closed</value>
+  </data>
+  <data name="EnsureAllTransactionsAreProperlyAccounted" xml:space="preserve">
+    <value>Ensure all transactions are properly accounted for before closing the sub-till. This process is essential for accurate reconciliation and end-of-day reporting</value>
+  </data>
+  <data name="EnsureAllTransactionsForTheDayAreAccountedForBeforeClosing" xml:space="preserve">
+    <value>Ensure all transactions for the day are accounted for before closing</value>
+  </data>
+  <data name="EnterAmountCollected" xml:space="preserve">
+    <value>Enter amount collected</value>
+  </data>
+  <data name="EnterCashAtHand" xml:space="preserve">
+    <value>Enter cash at hand</value>
+  </data>
+  <data name="EODaccountant" xml:space="preserve">
+    <value>EOD accountant</value>
+  </data>
+  <data name="EODDetails" xml:space="preserve">
+    <value>EOD Details</value>
+  </data>
+  <data name="EOD_ACCOUNTANT_FRONT_DESK_OPERATIONS" xml:space="preserve">
+    <value>EOD ACCOUNTANT FRONT DESK OPERATIONS</value>
+  </data>
+  <data name="EOD_PRIMARY_TELLER_OPERATIONS" xml:space="preserve">
+    <value>EOD PRIMARY TELLER OPERATIONS</value>
+  </data>
+  <data name="EOD_SUB_TELLER" xml:space="preserve">
+    <value>EOD SUB-TELLER</value>
+  </data>
+  <data name="ExportTellerTransactions" xml:space="preserve">
+    <value>Export teller transactions</value>
+  </data>
+  <data name="FeeType" xml:space="preserve">
+    <value>Fee type</value>
+  </data>
+  <data name="FollowTheseStepsToEnsureASmoothClosingOfTheMainTill" xml:space="preserve">
+    <value>Follow these steps to ensure a smooth closing of the Main till</value>
+  </data>
+  <data name="FollowTheseStepsToEnsureASuccessfulSubTillClosure" xml:space="preserve">
+    <value>Follow these steps to ensure a successful sub-till closure</value>
+  </data>
+  <data name="ForDateOf" xml:space="preserve">
+    <value>for date of</value>
+  </data>
+  <data name="ForTheSelectedDate" xml:space="preserve">
+    <value>for the selected date</value>
+  </data>
+  <data name="GenerateAndSaveNecessaryReports" xml:space="preserve">
+    <value>Generate and save necessary reports</value>
+  </data>
+  <data name="GenerateTheNecessaryReportsForReconciliation" xml:space="preserve">
+    <value>Generate the necessary reports for reconciliation</value>
+  </data>
+  <data name="HELPTIPS" xml:space="preserve">
+    <value>HELP TIPS</value>
+  </data>
+  <data name="IfThe" xml:space="preserve">
+    <value>If the</value>
+  </data>
+  <data name="InitialAmount" xml:space="preserve">
+    <value>Initial amount</value>
+  </data>
+  <data name="MakeSureTo" xml:space="preserve">
+    <value>Make sure to</value>
+  </data>
+  <data name="ManageTheClosingProcessOfTheMainTillEfficiently" xml:space="preserve">
+    <value>Manage the closing process of the Main till efficiently. Ensure all subtills in the branch have been closed before proceeding</value>
+  </data>
+  <data name="NoDataWasFound" xml:space="preserve">
+    <value>No Data was found</value>
+  </data>
+  <data name="NoteMainTillsCannotBeClosedUnless" xml:space="preserve">
+    <value>Note: Main tills cannot be closed unless all sub-tills in the branch are closed</value>
+  </data>
+  <data name="OAmount" xml:space="preserve">
+    <value>O.Amount</value>
+  </data>
+  <data name="Of" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="OpenDate" xml:space="preserve">
+    <value>Open date</value>
+  </data>
+  <data name="OpenedDate" xml:space="preserve">
+    <value>Opened date</value>
+  </data>
+  <data name="OpenOfDayAmount" xml:space="preserve">
+    <value>Open of day amount</value>
+  </data>
+  <data name="OpenOfDayDate" xml:space="preserve">
+    <value>Open of day date</value>
+  </data>
+  <data name="OpenOfDayNote" xml:space="preserve">
+    <value>Open of day note</value>
+  </data>
+  <data name="OperationDate" xml:space="preserve">
+    <value>Operation date</value>
+  </data>
+  <data name="PreviousBalance" xml:space="preserve">
+    <value>Previous balance</value>
+  </data>
+  <data name="PrimaryTellerComentary" xml:space="preserve">
+    <value>Primary teller comentary</value>
+  </data>
+  <data name="PrimaryTellerComment" xml:space="preserve">
+    <value>Primary teller comment</value>
+  </data>
+  <data name="PrimaryTellerConfirmation" xml:space="preserve">
+    <value>Primary teller confirmation</value>
+  </data>
+  <data name="PrimaryTellerEndOfDay" xml:space="preserve">
+    <value>Primary teller end of day</value>
+  </data>
+  <data name="PrimaryTellerStatus" xml:space="preserve">
+    <value>Primary teller status</value>
+  </data>
+  <data name="printYourCloseOfDayReport" xml:space="preserve">
+    <value>print your Close of Day report</value>
+  </data>
+  <data name="printYourEndOfDayReport" xml:space="preserve">
+    <value>print your End of Day report</value>
+  </data>
+  <data name="ProvisionedBy" xml:space="preserve">
+    <value>Provisioned by</value>
+  </data>
+  <data name="ReplenishedAmount" xml:space="preserve">
+    <value>Replenished amount</value>
+  </data>
+  <data name="SelectClosedStatusType" xml:space="preserve">
+    <value>Select closed status type</value>
+  </data>
+  <data name="SelectConfirmationStatusType" xml:space="preserve">
+    <value>Select confirmation status type</value>
+  </data>
+  <data name="SelectStatusType" xml:space="preserve">
+    <value>Select status type</value>
+  </data>
+  <data name="SubTellerCommentary" xml:space="preserve">
+    <value>Sub teller commentary</value>
+  </data>
+  <data name="SubTellerEOD" xml:space="preserve">
+    <value>Sub -teller EOD</value>
+  </data>
+  <data name="SystemBalance" xml:space="preserve">
+    <value>System balance</value>
+  </data>
+  <data name="SystemDifference" xml:space="preserve">
+    <value>System difference</value>
+  </data>
+  <data name="TellerAccountBalance" xml:space="preserve">
+    <value>Teller account balance</value>
+  </data>
+  <data name="TellerCloseOfDayNote" xml:space="preserve">
+    <value>Teller close of day note</value>
+  </data>
+  <data name="TellerCode" xml:space="preserve">
+    <value>Teller code</value>
+  </data>
+  <data name="TellerComment" xml:space="preserve">
+    <value>Teller comment</value>
+  </data>
+  <data name="TellerName" xml:space="preserve">
+    <value>Teller name</value>
+  </data>
+  <data name="TellerNote" xml:space="preserve">
+    <value>Teller note</value>
+  </data>
+  <data name="TellerUser" xml:space="preserve">
+    <value>Teller user</value>
+  </data>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>Total amount</value>
+  </data>
+  <data name="Transactions" xml:space="preserve">
+    <value>Transactions</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="ValidationStatus" xml:space="preserve">
+    <value>Validation status</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="VerificationOfSubtellerOperations" xml:space="preserve">
+    <value>Verification of subteller operations</value>
+  </data>
+  <data name="VERIFICATION_AND_CONFIRMATION_OF_SUBTELLER_OPERATIONS" xml:space="preserve">
+    <value>VERIFICATION AND CONFIRMATION OF SUBTELLER OPERATIONS</value>
+  </data>
+  <data name="VerifyAllTransactionsForTheDayAreAccounted" xml:space="preserve">
+    <value>Verify all transactions for the day are accounted for in the sub-till</value>
+  </data>
+  <data name="VerifyOperations" xml:space="preserve">
+    <value>Verify operations</value>
+  </data>
+  <data name="VerifyThatAllSubTillsUnderTheSameBranch" xml:space="preserve">
+    <value>Verify that all sub-tills under the same branch have been closed</value>
+  </data>
 </root>

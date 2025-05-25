@@ -1374,6 +1374,31 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalEndOfDayOperation.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Error\GlobalError.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalError.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\FeePolicy\GlobalFeePolicy.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalFeePolicy.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\FeeRange\GlobalFeeRange.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalFeeRange.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Fee\GlobalFee.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalFee.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\FundingLine\GlobalFundingLine.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalFundingLine.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\HomePage\GlobalAbout.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -5214,6 +5239,26 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalEndOfDayOperation.Designer.cs</LastGenOutput>
     </Content>
+    <Content Include="App_GlobalResources\Error\GlobalError.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalError.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Fee\GlobalFee.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalFee.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\FeePolicy\GlobalFeePolicy.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalFeePolicy.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\FeeRange\GlobalFeeRange.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalFeeRange.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\FundingLine\GlobalFundingLine.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalFundingLine.Designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -6369,6 +6414,7 @@
     <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
+    <Folder Include="App_GlobalResources\GlobalConfiguration\" />
     <Folder Include="Controllers\CustomerManagement\MemberActivation\" />
     <Folder Include="Hub\" />
     <Folder Include="Views\CorrespondingBank\" />

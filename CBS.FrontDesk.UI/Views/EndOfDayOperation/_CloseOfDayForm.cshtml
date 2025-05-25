@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.EndOfTheDay
-
+@using Resources
 @if (ViewBag.HasError)
 {
 
@@ -12,7 +12,7 @@
 
     <fieldset class="fieldset-custom">
         <legend id="select_base" class="underline-blue-bold">
-            CLOSE OF THE TILL AS OF ACCOUNTING DAY [@Model.CloseOfDayRequest.AccountingDay]
+            @GlobalEndOfDayOperation.CLOSEOFTHETILLASOFACCOUNTINGDAY [@Model.CloseOfDayRequest.AccountingDay]
         </legend>
 
         <div class="row mt-2 gy-4">
@@ -20,19 +20,19 @@
             @Html.HiddenFor(model => model.CloseOfDayRequest.CashAtHand)
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    <span class="formatted-amount shadow-box float-start">Close of day balance: @Model.CloseOfDayRequest.Amount.ToString("#,##0.0")</span>
+                    <span class="formatted-amount shadow-box float-start">@GlobalEndOfDayOperation.CloseOfDayBalance: @Model.CloseOfDayRequest.Amount.ToString("#,##0.0")</span>
                 </div>
             </div>
             <div class="col-md-6" hidden="hidden">
                 <div class="form-floating form-floating-outline">
-                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalEndOfDayOperation.TotalAmount: 0.0</span>
                     <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                     <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.CloseOfDayRequest.Amount">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    <span class="formatted-amount shadow-box" id="lblBalance">Balance: @Model.CloseOfDayRequest.Amount.ToString("#,##0.0")</span>
+                    <span class="formatted-amount shadow-box" id="lblBalance">@GlobalEndOfDayOperation.Balance: @Model.CloseOfDayRequest.Amount.ToString("#,##0.0")</span>
                 </div>
             </div>
             <input type="hidden" name="Option" id="Option" value="@ViewBag.Option" />
@@ -156,15 +156,15 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.CloseOfDayRequest.Comment, new { @class = "form-control formatted-amount shadow-box", @style = "height: 70px;" })
                     @Html.ValidationMessageFor(m => m.CloseOfDayRequest.Comment, "", new { @class = "text-danger " })
-                    <label for="formValidationDob">Open of day note</label>
+                    <label for="formValidationDob">@GlobalEndOfDayOperation.OpenOfDayNote</label>
                 </div>
             </div>
 
         </div>
         <div class="mt-4">
-            <button type="submit" id="btnSave" class="btn btn-primary me-2">Close the day</button>
+            <button type="submit" id="btnSave" class="btn btn-primary me-2">@GlobalEndOfDayOperation.CloseTheDay</button>
             <button type="button" class="btn btn-secondary me-2" onclick="Reprint(); return false;">
-                <i class="fas fa-print me-1"></i> Print
+                <i class="fas fa-print me-1"></i> @GlobalShared.Print
             </button>
 
         </div>

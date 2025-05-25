@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.EndOfTheDay
+    @using Resources
 @{
-    ViewBag.Title = "CLOSE OF DAY Main-Till";
+    ViewBag.Title = @GlobalEndOfDayOperation.CLOSEOFDAYMainTill;
 }
 <div class="row">
     <div class="col-12">
@@ -8,14 +9,14 @@
         <div class="card bg-light mb-4">
             <div class="card-body text-center">
                 <h1 class="card-title text-Main">
-                    <i class="mdi mdi-cash-multiple me-2"></i> Closing of Main-Till
+                    <i class="mdi mdi-cash-multiple me-2"></i> @GlobalEndOfDayOperation.ClosingOfMainTill
                 </h1>
                 <p class="card-text text-muted">
-                    Manage the closing process of the Main till efficiently. Ensure all subtills in the branch have been closed before proceeding.
+                    @GlobalEndOfDayOperation.ManageTheClosingProcessOfTheMainTillEfficiently.
                 </p>
                 <p class="card-text text-danger fw-bold">
                     <i class="mdi mdi-alert-circle-outline me-2"></i>
-                    Note: Main tills cannot be closed unless all sub-tills in the branch are closed.
+                    @GlobalEndOfDayOperation.NoteMainTillsCannotBeClosedUnless.
                 </p>
             </div>
         </div>
@@ -26,7 +27,7 @@
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-Main">
         <span>
-            <i class="mdi mdi-information-outline me-2"></i> HELP TIPS
+            <i class="mdi mdi-information-outline me-2"></i> @GlobalEndOfDayOperation.HELPTIPS
         </span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
             <i class="mdi mdi-chevron-down"></i>
@@ -35,18 +36,18 @@
     <div id="collapseHelpTips" class="collapse">
         <div class="card-body">
             <p class="text-muted mb-2">
-                Follow these steps to ensure a smooth closing of the Main till:
+                @GlobalEndOfDayOperation.FollowTheseStepsToEnsureASmoothClosingOfTheMainTill:
             </p>
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Verify that all sub-tills under the same branch have been closed.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure all transactions for the day are accounted for before closing.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Generate and save necessary reports.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Confirm the total balance matches the expected amount.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalEndOfDayOperation.VerifyThatAllSubTillsUnderTheSameBranch.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalEndOfDayOperation.EnsureAllTransactionsForTheDayAreAccountedForBeforeClosing.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalEndOfDayOperation.GenerateAndSaveNecessaryReports.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalEndOfDayOperation.ConfirmTheTotalBalanceMatchesTheExpectedAmount.</li>
             </ul>
-            <p class="text-muted">Additional notes:</p>
+            <p class="text-muted">@GlobalEndOfDayOperation.AdditionalNotes:</p>
             <ul>
-                <li><i class="mdi mdi-information-outline text-Main me-2"></i> If the <strong>Close of Day button is greyed out</strong>, ensure all sub-tills are closed.</li>
-                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> Make sure to <strong>print your End of Day report</strong> after completing the process.</li>
+                <li><i class="mdi mdi-information-outline text-Main me-2"></i> @GlobalEndOfDayOperation.IfThe <strong>@GlobalEndOfDayOperation.CloseOfDaButtonIsGreyedOut</strong>, @GlobalEndOfDayOperation.ensureAllSubTillsAreClosed.</li>
+                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> @GlobalEndOfDayOperation.MakeSureTo <strong>@GlobalEndOfDayOperation.printYourEndOfDayReport</strong> @GlobalEndOfDayOperation.AfterCompletingTheProcess.</li>
             </ul>
         </div>
     </div>
@@ -65,7 +66,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-cash-multiple me-2"></i>
-                            Closing of Main-Till
+                            @GlobalEndOfDayOperation.ClosingOfMainTill
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
