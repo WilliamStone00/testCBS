@@ -5,7 +5,7 @@
     ViewBag.Title = "Cash Deposit Request";
 
 }
-
+<!--@using Resources
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
@@ -24,10 +24,9 @@
             </div>
         </div>
     </div>
-</div>
-
+</div>-->
 <!-- Tips Section -->
-<div class="card mb-3">
+<!--<div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span><i class="mdi mdi-information-outline me-2"></i> @GlobalCashFlowManagement.TIPSFORCASHMOVEMENTVAULTTOBANK</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
@@ -44,8 +43,48 @@
             </ul>
         </div>
     </div>
+</div>-->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-cash-check me-2"></i> CASH MOVEMENT [BANK CASH DEPOSIT VALIDATION]
+                </h1>
+                <p class="card-text">
+                    All cash movement in TSC are validated by the person that has the role. When requesting to move cash to the bank the user issue a request
+                    at the level branch and need to be approved by the management.
+                </p>
+                <p class="card-text text-warning fw-bold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> In case you have limited information just about the request you are searching just click.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
 </div>
 
+<!-- Tips Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR BANK CASH DEPOSIT</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-briefcase-search-outline me-1 text-primary"></i> <strong> Select Branch:  </strong> Select the branch that issue the request.</li>
+                <li><i class="mdi mdi-checkbox-multiple-marked-outline me-1 text-primary"></i><strong>Request Status:</strong>  Select the expected request status:<em>Pending, Awaiting Branch Transfer, Cash Clearing, Approved, Rejected, Cancel, Completed</em>.</li>
+                <li><i class="mdi mdi-calendar-range-outline me-1 text-primary"></i>  <strong>Date Range:</strong> Select the period in which the request was initiated.</li>
+                <li><i class="mdi mdi-account-search-outline me-1 text-primary"></i> <strong> Issuer:  </strong> Select the user that Issue the request in the branch.</li>
+                <li><i class="mdi mdi-account-search-outline me-1 text-primary"></i><strong>Approver:</strong> Select the user that approved the request in the branch.</li>
+            </ul>
+
+        </div>
+    </div>
+</div>
 <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
 
     <div class="accordion-item active">
@@ -73,7 +112,7 @@
                          data-bs-parent="#accordionPopoutIcon">
                         <div class="accordion-body">
                             @Html.Partial("_SearchOptionDeposit")
-                  
+
                             <div id="datalistingview_pendingCashMovement">
 
                             </div>

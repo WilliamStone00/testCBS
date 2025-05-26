@@ -262,7 +262,7 @@ namespace CBS.FrontDesk.UI.Controllers
         //////                    }
         //////                }
 
-              
+
         //////            }
         //////            else
         //////            {
@@ -604,13 +604,13 @@ namespace CBS.FrontDesk.UI.Controllers
                     Id = user.UserID,
                     UserName = reqDto.userName,
                     RoleName = roles,
-                    SessionIP=reqDto.SessionIP,
-                    SessionUserAgent=reqDto.SessionUserAgent,
+                    SessionIP = reqDto.SessionIP,
+                    SessionUserAgent = reqDto.SessionUserAgent,
                     FullName = user.FullName,
                     Email = user.Email,
                     Phonenumber = user.Phonenumber,
                     SessionID = reqDto.SessionId,
-                    SessionCode=reqDto.SessionCode,
+                    SessionCode = reqDto.SessionCode,
                 };
                 Session["SessionStartTime"] = DateTime.UtcNow;
                 Session["SessionMaxLifetimeMinutes"] = minutes_to_live; // Example: 4 hours
@@ -711,10 +711,10 @@ namespace CBS.FrontDesk.UI.Controllers
 
             }
 
-                // ✅ Valid single session
-                BuildLocalSession(userSession.UserAuthDto);
-            }
+            // ✅ Valid single session
+            BuildLocalSession(userSession.UserAuthDto);
         }
+
 
 
         protected void SetMenuFromSession()
