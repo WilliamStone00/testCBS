@@ -1,11 +1,12 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.LoanConf.FundingLine>
+    @using Resources
 <table class="table table-hover" id="myDataTable">
     <thead class="table-light">
         <tr>
-            <th>Name</th>
-            <th>Range</th>
-            <th>Amount</th>
-            <th>Action</th>
+            <th>@GlobalFundingLine.Name</th>
+            <th>@GlobalFundingLine.Range</th>
+            <th>@GlobalFundingLine.Amount</th>
+            <th>@GlobalShared.Action</th>
         </tr>
     </thead>
     <tbody>
@@ -16,8 +17,8 @@
                 <td style="width:40%">Starting from: @d.beginDate.ToString("yy-MMM-dd ddd")  to: @d.endDate.ToString("yy-MMM-dd ddd")</td>
                 <td style="width:10%">@d.amount</td>
                 <td style="width:20%">
-                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview','_Update','update','FundingLine')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">Edit</a>
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.name" onclick="DeleteRecordDataTable('FundingLine','@d.id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview','_Update','update','FundingLine')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.name @GlobalShared.ToEdit">@GlobalShared.Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.name" onclick="DeleteRecordDataTable('FundingLine','@d.id','myDataTable','_Data',0,'datalistingview')">@GlobalShared.Delete</a>
                 </td>
             </tr>
         }

@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.FeeRange
+    @using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">Fee configuration</legend>
+    <legend id="select_base">@GlobalFeeRange.FeeConfiguration</legend>
     <div class="card-body">
         @using (Html.BeginForm("Create", "FeeRange", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
@@ -10,9 +11,9 @@
 
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.FeeId, new SelectList(ViewBag.Fees, "Id", "name"), "---Select fee---", new { @class = "form-control select2", @onchange = "GetFee(this.value);", @search = "true" })
+                    @Html.DropDownListFor(m => m.FeeId, new SelectList(ViewBag.Fees, "Id", "name"), "---"+ @GlobalFeeRange.SelectFee+"---", new { @class = "form-control select2", @onchange = "GetFee(this.value);", @search = "true" })
                     @Html.ValidationMessageFor(m => m.FeeId, "", new { @class = "text-danger" })
-                    <label>Select fee</label>
+                    <label>@GlobalFeeRange.SelectFee</label>
                 </div>
             </div>
             @if (ViewBag.Base == "Range")
@@ -23,21 +24,21 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.AmountFrom, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.AmountFrom, "", new { @class = "text-danger" })
-                                <label>Amount From</label>
+                                <label>@GlobalFeeRange.AmountFrom</label>
                             </div>
                         </div>
                         <div class="col-md-5 mb-3">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.AmountTo, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.AmountTo, "", new { @class = "text-danger" })
-                                <label>Amount To</label>
+                                <label>@GlobalFeeRange.AmountTo</label>
                             </div>
                         </div>
                         <div class="col-md-2 mb-3">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.Charge, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.Charge, "", new { @class = "text-danger" })
-                                <label>Charge</label>
+                                <label>@GlobalFeeRange.Charge</label>
                             </div>
                         </div>
                     </div>
@@ -50,7 +51,7 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.PercentageValue, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.PercentageValue, "", new { @class = "text-danger" })
-                            <label>Enter value (in %)</label>
+                            <label>@GlobalFeeRange.EnterValue</label>
                         </div>
                     </div>
                 </div>
@@ -64,21 +65,21 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.AmountFrom, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.AmountFrom, "", new { @class = "text-danger" })
-                                <label>Amount From</label>
+                                <label>@GlobalFeeRange.AmountFrom</label>
                             </div>
                         </div>
                         <div class="col-md-5 mb-3">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.AmountTo, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.AmountTo, "", new { @class = "text-danger" })
-                                <label>Amount To</label>
+                                <label>@GlobalFeeRange.AmountTo</label>
                             </div>
                         </div>
                         <div class="col-md-2 mb-3">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.Charge, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.Charge, "", new { @class = "text-danger" })
-                                <label>Charge</label>
+                                <label>@GlobalFeeRange.Charge</label>
                             </div>
                         </div>
                     </div>
@@ -88,7 +89,7 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.PercentageValue, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.PercentageValue, "", new { @class = "text-danger" })
-                            <label>Enter value (in %)</label>
+                            <label>@GlobalFeeRange.EnterValue</label>
                         </div>
                     </div>
                 </div>
@@ -99,12 +100,12 @@
             <div class="mt-4">
                 @if (ViewBag.Key != null)
                 {
-                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                 }
                 else
                 {
-                    <button type="submit" class="btn btn-primary me-2">Save</button>
-                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+            <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
 
                 }
             </div>

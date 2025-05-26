@@ -268,6 +268,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Go back to home.
+        /// </summary>
+        internal static string GoBackToHome {
+            get {
+                return ResourceManager.GetString("GoBackToHome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In Excel Format.
         /// </summary>
         internal static string InExcelFormat {
@@ -399,6 +408,15 @@ namespace Resources {
         internal static string Reset {
             get {
                 return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Return to home.
+        /// </summary>
+        internal static string ReturnToHome {
+            get {
+                return ResourceManager.GetString("ReturnToHome", resourceCulture);
             }
         }
         

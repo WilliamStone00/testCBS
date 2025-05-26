@@ -1,12 +1,12 @@
-﻿
+﻿@using Resources
 @{
-    ViewBag.Title = "503-Service Unavailable";
+    ViewBag.Title = @GlobalError.ServiceUnavailable;
     Layout = "~/Views/Shared/_ErrorLayout.cshtml";
 }
 
 
-<h2 class="mb-4">503 - Service Unavailable</h2>
-<p class="lead mb-4">Oops! We're sorry, but the service is currently unavailable.</p>
-<p>Please try again later or contact the administrator for assistance.</p>
-<p>ERROR:<br />@ViewBag.ErrorMessage</p>
-<a href="/" class="btn">Go Back to Home</a>
+<h2 class="mb-4">@GlobalError.ServiceUnavailable</h2>
+<p class="lead mb-4">@GlobalError.OopsWereSorryButTheServiceIsCurrentlyUnavailable.</p>
+<p>@GlobalError.PleaseContactTheAdministratorForAssistance.</p>
+<p>@GlobalError.ERROR:<br />@ViewBag.ErrorMessage</p>
+<a href="/" class="btn">@GlobalShared.GoBackToHome</a>
