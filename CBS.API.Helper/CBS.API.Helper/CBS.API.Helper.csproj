@@ -110,7 +110,7 @@
   <ItemGroup>
     <Compile Include="APICallHelper\ApiCallerHelper.cs" />
     <Compile Include="APICallHelper\ApiException.cs" />
-    <Compile Include="APICallHelper\Class1.cs" />
+    <Compile Include="APICallHelper\ApiResponse.cs" />
     <Compile Include="APICallHelper\RateLimitApiHelper.cs" />
     <Compile Include="APICallHelper\TokenEncryptionHelper.cs" />
     <Compile Include="BarCodeHelper.cs" />

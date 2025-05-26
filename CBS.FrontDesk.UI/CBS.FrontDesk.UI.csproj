@@ -516,6 +516,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\DDOSControlP\PasswordPolicyManagementController.cs" />
+    <Compile Include="Utility\Middlware logger\MiddlewareFileLogger.cs" />
     <Content Include="AppFiles\Images\Avatar\avatarimg.jpg" />
     <Content Include="AppFiles\Images\Bank-deposit-slip-excel-template.jpg" />
     <Content Include="AppFiles\Images\BG.jpeg" />
@@ -1836,6 +1838,10 @@
     <Compile Include="Controllers\AndriodVersioning\AndriodAppVersioningController.cs" />
     <Compile Include="Controllers\BulkOperation\BulkOperationController.cs" />
     <Compile Include="Controllers\ChangeCustomerNumber\ChangeNumberController.cs" />
+    <Compile Include="Controllers\DDOSControlP\BlacklistUserController.cs" />
+    <Compile Include="Controllers\DDOSControlP\RateLimitConfigController.cs" />
+    <Compile Include="Controllers\DDOSControlP\SuspiciousPathController.cs" />
+    <Compile Include="Controllers\DDOSControlP\RequestMonitotingController.cs" />
     <Compile Include="Controllers\ConnectedUserData\ClientData.cs" />
     <Compile Include="Controllers\SMSP\SMSActivityLogController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectorManagementController.cs" />
@@ -1983,8 +1989,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="App_Code\Helper\SessionTimeoutFilterAttribute.cs" />
+    <Compile Include="Helper\ExportFileResult.cs" />
+    <Compile Include="Helper\ExportUtilityRateLimitDashboardLogs.cs" />
     <Compile Include="Helper\ExportUtilityCMoney.cs" />
     <Compile Include="Helper\ExportUtilityUser.cs" />
+    <Compile Include="Helper\JsonMVC.cs" />
     <Compile Include="Helper\LanguageHelper.cs" />
     <Compile Include="Helper\LoanApplicationExcelGenerator.cs" />
     <Compile Include="Helper\LoanExcelGenerator.cs" />
@@ -4656,6 +4665,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <Content Include="RateLimitConfig\_Create.cshtml" />
+    <Content Include="RateLimitConfig\_Data.cshtml" />
+    <Content Include="RateLimitConfig\Index.cshtml" />
     <None Include="Resources\TextFile1.txt" />
     <Content Include="Mvc.sitemap" />
     <Content Include="DataSet\Transaction\TransactionDS.xsc">
@@ -6362,6 +6374,32 @@
     <Content Include="Views\Shared\DisplayTemplates\MetaRobotsHelperModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\MenuHelperModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\CanonicalHelperModel.cshtml" />
+    <Content Include="Views\Error\Blocked.cshtml" />
+    <Content Include="Views\RequestMonitoting\_ActivationDesk.cshtml" />
+    <Content Include="Views\RequestMonitoting\_ActivationForm.cshtml" />
+    <Content Include="Views\RequestMonitoting\_CMoneyMemberData.cshtml" />
+    <Content Include="Views\RequestMonitoting\_CustomerCard.cshtml" />
+    <Content Include="Views\RequestMonitoting\_ManageProfileDesk.cshtml" />
+    <Content Include="Views\RequestMonitoting\_ManageProfileForm.cshtml" />
+    <Content Include="Views\RequestMonitoting\_SearchBox.cshtml" />
+    <Content Include="Views\RequestMonitoting\Activation.cshtml" />
+    <Content Include="Views\RequestMonitoting\Index.cshtml" />
+    <Content Include="Views\RequestMonitoting\ManageProfile.cshtml" />
+    <Content Include="Views\SuspiciousPath\_Create.cshtml" />
+    <Content Include="Views\SuspiciousPath\_Data.cshtml" />
+    <Content Include="Views\SuspiciousPath\Index.cshtml" />
+    <Content Include="Views\BlacklistUser\_Create.cshtml" />
+    <Content Include="Views\BlacklistUser\_Data.cshtml" />
+    <Content Include="Views\BlacklistUser\Index.cshtml" />
+    <Content Include="Views\RateLimitConfig\_Create.cshtml" />
+    <Content Include="Views\RateLimitConfig\_Data.cshtml" />
+    <Content Include="Views\RateLimitConfig\Index.cshtml" />
+    <Content Include="Views\BlacklistUser\_Details.cshtml" />
+    <Content Include="Views\PasswordPolicyManagement\_Create.cshtml" />
+    <Content Include="Views\PasswordPolicyManagement\_Data.cshtml" />
+    <Content Include="Views\PasswordPolicyManagement\Index.cshtml" />
+    <Content Include="Views\PasswordPolicyManagement\Update.cshtml" />
+    <Content Include="Views\PasswordPolicyManagement\_PolicyTips.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

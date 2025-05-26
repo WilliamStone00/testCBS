@@ -15,6 +15,15 @@ using System.IO;
 using System.Net;
 using System.Web;
 using System.Collections.Concurrent;
+using DocumentFormat.OpenXml.Bibliography;
+using CBS.FrontDesk.Data.Entity.Config;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNet.SignalR.Hosting;
+using CBS.BusinessService.Config;
+using CBS.FrontDesk.Helper.Helper;
+using CBS.BusinessService.UserManagement;
+using MongoDB.Driver.Linq;
+using DocumentFormat.OpenXml.EMMA;
 
 namespace CBS.BusinessService.RequestLoggerServicesP
 {
@@ -34,13 +43,15 @@ namespace CBS.BusinessService.RequestLoggerServicesP
 
         private static RateLimitApiHelper ApiCaller => _lazyApiCaller.Value;
         private readonly ApiCallerHelper _identityServerBaseUrl;
-
+        private readonly BranchServices _branchServices;
+        private readonly UserManagementServices _userManagementServices;
         public RateLimitedUserService()
         {
             var baseUrl = ConfigurationManager.AppSettings["IdentityServerBaseUrl"];
             if (string.IsNullOrWhiteSpace(baseUrl))
                 throw new InvalidOperationException("❌ IdentityServerBaseUrl is missing from AppSettings.");
-
+            _branchServices=new BranchServices();
+            _userManagementServices=new UserManagementServices();
             _api = new RateLimitApiHelper(baseUrl);
 
             _identityServerBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
@@ -83,10 +94,10 @@ namespace CBS.BusinessService.RequestLoggerServicesP
         {
             try
             {
-                var response = await _identityServerBaseUrl.GetAsync<ServiceResponse<bool>>(
+                var response = await _identityServerBaseUrl.DeleteAsync<ServiceResponse<bool>>(
                     string.Format(APICallHelper.Get_Delete_RateLimitedUser, id));
 
-                if (response.IsSuccess && response.ApiResponseData?.Data == true)
+                if (response.IsSuccess)
                 {
                     GetExecutionMessages(response, true, id, MessagesResults.Success,
                         ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
@@ -131,34 +142,47 @@ namespace CBS.BusinessService.RequestLoggerServicesP
         {
             try
             {
-                var response = await ApiCaller.GetAsync<ResponseObject<List<RateLimitedUser>>>(
+                var response = await _identityServerBaseUrl.GetAsync<ResponseObject<List<RateLimitedUser>>>(
                     APICallHelper.GetAllRateLimitedUsers);
 
-                return response?.Data ?? new List<RateLimitedUser>();
+                return response?.ApiResponseData.Data ?? new List<RateLimitedUser>();
             }
             catch (Exception ex)
             {
                 throw new Exception("❌ Failed to retrieve all RateLimitedUser records", ex);
             }
         }
-        public bool CheckIsBlocked(string ipOrUsername)
+        public async Task<bool> CheckIsBlocked(CheckRateLimitBlockQuery rateLimitBlockQuery)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(ipOrUsername)) return false;
-
-                var response = _api.GetSync<ResponseObject<bool>>(
-                    string.Format(APICallHelper.CheckRateLimitBlock, ipOrUsername)
+                var response = await _api.PostAsync<ResponseObject<bool>>(
+                    APICallHelper.CheckRateLimitBlock, rateLimitBlockQuery
                 );
 
-                return response.ApiResponseData.Data == true;
+                return response.Data;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"⚠️ Block check failed for '{ipOrUsername}': {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"⚠️ Block check failed for '{rateLimitBlockQuery.IpOrUser} {rateLimitBlockQuery.Username}': {ex.Message}");
                 return false;
             }
         }
+
+        //public async Task<bool> CheckIsBlocked(CheckRateLimitBlockQuery rateLimitBlockQuery)
+        //{
+        //    try
+        //    {
+
+        //        var response = await _api.PostAsync<ResponseObject<bool>>(APICallHelper.AddRateLimitedUser, rateLimitBlockQuery);
+        //        return response.Data;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        System.Diagnostics.Debug.WriteLine($"⚠️ Block check failed for '{rateLimitBlockQuery.IpOrUser} {rateLimitBlockQuery.Username}': {ex.Message}");
+        //        return false;
+        //    }
+        //}
 
         public bool ShouldBlock(string ipOrUsername, int requestLimit, TimeSpan timeWindow)
         {
@@ -177,8 +201,8 @@ namespace CBS.BusinessService.RequestLoggerServicesP
                 return timestamps.Count > requestLimit;
             }
         }
-
-        public void BlockUser(string ipOrUsername, string userName, string blockType, TimeSpan blockDuration, string reason, string location)
+        //,string branchid,string branchcode,string branchname,string tel,string fullname
+        public async Task BlockUser(string ipOrUsername, string userName, string blockType, TimeSpan blockDuration, string reason, string location, string lat, string lon, string city, string region, string country, string branchid, string branchcode, string branchname, string tel, string fullname)
         {
             var command = new BlockUserCommand
             {
@@ -187,23 +211,76 @@ namespace CBS.BusinessService.RequestLoggerServicesP
                 BlockType = blockType,
                 BlockEndTime = DateTime.UtcNow.Add(blockDuration),
                 BlockedBy="SYSTEM",
-                BranchId=GetBranchID(),
-                BranchName=GetBranchName(),
                 ComputerName="",
+                BranchId=branchid,
+                BranchName=branchname,
                 Location=location,
-                Reason=reason
+                Reason=reason,
+                FullName=fullname,
+                BranchCode=branchcode,
+                City=city,
+                Country=country,
+                Latitude=lat,
+                Longitude=lon,
+                PhoneNumber=tel,
+                Region=region
 
             };
 
             try
             {
-                var result = _api.PostAsync<ResponseObject<bool>>(APICallHelper.AddRateLimitedUser, command).GetAwaiter().GetResult();
+                var result = await _api.PostAsync<ResponseObject<bool>>(APICallHelper.AddRateLimitedUser, command);
                 System.Diagnostics.Debug.WriteLine($"✅ Blocked {ipOrUsername}: {result?.Message}");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"❌ Failed to block user '{ipOrUsername}': {ex.Message}");
             }
+        }
+
+
+        public async Task<ExecutionMessages> Add(BlockRequest blockRequest)
+        {
+            if (!GeolocalizationHelper.IsPublicIp(blockRequest.UserIP))
+            {
+                    GetExecutionMessages(
+                  null,
+                  false,
+                  null,
+                  MessagesResults.Failed,
+                  ExecutionProcessOption.DefaultFailedMessages,
+                  SystemMessageStatus.Failed.ToString(),
+                  null,
+                  "The IP address provided is not a public address. Please enter a valid public IPv4 or IPv6 address that is accessible over the internet. Private or internal addresses (e.g., 192.168.x.x, 10.x.x.x, 127.0.0.1) are not allowed for blacklist registration.");
+                return ExecutionMessage;
+            }
+
+            var user = await _userManagementServices.GetUser(blockRequest.UserId);
+            var branch = await _branchServices.GetBranch(user.BranchID);
+            var (ip, location, lat, lon, city, region, country) = GeolocalizationHelper.GetIpAndLocationSync();
+            var blockUserCommand = new BlockUserCommand { BranchId=branch.Id, BranchCode=branch.BranchCode, BranchName=branch.Name, BlockedBy=GetUserFullName(), BlockEndTime=DateTime.Now.AddDays(blockRequest.NumberOfDays), BlockType="Manual", City=city, ComputerName="-", Country=country, FullName=$"{user.firstName} {user.lastName}", IpAddress=blockRequest.UserIP, Latitude=lat, Location=location, Longitude=lon, PhoneNumber=user.phoneNumber, Reason=blockRequest.Reason, Region=region, UserName=user.userName };
+
+            try
+            {
+                var response = await _identityServerBaseUrl.PostAsync<ResponseObject<bool>>(APICallHelper.AddRateLimitedUser, blockUserCommand);
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                }
+                else
+                {
+                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+            }
+
+            return ExecutionMessage;
         }
 
 

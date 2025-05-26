@@ -75,6 +75,9 @@ namespace CBS.FrontDesk.Data.Entity
         public string SessionCode { get; set; }
         public string SessionIP { get; set; }
         public string SessionUserAgent { get; set; }
+        public string BranchId { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchName { get; set; }
     }
     public class UserRoleDto
     {

@@ -8,6 +8,7 @@ using CBS.FrontDesk.Service;
 using CBS.FrontDesk.UI.Controllers.ErrorHandler;
 using CBS.FrontDesk.UI.Filter;
 using CBS.FrontDesk.UI.Filters;
+using CBS.FrontDesk.UI.Utility.Middlware_logger;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
@@ -35,7 +36,7 @@ namespace CBS.FrontDesk.UI
         protected void Application_Start()
         {
 
-      
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -123,6 +124,10 @@ namespace CBS.FrontDesk.UI
                 }
             }
         }
+        protected void Application_End()
+        {
+            AdvancedMiddlewareLogger.Shutdown();
+        }
 
         //protected void Application_EndRequest()
         //{
@@ -175,13 +180,24 @@ namespace CBS.FrontDesk.UI
             Response.Headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
 
             // ✅ Content Security Policy (CSP)
+            //string contentSecurityPolicy = "default-src 'self'; " +
+            //"script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://unpkg.com; " +
+            //"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://unpkg.com; " +
+            //"font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; " +
+            //"img-src 'self' data: https:; " +
+            //"connect-src 'self' https://localhost:44346; " +
+            //"frame-src 'self';";
+
             string contentSecurityPolicy = "default-src 'self'; " +
-                                           "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
-                                           "connect-src 'self' https://localhost:44346; " +
-                                           "img-src 'self' data:; " +
-                                           "style-src 'self' 'unsafe-inline'; " +
-                                           "frame-src 'self'; " +
-                                           "font-src 'self';";
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://cdnjs.cloudflare.com https://unpkg.com; " +
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://unpkg.com; " +
+            "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; " +
+            "img-src 'self' data: https:; " +
+            "connect-src 'self' https://localhost:44346; " +
+            "frame-src 'self' https://www.google.com;";
+
+
+
 
             if (!Response.Headers.AllKeys.Contains("Content-Security-Policy"))
                 Response.Headers.Add("Content-Security-Policy", contentSecurityPolicy);

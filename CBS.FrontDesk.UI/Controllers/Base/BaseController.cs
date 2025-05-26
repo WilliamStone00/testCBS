@@ -262,7 +262,7 @@ namespace CBS.FrontDesk.UI.Controllers
         //////                    }
         //////                }
 
-              
+
         //////            }
         //////            else
         //////            {
@@ -606,8 +606,11 @@ namespace CBS.FrontDesk.UI.Controllers
                     RoleName = roles,
                     SessionIP=reqDto.SessionIP,
                     SessionUserAgent=reqDto.SessionUserAgent,
-                    FullName = user.FullName,
+                    FullName = $"{reqDto.firstName} {reqDto.lastName}",
                     Email = user.Email,
+                    BranchCode=reqDto.Branch.BranchCode,
+                    BranchId=reqDto.BranchID,
+                    BranchName=reqDto.Branch.Name,
                     Phonenumber = user.Phonenumber,
                     SessionID = reqDto.SessionId,
                     SessionCode=reqDto.SessionCode,
@@ -711,9 +714,9 @@ namespace CBS.FrontDesk.UI.Controllers
 
             }
 
-                // ✅ Valid single session
-                BuildLocalSession(userSession.UserAuthDto);
-            }
+            // ✅ Valid single session
+            BuildLocalSession(userSession.UserAuthDto);
+
         }
 
 

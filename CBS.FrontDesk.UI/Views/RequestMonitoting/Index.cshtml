@@ -1,0 +1,660 @@
+﻿@using CBS.FrontDesk.UI.Helper
+@model CBS.FrontDesk.Data.Entity.RequestManagement.RateLimitDashboardDto
+
+@{
+    ViewBag.Title = "Rate Limit Monitoring Dashboard";
+}
+<style>
+    canvas#blockStatusPie {
+        max-height: 300px;
+    }
+
+    .chart-fixed {
+        height: 300px !important;
+        max-height: 300px !important;
+    }
+</style>
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-shield-alert me-2"></i> Request Monitoring Dashboard
+                </h1>
+                <p class="card-text">Analyze rate-limited access attempts across branches and IPs. Use date and branch filters to target specific requests.</p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-muted text-end pe-2 small">
+    <i class="mdi mdi-timer"></i> Auto-refreshes every 1 minute
+</div>
+
+
+<div class="card shadow p-3 mb-4">
+    <!-- Filters Section -->
+    <div class="card p-3 mb-0 bg-light">
+        <h5 class="text-primary mb-3">
+            <i class="mdi mdi-filter-outline me-1"></i> Filters
+        </h5>
+
+        <form id="filterForm" method="get" asp-action="RateLimitDashboard" class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Branch</label>
+                @Html.DropDownList(
+                    "BranchId",
+                    new SelectList(ViewBag.Branches, "Id", "Name", Context.Request.QueryString["BranchId"]),
+                    "--- Select Branch ---",
+                    new { @class = "form-control shadow-sm select2", @id = "branchInput" })
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Top X</label>
+                <input type="number" name="QueryTopValue" value="@Context.Request.QueryString["QueryTopValue"]" class="form-control" placeholder="Top Count" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Start Date</label>
+                <input type="date" name="StartDate"
+                       value="@(Context.Request.QueryString["StartDate"] ?? DateTime.Today.ToString("yyyy-MM-dd"))"
+                       class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">End Date</label>
+                <input type="date" name="EndDate"
+                       value="@(Context.Request.QueryString["EndDate"] ?? DateTime.Today.ToString("yyyy-MM-dd"))"
+                       class="form-control" />
+            </div>
+        </form>
+    </div>
+
+    <div class="mt-3 d-flex justify-content-between px-3">
+        <button type="button" onclick="exportDashboard()" class="btn btn-outline-primary">
+            <i class="mdi mdi-file-excel"></i> Export to Excel
+        </button>
+        <button type="submit" form="filterForm" class="btn btn-primary">
+            <i class="mdi mdi-magnify"></i> Apply Filters
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card p-3">
+            <h6 class="text-center text-primary">Top IPs</h6>
+            <canvas id="topIpsChart" style="height: 300px;" class="chart-fixed"></canvas>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card p-3">
+            <h6 class="text-center text-primary">Top Users</h6>
+            <canvas id="topUsersChart" style="height: 300px;" class="chart-fixed"></canvas>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card p-3">
+            <h6 class="text-center text-primary">Top Paths</h6>
+            <canvas id="topPathsChart" style="height: 300px;" class="chart-fixed"></canvas>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card p-3">
+            <h6 class="text-center text-success">Blocked vs Non-Blocked</h6>
+            <canvas id="blockStatusPie" style="height: 300px;" class="chart-fixed"></canvas>
+        </div>
+    </div>
+
+    <div class="col-md-12 mb-4">
+        <div class="card p-3">
+            <h6 class="text-center text-primary">Hourly Request Trends</h6>
+            <canvas id="hourlyRequestLine" style="height: 300px;" class="chart-fixed"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="text-muted small text-end" id="lastRefreshLabel">
+    <i class="mdi mdi-clock-outline"></i> Last refreshed: <span id="lastRefreshTime">never</span>
+</div>
+
+<div class="modal fade" id="logDetailModal" tabindex="-1" aria-labelledby="logDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content position-relative">
+
+            <!-- Loader Overlay -->
+            <div id="logDetailLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                    <div class="spinner-border text-primary mb-3" role="status"></div>
+                    <p class="fw-semibold text-primary">Loading detailed logs, please wait...</p>
+                </div>
+            </div>
+
+            <!-- Modal Header -->
+            <div class="modal-header pb-0 border-0">
+                <div class="w-100">
+                    <div class="card bg-light mb-2">
+                        <div class="card-body text-center">
+                            <h1 class="card-title text-primary" id="logDetailModalTitle">
+                                <i class="mdi mdi-chart-bar me-2"></i> Top 10 IP Activities
+                            </h1>
+                            <p class="card-text text-muted fw-semibold" id="logDetailModalDescription">
+                                Filtered by Branch: <span class="text-dark" id="modalBranch">N/A</span>,
+                                Start Date: <span class="text-dark" id="modalStartDate">N/A</span>,
+                                End Date: <span class="text-dark" id="modalEndDate">N/A</span>
+                            </p>
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body pt-0" style="max-height: 75vh; overflow-y: auto;">
+                <!-- Log Table -->
+                <div id="logDetailTableContainer" class="px-3">
+                    <div class="card p-3 shadow mb-4">
+                        <h5 class="text-primary mb-3">
+                            <i class="mdi mdi-table"></i> Request Log Listing
+                        </h5>
+                        <div class="table-responsive">
+                            <table id="logDataTable" class="table table-bordered table-striped table-sm align-middle w-100">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>IP</th>
+                                        <th>User</th>
+                                        <th>Status</th>
+                                        <th>Branch</th>
+                                        <th>Location</th>
+                                        <th>Time</th>
+                                        <th>Action</th> <!-- NEW COLUMN -->
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer justify-content-end">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" onclick="exportModalTableToExcel()">
+                    <i class="mdi mdi-file-excel"></i> Export to Excel
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Declare global variables at the top
+        let topIpsChartInstance, topUsersChartInstance, topPathsChartInstance, blockedStatusPieInstance, hourlyRequestLineChartInstance;
+
+        // Global chart instances (make sure to initialize these properly)
+        let topIpsChart, topUsersChart, topPathsChart, blockStatusPie, hourlyRequestLine;
+        let logTable;
+        $(document).ready(function () {
+            if ($.fn.DataTable.isDataTable("#logDataTable")) {
+                $('#logDataTable').DataTable().clear().destroy();
+            }
+
+            $('#logDataTable').DataTable({
+                pageLength: 10,
+                lengthChange: false,
+                order: [[5, 'desc']], // assuming Time column is last
+                language: {
+                    search: "Filter:",
+                    info: "Showing _START_ to _END_ of _TOTAL_ logs"
+                }
+            });
+
+
+            // Start auto-refresh every 60 seconds
+            setInterval(refreshDashboardCharts, 60000);
+        });
+
+        function exportDashboard() {
+            const filters = {
+                BranchId: $("#branchInput").val() || "n/a",
+                QueryTopValue: $("input[name='QueryTopValue']").val() || "10",
+                StartDate: $("input[name='StartDate']").val(),
+                EndDate: $("input[name='EndDate']").val()
+            };
+
+            const queryString = $.param(filters);
+            window.location.href = '/RequestMonitoting/ExportDashboardDataToExcel?' + queryString;
+        }
+
+
+        function refreshDashboardCharts() {
+            const filters = {
+                BranchId: $("#branchInput").val() || "n/a",
+                QueryTopValue: $("input[name='QueryTopValue']").val() || "10",
+                StartDate: $("input[name='StartDate']").val() || new Date().toISOString().split('T')[0],
+                EndDate: $("input[name='EndDate']").val() || new Date().toISOString().split('T')[0]
+            };
+
+            // Don't refresh if modal is active
+            const isModalOpen = $("#logDetailModal").hasClass("show");
+            if (isModalOpen || !filters.BranchId || !filters.QueryTopValue) return;
+
+            $.ajax({
+                url: '/RequestMonitoting/RateLimitDashboard',
+                method: 'GET',
+                data: filters, // Or use: $("#yourFilterForm").serialize(),
+                success: function (response) {
+                    if (!response) {
+                        console.warn("No dashboard data returned.");
+                        return;
+                    }
+
+                    // Only update charts if they exist and response has valid data
+                    if (typeof topIpsChartInstance !== 'undefined' && response.topIps)
+                        updateChart(topIpsChartInstance, response.topIps);
+
+                    if (typeof topUsersChartInstance !== 'undefined' && response.topUsers)
+                        updateChart(topUsersChartInstance, response.topUsers);
+
+                    if (typeof topPathsChartInstance !== 'undefined' && response.topPaths)
+                        updateChart(topPathsChartInstance, response.topPaths);
+
+                    if (typeof blockedStatusPieInstance !== 'undefined' && response.blockedStatus)
+                        updateChart(blockedStatusPieInstance, response.blockedStatus);
+
+                    if (typeof hourlyRequestLineChartInstance !== 'undefined' && response.hourlyRequests)
+                        updateChart(hourlyRequestLineChartInstance, response.hourlyRequests);
+                },
+                error: function (xhr) {
+                    console.error("Dashboard auto-refresh failed:", xhr.responseText || xhr.statusText);
+                }
+            });
+        }
+
+        function updateChart(chartInstance, newData) {
+            if (!newData || !Array.isArray(newData)) {
+                console.warn("Invalid or empty chart data received:", newData);
+                return;
+            }
+
+            chartInstance.data.labels = newData.map(x => x.Key);
+            chartInstance.data.datasets[0].data = newData.map(x => x.Value);
+            chartInstance.update();
+        }
+
+
+        function updatePieChart(chart, items) {
+            chart.data.labels = items.map(x => x.Key);
+            chart.data.datasets[0].data = items.map(x => x.Value);
+            chart.update();
+        }
+
+        function updateLineChart(chart, items) {
+            chart.data.labels = items.map(x => x.Key);
+            chart.data.datasets[0].data = items.map(x => x.Value);
+            chart.update();
+        }
+
+
+
+        function loadDetailModal(title, key) {
+            $('#detailModalLabel').text(title);
+            $('#modalContent').html('<div class="text-muted">Loading...</div>');
+
+            $.get(`/RequestMonitoting/GetLog?key=${encodeURIComponent(key)}`, function (data) {
+                // Render as JSON or format HTML depending on your data
+                let html = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                $('#modalContent').html(html);
+                $('#detailModal').modal('show');
+            }).fail(() => {
+                $('#modalContent').html('<div class="text-danger">Failed to load details.</div>');
+            });
+        }
+
+        function openDetailsFromChart(label, keyType) {
+            const filters = {
+                Key: label,
+                KeyType: keyType,
+                BranchId: $("#branchInput").val() || "n/a",
+                QueryTopValue: $("input[name='QueryTopValue']").val() || "10",
+                StartDate: $("input[name='StartDate']").val() || null,
+                EndDate: $("input[name='EndDate']").val() || null
+            };
+
+            // 🔹 Set modal header and description
+            $("#logDetailModalTitle").html(
+                `<i class="mdi mdi-chart-bar me-2"></i> Top ${filters.QueryTopValue} ${keyType.charAt(0).toUpperCase() + keyType.slice(1)} Activities`
+            );
+            $("#logDetailModalDescription").html(
+                `Filtered by Branch: <span class="text-dark">${filters.BranchId || 'N/A'}</span>,
+         Start Date: <span class="text-dark">${filters.StartDate || 'N/A'}</span>,
+         End Date: <span class="text-dark">${filters.EndDate || 'N/A'}</span>`
+            );
+
+            // 🔄 Show loader
+            $("#logDetailLoader").removeClass("d-none");
+            $('#logDetailModal').modal('show');
+
+            $.ajax({
+                url: '/RequestMonitoting/GetLogsByKey',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(filters),
+                success: function (response) {
+                    $("#logDetailLoader").addClass("d-none");
+
+                    if (!$.fn.DataTable.isDataTable("#logDataTable")) {
+                        toastr.error("Log table not initialized.");
+                        return;
+                    }
+
+                    const table = $("#logDataTable").DataTable();
+                    table.clear();
+
+                    if (Array.isArray(response) && response.length > 0) {
+                        response.forEach(row => {
+                            table.row.add([
+                                row.IpAddress,
+                                row.UserName,
+                                row.IsBlocked
+                                    ? '<span class="badge bg-danger">Blocked</span>'
+                                    : '<span class="badge bg-success">Allowed</span>',
+                                row.BranchName || '-',
+                                row.Location || '-',
+                                formatDate(row.Timestamp),
+                                `<button class="btn btn-sm ${row.IsBlocked ? 'btn-success' : 'btn-danger'}" onclick="toggleBlock('${row.IpAddress}', ${!row.IsBlocked})">
+                                ${row.IsBlocked ? 'Unblock' : 'Block'}
+                                </button>`
+                            ]);
+                        });
+                        table.draw();
+                    } else {
+                        table.draw();
+                        toastr.info("No log entries found for this selection.");
+                    }
+                },
+                error: function () {
+                    $("#logDetailLoader").addClass("d-none");
+                    toastr.error("Failed to load log details.");
+                }
+            });
+        }
+        function toggleBlock(ip, block) {
+            $.ajax({
+                url: '/RequestMonitoting/ToggleBlockStatus',
+                method: 'POST',
+                data: { ip: ip, block: block },
+                success: function (response) {
+                    if (response.success) {
+                        toastr.success(response.message);
+                        $('#logDetailModal').modal('hide');
+                        // Optionally trigger refresh of dashboard or modal
+                    } else {
+                        toastr.error(response.message);
+                    }
+                },
+                error: function () {
+                    toastr.error("Failed to update block status.");
+                }
+            });
+        }
+
+        function exportModalTableToExcel() {
+            const table = document.querySelector("#modalContent table");
+            if (!table) return;
+
+            let html = table.outerHTML.replace(/ /g, '%20');
+            const filename = 'RateLimitDetails.xlsx';
+
+            const link = document.createElement("a");
+            link.href = 'data:application/vnd.ms-excel,' + html;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        const topIps = @Html.Raw(JsonMVC.Serialize(Model.TopIps));
+        const topUsers = @Html.Raw(JsonMVC.Serialize(Model.TopUsers));
+        const topPaths = @Html.Raw(JsonMVC.Serialize(Model.TopPaths));
+        const blockStatus = @Html.Raw(JsonMVC.Serialize(Model.BlockedStatus));
+        const hourlyRequests = @Html.Raw(JsonMVC.Serialize(Model.HourlyRequests));
+
+        new Chart(document.getElementById("topIpsChart"), {
+            type: 'bar',
+            data: {
+                labels: topIps.map(x => x.Key),
+                datasets: [{
+                    label: "Top IPs",
+                    data: topIps.map(x => x.Value),
+                    backgroundColor: '#7cb9e8'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                onClick: function (event, elements) {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        const label = this.data.labels[index];
+                        openDetailsFromChart(label, "IP"); // ✅ use standard handler
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                }
+            }
+        });
+
+
+
+
+
+        new Chart(document.getElementById("topUsersChart"), {
+            type: 'bar',
+            data: {
+                labels: topUsers.map(x => x.Key),
+                datasets: [{
+                    label: "Top Users",
+                    data: topUsers.map(x => x.Value)
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                onClick: function (event, elements) {
+                    if (elements.length > 0) {
+                        const label = this.data.labels[elements[0].index];
+                        openDetailsFromChart(label, "User");
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById("topPathsChart"), {
+            type: 'bar',
+            data: {
+                labels: topPaths.map(x => x.Key),
+                datasets: [{
+                    label: "Top Paths",
+                    data: topPaths.map(x => x.Value)
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                onClick: function (event, elements) {
+                    if (elements.length > 0) {
+                        const label = this.data.labels[elements[0].index];
+                        openDetailsFromChart(label, "Path");
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById("blockStatusPie"), {
+            type: 'pie',
+            data: {
+                labels: blockStatus.map(x => x.Key),
+                datasets: [{
+                    data: blockStatus.map(x => x.Value),
+                    backgroundColor: ['#ff9999', '#66b3ff']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                onClick: function (event, elements) {
+                    if (elements.length > 0) {
+                        const label = this.data.labels[elements[0].index];
+                        openDetailsFromChart(label.toLowerCase(), "Blocked"); // "true" / "false"
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById("hourlyRequestLine"), {
+            type: 'line',
+            data: {
+                labels: hourlyRequests.map(x => x.Key),
+                datasets: [{
+                    label: "Requests Over Time",
+                    data: hourlyRequests.map(x => x.Value),
+                    fill: false,
+                    borderColor: 'blue'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                onClick: function (event, elements) {
+                    if (elements.length > 0) {
+                        const label = this.data.labels[elements[0].index];
+                        openDetailsFromChart(label, "Time"); // Optional: adjust if you support time-specific filtering
+                    }
+                }
+            }
+        });
+
+
+        topIpsChartInstance = new Chart(document.getElementById("topIpsChart"), {
+            type: 'bar',
+            data: {
+                labels: topIps.map(x => x.Key),
+                datasets: [{
+                    label: "Top IPs",
+                    data: topIps.map(x => x.Value),
+                    backgroundColor: '#7cb9e8'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                onClick: function (event, elements) {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        const label = this.data.labels[index];
+                        openDetailsFromChart(label, "IP");
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                }
+            }
+        });
+        topUsersChartInstance = new Chart(document.getElementById("topUsersChart"), {
+            type: 'bar',
+            data: {
+                labels: topUsers.map(x => x.Key),
+                datasets: [{
+                    label: "Top Users",
+                    data: topUsers.map(x => x.Value)
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                onClick: function (event, elements) {
+                    if (elements.length > 0) {
+                        const label = this.data.labels[elements[0].index];
+                        openDetailsFromChart(label, "User");
+                    }
+                }
+            }
+        });
+        topPathsChartInstance = new Chart(document.getElementById("topPathsChart"), {
+            type: 'bar',
+            data: {
+                labels: topPaths.map(x => x.Key),
+                datasets: [{
+                    label: "Top Paths",
+                    data: topPaths.map(x => x.Value)
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                onClick: function (event, elements) {
+                    if (elements.length > 0) {
+                        const label = this.data.labels[elements[0].index];
+                        openDetailsFromChart(label, "Path");
+                    }
+                }
+            }
+        });
+        blockedStatusPieInstance = new Chart(document.getElementById("blockStatusPie"), {
+            type: 'pie',
+            data: {
+                labels: blockStatus.map(x => x.Key),
+                datasets: [{
+                    data: blockStatus.map(x => x.Value),
+                    backgroundColor: ['#ff9999', '#66b3ff']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                onClick: function (event, elements) {
+                    if (elements.length > 0) {
+                        const label = this.data.labels[elements[0].index];
+                        openDetailsFromChart(label.toLowerCase(), "Blocked");
+                    }
+                }
+            }
+        });
+        hourlyRequestLineChartInstance = new Chart(document.getElementById("hourlyRequestLine"), {
+            type: 'line',
+            data: {
+                labels: hourlyRequests.map(x => x.Key),
+                datasets: [{
+                    label: "Requests Over Time",
+                    data: hourlyRequests.map(x => x.Value),
+                    fill: false,
+                    borderColor: 'blue'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                onClick: function (event, elements) {
+                    if (elements.length > 0) {
+                        const label = this.data.labels[elements[0].index];
+                        openDetailsFromChart(label, "Time");
+                    }
+                }
+            }
+        });
+
+    </script>
+}

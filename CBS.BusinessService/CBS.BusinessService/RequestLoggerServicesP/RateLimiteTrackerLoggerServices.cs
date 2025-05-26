@@ -36,7 +36,7 @@ namespace CBS.BusinessService.RequestLoggerServicesP
         public RateLimiteTrackerLoggerServices()
         {
             _identityServerBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-            
+
         }
         private static RateLimitApiHelper ApiCaller => _lazyApiCaller.Value;
 
@@ -86,6 +86,46 @@ namespace CBS.BusinessService.RequestLoggerServicesP
             );
         }
 
+        public async Task<RateLimitDashboardDto> GetDasgboardAsync(GetRateLimitDashboardQuery getRateLimitDashboardQuery)
+        {
+            var response = await _identityServerBaseUrl.PostAsync<ResponseObject<RateLimitDashboardDto>>(
+                APICallHelper.DashboardRateLimiteTrackerLogger,
+                getRateLimitDashboardQuery);
+
+            if (response.IsSuccess && response.ApiResponseData != null)
+            {
+                return response.ApiResponseData.Data;
+            }
+
+            return new RateLimitDashboardDto();
+        }
+        public async Task<List<RateLimiteTrackerLogger>> GetRateLimiteTrackerLoggerBylogs_by_key(GetRateLimitLogsByKeyQuery getRateLimitLogsByKey)
+        {
+            var response = await _identityServerBaseUrl.PostAsync<ResponseObject<List<RateLimiteTrackerLogger>>>(
+                APICallHelper.GetRateLimiteTrackerLoggerBylogs_by_key,
+                getRateLimitLogsByKey);
+
+            if (response.IsSuccess && response.ApiResponseData != null)
+            {
+                return response.ApiResponseData.Data;
+            }
+
+            return new List<RateLimiteTrackerLogger>();
+        }
+        public async Task<List<RateLimiteTrackerLogger>> ExportDashboard(GetRateLimitDashboardQuery dashboardQuery)
+        {
+            var response = await _identityServerBaseUrl.PostAsync<ResponseObject<List<RateLimiteTrackerLogger>>>(
+                APICallHelper.ExportRateLimiteTrackerLoggerBylogs,
+                dashboardQuery);
+
+            if (response.IsSuccess && response.ApiResponseData != null)
+            {
+                return response.ApiResponseData.Data;
+            }
+
+            return new List<RateLimiteTrackerLogger>();
+        }
+        //
         public async Task<RateLimiteTrackerLogger> GetRateLimiteTrackerLogger(string id)
         {
             try
@@ -105,8 +145,6 @@ namespace CBS.BusinessService.RequestLoggerServicesP
         {
             try
             {
-                logger.BranchId=GetBranchID();
-                logger.BranchName=GetBranchName();
                 var result = await ApiCaller.PostAsync<ResponseObject<bool>>(APICallHelper.AddRateLimiteTrackerLogger, logger);
                 return result?.Data ?? false;
             }
@@ -119,7 +157,7 @@ namespace CBS.BusinessService.RequestLoggerServicesP
         /// <summary>
         /// Logs a general request.
         /// </summary>
-        public async Task LogRequest(string ip, string mac, string computerName, string path, int statusCode, string location)
+        public async Task LogRequest(string ip, string mac, string computerName, string path, int statusCode, string location, string lat, string lon, string city, string region, string country, string branchid, string branchcode, string branchname, string tel, string fullname, bool isblocked, string reason)
         {
             var command = new LogRateLimitTrackerCommand
             {
@@ -131,7 +169,19 @@ namespace CBS.BusinessService.RequestLoggerServicesP
                 Location = location,
                 BlockType = "n/a",
                 WarningMessage = "n/a",
-                BlockEndTime = DateTime.MinValue
+                BlockEndTime = DateTime.MinValue,
+                FullName=fullname,
+                BranchCode=branchcode,
+                BranchName=branchname,
+                BranchId=branchid,
+                IsBlocked=isblocked,
+                Reason=reason,
+                City=city,
+                Country=country,
+                Latitude=lat,
+                Longitude=lon,
+                PhoneNumber=tel,
+                Region=region
             };
 
             await LogRequestAsync(command);
@@ -161,7 +211,7 @@ namespace CBS.BusinessService.RequestLoggerServicesP
         /// <summary>
         /// Logs a blocked user request.
         /// </summary>
-        public async Task LogBlockedUser(string ip, string mac, string computerName, DateTime blockEndTime, string blockType, string location,string reason)
+        public async Task LogBlockedUser(string ip, string mac, string computerName, DateTime blockEndTime, string blockType, string location, string reason)
         {
             var command = new LogRateLimitTrackerCommand
             {
@@ -171,15 +221,17 @@ namespace CBS.BusinessService.RequestLoggerServicesP
                 BlockType = blockType,
                 BlockEndTime = blockEndTime,
                 Location = location,
-                Path = "n/a", IsBlocked=true,
-                StatusCode = 429, Reason=reason,
-                WarningMessage = "Rate limit exceeded", 
+                Path = "n/a",
+                IsBlocked=true,
+                StatusCode = 429,
+                Reason=reason,
+                WarningMessage = "Rate limit exceeded",
             };
 
             await LogRequestAsync(command);
         }
 
-        
+
     }
 
 }

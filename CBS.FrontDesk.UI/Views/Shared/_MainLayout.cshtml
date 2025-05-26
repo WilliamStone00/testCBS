@@ -1191,28 +1191,28 @@
     </div>
     <!-- 🌟 Floating Idle Countdown Timer -->
     @*<div id="idleCountdownBanner" style="
-        position: fixed;
-        bottom: 10px;
-        right: 10px;  /* Extreme right */
-        z-index: 9999;
-        background: linear-gradient(to right, deepskyblue, limegreen);
-        color: white;
-        padding: 8px 16px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 600;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-        opacity: 0.95;
-        display: none;
-        height: 38px;
-        line-height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        white-space: nowrap;
-    ">
-            ⏳ Idle Timeout: <span id="floatingCountdownText">5:00</span>
-        </div>*@
+            position: fixed;
+            bottom: 10px;
+            right: 10px;  /* Extreme right */
+            z-index: 9999;
+            background: linear-gradient(to right, deepskyblue, limegreen);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+            opacity: 0.95;
+            display: none;
+            height: 38px;
+            line-height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+        ">
+                ⏳ Idle Timeout: <span id="floatingCountdownText">5:00</span>
+            </div>*@
     <!-- 🚫 Internet Lost Mini Banner -->
     <div id="internetStatusBanner" style="
         position: fixed;
@@ -1233,8 +1233,8 @@
         justify-content: center;
         white-space: nowrap;
     ">
-            🚫 No Internet
-        </div>
+        🚫 No Internet
+    </div>
     <!-- / Layout wrapper -->
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
@@ -1284,7 +1284,7 @@
     <!-- Main JS -->
     <script src="~/CBSTemp/ui/assets/js/main.js"></script>
 
-    <script src="~/CBSTemp/ui/assets/js/form-validation.js"></script>
+    @*<script src="~/CBSTemp/ui/assets/js/form-validation.js"></script>*@
     <script src="~/CBSTemp/ui/assets/js/form-layouts.js"></script>
     <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
 
@@ -1293,8 +1293,8 @@
     <script src="~/Scripts/Js/main.js/App.js"></script>
     <script src="~/CBSTemp/ui/assets/js/ui-toasts.js"></script>
     <script src="~/CBSTemp/ui/assets/js/app-logistics-dashboard.js"></script>
-
-    <script src="../../assets/js/forms-file-upload.js"></script>
+    <script src="~/CBSTemp/ui/assets/js/forms-file-upload.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ace.js" crossorigin="anonymous"></script>
 
 
     <script>
@@ -1310,34 +1310,34 @@
     @*<script src="~/Scripts/Js/main.js/clientDataAfterLogin.js"></script>*@
     <script src="~/Scripts/Js/main.js/ConnectionMonitor.js"></script>
     @*<script>
-        function checkInternetConnection() {
-            if (!navigator.onLine) {
-                redirectToNoInternet();
-            } else {
-                // Double-check connectivity by making a lightweight request
-                fetch("/Home/Ping")
-                    .then(response => {
-                        if (!response.ok) {
+            function checkInternetConnection() {
+                if (!navigator.onLine) {
+                    redirectToNoInternet();
+                } else {
+                    // Double-check connectivity by making a lightweight request
+                    fetch("/Home/Ping")
+                        .then(response => {
+                            if (!response.ok) {
+                                redirectToNoInternet();
+                            }
+                        })
+                        .catch(() => {
                             redirectToNoInternet();
-                        }
-                    })
-                    .catch(() => {
-                        redirectToNoInternet();
-                    });
+                        });
+                }
             }
-        }
 
-        function redirectToNoInternet() {
-            window.location.href = "/Home/NoInternet";
-        }
+            function redirectToNoInternet() {
+                window.location.href = "/Home/NoInternet";
+            }
 
-        // Initial check on page load
-        checkInternetConnection();
+            // Initial check on page load
+            checkInternetConnection();
 
-        // Listen for connectivity changes
-        window.addEventListener('offline', redirectToNoInternet);
-        window.addEventListener('online', checkInternetConnection);
-    </script>*@
+            // Listen for connectivity changes
+            window.addEventListener('offline', redirectToNoInternet);
+            window.addEventListener('online', checkInternetConnection);
+        </script>*@
 
 
     @RenderSection("scripts", required: false)

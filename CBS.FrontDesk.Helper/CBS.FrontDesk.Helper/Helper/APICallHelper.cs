@@ -4,11 +4,27 @@ using DocumentFormat.OpenXml.VariantTypes;
 namespace CBS.FrontDesk.Helper
 {
     public abstract class APICallHelper
-    {
-        public const string AddRateLimitedUser = "/api/v1/blocked-users/block";
+    {   //RateLimitedUser
+        public const string AddRateLimitedUser = "api/v1/blocked-users/block";
         public const string Get_Delete_RateLimitedUser = "/api/v1/blocked-users/{0}";         // ✅ GET by ID or DELETE
         public const string GetAllRateLimitedUsers = "/api/v1/blocked-users/all";
-        public const string CheckRateLimitBlock = "api/v1/blocked-users/is-blocked/{0}";     // ✅ NEW ENDPOINT FOR CHECK
+        public const string CheckRateLimitBlock = "/api/v1/blocked-users/is-blocked";     // ✅ NEW ENDPOINT FOR CHECK
+
+        //PasswordPolicyManagement
+        public const string AddPasswordPolicyManagement = "/api/v1/PasswordPolicyManagement/add";
+        public const string UpdatePasswordPolicyManagement = "/api/v1/PasswordPolicyManagement/update";
+        public const string Get_Delete_PasswordPolicyManagement = "/api/v1/PasswordPolicyManagement/{0}";         // ✅ GET by ID or DELETE
+        public const string GetAllPasswordPolicyManagements = "/api/v1/PasswordPolicyManagement/all";
+        public const string GetPasswordPolicyManagementByBranch = "/api/v1/PasswordPolicyManagement/by-branch/{0}";     // ✅ NEW ENDPOINT FOR CHECK
+        public static string GetCurrentIdletimeByBranch = "/api/v1/PasswordPolicyManagement/by-branch/{0}";
+
+
+        //SuspiciousPath
+        public const string AddSuspiciousPath = "/api/v1/suspicious-path/add";
+        public const string UpdateSuspiciousPath = "/api/v1/suspicious-path/update";
+        public const string Get_Delete_SuspiciousPath = "/api/v1/suspicious-path/{0}";         // ✅ GET by ID or DELETE
+        public const string GetAllSuspiciousPaths = "/api/v1/suspicious-path/all";
+        public const string CheckSuspiciousPath = "/api/v1/suspicious-path/is-suspicious";     // ✅ NEW ENDPOINT FOR CHECK
 
 
         //BlacklistAccounts
@@ -168,7 +184,6 @@ namespace CBS.FrontDesk.Helper
         public static string GetUserSessions = "/api/UserSession/GetUser/Sessions/{0}";
         public static string GetUserSessionByUserNameAndCode = "/api/Session/by-session-code";
         public static string InvalidateAllActivetUsers = "/api/Session/invalidate-by-recovery-code";
-        public static string GetCurrentIdletimeByBranch = "/api/v1/idletime/by-branch/{0}";
         public static string LogoutuserSessions = "/api/Session/logout";
         public static string GenerateRecoveryCode = "/api/Session/generate-recovery-code";
 
@@ -195,10 +210,13 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllUserRoles = "/api/RoleUsers/GetAllUserRoles";
 
 
-        //RateLimiteTrackerLogger
+        //RateLimiteTrackerLogger    /api/v1/rate-limit-tracker/export-dashboard-logs
         public static string Get_Delete_RateLimiteTrackerLogger = "/api/v1/rate-limit-tracker/{0}";
         public static string AddRateLimiteTrackerLogger = "/api/v1/rate-limit-tracker/log";
         public static string GetAllRateLimiteTrackerLogger = "/api/v1/rate-limit-tracker/datatable";
+        public static string DashboardRateLimiteTrackerLogger = "/api/v1/rate-limit-tracker/dashboard";
+        public static string GetRateLimiteTrackerLoggerBylogs_by_key = "/api/v1/rate-limit-tracker/logs-by-key";
+        public static string ExportRateLimiteTrackerLoggerBylogs = "/api/v1/rate-limit-tracker/export-logs";
 
 
         //RateLimitConfig

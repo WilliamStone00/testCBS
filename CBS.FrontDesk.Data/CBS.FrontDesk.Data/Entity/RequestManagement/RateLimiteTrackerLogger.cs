@@ -19,6 +19,21 @@ namespace CBS.FrontDesk.Data.Entity.RequestManagement
         public string WarningMessage { get; set; }
         public string BlockType { get; set; }
         public DateTime BlockEndTime { get; set; }
+        public string Reason { get; set; }
+        public bool IsBlocked { get; set; }
+
+        // New fields added
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
+        public string City { get; set; }
+        public string Region { get; set; }
+        public string Country { get; set; }
+
+        public string BranchId { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchName { get; set; }
+        public string PhoneNumber { get; set; }
+        public string FullName { get; set; }
         public DateTime Timestamp { get; set; }
     }
     public class LogRateLimitTrackerCommand
@@ -36,6 +51,16 @@ namespace CBS.FrontDesk.Data.Entity.RequestManagement
         public bool IsBlocked { get; set; }
         public string BranchName { get; set; }
         public string BranchId { get; set; }
+        // New fields added
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
+        public string City { get; set; }
+        public string Region { get; set; }
+        public string Country { get; set; }
+
+        public string BranchCode { get; set; }
+        public string PhoneNumber { get; set; }
+        public string FullName { get; set; }
 
     }
     public class GetRateLimitTrackerDataTableQuery

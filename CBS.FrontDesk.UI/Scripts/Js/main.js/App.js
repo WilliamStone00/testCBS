@@ -478,6 +478,39 @@ function calculateBalanceAmountReceived() {
     // Update the DepositRequest_amount input field with the total amount
     document.getElementById("DepositRequest_amount").value = totalAmount.toFixed(2);
 }
+function formatDate(input) {
+    const date = parseJsonDate(input);
+    if (!date || isNaN(date.getTime())) return '<span class="text-muted">Invalid</span>';
+
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months start at 0
+    const year = date.getFullYear();
+
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
+}
+
+
+function parseJsonDate(jsonDate) {
+    if (!jsonDate) return null;
+
+    // ISO format (safe)
+    if (typeof jsonDate === "string" && !jsonDate.includes("/Date")) {
+        const parsed = new Date(jsonDate);
+        return isNaN(parsed.getTime()) ? null : parsed;
+    }
+
+    // Microsoft JSON date format: /Date(1716635543557)/
+    const match = /\/Date\((\d+)(?:-\d+)?\)\//.exec(jsonDate);
+    if (match) {
+        const timestamp = parseInt(match[1], 10);
+        return new Date(timestamp);
+    }
+
+    return null;
+}
 
 function calculateBalanceAmountReceived() {
     const elements = [
