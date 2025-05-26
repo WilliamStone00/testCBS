@@ -1,7 +1,7 @@
 ﻿
-
+@using Resources
 @{
-    ViewBag.Title = "Moral Persons";
+    ViewBag.Title = @GlobalGroup.MoralPersons;
 }
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
@@ -16,7 +16,7 @@
                             data-bs-target="#accordionPopoutIcon-3"
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
-                        <i class="mdi mdi-account-group"></i>&nbsp; Moral Persons
+                        <i class="mdi mdi-account-group"></i>&nbsp; @GlobalGroup.MoralPersons
 
                     </button>
                 </h2>
@@ -29,7 +29,7 @@
                                 <div class="card mb-4">
                                     <div class="card-body d-sm-flex d-block">
                                         <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                            <a type="button" onclick="LoadUsers('All')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                            <a type="button" onclick="LoadUsers('All')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
                                                 <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                             </a>
                                         </div>
@@ -40,12 +40,12 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-8 d-flex align-items-center">
-                                                <label for="manualSearchInput" class="search-label">Search by Group name, Tax number, Registration number...</label>
+                                                <label for="manualSearchInput" class="search-label">@GlobalGroup.SearchByGroupNameTaxNumber...</label>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="Enter search criteria...">
-                                                    <button class="btn btn-primary" onclick="manualSearch()">Search</button>
+                                                    <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="@GlobalGroup.EnterSearchCriteria...">
+                                                    <button class="btn btn-primary" onclick="manualSearch()">@GlobalShared.Search</button>
                                                 </div>
                                             </div>
                                         </div>

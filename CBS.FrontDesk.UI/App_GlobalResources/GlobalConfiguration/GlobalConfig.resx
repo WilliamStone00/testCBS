@@ -117,223 +117,115 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountingEntryRule" xml:space="preserve">
-    <value>Accounting Entry Rule</value>
+  <data name="AccountingConfiguration" xml:space="preserve">
+    <value>Accounting configuration</value>
   </data>
-  <data name="Action" xml:space="preserve">
-    <value>Action</value>
+  <data name="AcountingEntryRule" xml:space="preserve">
+    <value>Acounting entry rule</value>
   </data>
-  <data name="Actions" xml:space="preserve">
-    <value>Actions</value>
+  <data name="AllCountriesAroundTheGlobe" xml:space="preserve">
+    <value>All countries around the globe</value>
   </data>
-  <data name="AddNew" xml:space="preserve">
-    <value>Add new</value>
+  <data name="AssociateCollateralToProduct" xml:space="preserve">
+    <value>Associate collateral to product</value>
   </data>
-  <data name="BackToHome" xml:space="preserve">
-    <value>Back to home</value>
+  <data name="BankManagement" xml:space="preserve">
+    <value>Bank management</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+  <data name="BranchManagement" xml:space="preserve">
+    <value>Branch management</value>
   </data>
-  <data name="ChooseLogoImage" xml:space="preserve">
-    <value>Choose logo image</value>
+  <data name="Collateral" xml:space="preserve">
+    <value>Collateral</value>
   </data>
-  <data name="ChoosePhoto" xml:space="preserve">
-    <value>Choose photo</value>
+  <data name="ConfigureAccountsAndAccountingEntryPerOperations" xml:space="preserve">
+    <value>Configure accounts and accounting entry per operations</value>
   </data>
-  <data name="CleanEntries" xml:space="preserve">
-    <value>Clean entries</value>
+  <data name="ConfigureNewEntryRule" xml:space="preserve">
+    <value>Configure new entry rule</value>
   </data>
-  <data name="Close" xml:space="preserve">
-    <value>Close</value>
+  <data name="ConfigureShareSavings" xml:space="preserve">
+    <value>Configure share, savings etc</value>
   </data>
-  <data name="Closed" xml:space="preserve">
-    <value>Closed</value>
+  <data name="ConfiguringLoans" xml:space="preserve">
+    <value>Configuring loans</value>
   </data>
-  <data name="CMoneyMemberActivationsOverview" xml:space="preserve">
-    <value>C-Money Member Activations Overview</value>
+  <data name="Country" xml:space="preserve">
+    <value>Country</value>
   </data>
-  <data name="CNIImage" xml:space="preserve">
-    <value>CNI image</value>
+  <data name="CreateAndManageBranches" xml:space="preserve">
+    <value>Create and manage branches</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>Create</value>
+  <data name="CreateAndManageRoles" xml:space="preserve">
+    <value>Create and manage roles</value>
   </data>
-  <data name="Decision" xml:space="preserve">
-    <value>Decision</value>
+  <data name="CreateAndManageTellerAccounts" xml:space="preserve">
+    <value>Create and manage teller accounts</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
+  <data name="CreateAndManageYourBanks" xml:space="preserve">
+    <value>Create and manage your banks</value>
   </data>
-  <data name="Details" xml:space="preserve">
-    <value>Details</value>
+  <data name="CreateCollateralForManagingLoans" xml:space="preserve">
+    <value>Create Collateral for managing loans</value>
   </data>
-  <data name="Download" xml:space="preserve">
-    <value>Download</value>
+  <data name="CreateNewLoanPurposes" xml:space="preserve">
+    <value>Create new loan purposes</value>
   </data>
-  <data name="EconomicActivity" xml:space="preserve">
-    <value>Economic activity</value>
+  <data name="CreateNewMenus" xml:space="preserve">
+    <value>Create new menus</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
+  <data name="CreateNewOperationEventAttribute" xml:space="preserve">
+    <value>Create new operation event attribute</value>
   </data>
-  <data name="Email" xml:space="preserve">
-    <value>Email</value>
+  <data name="CreateTheDifferentPenaltiesForLoan" xml:space="preserve">
+    <value>Create the different penalties for loan</value>
   </data>
-  <data name="EnterAccountNumber" xml:space="preserve">
-    <value>Enter account number</value>
+  <data name="DocumentsThatAreRelatedToLoanProducts" xml:space="preserve">
+    <value>Documents that are related to loan products</value>
   </data>
-  <data name="EnterMemberReferenceNumber" xml:space="preserve">
-    <value>Enter member reference number</value>
+  <data name="LoanConfiguration" xml:space="preserve">
+    <value>Loan configuration</value>
   </data>
-  <data name="Export" xml:space="preserve">
-    <value>Export</value>
+  <data name="LoanDocuments" xml:space="preserve">
+    <value>Loan documents</value>
   </data>
-  <data name="FaxNumber" xml:space="preserve">
-    <value>Fax number</value>
+  <data name="LoanProductCollateral" xml:space="preserve">
+    <value>Loan product collateral</value>
   </data>
-  <data name="FilterByBranch" xml:space="preserve">
-    <value>Filter by Branch</value>
+  <data name="LoanPurpose" xml:space="preserve">
+    <value>Loan purpose</value>
   </data>
-  <data name="GoBackToHome" xml:space="preserve">
-    <value>Go back to home</value>
+  <data name="ManageTheThirdPartyOrCorrespondingBankAccount" xml:space="preserve">
+    <value>Manage the third party or corresponding bank account</value>
   </data>
-  <data name="InExcelFormat" xml:space="preserve">
-    <value>In Excel Format</value>
+  <data name="ManageThirdPartyBankAccount" xml:space="preserve">
+    <value>Manage ThirdParty BankAccount</value>
   </data>
-  <data name="InPDFFormat" xml:space="preserve">
-    <value>In PDF Format</value>
+  <data name="MenuMaster" xml:space="preserve">
+    <value>Menu master</value>
   </data>
-  <data name="Insert" xml:space="preserve">
-    <value>Insert</value>
+  <data name="OperationEvent" xml:space="preserve">
+    <value>Operation Event</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
+  <data name="OperationEventAttributes" xml:space="preserve">
+    <value>Operation Event Attributes</value>
   </data>
-  <data name="LogoPreview" xml:space="preserve">
-    <value>Logo preview</value>
+  <data name="OrdinaryAccountConfiguration" xml:space="preserve">
+    <value>Ordinary account configuration</value>
   </data>
-  <data name="New" xml:space="preserve">
-    <value>New</value>
+  <data name="Penalty" xml:space="preserve">
+    <value>Penalty</value>
   </data>
-  <data name="NoFileIsAttachedTo" xml:space="preserve">
-    <value>No file is attached to</value>
+  <data name="RoleManager" xml:space="preserve">
+    <value>Role manager</value>
   </data>
-  <data name="NoImageFound" xml:space="preserve">
-    <value>No image found</value>
+  <data name="SetFee" xml:space="preserve">
+    <value>Set fee</value>
   </data>
-  <data name="NoPhotoFound" xml:space="preserve">
-    <value>No photo found</value>
+  <data name="SetTaxes" xml:space="preserve">
+    <value>Set taxes</value>
   </data>
-  <data name="NoSignatureFound" xml:space="preserve">
-    <value>No Signature Found</value>
-  </data>
-  <data name="Open" xml:space="preserve">
-    <value>Open</value>
-  </data>
-  <data name="PlaceOfIssue" xml:space="preserve">
-    <value>Place of Issue</value>
-  </data>
-  <data name="PostBox" xml:space="preserve">
-    <value>Post box</value>
-  </data>
-  <data name="Print" xml:space="preserve">
-    <value>Print</value>
-  </data>
-  <data name="ProfileImage" xml:space="preserve">
-    <value>Profile image</value>
-  </data>
-  <data name="Read" xml:space="preserve">
-    <value>Read</value>
-  </data>
-  <data name="Region" xml:space="preserve">
-    <value>Region</value>
-  </data>
-  <data name="Rejected" xml:space="preserve">
-    <value>Rejected</value>
-  </data>
-  <data name="Reopen" xml:space="preserve">
-    <value>Reopen</value>
-  </data>
-  <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
-  </data>
-  <data name="ReturnToHome" xml:space="preserve">
-    <value>Return to home</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="SaveChanges" xml:space="preserve">
-    <value>Save changes</value>
-  </data>
-  <data name="SAVEUC" xml:space="preserve">
-    <value>SAVE</value>
-  </data>
-  <data name="Search" xml:space="preserve">
-    <value>Search</value>
-  </data>
-  <data name="Select" xml:space="preserve">
-    <value>Select</value>
-  </data>
-  <data name="SelectFiles" xml:space="preserve">
-    <value>Select files</value>
-  </data>
-  <data name="SelectToEdit" xml:space="preserve">
-    <value>Select to edit</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Status</value>
-  </data>
-  <data name="Submit" xml:space="preserve">
-    <value>Submit</value>
-  </data>
-  <data name="SubmitRequest" xml:space="preserve">
-    <value>Submit request</value>
-  </data>
-  <data name="ToDownload" xml:space="preserve">
-    <value>To download</value>
-  </data>
-  <data name="ToEdit" xml:space="preserve">
-    <value>To edit</value>
-  </data>
-  <data name="Update" xml:space="preserve">
-    <value>Update</value>
-  </data>
-  <data name="Upload" xml:space="preserve">
-    <value>Upload</value>
-  </data>
-  <data name="UploadedImage" xml:space="preserve">
-    <value>UploadedImage</value>
-  </data>
-  <data name="UploadedSignature" xml:space="preserve">
-    <value>UploadedSignature</value>
-  </data>
-  <data name="UploadLogo" xml:space="preserve">
-    <value>Upload logo</value>
-  </data>
-  <data name="UploadPhoto" xml:space="preserve">
-    <value>Upload photo</value>
-  </data>
-  <data name="UseCamera" xml:space="preserve">
-    <value>Use camera</value>
-  </data>
-  <data name="Validate" xml:space="preserve">
-    <value>Validate</value>
-  </data>
-  <data name="View" xml:space="preserve">
-    <value>View</value>
-  </data>
-  <data name="ViewDetails" xml:space="preserve">
-    <value>View details</value>
-  </data>
-  <data name="ViewImage" xml:space="preserve">
-    <value>View image</value>
-  </data>
-  <data name="ViewInDatatable" xml:space="preserve">
-    <value>View in Datatable</value>
-  </data>
-  <data name="ViewList" xml:space="preserve">
-    <value>View list</value>
+  <data name="TellerManagement" xml:space="preserve">
+    <value>Teller management</value>
   </data>
 </root>

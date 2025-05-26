@@ -1,4 +1,4 @@
-﻿
+﻿@using Resources
 @{
     ViewBag.Title = "Index";
 }
@@ -17,9 +17,9 @@
                         <a href="/Country">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Country</h4>
+                                    <h4 class="mb-0">@GlobalConfig.Country</h4>
                                 </div>
-                                <small>All countries around the globe</small>
+                                <small>@GlobalConfig.AllCountriesAroundTheGlobe</small>
                             </div>
                         </a>
 
@@ -39,9 +39,9 @@
                         <a href="/Document">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Loan documents</h4>
+                                    <h4 class="mb-0">@GlobalConfig.LoanDocuments</h4>
                                 </div>
-                                <small>Documents that are related to loan products</small>
+                                <small>@GlobalConfig.DocumentsThatAreRelatedToLoanProducts</small>
                             </div>
                         </a>
 
@@ -61,9 +61,9 @@
                         <a href="/Collateral">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Collateral</h4>
+                                    <h4 class="mb-0">@GlobalConfig.Collateral</h4>
                                 </div>
-                                <small>Create Collateral for managing loans</small>
+                                <small>@GlobalConfig.CreateCollateralForManagingLoans</small>
                             </div>
                         </a>
 
@@ -87,9 +87,9 @@
                         <a href="/LoanProductCollateral">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Loan product collateral</h4>
+                                    <h4 class="mb-0">@GlobalConfig.LoanProductCollateral</h4>
                                 </div>
-                                <small>Associate collateral to product</small>
+                                <small>@GlobalConfig.AssociateCollateralToProduct</small>
                             </div>
                         </a>
 
@@ -110,7 +110,7 @@
                         <a href="/Tax">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Set taxes</h4>
+                                    <h4 class="mb-0">@GlobalConfig.SetTaxes</h4>
                                 </div>
                                 <small></small>
                             </div>
@@ -132,7 +132,7 @@
                         <a href="/Fee">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Set Fee</h4>
+                                    <h4 class="mb-0">@GlobalConfig.SetFee</h4>
                                 </div>
                                 <small></small>
                             </div>
@@ -159,9 +159,9 @@
                         <a href="/LoanPurpose">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Loan purpose</h4>
+                                    <h4 class="mb-0">@GlobalConfig.LoanPurpose</h4>
                                 </div>
-                                <small>Create new loan purposes</small>
+                                <small>@GlobalConfig.CreateNewLoanPurposes</small>
                             </div>
                         </a>
 
@@ -181,9 +181,9 @@
                         <a href="/LoanProduct">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Loan configuration</h4>
+                                    <h4 class="mb-0">@GlobalConfig.LoanConfiguration</h4>
                                 </div>
-                                <small>Configuring loans</small>
+                                <small>@GlobalConfig.ConfiguringLoans</small>
                             </div>
                         </a>
 
@@ -203,9 +203,9 @@
                         <a href="/Penalty">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Penalty</h4>
+                                    <h4 class="mb-0">@GlobalConfig.Penalty</h4>
                                 </div>
-                                <small>Create the different penalties for loan</small>
+                                <small>@GlobalConfig.CreateTheDifferentPenaltiesForLoan</small>
                             </div>
                         </a>
 
@@ -232,9 +232,9 @@
                         <a href="/TransactionConfiguration">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Ordinary account configuration</h4>
+                                    <h4 class="mb-0">@GlobalConfig.OrdinaryAccountConfiguration</h4>
                                 </div>
-                                <small>Configure share, savings etc...</small>
+                                <small>@GlobalConfig.ConfigureShareSavings...</small>
                             </div>
                         </a>
 
@@ -255,7 +255,7 @@
                         <a href="/OperationEvent">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Operation Event</h4>
+                                    <h4 class="mb-0">@GlobalConfig.OperationEvent</h4>
                                 </div>
                                 <small></small>
                             </div>
@@ -278,9 +278,9 @@
                         <a href="/AccountingConfiguration">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Accounting Configuration</h4>
+                                    <h4 class="mb-0">@GlobalConfig.AccountingConfiguration</h4>
                                 </div>
-                                <small>Configure accounts and accounting entry per operations</small>
+                                <small>@GlobalConfig.ConfigureAccountsAndAccountingEntryPerOperations</small>
                             </div>
                         </a>
 
@@ -300,9 +300,9 @@
                         <a href="/OperationEventAttribute">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Operation Event Attributes</h4>
+                                    <h4 class="mb-0">@GlobalConfig.OperationEventAttributes</h4>
                                 </div>
-                                <small>Create new Operation Event Attribute</small>
+                                <small>@GlobalConfig.CreateNewOperationEventAttribute</small>
                             </div>
                         </a>
 
@@ -322,9 +322,9 @@
                         <a href="/AccountingEntryRule">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Acounting Entry Rule</h4>
+                                    <h4 class="mb-0">@GlobalConfig.AcountingEntryRule</h4>
                                 </div>
-                                <small>Configure new Entry Rule</small>
+                                <small>@GlobalConfig.ConfigureNewEntryRule</small>
                             </div>
                         </a>
 
@@ -344,9 +344,9 @@
                         <a href="/MenuMaster">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Menu master</h4>
+                                    <h4 class="mb-0">@GlobalConfig.MenuMaster</h4>
                                 </div>
-                                <small>Create new menus</small>
+                                <small>@GlobalConfig.CreateNewMenus</small>
                             </div>
                         </a>
 
@@ -366,9 +366,9 @@
                         <a href="/Role">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Role Manager</h4>
+                                    <h4 class="mb-0">@GlobalConfig.RoleManager</h4>
                                 </div>
-                                <small>Create and manage roles</small>
+                                <small>@GlobalConfig.CreateAndManageRoles</small>
                             </div>
                         </a>
 
@@ -388,9 +388,9 @@
                         <a href="/TellerManagement">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Teller management</h4>
+                                    <h4 class="mb-0">@GlobalConfig.TellerManagement</h4>
                                 </div>
-                                <small>Create and manage teller accounts</small>
+                                <small>@GlobalConfig.CreateAndManageTellerAccounts</small>
                             </div>
                         </a>
 
@@ -410,9 +410,9 @@
                         <a href="/BranchManagement">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Branch management</h4>
+                                    <h4 class="mb-0">@GlobalConfig.BranchManagement</h4>
                                 </div>
-                                <small>Create and manage branches</small>
+                                <small>@GlobalConfig.CreateAndManageBranches</small>
                             </div>
                         </a>
 
@@ -432,9 +432,9 @@
                         <a href="/BranchManagement">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Bank management</h4>
+                                    <h4 class="mb-0">@GlobalConfig.BankManagement</h4>
                                 </div>
-                                <small>Create and manage your banks</small>
+                                <small>@GlobalConfig.CreateAndManageYourBanks</small>
                             </div>
                         </a>
 
@@ -455,9 +455,9 @@
                         <a href="/TransactionConfiguration">
                             <div class="card-info">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="mb-0">Manage ThirdParty BankAccount</h4>
+                                    <h4 class="mb-0">@GlobalConfig.ManageThirdPartyBankAccount</h4>
                                 </div>
-                                <small>Manage the third party or corresponding bank account.</small>
+                                <small>@GlobalConfig.ManageTheThirdPartyOrCorrespondingBankAccount.</small>
                             </div>
                         </a>
 

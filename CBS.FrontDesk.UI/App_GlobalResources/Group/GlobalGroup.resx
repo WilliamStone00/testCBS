@@ -117,119 +117,131 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountingEntryRule" xml:space="preserve">
-    <value>Accounting Entry Rule</value>
+  <data name="ActiveStatus" xml:space="preserve">
+    <value>Active status</value>
   </data>
-  <data name="Action" xml:space="preserve">
-    <value>Action</value>
+  <data name="AddDocuments" xml:space="preserve">
+    <value>Add documents</value>
   </data>
-  <data name="Actions" xml:space="preserve">
-    <value>Actions</value>
+  <data name="AddMembersTo" xml:space="preserve">
+    <value>Add members to</value>
   </data>
-  <data name="AddNew" xml:space="preserve">
-    <value>Add new</value>
+  <data name="AddSelectedMembers" xml:space="preserve">
+    <value>Add selected members</value>
   </data>
-  <data name="BackToHome" xml:space="preserve">
-    <value>Back to home</value>
+  <data name="AfterCompletingAllRequiredSectionsToRegisterTheGroup" xml:space="preserve">
+    <value>after completing all required sections to register the Group</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+  <data name="AttachValidContactDetails" xml:space="preserve">
+    <value>Attach valid contact details (Phone, Email, PO Box if available)</value>
   </data>
-  <data name="ChooseLogoImage" xml:space="preserve">
-    <value>Choose logo image</value>
+  <data name="CapitalAmount" xml:space="preserve">
+    <value>Capital amount</value>
   </data>
-  <data name="ChoosePhoto" xml:space="preserve">
-    <value>Choose photo</value>
+  <data name="Click" xml:space="preserve">
+    <value>Click</value>
   </data>
-  <data name="CleanEntries" xml:space="preserve">
-    <value>Clean entries</value>
+  <data name="Country" xml:space="preserve">
+    <value>Country</value>
   </data>
-  <data name="Close" xml:space="preserve">
-    <value>Close</value>
+  <data name="CreateANewGroupOrMoralPersonAccount" xml:space="preserve">
+    <value>Create a new Group or Moral Person account. Ensure all required fields (group type, registration, identification, and address) are filled correctly</value>
   </data>
-  <data name="Closed" xml:space="preserve">
-    <value>Closed</value>
+  <data name="CustomerCategory" xml:space="preserve">
+    <value>Customer category</value>
   </data>
-  <data name="CMoneyMemberActivationsOverview" xml:space="preserve">
-    <value>C-Money Member Activations Overview</value>
+  <data name="DateOfEstablishment" xml:space="preserve">
+    <value>Date of Establishment</value>
   </data>
-  <data name="CNIImage" xml:space="preserve">
-    <value>CNI image</value>
+  <data name="DetailedAddress" xml:space="preserve">
+    <value>Detailed address</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>Create</value>
+  <data name="Division" xml:space="preserve">
+    <value>Division</value>
   </data>
-  <data name="Decision" xml:space="preserve">
-    <value>Decision</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="Details" xml:space="preserve">
-    <value>Details</value>
-  </data>
-  <data name="Download" xml:space="preserve">
-    <value>Download</value>
+  <data name="EconomicActivities" xml:space="preserve">
+    <value>Economic activities</value>
   </data>
   <data name="EconomicActivity" xml:space="preserve">
     <value>Economic activity</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
-  </data>
   <data name="Email" xml:space="preserve">
     <value>Email</value>
   </data>
-  <data name="EnterAccountNumber" xml:space="preserve">
-    <value>Enter account number</value>
+  <data name="EnsureTheDateOfEstablishmentAndIdentification" xml:space="preserve">
+    <value>Ensure the Date of Establishment and Identification Document Details are valid</value>
   </data>
-  <data name="EnterMemberReferenceNumber" xml:space="preserve">
-    <value>Enter member reference number</value>
+  <data name="EnterGroupBasicInformation" xml:space="preserve">
+    <value>Enter group basic information (Group type, Name, Registration No, etc.)</value>
   </data>
-  <data name="Export" xml:space="preserve">
-    <value>Export</value>
+  <data name="EnterSearchCriteria" xml:space="preserve">
+    <value>Enter search criteria</value>
   </data>
   <data name="FaxNumber" xml:space="preserve">
     <value>Fax number</value>
   </data>
-  <data name="FilterByBranch" xml:space="preserve">
-    <value>Filter by Branch</value>
+  <data name="FormalInformalSector" xml:space="preserve">
+    <value>Formal / Informal Sector</value>
   </data>
-  <data name="GoBackToHome" xml:space="preserve">
-    <value>Go back to home</value>
+  <data name="Group" xml:space="preserve">
+    <value>Group</value>
   </data>
-  <data name="InExcelFormat" xml:space="preserve">
-    <value>In Excel Format</value>
+  <data name="GroupAddress" xml:space="preserve">
+    <value>Group address</value>
   </data>
-  <data name="InPDFFormat" xml:space="preserve">
-    <value>In PDF Format</value>
+  <data name="GroupLeader" xml:space="preserve">
+    <value>Group leader</value>
   </data>
-  <data name="Insert" xml:space="preserve">
-    <value>Insert</value>
+  <data name="GroupMoralPersonIdentificationForm" xml:space="preserve">
+    <value>Group / Moral Person Identification Form</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
+  <data name="GroupMoralPersonName" xml:space="preserve">
+    <value>Group / Moral person name</value>
   </data>
-  <data name="LogoPreview" xml:space="preserve">
-    <value>Logo preview</value>
+  <data name="GroupMoralPersonProfile" xml:space="preserve">
+    <value>Group / Moral Person Profile</value>
   </data>
-  <data name="New" xml:space="preserve">
-    <value>New</value>
+  <data name="GroupReference" xml:space="preserve">
+    <value>Group reference</value>
   </data>
-  <data name="NoFileIsAttachedTo" xml:space="preserve">
-    <value>No file is attached to</value>
+  <data name="GroupTypeName" xml:space="preserve">
+    <value>Group type name</value>
   </data>
-  <data name="NoImageFound" xml:space="preserve">
-    <value>No image found</value>
+  <data name="HELPTIPS" xml:space="preserve">
+    <value>HELP TIPS</value>
   </data>
-  <data name="NoPhotoFound" xml:space="preserve">
-    <value>No photo found</value>
+  <data name="IDIssueDate" xml:space="preserve">
+    <value>ID issue date</value>
   </data>
-  <data name="NoSignatureFound" xml:space="preserve">
-    <value>No Signature Found</value>
+  <data name="ManagementOf" xml:space="preserve">
+    <value>Management of</value>
   </data>
-  <data name="Open" xml:space="preserve">
-    <value>Open</value>
+  <data name="Member" xml:space="preserve">
+    <value>Member</value>
+  </data>
+  <data name="MoralPersonAccountCreation" xml:space="preserve">
+    <value>Moral person account creation</value>
+  </data>
+  <data name="MoralPersonDetail" xml:space="preserve">
+    <value>Moral person detail</value>
+  </data>
+  <data name="MoralPersonGroupAccountCreation" xml:space="preserve">
+    <value>Moral Person (Group) Account Creation</value>
+  </data>
+  <data name="MoralPersons" xml:space="preserve">
+    <value>Moral persons</value>
+  </data>
+  <data name="NationalIDNumber" xml:space="preserve">
+    <value>National id number</value>
+  </data>
+  <data name="NoMemberIsAddedTo" xml:space="preserve">
+    <value>No member is added to</value>
+  </data>
+  <data name="Occupation" xml:space="preserve">
+    <value>Occupation</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Phone number</value>
   </data>
   <data name="PlaceOfIssue" xml:space="preserve">
     <value>Place of Issue</value>
@@ -237,103 +249,79 @@
   <data name="PostBox" xml:space="preserve">
     <value>Post box</value>
   </data>
-  <data name="Print" xml:space="preserve">
-    <value>Print</value>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
   </data>
-  <data name="ProfileImage" xml:space="preserve">
-    <value>Profile image</value>
+  <data name="ProperlySelectTheEconomicActivity" xml:space="preserve">
+    <value>Properly select the Economic Activity and Customer Category for the Group</value>
   </data>
-  <data name="Read" xml:space="preserve">
-    <value>Read</value>
+  <data name="ProvideAccurateAddressDetails" xml:space="preserve">
+    <value>Provide accurate address details (Country, Region, Division, Sub-Division, Town)</value>
   </data>
   <data name="Region" xml:space="preserve">
     <value>Region</value>
   </data>
-  <data name="Rejected" xml:space="preserve">
-    <value>Rejected</value>
+  <data name="RegistrationNumber" xml:space="preserve">
+    <value>Registration number</value>
   </data>
-  <data name="Reopen" xml:space="preserve">
-    <value>Reopen</value>
+  <data name="SaveGroupInformation" xml:space="preserve">
+    <value>Save group information</value>
   </data>
-  <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
+  <data name="SaveNewGroup" xml:space="preserve">
+    <value>Save new group</value>
   </data>
-  <data name="ReturnToHome" xml:space="preserve">
-    <value>Return to home</value>
+  <data name="SearchByGroupNameTaxNumber" xml:space="preserve">
+    <value>Search by Group name, Tax number, Registration number</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
+  <data name="SelectCountry" xml:space="preserve">
+    <value>Select country</value>
   </data>
-  <data name="SaveChanges" xml:space="preserve">
-    <value>Save changes</value>
+  <data name="SelectCustomerCategory" xml:space="preserve">
+    <value>Select customer category</value>
   </data>
-  <data name="SAVEUC" xml:space="preserve">
-    <value>SAVE</value>
+  <data name="SelectDivision" xml:space="preserve">
+    <value>Select division</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Search</value>
+  <data name="SelectEconomicActivity" xml:space="preserve">
+    <value>Select economic activity</value>
   </data>
-  <data name="Select" xml:space="preserve">
-    <value>Select</value>
+  <data name="SelectGroupType" xml:space="preserve">
+    <value>Select group type</value>
   </data>
-  <data name="SelectFiles" xml:space="preserve">
-    <value>Select files</value>
+  <data name="SelectMemberAccountType" xml:space="preserve">
+    <value>Select member account type</value>
   </data>
-  <data name="SelectToEdit" xml:space="preserve">
-    <value>Select to edit</value>
+  <data name="SelectMembers" xml:space="preserve">
+    <value>Select members</value>
   </data>
-  <data name="Status" xml:space="preserve">
-    <value>Status</value>
+  <data name="SelectMembersAndAddTo" xml:space="preserve">
+    <value>Select members and add to</value>
   </data>
-  <data name="Submit" xml:space="preserve">
-    <value>Submit</value>
+  <data name="SelectRegion" xml:space="preserve">
+    <value>Select region</value>
   </data>
-  <data name="SubmitRequest" xml:space="preserve">
-    <value>Submit request</value>
+  <data name="SelectSector" xml:space="preserve">
+    <value>Select sector</value>
   </data>
-  <data name="ToDownload" xml:space="preserve">
-    <value>To download</value>
+  <data name="SelectSubDivision" xml:space="preserve">
+    <value>Select sub-division</value>
   </data>
-  <data name="ToEdit" xml:space="preserve">
-    <value>To edit</value>
+  <data name="SelectTown" xml:space="preserve">
+    <value>Select town</value>
   </data>
-  <data name="Update" xml:space="preserve">
-    <value>Update</value>
+  <data name="SubDivision" xml:space="preserve">
+    <value>Sub-Division</value>
   </data>
-  <data name="Upload" xml:space="preserve">
-    <value>Upload</value>
+  <data name="Tax" xml:space="preserve">
+    <value>Tax</value>
   </data>
-  <data name="UploadedImage" xml:space="preserve">
-    <value>UploadedImage</value>
+  <data name="TaxpayerNumber" xml:space="preserve">
+    <value>Tax payer number</value>
   </data>
-  <data name="UploadedSignature" xml:space="preserve">
-    <value>UploadedSignature</value>
+  <data name="Town" xml:space="preserve">
+    <value>Town</value>
   </data>
-  <data name="UploadLogo" xml:space="preserve">
-    <value>Upload logo</value>
-  </data>
-  <data name="UploadPhoto" xml:space="preserve">
-    <value>Upload photo</value>
-  </data>
-  <data name="UseCamera" xml:space="preserve">
-    <value>Use camera</value>
-  </data>
-  <data name="Validate" xml:space="preserve">
-    <value>Validate</value>
-  </data>
-  <data name="View" xml:space="preserve">
-    <value>View</value>
-  </data>
-  <data name="ViewDetails" xml:space="preserve">
-    <value>View details</value>
-  </data>
-  <data name="ViewImage" xml:space="preserve">
-    <value>View image</value>
-  </data>
-  <data name="ViewInDatatable" xml:space="preserve">
-    <value>View in Datatable</value>
-  </data>
-  <data name="ViewList" xml:space="preserve">
-    <value>View list</value>
+  <data name="UpdateGroup" xml:space="preserve">
+    <value>Update group</value>
   </data>
 </root>

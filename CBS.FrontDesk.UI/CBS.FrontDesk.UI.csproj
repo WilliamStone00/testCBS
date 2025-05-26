@@ -1399,6 +1399,36 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalFundingLine.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\GlobalConfiguration\GlobalConfig.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalConfig.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\GroupType\GlobalGroupType.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalGroupType.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Group\GlobalGroup.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalGroup.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Guaranty\GlobalGuaranty.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalGuaranty.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\HolidayRecurring\GlobalHolidayRecurring.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalHolidayRecurring.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Holiday\GlobalHoliday.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalHoliday.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\HomePage\GlobalAbout.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -5259,6 +5289,30 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalFundingLine.Designer.cs</LastGenOutput>
     </Content>
+    <Content Include="App_GlobalResources\GlobalConfiguration\GlobalConfig.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalConfig.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Group\GlobalGroup.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalGroup.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\GroupType\GlobalGroupType.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalGroupType.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Guaranty\GlobalGuaranty.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalGuaranty.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Holiday\GlobalHoliday.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalHoliday.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\HolidayRecurring\GlobalHolidayRecurring.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalHolidayRecurring.Designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -6414,7 +6468,6 @@
     <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
-    <Folder Include="App_GlobalResources\GlobalConfiguration\" />
     <Folder Include="Controllers\CustomerManagement\MemberActivation\" />
     <Folder Include="Hub\" />
     <Folder Include="Views\CorrespondingBank\" />
