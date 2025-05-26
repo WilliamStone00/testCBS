@@ -97,14 +97,17 @@
                 <input type="date" id="createdTo" class="form-control" placeholder="@GlobalBulkOperation.CreatedTo" />
             </div>
         </div>
-        <div class="row mt-2">
-            <div class="col-md-12 d-flex">
-                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalBulkOperation.ApplyFilter</button>
-                <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset</button>
-                @*<button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-export"></i> Export</button>*@
-            </div>
+
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-12 d-flex">
+            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
+            <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+            @*<button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-export"></i> Export</button>*@
         </div>
     </div>
+
+</div>
 
     @Html.Partial("_model")
     <!-- DataTable Partial -->

@@ -1,9 +1,9 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.LoanConf.FeeRange>
-
+@using Resources
 @if (Model.Count == 0)
 {
     <div class="text-center my-3">
-        <p>No loan fee type is configured</p>
+        <p>@GlobalFeeRange.NoLoanFeeTypeIsConfigured</p>
     </div>
 }
 else
@@ -12,13 +12,13 @@ else
         <table class="table table-hover" id="myDataTable">
             <thead class="table-light">
                 <tr>
-                    <th>Name</th>
-                    <th>from</th>
-                    <th>to</th>
-                    <th>charges</th>
+                    <th>@GlobalFeeRange.Name</th>
+                    <th>@GlobalFeeRange.From</th>
+                    <th>@GlobalFeeRange.To</th>
+                    <th>@GlobalFeeRange.Charges</th>
                     <th>%</th>
-                    <th>type</th>
-                    <th>Action</th>
+                    <th>@GlobalFeeRange.Type</th>
+                    <th>@GlobalShared.Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -43,7 +43,7 @@ else
                         }
                         <td style="width:10%">@d.Fee.FeeBase</td>
                         <td style="width:15%">
-                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Create','update','FeeRange')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Fee.Name to edit">Edit</a> |
+                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Create','update','FeeRange')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.Fee.Name @GlobalShared.ToEdit">@GlobalShared.Edit</a> |
                             <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Fee.Name" onclick="DeleteRecordDataTable('FeeRange','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>
                         </td>
                     </tr>

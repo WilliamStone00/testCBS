@@ -142,11 +142,11 @@ function AjaxPostAndUpdateBulkOperation(form) {
     }
 
     // --- Standard jQuery Unobtrusive
-    $.validator.unobtrusive.parse(form);
+   /* $.validator.unobtrusive.parse(form);
     if (!$(form).valid()) {
         appalert("❌ Please correct validation errors before submitting.", 2, 1);
         return false;
-    }
+    }*/
 
     console.log("Form Action ", form.action);
 

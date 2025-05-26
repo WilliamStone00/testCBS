@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.EndOfTheDay
+    @using Resources
 <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
 
     <div id="accordionPopoutIconxx" class="accordion mt-3 accordion-popout">
@@ -13,7 +14,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIconx-3">
                     <i class="mdi mdi-update me-2"></i>
-                    Details of operations of @Model.SubTellerProvioningHistory.teller.name for the selected date @Model.SubTellerProvioningHistory.openedDate
+                    @GlobalEndOfDayOperation.DetailsOfOperationsOf @Model.SubTellerProvioningHistory.teller.name @GlobalEndOfDayOperation.ForTheSelectedDate @Model.SubTellerProvioningHistory.openedDate
 
                 </button>
             </h2>
@@ -26,60 +27,60 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th colspan="2" class="separation-text"><h5 class="card-title">CLOSE OF DAY DETAILS</h5></th>
+                                        <th colspan="2" class="separation-text"><h5 class="card-title">@GlobalEndOfDayOperation.CLOSEOFDAYDETAILS</h5></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><strong>Opened date:</strong></td>
+                                        <td><strong>@GlobalEndOfDayOperation.OpenedDate:</strong></td>
                                         <td><span id="calculatedBalance">@Model.SubTellerProvioningHistory.openedDate</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Open of day amount:</strong></td>
+                                        <td><strong>@GlobalEndOfDayOperation.OpenOfDayAmount:</strong></td>
                                         <td><span id="notes10000Required">@Model.SubTellerProvioningHistory.openOfDayAmount</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Replenished amount:</strong></td>
+                                        <td><strong>@GlobalEndOfDayOperation.ReplenishedAmount:</strong></td>
                                         <td><span id="notes5000Required">@Model.SubTellerProvioningHistory.ReplenishedAmount</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Close of day amount:</strong></td>
+                                        <td><strong>@GlobalEndOfDayOperation.CloseOfDayAmount:</strong></td>
                                         <td><span id="notes2000Required">@Model.SubTellerProvioningHistory.cashAtHand</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Teller account balance:</strong></td>
+                                        <td><strong>@GlobalEndOfDayOperation.TellerAccountBalance:</strong></td>
                                         <td><span id="notes500Required">@Model.SubTellerProvioningHistory.tellerAccountBalance</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>System balance:</strong></td>
+                                        <td><strong>@GlobalEndOfDayOperation.SystemBalance:</strong></td>
                                         <td><span id="notes500Required">@Model.SubTellerProvioningHistory.accountBalance</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Closed date:</strong></td>
+                                        <td><strong>@GlobalEndOfDayOperation.ClosedDate:</strong></td>
                                         <td><span id="notes1000Required">@Model.SubTellerProvioningHistory.clossedDate</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Closed status:</strong></td>
+                                        <td><strong>@GlobalEndOfDayOperation.ClosedStatus:</strong></td>
                                         <td><span id="notes500Required">@Model.SubTellerProvioningHistory.clossedStatus</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Primary teller confirmation:</strong></td>
+                                        <td><strong>@GlobalEndOfDayOperation.PrimaryTellerConfirmation:</strong></td>
                                         <td><span id="notes500Required">@Model.SubTellerProvioningHistory.primaryTellerConfirmationStatus</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Primary teller comentary:</strong></td>
+                                        <td><strong>@GlobalEndOfDayOperation.PrimaryTellerComentary:</strong></td>
                                         <td><span id="notes500Required">@Model.SubTellerProvioningHistory.primaryTellerComment</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Teller Name:</strong></td>
+                                        <td><strong>@GlobalEndOfDayOperation.TellerName:</strong></td>
                                         <td><span id="notes500Required">@Model.SubTellerProvioningHistory.teller.name</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Teller User:</strong></td>
+                                        <td><strong>@GlobalEndOfDayOperation.TellerUser:</strong></td>
                                         <td><span id="notes500Required">@Model.SubTellerProvioningHistory.teller.inUsedByUserId</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Sub teller commentary:</strong></td>
+                                        <td><strong>@GlobalEndOfDayOperation.SubTellerCommentary:</strong></td>
                                         <td><span id="notes500Required">@Model.SubTellerProvioningHistory.subTellerComment</span></td>
                                     </tr>
                                 </tbody>
@@ -101,7 +102,7 @@
                         data-bs-target="#accordionPopoutIconx-2"
                         aria-controls="accordionPopoutIconx-2">
                     <i class="mdi mdi-details me-2"></i>
-                    Confirmation the operations of @Model.SubTellerProvioningHistory.teller.name for the selected date @Model.SubTellerProvioningHistory.openedDate
+                    @GlobalEndOfDayOperation.ConfirmationTheOperationsOf @Model.SubTellerProvioningHistory.teller.name @GlobalEndOfDayOperation.ForTheSelectedDate @Model.SubTellerProvioningHistory.openedDate
                 </button>
             </h2>
             <div id="accordionPopoutIconx-2"
@@ -118,21 +119,21 @@
                                 <div class="row mt-2 gy-4">
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.EndOfDayBySubTellerIDCommand.primaryTellerConfirmationStatus, new SelectList(ViewBag.Statuses, "Text", "Value"), "---Select status type---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.DropDownListFor(m => m.EndOfDayBySubTellerIDCommand.primaryTellerConfirmationStatus, new SelectList(ViewBag.Statuses, "Text", "Value"), "---"+ @GlobalEndOfDayOperation.SelectStatusType+"---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(m => m.EndOfDayBySubTellerIDCommand.primaryTellerConfirmationStatus, "", new { @class = "text-danger " })
-                                            <label for="formValidationDob">Confirmation status</label>
+                                            <label for="formValidationDob">@GlobalEndOfDayOperation.ConfirmationStatus</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextAreaFor(m => m.EndOfDayBySubTellerIDCommand.comment, new { @class = "form-control", @style = "height: 75px;" })
                                             @Html.ValidationMessageFor(m => m.EndOfDayBySubTellerIDCommand.comment, "", new { @class = "text-danger " })
-                                            <label for="formValidationDob">Teller close of day note</label>
+                                            <label for="formValidationDob">@GlobalEndOfDayOperation.TellerCloseOfDayNote</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary me-2">Confirm subteller operations</button>
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalEndOfDayOperation.ConfirmSubtellerOperations</button>
                                 </div>
                             }
                         </div>
@@ -149,7 +150,7 @@
                         data-bs-target="#accordionPopoutIconx-1"
                         aria-controls="accordionPopoutIconx-1">
                     <i class="mdi mdi-two-factor-authentication me-2"></i>
-                    Transactions
+                    @GlobalEndOfDayOperation.Transactions
                 </button>
             </h2>
 
@@ -162,7 +163,7 @@
                             <div class="card mb-4">
                                 <div class="card-body d-sm-flex d-block">
                                     <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                        <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('EndOfDayOperation', null,'GetReport', @Model.EndOfDayBySubTellerIDCommand.subTellerProvioningHistoryID, 'List', 'export_tellers_transactions', null,'@Model.SubTellerProvioningHistory.teller.name','DownloadExcelFile',null,'@Model.SubTellerProvioningHistory.teller.name')" data-bs-toggle="tooltip" title="Export teller transactions">
+                                        <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('EndOfDayOperation', null,'GetReport', @Model.EndOfDayBySubTellerIDCommand.subTellerProvioningHistoryID, 'List', 'export_tellers_transactions', null,'@Model.SubTellerProvioningHistory.teller.name','DownloadExcelFile',null,'@Model.SubTellerProvioningHistory.teller.name')" data-bs-toggle="tooltip" title="@GlobalEndOfDayOperation.ExportTellerTransactions">
                                             <span class="tf-icons mdi mdi-printer mdi-18px"></span>
                                         </a>
                                     </div>
@@ -173,26 +174,26 @@
                                 <table class="table table-hover" id="myDataTable">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Date</th>
-                                            <th>Debit</th>
-                                            <th>Credit</th>
-                                            <th>Charges</th>
-                                            <th>O.Amount</th>
-                                            <th>Previous balance</th>
-                                            <th>Balance</th>
-                                            <th>Fee type</th>
-                                            <th>Type</th>
+                                            <th>@GlobalEndOfDayOperation.Date</th>
+                                            <th>@GlobalEndOfDayOperation.Debit</th>
+                                            <th>@GlobalEndOfDayOperation.Credit</th>
+                                            <th>@GlobalEndOfDayOperation.Charges</th>
+                                            <th>@GlobalEndOfDayOperation.OAmount</th>
+                                            <th>@GlobalEndOfDayOperation.PreviousBalance</th>
+                                            <th>@GlobalEndOfDayOperation.Balance</th>
+                                            <th>@GlobalEndOfDayOperation.FeeType</th>
+                                            <th>@GlobalEndOfDayOperation.Type</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @{
-                                            var orderedTransactions = Model.TransactionHistories.OrderBy(d => d.CreatedDate);
-                                        }
+                                                var orderedTransactions = Model.TransactionHistories.OrderBy(d => d.CreatedDate);
+                                            }
 
-                                        @if (orderedTransactions != null)
+                                            @if (orderedTransactions != null)
                                         {
-                                            foreach (var d in orderedTransactions)
-                                            {
+                                                foreach (var d in orderedTransactions)
+                                                {
                                                 <tr>
                                                     <td style="width: 20%">@d.CreatedDate</td>
                                                     <td style="width: 10%">@d.Debit</td>
@@ -204,12 +205,12 @@
                                                     <td style="width: 10%">@d.FeeType</td>
                                                     <td style="width: 10%">@d.Operation</td>
                                                 </tr>
+                                                }
                                             }
-                                        }
                                         else
-                                        {
+                                            {
                                             <div class="text-center my-3">
-                                                <p>No Data was found.</p>
+                                                <p>@GlobalEndOfDayOperation.NoDataWasFound.</p>
                                             </div>
                                         }
 

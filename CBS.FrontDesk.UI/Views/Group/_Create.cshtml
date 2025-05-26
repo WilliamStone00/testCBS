@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping.Group
-
+@using Resources
 <div class="card-body">
     @using (Html.BeginForm("AddOrUpdate", "Group", FormMethod.Post, new { enctype = "multipart/form-data", id = "memberForm", onsubmit = "return AjaxPostAndUpdateGroupRegistration(this);" }))
     {
@@ -9,7 +9,7 @@
             <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingProfile">
                     <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseProfile" aria-expanded="true" aria-controls="collapseProfile">
-                        Group / Moral Person Profile
+                        @GlobalGroup.GroupMoralPersonProfile
                     </button>
                 </h2>
                 <div id="collapseProfile" class="accordion-collapse collapse show" data-bs-parent="#collapsibleSection">
@@ -19,17 +19,17 @@
 
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.GroupTypeId, new SelectList(ViewBag.GroupTypes, "GroupTypeId", "GroupTypeName"), "--- Select Group Type ---", new { @class = "form-control select2" })
+                                        @Html.DropDownListFor(m => m.GroupTypeId, new SelectList(ViewBag.GroupTypes, "GroupTypeId", "GroupTypeName"), "---"+ @GlobalGroup.SelectGroupType +"---", new { @class = "form-control select2" })
                                         @Html.ValidationMessageFor(m => m.GroupTypeId, "", new { @class = "text-danger" })
-                                        <label>Select Group Type</label>
+                                        <label>@GlobalGroup.SelectGroupType</label>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.CustomerId, new { @class = "form-control", placeholder = "Group Reference" })
+                                        @Html.TextBoxFor(m => m.CustomerId, new { @class = "form-control", placeholder = @GlobalGroup.GroupReference })
                                         @Html.ValidationMessageFor(m => m.CustomerId, "", new { @class = "text-danger" })
-                                        <label>Group Reference No.</label>
+                                        <label>@GlobalGroup.GroupReference No.</label>
                                     </div>
                                 </div>
 
@@ -37,7 +37,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.GroupName, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.GroupName, "", new { @class = "text-danger" })
-                                        <label>Group / Moral Person Name</label>
+                                        <label>@GlobalGroup.GroupMoralPersonName</label>
                                     </div>
                                 </div>
 
@@ -48,9 +48,9 @@
                                             new SelectListItem { Value = "MemberAccount", Text = "Normal Member Group Account", Selected = true }, // 🟰 Selected by default
                                             new SelectListItem { Value = "CivilServantsSalaryCollection", Text = "Civil Servant Salary Collective Group Account" },
                                             new SelectListItem { Value = "PrivateInstitutionSalaryCollection", Text = "Private Institution Salary Collective Group Account" }
-                                        }, "--- Select Member Account Type ---", new { @class = "form-select shadow-input-boxes" })
+                                        }, "---"+ @GlobalGroup.SelectMemberAccountType +"---", new { @class = "form-select shadow-input-boxes" })
                                         @Html.ValidationMessageFor(m => m.CustomerType, "", new { @class = "text-danger" })
-                                        <label>Select Member Account Type</label>
+                                        <label>@GlobalGroup.SelectMemberAccountType</label>
                                     </div>
                                 </div>
 
@@ -59,7 +59,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.RegistrationNumber, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.RegistrationNumber, "", new { @class = "text-danger" })
-                                        <label>Registration Number</label>
+                                        <label>@GlobalGroup.RegistrationNumber</label>
                                     </div>
                                 </div>
 
@@ -67,7 +67,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.TaxPayerNumber, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.TaxPayerNumber, "", new { @class = "text-danger" })
-                                        <label>Taxpayer Number</label>
+                                        <label>@GlobalGroup.TaxpayerNumber</label>
                                     </div>
                                 </div>
 
@@ -75,7 +75,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.DateOfEstablishment, new { @class = "form-control", type = "date" })
                                         @Html.ValidationMessageFor(m => m.DateOfEstablishment, "", new { @class = "text-danger" })
-                                        <label>Date of Establishment</label>
+                                        <label>@GlobalGroup.DateOfEstablishment</label>
                                     </div>
                                 </div>
 
@@ -83,7 +83,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
-                                        <label>Phone Number</label>
+                                        <label>@GlobalGroup.PhoneNumber</label>
                                     </div>
                                 </div>
 
@@ -91,7 +91,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.IDNumber, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.IDNumber, "", new { @class = "text-danger" })
-                                        <label>National ID Number</label>
+                                        <label>@GlobalGroup.NationalIDNumber</label>
                                     </div>
                                 </div>
 
@@ -99,7 +99,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.IDNumberIssueDate, new { @class = "form-control", type = "date" })
                                         @Html.ValidationMessageFor(m => m.IDNumberIssueDate, "", new { @class = "text-danger" })
-                                        <label>ID Issue Date</label>
+                                        <label>@GlobalGroup.IDIssueDate</label>
                                     </div>
                                 </div>
 
@@ -107,7 +107,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.IDNumberIssueAt, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.IDNumberIssueAt, "", new { @class = "text-danger" })
-                                        <label>Place of Issue</label>
+                                        <label>@GlobalGroup.PlaceOfIssue</label>
                                     </div>
                                 </div>
 
@@ -121,7 +121,7 @@
             <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingAddress">
                     <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseAddress" aria-expanded="false" aria-controls="collapseAddress">
-                        Group Address
+                        @GlobalGroup.GroupAddress
                     </button>
                 </h2>
                 <div id="collapseAddress" class="accordion-collapse collapse" data-bs-parent="#collapsibleSection">
@@ -133,10 +133,10 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.CountryId,
                                             new SelectList(ViewBag.Countries, "Id", "Name"),
-                                            "---Select Country---",
+                                            "---"+ @GlobalGroup.SelectCountry+"---",
                                             new { @class = "form-control select2", @id = "CountryId", @required = "required" })
                                         @Html.ValidationMessageFor(m => m.CountryId, "", new { @class = "text-danger" })
-                                        <label for="CountryId">Country</label>
+                                        <label for="CountryId">@GlobalGroup.Country</label>
                                     </div>
                                 </div>
 
@@ -144,10 +144,10 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.RegionId,
                                             new SelectList(ViewBag.Regions, "Id", "Name"),
-                                            "---Select Region---",
+                                            "---"+ @GlobalGroup.SelectRegion+"---",
                                             new { @class = "form-control select2", @id = "RegionId", @required = "required" })
                                         @Html.ValidationMessageFor(m => m.RegionId, "", new { @class = "text-danger" })
-                                        <label for="RegionId">Region</label>
+                                        <label for="RegionId">@GlobalGroup.Region</label>
                                     </div>
                                 </div>
 
@@ -155,10 +155,10 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.DivisionId,
                                             new SelectList(ViewBag.Divisions, "Id", "Name"),
-                                            "---Select Division---",
+                                            "---"+ @GlobalGroup.SelectDivision+"---",
                                             new { @class = "form-control select2", @id = "DivisionId", @required = "required" })
                                         @Html.ValidationMessageFor(m => m.DivisionId, "", new { @class = "text-danger" })
-                                        <label for="DivisionId">Division</label>
+                                        <label for="DivisionId">@GlobalGroup.Division</label>
                                     </div>
                                 </div>
 
@@ -166,10 +166,10 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.SubDivisionId,
                                             new SelectList(ViewBag.SubDivisions, "Id", "Name"),
-                                            "---Select Sub-Division---",
+                                            "---"+ @GlobalGroup.SelectSubDivision+"---",
                                             new { @class = "form-control select2", @id = "SubDivisionId", @required = "required" })
                                         @Html.ValidationMessageFor(m => m.SubDivisionId, "", new { @class = "text-danger" })
-                                        <label for="SubDivisionId">Sub-Division</label>
+                                        <label for="SubDivisionId">@GlobalGroup.SubDivision</label>
                                     </div>
                                 </div>
 
@@ -177,10 +177,10 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.TownId,
                                             new SelectList(ViewBag.Towns, "Id", "Name"),
-                                            "---Select Town---",
+                                            "---"+ @GlobalGroup.SelectTown +"---",
                                             new { @class = "form-control select2", @id = "TownId", @required = "required" })
                                         @Html.ValidationMessageFor(m => m.TownId, "", new { @class = "text-danger" })
-                                        <label for="TownId">Town</label>
+                                        <label for="TownId">@GlobalGroup.Town</label>
                                     </div>
                                 </div>
 
@@ -188,7 +188,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                                        <label>Email</label>
+                                        <label>@GlobalGroup.Email</label>
                                     </div>
                                 </div>
 
@@ -196,7 +196,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Fax, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Fax, "", new { @class = "text-danger" })
-                                        <label>Fax Number</label>
+                                        <label>@GlobalGroup.FaxNumber</label>
                                     </div>
                                 </div>
 
@@ -204,7 +204,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.POBox, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.POBox, "", new { @class = "text-danger" })
-                                        <label>Post Box</label>
+                                        <label>@GlobalGroup.PostBox</label>
                                     </div>
                                 </div>
 
@@ -212,7 +212,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextAreaFor(m => m.Address, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
-                                        <label>Detailed Address</label>
+                                        <label>@GlobalGroup.DetailedAddress</label>
                                     </div>
                                 </div>
 
@@ -226,7 +226,7 @@
             <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingActivities">
                     <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseActivities" aria-expanded="false" aria-controls="collapseActivities">
-                        Economic Activities
+                        @GlobalGroup.EconomicActivities
                     </button>
                 </h2>
                 <div id="collapseActivities" class="accordion-collapse collapse" data-bs-parent="#collapsibleSection">
@@ -236,9 +236,9 @@
 
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.EconomicActivitiesId, new SelectList(ViewBag.EconomicActivities, "Id", "Name"), "--- Select Economic Activity ---", new { @class = "form-control select2" })
+                                        @Html.DropDownListFor(m => m.EconomicActivitiesId, new SelectList(ViewBag.EconomicActivities, "Id", "Name"), "---"+ @GlobalGroup.SelectEconomicActivity +"---", new { @class = "form-control select2" })
                                         @Html.ValidationMessageFor(m => m.EconomicActivitiesId, "", new { @class = "text-danger" })
-                                        <label>Economic Activity</label>
+                                        <label>@GlobalGroup.EconomicActivity</label>
                                     </div>
                                 </div>
 
@@ -246,23 +246,23 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Occupation, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Occupation, "", new { @class = "text-danger" })
-                                        <label>Occupation</label>
+                                        <label>@GlobalGroup.Occupation</label>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.CustomerCategoryId, new SelectList(ViewBag.Categories, "Value", "Text"), "--- Select Customer Category ---", new { @class = "form-control select2" })
+                                        @Html.DropDownListFor(m => m.CustomerCategoryId, new SelectList(ViewBag.Categories, "Value", "Text"), "---"+ @GlobalGroup.SelectCustomerCategory +"---", new { @class = "form-control select2" })
                                         @Html.ValidationMessageFor(m => m.CustomerCategoryId, "", new { @class = "text-danger" })
-                                        <label>Customer Category</label>
+                                        <label>@GlobalGroup.CustomerCategory</label>
                                     </div>
                                 </div>
 
                                 <div class="col-md-9">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.FormalOrInformalSector, new SelectList(ViewBag.formalOrInformalSectors, "Text", "Value"), "--- Select Sector ---", new { @class = "form-control select2" })
+                                        @Html.DropDownListFor(m => m.FormalOrInformalSector, new SelectList(ViewBag.formalOrInformalSectors, "Text", "Value"), "---"+ @GlobalGroup.SelectSector +"---", new { @class = "form-control select2" })
                                         @Html.ValidationMessageFor(m => m.FormalOrInformalSector, "", new { @class = "text-danger" })
-                                        <label>Formal / Informal Sector</label>
+                                        <label>@GlobalGroup.FormalInformalSector</label>
                                     </div>
                                 </div>
 
@@ -270,7 +270,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Income, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Income, "", new { @class = "text-danger" })
-                                        <label>Capital Amount</label>
+                                        <label>@GlobalGroup.CapitalAmount</label>
                                     </div>
                                 </div>
 
@@ -284,7 +284,7 @@
             <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingCommit">
                     <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseCommit" aria-expanded="false" aria-controls="collapseCommit">
-                        Save Group Information
+                        @GlobalGroup.SaveGroupInformation
                     </button>
                 </h2>
                 <div id="collapseCommit" class="accordion-collapse collapse" data-bs-parent="#collapsibleSection">
@@ -292,14 +292,14 @@
                         <div class="text-center mt-4">
                             @if (Model.GroupId == null)
                             {
-                                <button type="submit" class="btn btn-primary">Save New Group</button>
+                                <button type="submit" class="btn btn-primary">@GlobalGroup.SaveNewGroup</button>
                                 <input type="hidden" name="Action" value="insert" id="Action" />
                             }
                             else
                             {
                                 @Html.HiddenFor(m => m.GroupId)
                                 <input type="hidden" name="Action" value="update" id="Action" />
-                                <button type="submit" class="btn btn-primary">Update Group</button>
+                                <button type="submit" class="btn btn-primary">@GlobalGroup.UpdateGroup</button>
                             }
                         </div>
                     </div>

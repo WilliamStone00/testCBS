@@ -613,7 +613,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     BranchName=reqDto.Branch.Name,
                     Phonenumber = user.Phonenumber,
                     SessionID = reqDto.SessionId,
-                    SessionCode=reqDto.SessionCode,
+                    SessionCode = reqDto.SessionCode,
                 };
                 Session["SessionStartTime"] = DateTime.UtcNow;
                 Session["SessionMaxLifetimeMinutes"] = minutes_to_live; // Example: 4 hours
@@ -718,6 +718,9 @@ namespace CBS.FrontDesk.UI.Controllers
             BuildLocalSession(userSession.UserAuthDto);
 
         }
+
+
+
 
 
         protected void SetMenuFromSession()

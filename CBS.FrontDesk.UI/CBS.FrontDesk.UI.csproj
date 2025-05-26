@@ -1376,6 +1376,61 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalEndOfDayOperation.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Error\GlobalError.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalError.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\FeePolicy\GlobalFeePolicy.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalFeePolicy.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\FeeRange\GlobalFeeRange.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalFeeRange.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Fee\GlobalFee.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalFee.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\FundingLine\GlobalFundingLine.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalFundingLine.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\GlobalConfiguration\GlobalConfig.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalConfig.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\GroupType\GlobalGroupType.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalGroupType.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Group\GlobalGroup.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalGroup.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Guaranty\GlobalGuaranty.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalGuaranty.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\HolidayRecurring\GlobalHolidayRecurring.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalHolidayRecurring.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Holiday\GlobalHoliday.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalHoliday.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\HomePage\GlobalAbout.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -5226,6 +5281,50 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalEndOfDayOperation.Designer.cs</LastGenOutput>
     </Content>
+    <Content Include="App_GlobalResources\Error\GlobalError.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalError.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Fee\GlobalFee.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalFee.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\FeePolicy\GlobalFeePolicy.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalFeePolicy.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\FeeRange\GlobalFeeRange.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalFeeRange.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\FundingLine\GlobalFundingLine.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalFundingLine.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\GlobalConfiguration\GlobalConfig.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalConfig.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Group\GlobalGroup.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalGroup.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\GroupType\GlobalGroupType.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalGroupType.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Guaranty\GlobalGuaranty.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalGuaranty.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Holiday\GlobalHoliday.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalHoliday.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\HolidayRecurring\GlobalHolidayRecurring.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalHolidayRecurring.Designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -6400,6 +6499,8 @@
     <Content Include="Views\PasswordPolicyManagement\Index.cshtml" />
     <Content Include="Views\PasswordPolicyManagement\Update.cshtml" />
     <Content Include="Views\PasswordPolicyManagement\_PolicyTips.cshtml" />
+    <Content Include="Views\CashFlowManagement\_SearchOptionCashReplenishment.cshtml" />
+    <Content Include="Views\CashFlowManagement\_CashReplenishmentData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

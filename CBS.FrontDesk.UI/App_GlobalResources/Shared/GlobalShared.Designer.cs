@@ -223,11 +223,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Economic activity.
+        /// </summary>
+        internal static string EconomicActivity {
+            get {
+                return ResourceManager.GetString("EconomicActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        internal static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
             }
         }
         
@@ -259,11 +277,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fax number.
+        /// </summary>
+        internal static string FaxNumber {
+            get {
+                return ResourceManager.GetString("FaxNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filter by Branch.
         /// </summary>
         internal static string FilterByBranch {
             get {
                 return ResourceManager.GetString("FilterByBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go back to home.
+        /// </summary>
+        internal static string GoBackToHome {
+            get {
+                return ResourceManager.GetString("GoBackToHome", resourceCulture);
             }
         }
         
@@ -322,6 +358,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No file is attached to.
+        /// </summary>
+        internal static string NoFileIsAttachedTo {
+            get {
+                return ResourceManager.GetString("NoFileIsAttachedTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No image found.
         /// </summary>
         internal static string NoImageFound {
@@ -358,6 +403,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Place of Issue.
+        /// </summary>
+        internal static string PlaceOfIssue {
+            get {
+                return ResourceManager.GetString("PlaceOfIssue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Post box.
+        /// </summary>
+        internal static string PostBox {
+            get {
+                return ResourceManager.GetString("PostBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Print.
         /// </summary>
         internal static string Print {
@@ -372,6 +435,24 @@ namespace Resources {
         internal static string ProfileImage {
             get {
                 return ResourceManager.GetString("ProfileImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Read.
+        /// </summary>
+        internal static string Read {
+            get {
+                return ResourceManager.GetString("Read", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Region.
+        /// </summary>
+        internal static string Region {
+            get {
+                return ResourceManager.GetString("Region", resourceCulture);
             }
         }
         
@@ -399,6 +480,15 @@ namespace Resources {
         internal static string Reset {
             get {
                 return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Return to home.
+        /// </summary>
+        internal static string ReturnToHome {
+            get {
+                return ResourceManager.GetString("ReturnToHome", resourceCulture);
             }
         }
         

@@ -1079,5 +1079,6 @@ namespace CBS.FrontDesk.Helper
         public static string BulkOperationDataDetails = "/api/v1/BulkOperations/simulation/details/";
         public static string BulkOperationDataTablePaggination = "/api/v1/BulkOperations/simulation/data-table";
         public static string BulkOperationDetailsDataTablePaggination = "/api/v1/BulkOperations/simulation/details";
+        public static object DeleteBulkOperations = "/api/v1/BulkOperations/simulation/delete";
     }
 }

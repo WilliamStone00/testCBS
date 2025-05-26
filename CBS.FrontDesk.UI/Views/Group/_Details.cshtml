@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping.GroupManagement
+    @using Resources
 <div class="card-body">
     <div class="accordion" id="collapsibleSection">
         <div class="card accordion-item mb-3">
@@ -9,7 +10,7 @@
                         data-bs-target="#collapseDeliveryAddress"
                         aria-expanded="true"
                         aria-controls="collapseDeliveryAddress">
-                    Update @Model.Group.GroupName Profile
+                    @GlobalShared.Update @Model.Group.GroupName @GlobalGroup.Profile
                 </button>
             </h2>
             <div id="collapseDeliveryAddress"
@@ -30,7 +31,7 @@
                         data-bs-target="#collapsePaymentMethod3"
                         aria-expanded="false"
                         aria-controls="collapsePaymentMethod3">
-                    Add Members to @Model.Group.GroupName
+                    @GlobalGroup.AddMembersTo @Model.Group.GroupName
                 </button>
             </h2>
             <div id="collapsePaymentMethod3"
@@ -53,7 +54,7 @@
                         data-bs-target="#collapsePaymentMethod5"
                         aria-expanded="false"
                         aria-controls="collapsePaymentMethod5">
-                    Add documents @Model.Group.GroupName
+                    @GlobalGroup.AddDocuments @Model.Group.GroupName
                 </button>
             </h2>
             <div id="collapsePaymentMethod5"

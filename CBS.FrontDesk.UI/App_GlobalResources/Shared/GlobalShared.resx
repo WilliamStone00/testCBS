@@ -171,8 +171,14 @@
   <data name="Download" xml:space="preserve">
     <value>Download</value>
   </data>
+  <data name="EconomicActivity" xml:space="preserve">
+    <value>Economic activity</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
   </data>
   <data name="EnterAccountNumber" xml:space="preserve">
     <value>Enter account number</value>
@@ -183,8 +189,14 @@
   <data name="Export" xml:space="preserve">
     <value>Export</value>
   </data>
+  <data name="FaxNumber" xml:space="preserve">
+    <value>Fax number</value>
+  </data>
   <data name="FilterByBranch" xml:space="preserve">
     <value>Filter by Branch</value>
+  </data>
+  <data name="GoBackToHome" xml:space="preserve">
+    <value>Go back to home</value>
   </data>
   <data name="InExcelFormat" xml:space="preserve">
     <value>In Excel Format</value>
@@ -204,6 +216,9 @@
   <data name="New" xml:space="preserve">
     <value>New</value>
   </data>
+  <data name="NoFileIsAttachedTo" xml:space="preserve">
+    <value>No file is attached to</value>
+  </data>
   <data name="NoImageFound" xml:space="preserve">
     <value>No image found</value>
   </data>
@@ -216,11 +231,23 @@
   <data name="Open" xml:space="preserve">
     <value>Open</value>
   </data>
+  <data name="PlaceOfIssue" xml:space="preserve">
+    <value>Place of Issue</value>
+  </data>
+  <data name="PostBox" xml:space="preserve">
+    <value>Post box</value>
+  </data>
   <data name="Print" xml:space="preserve">
     <value>Print</value>
   </data>
   <data name="ProfileImage" xml:space="preserve">
     <value>Profile image</value>
+  </data>
+  <data name="Read" xml:space="preserve">
+    <value>Read</value>
+  </data>
+  <data name="Region" xml:space="preserve">
+    <value>Region</value>
   </data>
   <data name="Rejected" xml:space="preserve">
     <value>Rejected</value>
@@ -230,6 +257,9 @@
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
+  </data>
+  <data name="ReturnToHome" xml:space="preserve">
+    <value>Return to home</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>

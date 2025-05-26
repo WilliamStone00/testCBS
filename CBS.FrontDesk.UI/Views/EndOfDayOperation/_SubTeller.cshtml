@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.EndOfTheDay
-
+@using Resources
 
 <div class="row">
     <div class="col-xl-7 col-lg-7 col-md-7 order-0 order-md-1">
@@ -16,7 +16,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIconx-3">
                         <i class="mdi mdi-update me-2"></i>
-                        Close of day by @Model.SubTellerProvioningHistory.teller.name of @Model.SubTellerProvioningHistory.openedDate
+                        @GlobalEndOfDayOperation.CloseOfDayBy @Model.SubTellerProvioningHistory.teller.name @GlobalEndOfDayOperation.Of @Model.SubTellerProvioningHistory.openedDate
                     </button>
                 </h2>
                 <div id="accordionPopoutIconx-3"
@@ -33,14 +33,14 @@
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.cashAtHand, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.cashAtHand, "", new { @class = "text-danger" })
-                                            <label style="color:blue">Enter cash at hand</label>
+                                            <label style="color:blue">@GlobalEndOfDayOperation.EnterCashAtHand</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.operationDate, new { @class = "form-control date-picker", @placeholder = "Operation date" })
+                                            @Html.TextBoxFor(m => m.EndOfDaySubTellerCommand.operationDate, new { @class = "form-control date-picker", @placeholder = @GlobalEndOfDayOperation.OperationDate })
                                             @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.operationDate, "", new { @class = "text-danger" })
-                                            <label>Date to close</label>
+                                            <label>@GlobalEndOfDayOperation.DateToClose</label>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -131,14 +131,14 @@
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextAreaFor(m => m.EndOfDaySubTellerCommand.comment, new { @class = "form-control", @style = "height: 75px;" })
                                             @Html.ValidationMessageFor(m => m.EndOfDaySubTellerCommand.comment, "", new { @class = "text-danger " })
-                                            <label for="formValidationDob">Teller close of day note</label>
+                                            <label for="formValidationDob">@GlobalEndOfDayOperation.TellerCloseOfDayNote</label>
                                         </div>
                                     </div>
                                 </div>
                                 if (Model.EndOfDaySubTellerCommand.cashAtHand == 0)
                                 {
                                     <div class="mt-4">
-                                        <button type="submit" class="btn btn-primary me-2">Close (End the day operation)</button>
+                                        <button type="submit" class="btn btn-primary me-2">@GlobalEndOfDayOperation.CloseEndTheDayOperation</button>
                                     </div>
                                 }
 
@@ -167,7 +167,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIconx-3">
                         <i class="mdi mdi-update me-2"></i>
-                        EOD Details
+                        @GlobalEndOfDayOperation.EODDetails
                     </button>
                 </h2>
                 <div id="accordionPopoutIconx-3"

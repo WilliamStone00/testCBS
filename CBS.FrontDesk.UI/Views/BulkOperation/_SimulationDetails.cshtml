@@ -134,16 +134,16 @@
                             <button type="button" class="btn btn-primary" id="approveBulkOperation" data-simulation-id="@Model.Id">
                                 <i class="fas fa-check me-1"></i> @GlobalBulkOperation.PerformActions
                             </button>
-                           @* <button type="button" class="btn btn-warning" id="reviewBulkOperation" data-simulation-id="@Model.Id">
-                                <i class="fas fa-search me-1"></i> Send for Review
-                            </button>*@
+                            @* <button type="button" class="btn btn-warning" id="reviewBulkOperation" data-simulation-id="@Model.Id">
+                                    <i class="fas fa-search me-1"></i> Send for Review
+                                </button>*@
                         }
-                    <button type="button" class="btn btn-info">
-                        <i class="fas fa-download me-1"></i> @GlobalBulkOperation.ExportData
-                    </button>
-                    <button type="button" class="btn btn-danger">
-                        <i class="fas fa-trash me-1"></i> @GlobalBulkOperation.Delete
-                    </button>
+                        <button type="button" class="btn btn-info" data-bs-toggle="tooltip" title="Export bulk operation Analysis to Excel" onclick="exportBulkOperation('@Model.Id')">
+                            <i class="fas fa-download me-1"></i> Export Bulk Operation to Excel
+                        </button>
+                        <button type="button" class="btn btn-danger"  data-bs-toggle="tooltip" title="Delete bulk operation Analysis to Excel" onclick="deleteBulkOperation('@Model.Id','@Model.SimulationType')">
+                            <i class="fas fa-trash me-1"></i> Delete Simulation 
+                        </button>
                     </div>
                 </div>
             </div>
@@ -230,4 +230,6 @@
         </div>
     </div>
 </div>
+
+
 

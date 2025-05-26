@@ -1,16 +1,16 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.EndOfTheDay
-
+@using Resources
 
 <table class="table table-hover" id="myDataTable">
     <thead class="table-light">
         <tr>
-            <th>Date Open</th>
-            <th>Date closes</th>
-            <th>Initial amount</th>
-            <th>Cash at handt</th>
-            <th>Closed status</th>
-            <th>Accountant status</th>
-            <th>Action</th>
+            <th>@GlobalEndOfDayOperation.DateOpen</th>
+            <th>@GlobalEndOfDayOperation.DateCloses</th>
+            <th>@GlobalEndOfDayOperation.InitialAmount</th>
+            <th>@GlobalEndOfDayOperation.CashAtHandt</th>
+            <th>@GlobalEndOfDayOperation.ClosedStatus</th>
+            <th>@GlobalEndOfDayOperation.AccountantStatus</th>
+            <th>@GlobalShared.Action</th>
         </tr>
     </thead>
     <tbody>
@@ -24,7 +24,7 @@
                 <td style="width:10%">@d.clossedStatus</td>
                 <td style="width:15%">@d.accountantConfirmationStatus</td>
                 <td style="width:20%">
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Close the operation of @d.openOfDayAmount for date of @d.openedDate" onclick="AddORUpdateGen('@d.id','datalistingview','_Primary','close','EndOfDayOperation')">Close</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalEndOfDayOperation.CloseTheOperationOf @d.openOfDayAmount @GlobalEndOfDayOperation.ForDateOf @d.openedDate" onclick="AddORUpdateGen('@d.id','datalistingview','_Primary','close','EndOfDayOperation')">@GlobalShared.Close</a>
                 </td>
             </tr>
         }

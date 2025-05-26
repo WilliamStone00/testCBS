@@ -1,11 +1,11 @@
-﻿
+﻿@using Resources
 @{
-    ViewBag.Title = "404-Resource Not Found";
+    ViewBag.Title = @GlobalError.ResourceNotFound;
     Layout = "~/Views/Shared/_ErrorLayout.cshtml";
 }
 
-<h2 class="mb-4">404 - Resource Not Found</h2>
-<p class="lead mb-4">Oops! We couldn't find the requested resource.</p>
-<p>Please check the URL or contact the administrator for assistance.</p>
-<p>ERROR:<br />@ViewBag.ErrorMessage</p>
-<a href="/" class="btn">Go Back to Home</a>
+<h2 class="mb-4">@GlobalError.ResourceNotFound</h2>
+<p class="lead mb-4">@GlobalError.OopsWeCouldntFindTheRequestedResource.</p>
+<p>@GlobalError.PleaseCheckTheURLOrContactTheAdministratorForAssistance.</p>
+<p>@GlobalError.ERROR:<br />@ViewBag.ErrorMessage</p>
+<a href="/" class="btn">@GlobalShared.GoBackToHome</a>

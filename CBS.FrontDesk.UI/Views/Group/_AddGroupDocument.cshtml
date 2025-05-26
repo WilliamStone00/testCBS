@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping.GroupManagement
+    @using Resources
 
 <fieldset class="fieldset-custom">
     @using (Html.BeginForm("Update", "Group", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
@@ -11,7 +12,7 @@
             <input type="hidden" value="@Model.Group.GroupId" id="groupId" />
             <div class="row g-4">
                 <div class="input-group">
-                    <button type="submit" class="input-group-text" for="inputGroupFile02">Upload</button>
+                    <button type="submit" class="input-group-text" for="inputGroupFile02">@GlobalShared.Upload</button>
                     <input type="file" name="GroupDocument.AttachedFiles"
                            class="form-control"
                            id="inputGroupFile03"

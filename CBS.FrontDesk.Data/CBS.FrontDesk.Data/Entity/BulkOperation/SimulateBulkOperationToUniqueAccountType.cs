@@ -44,7 +44,7 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
             SourceAccountType = simulate.SourceAccountType;
             EndAccount = simulate.EndAccount;
             StartAccount = simulate.StartAccount;
-            TargetAmount = simulate.TargetAmount;
+            TargetAmount = simulate.ContributionAmount;
         }
 
 
