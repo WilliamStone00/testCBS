@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Moral Person Account Creation";
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalGroup.MoralPersonAccountCreation;
 }
 
 <div class="row">
@@ -7,10 +8,10 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-group me-2"></i> Moral Person (Group) Account Creation
+                    <i class="mdi mdi-account-group me-2"></i> @GlobalGroup.MoralPersonGroupAccountCreation
                 </h1>
                 <p class="card-text text-muted">
-                    Create a new Group or Moral Person account. Ensure all required fields (group type, registration, identification, and address) are filled correctly.
+                    @GlobalGroup.CreateANewGroupOrMoralPersonAccount.
                 </p>
             </div>
         </div>
@@ -21,7 +22,7 @@
 <div class="card mb-1">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span>
-            <i class="mdi mdi-information-outline me-2"></i> HELP TIPS
+            <i class="mdi mdi-information-outline me-2"></i> @GlobalGroup.HELPTIPS
         </span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
             <i class="mdi mdi-chevron-down"></i>
@@ -30,12 +31,12 @@
     <div id="collapseHelpTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Enter group basic information (Group type, Name, Registration No, etc.).</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Provide accurate address details (Country, Region, Division, Sub-Division, Town).</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure the Date of Establishment and Identification Document Details are valid.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Properly select the Economic Activity and Customer Category for the Group.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Attach valid contact details (Phone, Email, PO Box if available).</li>
-                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> Click <strong>Save</strong> after completing all required sections to register the Group.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalGroup.EnterGroupBasicInformation.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalGroup.ProvideAccurateAddressDetails.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalGroup.EnsureTheDateOfEstablishmentAndIdentification.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalGroup.ProperlySelectTheEconomicActivity.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalGroup.AttachValidContactDetails.</li>
+                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> @GlobalGroup.Click <strong>@GlobalShared.Save</strong> @GlobalGroup.AfterCompletingAllRequiredSectionsToRegisterTheGroup.</li>
             </ul>
         </div>
     </div>
@@ -53,7 +54,7 @@
                             data-bs-target="#accordionPopoutIcon-3"
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
-                        <i class="mdi mdi-account-group me-2"></i> Group / Moral Person Identification Form
+                        <i class="mdi mdi-account-group me-2"></i> @GlobalGroup.GroupMoralPersonIdentificationForm
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"

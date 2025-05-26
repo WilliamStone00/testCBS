@@ -30,8 +30,8 @@ namespace CBS.API.Helper
     public class ApiCallerHelper : IDisposable
     {
         private readonly HttpClient _httpClient;
-        string _baseURL = string.Empty;
-        string _newbaseURL = string.Empty;
+        private readonly string _baseURL = string.Empty;
+        private readonly string _newbaseURL = string.Empty;
         public ApiCallerHelper(string baseUrl)
         {
             if (HttpContext.Current != null && HttpContext.Current.Session != null)

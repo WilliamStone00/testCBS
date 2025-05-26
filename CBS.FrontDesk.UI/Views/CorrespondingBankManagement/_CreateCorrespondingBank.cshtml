@@ -1,5 +1,5 @@
 ﻿
-
+@using Resources
 @model CBS.FrontDesk.Data.Entity.CorrespondingBankManaagement.CorrespondingBankConfiguration
 
 
@@ -14,30 +14,30 @@
 
                     <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
-                            @Html.DropDownListFor(m => m.CorrespondingBank.InstitionType, new SelectList(ViewBag.BankTypes == null ? "" : ViewBag.BankTypes, "Text", "Value"), "---Select Financial InstitutionType---", new { @class = "form-control select2", @search = "true" })
+                            @Html.DropDownListFor(m => m.CorrespondingBank.InstitionType, new SelectList(ViewBag.BankTypes == null ? "" : ViewBag.BankTypes, "Text", "Value"), "---"+ @GlobalCorrespondingBankManagement.SelectFinancialInstitutionType+"---", new { @class = "form-control select2", @search = "true" })
                             @Html.ValidationMessageFor(m => m.CorrespondingBank.InstitionType, "", new { @class = "text-danger" })
-                            <label>Financial Institution</label>
+                            <label>@GlobalCorrespondingBankManagement.FinancialInstitution</label>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.CorrespondingBank.Name, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.CorrespondingBank.Name, "", new { @class = "text-danger" })
-                            <label>Name</label>
+                            <label>@GlobalCorrespondingBankManagement.Name</label>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.CorrespondingBank.Code, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.CorrespondingBank.Code, "", new { @class = "text-danger" })
-                            <label>BankCode</label>
+                            <label>@GlobalCorrespondingBankManagement.BankCode</label>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.CorrespondingBank.HeadOfficeLocation, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.CorrespondingBank.HeadOfficeLocation, "", new { @class = "text-danger" })
-                            <label>Head Office Location</label>
+                            <label>@GlobalCorrespondingBankManagement.HeadOfficeLocation</label>
 
                         </div>
                     </div>
@@ -45,14 +45,14 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.CorrespondingBank.HeadOfficeTelephone, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.CorrespondingBank.HeadOfficeTelephone, "", new { @class = "text-danger" })
-                            <label>Head Office Telephone</label>
+                            <label>@GlobalCorrespondingBankManagement.HeadOfficeTelephone</label>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.CorrespondingBank.Email, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.CorrespondingBank.Email, "", new { @class = "text-danger" })
-                            <label>Head Office Telephone</label>
+                            <label>@GlobalCorrespondingBankManagement.HeadOfficeTelephone</label>
                         </div>
                     </div>
 
@@ -60,11 +60,11 @@
                 <div class="mt-4">
                     @if (Model.CorrespondingBank.Id == null)
                     {
-                        <button type="submit" class="btn btn-primary me-2">Save</button>
+                        <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
                         <input type="hidden" name="Action" value="insert" id="Action" />
                     }
                     else
-                    { <button type="submit" class="btn btn-primary me-2">Update</button>
+                    { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                         @Html.HiddenFor(m => m.CorrespondingBank.Id)
                         <input type="hidden" name="Action" value="update" id="Action" />
                     }

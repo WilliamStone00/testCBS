@@ -1,4 +1,5 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.LoanConf.Fee>
+    @using Resources
 <fieldset class="fieldset-custom">
     <legend>Data</legend>
     @if (Model.Count == 0)
@@ -13,10 +14,10 @@
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Payment Status</th>
-                        <th>Action</th>
+                        <th>@GlobalFee.Name</th>
+                        <th>@GlobalFee.Type</th>
+                        <th>@GlobalFee.PaymentStatus</th>
+                        <th>@GlobalShared.Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,16 +29,16 @@
                             <td style="width:15%">
                                 @if (d.IsBoforeProcesing)
                                 {
-                                    <span class="badge bg-info">Before Processing</span>
+                                    <span class="badge bg-info">@GlobalFee.BeforeProcessing</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-warning">During Disburstment</span>
+                            <span class="badge bg-warning">@GlobalFee.DuringDisburstment</span>
                                 }
                             </td>
                             <td style="width:15%">
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Create','update','Fee')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit</a> |
-                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteRecordDataTable('Fee','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Create','update','Fee')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.Name @GlobalShared.ToEdit">@GlobalShared.Edit</a> |
+                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.Name" onclick="DeleteRecordDataTable('Fee','@d.Id','myDataTable','_Data',0,'datalistingview')">@GlobalShared.Delete</a>
                             </td>
                         </tr>
                     }

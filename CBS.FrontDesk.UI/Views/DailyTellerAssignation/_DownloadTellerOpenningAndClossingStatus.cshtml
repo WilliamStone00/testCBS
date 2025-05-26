@@ -1,33 +1,34 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.DailyTeller
+    @using Resources
 
 <fieldset class="fieldset-custom">
-    <legend>Opening and Clossing Status for Tellers</legend>
+    <legend>@GlobalDailyTellerAssignation.OpeningAndClossingStatusForTellers</legend>
     <form method="get" action="/DailyTellerAssignation/TellerOpenningAndClossingStatusDownload/">
         <hr />
         <div class="col-12">
             <div class="form-check">
                 @Html.CheckBoxFor(m => m.GetTellerOpenningAndClossingQuery.ByBracnch, new { @class = "form-check-input", @id = "byBranchCheckbox" })
-                <label class="form-check-label" for="byBranchCheckbox">Check to print By Branch</label>
+                <label class="form-check-label" for="byBranchCheckbox">@GlobalDailyTellerAssignation.CheckToPrintByBranch</label>
             </div>
         </div>
         <hr />
         <div class="row g-4">
             <div class="col-md-4">
-                <label for="branchInput">Branch</label>
-                @Html.DropDownListFor(m => m.GetTellerOpenningAndClossingQuery.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---Select Branch---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
+                <label for="branchInput">@GlobalDailyTellerAssignation.Branch</label>
+                @Html.DropDownListFor(m => m.GetTellerOpenningAndClossingQuery.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalDailyTellerAssignation.SelectBranch+"---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
             </div>
             <div class="col-md-8">
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <label for="dateFromInput">Date From</label>
+                        <label for="dateFromInput">@GlobalDailyTellerAssignation.DateFrom</label>
                         <div class="input-group">
-                            @Html.TextBoxFor(m => m.GetTellerOpenningAndClossingQuery.DateFrom, new { @class = "form-control shadow-box date-picker", @placeholder = "Date From" })
+                            @Html.TextBoxFor(m => m.GetTellerOpenningAndClossingQuery.DateFrom, new { @class = "form-control shadow-box date-picker", @placeholder = @GlobalDailyTellerAssignation.DateFrom })
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="dateToInput">Date To</label>
+                        <label for="dateToInput">@GlobalDailyTellerAssignation.DateTo</label>
                         <div class="input-group">
-                            @Html.TextBoxFor(m => m.GetTellerOpenningAndClossingQuery.DateTo, new { @class = "form-control shadow-box date-picker", @placeholder = "Date To" })
+                            @Html.TextBoxFor(m => m.GetTellerOpenningAndClossingQuery.DateTo, new { @class = "form-control shadow-box date-picker", @placeholder = @GlobalDailyTellerAssignation.DateTo })
                             <button type="submit" class="btn btn-default btn-sm">Print</button>
                         </div>
                     </div>

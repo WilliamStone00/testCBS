@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.EndOfTheDay
-
+@using Resources
 
 
 <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
@@ -16,7 +16,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIconx-3">
                     <i class="mdi mdi-update me-2"></i>
-                    Details of operations of @Model.PrimaryTellerProvisioningHistory.teller.name for the selected date @Model.PrimaryTellerProvisioningHistory.openedDate
+                    @GlobalEndOfDayOperation.DetailsOfOperationsOf @Model.PrimaryTellerProvisioningHistory.teller.name @GlobalEndOfDayOperation.ForTheSelectedDate @Model.PrimaryTellerProvisioningHistory.openedDate
                 </button>
             </h2>
             <div id="accordionPopoutIconx-3"
@@ -30,60 +30,60 @@
                                 <div class="col-md-8">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.openOfDayAmount, new { @class = "form-control", @readonly = true })
-                                        <label style="color:blue">Open of day amount</label>
+                                        <label style="color:blue">@GlobalEndOfDayOperation.OpenOfDayAmount</label>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.openedDate, new { @class = "form-control date-picker", @placeholder = "Operation date" })
-                                        <label>Opened date</label>
+                                        @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.openedDate, new { @class = "form-control date-picker", @placeholder = @GlobalEndOfDayOperation.OperationDate })
+                                        <label>@GlobalEndOfDayOperation.OpenedDate</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.cashReplenishmentAmount, new { @class = "form-control", @readonly = true })
-                                        <label style="color:blue">Replenished amount</label>
+                                        <label style="color:blue">@GlobalEndOfDayOperation.ReplenishedAmount</label>
                                     </div>
                                 </div>
                                 <div class="col-md-8">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.cashAtHand, new { @class = "form-control", @readonly = true })
-                                        <label style="color:blue">Cash at hand</label>
+                                        <label style="color:blue">@GlobalEndOfDayOperation.CashAtHand</label>
                                     </div>
                                 </div> <div class="col-md-4">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.clossedDate, new { @class = "form-control date-picker", @placeholder = "Operation date" })
-                                        <label>Date to close</label>
+                                        @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.clossedDate, new { @class = "form-control date-picker", @placeholder = @GlobalEndOfDayOperation.OperationDate })
+                                        <label>@GlobalEndOfDayOperation.DateToClose</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.accountBalance, new { @class = "form-control", @readonly = true })
-                                        <label style="color:blue">System difference</label>
+                                        <label style="color:blue">@GlobalEndOfDayOperation.SystemDifference</label>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.clossedStatus, new { @class = "form-control", @readonly = true })
-                                        <label style="color:blue">Close of day status</label>
+                                        <label style="color:blue">@GlobalEndOfDayOperation.CloseOfDayStatus</label>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.accountantConfirmationStatus, new { @class = "form-control", @readonly = true })
-                                        <label style="color:blue">Validation status</label>
+                                        <label style="color:blue">@GlobalEndOfDayOperation.ValidationStatus</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextAreaFor(m => m.PrimaryTellerProvisioningHistory.primaryTellerComment, new { @class = "form-control", @style = "height: 75px;" })
-                                        <label for="formValidationDob">Teller note</label>
+                                        <label for="formValidationDob">@GlobalEndOfDayOperation.TellerNote</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextAreaFor(m => m.PrimaryTellerProvisioningHistory.accountantComment, new { @class = "form-control", @style = "height: 75px;" })
-                                        <label for="formValidationDob">Accountant note</label>
+                                        <label for="formValidationDob">@GlobalEndOfDayOperation.AccountantNote</label>
                                     </div>
                                 </div>
                             </div>
@@ -102,7 +102,7 @@
                         data-bs-target="#accordionPopoutIconx-2"
                         aria-controls="accordionPopoutIconx-2">
                     <i class="mdi mdi-details me-2"></i>
-                    Close operations of @Model.PrimaryTellerProvisioningHistory.teller.name for the selected date @Model.PrimaryTellerProvisioningHistory.openedDate
+                    @GlobalEndOfDayOperation.CloseOperationsOf @Model.PrimaryTellerProvisioningHistory.teller.name @GlobalEndOfDayOperation.ForTheSelectedDate @Model.PrimaryTellerProvisioningHistory.openedDate
                 </button>
             </h2>
             <div id="accordionPopoutIconx-2"
@@ -117,34 +117,34 @@
                                 <div class="col-md-8">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.openOfDayAmount, new { @class = "form-control", @readonly = true })
-                                        <label style="color:blue">Open of day amount</label>
+                                        <label style="color:blue">@GlobalEndOfDayOperation.OpenOfDayAmount</label>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.PrimaryTellerProvisioningHistory.openedDate, new { @class = "form-control", @readonly = true })
-                                        <label style="color:blue">Open of day date</label>
+                                        <label style="color:blue">@GlobalEndOfDayOperation.OpenOfDayDate</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.EndOfDayAccountantCommand.amountRecieved, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.EndOfDayAccountantCommand.amountRecieved, "", new { @class = "text-danger" })
-                                        <label style="color:blue">Enter amount collected</label>
+                                        <label style="color:blue">@GlobalEndOfDayOperation.EnterAmountCollected</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.EndOfDayAccountantCommand.accountantConfirmationStatus, new SelectList(ViewBag.Statuses, "Text", "Value"), "---Select confirmation status type---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.DropDownListFor(m => m.EndOfDayAccountantCommand.accountantConfirmationStatus, new SelectList(ViewBag.Statuses, "Text", "Value"), "---"+ @GlobalEndOfDayOperation.SelectConfirmationStatusType + "---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.EndOfDayAccountantCommand.accountantConfirmationStatus, "", new { @class = "text-danger " })
-                                        <label for="formValidationDob">Confirmation status</label>
+                                        <label for="formValidationDob">@GlobalEndOfDayOperation.ConfirmationStatus</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.EndOfDayAccountantCommand.eodClosedStatus, new SelectList(ViewBag.ClosedStatus, "Text", "Value"), "---Select closed status type---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.DropDownListFor(m => m.EndOfDayAccountantCommand.eodClosedStatus, new SelectList(ViewBag.ClosedStatus, "Text", "Value"), "---"+ @GlobalEndOfDayOperation.SelectClosedStatusType + "---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.EndOfDayAccountantCommand.eodClosedStatus, "", new { @class = "text-danger " })
-                                        <label for="formValidationDob">Closed status</label>
+                                        <label for="formValidationDob">@GlobalEndOfDayOperation.ClosedStatus</label>
                                     </div>
                                 </div>
 
@@ -152,7 +152,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextAreaFor(m => m.EndOfDayAccountantCommand.comment, new { @class = "form-control", @style = "height: 75px;" })
                                         @Html.ValidationMessageFor(m => m.EndOfDayAccountantCommand.comment, "", new { @class = "text-danger " })
-                                        <label for="formValidationDob">Accounant note</label>
+                                        <label for="formValidationDob">@GlobalEndOfDayOperation.AccounantNote</label>
                                     </div>
                                 </div>
                             </div>
@@ -176,7 +176,7 @@
                         data-bs-target="#accordionPopoutIconx-1"
                         aria-controls="accordionPopoutIconx-1">
                     <i class="mdi mdi-two-factor-authentication me-2"></i>
-                    Transactions
+                    @GlobalEndOfDayOperation.Transactions
                 </button>
             </h2>
 
@@ -189,7 +189,7 @@
                             <div class="card mb-4">
                                 <div class="card-body d-sm-flex d-block">
                                     <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                        <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('EndOfDayOperation', null,'GetReport', @Model.PrimaryTellerProvisioningHistory.id, 'List', 'export_tellers_transactions', null,'@Model.PrimaryTellerProvisioningHistory.teller.name','DownloadExcelFile',null,'@Model.PrimaryTellerProvisioningHistory.teller.name')" data-bs-toggle="tooltip" title="Export teller transactions">
+                                        <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('EndOfDayOperation', null,'GetReport', @Model.PrimaryTellerProvisioningHistory.id, 'List', 'export_tellers_transactions', null,'@Model.PrimaryTellerProvisioningHistory.teller.name','DownloadExcelFile',null,'@Model.PrimaryTellerProvisioningHistory.teller.name')" data-bs-toggle="tooltip" title="@GlobalEndOfDayOperation.ExportTellerTransactions">
                                             <span class="tf-icons mdi mdi-printer mdi-18px"></span>
                                         </a>
                                     </div>
@@ -200,12 +200,12 @@
                                 <table class="table table-hover" id="myDataTable">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Date</th>
-                                            <th>Debit</th>
-                                            <th>Credit</th>
-                                            <th>Previous balance</th>
-                                            <th>Balance</th>
-                                            <th>Type</th>
+                                            <th>@GlobalEndOfDayOperation.Date</th>
+                                            <th>@GlobalEndOfDayOperation.Debit</th>
+                                            <th>@GlobalEndOfDayOperation.Credit</th>
+                                            <th>@GlobalEndOfDayOperation.PreviousBalance</th>
+                                            <th>@GlobalEndOfDayOperation.Balance</th>
+                                            <th>@GlobalEndOfDayOperation.Type</th>
                                         </tr>
                                     </thead>
                                     <tbody>

@@ -1,9 +1,10 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping.GroupManagement
+    @using Resources
 <div id="loan_file_attached">
     @if (!Model.GroupDocuments.Any())
     {
         <div class="text-center my-3">
-            <p>No file is attached to @Model.Group.GroupName</p>
+            <p>@GlobalShared.NoFileIsAttachedTo @Model.Group.GroupName</p>
         </div>
     }
     else
@@ -37,7 +38,7 @@
                                             </h6>
                                         </div>
                                         <div class="file-actions">
-                                            <a href="@($"{file.UrlPath}")" target="_blank" class="btn btn-sm btn-primary">Read</a>
+                                            <a href="@($"{file.UrlPath}")" target="_blank" class="btn btn-sm btn-primary">@GlobalShared.Read</a>
                                         </div>
                                     </div>
                                 </div>

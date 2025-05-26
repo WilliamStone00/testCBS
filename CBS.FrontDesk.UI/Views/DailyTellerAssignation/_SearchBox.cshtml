@@ -1,12 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.DailyTeller
-
+@using Resources
 <fieldset class="fieldset-custom">
-    <legend>Filter Tellers in Operation</legend>
+    <legend>@GlobalDailyTellerAssignation.FilterTellersInOperation</legend>
     <hr />
     <div class="row g-4">
         <div class="col-md-12">
-            <label for="branchInput" class="form-label">Select Branch to view assigned tellers</label>
-            @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---Select Branch to load tellers assigned---",
+            <label for="branchInput" class="form-label">@GlobalDailyTellerAssignation.SelectBranchToViewAssignedTellers</label>
+            @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---" + @GlobalDailyTellerAssignation.SelectBranchToLoadTellersAssigned + "---",
  new { @class = "form-control select2", @id = "branchInput", onchange = "LoadTellerrsAssigned()" })
         </div>
     </div>

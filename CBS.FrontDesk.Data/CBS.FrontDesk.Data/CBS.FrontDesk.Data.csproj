@@ -124,7 +124,9 @@
     <Compile Include="Entity\MemberNoneCashOperationsP\MemberNoneCashOperation.cs" />
     <Compile Include="Entity\MenuTranslationP\MenuTranslation.cs" />
     <Compile Include="Entity\RequestManagement\ClientDataModel.cs" />
-    <Compile Include="Entity\RequestManagement\RequestLog.cs" />
+    <Compile Include="Entity\RequestManagement\RateLimitConfig.cs" />
+    <Compile Include="Entity\RequestManagement\RateLimitedUser.cs" />
+    <Compile Include="Entity\RequestManagement\RateLimiteTrackerLogger.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryAnalysisResultSummary.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryExecutionModel.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryUploadModel.cs" />

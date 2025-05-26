@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Phone number approval";
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalChangeNumber.PhoneNumberApproval;
 }
 
 <div class="row">
@@ -8,11 +9,11 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-phone me-2"></i> Change Member Phone Number Approval
+                    <i class="mdi mdi-phone me-2"></i> @GlobalChangeNumber.ChangeMemberPhoneNumberApproval
                 </h1>
                 <p class="card-text">
-                    Manage and approve member phone number change requests.
-                    Review pending requests and take necessary actions to **approve or reject** changes.
+                    @GlobalChangeNumber.ManageAndApproveMemberPhoneNumberChangeRequests.
+                    @GlobalChangeNumber.ReviewPendingRequestsAndTakeNecessaryActions.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -23,7 +24,7 @@
 <!-- Tips Card -->
 <div class="card mb-1">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR REQUEST APPROVAL</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalChangeNumber.TIPSFORREQUESTAPPROVAL</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePhoneTips" aria-expanded="false" aria-controls="collapsePhoneTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -31,10 +32,10 @@
     <div id="collapsePhoneTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure that the new phone number **belongs to the member** and is active.</li>
-                <li><i class="mdi mdi-account-check-outline text-success me-2"></i> Verify the identity of the requester before approval.</li>
-                <li><i class="mdi mdi-gavel text-warning me-2"></i> **Approved changes cannot be reverted automatically.** Ensure the request is legitimate before proceeding.</li>
-                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> If there are any inconsistencies, **reject** the request and provide a reason in the approval comment.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalChangeNumber.EnsureThatTheNewPhoneNumberBelongsToTheMember.</li>
+                <li><i class="mdi mdi-account-check-outline text-success me-2"></i> @GlobalChangeNumber.VerifyTheIdentityOfTheRequesterBeforeApproval.</li>
+                <li><i class="mdi mdi-gavel text-warning me-2"></i> @GlobalChangeNumber.ApprovedChangesCannotBeRevertedAutomatically.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> @GlobalChangeNumber.IfThereAreAnyInconsistencies.</li>
             </ul>
         </div>
     </div>
@@ -61,10 +62,10 @@
                         <div class="card bg-light mb-1">
                             <div class="card-body text-center">
                                 <h1 class="card-title text-primary">
-                                    <i class="mdi mdi-account-details-outline me-2"></i> PHONE NUMBER CHANGE REQUEST [@Session["BranchName"].ToString()]
+                                    <i class="mdi mdi-account-details-outline me-2"></i> @GlobalChangeNumber.PHONENUMBERCHANGEREQUEST [@Session["BranchName"].ToString()]
                                 </h1>
                                 <p class="card-text">
-                                    You are about to review and approve a phone number change request. Please ensure the details are accurate before proceeding with approval.
+                                    @GlobalChangeNumber.YouAreAboutToReviewAndApproveAPhoneNumberChangeRequest.
                                 </p>
                                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                             </div>
@@ -78,7 +79,7 @@
                 <!-- Tips Section -->
                 <div class="card">
                     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                        <span><i class="mdi mdi-information-outline me-2"></i> IMPORTANT INFORMATION</span>
+                        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalChangeNumber.IMPORTANTINFORMATION</span>
                         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
                             <i class="mdi mdi-chevron-down"></i>
                         </button>
@@ -86,11 +87,11 @@
                     <div id="collapseTips" class="collapse">
                         <div class="card-body">
                             <ul class="mb-0">
-                                <li><i class="mdi mdi-account-check-outline text-primary me-2"></i><strong>Verification:</strong> Ensure that the member requesting the phone number change is authorized and that supporting documents (if required) are available.</li>
-                                <li><i class="mdi mdi-phone-classic text-primary me-2"></i><strong>Phone Number Update:</strong> The old phone number will be replaced with the new one in the system upon approval.</li>
-                                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i><strong>Irreversible Action:</strong> Once approved, the change will take effect immediately and cannot be undone.</li>
-                                <li><i class="mdi mdi-comment-check-outline text-success me-2"></i><strong>Approval Comment:</strong> Provide a clear and concise reason for approval or rejection in the comment section.</li>
-                                <li><i class="mdi mdi-security text-danger me-2"></i><strong>Security Consideration:</strong> Be cautious of fraudulent requests and ensure all approvals align with company policies.</li>
+                                <li><i class="mdi mdi-account-check-outline text-primary me-2"></i><strong>@GlobalChangeNumber.Verification:</strong> @GlobalChangeNumber.EnsureThatTheMemberRequestingThePhoneNumberChangeIsAuthorized.</li>
+                                <li><i class="mdi mdi-phone-classic text-primary me-2"></i><strong>@GlobalChangeNumber.PhoneNumberUpdate:</strong> @GlobalChangeNumber.TheOldPhoneNumberWillBeReplacedWithTheNewOneInTheSystemUponApproval.</li>
+                                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i><strong>@GlobalChangeNumber.IrreversibleAction:</strong> @GlobalChangeNumber.OnceApprovedTheChangeWillTakeEffectImmediatelyAndCannotBeUndone.</li>
+                                <li><i class="mdi mdi-comment-check-outline text-success me-2"></i><strong>@GlobalChangeNumber.ApprovalComment:</strong> @GlobalChangeNumber.ProvideAclearAndConciseReasonForApproval.</li>
+                                <li><i class="mdi mdi-security text-danger me-2"></i><strong>@GlobalChangeNumber.SecurityConsideration:</strong> @GlobalChangeNumber.BeCautiousOfFraudulentRequests.</li>
                             </ul>
                         </div>
                     </div>

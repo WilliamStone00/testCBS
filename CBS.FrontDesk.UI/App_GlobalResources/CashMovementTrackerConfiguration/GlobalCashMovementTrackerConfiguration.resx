@@ -139,7 +139,7 @@
     <value>Distance to cover (In Kilometers)</value>
   </data>
   <data name="Duration" xml:space="preserve">
-    <value>Duration</value>
+    <value>Duration(In Mins)</value>
   </data>
   <data name="DurationForMovement" xml:space="preserve">
     <value>Duration for movement (In minutes)</value>

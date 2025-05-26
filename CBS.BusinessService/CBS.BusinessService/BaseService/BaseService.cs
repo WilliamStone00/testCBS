@@ -197,6 +197,11 @@ namespace BusinessServices
 
             return string.Join("&", properties.ToArray());
         }
+        public string RemoveDuplicateSlashes(string url)
+        {
+            // Replace occurrences of double forward slashes (//) with single forward slash (/)
+            return url.Replace("//", "/");
+        }
         public bool ComputeDenomination(CurrencyNotes currencyNotes, int amount)
         {
             int totalNotesValue = currencyNotes.note10000 * 10000 +
@@ -1792,7 +1797,7 @@ namespace BusinessServices
         public string GetUserFullName()
         {
             var data = HttpContext.Current?.Session?["FullName"]?.ToString();
-            return string.IsNullOrWhiteSpace(data) ? "None" : data;
+            return string.IsNullOrWhiteSpace(data) ? "No Name" : data;
         }
 
         public string GetUserName()

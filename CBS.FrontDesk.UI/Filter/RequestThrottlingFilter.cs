@@ -21,10 +21,6 @@ namespace CBS.FrontDesk.UI.Filter
     public class RequestThrottlingFilter : ActionFilterAttribute
     {
 
-        //private const int REQUEST_LIMIT = 100;
-        //private static readonly TimeSpan TIME_WINDOW = TimeSpan.FromSeconds(20);
-        //private static readonly TimeSpan BLOCK_DURATION = TimeSpan.FromMinutes(30);
-        //private static readonly MemoryCache RequestCache = MemoryCache.Default;
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -51,37 +47,7 @@ namespace CBS.FrontDesk.UI.Filter
                     return;
                 }
             }
-            //// ✅ Exclude AJAX Requests
-            //if (request.IsAjaxRequest())
-            //{
-            //    base.OnActionExecuting(filterContext);
-            //    return;
-            //}
-
-            //// ✅ Check if IP is blocked
-            //string blockKey = $"BLOCK_{ipAddress}";
-            //if (RequestCache.Contains(blockKey))
-            //{
-            //    filterContext.Result = new HttpStatusCodeResult(429, "Too Many Requests - IP Blocked");
-            //    return;
-            //}
-
-            //// ✅ Log the request and update count
-            //string requestKey = $"REQ_{ipAddress}";
-            //int requestCount = (int)(RequestCache.Get(requestKey) ?? 0);
-
-            //// ✅ Block further processing if limit exceeded
-            //if (requestCount >= REQUEST_LIMIT)
-            //{
-            //    RequestCache.Set(blockKey, true, DateTimeOffset.Now.Add(BLOCK_DURATION));
-            //    filterContext.Result = new HttpStatusCodeResult(429, "Too Many Requests - You have been blocked.");
-            //    return;
-            //}
-
-            //// ✅ Increment the request count
-            //requestCount++;
-            //RequestCache.Set(requestKey, requestCount, DateTimeOffset.Now.Add(TIME_WINDOW));
-
+            
             try
             {
 
@@ -211,15 +177,53 @@ namespace CBS.FrontDesk.UI.Filter
         }
         public void GetUserSession(ActionExecutingContext filterContext)
         {
-            if (!filterContext.HttpContext.User.Identity.IsAuthenticated) return;
+            var request = filterContext.HttpContext.Request;
+            var response = filterContext.HttpContext.Response;
 
-            bool isAjaxRequest = filterContext.HttpContext.Request.IsAjaxRequest();
-            var _userManagementServices = new LocalSession();
+            string currentPath = request.Path.ToLower();
+            string resolvedFlag = request.QueryString["resolved"]?.ToLower();
+
+            System.Diagnostics.Debug.WriteLine($"🌐 Path: {currentPath}, Resolved: {resolvedFlag}");
+
+            // ✅ 1. Bypass session checks on Login or ResolveMultipleSessions pages
+            if (currentPath.Contains("/authentication/login") ||
+                currentPath.Contains("/authentication/resolvemultiplesessions"))
+            {
+                System.Diagnostics.Debug.WriteLine($"🚫 Skipping session check on path: {currentPath}");
+                return;
+            }
+
+            // ✅ 2. Avoid session logic if HttpContext or Session is null
+            if (HttpContext.Current == null || HttpContext.Current.Session == null)
+            {
+                System.Diagnostics.Debug.WriteLine("⚠️ HttpContext or Session is null. Skipping session rehydration.");
+                return;
+            }
+
+            // ✅ 3. Skip if user is not authenticated
+            if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
+            {
+                System.Diagnostics.Debug.WriteLine("⛔ User not authenticated. Skipping session check.");
+                return;
+            }
+
+            bool isAjaxRequest = request.IsAjaxRequest();
             var identity = filterContext.HttpContext.User as CustomPrincipal;
 
-            // ✅ Validate the identity
+            // ✅ 4. Trace identity state
+            if (identity == null)
+            {
+                System.Diagnostics.Debug.WriteLine("❌ identity is null.");
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"🔍 Identity info: UserName={identity.UserName}, SessionCode={identity.SessionCode}");
+            }
+
+            // ✅ 5. Handle invalid or empty identity info
             if (identity == null || string.IsNullOrWhiteSpace(identity.SessionCode) || string.IsNullOrWhiteSpace(identity.UserName))
             {
+                System.Diagnostics.Debug.WriteLine("❌ Invalid identity. Logging out...");
                 if (!isAjaxRequest)
                 {
                     PerformLogoutAsync();
@@ -230,11 +234,13 @@ namespace CBS.FrontDesk.UI.Filter
 
             try
             {
+                var _userManagementServices = new LocalSession();
                 var userSession = _userManagementServices.GetUserCurrentsession(identity.SessionCode, identity.UserName);
 
-                // ✅ Handle invalid or null session
+                // ✅ 6. Handle missing or invalid session
                 if (userSession == null || string.Equals(userSession.SessionStatus, "Invalid", StringComparison.OrdinalIgnoreCase))
                 {
+                    System.Diagnostics.Debug.WriteLine("❌ No session or invalid. Logging out...");
                     if (!isAjaxRequest)
                     {
                         PerformLogoutAsync();
@@ -243,33 +249,29 @@ namespace CBS.FrontDesk.UI.Filter
                     return;
                 }
 
-                // ✅ Check for multiple sessions
+                // ✅ 7. Handle multiple sessions and redirect
                 if (userSession.SessionStatus == "Multiple_Sessions")
                 {
-                    string currentUrl = filterContext.HttpContext.Request.RawUrl.ToLower();
-                    bool isOnResolveMultipleSessionsPage = currentUrl.Contains("/authentication/resolvemultiplesessions");
+                    string redirectUrl = $"~/Authentication/ResolveMultipleSessions" +
+                                         $"?username={HttpUtility.UrlEncode(userSession.UserName)}" +
+                                         $"&message={HttpUtility.UrlEncode(userSession.ErrorMessage)}" +
+                                         $"&count={userSession.NumberOfSessionsOpen}" +
+                                         $"&resolved=false";
 
-                    if (!isOnResolveMultipleSessionsPage)
-                    {
-                        string redirectUrl = $"~/Authentication/ResolveMultipleSessions?username={HttpUtility.UrlEncode(userSession.UserName)}" +
-                                             $"&message={HttpUtility.UrlEncode(userSession.ErrorMessage)}" +
-                                             $"&count={userSession.NumberOfSessionsOpen}";
+                    System.Diagnostics.Debug.WriteLine($"🔁 REDIRECTING to: {redirectUrl}");
 
-                        if (!isAjaxRequest)
-                        {
-                            filterContext.Result = new RedirectResult(redirectUrl);
-                        }
-                    }
+                    filterContext.Result = new RedirectResult(redirectUrl);
                     return;
                 }
 
-                // ✅ Valid single session
+                // ✅ 8. Valid session - build local session
+                System.Diagnostics.Debug.WriteLine("✅ Valid session. Proceeding...");
                 BuildLocalSession(userSession.UserAuthDto, filterContext);
             }
             catch (Exception ex)
             {
-                // ✅ Handle unexpected exceptions
-                // LogException(ex); // Implement logging
+                System.Diagnostics.Debug.WriteLine($"❗ Exception in GetUserSession: {ex.Message}");
+
                 if (!isAjaxRequest)
                 {
                     PerformLogoutAsync();

@@ -1,9 +1,10 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping.GroupManagement
+     @using Resources
 <div id="loan_file_attached">
     @if (!Model.GroupCustomers.Any())
     {
         <div class="text-center my-3">
-            <p>No member is added to @Model.Group.GroupName group</p>
+            <p>@GlobalGroup.NoMemberIsAddedTo @Model.Group.GroupName @GlobalGroup.Group</p>
         </div>
     }
     else
@@ -23,14 +24,14 @@
                                             {
                                                 <h6 class="mb-1">
                                                     @(i + 1). @file.Customer.FirstName @file.Customer.LastName, Tel: @file.Customer.Phone
-                                                    <span class="badge rounded-pill bg-primary">Group Leader</span>
+                                                    <span class="badge rounded-pill bg-primary">@GlobalGroup.GroupLeader</span>
                                                 </h6>
                                             }
                                             else
                                             {
                                         <h6 class="mb-1">
                                             @(i + 1). @file.Customer.FirstName @file.Customer.LastName, Tel: @file.Customer.Phone
-                                            <span class="badge rounded-pill bg-secondary">Member</span>
+                                            <span class="badge rounded-pill bg-secondary">@GlobalGroup.Member</span>
                                         </h6>
                                             }
                                         </div>

@@ -176,7 +176,7 @@ function validateTotalAmount(total, totalNotes) {
 }
 function collectDeposits() {
     const deposits = [];
-
+    const totalInfo = calculateTotalAmount();
     const alphaNumber = $('#CustomerAlphaNumber').val();
     const customerId = $('#customerId').val();
     const operationType = $('#OperationType').val();
@@ -201,6 +201,7 @@ function collectDeposits() {
             Penalty: parseFloat($(this).find('.penalty-input')?.val()) || 0,
             Interest: parseFloat($(this).find('.interest-input')?.val()) || 0,
             Total: parseFloat($(this).find('.total-span').text()) || 0,
+            //Total: totalInfo.total //parseFloat($(this).find('.total-span').text()) || 0,
             Note: note,
             CheckName: checkName,
             CheckNumber: checkNumber,

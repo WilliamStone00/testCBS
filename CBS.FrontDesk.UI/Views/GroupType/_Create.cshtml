@@ -1,8 +1,9 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping.GroupType
+    @using Resources
 <div class="card-body">
     @using (Html.BeginForm("AddOrUpdate", "GroupType", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {<fieldset class="fieldset-custom">
-            <legend>Group Type</legend>
+            <legend>@GlobalGroupType.GroupType</legend>
             <br />
 
             <div class="row mt-2 gy-4">
@@ -10,25 +11,25 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.GroupTypeName, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.GroupTypeName, "", new { @class = "text-danger" })
-                        <label>Group type name</label>
+                        <label>@GlobalGroupType.GroupTypeName</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 200px;" })
                         @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                        <label>Description</label>
+                        <label>@GlobalGroupType.Description</label>
                     </div>
                 </div>
             </div>
             <div class="mt-4">
                 @if (Model.GroupTypeId == null)
                 {
-                    <button type="submit" class="btn btn-primary me-2">Save</button>
+                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
                     <input type="hidden" name="Action" value="insert" id="Action" />
                 }
                 else
-                { <button type="submit" class="btn btn-primary me-2">Update</button>
+                { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                     @Html.HiddenFor(m => m.GroupTypeId)
                     <input type="hidden" name="Action" value="update" id="Action" />
                 }

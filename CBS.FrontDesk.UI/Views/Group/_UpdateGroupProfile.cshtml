@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping.GroupManagement
+     @using Resources
 
 @using (Html.BeginForm("Update", "Group", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
@@ -7,42 +8,42 @@
             <div class="row mt-2 gy-4">
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.Group.GroupTypeId, new SelectList(ViewBag.GroupTypes, "GroupTypeId", "GroupTypeName"), "---Select Group type---", new { @class = "form-control select2" })
+                        @Html.DropDownListFor(m => m.Group.GroupTypeId, new SelectList(ViewBag.GroupTypes, "GroupTypeId", "GroupTypeName"), "---"+ @GlobalGroup.SelectGroupType+"---", new { @class = "form-control select2" })
                         @Html.ValidationMessageFor(m => m.Group.GroupTypeId, "", new { @class = "text-danger" })
-                        <label>Select group type</label>
+                        <label>@GlobalGroup.SelectGroupType</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Group.GroupName, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Group.GroupName, "", new { @class = "text-danger" })
-                        <label>Group type name</label>
+                        <label>@GlobalGroup.GroupTypeName</label>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Group.RegistrationNumber, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Group.RegistrationNumber, "", new { @class = "text-danger" })
-                        <label>Registration number</label>
+                        <label>@GlobalGroup.RegistrationNumber</label>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Group.TaxPayerNumber, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Group.TaxPayerNumber, "", new { @class = "text-danger" })
-                        <label>Tax payer number</label>
+                        <label>@GlobalGroup.TaxpayerNumber</label>
                     </div>
                 </div>
                
                 <div class="col-12">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.Group.Active, new { @class = "form-check-input" })
-                        <label class="form-check-label" for="isActive">Active status</label>
+                        <label class="form-check-label" for="isActive">@GlobalGroup.ActiveStatus</label>
                     </div>
                 </div>
             </div>
             <div class="mt-4">
-                <button type="submit" class="btn btn-primary me-2">Update</button>
+                <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                 @Html.HiddenFor(m => m.Group.GroupId)
                 <input type="hidden" name="Option" value="groupprofile" id="Option" />
             </div>

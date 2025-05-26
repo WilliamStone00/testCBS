@@ -1,13 +1,14 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.LoanConf.Guaranty>
+    @using Resources
 <table class="table table-hover" id="myDataTable">
     <thead class="table-light">
         <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Value</th>
-            <th>Link</th>
-            <th>Description</th>
-            <th>Action</th>
+            <th>@GlobalGuaranty.Name</th>
+            <th>@GlobalGuaranty.Type</th>
+            <th>@GlobalGuaranty.Value</th>
+            <th>@GlobalGuaranty.Link</th>
+            <th>@GlobalGuaranty.Description</th>
+            <th>@GlobalShared.Action</th>
         </tr>
     </thead>
     <tbody>
@@ -20,8 +21,8 @@
                 <td style="width:15%">@d.linkDoc</td>
                 <td style="width:30%">@d.description</td>
                 <td style="width:20%">
-                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview','_Update','update','Guaranty')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">Edit</a>
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.name" onclick="DeleteRecordDataTable('Guaranty','@d.id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview','_Update','update','Guaranty')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.name @GlobalShared.ToEdit">@GlobalShared.Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.name" onclick="DeleteRecordDataTable('Guaranty','@d.id','myDataTable','_Data',0,'datalistingview')">@GlobalShared.Delete</a>
                 </td>
             </tr>
         }

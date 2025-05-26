@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Sub-teller EOD";
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalEndOfDayOperation.SubTellerEOD;
 }
 
 <div class="row">
@@ -16,7 +17,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
                         <i class="mdi mdi-close-box me-2"></i>
-                        EOD SUB-TELLER
+                        @GlobalEndOfDayOperation.EOD_SUB_TELLER
                     </button>
 
                 </h2>
@@ -29,7 +30,7 @@
                                 <div class="card mb-4">
                                     <div class="card-body d-sm-flex d-block">
                                         <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                            <a type="button" href="/EndOfDayOperation/SubTeller" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                            <a type="button" href="/EndOfDayOperation/SubTeller" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
                                                 <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                             </a>
                                         </div>

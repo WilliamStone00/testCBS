@@ -25,6 +25,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
+using static RateLimitConfigService;
 
 namespace CBS.FrontDesk.UI
 {
@@ -46,6 +47,8 @@ namespace CBS.FrontDesk.UI
             //GlobalFilters.Filters.Add(new UserAuditFilter()); // Register UserAuditFilter
             ValueProviderFactories.Factories.Add(new JsonValueProviderFactory());
             ConnectionMonitoringService connectionService = new ConnectionMonitoringService();
+            var configService = new RateLimitConfigService(); // or resolve from container
+            RateLimitConfigHolder.LoadAsync(configService).GetAwaiter().GetResult(); // One-time safe call
             // Start IP Unblock Service
             //new UnblockIpService();
         }

@@ -29,23 +29,24 @@
     /* Other styles remain the same */
 </style>
 
+@using Resources
 <!-- Dashboard Container -->
 <div class="dashboard-container">
     <!-- Dashboard Title -->
     <hr style="border: 2px solid green;" />
     <h2 class="dashboard-title">
         <span>
-            DAILY DASHBOARD VIEW FOR OPERATIONS. (@ViewBag.BranchName)
+            @GlobalDashboard.DAILYDASHBOARDVIEWFOROPERATIONSBRANCHNAME. (@ViewBag.BranchName)
         </span>
     </h2>
     <hr style="border: 2px solid blue;" />
     <div class="d-flex justify-content-end mt-3">
         <a href="/Dashboard/OpenedBranches" class="btn btn-sm btn-secondary d-flex align-items-center">
-            <i class="mdi mdi-office-building mdi-18px me-1"></i> View All Open Branches
+            <i class="mdi mdi-office-building mdi-18px me-1"></i> @GlobalDashboard.ViewAllOpenBranches
         </a>
     </div>
 
-    <div class="section-header">Membership</div>
+    <div class="section-header">@GlobalDashboard.MembershipLc</div>
     <div class="row mb-2">
         <!-- New Members Card -->
         <div class="col-sm-6 col-md-4">
@@ -59,7 +60,7 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="newMembers"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">New Members</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.NewMembers</p>
                 </div>
             </div>
         </div>
@@ -75,7 +76,7 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="closedAccounts"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Closed Accounts</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.ClosedAccounts</p>
                 </div>
             </div>
         </div>
@@ -91,7 +92,7 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="activeAccounts"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Active Accounts</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.ActiveAccounts</p>
                 </div>
             </div>
         </div>
@@ -99,7 +100,7 @@
 
 
     <!-- Cash Flow Section -->
-    <div class="section-header">Cash Operations By @ViewBag.BranchName</div>
+    <div class="section-header">@GlobalDashboard.CashOperationsBy @ViewBag.BranchName</div>
     <div class="row mb-2">
         <!-- Cash In Card -->
         <div class="col-sm-6 col-md-3">
@@ -113,7 +114,7 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="numberOfCashIn"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Cash In</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.CashIn</p>
                 </div>
             </div>
         </div>
@@ -129,7 +130,7 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="totalCashInAmount"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Cash In Volume</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.CashInVolume</p>
                 </div>
             </div>
         </div>
@@ -145,7 +146,7 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="numberOfCashOut"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Cash Out</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.CashOut</p>
                 </div>
             </div>
         </div>
@@ -161,7 +162,7 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="totalCashOutAmount"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Cash Out Volume</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.CashOutVolume</p>
                 </div>
             </div>
         </div>
@@ -180,7 +181,7 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="serviceFeesCollected"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Daily Income Collected</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.DailyIncomeCollected</p>
                 </div>
             </div>
         </div>
@@ -195,7 +196,7 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="loanRepayments"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Loan Repayment</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.LoanRepayment</p>
                 </div>
             </div>
         </div>
@@ -210,7 +211,7 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="dailyExpenses"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Other Expense</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.OtherExpense</p>
                 </div>
             </div>
         </div>
@@ -225,14 +226,14 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="subTillBalance"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Till Balance</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.TillBalance</p>
                 </div>
             </div>
         </div>
     </div>
 
 
-    <div class="section-header">Mobile Money-MTN</div>
+    <div class="section-header">@GlobalDashboard.MobileMoneyMTN</div>
     <div class="row mb-2">
         <!-- Cash In Card -->
         <div class="col-sm-6 col-md-3">
@@ -246,7 +247,7 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="numberOfCashInMTN"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Cash In MTN</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.CashInMTN</p>
                 </div>
             </div>
         </div>
@@ -262,7 +263,7 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="mtnMobileMoney"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Cash In-MTN Volume</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.CashInMTNVolume</p>
                 </div>
             </div>
         </div>
@@ -278,7 +279,7 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="numberOfCashOutMTN"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Cash Out-MTN</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.CashOutMTN</p>
                 </div>
             </div>
         </div>
@@ -294,12 +295,12 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="mobileMoneyCashOut"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Cash Out-MTN Volume</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.CashOutMTNVolume</p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="section-header">Mobile Money-ORANGE</div>
+    <div class="section-header">@GlobalDashboard.MobileMoneyORANGE</div>
     <div class="row mb-2">
         <!-- Cash In Card -->
         <div class="col-sm-6 col-md-3">
@@ -313,7 +314,7 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="numberOfCashInOrange"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Cash In Orange</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.CashInOrange</p>
                 </div>
             </div>
         </div>
@@ -329,7 +330,7 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="orangeMoney"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Cash In-Orange Volume</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.CashInOrangeVolume</p>
                 </div>
             </div>
         </div>
@@ -345,7 +346,7 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="numberOfCashOutOrange"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Cash Out Orange</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.CashOutOrange</p>
                 </div>
             </div>
         </div>
@@ -361,12 +362,12 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="totalOrangeMoneyCashOut"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Cash Out-Orange Volume</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.CashOutOrangeVolume</p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="section-header">Daily Collections</div>
+    <div class="section-header">@GlobalDashboard.DailyCollections</div>
     <div class="row mb-2">
         <!-- Cash In Card -->
         <div class="col-sm-6 col-md-6">
@@ -380,7 +381,7 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="dailyCollectionCashIn"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Cash In Daily collections</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.CashInDailyCollections</p>
                 </div>
             </div>
         </div>
@@ -396,7 +397,7 @@
                         </div>
                         <h5 class="ms-1 mb-0"><span id="dailyCollectionCashOut"></span></h5>
                     </div>
-                    <p class="mb-0 text-heading">Cash Out Daily collections</p>
+                    <p class="mb-0 text-heading">@GlobalDashboard.CashOutDailyCollections</p>
                 </div>
             </div>
         </div>

@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -174,14 +175,15 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 }
 
                 bulkOperationData.ApprovalStatusBadge = GetBadge(bulkOperationData.ApprovalStatus);
-             /*   var addDetailStatusBadge = bulkOperationData.BulkOperationSimulationDetails?.Select(x =>
-                {
-                    x.ApprovalStatusBadge = GetBadge(x.ApprovalStatus);
-                    x.TransferStatusBadge = GetBadge(x.TransferStatus);
-                    return x;
-                }).ToList();*/
+                /*   var addDetailStatusBadge = bulkOperationData.BulkOperationSimulationDetails?.Select(x =>
+                   {
+                       x.ApprovalStatusBadge = GetBadge(x.ApprovalStatus);
+                       x.TransferStatusBadge = GetBadge(x.TransferStatus);
+                       return x;
+                   }).ToList();*/
 
-               // bulkOperationData.BulkOperationSimulationDetails = bulkOperationData.BulkOperationSimulationDetails ?? new List<BulkOperationDataDetails>();
+                // bulkOperationData.BulkOperationSimulationDetails = bulkOperationData.BulkOperationSimulationDetails ?? new List<BulkOperationDataDetails>();
+                ViewBag.FullName = _bulkOperationService.GetUserFullName();
                 return View(bulkOperationData);
             }
             catch (Exception ex)
@@ -205,7 +207,7 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
 
 
 
-        public async Task<ActionResult> LoadBulkOperationData(string searchCriteria, string dateFrom= null, string dateTo=null, string operationStatus = "Pending", string branchid = null)
+        public async Task<ActionResult> LoadBulkOperationData(string searchCriteria, string dateFrom= null, string dateTo=null, string operationStatus="", string branchid = null)
         {
 
             DateTime? startDate = null;
@@ -272,6 +274,81 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             }
         }
 
-      
+        public async Task<ActionResult> DownloadBulkOperationExcel(string simulationId)
+        {
+            if (string.IsNullOrEmpty(simulationId))
+            {
+                return RedirectToAction("Listing", new { error = "Invalid operation ID" });
+            }
+            try
+            {
+                var bulkOperationData = await _bulkOperationService.GetBulkOperationById(simulationId);
+                if (bulkOperationData == null)
+                {
+                    return HttpNotFound();
+                }
+
+                bulkOperationData.ApprovalStatusBadge = GetBadge(bulkOperationData.ApprovalStatus);
+                // Define file path and branch name
+                string branchName = Session["BranchName"].ToString();
+                string fileName = $"BulkOperation_{bulkOperationData.SimulationType}_{branchName}_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+                string directoryPath = Server.MapPath("~/TempFiles");
+
+                // Ensure the directory exists
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                string filePath = Path.Combine(directoryPath, fileName);
+                string exportedDate = DateTime.Now.ToString();
+                string exportedBy = Session["FullName"].ToString();
+
+                BulkOperationResultDetailExcelGenerator.GenerateBulkOperationExcel(bulkOperationData, branchName, filePath, exportedDate, exportedBy);
+
+                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                System.IO.File.Delete(filePath); // Clean up temporary file
+
+                return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+
+
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                // Log the exception and return an error response
+                Console.WriteLine($"Error generating Excel file: {ex.Message}");
+                return Json(new { success = false, message = "An error occurred while generating the Excel file." }, JsonRequestBehavior.AllowGet);
+
+            }
+
+        }
+
+
+        public async Task<ActionResult> DeleteBulkOperation(string simulationId,string simulationType)
+        {
+            if (string.IsNullOrEmpty(simulationId))
+            {
+                return RedirectToAction("Listing", new { error = "Invalid operation ID" });
+            }
+
+            try
+            {
+                var data = await _bulkOperationService.DeleteBulkOperationById(simulationId, simulationType);
+
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                // Log the exception and return an error response
+                Console.WriteLine($"Error generating Excel file: {ex.Message}");
+                return Json(new { success = false, message = "An error occurred while generating the Excel file." }, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+
     }
 }

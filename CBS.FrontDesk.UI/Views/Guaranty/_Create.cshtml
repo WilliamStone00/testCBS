@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Guaranty
+    @using Resources
 <div class="card-body">
     @using (Html.BeginForm("Create", "Guaranty", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
@@ -7,42 +8,42 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
-                    <label>Name</label>
+                    <label>@GlobalGuaranty.Name</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.type, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.type, "", new { @class = "text-danger" })
-                    <label>Type</label>
+                    <label>@GlobalGuaranty.Type</label>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.value, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.value, "", new { @class = "text-danger" })
-                    <label>Value</label>
+                    <label>@GlobalGuaranty.Value</label>
                 </div>
             </div>
             <div class="col-md-9">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.linkDoc, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.linkDoc, "", new { @class = "text-danger" })
-                    <label>Link</label>
+                    <label>@GlobalGuaranty.Link</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.description, new { @class = "form-control", @style = "height: 200px;" })
                     @Html.ValidationMessageFor(m => m.description, "", new { @class = "text-danger" })
-                    <label>Description</label>
+                    <label>@GlobalGuaranty.Description</label>
                 </div>
             </div>
 
         </div>
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary me-2">Save</button>
-            <button type="reset" class="btn btn-outline-secondary">Reset</button>
+            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+            <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
         </div>
     }
 </div>

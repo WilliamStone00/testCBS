@@ -1,30 +1,30 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.WithdrawalNotificationForm
-
+@using Resources
 
 <table class="table">
     <thead>
         <tr>
-            <th colspan="2" class="separation-text"><h5 class="card-title">Members Informations</h5></th>
+            <th colspan="2" class="separation-text"><h5 class="card-title">@GlobalChargesWaived.MembersInformations</h5></th>
         </tr>
     </thead>
     <tbody>
        
         <tr>
-            <td><strong>Member refernce:</strong></td>
+            <td><strong>@GlobalChargesWaived.MemberRefernce:</strong></td>
             <td><span id="notes10000Required">@Model.Customer.CustomerId</span></td>
         </tr>
         <tr>
-            <td><strong>Member:</strong></td>
+            <td><strong>@GlobalChargesWaived.Member:</strong></td>
             <td><span id="notes10000Required">@Model.Customer.name</span></td>
         </tr>
         <tr>
-            <td><strong>Photo:</strong></td>
+            <td><strong>@GlobalChargesWaived.Photo:</strong></td>
             <td>
                 <img id="customerPhoto" src="@Model.Customer.photoUrl" alt="Customer Photo" style="max-width: 100px; height: auto;">
             </td>
         </tr>
         <tr>
-            <td><strong>Telephone:</strong></td>
+            <td><strong>@GlobalChargesWaived.Telephone:</strong></td>
             <td><span id="notes2000Required">@Model.Customer.Phone</span></td>
         </tr>
 
@@ -33,46 +33,46 @@
     </tbody>
     <thead>
         <tr>
-            <th colspan="2" class="separation-text"><h5 class="card-title">REQUEST INFO</h5></th>
+            <th colspan="2" class="separation-text"><h5 class="card-title">@GlobalChargesWaived.REQUESTINFO</h5></th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td><strong>Request Code:</strong></td>
+            <td><strong>@GlobalChargesWaived.RequestCode:</strong></td>
             <td><span id="calculatedBalance">@Model.ChargesWaived.TransactionReference</span></td>
         </tr>
         <tr>
-            <td><strong>Request date:</strong></td>
+            <td><strong>@GlobalChargesWaived.RequestDate:</strong></td>
             <td><span id="notes5000Required">@Model.ChargesWaived.DateOfWaiverRequest</span></td>
         </tr>
         <tr>
-            <td><strong>Waived amount:</strong></td>
+            <td><strong>@GlobalChargesWaived.WaivedAmount:</strong></td>
             <td><span id="notes5000Required">@Model.ChargesWaived.CustomCharge.ToString("#,##0.0 XAF")</span></td>
         </tr>
         <tr>
-            <td><strong>Normal Charge:</strong></td>
+            <td><strong>@GlobalChargesWaived.NormalCharge:</strong></td>
             <td><span id="notes5000Required">@Model.ChargesWaived.NormalCharge.ToString("#,##0.0 XAF")</span></td>
         </tr>
         <tr>
-            <td><strong>Initiator:</strong></td>
+            <td><strong>@GlobalChargesWaived.Initiator:</strong></td>
             <td><span id="coins50Required">@Model.ChargesWaived.WaiverInitiator</span></td>
         </tr>
         <tr>
-            <td><strong>Comment:</strong></td>
+            <td><strong>@GlobalChargesWaived.Comment:</strong></td>
             <td><span id="notes5000Required">@Model.ChargesWaived.Comment</span></td>
         </tr>
 
 
         <tr>
-            <td><strong>Date waived:</strong></td>
+            <td><strong>@GlobalChargesWaived.DateWaived:</strong></td>
             <td><span id="notes5000Required">@Model.ChargesWaived.DateOfWaived</span></td>
         </tr>
         <tr>
-            <td><strong>Is withdrawal done:</strong></td>
+            <td><strong>@GlobalChargesWaived.IsWithdrawalDone:</strong></td>
             <td><span id="notes5000Required">@Model.ChargesWaived.IsWaiverDone, Date: @Model.ChargesWaived.DateOfWaived</span></td>
         </tr>
         <tr>
-            <td><strong>Cashier:</strong></td>
+            <td><strong>@GlobalChargesWaived.Cashier:</strong></td>
             <td><span id="notes5000Required">@Model.ChargesWaived.TellerCaise, @Model.ChargesWaived.TellerName </span></td>
         </tr>
     </tbody>

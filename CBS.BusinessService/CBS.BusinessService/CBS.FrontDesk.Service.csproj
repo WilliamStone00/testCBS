@@ -265,6 +265,7 @@
     <Compile Include="AuditTrailP\AuditTrailServices.cs" />
     <Compile Include="AndriodVersioning\ChangeNumberServices.cs" />
     <Compile Include="AndriodAppVersioning\AndriodVersionConfigurationServices.cs" />
+    <Compile Include="BulkOperations\BulkOperationResultDetailExcelGenerator.cs" />
     <Compile Include="BulkOperations\BulkOperationService.cs" />
     <Compile Include="ChangeNumber\ChangeNumberServices.cs" />
     <Compile Include="CorrespondingBankBranchServices\BankZoneBranchServices.cs" />
@@ -344,7 +345,8 @@
     <Compile Include="MembersAccountSettings\Policy\MemberAccountActivationPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestLoggerServicesP\ClientDataService.cs" />
-    <Compile Include="RequestLoggerServicesP\RequestLoggerService.cs" />
+    <Compile Include="RequestLoggerServicesP\RateLimitedUserService.cs" />
+    <Compile Include="RequestLoggerServicesP\RateLimiteTrackerLoggerServices.cs" />
     <Compile Include="RequestLoggerServicesP\RateLimitConfigService.cs" />
     <Compile Include="RoleManagement\RolePermissionServices.cs" />
     <Compile Include="RoleManagement\MenuMasterServices.cs" />

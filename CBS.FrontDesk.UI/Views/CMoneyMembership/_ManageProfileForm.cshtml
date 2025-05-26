@@ -1,8 +1,8 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CMoney.CMoneyMembersActivationAccount
-
+@using Resources
 <div class="container mt-4">
     <header class="text-center mb-4">
-        <p class="text-muted">Easily manage profiles, including activation, PIN resets, deactivation, reactivation, Set Security Questions & Answer, Change Members Number, Generate OTP and Update Subcription Status</p>
+        <p class="text-muted">@GlobalCMoneyMembership.EasilyManageProfilesIncludingActivation.</p>
         <hr style="border: 2px solid rgba(128, 128, 128, 0.5);">
     </header>
 
@@ -11,12 +11,12 @@
         <div class="accordion-item mb-3">
             <h2 class="accordion-header" id="resetPinHeading">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#resetPinCollapse" aria-expanded="true" aria-controls="resetPinCollapse">
-                    RESET PIN
+                    @GlobalCMoneyMembership.RESETPIN
                 </button>
             </h2>
             <div id="resetPinCollapse" class="accordion-collapse collapse show" aria-labelledby="resetPinHeading" data-bs-parent="#activationAccordion">
                 <div class="accordion-body">
-                    <p class="text-muted">Note: Resetting the PIN will set it back to the default value. Inform the member to change it immediately upon login.</p>
+                    <p class="text-muted">@GlobalCMoneyMembership.NoteResettingThePINWillSetItBackToTheDefaultValue.</p>
                     @using (Html.BeginForm("Update", "CMoneyMembership", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                     {
                         <fieldset class="fieldset-custom">
@@ -24,13 +24,13 @@
                                 <div class="col-md-6">
                                     <div class="form-floating">
                                         @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control shadow-input-boxes", @readonly = true })
-                                        <label>DEFAULT PHONE NUMBER</label>
+                                        <label>@GlobalCMoneyMembership.DEFAULTPHONENUMBER</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
                                         @Html.TextBoxFor(m => m.LoginId, new { @class = "form-control shadow-input-boxes", @readonly = "readonly" })
-                                        <label>LOGIN ID</label>
+                                        <label>@GlobalCMoneyMembership.LOGINID</label>
                                     </div>
                                 </div>
                             </div>
@@ -41,7 +41,7 @@
                                 @Html.HiddenFor(m => m.ResetCMoneyMemberPinCommand.CustomerId)
                                 <input type="hidden" name="Option" value="reset_pin" id="Option" />
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fas mdi-face-recognition me-2"></i> RESET PIN
+                                    <i class="fas mdi-face-recognition me-2"></i> @GlobalCMoneyMembership.RESETPIN
                                 </button>
                             </div>
                         </fieldset>
@@ -54,31 +54,31 @@
         <div class="accordion-item mb-3">
             <h2 class="accordion-header" id="resetPinWithSecurityHeading">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#resetPinWithSecurityCollapse" aria-expanded="false" aria-controls="resetPinWithSecurityCollapse">
-                    RESET PIN WITH SECURITY QUESTIONS
+                    @GlobalCMoneyMembership.RESETPINWITHSECURITYQUESTIONS
                 </button>
             </h2>
             <div id="resetPinWithSecurityCollapse" class="accordion-collapse collapse" aria-labelledby="resetPinWithSecurityHeading" data-bs-parent="#activationAccordion">
                 <div class="accordion-body">
-                    <p class="text-muted">Note: Use security questions and answers to reset the PIN securely.</p>
+                    <p class="text-muted">@GlobalCMoneyMembership.NoteUseSecurityQuestionsAndAnswersToResetThePINSecurely.</p>
                     @using (Html.BeginForm("Update", "CMoneyMembership", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                     {
                         <fieldset class="fieldset-custom">
                             <div class="form-floating mb-3">
                                 @Html.TextBoxFor(m => m.ResetPinWithSecurityCommand.LoginId, new { @class = "form-control shadow-input-boxes" })
                                 @Html.ValidationMessageFor(m => m.ResetPinWithSecurityCommand.LoginId, "", new { @class = "text-danger" })
-                                <label>LOGIN ID</label>
+                                <label>@GlobalCMoneyMembership.LOGINID</label>
                             </div>
 
                             <div class="form-floating mb-3">
                                 @Html.TextBoxFor(m => m.ResetPinWithSecurityCommand.SecretQuestion, new { @class = "form-control shadow-input-boxes" })
                                 @Html.ValidationMessageFor(m => m.ResetPinWithSecurityCommand.SecretQuestion, "", new { @class = "text-danger" })
-                                <label>SECRET QUESTION</label>
+                                <label>@GlobalCMoneyMembership.SECRETQUESTION</label>
                             </div>
 
                             <div class="form-floating mb-3">
                                 @Html.TextBoxFor(m => m.ResetPinWithSecurityCommand.SecretAnswer, new { @class = "form-control shadow-input-boxes" })
                                 @Html.ValidationMessageFor(m => m.ResetPinWithSecurityCommand.SecretAnswer, "", new { @class = "text-danger" })
-                                <label>SECRET ANSWER</label>
+                                <label>@GlobalCMoneyMembership.SECRETANSWER</label>
                             </div>
 
                             <hr style="border: 3px solid rgba(128, 128, 128, 0.7);">
@@ -86,7 +86,7 @@
 
                             <div class="header-buttons mt-4 text-center">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fas mdi-security me-2"></i> RESET PIN
+                                    <i class="fas mdi-security me-2"></i> @GlobalCMoneyMembership.RESETPIN
                                 </button>
                             </div>
                         </fieldset>
@@ -98,37 +98,37 @@
         <div class="accordion-item mb-3">
             <h2 class="accordion-header" id="securityQuestionHeading">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#securityQuestionCollapse" aria-expanded="false" aria-controls="securityQuestionCollapse">
-                    SET SECURITY QUESTION & ANSWER
+                    @GlobalCMoneyMembership.SETSECURITYQUESTIONANSWER
                 </button>
             </h2>
             <div id="securityQuestionCollapse" class="accordion-collapse collapse" aria-labelledby="securityQuestionHeading" data-bs-parent="#activationAccordion">
                 <div class="accordion-body">
-                    <p class="text-muted">Note: Setting a security question and answer helps enhance account security and allows for PIN resets using this information.</p>
+                    <p class="text-muted">@GlobalCMoneyMembership.NoteSettingAsecurityQuestionAndAnswer.</p>
                     @using (Html.BeginForm("Update", "CMoneyMembership", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                     {
                         <fieldset class="fieldset-custom">
                             <div class="form-floating mb-3">
                                 @Html.TextBoxFor(m => m.ManageSecretQuestionCommand.LoginId, new { @class = "form-control shadow-input-boxes", @readonly = true })
                                 @Html.ValidationMessageFor(m => m.ManageSecretQuestionCommand.LoginId, "", new { @class = "text-danger" })
-                                <label>LOGIN ID</label>
+                                <label>@GlobalCMoneyMembership.LOGINID</label>
                             </div>
 
                             <div class="form-floating mb-3">
                                 @Html.TextBoxFor(m => m.ManageSecretQuestionCommand.SecretQuestion, new { @class = "form-control shadow-input-boxes" })
                                 @Html.ValidationMessageFor(m => m.ManageSecretQuestionCommand.SecretQuestion, "", new { @class = "text-danger" })
-                                <label>SECRET QUESTION</label>
+                                <label>@GlobalCMoneyMembership.SECRETQUESTION</label>
                             </div>
 
                             <div class="form-floating mb-3">
                                 @Html.TextBoxFor(m => m.ManageSecretQuestionCommand.SecretAnswer, new { @class = "form-control shadow-input-boxes" })
                                 @Html.ValidationMessageFor(m => m.ManageSecretQuestionCommand.SecretAnswer, "", new { @class = "text-danger" })
-                                <label>SECRET ANSWER</label>
+                                <label>@GlobalCMoneyMembership.SECRETANSWER</label>
                             </div>
                             <hr style="border: 3px solid rgba(128, 128, 128, 0.7);">
                             <input type="hidden" name="Option" value="set_security_questions" id="Option" />
                             <div class="header-buttons mt-4 text-center">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fas mdi-security me-2"></i> SAVE SECURITY QUESTION
+                                    <i class="fas mdi-security me-2"></i> @GlobalCMoneyMembership.SAVESECURITYQUESTION
                                 </button>
                             </div>
                         </fieldset>
@@ -140,19 +140,19 @@
         <div class="accordion-item mb-3">
             <h2 class="accordion-header" id="deactivateAccountHeading">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#deactivateAccountCollapse" aria-expanded="false" aria-controls="deactivateAccountCollapse">
-                    DEACTIVATE ACCOUNT
+                    @GlobalCMoneyMembership.DEACTIVATEACCOUNT
                 </button>
             </h2>
             <div id="deactivateAccountCollapse" class="accordion-collapse collapse" aria-labelledby="deactivateAccountHeading" data-bs-parent="#activationAccordion">
                 <div class="accordion-body">
-                    <p class="text-muted">Note: Deactivating an account will restrict the member's access to C-Money services.</p>
+                    <p class="text-muted">@GlobalCMoneyMembership.NoteDeactivatingAnAccountWillRestrictTheMembersAccess.</p>
                     @using (Html.BeginForm("Update", "CMoneyMembership", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                     {
                         <fieldset class="fieldset-custom">
                             <div class="form-floating">
                                 @Html.TextBoxFor(m => m.DeactivateCMoneyMemberCommand.Reason, new { @class = "form-control shadow-input-boxes" })
                                 @Html.ValidationMessageFor(m => m.DeactivateCMoneyMemberCommand.Reason, "", new { @class = "text-danger" })
-                                <label>Reason for deactivating account</label>
+                                <label>@GlobalCMoneyMembership.ReasonForDeactivatingAccount</label>
                             </div>
 
                             <hr style="border: 3px solid rgba(128, 128, 128, 0.7);">
@@ -161,7 +161,7 @@
                             <div class="header-buttons mt-4 text-center">
                                 @Html.HiddenFor(m => m.DeactivateCMoneyMemberCommand.CustomerId)
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save me-2"></i> DEACTIVATE ACCOUNT
+                                    <i class="fas fa-save me-2"></i> @GlobalCMoneyMembership.DEACTIVATEACCOUNT
                                 </button>
                             </div>
                         </fieldset>
@@ -174,12 +174,12 @@
         <div class="accordion-item mb-3">
             <h2 class="accordion-header" id="reactivateAccountHeading">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#reactivateAccountCollapse" aria-expanded="false" aria-controls="reactivateAccountCollapse">
-                    REACTIVATE ACCOUNT
+                    @GlobalCMoneyMembership.REACTIVATEACCOUNT
                 </button>
             </h2>
             <div id="reactivateAccountCollapse" class="accordion-collapse collapse" aria-labelledby="reactivateAccountHeading" data-bs-parent="#activationAccordion">
                 <div class="accordion-body">
-                    <p class="text-muted">Note: Reactivating an account will restore the member's access to C-Money services.</p>
+                    <p class="text-muted">@GlobalCMoneyMembership.NoteReactivatingAnAccountWillRestoreTheMembersAccess.</p>
                     @using (Html.BeginForm("Update", "CMoneyMembership", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                     {
                         <fieldset class="fieldset-custom">
@@ -189,7 +189,7 @@
                             <div class="header-buttons mt-4 text-center">
                                 @Html.HiddenFor(m => m.ReactivateCMoneyMemberCommand.CustomerId)
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save me-2"></i> REACTIVATE ACCOUNT
+                                    <i class="fas fa-save me-2"></i> @GlobalCMoneyMembership.REACTIVATEACCOUNT
                                 </button>
                             </div>
                         </fieldset>
@@ -202,29 +202,29 @@
         <div class="accordion-item mb-3">
             <h2 class="accordion-header" id="updateSubscriptionHeading">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#updateSubscriptionCollapse" aria-expanded="false" aria-controls="updateSubscriptionCollapse">
-                    UPDATE SUBSCRIPTION STATUS
+                    @GlobalCMoneyMembership.UPDATESUBSCRIPTIONSTATUS
                 </button>
             </h2>
             <div id="updateSubscriptionCollapse" class="accordion-collapse collapse" aria-labelledby="updateSubscriptionHeading" data-bs-parent="#activationAccordion">
                 <div class="accordion-body">
-                    <p class="text-muted">Note: Update the subscription status for the member's account.</p>
+                    <p class="text-muted">@GlobalCMoneyMembership.NoteUpdateTheSubscriptionStatusForTheMembersAccount.</p>
                     @using (Html.BeginForm("Update", "CMoneyMembership", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                     {
                         <fieldset class="fieldset-custom">
                             <div class="form-floating mb-3">
                                 @Html.TextBoxFor(m => m.UpdateCMoneyMemberActivationCommand.PhoneNumber, new { @class = "form-control shadow-input-boxes", @readonly = true })
                                 @Html.ValidationMessageFor(m => m.UpdateCMoneyMemberActivationCommand.PhoneNumber, "", new { @class = "text-danger" })
-                                <label>PHONE NUMBER</label>
+                                <label>@GlobalCMoneyMembership.PHONENUMBERUC</label>
                             </div>
 
                             <div class="form-check form-switch mb-3">
                                 @Html.CheckBoxFor(m => m.UpdateCMoneyMemberActivationCommand.IsSubcribed, new { @class = "form-check-input", @role = "switch" })
-                                <label class="form-check-label">SUBSCRIBED</label>
+                                <label class="form-check-label">@GlobalCMoneyMembership.SUBSCRIBED</label>
                             </div>
 
                             <div class="form-check form-switch mb-3">
                                 @Html.CheckBoxFor(m => m.UpdateCMoneyMemberActivationCommand.IsActive, new { @class = "form-check-input", @role = "switch" })
-                                <label class="form-check-label">ACTIVE</label>
+                                <label class="form-check-label">@GlobalCMoneyMembership.ACTIVE</label>
                             </div>
                             <input type="hidden" name="Option" value="update_activation_profile" id="Option" />
 
@@ -232,7 +232,7 @@
                             @Html.HiddenFor(m => m.UpdateCMoneyMemberActivationCommand.Id)
                             <div class="header-buttons mt-4 text-center">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save me-2"></i> UPDATE SUBSCRIPTION
+                                    <i class="fas fa-save me-2"></i> @GlobalCMoneyMembership.UPDATESUBSCRIPTION
                                 </button>
                             </div>
                         </fieldset>

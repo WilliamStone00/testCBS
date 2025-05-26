@@ -1,9 +1,10 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.LoanConf.Collateral>
+    @using Resources
 <table class="table table-hover" id="myDataTable">
     <thead class="table-light">
         <tr>
-            <th>Name</th>
-            <th>Action</th>
+            <th>@GlobalCollateral.Name</th>
+            <th>@GlobalShared.Action</th>
         </tr>
     </thead>
     <tbody>
@@ -12,8 +13,8 @@
             <tr>
                 <td style="width:85%">@d.name</td>
                 <td style="width:15%">
-                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview','_Create','update','Collateral')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">Edit</a> |
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.name" onclick="DeleteRecordDataTable('Collateral','@d.id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview','_Create','update','Collateral')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">@GlobalShared.Edit</a> |
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.name" onclick="DeleteRecordDataTable('Collateral','@d.id','myDataTable','_Data',0,'datalistingview')">@GlobalShared.Delete</a>
                 </td>
             </tr>
         }
