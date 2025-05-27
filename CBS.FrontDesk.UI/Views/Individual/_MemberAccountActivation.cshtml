@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
-
+@using Resources
 <div class="card-header">
-    <h5 class="card-title">Member Fee Set-Up</h5>
+    <h5 class="card-title">@GlobalIndividual.MemberFeeSetUp</h5>
 </div>
 @if (Model.MemberAccountActivation.Balance != 0)
 {
@@ -17,32 +17,32 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.MemberAccountActivation.EntranceFee, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.MemberAccountActivation.EntranceFee, "", new { @class = "text-danger" })
-                    <label>Entrance fee</label>
+                    <label>@GlobalIndividual.EntranceFee</label>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.MemberAccountActivation.ByeLawFee, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.MemberAccountActivation.ByeLawFee, "", new { @class = "text-danger" })
-                    <label>Bye laws fee</label>
+                    <label>@GlobalIndividual.ByeLawsFee</label>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.MemberAccountActivation.LoanPolicyFee, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.MemberAccountActivation.LoanPolicyFee, "", new { @class = "text-danger" })
-                    <label>Loan policy fee</label>
+                    <label>@GlobalIndividual.LoanPolicyFee</label>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.MemberAccountActivation.BuildingContribution, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.MemberAccountActivation.BuildingContribution, "", new { @class = "text-danger" })
-                    <label>Building contribution fee</label>
+                    <label>@GlobalIndividual.BuildingContributionFee</label>
                 </div>
             </div>
             <div class="col-12">
-                <button type="submit" class="btn btn-primary">Set fees</button>
+                <button type="submit" class="btn btn-primary">@GlobalIndividual.SetFees</button>
             </div>
         }
     </div>

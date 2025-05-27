@@ -1,14 +1,14 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
-
+@using Resources
 
 @if (Model.CustomerList.SecretQuestion != null)
 {<div class="card-body">
-        <h5 class="mb-3">Secret Question</h5>
+        <h5 class="mb-3">@GlobalIndividual.SecretQuestion</h5>
         <p class="w-75">
             @Model.CustomerList.SecretQuestion
         </p>
         <br />
-        <h5 class="mb-3">Secret Answer</h5>
+        <h5 class="mb-3">@GlobalIndividual.SecretAnswer</h5>
         <p class="w-75">
             @Model.CustomerList.SecretAnswer
         </p>
@@ -18,9 +18,9 @@
 else
 {
     <div class="card-body">
-        <h5 class="mb-3">Secret Question not set by @Model.CustomerList.name</h5><br />
+        <h5 class="mb-3">@GlobalIndividual.SecretQuestionNotSetBy @Model.CustomerList.name</h5><br />
         <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#enableOTP">
-            Send security warning sms.
+            @GlobalIndividual.SendSecurityWarningSms.
         </button>
     </div>
 }

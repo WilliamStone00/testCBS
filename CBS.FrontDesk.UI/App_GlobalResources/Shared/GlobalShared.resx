@@ -165,6 +165,9 @@
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Detail</value>
+  </data>
   <data name="Details" xml:space="preserve">
     <value>Details</value>
   </data>
@@ -231,11 +234,20 @@
   <data name="Open" xml:space="preserve">
     <value>Open</value>
   </data>
+  <data name="PhotoPreview" xml:space="preserve">
+    <value>Photo preview</value>
+  </data>
   <data name="PlaceOfIssue" xml:space="preserve">
     <value>Place of Issue</value>
   </data>
   <data name="PostBox" xml:space="preserve">
     <value>Post box</value>
+  </data>
+  <data name="PreviewImage" xml:space="preserve">
+    <value>Preview image</value>
+  </data>
+  <data name="PreviewSignature" xml:space="preserve">
+    <value>Preview signature</value>
   </data>
   <data name="Print" xml:space="preserve">
     <value>Print</value>
@@ -251,6 +263,9 @@
   </data>
   <data name="Rejected" xml:space="preserve">
     <value>Rejected</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
   </data>
   <data name="Reopen" xml:space="preserve">
     <value>Reopen</value>
@@ -281,6 +296,12 @@
   </data>
   <data name="SelectToEdit" xml:space="preserve">
     <value>Select to edit</value>
+  </data>
+  <data name="Signature" xml:space="preserve">
+    <value>Signature</value>
+  </data>
+  <data name="SignaturePreview" xml:space="preserve">
+    <value>Signature preview</value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>Status</value>

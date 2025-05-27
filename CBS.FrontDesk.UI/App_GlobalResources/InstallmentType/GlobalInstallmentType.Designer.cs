@@ -22,14 +22,14 @@ namespace Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class GlobalHome {
+    internal class GlobalInstallmentType {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal GlobalHome() {
+        internal GlobalInstallmentType() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.GlobalHome", global::System.Reflection.Assembly.Load("App_GlobalResources"));
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.GlobalInstallmentType", global::System.Reflection.Assembly.Load("App_GlobalResources"));
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,83 +61,56 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREDIT.
+        ///   Looks up a localized string similar to Description.
         /// </summary>
-        internal static string Credit {
+        internal static string Description {
             get {
-                return ResourceManager.GetString("Credit", resourceCulture);
+                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Home.
+        ///   Looks up a localized string similar to Installment type.
         /// </summary>
-        internal static string Home {
+        internal static string InstallmentType {
             get {
-                return ResourceManager.GetString("Home", resourceCulture);
+                return ResourceManager.GetString("InstallmentType", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No internet connection.
+        ///   Looks up a localized string similar to Name.
         /// </summary>
-        internal static string NoInternetConnection {
+        internal static string Name {
             get {
-                return ResourceManager.GetString("NoInternetConnection", resourceCulture);
+                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your Secure &amp; Reliable Partner. FLUX!.
+        ///   Looks up a localized string similar to Select installment type.
         /// </summary>
-        internal static string PartnerText {
+        internal static string SelectInstallmentType {
             get {
-                return ResourceManager.GetString("PartnerText", resourceCulture);
+                return ResourceManager.GetString("SelectInstallmentType", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RETRY.
+        ///   Looks up a localized string similar to Type.
         /// </summary>
-        internal static string RETRY {
+        internal static string Type {
             get {
-                return ResourceManager.GetString("RETRY", resourceCulture);
+                return ResourceManager.GetString("Type", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Flux SARL! : Empowering businesses. Enhancing lives..
+        ///   Looks up a localized string similar to Value ( in integer).
         /// </summary>
-        internal static string SatisfactionText {
+        internal static string Value {
             get {
-                return ResourceManager.GetString("SatisfactionText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to TRUSTSOFT.
-        /// </summary>
-        internal static string TrustSoft {
-            get {
-                return ResourceManager.GetString("TrustSoft", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WELCOME TO.
-        /// </summary>
-        internal static string WelcomeTitle {
-            get {
-                return ResourceManager.GetString("WelcomeTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You are currently offline. Please check your internet connection and try again.
-        /// </summary>
-        internal static string YouAreCurrentlyOffline {
-            get {
-                return ResourceManager.GetString("YouAreCurrentlyOffline", resourceCulture);
+                return ResourceManager.GetString("Value", resourceCulture);
             }
         }
     }

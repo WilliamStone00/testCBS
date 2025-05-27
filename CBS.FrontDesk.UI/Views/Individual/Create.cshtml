@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Individual Account Creation";
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalIndividual.IndividualAccountCreation;
 }
 
 <div class="row">
@@ -8,10 +9,10 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-circle me-2"></i> Individual Account Creation
+                    <i class="mdi mdi-account-circle me-2"></i> @GlobalIndividual.IndividualAccountCreation
                 </h1>
                 <p class="card-text text-muted">
-                    Create a new member account by filling in the identification details accurately. Ensure all required fields are completed.
+                    @GlobalIndividual.CreateANewMemberAccountByFillingInTheIdentificationDetailsAccurately.
                 </p>
             </div>
         </div>
@@ -22,7 +23,7 @@
 <div class="card mb-1">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span>
-            <i class="mdi mdi-information-outline me-2"></i> HELP TIPS
+            <i class="mdi mdi-information-outline me-2"></i> @GlobalIndividual.HELPTIPS
         </span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
             <i class="mdi mdi-chevron-down"></i>
@@ -31,68 +32,68 @@
     <div id="collapseHelpTips" class="collapse">
         <div class="card-body">
             <p class="text-muted mb-2">
-                Follow these tips to ensure a successful account creation process:
+                @GlobalIndividual.FollowTheseTipsToEnsureAsuccessfulAccountCreationProcess:
             </p>
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Enter all required personal information (e.g., name, ID, address).</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure the member's contact details are accurate for future communications.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Double-check identification details such as ID numbers or document types.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Attach necessary documents if applicable (e.g., photo, proof of address).</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use dropdown fields (e.g., gender, marital status) to ensure accurate categorization.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalIndividual.EnterAllRequiredPersonalInformation.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalIndividual.EnsureTheMembersContactDetailsAreAccurate.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalIndividual.DoubleCheckIdentificationDetailsSuchAsIDNumbersOrDocumentTypes.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalIndividual.AttachNecessaryDocumentsIfApplicable.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalIndividual.UseDropdownFields.</li>
 
                 <!-- New Tips -->
                 <li>
-                    <i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Matricules:</strong>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalIndividual.Matricules:</strong>
                     <ul>
-                        <li>Mandatory for <strong>Civil Servants</strong>. Ensure this field is completed accurately.</li>
-                        <li>Leave blank for other account types unless instructed otherwise.</li>
+                        <li>@GlobalIndividual.MandatoryFor <strong>@GlobalIndividual.CivilServants</strong>. @GlobalIndividual.EnsureThisFieldIsCompletedAccurately.</li>
+                        <li>@GlobalIndividual.LeaveBlankForOtherAccountTypesUnlessInstructedOtherwise.</li>
                     </ul>
                 </li>
                 <li>
-                    <i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Salary Information:</strong>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalIndividual.SalaryInformation:</strong>
                     <ul>
                         <li>
-                            Mandatory for:
+                            @GlobalIndividual.MandatoryFor:
                             <ul>
-                                <li><strong>Civil Servants</strong></li>
-                                <li><strong>Salary Earners</strong></li>
-                                <li><strong>Branch Employees</strong></li>
+                                <li><strong>@GlobalIndividual.CivilServants</strong></li>
+                                <li><strong>@GlobalIndividual.SalaryEarners</strong></li>
+                                <li><strong>@GlobalIndividual.BranchEmployees</strong></li>
                             </ul>
                         </li>
-                        <li>Ensure salary details are accurate and align with the member's profile.</li>
+                        <li>@GlobalIndividual.EnsureSalaryDetailsAreAccurateAndAlignWithTheMembersProfile.</li>
                     </ul>
                 </li>
                 <li>
-                    <i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Member Reference:</strong>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalIndividual.MemberReference:</strong>
                     <ul>
-                        <li>The system will <strong>auto-generate</strong> a serial Member Reference Number if left empty with the default value of <code>0000000</code>.</li>
-                        <li>If you enter a custom value, it will be considered as long as it is valid.</li>
-                        <li>Member References are a combination of the <strong>Branch Code</strong> and a <strong>7-digit Member Code</strong>.</li>
+                        <li>@GlobalIndividual.TheSystemWill <strong>@GlobalIndividual.AutoGenerate</strong> @GlobalIndividual.aSerialMemberReferenceNumberIfLeftEmptyWithTheDefaultValueOf <code>0000000</code>.</li>
+                        <li>@GlobalIndividual.IfYouEnterACustomValueItWillBeConsideredAsLongAsItIsValid.</li>
+                        <li>@GlobalIndividual.MemberReferencesAreAcombinationOfThe <strong>@GlobalIndividual.BranchCode</strong> @GlobalIndividual.AndA <strong>@GlobalIndividual.DigitMemberCode</strong>.</li>
                         <ul>
-                            <li><i class="mdi mdi-information-outline text-primary me-2"></i> For example, a Member Number 1 in Branch 003 will appear as <strong>0030000001</strong>.</li>
+                            <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalIndividual.ForExampleAMemberNumber1InBranch003willAppearAs <strong>0030000001</strong>.</li>
                         </ul>
                     </ul>
                 </li>
                 <li>
-                    <i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>None Member Accounts:</strong>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalIndividual.NoneMemberAccounts:</strong>
                     <ul>
                         <li>
-                            Check the <strong>None Member Account</strong> button for collective accounts such as:
+                            @GlobalIndividual.CheckThe <strong>@GlobalIndividual.NoneMemberAccount</strong> @GlobalIndividual.buttonForCollectiveAccountsSuchAs:
                             <ul>
-                                <li>Mobile Money</li>
-                                <li>Remittance</li>
-                                <li>Orange Money</li>
-                                <li>Daily Collection</li>
+                                <li>@GlobalIndividual.MobileMoney</li>
+                                <li>@GlobalIndividual.Remittance</li>
+                                <li>@GlobalIndividual.OrangeMoney</li>
+                                <li>@GlobalIndividual.DailyCollection</li>
                             </ul>
                         </li>
-                        <li>If left unchecked, the system considers it a <strong>Member Account</strong>.</li>
+                        <li>@GlobalIndividual.IfLeftUncheckedTheSystemConsidersItA <strong>@GlobalIndividual.MemberAccount</strong>.</li>
                     </ul>
                 </li>
             </ul>
             <p class="text-muted">Note:</p>
             <ul>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Click <strong>Save</strong> to create the account once all fields are completed.</li>
-                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> If the form cannot be submitted, review the highlighted fields for missing or incorrect information.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i>@GlobalIndividual.Click <strong>@GlobalShared.Save</strong> @GlobalIndividual.toCreateTheAccountOnceAllFieldsAreCompleted.</li>
+                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> @GlobalIndividual.IfTheFormCannotBeSubmittedReviewTheHighlightedFields.</li>
             </ul>
         </div>
     </div>
@@ -111,7 +112,7 @@
                             data-bs-target="#accordionPopoutIcon-3"
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
-                        <i class="mdi mdi-account-card-details me-2"></i> Member's Identification Form
+                        <i class="mdi mdi-account-card-details me-2"></i> @GlobalIndividual.MembersIdentificationForm
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"

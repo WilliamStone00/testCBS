@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
-
+@using Resources
 <div class="card-body">
 
 
@@ -10,20 +10,20 @@
         <input type="hidden" name="option" value="ResetPin" id="option" />
         <div class="col-md-9">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.Phone, new { @class = "form-control", @placeholder = "Spouse name" })
+                @Html.TextBoxFor(m => m.CustomerList.Phone, new { @class = "form-control", @placeholder = @GlobalIndividual.PhoneNumber })
                 @Html.ValidationMessageFor(m => m.CustomerList.Phone, "", new { @class = "text-danger" })
-                <label>Phone number</label>
+                <label>@GlobalIndividual.PhoneNumber</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.CustomerList.CustomerPackageId, new { @class = "form-control", @placeholder = "1234",@readonly=true })
                 @Html.ValidationMessageFor(m => m.CustomerList.CustomerPackageId, "", new { @class = "text-danger" })
-                <label>Current Pin</label>
+                <label>@GlobalIndividual.CurrentPin</label>
             </div>
         </div>
         <div class="col-12">
-            <button type="submit" class="btn btn-primary">Reset pin</button>
+            <button type="submit" class="btn btn-primary">@GlobalIndividual.ResetPin</button>
         </div>
     }
 </div>

@@ -1449,6 +1449,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalHome.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Individual\GlobalIndividual.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalIndividual.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\InstallmentType\GlobalInstallmentType.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalInstallmentType.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Login\GlobalLogin.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -5312,6 +5322,14 @@
     <Content Include="App_GlobalResources\HolidayRecurring\GlobalHolidayRecurring.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalHolidayRecurring.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Individual\GlobalIndividual.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalIndividual.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\InstallmentType\GlobalInstallmentType.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalInstallmentType.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>

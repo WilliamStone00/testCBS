@@ -1,12 +1,13 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+    @using Resources
 <div class="table-responsive mb-3">
     <table class="table table-hover" id="myDataTable">
         <thead class="table-light">
             <tr>
-                <th>Name</th>
-                <th>Ration</th>
-                <th>Relationship</th>
-                <th>Branch</th>
+                <th>@GlobalIndividual.Name</th>
+                <th>@GlobalIndividual.Ration</th>
+                <th>@GlobalIndividual.Relationship</th>
+                <th>@GlobalIndividual.Branch</th>
             </tr>
         </thead>
         <tbody>

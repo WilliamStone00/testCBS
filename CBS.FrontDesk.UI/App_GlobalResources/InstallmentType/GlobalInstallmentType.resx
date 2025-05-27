@@ -117,37 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Credit" xml:space="preserve">
-    <value>CREDIT</value>
-    <comment>Brand name part 2</comment>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
   </data>
-  <data name="Home" xml:space="preserve">
-    <value>Home</value>
-    <comment>Home page</comment>
+  <data name="InstallmentType" xml:space="preserve">
+    <value>Installment type</value>
   </data>
-  <data name="NoInternetConnection" xml:space="preserve">
-    <value>No internet connection</value>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
   </data>
-  <data name="PartnerText" xml:space="preserve">
-    <value>Your Secure &amp; Reliable Partner. FLUX!</value>
-    <comment>Slogan line under the heading</comment>
+  <data name="SelectInstallmentType" xml:space="preserve">
+    <value>Select installment type</value>
   </data>
-  <data name="RETRY" xml:space="preserve">
-    <value>RETRY</value>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
   </data>
-  <data name="SatisfactionText" xml:space="preserve">
-    <value>Flux SARL! : Empowering businesses. Enhancing lives.</value>
-    <comment>Mission statement under the slogan</comment>
-  </data>
-  <data name="TrustSoft" xml:space="preserve">
-    <value>TRUSTSOFT</value>
-    <comment>Brand name part 1</comment>
-  </data>
-  <data name="WelcomeTitle" xml:space="preserve">
-    <value>WELCOME TO</value>
-    <comment>Main welcome heading for the home page</comment>
-  </data>
-  <data name="YouAreCurrentlyOffline" xml:space="preserve">
-    <value>You are currently offline. Please check your internet connection and try again</value>
+  <data name="Value" xml:space="preserve">
+    <value>Value ( in integer)</value>
   </data>
 </root>

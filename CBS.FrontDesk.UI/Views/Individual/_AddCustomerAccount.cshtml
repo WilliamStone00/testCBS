@@ -1,7 +1,8 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+    @using Resources
 
 <div class="card-header">
-    <h5 class="card-title">Add Ordinary Account to @Model.CustomerList.name</h5>
+    <h5 class="card-title">@GlobalIndividual.AddOrdinaryAccountTo @Model.CustomerList.name</h5>
 </div>
 <div class="card-body">
     @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
@@ -15,7 +16,7 @@
         <div class="col-md-3">
             <div class="form-floating">
                 @Html.TextBoxFor(m => m.CustomerList.CustomerId, new { @class = "form-control", @readonly = true })
-                <label>Member Reference Number</label>
+                <label>@GlobalIndividual.MemberReferenceNumber</label>
             </div>
         </div>
 
@@ -23,16 +24,16 @@
         <div class="col-md-9">
             <div class="form-floating">
                 @Html.TextBoxFor(m => m.CustomerList.name, new { @class = "form-control", @readonly = true })
-                <label>Member Name</label>
+                <label>@GlobalIndividual.MemberName</label>
             </div>
         </div>
 
         <!-- Account Type Selection -->
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.AddCustomerAccount.productId, new SelectList(ViewBag.Savings, "Id", "Name"), "---Select product---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.AddCustomerAccount.productId, new SelectList(ViewBag.Savings, "Id", "Name"), "---"+ @GlobalIndividual.SelectProduct+"---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.AddCustomerAccount.productId, "", new { @class = "text-danger " })
-                <label for="formValidationDob">Select the account type to Open/Remove for @Model.CustomerList.name</label>
+                <label for="formValidationDob">@GlobalIndividual.SelectTheAccountTypeToOpenRemoveFor @Model.CustomerList.name</label>
             </div>
         </div>
 
@@ -40,13 +41,13 @@
         <div class="col-12">
             <div class="form-check">
                 @Html.CheckBoxFor(m => m.AddCustomerAccount.IsRemoveAccount, new { @class = "form-check-input", @id = "isRemoveAccount", onchange = "toggleButtonStyle();" })
-                <label class="form-check-label" for="isRemoveAccount">Check to remove/delete account.</label>
+                <label class="form-check-label" for="isRemoveAccount">@GlobalIndividual.CheckToRemoveDeleteAccount.</label>
             </div>
         </div>
 
         <!-- Submit Button -->
         <div class="col-12">
-            <button type="submit" class="btn btn-primary" id="submitButton">Add Account</button>
+            <button type="submit" class="btn btn-primary" id="submitButton">@GlobalIndividual.AddAccount</button>
         </div>
     }
 
