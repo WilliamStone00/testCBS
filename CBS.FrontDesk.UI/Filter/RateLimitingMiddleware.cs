@@ -598,10 +598,11 @@ namespace CBS.FrontDesk.UI.Filter
             "41.202.217.0/24",
             "41.202.219.0/24",
             "102.244.0.0/14",
-
-
-
-            "143.105.152.0/24"
+            "143.105.152.0/24",
+            //Camtel
+            "154.72.169.0/24",
+            "154.72.168.0/24",
+            "154.72.170.0/24"
         };
 
 
@@ -725,18 +726,21 @@ namespace CBS.FrontDesk.UI.Filter
                 string matchedBadAgent = BadUserAgents
                     .Select(b => b.ToLowerInvariant())
                     .FirstOrDefault(bad => userAgent.Contains(bad));
-
-                if (!string.IsNullOrEmpty(matchedBadAgent))
+                if (!requestPath.ToLower().Contains("resolvemultiplesessions"))
                 {
-                    string logMsg = $"🚨 Blocked request with suspicious User-Agent: '{request.UserAgent}' " +
-                                    $"| Matched: '{matchedBadAgent}' | IP: {ip}";
-                    System.Diagnostics.Debug.WriteLine(logMsg);
-                    AdvancedMiddlewareLogger.Log(logMsg, LogLevel.WARN, globalUserFullname, globalbranchname);
+                    if (!string.IsNullOrEmpty(matchedBadAgent))
+                    {
+                        string logMsg = $"🚨 Blocked request with suspicious User-Agent: '{request.UserAgent}' " +
+                                        $"| Matched: '{matchedBadAgent}' | IP: {ip}";
+                        System.Diagnostics.Debug.WriteLine(logMsg);
+                        AdvancedMiddlewareLogger.Log(logMsg, LogLevel.WARN, globalUserFullname, globalbranchname);
 
-                    HandleSuspiciousPath(request, response, requestPath, logMsg, "Header-Filter", fullUrl);
-                    HandleRateLimitExceeded(response, ip, $"Bad User-Agent ({matchedBadAgent})", 0);
-                    return true;
+                        HandleSuspiciousPath(request, response, requestPath, logMsg, "Header-Filter", fullUrl);
+                        HandleRateLimitExceeded(response, ip, $"Bad User-Agent ({matchedBadAgent})", 0);
+                        return true;
+                    }
                 }
+                
 
 
                 // 2️⃣ Optional: Block requests to secure paths with missing Referer
