@@ -120,8 +120,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Address { get; set; }
         public string AccountNumber { get; set; }
         public string AccountName { get; set; }
-        public string Debit { get; set; }
-        public string Credit{ get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
         public string Description { get; set; }
         public string Reference { get; set; }
         public string EntryDate { get; set; }
