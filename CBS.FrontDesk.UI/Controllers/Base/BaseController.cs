@@ -717,8 +717,8 @@ namespace CBS.FrontDesk.UI.Controllers
         }
     
             // ✅ Valid single session
-            BuildLocalSession(userSession.UserAuthDto);
-        }
+        //    BuildLocalSession(userSession.UserAuthDto);
+        //}
 
 
 

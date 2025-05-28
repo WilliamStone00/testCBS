@@ -22,17 +22,18 @@
             // Show the element 
             console.log(selectedValue);
         
-            loadBranch(branchId)
+
          
                 if (selectedValue === 'Approved') {
                     $('#hideBranchID').hide();
                     $('#hideAmount').show();
                     $('#hideAccountId').show();
-                    loadAccountBalance(selectedValue);
+                    loadAccountBalance(branchId);
                 } else {
                     $('#hideBranchID').show();
                     $('#hideAmount').show();
                     $('#hideAccountId').hide();
+                    loadBranch(branchId)
                 }
              
         } else {
@@ -392,17 +393,21 @@ function loadBranchAccountUsedToCreditCashFlow(branchId,option) {
 function loadAccountBalance(accountId) {
     console.log(accountId);
     $.ajax({
-        url: '/ManuallyJournalEntry/GetAccountBalance',
+        url: '/CashFlowManagement/GetBranchBankAccount',
         type: 'GET',
         dataType: 'json',
         data: { Id: accountId },
         success: function (data) {
-            // Clear existing options in the OperationEventAttributeId combo 
-            $('#BankCashOut_Balance').empty();
-            $("#BankCashOut_Balance").val(data.Account.CurrentBalance);
- 
+            // Clear existing options in the OperationEventAttributeId combo  GetBranchBankAccount
+            //$('#BankCashOut_Balance').empty();
+            //$("#BankCashOut_Balance").val(data.Account.CurrentBalance);
+            $('#CashReplenimentRequestdto_TempId3').empty();
+            $.each(data, function (index, item) {
+                $('#CashReplenimentRequestdto_TempId3').append($('<option>').text(item.Value).attr('value', item.Text));
+            });
+
             // Add new options based on the fetched data
-            console.log(data.Account.CurrentBalance);
+            console.log(data);
         },
         error: function (xhr, status, error) {
             console.error(xhr.responseText);
