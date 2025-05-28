@@ -157,7 +157,7 @@ namespace CBS.BusinessService.RequestLoggerServicesP
         /// <summary>
         /// Logs a general request.
         /// </summary>
-        public async Task LogRequest(string ip, string mac, string computerName, string path, int statusCode, string location, string lat, string lon, string city, string region, string country, string branchid, string branchcode, string branchname, string tel, string fullname, bool isblocked, string reason)
+        public async Task LogRequest(string ip, string mac, string computerName, string path, int statusCode, string location, string lat, string lon, string city, string region, string country, string branchid, string branchcode, string branchname, string tel, string fullname, bool isblocked, string reason, bool isAuthenticated, string fullUrl)
         {
             var command = new LogRateLimitTrackerCommand
             {
@@ -181,7 +181,9 @@ namespace CBS.BusinessService.RequestLoggerServicesP
                 Latitude=lat,
                 Longitude=lon,
                 PhoneNumber=tel,
-                Region=region
+                Region=region,
+                IsAuthenticated=isAuthenticated,
+                FullUrl=fullUrl
             };
 
             await LogRequestAsync(command);

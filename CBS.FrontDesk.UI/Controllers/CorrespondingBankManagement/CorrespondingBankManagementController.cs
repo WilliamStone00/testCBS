@@ -5,7 +5,6 @@ using CBS.BusinessService.CorrespondingBankAccount;
 using CBS.BusinessService.Services;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity.CorrespondingBankManaagement;
-using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;

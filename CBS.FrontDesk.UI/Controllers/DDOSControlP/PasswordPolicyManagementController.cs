@@ -14,6 +14,7 @@ using System.Web.Services.Description;
 
 namespace CBS.FrontDesk.UI.Controllers.DDOSControlP
 {
+    [CheckSessionTimeOutAttribute]
     public class PasswordPolicyManagementController : BaseController
     {
         private readonly BranchServices _branchServices;

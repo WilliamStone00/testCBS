@@ -26,6 +26,11 @@ namespace CBS.FrontDesk.UI.Controllers.ErrorHandler
             return View();
         }
         [AllowAnonymous]
+        public ActionResult Unauthorized()
+        {
+            return View("Unauthorized"); // Make sure the view exists: Views/Error/Unauthorized.cshtml
+        }
+        [AllowAnonymous]
         public ActionResult Show(int id)
         {
             string message;
