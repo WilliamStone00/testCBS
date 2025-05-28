@@ -153,16 +153,17 @@ namespace CBS.API.Helper.APICallHelper
                         if (responseData.Contains("\"status\":SUCCESS") || responseData.Contains("\"data\":true") || responseData.Contains("\"isSuccess\":true"))
                         {
                             jsonResponse = JObject.Parse(responseData);
-                            var obj = JsonConvert.DeserializeObject<dynamic>(responseData);
                             message = jsonResponse["message"]?.ToString();
                             statusDescription = jsonResponse["statusDescription"]?.ToString();
 
+                            T obj = JsonConvert.DeserializeObject<T>(responseData);
                             return new ApiResponse<T>
                             {
                                 IsSuccess = true,
-                                //  ApiResponseData = obj,
+                                ApiResponseData = obj,
                                 Message = statusDescription + " " + message
                             };
+
                         }
 
                         T data = JsonConvert.DeserializeObject<T>(responseData, new JsonSerializerSettings

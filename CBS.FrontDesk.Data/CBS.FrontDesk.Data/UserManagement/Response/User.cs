@@ -297,17 +297,7 @@ namespace CBS.FrontDesk.Data.UserManagement
         public List<PermissionNode> PermissionNodes { get; set; }
 
     }
-    public class IdleTime
-    {
-        public string Id { get; set; }
-        public TimeSpan IdleDuration { get; set; }
-        public bool IsCentral { get; set; }
-        public string BranchId { get; set; }
-        public string BranchCode { get; set; }
-        public string BranchName { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public string Createdby { get; set; }
-    }
+
     public class SessionTimeoutConfigDto
     {
         public int Timeout { get; set; }      // total idle timeout in minutes

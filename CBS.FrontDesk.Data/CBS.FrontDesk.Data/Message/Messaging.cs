@@ -1,4 +1,5 @@
 ﻿using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.RequestManagement;
 using CBS.FrontDesk.Data.UserManagement;
 using System;
 using System.Collections.Generic;

@@ -8,6 +8,7 @@ using CBS.FrontDesk.Service;
 using CBS.FrontDesk.UI.Controllers.ErrorHandler;
 using CBS.FrontDesk.UI.Filter;
 using CBS.FrontDesk.UI.Filters;
+using CBS.FrontDesk.UI.Utility.Middlware_logger;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
@@ -35,7 +36,7 @@ namespace CBS.FrontDesk.UI
         protected void Application_Start()
         {
 
-      
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -122,6 +123,10 @@ namespace CBS.FrontDesk.UI
                     cookie.SameSite = SameSiteMode.Strict;
                 }
             }
+        }
+        protected void Application_End()
+        {
+            AdvancedMiddlewareLogger.Shutdown();
         }
 
         //protected void Application_EndRequest()
@@ -217,7 +222,6 @@ namespace CBS.FrontDesk.UI
                 cookie.SameSite = SameSiteMode.Strict; // CSRF protection
             }
         }
-
         //protected void Application_PreSendRequestHeaders()
         //{
         //    // 🔄 Remove existing headers not removed by <remove> in web.config
@@ -400,53 +404,99 @@ namespace CBS.FrontDesk.UI
             //}
         }
 
-
-
-        protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
+        protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
         {
-            HttpCookie authCookie = Request.Cookies["TSC"];
-
-            if (authCookie != null)
+            try
             {
+                HttpCookie authCookie = HttpContext.Current?.Request?.Cookies["TSC"];
+                if (authCookie == null || string.IsNullOrWhiteSpace(authCookie.Value))
+                    return;
+
                 FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                if (authTicket == null || authTicket.Expired)
+                    return;
 
-                if (!authTicket.Expired)
+                var user = JsonConvert.DeserializeObject<CustomSerializeModel>(authTicket.UserData);
+                if (user == null || string.IsNullOrWhiteSpace(user.UserName))
+                    return;
+
+                var principal = new CustomPrincipal(authTicket.Name)
                 {
-                    var user = JsonConvert.DeserializeObject<CustomSerializeModel>(authTicket.UserData);
+                    UserId = user.Id,
+                    FullName = user.FullName,
+                    UserName = user.UserName,
+                    Roles = user.RoleName,
+                    SessionIP = user.SessionIP,
+                    SessionUserAgent = user.SessionUserAgent,
+                    SessionID = user.SessionID,
+                    Email = user.Email,
+                    SessionCode = user.SessionCode,
+                    Phonenumber = user.Phonenumber,
+                    IsAuthenticated = true
+                };
 
-                    CustomPrincipal principal = new CustomPrincipal(authTicket.Name)
-                    {
-                        UserId = user.Id,
-                        FullName = user.FullName,
-                        UserName = user.UserName,
-                        Roles = user.RoleName,
-                        SessionIP = user.SessionIP,
-                        SessionUserAgent = user.SessionUserAgent,
-                        SessionID = user.SessionID,
-                        Email = user.Email,
-                        SessionCode = user.SessionCode,
-                        Phonenumber = user.Phonenumber,
-                        IsAuthenticated = true
-                    };
+                HttpContext.Current.User = principal;
+                System.Threading.Thread.CurrentPrincipal = principal;
 
-                    HttpContext.Current.User = principal;
-                    System.Threading.Thread.CurrentPrincipal = principal;
-
-                    // ✅ Rehydrate session if missing
-                    if (HttpContext.Current == null || HttpContext.Current.Session == null)
-                    {
-                        System.Diagnostics.Debug.WriteLine("HttpContext or Session is null. Skipping session rehydration.");
-                        return;
-                    }
-
-                    if (HttpContext.Current.Session["UserID"] == null)
-                    {
-                        RehydrateSession(user);
-                    }
-
+                // ✅ Ensure session is hydrated if not already
+                if (HttpContext.Current.Session != null && HttpContext.Current.Session["UserID"] == null)
+                {
+                    RehydrateSession(user);
                 }
             }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"⚠️ PostAuthenticateRequest failed: {ex.Message}");
+                // Optionally: log securely using your logger (e.g., NLog/Serilog)
+            }
         }
+
+
+        //protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
+        //{
+        //    HttpCookie authCookie = Request.Cookies["TSC"];
+
+        //    if (authCookie != null)
+        //    {
+        //        FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+
+        //        if (!authTicket.Expired)
+        //        {
+        //            var user = JsonConvert.DeserializeObject<CustomSerializeModel>(authTicket.UserData);
+
+        //            CustomPrincipal principal = new CustomPrincipal(authTicket.Name)
+        //            {
+        //                UserId = user.Id,
+        //                FullName = user.FullName,
+        //                UserName = user.UserName,
+        //                Roles = user.RoleName,
+        //                SessionIP = user.SessionIP,
+        //                SessionUserAgent = user.SessionUserAgent,
+        //                SessionID = user.SessionID,
+        //                Email = user.Email,
+        //                SessionCode = user.SessionCode,
+        //                Phonenumber = user.Phonenumber,
+        //                IsAuthenticated = true
+        //            };
+
+        //            HttpContext.Current.User = principal;
+        //            System.Threading.Thread.CurrentPrincipal = principal;
+
+        //            // ✅ Rehydrate session if missing
+        //            if (HttpContext.Current == null || HttpContext.Current.Session == null)
+        //            {
+        //                System.Diagnostics.Debug.WriteLine("HttpContext or Session is null. Skipping session rehydration.");
+        //                return;
+        //            }
+
+        //            if (HttpContext.Current.Session["UserID"] == null)
+        //            {
+        //                RehydrateSession(user);
+        //            }
+
+        //        }
+        //    }
+        //}
 
 
         private void RehydrateSession(CustomSerializeModel user)

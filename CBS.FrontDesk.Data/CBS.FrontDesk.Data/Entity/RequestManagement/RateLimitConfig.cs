@@ -15,6 +15,7 @@ namespace CBS.FrontDesk.Data.Entity.RequestManagement
         public int IPRequestLimit { get; set; }
         public int IPTimeWindowSeconds { get; set; }
         public List<string> WhitelistedHeaders { get; set; } = new List<string>();
+        public string Action { get; set; }
     }
 
 

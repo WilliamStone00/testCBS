@@ -39,14 +39,14 @@ namespace CBS.FrontDesk.UI.Controllers.Session
             }
 
             // 🧠 Default values
-            int timeout = 5;
+            int timeout = 15;
             int warning = 2;
 
             var idleTime = await _localSession.GetCurrentIdletimeByBranch();
 
-            if (idleTime != null && idleTime.IdleDuration.TotalMinutes > 0)
+            if (idleTime != null && idleTime.TotalMinutes > 0)
             {
-                timeout = (int)idleTime.IdleDuration.TotalMinutes;
+                timeout = (int)idleTime.TotalMinutes;
             }
 
             var config = new SessionTimeoutConfigDto

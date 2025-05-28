@@ -18,6 +18,7 @@ using CBS.BusinessService.Config;
 using CBS.BusinessService.Session;
 using DocumentFormat.OpenXml.EMMA;
 using Microsoft.Owin.Logging;
+using System.Data.Entity.Core.Metadata.Edm;
 
 namespace CBS.BusinessService.UserManagement
 {
@@ -26,11 +27,11 @@ namespace CBS.BusinessService.UserManagement
         private readonly ApiCallerHelper _identityServerBaseUrl;
         private readonly BranchServices _branchServices;
         private readonly RoleServices _roleServices;
-        public UserManagementServices(BranchServices branchServices = null, RoleServices roleServices = null)
+        public UserManagementServices()
         {
             _identityServerBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
             _branchServices=new BranchServices();
-            _roleServices=roleServices;
+            _roleServices=new RoleServices();
         }
         public async Task<ExecutionMessages> CreateUser(User user)
         {

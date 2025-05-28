@@ -16,7 +16,21 @@ namespace CBS.FrontDesk.UI.Controllers.ErrorHandler
             ViewBag.StatusCode = 500;
             return View("~/Views/Shared/Error.cshtml");
         }
-
+        [AllowAnonymous]
+        public ActionResult Blocked(string ip, string reason, string blockedAt, int unblockAfter)
+        {
+            ViewBag.IP = ip;
+            ViewBag.Reason = reason;
+            ViewBag.BlockedAt = blockedAt;
+            ViewBag.UnblockAfter = unblockAfter;
+            return View();
+        }
+        [AllowAnonymous]
+        public ActionResult Unauthorized()
+        {
+            return View("Unauthorized"); // Make sure the view exists: Views/Error/Unauthorized.cshtml
+        }
+        [AllowAnonymous]
         public ActionResult Show(int id)
         {
             string message;

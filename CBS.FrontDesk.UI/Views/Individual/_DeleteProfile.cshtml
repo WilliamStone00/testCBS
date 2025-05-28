@@ -44,42 +44,45 @@
                 </div>
             }
 
-            using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
-            {
-                <!-- Hidden Fields -->
-                @Html.HiddenFor(model => model.CustomerList.CustomerId)
-                <input type="hidden" name="option" value="Status" id="option" />
-
-                <!-- Activation Toggle -->
-                <div class="form-check mb-3">
-                    @Html.CheckBoxFor(m => m.CustomerList.Active, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="isActive">
-                        @if (Model.CustomerList.Active)
-                        {
-                            @:Uncheck to deactivate the customer's account
-                        }
-                        else
-                        {
-                            @:Check to reactivate the customer's account
-                        }
-                    </label>
-                </div>
-
-                <!-- Action Button -->
-                <div class="col-12">
-                    <button type="submit" class="btn @(Model.CustomerList.Active ? "btn-danger" : "btn-primary")">
-                        @if (Model.CustomerList.Active)
-                        {
-                            @:Deactivate Account
-                        }
-                        else
-                        {
-                            @:Reactivate Account
-                        }
-                    </button>
-                </div>
-            }
         }
+        <br />
+        <br />
+        @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
+        {
+            <!-- Hidden Fields -->
+            @Html.HiddenFor(model => model.CustomerList.CustomerId)
+            <input type="hidden" name="option" value="Status" id="option" />
+
+            <!-- Activation Toggle -->
+            <div class="form-check mb-3">
+                @Html.CheckBoxFor(m => m.CustomerList.Active, new { @class = "form-check-input" })
+                <label class="form-check-label" for="isActive">
+                    @if (Model.CustomerList.Active)
+                    {
+                        @:Uncheck to deactivate the customer's account
+                    }
+                    else
+                    {
+                        @:Check to reactivate the customer's account
+                    }
+                </label>
+            </div>
+
+            <!-- Action Button -->
+            <div class="col-12">
+                <button type="submit" class="btn @(Model.CustomerList.Active ? "btn-danger" : "btn-primary")">
+                    @if (Model.CustomerList.Active)
+                    {
+                        @:Deactivate Account
+                    }
+                    else
+                    {
+                        @:Reactivate Account
+                    }
+                </button>
+            </div>
+        }
+
     </div>
 
 
