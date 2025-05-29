@@ -63,7 +63,13 @@ namespace CBS.BusinessService.Config.Localization
                 var couApiResponse = await _bankConfigApiHelper.GetAsync<ResponseObject<List<Country>>>(APICallHelper.GetAllCountry);
                 if (couApiResponse.IsSuccess)
                 {
-                    return couApiResponse.ApiResponseData.Data;
+                    return couApiResponse.ApiResponseData.Data.Select(x =>
+                    {
+                        x.Name = $"[{x.Id}] [{x.Name}]";
+                        return x;
+                    })
+                    .OrderBy(x => x.Name)
+                    .ToList();
                 }
                 return new List<Country>();
             }

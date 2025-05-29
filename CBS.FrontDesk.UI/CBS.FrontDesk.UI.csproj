@@ -562,7 +562,7 @@
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectorManagementController.cs" />
     <Compile Include="Controllers\DDOSControlP\BlacklistUserController.cs" />
     <Compile Include="Controllers\DDOSControlP\PasswordPolicyManagementController.cs" />
-    <Compile Include="Controllers\DDOSControlP\RateLimitConfigController.cs" />
+    <Compile Include="Controllers\DDOSControlP\AdvancedSheildController.cs" />
     <Compile Include="Controllers\DDOSControlP\RequestMonitotingController.cs" />
     <Compile Include="Controllers\DDOSControlP\SuspiciousPathController.cs" />
     <Compile Include="Controllers\Error\ErrorController.cs" />
@@ -6257,9 +6257,9 @@
     <Content Include="Views\PrimaryTellerCashRequisition\_Request.cshtml" />
     <Content Include="Views\PrimaryTellerCashRequisition\_RequestValidation.cshtml" />
     <Content Include="Views\PrimaryTellerCashRequisition\_SearchBox.cshtml" />
-    <Content Include="Views\RateLimitConfig\Index.cshtml" />
-    <Content Include="Views\RateLimitConfig\_Create.cshtml" />
-    <Content Include="Views\RateLimitConfig\_Data.cshtml" />
+    <Content Include="Views\AdvancedSheild\Index.cshtml" />
+    <Content Include="Views\AdvancedSheild\_Create.cshtml" />
+    <Content Include="Views\AdvancedSheild\_Data.cshtml" />
     <Content Include="Views\RemittanceCashDesk\Index.cshtml" />
     <Content Include="Views\RemittanceCashDesk\_CustomerCard.cshtml" />
     <Content Include="Views\RemittanceCashDesk\_DenominationBreakDown.cshtml" />
@@ -6496,6 +6496,7 @@
     <Content Include="Views\WithdrawalNotification\_Tabs.cshtml" />
     <Content Include="Views\WithdrawalNotification\_ValidatePendingRequest.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\AdvancedSheild\_PolicyTips.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

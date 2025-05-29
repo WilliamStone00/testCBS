@@ -52,7 +52,7 @@ namespace CBS.FrontDesk.UI.Filter
 
     public class RateLimitingMiddleware : IHttpModule
     {
-        private readonly RateLimitConfigService _configService = new RateLimitConfigService();
+        //private readonly RateLimitConfigService _configService = new RateLimitConfigService();
         private readonly RateLimiteTrackerLoggerServices _loggerService = new RateLimiteTrackerLoggerServices();
         private readonly RateLimitedUserService _rateLimitedUserService = new RateLimitedUserService();
         private readonly SuspiciousPathService _suspiciousPathService = new SuspiciousPathService();
@@ -60,13 +60,48 @@ namespace CBS.FrontDesk.UI.Filter
         private static readonly MemoryCache _ipCache = MemoryCache.Default;
         private static readonly MemoryCache _blockCache = MemoryCache.Default;
         private readonly MaliciousContentScannerService _scanner = new MaliciousContentScannerService();
-        private static readonly List<string> AllowedOriginDomains = ConfigurationManager.AppSettings["AllowedOrigins"]
-        ?.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-        .Select(o => o.Trim().ToLowerInvariant())
-        .ToList() ?? new List<string>();
+        RateLimitConfig rateLimitConfig = RateLimitConfigHolder.Config;
 
         string globalUserFullname = "anonymous";
         string globalbranchname = "global";
+
+
+
+
+        private static readonly string EnvironmentName = ConfigurationManager.AppSettings["EnvironmentX"]?.Trim() ?? "Production";
+
+        private static readonly List<string> AllowedOriginDomains = (ConfigurationManager.AppSettings["AllowedOrigins"] ?? "")
+        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+        .Select((origin, index) => new { origin = origin.Trim(), index })
+        .Where(entry =>
+        {
+            // 🧠 Environment-specific origin inclusion
+            if (EnvironmentName == "Development" && entry.index == 0)
+                return true;
+            if (EnvironmentName == "TestBed" && entry.index == 1)
+                return true;
+            if (EnvironmentName == "Production" && entry.index == 2)
+                return true;
+            return false;
+        })
+        .Select(entry =>
+        {
+            try
+            {
+                return new Uri(entry.origin).Host.ToLowerInvariant();
+            }
+            catch
+            {
+                return null;
+            }
+        })
+        .Where(host => !string.IsNullOrEmpty(host))
+        .Distinct()
+        .ToList();
+
+
+
+
 
         public void Init(HttpApplication context)
         {
@@ -149,7 +184,7 @@ namespace CBS.FrontDesk.UI.Filter
             // ⚠️ 4. Immediately block malformed or non-IPv4 requests
             if (!isLocalDevIp)
             {
-                if (!IsValidIPv4(ip))
+                if (!CidrUtility.IsValidIPv4(ip))
                 {
                     string logMsg = $"🚫 Invalid or malformed IP address. Invalid IP format: {ip} | Path: {requestPath}";
                     System.Diagnostics.Debug.WriteLine(logMsg);
@@ -179,20 +214,33 @@ namespace CBS.FrontDesk.UI.Filter
                 return;
             }
 
-            // 🌍 7. Validate that IP belongs to allowed Cameroon CIDR
+            // 🌍 7. GeoIP Enforcement — Enforce access only from Cameroon or approved countries/IPs
             if (!isLocalDevIp)
             {
-                if (!CidrUtility.IsCameroonIp(ip, CameroonCidrs))
+                // 7.1 🚫 Reject if country is not whitelisted
+                if (!CidrUtility.IsWhitelistedCountry(country, rateLimitConfig.WhiteListedCountriesCode))
                 {
-                    string logMsg = $"🚨 Access from non-Cameroon IP. IP not in Cameroon CIDR: {ip} | Country: {country} | Path: {requestPath}";
+                    string logMsg = $"🚨 GeoIP Restriction — Blocked: Country '{country}' is not whitelisted | IP: {ip} | Path: {requestPath} | URL: {fullUrl}";
+                    System.Diagnostics.Debug.WriteLine(logMsg);
+                    AdvancedMiddlewareLogger.Log(logMsg, LogLevel.WARN, fullname, branchname);
+                    HandleSuspiciousPath(request, response, requestPath, logMsg, "GeoIP Country Restriction", fullUrl);
+                    HandleRateLimitExceeded(response, ip, "GeoIP Country Restriction", 0);
+                    return;
+                }
+
+                // 7.2 🚫 Reject if IP is not in any allowed CIDR block
+                if (!CidrUtility.IsIpInCidr(ip, rateLimitConfig.CameroonCidrs))
+                {
+                    string logMsg = $"🚨 CIDR Restriction — Blocked: IP '{ip}' not in any whitelisted CIDR | Country: {country} | Path: {requestPath}";
                     System.Diagnostics.Debug.WriteLine(logMsg);
                     AdvancedMiddlewareLogger.Log(logMsg, LogLevel.WARN, globalUserFullname, globalbranchname);
-                    HandleSuspiciousPath(request, response, requestPath, logMsg, "GeoIP-CIDR-Filter", fullUrl);
-                    HandleRateLimitExceeded(response, ip, "Non-Cameroon CIDR IP", 0);
+                    HandleSuspiciousPath(request, response, requestPath, logMsg, "GeoIP-CIDR Restriction", fullUrl);
+                    HandleRateLimitExceeded(response, ip, "GeoIP CIDR Restriction", 0);
                     return;
                 }
             }
-            
+
+
 
             // 🧪 8. Scan for malformed headers (user-agents, referers, etc.)
             if (IsSuspiciousHeaders(request, response, requestPath, fullUrl, ip))
@@ -218,17 +266,7 @@ namespace CBS.FrontDesk.UI.Filter
             if (ContainsMaliciousRequestBodyContent(request, response, requestPath, fullUrl, ip))
                 return;
 
-            // 🧬 12. GeoIP filter — allow only CM or local development IPs
-        
-            if (!country.Equals("CM", StringComparison.OrdinalIgnoreCase) && !isLocalDevIp)
-            {
-                string logMsg = $"🚨 GeoIP Restriction. Foreign IP blocked by GeoIP: {requestPath} | IP: {ip} | Country: {country} | URL: {fullUrl}";
-                System.Diagnostics.Debug.WriteLine(logMsg);
-                AdvancedMiddlewareLogger.Log(logMsg, LogLevel.WARN, fullname, branchname);
-                HandleSuspiciousPath(request, response, requestPath, logMsg, "GeoIP Restriction", fullUrl);
-                HandleRateLimitExceeded(response, ip, "GeoIP Restriction", 0);
-                return;
-            }
+
 
             // 🚷 13. Match suspicious paths (stored in DB or memory cache)
             if (IsSuspiciousPathCached(requestPath))
@@ -242,10 +280,9 @@ namespace CBS.FrontDesk.UI.Filter
             }
 
             // 📈 14. Apply rate limiting to detect bursts of traffic
-            var config = RateLimitConfigHolder.Config;
-            int requestLimit = config.RequestLimit;
-            TimeSpan timeWindow = TimeSpan.FromSeconds(config.TimeWindowSeconds);
-            TimeSpan blockDuration = TimeSpan.FromMinutes(config.BlockDurationMinutes);
+            int requestLimit = rateLimitConfig.RequestLimit;
+            TimeSpan timeWindow = TimeSpan.FromSeconds(rateLimitConfig.TimeWindowSeconds);
+            TimeSpan blockDuration = TimeSpan.FromMinutes(rateLimitConfig.BlockDurationMinutes);
 
             bool isBlocked = false;
             string reasonOfBlocked = string.Empty;
@@ -261,7 +298,7 @@ namespace CBS.FrontDesk.UI.Filter
                 Task.Run(() => _rateLimitedUserService.BlockUser(ip, username, "IP-Based", blockDuration, reasonOfBlocked,
                     location, lat, lon, city, region, country, branchid, branchcode, branchname, tel, fullname));
                 CacheTemporaryBlock(ip);
-                HandleRateLimitExceeded(response, ip, reasonOfBlocked, config.BlockDurationMinutes);
+                HandleRateLimitExceeded(response, ip, reasonOfBlocked, rateLimitConfig.BlockDurationMinutes);
                 return;
             }
 
@@ -403,10 +440,7 @@ namespace CBS.FrontDesk.UI.Filter
             }
         }
 
-        private bool IsValidIPv4(string ip)
-        {
-            return IPAddress.TryParse(ip, out var addr) && addr.AddressFamily == AddressFamily.InterNetwork;
-        }
+   
 
         public void CacheTemporaryBlock(string ipOrUser, int durationMinutes = 10)
         {
@@ -430,28 +464,10 @@ namespace CBS.FrontDesk.UI.Filter
         {
             var lower = path.ToLowerInvariant();
 
-            string[] suspiciousIndicators = new[]
-            {
-            ".env", ".git", ".svn", ".hg", ".bak", ".old", ".backup",
-            "web.config", "application.yml", "application.yaml", "settings.py",
-            "config.php", "database.yml", "composer.json", "package.json",
-            "requirements.txt", ".htaccess", ".htpasswd",
-            "id_rsa", "id_dsa", "private.key", "access_token", "jwt", "secret",
-            "phpmyadmin", "pma", "adminer", "dbadmin", "wp-admin", "wp-login",
-            "cpanel", "login.jsp", "login.php", "dashboard.jsp", "dashboard.php",
-            "passwd", "shadow", "boot.ini", "hosts", "system.ini",
-            "windows/win.ini", "etc/passwd", "etc/shadow",
-            "shell.php", "backdoor.php", "test.php", "eval.php", "mailer.php",
-            "cmd.php", "rce.php", "upload.php", "exploit.php", "drupal", "magento",
-            "owa", "ecp", "autodiscover", "activesync", "exchange", "server-status",
-            ".php", ".jsp", ".asp", ".aspx", ".cgi", ".exe", ".sh", ".pl", ".py", ".rb", ".lua",
-            ".log", ".sql", ".zip", ".tar.gz", ".7z", ".gz", ".tgz", ".rar",
-            ".idea", ".vscode", ".dockerignore", "docker-compose", ".DS_Store",
-            "crossdomain.xml", "clientaccesspolicy.xml", ".well-known", "favicon.ico.php"
-        };
+            string[] suspiciousIndicators = rateLimitConfig.SuspiciousIndicators;
 
-            bool isExcluded = ExcludedExtensions.Any(ext => lower.EndsWith(ext)) ||
-                              ExcludedPaths.Any(p => lower.StartsWith(p));
+            bool isExcluded = rateLimitConfig.ExcludedExtensions.Any(ext => lower.EndsWith(ext)) ||
+                              rateLimitConfig.ExcludedPaths.Any(p => lower.StartsWith(p));
 
             string logMsg = $"🔍 Checked static path: {path} | Result: {(isExcluded ? "Excluded" : "Included")}";
             System.Diagnostics.Debug.WriteLine(logMsg);
@@ -459,177 +475,11 @@ namespace CBS.FrontDesk.UI.Filter
 
             return isExcluded;
         }
-        private static readonly List<string> ExcludedPaths = new List<string>
-        {
-            "/favicon.ico", "/error/show/404", "/error/show/500", "/error/blocked",
-            "/Content/", "/Scripts/", "/fonts/", "/Images/","/dashboard/getlivedashboardheadoffice",
-            "/session/getidletimeout", "/signalr/hubs","/bundles/jqueryval","/aspnet_client/system_web/4_0_30319/crystalreportviewers13/js/dhtmllib/empty.html"
-        };
-
-        private static readonly List<string> CameroonCidrs = new List<string>
-        {
-            // CAMTEL Allocations
-            "41.202.219.0/24",
-            "41.202.220.0/23",
-            "41.202.222.0/24",
-            "41.202.223.0/24",
-            "41.217.192.0/18",
-            "41.221.240.0/21",
-            "102.244.192.0/18",
-            "129.151.128.0/17",
-            "154.66.128.0/17",
-            "154.70.0.0/17",
-            "154.72.162.0/23",
-            "154.73.64.0/18",
-            "154.118.64.0/18",
-            "154.120.96.0/19",
-            "160.120.0.0/16",
-            "160.153.0.0/16",
-            "165.98.0.0/16",
-            "169.255.64.0/18",
-            "197.149.192.0/18",
-            "197.159.160.0/19",
-            "197.214.0.0/17",
-            "197.231.0.0/17",
-
-            // MTN Cameroon Allocations
-            "129.0.0.0/16",
-            "129.0.101.0/24",
-            "129.0.102.0/24",
-            "129.0.103.0/24",
-            "129.0.109.0/24",
-            "129.0.110.0/24",
-            "129.0.111.0/24",
-            "129.0.113.0/24",
-            "129.0.125.0/24",
-            "129.0.128.0/24",
-            "129.0.129.0/24",
-            "129.0.130.0/24",
-            "129.0.131.0/24",
-            "129.0.132.0/24",
-            "129.0.133.0/24",
-            "129.0.134.0/24",
-            "129.0.135.0/24",
-            "129.0.136.0/24",
-            "129.0.137.0/24",
-            "129.0.138.0/24",
-            "129.0.139.0/24",
-            "129.0.140.0/24",
-            "129.0.141.0/24",
-            "129.0.142.0/24",
-            "129.0.143.0/24",
-            "129.0.144.0/24",
-            "129.0.145.0/24",
-            "129.0.146.0/24",
-            "129.0.147.0/24",
-            "129.0.148.0/24",
-            "129.0.149.0/24",
-            "129.0.150.0/24",
-            "129.0.151.0/24",
-            "129.0.152.0/24",
-            "129.0.153.0/24",
-            "129.0.154.0/24",
-            "129.0.156.0/24",
-            "129.0.157.0/24",
-            "129.0.158.0/24",
-            "129.0.159.0/24",
-            "129.0.160.0/24",
-            "129.0.164.0/24",
-            "129.0.165.0/24",
-            "129.0.168.0/21",
-            "129.0.168.0/24",
-            "129.0.169.0/24",
-            "129.0.171.0/24",
-            "129.0.172.0/24",
-            "129.0.173.0/24",
-            "129.0.180.0/24",
-            "129.0.181.0/24",
-            "129.0.182.0/24",
-            "129.0.183.0/24",
-            "129.0.188.0/24",
-            "129.0.190.0/24",
-            "129.0.202.0/24",
-            "129.0.203.0/24",
-            "129.0.204.0/24",
-            "129.0.205.0/24",
-            "129.0.206.0/24",
-            "129.0.207.0/24",
-            "129.0.208.0/24",
-            "129.0.209.0/24",
-            "129.0.210.0/24",
-            "129.0.211.0/24",
-            "129.0.212.0/24",
-            "129.0.213.0/24",
-            "129.0.214.0/24",
-            "129.0.215.0/24",
-            "129.0.216.0/24",
-            "129.0.217.0/24",
-            "129.0.218.0/24",
-            "129.0.219.0/24",
-            "129.0.220.0/24",
-            "129.0.226.0/24",
-            "129.0.231.0/24",
-            "129.0.232.0/24",
-            "129.0.233.0/24",
-            "129.0.234.0/24",
-            "129.0.237.0/24",
-            "129.0.238.0/24",
-            "129.0.239.0/24",
-            "129.0.255.0/24",
-            "129.0.125.0/24",
-
-            // Creolink Communications Allocations
-            "41.223.28.0/22",
-            "154.126.160.0/19",
-            "154.126.163.0/24",
-            "154.126.165.0/24",
-            "154.126.166.0/23",
-            "154.126.168.0/22",
-            "154.126.172.0/24",
-            "154.126.173.0/24",
-            "154.126.176.0/24",
-            "154.126.178.0/24",
-            "154.126.183.0/24",
-            "154.126.190.0/24",
-
-            // Orange Cameroun SA Allocations
-            "41.202.192.0/19",
-            "41.202.216.0/23",
-            "41.202.217.0/24",
-            "41.202.219.0/24",
-            "102.244.0.0/14",
-            "143.105.152.0/24",
-            //Camtel
-            "154.72.169.0/24",
-            "154.72.168.0/24",
-            "154.72.170.0/24"
-        };
 
 
-        private static readonly string[] BadUserAgents =
-        {
-            "", // Empty User-Agent
-            "curl", "httpclient", "python", "sqlmap", "fuzzer", "wget", "libwww",
-            "go-http-client", "scan", "scrapy", "nmap", "nessus", "masscan", "nikto",
-            "httprequest", "powershell", "java", "perl", "ruby", "httpget", "netcat",
-            "curl/7", "http-post", "metasploit", "acunetix", "netsparker", "dirbuster",
-            "zmeu", "sqlninja", "webinspect", "openvas", "qualys", "jaascois", "havij",
-            "morfeus", "httplib", "bot", "spider", "crawler", "hacktool", "recon",
-            "loader", "brutus", "hydra", "paros", "burpsuite", "headless", "phantomjs",
-            "python-requests", "okhttp", "axios", "node-fetch", "lwp", "java/", "vbscript",
-            "curl-winhttp", "fetch", "http_request2", "cyberduck"
-        };
 
 
-        private static readonly List<string> ExcludedExtensions = new List<string>
-        {
-            ".js", ".css", ".png", ".jpg", ".jpeg", ".gif", ".woff", ".woff2", ".ttf", ".ico", ".aspx", ".json", ".axd", ".html"
-        };
-
-        private static readonly List<string> ExcludedSubstrings = new List<string>
-        {
-            "dashboard", "login", "logout"
-        };
+       
         private (string IpAddress, string Location, string Latitude, string Longitude, string City, string Region, string Country) GetIpAndLocationSync()
         {
             try
@@ -719,44 +569,125 @@ namespace CBS.FrontDesk.UI.Filter
                 string referer = request.Headers["Referer"];
                 string origin = request.Headers["Origin"];
 
+                // 1️⃣ Block known bad or spoofed User-Agent
+                string matchedBadAgent = rateLimitConfig.BadUserAgents.Select(b => b.ToLowerInvariant()).FirstOrDefault(bad => userAgent.Contains(bad));
+
+                if (!string.IsNullOrEmpty(matchedBadAgent))
+                {
+                    string logMsg = $"🚨 Blocked request with suspicious User-Agent: '{request.UserAgent}' | Matched: '{matchedBadAgent}' | IP: {ip}";
+                    System.Diagnostics.Debug.WriteLine(logMsg);
+                    AdvancedMiddlewareLogger.Log(logMsg, LogLevel.WARN, globalUserFullname, globalbranchname);
+
+                    HandleSuspiciousPath(request, response, requestPath, logMsg, "Header-Filter", fullUrl);
+                    HandleRateLimitExceeded(response, ip, $"Bad User-Agent ({matchedBadAgent})", 0);
+                    return true;
+                }
+
+                // 2️⃣ Block POST requests to secure areas without Referer
+                if ((requestPath.StartsWith("/dashboard", StringComparison.OrdinalIgnoreCase) ||
+                     requestPath.StartsWith("/secure", StringComparison.OrdinalIgnoreCase)) &&
+                    string.IsNullOrWhiteSpace(referer))
+                {
+                    string logMsg = $"🚨 Missing Referer Header on protected path '{requestPath}' | IP: {ip}";
+                    System.Diagnostics.Debug.WriteLine(logMsg);
+                    AdvancedMiddlewareLogger.Log(logMsg, LogLevel.WARN, globalUserFullname, globalbranchname);
+
+                    HandleSuspiciousPath(request, response, requestPath, logMsg, "Header-Filter", fullUrl);
+                    HandleRateLimitExceeded(response, ip, "Missing Referer", 0);
+                    return true;
+                }
+                // 3️⃣ Block POST requests with suspicious or unauthorized Origin headers
+                if (request.HttpMethod == "POST" && !string.IsNullOrWhiteSpace(origin))
+                {
+                    string originHost = string.Empty;
+
+                    try
+                    {
+                        // Parse and extract the domain host from the Origin header
+                        originHost = new Uri(origin).Host.ToLowerInvariant();
+                    }
+                    catch
+                    {
+                        originHost = ""; // ⚠️ Origin header is malformed or invalid
+                    }
+
+                    // 🚫 If the origin is not on the allowlist, block the request
+                    if (!string.IsNullOrWhiteSpace(originHost) && !AllowedOriginDomains.Contains(originHost))
+                    {
+                        string logMsg = $"❌ Request denied due to unauthorized Origin: '{origin}' (host: '{originHost}'). " +
+                                        $"Path: '{requestPath}' | IP: {ip} | Reason: Origin not in allowlist.";
+
+                        System.Diagnostics.Debug.WriteLine(logMsg);
+                        AdvancedMiddlewareLogger.Log(logMsg, LogLevel.WARN, globalUserFullname, globalbranchname);
+
+                        HandleSuspiciousPath(
+                            request,
+                            response,
+                            requestPath,
+                            "Unauthorized Origin detected in request header",
+                            "Header-Origin-Filter",
+                            fullUrl
+                        );
+
+                        HandleRateLimitExceeded(response, ip, "Blocked due to unauthorized Origin", 0);
+                        return true;
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                string logMsg = $"⚠️ Error during header sanity check: {ex.Message}";
+                System.Diagnostics.Debug.WriteLine(logMsg);
+                AdvancedMiddlewareLogger.Log(logMsg, LogLevel.ERROR, globalUserFullname, globalbranchname);
+            }
+
+            return false;
+        }
+
+        private bool IsSuspiciousHeadersxx(HttpRequest request, HttpResponse response, string requestPath, string fullUrl, string ip)
+        {
+            try
+            {
+                string userAgent = request.UserAgent?.ToLowerInvariant() ?? "";
+                string referer = request.Headers["Referer"];
+                string origin = request.Headers["Origin"];
+
                 // 1️⃣ Block bad or empty User-Agent
                 // Normalize the user agent
 
                 // Try to match which specific bad keyword triggered
-                string matchedBadAgent = BadUserAgents
-                    .Select(b => b.ToLowerInvariant())
-                    .FirstOrDefault(bad => userAgent.Contains(bad));
-                if (!requestPath.ToLower().Contains("resolvemultiplesessions"))
+                string matchedBadAgent = rateLimitConfig.BadUserAgents.Select(b => b.ToLowerInvariant()).FirstOrDefault(bad => userAgent.Contains(bad));
+
+                if (!string.IsNullOrEmpty(matchedBadAgent))
                 {
-                    if (!string.IsNullOrEmpty(matchedBadAgent))
+                    string logMsg = $"🚨 Blocked request with suspicious User-Agent: '{request.UserAgent}' " +
+                                    $"| Matched: '{matchedBadAgent}' | IP: {ip}";
+                    System.Diagnostics.Debug.WriteLine(logMsg);
+                    AdvancedMiddlewareLogger.Log(logMsg, LogLevel.WARN, globalUserFullname, globalbranchname);
+
+                    HandleSuspiciousPath(request, response, requestPath, logMsg, "Header-Filter", fullUrl);
+                    HandleRateLimitExceeded(response, ip, $"Bad User-Agent ({matchedBadAgent})", 0);
+                    return true;
+                }
+
+
+
+                // 2️⃣ Optional: Block requests to secure paths with missing Referer
+                if (requestPath.StartsWith("/dashboard") || requestPath.StartsWith("/secure"))
+                {
+                    if (string.IsNullOrWhiteSpace(referer))
                     {
-                        string logMsg = $"🚨 Blocked request with suspicious User-Agent: '{request.UserAgent}' " +
-                                        $"| Matched: '{matchedBadAgent}' | IP: {ip}";
+                        string logMsg = $"🚨 Missing Referer Header on protected path '{requestPath}' | IP: {ip}";
                         System.Diagnostics.Debug.WriteLine(logMsg);
                         AdvancedMiddlewareLogger.Log(logMsg, LogLevel.WARN, globalUserFullname, globalbranchname);
 
                         HandleSuspiciousPath(request, response, requestPath, logMsg, "Header-Filter", fullUrl);
-                        HandleRateLimitExceeded(response, ip, $"Bad User-Agent ({matchedBadAgent})", 0);
+                        HandleRateLimitExceeded(response, ip, "Missing Referer", 0);
                         return true;
                     }
                 }
-                
-
-
-                // 2️⃣ Optional: Block requests to secure paths with missing Referer
-                //if (requestPath.StartsWith("/dashboard") || requestPath.StartsWith("/secure"))
-                //{
-                //    if (string.IsNullOrWhiteSpace(referer))
-                //    {
-                //        string logMsg = $"🚨 Missing Referer Header on protected path '{requestPath}' | IP: {ip}";
-                //        System.Diagnostics.Debug.WriteLine(logMsg);
-                //        AdvancedMiddlewareLogger.Log(logMsg, LogLevel.WARN, globalUserFullname, globalbranchname);
-
-                //        HandleSuspiciousPath(request, response, requestPath, logMsg, "Header-Filter", fullUrl);
-                //        HandleRateLimitExceeded(response, ip, "Missing Referer", 0);
-                //        return true;
-                //    }
-                //}
 
                 // 3️⃣ Optional: Check invalid Origin headers (e.g. non-site POST)
                 if (request.HttpMethod == "POST" && !string.IsNullOrWhiteSpace(origin))

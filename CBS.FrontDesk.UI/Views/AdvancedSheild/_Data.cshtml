@@ -20,7 +20,7 @@
                         <th style="width: 10%;">Block (min)</th>
                         <th style="width: 10%;">Req/IP</th>
                         <th style="width: 10%;">IP Window (s)</th>
-                        <th style="width: 35%;">Whitelisted Headers</th>
+                        <th style="width: 35%;">Whitelisted Countries</th>
                         <th style="width: 10%;">Options</th>
                     </tr>
                 </thead>
@@ -34,10 +34,10 @@
                             <td>@item.IPRequestLimit</td>
                             <td>@item.IPTimeWindowSeconds</td>
                             <td>
-                                @if (item.WhitelistedHeaders != null && item.WhitelistedHeaders.Any())
+                                @if (item.WhiteListedCountriesCode != null && item.WhiteListedCountriesCode.Any())
                                 {
                                     <ul class="mb-0 ps-3 small">
-                                        @foreach (var header in item.WhitelistedHeaders)
+                                        @foreach (var header in item.WhiteListedCountriesCode)
                                         {
                                             <li>@header</li>
                                         }
@@ -53,7 +53,7 @@
                                     <!-- Edit Button -->
                                     <button type="button"
                                             class="btn btn-sm btn-outline-primary"
-                                            onclick="AddORUpdateGen('@item.Id', 'datalistingview', '_Create', 'update', 'RateLimitConfig')"
+                                            onclick="AddORUpdateGen('@item.Id', 'datalistingview', '_Create', 'update', 'AdvancedSheild')"
                                             data-bs-toggle="tooltip"
                                             title="Edit Config">
                                         <i class="fas fa-edit me-1"></i> Edit
@@ -62,7 +62,7 @@
                                     <!-- Delete Button -->
                                     <button type="button"
                                             class="btn btn-sm btn-outline-danger"
-                                            onclick="DeleteDynamic('RateLimitConfig','Delete','@item.Id','myDataTable','_Data', 2,'datalistingview')"
+                                            onclick="DeleteDynamic('AdvancedSheild','Delete','@item.Id','myDataTable','_Data', 2,'datalistingview')"
                                             data-bs-toggle="tooltip"
                                             title="Delete Config">
                                         <i class="fas fa-trash-alt me-1"></i> Reset
