@@ -1,19 +1,19 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
-
+@using Resources
 @if (Model != null && Model.LoanProducts.Any())
 {
     <div class="table-responsive mb-3">
         <table class="table table-hover table-bordered table-sm" id="myDataTable">
             <thead class="table-light">
                 <tr>
-                    <th style="width: 10%;">Target</th>
-                    <th style="width: 16%;">Category</th>
-                    <th style="width: 6%;">Code</th>
-                    <th style="width: 34%;">Name</th>
-                    <th style="width: 20%;">Min : Max</th>
-                    <th style="width: 5%;">Status</th>
-                    <th style="width: 5%;">SSF</th>
-                    <th style="width: 8%;">Action</th>
+                    <th style="width: 10%;">@GlobalLoanProduct.Target</th>
+                    <th style="width: 16%;">@GlobalLoanProduct.Category</th>
+                    <th style="width: 6%;">@GlobalLoanProduct.Code</th>
+                    <th style="width: 34%;">@GlobalLoanProduct.Name</th>
+                    <th style="width: 20%;">@GlobalLoanProduct.MinMax</th>
+                    <th style="width: 5%;">@GlobalLoanProduct.Status</th>
+                    <th style="width: 5%;">@GlobalLoanProduct.SSF</th>
+                    <th style="width: 8%;">@GlobalShared.Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,27 +42,27 @@
                                     <ul class="mb-0">
                                         @if (d.LoanMinimumAmount <= 0)
                                         {
-                                            <li>Min Amount must be greater than 0.</li>
+                                            <li>@GlobalLoanProduct.MinAmountMustBeGreaterThan0.</li>
                                         }
                                         @if (d.LoanMaximumAmount <= 0)
                                         {
-                                            <li>Max Amount must be greater than 0.</li>
+                                            <li>@GlobalLoanProduct.MaxAmountMustBeGreaterThan0.</li>
                                         }
                                         @if (d.LoanMinimumAmount > d.LoanMaximumAmount)
                                         {
-                                            <li>Min Amount cannot exceed Max Amount.</li>
+                                            <li>@GlobalLoanProduct.MinAmountCannotExceedMaxAmount.</li>
                                         }
                                         @if (d.LoanProductCategory.Name == "N/A")
                                         {
-                                            <li>Category is not configured.</li>
+                                            <li>@GlobalLoanProduct.CategoryIsNotConfigured.</li>
                                         }
                                         @if (d.TargetType == "N/A")
                                         {
-                                            <li>Target Type is not configured.</li>
+                                            <li>@GlobalLoanProduct.TargetTypIsNotConfigured.</li>
                                         }
                                         @if (d.LoanTerm.Name == "N/A")
                                         {
-                                            <li>Loan Term is not configured.</li>
+                                            <li>@GlobalLoanProduct.LoanTermIsNotConfigured.</li>
                                         }
                                     </ul>
                                 </div>
@@ -72,25 +72,25 @@
                         <td>
                             @if (d.ActiveStatus)
                             {
-                                <span class="badge bg-info">Active</span>
+                                <span class="badge bg-info">@GlobalLoanProduct.Active</span>
                             }
                             else
                             {
-                                <span class="badge bg-warning">Inactive</span>
+                                <span class="badge bg-warning">@GlobalLoanProduct.Inactive</span>
                             }
                         </td>
                         <td>
                             @if (d.IsProductWithSavingFacilities)
                             {
-                                <span class="badge bg-info">SSF</span>
+                                <span class="badge bg-info">@GlobalLoanProduct.SSF</span>
                             }
                             else
                             {
-                                <span class="badge bg-primary">MAIN</span>
+                        <span class="badge bg-primary">@GlobalLoanProduct.MAIN</span>
                             }
                         </td>
                         <td>
-                            <a href="/LoanProduct/Policy?Key=@d.Id" target="_blank" class="text-decoration-none mr-2" data-toggle="tooltip" data-placement="top" title="Set penalty for @d.ProductName">Policies</a>
+                            <a href="/LoanProduct/Policy?Key=@d.Id" target="_blank" class="text-decoration-none mr-2" data-toggle="tooltip" data-placement="top" title="Set penalty for @d.ProductName">@GlobalLoanProduct.Policies</a>
                         </td>
                     </tr>
                 }
@@ -101,7 +101,7 @@
 else
 {
     <div class="text-center my-3">
-        <p>No loan product has been created.</p>
+        <p>@GlobalLoanProduct.NoLoanProductHasBeenCreated.</p>
     </div>
 }
 

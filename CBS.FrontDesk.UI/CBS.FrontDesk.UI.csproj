@@ -516,6 +516,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\LoanCommitee\GlobalLoanCommitee.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanCommitee.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\LoanDeliquencyConfiguration\GlobalLoanDeliquencyConfiguration.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanDeliquencyConfiguration.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\LoanProduct\GlobalLoanProduct.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanProduct.resx</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
     <Compile Include="Controllers\Accounting\AccountEntry.cs" />
@@ -1575,6 +1590,26 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalHome.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Individual\GlobalIndividual.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalIndividual.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\InstallmentType\GlobalInstallmentType.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalInstallmentType.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\LoanApplication\GlobalLoanApplication.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanApplication.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Loan\GlobalLoan.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoan.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Login\GlobalLogin.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -5326,6 +5361,34 @@
     <Content Include="App_GlobalResources\HolidayRecurring\GlobalHolidayRecurring.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalHolidayRecurring.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Individual\GlobalIndividual.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalIndividual.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\InstallmentType\GlobalInstallmentType.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalInstallmentType.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Loan\GlobalLoan.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoan.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LoanApplication\GlobalLoanApplication.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanApplication.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LoanCommitee\GlobalLoanCommitee.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanCommitee.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LoanDeliquencyConfiguration\GlobalLoanDeliquencyConfiguration.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanDeliquencyConfiguration.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LoanProduct\GlobalLoanProduct.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanProduct.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>

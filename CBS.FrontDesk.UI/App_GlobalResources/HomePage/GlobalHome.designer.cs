@@ -79,11 +79,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No internet connection.
+        /// </summary>
+        internal static string NoInternetConnection {
+            get {
+                return ResourceManager.GetString("NoInternetConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your Secure &amp; Reliable Partner. FLUX!.
         /// </summary>
         internal static string PartnerText {
             get {
                 return ResourceManager.GetString("PartnerText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RETRY.
+        /// </summary>
+        internal static string RETRY {
+            get {
+                return ResourceManager.GetString("RETRY", resourceCulture);
             }
         }
         
@@ -111,6 +129,15 @@ namespace Resources {
         internal static string WelcomeTitle {
             get {
                 return ResourceManager.GetString("WelcomeTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are currently offline. Please check your internet connection and try again.
+        /// </summary>
+        internal static string YouAreCurrentlyOffline {
+            get {
+                return ResourceManager.GetString("YouAreCurrentlyOffline", resourceCulture);
             }
         }
     }

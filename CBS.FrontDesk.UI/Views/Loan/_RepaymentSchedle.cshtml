@@ -1,12 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
-
+@using Resources
 <fieldset class="fieldset-custom">
     <legend>Repayment Schedule</legend>
     <hr style="border: 2px solid green;" />
     @if (Model.LoanAmortizations.Count() == 0)
     {
         <div class="text-center my-3">
-            <p>No repayment schedule generated for @Model.IndividualCustomer.CustomerList.name</p>
+            <p>@GlobalLoan.NoRepaymentScheduleGeneratedFor @Model.IndividualCustomer.CustomerList.name</p>
         </div>
     }
     else
@@ -109,25 +109,25 @@
                 <thead class="table-light">
                     <tr>
                         <th style="width: 5%">SN</th>
-                        <th style="width: 10%">Date</th>
-                        <th style="width: 15%">Description</th>
-                        <th style="width: 10%">Principal</th>
-                        <th style="width: 10%">Interest</th>
-                        <th style="width: 10%">VAT</th>
-                        <th style="width: 10%">Penalty</th>
-                        <th style="width: 10%">Paid</th>
-                        <th style="width: 10%">Balance</th>
+                        <th style="width: 10%">@GlobalLoan.Date</th>
+                        <th style="width: 15%">@GlobalLoan.Description</th>
+                        <th style="width: 10%">@GlobalLoan.Principal</th>
+                        <th style="width: 10%">@GlobalLoan.Interest</th>
+                        <th style="width: 10%">@GlobalLoan.VATLc</th>
+                        <th style="width: 10%">@GlobalLoan.Penalty</th>
+                        <th style="width: 10%">@GlobalLoan.Paid</th>
+                        <th style="width: 10%">@GlobalLoan.Balance</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- First Additional Row -->
                     <tr>
-                        <td colspan="3" class="text-end fw-bold">Principal:</td>
+                        <td colspan="3" class="text-end fw-bold">@GlobalLoan.Principal:</td>
                         <td colspan="6">@Model.Principal.ToString("#,##0.0")</td>
                     </tr>
                     <!-- Second Additional Row -->
                     <tr>
-                        <td colspan="3" class="text-end fw-bold">Date:</td>
+                        <td colspan="3" class="text-end fw-bold">@GlobalLoan.Date:</td>
                         <td colspan="6">@DateTime.Now.ToShortDateString()</td>
                     </tr>
                     @foreach (var d in Model.LoanAmortizations.OrderBy(app => app.Sno))

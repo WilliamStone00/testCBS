@@ -1,15 +1,16 @@
-﻿<div class="card p-3 shadow mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i> BRANCH MEMBERS</h5>
+﻿@using Resources
+<div class="card p-3 shadow mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i> @GlobalIndividual.BRANCHMEMBERS</h5>
     <div class="table-responsive">
         <table id="myDataTable" class="table table-bordered table-striped">
             <thead class="table-light">
                 <tr>
-                    <th>R.Date</th>
-                    <th>Name</th>
-                    <th>M.Acc.Num</th>
-                    <th>Telephone</th>
-                    <th>Member's Profile</th>
-                    <th>Action</th>
+                    <th>@GlobalIndividual.RDate</th>
+                    <th>@GlobalIndividual.Name</th>
+                    <th>@GlobalIndividual.MAccNum</th>
+                    <th>@GlobalIndividual.Telephone</th>
+                    <th>@GlobalIndividual.MembersProfile</th>
+                    <th>@GlobalShared.Action</th>
                 </tr>
             </thead>
             <tbody></tbody>

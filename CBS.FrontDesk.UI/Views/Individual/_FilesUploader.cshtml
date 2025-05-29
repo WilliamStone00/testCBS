@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
-
+@using Resources
 <div class="card-body">
     @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
     {
@@ -7,7 +7,7 @@
         <input type="hidden" name="option" value="upload" />
         <input type="hidden" name="CustomerDocumentRequest.DocumentType" value="CustomerOtherDocument" />
         <div class="input-group">
-            <button type="submit" class="input-group-text" for="inputGroupFile02">Upload</button>
+            <button type="submit" class="input-group-text" for="inputGroupFile02">@GlobalShared.Upload</button>
             <input type="file" name="CustomerDocumentRequest.AttachedFiles"
                    class="form-control"
                    id="inputGroupFile03"
@@ -44,8 +44,8 @@
                                     </h6>
                                 </div>
                                 <div class="file-actions">
-                                    <button type="button" onclick="confirmDelete('@file.documentId')" class="btn btn-sm btn-danger me-2">Delete</button>
-                                    <a href="@($"{file.urlPath}")" target="_blank" class="btn btn-sm btn-primary">Read</a>
+                                    <button type="button" onclick="confirmDelete('@file.documentId')" class="btn btn-sm btn-danger me-2">@GlobalShared.Delete</button>
+                                    <a href="@($"{file.urlPath}")" target="_blank" class="btn btn-sm btn-primary">@GlobalShared.Read</a>
                                 </div>
                             </div>
                         </div>

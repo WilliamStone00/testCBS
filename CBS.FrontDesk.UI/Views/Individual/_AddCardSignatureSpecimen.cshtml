@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
-
+@using Resources
 <div class="card-body">
 
 
@@ -12,28 +12,28 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.CardSignatureSpecimen.Name, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.Name, "", new { @class = "text-danger " })
-                <label>Name</label>
+                <label>@GlobalIndividual.Name</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.CardSignatureSpecimen.IdentityCardNumber, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.IdentityCardNumber, "", new { @class = "text-danger " })
-                <label>Identity card number</label>
+                <label>@GlobalIndividual.IdentityCardNumber</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.CardSignatureSpecimen.IssuedOn, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.IssuedOn, "", new { @class = "text-danger " })
-                <label>Issued on (yyyy-mm-dd: 2023-01-28)</label>
+                <label>@GlobalIndividual.IssuedOn (yyyy-mm-dd: 2023-01-28)</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.CardSignatureSpecimen.IssuedAt, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.IssuedAt, "", new { @class = "text-danger " })
-                <label>Issued at (yyyy-mm-dd: 2029-01-28)</label>
+                <label>@GlobalIndividual.IssuedAt (yyyy-mm-dd: 2029-01-28)</label>
             </div>
         </div>
 
@@ -41,7 +41,7 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextAreaFor(m => m.CardSignatureSpecimen.Instruction, new { @class = "form-control", @style = "height: 75px;" })
                 @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.Instruction, "", new { @class = "text-danger " })
-                <label>Instructions</label>
+                <label>@GlobalIndividual.Instructions</label>
             </div>
         </div>
         @*<div class="col-md-12">
@@ -59,7 +59,7 @@
             </div>
         </div>*@
         <div class="col-12">
-            <button type="submit" class="btn btn-primary">Add signatory</button>
+            <button type="submit" class="btn btn-primary">@GlobalIndividual.AddSignatory</button>
         </div>
     }
 </div>

@@ -1,39 +1,39 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
-
+@using Resources
 <fieldset class="fieldset-custom">
     <legend>Terms</legend>
     <hr style="border: 2px solid green;" />
     <table class="table">
         <tr>
-            <td><strong>Member's Code:</strong></td>
+            <td><strong>@GlobalLoan.MembersCode:</strong></td>
             <td>@Model.LoanApplication.CustomerId</td>
         </tr>
         <tr>
-            <td><strong>Loan Applocation Code:</strong></td>
+            <td><strong>@GlobalLoan.LoanApplicationCode:</strong></td>
             <td>@Model.LoanApplication.Id</td>
         </tr>
         <tr>
-            <td><strong>Loan Product ID:</strong></td>
+            <td><strong>@GlobalLoan.LoanProductID:</strong></td>
             <td>@Model.LoanApplication.LoanProductId</td>
         </tr>
         <tr>
-            <td><strong>Loan Product Name:</strong></td>
+            <td><strong>@GlobalLoan.LoanProductName:</strong></td>
             <td>@Model.LoanApplication.LoanProduct.ProductName</td>
         </tr>
         <tr>
-            <td><strong>Loan type:</strong></td>
+            <td><strong>@GlobalLoan.LoanType:</strong></td>
             <td>@Model.LoanApplication.LoanType</td>
         </tr>
         <tr>
-            <td><strong>Amount:</strong></td>
+            <td><strong>@GlobalLoan.Amount:</strong></td>
             <td>@Model.LoanApplication.Amount.ToString("#,##0.00") FCFA</td>
         </tr>
         <tr>
-            <td><strong>Interest Rate:</strong></td>
+            <td><strong>@GlobalLoan.InterestRate:</strong></td>
             <td>@Model.LoanApplication.InterestRate.ToString("#,##0.00")%</td>
         </tr>
         <tr>
-            <td><strong>Fees</strong></td>
+            <td><strong>@GlobalLoan.Fees</strong></td>
             <td>
                 @if (Model.LoanApplication.LoanApplicationFees.Any())
                 {
@@ -46,12 +46,12 @@
                         }
                     </ul>
 
-                    <strong>Total Fee Amount:</strong> @(Model.LoanApplication.LoanApplicationFees.Sum(f => f.FeeAmount).ToString("#,##0.00") + " FCFA")<br />
-                    <strong>Total Amount Paid:</strong> @(Model.LoanApplication.LoanApplicationFees.Sum(f => f.AmountPaid).ToString("#,##0.00") + " FCFA")
+                    <strong>@GlobalLoan.TotalFeeAmount:</strong> @(Model.LoanApplication.LoanApplicationFees.Sum(f => f.FeeAmount).ToString("#,##0.00") + " FCFA")<br />
+                    <strong>@GlobalLoan.TotalAmountPaid:</strong> @(Model.LoanApplication.LoanApplicationFees.Sum(f => f.AmountPaid).ToString("#,##0.00") + " FCFA")
                 }
                 else
                 {
-                    <label>No Fee Added.</label>
+                    <label>@GlobalLoan.NoFeeAdded.</label>
                 }
             </td>
         </tr>
@@ -60,47 +60,47 @@
                 <td>@Model.LoanApplication.LoanProduct.LoanProductRepaymentCycles.FirstOrDefault(x => x.Id == @Model.LoanApplication.RepaymentCircle).RepaymentCycle</td>
             </tr>*@
         <tr>
-            <td><strong>Loan Duration:</strong></td>
+            <td><strong>@GlobalLoan.LoanDuration:</strong></td>
             <td>@Model.LoanApplication.LoanDuration  -  @Model.LoanApplication.LoanProduct.LoanDurationPeriod</td>
 
         </tr>
         <tr>
-            <td><strong>First installment Date:</strong></td>
+            <td><strong>@GlobalLoan.FirstInstallmentDate:</strong></td>
             <td>@Model.LoanApplication.FirstInstallmentDate.ToString("MM/dd/yyyy")</td>
         </tr>
         <tr>
-            <td><strong>Application Date:</strong></td>
+            <td><strong>@GlobalLoan.ApplicationDate:</strong></td>
             <td>@Model.LoanApplication.ApplicationDate</td>
         </tr>
         <tr>
-            <td><strong>Approval State:</strong></td>
+            <td><strong>@GlobalLoan.ApprovalState:</strong></td>
             <td>@Model.LoanApplication.ApprovalStatus</td>
         </tr>
         <tr>
-            <td><strong>Has the loan been approved?:</strong></td>
+            <td><strong>@GlobalLoan.HasTheLoanBeenApproved?:</strong></td>
             <td>
                 @if (@Model.LoanApplication.IsApproved)
                 {
-                    <span class="badge bg-info">Approved</span>
+                    <span class="badge bg-info">@GlobalLoan.Approved</span>
                 }
                 else
                 {
-                    <span class="badge bg-dark">Pending</span>
+                    <span class="badge bg-dark">@GlobalLoan.Pending</span>
                 }
             </td>
         </tr>
        
         <tr>
-            <td><strong>Vat rate:</strong></td>
+            <td><strong>@GlobalLoan.Vat rate:</strong></td>
             <td>@Model.LoanApplication.VatRate %</td>
         </tr>
         <tr>
-            <td><strong>Grace period before first installment:</strong></td>
-            <td>@Model.LoanApplication.GracePeriodBeforeFirstPayment month before first installment.</td>
+            <td><strong>@GlobalLoan.GracePeriodBeforeFirstInstallment:</strong></td>
+            <td>@Model.LoanApplication.GracePeriodBeforeFirstPayment @GlobalLoan.MonthBeforeFirstInstallment.</td>
         </tr>
         <tr>
-            <td><strong>Grace period after loan due date:</strong></td>
-            <td>@Model.LoanApplication.GracePeriodAfterMaturityDate days after maturity date.</td>
+            <td><strong>@GlobalLoan.GracePeriodAfterLoanDueDate:</strong></td>
+            <td>@Model.LoanApplication.GracePeriodAfterMaturityDate @GlobalLoan.DaysAfterMaturityDate.</td>
         </tr>
     </table>
 

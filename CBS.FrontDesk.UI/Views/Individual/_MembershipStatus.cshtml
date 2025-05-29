@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+    @using Resources
 @{
     bool isAdmin = Session["Administrator"] != null && Convert.ToBoolean(Session["Administrator"].ToString());
     var formClasses = isAdmin ? "form-greyed-out" : "";
@@ -13,14 +14,14 @@
 
         <div class="col-md-12 @formClasses">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.MembershipApprovalStatus, new SelectList(ViewBag.membershipApprovalStatuses, "Text", "Value"), "---Select membership status---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.CustomerList.MembershipApprovalStatus, new SelectList(ViewBag.membershipApprovalStatuses, "Text", "Value"), "---"+ @GlobalIndividual.SelectMembershipStatus+"---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.CustomerList.MembershipApprovalStatus, "", new { @class = "text-danger " })
-                <label for="formValidationDob">Membership status</label>
+                <label for="formValidationDob">@GlobalIndividual.MembershipStatus</label>
             </div>
         </div>
 
         <div class="col-12 @formClasses">
-            <button type="submit" class="btn btn-primary" @buttonDisabled>Update</button>
+            <button type="submit" class="btn btn-primary" @buttonDisabled>@GlobalShared.Update</button>
         </div>
     }
 </div>
