@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
+    @using Resources
 <div class="col">
 
     <div class="row my-4">
@@ -9,19 +10,19 @@ Model.UpdateLoanProductCommand.LoanMaximumAmount <= 0 ||
 Model.UpdateLoanProductCommand.LoanMinimumAmount > Model.UpdateLoanProductCommand.LoanMaximumAmount)
                 {
                     <div class="alert alert-danger" role="alert">
-                        <strong>Validation Error:</strong>
+                        <strong>@GlobalLoanProduct.ValidationError:</strong>
                         <ul>
                             @if (Model.UpdateLoanProductCommand.LoanMinimumAmount <= 0)
                             {
-                                <li>Minimum Loan Amount must be greater than 0.</li>
+                                <li>@GlobalLoanProduct.MinimumLoanAmountMustBeGreaterThan0.</li>
                             }
                             @if (Model.UpdateLoanProductCommand.LoanMaximumAmount <= 0)
                             {
-                                <li>Maximum Loan Amount must be greater than 0.</li>
+                                <li>@GlobalLoanProduct.MaximumLoanAmountMustBeGreaterThan0.</li>
                             }
                             @if (Model.UpdateLoanProductCommand.LoanMinimumAmount > Model.UpdateLoanProductCommand.LoanMaximumAmount)
                             {
-                                <li>Minimum Loan Amount cannot exceed Maximum Loan Amount.</li>
+                                <li>@GlobalLoanProduct.MinimumLoanAmountCannotExceedMaximumLoanAmount.</li>
                             }
                         </ul>
                     </div>
@@ -34,12 +35,12 @@ Model.UpdateLoanProductCommand.LoanMinimumAmount > Model.UpdateLoanProductComman
                             data-bs-target="#collapseDeliveryAddress"
                             aria-expanded="true"
                             aria-controls="collapseDeliveryAddress">
-                        Minimum and Down Payment Settings
-                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="Loan Range: Set the minimum, default, and maximum loan amounts to define the range within which loan amounts can vary, providing flexibility while ensuring responsible lending practices.
-Key Points:
-1. Minimum Loan Amount: Determine a reasonable minimum loan amount.
-2. Default Loan Amount: Set based on market demand and historical data.
-3. Maximum Loan Amount: Define to limit risk exposure."></i>
+                        @GlobalLoanProduct.MinimumAndDownPaymentSettings
+                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.LoanRangeSetTheMinimumDefaultAndMaximumLoanAmounts.
+@GlobalLoanProduct.KeyPoints:
+1. @GlobalLoanProduct.MinimumLoanAmountDetermineAReasonableMinimumLoanAmount.
+2. @GlobalLoanProduct.DefaultLoanAmountSetBasedOnMarketDemandAndHistoricalData.
+3. @GlobalLoanProduct.MaximumLoanAmountDefineToLimitRiskExposure."></i>
                     </button>
                 </h2>
                 <div id="collapseDeliveryAddress"
@@ -56,11 +57,11 @@ Key Points:
                                             @Html.DropDownListFor(
                                                 m => m.UpdateLoanProductCommand.TargetType,
                                                 new SelectList(ViewBag.LoanTargets, "Value", "Text"),
-                                                "---Select---",
+                                                "---"+ @GlobalLoanProduct.Select+"---",
                                                 new { @class = "form-control select2", @search = "true", disabled = "disabled" }
                                             )
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.TargetType, "", new { @class = "text-danger " })
-                                            <label>Target</label>
+                                            <label>@GlobalLoanProduct.Target</label>
                                         </div>
                                     </div>
 
@@ -68,14 +69,14 @@ Key Points:
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.ProductCode, new { @class = "form-control", @readonly = true })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ProductCode, "", new { @class = "text-danger" })
-                                            <label>Code</label>
+                                            <label>@GlobalLoanProduct.Code</label>
                                         </div>
                                     </div>
                                     <div class="col-md-9">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.ProductName, new { @class = "form-control", @readonly = true })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ProductName, "", new { @class = "text-danger" })
-                                            <label>Name</label>
+                                            <label>@GlobalLoanProduct.Name</label>
                                         </div>
                                     </div>
 
@@ -83,40 +84,40 @@ Key Points:
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextAreaFor(m => m.UpdateLoanProductCommand.Description, new { @class = "form-control", @style = "height: 75px;", @readonly = true })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.Description, "", new { @class = "text-danger" })
-                                            <label>Description</label>
+                                            <label>@GlobalLoanProduct.Description</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.LoanMinimumAmount, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.LoanMinimumAmount, "", new { @class = "text-danger" })
-                                            <label>Minimum loan amount</label>
+                                            <label>@GlobalLoanProduct.MinimumLoanAmount</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.LoanMaximumAmount, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.LoanMaximumAmount, "", new { @class = "text-danger" })
-                                            <label>Maximum loan amount</label>
+                                            <label>@GlobalLoanProduct.MaximumLoanAmount</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumDownPaymentPercentage, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumDownPaymentPercentage, "", new { @class = "text-danger" })
-                                            <label>Minimum down payment rate</label>
+                                            <label>@GlobalLoanProduct.MinimumDownPaymentRate</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.IsPaidFeeBeforeProcessing, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Must a partial fee be paid before the loan application is processed?</label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.MustApartialFeeBePaidBeforeTheLoanApplicationIsProcessed?</label>
                                         </div>
                                     </div>
 
                                 </div>
                                 <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
                                     <input type="hidden" name="ServiceOption" value="loan_range" id="ServiceOption" />
                                 </div>
@@ -133,16 +134,16 @@ Key Points:
                             data-bs-target="#collapsePaymentMethod3"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod3">
-                        Collateral check-list settings
-                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="Collateral Values Evaluation Settings: Define the requirements and evaluation criteria for collateral values to mitigate risk and ensure loan security.
-Key Points:
-1. Requires Guarantor: Determine if the product requires a guarantor for collateral.
-2. Requires Collateral: Specify if collateral such as land, buildings, or cars is necessary.
-3. Requires Salary Account: Decide if a salary account is needed for the loan.
-4. Requires Share Account: Determine if a member's share account is required.
-5. Requires Saving Account: Specify if a member's saving account is required.
-6. Requires Irrevocable Salary Transfer: Decide if an irrevocable fund transfer is needed.
-7. Requires Registered Public Authority: Determine if a registered public authority is required for collateral evaluation."></i>
+                        @GlobalLoanProduct.CollateralCheckListSettings
+                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.CollateralValuesEvaluationSettingsDefineTheRequirements.
+@GlobalLoanProduct.KeyPoints:
+1. @GlobalLoanProduct.RequiresGuarantorDetermineIfTheProductRequiresGuarantor.
+2. @GlobalLoanProduct.RequiresCollateralSpecifyIfCollateralIsNecessary.
+3. @GlobalLoanProduct.RequiresSalaryAccountDecideIfAsalaryAccountIsNeededForTheLoan.
+4. @GlobalLoanProduct.RequiresShareAccountDetermineIfAMemberShareAccountIsRequired.
+5. @GlobalLoanProduct.RequiresSavingAccountSpecifyIfAMemberSavingAccountIsRequired.
+6. @GlobalLoanProduct.RequiresIrrevocableSalaryTransferDecide.
+7. @GlobalLoanProduct.RequiresRegisteredPublicAuthorityDetermineIfARegistered."></i>
 
                     </button>
                 </h2>
@@ -159,117 +160,117 @@ Key Points:
                                     <div class="col-6">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.RequiresGuarantor, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Does this product reqires guarantor?</label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.DoesThisProductRequiresGuarantor?</label>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.IsRequiredCollateral, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Requires collateral such as lands, building, cars, etc...</label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.RequiresCollateralSuchAsLandsBuildingCars...</label>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.IsRequiredSalaryccount, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Requires salary account</label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.RequiresSalaryAccount</label>
                                         </div>
                                     </div>
 
                                     <div class="col-6">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.Co_obligorMustHaveFundToGuranteeLoan, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Co-obligor must have fund to gurantee this loan.</label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.CoObligorMustHaveFundToGuranteeThisLoan.</label>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.IsRequiredShareAccount, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Requires members share account</label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.RequiresMembersShareAccount</label>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.IsRequiredSavingAccount, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Requires members saving account</label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.RequiresMembersSavingAccount</label>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.IsRequredIrrivocableSalaryTransfer, new { @class = "form-check-input", disabled = "disabled" })
-                                            <label class="form-check-label" for="isActive">Requires irrivocable fund transfer</label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.RequiresIrrivocableFundTransfer</label>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.IsRequresRegisteredPublicAuthority, new { @class = "form-check-input", disabled = "disabled" })
-                                            <label class="form-check-label" for="isActive">Requires registered public authority</label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.RequiresRegisteredPublicAuthority</label>
                                         </div>
                                     </div>
 
-                                    <h6>Collateral</h6>
+                                    <h6>@GlobalLoanProduct.Collateral</h6>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumCollateralPercentage, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumCollateralPercentage, "", new { @class = "text-danger" })
-                                            <label>Minimum collateral rate</label>
+                                            <label>@GlobalLoanProduct.CollateralRate</label>
                                         </div>
                                     </div>
-                                    <h6>Members account</h6>
+                                    <h6>@GlobalLoanProduct.MembersAccount</h6>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumShareAccountBalanceForTheRequestAmount, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumShareAccountBalanceForTheRequestAmount, "", new { @class = "text-danger" })
-                                            <label>Minimum share account balance reqired</label>
+                                            <label>@GlobalLoanProduct.MinimumShareAccountBalanceRequired</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumSavingAccountBalanceRateForTheRequestAmount, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumSavingAccountBalanceRateForTheRequestAmount, "", new { @class = "text-danger" })
-                                            <label>Minimum saving account rate</label>
+                                            <label>@GlobalLoanProduct.MinimumSavingAccountRate</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.BlockedSavingAccount, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Blocked down payments for saving account. </label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.BlockedDownPaymentsForSavingAccount. </label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumSalaryAccountBalanceRateForTheRequestAmount, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumSalaryAccountBalanceRateForTheRequestAmount, "", new { @class = "text-danger" })
-                                            <label>Minimum salary account rate</label>
+                                            <label>@GlobalLoanProduct.MinimumSalaryAccountRate</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.BlockedSalaryAccount, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Blocked salary account for standing orders. </label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.BlockedSalaryAccountForStandingOrders. </label>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.BlockedGuarantorAccount, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Blocked co-guarantors account. </label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.BlockedCoGuarantorsAccount. </label>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.ShorteeMustHaveFundToGuranteeLoan, new { @class = "form-check-input", @id = "shorteeFundCheckbox" })
-                                            <label class="form-check-label" for="shorteeFundCheckbox">Shortee must have fund to guarantee this loan.</label>
+                                            <label class="form-check-label" for="shorteeFundCheckbox">@GlobalLoanProduct.ShorteeMustHaveFundToGuaranteeThisLoan.</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12" id="percentageCoverageContainer" style="display: none;">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumPercentageCoverageOfShortee, new { @class = "form-control", @id = "percentageCoverageInput" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumPercentageCoverageOfShortee, "", new { @class = "text-danger" })
-                                            <label for="percentageCoverageInput">Enter shortee minimum percentage coverage.</label>
+                                            <label for="percentageCoverageInput">@GlobalLoanProduct.EnterShorteeMinimumPercentageCoverage.</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanProductCategoryId)
                                     <input type="hidden" name="ServiceOption" value="gurantee" id="ServiceOption" />
@@ -288,8 +289,8 @@ Key Points:
                             data-bs-target="#collapseMortgage"
                             aria-expanded="false"
                             aria-controls="collapseMortgage">
-                        Mortgage Configuration
-                        <i class="mdi mdi-home-lock text-primary ms-2" data-bs-toggle="tooltip" title="Mortgage Settings: Configure specific parameters for mortgage loan products such as insurance requirement, LTV ratio, grace period, and property ownership rules."></i>
+                        @GlobalLoanProduct.MortgageConfiguration
+                        <i class="mdi mdi-home-lock text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.MortgageSettingsConfigureSpecificParameters."></i>
                     </button>
                 </h2>
                 <div id="collapseMortgage"
@@ -305,54 +306,54 @@ Key Points:
                                     <div class="col-12">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.IsMortgage, new { @class = "form-check-input" })
-                                            <label class="form-check-label">Is this a mortgage loan product?</label>
+                                            <label class="form-check-label">@GlobalLoanProduct.IsThisAMortgageLoanProduct?</label>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.RequireInsurance, new { @class = "form-check-input" })
-                                            <label class="form-check-label">Require insurance before disbursement</label>
+                                            <label class="form-check-label">@GlobalLoanProduct.RequireInsuranceBeforeDisbursement</label>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.RequireTitleRegistration, new { @class = "form-check-input" })
-                                            <label class="form-check-label">Require land title registration</label>
+                                            <label class="form-check-label">@GlobalLoanProduct.RequireLandTitleRegistration</label>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.GracePeriodMonths, new { @class = "form-control" })
-                                            <label>Grace period (months)</label>
+                                            <label>@GlobalLoanProduct.GracePeriodMonths</label>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MaxLoanToValueRatio, new { @class = "form-control" })
-                                            <label>Max LTV Ratio (e.g. 0.80 = 80%)</label>
+                                            <label>@GlobalLoanProduct.MaxLTVRatio (e.g. 0.80 = 80%)</label>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinCollateralCoveragePercent, new { @class = "form-control" })
-                                            <label>Min Collateral Coverage (e.g. 1.25 = 125%)</label>
+                                            <label>@GlobalLoanProduct.MinCollateralCoverage (e.g. 1.25 = 125%)</label>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.EnablePhasedDisbursement, new { @class = "form-check-input" })
-                                            <label class="form-check-label">Enable phased disbursement</label>
+                                            <label class="form-check-label">@GlobalLoanProduct.EnablePhasedDisbursement</label>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.AllowThirdPartyOwnership, new { @class = "form-check-input" })
-                                            <label class="form-check-label">Allow third-party property ownership</label>
+                                            <label class="form-check-label">@GlobalLoanProduct.AllowThirdPartyPropertyOwnership</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanProductCategoryId)
                                     <input type="hidden" name="ServiceOption" value="mortgage" id="ServiceOption" />
@@ -372,13 +373,13 @@ Key Points:
                             data-bs-target="#collapsePaymentMethod5"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod5">
-                        Top-up option
-                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="Loan Top-up Limits: Define the limits and criteria for refinancing existing loans or providing top-up loans to borrowers.
-Key Points:
-1. Has Top-up: Determine if the product offers refinancing or top-up loan options.
-2. Minimum Top-up Amount: Specify the minimum amount allowed for refinancing or top-up loans.
-3. Default Top-up Amount: Set the default amount for refinancing or top-up loans.
-4. Maximum Top-up Amount: Define the maximum amount allowed for refinancing or top-up loans."></i>
+                        @GlobalLoanProduct.TopupOption
+                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.LoanTopUpLimitsDefineTheLimitsAndCriteria.
+@GlobalLoanProduct.KeyPoints:
+1. @GlobalLoanProduct.HasTopUpDetermineIfTheProductOffersRefinancing.
+2. @GlobalLoanProduct.MinimumTopUpAmountSpecifyTheMinimumAmountAllowed.
+3. @GlobalLoanProduct.DefaultTopUpAmountSetTheDefaultAmountForRefinancing.
+4. @GlobalLoanProduct.MaximumTopUpAmountDefineTheMaximumAmountAllowed."></i>
 
                     </button>
                 </h2>
@@ -390,24 +391,24 @@ Key Points:
                         @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                         {
                             <fieldset class="fieldset-custom">
-                                <legend>Loan top-up settings</legend>
+                                <legend>@GlobalLoanProduct.LoanTopUpSettings</legend>
                                 <div class="row g-4">
                                     <div class="col-12">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.HasTopUp, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Does this product reqires refinancing?</label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.DoesThisProductReqiresRefinancing?</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumPercentageRefundBeforeRefinancing, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumPercentageRefundBeforeRefinancing, "", new { @class = "text-danger" })
-                                            <label>Minimum percentage that must be refunded for topping-up</label>
+                                            <label>@GlobalLoanProduct.MinimumPercentageThatMustBeRefundedForToppingUp</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanProductCategoryId)
                                     <input type="hidden" name="ServiceOption" value="topup" id="ServiceOption" />
@@ -425,18 +426,18 @@ Key Points:
                             data-bs-target="#collapseDeliveryOptions"
                             aria-expanded="false"
                             aria-controls="collapseDeliveryOptions">
-                        Interest settings
-                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="Interest: Set the interest type, period, and rates for the loan product.
-Key Points:
-1. Loan Interest Type: Determine the type of interest, such as flat or reducing balance.
-2. Loan Interest Period: Specify the period for interest calculation, such as monthly or annually.
-3. Minimum Interest Rate: Define the minimum interest rate applicable to the loan.
-4. Default Interest Rate: Set the default interest rate for the loan product.
-5. Maximum Interest Rate: Define the maximum interest rate applicable to the loan.
-6. Start Generating Interest After Disbursement: Decide if interest accrual starts immediately after loan disbursement.
-7. Interest Waiver: Allow for the waiver of interest charges under specific conditions for the loan product.
-8. Minimum Interest Waiver Rate: Specify the minimum rate at which interest charges can be waived, expressed as a percentage.
-9. Maximum Interest Waiver Rate: Define the maximum rate at which interest charges can be waived, expressed as a percentage."></i>
+                        @GlobalLoanProduct.InterestSettings
+                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.InterestSetTheInterestTypePeriodAndRatesForTheLoanProduct.
+@GlobalLoanProduct.KeyPoints:
+1. @GlobalLoanProduct.LoanInterestTypeDetermineTheTypeOfInterest.
+2. @GlobalLoanProduct.LoanInterestPeriodSpecifyThePeriodForInterest.
+3. @GlobalLoanProduct.MinimumInterestRateDefineTheMinimumInterestRateApplicableToTheLoan.
+4. @GlobalLoanProduct.DefaultInterestRateSetTheDefaultInterestRateForTheLoanProduct.
+5. @GlobalLoanProduct.MaximumInterestRateDefineTheMaximumInterestRate.
+6. @GlobalLoanProduct.StartGeneratingInterestAfterDisbursementDecideIfInterestAccrualStarts.
+7. @GlobalLoanProduct.InterestWaiverAllowForTheWaiverOfInterestCharges.
+8. @GlobalLoanProduct.MinimumInterestWaiverRateSpecifyTheMinimumRate.
+9. @GlobalLoanProduct.MaximumInterestWaiverRateDefineTheMaximumRate."></i>
 
 
                     </button>
@@ -449,7 +450,7 @@ Key Points:
                         @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                         {
                             <fieldset class="fieldset-custom">
-                                <legend>Interest settings</legend>
+                                <legend>@GlobalLoanProduct.InterestSettings</legend>
                                 <div class="row g-4">
                                     @*<div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
@@ -462,64 +463,64 @@ Key Points:
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumInterestRate, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumInterestRate, "", new { @class = "text-danger" })
-                                            <label>Minimum interest value</label>
+                                            <label>@GlobalLoanProduct.MinimumInterestValue</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MaximumInterestRate, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MaximumInterestRate, "", new { @class = "text-danger" })
-                                            <label>Maximum interest value</label>
+                                            <label>@GlobalLoanProduct.MaximumInterestValue</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.StartGeneratingInterestAfterDisbustment, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Check to start accrual interest after disbustment.</label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.CheckToStartAccrualInterestAfterDisbustment.</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.IsInterestWaiverApplied, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Check to allow interest waiver for this product</label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.CheckToAllowInterestWaiverForThisProduct</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumInterestWaiver, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumInterestWaiver, "", new { @class = "text-danger" })
-                                            <label>Minimum interest waiver rate (%)</label>
+                                            <label>@GlobalLoanProduct.MinimumInterestWaiverRate (%)</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MaximumInterestWaiver, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MaximumInterestWaiver, "", new { @class = "text-danger" })
-                                            <label>Maximum interest waiver rate (%)</label>
+                                            <label>@GlobalLoanProduct.MaximumInterestWaiverRate (%)</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.StopInterestCalculationAtLoanMaturityDate, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Stop interest calculation at loan maturity date.</label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.StopInterestCalculationAtLoaMaturityDate.</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.NumberOfDaysToStopInterestCalculation, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.NumberOfDaysToStopInterestCalculation, "", new { @class = "text-danger" })
-                                            <label>Maximum interest waiver rate (%)</label>
+                                            <label>@GlobalLoanProduct.MaximumInterestWaiverRate (%)</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.InterestMustBePaidUpFront, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Interest Must be paid upfront.</label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.InterestMustBePaidUpfront.</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanProductCategoryId)
                                     <input type="hidden" name="ServiceOption" value="interest" id="ServiceOption" />
@@ -539,15 +540,15 @@ Key Points:
                     Model.UpdateLoanProductCommand.LoanTerm.MaxInMonth == 0)
                 {
                     <div class="alert alert-danger" role="alert">
-                        <strong>Configuration Missing:</strong>
+                        <strong>@GlobalLoanProduct.ConfigurationMissing:</strong>
                         <ul>
                             @if (Model.UpdateLoanProductCommand.LoanTerm.Name == "N/A" || string.IsNullOrEmpty(Model.UpdateLoanProductCommand.LoanTerm.Name))
                             {
-                                <li>Loan Term is not configured for this loan product. Please set the loan term before updating duration parameters.</li>
+                                <li>@GlobalLoanProduct.LoanTermIsNotConfiguredForThisLoanProduct.</li>
                             }
                             @if (Model.UpdateLoanProductCommand.LoanTerm.MinInMonth == 0 || Model.UpdateLoanProductCommand.LoanTerm.MaxInMonth == 0)
                             {
-                                <li>Loan Term duration parameters (Minimum or Maximum) are not properly set. Ensure both values are greater than 0 before updating duration parameters.</li>
+                                <li>@GlobalLoanProduct.LoanTermDurationParametersAreNotProperlySet.</li>
                             }
                         </ul>
                     </div>
@@ -560,15 +561,15 @@ Key Points:
                             data-bs-target="#collapsePaymentMethod"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod">
-                        Duration in Months
-                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="Duration: Set the loan duration parameters including the minimum, default, and maximum duration for the loan product.
-Key Points:
-1. Minimum Loan Duration: Specify the shortest duration allowed for the loan.
-2. Default Loan Duration: Set the default duration for the loan product.
-3. Maximum Loan Duration: Define the longest duration allowed for the loan.
-4. Flexibility: Offer customizable loan durations to meet borrower needs.
-5. Risk Mitigation: Balance risk and borrower preferences in setting loan duration parameters.
-6. Market Analysis: Consider market trends and demand when determining loan duration limits."></i>
+                        @GlobalLoanProduct.DurationInMonths
+                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.DurationSetTheLoanDurationParameters.
+@GlobalLoanProduct.KeyPoints:
+1. @GlobalLoanProduct.MinimumLoanDurationSpecifyTheShortestDurationAllowedForTheLoan.
+2. @GlobalLoanProduct.DefaultLoanDurationSetTheDefaultDurationForTheLoanProduct.
+3. @GlobalLoanProduct.MaximumLoanDurationDefineTheLongestDuration.
+4. @GlobalLoanProduct.FlexibilityOfferCustomizableLoanDurations.
+5. @GlobalLoanProduct.RiskMitigationBalanceRiskAndBorrower.
+6. @GlobalLoanProduct.MarketAnalysisConsiderMarketTrends."></i>
                     </button>
                 </h2>
                 <div id="collapsePaymentMethod"
@@ -579,26 +580,26 @@ Key Points:
                         @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                         {
                             <fieldset class="fieldset-custom">
-                                <legend>Loan Duration (In Months)</legend>
+                                <legend>@GlobalLoanProduct.LoanDuration</legend>
                                 <div class="row g-4">
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.LoanTerm.Name, new { @class = "form-control", @readonly = true })
-                                            <label>Loan Duration Period</label>
+                                            <label>@GlobalLoanProduct.LoanDurationPeriod</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.LoanTerm.MinInMonth, new { @class = "form-control", @readonly = true })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.LoanTerm.MinInMonth, "", new { @class = "text-danger" })
-                                            <label>Minimum month(s)</label>
+                                            <label>@GlobalLoanProduct.MinimumMonth</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.LoanTerm.MaxInMonth, new { @class = "form-control", @readonly = true })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.LoanTerm.MaxInMonth, "", new { @class = "text-danger" })
-                                            <label>Maximum month(s)</label>
+                                            <label>@GlobalLoanProduct.MaximumMonth</label>
                                         </div>
                                     </div>
                                 </div>
@@ -623,15 +624,15 @@ Key Points:
                             data-bs-target="#collapsePaymentMethod7"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod7">
-                        Repayment
-                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="Repayment: Define the repayment terms and options for the loan product.
-Key Points:
-1. Repayment Frequency: Specify how often borrowers are required to make repayments, such as monthly, bi-weekly, or quarterly.
-2. Repayment Method: Determine the methods through which borrowers can make repayments, such as bank transfer, cash, or mobile payment.
-3. Grace Period: Set a grace period during which borrowers are exempt from making repayments.
-4. Penalty Charges: Define penalties for late repayments or defaults to encourage timely repayment.
-5. Flexible Options: Offer flexible repayment options to accommodate varying borrower preferences and circumstances.
-6. Customer Education: Provide clear information to borrowers about repayment terms and options to promote responsible borrowing and repayment behavior."></i>
+                        @GlobalLoanProduct.Repayment
+                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.RepaymentDefineTheRepaymentTermsAndOptionsForTheLoanProduct.
+@GlobalLoanProduct.KeyPoints:
+1. @GlobalLoanProduct.RepaymentFrequencySpecifyHowOftenBorrowers.
+2. @GlobalLoanProduct.RepaymentMethodDetermineTheMethods.
+3. @GlobalLoanProduct.GracePeriodSetAGracePeriodDuringWhichBorrowers.
+4. @GlobalLoanProduct.PenaltyChargesDefinePenaltiesForLateRepayments.
+5. @GlobalLoanProduct.FlexibleOptionsOfferFlexibleRepaymentOptions.
+6. @GlobalLoanProduct.CustomerEducationProvideClearInformation."></i>
 
                     </button>
                 </h2>
@@ -644,7 +645,7 @@ Key Points:
                         @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                         {
                             <fieldset class="fieldset-custom">
-                                <legend>Repayment periods</legend>
+                                <legend>@GlobalLoanProduct.RepaymentPeriods</legend>
 
 
                                 <div class="row g-4">
@@ -652,7 +653,7 @@ Key Points:
                                         <div class="form-floating form-floating-outline">
                                             @Html.ListBoxFor(m => m.UpdateLoanProductCommand.RepaymentCycles, new MultiSelectList(ViewBag.RepaymentCycles, "Value", "Text"), new { @class = "select2 form-select" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.RepaymentCycles, "", new { @class = "text-danger " })
-                                            <label>Repayment cycles</label>
+                                            <label>@GlobalLoanProduct.RepaymentCycles</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-2">
@@ -669,7 +670,7 @@ Key Points:
                                             }
                                             else
                                             {
-                                                <p>No repayment cycles selected</p>
+                                                <p>@GlobalLoanProduct.NoRepaymentCyclesSelected</p>
                                             }
                                         </div>
                                     </div>
@@ -677,48 +678,48 @@ Key Points:
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.InterestOrder, new { @class = "form-control", disabled = "disabled" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.InterestOrder, "", new { @class = "text-danger" })
-                                            <label>Interest order</label>
+                                            <label>@GlobalLoanProduct.InterestOrder</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.CapitalOrder, new { @class = "form-control", disabled = "disabled" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.CapitalOrder, "", new { @class = "text-danger" })
-                                            <label>Capital order</label>
+                                            <label>@GlobalLoanProduct.CapitalOrder</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.FineOrder, new { @class = "form-control", disabled = "disabled" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.FineOrder, "", new { @class = "text-danger" })
-                                            <label>Fine order</label>
+                                            <label>@GlobalLoanProduct.FineOrder</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.InterestRate, new { @class = "form-control", disabled = "disabled" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.InterestRate, "", new { @class = "text-danger" })
-                                            <label>Interest percent to refund</label>
+                                            <label>@GlobalLoanProduct.InterestPercentToRefund</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.CapitalRate, new { @class = "form-control", disabled = "disabled" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.CapitalRate, "", new { @class = "text-danger" })
-                                            <label>Capital percent to refund</label>
+                                            <label>@GlobalLoanProduct.CapitalPercentToRefund</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.FineRate, new { @class = "form-control", disabled = "disabled" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.FineRate, "", new { @class = "text-danger" })
-                                            <label>Fine percent to refund</label>
+                                            <label>@GlobalLoanProduct.FinePercentToRefund</label>
                                         </div>
                                     </div>
 
                                 </div>
                                 <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanProductCategoryId)
                                     <input type="hidden" name="ServiceOption" value="repayment" id="ServiceOption" />
@@ -830,18 +831,18 @@ Key Points:
                             data-bs-target="#collapsePaymentMethod1"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod1">
-                        Defaulted loan settings
-                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="Charges: Define the charge policies for the loan product, including the application of charges, minimum and maximum charge rates, and conditions for charge cessation.
-Key Points:
-1. Apply Charges: Check this box to apply charges to this loan product.
-2. Minimum Charge Rate: Set the minimum charge rate applicable to the loan product.
-3. Default Charge Rate: Define the default charge rate applicable to the loan product.
-4. Minimum Days to Apply Charges After Due Date: Specify the minimum number of days to apply charges after the loan due date.
-5. Maximum Days to Apply Charges After Due Date: Specify the maximum number of days to apply charges after the loan due date.
-6. Default Days to Apply Charges After Due Date: Set the default number of days to apply charges after the loan due date.
-7. Maximum Charge Rate: Define the maximum charge rate applicable to the loan product.
-8. Charges Cessation: Specify the number of days after which charges should stop applying to this product.
-9. Charges Applied On: Select whether charges are applied to interest or balance.
+                        @GlobalLoanProduct.DefaultedLoanSettings 
+                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.ChargesDefineTheChargePoliciesForTheLoanProduct.
+@GlobalLoanProduct.KeyPoints:
+1. @GlobalLoanProduct.ApplyChargesCheckThisBoxToApplyChargesToThisLoanProduct.
+2. @GlobalLoanProduct.MinimumChargeRateSetTheMinimumChargeRateApplicableToTheLoanProduct.
+3. @GlobalLoanProduct.DefaultChargeRateDefineTheDefaultChargeRateApplicableToTheLoanProduct.
+4. @GlobalLoanProduct.MinimumDaysToApplyChargesAfterDueDateSpecifyTheMinimumNumberOfDays.
+5. @GlobalLoanProduct.MaximumDaysToApplyChargesAfterDueDateSpecifyTheMaximumNumberOfDaysToApply.
+6. @GlobalLoanProduct.DefaultDaysToApplyChargesAfterDueDateSetTheDefaultNumberOfDaysToApply.
+7. @GlobalLoanProduct.MaximumChargeRateDefineTheMaximumChargeRateApplicableToTheLoanProduct.
+8. @GlobalLoanProduct.ChargesCessationSpecifyTheNumberOfDaysAfterWhichChargesShouldStopApplying.
+9. @GlobalLoanProduct.ChargesAppliedOnSelectWhetherChargesAreAppliedToInterestOrBalance.
 "></i>
                     </button>
                 </h2>
@@ -853,33 +854,33 @@ Key Points:
                         @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                         {
                             <fieldset class="fieldset-custom">
-                                <legend>Defaulted loans (Late fee settings)</legend>
+                                <legend>@GlobalLoanProduct.DefaultedLoans</legend>
                                 <div class="row g-4">
                                     <div class="col-12">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.IsChargesApplied, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Check if charges should be applied to this product</label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.CheckIfChargesShouldBeAppliedToThisProduct</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumChargesToAppliedInPercentage, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumChargesToAppliedInPercentage, "", new { @class = "text-danger" })
-                                            <label>Minimum charge to be applied (in %)</label>
+                                            <label>@GlobalLoanProduct.MinimumChargeToBeApplied</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.DefaultChargeToAppliedPercentage, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.DefaultChargeToAppliedPercentage, "", new { @class = "text-danger" })
-                                            <label>Default charge to be applied (in %)</label>
+                                            <label>@GlobalLoanProduct.DefaultChargeToBeApplied</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MaximumChargesToAppliedPercentage, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MaximumChargesToAppliedPercentage, "", new { @class = "text-danger" })
-                                            <label>Maximum charge to be applied (in %)</label>
+                                            <label>@GlobalLoanProduct.MaximumChargeToBeApplied</label>
                                         </div>
                                     </div>
 
@@ -887,7 +888,7 @@ Key Points:
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumChargesStartDayAfterLoanDueDate, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MinimumChargesStartDayAfterLoanDueDate, "", new { @class = "text-danger" })
-                                            <label>Minimum days to apply charges after due date</label>
+                                            <label>@GlobalLoanProduct.MinimumDaysToApplyChargesAfterDueDate</label>
                                         </div>
                                     </div>
 
@@ -895,40 +896,40 @@ Key Points:
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.DefaulChargesStartDayAfterLoanDueDate, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.DefaulChargesStartDayAfterLoanDueDate, "", new { @class = "text-danger" })
-                                            <label>Default days to apply charges after due date</label>
+                                            <label>@GlobalLoanProduct.DefaultDaysToApplyChargesAfterDueDate</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MaximumChargesStartDayAfterLoanDueDate, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.MaximumChargesStartDayAfterLoanDueDate, "", new { @class = "text-danger" })
-                                            <label>Maximum days to apply charges after due date</label>
+                                            <label>@GlobalLoanProduct.MaximumDaysToApplyChargesAfterDueDate</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.UpdateLoanProductCommand.ChargesStopAfterHowManyDaysFromStart, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChargesStopAfterHowManyDaysFromStart, "", new { @class = "text-danger" })
-                                            <label>Specify in days when charges should stop applying to this product. (In Days)</label>
+                                            <label>@GlobalLoanProduct.SpecifyInDaysWhenChargesShouldStopApplyingToThisProduct</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div>
-                                            <label class="form-label">Late fee are applied on:</label>
+                                            <label class="form-label">@GlobalLoanProduct.LateFeeAreAppliedOn:</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             @Html.RadioButtonFor(m => m.UpdateLoanProductCommand.ChargesAreAppliedToInterestOrBalance, "Interest", new { @class = "form-check-input", id = "interestRadio" })
-                                            <label class="form-check-label" for="interestRadio">Interest</label>
+                                            <label class="form-check-label" for="interestRadio">@GlobalLoanProduct.Interest</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             @Html.RadioButtonFor(m => m.UpdateLoanProductCommand.ChargesAreAppliedToInterestOrBalance, "Balance", new { @class = "form-check-input", id = "balanceRadio" })
-                                            <label class="form-check-label" for="balanceRadio">Balance</label>
+                                            <label class="form-check-label" for="balanceRadio">@GlobalLoanProduct.Balance</label>
                                         </div>
                                         @Html.ValidationMessageFor(m => m.UpdateLoanProductCommand.ChargesAreAppliedToInterestOrBalance, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                                 <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.Id)
                                     @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanProductCategoryId)
                                     <input type="hidden" name="ServiceOption" value="charges" id="ServiceOption" />

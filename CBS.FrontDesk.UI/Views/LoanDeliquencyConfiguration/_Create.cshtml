@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanDeliquencyConfiguration
+    @using Resources
 <div class="card-body">
     @using (Html.BeginForm("Create", "LoanDeliquencyConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {<fieldset class="fieldset-custom">
@@ -9,50 +10,50 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                        <label>Name</label>
+                        <label>@GlobalLoanDeliquencyConfiguration.Name</label>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.DaysFrom, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.DaysFrom, "", new { @class = "text-danger" })
-                        <label>Loans from day</label>
+                        <label>@GlobalLoanDeliquencyConfiguration.LoansFromDay</label>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.DaysTo, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.DaysTo, "", new { @class = "text-danger" })
-                        <label>Loans to day</label>
+                        <label>@GlobalLoanDeliquencyConfiguration.LoansToDay</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.Status, new SelectList(ViewBag.LoanStatuses, "Text", "Value"), "---Select loan status---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.Status, new SelectList(ViewBag.LoanStatuses, "Text", "Value"), "---"+ @GlobalLoanDeliquencyConfiguration.SelectLoanStatus + "---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger " })
-                        <label>Status</label>
+                        <label>@GlobalLoanDeliquencyConfiguration.Status</label>
                     </div>
                 </div>
                 <hr />
                 <div class="col-12">
-                    <h5>Member Actions</h5>
+                    <h5>@GlobalLoanDeliquencyConfiguration.MemberActions</h5>
                     <div class="row">
                         <div class="col-4">
                             <div class="form-check">
                                 @Html.CheckBoxFor(m => m.SendSMStoClient, new { @class = "form-check-input" })
-                                <label class="form-check-label" for="SendSMStoClient">Send SMS to members</label>
+                                <label class="form-check-label" for="SendSMStoClient">@GlobalLoanDeliquencyConfiguration.SendSMSToMembers</label>
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="form-check">
                                 @Html.CheckBoxFor(m => m.AffectScoring, new { @class = "form-check-input" })
-                                <label class="form-check-label" for="AffectScoring">Affect member's scoring</label>
+                                <label class="form-check-label" for="AffectScoring">@GlobalLoanDeliquencyConfiguration.AffectMembersScoring</label>
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="form-check">
                                 @Html.CheckBoxFor(m => m.ApplyFine, new { @class = "form-check-input" })
-                                <label class="form-check-label" for="ApplyFine">Apply fines</label>
+                                <label class="form-check-label" for="ApplyFine">@GlobalLoanDeliquencyConfiguration.ApplyFines</label>
                             </div>
                         </div>
                     </div>
@@ -64,19 +65,19 @@
                         <div class="col-4">
                             <div class="form-check">
                                 @Html.CheckBoxFor(m => m.SendSMS, new { @class = "form-check-input" })
-                                <label class="form-check-label" for="SendSMS">Send SMS to follow-up team</label>
+                                <label class="form-check-label" for="SendSMS">@GlobalLoanDeliquencyConfiguration.SendSMSToFollowUpTeam</label>
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="form-check">
                                 @Html.CheckBoxFor(m => m.SendMail, new { @class = "form-check-input" })
-                                <label class="form-check-label" for="SendMail">Send email to follow-up team</label>
+                                <label class="form-check-label" for="SendMail">@GlobalLoanDeliquencyConfiguration.SendEmailToFolloUpTeam</label>
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="form-check">
                                 @Html.CheckBoxFor(m => m.ReportToCreditOffice, new { @class = "form-check-input" })
-                                <label class="form-check-label" for="ReportToCreditOffice">Report to credit office</label>
+                                <label class="form-check-label" for="ReportToCreditOffice">@GlobalLoanDeliquencyConfiguration.ReportToCreditOffice</label>
                             </div>
                         </div>
                     </div>
@@ -86,7 +87,7 @@
             <div class="mt-4">
                 @if (ViewBag.Key != null)
                 {
-                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                 }
                 else
                 {

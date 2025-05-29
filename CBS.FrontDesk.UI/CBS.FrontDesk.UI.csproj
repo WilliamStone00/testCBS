@@ -516,6 +516,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\LoanCommitee\GlobalLoanCommitee.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanCommitee.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\LoanDeliquencyConfiguration\GlobalLoanDeliquencyConfiguration.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanDeliquencyConfiguration.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\LoanProduct\GlobalLoanProduct.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanProduct.resx</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
     <Compile Include="Controllers\Accounting\AccountEntry.cs" />
@@ -5362,6 +5377,18 @@
     <Content Include="App_GlobalResources\LoanApplication\GlobalLoanApplication.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanApplication.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LoanCommitee\GlobalLoanCommitee.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanCommitee.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LoanDeliquencyConfiguration\GlobalLoanDeliquencyConfiguration.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanDeliquencyConfiguration.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LoanProduct\GlobalLoanProduct.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanProduct.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
