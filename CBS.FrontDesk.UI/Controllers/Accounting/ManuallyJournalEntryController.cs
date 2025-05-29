@@ -460,10 +460,7 @@ namespace CBS.FrontDesk.UI.Controllers
             try
             {
                 var AccountData = await _AccountServices.GetAccountWithAccountCartegorieStatus(Id);
-
                 var data = new ManuallyJournalEntryDataSet { Account = AccountData };
-
-
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

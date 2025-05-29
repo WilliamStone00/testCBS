@@ -345,7 +345,9 @@
     <Compile Include="MembersAccountSettings\Policy\MemberAccountActivationPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestLoggerServicesP\ClientDataService.cs" />
+    <Compile Include="RequestLoggerServicesP\PasswordPolicyManagentService.cs" />
     <Compile Include="RequestLoggerServicesP\RateLimitedUserService.cs" />
+    <Compile Include="RequestLoggerServicesP\SuspiciousPathServices.cs" />
     <Compile Include="RequestLoggerServicesP\RateLimiteTrackerLoggerServices.cs" />
     <Compile Include="RequestLoggerServicesP\RateLimitConfigService.cs" />
     <Compile Include="RoleManagement\RolePermissionServices.cs" />

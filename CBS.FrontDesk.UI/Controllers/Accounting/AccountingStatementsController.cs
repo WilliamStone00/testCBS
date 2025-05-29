@@ -58,7 +58,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             //listAccount.Add(new Account { Id = "XXXXXX", AccountNumber = "000000", AccountName = "ALL" });
             //ViewBag.Accounts = BuildDropDown(GenerateAccountsListView(listAccount));
             var listBranches = (await _branchServices.GetBranches()).ToList();
-            listBranches.Add(new Branch { Id = "XXXXXX", Name = "[BapCCUL-Network]" });
+            //listBranches.Add(new Branch { Id = "XXXXXX", Name = "[BapCCUL-Network]" });
             ViewBag.Branches = BuildDropDown(GenerateBranchListView(listBranches));
             var reportData = await _accountingServices.GetAllFileDownloadInfoPerUser();
             return View(new AccountingEntryQuery { ReportDownloadInfo = reportData.OrderByDescending(x=>x.CreatedDate).ToList() });

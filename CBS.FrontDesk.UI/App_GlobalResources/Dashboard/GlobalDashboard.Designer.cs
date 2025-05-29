@@ -97,6 +97,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Branch Code.
+        /// </summary>
+        internal static string Branch_Code {
+            get {
+                return ResourceManager.GetString("Branch_Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Branch Name.
+        /// </summary>
+        internal static string Branch_Name {
+            get {
+                return ResourceManager.GetString("Branch_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cash in.
         /// </summary>
         internal static string CashIn {
@@ -327,6 +345,15 @@ namespace Resources {
         internal static string DailyOperations {
             get {
                 return ResourceManager.GetString("DailyOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        internal static string Date {
+            get {
+                return ResourceManager.GetString("Date", resourceCulture);
             }
         }
         
@@ -687,6 +714,33 @@ namespace Resources {
         internal static string September {
             get {
                 return ResourceManager.GetString("September", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub Till Balance.
+        /// </summary>
+        internal static string Sub_Till_Balance {
+            get {
+                return ResourceManager.GetString("Sub_Till_Balance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TCIN.
+        /// </summary>
+        internal static string TCIN {
+            get {
+                return ResourceManager.GetString("TCIN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TCOUT.
+        /// </summary>
+        internal static string TCOUT {
+            get {
+                return ResourceManager.GetString("TCOUT", resourceCulture);
             }
         }
         

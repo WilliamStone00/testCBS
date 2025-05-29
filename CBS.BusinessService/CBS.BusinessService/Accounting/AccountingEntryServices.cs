@@ -816,7 +816,7 @@ namespace CBS.BusinessService
         {
             try
             {
-                var ff = string.Format(APICallHelper.GetCashReplenishmentRequestById, Id);
+                var ff = string.Format(APICallHelper.GetDepositNotificationRequestById, Id);
                 var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<DepositNotificationDto>>(string.Format(APICallHelper.GetDepositNotificationRequestRequests, Id));
                 if (couApiResponse.IsSuccess)
                 {
@@ -1713,7 +1713,7 @@ namespace CBS.BusinessService
             {
                 //status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}
                 string url = APICallHelper.Url_Get_AllBankDepositeRequest;//, model.Status, model.FromDate,model.ToDate,model.BranchId,model.IssuedBy,model.ApprovedBy);
-                var cusResponseObject = await _accountingApiCallerHelper.PostDepositNotificationAsync<ResponseObject<List<DepositNotificationDto>>>(url, model);
+                var cusResponseObject = await _accountingApiCallerHelper.PostDepositNotificationAsync<ApiResponse<List<DepositNotificationDto>>>(url, model);
                 if (cusResponseObject.ApiResponseData != null)
                 {
                     return cusResponseObject.ApiResponseData;

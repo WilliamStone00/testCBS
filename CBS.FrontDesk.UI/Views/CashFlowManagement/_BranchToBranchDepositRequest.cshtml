@@ -52,7 +52,7 @@
             @Html.HiddenFor(m => m.BankDepositCashClearing.Id)
             @Html.HiddenFor(m => m.BankDepositCashClearing.ToAccountId)
             @Html.HiddenFor(m => m.BankDepositCashClearing.FromAccountId)
-        <legend>@GlobalCashFlowManagement.Denomination</legend>
+            <legend>@GlobalCashFlowManagement.Denomination</legend>
             <div class="col-md-2">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.BankDepositCashClearing.CurrencyNotes.note10000, new { @class = "form-control", @id = "Notes_note10000", @oninput = "calculateCashBalance()", @Value = Model.BankDepositCashClearing.CurrencyNotes.note10000 })
@@ -93,6 +93,37 @@
                     @Html.TextBoxFor(m => m.BankDepositCashClearing.CurrencyNotes.coin500, new { @class = "form-control", @id = "Notes_coin500", @oninput = "calculateCashBalance()", @Value = Model.BankDepositCashClearing.CurrencyNotes.coin500 })
                     @Html.ValidationMessageFor(m => m.BankDepositCashClearing.CurrencyNotes.coin500, "", new { @class = "text-danger " })
                     <label>C500</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.BankDepositCashClearing.CurrencyNotes.coin350, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin350", @oninput = "calculateCashBalance()", @Value = "0" })
+                    @Html.ValidationMessageFor(m => m.BankDepositCashClearing.CurrencyNotes.coin350, "", new { @class = "text-danger " })
+                    <label>C350</label>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.BankDepositCashClearing.CurrencyNotes.coin250, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin250", @oninput = "calculateCashBalance()", @Value = "0" })
+                    @Html.ValidationMessageFor(m => m.BankDepositCashClearing.CurrencyNotes.coin250, "", new { @class = "text-danger " })
+                    <label>C250</label>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.BankDepositCashClearing.CurrencyNotes.coin200, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin200", @oninput = "calculateCashBalance()", @Value = "0" })
+                    @Html.ValidationMessageFor(m => m.BankDepositCashClearing.CurrencyNotes.coin200, "", new { @class = "text-danger " })
+                    <label>C200</label>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.BankDepositCashClearing.CurrencyNotes.coin150, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin150", @oninput = "calculateCashBalance()", @Value = "0" })
+                    @Html.ValidationMessageFor(m => m.BankDepositCashClearing.CurrencyNotes.coin150, "", new { @class = "text-danger " })
+                    <label>C150</label>
                 </div>
             </div>
             <div class="col-md-2">
