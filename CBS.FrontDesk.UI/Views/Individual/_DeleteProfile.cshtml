@@ -73,11 +73,11 @@
                 <button type="submit" class="btn @(Model.CustomerList.Active ? "btn-danger" : "btn-primary")">
                     @if (Model.CustomerList.Active)
                     {
-                        @:Deactivate Account
+                        @:@GlobalIndividual.DeactivateAccount
                     }
                     else
                     {
-                        @:Reactivate Account
+                        @:@GlobalIndividual.ReactivateAccount
                     }
                 </button>
             </div>
