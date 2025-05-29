@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
+    @using Resources
 @{
-    ViewBag.Title = "Loan Query Overview";
+    ViewBag.Title = @GlobalLoan.LoanQueryOverview;
 }
 
 
@@ -8,10 +9,10 @@
 <div class="card bg-light mb-2 shadow-sm">
     <div class="card-body text-center">
         <h1 class="card-title text-primary">
-            <i class="mdi mdi-finance me-2"></i> LOAN QUERY LOGS
+            <i class="mdi mdi-finance me-2"></i> @GlobalLoan.LOANQUERYLOGS
         </h1>
         <p class="card-text">
-            Monitor and analyze loan applications, repayments, and delinquencies using a dynamic and powerful search and filter interface. Export and review specific loans for audits, compliance, and performance tracking.
+            @GlobalLoan.MonitorAndAnalyzeLoanApplicationsRepaymentsAndDelinquencies.
         </p>
         <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
     </div>
@@ -20,10 +21,10 @@
 <div class="card mb-3 shadow-sm">
     <div class="card-header bg-light text-dark fw-bold d-flex justify-content-between align-items-center">
         <span>
-            <i class="mdi mdi-filter-outline me-2"></i> Loan Search and Filters
+            <i class="mdi mdi-filter-outline me-2"></i> @GlobalLoan.LoanSearchAndFilters
         </span>
         <button id="toggleFilterButton" class="btn btn-sm btn-light">
-            <i class="mdi mdi-chevron-down"></i> Show Filters
+            <i class="mdi mdi-chevron-down"></i> @GlobalLoan.ShowFilters
         </button>
     </div>
     <div class="card-body collapse" id="filterContent">
@@ -31,59 +32,59 @@
         <div class="row">
             <!-- Date Filters -->
             <div class="col-md-3">
-                <label for="dateFrom" class="form-label fw-bold">Date From:</label>
+                <label for="dateFrom" class="form-label fw-bold">@GlobalLoan.DateFrom:</label>
                 <input type="text" id="dateFrom" class="form-control shadow-sm" placeholder="dd/MM/yyyy" />
             </div>
             <div class="col-md-3">
-                <label for="dateTo" class="form-label fw-bold">Date To:</label>
+                <label for="dateTo" class="form-label fw-bold">@GlobalLoan.DateTo:</label>
                 <input type="text" id="dateTo" class="form-control shadow-sm" placeholder="dd/MM/yyyy" />
             </div>
 
             <!-- Loan Status and Delinquency Filters -->
             <div class="col-md-3">
-                <label for="status" class="form-label fw-bold">Loan Status:</label>
+                <label for="status" class="form-label fw-bold">@GlobalLoan.LoanStatus:</label>
                 <select id="status" class="form-select shadow-sm">
-                    <option value="all">All</option>
-                    <option value="Open">Open</option>
-                    <option value="Closed">Closed</option>
-                    <option value="Refinanced">Refinanced</option>
-                    <option value="Restructured">Restructured</option>
-                    <option value="Rescheduled">Rescheduled</option>
+                    <option value="all">@GlobalLoan.All</option>
+                    <option value="Open">@GlobalLoan.Open</option>
+                    <option value="Closed">@GlobalLoan.Closed</option>
+                    <option value="Refinanced">@GlobalLoan.Refinanced</option>
+                    <option value="Restructured">@GlobalLoan.Restructured</option>
+                    <option value="Rescheduled">@GlobalLoan.Rescheduled</option>
                 </select>
             </div>
             <div class="col-md-3">
-                <label for="deliquentStatus" class="form-label fw-bold">Delinquency Status:</label>
+                <label for="deliquentStatus" class="form-label fw-bold">@GlobalLoan.DelinquencyStatus:</label>
                 <select id="deliquentStatus" class="form-select shadow-sm">
-                    <option value="all">All</option>
-                    <option value="Current">Current</option>
-                    <option value="Delinquent">Delinquent</option>
+                    <option value="all">@GlobalLoan.All</option>
+                    <option value="Current">@GlobalLoan.Current</option>
+                    <option value="Delinquent">@GlobalLoan.Delinquent</option>
                 </select>
             </div>
         </div>
 
         <div class="row mt-3">
             <div class="col-md-4">
-                <label for="searchCriteria" class="form-label fw-bold">Search Criteria:</label>
-                <input type="text" id="searchCriteria" class="form-control shadow-sm" placeholder="Enter customer, branch, or reference..." />
+                <label for="searchCriteria" class="form-label fw-bold">@GlobalLoan.SearchCriteria:</label>
+                <input type="text" id="searchCriteria" class="form-control shadow-sm" placeholder="@GlobalLoan.EnterCustomerBranchOrReference..." />
             </div>
             <div class="col-md-4">
-                <label for="branchInput" class="form-label fw-bold">Branch:</label>
+                <label for="branchInput" class="form-label fw-bold">@GlobalLoan.Branch:</label>
                 @Html.DropDownListFor(
                     m => m.InitiateLoanDownloadCommand.BranchId,
                     new SelectList(ViewBag.Branches, "Id", "Name"),
-                    "---Select All---",
+                    "---"+ @GlobalLoan.SelectAll+"---",
                     new { @class = "form-control shadow-sm select2", @id = "branchInput" }
                 )
             </div>
             <div class="col-md-4">
-                <label for="exportReportType" class="form-label fw-bold">Export Report Type:</label>
+                <label for="exportReportType" class="form-label fw-bold">@GlobalLoan.ExportReportType:</label>
                 <select id="exportReportType" class="form-select shadow-sm">
-                    <option value="Loan_Query">List of Loans</option>
-                    <option value="Approved_Loans">List of Approved Loans</option>
-                    <option value="Paid_Loans">List of Paid Loans</option>
-                    <option value="Delinquent_Loans">List of Delinquent Loans</option>
-                    <option value="Current_Loans">List of Current Loans</option>
-                    <option value="All_Loans">All Loans</option>
+                    <option value="Loan_Query">@GlobalLoan.ListOfLoans</option>
+                    <option value="Approved_Loans">@GlobalLoan.ListOfApprovedLoans</option>
+                    <option value="Paid_Loans">@GlobalLoan.ListOfPaidLoans</option>
+                    <option value="Delinquent_Loans">@GlobalLoan.ListOfDelinquentLoans</option>
+                    <option value="Current_Loans">@GlobalLoan.ListOfCurrentLoans</option>
+                    <option value="All_Loans">@GlobalLoan.AllLoans</option>
                 </select>
             </div>
         </div>
@@ -92,10 +93,10 @@
         <div class="row mt-3">
             <div class="col-md-12 d-flex justify-content-end">
                 <button id="searchButton" class="btn btn-primary me-2">
-                    <i class="mdi mdi-magnify me-1"></i> Search
+                    <i class="mdi mdi-magnify me-1"></i> @GlobalShared.Search
                 </button>
                 <button id="exportButton" class="btn btn-success" onclick="exportLoanData()">
-                    <i class="mdi mdi-file-excel me-1"></i> Export
+                    <i class="mdi mdi-file-excel me-1"></i> @GlobalShared.Export
                 </button>
             </div>
         </div>
@@ -105,7 +106,7 @@
 <!-- Data Display Section -->
 <div class="card shadow-sm" id="loanDataCard" style="display: none;">
     <div class="card-header bg-light text-dark fw-bold">
-        <i class="mdi mdi-table me-2"></i> Loan Data Table
+        <i class="mdi mdi-table me-2"></i> @GlobalLoan.LoanDataTable
     </div>
     <div class="card-body">
         <div id="loanDataTableContainer">

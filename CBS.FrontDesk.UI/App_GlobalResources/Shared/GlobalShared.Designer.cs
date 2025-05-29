@@ -97,6 +97,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        internal static string Back {
+            get {
+                return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back to home.
         /// </summary>
         internal static string BackToHome {
@@ -367,6 +376,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No file found.
+        /// </summary>
+        internal static string NoFileFound {
+            get {
+                return ResourceManager.GetString("NoFileFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No file is attached to.
         /// </summary>
         internal static string NoFileIsAttachedTo {
@@ -525,6 +543,15 @@ namespace Resources {
         internal static string Reset {
             get {
                 return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset filter.
+        /// </summary>
+        internal static string ResetFilter {
+            get {
+                return ResourceManager.GetString("ResetFilter", resourceCulture);
             }
         }
         

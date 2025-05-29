@@ -129,6 +129,9 @@
   <data name="AddNew" xml:space="preserve">
     <value>Add new</value>
   </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
   <data name="BackToHome" xml:space="preserve">
     <value>Back to home</value>
   </data>
@@ -219,6 +222,9 @@
   <data name="New" xml:space="preserve">
     <value>New</value>
   </data>
+  <data name="NoFileFound" xml:space="preserve">
+    <value>No file found</value>
+  </data>
   <data name="NoFileIsAttachedTo" xml:space="preserve">
     <value>No file is attached to</value>
   </data>
@@ -272,6 +278,9 @@
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
+  </data>
+  <data name="ResetFilter" xml:space="preserve">
+    <value>Reset filter</value>
   </data>
   <data name="ReturnToHome" xml:space="preserve">
     <value>Return to home</value>

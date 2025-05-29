@@ -1,11 +1,11 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
-
+@using Resources
 <fieldset class="fieldset-custom">
     <legend>Refunds</legend>
     @if (Model.Refunds.Count() == 0)
     {
         <div class="text-center my-3">
-            <p>No refund is done by @Model.IndividualCustomer.CustomerList.name</p>
+            <p>@GlobalLoan.NoRefundIsDoneBy @Model.IndividualCustomer.CustomerList.name</p>
         </div>
     }
     else
@@ -36,7 +36,7 @@
                 </div>
                 <div class="card-info">
                     <h4 class="mb-0">@totalRefunds.ToString("#,##0.0")</h4>
-                    <small>Total Refunds</small>
+                    <small>@GlobalLoan.TotalRefunds</small>
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
                 </div>
                 <div class="card-info">
                     <h4 class="mb-0">@totalCapital.ToString("#,##0.0")</h4>
-                    <small>Capital</small>
+                    <small>@GlobalLoan.Capital</small>
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="card-info">
                     <h4 class="mb-0">@totalInterest.ToString("#,##0.0")</h4>
-                    <small>Interest</small>
+                    <small>@GlobalLoan.Interest</small>
                 </div>
             </div>
         </div>
@@ -79,7 +79,7 @@
                 </div>
                 <div class="card-info">
                     <h4 class="mb-0">@totalPenalties.ToString("#,##0.0")</h4>
-                    <small>Penalties</small>
+                    <small>@GlobalLoan.Penalties</small>
                 </div>
             </div>
         </div>
@@ -92,7 +92,7 @@
                 </div>
                 <div class="card-info">
                     <h4 class="mb-0">@totalVAT.ToString("#,##0.0")</h4>
-                    <small>VAT</small>
+                    <small>@GlobalLoan.VATLc</small>
                 </div>
             </div>
         </div>
@@ -105,7 +105,7 @@
                 </div>
                 <div class="card-info">
                     <h4 class="mb-0">@totalBalance.ToString("#,##0.0")</h4>
-                    <small>Balance</small>
+                    <small>@GlobalLoan.Balance</small>
                 </div>
             </div>
         </div>
@@ -120,7 +120,7 @@
                 </div>
                 <div class="card-info">
                     <h4 class="mb-0">@totalDueAmount.ToString("#,##0.0")</h4>
-                    <small>Due Amount</small>
+                    <small>@GlobalLoan.DueAmount</small>
                 </div>
             </div>
         </div>
@@ -136,13 +136,13 @@
                 <thead class="table-light">
                     <tr>
                         <th>#</th> <!-- Serial number column -->
-                        <th>Date</th>
-                        <th>Amount</th>
-                        <th>Capital</th>
-                        <th>Interest</th>
-                        <th>VAT</th>
-                        <th>Penalties</th>
-                        <th>Balance</th>
+                        <th>@GlobalLoan.Date</th>
+                        <th>@GlobalLoan.Amount</th>
+                        <th>@GlobalLoan.Capital</th>
+                        <th>@GlobalLoan.Interest</th>
+                        <th>@GlobalLoan.VATLc</th>
+                        <th>@GlobalLoan.Penalties</th>
+                        <th>@GlobalLoan.Balance</th>
                     </tr>
                 </thead>
                 <tbody>

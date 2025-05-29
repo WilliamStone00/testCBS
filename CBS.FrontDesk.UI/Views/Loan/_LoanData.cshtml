@@ -1,19 +1,20 @@
-﻿<div class="table-responsive mb-3">
+﻿@using Resources
+<div class="table-responsive mb-3">
     <table class="table table-hover table-bordered align-middle" id="myDataTable">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Name</th>
-                <th>M.REF</th>
-                <th>Amount</th>
-                <th>Rate</th>
-                <th>INT</th>
-                <th>BAL</th>
-                <th>D.Days</th>
+                <th>@GlobalLoan.Date</th>
+                <th>@GlobalLoan.Name</th>
+                <th>@GlobalLoan.MREF</th>
+                <th>@GlobalLoan.Amount</th>
+                <th>@GlobalLoan.Rate</th>
+                <th>@GlobalLoan.INT</th>
+                <th>@GlobalLoan.BAL</th>
+                <th>@GlobalLoan.DDays</th>
                 <th>D. AMT</th>
                 <th>D.INT</th>
-                <th>Due. AMT</th>
-                <th>Action</th>
+                <th>@GlobalLoan.DueAMT</th>
+                <th>@GlobalShared.Action</th>
             </tr>
         </thead>
     </table>

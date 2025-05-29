@@ -1459,6 +1459,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalInstallmentType.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\LoanApplication\GlobalLoanApplication.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanApplication.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Loan\GlobalLoan.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoan.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Login\GlobalLogin.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -5330,6 +5340,14 @@
     <Content Include="App_GlobalResources\InstallmentType\GlobalInstallmentType.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalInstallmentType.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Loan\GlobalLoan.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoan.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LoanApplication\GlobalLoanApplication.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanApplication.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>

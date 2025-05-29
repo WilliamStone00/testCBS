@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Loan Details";
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalLoan.LoanDetails;
 }
 
 
@@ -17,7 +18,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
                         <i class="mdi mdi-file-document me-2"></i>
-                        MEMBER'S LOAN DETAILS
+                        @GlobalLoan.MEMBERS_LOAN_DETAILS
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"
