@@ -147,6 +147,9 @@
   <data name="DailyTeller" xml:space="preserve">
     <value>Daily teller</value>
   </data>
+  <data name="DailyTellerControl" xml:space="preserve">
+    <value>Daily teller control</value>
+  </data>
   <data name="DailyTellerDataSet" xml:space="preserve">
     <value>Daily Teller Data Set</value>
   </data>

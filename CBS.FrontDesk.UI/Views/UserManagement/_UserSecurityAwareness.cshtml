@@ -5,42 +5,102 @@
 
     <div class="alert alert-info shadow-sm mb-4">
         <i class="mdi mdi-security me-2"></i>
-        <strong>Trust Soft Credit (TSC)</strong> implements advanced security features to protect your account and data. Here's what you need to know and apply as a user.
+        <strong>Trust Soft Credit (TSC)</strong> enforces a comprehensive security policy framework. All users must comply with these security and usage standards to ensure protection of personal, organizational, and system-wide data.
     </div>
 
-    <h6 class="text-secondary fw-bold mt-4">🔒 System-Level Security Features</h6>
+    <!-- 🔐 ACCOUNT POLICIES -->
+    <h6 class="text-secondary fw-bold mt-4">🔐 Account Compliance Policies</h6>
     <ul>
-        <li><strong>MFA (Multi-Factor Authentication):</strong> Adds a second layer of authentication using your phone or authenticator app.</li>
-        <li><strong>Session Management:</strong> Automatically expires sessions after 1 hour of inactivity.</li>
-        <li><strong>IP Address Tracking:</strong> Logs all login sessions by IP for auditing and threat detection.</li>
-        <li><strong>Password Policy:</strong> Enforces strong passwords and periodic expiration (every 3 months).</li>
-        <li><strong>Session Recovery Code:</strong> Secure backup code for emergency logins.</li>
-        <li><strong>Account Lockout:</strong> Blocks user after multiple failed login attempts.</li>
-        <li><strong>Device Logout:</strong> Admins can force logout of all active devices in case of compromise.</li>
-        <li><strong>Blocked Access Control:</strong> Prevents login from unauthorized IPs or blocked branches.</li>
+        <li><strong>Inactivity Lock:</strong> Accounts are automatically disabled after a configured period of user inactivity (e.g., 12 days).</li>
+        <li><strong>No Login After Creation:</strong> Newly created accounts must be accessed within <strong>3 days</strong>; otherwise, they will be automatically disabled.</li>
+        <li><strong>MFA Enforcement:</strong> Users are required to activate Multi-Factor Authentication within <strong>3 days</strong> of account creation.</li>
+        <li><strong>Account Lockout:</strong> Accounts are locked after <strong>3 failed login attempts</strong> to prevent brute-force attacks.</li>
+        <li><strong>Branch and IP Restrictions:</strong> Login is restricted to authorized branches and approved IP address ranges.</li>
+        <li><strong>Password Expiration:</strong> Users must <strong>change their password every 90 days</strong> in accordance with the organization's fraud prevention and security policies.</li>
     </ul>
 
-    <h6 class="text-secondary fw-bold mt-4">🛡️ Best Practices to Stay Protected</h6>
+    <div class="alert alert-warning mt-3 shadow-sm">
+        <i class="mdi mdi-alert-outline me-2"></i>
+        <strong>Important:</strong> Failure to comply with any of the above policies will result in the <strong>automatic blocking of your account</strong> by the system.
+        If your account is blocked, please contact your administrator or IT support team for assistance.
+    </div>
+
+
+
+    <!-- 🔑 PASSWORD POLICIES -->
+    <h6 class="text-secondary fw-bold mt-4">🔐 Password Policy</h6>
     <ul>
-        <li>Use a <strong>unique and strong password</strong> for your account — avoid names or birthdays.</li>
-        <li><strong>Never share your password</strong> or recovery code with anyone.</li>
-        <li><strong>Always enable MFA</strong> — it's the most effective layer against unauthorized access.</li>
-        <li><strong>Logout from shared devices</strong> and clear the browser cache.</li>
-        <li>Use a <strong>trusted browser</strong> and keep it up to date.</li>
-        <li>Don’t store passwords in browsers or on paper.</li>
+        <li><strong>Length:</strong> Passwords must be between <strong>8 and 128 characters</strong>.</li>
+        <li>
+            <strong>Composition:</strong> Must include at least:
+            <ul>
+                <li>One uppercase letter (A–Z)</li>
+                <li>One lowercase letter (a–z)</li>
+                <li>One digit (0–9)</li>
+                <li><strong>Three non-repeating special characters</strong> from the approved set <code>!@@#$%^&*()_+-=[]{}|;:,.&lt;&gt;?</code>, distributed across the password.</li>
+            </ul>
+        </li>
+        <li><strong>Username Exclusion:</strong> Your password must not contain your username.</li>
+        <li><strong>Common Word Filter:</strong> Forbidden words like <code>admin</code>, <code>password</code>, <code>welcome</code>, etc., are not allowed.</li>
+        <li><strong>Calendar Year Restriction:</strong> Passwords must not include years such as <code>1999</code>, <code>2024</code>, etc. These make passwords easier to guess.</li>
+        <li><strong>Repetition Avoidance:</strong> Serial patterns (e.g., <code>1234</code>, <code>abcd</code>) are disallowed.</li>
+        <li><strong>Password History:</strong> You cannot reuse your last <strong>5 previously used passwords</strong>.</li>
+        <li><strong>Password Expiration:</strong> Passwords must be changed every <strong>90 days</strong> in accordance with the fraud prevention policy.</li>
     </ul>
 
-    <h6 class="text-secondary fw-bold mt-4">🚫 Protect Yourself Against Threats</h6>
+
+    <!-- 📱 MFA -->
+    <h6 class="text-secondary fw-bold mt-4">📱 Multi-Factor Authentication (MFA)</h6>
     <ul>
-        <li><strong>Phishing Attacks:</strong> TSC will never ask for your password via email or SMS. Beware of suspicious links.</li>
-        <li><strong>Session Hijacking:</strong> Avoid logging in on public Wi-Fi. Use VPNs when working remotely.</li>
-        <li><strong>Brute-force Attacks:</strong> Password attempts are monitored. Lockout is enforced after multiple failures.</li>
-        <li><strong>Unauthorized Access:</strong> Monitor recent logins and logout of unknown devices immediately.</li>
+        <li>MFA is <strong>mandatory</strong> by policy.</li>
+        <li>The default MFA method is <strong>TOTP (Time-based One-Time Password)</strong> using apps like Google Authenticator.</li>
+        <li>Other supported types include <strong>SMS</strong> and <strong>Email</strong>-based tokens.</li>
+        <li>Users must activate MFA within <strong>3 days after account creation</strong> or risk account suspension.</li>
     </ul>
 
+    <!-- ⏳ SESSION MANAGEMENT -->
+    <h6 class="text-secondary fw-bold mt-4">⏳ Idle Time & Session Management</h6>
+    <ul>
+        <li><strong>Session Timeout:</strong> Sessions are automatically terminated after <strong>15 minutes</strong> of inactivity.</li>
+        <li><strong>Idle Account Policy:</strong> Users who remain inactive for several days may have their accounts auto-blocked.</li>
+        <li><strong>Secure Cookies:</strong> All session cookies are <code>HttpOnly</code>, <code>Secure</code>, and <code>SameSite=Strict</code>.</li>
+        <li><strong>Multiple Session Enforcement:</strong> TSC monitors simultaneous logins and terminates overlapping sessions to prevent abuse.</li>
+    </ul>
+
+    <!-- 🧪 EXAMPLES -->
+    <h6 class="text-secondary fw-bold mt-4">🧪 Examples</h6>
+    <p><strong class="text-primary">✅ Very Strong Password:</strong> <code>Xr@91$FeB!tYz2025</code></p>
+    <p><strong class="text-danger">❌ Very Weak Passwords:</strong> <code>password123</code>, <code>admin</code>, <code>12345678</code></p>
+
+    <!-- 🛡️ BEST PRACTICES -->
+    <h6 class="text-secondary fw-bold mt-4">🛡️ Best Practices to Stay Secure</h6>
+    <ul>
+        <li>Use a <strong>unique password</strong> that you do not use on other systems.</li>
+        <li><strong>Never share your password or MFA code</strong> with anyone — not even IT staff.</li>
+        <li><strong>Logout</strong> from shared computers and clear browser data after use.</li>
+        <li>Keep your devices, browsers, and OS updated to patch known vulnerabilities.</li>
+    </ul>
+
+    <!-- 🚫 THREATS -->
+    <h6 class="text-secondary fw-bold mt-4">🚫 Protect Yourself from Threats</h6>
+    <ul>
+        <li><strong>Phishing:</strong> Never enter your credentials on untrusted links or fake sites. TSC will never email you for your password.</li>
+        <li><strong>Session Hijacking:</strong> Use VPNs on public networks. Never leave active sessions open on shared devices.</li>
+        <li><strong>Unauthorized Access:</strong> Monitor your recent login history. Report suspicious behavior immediately.</li>
+    </ul>
+
+    <!-- 📘 GLOSSARY -->
+    <h6 class="text-secondary fw-bold mt-4">📘 Key Abbreviations</h6>
+    <ul>
+        <li><strong>MFA:</strong> Multi-Factor Authentication</li>
+        <li><strong>TOTP:</strong> Time-based One-Time Password</li>
+        <li><strong>CSRF:</strong> Cross-Site Request Forgery</li>
+        <li><strong>HTTPS:</strong> HyperText Transfer Protocol Secure</li>
+    </ul>
+
+    <!-- ⚠️ ALERT -->
     <div class="alert alert-warning mt-4 shadow-sm">
         <i class="mdi mdi-alert-outline me-2"></i>
-        <strong>Important:</strong> If you suspect your account has been compromised or you notice unusual activity,
-        <span class="text-danger">change your password immediately</span> and report it to your administrator.
+        <strong>Important:</strong> If you notice unusual account activity or suspect compromise, <span class="text-danger">change your password immediately</span> and notify your system administrator.
     </div>
 </div>

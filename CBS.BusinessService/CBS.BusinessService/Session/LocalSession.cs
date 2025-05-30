@@ -2,6 +2,7 @@
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.RequestManagement;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.UserManagement;
 using CBS.FrontDesk.Helper;
@@ -90,18 +91,17 @@ namespace CBS.BusinessService.Session
             }
         }
         //GetCurrentIdletimeByBranch
-        public async Task<IdleTime> GetCurrentIdletimeByBranch()
+        public async Task<TimeSpan> GetCurrentIdletimeByBranch()
         {
             try
             {
                 var branchId = GetBranchID(); // You may want to log this or validate
-                var response = await _identityServerBaseUrl
-                    .GetAsync<ServiceResponse<IdleTime>>(string.Format(APICallHelper.GetCurrentIdletimeByBranch, branchId));
+                var response = await _identityServerBaseUrl.GetAsync<ServiceResponse<TimeSpan>>(string.Format(APICallHelper.GetCurrentIdletimeByBranch, branchId));
                 if (response.ApiResponseData != null)
                 {
                     return response.ApiResponseData.Data;
                 }
-                return new IdleTime();
+                return new TimeSpan();
             }
             catch (Exception ex)
             {

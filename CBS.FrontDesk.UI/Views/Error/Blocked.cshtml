@@ -1,0 +1,78 @@
+﻿@{
+    Layout = "~/Views/Shared/_ErrorLayout.cshtml";
+    ViewBag.Title = "Access Blocked";
+
+    string ip = Request.QueryString["ip"];
+    string reason = Request.QueryString["reason"];
+    string blockedAtRaw = Request.QueryString["blockedAt"];
+    string unblockAfterRaw = Request.QueryString["unblockAfter"];
+
+    string blockedAtFormatted = "Unavailable";
+    string countdownMessage = "";
+
+    if (DateTime.TryParse(blockedAtRaw, out DateTime parsedBlockedAt))
+    {
+        blockedAtFormatted = parsedBlockedAt.ToLocalTime().ToString("f");
+
+        if (int.TryParse(unblockAfterRaw, out int minutes))
+        {
+            if (minutes <= 10)
+            {
+                var unblockTime = parsedBlockedAt.AddMinutes(minutes);
+                var remaining = unblockTime.ToLocalTime() - DateTime.Now;
+
+                if (remaining.TotalSeconds > 0)
+                {
+                    countdownMessage = $"<strong>Time Remaining:</strong> {remaining.Minutes} min {remaining.Seconds} sec";
+                }
+                else
+                {
+                    countdownMessage = "<strong>Time Remaining:</strong> expired – please try again.";
+                }
+            }
+        }
+    }
+}
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4 text-danger mb-3">
+            <i class="mdi mdi-shield-lock-outline"></i> Access Blocked
+        </h1>
+        <h5 class="text-muted mb-4">HTTP Status Code: <span class="text-dark">403 – Forbidden</span></h5>
+        <p class="lead text-secondary">Your access has been restricted due to unusual or excessive activity.</p>
+    </div>
+
+    <div class="card mx-auto mt-4 shadow-sm border-danger" style="max-width: 600px;">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-5">IP Address:</dt>
+                <dd class="col-sm-7">@ip</dd>
+
+                <dt class="col-sm-5">Reason:</dt>
+                <dd class="col-sm-7 text-capitalize">@reason</dd>
+
+                <dt class="col-sm-5">Blocked At:</dt>
+                <dd class="col-sm-7">@blockedAtFormatted</dd>
+
+                <dt class="col-sm-5">Block Duration:</dt>
+                <dd class="col-sm-7">@unblockAfterRaw minutes</dd>
+
+                @if (!string.IsNullOrEmpty(countdownMessage))
+                {
+                    <dt class="col-sm-5">Status:</dt>
+                    <dd class="col-sm-7 text-danger">@Html.Raw(countdownMessage)</dd>
+                }
+            </dl>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <p>
+            If you believe this is a mistake, please <strong>contact support</strong> via <a href="mailto:support@trustsoftcredit.com">support@trustsoftcredit.com</a>
+            or open a ticket at <a href="https://support.trustsoftcredit.com">support.trustsoftcredit.com</a>.
+        </p>
+        <a href="/" class="btn btn-outline-primary">
+            <i class="mdi mdi-home-outline"></i> Return to Home
+        </a>
+    </div>
+</div>

@@ -515,13 +515,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
 
         [HttpGet]
-        public async Task<ActionResult> GetBranchBankAccount(string branchId)
+        public async Task<ActionResult> GetBranchBankAccount(string Id)
         {
             
             List<ChartOfAccountStateDto> listOfAccounts = new List<ChartOfAccountStateDto>();
             listOfAccounts = await _chartOfAccountManagementPositionService.GetAllBranchAccountUsedToCreditCashFlow("560", "3");
             
-            var listOfBankAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(branchId);
+            var listOfBankAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(Id);
 
             listOfBankAccounts = listOfBankAccounts.Where(c => c.Account2 == "56").ToList();
             if (listOfBankAccounts.Any())
@@ -723,7 +723,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
 
-            // await GetList();
+            // await GetList();CorrespondingBranchID
             if (path == "list")
             {
                 List<CashReplenimentRequestDto> cashRepleniments = new List<CashReplenimentRequestDto>();
@@ -1183,6 +1183,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else if (path == "FilteringCashReplenishmentOption")
             {
+                var CashReplenimentRequestDtos = new List<CashReplenimentRequestDto>();
                 try
                 {
                     var settings = new JsonSerializerSettings
@@ -1194,8 +1195,58 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     var modelc = JsonConvert.DeserializeObject<QueryFilter>(KEY, settings);
 
                     var dataModel = await _accountingEntryServices.GetCashReplenishmentEntries(modelc);
+                    if (dataModel==null)
+                    {
+                        ViewBag.IsAuthourized = true;
+                        ViewBag.Error = _AccountServices.GetUserFullName() + ", You must select a date range you estimated the data was inputed";
+                        return PartialView(partialView, new CashDemandDataEntity { ListCashReplenimentRequestDto = new List<CashReplenimentRequestDto>() });
+                    }
+                    var listBranch = await branchServices.GetBranches();
+           
+                    ViewBag.IsAuthourized = false;
+                    var dataUserList = (await _accountingEntryServices.GetUserList()).ToList();
+                    var branchList = await branchServices.GetBranches();
+                    foreach (var item in dataModel)
+                    {
+                        if (item.BranchId == _accountingEntryServices.GetBranchID())
+                        {
+                            var branch = branchList.FirstOrDefault(x => x.Id.Equals(item.BranchId));
+                            item.BranchOffice = branch.Name;
+                            //item.HasBankAccount = branch.IsHavingBank;
+                            var userx = dataUserList.Find(x => x.id.ToString() == item.IssuedBy);
+                            item.TempId1 = userx.firstName + " " + userx.lastName;
+                            item.IsOwner = item.BranchId == _accountingEntryServices.GetBranchID();
+                            item.IsRedirectedTo = item.CorrespondingBranchId == _accountingEntryServices.GetBranchID();
+                            if (item.IsApproved)
+                            {
+                                var user0x = dataUserList.Find(x => x.id.ToString() == item.ApprovedBy);
+                                item.TempId2 = user0x.firstName + " " + user0x.lastName;
+                            }
+
+                            CashReplenimentRequestDtos.Add(item);
+                        }
+                        else
+                        {
+                            item.CorrespondingBranchId = item.CorrespondingBranchId == "xxx" ? item.BranchId:item.CorrespondingBranchId;
+                                var branch = branchList.FirstOrDefault(x => x.Id.Equals(item.CorrespondingBranchId));
+                            item.BranchOffice = branch.Name;
+                            //item.HasBankAccount = branch.IsHavingBank;
+                            var userx = dataUserList.Find(x => x.id.ToString() == item.IssuedBy);
+                            item.TempId1 = userx==null?"User not found": userx.firstName + " " + userx.lastName;
+                            item.IsOwner = item.BranchId == _accountingEntryServices.GetBranchID();
+                            item.IsRedirectedTo = item.CorrespondingBranchId == _accountingEntryServices.GetBranchID();
+                            if (item.IsApproved)
+                            {
+                                var user0x = dataUserList.Find(x => x.id.ToString() == item.ApprovedBy);
+                                item.TempId2 = user0x == null ? "User not found" : user0x.firstName + "," + user0x.lastName;
+                            }
+
+                            CashReplenimentRequestDtos.Add(item);
+                        }
+
+                    }
                     ViewBag.IsAuthourized = true;
-                    return PartialView(partialView, new CashDemandDataEntity { ListCashReplenimentRequestDto = dataModel == null? new List<CashReplenimentRequestDto>():dataModel });
+                    return PartialView(partialView, new CashDemandDataEntity { ListCashReplenimentRequestDto = CashReplenimentRequestDtos == null? new List<CashReplenimentRequestDto>(): CashReplenimentRequestDtos });
                 }
                 catch (Exception EX)
                 {
@@ -1209,6 +1260,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else if (path == "FilteringBankDepositOption")
             {
+             var DepositNotificationDtos =   new List<DepositNotificationDto>();
                 try
                 {
                     var settings = new JsonSerializerSettings
@@ -1218,10 +1270,49 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         Culture = CultureInfo.InvariantCulture
                     };
                     var modelc = JsonConvert.DeserializeObject<QueryFilter>(KEY, settings);
-
+                    var listBranch = await branchServices.GetBranches();
                     var dataModel = await _accountingEntryServices.GetBankDepositEntries(modelc);
-                    ViewBag.IsAuthourized = true;
-                    return PartialView(partialView, new CashDemandDataEntity { ListDepositNotificationDto = dataModel == null ? new List<DepositNotificationDto>() : dataModel });
+                    ViewBag.IsAuthourized = false;
+                    var dataUserList = (await _accountingEntryServices.GetUserList()).ToList();
+                    var branchList = await branchServices.GetBranches();
+                    foreach (var item in dataModel.ToList())
+                    {
+                        if (item.BranchId == _accountingEntryServices.GetBranchID())
+                        {
+                            var branch = branchList.FirstOrDefault(x => x.Id.Equals(item.BranchId));
+                            item.BranchOffice = branch.Name;
+                            item.HasBankAccount = branch.IsHavingBank;
+                            var userx = dataUserList.Find(x => x.id.ToString() == item.IssuedBy);
+                            item.Temp1 = userx.firstName + " " + userx.lastName;
+                            item.IsOwner = item.BranchId == _accountingEntryServices.GetBranchID();
+                            if (item.IsApproved)
+                            {
+                                var user0x = dataUserList.Find(x => x.id.ToString() == item.ApprovedBy);
+                                item.Temp2 = user0x.firstName + "," + user0x.lastName;
+                            }
+
+                            DepositNotificationDtos.Add(item);
+                        }
+                        else
+                        {
+                            var branch = branchList.FirstOrDefault(x => x.Id.Equals(item.correpondingBranchId));
+                            item.BranchOffice = branch.Name;
+                            item.HasBankAccount = branch.IsHavingBank;
+                            var userx = dataUserList.Find(x => x.id.ToString() == item.IssuedBy);
+                            item.Temp1 = userx.firstName + " " + userx.lastName;
+                            item.IsOwner = item.BranchId == _accountingEntryServices.GetBranchID();
+                            if (item.IsApproved)
+                            {
+                                var user0x = dataUserList.Find(x => x.id.ToString() == item.ApprovedBy);
+                                item.Temp2 = user0x.firstName + "," + user0x.lastName;
+                            }
+
+                            DepositNotificationDtos.Add(item);
+                        }
+
+                    }
+
+                    return PartialView(partialView, new CashDemandDataEntity { ListDepositNotificationDto = dataModel == null ? new List<DepositNotificationDto>() : DepositNotificationDtos });
                 }
                 catch (Exception EX)
                 {
@@ -1438,17 +1529,33 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             return selectListItems;
         }
-
+        private List<System.Web.WebPages.Html.SelectListItem> GetFilteringBankDepositOptions()
+        {
+            //    ,
+            //,
+            //Awaiting_Bank_CashOut,
+            //,       
+            var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[]
+            { new System.Web.WebPages.Html.SelectListItem { Text = "Pending", Value = "Pending" },
+                new System.Web.WebPages.Html.SelectListItem { Text = "Approved", Value = "Approved" },
+                  new System.Web.WebPages.Html.SelectListItem { Text = "Awaiting Branch Transfer", Value = "RedirectToBranchBTB" },
+                                    new System.Web.WebPages.Html.SelectListItem { Text = "Awaiting Bank deposit", Value = "Awaiting_uploaded_bank_deposit_receipt" },
+                                       new System.Web.WebPages.Html.SelectListItem { Text = "Completed", Value = "Completed" },
+             new System.Web.WebPages.Html.SelectListItem { Text = "Cash Clearing", Value = "Awaiting_Branch_CashClearing" },
+                new System.Web.WebPages.Html.SelectListItem { Text = "Rejected", Value = "Rejected" } }.ToList();
+            return doubbleEntryValidations;
+        }
         private List<System.Web.WebPages.Html.SelectListItem> GetFilteringOptions()
         {
-        //    ,
-        //,
-        //Awaiting_Bank_CashOut,
-        //,       
+            //    ,
+            //,Awaiting_uploaded_bank_deposit_receipt
+            //Awaiting_Bank_CashOut,
+            //,       
             var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[]
             { new System.Web.WebPages.Html.SelectListItem { Text = "Pending", Value = "Pending" },
                 new System.Web.WebPages.Html.SelectListItem { Text = "Approved", Value = "Approved" },
                   new System.Web.WebPages.Html.SelectListItem { Text = "Awaiting_Branch_Transfer", Value = "RedirectToBranchBTB" },
+                           new System.Web.WebPages.Html.SelectListItem { Text = "Completed", Value = "Completed" },
        new System.Web.WebPages.Html.SelectListItem { Text = "Cash Clearing", Value = "Awaiting_Branch_CashClearing" },
                 new System.Web.WebPages.Html.SelectListItem { Text = "Rejected", Value = "Rejected" } }.ToList();
             return doubbleEntryValidations;
@@ -1467,7 +1574,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         public async Task<ActionResult> GetAllDepositRequestData()
         {
             ViewBag.Branches = BuildBranchViewBag((await branchServices.GetBranches()).ToList());
-            ViewBag.filteringOptions = GetFilteringOptions();
+            ViewBag.filteringOptions = GetFilteringBankDepositOptions();
             //var datasList = (await _accountingEntryServices.GetBranches()).ToList();
 
             //var datas = await _accountingEntryServices.GetAllDepositNotificationRequest();
@@ -1518,7 +1625,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 if (item.IsApproved)
                 {
                     var userxc = await _accountingEntryServices.GetUser(item.ApprovedBy);
-                    itemdto.TempId2 = userxc.firstName + "," + userxc.lastName;
+                    itemdto.TempId2 = userxc.firstName + " " + userxc.lastName;
                 }
 
                 cashReplenimentRequests.Add(itemdto);
@@ -1530,7 +1637,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
         [HttpGet]
         public async Task<ActionResult> GetCashDepositDataAwaitingApproval()
-        
         {
             #region MyRegion
             //List<DepositNotificationDto> datas = new List<DepositNotificationDto>();
@@ -1617,7 +1723,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             //ViewBag.IsAuthourized = true; 
             #endregion
             ViewBag.Branches = BuildBranchViewBag((await branchServices.GetBranches()).ToList());
-            ViewBag.filteringOptions = GetFilteringOptions();
+            ViewBag.filteringOptions = GetFilteringBankDepositOptions();
             return View();
         }
 

@@ -97,6 +97,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        internal static string Back {
+            get {
+                return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back to home.
         /// </summary>
         internal static string BackToHome {
@@ -205,6 +214,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Detail.
+        /// </summary>
+        internal static string Detail {
+            get {
+                return ResourceManager.GetString("Detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Details.
         /// </summary>
         internal static string Details {
@@ -223,11 +241,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Economic activity.
+        /// </summary>
+        internal static string EconomicActivity {
+            get {
+                return ResourceManager.GetString("EconomicActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        internal static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
             }
         }
         
@@ -255,6 +291,15 @@ namespace Resources {
         internal static string Export {
             get {
                 return ResourceManager.GetString("Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fax number.
+        /// </summary>
+        internal static string FaxNumber {
+            get {
+                return ResourceManager.GetString("FaxNumber", resourceCulture);
             }
         }
         
@@ -331,6 +376,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No file found.
+        /// </summary>
+        internal static string NoFileFound {
+            get {
+                return ResourceManager.GetString("NoFileFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No file is attached to.
+        /// </summary>
+        internal static string NoFileIsAttachedTo {
+            get {
+                return ResourceManager.GetString("NoFileIsAttachedTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No image found.
         /// </summary>
         internal static string NoImageFound {
@@ -367,6 +430,51 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Photo preview.
+        /// </summary>
+        internal static string PhotoPreview {
+            get {
+                return ResourceManager.GetString("PhotoPreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Place of Issue.
+        /// </summary>
+        internal static string PlaceOfIssue {
+            get {
+                return ResourceManager.GetString("PlaceOfIssue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Post box.
+        /// </summary>
+        internal static string PostBox {
+            get {
+                return ResourceManager.GetString("PostBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview image.
+        /// </summary>
+        internal static string PreviewImage {
+            get {
+                return ResourceManager.GetString("PreviewImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview signature.
+        /// </summary>
+        internal static string PreviewSignature {
+            get {
+                return ResourceManager.GetString("PreviewSignature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Print.
         /// </summary>
         internal static string Print {
@@ -385,11 +493,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Read.
+        /// </summary>
+        internal static string Read {
+            get {
+                return ResourceManager.GetString("Read", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Region.
+        /// </summary>
+        internal static string Region {
+            get {
+                return ResourceManager.GetString("Region", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rejected.
         /// </summary>
         internal static string Rejected {
             get {
                 return ResourceManager.GetString("Rejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        internal static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
             }
         }
         
@@ -408,6 +543,15 @@ namespace Resources {
         internal static string Reset {
             get {
                 return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset filter.
+        /// </summary>
+        internal static string ResetFilter {
+            get {
+                return ResourceManager.GetString("ResetFilter", resourceCulture);
             }
         }
         
@@ -480,6 +624,24 @@ namespace Resources {
         internal static string SelectToEdit {
             get {
                 return ResourceManager.GetString("SelectToEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signature.
+        /// </summary>
+        internal static string Signature {
+            get {
+                return ResourceManager.GetString("Signature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signature preview.
+        /// </summary>
+        internal static string SignaturePreview {
+            get {
+                return ResourceManager.GetString("SignaturePreview", resourceCulture);
             }
         }
         

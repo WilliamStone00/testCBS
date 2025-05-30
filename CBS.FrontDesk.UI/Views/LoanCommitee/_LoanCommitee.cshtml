@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanCommitee.LoanCommitee
+    @using Resources
 <div class="col">
 
     <div class="row my-4">
@@ -11,7 +12,7 @@
                             data-bs-target="#collapseDeliveryAddress"
                             aria-expanded="true"
                             aria-controls="collapseDeliveryAddress">
-                        Loan commitee group
+                        @GlobalLoanCommitee.LoanCommiteeGroup
                     </button>
                 </h2>
                 <div id="collapseDeliveryAddress"
@@ -23,7 +24,7 @@
                         <div class="card mb-4">
                             <div class="card-body d-sm-flex d-block">
                                 <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                    <a type="button" onclick="LoadDataGen('LoanCommitee','myDataTable_commitee_group','_LoanCommiteeData',0,'datalistingview',null,'LoanCommiteeGroup','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                    <a type="button" onclick="LoadDataGen('LoanCommitee','myDataTable_commitee_group','_LoanCommiteeData',0,'datalistingview',null,'LoanCommiteeGroup','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
                                         <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                     </a>
                                 </div>
@@ -38,7 +39,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanCommiteeGroup.Name, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.Name, "", new { @class = "text-danger" })
-                                        <label>Commitee name</label>
+                                        <label>@GlobalLoanCommitee.CommiteeName</label>
                                     </div>
                                 </div>
 
@@ -46,62 +47,62 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanCommiteeGroup.MinimumLoanAmount, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.MinimumLoanAmount, "", new { @class = "text-danger" })
-                                        <label>Minimum amount to valide</label>
+                                        <label>@GlobalLoanCommitee.MinimumAmountToValide</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanCommiteeGroup.MaximumLoanAmount, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.MinimumLoanAmount, "", new { @class = "text-danger" })
-                                        <label>Maximum amount to valide</label>
+                                        <label>@GlobalLoanCommitee.MaximumAmountToValide</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanCommiteeGroup.NumberOfMembers, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.NumberOfMembers, "", new { @class = "text-danger" })
-                                        <label>Commitee size</label>
+                                        <label>@GlobalLoanCommitee.CommiteeSize</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanCommiteeGroup.NumberToApprovalsToValidationALoan, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.NumberToApprovalsToValidationALoan, "", new { @class = "text-danger" })
-                                        <label>Enter acceptable number of approvals</label>
+                                        <label>@GlobalLoanCommitee.EnterAcceptableNumberOfApprovals</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.LoanCommiteeGroup.CommiteeLeaderUserId, new SelectList(ViewBag.Users, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.DropDownListFor(m => m.LoanCommiteeGroup.CommiteeLeaderUserId, new SelectList(ViewBag.Users, "Value", "Text"), "---"+ @GlobalLoanCommitee.SelectGroupLeader + "---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.CommiteeLeaderUserId, "", new { @class = "text-danger" })
-                                        <label>Select group leader</label>
+                                        <label>@GlobalLoanCommitee.SelectGroupLeader</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-check">
                                         @Html.CheckBoxFor(m => m.LoanCommiteeGroup.Status, new { @class = "form-check-input" })
-                                        <label class="form-check-label" for="isActive">Active status</label>
+                                        <label class="form-check-label" for="isActive">@GlobalLoanCommitee.ActiveStatus</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextAreaFor(m => m.LoanCommiteeGroup.Description, new { @class = "form-control", @style = "height: 200px;" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.Description, "", new { @class = "text-danger" })
-                                        <label>Description</label>
+                                        <label>@GlobalLoanCommitee.Description</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="mt-4">
                                 @if (ViewBag.Key == null)
                                 {
-                                    <button type="submit" class="btn btn-primary me-2">Create</button>
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Create</button>
                                     <input type="hidden" name="ServiceOption" value="commitee_group" id="ServiceOption" />
                                     <input type="hidden" name="Action" value="insert" id="Action" />
 
                                 }
                                 else
                                 {
-                                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                                     @Html.HiddenFor(m => m.LoanCommiteeGroup.Id)
                                     <button type="submit" class="btn btn-primary me-2">Create</button>
                                     <input type="hidden" name="ServiceOption" value="commitee_group" id="ServiceOption" />

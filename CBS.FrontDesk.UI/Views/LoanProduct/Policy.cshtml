@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
-
+@using Resources
 @{
     ViewBag.Title = "Loan Policies Setting";
 }
@@ -9,22 +9,22 @@
         @if (@Model.UpdateLoanProductCommand.LoanProductCategory.Name == "N/A" || @Model.UpdateLoanProductCommand.LoanTerm.Name == "N/A" || string.IsNullOrEmpty(@Model.UpdateLoanProductCommand.TargetType))
         {
             <div class="alert alert-danger" role="alert">
-                <strong>Configuration Missing:</strong>
+                <strong>@GlobalLoanProduct.ConfigurationMissing:</strong>
                 <ul>
                     @if (@Model.UpdateLoanProductCommand.LoanProductCategory.Name == "N/A")
                     {
-                        <li>Loan Product Category is not configured.</li>
+                        <li>@GlobalLoanProduct.LoanProductCategoryIsNotConfigured.</li>
                     }
                     @if (@Model.UpdateLoanProductCommand.LoanTerm.Name == "N/A")
                     {
-                        <li>Loan Term is not configured.</li>
+                        <li>@GlobalLoanProduct.LoanTermIsNotConfigured.</li>
                     }
                     @if (string.IsNullOrEmpty(@Model.UpdateLoanProductCommand.TargetType))
                     {
-                        <li>Target Type is not specified.</li>
+                        <li>@GlobalLoanProduct.TargetTypeIsNotSpecified.</li>
                     }
                 </ul>
-                Please ensure all fields are properly configured before proceeding.
+                @GlobalLoanProduct.PleaseEnsureAllFieldsAreProperlyConfigured.
             </div>
         }
 
@@ -43,9 +43,9 @@
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-police-badge me-2"></i>
                             <b>
-                                Setting Loan Policy For @Model.UpdateLoanProductCommand.LoanProductCategory.Name
+                                @GlobalLoanProduct.SettingLoanPolicyFor @Model.UpdateLoanProductCommand.LoanProductCategory.Name
                                 [@Model.UpdateLoanProductCommand.ProductName] -
-                                [For @Model.UpdateLoanProductCommand.LoanTerm.Name, Between @Model.UpdateLoanProductCommand.LoanTerm.MinInMonth : @Model.UpdateLoanProductCommand.LoanTerm.MaxInMonth Months]
+                                [@GlobalLoanProduct.For @Model.UpdateLoanProductCommand.LoanTerm.Name, @GlobalLoanProduct.Between @Model.UpdateLoanProductCommand.LoanTerm.MinInMonth : @Model.UpdateLoanProductCommand.LoanTerm.MaxInMonth @GlobalLoanProduct.Months]
                             </b>
                         </button>
                     </h2>

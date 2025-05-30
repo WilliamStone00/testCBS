@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
-
+@using Resources
 
 
 <div class="col-12 col-lg-6 mb-4 mb-xl-0">
@@ -13,8 +13,8 @@
                             <div class="user-info">
                                 <h6 class="mb-1">@file.documentName</h6>
                                 <div class="file-actions">
-                                    <a href="#" onclick="confirmDelete(@file.documentId)" class="file-action-link delete">Delete</a>
-                                    <a href="@($"{file.baseUrl}/{file.urlPath}")" target="_blank" class="file-action-link read">Read</a>
+                                    <a href="#" onclick="confirmDelete(@file.documentId)" class="file-action-link delete">@GlobalShared.Delete</a>
+                                    <a href="@($"{file.baseUrl}/{file.urlPath}")" target="_blank" class="file-action-link read">@GlobalShared.Read</a>
                                 </div>
                             </div>
                         </div>

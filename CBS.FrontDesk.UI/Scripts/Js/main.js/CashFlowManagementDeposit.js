@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-
+    calculateCashBalance();
     $('#hideBranchID').hide();
     $('#hideAccountId').hide();
  
@@ -684,61 +684,161 @@ function DeleteCashRequestData(controller, KEY, serviceOption, status) {
 
 }
 
+//function calculateCashBalance() {
+//    // Get the total amount of currency notes and coins
+//    var note10000 = parseInt(document.getElementById('Notes_note10000').value) || 0;
+//    var note5000 = parseInt(document.getElementById('Notes_note5000').value) || 0;
+//    var note2000 = parseInt(document.getElementById('Notes_note2000').value) || 0;
+//    var note1000 = parseInt(document.getElementById('Notes_note1000').value) || 0;
+//    var note500 = parseInt(document.getElementById('Notes_note500').value) || 0;
+//    var coin500 = parseInt(document.getElementById('Notes_coin500').value) || 0;
+//    var coin350 = parseInt(document.getElementById('Notes_coin350').value) || 0;
+//    var coin250 = parseInt(document.getElementById('Notes_coin250').value) || 0;
+//    var coin200 = parseInt(document.getElementById('Notes_coin200').value) || 0;
+//    var coin150 = parseInt(document.getElementById('Notes_coin150').value) || 0;
+//    var coin100 = parseInt(document.getElementById('Notes_coin100').value) || 0;
+//    var coin50 = parseInt(document.getElementById('Notes_coin50').value) || 0;
+//    var coin25 = parseInt(document.getElementById('Notes_coin25').value) || 0;
+//    var coin10 = parseInt(document.getElementById('Notes_coin10').value) || 0;
+//    var coin5 = parseInt(document.getElementById('Notes_coin5').value) || 0;
+//    var coin1 = parseInt(document.getElementById('Notes_coin1').value) || 0;
+
+//    // Calculate total amount
+//    var totalAmount = (note10000 * 10000) + (note5000 * 5000) + (note2000 * 2000) + (note1000 * 1000) +
+//        (note500 * 500) + (coin500 * 500) + (coin350 * 350) + (coin250 * 250) + (coin200 *200) + (coin150 * 150) + (coin100 * 100) + (coin50 * 50) + (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
+//    console.log(totalAmount);
+//    // Format total amount as currency
+//    var formattedTotalAmount = totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
+//    var balanceInVault = $('#lblBalanceInVault').text().trim();
+//    $("#totalNoteAmount").val(totalAmount);
+//    console.log(formattedTotalAmount);
+//    var BalanceInVault = parseInt(balanceInVault.replace(/,/g, '').split('.')[0]);
+//    console.log(BalanceInVault);
+//    BalanceInVault = BalanceInVault - totalAmount;
+//    console.log(BalanceInVault);
+//    var formattedBalanceInVault = BalanceInVault.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
+//    console.log(formattedBalanceInVault);
+//    $("#lblBalanceInVault").text(formattedBalanceInVault);
+//    $("#lblBalanceDeposit").val(totalAmount);
+//    // Update the lblDepositRequest_amount span with the formatted total amount
+//    var element = document.getElementById("lblDepositRequest_amount");
+//    if (element) { element.textContent = "Total Amount: " + formattedTotalAmount; }
+
+
+
+//    ////Primary teller
+
+//    //// Get total note amount
+//    var totalNoteAmount = parseFloat(document.getElementById("totalNoteAmount").value);
+//    var totalProvision = parseFloat(document.getElementById("totalProvision").value);
+//    // Calculate balance
+//    var balance = totalNoteAmount - totalProvision ;
+//    console.log(totalNoteAmount);
+
+//    // Format balance with commas and one decimal place
+//    var formattedTotalAmount = formattedTotalAmount.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+//    console.log(totalAmount);
+//    // Display balance
+
+//    document.getElementById("lblBalanceDeposit").innerText = "Balance: " + formattedTotalAmount;
+//    // Check if balance is 0 and enable/disable the save button accordingly
+//    var btnSave = document.getElementById("btnSave");
+//    if (totalAmount === 0) {
+//        btnSave.disabled = true; // Enable save button
+//    } else {
+//        btnSave.disabled = false; // Disable save button
+//    }
+
+
+//}
+
 function calculateCashBalance() {
     // Get the total amount of currency notes and coins
-    var note10000 = parseInt(document.getElementById('Notes_note10000').value) || 0;
-    var note5000 = parseInt(document.getElementById('Notes_note5000').value) || 0;
-    var note2000 = parseInt(document.getElementById('Notes_note2000').value) || 0;
-    var note1000 = parseInt(document.getElementById('Notes_note1000').value) || 0;
-    var note500 = parseInt(document.getElementById('Notes_note500').value) || 0;
-    var coin500 = parseInt(document.getElementById('Notes_coin500').value) || 0;
-    var coin100 = parseInt(document.getElementById('Notes_coin100').value) || 0;
-    var coin50 = parseInt(document.getElementById('Notes_coin50').value) || 0;
-    var coin25 = parseInt(document.getElementById('Notes_coin25').value) || 0;
-    var coin10 = parseInt(document.getElementById('Notes_coin10').value) || 0;
-    var coin5 = parseInt(document.getElementById('Notes_coin5').value) || 0;
-    var coin1 = parseInt(document.getElementById('Notes_coin1').value) || 0;
+    const getValue = id => parseInt(document.getElementById(id)?.value) || 0;
+
+    const note10000 = getValue('Notes_note10000');
+    const note5000 = getValue('Notes_note5000');
+    const note2000 = getValue('Notes_note2000');
+    const note1000 = getValue('Notes_note1000');
+    const note500 = getValue('Notes_note500');
+    const coin500 = getValue('Notes_coin500');
+    const coin350 = getValue('Notes_coin350');
+    const coin250 = getValue('Notes_coin250');
+    const coin200 = getValue('Notes_coin200');
+    const coin150 = getValue('Notes_coin150');
+    const coin100 = getValue('Notes_coin100');
+    const coin50 = getValue('Notes_coin50');
+    const coin25 = getValue('Notes_coin25');
+    const coin10 = getValue('Notes_coin10');
+    const coin5 = getValue('Notes_coin5');
+    const coin1 = getValue('Notes_coin1');
 
     // Calculate total amount
-    var totalAmount = (note10000 * 10000) + (note5000 * 5000) + (note2000 * 2000) + (note1000 * 1000) +
-        (note500 * 500) + (coin500 * 500) + (coin100 * 100) + (coin50 * 50) + (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
-    console.log(totalAmount);
-    // Format total amount as currency
-    var formattedTotalAmount = totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });
+    const totalAmount =
+        note10000 * 10000 + note5000 * 5000 + note2000 * 2000 + note1000 * 1000 +
+        note500 * 500 + coin500 * 500 + coin350 * 350 + coin250 * 250 +
+        coin200 * 200 + coin150 * 150 + coin100 * 100 + coin50 * 50 +
+        coin25 * 25 + coin10 * 10 + coin5 * 5 + coin1;
+
+    // Format total amount
+    const formattedTotalAmount = totalAmount.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'XAF'
+    });
+
+    // Get balance from UI
+    //const balanceInVaultRaw = $('#lblBalanceInVault').text().trim();
+    //const balanceMatch = balanceInVaultRaw.match(/[\d,]+\.\d{2}/);
+    // Always read from the original stored value, not the label which changes
+    const originalBalanceInVault = parseInt($('#balanceInVault').val(), 10) || 0;
+    // Difference
+    const difference = originalBalanceInVault - totalAmount;
+
+    const vaultLabel = $("#lblBalanceInVault");
+    var formattedBalanceInVault=   difference.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'XAF'
+    })
+ 
+
+    // Update UI
     $("#totalNoteAmount").val(totalAmount);
-    console.log(formattedTotalAmount);
-    
     $("#lblBalanceDeposit").val(totalAmount);
-    // Update the lblDepositRequest_amount span with the formatted total amount
-    var element = document.getElementById("lblDepositRequest_amount");
-    if (element) { element.textContent = "Total Amount: " + formattedTotalAmount; } 
-  
+    vaultLabel.text(formattedBalanceInVault);
 
-
-    ////Primary teller
-
-    //// Get total note amount
-    //var totalNoteAmount = parseFloat(document.getElementById("totalNoteAmount").value);
-    //var totalProvision = parseFloat(document.getElementById("totalProvision").value);
-    //// Calculate balance
-    //var balance = totalNoteAmount - totalProvision ;
-    //console.log(totalNoteAmount);
-
-    // Format balance with commas and one decimal place
-    var formattedTotalAmount = formattedTotalAmount.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-    console.log(totalAmount);
-    // Display balance
-   
-    document.getElementById("lblBalanceDeposit").innerText = "Balance: " + formattedTotalAmount;
-    // Check if balance is 0 and enable/disable the save button accordingly
-    var btnSave = document.getElementById("btnSave");
-    if (totalAmount === 0) {
-        btnSave.disabled = true; // Enable save button
+    // Highlight in red if difference < 0
+    if (difference < 0) {
+        vaultLabel.css('color', 'red');
     } else {
-        btnSave.disabled = false; // Disable save button
+        vaultLabel.css('color', 'black'); // Reset to normal if >= 0
     }
 
-    
+    const lblDepositAmount = document.getElementById("lblDepositRequest_amount");
+    if (lblDepositAmount) {
+        lblDepositAmount.textContent = "Total Amount: " + formattedTotalAmount;
+    }
+
+    // Primary teller calculation
+    const totalProvision = parseFloat(document.getElementById("totalProvision")?.value) || 0;
+    const balance = totalAmount - totalProvision;
+
+    const formattedBalance = balance.toLocaleString('en-US', {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1
+    });
+
+    document.getElementById("lblBalanceDeposit").innerText = "Balance: " + formattedBalance;
+    const btnSave = document.getElementById("btnSave");
+    if (difference===0) {
+        btnSave.disabled = true;
+    } else {
+        btnSave.disabled = false;
+    }
+    // Enable/disable Save button
+
+    if (btnSave) {
+        btnSave.disabled = totalAmount === 0;
+    }
 }
 
 

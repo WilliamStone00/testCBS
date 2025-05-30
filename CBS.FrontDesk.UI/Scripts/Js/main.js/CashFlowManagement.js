@@ -4,7 +4,7 @@
     
     $('#hideAccountId').hide();
     LoadCashRequestDataBranch("CashRequestDataTable")
-    //LoadCashRequestDataHo("myRequestDataTable") QueryModel_BranchId
+    //LoadCashRequestDataHo("myRequestDataTable") QueryModel_BranchId CashReplenimentRequestdto_TempId2
     LoadCashReplenishmentDataDT("GetAllCashRequestDataTable")
     
     $(document).on('change', '#MakeDecision', function () {
@@ -22,16 +22,18 @@
             // Show the element 
             console.log(selectedValue);
         
-            loadBranch(branchId)
+
          
                 if (selectedValue === 'Approved') {
                     $('#hideBranchID').hide();
                     $('#hideAmount').show();
                     $('#hideAccountId').show();
+                    loadAccountBalance(branchId);
                 } else {
                     $('#hideBranchID').show();
                     $('#hideAmount').show();
                     $('#hideAccountId').hide();
+                    loadBranch(branchId)
                 }
              
         } else {
@@ -391,17 +393,21 @@ function loadBranchAccountUsedToCreditCashFlow(branchId,option) {
 function loadAccountBalance(accountId) {
     console.log(accountId);
     $.ajax({
-        url: '/ManuallyJournalEntry/GetAccountBalance',
+        url: '/CashFlowManagement/GetBranchBankAccount',
         type: 'GET',
         dataType: 'json',
         data: { Id: accountId },
         success: function (data) {
-            // Clear existing options in the OperationEventAttributeId combo 
-            $('#BankCashOut_Balance').empty();
-            $("#BankCashOut_Balance").val(data.Account.CurrentBalance);
- 
+            // Clear existing options in the OperationEventAttributeId combo  GetBranchBankAccount
+            //$('#BankCashOut_Balance').empty();
+            //$("#BankCashOut_Balance").val(data.Account.CurrentBalance);
+            $('#CashReplenimentRequestdto_TempId3').empty();
+            $.each(data, function (index, item) {
+                $('#CashReplenimentRequestdto_TempId3').append($('<option>').text(item.Value).attr('value', item.Text));
+            });
+
             // Add new options based on the fetched data
-            console.log(data.Account.CurrentBalance);
+            console.log(data);
         },
         error: function (xhr, status, error) {
             console.error(xhr.responseText);
@@ -821,6 +827,10 @@ function calculateCashBalance() {
     var coin500 = parseInt(document.getElementById('Notes_coin500').value) || 0;
     var coin100 = parseInt(document.getElementById('Notes_coin100').value) || 0;
     var coin50 = parseInt(document.getElementById('Notes_coin50').value) || 0;
+    var coin350 = parseInt(document.getElementById('Notes_coin350').value) || 0;
+    var coin250 = parseInt(document.getElementById('Notes_coin250').value) || 0;
+    var coin200 = parseInt(document.getElementById('Notes_coin200').value) || 0;
+    var coin150 = parseInt(document.getElementById('Notes_coin150').value) || 0;
     var coin25 = parseInt(document.getElementById('Notes_coin25').value) || 0;
     var coin10 = parseInt(document.getElementById('Notes_coin10').value) || 0;
     var coin5 = parseInt(document.getElementById('Notes_coin5').value) || 0;
@@ -828,7 +838,7 @@ function calculateCashBalance() {
 
     // Calculate total amount
     var totalAmount = (note10000 * 10000) + (note5000 * 5000) + (note2000 * 2000) + (note1000 * 1000) +
-        (note500 * 500) + (coin500 * 500) + (coin100 * 100) + (coin50 * 50) + (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
+        (note500 * 500) + (coin500 * 500) + (coin350 * 350) + (coin250 * 250) + (coin200 * 200) + (coin150 * 150) + (coin100 * 100) + (coin50 * 50) + (coin25 * 25) + (coin10 * 10) + (coin5 * 5) + coin1;
     console.log(totalAmount);
     // Format total amount as currency
     var formattedTotalAmount = totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'XAF' });

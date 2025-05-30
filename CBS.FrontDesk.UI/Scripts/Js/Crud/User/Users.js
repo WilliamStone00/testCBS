@@ -91,7 +91,6 @@ function collectFilterData() {
         BranchId: $('#branchInput').val(),
         Role: $('#role').val(),
         IsActive: $('#isActive').val(),
-        IsBlocked: $('#isBlocked').val(),
         IsVerified: $('#isVerified').val(),
         StartDate: $('#createdFrom').val(),
         EndDate: $('#createdTo').val()
@@ -125,7 +124,7 @@ function downloadUsers() {
 // 🧹 Reset filter inputs
 function resetFilterForm() {
     $('#userName, #firstName, #lastName, #phoneNumber, #email, #role, #createdFrom, #createdTo').val('');
-    $('#isActive, #isBlocked, #isVerified').val('');
+    $('#isActive, #isVerified').val('');
     $('#branchInput').val('').trigger('change');
     $('#byBranch, #byUser, #byDate').prop('checked', false);
     $('#branchFilterSection, #userFilterSection, #dateRangeSection').hide();

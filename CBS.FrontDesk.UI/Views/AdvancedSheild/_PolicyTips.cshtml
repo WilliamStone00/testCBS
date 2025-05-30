@@ -1,0 +1,45 @@
+﻿<div class="card mb-1">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TSC Avanced Security Shield Configuration Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><strong>RequestLimit</strong>: Max requests per user/session in the time window. <span class="text-muted">e.g. <code>100</code></span></li>
+                <li><strong>TimeWindowSeconds</strong>: Time frame (in seconds) to count requests. <span class="text-muted">e.g. <code>60</code></span></li>
+                <li><strong>BlockDurationMinutes</strong>: Time (in minutes) to block after abuse. <span class="text-muted">e.g. <code>15</code></span></li>
+                <li><strong>IPRequestLimit</strong>: Max requests per IP in a separate window. <span class="text-muted">e.g. <code>300</code></span></li>
+                <li><strong>IPTimeWindowSeconds</strong>: Interval (seconds) to evaluate per-IP abuse. <span class="text-muted">e.g. <code>60</code></span></li>
+                <li><strong>WhitelistedHeaders</strong>: Trusted headers to skip limits. <span class="text-muted">e.g. <code>X-Internal-Request</code></span></li>
+                <li><strong>WhiteListedCountriesCode</strong>: ISO country codes allowed to access the system. <span class="text-muted">Used for geolocation-based access filtering. e.g. <code>CM</code> for Cameroon, <code>NG</code> for Nigeria</span></li>
+                <li><strong>CameroonCidrs</strong>: IP CIDRs allowed for system access from whitelisted countries. <span class="text-muted">Used to enforce IP-level geographic restrictions alongside country codes. <br />Example (single IP): <code>102.244.128.23/32</code> <br />Example (range): <code>102.244.128.0/18</code></span></li>
+                <li><strong>SuspiciousIndicators</strong>: Keywords & filenames to flag/block. <span class="text-muted">e.g. <code>shell.php</code>, <code>wp-login</code></span></li>
+                <li><strong>ExcludedPaths/Substrings/Extensions</strong>: Bypass routing for static/internal requests.</li>
+                <li><strong>BadUserAgents</strong>: User-Agent signatures of known bots and attackers. <span class="text-muted">e.g. <code>curl</code>, <code>python-requests</code></span></li>
+                <li><strong>Reset Policy</strong>: Deleting the current configuration will automatically initialize a secure default policy. <span class="text-muted">Used to recover or rebaseline protections. <strong>Note:</strong> This action will permanently remove all custom settings you have configured.</span></li>
+            </ul>
+        </div>
+
+
+        <!-- Default Config Display -->
+        <div class="alert alert-secondary mt-3">
+            <strong>Sample Configuration Snapshot:</strong><br />
+            <code>
+                RequestLimit = 100<br />
+                TimeWindowSeconds = 60<br />
+                BlockDurationMinutes = 15<br />
+                IPRequestLimit = 300<br />
+                IPTimeWindowSeconds = 60<br />
+                WhitelistedHeaders = ["FLUXTSC-Internal-Request", "FLUXTSC-Bypass-Limit"]<br />
+                CameroonCidrs = ["102.244.128.0/18"]<br />
+                SuspiciousIndicators = [...blocked filenames & attack tools...]<br />
+                ExcludedPaths = ["/favicon.ico", "/Content/", ...]<br />
+                BadUserAgents = ["curl", "python-requests"]
+            </code>
+        </div>
+    </div>
+
+</div>

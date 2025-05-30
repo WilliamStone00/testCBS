@@ -206,8 +206,8 @@ namespace CBS.BusinessService.Accounting
             JournalEntryDto dto = new JournalEntryDto();
             dto.AccountNumber = account.DrAmount> account.CrAmount?account.DrAccountNumber: account.CrAccountNumber;
             dto.Description = account.Description;
-            dto.Debit  = account.DrAmount.ToString();
-            dto.Credit = account.CrAmount.ToString();
+            dto.Debit  = account.DrAmount;
+            dto.Credit = account.CrAmount;
             dto.Reference = account.ReferenceID.ToString();
             dto.EntryDate =account.EntryDate.ToString();
                 

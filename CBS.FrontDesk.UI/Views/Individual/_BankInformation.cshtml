@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
-
+@using Resources
 <div class="card-body">
 
 
@@ -10,23 +10,23 @@
         <input type="hidden" name="option" value="bank_info" />
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.BankId, new SelectList(ViewBag.Banks, "Id", "Name"), "---Select Branch head office---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.CustomerList.BankId, new SelectList(ViewBag.Banks, "Id", "Name"), "---" + @GlobalIndividual.SelectBranchHeadOffice + "---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.CustomerList.BankId, "", new { @class = "text-danger " })
-                <label for="formValidationDob">Branch Head office</label>
+                <label for="formValidationDob">@GlobalIndividual.BranchHeadOffice</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---Select Branch offce---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.CustomerList.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---"+ @GlobalIndividual.SelectBranchOffice+"---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.CustomerList.BranchId, "", new { @class = "text-danger " })
-                <label for="formValidationDob">Branch offce</label>
+                <label for="formValidationDob">@GlobalIndividual.BranchOffice</label>
             </div>
         </div>
 
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.CustomerList.MembershipApprovalStatus, new { @class = "form-control",@readonly=true })
-                <label for="formValidationDob">Membership status</label>
+                <label for="formValidationDob">@GlobalIndividual.MembershipStatus</label>
             </div>
         </div>
 

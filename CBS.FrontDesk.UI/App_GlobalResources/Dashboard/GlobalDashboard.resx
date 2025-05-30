@@ -129,6 +129,12 @@
   <data name="August" xml:space="preserve">
     <value>August</value>
   </data>
+  <data name="Branch_Code" xml:space="preserve">
+    <value>Branch Code</value>
+  </data>
+  <data name="Branch_Name" xml:space="preserve">
+    <value>Branch Name</value>
+  </data>
   <data name="CashIn" xml:space="preserve">
     <value>Cash in</value>
   </data>
@@ -206,6 +212,9 @@
   </data>
   <data name="DailyOperations" xml:space="preserve">
     <value>Daily operations</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
   </data>
   <data name="December" xml:space="preserve">
     <value>December</value>
@@ -326,6 +335,15 @@
   </data>
   <data name="September" xml:space="preserve">
     <value>September</value>
+  </data>
+  <data name="Sub_Till_Balance" xml:space="preserve">
+    <value>Sub Till Balance</value>
+  </data>
+  <data name="TCIN" xml:space="preserve">
+    <value>TCIN</value>
+  </data>
+  <data name="TCOUT" xml:space="preserve">
+    <value>TCOUT</value>
   </data>
   <data name="TillBalance" xml:space="preserve">
     <value>Till balance</value>

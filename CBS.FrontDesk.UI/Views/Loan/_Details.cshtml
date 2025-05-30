@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
+    @using Resources
 <style>
     .small-image {
         max-width: 100px; /* Adjust the size as needed */
@@ -29,7 +30,7 @@
                                 {
                                     <!-- Clickable photo for preview -->
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#photoPreviewModal">
-                                        <img src="@Model.IndividualCustomer.CustomerList.photoUrl" class="img-fluid preview-image small-image" alt="Uploaded Image">
+                                        <img src="@Model.IndividualCustomer.CustomerList.photoUrl" class="img-fluid preview-image small-image" alt="@GlobalShared.UploadedImage">
                                     </a>
                                     <!-- Modal for photo preview -->
                                     <div class="modal fade" id="photoPreviewModal" tabindex="-1" aria-labelledby="photoPreviewModalLabel" aria-hidden="true">
@@ -46,7 +47,7 @@
                                 }
                                 else
                                 {
-                                    <img src="@Url.Content(Model.IndividualCustomer.CustomerList.ImageNoVirtualPath)" class="img-fluid preview-image small-image" alt="No Signature Found" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
+                                    <img src="@Url.Content(Model.IndividualCustomer.CustomerList.ImageNoVirtualPath)" class="img-fluid preview-image small-image" alt="@GlobalShared.NoSignatureFound" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
                                 }
                             </td>
                             <td class="align-top">
@@ -57,16 +58,16 @@
                                         <hr />
                                         <ul class="list-inline mb-0 d-flex flex-wrap gap-2">
                                             <li class="list-inline-item">
-                                                <i class="mdi mdi-file-code me-1 mdi-20px"></i><span class="fw-medium">Member Reference: @Model.IndividualCustomer.CustomerList.CustomerId</span>
+                                                <i class="mdi mdi-file-code me-1 mdi-20px"></i><span class="fw-medium">@GlobalLoan.MemberReference: @Model.IndividualCustomer.CustomerList.CustomerId</span>
                                             </li>
                                             <li class="list-inline-item">
-                                                <i class="mdi mdi-phone me-1 mdi-20px"></i><span class="fw-medium">Phone: @Model.IndividualCustomer.CustomerList.Phone</span>
+                                                <i class="mdi mdi-phone me-1 mdi-20px"></i><span class="fw-medium">@GlobalLoan.Phone: @Model.IndividualCustomer.CustomerList.Phone</span>
                                             </li>
                                             <li class="list-inline-item">
-                                                <i class="mdi mdi-map-marker-outline me-1 mdi-20px"></i><span class="fw-medium">Address: @Model.IndividualCustomer.CustomerList.Address, Email: @Model.IndividualCustomer.CustomerList.Email, Branch and Code: @Model.IndividualCustomer.CustomerList.branch, @Model.IndividualCustomer.CustomerList.branchCode</span>
+                                                <i class="mdi mdi-map-marker-outline me-1 mdi-20px"></i><span class="fw-medium">@GlobalLoan.Address: @Model.IndividualCustomer.CustomerList.Address, @GlobalLoan.Email: @Model.IndividualCustomer.CustomerList.Email, @GlobalLoan.BranchAndCode: @Model.IndividualCustomer.CustomerList.branch, @Model.IndividualCustomer.CustomerList.branchCode</span>
                                             </li>
                                             <li class="list-inline-item">
-                                                <i class="mdi mdi-calendar-blank-outline me-1 mdi-20px"></i><span class="fw-medium"> Membership Approved Date: @Model.IndividualCustomer.CustomerList.MembershipApprovedDate</span>
+                                                <i class="mdi mdi-calendar-blank-outline me-1 mdi-20px"></i><span class="fw-medium"> @GlobalLoan.MembershipApprovedDate: @Model.IndividualCustomer.CustomerList.MembershipApprovedDate</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -94,7 +95,7 @@
                                         data-bs-target="#navs-justified-home"
                                         aria-controls="navs-justified-home"
                                         aria-selected="true">
-                                    <i class="tf-icons mdi mdi-home-outline me-1"></i> Loan Term
+                                    <i class="tf-icons mdi mdi-home-outline me-1"></i> @GlobalLoan.LoanTerm
                                 </button>
                             </li>
                             <li class="nav-item">
@@ -105,7 +106,7 @@
                                         data-bs-target="#navs-loan-Informations"
                                         aria-controls="navs-loan-Informations"
                                         aria-selected="false">
-                                    <i class="tf-icons mdi mdi-account-outline me-1"></i> Lona Information
+                                    <i class="tf-icons mdi mdi-account-outline me-1"></i> @GlobalLoan.LoanInformation
                                 </button>
                             </li>
                             <li class="nav-item">
@@ -116,7 +117,7 @@
                                         data-bs-target="#navs-daily-interest"
                                         aria-controls="navs-daily-interest"
                                         aria-selected="false">
-                                    <i class="tf-icons mdi mdi-message-text-outline me-1"></i> Accrual Interests
+                                    <i class="tf-icons mdi mdi-message-text-outline me-1"></i> @GlobalLoan.AccrualInterests
                                 </button>
                             </li>
                             <li class="nav-item">
@@ -127,7 +128,7 @@
                                         data-bs-target="#navs-loan-refunds"
                                         aria-controls="navs-loan-refunds"
                                         aria-selected="false">
-                                    <i class="tf-icons mdi mdi-home-outline me-1"></i> Refunds
+                                    <i class="tf-icons mdi mdi-home-outline me-1"></i> @GlobalLoan.Refunds
                                     <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">@Model.Refunds.Count()</span>
                                 </button>
                             </li>
@@ -140,7 +141,7 @@
                                         data-bs-target="#navs-loan-scheduller"
                                         aria-controls="navs-loan-scheduller"
                                         aria-selected="false">
-                                    <i class="tf-icons mdi mdi-message-text-outline me-1"></i> Repayment schedule
+                                    <i class="tf-icons mdi mdi-message-text-outline me-1"></i> @GlobalLoan.RepaymentSchedule
                                 </button>
                             </li>
                             @*<li class="nav-item">

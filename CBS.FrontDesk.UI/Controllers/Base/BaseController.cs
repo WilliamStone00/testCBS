@@ -262,7 +262,7 @@ namespace CBS.FrontDesk.UI.Controllers
         //////                    }
         //////                }
 
-              
+
         //////            }
         //////            else
         //////            {
@@ -591,9 +591,67 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
 
+        public void CreateToken(UserDto reqDto, string cookieName = "TSC", int minutes_to_live = 240)
+        {
+            if (reqDto == null || string.IsNullOrWhiteSpace(reqDto.userName))
+                throw new ArgumentException("Invalid user data");
+
+            // Optional: skip Membership.ValidateUser if password is not being verified
+            if (!Membership.ValidateUser(reqDto.userName, string.Empty))
+                return;
+
+            var user = new CustomMembershipUser(reqDto);
+            var roles = reqDto.Roles?.Select(r => r.RoleName).ToArray() ?? new[] { "User" };
+
+            var userModel = new CustomSerializeModel
+            {
+                Id = user.UserID,
+                UserName = reqDto.userName,
+                RoleName = roles,
+                SessionIP = reqDto.SessionIP,
+                SessionUserAgent = reqDto.SessionUserAgent,
+                FullName = $"{reqDto.firstName} {reqDto.lastName}",
+                Email = user.Email,
+                BranchCode = reqDto.Branch?.BranchCode,
+                BranchId = reqDto.BranchID,
+                BranchName = reqDto.Branch?.Name,
+                Phonenumber = user.Phonenumber,
+                SessionID = reqDto.SessionId,
+                SessionCode = reqDto.SessionCode
+            };
+
+            // ⏱️ Store session time details
+            Session["SessionStartTime"] = DateTime.UtcNow;
+            Session["SessionMaxLifetimeMinutes"] = minutes_to_live;
+
+            string userData = JsonConvert.SerializeObject(userModel);
+
+            var ticket = new FormsAuthenticationTicket(
+                version: 1,
+                name: reqDto.userName, // ✅ Use username instead of SessionId for readability
+                issueDate: DateTime.Now,
+                expiration: DateTime.Now.AddMinutes(minutes_to_live),
+                isPersistent: false,
+                userData: userData
+            );
+
+            string encryptedTicket = FormsAuthentication.Encrypt(ticket);
+            var authCookie = new HttpCookie(cookieName, encryptedTicket)
+            {
+                HttpOnly = true, // ✅ Security: prevent JS access
+                Secure = FormsAuthentication.RequireSSL, // ✅ Only transmit over HTTPS if configured
+                SameSite = SameSiteMode.Lax // Optional: stricter CSRF control
+            };
+
+            Response.Cookies.Add(authCookie);
+
+            // ✅ Hydrate session
+            BuildLocalSession(reqDto);
+        }
 
 
-        public void CreateToken(UserDto reqDto, string cookieName = "TSC", int minutes_to_live = 60)
+
+        public void CreateTokenOld(UserDto reqDto, string cookieName = "TSC", int minutes_to_live = 60)
         {
             if (Membership.ValidateUser(reqDto.userName, ""))
             {
@@ -604,10 +662,13 @@ namespace CBS.FrontDesk.UI.Controllers
                     Id = user.UserID,
                     UserName = reqDto.userName,
                     RoleName = roles,
-                    SessionIP = reqDto.SessionIP,
-                    SessionUserAgent = reqDto.SessionUserAgent,
-                    FullName = user.FullName,
+                    SessionIP=reqDto.SessionIP,
+                    SessionUserAgent=reqDto.SessionUserAgent,
+                    FullName = $"{reqDto.firstName} {reqDto.lastName}",
                     Email = user.Email,
+                    BranchCode=reqDto.Branch.BranchCode,
+                    BranchId=reqDto.BranchID,
+                    BranchName=reqDto.Branch.Name,
                     Phonenumber = user.Phonenumber,
                     SessionID = reqDto.SessionId,
                     SessionCode = reqDto.SessionCode,
@@ -711,11 +772,12 @@ namespace CBS.FrontDesk.UI.Controllers
 
             }
 
-                // ✅ Valid single session
-                BuildLocalSession(userSession.UserAuthDto);
-            
+            // ✅ Valid single session
+            BuildLocalSession(userSession.UserAuthDto);
+
         }
-    
+
+
 
 
 

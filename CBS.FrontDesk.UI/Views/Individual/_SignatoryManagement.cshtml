@@ -1,4 +1,5 @@
-﻿<div id="accordionPayment" class="accordion">
+﻿@using Resources
+<div id="accordionPayment" class="accordion">
     <div class="accordion-item active">
         <h2 class="accordion-header">
             <button class="accordion-button"
@@ -7,7 +8,7 @@
                     aria-expanded="true"
                     data-bs-target="#accordionPayment-1"
                     aria-controls="accordionPayment-1">
-                Add account signatories
+                @GlobalIndividual.AddAccountSignatories
             </button>
         </h2>
 
@@ -25,7 +26,7 @@
                     data-bs-toggle="collapse"
                     data-bs-target="#accordionPayment-2"
                     aria-controls="accordionPayment-2">
-                Accounts signatories
+                @GlobalIndividual.AccountsSignatories
             </button>
         </h2>
         <div id="accordionPayment-2" class="accordion-collapse collapse">

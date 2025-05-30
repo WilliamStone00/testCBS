@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "No Internet Connection";
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalHome.NoInternetConnection;
 }
 
 <div class="container-fluid h-100 d-flex flex-column justify-content-center align-items-center bg-light">
@@ -8,12 +9,12 @@
             <div class="mb-3">
                 <i class="mdi mdi-wifi-off text-success display-1"></i>
             </div>
-            <h3 class="text-primary mb-2 font-weight-bold">No Internet Connection</h3>
+            <h3 class="text-primary mb-2 font-weight-bold">@GlobalHome.NoInternetConnection</h3>
             <p class="text-muted mb-4" style="font-size: 1rem;">
-                You are currently offline. Please check your internet connection and try again.
+                @GlobalHome.YouAreCurrentlyOffline.
             </p>
             <a href="~/Home" class="btn btn-gradient-primary px-4 py-2">
-                RETRY
+                @GlobalHome.RETRY
             </a>
         </div>
     </div>

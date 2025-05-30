@@ -1,14 +1,14 @@
-﻿
+﻿@using Resources
 
 @{
-    ViewBag.Title = "Installment Type";
+    ViewBag.Title = @GlobalInstallmentType.InstallmentType;
 }
 <div class="row justify-content-end">
     <div class="demo-inline-spacing text-end">
-        <a type="button"  onclick="LoadDataGen('InstallmentType','myDataTable','_Data',0,'datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+        <a type="button"  onclick="LoadDataGen('InstallmentType','myDataTable','_Data',0,'datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
             <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
         </a>
-        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','InstallmentType')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','InstallmentType')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
             <span class="tf-icons mdi mdi-plus mdi-18px"></span>
         </a>
     </div>

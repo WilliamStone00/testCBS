@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
-
+@using Resources
 <div class="card-body">
 
 
@@ -10,49 +10,49 @@
         <input type="hidden" name="option" value="maritalstatus" id="option" />
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.CustomerList.MaritalStatus, new SelectList(ViewBag.maritalStatuses, "Text", "Value"), "---Select Marital Status---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.CustomerList.MaritalStatus, new SelectList(ViewBag.maritalStatuses, "Text", "Value"), "---"+ @GlobalIndividual.SelectMaritalStatus+"---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.CustomerList.MaritalStatus, "", new { @class = "text-danger " })
-                <label for="formValidationDob">Marital status</label>
+                <label for="formValidationDob">@GlobalIndividual.MaritalStatus</label>
             </div>
         </div>
         <div class="col-md-9">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.SpouseName, new { @class = "form-control", @placeholder = "Spouse name" })
+                @Html.TextBoxFor(m => m.CustomerList.SpouseName, new { @class = "form-control", @placeholder = @GlobalIndividual.SpouseName })
                 @Html.ValidationMessageFor(m => m.CustomerList.SpouseName, "", new { @class = "text-danger" })
-                <label>Spouse name</label>
+                <label>@GlobalIndividual.SpouseName</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.SpouseAddress, new { @class = "form-control", @placeholder = "Spouse address" })
+                @Html.TextBoxFor(m => m.CustomerList.SpouseAddress, new { @class = "form-control", @placeholder = @GlobalIndividual.SpouseAddress })
                 @Html.ValidationMessageFor(m => m.CustomerList.SpouseAddress, "", new { @class = "text-danger" })
-                <label>Spouse address</label>
+                <label>@GlobalIndividual.SpouseAddress</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.SpouseContactNumber, new { @class = "form-control", @placeholder = "Spouse contact" })
+                @Html.TextBoxFor(m => m.CustomerList.SpouseContactNumber, new { @class = "form-control", @placeholder = @GlobalIndividual.SpouseContact })
                 @Html.ValidationMessageFor(m => m.CustomerList.SpouseContactNumber, "", new { @class = "text-danger" })
-                <label>Spouse contact</label>
+                <label>@GlobalIndividual.SpouseContact</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.SpouseOccupation, new { @class = "form-control", @placeholder = "Spouse occupation" })
+                @Html.TextBoxFor(m => m.CustomerList.SpouseOccupation, new { @class = "form-control", @placeholder = @GlobalIndividual.SpouseOccupation })
                 @Html.ValidationMessageFor(m => m.CustomerList.SpouseOccupation, "", new { @class = "text-danger" })
-                <label>Spouse occupation</label>
+                <label>@GlobalIndividual.SpouseOccupation</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.CustomerList.NumberOfKids, new { @class = "form-control", @placeholder = "Number of kids" })
                 @Html.ValidationMessageFor(m => m.CustomerList.NumberOfKids, "", new { @class = "text-danger" })
-                <label>Number of kids</label>
+                <label>@GlobalIndividual.NumberOfKids</label>
             </div>
         </div>
 
         <div class="col-12">
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" class="btn btn-primary">@GlobalShared.Update</button>
         </div>
     }
 </div>

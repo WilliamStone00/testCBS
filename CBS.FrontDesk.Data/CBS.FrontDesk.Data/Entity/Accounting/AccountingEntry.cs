@@ -48,8 +48,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 JournalEntryDto dto = new JournalEntryDto();
                 dto.AccountNumber = account.AccountNumberReference;
                 dto.Description = account.Naration;
-                dto.Debit = ConvertToLong(account.DrAmount).ToString();
-                dto.Credit = ConvertToLong(account.CrAmount).ToString();
+             
                 dto.Reference = account.ReferenceID.ToString();
                 dto.EntryDate = account.EntryDate.ToString();
                 dto.Address = this.Address;
@@ -66,6 +65,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 dto.BranchName = this.BranchName;
                 dto.FromDate = this.FromDate.ToString("yyyy-MM-dd");
                 dto.ToDate = this.ToDate.ToString("yyyy-MM-dd");
+                dto.Debit = account.DrAmount;
+                dto.Credit = account.CrAmount;
                 dto.SumCredit = ConvertToLong((Entries.AccountingEntries.Where(x=>x.CrAmount>0).Sum(x=>x.CrAmount))).ToString("N");
                 dto.SumDebit = ConvertToLong(Entries.AccountingEntries.Where(x => x.DrAmount > 0).Sum(x => x.DrAmount)).ToString("N");
                 dto.NumberCredit = ConvertToLong(Entries.AccountingEntries.Where(x => x.CrAmount > 0).Count()).ToString("N");

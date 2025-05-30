@@ -29,7 +29,9 @@ namespace CBS.FrontDesk.UI.Filter
             var actionName = filterContext.ActionDescriptor.ActionName.ToLower();
             var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName.ToLower();
             var requestUrl = request.RawUrl.ToLower();
-
+            // ✅ Skip access checks for blocked page to prevent redirect loop
+            if (requestUrl.Contains("/error/blocked") || requestUrl.Contains("/authentication/login"))
+                return; // ✅ prevent middleware from interfering
             bool isAuthenticated = filterContext.HttpContext.User.Identity.IsAuthenticated;
             if (!isAuthenticated && filterContext.HttpContext.Session["UserID"] != null)
             {

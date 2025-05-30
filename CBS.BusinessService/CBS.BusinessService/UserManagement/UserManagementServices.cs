@@ -18,6 +18,7 @@ using CBS.BusinessService.Config;
 using CBS.BusinessService.Session;
 using DocumentFormat.OpenXml.EMMA;
 using Microsoft.Owin.Logging;
+using System.Data.Entity.Core.Metadata.Edm;
 
 namespace CBS.BusinessService.UserManagement
 {
@@ -26,11 +27,11 @@ namespace CBS.BusinessService.UserManagement
         private readonly ApiCallerHelper _identityServerBaseUrl;
         private readonly BranchServices _branchServices;
         private readonly RoleServices _roleServices;
-        public UserManagementServices(BranchServices branchServices = null, RoleServices roleServices = null)
+        public UserManagementServices()
         {
             _identityServerBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
             _branchServices=new BranchServices();
-            _roleServices=roleServices;
+            _roleServices=new RoleServices();
         }
         public async Task<ExecutionMessages> CreateUser(User user)
         {
@@ -605,7 +606,6 @@ namespace CBS.BusinessService.UserManagement
                 else if (model.Option == "ActivateDeactivateAccount")
                 {
                     userModel.isActive=userModel.isActive ? false : true;
-                    userModel.IsBlocked=userModel.isActive ? true : false;
                     userModel.ReasonForBlockingAccount=model.ReasonForBlockingAccount;
                 }
                 else if (model.Option == "ChangeBranch")
@@ -650,9 +650,8 @@ namespace CBS.BusinessService.UserManagement
         {
             try
             {
-                user.ChangePasswordOnFirstLogin = true;
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var reUser = await ApiCallerHelper.PostAsync<ResponseObject<User>>(APICallHelper.ChangePassword, user.ChangePassword);
+                var reUser = await ApiCallerHelper.PostAsync<ResponseObject<bool>>(APICallHelper.ChangePassword, user.ChangePassword);
                 if (reUser.IsSuccess)
                 {
                     GetExecutionMessages(reUser, true, user.ChangePassword.userName, MessagesResults.Success,
@@ -734,6 +733,7 @@ namespace CBS.BusinessService.UserManagement
                 {
                     mFAActivation.Status = true;
                 }
+                mFAActivation.MfaTypeUsed="TOTP";
                 mFAActivation.Email=GetUserName();
                 mFAActivation.Id=ConvertStringToGuid(GetUserID());
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());

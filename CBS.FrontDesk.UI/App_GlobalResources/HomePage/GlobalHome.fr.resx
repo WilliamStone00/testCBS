@@ -123,8 +123,14 @@
   <data name="Home" xml:space="preserve">
     <value>Accueil</value>
   </data>
+  <data name="NoInternetConnection" xml:space="preserve">
+    <value />
+  </data>
   <data name="PartnerText" xml:space="preserve">
     <value>Votre partenaire sécurisé et fiable. FLUX !</value>
+  </data>
+  <data name="RETRY" xml:space="preserve">
+    <value />
   </data>
   <data name="SatisfactionText" xml:space="preserve">
     <value>Flux SARL ! : Autonomiser les entreprises. Améliorer les vies.</value>
@@ -134,5 +140,8 @@
   </data>
   <data name="WelcomeTitle" xml:space="preserve">
     <value>BIENVENUE À</value>
+  </data>
+  <data name="YouAreCurrentlyOffline" xml:space="preserve">
+    <value />
   </data>
 </root>

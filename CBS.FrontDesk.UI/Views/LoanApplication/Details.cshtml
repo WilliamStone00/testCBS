@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanApplication
+    @using Resources
 @{
-    ViewBag.Title = "Loan Application Details";
+    ViewBag.Title = @GlobalLoanApplication.LoanApplicationDetails;
     var SavingCoverage = (Model.SavingAccountCoverageRate / 100) * Model.RequestedAmount;
     var totalRefinancing = Model.RequestedAmount + Model.RestructuredBalance;
 }
@@ -9,10 +10,10 @@
 <div class="card bg-light mb-2 shadow-sm">
     <div class="card-body text-center">
         <h1 class="card-title text-primary">
-            <i class="mdi mdi-file-document-outline me-2"></i> Loan Application Details
+            <i class="mdi mdi-file-document-outline me-2"></i> @GlobalLoanApplication.LoanApplicationDetails
         </h1>
         <p class="card-text">
-            View and manage loan application details, repayment schedule, and loan tracking. This section provides all necessary information related to the loan, approvals, repayments, and associated financial calculations.
+            @GlobalLoanApplication.ViewAndManageLoanApplicationDetails.
         </p>
         <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
     </div>
@@ -21,7 +22,7 @@
 <!-- Loan Application Help Tips -->
 <div class="card mb-2">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> Important Guidelines for Loan Application Modifications</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalLoanApplication.ImportantGuidelinesForLoanApplicationModifications</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanEditTips" aria-expanded="false" aria-controls="collapseLoanEditTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -29,50 +30,50 @@
     <div id="collapseLoanEditTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-lock-outline text-danger me-2"></i> **Once a loan is approved or disbursed, it cannot be modified.** If there is an issue with an approved loan, please contact your administrator.</li>
+                <li><i class="mdi mdi-lock-outline text-danger me-2"></i> @GlobalLoanApplication.OnceAloanIsApprovedOrDisbursedItCannotBeModified.</li>
 
                 <li>
-                    <i class="mdi mdi-pencil-outline text-primary me-2"></i> **Modifiable Details:**
+                    <i class="mdi mdi-pencil-outline text-primary me-2"></i> @GlobalLoanApplication.ModifiableDetails
                     <ul>
-                        <li>Requested **Loan Amount**</li>
-                        <li>Interest Rate & Loan Duration</li>
-                        <li>Repayment Terms & Grace Period</li>
-                        <li>Guarantor & Collateral Information</li>
-                        <li>Coverage details (Savings, Shares, Deposits, Salary, etc.)</li>
-                        <li>Applicable **loan fees & charges**</li>
+                        <li>@GlobalLoanApplication.RequestedLoanAmount</li>
+                        <li>@GlobalLoanApplication.InterestRateLoanDuration</li>
+                        <li>@GlobalLoanApplication.RepaymentTermsGracePeriod</li>
+                        <li>@GlobalLoanApplication.GuarantorCollateralInformation</li>
+                        <li>@GlobalLoanApplication.CoverageDetails</li>
+                        <li>@GlobalLoanApplication.ApplicableLoanFeesCharges</li>
                     </ul>
                 </li>
 
                 <li>
-                    <i class="mdi mdi-alert-circle-outline text-warning me-2"></i> **Non-Modifiable Details:**
+                    <i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalLoanApplication.NonModifiableDetails
                     <ul>
-                        <li>Loan Application Date</li>
-                        <li>Loan Status (Once Approved, it is Locked)</li>
-                        <li>Disbursement Information</li>
+                        <li>@GlobalLoanApplication.LoanApplicationDate</li>
+                        <li>@GlobalLoanApplication.LoanStatusOnceApproved</li>
+                        <li>@GlobalLoanApplication.DisbursementInformation</li>
                     </ul>
                 </li>
 
                 <li>
-                    <i class="mdi mdi-bank-transfer text-success me-2"></i> **Loan Coverage Requirements:**
+                    <i class="mdi mdi-bank-transfer text-success me-2"></i> @GlobalLoanApplication.LoanCoverageRequirements
                     <ul>
-                        <li>Ensure that the total coverage amount (savings, deposits, shares, or salary) meets the loan security requirements.</li>
-                        <li>If a **down payment is required**, make sure it is correctly recorded.</li>
+                        <li>@GlobalLoanApplication.EnsureThatTheTotalCoverageAmountMeetTheLoanReq.</li>
+                        <li>@GlobalLoanApplication.IfADownPaymentIsRequiredMakeSureItIsCorrectlyRecorded.</li>
                     </ul>
                 </li>
 
                 <li>
-                    <i class="mdi mdi-check-circle-outline text-success me-2"></i> **Before Submission:**
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalLoanApplication.BeforeSubmission
                     <ul>
-                        <li>Review all entered details to ensure accuracy.</li>
-                        <li>Any incorrect information may cause delays in approval.</li>
+                        <li>@GlobalLoanApplication.ReviewAllEnteredDetailsToEnsureAccuracy.</li>
+                        <li>@GlobalLoanApplication.AnyIncorrectInformationMayCauseDelaysInApproval.</li>
                     </ul>
                 </li>
 
                 <li>
-                    <i class="mdi mdi-history text-info me-2"></i> **Tracking Loan Applications:**
+                    <i class="mdi mdi-history text-info me-2"></i> @GlobalLoanApplication.TrackingLoanApplications
                     <ul>
-                        <li>Use the **Loan Query Panel** to check application status and approvals.</li>
-                        <li>For any further assistance, reach out to your loan officer.</li>
+                        <li>@GlobalLoanApplication.UseTheLoanQueryPanel.</li>
+                        <li>@GlobalLoanApplication.ForAnyFurtherAssistanceReachOutToYourLoanOfficer.</li>
                     </ul>
                 </li>
             </ul>
@@ -91,7 +92,7 @@
                class="btn btn-label-warning btn-sm me-2"
                data-bs-toggle="tooltip"
                title="Edit Loan Application">
-                <i class="mdi mdi-pencil mdi-18px"></i> Edit
+                <i class="mdi mdi-pencil mdi-18px"></i> @GlobalShared.Edit
             </a>
         }
 
@@ -100,14 +101,14 @@
             <a type="button" class="btn btn-label-danger btn-sm me-2"
                data-bs-toggle="tooltip" title="Delete Loan Application"
                onclick="confirmDelete('@Model.Id')">
-                <i class="mdi mdi-trash-can mdi-18px"></i> Delete
+                <i class="mdi mdi-trash-can mdi-18px"></i> @GlobalShared.Delete
             </a>
         }
 
-        <a type="button" href="@Url.Action("Index", "LoanApplication")"
-           class="btn btn-label-primary btn-sm" data-bs-toggle="tooltip" title="Back to Loan List">
-            <i class="mdi mdi-arrow-left mdi-18px"></i> Back
-        </a>
+    <a type="button" href="@Url.Action("Index", "LoanApplication")"
+       class="btn btn-label-primary btn-sm" data-bs-toggle="tooltip" title="@GlobalLoanApplication.BackToLoanList">
+        <i class="mdi mdi-arrow-left mdi-18px"></i> @GlobalShared.Back
+    </a>
     </div>
 </div>
 
@@ -116,25 +117,25 @@
 {
     <div class="card shadow-sm mt-4 mb-2">
         <div class="card-header bg-dark text-white fw-bold">
-            <i class="mdi mdi-bank"></i> LOAN APPROVAL STATUS
+            <i class="mdi mdi-bank"></i> @GlobalLoanApplication.LOAN_APPROVAL_STATUS
         </div>
         <div class="card-body">
             <!-- Loan Details Table -->
             <table class="table table-bordered table-striped" id="myDataTable">
                 <thead>
                     <tr class="table-secondary">
-                        <th>ID</th>
-                        <th>L.Date</th>
-                        <th>l.Amount</th>
-                        <th>I.Rate</th>
-                        <th>A.Interest</th>
-                        <th>Total Due</th>
-                        <th>Paid</th>
-                        <th>Balance</th>
-                        <th>N.Installment</th>
-                        <th>Duration</th>
-                        <th>M.Date</th>
-                        <th>Status</th>
+                        <th>@GlobalLoanApplication.ID</th>
+                        <th>@GlobalLoanApplication.LDate</th>
+                        <th>@GlobalLoanApplication.lAmount</th>
+                        <th>@GlobalLoanApplication.IRate</th>
+                        <th>@GlobalLoanApplication.AInterest</th>
+                        <th>@GlobalLoanApplication.TotalDue</th>
+                        <th>@GlobalLoanApplication.Paid</th>
+                        <th>@GlobalLoanApplication.Balance</th>
+                        <th>@GlobalLoanApplication.NInstallment</th>
+                        <th>@GlobalLoanApplication.Duration</th>
+                        <th>@GlobalLoanApplication.MDate</th>
+                        <th>@GlobalShared.Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -174,15 +175,15 @@ else
     <div class="card shadow-sm mt-2">
         <div class="card-body text-center">
             <div class="alert alert-warning">
-                <h5><i class="mdi mdi-alert-circle-outline"></i> Loan Not Yet Approved</h5>
+                <h5><i class="mdi mdi-alert-circle-outline"></i> @GlobalLoanApplication.LoanNotYetApproved</h5>
                 <p class="text-muted">
-                    This loan application is still under review. Once approved, all loan details will be updated here.
+                    @GlobalLoanApplication.ThisLoanApplicationIsStillUnderReview.
                 </p>
             </div>
 
             <div class="alert alert-info">
                 <i class="mdi mdi-clock-outline me-2"></i>
-                <strong>Tip:</strong> If your loan application is taking too long for approval, contact the loan department for assistance.
+                <strong>@GlobalLoanApplication.Tip:</strong> @GlobalLoanApplication.IfYourLoanApplicationIsTakingTooLongForApprovalContactTheLoanDep.
             </div>
         </div>
     </div>
@@ -191,11 +192,11 @@ else
 <!-- Loan Terms Details -->
 <div class="card shadow-sm mt-2">
     <div class="card-header bg-dark text-white fw-bold">
-        <i class="mdi mdi-bank"></i> LOAN APPLICATION TERMS DETAILS
+        <i class="mdi mdi-bank"></i> @GlobalLoanApplication.LOAN_APPLICATION_TERMS_DETAILS
     </div>
     <div class="card-body">
         <p class="text-muted">
-            Below are the specific terms and conditions of this loan application, including repayment structure and collateral details.
+            @GlobalLoanApplication.BelowAreTheSpecificTermsAndConditionsOfThisLoanApplication.
         </p>
         @Html.Partial("_Details")
     </div>

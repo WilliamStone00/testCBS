@@ -1,6 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingDayObject.HolyDay
+    @using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">Set Holidays</legend>
+    <legend id="select_base">@GlobalHoliday.SetHolidays</legend>
     <div class="card-body">
         @using (Html.BeginForm("Create", "Holiday", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
@@ -11,7 +12,7 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.EventName, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.EventName, "", new { @class = "text-danger" })
-                    <label for="EventName">Event Name</label>
+                    <label for="EventName">@GlobalHoliday.EventName</label>
                 </div>
             </div>
 
@@ -20,7 +21,7 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.DateFromStr, new { @class = "form-control date-picker" })
                     @Html.ValidationMessageFor(m => m.DateFromStr, "", new { @class = "text-danger" })
-                    <label for="DateFrom">Begin Date</label>
+                    <label for="DateFrom">@GlobalHoliday.BeginDate</label>
                 </div>
             </div>
 
@@ -28,7 +29,7 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.DateToStr, new { @class = "form-control date-picker" })
                     @Html.ValidationMessageFor(m => m.DateToStr, "", new { @class = "text-danger" })
-                    <label for="DateTo">End Date</label>
+                    <label for="DateTo">@GlobalHoliday.EndDate</label>
                 </div>
             </div>
 
@@ -37,7 +38,7 @@
             <div class="col-md-12">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.IsCentralisedConfiguration, new { @class = "form-check-input", id = "isCentralisedCheck" })
-                    <label class="form-check-label" for="isCentralisedCheck" id="isCentralisedLabel">Check to centralise</label>
+                    <label class="form-check-label" for="isCentralisedCheck" id="isCentralisedLabel">@GlobalHoliday.CheckToCentralise</label>
                 </div>
             </div>
 
@@ -47,18 +48,18 @@
                     @Html.DropDownListFor(
                         m => m.BranchId,
                         new SelectList(ViewBag.Branches, "Id", "Name"),
-                        "--- Select Branch ---",
+                        "---"+ @GlobalHoliday.SelectBranch +"---",
                         new { @class = "form-control select2", id = "BranchId", @search = "true" }
                     )
                     @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                    <label for="BranchId">Select Branch</label>
+                    <label for="BranchId">@GlobalHoliday.SelectBranch</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 200px;" })
                     @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                    <label>Description</label>
+                    <label>@GlobalHoliday.Description</label>
 
                 </div>
             </div>
@@ -66,7 +67,7 @@
             <div class="col-md-12">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "isActive" })
-                    <label class="form-check-label" for="isActive">Active Status</label>
+                    <label class="form-check-label" for="isActive">@GlobalHoliday.ActiveStatus</label>
                 </div>
             </div>
         </div>
@@ -75,12 +76,12 @@
             <div class="mt-4">
                 @if (ViewBag.Key != null)
                 {
-                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                 }
                 else
                 {
-                    <button type="submit" class="btn btn-primary me-2">Save</button>
-                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+            <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
                 }
             </div>
         }

@@ -39,7 +39,7 @@ public class RateLimitConfigService : BaseService
             var response = await _identityServerBaseUrl.PostAsync<ResponseObject<RateLimitConfig>>(
                 APICallHelper.AddOrUpdateRateLimitConfig, command);
 
-            if (response.IsSuccess && response.ApiResponseData != null)
+            if (response.IsSuccess)
             {
                 GetExecutionMessages(response, true, command.Id, MessagesResults.Success,
                     ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
@@ -66,10 +66,10 @@ public class RateLimitConfigService : BaseService
     {
         try
         {
-            var response = await _identityServerBaseUrl.GetAsync<ServiceResponse<bool>>(
+            var response = await _identityServerBaseUrl.DeleteAsync<ServiceResponse<bool>>(
                 string.Format(APICallHelper.Get_Delete_RateLimitConfig, id)); // Assuming GET is used for delete endpoint call
 
-            if (response.IsSuccess && response.ApiResponseData != null)
+            if (response.IsSuccess)
             {
                 GetExecutionMessages(response, true, id, MessagesResults.Success,
                     ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
@@ -92,7 +92,7 @@ public class RateLimitConfigService : BaseService
     /// <summary>
     /// Retrieves a RateLimitConfig by ID.
     /// </summary>
-    public async Task<RateLimitConfig> GetByIdAsync(string id)
+    public async Task<RateLimitConfig> GetRateLimitConfig(string id)
     {
         try
         {

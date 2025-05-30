@@ -142,6 +142,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Daily teller control.
+        /// </summary>
+        internal static string DailyTellerControl {
+            get {
+                return ResourceManager.GetString("DailyTellerControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Daily Teller Data Set.
         /// </summary>
         internal static string DailyTellerDataSet {

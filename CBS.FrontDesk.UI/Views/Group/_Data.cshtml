@@ -1,4 +1,5 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping.Group>
+    @using Resources
 @*@if (Model != null)
 {<div class="table-responsive mb-3">
         <table class="table table-hover" id="myDataTable">
@@ -55,10 +56,10 @@ else
     <table class="table table-hover" id="myDataTable">
         <thead class="table-light">
             <tr>
-                <th>Group</th>
-                <th>Registration number</th>
-                <th>Tax</th>
-                <th>Action</th>
+                <th>@GlobalGroup.Group</th>
+                <th>@GlobalGroup.RegistrationNumber</th>
+                <th>@GlobalGroup.Tax</th>
+                <th>@GlobalShared.Action</th>
             </tr>
         </thead>
     </table>

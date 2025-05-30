@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping.GroupManagement
-
+@using Resources
 @{
-    ViewBag.Title = "Moral Person Detail";
+    ViewBag.Title = @GlobalGroup.MoralPersonDetail;
 }
 <div class="row">
 
@@ -20,7 +20,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-account-group me-2"></i>
-                            Management of @Model.Group.GroupName - @Model.Group.GroupType.GroupTypeName
+                            @GlobalGroup.ManagementOf @Model.Group.GroupName - @Model.Group.GroupType.GroupTypeName
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
