@@ -25,16 +25,12 @@ namespace CBS.FrontDesk.UI
 
             // Configure SignalR options
             GlobalHost.Configuration.MaxIncomingWebSocketMessageSize = 32 * 1024; // 32 KB
-
             // Set DisconnectTimeout first
             GlobalHost.Configuration.DisconnectTimeout = TimeSpan.FromSeconds(180); // 3 minutes
-
             // Set ConnectionTimeout (same as DisconnectTimeout or less)
             GlobalHost.Configuration.ConnectionTimeout = TimeSpan.FromSeconds(180);
-
             // Set KeepAlive to be at most 1/3 of DisconnectTimeout
             GlobalHost.Configuration.KeepAlive = TimeSpan.FromSeconds(60); // 1 minute
-
             // Map SignalR hubs
             app.MapSignalR("/signalr", hubConfiguration);
             app.MapSignalR();
