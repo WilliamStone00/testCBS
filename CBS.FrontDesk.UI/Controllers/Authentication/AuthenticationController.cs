@@ -51,14 +51,21 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
 
+        private const int MaxFailedAttempts = 5;
+        private const string FailedAttemptsKey = "FailedLoginAttempts";
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult> Login(AuthRequest model, string returnUrl = "")
         {
-            // If user failed 3+ times, check reCAPTCHA
-            var failedAttempts = Session["FailedLoginAttempts"] != null ? (int)Session["FailedLoginAttempts"] : 0;
+            var result = new ExecutionMessages();
+            var geo = await GetGeoLocation();
+            model.GeoLocationResponse = geo;
 
-            if (failedAttempts >= 1)
+            int failedAttempts = Session[FailedAttemptsKey] != null ? (int)Session[FailedAttemptsKey] : 0;
+
+            // ✅ 1. If too many failures, trigger CAPTCHA
+            if (failedAttempts >= 3)
             {
                 var recaptchaResponse = Request["g-recaptcha-response"];
                 var isCaptchaValid = await VerifyRecaptchaAsync(recaptchaResponse);
@@ -66,102 +73,93 @@ namespace CBS.FrontDesk.UI.Controllers
                 if (!isCaptchaValid)
                 {
                     ViewBag.Success = false;
-                    ViewBag.Message = "Please complete the CAPTCHA verification.";
+                    ViewBag.Message = "🚧 Please complete CAPTCHA verification.";
                     return View(model);
                 }
             }
-            var result = new ExecutionMessages();
-            var Geo =  await GetGeoLocation();
-            model.GeoLocationResponse = Geo;
+
+            // ✅ 2. Validate credentials
             if (ModelState.IsValid)
             {
                 result = await _helper.AuthenticateUser(model);
+
                 if (result.Data is UserDto userDto)
                 {
-                    if (!userDto.IsBlocked)
+                    try
                     {
-                        try
-                        {
-                            if (userDto.ChangePasswordOnFirstLogin)
-                            {
-                                Session["PWD"] = "PWD";
-                                CreateToken(userDto, "TSC", userDto.expirationTime);
-                                //CreateToken(userDto, "CHANGE_PWD", userDto.expirationTime, false, true);
-                                var url = Url.Action("FLoginChangePassword", "UserManagement", new
-                                {
-                                    serviceoption = "USER",
-                                    KEY = userDto.id,
-                                    secrete = userDto.refreshToken,
-                                    usersecreteid = Guid.NewGuid(),
-                                    path = $"{userDto.firstName}_{userDto.lastName}",
-                                    userName = userDto.userName
-                                });
-                                Session["CHPWDUrl"] = url;
-                                return RedirectToLocal(url);
-                            }
-                            else
-                            {
-                                if (userDto.isMFA)
-                                {
-                                    Session["MFA"] = "MFA";
-                                    CreateToken(userDto, "TSC", userDto.expirationTime);
-                                    var url = Url.Action("Index", "MFAVerification", new
-                                    {
-                                        serviceoption = "MFA",
-                                        KEY = userDto.id,
-                                        secrete = userDto.refreshToken,
-                                        usersecreteid = Guid.NewGuid(),
-                                        email = userDto.email,
-                                        fullname = userDto.firstName,
-                                        returnUrl
-                                    });
-                                    // 🛡️ Reset failed attempts server-side
-                                    Session["FailedLoginAttempts"] = 0;
+                        // 🛡️ Reset failed attempts
+                        Session[FailedAttemptsKey] = 0;
+                        TempData["ResetClientAttempts"] = true;
 
-                                    // 🛡️ Also reset client-side using TempData
-                                    TempData["ResetClientAttempts"] = true;
-                                    Session["MFAUrl"] = url;
-                                    return Redirect(url);
-                                }
-                                else
-                                {
-                                    //CreateToken(userDto, "CBS4U", userDto.expirationTime, false, false);
-                                    CreateToken(userDto, "TSC", userDto.expirationTime);
-                                    ViewBag.Success = true;
-                                    ViewBag.StartSessionWarning = true;
-                                    ViewBag.Message = Messaging.MessageResult(result);
-                                    // 🛡️ Reset failed attempts server-side
-                                    Session["FailedLoginAttempts"] = 0;
+                        CreateToken(userDto, "TSC", userDto.expirationTime);
 
-                                    // 🛡️ Also reset client-side using TempData
-                                    TempData["ResetClientAttempts"] = true;
-                                    return RedirectToLocal(returnUrl);
-                                }
-                            }
-                            
-                        }
-                        catch (Exception ex)
+                        if (userDto.ChangePasswordOnFirstLogin)
                         {
-                            Session["FailedLoginAttempts"] = ((int?)Session["FailedLoginAttempts"] ?? 0) + 1;
-                            ViewBag.Success = false;
-                            ViewBag.Message = "An error occurred while processing your request. Please try again later.";
-                            return View("Login", model);
+                            Session["PWD"] = "PWD";
+                            var url = Url.Action("FLoginChangePassword", "UserManagement", new
+                            {
+                                serviceoption = "USER",
+                                KEY = userDto.id,
+                                secrete = userDto.refreshToken,
+                                usersecreteid = Guid.NewGuid(),
+                                path = $"{userDto.firstName}_{userDto.lastName}",
+                                userName = userDto.userName
+                            });
+                            Session["CHPWDUrl"] = url;
+                            return RedirectToLocal(url);
                         }
+
+                        if (userDto.isMFA)
+                        {
+                            Session["MFA"] = "MFA";
+                            var url = Url.Action("Index", "MFAVerification", new
+                            {
+                                serviceoption = "MFA",
+                                KEY = userDto.id,
+                                secrete = userDto.refreshToken,
+                                usersecreteid = Guid.NewGuid(),
+                                email = userDto.email,
+                                fullname = userDto.firstName,
+                                returnUrl
+                            });
+                            Session["MFAUrl"] = url;
+                            return Redirect(url);
+                        }
+
+                        ViewBag.Success = true;
+                        ViewBag.StartSessionWarning = true;
+                        ViewBag.Message = Messaging.MessageResult(result);
+                        return RedirectToLocal(returnUrl);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        Session["FailedLoginAttempts"] = ((int?)Session["FailedLoginAttempts"] ?? 0) + 1;
+                        LogFailedAttempt(model.UserName); // Optional: Log failed login to DB
+                        IncrementLoginFailures();
                         ViewBag.Success = false;
-                        ViewBag.Message = "Your account is blocked. Please contact support.";
+                        ViewBag.Message = "⚠️ Login failed due to internal error. Please try again.";
                         return View("Login", model);
                     }
                 }
             }
-            Session["FailedLoginAttempts"] = ((int?)Session["FailedLoginAttempts"] ?? 0) + 1;
-            // If we got this far, something failed, redisplay form with error message
+
+            // ❌ Final failure fallback
+            LogFailedAttempt(model.UserName);
+            IncrementLoginFailures();
             ViewBag.Success = false;
-            ViewBag.Message = result.MessageString ?? "There was a connection issue. Please try again later.";
+            ViewBag.Message = result.MessageString ?? "❌ Invalid login. Please check your credentials.";
             return View("Login", model);
+        }
+
+        // 🧠 Utility methods
+
+        private void IncrementLoginFailures()
+        {
+            Session[FailedAttemptsKey] = ((int?)Session[FailedAttemptsKey] ?? 0) + 1;
+        }
+
+        private void LogFailedAttempt(string username)
+        {
+            // TODO: Log to DB or log file: IP, user, timestamp
         }
         [HttpPost]
         [AllowAnonymous]

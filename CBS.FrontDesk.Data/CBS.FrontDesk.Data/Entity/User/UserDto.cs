@@ -52,6 +52,9 @@ namespace CBS.FrontDesk.Data.Entity
         public string BranchID { get; set; }
         public string Address { get; set; }
         public bool IsActive { get; set; }
+        public GeneralMFaConfig GeneralMFaConfig { get; set; } = new GeneralMFaConfig();
+        public bool IsRequiredMFA { get; set; }
+        public string RequiredMFANotificationToUse { get; set; }
         public Bank Bank { get; set; } = new Bank();
         public Branch Branch { get; set; } = new Branch();
         public Organization Organization { get; set; }=new Organization();

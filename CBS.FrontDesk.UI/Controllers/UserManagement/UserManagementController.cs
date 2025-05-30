@@ -150,6 +150,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
             }
             else if (model.Option == "ChangePassword")
             {
+                model.ChangePassword.userName=model.userName;
                 var data = await _userManagementServices.ChangePassword(model);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
@@ -228,13 +229,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
         {
             try
             {
-                if (!query.IsActive && !query.IsBlocked && !query.IsVerified)
-                {
-                    query.IsActive=true;
-                    query.IsVerified=false;
-                }
                 var dataTable = await _userManagementServices.GetDataTableAsync(query);
-
                 var userList = JsonConvert.DeserializeObject<List<UserLightDto>>(
                     JsonConvert.SerializeObject(dataTable.data)
                 );

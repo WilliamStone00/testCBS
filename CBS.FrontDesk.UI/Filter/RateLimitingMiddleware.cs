@@ -584,18 +584,18 @@ namespace CBS.FrontDesk.UI.Filter
                 }
 
                 // 2️⃣ Block POST requests to secure areas without Referer
-                if ((requestPath.StartsWith("/dashboard", StringComparison.OrdinalIgnoreCase) ||
-                     requestPath.StartsWith("/secure", StringComparison.OrdinalIgnoreCase)) &&
-                    string.IsNullOrWhiteSpace(referer))
-                {
-                    string logMsg = $"🚨 Missing Referer Header on protected path '{requestPath}' | IP: {ip}";
-                    System.Diagnostics.Debug.WriteLine(logMsg);
-                    AdvancedMiddlewareLogger.Log(logMsg, LogLevel.WARN, globalUserFullname, globalbranchname);
+                //if ((requestPath.StartsWith("/dashboard", StringComparison.OrdinalIgnoreCase) ||
+                //     requestPath.StartsWith("/secure", StringComparison.OrdinalIgnoreCase)) &&
+                //    string.IsNullOrWhiteSpace(referer))
+                //{
+                //    string logMsg = $"🚨 Missing Referer Header on protected path '{requestPath}' | IP: {ip}";
+                //    System.Diagnostics.Debug.WriteLine(logMsg);
+                //    AdvancedMiddlewareLogger.Log(logMsg, LogLevel.WARN, globalUserFullname, globalbranchname);
 
-                    HandleSuspiciousPath(request, response, requestPath, logMsg, "Header-Filter", fullUrl);
-                    HandleRateLimitExceeded(response, ip, "Missing Referer", 0);
-                    return true;
-                }
+                //    HandleSuspiciousPath(request, response, requestPath, logMsg, "Header-Filter", fullUrl);
+                //    HandleRateLimitExceeded(response, ip, "Missing Referer", 0);
+                //    return true;
+                //}
                 // 3️⃣ Block POST requests with suspicious or unauthorized Origin headers
                 if (request.HttpMethod == "POST" && !string.IsNullOrWhiteSpace(origin))
                 {

@@ -114,7 +114,8 @@ namespace CBS.FrontDesk.Data.Entity.RequestManagement
         // 🛠 Admin Controls
         { "AllowAdminReset", "true" },
         { "RejectSerialPatterns", "true" },
-        { "AdminResetBypassHistory", "false" }
+        { "AdminResetBypassHistory", "false" },
+        { "DeleteUnusedAccountsAfterCreationDays", "3" }
     };
     }
 

@@ -606,7 +606,6 @@ namespace CBS.BusinessService.UserManagement
                 else if (model.Option == "ActivateDeactivateAccount")
                 {
                     userModel.isActive=userModel.isActive ? false : true;
-                    userModel.IsBlocked=userModel.isActive ? true : false;
                     userModel.ReasonForBlockingAccount=model.ReasonForBlockingAccount;
                 }
                 else if (model.Option == "ChangeBranch")
@@ -651,9 +650,8 @@ namespace CBS.BusinessService.UserManagement
         {
             try
             {
-                user.ChangePasswordOnFirstLogin = true;
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-                var reUser = await ApiCallerHelper.PostAsync<ResponseObject<User>>(APICallHelper.ChangePassword, user.ChangePassword);
+                var reUser = await ApiCallerHelper.PostAsync<ResponseObject<bool>>(APICallHelper.ChangePassword, user.ChangePassword);
                 if (reUser.IsSuccess)
                 {
                     GetExecutionMessages(reUser, true, user.ChangePassword.userName, MessagesResults.Success,
@@ -735,6 +733,7 @@ namespace CBS.BusinessService.UserManagement
                 {
                     mFAActivation.Status = true;
                 }
+                mFAActivation.MfaTypeUsed="TOTP";
                 mFAActivation.Email=GetUserName();
                 mFAActivation.Id=ConvertStringToGuid(GetUserID());
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());

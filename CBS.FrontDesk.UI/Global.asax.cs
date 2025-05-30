@@ -13,6 +13,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
@@ -34,6 +35,37 @@ namespace CBS.FrontDesk.UI
 
     public class MvcApplication : System.Web.HttpApplication
     {
+        public static readonly string EnvironmentName =
+        ConfigurationManager.AppSettings["URLConf_Environment"]?.Trim() ?? "Production";
+
+        public static readonly List<string> AllowedOriginDomains =
+            (ConfigurationManager.AppSettings["AllowedOrigins"] ?? "")
+            .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+            .Select((origin, index) => new { origin = origin.Trim(), index })
+            .Where(entry =>
+            {
+                if (EnvironmentName == "Development" && entry.index == 0)
+                    return true;
+                if (EnvironmentName == "TestBed" && entry.index == 1)
+                    return true;
+                if (EnvironmentName == "Production" && entry.index == 2)
+                    return true;
+                return false;
+            })
+            .Select(entry =>
+            {
+                try
+                {
+                    return new Uri(entry.origin).GetLeftPart(UriPartial.Authority).ToLowerInvariant();
+                }
+                catch
+                {
+                    return null;
+                }
+            })
+            .Where(origin => !string.IsNullOrWhiteSpace(origin))
+            .Distinct()
+            .ToList();
         protected void Application_Start()
         {
 
@@ -179,27 +211,30 @@ namespace CBS.FrontDesk.UI
 
         protected void Application_PreSendRequestHeaders()
         {
-            // 🔒 Remove default server headers
+            // 🔐 1️⃣ Remove default server-identifying headers
             Response.Headers.Remove("Server");
             Response.Headers.Remove("X-AspNet-Version");
             Response.Headers.Remove("X-Powered-By");
 
-            // 🌐 Custom branding (optional)
+            // 🛡️ 2️⃣ Apply custom branding (optional but obfuscates real tech stack)
             Response.Headers.Add("Server", "SERVER FLUX TSC");
             Response.Headers.Add("X-Powered-By", "FLUXSAL CAMEROON");
 
-            // ✅ Enforce HTTPS
+            // 🔒 3️⃣ Enforce strict HTTPS with HSTS for 1 year and preload
             Response.Headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains; preload";
 
-            // ✅ Content Security Policy (allow scripts, styles, fonts, etc.)
+            // 🌐 4️⃣ Dynamically set allowed connect-src domains for CSP
+            var connectSrcValues = string.Join(" ", AllowedOriginDomains.Prepend("'self'"));
+
+            // 📜 5️⃣ Add Content-Security-Policy (CSP) for XSS protection
             string contentSecurityPolicy = string.Join(" ",
                 "default-src 'self';",
-                "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://unpkg.com https://localhost:44346;",
-                "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://localhost:44346;",
+                "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://unpkg.com;",
+                "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;",
                 "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;",
-                "connect-src 'self' https://localhost:44346;",
+                $"connect-src {connectSrcValues};",
                 "img-src 'self' data:;",
-                "frame-src 'self';",
+                "frame-src 'none';",
                 "object-src 'none';",
                 "base-uri 'self';",
                 "form-action 'self';"
@@ -208,35 +243,35 @@ namespace CBS.FrontDesk.UI
             if (!Response.Headers.AllKeys.Contains("Content-Security-Policy"))
                 Response.Headers.Add("Content-Security-Policy", contentSecurityPolicy);
 
-            // ✅ Referrer policy (prevent leakage of referrer data)
+            // 🔎 6️⃣ Privacy headers
             if (!Response.Headers.AllKeys.Contains("Referrer-Policy"))
                 Response.Headers.Add("Referrer-Policy", "no-referrer");
 
-            // ✅ Permissions policy (disable features not needed)
+            // 🎛️ 7️⃣ Permissions control
             if (!Response.Headers.AllKeys.Contains("Permissions-Policy"))
                 Response.Headers.Add("Permissions-Policy", "geolocation=(), microphone=(), camera=(), payment=()");
 
-            // ✅ Prevent clickjacking
+            // 🛡️ 8️⃣ Anti-clickjacking
             if (!Response.Headers.AllKeys.Contains("X-Frame-Options"))
                 Response.Headers.Add("X-Frame-Options", "DENY");
 
-            // ✅ Prevent MIME sniffing
+            // 🧪 9️⃣ Prevent MIME-type sniffing
             if (!Response.Headers.AllKeys.Contains("X-Content-Type-Options"))
                 Response.Headers.Add("X-Content-Type-Options", "nosniff");
 
-            // ✅ Legacy XSS filter (older browsers)
+            // 🧰 🔒 10️⃣ Legacy XSS filter (for older browsers)
             if (!Response.Headers.AllKeys.Contains("X-XSS-Protection"))
                 Response.Headers.Add("X-XSS-Protection", "1; mode=block");
 
-            // ✅ Secure all cookies
+            // 🍪 11️⃣ Secure all response cookies
             foreach (var cookieKey in Response.Cookies.AllKeys)
             {
                 var cookie = Response.Cookies[cookieKey];
                 if (cookie == null) continue;
 
-                cookie.Secure = true; // Enforce HTTPS
-                cookie.HttpOnly = true; // Block JS access
-                cookie.SameSite = SameSiteMode.Strict; // Prevent CSRF from external sites
+                cookie.Secure = true; // Only send via HTTPS
+                cookie.HttpOnly = true; // JS cannot access
+                cookie.SameSite = SameSiteMode.Strict; // Prevent cross-origin usage
             }
         }
         //protected void Application_PreSendRequestHeaders()
