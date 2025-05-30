@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
@@ -30,13 +31,17 @@ namespace CBS.BusinessService.BulkOperations
         private readonly BranchServices _branchServices;
         private readonly SavingProductServices _savingProductServices;
         private readonly IndividualProfileServices _individualProfileServices;
+        private readonly AccountingServices _accountingServices;
+        private string operationType;
 
-        public BulkOperationService(BranchServices branchServices = null, IndividualProfileServices individualProfileServices = null, SavingProductServices savingProductServices = null)
+        public BulkOperationService(BranchServices branchServices = null, IndividualProfileServices individualProfileServices = null, SavingProductServices savingProductServices = null, AccountingServices accountingServices = null)
         {
             _transactionConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
             _branchServices = branchServices;
             _individualProfileServices = individualProfileServices;
             _savingProductServices = savingProductServices;
+            _accountingServices = accountingServices;
+            operationType = "INCOME";
         }
 
 
@@ -186,7 +191,6 @@ namespace CBS.BusinessService.BulkOperations
             {
            
                 Branch branch= model.Branches.Where(x=>x.Id==model.BranchId).FirstOrDefault();
-                   
 
                 if (model.ContributionAmount>0)
                 {
@@ -211,7 +215,11 @@ namespace CBS.BusinessService.BulkOperations
                 else
                 {
 
-                    SimulateBulkOperationToSpecificAccountType simulateModel = new SimulateBulkOperationToSpecificAccountType(model, branch);
+                    var eventName=await _accountingServices.GetEventNames(operationType);
+
+                    var selectedEvent = eventName.Where(x => x.Value == model.DestinationAccountId).FirstOrDefault();
+
+                    SimulateBulkOperationToSpecificAccountType simulateModel = new SimulateBulkOperationToSpecificAccountType(model,selectedEvent.Text, branch);
                     // Make an API call to create an individual profile
                     var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<CreateBulkOperationSimulation>>(APICallHelper.SimulateAccountTopup, simulateModel);
                     if (response.ApiResponseData != null)

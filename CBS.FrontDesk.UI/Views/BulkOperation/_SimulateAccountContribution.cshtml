@@ -8,7 +8,7 @@
             <div class="mb-3">
                 @Html.LabelFor(m => m.DestinationAccountId, "Destination Account", new { @class = "form-label" })
                 @Html.DropDownListFor(m => m.DestinationAccountId,
-                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                    new SelectList(ViewBag.eventNames, "Value", "Text"),
                     @GlobalBulkOperation.SelectAccount,
                     new { @class = "form-select select2" })
             </div>
