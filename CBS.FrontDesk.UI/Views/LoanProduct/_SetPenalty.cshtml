@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
+    @using Resources
 <div class="col">
 
     <div class="row my-4">
@@ -11,7 +12,7 @@
                             data-bs-target="#collapseDeliveryAddress"
                             aria-expanded="true"
                             aria-controls="collapseDeliveryAddress">
-                        Set Penalty configurations for @Model.UpdateLoanProductCommand.ProductName.ToUpper()
+                        @GlobalLoanProduct.SetPenaltyConfigurationsFor @Model.UpdateLoanProductCommand.ProductName.ToUpper()
                     </button>
                 </h2>
                 <div id="collapseDeliveryAddress"
@@ -24,87 +25,87 @@
                                 <div class="row g-4">
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.Penalty.PenaltyType, new SelectList(ViewBag.PenaltyTypes, "Value", "Text"), "---Select Penalty type---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.DropDownListFor(m => m.Penalty.PenaltyType, new SelectList(ViewBag.PenaltyTypes, "Value", "Text"), "---"+ @GlobalLoanProduct.SelectPenaltyType+"---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(m => m.Penalty.PenaltyType, "", new { @class = "text-danger " })
-                                            <label>Penalty type</label>
+                                            <label>@GlobalLoanProduct.PenaltyType</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.Penalty.PenaltyName, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.Penalty.PenaltyName, "", new { @class = "text-danger" })
-                                            <label>Enter penalty unique name</label>
+                                            <label>@GlobalLoanProduct.EnterPenaltyUniqueName</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <label for="waivePenaltyYesNo"></label>
                                         <div class="form-check form-check-inline" id="waivePenaltyYesNo">
                                             @Html.RadioButtonFor(m => m.Penalty.IsRate, true, new { id = "IsRatePercentage", @class = "form-check-input" })
-                                            <label class="form-check-label" for="waivePenaltyYes">I want Penalty to be percentage % based</label>
+                                            <label class="form-check-label" for="waivePenaltyYes">@GlobalLoanProduct.IWantPenaltyToBePercentageBased</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             @Html.RadioButtonFor(m => m.Penalty.IsRate, false, new { id = "IsRateFixed", @class = "form-check-input" })
-                                            <label class="form-check-label" for="waivePenaltyNo">I want Penalty to be a fixed amount</label>
+                                            <label class="form-check-label" for="waivePenaltyNo">@GlobalLoanProduct.IWantPenaltyToBeAFixedAmount</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <label for="waivePenaltyYesNo">(optional) Waive penalty on branch holidays?</label>
+                                        <label for="waivePenaltyYesNo">@GlobalLoanProduct.OptionalWaivePenaltyOnBranchHolidays?</label>
                                         <div class="form-check form-check-inline" id="waivePenaltyYesNo">
                                             @Html.RadioButtonFor(m => m.Penalty.WaivePenaltyOnBranchHolidays, true, new { id = "waivePenaltyYes", @class = "form-check-input" })
-                                            <label class="form-check-label" for="waivePenaltyYes">Yes</label>
+                                            <label class="form-check-label" for="waivePenaltyYes">@GlobalLoanProduct.Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             @Html.RadioButtonFor(m => m.Penalty.WaivePenaltyOnBranchHolidays, false, new { id = "waivePenaltyNo", @class = "form-check-input" })
-                                            <label class="form-check-label" for="waivePenaltyNo">No</label>
+                                            <label class="form-check-label" for="waivePenaltyNo">@GlobalLoanProduct.No</label>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
-                                            @Html.DropDownListFor(m => m.Penalty.CalculatePenaltyOn, new SelectList(ViewBag.CalculateInterestOn, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.DropDownListFor(m => m.Penalty.CalculatePenaltyOn, new SelectList(ViewBag.CalculateInterestOn, "Value", "Text"), "---"+ @GlobalLoanProduct.Select+"---", new { @class = "form-control select2", @search = "true" })
                                             @Html.ValidationMessageFor(m => m.Penalty.CalculatePenaltyOn, "", new { @class = "text-danger " })
-                                            <label>Calculate penalty on?</label>
+                                            <label>@GlobalLoanProduct.CalculatePenaltyOn?</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.Penalty.PenaltyValue, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.Penalty.PenaltyValue, "", new { @class = "text-danger" })
-                                            <label>Enter penalty value. (Keep in mind of you have selectd rate or fix amount)</label>
+                                            <label>@GlobalLoanProduct.EnterPenaltyValue</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.Penalty.GracePeriodInDaysBeforeApplyingPenalty, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.Penalty.GracePeriodInDaysBeforeApplyingPenalty, "", new { @class = "text-danger" })
-                                            <label>Grace priod in days (Optional)</label>
+                                            <label>@GlobalLoanProduct.GracePeriodInDaysOptional</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.Penalty.DaysToApplyPenalty, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.Penalty.DaysToApplyPenalty, "", new { @class = "text-danger" })
-                                            <label>Enter days to apply penalt. Penalty will be applied after grace period.</label>
+                                            <label>@GlobalLoanProduct.EnterDaysToApplyPenalt.</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.Penalty.IsEnabled, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">Check to enable</label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.CheckToEnable</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextAreaFor(m => m.Penalty.Description, new { @class = "form-control", style = "height: 150px;" })
                                             @Html.ValidationMessageFor(m => m.Penalty.Description, "", new { @class = "text-danger" })
-                                            <label>Penalty description</label>
+                                            <label>@GlobalLoanProduct.PenaltyDescription</label>
                                         </div>
                                     </div>
 
 
                                 </div>
                                 <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary me-2">Set penalty</button>
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalLoanProduct.SetPenalty</button>
                                     @Html.HiddenFor(m => m.Penalty.LoanProductId)
                                     <input type="hidden" name="ServiceOption" value="set_penalty" id="ServiceOption" />
                                 </div>
@@ -122,7 +123,7 @@
                             data-bs-target="#collapsePaymentMethod3"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod3">
-                        @Model.UpdateLoanProductCommand.ProductName.ToUpper() Penalties configurations
+                        @Model.UpdateLoanProductCommand.ProductName.ToUpper() @GlobalLoanProduct.PenaltiesConfigurations
                     </button>
                 </h2>
                 <div id="collapsePaymentMethod3"
@@ -135,11 +136,11 @@
                                 <table class="table table-hover" id="myDataTable">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Type</th>
-                                            <th>Product</th>
-                                            <th>Value</th>
-                                            <th>Status</th>
+                                            <th>@GlobalLoanProduct.Name</th>
+                                            <th>@GlobalLoanProduct.Type</th>
+                                            <th>@GlobalLoanProduct.Product</th>
+                                            <th>@GlobalLoanProduct.Value</th>
+                                            <th>@GlobalLoanProduct.Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -156,17 +157,17 @@
                                                     }
                                                     else
                                                     {
-                                                        <span>@d.PenaltyValue.ToString("0#,00.0") Fixed Amount</span>
+                                                        <span>@d.PenaltyValue.ToString("0#,00.0") @GlobalLoanProduct.FixedAmount</span>
                                                     }
                                                 </td>
                                                 <td style="width:10%">
                                                     @if (d.IsEnabled)
                                                     {
-                                                        <span class="badge bg-info">Active</span>
+                                                        <span class="badge bg-info">@GlobalLoanProduct.Active</span>
                                                     }
                                                     else
                                                     {
-                                                        <span class="badge bg-warning">Inactive</span>
+                                                        <span class="badge bg-warning">@GlobalLoanProduct.Inactive</span>
                                                     }
                                                 </td>
                                             </tr>

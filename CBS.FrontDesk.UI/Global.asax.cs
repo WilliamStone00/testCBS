@@ -13,6 +13,8 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -33,6 +35,37 @@ namespace CBS.FrontDesk.UI
 
     public class MvcApplication : System.Web.HttpApplication
     {
+        public static readonly string EnvironmentName =
+        ConfigurationManager.AppSettings["URLConf_Environment"]?.Trim() ?? "Production";
+
+        public static readonly List<string> AllowedOriginDomains =
+            (ConfigurationManager.AppSettings["AllowedOrigins"] ?? "")
+            .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+            .Select((origin, index) => new { origin = origin.Trim(), index })
+            .Where(entry =>
+            {
+                if (EnvironmentName == "Development" && entry.index == 0)
+                    return true;
+                if (EnvironmentName == "TestBed" && entry.index == 1)
+                    return true;
+                if (EnvironmentName == "Production" && entry.index == 2)
+                    return true;
+                return false;
+            })
+            .Select(entry =>
+            {
+                try
+                {
+                    return new Uri(entry.origin).GetLeftPart(UriPartial.Authority).ToLowerInvariant();
+                }
+                catch
+                {
+                    return null;
+                }
+            })
+            .Where(origin => !string.IsNullOrWhiteSpace(origin))
+            .Distinct()
+            .ToList();
         protected void Application_Start()
         {
 
@@ -55,6 +88,15 @@ namespace CBS.FrontDesk.UI
         }
         protected void Application_BeginRequest()
         {
+            var isProduction = ConfigurationManager.AppSettings["Environment"] == "Production";
+            var host = HttpContext.Current.Request.Url.Host.ToLowerInvariant();
+
+            if (isProduction && host.Contains("localhost"))
+            {
+                HttpContext.Current.Response.StatusCode = 403;
+                HttpContext.Current.Response.StatusDescription = "Localhost access is blocked in production/TB";
+                HttpContext.Current.Response.End();
+            }
             if (!Context.Request.IsSecureConnection)
             {
                 Response.Redirect(Context.Request.Url.ToString().Replace("http:", "https:"));
@@ -75,6 +117,7 @@ namespace CBS.FrontDesk.UI
             Thread.CurrentThread.CurrentCulture = ci;
             Thread.CurrentThread.CurrentUICulture = ci;
         }
+
 
         //protected void Application_AcquireRequestState(object sender, EventArgs e)
         //{
@@ -168,58 +211,67 @@ namespace CBS.FrontDesk.UI
 
         protected void Application_PreSendRequestHeaders()
         {
-            // 🔄 Remove existing headers not removed by <remove> in web.config
+            // 🔐 1️⃣ Remove default server-identifying headers
             Response.Headers.Remove("Server");
             Response.Headers.Remove("X-AspNet-Version");
+            Response.Headers.Remove("X-Powered-By");
 
-            // 🛡️ Add branding (not security-sensitive)
+            // 🛡️ 2️⃣ Apply custom branding (optional but obfuscates real tech stack)
             Response.Headers.Add("Server", "SERVER FLUX TSC");
             Response.Headers.Add("X-Powered-By", "FLUXSAL CAMEROON");
 
-            // ✅ Strict-Transport-Security (Already configured in web.config, included for redundancy)
-            Response.Headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
+            // 🔒 3️⃣ Enforce strict HTTPS with HSTS for 1 year and preload
+            Response.Headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains; preload";
 
-            // ✅ Content Security Policy (CSP)
-            string contentSecurityPolicy = "default-src 'self'; " +
-                                           "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
-                                           "connect-src 'self' https://localhost:44346; " +
-                                           "img-src 'self' data:; " +
-                                           "style-src 'self' 'unsafe-inline'; " +
-                                           "frame-src 'self'; " +
-                                           "font-src 'self';";
+            // 🌐 4️⃣ Dynamically set allowed connect-src domains for CSP
+            var connectSrcValues = string.Join(" ", AllowedOriginDomains.Prepend("'self'"));
+
+            // 📜 5️⃣ Add Content-Security-Policy (CSP) for XSS protection
+            string contentSecurityPolicy = string.Join(" ",
+                "default-src 'self';",
+                "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://unpkg.com;",
+                "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;",
+                "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;",
+                $"connect-src {connectSrcValues};",
+                "img-src 'self' data:;",
+                "frame-src 'none';",
+                "object-src 'none';",
+                "base-uri 'self';",
+                "form-action 'self';"
+            );
 
             if (!Response.Headers.AllKeys.Contains("Content-Security-Policy"))
                 Response.Headers.Add("Content-Security-Policy", contentSecurityPolicy);
 
-            // ✅ Referrer-Policy
+            // 🔎 6️⃣ Privacy headers
             if (!Response.Headers.AllKeys.Contains("Referrer-Policy"))
                 Response.Headers.Add("Referrer-Policy", "no-referrer");
 
-            // ✅ Permissions Policy
+            // 🎛️ 7️⃣ Permissions control
             if (!Response.Headers.AllKeys.Contains("Permissions-Policy"))
                 Response.Headers.Add("Permissions-Policy", "geolocation=(), microphone=(), camera=(), payment=()");
 
-            // ✅ X-Frame-Options (Prevent Clickjacking)
+            // 🛡️ 8️⃣ Anti-clickjacking
             if (!Response.Headers.AllKeys.Contains("X-Frame-Options"))
                 Response.Headers.Add("X-Frame-Options", "DENY");
 
-            // ✅ X-Content-Type-Options (Prevent MIME Sniffing)
+            // 🧪 9️⃣ Prevent MIME-type sniffing
             if (!Response.Headers.AllKeys.Contains("X-Content-Type-Options"))
                 Response.Headers.Add("X-Content-Type-Options", "nosniff");
 
-            // ✅ X-XSS-Protection (Cross-Site Scripting Protection)
+            // 🧰 🔒 10️⃣ Legacy XSS filter (for older browsers)
             if (!Response.Headers.AllKeys.Contains("X-XSS-Protection"))
                 Response.Headers.Add("X-XSS-Protection", "1; mode=block");
 
-            // 🍪 Secure cookies with best practices
+            // 🍪 11️⃣ Secure all response cookies
             foreach (var cookieKey in Response.Cookies.AllKeys)
             {
                 var cookie = Response.Cookies[cookieKey];
                 if (cookie == null) continue;
 
-                cookie.Secure = true; // HTTPS only
-                cookie.HttpOnly = true; // No access from JS
-                cookie.SameSite = SameSiteMode.Strict; // CSRF protection
+                cookie.Secure = true; // Only send via HTTPS
+                cookie.HttpOnly = true; // JS cannot access
+                cookie.SameSite = SameSiteMode.Strict; // Prevent cross-origin usage
             }
         }
         //protected void Application_PreSendRequestHeaders()

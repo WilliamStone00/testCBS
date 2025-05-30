@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.InstallmentType
+    @using Resources
 <div class="card-body">
 
     @using (Html.BeginForm("Update", "InstallmentType", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
@@ -8,36 +9,36 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
-                <label>Name</label>
+                <label>@GlobalInstallmentType.Name</label>
             </div>
         </div>
 
         <div class="col-md-5">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.type, new SelectList(ViewBag.Values, "Text", "Value"), "---Select installment type---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.type, new SelectList(ViewBag.Values, "Text", "Value"), "---"+ @GlobalInstallmentType.SelectInstallmentType+"---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.type, "", new { @class = "text-danger " })
-                <label>Installment type</label>
+                <label>@GlobalInstallmentType.InstallmentType</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.number, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.number, "", new { @class = "text-danger" })
-                <label>Value ( in integer)</label>
+                <label>@GlobalInstallmentType.Value</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
                 @Html.TextAreaFor(m => m.description, new { @class = "form-control", @style = "height: 200px;" })
                 @Html.ValidationMessageFor(m => m.description, "", new { @class = "text-danger" })
-                <label>Description</label>
+                <label>@GlobalInstallmentType.Description</label>
             </div>
         </div>
 
     </div>
     <div class="mt-4">
 
-        <button type="submit" class="btn btn-primary me-2">Update</button>
+        <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
 
     </div>
 }

@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanCommitee.LoanCommitee
+    @using Resources
 <div class="col">
 
     <div class="row my-4">
@@ -11,7 +12,7 @@
                             data-bs-target="#collapseDeliveryAddress"
                             aria-expanded="true"
                             aria-controls="collapseDeliveryAddress">
-                        Add users in to commitee groups
+                        @GlobalLoanCommitee.AddUsersInToCommiteeGroups
                     </button>
                 </h2>
                 <div id="collapseDeliveryAddress"
@@ -21,7 +22,7 @@
                         <div class="card mb-4">
                             <div class="card-body d-sm-flex d-block">
                                 <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                    <a type="button" onclick="LoadDataGen('LoanCommitee','myDataTable_commitee_members','_LoanCommiteeMemberData',0,'datalistingview',null,'LoanCommiteeMember','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                    <a type="button" onclick="LoadDataGen('LoanCommitee','myDataTable_commitee_members','_LoanCommiteeMemberData',0,'datalistingview',null,'LoanCommiteeMember','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
                                         <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                     </a>
                                 </div>
@@ -34,30 +35,30 @@
 
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.LoanCommiteeMember.LoanCommiteeGroupId, new SelectList(ViewBag.Groups, "Id", "Name"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.DropDownListFor(m => m.LoanCommiteeMember.LoanCommiteeGroupId, new SelectList(ViewBag.Groups, "Id", "Name"), "---"+ @GlobalLoanCommitee.SelectGroup + "---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeMember.LoanCommiteeGroupId, "", new { @class = "text-danger" })
-                                        <label>Select group</label>
+                                        <label>@GlobalLoanCommitee.SelectGroup</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.LoanCommiteeMember.UserId, new SelectList(ViewBag.Users, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.DropDownListFor(m => m.LoanCommiteeMember.UserId, new SelectList(ViewBag.Users, "Value", "Text"), "---"+ @GlobalLoanCommitee.SelectUser + "---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeMember.UserId, "", new { @class = "text-danger" })
-                                        <label>Select user</label>
+                                        <label>@GlobalLoanCommitee.SelectUser</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="mt-4">
                                 @if (ViewBag.Key == null)
                                 {
-                                    <button type="submit" class="btn btn-primary me-2">Create</button>
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Create</button>
                                     <input type="hidden" name="ServiceOption" value="commitee_member" id="ServiceOption" />
                                     <input type="hidden" name="Action" value="insert" id="Action" />
 
                                 }
                                 else
                                 {
-                                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                                     @Html.HiddenFor(m => m.LoanCommiteeMember.Id)
                                     <input type="hidden" name="ServiceOption" value="commitee_member" id="ServiceOption" />
                                     <input type="hidden" name="Action" value="update" id="Action" />

@@ -1,6 +1,6 @@
-﻿
+﻿@using Resources
 @{
-    ViewBag.Title = "Member Overview";
+    ViewBag.Title = @GlobalIndividual.MemberOverview;
 }
 
 <div class="row">
@@ -8,13 +8,13 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-group-outline me-2"></i> MEMBERS OVERVIEW
+                    <i class="mdi mdi-account-group-outline me-2"></i> @GlobalIndividual.MEMBERSOVERVIEW
                 </h1>
                 <p class="card-text">
-                    View and manage registered members across all branches. Use advanced filters to analyze member demographics, approval status, and activation records.
+                    @GlobalIndividual.ViewAndManageRegisteredMembersAcrossAllBranches.
                 </p>
                 <p class="card-text text-warning fw-bold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> Leverage the filters below to narrow results by gender, legal form, branch, registration date, or approval status. Use the export feature to extract reports for auditing or further analysis.
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalIndividual.LeverageTheFiltersBelowToNarrowResultsByGender.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -25,7 +25,7 @@
 <!-- Tips Section -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR FILTERING MEMBERS EFFECTIVELY</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalIndividual.TIPS_FOR_FILTERING_MEMBERS_EFFECTIVELY</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -33,11 +33,11 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Filter by Branch:</strong> Easily segment members by operational branch.</li>
-                <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>Registration Dates:</strong> Filter by creation date or birth date to target specific demographics.</li>
-                <li><i class="mdi mdi-gender-male-female text-secondary me-2"></i> <strong>Gender & Marital Status:</strong> Analyze member breakdown across key attributes.</li>
-                <li><i class="mdi mdi-account-check-outline text-info me-2"></i> <strong>Approval & Legal Status:</strong> Filter approved members by legal form or type.</li>
-                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>Export:</strong> Export search results to Excel for reporting or recordkeeping.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalIndividual.FilterByBranch:</strong> @GlobalIndividual.EasilySegmentMembersByOperationalBranch.</li>
+                <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>@GlobalIndividual.RegistrationDates:</strong> @GlobalIndividual.FilterByCreationDateOrBirthDateToTargetSpecificDemographics.</li>
+                <li><i class="mdi mdi-gender-male-female text-secondary me-2"></i> <strong>@GlobalIndividual.GenderMaritalStatus:</strong> @GlobalIndividual.AnalyzeMemberBreakdownAcrossKeyAttributes.</li>
+                <li><i class="mdi mdi-account-check-outline text-info me-2"></i> <strong>@GlobalIndividual.ApprovalLegalStatus:</strong> @GlobalIndividual.FilterApprovedMembersByLegalFormOrType.</li>
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>@GlobalIndividual.Export:</strong> @GlobalIndividual.ExportSearchResultsToExcelForReportingOrRecordkeeping.</li>
             </ul>
         </div>
     </div>
@@ -45,103 +45,103 @@
 
 <!-- Advanced Filters -->
 <div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Member Filters</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalIndividual.MemberFilters</h5>
     <form id="memberFilterForm">
         <div class="card p-3 mb-3 bg-light">
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Customer ID</label>
-                    <input type="text" id="customerId" name="CustomerId" class="form-control" placeholder="Customer ID" />
+                    <label class="form-label fw-bold">@GlobalIndividual.CustomerID</label>
+                    <input type="text" id="customerId" name="CustomerId" class="form-control" placeholder="@GlobalIndividual.CustomerID" />
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">First Name</label>
-                    <input type="text" id="firstName" name="FirstName" class="form-control" placeholder="First Name" />
+                    <label class="form-label fw-bold">@GlobalIndividual.FirstName</label>
+                    <input type="text" id="firstName" name="FirstName" class="form-control" placeholder="@GlobalIndividual.FirstName" />
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Last Name</label>
-                    <input type="text" id="lastName" name="LastName" class="form-control" placeholder="Last Name" />
+                    <label class="form-label fw-bold">@GlobalIndividual.LastName</label>
+                    <input type="text" id="lastName" name="LastName" class="form-control" placeholder="@GlobalIndividual.LastName" />
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-3">
-                    <label class="form-label fw-bold">Gender</label>
+                    <label class="form-label fw-bold">@GlobalIndividual.Gender</label>
                     <select id="gender" name="Gender" class="form-select">
-                        <option value="">All</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
+                        <option value="">@GlobalIndividual.All</option>
+                        <option value="Male">@GlobalIndividual.Male</option>
+                        <option value="Female">@GlobalIndividual.Female</option>
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label fw-bold">Marital Status</label>
+                    <label class="form-label fw-bold">@GlobalIndividual.MaritalStatus</label>
                     <select id="maritalStatus" name="MaritalStatus" class="form-select">
-                        <option value="">All</option>
-                        <option value="Single">Single</option>
-                        <option value="Married">Married</option>
-                        <option value="Divorced">Divorced</option>
-                        <option value="Widowed">Widowed</option>
+                        <option value="">@GlobalIndividual.All</option>
+                        <option value="Single">@GlobalIndividual.Single</option>
+                        <option value="Married">@GlobalIndividual.Married</option>
+                        <option value="Divorced">@GlobalIndividual.Divorced</option>
+                        <option value="Widowed">@GlobalIndividual.Widowed</option>
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label fw-bold">Working Status</label>
+                    <label class="form-label fw-bold">@GlobalIndividual.WorkingStatus</label>
                     <select id="workingStatus" name="WorkingStatus" class="form-select">
-                        <option value="">All</option>
-                        <option value="Working">Working</option>
-                        <option value="Unemployed">Unemployed</option>
+                        <option value="">@GlobalIndividual.All</option>
+                        <option value="Working">@GlobalIndividual.Working</option>
+                        <option value="Unemployed">@GlobalIndividual.Unemployed</option>
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label fw-bold">Membership Approval</label>
+                    <label class="form-label fw-bold">@GlobalIndividual.MembershipApproval</label>
                     <select id="membershipApprovalStatus" name="MembershipApprovalStatus" class="form-select">
-                        <option value="">All</option>
-                        <option value="Approved">Approved</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Rejected">Rejected</option>
+                        <option value="">@GlobalIndividual.All</option>
+                        <option value="Approved">@GlobalIndividual.Approved</option>
+                        <option value="Pending">@GlobalIndividual.Pending</option>
+                        <option value="Rejected">@GlobalIndividual.Rejected</option>
                     </select>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-3">
-                    <label class="form-label fw-bold">Legal Form</label>
+                    <label class="form-label fw-bold">@GlobalIndividual.LegalForm</label>
                     <select id="legalForm" name="LegalForm" class="form-select">
                         <option value="">All</option>
-                        <option value="Physical_Person">Physical Person</option>
-                        <option value="Moral_Person">Moral Person</option>
+                        <option value="Physical_Person">@GlobalIndividual.PhysicalPerson</option>
+                        <option value="Moral_Person">@GlobalIndividual.MoralPerson</option>
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label fw-bold">Customer Type</label>
+                    <label class="form-label fw-bold">@GlobalIndividual.CustomerType</label>
                     <input type="text" id="customerType" name="CustomerType" class="form-control" placeholder="Customer Type" />
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label fw-bold">Age Category</label>
-                    <input type="text" id="ageCategoryStatus" name="AgeCategoryStatus" class="form-control" placeholder="Age Category Status" />
+                    <label class="form-label fw-bold">@GlobalIndividual.AgeCategory</label>
+                    <input type="text" id="ageCategoryStatus" name="AgeCategoryStatus" class="form-control" placeholder="@GlobalIndividual.AgeCategoryStatus" />
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label fw-bold">Branch</label>
-                    @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
+                    <label class="form-label fw-bold">@GlobalIndividual.Branch</label>
+                    @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "---"+ @GlobalIndividual.SelectBranch+"---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Date of Birth (From)</label>
+                    <label class="form-label fw-bold">@GlobalIndividual.DateOfBirth (From)</label>
                     <input type="date" id="dobFrom" name="DateOfBirthFrom" class="form-control" />
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Date of Birth (To)</label>
+                    <label class="form-label fw-bold">@GlobalIndividual.DateOfBirth (To)</label>
                     <input type="date" id="dobTo" name="DateOfBirthTo" class="form-control" />
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Created From</label>
+                    <label class="form-label fw-bold">@GlobalIndividual.CreatedFrom</label>
                     <input type="date" id="createdFrom" name="CreatedFrom" class="form-control" />
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Created To</label>
+                    <label class="form-label fw-bold">@GlobalIndividual.CreatedTo</label>
                     <input type="date" id="createdTo" name="CreatedTo" class="form-control" />
                 </div>
             </div>
@@ -149,9 +149,9 @@
 
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
-                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
-                <button id="resetFilterBtn" type="reset" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
-                <button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-excel"></i> Export</button>
+                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalIndividual.ApplyFilter</button>
+                <button id="resetFilterBtn" type="reset" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset</button>
+                <button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-excel"></i> @GlobalIndividual.Export</button>
             </div>
         </div>
     </form>

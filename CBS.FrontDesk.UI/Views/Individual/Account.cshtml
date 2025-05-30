@@ -1,14 +1,15 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+    @using Resources
 @{
-    ViewBag.Title = "Account";
+    ViewBag.Title = @GlobalIndividual.Account;
 }
 
 <div class="row justify-content-end">
     <div class="demo-inline-spacing text-end">
-        <a type="button" onclick="LoadDataGen('LoanProduct','myDataTable','_Data',0,'datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+        <a type="button" onclick="LoadDataGen('LoanProduct','myDataTable','_Data',0,'datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
             <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
         </a>
-        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','LoanProduct')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','LoanProduct')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
             <span class="tf-icons mdi mdi-plus mdi-18px"></span>
         </a>
     </div>
@@ -16,7 +17,7 @@
 <br />
 
 <div class="col-xl-12">
-    <h6 class="text-muted">Filled Tabs</h6>
+    <h6 class="text-muted">@GlobalIndividual.FilledTabs</h6>
     <div class="card mb-4">
         <div class="card-header p-0">
             <div class="nav-align-top">
@@ -29,7 +30,7 @@
                                 data-bs-target="#navs-justified-home"
                                 aria-controls="navs-justified-home"
                                 aria-selected="true">
-                            <i class="tf-icons mdi mdi-account-outline me-1"></i> Profile
+                            <i class="tf-icons mdi mdi-account-outline me-1"></i> @GlobalIndividual.Profile
                             @*<span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">3</span>*@
                         </button>
                     </li>
@@ -41,7 +42,7 @@
                                 data-bs-target="#navs-justified-security"
                                 aria-controls="navs-justified-security"
                                 aria-selected="false">
-                            <i class="tf-icons mdi mdi-security me-1"></i> Security
+                            <i class="tf-icons mdi mdi-security me-1"></i> @GlobalIndividual.Security
                         </button>
                     </li>
                     <li class="nav-item">
@@ -52,7 +53,7 @@
                                 data-bs-target="#navs-justified-profile"
                                 aria-controls="navs-justified-profile"
                                 aria-selected="false">
-                            <i class="tf-icons mdi mdi-file-document-alert-outline me-1"></i> Documents
+                            <i class="tf-icons mdi mdi-file-document-alert-outline me-1"></i> @GlobalIndividual.Documents
                         </button>
                     </li>
                     <li class="nav-item">
@@ -63,7 +64,7 @@
                                 data-bs-target="#navs-justified-messages"
                                 aria-controls="navs-justified-messages"
                                 aria-selected="false">
-                            <i class="tf-icons mdi mdi-account me-1"></i> Account
+                            <i class="tf-icons mdi mdi-account me-1"></i> @GlobalIndividual.Account
                         </button>
                     </li>
 
@@ -77,8 +78,8 @@
                     <div class="card-body">
                         <div class="mb-3 col-12 mb-0">
                             <div class="alert alert-warning">
-                                <h6 class="alert-heading mb-1">Are you sure you want to delete your account?</h6>
-                                <p class="mb-0">Once you delete your account, there is no going back. Please be certain.</p>
+                                <h6 class="alert-heading mb-1">@GlobalIndividual.AreYouSureYouWantToDeleteYourAccount</h6>
+                                <p class="mb-0">@GlobalIndividual.OnceYouDeleteYourAccountThereIsNoGoingBackPleaseBeCertain.</p>
                             </div>
                         </div>
                         <form id="formAccountDeactivation" onsubmit="return false">
@@ -87,9 +88,9 @@
                                        type="checkbox"
                                        name="accountActivation"
                                        id="accountActivation" />
-                                <label class="form-check-label" for="accountActivation">I confirm my account deactivation</label>
+                                <label class="form-check-label" for="accountActivation">@GlobalIndividual.IConfirmMyAccountDeactivation</label>
                             </div>
-                            <button type="submit" class="btn btn-danger deactivate-account">Deactivate Account</button>
+                            <button type="submit" class="btn btn-danger deactivate-account">@GlobalIndividual.DeactivateAccount</button>
                         </form>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingDayObject.HolyDayRecurring
      @using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">@GlobalHoliday.RecurringSet Recurring Holidays</legend>
+    <legend id="select_base">@GlobalHolidayRecurring.RecurringSetRecurringHolidays</legend>
     <div class="card-body">
         @using (Html.BeginForm("Create", "HolidayRecurring", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
@@ -12,24 +12,24 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                        <label for="Month">@GlobalHoliday.Name</label>
+                        <label for="Month">@GlobalHolidayRecurring.Name</label>
                     </div>
                 </div>
                 <!-- Holiday Type -->
                 <div class="col-md-4">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.HolidayType, new SelectList(ViewBag.HolidayTypes, "Value", "Text"), "---"+ @GlobalHoliday.Select Holiday Type +"---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.HolidayType, new SelectList(ViewBag.HolidayTypes, "Value", "Text"), "---"+ @GlobalHolidayRecurring.SelectHolidayType +"---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.HolidayType, "", new { @class = "text-danger" })
-                        <label for="HolidayType">@GlobalHoliday.Holiday Type</label>
+                        <label for="HolidayType">@GlobalHolidayRecurring.HolidayType</label>
                     </div>
                 </div>
 
                 <!-- Recurrence Pattern -->
                 <div class="col-md-3">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.RecurrencePattern, new SelectList(ViewBag.RecurrencePatterns, "Value", "Text"), "---"+ @GlobalHoliday.Select Recurrence Pattern +"---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.RecurrencePattern, new SelectList(ViewBag.RecurrencePatterns, "Value", "Text"), "---"+ @GlobalHolidayRecurring.SelectRecurrencePattern + "---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.RecurrencePattern, "", new { @class = "text-danger" })
-                        <label for="RecurrencePattern">@GlobalHoliday.Recurrence Pattern</label>
+                        <label for="RecurrencePattern">@GlobalHolidayRecurring.RecurrencePattern</label>
                     </div>
                 </div>
 
@@ -37,16 +37,16 @@
                 <div class="col-md-12">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.ExcludeRecurringDay, new { @class = "form-check-input", id = "excludeRecurringDayCheck" })
-                        <label class="form-check-label" for="excludeRecurringDayCheck">@GlobalHoliday.Exclude Recurring Day</label>
+                        <label class="form-check-label" for="excludeRecurringDayCheck">@GlobalHolidayRecurring.ExcludeRecurringDay</label>
                     </div>
                 </div>
 
                 <!-- Recurring Day -->
                 <div class="col-md-12" id="recurringDayDive">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.RecurringDay, new SelectList(ViewBag.DayOfWeeks, "Value", "Text"), "---"+ @GlobalHoliday.Select Recurring Day +"---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.RecurringDay, new SelectList(ViewBag.DayOfWeeks, "Value", "Text"), "---"+ @GlobalHolidayRecurring.SelectRecurringDay +"---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.RecurringDay, "", new { @class = "text-danger" })
-                        <label for="RecurringDay">@GlobalHoliday.Recurring Day</label>
+                        <label for="RecurringDay">@GlobalHolidayRecurring.RecurringDay</label>
                     </div>
                 </div>
 
@@ -54,7 +54,7 @@
                 <div class="col-md-12">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.ExludeDayAndMonth, new { @class = "form-check-input", id = "excludeDayMonthCheck" })
-                        <label class="form-check-label" for="excludeDayMonthCheck">@GlobalHoliday.Exclude Day and Month</label>
+                        <label class="form-check-label" for="excludeDayMonthCheck">@GlobalHolidayRecurring.ExcludeDayAndMonth</label>
                     </div>
                 </div>
 
@@ -63,7 +63,7 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Month, new { @class = "form-control", type = "number", min = "0", max = "12" })
                         @Html.ValidationMessageFor(m => m.Month, "", new { @class = "text-danger" })
-                        <label for="Month">@GlobalHoliday.Month</label>
+                        <label for="Month">@GlobalHolidayRecurring.Month</label>
                     </div>
                 </div>
 
@@ -72,14 +72,14 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.DayOfMonth, new { @class = "form-control", type = "number", min = "", max = "31" })
                         @Html.ValidationMessageFor(m => m.DayOfMonth, "", new { @class = "text-danger" })
-                        <label for="DayOfMonth">@GlobalHoliday.Day of Month</label>
+                        <label for="DayOfMonth">@GlobalHolidayRecurring.DayOfMonth</label>
                     </div>
                 </div>
 
                 <div class="col-md-12">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.IsGlobal, new { @class = "form-check-input", id = "isGlobalCheck" })
-                        <label class="form-check-label" for="isGlobalCheck">@GlobalHoliday.Check to centralise</label>
+                        <label class="form-check-label" for="isGlobalCheck">@GlobalHolidayRecurring.CheckToCentralise</label>
                     </div>
                 </div>
 
@@ -88,11 +88,11 @@
                         @Html.DropDownListFor(
                             m => m.BranchId,
                             new SelectList(ViewBag.Branches, "Id", "Name"),
-                            "--- Select Branch ---",
+                            "---"+ @GlobalHolidayRecurring.SelectBranch+ "---",
                             new { @class = "form-control select2", id = "BranchId", @search = "true" }
                         )
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                        <label for="BranchId">@GlobalHoliday.Select Branch</label>
+                        <label for="BranchId">@GlobalHolidayRecurring.SelectBranch</label>
                     </div>
                 </div>
 
@@ -101,7 +101,7 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.Description, new { @class = "form-control", style = "height: 200px;" })
                         @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                        <label for="Description">@GlobalHoliday.Description</label>
+                        <label for="Description">@GlobalHolidayRecurring.Description</label>
                     </div>
                 </div>
 
@@ -109,7 +109,7 @@
                 <div class="col-md-12">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "isActive" })
-                        <label class="form-check-label" for="isActive">@GlobalHoliday.Active Status</label>
+                        <label class="form-check-label" for="isActive">@GlobalHolidayRecurring.ActiveStatus</label>
                     </div>
                 </div>
             </div>

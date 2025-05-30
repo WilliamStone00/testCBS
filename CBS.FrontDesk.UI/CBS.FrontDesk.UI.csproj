@@ -516,6 +516,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\LoanCommitee\GlobalLoanCommitee.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanCommitee.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\LoanDeliquencyConfiguration\GlobalLoanDeliquencyConfiguration.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanDeliquencyConfiguration.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\LoanProduct\GlobalLoanProduct.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanProduct.resx</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
     <Compile Include="Controllers\Accounting\AccountEntry.cs" />
@@ -562,7 +577,7 @@
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectorManagementController.cs" />
     <Compile Include="Controllers\DDOSControlP\BlacklistUserController.cs" />
     <Compile Include="Controllers\DDOSControlP\PasswordPolicyManagementController.cs" />
-    <Compile Include="Controllers\DDOSControlP\RateLimitConfigController.cs" />
+    <Compile Include="Controllers\DDOSControlP\AdvancedSheildController.cs" />
     <Compile Include="Controllers\DDOSControlP\RequestMonitotingController.cs" />
     <Compile Include="Controllers\DDOSControlP\SuspiciousPathController.cs" />
     <Compile Include="Controllers\Error\ErrorController.cs" />
@@ -1575,6 +1590,26 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalHome.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Individual\GlobalIndividual.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalIndividual.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\InstallmentType\GlobalInstallmentType.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalInstallmentType.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\LoanApplication\GlobalLoanApplication.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanApplication.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Loan\GlobalLoan.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoan.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Login\GlobalLogin.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -5327,6 +5362,34 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalHolidayRecurring.Designer.cs</LastGenOutput>
     </Content>
+    <Content Include="App_GlobalResources\Individual\GlobalIndividual.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalIndividual.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\InstallmentType\GlobalInstallmentType.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalInstallmentType.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Loan\GlobalLoan.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoan.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LoanApplication\GlobalLoanApplication.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanApplication.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LoanCommitee\GlobalLoanCommitee.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanCommitee.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LoanDeliquencyConfiguration\GlobalLoanDeliquencyConfiguration.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanDeliquencyConfiguration.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LoanProduct\GlobalLoanProduct.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanProduct.Designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -6257,9 +6320,9 @@
     <Content Include="Views\PrimaryTellerCashRequisition\_Request.cshtml" />
     <Content Include="Views\PrimaryTellerCashRequisition\_RequestValidation.cshtml" />
     <Content Include="Views\PrimaryTellerCashRequisition\_SearchBox.cshtml" />
-    <Content Include="Views\RateLimitConfig\Index.cshtml" />
-    <Content Include="Views\RateLimitConfig\_Create.cshtml" />
-    <Content Include="Views\RateLimitConfig\_Data.cshtml" />
+    <Content Include="Views\AdvancedSheild\Index.cshtml" />
+    <Content Include="Views\AdvancedSheild\_Create.cshtml" />
+    <Content Include="Views\AdvancedSheild\_Data.cshtml" />
     <Content Include="Views\RemittanceCashDesk\Index.cshtml" />
     <Content Include="Views\RemittanceCashDesk\_CustomerCard.cshtml" />
     <Content Include="Views\RemittanceCashDesk\_DenominationBreakDown.cshtml" />
@@ -6496,6 +6559,7 @@
     <Content Include="Views\WithdrawalNotification\_Tabs.cshtml" />
     <Content Include="Views\WithdrawalNotification\_ValidatePendingRequest.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\AdvancedSheild\_PolicyTips.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

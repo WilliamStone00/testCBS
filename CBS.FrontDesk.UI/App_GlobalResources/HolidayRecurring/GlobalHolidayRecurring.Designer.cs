@@ -59,5 +59,275 @@ namespace Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        internal static string Active {
+            get {
+                return ResourceManager.GetString("Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active status.
+        /// </summary>
+        internal static string ActiveStatus {
+            get {
+                return ResourceManager.GetString("ActiveStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Branch.
+        /// </summary>
+        internal static string Branch {
+            get {
+                return ResourceManager.GetString("Branch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Branch-specific.
+        /// </summary>
+        internal static string BranchSpecific {
+            get {
+                return ResourceManager.GetString("BranchSpecific", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Centralised.
+        /// </summary>
+        internal static string Centralised {
+            get {
+                return ResourceManager.GetString("Centralised", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check to centralise.
+        /// </summary>
+        internal static string CheckToCentralise {
+            get {
+                return ResourceManager.GetString("CheckToCentralise", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration.
+        /// </summary>
+        internal static string Configuration {
+            get {
+                return ResourceManager.GetString("Configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configured recurring holiday data.
+        /// </summary>
+        internal static string ConfiguredRecurringHolidayData {
+            get {
+                return ResourceManager.GetString("ConfiguredRecurringHolidayData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configure recurring holidays.
+        /// </summary>
+        internal static string ConfigureRecurringHolidays {
+            get {
+                return ResourceManager.GetString("ConfigureRecurringHolidays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Day.
+        /// </summary>
+        internal static string Day {
+            get {
+                return ResourceManager.GetString("Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Day of month.
+        /// </summary>
+        internal static string DayOfMonth {
+            get {
+                return ResourceManager.GetString("DayOfMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        internal static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit/Delete Restricted.
+        /// </summary>
+        internal static string EditDeleteRestricted {
+            get {
+                return ResourceManager.GetString("EditDeleteRestricted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exclude day and month.
+        /// </summary>
+        internal static string ExcludeDayAndMonth {
+            get {
+                return ResourceManager.GetString("ExcludeDayAndMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exclude recurring day.
+        /// </summary>
+        internal static string ExcludeRecurringDay {
+            get {
+                return ResourceManager.GetString("ExcludeRecurringDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Holiday recurring.
+        /// </summary>
+        internal static string HolidayRecurring {
+            get {
+                return ResourceManager.GetString("HolidayRecurring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Holiday Recurring Configuration.
+        /// </summary>
+        internal static string HolidayRecurringConfiguration {
+            get {
+                return ResourceManager.GetString("HolidayRecurringConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Holiday type.
+        /// </summary>
+        internal static string HolidayType {
+            get {
+                return ResourceManager.GetString("HolidayType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inactive.
+        /// </summary>
+        internal static string Inactive {
+            get {
+                return ResourceManager.GetString("Inactive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Month.
+        /// </summary>
+        internal static string Month {
+            get {
+                return ResourceManager.GetString("Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No recurring holiday is configured yet.
+        /// </summary>
+        internal static string NoRecurringHolidayIsConfiguredYet {
+            get {
+                return ResourceManager.GetString("NoRecurringHolidayIsConfiguredYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recurrence pattern.
+        /// </summary>
+        internal static string RecurrencePattern {
+            get {
+                return ResourceManager.GetString("RecurrencePattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recurring day.
+        /// </summary>
+        internal static string RecurringDay {
+            get {
+                return ResourceManager.GetString("RecurringDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recurring set recurring holidays.
+        /// </summary>
+        internal static string RecurringSetRecurringHolidays {
+            get {
+                return ResourceManager.GetString("RecurringSetRecurringHolidays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select branch.
+        /// </summary>
+        internal static string SelectBranch {
+            get {
+                return ResourceManager.GetString("SelectBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select holiday type.
+        /// </summary>
+        internal static string SelectHolidayType {
+            get {
+                return ResourceManager.GetString("SelectHolidayType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select recurrence pattern.
+        /// </summary>
+        internal static string SelectRecurrencePattern {
+            get {
+                return ResourceManager.GetString("SelectRecurrencePattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select recurring day.
+        /// </summary>
+        internal static string SelectRecurringDay {
+            get {
+                return ResourceManager.GetString("SelectRecurringDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        internal static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
     }
 }

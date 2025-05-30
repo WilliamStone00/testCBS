@@ -1,7 +1,7 @@
-﻿
+﻿@using Resources
 
 @{
-    ViewBag.Title = "Loan commitee";
+    ViewBag.Title = @GlobalLoanCommitee.LoanCommitee;
 }
 <div class="row">
 
@@ -29,16 +29,16 @@
                                     <div class="card mb-4">
                                         <div class="card-body d-sm-flex d-block">
                                             <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                                LOAN COMMITEE CONFIGURATION
+                                                @GlobalLoanCommitee.LOAN_COMMITEE_CONFIGURATION
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row justify-content-end">
                                         <div class="demo-inline-spacing text-end">
-                                            <button type="button" onclick="AddORUpdateGen(null,'datalistingview','_LoanCommitee','new','LoanCommitee','LoanCommiteeGroup')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new committee">
+                                            <button type="button" onclick="AddORUpdateGen(null,'datalistingview','_LoanCommitee','new','LoanCommitee','LoanCommiteeGroup')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalLoanCommitee.AddNewCommittee">
                                                 <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                             </button>
-                                            <button type="button" onclick="AddORUpdateGen(null,'datalistingview','_LoanCommiteeMember','new','LoanCommitee','LoanCommiteeMember')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Assign members to committee">
+                                            <button type="button" onclick="AddORUpdateGen(null,'datalistingview','_LoanCommiteeMember','new','LoanCommitee','LoanCommiteeMember')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalLoanCommitee.AssignMembersToCommittee">
                                                 <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                             </button>
 

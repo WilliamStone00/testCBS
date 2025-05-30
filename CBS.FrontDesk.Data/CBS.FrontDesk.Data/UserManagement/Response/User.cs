@@ -58,9 +58,10 @@ namespace CBS.FrontDesk.Data.UserManagement
         public string ResetPasswordReason { get; set; }
         public bool ChangePasswordOnFirstLogin { get; set; }
         public DateTime CreatedDate { get; set; }
-        public Guid? CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
+        public string ModifiedBy { get; set; }
+
         public DateTime ModifiedDate { get; set; }
-        public Guid? ModifiedBy { get; set; }
         public DateTime? DeletedDate { get; set; }
         public bool IsRoot { get; set; }
         public DateTime LastLoginDate { get; set; }
@@ -77,7 +78,16 @@ namespace CBS.FrontDesk.Data.UserManagement
         public DateTime LastDateOfPasswordChange { get; set; }
         public string ReasonForBlockingAccount { get; set; }
         public string UserPreferedLanguage { get; set; }
-
+        public GeneralMFaConfig GeneralMFaConfig { get; set; } = new GeneralMFaConfig();
+        public bool IsRequiredMFA { get; set; }
+        public string RequiredMFANotificationToUse { get; set; }
+        public string MfaTypeUsed { get; set; }           // e.g., "TOTP", "SMS", "EMAIL"
+        public DateTime MfaEnrolledDate { get; set; } = DateTime.MinValue;
+        public DateTime MfaDisabledDate { get; set; } = DateTime.MinValue;
+        public DateTime DateOfAccountBlockage { get; set; } = DateTime.MinValue;
+        public bool MeetsPasswordPolicy { get; set; } = false;
+        public string PasswordPolicyViolationReason { get; set; }
+        public DateTime? DateOfPasswordPolicyFailure { get; set; }
         public Bank Bank { get; set; }
         public Branch Brancch { get; set; }
         public string strlastLoginDate { get; set; }
@@ -97,6 +107,12 @@ namespace CBS.FrontDesk.Data.UserManagement
             MFAActivation = new MFAActivation();
             ImageVirtualPath = "~/Appfiles/Images/p.jpg";
         }
+    }
+    public class GeneralMFaConfig
+    {
+        public bool Enabled { get; set; }
+        public int GraceDays { get; set; }
+        public string[] AllowedTypes { get; set; }
     }
     public class AccountSystemActionLog
     {
@@ -332,7 +348,7 @@ namespace CBS.FrontDesk.Data.UserManagement
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid email address.")]
         public string Email { get; set; }
-
+        public string MfaTypeUsed { get; set; }
         public Guid Id { get; set; }
 
         [Required(ErrorMessage = "Code is required.")]

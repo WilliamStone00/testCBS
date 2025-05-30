@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Loan Portfolio Report Overview";
+﻿´@using Resources
+@{
+    ViewBag.Title = @GlobalLoan.LoanPortfolioReportOverview;
 }
 
 <div class="row">
@@ -7,13 +8,13 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-finance me-2"></i> LOAN PORTFOLIO REPORT
+                    <i class="mdi mdi-finance me-2"></i> @GlobalLoan.LOAN_PORTFOLIO_REPORT
                 </h1>
                 <p class="card-text">
-                    Analyze and track loan portfolio statistics across branches and timeframes. Filter by branch, loan type, delinquency state, or report focus area.
+                    @GlobalLoan.AnalyzeAndTrackLoanPortfolioStatisticsAcrossBranchesAndTimeframes.
                 </p>
                 <p class="card-text text-black fw-bold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> Select a main report type or generate a full portfolio report with optional subreport details. Export as PDF, Excel, or Word.
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalLoan.SelectAMainReportTypeOrGenerateAFullPortfolioReportWithOptionalSubreportDetails.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -24,7 +25,7 @@
 <!-- Tips Section -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR USING LOAN PORTFOLIO REPORT FILTERS</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalLoan.TIPS_FOR_USING_LOAN_PORTFOLIO_REPORT_FILTERS</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -32,11 +33,11 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-bank-outline text-success me-2"></i> <strong>Filter by Branch:</strong> Focus on a specific credit union branch.</li>
-                <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>Date Range:</strong> Define the loan disbursement or report period.</li>
-                <li><i class="mdi mdi-table-large text-info me-2"></i> <strong>Main Report Type:</strong> Choose between a full report or a focused view (e.g., Delinquent Loans).</li>
-                <li><i class="mdi mdi-layers-triple-outline text-info me-2"></i> <strong>Subreport Analysis:</strong> Add deeper breakdowns such as aging, gender, and purpose.</li>
-                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>Export:</strong> Download as PDF, Excel, or Word for sharing and compliance.</li>
+                <li><i class="mdi mdi-bank-outline text-success me-2"></i> <strong>@GlobalLoan.FilterByBranch:</strong> @GlobalLoan.FocusOnAspecificCreditUnionBranch.</li>
+                <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>@GlobalLoan.DateRange:</strong> @GlobalLoan.DefineTheLoanDisbursementOrReportPeriod.</li>
+                <li><i class="mdi mdi-table-large text-info me-2"></i> <strong>@GlobalLoan.MainReportType:</strong> @GlobalLoan.ChooseBetweenAFullReportOrAFocusedView.</li>
+                <li><i class="mdi mdi-layers-triple-outline text-info me-2"></i> <strong>@GlobalLoan.SubreportAnalysis:</strong> @GlobalLoan.AddDeeperBreakdownsSuchAsAgingGenderAndPurpose.</li>
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>@GlobalLoan.Export:</strong> @GlobalLoan.DownloadAsPDFExcelOrWordForSharingAndCompliance.</li>
             </ul>
         </div>
     </div>
@@ -44,67 +45,67 @@
 
 <!-- Filter Section -->
 <div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Generate Loan Portfolio Report</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalLoan.GenerateLoanPortfolioReport</h5>
     <div class="card p-3 mb-3 bg-light">
 
         <!-- Toggle Options -->
         <div class="row mb-3">
             <div class="col-md-4 form-check">
                 <input type="checkbox" class="form-check-input" id="byBranch" />
-                <label class="form-check-label fw-bold" for="byBranch">Filter By Branch</label>
+                <label class="form-check-label fw-bold" for="byBranch">@GlobalLoan.FilterByBranch</label>
             </div>
             <div class="col-md-4 form-check">
                 <input type="checkbox" class="form-check-input" id="byMainReport" />
-                <label class="form-check-label fw-bold" for="byMainReport">Filter By Main Report Type</label>
+                <label class="form-check-label fw-bold" for="byMainReport">@GlobalLoan.FilterByMainReportType</label>
             </div>
             <div class="col-md-4 form-check">
                 <input type="checkbox" class="form-check-input" id="byDate" />
-                <label class="form-check-label fw-bold" for="byDate">Filter By Date Range</label>
+                <label class="form-check-label fw-bold" for="byDate">@GlobalLoan.FilterByDateRange</label>
             </div>
         </div>
 
         <!-- Branch Section -->
         <div id="branchFilterSection" class="row mb-3" style="display: none;">
             <div class="col-md-12">
-                <label for="BranchId" class="form-label fw-bold">Select Branch</label>
-                @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2" })
+                <label for="BranchId" class="form-label fw-bold">@GlobalLoan.SelectBranch</label>
+                @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "---" + @GlobalLoan.SelectBranch +"---", new { @class = "form-control select2" })
             </div>
         </div>
 
         <!-- Main Report Type + Subreport on same line -->
         <div class="row mb-3" id="mainReportTypeSection" style="display: none;">
             <div class="col-md-6">
-                <label class="form-label fw-bold">Main Report Type</label>
+                <label class="form-label fw-bold">@GlobalLoan.MainReportType</label>
                 <select id="MainReportType" class="form-select">
-                    <option value="All">Full Loan Portfolio Report</option>
-                    <option value="CurrentLoan">Current Loan Summary</option>
-                    <option value="DelinquentLoan">Delinquent Loan Summary</option>
-                    <option value="LoanByPurpose">Loan by Purpose</option>
+                    <option value="All">@GlobalLoan.FullLoanPortfolioReport</option>
+                    <option value="CurrentLoan">@GlobalLoan.CurrentLoanSummary</option>
+                    <option value="DelinquentLoan">@GlobalLoan.DelinquentLoanSummary</option>
+                    <option value="LoanByPurpose">@GlobalLoan.LoanByPurpose</option>
                 </select>
             </div>
             <div class="col-md-6" id="subreportSection" style="display: none;">
                 <label class="form-label fw-bold">Subreport Type(s)</label>
                 <select id="SubReportType" class="form-select select2" multiple>
-                    <option value="Flat_AgeAndGender">Delinquency According to Ages and Gender</option>
-                    <option value="Flat_AgeAndLoanType">Delinquency According to Ages and Loan Types</option>
-                    <option value="Flat_ByZone">Delinquency According to Zones</option>
-                    <option value="Flat_ByLoanTerm">Delinquency According to Loan Terms</option>
-                    <option value="Flat_ByTargetGroup">Delinquency According to Target Groups</option>
-                    <option value="Flat_ByCategory">Delinquency According to Categories</option>
+                    <option value="Flat_AgeAndGender">@GlobalLoan.DelinquencyAccordingToAgesAndGender</option>
+                    <option value="Flat_AgeAndLoanType">@GlobalLoan.DelinquencyAccordingToAgesAndLoanTypes</option>
+                    <option value="Flat_ByZone">@GlobalLoan.DelinquencyAccordingToZones</option>
+                    <option value="Flat_ByLoanTerm">@GlobalLoan.DelinquencyAccordingToLoanTerms</option>
+                    <option value="Flat_ByTargetGroup">@GlobalLoan.DelinquencyAccordingToTargetGroups</option>
+                    <option value="Flat_ByCategory">@GlobalLoan.DelinquencyAccordingToCategories</option>
                    
                 </select>
-                <small class="text">Hold Ctrl (or Cmd) to select multiple</small>
+                <small class="text">@GlobalLoan.HoldCtrlToSelectMultiple</small>
             </div>
         </div>
 
         <!-- Date Range Section -->
         <div id="dateRangeSection" class="row mb-3" style="display: none;">
             <div class="col-md-6">
-                <label class="form-label fw-bold">Start Date</label>
+                <label class="form-label fw-bold">@GlobalLoan.StartDate</label>
                 <input type="date" id="StartDate" class="form-control" />
             </div>
             <div class="col-md-6">
-                <label class="form-label fw-bold">End Date</label>
+                <label class="form-label fw-bold">@GlobalLoan.EndDate</label>
                 <input type="date" id="EndDate" class="form-control" />
             </div>
         </div>
@@ -112,7 +113,7 @@
         <!-- Export Format and Action -->
         <div class="row mb-3">
             <div class="col-md-12">
-                <label class="form-label fw-bold">Export Format</label>
+                <label class="form-label fw-bold">@GlobalLoan.ExportFormat</label>
                 <select id="ReportDownloadType" class="form-select">
                     <option value="PDF">PDF</option>
                     <option value="Excel">Excel</option>
@@ -126,12 +127,12 @@
     <div class="row mb-3">
         <div class="col-md-6 d-flex align-items-end">
             <button id="generateReportBtn" class="btn btn-primary w-100">
-                <i class="mdi mdi-file-chart-outline me-1"></i> Generate Report
+                <i class="mdi mdi-file-chart-outline me-1"></i> @GlobalLoan.GenerateReport
             </button>
         </div>
         <div class="col-md-6 d-flex align-items-end">
             <button id="resetReportBtn" class="btn btn-secondary w-100">
-                <i class="mdi mdi-refresh me-1"></i> Reset Filters
+                <i class="mdi mdi-refresh me-1"></i> @GlobalLoan.ResetFilters
             </button>
         </div>
     </div>
