@@ -516,6 +516,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\AccountingConfiguration\GlobalAccount.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalAccount.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\LoanCommitee\GlobalLoanCommitee.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1040,11 +1045,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingConfig_AccountingEntryRule.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\AccountingConfiguration\GlobalAccount.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GlobalAccount.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\AccountingConfiguration\GlobalAccountPolicySetting.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -4882,7 +4882,7 @@
       <LastGenOutput>GlobalAccountPolicySetting.Designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\AccountingConfiguration\GlobalAccount.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
+      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalAccount.Designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\AccountingConfiguration\GlobalAccountUpload.resx">

@@ -1983,7 +1983,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     var worksheet = workbook.Worksheets.First();
                     foreach (var row in worksheet.RowsUsed().Skip(1)) // Skip header row
                     {
-                       // Skip rows with insufficient columns
+           
+                        // Skip rows with insufficient columns
                         if (row.CellsUsed().Count()==8)
                         {
                             i++;
@@ -2016,7 +2017,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         }
                         else
                         {
-                            throw new  Exception("The file structure was not respected");
+                           throw new  Exception("The file structure was not respected");
                         }
                        
 
