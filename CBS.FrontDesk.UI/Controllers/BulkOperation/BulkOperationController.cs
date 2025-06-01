@@ -26,21 +26,25 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
     {
          private readonly BranchServices _branchServices;
          private readonly BulkOperationService _bulkOperationService;
+         private readonly AccountingServices _accountingServices;
         private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
+        private string operationType;
 
 
 
-
-        public BulkOperationController(BranchServices branchServices, BulkOperationService bulkOperationService, ChartOfAccountServicesAnnex chartOfAccountServices)
+        public BulkOperationController(BranchServices branchServices, BulkOperationService bulkOperationService, ChartOfAccountServicesAnnex chartOfAccountServices, AccountingServices accountingEntryServices)
         {
             _branchServices = branchServices;
             _bulkOperationService = bulkOperationService;
             this.chartOfAccountServices = chartOfAccountServices;
+            operationType = "INCOME";
+            _accountingServices = accountingEntryServices;
         }
 
         public async Task<ActionResult> Index()
         {
             var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
+            ViewBag.eventNames = await _accountingServices.GetEventNames(operationType);
             ViewBag.chartOfAccounts = chartOfAccounts.ToList();
             var savingProduct = await _bulkOperationService.GetSavingProducts();
             var savingOrdinaryProduct = savingProduct.Where(x => x.ProductCategory == "OrdinaryAccount").ToList();

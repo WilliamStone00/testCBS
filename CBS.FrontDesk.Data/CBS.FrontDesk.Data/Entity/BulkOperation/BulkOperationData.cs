@@ -22,6 +22,7 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
         public string BankCode { get; set; }
         public string BankId { get; set; }
         public string BankName { get; set; }
+        public string EventCode { get; set; }
         public List<BulkOperationDataDetails> BulkOperationSimulationDetails { get; set; }
 
     }
