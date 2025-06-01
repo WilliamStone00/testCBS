@@ -21,8 +21,9 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
         public string BankId { get; set; }
         public string BankName { get; set; }
         public string BranchName { get; set; }
+        public string EventCode { get; set; }
 
-        public SimulateBulkOperationToSpecificAccountType(SimulateBulkOperation simulate,Branch branch)
+        public SimulateBulkOperationToSpecificAccountType(SimulateBulkOperation simulate,string eventCode,Branch branch)
         {
             BankCode = branch.Bank.BankCode;
             BranchCode = branch.BranchCode;
@@ -39,6 +40,7 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
             EndAccount = simulate.EndAccount;
             StartAccount = simulate.StartAccount;
             TargetAmount = simulate.TargetAmount;
+            EventCode=eventCode;
         }
     }
 }

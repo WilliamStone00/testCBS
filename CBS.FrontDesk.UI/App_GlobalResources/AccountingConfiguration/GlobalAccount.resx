@@ -195,6 +195,9 @@
   <data name="Details" xml:space="preserve">
     <value>Details</value>
   </data>
+  <data name="Details1" xml:space="preserve">
+    <value>Details</value>
+  </data>
   <data name="DownloadMFIChartOfAccount" xml:space="preserve">
     <value>Download MFI Chart Of Account</value>
   </data>
