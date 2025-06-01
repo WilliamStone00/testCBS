@@ -3308,6 +3308,66 @@ namespace CBS.API.Helper
             }
         }
 
+        //private static void AddAuthorizationHeader(HttpClient client)
+        //{
+        //    var context = HttpContext.Current;
+
+        //    if (context == null || context.Request == null)
+        //        return;
+
+        //    // 🔐 1. Add Authorization from Session Token
+        //    string encryptedToken = context.Session["EncryptedJWToken"] as string;
+        //    if (!string.IsNullOrEmpty(encryptedToken) && client.DefaultRequestHeaders.Authorization == null)
+        //    {
+        //        string decryptedToken = TokenEncryptionHelper.DecryptToken(encryptedToken);
+        //        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", decryptedToken);
+        //    }
+
+        //    // 🔄 2. Copy client headers from the current request
+
+        //    // User-Agent
+        //    string userAgent = context.Request.Headers["User-Agent"];
+        //    if (!string.IsNullOrWhiteSpace(userAgent) && !client.DefaultRequestHeaders.Contains("User-Agent"))
+        //    {
+        //        client.DefaultRequestHeaders.Add("User-Agent", userAgent);
+        //    }
+
+        //    // Referer
+        //    string referer = context.Request.Headers["Referer"];
+        //    if (!string.IsNullOrWhiteSpace(referer) && !client.DefaultRequestHeaders.Contains("Referer"))
+        //    {
+        //        client.DefaultRequestHeaders.Add("Referer", referer);
+        //    }
+
+        //    // Origin
+        //    string origin = context.Request.Headers["Origin"];
+        //    if (!string.IsNullOrWhiteSpace(origin) && !client.DefaultRequestHeaders.Contains("Origin"))
+        //    {
+        //        client.DefaultRequestHeaders.Add("Origin", origin);
+        //    }
+
+        //    // X-Forwarded-For
+        //    string xff = GetRealClientIp(context.Request);
+        //    if (!string.IsNullOrWhiteSpace(xff) && !client.DefaultRequestHeaders.Contains("X-Forwarded-For"))
+        //    {
+        //        client.DefaultRequestHeaders.Add("X-Forwarded-For", xff);
+        //    }
+        //    else
+        //    {
+        //        // Optional fallback to actual client IP
+        //        string ip = context.Request.UserHostAddress;
+        //        if (!client.DefaultRequestHeaders.Contains("X-Forwarded-For"))
+        //            client.DefaultRequestHeaders.Add("X-Forwarded-For", ip);
+        //    }
+
+        //    // Host
+        //    string host = context.Request.Headers["Host"];
+        //    if (!string.IsNullOrWhiteSpace(host))
+        //    {
+        //        client.DefaultRequestHeaders.Host = host;
+        //    }
+        //}
+
 
         private static void AddAuthorizationHeader(HttpClient client)
         {
@@ -3327,7 +3387,7 @@ namespace CBS.API.Helper
                     //    // Replace the token if it's expired
                     //    client.DefaultRequestHeaders.Remove("Authorization");
                     //    //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                   // }
+                    // }
                 }
                 else
                 {
@@ -3342,15 +3402,19 @@ namespace CBS.API.Helper
 
         }
 
-        private static void AddAuthorizationHeader(HttpClient client, string token)
+
+
+        public static string GetRealClientIp(HttpRequest request)
         {
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+            string ip = request?.Headers["X-Forwarded-For"]?.Split(',')?.FirstOrDefault()?.Trim();
+            if (string.IsNullOrWhiteSpace(ip))
+                ip = request?.UserHostAddress;
+
+            if (string.IsNullOrWhiteSpace(ip) || ip.Equals("unknown", StringComparison.OrdinalIgnoreCase))
+                ip = Guid.NewGuid().ToString("N");
+            return ip;
         }
 
-
-
-
-      
 
         public void Dispose()
         {
@@ -3374,6 +3438,9 @@ namespace CBS.API.Helper
         {
             throw new NotImplementedException(); // Optional if you don't need to serialize back
         }
+       
+
+
     }
 
 }
