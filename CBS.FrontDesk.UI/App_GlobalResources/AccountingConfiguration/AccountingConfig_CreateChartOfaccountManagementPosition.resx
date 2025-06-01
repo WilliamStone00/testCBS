@@ -138,4 +138,8 @@
   <data name="SelectTheSourceBranch" xml:space="preserve">
     <value>---Select source branch---</value>
   </data>
+  <data name="xxxxxx" xml:space="preserve">
+    <value>xxxxxx</value>
+    <comment>xxxxxxxx</comment>
+  </data>
 </root>
