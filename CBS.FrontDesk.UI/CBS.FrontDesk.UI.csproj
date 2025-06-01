@@ -521,6 +521,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingConfig_CreateChartOfaccountManagementPosition.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateChartOfaccountManagementPosition.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingConfig_CreateChartOfaccountManagementPosition.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\AccountingConfiguration\GlobalAccount.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -5398,6 +5403,10 @@
     <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateChartOfaccountManagementPosition.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>AccountingConfig_CreateChartOfaccountManagementPosition1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateChartOfaccountManagementPosition.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingConfig_CreateChartOfaccountManagementPosition.designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
