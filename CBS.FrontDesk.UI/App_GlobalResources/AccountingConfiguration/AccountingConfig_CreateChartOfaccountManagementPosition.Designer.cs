@@ -122,14 +122,5 @@ namespace Resources {
                 return ResourceManager.GetString("SelectTheSourceBranch", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to xxxxxx.
-        /// </summary>
-        internal static string xxxxxx {
-            get {
-                return ResourceManager.GetString("xxxxxx", resourceCulture);
-            }
-        }
     }
 }
