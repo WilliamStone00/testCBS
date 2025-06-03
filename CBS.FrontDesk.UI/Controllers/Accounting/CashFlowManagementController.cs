@@ -626,14 +626,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 model.BankCashOut.TransactionType = "CASH OUT";
                 model.BankCashOut.Id = BaseUtilities.GenerateInsuranceUniqueNumber(15, "BCO");
-                model.BankCashOut.Balance = (await _AccountServices.GetAccount(model.BankCashOut.FromAccountId)).CurrentBalance.ToString();
-        
+                //        model.BankCashOut.Balance = (await _AccountServices.GetAccount(model.BankCashOut.FromAccountId)).CurrentBalance.ToString();
+
                 var accountList = (await _AccountServices.GetAccountInfoByEventCode(new EventRequest { EventCode = "Bank_To_Transit", ToBranchCode = _AccountServices.GetBranchCode(), ToBranchId = _AccountServices.GetBranchID() }));
                 var fromAccount = accountList.Where(x => x.Type.ToLower() == "source").FirstOrDefault();
                 var toAccount = accountList.Where(x => x.Type.ToLower() == "destination").FirstOrDefault();
-                
                 model.BankCashOut.ToAccountId = toAccount.Id;
-                var datac = await _accountingEntryServices.CreateBankCashTransaction(model.BankCashOut);
+                //model.BankCashOut.FromAccountId = model.CashReplenimentRequest.TempData;
+
+               var datac = await _accountingEntryServices.CreateBankCashTransaction(model.BankCashOut);
                 return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
 
             }
@@ -722,9 +723,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
-
-            // await GetList();CorrespondingBranchID
-            if (path == "list")
+             if (path == "list")
             {
                 List<CashReplenimentRequestDto> cashRepleniments = new List<CashReplenimentRequestDto>();
 
@@ -924,7 +923,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var destinationBranchInfo = await branchServices.GetBranch(OperationEventAttribute.BranchId);
                 var accountList = (await _AccountServices.GetAccountInfoByEventCode(new EventRequest { EventCode = "Transit_To_Vault", ToBranchCode = destinationBranchInfo.BranchCode, ToBranchId = destinationBranchInfo.Id }));
                 var accountTo = accountList.Where(x => x.Type.ToLower() == "destination").FirstOrDefault();
-                cashDemandDataEntity.BankCashOut.ToAccountId = accountTo.Id;
+                cashDemandDataEntity.BankCashOut.ToAccountId = OperationEventAttribute.TempData;
                 if (branchServices.IsHeadOffice())
                 {
                     //ViewBag.HasError= true;
@@ -945,7 +944,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
                 }
                 var modsx = await _AccountServices.GetAccount(cashDemandDataEntity.BankCashOut.FromAccountId);
-                cashDemandDataEntity.BankCashOut.FromAccountName = $"{modsx.AccountNumberCU} -{modsx.AccountName}:{modsx.CurrentBalance}";
+                if (modsx==null)
+                {
+                    var modelx = await _chartOfAccountManagementPositionService.GetChartOfAccountManagementPosition(cashDemandDataEntity.BankCashOut.FromAccountId);
+                    cashDemandDataEntity.BankCashOut.FromAccountName = $"{modelx.AccountNumber}{modelx.PositionNumber}[BCD]-{modelx.Description}:0 FCFA";
+                }
+                else
+                {
+                    cashDemandDataEntity.BankCashOut.FromAccountName = $"{modsx.AccountNumberCU} -{modsx.AccountName}:{modsx.CurrentBalance}";
+
+                }
 
                 return PartialView(partialView, cashDemandDataEntity);
 

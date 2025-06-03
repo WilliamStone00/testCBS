@@ -57,7 +57,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                         Description = Description,
                         Id = Id,
                         CurrencyNotesRequest = CurrencyNotes,
-                        Balance = Balance
+                        Balance = Balance==null? "0": Balance
                     };
                 }
                 else

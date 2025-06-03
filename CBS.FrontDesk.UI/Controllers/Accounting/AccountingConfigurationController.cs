@@ -291,7 +291,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 if (!item.BranchCode.Equals("000"))
                 {
-                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.BranchCode, Value = $"{item.BranchCode} - {item.Name}" });
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.BranchCode, Value = $"{item.Name}" });
                 }
 
             }
@@ -317,7 +317,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 if (!item.BranchCode.Equals("000"))
                 {
-                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.BranchCode} - {item.Name}" });
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.Name}" });
                 }
 
             }
