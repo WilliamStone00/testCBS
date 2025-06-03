@@ -1,5 +1,5 @@
 ﻿@model  CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
-
+@using Resources
 @{
     ViewBag.Title = "_PendingUserNotifications";
 
@@ -10,11 +10,11 @@
     {
         <thead class="table-light">
             <tr>
-                <th>BranchOffice</th>
-                <th>IssuedBy</th>
-                <th>Action to be performed</th>
-                <th>Latency</th>
-                <th>Action</th>
+                <th>@GlobalNotification.BranchOffice</th>
+                <th>@GlobalNotification.IssuedBy</th>
+                <th>@GlobalNotification.ActionToBePerformed</th>
+                <th>@GlobalNotification.Latency</th>
+                <th>@GlobalShared.Action</th>
             </tr>
         </thead>
 
@@ -23,10 +23,10 @@
     {
         <thead class="table-light">
             <tr>
-                <th>IssuedBy</th>
-                <th>Action to be performed</th>
-                <th>Latency</th>
-                <th>Action</th>
+                <th>@GlobalNotification.IssuedBy</th>
+                <th>@GlobalNotification.ActionToBePerformed</th>
+                <th>@GlobalNotification.Latency</th>
+                <th>@GlobalShared.Action</th>
             </tr>
         </thead>
     }
@@ -46,7 +46,7 @@
                     <td style="width:15%">
 
                         @*<a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateCashReplenishmentRequest','update','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.IssuedBy Cash Request to edit">Edit</a>*@
-                        <a href="@d.ActionUrl" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Click to act">Execute</a>
+                        <a href="@d.ActionUrl" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Click to act">@GlobalShared.Execute</a>
                         @* <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ApproveCashReplenimentRequest','approve','CashFlowManagement')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Approve @d.IssuedBy Cash Request">Approve|</a>
                             <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Approve @d.AmountRequested" onclick="DeleteRecordDataTable('CashFlowManagement','@d.Id','ListOfCashReplenishmentData','_CashReplenishmentRequestData',0,'datalistingview_CashReplenimentRequest')">Delete</a>*@
                     </td>
@@ -61,7 +61,7 @@
                     <td style="width:20%">@d.Timestamp</td>
                     <td style="width:20%">
                         @*<a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_CreateCashReplenishmentRequest','update','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.IssuedBy Cash Request to edit">Edit</a>*@
-                        <a href="@d.ActionUrl" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Click to act">Execute</a>
+                        <a href="@d.ActionUrl" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Click to act">@GlobalShared.Execute</a>
                         @* <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashReplenishmentRequest','_ApproveCashReplenimentRequest','approve','CashFlowManagement')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Approve @d.IssuedBy Cash Request">Approve|</a>
                             <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Approve @d.AmountRequested" onclick="DeleteRecordDataTable('CashFlowManagement','@d.Id','ListOfCashReplenishmentData','_CashReplenishmentRequestData',0,'datalistingview_CashReplenimentRequest')">Delete</a>*@
                     </td>

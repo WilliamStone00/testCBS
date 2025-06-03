@@ -1,16 +1,17 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.SavingProducts.MemberRegistrationFeePolicy>
+    @using Resources
 @if (Model != null)
 {<div class="table-responsive mb-3">
         <table class="table table-hover" id="myDataTable">
             <thead class="table-light">
                 <tr>
-                    <th>Policy</th>
-                    <th>Entrace fee</th>
-                    <th>Bye laws fee</th>
-                    <th>Loan P Fee</th>
-                    <th>Buildin C Fee</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                    <th>@GlobalMemberAccountActivationPolicy.Policy</th>
+                    <th>@GlobalMemberAccountActivationPolicy.EntranceFee</th>
+                    <th>@GlobalMemberAccountActivationPolicy.ByeLawsFee</th>
+                    <th>@GlobalMemberAccountActivationPolicy.LoanPFee</th>
+                    <th>@GlobalMemberAccountActivationPolicy.BuildinCFee</th>
+                    <th>@GlobalShared.Status</th>
+                    <th>@GlobalShared.Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,16 +27,16 @@
 
                             @if (d.IsActive)
                             {
-                                <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Active</span></label>
+                                <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalShared.Active</span></label>
                             }
                             else
                             {
-                                <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Blocked</span></label>
+                                <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalShared.Blocked</span></label>
                             }
                         </td>
                         <td style="width:12%">
-                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Create','update','MemberAccountActivationPolicy')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.PolicyName to edit">Edit</a> |
-                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.PolicyName" onclick="DeleteRecordDataTable('MemberAccountActivationPolicy','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Create','update','MemberAccountActivationPolicy')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.PolicyName @GlobalShared.ToEdit">@GlobalShared.Edit</a> |
+                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.PolicyName" onclick="DeleteRecordDataTable('MemberAccountActivationPolicy','@d.Id','myDataTable','_Data',0,'datalistingview')">@GlobalShared.Delete</a>
                         </td>
                     </tr>
                 }
@@ -45,7 +46,7 @@
 }
 else
 {
-    <div class="alert alert-info" role="alert">
-        No member fee policy was found at the moment.
-    </div>
+<div class="alert alert-info" role="alert">
+    @GlobalMemberAccountActivationPolicy.NoMemberFeePolicyWasFoundAtTheMoment.
+</div>
 }

@@ -1,11 +1,12 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.LoanConf.LoanTerm>
+    @using Resources
 <fieldset class="fieldset-custom">
     <table class="table table-hover" id="myDataTable">
         <thead class="table-light">
             <tr>
-                <th>Name</th>
-                <th>Min : Max</th>
-                <th>Action</th>
+                <th>@GlobalLoanTerm.Name</th>
+                <th>@GlobalLoanTerm.Min_Max</th>
+                <th>@GlobalShared.Action</th>
             </tr>
         </thead>
         <tbody>
@@ -15,8 +16,8 @@
                     <td style="width:70%">@d.Name</td>
                     <td style="width:20%">@d.MinInMonth : @d.MaxInMonth Month(s)</td>
                     <td style="width:10%">
-                        <a href="#" onclick="AddORUpdateGen(@d.Id,'datalistingview','_Create','update','LoanTerm')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit</a>
-                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteRecordDataTable('LoanTerm','@d.Id','myDataTable','_Data',0,'datalistingview',null,'list')">Delete</a>
+                        <a href="#" onclick="AddORUpdateGen(@d.Id,'datalistingview','_Create','update','LoanTerm')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.Name @GlobalShared.ToEdit">@GlobalShared.Edit</a>
+                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.Name" onclick="DeleteRecordDataTable('LoanTerm','@d.Id','myDataTable','_Data',0,'datalistingview',null,'list')">@GlobalShared.Delete</a>
                     </td>
                 </tr>
             }

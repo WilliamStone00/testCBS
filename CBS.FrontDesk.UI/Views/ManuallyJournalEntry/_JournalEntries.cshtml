@@ -1,14 +1,14 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
-
+@using Resources
 <div class="table-responsive mb-3">
     <table class="table table-hover card-body" id="JournalEntryDataTable">
         <thead class="table-light">
             <tr>
-                <th>AccountNumber</th>
-                <th>AccountName</th>
-                <th>Credit</th>
-                <th>Debit</th>
-                <th>Action</th>
+                <th>@GlobalManuallyJournalEntry.AccountNumber</th>
+                <th>@GlobalManuallyJournalEntry.AccountName</th>
+                <th>@GlobalManuallyJournalEntry.Credit</th>
+                <th>@GlobalManuallyJournalEntry.Debit</th>
+                <th>@GlobalShared.Action</th>
 
             </tr>
         </thead>
@@ -34,7 +34,7 @@
                         }
                         <td style="width:25%">
 
-                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.AccountName" onclick="DeleteDataJournal('ManuallyJournalEntry','@d.Id','JournalEntryDataTable','_JournalEntries','desc','datalistingview_JournalEntries','EntryTempData')">Delete</a>
+                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.AccountName" onclick="DeleteDataJournal('ManuallyJournalEntry','@d.Id','JournalEntryDataTable','_JournalEntries','desc','datalistingview_JournalEntries','EntryTempData')">@GlobalShared.Delete</a>
                         </td>
 
                     </tr>
@@ -42,11 +42,11 @@
                 <tr>
                     @if (Model.EntryTempDataResult.Count() > 0)
                     {
-                        <td>Total Debit:@Model.EntryTempDataResult[0].SumDebit</td>
+                        <td>@GlobalManuallyJournalEntry.TotalDebit:@Model.EntryTempDataResult[0].SumDebit</td>
                         <td></td>
-                        <td>Total Credit:@Model.EntryTempDataResult[0].SumCredit</td>
+                        <td>@GlobalManuallyJournalEntry.TotalCredit:@Model.EntryTempDataResult[0].SumCredit</td>
                         <td></td>
-                        <td>Difference:@Model.EntryTempDataResult[0].Difference</td>
+                        <td>@GlobalManuallyJournalEntry.Difference:@Model.EntryTempDataResult[0].Difference</td>
 
                     }
 

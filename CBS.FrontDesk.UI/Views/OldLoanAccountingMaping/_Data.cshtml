@@ -1,10 +1,11 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.SavingProducts.OldLoanAccountingMaping>
+    @using Resources
 <fieldset class="fieldset-custom">
-    <legend>Data</legend>
+    <legend>@GlobalOldLoanAccountingMaping.Data</legend>
     @if (Model.Count == 0)
     {
         <div class="text-center my-3">
-            <p>No old loan maping is created</p>
+            <p>@GlobalOldLoanAccountingMaping.NoOldLoanMapingIsCreated</p>
         </div>
     }
     else
@@ -13,9 +14,9 @@
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>Name</th>
+                        <th>@GlobalOldLoanAccountingMaping.Name</th>
                         @*<th>Branch</th>*@
-                        <th>Action</th>
+                    <th>@GlobalShared.Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,8 +26,8 @@
                             <td style="width:80%">@d.LoanTypeName</td>
                             @*<td style="width:70%">@d.BranchName</td>*@
                             <td style="width:10%">
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Create','update','OldLoanAccountingMaping')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.LoanTypeName to edit">Edit</a> |
-                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.LoanTypeName" onclick="DeleteRecordDataTable('OldLoanAccountingMaping','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Create','update','OldLoanAccountingMaping')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.LoanTypeName to edit">@GlobalShared.Edit</a> |
+                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.LoanTypeName" onclick="DeleteRecordDataTable('OldLoanAccountingMaping','@d.Id','myDataTable','_Data',0,'datalistingview')">@GlobalShared.Delete</a>
                             </td>
                         </tr>
                     }

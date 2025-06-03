@@ -8,12 +8,13 @@
             white-space: nowrap; /* Prevent text from wrapping */
         }
 </style>
+@using Resources
 <fieldset class="fieldset-custom">
     <legend id="select_base">Data listings</legend>
     @if (Model.Count() == 0)
     {
         <div class="text-center my-3">
-            <p>No Data Found</p>
+            <p>@GlobalMobileMoneyCashTopup.NoDataFound</p>
         </div>
     }
     else
@@ -22,14 +23,14 @@
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>Date</th>
-                        <th>Amount</th>
-                        <th>Operator</th>
-                        <th>Source</th>
-                        <th>Branch</th>
-                        <th>Status</th>
-                        <th>Initiated by</th>
-                        <th>Action</th>
+                        <th>@GlobalMobileMoneyCashTopup.Date</th>
+                        <th>@GlobalMobileMoneyCashTopup.Amount</th>
+                        <th>@GlobalMobileMoneyCashTopup.Operator</th>
+                        <th>@GlobalMobileMoneyCashTopup.Source</th>
+                        <th>@GlobalMobileMoneyCashTopup.Branch</th>
+                        <th>@GlobalShared.Status</th>
+                        <th>@GlobalMobileMoneyCashTopup.InitiatedBy</th>
+                        <th>@GlobalShared.Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,7 +54,7 @@
                             <td>
                                 @if (d.RequestApprovalStatus == "Approved")
                                 {
-                                    <span class="badge bg-info">Approved</span>
+                                    <span class="badge bg-info">@GlobalShared.Approved</span>
                                 }
                                 else
                                 {
@@ -62,7 +63,7 @@
                             </td>
                             <td>@d.RequestInitiatedBy</td>
                             <td>
-                                <a href="/MobileMoneyCashTopup/RequestValidation?Id=@d.Id" class="mr-2" data-toggle="tooltip" data-placement="top" title="Validate @d.Amount to topup @d.OperatorType">Validate</a>
+                                <a href="/MobileMoneyCashTopup/RequestValidation?Id=@d.Id" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Validate @d.Amount to topup @d.OperatorType">@GlobalShared.Validate</a>
                             </td>
                         </tr>
                     }

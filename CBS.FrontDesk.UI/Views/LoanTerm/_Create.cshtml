@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanTerm
+    @using Resources
 <div class="card-body">
     @using (Html.BeginForm("Create", "LoanTerm", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
@@ -10,7 +11,7 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                        <label>Name</label>
+                        <label>@GlobalLoanTerm.Name</label>
                     </div>
                 </div>
                 <!-- Min and Max Fields in the Same Row -->
@@ -19,14 +20,14 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.MinInMonth, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.MinInMonth, "", new { @class = "text-danger" })
-                            <label>Minimum value in months</label>
+                            <label>@GlobalLoanTerm.Minimum_value_in_months</label>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.MaxInMonth, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.MaxInMonth, "", new { @class = "text-danger" })
-                            <label>Maximum value in months</label>
+                            <label>@GlobalLoanTerm.Maximum_value_in_months</label>
                         </div>
                     </div>
                 </div>
@@ -36,12 +37,12 @@
         <div class="mt-4 text-end">
             @if (ViewBag.Key != null)
             {
-                <button type="submit" class="btn btn-primary me-2">Update</button>
+                <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
             }
             else
             {
-                <button type="submit" class="btn btn-primary me-2">Save</button>
-                <button type="reset" class="btn btn-outline-secondary">Reset</button>
+        <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+        <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
             }
         </div>
     }

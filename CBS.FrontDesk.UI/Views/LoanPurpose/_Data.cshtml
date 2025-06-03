@@ -1,13 +1,14 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.LoanConf.LoanPurpose>
+    @using Resources
 <fieldset class="fieldset-custom">
 
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover" id="myDataTable">
             <thead class="table-light">
                 <tr>
-                    <th>Name</th>
-                    <th>Product Category</th>
-                    <th>Actions</th>
+                    <th>@GlobalLoanPurpose.Name</th>
+                    <th>@GlobalLoanPurpose.ProductCategory</th>
+                    <th>@GlobalShared.Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -19,11 +20,11 @@
                             <td style="width:60%">@d.purposeName</td>
                             <td style="width:25%">@d.LoanProductCategory.Name</td>
                             <td style="width:15%">
-                                <a href="#" onclick="AddORUpdateGen('@d.id', 'datalistingview', '_Update', 'update', 'LoanPurpose','list')" class="btn btn-outline-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Select @d.purposeName to edit">
-                                    <i class="fas fa-edit"></i> Edit
+                                <a href="#" onclick="AddORUpdateGen('@d.id', 'datalistingview', '_Update', 'update', 'LoanPurpose','list')" class="btn btn-outline-primary btn-sm" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.purposeName @GlobalShared.ToEdit">
+                                    <i class="fas fa-edit"></i> @GlobalShared.Edit
                                 </a>
                                 <a href="#" class="btn btn-outline-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Delete @d.purposeName" onclick="DeleteRecordDataTable('LoanPurpose', '@d.id', 'myDataTable', '_Data', 0, 'datalistingview',null,'list')">
-                                    <i class="fas fa-trash-alt"></i> Delete
+                                    <i class="fas fa-trash-alt"></i> @GlobalShared.Delete
                                 </a>
                             </td>
                         </tr>
@@ -33,7 +34,7 @@
                 {
                     <tr>
                         <td colspan="3" class="text-center text-muted">
-                            <strong>No loan purposes available.</strong>
+                            <strong>@GlobalLoanPurpose.NoLoanPurposesAvailable.</strong>
                         </td>
                     </tr>
                 }

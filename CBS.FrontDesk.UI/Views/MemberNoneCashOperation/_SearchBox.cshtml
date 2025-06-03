@@ -1,5 +1,5 @@
 ﻿
-
+@using Resources
 
 <fieldset class="fieldset-custom p-3">
     <div class="row">
@@ -7,15 +7,15 @@
 
             <!-- Search Bar -->
             <div class="input-group shadow">
-                <input type="text" id="manualSearchInput" class="form-control" placeholder="Enter Member Reference Number: 0120050001" maxlength="10">
+                <input type="text" id="manualSearchInput" class="form-control" placeholder="@GlobalMemberNoneCashOperation.EnterMemberReferenceNumber: 0120050001" maxlength="10">
                 <button class="btn btn-primary" onclick="GetMember()">
-                    <i class="mdi mdi-magnify"></i> Search
+                    <i class="mdi mdi-magnify"></i> @GlobalShared.Search
                 </button>
             </div>
             <small class="form-text text-muted mt-2">
 
-                Enter the 10-digit Member Reference Number. This includes a 3-digit Branch Code followed by a 7-digit Member Code. <br />
-                Perform secure cash deposits into member accounts. Follow the guidelines outlined in the Help Tips section above.
+                @GlobalMemberNoneCashOperation.EnterThe10DigitMemberReferenceNumber. <br />
+                @GlobalMemberNoneCashOperation.PerformSecureCashDepositsIntoMemberAccounts.
 
             </small>
         </div>

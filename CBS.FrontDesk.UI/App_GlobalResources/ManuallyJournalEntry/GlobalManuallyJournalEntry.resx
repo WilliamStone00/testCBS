@@ -1,0 +1,516 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Date_Issued" xml:space="preserve">
+    <value>Date issued</value>
+  </data>
+  <data name="Approved_By" xml:space="preserve">
+    <value>Approved by</value>
+  </data>
+  <data name="Approved_Date" xml:space="preserve">
+    <value>Approved date</value>
+  </data>
+  <data name="Issuer" xml:space="preserve">
+    <value>Issuer</value>
+  </data>
+  <data name="Issuer_Information" xml:space="preserve">
+    <value>Issuer Information</value>
+  </data>
+  <data name="Journal_Entry_Status" xml:space="preserve">
+    <value>Journal Entry Status</value>
+  </data>
+  <data name="loading" xml:space="preserve">
+    <value>Loading</value>
+  </data>
+  <data name="Posting_Source" xml:space="preserve">
+    <value>Posting source</value>
+  </data>
+  <data name="Purpose" xml:space="preserve">
+    <value>Purpose</value>
+  </data>
+  <data name="Account_Number" xml:space="preserve">
+    <value>Account number</value>
+  </data>
+  <data name="Debit" xml:space="preserve">
+    <value>Debit</value>
+  </data>
+  <data name="Credit" xml:space="preserve">
+    <value>Credit</value>
+  </data>
+  <data name="DECISION_STATEMENT" xml:space="preserve">
+    <value>DECISION STATEMENT</value>
+  </data>
+  <data name="The_comment_field_is_required" xml:space="preserve">
+    <value>The comment field is required</value>
+  </data>
+  <data name="Journal_Entries_Reference_loading" xml:space="preserve">
+    <value>Journal Entries Reference:loading</value>
+  </data>
+  <data name="ReferenceId" xml:space="preserve">
+    <value>Reference Id</value>
+  </data>
+  <data name="AccountName" xml:space="preserve">
+    <value>Account name</value>
+  </data>
+  <data name="AccountBalance" xml:space="preserve">
+    <value>Account balance</value>
+  </data>
+  <data name="BookingDirection" xml:space="preserve">
+    <value>Booking direction</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="SelectAccount" xml:space="preserve">
+    <value>Select account</value>
+  </data>
+  <data name="SelectBookingDirection" xml:space="preserve">
+    <value>Select bookingDirection</value>
+  </data>
+  <data name="Journal_Entry_at_this_level_can_only _be_passed_from_branch_office_terminal" xml:space="preserve">
+    <value>Journal Entry at this level can only be passed from branch office terminal. Please kindly contact the branch manager concern</value>
+  </data>
+  <data name="PostEntries" xml:space="preserve">
+    <value>Post Entries</value>
+  </data>
+  <data name="Purpose_of_the_Entry" xml:space="preserve">
+    <value>Purpose of the entry</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Event_Entry_Metadata" xml:space="preserve">
+    <value>Event Entry Metadata</value>
+  </data>
+  <data name="Accounting_Event_Name" xml:space="preserve">
+    <value>Accounting Event Name</value>
+  </data>
+  <data name="Amount_to_be_executed_in_journal" xml:space="preserve">
+    <value>Amount to be executed in journal</value>
+  </data>
+  <data name="Is_Validation_Needed" xml:space="preserve">
+    <value>Is Validation Needed</value>
+  </data>
+  <data name="Select_Eligible_Branches" xml:space="preserve">
+    <value>Select Eligible Branches</value>
+  </data>
+  <data name="Select_Entry_Type" xml:space="preserve">
+    <value>Select Entry Type</value>
+  </data>
+  <data name="Select_Transaction" xml:space="preserve">
+    <value>Select Transaction</value>
+  </data>
+  <data name="Select_Level_of_Execution" xml:space="preserve">
+    <value>Select Level of Execution</value>
+  </data>
+  <data name="Is_a_chain_entry" xml:space="preserve">
+    <value>Is a chain entry</value>
+  </data>
+  <data name="Select_Chain_Event_Entry" xml:space="preserve">
+    <value>Select Chain Event Entry</value>
+  </data>
+  <data name="Accounting_Event_Entry_Rule" xml:space="preserve">
+    <value>Accounting Event Entry Rule</value>
+  </data>
+  <data name="Select_Chart_of_Account" xml:space="preserve">
+    <value>Select Chart of Account</value>
+  </data>
+  <data name="AddEntryRule" xml:space="preserve">
+    <value>Add entry rule</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Direction</value>
+  </data>
+  <data name="ChartOfAccount" xml:space="preserve">
+    <value>Chart of Account</value>
+  </data>
+  <data name="Registered_Accounting_Entry_Rule" xml:space="preserve">
+    <value>Registered Accounting Entry Rule</value>
+  </data>
+  <data name="SaveEventEntryRule" xml:space="preserve">
+    <value>Save Event Entry Rule</value>
+  </data>
+  <data name="UpdateEventEntryRule" xml:space="preserve">
+    <value>Update Event Entry Rule</value>
+  </data>
+  <data name="SubmitEntry" xml:space="preserve">
+    <value>Submit entry</value>
+  </data>
+  <data name="EnterReasonForManualEntry" xml:space="preserve">
+    <value>Enter reason for manual entry</value>
+  </data>
+  <data name="ConfiguredManualJournalEntry" xml:space="preserve">
+    <value>Configured Manual Journal Entry</value>
+  </data>
+  <data name="EntryMetadata" xml:space="preserve">
+    <value>Entry metadata</value>
+  </data>
+  <data name="EventName" xml:space="preserve">
+    <value>Event name</value>
+  </data>
+  <data name="DoubleValidationNeeded" xml:space="preserve">
+    <value>Double validation needed</value>
+  </data>
+  <data name="LevelOfExecution" xml:space="preserve">
+    <value>Level of execution</value>
+  </data>
+  <data name="IsChainExecution" xml:space="preserve">
+    <value>Is chain execution</value>
+  </data>
+  <data name="NextAccountingEvent" xml:space="preserve">
+    <value>Next accounting event</value>
+  </data>
+  <data name="AddEntry" xml:space="preserve">
+    <value>Add entry</value>
+  </data>
+  <data name="AccountingEntries" xml:space="preserve">
+    <value>Accounting entries</value>
+  </data>
+  <data name="TransactionReference" xml:space="preserve">
+    <value>Transaction reference</value>
+  </data>
+  <data name="AccountDescription" xml:space="preserve">
+    <value>Account description</value>
+  </data>
+  <data name="TOTAL" xml:space="preserve">
+    <value>TOTAL</value>
+  </data>
+  <data name="NoAccountingRulesAvailable" xml:space="preserve">
+    <value>No accounting rules available</value>
+  </data>
+  <data name="TotalDebit" xml:space="preserve">
+    <value>Total debit</value>
+  </data>
+  <data name="TotalCredit" xml:space="preserve">
+    <value>Total credit</value>
+  </data>
+  <data name="Difference" xml:space="preserve">
+    <value>Difference</value>
+  </data>
+  <data name="AccountNumber" xml:space="preserve">
+    <value>Account number</value>
+  </data>
+  <data name="Loading_" xml:space="preserve">
+    <value>Loading</value>
+  </data>
+  <data name="PASSINGJOURNALENTRYFOR" xml:space="preserve">
+    <value>PASSING JOURNAL ENTRY FOR</value>
+  </data>
+  <data name="RuleName" xml:space="preserve">
+    <value>Rule name</value>
+  </data>
+  <data name="ApproveReject" xml:space="preserve">
+    <value>Approve/Reject</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Reference" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="IssuedBy" xml:space="preserve">
+    <value>IssuedBy</value>
+  </data>
+  <data name="IssuedDate" xml:space="preserve">
+    <value>IssuedDate</value>
+  </data>
+  <data name="IssuerInformation" xml:space="preserve">
+    <value>Issuer Information</value>
+  </data>
+  <data name="PostingSource" xml:space="preserve">
+    <value>Posting source</value>
+  </data>
+  <data name="DateIssued" xml:space="preserve">
+    <value>Date issued</value>
+  </data>
+  <data name="ApprovedDate" xml:space="preserve">
+    <value>Approved date</value>
+  </data>
+  <data name="ApprovedBy" xml:space="preserve">
+    <value>Approved by</value>
+  </data>
+  <data name="JournalEntryStatus" xml:space="preserve">
+    <value>Journal entry status</value>
+  </data>
+  <data name="TheCommentFieldIsRequired" xml:space="preserve">
+    <value>The comment field is required</value>
+  </data>
+  <data name="DECISIONSTATEMENT" xml:space="preserve">
+    <value>DECISION STATEMENT</value>
+  </data>
+  <data name="SelectBranchOffice" xml:space="preserve">
+    <value>Select branch office</value>
+  </data>
+  <data name="SelectUsersInTheBranch" xml:space="preserve">
+    <value>Select users in the branch</value>
+  </data>
+  <data name="CheckIfTheApproverIsOutOfTheIssuingBranch" xml:space="preserve">
+    <value>Check if the approver is out of the issuing branch</value>
+  </data>
+  <data name="SelectUsersInTheSystem" xml:space="preserve">
+    <value>Select users in the system</value>
+  </data>
+  <data name="SelectFilteringOption" xml:space="preserve">
+    <value>Select filtering option</value>
+  </data>
+  <data name="ToDate" xml:space="preserve">
+    <value>To date</value>
+  </data>
+  <data name="SearchJournalEntry" xml:space="preserve">
+    <value>Search journal entry</value>
+  </data>
+  <data name="FromDate" xml:space="preserve">
+    <value>From date</value>
+  </data>
+  <data name="AccountingEntryRules" xml:space="preserve">
+    <value>Accounting Entry Rules</value>
+  </data>
+  <data name="SelectChainEventEntry" xml:space="preserve">
+    <value>Select chain event entry</value>
+  </data>
+  <data name="IsAChainEntry" xml:space="preserve">
+    <value>Is a chain entry</value>
+  </data>
+  <data name="SelectTransaction" xml:space="preserve">
+    <value>Select transaction</value>
+  </data>
+  <data name="SelectLevelOfExecution" xml:space="preserve">
+    <value>Select level of execution</value>
+  </data>
+  <data name="SelectEntryType" xml:space="preserve">
+    <value>Select entry type</value>
+  </data>
+  <data name="SelectEligibleBranches" xml:space="preserve">
+    <value>Select eligible branches</value>
+  </data>
+  <data name="IsValidationNeeded" xml:space="preserve">
+    <value>Is validation needed</value>
+  </data>
+  <data name="EnterEventName" xml:space="preserve">
+    <value>Enter event name</value>
+  </data>
+  <data name="EventEntryMetadata" xml:space="preserve">
+    <value>Event Entry Metadata</value>
+  </data>
+  <data name="SettingAccountingEventEntryRule" xml:space="preserve">
+    <value>Setting Accounting Event Entry Rule</value>
+  </data>
+  <data name="EnterDescription" xml:space="preserve">
+    <value>Enter description</value>
+  </data>
+  <data name="INITIATEEXCEPTIONALJOURNALENTRY" xml:space="preserve">
+    <value>INITIATE EXCEPTIONAL JOURNAL ENTRY</value>
+  </data>
+  <data name="Reason" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="ValueDate" xml:space="preserve">
+    <value>Value date</value>
+  </data>
+  <data name="CurrentBalance" xml:space="preserve">
+    <value>Current balance</value>
+  </data>
+  <data name="SelectDirection" xml:space="preserve">
+    <value>Select direction</value>
+  </data>
+  <data name="EventDescription" xml:space="preserve">
+    <value>Event description</value>
+  </data>
+  <data name="AmountToBeExecuted" xml:space="preserve">
+    <value>Amount to be executed</value>
+  </data>
+  <data name="ChainEntry" xml:space="preserve">
+    <value>Chain entry</value>
+  </data>
+  <data name="EntryType" xml:space="preserve">
+    <value>Entry type</value>
+  </data>
+  <data name="ListOfAccountingEntriesInvolve" xml:space="preserve">
+    <value>List of accounting entries involve</value>
+  </data>
+  <data name="YES" xml:space="preserve">
+    <value>YES</value>
+  </data>
+  <data name="YouHaveRequestedToDeleteTheAccountingEventRule" xml:space="preserve">
+    <value>You have requested to delete the accounting event rule with the following details</value>
+  </data>
+  <data name="ThisActionCannotBeUndone" xml:space="preserve">
+    <value>This action cannot be undone</value>
+  </data>
+  <data name="PleaseConfirmThatYouWouldLikeToPermanentlyDeleteThisAccountingEvent" xml:space="preserve">
+    <value>Please confirm that you would like to permanently delete this accounting event rule and its associated data</value>
+  </data>
+  <data name="BranchsEligibleForTheExecutionOf" xml:space="preserve">
+    <value>Branch's eligible for the execution of</value>
+  </data>
+  <data name="INITIATEJOURNALENTRY" xml:space="preserve">
+    <value>INITIATE JOURNAL ENTRY</value>
+  </data>
+  <data name="FilterByBranch" xml:space="preserve">
+    <value>Filter by branch</value>
+  </data>
+  <data name="DateRange" xml:space="preserve">
+    <value>Date range</value>
+  </data>
+  <data name="FilterByRequestStatus" xml:space="preserve">
+    <value>Filter by request status</value>
+  </data>
+  <data name="FilterByRequestIssuer" xml:space="preserve">
+    <value>Filter by request issuer</value>
+  </data>
+  <data name="FilterByRequestApprover" xml:space="preserve">
+    <value>Filter by request approver</value>
+  </data>
+  <data name="AvailableOnlyWhenAssignedByTheHeadOffice" xml:space="preserve">
+    <value>Available only when assigned by the head office</value>
+  </data>
+  <data name="SpecifyADateRangeToFilterJournalEntriesAccordingly" xml:space="preserve">
+    <value>Specify a date range to filter journal entries accordingly</value>
+  </data>
+  <data name="FilterBasedOnTheStatus" xml:space="preserve">
+    <value>Filter based on the status — pending, rejected, or approved</value>
+  </data>
+  <data name="SelectTheUserWhoInitiatedTheRequestWithinTheBranch" xml:space="preserve">
+    <value>Select the user who initiated the request within the branch</value>
+  </data>
+  <data name="SelectTheUserWhoApprovedTheRequest" xml:space="preserve">
+    <value>Select the user who approved the request — can be from the branch or the entire system</value>
+  </data>
+  <data name="JOURNALENTRIES" xml:space="preserve">
+    <value>JOURNAL ENTRIES</value>
+  </data>
+  <data name="VALIDATEJOURNALENTRIES" xml:space="preserve">
+    <value>VALIDATE JOURNAL ENTRIES</value>
+  </data>
+  <data name="TheJournalEntriesRetrievedInThisInterfaceIncludeDataFromTheLastFinancialYear" xml:space="preserve">
+    <value>The journal entries retrieved in this interface include data from the last financial year</value>
+  </data>
+  <data name="TIPSFORFILTERINGJOURNALENTRIES" xml:space="preserve">
+    <value>TIPS FOR FILTERING JOURNAL ENTRIES</value>
+  </data>
+  <data name="andTheCurrentYear" xml:space="preserve">
+    <value>and the current year</value>
+  </data>
+  <data name="InCaseYouWishToHaveDataAboveThePeriod" xml:space="preserve">
+    <value>In case you wish to have data above the period of year please kindly contact your  system administrator</value>
+  </data>
+</root>

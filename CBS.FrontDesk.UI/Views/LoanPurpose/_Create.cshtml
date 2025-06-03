@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanPurpose
+    @using Resources
 <div class="card-body">
     @using (Html.BeginForm("Create", "LoanPurpose", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
@@ -7,9 +8,9 @@
                 <!-- Loan Product Category Field -->
                 <div class="col-md-12 mb-3" id="selectFeild">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.LoanProductCategoryId, new SelectList(ViewBag.Categories, "Id", "Name"), "---Select category---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.LoanProductCategoryId, new SelectList(ViewBag.Categories, "Id", "Name"), "---"+ @GlobalLoanPurpose.SelectCategory+"---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.LoanProductCategoryId, "", new { @class = "text-danger" })
-                        <label>Select loan product category</label>
+                        <label>@GlobalLoanPurpose.SelectLoanProductCategory</label>
                     </div>
                 </div>
                 <!-- Loan Purpose Type Field -->
@@ -17,14 +18,14 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.purposeName, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.purposeName, "", new { @class = "text-danger" })
-                        <label>Loan purpose</label>
+                        <label>@GlobalLoanPurpose.LoanPurpose</label>
                     </div>
                 </div>
             </fieldset>
         </div>
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary me-2">Save</button>
-            <button type="reset" class="btn btn-outline-secondary">Reset</button>
+            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+            <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
         </div>
     }
 </div>
