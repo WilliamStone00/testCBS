@@ -79,7 +79,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check this box if you wish to harmonised your existing trial balance with the centralise accounting.
+        ///   Looks up a localized string similar to Check to add all unharmonised account to the existing chart of account.
         /// </summary>
         internal static string CheckThisBoxIfYouWishToHarmonise {
             get {
