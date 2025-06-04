@@ -256,7 +256,7 @@ namespace CBS.BusinessService.BulkOperations
                   
                     // Make an API call to create an individual profile
                     var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.ConfirmBulkOperation, command);
-                    if (response.ApiResponseData != null && response.ApiResponseData.Data)
+                    if (response.IsSuccess)
                     {
                         // Successful creation
                         GetExecutionMessages(response, true, $"{command.ApprovalStatus}", MessagesResults.Success,

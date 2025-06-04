@@ -9,17 +9,59 @@
     <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
 
         <!-- Header Section -->
+        <!--<div class="card bg-light mb-3 shadow-sm">
+        <div class="card-body text-center">
+            <h1 class="card-title text-primary">
+                <i class="mdi mdi-account-group-outline me-2"></i> @GlobalBulkOperation.BULKOPERATIONS
+            </h1>
+            <p class="card-text">
+                @GlobalBulkOperation.BulkOperationManagementMechanisms.
+            </p>
+            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+        </div>
+    </div>-->
+        <!-- Header Section -->
         <div class="card bg-light mb-3 shadow-sm">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
                     <i class="mdi mdi-account-group-outline me-2"></i> @GlobalBulkOperation.BULKOPERATIONS
                 </h1>
                 <p class="card-text">
-                    @GlobalBulkOperation.BulkOperationManagementMechanisms.
+                    <strong>Bulk Account Management System</strong> - Perform mass operations on multiple accounts simultaneously.
+                    Save time by processing hundreds of accounts with a single operation while maintaining complete audit trails.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+
+                <div class="alert alert-info mt-3">
+                    <i class="mdi mdi-alert-circle-outline me-2"></i>
+                    <strong>Important:</strong> All bulk operations will first run in simulation mode to preview results before actual execution.
+                </div>
             </div>
         </div>
+
+        @*
+          <!-- Tips Section -->
+        <div class="card shadow-sm mb-4">
+              <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                  <span><i class="mdi mdi-information-outline me-2"></i> @GlobalBulkOperation.TIPS</span>
+                  <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUserTips" aria-expanded="false" aria-controls="collapseUserTips">
+                      <i class="mdi mdi-chevron-down"></i>
+                  </button>
+              </h6>
+              <div id="collapseUserTips" class="collapse">
+                  <div class="card-body">
+                      <div class="row gy-2">
+                          <div class="col-md-6">
+                              <div class="alert alert-primary d-flex align-items-center" role="alert">
+                                  <i class="mdi mdi-account-edit-outline me-2"></i>
+                                  @GlobalBulkOperation.FillAllRequiredFieldsAccurately.
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        *@
 
         <!-- Tips Section -->
         <div class="card shadow-sm mb-4">
@@ -29,20 +71,67 @@
                     <i class="mdi mdi-chevron-down"></i>
                 </button>
             </h6>
-            <div id="collapseUserTips" class="collapse">
+            <div id="collapseUserTips" class="collapse show">
                 <div class="card-body">
                     <div class="row gy-2">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
+                            <h5 class="text-primary mb-3"><i class="mdi mdi-playlist-check me-2"></i> How to Execute a Bulk Operation:</h5>
+                            <ol class="list-group list-group-numbered">
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold">Define Operation Details</div>
+                                        Set a clear simulation type and description that will help identify this operation in reports and audit logs.
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold">Select Operation Type</div>
+                                        Choose between account top-up (adding funds to multiple accounts) or contribution (collecting funds to a single account).
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold">Configure Source Accounts</div>
+                                        Define which accounts will be affected by specifying account types, ranges, and balance filters.
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold">Set Destination Parameters</div>
+                                        Configure where funds will go (specific account for contributions) or target balances (for top-ups).
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold">Run Simulation</div>
+                                        Review the simulation results carefully before executing the actual operation.
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold">Execute Operation</div>
+                                        After verifying simulation results, proceed with the actual bulk operation.
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
                             <div class="alert alert-primary d-flex align-items-center" role="alert">
                                 <i class="mdi mdi-account-edit-outline me-2"></i>
                                 @GlobalBulkOperation.FillAllRequiredFieldsAccurately.
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                                <i class="mdi mdi-alert-outline me-2"></i>
+                                Double-check account ranges and amounts - bulk operations cannot be easily undone.
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="row mb-1">
             <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
                 <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
