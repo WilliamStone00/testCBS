@@ -124,7 +124,7 @@
     <value>Accounts not existing</value>
   </data>
   <data name="CheckThisBoxIfYouWishToHarmonise" xml:space="preserve">
-    <value>Check this box if you wish to harmonised your existing trial balance with the centralise accounting</value>
+    <value>Check to add all unharmonised account to the existing chart of account</value>
   </data>
   <data name="ColumnAsMentionBelow" xml:space="preserve">
     <value>Column as mention below</value>

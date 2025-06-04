@@ -291,7 +291,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 if (!item.BranchCode.Equals("000"))
                 {
-                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.BranchCode, Value = $"{item.BranchCode} - {item.Name}" });
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.BranchCode, Value = $"{item.Name}" });
                 }
 
             }
@@ -317,7 +317,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 if (!item.BranchCode.Equals("000"))
                 {
-                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.BranchCode} - {item.Name}" });
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.Name}" });
                 }
 
             }
@@ -1983,7 +1983,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     var worksheet = workbook.Worksheets.First();
                     foreach (var row in worksheet.RowsUsed().Skip(1)) // Skip header row
                     {
-                       // Skip rows with insufficient columns
+           
+                        // Skip rows with insufficient columns
                         if (row.CellsUsed().Count()==8)
                         {
                             i++;
@@ -2016,7 +2017,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         }
                         else
                         {
-                            throw new  Exception("The file structure was not respected");
+                           throw new  Exception("The file structure was not respected");
                         }
                        
 

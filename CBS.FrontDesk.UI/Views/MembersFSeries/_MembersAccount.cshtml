@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
-
+@using Resources
 
 
 <div class="row g-4">
@@ -8,32 +8,32 @@
             <div class="mb-3 border-2">
                 <div class="form-wrapper">
                     <fieldset class="fieldset-custom">
-                        <legend>ACCOUNTS</legend>
+                        <legend>@GlobalMembersFSeries.ACCOUNTS</legend>
                         <div class="change-group">
                             <div class="row mt-2 gy-4">
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
-                                        <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
+                                        <span class="formatted-amount shadow-box float-start">@GlobalMembersFSeries.MembersName: @Model.Customer.name</span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
-                                        <span class="formatted-amount shadow-box" id="totalAccountBalance">Actual account balance: 0.0</span>
+                                        <span class="formatted-amount shadow-box" id="totalAccountBalance">@GlobalMembersFSeries.ActualAccountBalance: 0.0</span>
                                     </div>
                                 </div>
                                 <div class="table-responsive" style="width: 100%;">
                                     <table class="table table-hover" id="myDataTableT">
                                         <thead class="table-light">
                                             <tr>
-                                                <th>Account number</th>
-                                                <th>Ordinary accounts</th>
-                                                <th>Balance</th>
-                                                <th>Blocked</th>
-                                                <th>Actual Balance</th>
-                                                <th style="display:none">Balance</th>
-                                                <th style="display:none">Blocked</th>
-                                                <th>Account Status</th>
-                                                <th>Print</th>
+                                                <th>@GlobalMembersFSeries.AccountNumber</th>
+                                                <th>@GlobalMembersFSeries.OrdinaryAccounts</th>
+                                                <th>@GlobalMembersFSeries.Balance</th>
+                                                <th>@GlobalMembersFSeries.Blocked</th>
+                                                <th>@GlobalMembersFSeries.ActualBalance</th>
+                                                <th style="display:none">@GlobalMembersFSeries.Balance</th>
+                                                <th style="display:none">@GlobalMembersFSeries.Blocked</th>
+                                                <th>@GlobalMembersFSeries.AccountStatus</th>
+                                                <th>@GlobalShared.Print</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -61,7 +61,7 @@
                                                     </td>
                                                     <td style="width: 10%">@d.status</td>
                                                     <td style="width: 10%">
-                                                        <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="PrintSingleObject('MembersFSeries', '@d.accountNumber','customer_account_transaction_rpt','ReportParameterLess')" data-bs-toggle="tooltip" title="print members account @d.accountNumber statements">
+                                                        <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="PrintSingleObject('MembersFSeries', '@d.accountNumber','customer_account_transaction_rpt','ReportParameterLess')" data-bs-toggle="tooltip" title="@GlobalMembersFSeries.printMembersAccount @d.accountNumber @GlobalMembersFSeries.statements">
                                                             <span class="tf-icons mdi mdi-printer mdi-18px"></span>
                                                         </a>
                                                     </td>
@@ -70,7 +70,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td colspan="2" style="text-align: right;"><strong>Total:</strong></td>
+                                                <td colspan="2" style="text-align: right;"><strong>@GlobalMembersFSeries.Total:</strong></td>
                                                 <td>
                                                     <span class="formatted-amount shadow-box float-start" id="tableTotalAccountBalance">0</span>
                                                 </td>
@@ -81,10 +81,10 @@
                                                     <span class="formatted-amount shadow-box" id="actualAccountBalance">0.0</span>
                                                 </td>
                                                 <td>
-                                                    <strong>Print all</strong>
+                                                    <strong>@GlobalMembersFSeries.PrintAll</strong>
                                                 </td>
                                                 <td>
-                                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ModalShowUp()" data-bs-toggle="tooltip" title="print all account statements">
+                                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ModalShowUp()" data-bs-toggle="tooltip" title="@GlobalMembersFSeries.printAllAccountStatements">
                                                         <span class="tf-icons mdi mdi-printer mdi-18px"></span>
                                                     </a>
                                                 </td>
@@ -98,7 +98,7 @@
                         </div>
                     </fieldset>
                     <fieldset class="fieldset-custom">
-                        <legend>LOAN</legend>
+                        <legend>@GlobalMembersFSeries.LOAN</legend>
 
                         <!-- Loan Filter Dropdown Group -->
                         <div class="loan-filter-group p-3 mb-4 border rounded bg-light">
@@ -106,13 +106,13 @@
                                 <div class="col-md-6">
                                     <label for="loanFilter" class="form-label"><strong>Filter Loans:</strong></label>
                                     <select id="loanFilterDropdown" class="form-select" onchange="loadLoans('@Model.Customer.CustomerId')">
-                                        <option value="" disabled selected>Select Loan Filter</option> <!-- Default option -->
-                                        <option value="all">All Loans</option>
-                                        <option value="approved">Approved Loans</option>
-                                        <option value="rescheduled">Rescheduled Loans</option>
-                                        <option value="refinanced">Refinanced Loans</option>
-                                        <option value="restructured">Restructured Loans</option>
-                                        <option value="current">Current Loans</option>
+                                        <option value="" disabled selected>@GlobalMembersFSeries.SelectLoanFilter</option> <!-- Default option -->
+                                        <option value="all">@GlobalMembersFSeries.AllLoans</option>
+                                        <option value="approved">@GlobalMembersFSeries.ApprovedLoans</option>
+                                        <option value="rescheduled">@GlobalMembersFSeries.RescheduledLoans</option>
+                                        <option value="refinanced">@GlobalMembersFSeries.RefinancedLoans</option>
+                                        <option value="restructured">@GlobalMembersFSeries.RestructuredLoans</option>
+                                        <option value="current">@GlobalMembersFSeries.CurrentLoans</option>
                                     </select>
                                 </div>
                             </div>
@@ -123,7 +123,7 @@
                             <div class="row mt-2 gy-4">
                                 <!-- No Loans Message -->
                                 <div id="noLoansMessage" class="alert alert-info text-center my-3" style="display: none;">
-                                    <p class="mb-0"><strong>No loans have been contracted.</strong></p>
+                                    <p class="mb-0"><strong>@GlobalMembersFSeries.NoLoansHaveBeenContracted.</strong></p>
                                 </div>
                                 <div class="table-responsive mb-3">
                                     <!-- Loans Table -->
@@ -132,18 +132,18 @@
 
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th>Date</th>
-                                                    <th>L.Amount</th>
-                                                    <th>I.Rate</th>
-                                                    <th>A.Interest</th>
-                                                    <th>Fines</th>
-                                                    <th>VAT</th>
-                                                    <th>Paid</th>
-                                                    <th>Balance</th>
-                                                    <th>D.Amount</th>
-                                                    <th>L.Status</th>
-                                                    <th>Journey</th>
-                                                    <th>Action</th>
+                                                    <th>@GlobalMembersFSeries.Date</th>
+                                                    <th>@GlobalMembersFSeries.LAmount</th>
+                                                    <th>@GlobalMembersFSeries.IRate</th>
+                                                    <th>@GlobalMembersFSeries.AInterest</th>
+                                                    <th>@GlobalMembersFSeries.Fines</th>
+                                                    <th>@GlobalMembersFSeries.VAT</th>
+                                                    <th>@GlobalMembersFSeries.Paid</th>
+                                                    <th>@GlobalMembersFSeries.Balance</th>
+                                                    <th>@GlobalMembersFSeries.DAmount</th>
+                                                    <th>@GlobalMembersFSeries.LStatus</th>
+                                                    <th>@GlobalMembersFSeries.Journey</th>
+                                                    <th>@GlobalShared.Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -151,7 +151,7 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <td colspan="6" class="text-end"><strong>Total:</strong></td>
+                                                    <td colspan="6" class="text-end"><strong>@GlobalMembersFSeries.Total:</strong></td>
                                                     <td><span class="formatted-amount shadow-box float-start" id="totalPaid">0</span></td>
                                                     <td><span class="formatted-amount shadow-box float-start" id="totalBalance">0</span></td>
                                                 </tr>

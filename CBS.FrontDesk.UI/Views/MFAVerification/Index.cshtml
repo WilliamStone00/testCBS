@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.UserManagement.MFAActivation
+    @using Resources
 @{
     Layout = "~/Views/Shared/_LoginMainCover.cshtml";
     ViewBag.Title = "Two Step Account Verification";
@@ -83,7 +84,7 @@
             </div>
             <hr />
             <h5 class="mb-2 trustbank-text" style="display: inline-block; font-size: 1rem;">
-                MFA Verification
+                @GlobalMFAVerification.MFAVerification
                 <span class="authentication-text" style="display: inline-block;">, @Model.FullName</span>
             </h5>
             <hr />
@@ -96,15 +97,15 @@
                     <div class="form-floating form-floating-outline mb-3">
                         @Html.TextBoxFor(m => m.Code, new { @class = "form-control", @placeholder = "Enter MFA Code", @autocomplete = "off" })
                         @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
-                        <label for="Code">MFA Code</label>
+                        <label for="Code">@GlobalMFAVerification.MFACode</label>
                     </div>
 
                     <!-- Submit Button -->
-                    <button class="btn btn-primary d-grid w-100">Submit</button>
+                    <button class="btn btn-primary d-grid w-100">@GlobalShared.Submit</button>
 
                     <!-- Back to Login Button -->
                     <div class="button-spacing">
-                        <a href="~/Authentication/Logout" class="btn btn-secondary d-grid w-100">Back to Login</a>
+                        <a href="~/Authentication/Logout" class="btn btn-secondary d-grid w-100">@GlobalMFAVerification.BackToLogin</a>
                     </div>
                 </fieldset>
             }
@@ -113,12 +114,12 @@
 
             <!-- Validation Notice -->
             <div class="alert alert-info mt-3" role="alert">
-                <strong>How to Validate the MFA Code:</strong>
+                <strong>@GlobalMFAVerification.HowToValidateTheMFACode:</strong>
                 <ol>
-                    <li>Open the Google Authenticator app on your phone.</li>
-                    <li>Locate the code associated with your account. This code refreshes every 30 seconds.</li>
-                    <li>Enter the current code displayed in the app into the "MFA Code" input box above.</li>
-                    <li>If the code is correct, you will be redirected or receive confirmation. If not, check the code on your app and try again.</li>
+                    <li>@GlobalMFAVerification.OpenTheGoogleAuthenticatorAppOnYourPhone.</li>
+                    <li>@GlobalMFAVerification.LocateTheCodeAssociatedWithYourAccount.</li>
+                    <li>@GlobalMFAVerification.EnterTheCurrentCodeDisplayedInTheApp.</li>
+                    <li>@GlobalMFAVerification.IfTheCodeIsCorrectYouWillBeRedirectedOrReceiveConfirmation.</li>
                 </ol>
             </div>
 

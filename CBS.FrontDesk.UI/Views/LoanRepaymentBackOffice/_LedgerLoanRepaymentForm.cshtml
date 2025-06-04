@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
-
+@using Resources
 <input type="hidden" id="customerId" value="@Model.Customer.CustomerId" />
 <input type="hidden" id="memberName" value="@Model.Customer.name" />
 <input type="hidden" id="branchName" value="@Model.Branch.Name" />
@@ -12,9 +12,9 @@
             <div class="col-md-12">
                 <div class="form-floating">
                     <span class="formatted-amount shadow-sm d-block py-3 px-4 bg-light rounded border border-secondary">
-                        <strong>Member's Name:</strong> @Model.Customer.name &nbsp; | &nbsp;
-                        <strong>Branch Name:</strong> @Model.Branch.Name &nbsp; | &nbsp;
-                        <strong>Branch Code:</strong> @Model.Branch.BranchCode
+                        <strong>@GlobalLoanRepaymentBackOffice.MembersName:</strong> @Model.Customer.name &nbsp; | &nbsp;
+                        <strong>@GlobalLoanRepaymentBackOffice.BranchName:</strong> @Model.Branch.Name &nbsp; | &nbsp;
+                        <strong>@GlobalLoanRepaymentBackOffice.BranchCode:</strong> @Model.Branch.BranchCode
                     </span>
                 </div>
             </div>
@@ -24,12 +24,12 @@
     <fieldset class="fieldset-custom">
         <div class="container">
             <div class="row">
-                <h6 class="mb-0 fw-bold text-dark">Source accounts</h6>
+                <h6 class="mb-0 fw-bold text-dark">@GlobalLoanRepaymentBackOffice.SourceAccounts</h6>
                 <div class="col-md-12 mb-2">
                     <div class="form-floating">
-                        @Html.DropDownListFor(m => m.BulkDeposit.ChartOfAccountId, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select GL---", new { @class = "form-control select2", id = "account_number", @search = "true" })
+                        @Html.DropDownListFor(m => m.BulkDeposit.ChartOfAccountId, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---"+ @GlobalLoanRepaymentBackOffice.SelectGL+"---", new { @class = "form-control select2", id = "account_number", @search = "true" })
                         @Html.ValidationMessageFor(m => m.BulkDeposit.ChartOfAccountId, "", new { @class = "text-danger" })
-                        <label id="accountNumberLabel">Select Source Account</label>
+                        <label id="accountNumberLabel">@GlobalLoanRepaymentBackOffice.SelectSourceAccount</label>
                     </div>
                 </div>
             </div>
@@ -39,21 +39,21 @@
                     <table class="table table-hover" id="myDataTableT">
                         <thead class="table-light">
                             <tr>
-                                <th colspan="11" class="text-center fw-bold bg-light text-dark">MEMBER'S OPENED LOANS</th>
+                                <th colspan="11" class="text-center fw-bold bg-light text-dark">@GlobalLoanRepaymentBackOffice.MEMBERS_OPENED_LOANS</th>
                             </tr>
                             <tr>
-                                <th style="display:none;">L. Ref</th>
-                                <th>Date</th>
-                                <th>L.Amount</th>
-                                <th>A.I</th>
-                                <th>Balance</th>
-                                <th>Capital</th>
-                                <th>Interest</th>
-                                <th>VAT (19.25%)</th>
-                                <th>Penalty</th>
-                                <th>Total</th>
-                                <th>Conf</th>
-                                <th>VAT-INC/EXC</th>
+                                <th style="display:none;">@GlobalLoanRepaymentBackOffice.LRef</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Date</th>
+                                <th>@GlobalLoanRepaymentBackOffice.LAmount</th>
+                                <th>@GlobalLoanRepaymentBackOffice.AI</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Balance</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Capital</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Interest</th>
+                                <th>@GlobalLoanRepaymentBackOffice.VAT (19.25%)</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Penalty</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Total</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Conf</th>
+                                <th>@GlobalLoanRepaymentBackOffice.VAT-INC/EXC</th>
                             </tr>
                         </thead>
                         <tbody id="loanRepaymentTable">
@@ -119,7 +119,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="9" style="text-align: right;"><strong>Overall Total Repayment:</strong></td>
+                                <td colspan="9" style="text-align: right;"><strong>@GlobalLoanRepaymentBackOffice.OverallTotalRepayment:</strong></td>
                                 <td colspan="2" id="grandTotalRepayment">0</td>
                             </tr>
                         </tfoot>
@@ -130,19 +130,19 @@
             <div class="row">
                 <div class="col-md-12 mt-2">
                     <div class="form-floating form-floating-outline">
-                        @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control shadow-input-boxes", @id = "Note", rows = "3", placeholder = "Enter reason for transaction...", style = "height: 90px;" })
+                        @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control shadow-input-boxes", @id = "Note", rows = "3", placeholder = @GlobalLoanRepaymentBackOffice.EnterReasonForTransaction, style = "height: 90px;" })
                         @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger" })
-                        <label for="Note">Transaction Note (Reason)</label>
+                        <label for="Note">@GlobalLoanRepaymentBackOffice.TransactionNoteReason</label>
                     </div>
                 </div>
             </div>
 
             <div class="text-end mt-4">
                 <button class="btn btn-primary me-2" onclick="PostLoanRepayment()">
-                    <i class="mdi mdi-check me-1"></i> Confirm Repayment
+                    <i class="mdi mdi-check me-1"></i> @GlobalLoanRepaymentBackOffice.ConfirmRepayment
                 </button>
                 <button class="btn btn-secondary" onclick="Reprint()">
-                    <i class="mdi mdi-printer me-1"></i> Reprint Receipt
+                    <i class="mdi mdi-printer me-1"></i> @GlobalLoanRepaymentBackOffice.ReprintReceipt
                 </button>
              
             </div>

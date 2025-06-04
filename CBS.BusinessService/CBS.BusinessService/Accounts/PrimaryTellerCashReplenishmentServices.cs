@@ -6,6 +6,7 @@ using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml;
@@ -309,7 +310,9 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                if (!ComputeDenomination(model.CurrencyNote, Convert.ToInt32(model.RequestedAmount)))
+                var (isValid, discrepancyMessage) = ValidateDenominations(model.CurrencyNote, model.RequestedAmount);
+
+                if (!isValid)
                 {
                     GetExecutionMessages(model, false, $"{model.RequestedAmount}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered must be greater than 0");

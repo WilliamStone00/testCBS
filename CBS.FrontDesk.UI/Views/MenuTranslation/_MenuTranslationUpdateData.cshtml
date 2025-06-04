@@ -1,4 +1,5 @@
-﻿<!-- ✅ FINAL CLEAN VERSION -->
+﻿@using Resources
+<!-- ✅ FINAL CLEAN VERSION -->
 <!--<div id="translationTableContainer" class="card p-3 shadow mb-4">
     <div class="table-responsive mb-4">
         <table id="myDataTable" class="table table-bordered table-striped">
@@ -28,10 +29,10 @@
             <thead class="table-light">
                 <tr>
                     <th>#</th>
-                    <th>Menu</th>
-                    <th>Original Description</th>
-                    <th>Translated Text</th>
-                    <th>Translated Description</th>
+                    <th>@GlobalMenuTranslation.Menu</th>
+                    <th>@GlobalMenuTranslation.OriginalDescription</th>
+                    <th>@GlobalMenuTranslation.TranslatedText</th>
+                    <th>@GlobalMenuTranslation.TranslatedDescription</th>
                 </tr>
             </thead>
             <tbody id="updateTranslationTableBody">
@@ -40,6 +41,6 @@
         </table>
     </div>
     <button class="btn btn-primary mt-3" onclick="submitUpdatedMenuTranslations()">
-        <i class="mdi mdi-content-save me-1"></i> Update Translations
+        <i class="mdi mdi-content-save me-1"></i> @GlobalMenuTranslation.UpdateTranslations
     </button>
 </div>

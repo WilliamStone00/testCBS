@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+    @using Resources
 
 <input type="hidden" id="customerId" value="@Model.Customer.CustomerId" />
 <input type="hidden" id="memberName" value="@Model.Customer.name" />
@@ -14,9 +15,9 @@
             <div class="col-md-12">
                 <div class="form-floating">
                     <span class="formatted-amount shadow-sm d-block py-3 px-4 bg-light rounded border border-secondary">
-                        <strong>Member's Name:</strong> @Model.Customer.name &nbsp; | &nbsp;
-                        <strong>Branch Name:</strong> @Model.Branch.Name &nbsp; | &nbsp;
-                        <strong>Branch Code:</strong> @Model.Branch.BranchCode
+                        <strong>@GlobalLoanRepaymentBackOffice.MembersName:</strong> @Model.Customer.name &nbsp; | &nbsp;
+                        <strong>@GlobalLoanRepaymentBackOffice.BranchName:</strong> @Model.Branch.Name &nbsp; | &nbsp;
+                        <strong>@GlobalLoanRepaymentBackOffice.BranchCode:</strong> @Model.Branch.BranchCode
                     </span>
                 </div>
             </div>
@@ -33,16 +34,16 @@
                         <thead class="table-light">
                             <!-- Merged Header Row -->
                             <tr>
-                                <th colspan="7" class="text-center fw-bold bg-light text-dark">MEMBER'S ACCOUNT BALANCES</th>
+                                <th colspan="7" class="text-center fw-bold bg-light text-dark">@GlobalLoanRepaymentBackOffice.MEMBERS_ACCOUNT_BALANCES</th>
                             </tr>
                             <tr>
-                                <th style="display:none;">ProductID</th>
-                                <th style="display:none;">AccountNumber</th>
-                                <th>Accounts</th>
-                                <th>Balance</th>
-                                <th>Amount to Debit</th>
-                                <th>AB.Validation</th>
-                                <th>Confirm</th>
+                                <th style="display:none;">@GlobalLoanRepaymentBackOffice.ProductID</th>
+                                <th style="display:none;">@GlobalLoanRepaymentBackOffice.AccountNumber</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Accounts</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Balance</th>
+                                <th>@GlobalLoanRepaymentBackOffice.AmountToDebit</th>
+                                <th>@GlobalLoanRepaymentBackOffice.ABValidation</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Confirm</th>
                             </tr>
                         </thead>
                         <tbody id="memberAccountsTable">
@@ -65,7 +66,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="2" style="text-align: right;"><strong>Total Debited:</strong></td>
+                                <td colspan="2" style="text-align: right;"><strong>@GlobalLoanRepaymentBackOffice.TotalDebited:</strong></td>
                                 <td id="totalDebitedAmount">0</td>
                                 <td colspan="3"></td>
                             </tr>
@@ -81,20 +82,20 @@
                         <thead class="table-light">
                             <!-- Merged Header Row -->
                             <tr>
-                                <th colspan="10" class="text-center fw-bold bg-light text-dark">MEMBER'S OPENED LOANS</th>
+                                <th colspan="10" class="text-center fw-bold bg-light text-dark">@GlobalLoanRepaymentBackOffice.MEMBERS_OPENED_LOANS</th>
                             </tr>
                             <tr>
-                                <th style="display:none;">L. Ref</th>
-                                <th>Date</th>
-                                <th>L.Amount</th>
-                                <th>A.I</th>
-                                <th>Balance</th>
-                                <th>Capital</th>
-                                <th>Interest</th>
-                                <th>VAT (19.25%)</th> <!-- ✅ NEW VAT COLUMN -->
-                                <th>Penalty</th>
-                                <th>Total</th>
-                                <th>Conf</th>
+                                <th style="display:none;">@GlobalLoanRepaymentBackOffice.LRef</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Date</th>
+                                <th>@GlobalLoanRepaymentBackOffice.LAmount</th>
+                                <th>@GlobalLoanRepaymentBackOffice.AI</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Balance</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Capital</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Interest</th>
+                                <th>@GlobalLoanRepaymentBackOffice.VAT (19.25%)</th> <!-- ✅ NEW VAT COLUMN -->
+                                <th>@GlobalLoanRepaymentBackOffice.Penalty</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Total</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Conf</th>
                             </tr>
                         </thead>
                         <tbody id="loanRepaymentTable">
@@ -138,12 +139,12 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="7" style="text-align: right;"><strong>Total Repayment:</strong></td>
+                                <td colspan="7" style="text-align: right;"><strong>@GlobalLoanRepaymentBackOffice.TotalRepayment:</strong></td>
                                 <td id="totalRepaymentAmount">0</td>
                                 <td colspan="2"></td>
                             </tr>
                             <tr>
-                                <td colspan="7" style="text-align: right;"><strong>Balance Remaining:</strong></td>
+                                <td colspan="7" style="text-align: right;"><strong>@GlobalLoanRepaymentBackOffice.BalanceRemaining:</strong></td>
                                 <td>
                                     <span id="remainingBalance">0</span>
                                     <span id="balanceIndicator" style="font-size: 1.5rem;"></span>
@@ -151,7 +152,7 @@
                                 <td colspan="2"></td>
                             </tr>
                             <tr style="display:none;">
-                                <td colspan="7" style="text-align: right;"><strong>Total Calculated VAT (If applicable):</strong></td>
+                                <td colspan="7" style="text-align: right;"><strong>@GlobalLoanRepaymentBackOffice.TotalCalculatedVATIfApplicable:</strong></td>
                                 <td id="calculatedVat">0</td>
                                 <td colspan="2"></td>
                             </tr>
@@ -166,9 +167,9 @@
                 <div class="col-md-12 mt-2">
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.BulkDeposit.Note,
-                            new { @class = "form-control shadow-input-boxes", @id = "Note", rows = "3", placeholder = "Enter reason for transaction...", style = "height: 90px;" })
+                            new { @class = "form-control shadow-input-boxes", @id = "Note", rows = "3", placeholder = @GlobalLoanRepaymentBackOffice.EnterReasonForTransaction, style = "height: 90px;" })
                         @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
-                        <label for="Note">Transaction Note (Reason)</label>
+                        <label for="Note">@GlobalLoanRepaymentBackOffice.TransactionNoteReason</label>
                     </div>
                 </div>
             </div>
@@ -176,10 +177,10 @@
             <!-- Action Buttons -->
             <div class="text-end mt-4">
                 <button class="btn btn-primary me-2" onclick="PostLoanRepayment()">
-                    <i class="mdi mdi-check me-1"></i> Confirm Repayment
+                    <i class="mdi mdi-check me-1"></i> @GlobalLoanRepaymentBackOffice.ConfirmRepayment
                 </button>
                 <button class="btn btn-secondary" onclick="Reprint()">
-                    <i class="mdi mdi-printer me-1"></i> Reprint Receipt
+                    <i class="mdi mdi-printer me-1"></i> @GlobalLoanRepaymentBackOffice.ReprintReceipt
                 </button>
             </div>
         </div>

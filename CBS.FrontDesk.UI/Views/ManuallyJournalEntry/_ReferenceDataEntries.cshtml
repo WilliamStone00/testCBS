@@ -1,8 +1,9 @@
-﻿<div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+﻿@using Resources
+<div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel3"> Loading ...</h4>
+                <h4 class="modal-title" id="exampleModalLabel3"> @GlobalManuallyJournalEntry.Loading_ ...</h4>
                 <button type="button"
                         class="btn-close"
                         data-bs-dismiss="modal"
@@ -13,52 +14,52 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th colspan="2">  <h5 class="card-title" style="text-justify:auto">Issuer Information</h5></th>
+                            <th colspan="2">  <h5 class="card-title" style="text-justify:auto">@GlobalManuallyJournalEntry.IssuerInformation</h5></th>
 
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
                         <tr>
-                            <td>Issuer</td>
-                            <td id="issuer"> loading ... </td>
+                            <td>@GlobalManuallyJournalEntry.Issuer</td>
+                            <td id="issuer"> @GlobalManuallyJournalEntry.loading ... </td>
                         </tr>
                         <tr>
-                            <td>Posting Source</td>
+                            <td>@GlobalManuallyJournalEntry.PostingSource</td>
                             
                             <td id="branchCode">loading ...</td>
                         </tr>
                         <tr>
-                            <td>Date Issued</td>
+                            <td>@GlobalManuallyJournalEntry.DateIssued</td>
                             <td id="dateIssued">loading ...</td>
                         </tr>
                         <tr>
-                            <td>Journal Entry Status</td>
-                            <td id="status">loading ...</td>
+                            <td>@GlobalManuallyJournalEntry.JournalEntryStatus</td>
+                            <td id="status">@GlobalManuallyJournalEntry.loading ...</td>
                         </tr>
                         <tr>
-                            <td>Approved By</td>
-                            <td id="approvedBy">loading ...</td>
+                            <td>@GlobalManuallyJournalEntry.ApprovedBy</td>
+                            <td id="approvedBy">@GlobalManuallyJournalEntry.loading ...</td>
                         </tr>
                         <tr>
-                            <td>Approved Date</td>
-                            <td id="approvedDate">loading ...</td>
+                            <td>@GlobalManuallyJournalEntry.ApprovedDate</td>
+                            <td id="approvedDate">@GlobalManuallyJournalEntry.loading ...</td>
                         </tr>
                         <tr>
-                            <td>Purpose</td>
-                            <td id="description">loading ...</td>
+                            <td>@GlobalManuallyJournalEntry.Purpose</td>
+                            <td id="description">@GlobalManuallyJournalEntry.loading ...</td>
                         </tr>
                         <tr>
 
-                            <td colspan="2">  <h5 class="card-title" style="text-justify:auto" id="referenceID">Journal Entries Reference:loading</h5></td>
+                            <td colspan="2">  <h5 class="card-title" style="text-justify:auto" id="referenceID">@GlobalManuallyJournalEntry.Journal_Entries_Reference_loading</h5></td>
                         </tr>
                     </tbody>
                 </table>
                 <table class="table table-hover" id="ReferenceEntriesDataTable">
                     <thead class="table-light">
                         <tr>
-                            <th>Account Number</th>
-                            <th>Debit(XFA)</th>
-                            <th>Credit(XFA)</th>
+                            <th>@GlobalManuallyJournalEntry.AccountNumber</th>
+                            <th>@GlobalManuallyJournalEntry.Debit (XFA)</th>
+                            <th>@GlobalManuallyJournalEntry.Credit (XFA)</th>
 
                         </tr>
                     </thead>
@@ -74,17 +75,17 @@
 
                     <form id="myCommentForm">
                         <h5 class="card-title">
-                            DECISION STATEMENT : <textarea class="form-control textbox" cols="20" data-val="true" data-val-required="The comment field is required." id="comment_description" name="EntryDescription.Description" rows="2"></textarea>
+                            @GlobalManuallyJournalEntry.DECISIONSTATEMENT : <textarea class="form-control textbox" cols="20" data-val="true" data-val-required="@GlobalManuallyJournalEntry.TheCommentFieldIsRequired." id="comment_description" name="EntryDescription.Description" rows="2"></textarea>
                             <span class="field-validation-valid text-danger" data-valmsg-for="EntryDescription.Description" data-valmsg-replace="true"></span>
                         </h5>
                
                         <div class="modal-footer">
                         
                             <button type="button" id="Reject" onclick="ApprovePostedEntries(false)" class="btn btn-danger" data-bs-dismiss="modal">
-                                Reject
+                                @GlobalShared.Reject
                             </button>
                             <button type="button" id="Approve" onclick="ApprovePostedEntries(true)" class="btn btn-primary" data-bs-dismiss="modal">
-                                Approve
+                                @GlobalShared.Approve
                             </button>
                         </div>
 
@@ -95,7 +96,7 @@
             <div id="rejected">
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                        Close
+                        @GlobalShared.Close
                     </button>
                 </div> 
             </div>
@@ -103,10 +104,10 @@
                 <div class="modal-footer">
 
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                        Close
+                        @GlobalShared.Close
                     </button>
                     <button type="button" id="print" onclick="PrintDataEntries(false)" class="btn btn-primary">
-                        <i class="mdi mdi-printer"></i>  Print
+                        <i class="mdi mdi-printer"></i>  @GlobalShared.Print
                     </button>
                 </div>
             </div>

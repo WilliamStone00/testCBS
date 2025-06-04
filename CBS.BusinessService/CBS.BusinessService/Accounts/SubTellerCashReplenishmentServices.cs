@@ -279,12 +279,16 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                if (!ComputeDenomination(model.CurrencyNotes, Convert.ToInt32(model.RequestedAmount)))
+
+                var (isValid, discrepancyMessage) = ValidateDenominations(model.CurrencyNotes, model.RequestedAmount);
+
+                if (!isValid)
                 {
                     GetExecutionMessages(model, false, $"{model.RequestedAmount}", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Amount entered must be greater than 0");
                     return ExecutionMessage;
                 }
+
                 model.ApprovedStatus = model.Approved ? "Approved" : "Pending";
                 var cashReplenishmentSubTeller = await GetCashReplenishmentSubTeller(model.Id);
 

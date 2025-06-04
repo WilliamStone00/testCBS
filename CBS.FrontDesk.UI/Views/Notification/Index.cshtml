@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+    @using Resources
 @{
     ViewBag.Title = "Index";
    
@@ -18,7 +19,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-bell-plus-outline me-2"></i>
-                PENDING NOTIFICATIONS
+                @GlobalNotification.PENDING_NOTIFICATIONS
             </button>
         </h2>
         <div id="accordionPopoutIcon-3"

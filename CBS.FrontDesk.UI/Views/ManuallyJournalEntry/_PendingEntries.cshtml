@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
+    @using Resources
 <div class="table-responsive mb-3">
     @if (Convert.ToBoolean(ViewBag.IsAuthourized) == false)
     {
@@ -10,15 +11,15 @@
             <table class="table table-hover table-bordered table-sm" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>Code</th>
-                        <th>Reference</th>
-                        <th>IssuedBy</th>
-                        <th>IssuedDate</th>
-                        <th>Purpose</th>
-                        <th>Amount(XFA)</th>
-                        <th>Status</th>
+                        <th>@GlobalManuallyJournalEntry.Code</th>
+                        <th>@GlobalManuallyJournalEntry.Reference</th>
+                        <th>@GlobalManuallyJournalEntry.IssuedBy</th>
+                        <th>@GlobalManuallyJournalEntry.IssuedDate</th>
+                        <th>@GlobalManuallyJournalEntry.Purpose</th>
+                        <th>@GlobalManuallyJournalEntry.Amount (XFA)</th>
+                        <th>@GlobalShared.Status</th>
 
-                        <th>Action</th>
+                        <th>@GlobalShared.Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,7 +76,7 @@
                             {
                                 <td style="width:10%">
                                     <a href="#" type="button" onclick="loadPostedEntriesByReference('@item.Id')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#largeModal">
-                                        Approve/Reject
+                                        @GlobalManuallyJournalEntry.ApproveReject
                                     </a>
 
                                 </td>
@@ -85,7 +86,7 @@
 
                                 <td style="width:10%">
                                     <a href="#" type="button" onclick="loadPostedEntriesByReference('@item.Id');" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#largeModal">
-                                        View
+                                        @GlobalShared.View
                                     </a>
                                 </td>
                             }

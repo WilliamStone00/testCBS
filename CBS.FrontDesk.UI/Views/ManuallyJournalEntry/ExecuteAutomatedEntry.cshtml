@@ -1,11 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
+    @using Resources
 @{
     ViewBag.Title = "Accounting Event -Execution";
 }
 <div class="container mt-4">
     <div class="card shadow-lg">
         <div class="card-header bg-primary text-white text-center">
-            <h4 class="mb-0 w-100">Configured Manual Journal Entry</h4>
+            <h4 class="mb-0 w-100">@GlobalManuallyJournalEntry.ConfiguredManualJournalEntry</h4>
         </div>
 
         <div class="card-body">
@@ -13,36 +14,36 @@
                 <!-- Left Panel: Event Metadata -->
                 <div class="col-md-4">
                     <fieldset class="border p-3 rounded">
-                        <legend class="w-auto text-primary">Entry Metadata</legend>
+                        <legend class="w-auto text-primary">@GlobalManuallyJournalEntry.EntryMetadata</legend>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Event Name</label>
+                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.EventName</label>
                             <input type="text" class="form-control" value="@Model.AccountingEventRule.EventName" readonly>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Event Description</label>
+                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.EventDescription</label>
                             <input type="text" class="form-control" value="@Model.AccountingEventRule.Description" readonly>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Amount to be executed</label>
+                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.AmountToBeExecuted</label>
                             <input type="text" class="form-control" value="@Model.AccountingEventRule.UnitAmount" readonly>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Double Validation Needed</label>
+                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.DoubleValidationNeeded</label>
                             <input type="text" class="form-control" value="@(Model.AccountingEventRule.IsDoubleValidationNeeded ? "Double Validation is required" : "Double Validation is not required")" readonly>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Level of Execution</label>
+                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.LevelOfExecution</label>
                             <input type="text" class="form-control" id="LevelOfExecution" value="@Model.AccountingEventRule.LevelOfExecution" readonly>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Is Chain Execution</label>
+                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.IsChainExecution</label>
                             <input type="text" class="form-control" value="@(Model.AccountingEventRule.IsChainEntry ? "Chain execution is set" : "Chain execution is not set")" readonly>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Next Accounting Event</label>
+                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.NextAccountingEvent</label>
                             <input type="text" class="form-control" value="@(Model.AccountingEventRule.IsChainEntry ? Model.AccountingEventRule.AccountingEventRuleId : "Chain execution is not set")" readonly>
                         </div>
                     </fieldset>
@@ -51,13 +52,13 @@
                 <!-- Right Panel: Accounting Rules Table -->
                 <div class="col-md-8">
                     <fieldset class="border p-3 rounded">
-                        <legend class="w-auto text-primary">Accounting Entries: @Model.AccountingEventRule.EventName</legend>
+                        <legend class="w-auto text-primary">@GlobalManuallyJournalEntry.AccountingEntries: @Model.AccountingEventRule.EventName</legend>
 
 
                         @using (Html.BeginForm("", "", FormMethod.Post, new { @id = "manualEntryForm" }))
                         {
                             <div class="mb-3">
-                                <label class="form-label fw-bold">Transaction Reference</label>
+                                <label class="form-label fw-bold">@GlobalManuallyJournalEntry.TransactionReference</label>
                                 <input type="text" class="form-control" id="Reference" value="" readonly>
                             </div>
                             <input type="hidden" class="form-control" id="AccountingEventId" value="@Model.AccountingEventRule.Id" readonly>
@@ -69,9 +70,9 @@
                             <table id="accountingEventRuleDataTable" class="table table-bordered">
                                 <thead class="table-dark text-center">
                                     <tr>
-                                        <th width="50%">Account Description</th>
-                                        <th width="25%">Debit (XFA)</th>
-                                        <th width="25%">Credit (XFA)</th>
+                                        <th width="50%">@GlobalManuallyJournalEntry.AccountDescription</th>
+                                        <th width="25%">@GlobalManuallyJournalEntry.Debit (XFA)</th>
+                                        <th width="25%">@GlobalManuallyJournalEntry.Credit (XFA)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -107,13 +108,13 @@
                                     else
                                     {
                                         <tr>
-                                            <td colspan="3" class="text-center text-muted">No accounting rules available.</td>
+                                            <td colspan="3" class="text-center text-muted">@GlobalManuallyJournalEntry.NoAccountingRulesAvailable.</td>
                                         </tr>
                                     }
                                 </tbody>
                                 <tfoot>
                                     <tr class="table-secondary">
-                                        <td class="fw-bold">TOTAL:</td>
+                                        <td class="fw-bold">@GlobalManuallyJournalEntry.TOTAL:</td>
                                         <td class="fw-bold text-end" id="debitTotal">0</td>
                                         <td class="fw-bold text-end" id="creditTotal">0</td>
                                     </tr>
@@ -127,11 +128,11 @@
 
                             <!-- Description Input -->
                             <div class="mb-3">
-                                <label class="form-label fw-bold">Description / Purpose of Manual Entry</label>
-                                <textarea class="form-control" id="descriptionField" rows="3" placeholder="Enter reason for manual entry..."></textarea>
+                                <label class="form-label fw-bold">@GlobalManuallyJournalEntry.Description / Purpose of Manual Entry</label>
+                                <textarea class="form-control" id="descriptionField" rows="3" placeholder="@GlobalManuallyJournalEntry.EnterReasonForManualEntry..."></textarea>
                             </div>
                             <div class="mt-4 text-center">
-                                <button type="submit" class="btn btn-primary px-4" id="submitButton" disabled>Submit Entry</button>
+                                <button type="submit" class="btn btn-primary px-4" id="submitButton" disabled>@GlobalManuallyJournalEntry.SubmitEntry</button>
                             </div>
                         }
                     </fieldset>

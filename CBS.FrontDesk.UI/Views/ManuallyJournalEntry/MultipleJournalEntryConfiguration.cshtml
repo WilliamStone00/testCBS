@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
-
+@using Resources
 @{
     ViewBag.Title = "Accounting Rule";
 }
@@ -14,7 +14,7 @@
                         data-bs-target="#accordionThree"
                         aria-expanded="false"
                         aria-controls="accordionThree">
-                    <i class="tf-icons mdi mdi-typewriter me-7"></i>Setting Accounting Event Entry Rule
+                    <i class="tf-icons mdi mdi-typewriter me-7"></i>@GlobalManuallyJournalEntry.SettingAccountingEventEntryRule
                 </button>
             </h2>
             <div id="accordionThree"
@@ -26,10 +26,10 @@
                         @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
                         {
                             <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataTableGeneration('ManuallyJournalEntry','AccountingEventxxDataTable','_MultipleJournalEntryClientData','datalistingview_accountingEventRule',0,'accountingEventRule','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                <a type="button" onclick="LoadDataTableGeneration('ManuallyJournalEntry','AccountingEventxxDataTable','_MultipleJournalEntryClientData','datalistingview_accountingEventRule',0,'accountingEventRule','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
                                     <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                 </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_accountingEventRule','_CreateAccountingEventRule','new','ManuallyJournalEntry','accountingEventRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_accountingEventRule','_CreateAccountingEventRule','new','ManuallyJournalEntry','accountingEventRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
                                     <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                 </a>
 

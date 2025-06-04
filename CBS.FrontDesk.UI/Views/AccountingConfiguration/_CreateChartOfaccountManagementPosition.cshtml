@@ -41,19 +41,21 @@
                          </div>
                      </div>
                      <div class="col-md-12">
-                           @Html.DropDownListFor(m => m.ChartofAccountManagementPosition.IsHeadOfficeAccount, new SelectList(ViewBag.HeadOfficeAccount == null ? "" : ViewBag.HeadOfficeAccount, "Text", "Value"), @AccountingConfig_CreateChartOfaccountManagementPosition.SelectTheSourceBranch, new { @class = "form-control select2", @search = "true" })
-                         @*@Html.ValidationMessageFor(m => m.ChartofAccountManagementPosition.BranchId, "", new { @class = "text-danger" })*@
-                         <label>@AccountingConfig_CreateChartOfaccountManagementPosition.SelectTheBranchInitiatorForThisAccount</label>
-                     </div>
-                     <div class="col-md-12">
                          <div class="form-floating form-floating-outline">
-                             @Html.DropDownListFor(m => m.ChartofAccountManagementPosition.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), @AccountingConfig_CreateChartOfaccountManagementPosition.SelectTheSourceBranch, new { @class = "form-control select2", @search = "true" })
-                             @*@Html.ValidationMessageFor(m => m.ChartofAccountManagementPosition.BranchId, "", new { @class = "text-danger" })*@
+                             @Html.DropDownListFor(m => m.ChartofAccountManagementPosition.IsHeadOfficeAccount, new SelectList(ViewBag.HeadOfficeAccount == null ? "" : ViewBag.HeadOfficeAccount, "Text", "Value"), @AccountingConfig_CreateChartOfaccountManagementPosition.SelectTheSourceBranch, new { @class = "form-control select2", @search = "true" })
+               
                              <label>@AccountingConfig_CreateChartOfaccountManagementPosition.SelectTheBranchInitiatorForThisAccount</label>
                          </div>
                      </div>
+                         <div class="col-md-12">
+                             <div class="form-floating form-floating-outline">
+                                 @Html.DropDownListFor(m => m.ChartofAccountManagementPosition.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), @AccountingConfig_CreateChartOfaccountManagementPosition.SelectTheSourceBranch, new { @class = "form-control select2", @search = "true" })
+     
+                                 <label>@AccountingConfig_CreateChartOfaccountManagementPosition.SelectTheBranchInitiatorForThisAccount</label>
+                             </div>
+                         </div>
 
-                 </div>
+                     </div>
                     <div class="mt-4">
                         @if (Model.ChartofAccountManagementPosition.Id == null)
                         {

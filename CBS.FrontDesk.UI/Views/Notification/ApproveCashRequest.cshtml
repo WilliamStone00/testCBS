@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+    @using Resources
 @{
     ViewBag.Title = "Index";
     //Layout = "~/Views/Shared/_MainLayout.cshtml";
@@ -18,7 +19,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-bank-plus me-2"></i>
-                CASH REQUISITION FOR VAULT (APPROVAL)
+                @GlobalNotification.CASH_REQUISITION_FOR_VAULT_APPROVAL
             </button>
         </h2>
 
