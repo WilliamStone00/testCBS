@@ -192,7 +192,7 @@ namespace CBS.BusinessService.BulkOperations
            
                 Branch branch= model.Branches.Where(x=>x.Id==model.BranchId).FirstOrDefault();
 
-                if (model.ContributionAmount>0)
+                if (model.TargetAmount>0)
                 {
                     SimulateBulkOperationToUniqueAccountType simulateModel= new SimulateBulkOperationToUniqueAccountType(model,branch);
                     // Make an API call to create an individual profile
