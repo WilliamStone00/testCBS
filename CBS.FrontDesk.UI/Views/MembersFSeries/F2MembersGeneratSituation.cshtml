@@ -1,122 +1,229 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@using Resources
 
 @{
-    ViewBag.Title = "F2-F5 Series - General Situation";
+    ViewBag.Title = "F2-F5 Members General Situation";
 }
 
-<div class="container">
-    <header class="text-center mb-4">
-        <h1 class="text-primary fw-bold">F2-F5 Members General Situation</h1>
-        <p class="text-muted">
-            This page offers an overview of member situations across the network (<strong>@Session["BankName"]</strong>),
-            including insights into loans, account balances, movements, and account statements. This is strictly read-only access.
-        </p>
-        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
-    </header>
-
-    <!-- Tips Section -->
-    <div class="card mb-4">
-        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-            <span><i class="mdi mdi-information-outline me-2"></i> IMPORTANT TIPS</span>
-            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
-                <i class="mdi mdi-chevron-down"></i>
-            </button>
-        </h6>
-        <div id="collapseTips" class="collapse">
-            <div class="card-body">
-                <ul>
-                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use the tabs below to navigate between member profiles, accounts, and transaction details.</li>
-                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> To print account statements, specify the date range in the modal and click "Print".</li>
-                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Loan details can be accessed by clicking on individual loans within the profile.</li>
-                    <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> Ensure all actions comply with the organization's data privacy policies and are for authorized personnel only.</li>
-                </ul>
+<!-- 📌 Header Section -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-3">
+            <div class="card-body text-center">
+                <h4 class="text-primary fw-bold">
+                    <i class="mdi mdi-account-multiple-check me-2"></i> F2-F5 Members General Situation
+                </h4>
+                <p>
+                    This page provides a full overview of member financial situations across <strong>@Session["BankName"]</strong>, including loans, balances, statements, and activity logs.
+                </p>
+                <p class="text-danger fw-bold">
+                    <i class="mdi mdi-shield-lock-outline me-1"></i> Strictly read-only. For authorized personnel only.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
     </div>
+</div>
 
-    <div id="accordionPopoutIcon" class="accordion accordion-popout">
-        <div class="accordion-item active">
-            <h2 class="accordion-header" id="accordionPopoutIconThree">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordionPopoutIcon-3" aria-expanded="true" aria-controls="accordionPopoutIcon-3">
-                    <i class="mdi mdi-file-document me-2"></i>
-                    Members General Situation (F2-F5 Series)
-                </button>
-            </h2>
-            <div id="accordionPopoutIcon-3" class="accordion-collapse collapse show" data-bs-parent="#accordionPopoutIcon">
-                <div class="accordion-body">
-                    <!-- Members Overview -->
-                    <div class="card mb-4 shadow">
-                        <div class="card-body">
-                            @Html.Partial("_Tabs")
-                        </div>
-                    </div>
+<!-- ℹ️ Tips Section -->
+<div class="card mb-2">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Important Usage Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use tabs to switch between accounts, loans, and statements.</li>
+                <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> Date ranges can be used to filter print statements.</li>
+                <li><i class="mdi mdi-eye-outline text-info me-2"></i> Click individual loans for full lifecycle/journey view.</li>
+                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> All access must comply with internal data policies.</li>
+            </ul>
+        </div>
+    </div>
+</div>
 
-                    <!-- Members Data Listing -->
-                    <div id="datalistingview">
-                        <div class="row g-4">
-                            <div class="col-md-12">
-                                <div class="card mb-3 border-2">
-                                    <div id="datalistingview_inner">
-                                        @Html.Partial("_CustomerCard")
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<!-- 📂 Member Tabs + Overview -->
+<div class="card shadow-sm mb-2">
+    <div class="card-header bg-white fw-bold text-primary">
+        <i class="mdi mdi-folder-multiple-outline me-2"></i> Member Quick Navigation
+    </div>
 
-                    <!-- Print Statements Modal -->
-                    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="searchModalLabel">Print statements from all @Model.Customer.name accounts</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.PrintDate.DateFrom, new { @class = "form-control date-picker", @id = "DateFrom" })
-                                                @Html.ValidationMessageFor(m => m.PrintDate.DateFrom, "", new { @class = "text-danger" })
-                                                <label for="DateFrom">Start date</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.PrintDate.DateTo, new { @class = "form-control date-picker", @id = "DateTo" })
-                                                @Html.ValidationMessageFor(m => m.PrintDate.DateTo, "", new { @class = "text-danger" })
-                                                <label for="DateTo">End date</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-3">
-                                            <button class="btn btn-primary" onclick="ExportIndividaulReport('@Model.CustomerId','all_by_dates_customer_account_transaction')">Print</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <div class="card-body d-flex flex-wrap gap-2 justify-content-start">
+        <!-- Accounts Button -->
+        <a href="#"
+           onclick="GetMembersAccounts('@Model.CustomerId','_MembersAccount','datalistingview','members_account')"
+           class="btn btn-outline-primary d-flex align-items-center">
+            <i class="fas fa-money-check me-2"></i>
+            <span>Accounts</span>
+        </a>
 
+        <!-- Operational Receipts Button -->
+        <a href="#"
+           onclick="GetTransactionMembersTransactions('@Model.CustomerId','datalistingview','_Transactions','transactions','myDataTable',0)"
+           class="btn btn-outline-secondary d-flex align-items-center">
+            <i class="fas fa-receipt me-2"></i>
+            <span>Member Operational Receipts</span>
+        </a>
+    </div>
+</div>
+
+
+<!-- 🔍 Profile + Main Data Split View -->
+<div class="row g-1">
+    <!-- Left: Profile Section -->
+    <div class="col-lg-3 mb-3 pe-1">
+        <!-- Reduce padding-end -->
+        <!-- Profile Info Card -->
+        <div class="card shadow-sm text-start mb-2">
+            <div class="card-header bg-white fw-bold text-black">
+                <i class="mdi mdi-card-account-details-outline me-1"></i> Member Profile
+            </div>
+            <div class="card-body">
+                <p class="mb-2"><strong>Name:</strong> @Model.Customer.name</p>
+                <p class="mb-2"><strong>Member A.Number:</strong> @Model.Customer.CustomerId</p>
+                <p class="mb-2"><strong>Phone:</strong> @Model.Customer.Phone</p>
+                <p class="mb-2">
+                    <strong>Status:</strong>
+                    @{
+                        var status = Model.Customer.MembershipApprovalStatus?.ToLower();
+                        var statusClass = status == "approved"
+                            ? "badge bg-primary text-white rounded-pill fw-semibold px-3 py-1"
+                            : "badge bg-warning text-dark rounded-pill fw-semibold px-3 py-1";
+                    }
+                    <span class="@statusClass">
+                        @Model.Customer.MembershipApprovalStatus
+                    </span>
+                </p>
+                <p class="mb-2"><strong>Branch:</strong> @Model.Branch.Name</p>
+            </div>
+        </div>
+
+
+        <!-- Profile Photo Card -->
+        <div class="card shadow-sm mb-2 text-center">
+            <div class="card-header bg-white fw-bold text-black">
+                <i class="mdi mdi-account-circle me-1"></i> Photo
+            </div>
+            <div class="card-body d-flex justify-content-center">
+                <a href="@Url.Content(Model.Customer.photoUrl ?? Model.Customer.ImageVirtualPath)"
+                   data-bs-toggle="modal" data-bs-target="#imagePreviewModal"
+                   data-imgsrc="@Url.Content(Model.Customer.photoUrl ?? Model.Customer.ImageVirtualPath)"
+                   data-title="Member Photo">
+                    <img src="@Url.Content(Model.Customer.photoUrl ?? Model.Customer.ImageVirtualPath)"
+                         class="img-thumbnail rounded-circle shadow-sm"
+                         alt="Member Photo"
+                         style="width: 140px; height: 140px; object-fit: cover; cursor: pointer;" />
+                </a>
+            </div>
+        </div>
+
+        <!-- Signature Card -->
+        <div class="card shadow-sm mb-2 text-center">
+            <div class="card-header bg-white fw-bold text-black">
+                <i class="mdi mdi-pencil me-1"></i> Signature
+            </div>
+            <div class="card-body d-flex justify-content-center">
+                <a href="@Url.Content(Model.Customer.signatureUrl ?? Model.Customer.ImageVirtualSignaturePath)"
+                   data-bs-toggle="modal" data-bs-target="#imagePreviewModal"
+                   data-imgsrc="@Url.Content(Model.Customer.signatureUrl ?? Model.Customer.ImageVirtualSignaturePath)"
+                   data-title="Member Signature">
+                    <img src="@Url.Content(Model.Customer.signatureUrl ?? Model.Customer.ImageVirtualSignaturePath)"
+                         class="img-fluid shadow-sm"
+                         alt="Signature"
+                         style="max-height: 70px; cursor: pointer;" />
+                </a>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- Right: Account & Loan Info -->
+    <div class="col-lg-9 mb-3 ps-1">
+        <!-- Reduce padding-start -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-white fw-bold text-black">
+                <i class="mdi mdi-file-document-outline me-1"></i> MEMBERS ACCOUNT OVERVIEW (F2-F5 SERIES)
+            </div>
+            <div class="card-body p-0" id="datalistingview">
+                <div id="datalistingview_inner">
+                    @Html.Partial("_MembersAccount")
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- Loan Detail Modal -->
+<!-- 📷 Modal Preview -->
+<!-- 📷 Modal Preview -->
+<div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-labelledby="imagePreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content shadow">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imagePreviewModalLabel">Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalPreviewImg" src="" class="img-fluid rounded shadow-sm" alt="Preview" style="max-height: 550px;" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 🖨️ Print Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-sm">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchModalLabel">
+                    Print statements from all <strong>@Model.Customer.name</strong>'s accounts
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row gy-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.PrintDate.DateFrom, new { @class = "form-control date-picker", @id = "DateFrom" })
+                            <label for="DateFrom">Start Date</label>
+                            @Html.ValidationMessageFor(m => m.PrintDate.DateFrom, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.PrintDate.DateTo, new { @class = "form-control date-picker", @id = "DateTo" })
+                            <label for="DateTo">End Date</label>
+                            @Html.ValidationMessageFor(m => m.PrintDate.DateTo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-12 text-end">
+                        <button class="btn btn-primary mt-2" onclick="ExportIndividaulReport('@Model.CustomerId','all_by_dates_customer_account_transaction')">
+                            <i class="mdi mdi-printer me-1"></i> Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 🧾 Loan Detail Modal -->
 <div class="modal fade" id="loanDetailModal" tabindex="-1" aria-labelledby="loanDetailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div class="modal-content shadow-sm">
             <div class="modal-header">
                 <h5 class="modal-title" id="loanDetailModalLabel">Loan Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div id="loanDetailsContent">
-                    <!-- Loan details will be dynamically injected here -->
+                    <!-- dynamic content injected via JS -->
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -125,4 +232,18 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/Js/Crud/MembersFSeries/FSeries.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('imagePreviewModal');
+            modal.addEventListener('show.bs.modal', function (event) {
+                const trigger = event.relatedTarget;
+                const imgSrc = trigger.getAttribute('data-imgsrc');
+                const title = trigger.getAttribute('data-title');
+                modal.querySelector('#modalPreviewImg').src = imgSrc;
+                modal.querySelector('.modal-title').textContent = title;
+            });
+        });
+    </script>
+
+
 }

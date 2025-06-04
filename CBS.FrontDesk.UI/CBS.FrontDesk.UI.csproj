@@ -5526,6 +5526,7 @@
     <Content Include="Scripts\Js\Crud\Remittance\RemittanceQuery.js" />
     <Content Include="Scripts\Js\Crud\Remittance\RemittanceRequest.js" />
     <Content Include="Scripts\Js\Crud\SMSActivityLog\SMSActivityLog.js" />
+    <Content Include="Scripts\Js\Crud\User\FChangePassword.js" />
     <Content Include="Scripts\Js\Crud\User\UserConnected.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\Pending.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\Requests.js" />
@@ -5569,6 +5570,7 @@
     <Content Include="Scripts\Js\main.js\Connection_checker.js" />
     <Content Include="Scripts\Js\main.js\clientDataAfterLogin.js" />
     <Content Include="Scripts\Js\main.js\clintLoginData.js" />
+    <Content Include="Scripts\Js\main.js\PasswordGenerator.js" />
     <Content Include="Scripts\Js\main.js\StaticAutomatedJournalEntry.js" />
     <Content Include="Scripts\Js\main.js\Account_Upload.js" />
     <Content Include="Scripts\Js\main.js\Account.js" />
@@ -6560,6 +6562,9 @@
     <Content Include="Views\WithdrawalNotification\_ValidatePendingRequest.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\AdvancedSheild\_PolicyTips.cshtml" />
+    <Content Include="Views\Shared\_LayoutChangePassword.cshtml" />
+    <Content Include="Views\Shared\_PasswordPolicyPanel.cshtml" />
+    <Content Include="Views\Shared\_MfaLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
