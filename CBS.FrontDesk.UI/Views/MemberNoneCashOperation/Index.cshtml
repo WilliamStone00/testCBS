@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP.MemberNoneCashOperationCarrier
+    @using Resources
 @{
     ViewBag.Title = "Member's None Cash Operations";
 }
@@ -10,10 +11,10 @@
         <div class="card bg-light">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-wallet-outline me-2"></i></i> Manage Member's None Cash Operations
+                    <i class="mdi mdi-wallet-outline me-2"></i></i> @GlobalMemberNoneCashOperation.ManageMembersNoneCashOperations
                 </h1>
                 <p class="card-text">
-                    Perform other none-cash transactions such as debiting or crediting members’ accounts with ease. Please note that these transactions will not take immediate effect and must undergo validation and approval before impacting member accounts.
+                    @GlobalMemberNoneCashOperation.PerformOtherNonecashTransactions.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -32,16 +33,16 @@
     <div id="collapseOperationTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use the search bar to find a member’s account by entering the 10-digit reference number (3-digit branch code followed by a 7-digit member code).</li>
-                <li><i class="mdi mdi-account-box-outline text-primary me-2"></i> Verify the member’s name and account details before proceeding with any transaction.</li>
-                <li><i class="mdi mdi-wallet-outline text-success me-2"></i> Select whether to <strong>Debit</strong> or <strong>Credit</strong> the member’s account by choosing the appropriate option in the form.</li>
-                <li><i class="mdi mdi-chart-areaspline text-primary me-2"></i> Choose the corresponding General Ledger (GL) account from the dropdown list to ensure proper booking of transactions.</li>
-                <li><i class="mdi mdi-note-edit-outline text-info me-2"></i> Provide a detailed note describing the reason for the operation. This is essential for auditing purposes.</li>
-                <li><i class="mdi mdi-cash-multiple text-warning me-2"></i> Double-check all amounts entered, including fees, totals, and balance updates. Ensure that the amounts are accurate before confirming the transaction.</li>
-                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> **Only one operation can be processed at a time.** Multiple entries are not allowed. Select a single ledger account and a corresponding member’s account to complete the transaction.</li>
-                <li><i class="mdi mdi-lock-outline text-danger me-2"></i> Ensure the selected ledger and member account are correct, as once submitted, the transaction cannot be modified without proper approval.</li>
-                <li><i class="mdi mdi-shield-check-outline text-success me-2"></i> Once a transaction is submitted, it **requires validation and approval** from the designated authority before taking effect.</li>
-                <li><i class="mdi mdi-clock-outline text-warning me-2"></i> The member's account will only be impacted once the validation and approval process is complete.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalMemberNoneCashOperation.UseTheSearchBarToFindAMembersAccount.</li>
+                <li><i class="mdi mdi-account-box-outline text-primary me-2"></i> @GlobalMemberNoneCashOperation.VerifyTheMembersNameAndAccountDetails.</li>
+                <li><i class="mdi mdi-wallet-outline text-success me-2"></i> @GlobalMemberNoneCashOperation.SelectWhetherTo <strong>@GlobalMemberNoneCashOperation.Debit</strong> @GlobalMemberNoneCashOperation.or <strong>@GlobalMemberNoneCashOperation.Credit</strong> @GlobalMemberNoneCashOperation.theMembersAccountByChoosingTheAppropriateOption.</li>
+                <li><i class="mdi mdi-chart-areaspline text-primary me-2"></i> @GlobalMemberNoneCashOperation.ChooseTheCorrespondingGeneralLedger.</li>
+                <li><i class="mdi mdi-note-edit-outline text-info me-2"></i> @GlobalMemberNoneCashOperation.ProvideADetailedNoteDescribingTheReasonForTheOperation.</li>
+                <li><i class="mdi mdi-cash-multiple text-warning me-2"></i> @GlobalMemberNoneCashOperation.DoubleCheckAllAmountsEntered.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalMemberNoneCashOperation.OnlyOneOperationCanBeProcessedAtAtime.</li>
+                <li><i class="mdi mdi-lock-outline text-danger me-2"></i> @GlobalMemberNoneCashOperation.EnsureTheSelectedLedgerAndMemberAccountAreCorrect.</li>
+                <li><i class="mdi mdi-shield-check-outline text-success me-2"></i> @GlobalMemberNoneCashOperation.OnceAtransactionIsSubmitted.</li>
+                <li><i class="mdi mdi-clock-outline text-warning me-2"></i> @GlobalMemberNoneCashOperation.TheMembersAccountWillOnlyBeImpactedOnce.</li>
             </ul>
         </div>
     </div>
@@ -56,7 +57,7 @@
                     <h2 class="accordion-header" id="headingDeliveryAddress">
                         <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionPopoutIcon-3" aria-expanded="true" aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-wallet-outline me-2"></i>
-                            <span id="cashDeskOperations">MEMBER'S OTHER NONE-CASH OPERATION</span>
+                            <span id="cashDeskOperations">@GlobalMemberNoneCashOperation.MEMBERSOTHERNONECASHOPERATION</span>
                         </button>
                     </h2>
                     <div id="collapseDeliveryAddress" data-bs-parent="#collapsibleSection">

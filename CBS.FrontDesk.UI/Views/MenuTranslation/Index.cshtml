@@ -2,6 +2,7 @@
     ViewBag.Title = "Menu Translation Overview";
 }
 
+@using Resources
 <style>
     .wide-textarea {
         min-width: 250px;
@@ -16,13 +17,13 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-translate me-2"></i> MENU TRANSLATION OVERVIEW
+                    <i class="mdi mdi-translate me-2"></i> @GlobalMenuTranslation.MENU_TRANSLATION_OVERVIEW
                 </h1>
                 <p class="card-text">
-                    View and manage translation records for system menus. Select a language to identify untranslated menus and initiate translation updates.
+                    @GlobalMenuTranslation.ViewAndManageTranslationRecordsForSystemMenus.
                 </p>
                 <p class="card-text fw-bold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use the language selector below to view untranslated menu items and existing translations for the selected language.
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalMenuTranslation.UseTheLanguageSelectorBelowToView.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -33,7 +34,7 @@
 <!-- Tips Section -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR USING MENU TRANSLATIONS</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalMenuTranslation.TIPS_FOR_USING_MENU_TRANSLATIONS</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -41,37 +42,37 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-flag text-success me-2"></i> <strong>Select a Language:</strong> Start by selecting the language you want to translate into.</li>
-                <li><i class="mdi mdi-translate text-primary me-2"></i> <strong>Translate Missing Menus:</strong> Only untranslated menu items for that language will be shown.</li>
-                <li><i class="mdi mdi-check-outline text-info me-2"></i> <strong>Existing Translations:</strong> Existing translations can also be edited from the grid.</li>
-                <li><i class="mdi mdi-export text-success me-2"></i> <strong>Export Option:</strong> You can export translation data if needed for audit or batch work.</li>
+                <li><i class="mdi mdi-flag text-success me-2"></i> <strong>@GlobalMenuTranslation.SelectALanguage:</strong> @GlobalMenuTranslation.StartBySelectingTheLanguageYouWantToTranslateInto.</li>
+                <li><i class="mdi mdi-translate text-primary me-2"></i> <strong>@GlobalMenuTranslation.TranslateMissingMenus:</strong> @GlobalMenuTranslation.OnlyUntranslatedMenuItemsForThatLanguageWillBeShown.</li>
+                <li><i class="mdi mdi-check-outline text-info me-2"></i> <strong>@GlobalMenuTranslation.ExistingTranslations:</strong> @GlobalMenuTranslation.ExistingTranslationsCanAlsoBeEditedFromTheGrid.</li>
+                <li><i class="mdi mdi-export text-success me-2"></i> <strong>@GlobalMenuTranslation.ExportOption:</strong> @GlobalMenuTranslation.YouCanExportTranslationData.</li>
             </ul>
         </div>
     </div>
 </div>
 <div class="d-flex justify-content-end gap-2 mb-4">
     <a href="@Url.Action("Index", "MenuTranslationCreate")" class="btn btn-outline-primary">
-        <i class="mdi mdi-plus-circle-outline me-1"></i> Add New Translations
+        <i class="mdi mdi-plus-circle-outline me-1"></i> @GlobalMenuTranslation.AddNewTranslations
     </a>
     <a href="@Url.Action("Update", "MenuTranslation")" class="btn btn-outline-primary">
-        <i class="mdi mdi-pencil-box-outline me-1"></i> Edit Translations
+        <i class="mdi mdi-pencil-box-outline me-1"></i> @GlobalMenuTranslation.EditTranslations
     </a>
 </div>
 <!-- Language Filter -->
 <div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-translate me-1"></i> Language Filter</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-translate me-1"></i> @GlobalMenuTranslation.LanguageFilter</h5>
     <form id="menuTranslationFilterForm">
         <div class="row mb-3">
             <div class="col-md-4">
-                <label class="form-label fw-bold">Select Language</label>
+                <label class="form-label fw-bold">@GlobalMenuTranslation.SelectLanguage</label>
                 <select id="languageSelector" name="LanguageCode" class="form-select">
-                    <option value="en">English</option>
-                    <option value="fr" selected>French</option> <!-- ✅ French is now the default -->
+                    <option value="en">@GlobalShared.English</option>
+                    <option value="fr" selected>@GlobalShared.French</option> <!-- ✅ French is now the default -->
                 </select>
             </div>
             <div class="col-md-8 d-flex align-items-end">
-                <button id="applyTranslationFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Load Translations</button>
-                <button id="resetTranslationFilterBtn" type="reset" class="btn btn-secondary w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+                <button id="applyTranslationFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalMenuTranslation.LoadTranslations</button>
+                <button id="resetTranslationFilterBtn" type="reset" class="btn btn-secondary w-100"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset</button>
             </div>
         </div>
     </form>

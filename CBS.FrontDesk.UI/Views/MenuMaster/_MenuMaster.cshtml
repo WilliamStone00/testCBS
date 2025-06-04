@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MenuMaster
-
+@using Resources
 
 @using (Html.BeginForm("AddOrUpdate", "MenuMaster", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
@@ -11,69 +11,69 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.MenuText, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.MenuText, "", new { @class = "text-danger" })
-                        <label>Menu text</label>
+                        <label>@GlobalMenuMaster.MenuText</label>
                     </div>
                 </div>
                 <div class="col-md-5">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.ControllerName, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.ControllerName, "", new { @class = "text-danger" })
-                        <label>Controller name</label>
+                        <label>@GlobalMenuMaster.ControllerName</label>
                     </div>
                 </div>
                 <div class="col-md-5">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.ActionName, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.ActionName, "", new { @class = "text-danger" })
-                        <label>Action name</label>
+                        <label>@GlobalMenuMaster.ActionName</label>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.MenuOrder, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.MenuOrder, "", new { @class = "text-danger" })
-                        <label>Menu Order</label>
+                        <label>@GlobalMenuMaster.MenuOrder</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.IconClass, new { @class = "form-control", placeholder = "tf-icons mdi mdi-chart-areaspline" })
                         @Html.ValidationMessageFor(m => m.IconClass, "", new { @class = "text-danger" })
-                        <label>Icon class</label>
+                        <label>@GlobalMenuMaster.IconClass</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.MenuGroup, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.MenuGroup, "", new { @class = "text-danger" })
-                        <label>Group name</label>
+                        <label>@GlobalMenuMaster.GroupName</label>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.IsVisible, new { @class = "form-check-input" })
-                        <label class="form-check-label" for="isActive">Check to set in-visibile</label>
+                        <label class="form-check-label" for="isActive">@GlobalMenuMaster.CheckToSetInVisibile</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.ParentId, new SelectList(ViewBag.MenuMasters, "Value", "Text"), "---Select parent menu---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.ParentId, new SelectList(ViewBag.MenuMasters, "Value", "Text"), "---"+ @GlobalMenuMaster.SelectParentMenu + "---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.ParentId, "", new { @class = "text-danger" })
-                        <label>Select parent menu</label>
+                        <label>@GlobalMenuMaster.SelectParentMenu</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.Tooltip, new { @class = "form-control", @style = "height: 100px;" })
                         @Html.ValidationMessageFor(m => m.Tooltip, "", new { @class = "text-danger" })
-                        <label>Tooltips</label>
+                        <label>@GlobalMenuMaster.Tooltips</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 200px;" })
                         @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                        <label>Description</label>
+                        <label>@GlobalMenuMaster.Description</label>
                     </div>
                 </div>
             </div>
@@ -81,11 +81,11 @@
         <div class="mt-4">
             @if (Model.Id == 0)
             {
-                <button type="submit" class="btn btn-primary me-2">Save</button>
+                <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
                 <input type="hidden" name="Action" value="insert" id="Action" />
             }
             else
-            { <button type="submit" class="btn btn-primary me-2">Update</button>
+            { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                 @Html.HiddenFor(m => m.Id)
                 <input type="hidden" name="Action" value="update" id="Action" />
             }

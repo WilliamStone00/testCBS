@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+    @using Resources
 @{
     ViewBag.Title = "View Cash Replenishment Details";
 
@@ -18,7 +19,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    Request ReferenceId :@Model.CashReplenimentRequestdto.Id Amount : XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N")
+                    @GlobalNotification.RequestReferenceId :@Model.CashReplenimentRequestdto.Id @GlobalNotification.Amount : XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N")
                 </button>
             </h2>
             <div class="card-body">
@@ -28,7 +29,7 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th colspan="2"> <h5 class="card-title">Cash Replenishment Request Details</h5></th>
+                                <th colspan="2"> <h5 class="card-title">@GlobalNotification.CashReplenishmentRequestDetails</h5></th>
 
                             </tr>
                         </thead>
@@ -36,53 +37,53 @@
                             @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
                             {
                                 <tr>
-                                    <td>Branch Office</td>
+                                    <td>@GlobalNotification.BranchOffice</td>
                                     <td>@Model.CashReplenimentRequestdto.BranchOffice </td>
                                 </tr>
                             }
                             <tr>
-                                <td>Invoice Number</td>
+                                <td>@GlobalNotification.InvoiceNumber</td>
                                 <td id="referenceId">@Model.CashReplenimentRequestdto.ReferenceId </td>
                             </tr>
                             <tr>
-                                <td>Amount Requested</td>
+                                <td>@GlobalNotification.AmountRequested</td>
                                 <td id="amountRequested">XAF @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") </td>
                             </tr>
                             <tr>
-                                <td>Request Message</td>
+                                <td>@GlobalNotification.RequestMessage</td>
                                 <td>@Model.CashReplenimentRequestdto.RequestMessage </td>
                             </tr>
                             <tr>
-                                <td>Requested By </td>
+                                <td>@GlobalNotification.RequestedBy </td>
                                 <td id="IssuedBy"> @Model.CashReplenimentRequestdto.TempId1 </td>
                             </tr>
                             <tr>
-                                <td>Requested Date</td>
+                                <td>@GlobalNotification.RequestedDate</td>
                                 <td id="IssuedDate">@Model.CashReplenimentRequestdto.IssuedDate </td>
                             </tr>
 
                             @if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Approved.ToString()))
                             {
                                 <tr>
-                                    <td>Status</td>
+                                    <td>@GlobalShared.Status</td>
                                     <td class="badge bg-label-success rounded-pill text-uppercase">
-                                        @Model.CashReplenimentRequestdto.Status,but  waiting for action from manager
+                                        @Model.CashReplenimentRequestdto.Status, @GlobalNotification.butWaitingForActionFromManager
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Approved Message</td>
+                                    <td>@GlobalNotification.ApprovedMessage</td>
                                     <td>@Model.CashReplenimentRequestdto.ApprovedMessage </td>
                                 </tr>
                                 <tr>
-                                    <td>Approved By </td>
+                                    <td>@GlobalNotification.ApprovedBy </td>
                                     <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.TempId2 </td>
                                 </tr>
                                 <tr>
-                                    <td>Approved Date</td>
+                                    <td>@GlobalNotification.ApprovedDate</td>
                                     <td id="ApprovedBy">@Model.CashReplenimentRequestdto.ApprovedDate </td>
                                 </tr>
                                 <tr>
-                                    <td>Approved Amount</td>
+                                    <td>@GlobalNotification.ApprovedAmount</td>
                                     <td id="ApprovedBy">@Model.CashReplenimentRequestdto.AmountApproved </td>
                                 </tr>
                                 if (@Model.CashReplenimentRequestdto.CashRequisitionType.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashRequisitionType.REQUEST.ToString()))
@@ -100,9 +101,9 @@
                                 if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Pending.ToString()))
                                 {
                                     <tr>
-                                        <td>Status</td>
+                                        <td>@GlobalShared.Status</td>
                                         <td class="badge bg-label-primary rounded-pill text-uppercase">
-                                            @Model.CashReplenimentRequestdto.Status,Has not yet been approved by head office
+                                            @Model.CashReplenimentRequestdto.Status, @GlobalNotification.HasNotYetBeenApprovedByHeadOffice
                                         </td>
                                     </tr>
                                 }
@@ -111,21 +112,21 @@
                                     if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.Completed.ToString()))
                                     {
                                         <tr>
-                                            <td>Status</td>
+                                            <td>@GlobalShared.Status</td>
                                             <td class="badge bg-label-success rounded-pill text-uppercase">
-                                                @Model.CashReplenimentRequestdto.Status,but  waiting for action from manager
+                                                @Model.CashReplenimentRequestdto.Status, @GlobalNotification.butWaitingForActionFromManager
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>Approved Message</td>
+                                            <td>@GlobalNotification.ApprovedMessage</td>
                                             <td>@Model.CashReplenimentRequestdto.ApprovedMessage </td>
                                         </tr>
                                         <tr>
-                                            <td>Approved By </td>
+                                            <td>@GlobalNotification.ApprovedBy </td>
                                             <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.ApprovedBy </td>
                                         </tr>
                                         <tr>
-                                            <td>Approved Date</td>
+                                            <td>@GlobalNotification.ApprovedDate</td>
                                             <td id="ApprovedBy">@Model.CashReplenimentRequestdto.ApprovedDate </td>
                                         </tr>
                                     }
@@ -134,26 +135,26 @@
                                         if (@Model.CashReplenimentRequestdto.Status.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashReplishmentRequestStatus.RedirectToBranchBTB.ToString()))
                                         {
                                             <tr>
-                                                <td>Status</td>
+                                                <td>@GlobalShared.Status</td>
                                                 <td class="badge bg-label-primary rounded-pill text-uppercase">
                                                     @Model.CashReplenimentRequestdto.Status,Awaiting for fund transfer
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>Approved Message</td>
+                                                <td>@GlobalNotification.ApprovedMessage</td>
                                                 <td>@Model.CashReplenimentRequestdto.ApprovedMessage </td>
                                             </tr>
                                             <tr>
-                                                <td>Approved By </td>
+                                                <td>@GlobalNotification.ApprovedBy </td>
                                                 <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.ApprovedBy </td>
                                             </tr>
                                             <tr>
-                                                <td>Approved Date</td>
+                                                <td>@GlobalNotification.ApprovedDate</td>
                                                 <td id="ApprovedBy">@Model.CashReplenimentRequestdto.ApprovedDate </td>
 
                                             </tr>
                                             <tr>
-                                                <td>Bank Transaction</td>
+                                                <td>@GlobalNotification.BankTransaction</td>
                                                 <td>
                                                     @*  <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.ReferenceId')" class="mr-2" id="exLargeModal" data-toggle="tooltip" data-placement="top" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>*@
                                                     <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.Id')" class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>
@@ -163,21 +164,21 @@
                                         else
                                         {
                                             <tr>
-                                                <td>Status</td>
+                                                <td>@GlobalShared.Status</td>
                                                 <td class="badge bg-label-danger rounded-pill text-uppercase">
                                                     @Model.CashReplenimentRequestdto.Status and aborted
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>Approved Message</td>
+                                                <td>@GlobalNotification.ApprovedMessage</td>
                                                 <td>@Model.CashReplenimentRequestdto.ApprovedMessage </td>
                                             </tr>
                                             <tr>
-                                                <td>Approved By </td>
+                                                <td>@GlobalNotification.ApprovedBy </td>
                                                 <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.ApprovedBy </td>
                                             </tr>
                                             <tr>
-                                                <td>Approved Date</td>
+                                                <td>@GlobalNotification.ApprovedDate</td>
                                                 <td id="ApprovedBy">@Model.CashReplenimentRequestdto.ApprovedDate </td>
                                             </tr>
                                         }

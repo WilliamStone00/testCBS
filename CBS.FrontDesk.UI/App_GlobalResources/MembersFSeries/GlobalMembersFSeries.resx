@@ -1,0 +1,516 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountNumber" xml:space="preserve">
+    <value>Account number</value>
+  </data>
+  <data name="ACCOUNTS" xml:space="preserve">
+    <value>ACCOUNTS</value>
+  </data>
+  <data name="AccountStatus" xml:space="preserve">
+    <value>Account status</value>
+  </data>
+  <data name="accounts_" xml:space="preserve">
+    <value>accounts</value>
+  </data>
+  <data name="AccountType" xml:space="preserve">
+    <value>Account type</value>
+  </data>
+  <data name="ActualAccountBalance" xml:space="preserve">
+    <value>Actual account balance</value>
+  </data>
+  <data name="ActualBalance" xml:space="preserve">
+    <value>Actual balance</value>
+  </data>
+  <data name="AffiliateMemberSalary" xml:space="preserve">
+    <value>Affiliate Member Salary (TMAA)</value>
+  </data>
+  <data name="AgeCategory" xml:space="preserve">
+    <value>Age category</value>
+  </data>
+  <data name="AInterest" xml:space="preserve">
+    <value>A.Interest</value>
+  </data>
+  <data name="AListOfMembersIsFirstDisplayed" xml:space="preserve">
+    <value>A list of members is first displayed, where users can click on a member to view the F2 Series for detailed information</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="AllLoans" xml:space="preserve">
+    <value>All loans</value>
+  </data>
+  <data name="AnalyzeMemberBreakdownAcrossKeyAttributes" xml:space="preserve">
+    <value>Analyze member breakdown across key attributes</value>
+  </data>
+  <data name="andIsStrictlyReadOnly" xml:space="preserve">
+    <value>and is strictly read-only</value>
+  </data>
+  <data name="ApplyFilter" xml:space="preserve">
+    <value>Apply filter</value>
+  </data>
+  <data name="ApprovalLegalStatus" xml:space="preserve">
+    <value>Approval &amp; legal status</value>
+  </data>
+  <data name="ApprovalStatus" xml:space="preserve">
+    <value>Approval status</value>
+  </data>
+  <data name="ApprovedLoans" xml:space="preserve">
+    <value>Approved loans</value>
+  </data>
+  <data name="AwaitsValidation" xml:space="preserve">
+    <value>Awaits validation</value>
+  </data>
+  <data name="Balance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="Blocked" xml:space="preserve">
+    <value>Blocked</value>
+  </data>
+  <data name="Branch" xml:space="preserve">
+    <value>Branch</value>
+  </data>
+  <data name="CivilServantsSalary" xml:space="preserve">
+    <value>Civil Servants Salary (CSCA)</value>
+  </data>
+  <data name="CreatedFrom" xml:space="preserve">
+    <value>Created from</value>
+  </data>
+  <data name="CreatedTo" xml:space="preserve">
+    <value>Created to</value>
+  </data>
+  <data name="Credit" xml:space="preserve">
+    <value>Credit</value>
+  </data>
+  <data name="CurrentLoans" xml:space="preserve">
+    <value>Current loans</value>
+  </data>
+  <data name="CustomerCode" xml:space="preserve">
+    <value>Customer code</value>
+  </data>
+  <data name="CustomerNumber" xml:space="preserve">
+    <value>Customer number</value>
+  </data>
+  <data name="DailyCollection" xml:space="preserve">
+    <value>Daily collection (DCA)</value>
+  </data>
+  <data name="DailySaver" xml:space="preserve">
+    <value>Daily Saver (DSA)</value>
+  </data>
+  <data name="DAmount" xml:space="preserve">
+    <value>D.Amount</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="DateOfBirthFrom" xml:space="preserve">
+    <value>Date of birth (from)</value>
+  </data>
+  <data name="DateofBirthTo" xml:space="preserve">
+    <value>Date of birth (to)</value>
+  </data>
+  <data name="Debit" xml:space="preserve">
+    <value>Debit</value>
+  </data>
+  <data name="Divorced" xml:space="preserve">
+    <value>Divorced</value>
+  </data>
+  <data name="EasilySegmentMembersByOperationalBranch" xml:space="preserve">
+    <value>Easily segment members by operational branch</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>End date</value>
+  </data>
+  <data name="EnsureAllActionsComplyWithTheOrganizationsData" xml:space="preserve">
+    <value>Ensure all actions comply with the organization's data privacy policies and are for authorized personnel only</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="ExportSearchResultsToExcelForReportingOrRecordkeeping" xml:space="preserve">
+    <value>Export search results to Excel for reporting or recordkeeping</value>
+  </data>
+  <data name="Fee" xml:space="preserve">
+    <value>Fee</value>
+  </data>
+  <data name="Female" xml:space="preserve">
+    <value>Female</value>
+  </data>
+  <data name="FilterApprovedMembersByLegalFormOrType" xml:space="preserve">
+    <value>Filter approved members by legal form or type</value>
+  </data>
+  <data name="FilterByBranch" xml:space="preserve">
+    <value>Filter by branch</value>
+  </data>
+  <data name="FilterByCreationDateOrBirthDateToTargetSpecificDemographics" xml:space="preserve">
+    <value>Filter by creation date or birth date to target specific demographics</value>
+  </data>
+  <data name="Fines" xml:space="preserve">
+    <value>Fines</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>First name</value>
+  </data>
+  <data name="GenderMaritalStatus" xml:space="preserve">
+    <value>Gender &amp; marital status</value>
+  </data>
+  <data name="GenderOrGroups" xml:space="preserve">
+    <value>Gender or Groups</value>
+  </data>
+  <data name="GetOrViewMembersTransactions" xml:space="preserve">
+    <value>Get or view members transactions</value>
+  </data>
+  <data name="Groups" xml:space="preserve">
+    <value>Groups</value>
+  </data>
+  <data name="IMPORTANTTIPS" xml:space="preserve">
+    <value>IMPORTANT TIPS</value>
+  </data>
+  <data name="includingInsightsIntoLoansAccountBalances" xml:space="preserve">
+    <value>including insights into loans, account balances, movements, and account statements. This is strictly read-only access</value>
+  </data>
+  <data name="IRate" xml:space="preserve">
+    <value>I.Rate</value>
+  </data>
+  <data name="Journey" xml:space="preserve">
+    <value>Journey</value>
+  </data>
+  <data name="LAmount" xml:space="preserve">
+    <value>L.Amount</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Last name</value>
+  </data>
+  <data name="LegalForm" xml:space="preserve">
+    <value>Legal form</value>
+  </data>
+  <data name="LeverageTheFiltersBelowToNarrowResultsByGender" xml:space="preserve">
+    <value>Leverage the filters below to narrow results by gender, legal form, branch, registration date, or approval status. Use the export feature to extract reports for auditing or further analysis</value>
+  </data>
+  <data name="LOAN" xml:space="preserve">
+    <value>LOAN</value>
+  </data>
+  <data name="LoanDetails" xml:space="preserve">
+    <value>Loan details</value>
+  </data>
+  <data name="LoanDetailsCanBeAccessedByClickingOnIndividualLoansWithinTheProfile" xml:space="preserve">
+    <value>Loan details can be accessed by clicking on individual loans within the profile</value>
+  </data>
+  <data name="LStatus" xml:space="preserve">
+    <value>L.Status</value>
+  </data>
+  <data name="Major" xml:space="preserve">
+    <value>Major</value>
+  </data>
+  <data name="Male" xml:space="preserve">
+    <value>Male</value>
+  </data>
+  <data name="MaritalStatus" xml:space="preserve">
+    <value>Marital status</value>
+  </data>
+  <data name="Married" xml:space="preserve">
+    <value>Married</value>
+  </data>
+  <data name="MemberAccountNumber" xml:space="preserve">
+    <value>Member account number</value>
+  </data>
+  <data name="MemberAccountTemporalNumber" xml:space="preserve">
+    <value>Member account/Temporal number</value>
+  </data>
+  <data name="MemberFilters" xml:space="preserve">
+    <value>Member filters</value>
+  </data>
+  <data name="MembersAccountNumber" xml:space="preserve">
+    <value>Member's account number</value>
+  </data>
+  <data name="MembersAccountSerialNumber" xml:space="preserve">
+    <value>Member's Account (Serial number)</value>
+  </data>
+  <data name="MembersAccountsStatus" xml:space="preserve">
+    <value>Members accounts status</value>
+  </data>
+  <data name="MembersGeneralSituation" xml:space="preserve">
+    <value>Members General Situation</value>
+  </data>
+  <data name="MembershipApproval" xml:space="preserve">
+    <value>Membership approval</value>
+  </data>
+  <data name="MembersName" xml:space="preserve">
+    <value>Member's name</value>
+  </data>
+  <data name="MembersProfile" xml:space="preserve">
+    <value>Member's profile</value>
+  </data>
+  <data name="MEMBERS_OVERVIEW_FROM_OVER_ALL_BRANCHES" xml:space="preserve">
+    <value>MEMBERS OVERVIEW FROM OVER ALL BRANCHES</value>
+  </data>
+  <data name="Minor" xml:space="preserve">
+    <value>Minor</value>
+  </data>
+  <data name="MobileMoneyMTN" xml:space="preserve">
+    <value>Mobile Money MTN (MTCA)</value>
+  </data>
+  <data name="MobileMoneyOrange" xml:space="preserve">
+    <value>Mobile Money Orange (OMCA)</value>
+  </data>
+  <data name="MoralPerson" xml:space="preserve">
+    <value>Moral person</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="NoLoansHaveBeenContracted" xml:space="preserve">
+    <value>No loans have been contracted</value>
+  </data>
+  <data name="NoTransactionAreAvailableFor" xml:space="preserve">
+    <value>No transaction(s) are available for</value>
+  </data>
+  <data name="OrdinaryAccounts" xml:space="preserve">
+    <value>Ordinary accounts</value>
+  </data>
+  <data name="Paid" xml:space="preserve">
+    <value>Paid</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Phone number</value>
+  </data>
+  <data name="PhysicalPerson" xml:space="preserve">
+    <value>Physical person</value>
+  </data>
+  <data name="PreRegisteredMembers" xml:space="preserve">
+    <value>Pre-registered members (PRM)</value>
+  </data>
+  <data name="PrintAll" xml:space="preserve">
+    <value>Print all</value>
+  </data>
+  <data name="printAllAccountStatements" xml:space="preserve">
+    <value>print all account statements</value>
+  </data>
+  <data name="printMembersAccount" xml:space="preserve">
+    <value>print members account</value>
+  </data>
+  <data name="PrintReceiptWithReference" xml:space="preserve">
+    <value>Print receipt with reference</value>
+  </data>
+  <data name="PrintStatementsFromAll" xml:space="preserve">
+    <value>Print statements from all</value>
+  </data>
+  <data name="PrivateInstitutionSalary" xml:space="preserve">
+    <value>Private institution salary (PICA)</value>
+  </data>
+  <data name="Receipts" xml:space="preserve">
+    <value>Receipts</value>
+  </data>
+  <data name="RefinancedLoans" xml:space="preserve">
+    <value>Refinanced loans</value>
+  </data>
+  <data name="RegistrationDate" xml:space="preserve">
+    <value>Registration date</value>
+  </data>
+  <data name="RegistrationDates" xml:space="preserve">
+    <value>Registration dates</value>
+  </data>
+  <data name="Remittance" xml:space="preserve">
+    <value>Remittance (RMCA)</value>
+  </data>
+  <data name="RescheduledLoans" xml:space="preserve">
+    <value>Rescheduled loans</value>
+  </data>
+  <data name="RestructuredLoans" xml:space="preserve">
+    <value>Restructured loans</value>
+  </data>
+  <data name="SelectBranch" xml:space="preserve">
+    <value>Select branch</value>
+  </data>
+  <data name="SelectLoanFilter" xml:space="preserve">
+    <value>Select Loan Filter</value>
+  </data>
+  <data name="SELECT_MEMBER_TO_SEE_ACCOUNT_SITUATION" xml:space="preserve">
+    <value>SELECT MEMBER TO SEE ACCOUNT SITUATION</value>
+  </data>
+  <data name="ShowApprovalLegalFilters" xml:space="preserve">
+    <value>Show approval &amp; legal filters</value>
+  </data>
+  <data name="ShowDateFilters" xml:space="preserve">
+    <value>Show date filters</value>
+  </data>
+  <data name="ShowDemographicFilters" xml:space="preserve">
+    <value>Show demographic filters</value>
+  </data>
+  <data name="Single" xml:space="preserve">
+    <value>Single</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Start date</value>
+  </data>
+  <data name="statements" xml:space="preserve">
+    <value>statements</value>
+  </data>
+  <data name="Telephone" xml:space="preserve">
+    <value>Telephone</value>
+  </data>
+  <data name="TemporalAccount" xml:space="preserve">
+    <value>Temporal account (TEMP)</value>
+  </data>
+  <data name="TemporalSalaryForMember" xml:space="preserve">
+    <value>Temporal salary for member (TMSA)</value>
+  </data>
+  <data name="TheF2F5SeriesProvidesUsersWithDetailedInsights" xml:space="preserve">
+    <value>The F2 &amp; F5 Series provides users with detailed insights into member situations regarding loan and account balances, movements, and account statements</value>
+  </data>
+  <data name="ThisPageOffersAnOverviewOfMember" xml:space="preserve">
+    <value>This page offers an overview of member situations across the network</value>
+  </data>
+  <data name="ThisReportOffersNetworkWideAccessSpecificallyLimitedToThe" xml:space="preserve">
+    <value>This report offers network-wide access, specifically limited to the</value>
+  </data>
+  <data name="TIPS_FOR_FILTERING_MEMBERS_EFFECTIVELY" xml:space="preserve">
+    <value>TIPS FOR FILTERING MEMBERS EFFECTIVELY</value>
+  </data>
+  <data name="ToPrintAccountStatementsSpecifyTheDateRangeInTheModalAndClickPrint" xml:space="preserve">
+    <value>To print account statements, specify the date range in the modal and click "Print"</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="TRANSACTIONS" xml:space="preserve">
+    <value>TRANSACTIONS</value>
+  </data>
+  <data name="Unemployed" xml:space="preserve">
+    <value>Unemployed</value>
+  </data>
+  <data name="UseTheTabsBelowToNavigateBetweenMemberProfiles" xml:space="preserve">
+    <value>Use the tabs below to navigate between member profiles, accounts, and transaction details</value>
+  </data>
+  <data name="VAT" xml:space="preserve">
+    <value>VAT</value>
+  </data>
+  <data name="ViewCustomerDetails" xml:space="preserve">
+    <value>View customer details</value>
+  </data>
+  <data name="Widowed" xml:space="preserve">
+    <value>Widowed</value>
+  </data>
+  <data name="Working" xml:space="preserve">
+    <value>Working</value>
+  </data>
+  <data name="WorkingStatus" xml:space="preserve">
+    <value>Working status</value>
+  </data>
+</root>

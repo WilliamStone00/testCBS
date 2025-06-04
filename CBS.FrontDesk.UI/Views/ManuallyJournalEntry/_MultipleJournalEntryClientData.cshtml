@@ -1,4 +1,4 @@
-﻿
+﻿@using Resources
 
 @model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
 
@@ -17,7 +17,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
                         <i class="mdi mdi-file-document-outline me-2"></i>
-                        PASSING JOURNAL ENTRY FOR  (@Session["BranchName"].ToString().ToUpper()).
+                        @GlobalManuallyJournalEntry.PASSINGJOURNALENTRYFOR  (@Session["BranchName"].ToString().ToUpper()).
                     </button>
                 </h2>
     
@@ -34,9 +34,9 @@
                                             <table class="table table-hover" id="AccountingEventxxDataTable">
                                                 <thead class="table-light">
                                                     <tr>
-                                                        <th>RuleName</th>
-                                                        <th>Level of Execution</th>
-                                                        <th>Action</th>
+                                                        <th>@GlobalManuallyJournalEntry.RuleName</th>
+                                                        <th>@GlobalManuallyJournalEntry.LevelOfExecution</th>
+                                                        <th>@GlobalShared.Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -61,7 +61,7 @@
                                                                            target="_blank"
                                                                            title="Execute @d.EventName">
                                                                             <i class="fas fa-play me-1"></i>
-                                                                            <span>Execute</span>
+                                                                            <span>@GlobalShared.Execute</span>
                                                                         </a>
 
                                                                         <a href="#"
@@ -69,7 +69,7 @@
                                                                             onclick="AddORUpdateGen('@d.Id','datalistingview_accountingEventRule','_CreateAccountingEventRule','update','ManuallyJournalEntry','accountingEventRule')"
                                                                             title="Edit @d.EventName">
                                                                             <i class="fas fa-edit me-1"></i>
-                                                                            <span>Edit</span>
+                                                                            <span>@GlobalShared.Edit</span>
                                                                         </a>
                                                                        
                                                                         <a href="/ManuallyJournalEntry/GetAccountingEventToDelete?Key=@d.Id"
@@ -78,7 +78,7 @@
                                                                            title="Execute @d.EventName">
 
                                                                             <i class="fas fa-trash me-1"></i>
-                                                                            <span>Delete</span>
+                                                                            <span>@GlobalShared.Delete</span>
                                                                         </a>
                                                                     </div>
                                                                 </td>
@@ -104,9 +104,9 @@
                                                                         <a href="/ManuallyJournalEntry/ExecuteAutomatedEntry?Key=@d.Id"
                                                                            class="btn btn-sm btn-primary d-inline-flex align-items-center"
                                                                            target="_blank"
-                                                                           title="Execute @d.EventName">
+                                                                           title="@GlobalShared.Execute @d.EventName">
                                                                             <i class="fas fa-play me-1"></i>
-                                                                            <span>Execute</span>
+                                                                            <span>@GlobalShared.Execute</span>
                                                                         </a>
 
 

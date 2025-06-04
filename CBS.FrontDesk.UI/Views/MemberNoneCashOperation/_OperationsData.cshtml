@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP.MemberNoneCashOperationCarrier
-
+@using Resources
 
 <fieldset class="fieldset-custom">
     <div class="mb-3 border-2">
@@ -10,14 +10,14 @@
                     <table class="table table-hover" id="myDataTable">
                         <thead class="table-light">
                             <tr>
-                                <th>M.Reference</th>
-                                <th>Member Name</th>
-                                <th>Account</th>
-                                <th>B.Direction</th>
-                                <th>Amount</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                <th>@GlobalMemberNoneCashOperation.MReference</th>
+                                <th>@GlobalMemberNoneCashOperation.MemberName</th>
+                                <th>@GlobalMemberNoneCashOperation.Account</th>
+                                <th>@GlobalMemberNoneCashOperation.BDirection</th>
+                                <th>@GlobalMemberNoneCashOperation.Amount</th>
+                                <th>@GlobalMemberNoneCashOperation.Date</th>
+                                <th>@GlobalShared.Status</th>
+                                <th>@GlobalShared.Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -30,11 +30,11 @@
                                     <td>
                                         @if (operation.BookingDirection=="Credit")
                                         {
-                                            <span class="badge bg-success">Credit</span>
+                                            <span class="badge bg-success">@GlobalMemberNoneCashOperation.Credit</span>
                                         }
                                         else
                                         {
-                                            <span class="badge bg-danger">Debit</span>
+                                            <span class="badge bg-danger">@GlobalMemberNoneCashOperation.Debit</span>
                                         }
                                     </td>
                                     <td>@operation.Amount.ToString("N1")</td>
@@ -46,7 +46,7 @@
                                         }
                                         else
                                         {
-                                            <span class="badge bg-secondary">Pending</span>
+                                    <span class="badge bg-secondary">@GlobalShared.Pending</span>
                                         }
                                     </td>
                                     <td>
@@ -60,13 +60,13 @@
                                                 <!-- Delete Button -->
                                                 if (operation.ApprovalStatus!="Approved")
                                                 {
-                                                    <button type="button"
-                                                            class="btn btn-sm btn-outline-danger"
-                                                            onclick="deleteOperation('@operation.Id')"
-                                                            data-bs-toggle="tooltip"
-                                                            title="Delete Operation">
-                                                        <i class="fas fa-trash-alt me-1"></i> Delete
-                                                    </button>
+                                            <button type="button"
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    onclick="deleteOperation('@operation.Id')"
+                                                    data-bs-toggle="tooltip"
+                                                    title="@GlobalShared.DeleteOperation">
+                                                <i class="fas fa-trash-alt me-1"></i> @GlobalShared.Delete
+                                            </button>
                                                 }
                                             }
                                             else
@@ -76,7 +76,7 @@
                                                         class="btn btn-sm btn-outline-success"
                                                         onclick="loadValidationForm('@operation.Id')"
                                                         data-bs-toggle="tooltip"
-                                                        title="Approve or Reject Operation">
+                                                        title="@GlobalMemberNoneCashOperation.Approve or Reject Operation">
                                                     <i class="fas fa-check-circle me-1"></i> A/R
                                                 </button>
                                             }
@@ -84,8 +84,8 @@
                                             <button type="button" class="btn btn-sm btn-outline-info view-details"
                                                     data-operation-id="@operation.Id"
                                                     data-bs-toggle="tooltip"
-                                                    title="View Details">
-                                                <i class="fas fa-info-circle me-1"></i> Details
+                                                    title="@GlobalShared.ViewDetails">
+                                                <i class="fas fa-info-circle me-1"></i> @GlobalShared.Details
                                             </button>
                                         </div>
                                     </td>
@@ -97,7 +97,7 @@
                 else
                 {
                     <div class="text-center my-3">
-                        <p>No member none-cash operations found.</p>
+                        <p>@GlobalMemberNoneCashOperation.NoMemberNoneCashOperationsFound.</p>
                     </div>
                 }
             </div>
