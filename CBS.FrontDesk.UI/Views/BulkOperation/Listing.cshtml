@@ -455,8 +455,14 @@
 
             function loadBulkOperationDataTable() {
                 $('#myDataTable').DataTable({
-                    destroy: true,
-                    serverSide: true,
+                    "destroy": true,
+                    "serverSide": true,
+                    "processing": true, // Add processing indicator
+                    "info": true,
+                    "stateSave": true,
+                    "lengthMenu": [[10, 20, 50, 100], [10, 20, 50, 100]],
+                    "searching": true,
+                    "paging": true, // Ensure pagination is enabled
                     order: [[0, 'desc']],
                     ajax: {
                         url: '/BulkOperation/LoadBulkOperationData',
@@ -548,9 +554,10 @@
                         }
                     ],
                     language: {
-                        emptyTable: "No Bulk Oprations available for the selected criteria."
-                    },
-                    dom: 'rtip'
+                        emptyTable: "No Bulk Oprations available for the selected criteria.",
+                        "processing": "Processing...", // Add processing text
+                        "search": "Search all columns:" // Customize search label
+                    }
                 });
             }
 

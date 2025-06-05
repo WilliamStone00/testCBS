@@ -448,15 +448,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Destination account type.
-        /// </summary>
-        internal static string DestinationAccountType {
-            get {
-                return ResourceManager.GetString("DestinationAccountType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Destination configuration.
         /// </summary>
         internal static string DestinationConfiguration {
@@ -826,15 +817,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select account type.
-        /// </summary>
-        internal static string SelectAccountType {
-            get {
-                return ResourceManager.GetString("SelectAccountType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Select branch.
         /// </summary>
         internal static string SelectBranch {
@@ -925,6 +907,69 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contribution Amount .
+        /// </summary>
+        internal static string SimulationContributionAmount {
+            get {
+                return ResourceManager.GetString("SimulationContributionAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contribution account to be credited.
+        /// </summary>
+        internal static string SimulationContributionDestinationAccountType {
+            get {
+                return ResourceManager.GetString("SimulationContributionDestinationAccountType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Contribution Member Reference.
+        /// </summary>
+        internal static string SimulationContributionEndMemberAccount {
+            get {
+                return ResourceManager.GetString("SimulationContributionEndMemberAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contribution Maximum Account Balance Eligibilty.
+        /// </summary>
+        internal static string SimulationContributionMaximumAccountBalance {
+            get {
+                return ResourceManager.GetString("SimulationContributionMaximumAccountBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contribution Minimum Account Balance Eligibilty.
+        /// </summary>
+        internal static string SimulationContributionMinimumAccountBalance {
+            get {
+                return ResourceManager.GetString("SimulationContributionMinimumAccountBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Contribution Account to Be Debited.
+        /// </summary>
+        internal static string SimulationContributionSourceAccountType {
+            get {
+                return ResourceManager.GetString("SimulationContributionSourceAccountType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Contribution Member Reference.
+        /// </summary>
+        internal static string SimulationContributionStartMemberAccount {
+            get {
+                return ResourceManager.GetString("SimulationContributionStartMemberAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simulation details.
         /// </summary>
         internal static string SimulationDetails {
@@ -934,7 +979,70 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SimulationType.
+        ///   Looks up a localized string similar to Amount To Topup To.
+        /// </summary>
+        internal static string SimulationTopupAmount {
+            get {
+                return ResourceManager.GetString("SimulationTopupAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to account to Top up.
+        /// </summary>
+        internal static string SimulationTopupDestinationAccountType {
+            get {
+                return ResourceManager.GetString("SimulationTopupDestinationAccountType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Topup Member Reference.
+        /// </summary>
+        internal static string SimulationTopupEndMemberAccount {
+            get {
+                return ResourceManager.GetString("SimulationTopupEndMemberAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Topup Maximum Account Balance.
+        /// </summary>
+        internal static string SimulationTopupMaximumAccountBalance {
+            get {
+                return ResourceManager.GetString("SimulationTopupMaximumAccountBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Topup Minimum Account Balance.
+        /// </summary>
+        internal static string SimulationTopupMinimumAccountBalance {
+            get {
+                return ResourceManager.GetString("SimulationTopupMinimumAccountBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Topup Account To Be Debited.
+        /// </summary>
+        internal static string SimulationTopupSourceAccountType {
+            get {
+                return ResourceManager.GetString("SimulationTopupSourceAccountType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Topup Member Reference.
+        /// </summary>
+        internal static string SimulationTopupStartMemberAccount {
+            get {
+                return ResourceManager.GetString("SimulationTopupStartMemberAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simulation Name.
         /// </summary>
         internal static string SimulationType {
             get {
@@ -997,29 +1105,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start account range.
-        /// </summary>
-        internal static string StartAccountRange {
-            get {
-                return ResourceManager.GetString("StartAccountRange", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Status.
         /// </summary>
         internal static string Status {
             get {
                 return ResourceManager.GetString("Status", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Target account balance.
-        /// </summary>
-        internal static string TargetAccountBalance {
-            get {
-                return ResourceManager.GetString("TargetAccountBalance", resourceCulture);
             }
         }
         
