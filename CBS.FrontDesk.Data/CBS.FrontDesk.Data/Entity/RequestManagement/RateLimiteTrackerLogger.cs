@@ -65,7 +65,8 @@ namespace CBS.FrontDesk.Data.Entity.RequestManagement
         public string FullName { get; set; }
         public bool IsAuthenticated { get; set; } // ✅ New
         public string FullUrl { get; set; }
-
+        public string ServiceName { get; set; }
+      
     }
     public class GetRateLimitTrackerDataTableQuery
     {

@@ -145,6 +145,7 @@ namespace CBS.BusinessService.RequestLoggerServicesP
         {
             try
             {
+                logger.ServiceName="BACKOFFICE";
                 var result = await ApiCaller.PostAsync<ResponseObject<bool>>(APICallHelper.AddRateLimiteTrackerLogger, logger);
                 return result?.Data ?? false;
             }
