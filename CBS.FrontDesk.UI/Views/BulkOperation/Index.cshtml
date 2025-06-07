@@ -217,7 +217,7 @@
 
 @section Scripts {
     @*@Scripts.Render("~/bundles/jqueryval")*@
-   <script>
+<script>
        $(document).ready(function () {
            // Initialize tooltips
            $('[data-bs-toggle="tooltip"]').tooltip();
@@ -237,12 +237,22 @@
 
            function updateOperationViews() {
                const isContribution = $('input[name="operationType"]:checked').val() === "unique";
-/*               $("#isContribution").val(isContribution.toString());*/
+               /*               $("#isContribution").val(isContribution.toString());*/
 
                if (isContribution) {
+                   $('label[for="SourceAccountType"]').text('@GlobalBulkOperation.SimulationContributionSourceAccountType');
+                   $('#StartAccount').prev('label').text('@GlobalBulkOperation.SimulationContributionStartMemberAccount');
+                   $('#EndAccount').prev('label').text('@GlobalBulkOperation.SimulationContributionEndMemberAccount');
+                   $('#SourceAccountMinAmount').prev('label').text('@GlobalBulkOperation.SimulationContributionMinimumAccountBalance');
+                   $('#SourceAccountMaxAmount').prev('label').text('@GlobalBulkOperation.SimulationContributionMaximumAccountBalance');
                    $("#mainview1").hide();
                    $("#mainview2").show();
                } else {
+                   $('label[for="SourceAccountType"]').text('@GlobalBulkOperation.SimulationTopupSourceAccountType');
+                   $('#StartAccount').prev('label').text('@GlobalBulkOperation.SimulationTopupStartMemberAccount');
+                   $('#EndAccount').prev('label').text('@GlobalBulkOperation.SimulationTopupEndMemberAccount');
+                   $('#SourceAccountMinAmount').prev('label').text('@GlobalBulkOperation.SimulationTopupMinimumAccountBalance');
+                   $('#SourceAccountMaxAmount').prev('label').text('@GlobalBulkOperation.SimulationTopupMaximumAccountBalance');
                    $("#mainview1").show();
                    $("#mainview2").hide();
                }
@@ -300,6 +310,22 @@
                    }
                });
 
+               const isContribution = $('input[name="operationType"]:checked').val() === "unique";
+
+               if (isContribution) {
+                   const contributionAmount = parseFloat($(formElement).find('[name="ContributionAmount"]').val()) || 0;
+                   if (isNaN(contributionAmount) || contributionAmount < 0) {
+                       markInvalid($(formElement).find('[name="ContributionAmount"]'),
+                           "❌ contribution  amount must be 0 or greater.");
+                   }
+               } else {
+                   const topupAmount = parseFloat($(formElement).find('[name="TargetAmount"]').val()) || 0;
+                   if (isNaN(topupAmount) || topupAmount < 0) {
+                       markInvalid($(formElement).find('[name="TargetAmount"]'),
+                           "❌ topup target amount must be 0 or greater.");
+                   }
+               }
+
                const minAmount = parseFloat($(formElement).find('[name="SourceAccountMinAmount"]').val()) || 0;
                const maxAmount = parseFloat($(formElement).find('[name="SourceAccountMaxAmount"]').val()) || 0;
 
@@ -326,7 +352,7 @@
                const isUniqueAccount = $(formElement).find('input[name = "operationType"]:checked').val() === 'unique';
 
                console.log("Verify Contribution : ", isUniqueAccount);
-            
+
 
                if (isUniqueAccount) {
                  /*  $(formElement).find($('#isContribution').val($(this).val() === 'unique'));*/
@@ -427,6 +453,6 @@
 
            return false;
        }
-    </script>
+</script>
     @*<script src="~/Scripts/Js/Crud/BulkOperation/Simulation.js"></script>*@
 }

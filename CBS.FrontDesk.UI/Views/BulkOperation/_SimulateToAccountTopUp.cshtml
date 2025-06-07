@@ -9,7 +9,7 @@
                 @Html.DropDownListFor(m => m.DestinationAccountType,
                     new SelectList(Model.SavingProducts, "Name", "Name"),
                     @GlobalBulkOperation.SimulationTopupDestinationAccountType,
-                    new { @class = "form-select" })
+                    new { @class = "form-select select2" })
             </div>
             <div class="col-md-12">
                 <div class="mb-3">
