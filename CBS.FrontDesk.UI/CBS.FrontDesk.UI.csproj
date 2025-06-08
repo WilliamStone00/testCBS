@@ -4939,6 +4939,8 @@
     <Content Include="RateLimitConfig\_Create.cshtml" />
     <Content Include="RateLimitConfig\_Data.cshtml" />
     <Content Include="RateLimitConfig\Index.cshtml" />
+    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Resources\TextFile1.txt" />
     <Content Include="Mvc.sitemap" />
     <Content Include="DataSet\Transaction\TransactionDS.xsc">

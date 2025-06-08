@@ -455,8 +455,14 @@
 
             function loadBulkOperationDataTable() {
                 $('#myDataTable').DataTable({
-                    destroy: true,
-                    serverSide: true,
+                    "destroy": true,
+                    "serverSide": false,
+                     //"processing": true, // Add processing indicator
+                    "info": true,
+                    "stateSave": true,
+                    "lengthMenu": [[10, 20, 50, 100], [10, 20, 50, 100]],
+                    "searching": true,
+                    "paging": true, // Ensure pagination is enabled
                     order: [[0, 'desc']],
                     ajax: {
                         url: '/BulkOperation/LoadBulkOperationData',
@@ -540,17 +546,18 @@
                             searchable: false,
                             render: function (id) {
                                 return `
-                                                                <div class="text-center">
-                                                                    <a href="/BulkOperation/Details?KEY=${id}" class="btn btn-sm btn-outline-primary" title="Detail Simulation">
-                                                                    <i class="fas fa-user-cog me-1"></i> View </a>
-                                                                </div>`;
+                                        <div class="text-center">
+                                            <a href="/BulkOperation/Details?KEY=${id}" class="btn btn-sm btn-outline-primary" title="Detail Simulation">
+                                            <i class="fas fa-user-cog me-1"></i> View </a>
+                                        </div>`;
                             }
                         }
                     ],
                     language: {
-                        emptyTable: "No Bulk Oprations available for the selected criteria."
-                    },
-                    dom: 'rtip'
+                        emptyTable: "No Bulk Oprations available for the selected criteria.",
+                        //"processing": "Processing...",  Add processing text
+                        "search": "Search :" // Customize search label
+                    }
                 });
             }
 

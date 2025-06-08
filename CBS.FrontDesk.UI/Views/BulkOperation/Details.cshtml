@@ -190,11 +190,13 @@
         function loadBulkOperationDetailsDataTable(simulationId) {
             $('#myDataTable').DataTable({
                 "destroy": true,
-                "serverSide": true,
+                "serverSide": false,
+                 //"processing": true, // Add processing indicator
                 "info": true,
                 "stateSave": true,
                 "lengthMenu": [[10, 20, 50, 100], [10, 20, 50, 100]],
-                "searching": false,
+                "searching": true,
+                "paging": true, // Ensure pagination is enabled
                 ajax: {
                     url: '/BulkOperation/LoadBulkOperationDetailsData',
                     type: 'POST',
@@ -211,33 +213,46 @@
                     {
                         data: 'MemberName',
                         title: 'Member Name',
+                        width: '19%',
                         render: (data) => data || 'N/A'
                     },
                     {
                         data: 'SourceAccountNumber',
                         title: 'Source Account',
+                        width: '13%',
+                        render: (data) => data || 'N/A'
+                    },
+                    {
+                        data: 'DestinationAccountNumber',
+                        title: 'Destination Account',
+                        width: '15%',
                         render: (data) => data || 'N/A'
                     },
                     {
                         data: 'SourceAccountBalance',
                         title: 'Source Balance',
+                        width: '10%',
                         className: 'text-end',
                         render: (data) => formatCurrency(data)
                     },
                     {
-                        data: 'DestinationAccountNumber',
-                        title: 'Destination Account',
-                        render: (data) => data || 'N/A'
-                    },
-                    {
                         data: 'AmountToDebit',
                         title: 'Amount To Debit',
+                        width: '10%',
+                        className: 'text-end',
+                        render: (data) => formatCurrency(data)
+                    },
+                    {
+                        data: 'NetBalance',
+                        title: 'Actual Balance',
+                        width: '10%',
                         className: 'text-end',
                         render: (data) => formatCurrency(data)
                     },
                     {
                         data: 'ApprovalStatus',
                         title: 'Status',
+                        width: '8%',
                         render: function (data, type, row) {
                             let badgeClass = '';
                             switch (data) {
@@ -259,6 +274,7 @@
                     {
                         data: 'TransferStatus',
                         title: 'Transfer Status',
+                        width: '10%',
                         render: function (data, type, row) {
                             let badgeClass = '';
                             switch (data) {
@@ -271,31 +287,33 @@
                                 default:
                                     badgeClass = 'bg-secondary text-white';
                             }
-                            return `<span class="badge ${badgeClass}">${data || 'N/A'}</span>`;
+                            return `<span class="badge ${badgeClass}">${data || 'NOT STARTED'}</span>`;
                         }
                     },
                     {
                         data: 'Id',
+                        width: '5%',
                         orderable: false,
                         searchable: false,
                         render: function (id) {
                             return `
-                        <div class="text-center">
-                            <a href="#" 
-                               class="btn btn-sm btn-outline-primary details-btn" 
-                               title="Transfer Details"
-                               data-id="${id}">
-                                <i class="fas fa-user-cog me-1"></i>View
-                            </a>
-                        </div>`;
+                                    <div class="text-center">
+                                        <a href="#" 
+                                           class="btn btn-sm btn-outline-primary details-btn" 
+                                           title="Transfer Details"
+                                           data-id="${id}">
+                                            <i class="fas fa-user-cog me-1"></i>View
+                                        </a>
+                                    </div>`;
                         }
                     }
                 ],
                 "order": [[0, "desc"]],
                 language: {
-                    emptyTable: "No Bulk Oprations available for the selected criteria."
+                    emptyTable: "No Bulk Oprations available for the selected criteria.",
+                     //"processing": "Processing...", // Add processing text
+                    "search": "Search :" // Customize search label
                 },
-                dom: 'rtip',
                 initComplete: function () {
                     // Add click event handler for details buttons
                     $('#myDataTable').on('click', '.details-btn', function (e) {
