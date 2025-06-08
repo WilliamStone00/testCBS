@@ -595,9 +595,15 @@ namespace CBS.BusinessService.UserManagement
                     userModel.NationalIdentityCardNumber=model.NationalIdentityCardNumber;
                     userModel.IssueDate=model.IssueDate;
                     userModel.ExpiryDate=model.ExpiryDate;
+                    userModel.AccountExpiryDate=model.AccountExpiryDate;
                     userModel.PlaceOfIssue=model.PlaceOfIssue;
+                    userModel.AccountTypePolicyProfile=model.AccountTypePolicyProfile;
                     userModel.BankID=GetBankID();
-                    
+
+                }//OverridePolicy
+                else if (model.Option == "OverridePolicy")
+                {
+                    userModel.PolicyOverride=model.PolicyOverride;
                 }
                 else if (model.Option == "SetLanguage")
                 {

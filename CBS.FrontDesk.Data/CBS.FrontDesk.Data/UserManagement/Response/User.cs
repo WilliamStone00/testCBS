@@ -91,6 +91,9 @@ namespace CBS.FrontDesk.Data.UserManagement
         public Bank Bank { get; set; }
         public Branch Brancch { get; set; }
         public string strlastLoginDate { get; set; }
+        public string AccountTypePolicyProfile { get; set; }
+        public AccountPolicyOverride PolicyOverride { get; set; } =new AccountPolicyOverride();
+        public DateTime? AccountExpiryDate { get; set; }
         public ChangePassword ChangePassword { get; set; } = new ChangePassword();
         public ResetPassword ResetPassword { get; set; } = new ResetPassword();
         public UserSessionDto UserSession { get; set; } = new UserSessionDto();
@@ -107,6 +110,60 @@ namespace CBS.FrontDesk.Data.UserManagement
             MFAActivation = new MFAActivation();
             ImageVirtualPath = "~/Appfiles/Images/p.jpg";
         }
+    }
+    public enum AccountPolicyProfile
+    {
+        /// <summary>
+        /// ✅ Default for internal staff.
+        /// Enforces MFA, password expiry, and inactivity logout.
+        /// </summary>
+        StandardUser,
+
+        /// <summary>
+        /// 🤝 Third-party service (vendors, APIs).
+        /// No password expiry, optional MFA, expires by contract.
+        /// </summary>
+        ThirdPartyService,
+
+        /// <summary>
+        /// 🧪 Test/dev users.
+        /// Minimal restrictions, auto-expire in 7 days.
+        /// </summary>
+        TestAccount,
+
+        /// <summary>
+        /// 🛠️ System service account.
+        /// Non-interactive, privileged, excluded from login rules.
+        /// </summary>
+        SystemServiceAccount,
+
+        /// <summary>
+        /// 📥 Migrated legacy account (e.g., from flat file).
+        /// May bypass MFA temporarily but enforces reset.
+        /// </summary>
+        LegacyImported,
+
+        /// <summary>
+        /// 🤖 Integration bot accounts (like svc_*).
+        /// Non-expiring, with restricted access patterns.
+        /// </summary>
+        IntegrationBot,
+
+        /// <summary>
+        /// 🔍 Viewer account with no write permissions.
+        /// Often used for auditing or compliance observers.
+        /// </summary>
+        ReadOnlyViewer,
+        RootAdmin,
+    }
+
+    public class AccountPolicyOverride
+    {
+        public bool PasswordNeverExpires { get; set; }
+        public bool IgnoreMFARequirement { get; set; }
+        public bool AllowWeakPassword { get; set; }
+        public bool BypassLockoutPolicy { get; set; }
+        public DateTime? CustomExpiryDate { get; set; }
     }
     public class GeneralMFaConfig
     {

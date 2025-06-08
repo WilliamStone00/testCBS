@@ -40,7 +40,7 @@ namespace CBS.FrontDesk.UI.Filter
     using static RateLimitConfigService;
 
     /// <summary>
-    /// 📛 RateLimitingMiddleware is an HTTP module for ASP.NET MVC applications designed to:
+    /// 📛 TSCWAFMiddleware is an HTTP module for ASP.NET MVC applications designed to:
     /// - Block abusive users based on rate limits.
     /// - Detect and respond to suspicious path access (security probing).
     /// - Log suspicious activity with metadata like IP, user, and device info.
@@ -50,7 +50,7 @@ namespace CBS.FrontDesk.UI.Filter
     /// </summary>
 
 
-    public class RateLimitingMiddleware : IHttpModule
+    public class TSCWAFMiddleware : IHttpModule
     {
         //private readonly RateLimitConfigService _configService = new RateLimitConfigService();
         private readonly RateLimiteTrackerLoggerServices _loggerService = new RateLimiteTrackerLoggerServices();
@@ -174,6 +174,8 @@ namespace CBS.FrontDesk.UI.Filter
                 return;
             }
 
+        
+
             // 📦 3. Gather request + user context info
             var (username, branchid, branchcode, branchname, tel, fullname, isAuthenticated) = GetUserNameFromTSCCookie(request);
             var (ip, location, lat, lon, city, region, country) = GetIpAndLocationSync();
@@ -218,7 +220,7 @@ namespace CBS.FrontDesk.UI.Filter
             if (!isLocalDevIp)
             {
                 // 7.1 🚫 Reject if country is not whitelisted
-                if (!CidrUtility.IsWhitelistedCountry(country, rateLimitConfig.WhiteListedCountriesCode))
+                if (!CidrUtility.IsWhitelistedCountry(country, rateLimitConfig.WhitelistedCountriesCode))
                 {
                     string logMsg = $"🚨 GeoIP Restriction — Blocked: Country '{country}' is not whitelisted | IP: {ip} | Path: {requestPath} | URL: {fullUrl}";
                     System.Diagnostics.Debug.WriteLine(logMsg);
@@ -229,7 +231,7 @@ namespace CBS.FrontDesk.UI.Filter
                 }
 
                 // 7.2 🚫 Reject if IP is not in any allowed CIDR block
-                if (!CidrUtility.IsIpInCidr(ip, rateLimitConfig.CameroonCidrs))
+                if (!CidrUtility.IsIpInCidr(ip, rateLimitConfig.WhitelistedCidrs))
                 {
                     string logMsg = $"🚨 CIDR Restriction — Blocked: IP '{ip}' not in any whitelisted CIDR | Country: {country} | Path: {requestPath}";
                     System.Diagnostics.Debug.WriteLine(logMsg);
@@ -464,7 +466,7 @@ namespace CBS.FrontDesk.UI.Filter
         {
             var lower = path.ToLowerInvariant();
 
-            string[] suspiciousIndicators = rateLimitConfig.SuspiciousIndicators;
+            var suspiciousIndicators = rateLimitConfig.SuspiciousIndicators;
 
             bool isExcluded = rateLimitConfig.ExcludedExtensions.Any(ext => lower.EndsWith(ext)) ||
                               rateLimitConfig.ExcludedPaths.Any(p => lower.StartsWith(p));
