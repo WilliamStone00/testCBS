@@ -1,49 +1,49 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
-
+@using Resources
 <fieldset class="fieldset-custom">
     <div class="change-group">
         <!-- Member's Name Section -->
         <div class="row mb-4">
             <div class="col-md-12">
                 <div class="form-floating">
-                    <span class="formatted-amount shadow-sm d-block py-3 px-4 bg-light rounded border border-secondary">Member's Name: <strong>@Model.Customer.name</strong></span>
+                    <span class="formatted-amount shadow-sm d-block py-3 px-4 bg-light rounded border border-secondary.@GlobalMemberNoneCashOperation.MembersName: <strong>@Model.Customer.name</strong></span>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="rounded p-2 border-primary border mb-3">
-        <h6 class="mb-0 fw-bold text-dark">Booking Direction</h6>
+        <h6 class="mb-0 fw-bold text-dark">@GlobalMemberNoneCashOperation.BookingDirection</h6>
 
         <!-- Debit and Credit Options -->
         <div class="d-flex justify-content-start gap-4 mb-2">
             <div class="form-check border p-3 rounded">
                 @Html.RadioButtonFor(m => m.AddMembersNoneCashOperationCommand.BookingDirection, "Debit", new { @class = "form-check-input", id = "Debit" })
-                <label class="form-check-label" for="Debit" style="font-size: 1.1rem;">Debit Member's Account</label>
+                <label class="form-check-label" for="Debit" style="font-size: 1.1rem;">@GlobalMemberNoneCashOperation.DebitMembersAccount</label>
             </div>
             <div class="form-check border p-3 rounded">
                 @Html.RadioButtonFor(m => m.AddMembersNoneCashOperationCommand.BookingDirection, "Credit", new { @class = "form-check-input", id = "Credit" })
-                <label class="form-check-label" for="Credit" style="font-size: 1.1rem;">Credit Member's Account</label>
+                <label class="form-check-label" for="Credit" style="font-size: 1.1rem;">@GlobalMemberNoneCashOperation.CreditMembersAccount</label>
             </div>
         </div>
         <input type="hidden" id="memberName" value="@Model.AddMembersNoneCashOperationCommand.MemberName" />
 
     </div>
     <div class="rounded p-2 border-primary border mb-3">
-        <h6 class="mb-0 fw-bold text-dark">Members Accounts</h6>
+        <h6 class="mb-0 fw-bold text-dark">@GlobalMemberNoneCashOperation.MembersAccounts</h6>
         <!-- Table Section -->
         <div class="table-responsive mt-4 mb-2">
             <table class="table table-hover" id="myDataTableT">
                 <thead class="table-light">
                     <tr>
-                        <th style="display:none;">ProductID</th>
-                        <th>Accounts</th>
-                        <th>Balance</th>
-                        <th>Amount</th>
-                        <th style="display:none">Fee</th>
-                        <th>Total</th>
-                        <th>confirm</th>
-                        <th style="display:none">Inc</th>
+                        <th style="display:none;">@GlobalMemberNoneCashOperation.ProductID</th>
+                        <th>@GlobalMemberNoneCashOperation.Accounts</th>
+                        <th>@GlobalMemberNoneCashOperation.Balance</th>
+                        <th>@GlobalMemberNoneCashOperation.Amount</th>
+                        <th style="display:none">@GlobalMemberNoneCashOperation.Fee</th>
+                        <th>@GlobalMemberNoneCashOperation.Total</th>
+                        <th>@GlobalMemberNoneCashOperation.confirm</th>
+                        <th style="display:none">@GlobalMemberNoneCashOperation.Inc</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,7 +73,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+                        <td colspan="3" style="text-align: right;"><strong>@GlobalMemberNoneCashOperation.Total:</strong></td>
                         <td id="tableTotal">0</td>
                     </tr>
                 </tfoot>
@@ -81,13 +81,13 @@
         </div>
     </div>
     <div class="rounded p-2 border-primary border mb-3">
-        <h6 class="mb-0 fw-bold text-dark">Coresponding accounts</h6>
+        <h6 class="mb-0 fw-bold text-dark">@GlobalMemberNoneCashOperation.CorrespondingAccounts</h6>
         <!-- Correspondent Account Selection -->
         <div class="col-md-12 mb-2">
             <div class="form-floating border rounded p-3">
-                @Html.DropDownListFor(m => m.AddMembersNoneCashOperationCommand.ChartOfAccountId, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select GL---", new { @class = "form-control select2", id = "account_number", @search = "true" })
+                @Html.DropDownListFor(m => m.AddMembersNoneCashOperationCommand.ChartOfAccountId, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---"+@GlobalMemberNoneCashOperation.SelectGL+"---", new { @class = "form-control select2", id = "account_number", @search = "true" })
                 @Html.ValidationMessageFor(m => m.AddMembersNoneCashOperationCommand.ChartOfAccountId, "", new { @class = "text-danger" })
-                <label id="accountNumberLabel" for="account_number" style="font-size: 1.1rem;">Select Correspondent Account</label>
+                <label id="accountNumberLabel" for="account_number" style="font-size: 1.1rem;">@GlobalMemberNoneCashOperation.SelectCorrespondentAccount</label>
             </div>
         </div>
 
@@ -96,7 +96,7 @@
             <div class="form-floating border rounded p-3">
                 @Html.TextAreaFor(m => m.AddMembersNoneCashOperationCommand.Note, new { @class = "form-control", id = "Note", style = "height: 90px;" })
                 @Html.ValidationMessageFor(m => m.AddMembersNoneCashOperationCommand.Note, "", new { @class = "text-danger" })
-                <label for="Note" style="font-size: 1.1rem;">Enter reasons for the Operation</label>
+                <label for="Note" style="font-size: 1.1rem;">@GlobalMemberNoneCashOperation.EnterReasonsForTheOperation</label>
             </div>
         </div>
     </div>
@@ -107,7 +107,7 @@
         <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
 
         <button type="submit" class="btn btn-primary btn-lg me-3" onclick="PostOperation()">
-            <i class="fas fa-money-bill-wave me-2"></i> Create Request
+            <i class="fas fa-money-bill-wave me-2"></i> @GlobalMemberNoneCashOperation.CreateRequest
         </button>
     </div>
 

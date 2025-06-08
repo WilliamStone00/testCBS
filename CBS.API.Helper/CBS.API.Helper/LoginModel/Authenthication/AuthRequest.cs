@@ -158,13 +158,13 @@ namespace CBS.API.Helper
     {
         [Required(ErrorMessage = "Password is required.")]
         [GoodPassword(ErrorMessage = "Password must contain at least 8 characters, including uppercase, lowercase, digit, and special characters, and must not contain serial numbers or the username.")]
-        [StringLength(15, ErrorMessage = "Password must be a maximum of 10 characters.")]
+        [StringLength(128, ErrorMessage = "Password must be a maximum of 128 characters.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Confirm password is required.")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        [StringLength(15, ErrorMessage = "Confirm Password must be a maximum of 10 characters.")]
+        [StringLength(128, ErrorMessage = "Confirm Password must be a maximum of 128 characters.")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
 

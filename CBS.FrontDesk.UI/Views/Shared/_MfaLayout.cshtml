@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - MFA Verification</title>
+
+    <link rel="icon" type="image/x-icon" href="~/AppFiles/Images/Icon.ico" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/fonts/materialdesignicons.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/fonts/flag-icons.css" />
+
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/node-waves/node-waves.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/css/rtl/core.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/css/rtl/theme-default.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/css/demo.css" />
+
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/typeahead-js/typeahead.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/toastr/toastr.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/animate-css/animate.css" />
+    <link href="~/Loaders/CSSJS/Spin.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/css/pages/page-auth.css" />
+
+    <style>
+        html, body {
+            height: 100dvh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 1rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            height: 100%;
+        }
+
+        .tsc-header {
+            background-color: #003865;
+            color: white;
+            padding: 1rem 1.5rem;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+            .tsc-header .tsc-title {
+                font-size: 1.2rem;
+                font-weight: bold;
+                color: #00c897;
+                text-transform: uppercase;
+            }
+
+            .tsc-header .tsc-subtitle {
+                font-size: 1rem;
+                color: white;
+                margin-left: 0.5rem;
+                font-weight: normal;
+            }
+
+        .tsc-footer {
+            background-color: #003865;
+            color: #ddd;
+            text-align: center;
+            padding: 0.75rem;
+            font-size: 0.85rem;
+            border-top: 1px solid #1b3f5e;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f4f9fc;
+            padding: 2rem;
+        }
+
+        .mfa-form-box {
+            width: 100%;
+            max-width: 460px;
+            padding: 2rem;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        @@media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .mfa-form-box {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+
+    <script src="~/CBSTemp/ui/assets/vendor/js/helpers.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/js/template-customizer.js"></script>
+    <script src="~/CBSTemp/ui/assets/js/config.js"></script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <header class="tsc-header">
+            <span class="tsc-title">TRUSTSOFTCREDIT</span>
+            <span class="tsc-subtitle">TOTP Verification Portal</span>
+        </header>
+
+        <main class="main-content">
+            @RenderBody()
+        </main>
+
+        @Html.Partial("_AjaxSpinner")
+
+        <footer class="tsc-footer">
+            &copy; @DateTime.Now.Year <strong>TRUSTSOFTCREDIT</strong> — Powered by <strong>F L U X SARL Cameroon</strong>, <span>Head Office Bamenda</span>
+        </footer>
+    </div>
+
+    <script src="~/CBSTemp/ui/assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+
+    <script src="~/Loaders/CSSJS/Spin.js"></script>
+    <script src="~/CBSTemp/ui/assets/vendor/libs/toastr/toastr.js"></script>
+    <script src="~/Scripts/Js/main.js/App.js"></script>
+    <script src="~/CBSTemp/ui/assets/js/main.js"></script>
+    <script src="~/CBSTemp/ui/assets/js/pages-auth.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

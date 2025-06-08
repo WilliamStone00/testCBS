@@ -102,5 +102,45 @@ namespace CBS.FrontDesk.Data.Entity.RequestManagement
         [Range(1, 365, ErrorMessage = "Block duration must be between 1 and 365 days.")]
         public int NumberOfDays { get; set; }
     }
-
+    public class WafDashboardData
+    {
+        public SummaryStats Summary { get; set; }
+        public List<BlockTrendPoint> BlockTrends { get; set; }
+        public List<PieChartEntry> BlockReasons { get; set; }
+        public List<PieChartEntry> SuspiciousPathByBranch { get; set; }
+        public List<BarChartEntry> BlocksByBranch { get; set; }
+        public List<BlockedUserEntry> BlockedUsers { get; set; }
+    }
+    public class SummaryStats
+    {
+        public int ActiveBlocks { get; set; }
+        public string TopCountry { get; set; }
+        public int BlockedIps { get; set; }
+        public string TopReason { get; set; }
+    }
+    public class BlockTrendPoint
+    {
+        public int Day { get; set; }          // 1–30
+        public int TSCCount { get; set; }
+        public int NVCCount { get; set; }
+    }
+    public class PieChartEntry
+    {
+        public string Label { get; set; }
+        public int Value { get; set; }
+    }
+    public class BarChartEntry
+    {
+        public string Branch { get; set; }
+        public int BlockCount { get; set; }
+    }
+    public class BlockedUserEntry
+    {
+        public string IpAddress { get; set; }
+        public string UserName { get; set; }
+        public string Reason { get; set; }
+        public string Country { get; set; }
+        public string Branch { get; set; }
+        public DateTime Timestamp { get; set; }
+    }
 }

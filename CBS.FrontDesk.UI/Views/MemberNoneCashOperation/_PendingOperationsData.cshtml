@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP.MemberNoneCashOperationCarrier
-
+@using Resources
 <fieldset class="fieldset-custom">
     <div class="mb-3 border-2">
         <div id="datalistingview_inner">
@@ -9,14 +9,14 @@
                     <table class="table table-hover" id="myDataTable">
                         <thead class="table-light">
                             <tr>
-                                <th>M.Reference</th>
-                                <th>Member Name</th>
-                                <th>Account</th>
-                                <th>Corespondant A</th>
-                                <th>Amount</th>
-                                <th>R.Date</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                <th>@GlobalMemberNoneCashOperation.MReference</th>
+                                <th>@GlobalMemberNoneCashOperation.MemberName</th>
+                                <th>@GlobalMemberNoneCashOperation.Account</th>
+                                <th>@GlobalMemberNoneCashOperation.CorrespondantA</th>
+                                <th>@GlobalMemberNoneCashOperation.Amount</th>
+                                <th>@GlobalMemberNoneCashOperation.RDate</th>
+                                <th>@GlobalShared.Status</th>
+                                <th>@GlobalShared.Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -36,7 +36,7 @@
                                         }
                                         else
                                         {
-                                            <span class="badge bg-secondary">Pending</span>
+                                    <span class="badge bg-secondary">@GlobalShared.Pending</span>
                                         }
                                     </td>
                                     <td>
@@ -45,8 +45,8 @@
                                             <button type="button" class="btn btn-sm btn-outline-info view-details"
                                                     data-operation-id="@operation.Id"
                                                     data-bs-toggle="tooltip"
-                                                    title="View Details">
-                                                <i class="fas fa-info-circle me-1"></i> Details
+                                                    title="@GlobalShared.ViewDetails">
+                                                <i class="fas fa-info-circle me-1"></i> @GlobalShared.Details
                                             </button>
 
 
@@ -56,15 +56,15 @@
                                                     class="btn btn-sm btn-outline-danger"
                                                     onclick="deleteOperation('@operation.Id')"
                                                     data-bs-toggle="tooltip"
-                                                    title="Delete Operation">
-                                                <i class="fas fa-trash-alt me-1"></i> Delete
+                                                    title="@GlobalShared.DeleteOperation">
+                                                <i class="fas fa-trash-alt me-1"></i> @GlobalShared.Delete
                                             </button>
                                             <!-- Approve Button -->
                                             <button type="button"
                                                     class="btn btn-sm btn-outline-success"
                                                     onclick="loadValidationForm('@operation.Id')"
                                                     data-bs-toggle="tooltip"
-                                                    title="Approve or Reject Operation">
+                                                    title="@GlobalMemberNoneCashOperation.ApproveOrRejectOperation">
                                                 <i class="fas fa-check-circle me-1"></i> A/R
                                             </button>
                                         </div>
@@ -77,7 +77,7 @@
                 else
                 {
                     <div class="text-center my-3">
-                        <p>No member none-cash operations found.</p>
+                        <p>@GlobalMemberNoneCashOperation.NoMemberNoneCashOperationsFound.</p>
                     </div>
                 }
             </div>

@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
-
+@using Resources
 <fieldset class="fieldset-custom">
     <legend>Export Members Account Balances</legend>
     <form method="post" action="/MemberOrdinaryAccountsF8/DownloadFileF8/">
@@ -7,13 +7,13 @@
             <div class="col-md-12">
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <label for="branchInput">Branch</label>
+                        <label for="branchInput">@GlobalMemberOrdinaryAccountsF8.Branch</label>
                         <div class="input-group">
                             <div class="col-md-9">
-                                @Html.DropDownListFor(m => m.InitiateLoanDownloadCommand.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---Select Branch---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
+                                @Html.DropDownListFor(m => m.InitiateLoanDownloadCommand.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalMemberOrdinaryAccountsF8.SelectBranch+"---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
                             </div>
                             <div class="col-md-3">
-                                <button type="submit" class="btn btn-default btn-sm w-100">Initiate Download</button>
+                                <button type="submit" class="btn btn-default btn-sm w-100">@GlobalMemberOrdinaryAccountsF8.InitiateDownload</button>
                             </div>
                         </div>
                     </div>

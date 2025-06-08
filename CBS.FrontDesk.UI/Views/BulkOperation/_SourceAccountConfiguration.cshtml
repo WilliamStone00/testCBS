@@ -5,11 +5,11 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="mb-3">
-                    @Html.LabelFor(m => m.SourceAccountType, @GlobalBulkOperation.SourceAccountType, new { @class = "form-label" })
+                    @Html.LabelFor(m => m.SourceAccountType, @GlobalBulkOperation.SimulationTopupSourceAccountType, new { @class = "form-label" })
                     @Html.DropDownListFor(m => m.SourceAccountType,
                         new SelectList(Model.SavingProducts, "Name", "Name"),
-                        @GlobalBulkOperation.SelectAccountType,
-                        new { @class = "form-select" })
+                        "Select Value",
+                        new { @class = "form-select select2" })
                 </div>
             </div>
             
@@ -18,13 +18,13 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="mb-3">
-                    @Html.LabelFor(m => m.StartAccount, @GlobalBulkOperation.StartAccountRange, new { @class = "form-label" })
+                    @Html.LabelFor(m => m.StartAccount,@GlobalBulkOperation.SimulationTopupStartMemberAccount, new { @class = "form-label" })
                     @Html.TextBoxFor(m => m.StartAccount, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="mb-3">
-                    @Html.LabelFor(m => m.EndAccount, @GlobalBulkOperation.EndAccountRange, new { @class = "form-label" })
+                    @Html.LabelFor(m => m.EndAccount, @GlobalBulkOperation.SimulationTopupEndMemberAccount, new { @class = "form-label" })
                     @Html.TextBoxFor(m => m.EndAccount, new { @class = "form-control" })
                 </div>
             </div>
@@ -33,13 +33,13 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="mb-3">
-                    @Html.LabelFor(m => m.SourceAccountMinAmount, @GlobalBulkOperation.MinimumAccountBalance, new { @class = "form-label" })
+                    @Html.LabelFor(m => m.SourceAccountMinAmount,  @GlobalBulkOperation.SimulationTopupMinimumAccountBalance, new { @class = "form-label" })
                     @Html.TextBoxFor(m => m.SourceAccountMinAmount, new { @class = "form-control", type = "number", step = "0.01" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="mb-3">
-                    @Html.LabelFor(m => m.SourceAccountMaxAmount, @GlobalBulkOperation.MaximumAccountBalance, new { @class = "form-label" })
+                    @Html.LabelFor(m => m.SourceAccountMaxAmount,  @GlobalBulkOperation.SimulationTopupMaximumAccountBalance, new { @class = "form-label" })
                     @Html.TextBoxFor(m => m.SourceAccountMaxAmount, new { @class = "form-control", type = "number", step = "0.01" })
                 </div>
             </div>

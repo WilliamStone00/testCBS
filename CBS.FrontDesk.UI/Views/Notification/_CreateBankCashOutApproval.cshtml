@@ -1,6 +1,6 @@
 ﻿
 @model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
-
+@using Resources
 @{
     ViewBag.Title = "_CreateBankCashOutApproval";
  
@@ -25,13 +25,13 @@
         }
         <input type="hidden" name="ServiceOption" value="bankCashOutApproval" id="ServiceOption" />
         <fieldset class="fieldset-custom">
-            <legend id="select_base">Bank accounts information present</legend>
+            <legend id="select_base">@GlobalNotification.BankAccountsInformationPresent</legend>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.DropDownListFor(m => m.BankCashOut.FromAccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "", new { @class = "form-control select2", @search = "true", @id = "AccountId" })
                         @Html.ValidationMessageFor(model => model.BankCashOut.FromAccountId, "", new { @class = "text-danger" })
-                        <label for="AccountId">Select Bank Account</label>
+                        <label for="AccountId">@GlobalNotification.SelectBankAccount</label>
                     </div>
                 </div>
 
@@ -41,8 +41,8 @@
                             <div class="card-body">
                                 <div class="d-flex flex-column align-items-end text-end">
                                     <h3 class="mb-3">XAF @Model.CashReplenimentRequest.AmountApproved</h3>
-                                    <p class="mb-0">Amount authorized by @Model.BankCashOut.ApprovedBy</p>
-                                    <p class="mb-0">On the @Model.BankCashOut.ApprovedDate</p>
+                                    <p class="mb-0">@GlobalNotification.AmountAuthorizedBy @Model.BankCashOut.ApprovedBy</p>
+                                    <p class="mb-0">@GlobalNotification.OnThe @Model.BankCashOut.ApprovedDate</p>
                                 </div>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                 </div>
                 <div class="col-md-6" hidden="hidden">
                     <div class="form-floating form-floating-outline">
-                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalNotification.TotalAmount: 0.0</span>
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.BankCashOut.Amount">
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="BranchToBranchTransfer.ReferenceId" value="@Model.BankCashOut.ReferenceId">
@@ -58,13 +58,13 @@
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        <span class="formatted-amount shadow-box" id="lblBalance">Balance: 0</span>
+                        <span class="formatted-amount shadow-box" id="lblBalance">@GlobalNotification.Balance: 0</span>
                     </div>
                 </div>
             </div>
         </fieldset>
         <fieldset class="fieldset-custom">
-            <legend id="select_base">Cash Denomination Recieve From Bank</legend>
+            <legend id="select_base">@GlobalNotification.Cash Denomination Recieve From Bank</legend>
             <div class="row">
 
                 <div class="col-md-2 mb-sm-4">
@@ -157,14 +157,14 @@
             </div>
         </fieldset>
         <fieldset class="fieldset-custom">
-            <legend id="select_base">Bank Cash Out Identification</legend>
+            <legend id="select_base">@GlobalNotification.BankCashOutIdentification</legend>
             <div class="row">
                 <div class="col-md-6 mb-sm-4">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.BankCashOut.BankTransactionReference, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.BankCashOut.BankTransactionReference, "", new { @class = "text-danger" })
 
-                        <label for="Amount"> Bank Transaction Reference</label>
+                        <label for="Amount"> @GlobalNotification.BankTransactionReference</label>
                     </div>
                 </div>
                 <div class="col-md-6 mb-sm-4">
@@ -173,7 +173,7 @@
                         @Html.TextBoxFor(model => model.BankCashOut.ValueDate, new { @class = "form-control date-picker", @type = "datetime-local", @id = "html5-datetime-local-input" })
                         @Html.ValidationMessageFor(model => model.BankCashOut.ValueDate, "", new { @class = "text-danger" })
 
-                        <label for="ValueDate">Date Of Bank CashOut</label>
+                        <label for="ValueDate">@GlobalNotification.DateOfBankCashOut</label>
                     </div>
 
                 </div>
@@ -186,16 +186,16 @@
                         @Html.ValidationMessageFor(model => model.BankCashOut.Description, "", new { @class = "text-danger" })
 
 
-                        <label>Naration</label>
+                        <label>@GlobalNotification.Naration</label>
                     </div>
                 </div>
                 <div class="col-md-6 mb-sm-4">
                     <div class="upload-container">
                         <div class="image-preview">
-                            <img src="@Url.Content(Model.BankCashOut.FileUpload)" alt="No Image Found" id="previewimage" class="img-fluid" />
+                            <img src="@Url.Content(Model.BankCashOut.FileUpload)" alt="@GlobalShared.NoImageFound" id="previewimage" class="img-fluid" />
                         </div>
                         <label for="imageuploadSignature" class="custom-file-upload">
-                            <i class="fas fa-cloud-upload-alt"></i> Choose Photo
+                            <i class="fas fa-cloud-upload-alt"></i> @GlobalShared.ChoosePhoto
                         </label>
                         <input type="file" name="BankCashOut.UploadedFile" accept="image/jpeg,image/png,image/JPG" id="imageuploadSignature" onchange="ShowImagePreview(this, document.getElementById('previewimage'))" />
                     </div>
@@ -203,7 +203,7 @@
             </div>
         </fieldset>
         <div class="col-12 text-end">
-            <button type="submit" class="btn btn-primary me-2" id="btnSave">Validate</button>
+            <button type="submit" class="btn btn-primary me-2" id="btnSave">@GlobalShared.Validate</button>
             <input type="hidden" name="Action" value="insert" id="Action" />
 
         </div>

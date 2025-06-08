@@ -73,18 +73,34 @@ namespace CBS.FrontDesk.UI.Controllers.Series
 
         public async Task<ActionResult> F2MembersGeneratSituation(string KEY)
         {
+            //if (KEY == null || KEY == "")
+            //{
+            //    ViewBag.message = "Empty data was submited. Please enter search criterial";
+            //    return PartialView("_DataNotFound", new CashDesk());
+            //}
+            //var cashDesk = await _cashDeskService.GetMember(KEY);
+            //if (cashDesk == null)
+            //{
+            //    ViewBag.message = $"{KEY} was not found in the database.";
+            //    return PartialView("_DataNotFound", new CashDesk());
+            //}
+
             if (KEY == null || KEY == "")
             {
                 ViewBag.message = "Empty data was submited. Please enter search criterial";
                 return PartialView("_DataNotFound", new CashDesk());
             }
-            var cashDesk = await _cashDeskService.GetMember(KEY);
+            var cashDesk = await _cashDeskService.GetAccountByAccountNumberSearch(KEY, "F5");
             if (cashDesk == null)
             {
+
                 ViewBag.message = $"{KEY} was not found in the database.";
                 return PartialView("_DataNotFound", new CashDesk());
             }
+            //ViewBag.Operation = path;
             return View(cashDesk);
+
+
         }
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = "_DataNotFound", string path = null, string serviceOption = null)
         {

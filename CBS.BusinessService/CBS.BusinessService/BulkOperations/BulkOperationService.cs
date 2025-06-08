@@ -194,10 +194,14 @@ namespace CBS.BusinessService.BulkOperations
 
                 if (model.ContributionAmount>0)
                 {
-                    SimulateBulkOperationToUniqueAccountType simulateModel= new SimulateBulkOperationToUniqueAccountType(model,branch);
+                    var eventName = await _accountingServices.GetEventNames(operationType);
+
+                    var selectedEvent = eventName.Where(x => x.Value == model.DestinationAccountId).FirstOrDefault();
+
+                    BulkOperationContributionSimulationCommand simulateModel= new BulkOperationContributionSimulationCommand(model, selectedEvent.Text, branch);
                     // Make an API call to create an individual profile
                     var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<CreateBulkOperationSimulation>>(APICallHelper.SimulateContribution, simulateModel);
-                    if (response.ApiResponseData != null)
+                    if (response.IsSuccess)
                     {
                         // Successful creation
                         GetExecutionMessages(response, true, $"{simulateModel.SimulationType}", MessagesResults.Success,
@@ -215,11 +219,9 @@ namespace CBS.BusinessService.BulkOperations
                 else
                 {
 
-                    var eventName=await _accountingServices.GetEventNames(operationType);
+                  
 
-                    var selectedEvent = eventName.Where(x => x.Value == model.DestinationAccountId).FirstOrDefault();
-
-                    SimulateBulkOperationToSpecificAccountType simulateModel = new SimulateBulkOperationToSpecificAccountType(model,selectedEvent.Text, branch);
+                    BulkOperationAccountTopupSimulationCommand simulateModel = new BulkOperationAccountTopupSimulationCommand(model, branch);
                     // Make an API call to create an individual profile
                     var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<CreateBulkOperationSimulation>>(APICallHelper.SimulateAccountTopup, simulateModel);
                     if (response.ApiResponseData != null)
@@ -256,7 +258,7 @@ namespace CBS.BusinessService.BulkOperations
                   
                     // Make an API call to create an individual profile
                     var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.ConfirmBulkOperation, command);
-                    if (response.ApiResponseData != null && response.ApiResponseData.Data)
+                    if (response.IsSuccess)
                     {
                         // Successful creation
                         GetExecutionMessages(response, true, $"{command.ApprovalStatus}", MessagesResults.Success,

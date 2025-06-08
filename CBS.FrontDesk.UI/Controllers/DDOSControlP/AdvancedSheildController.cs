@@ -32,13 +32,13 @@ namespace CBS.FrontDesk.UI.Controllers.DDOSControlP
         }
         [HttpPost]
         public async Task<ActionResult> AddOrUpdate(RateLimitConfig model,
-            string WhitelistedHeadersInput,
-            string CameroonCidrs,
+            string WhitelistedHeaders,
+            string WhitelistedCidrs,
             string SuspiciousIndicators,
             string ExcludedPaths,
             string ExcludedSubstrings,
             string ExcludedExtensions,
-            string BadUserAgents)
+            string BadUserAgents, string AllowedOrigins, string TelemetryHeaderPrefixes, string HighRiskHeaderKeys, string ProtectedPathRefererRequired, string SensitiveHeaderMissingCheckPaths, string SpoofedForwardedForIndicators,string AllowedHeaderValuePattern,string SuspiciousFormKeyPatterns,string BlockedFileExtensions)
         {
             // Helpers
             List<string> ParseList(string input) =>
@@ -48,25 +48,27 @@ namespace CBS.FrontDesk.UI.Controllers.DDOSControlP
                       .Distinct()
                       .ToList() ?? new List<string>();
 
-            string[] ParseArray(string input) =>
-                input?.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
-                      .Select(x => x.Trim())
-                      .Where(x => !string.IsNullOrWhiteSpace(x))
-                      .Distinct()
-                      .ToArray() ?? Array.Empty<string>();
-
             // Parse form inputs
-            model.WhitelistedHeaders = ParseList(WhitelistedHeadersInput);
-            model.CameroonCidrs = ParseList(CameroonCidrs);
+            model.WhitelistedHeaders = ParseList(WhitelistedHeaders);
+            model.WhitelistedCidrs = ParseList(WhitelistedCidrs);
             model.ExcludedPaths = ParseList(ExcludedPaths);
             model.ExcludedSubstrings = ParseList(ExcludedSubstrings);
             model.ExcludedExtensions = ParseList(ExcludedExtensions);
-            model.SuspiciousIndicators = ParseArray(SuspiciousIndicators);
-            model.BadUserAgents = ParseArray(BadUserAgents);
+            model.SuspiciousIndicators = ParseList(SuspiciousIndicators);
+            model.BadUserAgents = ParseList(BadUserAgents);
+            model.AllowedOrigins = ParseList(AllowedOrigins);
+            model.TelemetryHeaderPrefixes = ParseList(TelemetryHeaderPrefixes);
+            model.HighRiskHeaderKeys = ParseList(HighRiskHeaderKeys);
+            model.ProtectedPathRefererRequired = ParseList(ProtectedPathRefererRequired);
+            model.SensitiveHeaderMissingCheckPaths = ParseList(SensitiveHeaderMissingCheckPaths);
+            model.SpoofedForwardedForIndicators = ParseList(SpoofedForwardedForIndicators);
+            model.AllowedHeaderValuePattern = ParseList(AllowedHeaderValuePattern);
 
+            model.SuspiciousFormKeyPatterns = ParseList(SuspiciousFormKeyPatterns);
+            model.BlockedFileExtensions = ParseList(BlockedFileExtensions);
             // CIDR validation
             var invalidCidrs = new List<string>();
-            foreach (var cidr in model.CameroonCidrs)
+            foreach (var cidr in model.WhitelistedCidrs)
             {
                 var parts = cidr.Split('/');
                 if (parts.Length != 2 ||

@@ -87,15 +87,15 @@ namespace CBS.FrontDesk.Data.Entity.RequestManagement
         /// These defaults are used if no admin configuration is found.
         /// </summary>
         public static Dictionary<string, string> GetDefaultPolicies() => new Dictionary<string, string>
-    {
-        // 🧱 Complexity Rules
+        {
+            // 🧱 Complexity Rules
         { "MinLength", "8" },
         { "MaxLength", "128" },
         { "RequireUppercase", "true" },
         { "RequireLowercase", "true" },
         { "RequireDigit", "true" },
         { "RequireSpecialChar", "true" },
-        { "AllowedSpecialChars", "!@#$%^&*()_+-=[]{}|;:,.<>?" },
+        { "AllowedSpecialChars", "~!@#$%^&*()_+-=[]{}|;:,.<>?" },
         { "DisallowUsernameInPassword", "true" },
 
         // ♻️ History & Reuse
@@ -107,7 +107,7 @@ namespace CBS.FrontDesk.Data.Entity.RequestManagement
         { "MFATypesAllowed", "SMS,EMAIL,TOTP" },
         { "MFAEnforcementGraceDays", "3" },
 
-         // 🚫 Disallowed Patterns
+        // 🚫 Disallowed Patterns
         { "DisallowedSubstrings", "password,admin,login,1234,qwerty,abcd,root,test,guest,access,letmein,welcome,secret,iloveyou,trustno1,dragon,2020,2021,0000" },
         { "RegexPatternValidation", "^(?!.*(.)\\1{2,})(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!?]).{12,128}$" },
 
@@ -115,8 +115,10 @@ namespace CBS.FrontDesk.Data.Entity.RequestManagement
         { "AllowAdminReset", "true" },
         { "RejectSerialPatterns", "true" },
         { "AdminResetBypassHistory", "false" },
-        { "DeleteUnusedAccountsAfterCreationDays", "3" }
-    };
+        { "DeleteUnusedAccountsAfterCreationDays", "3" },
+        { "DisallowSerialNumbers", "true" },
+        { "DisallowYearsInPassword", "true" }
+        };
     }
 
 }

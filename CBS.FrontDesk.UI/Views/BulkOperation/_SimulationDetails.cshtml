@@ -1,5 +1,11 @@
 ﻿@model  CBS.FrontDesk.Data.Entity.BulkOperation.BulkOperationData
 @using Resources
+@{ 
+    var firstMember = Model.BulkOperationSimulationDetails.FirstOrDefault();
+    var sourceAccountype = firstMember != null ? firstMember.SourceAccountType : "N/A";
+    var destinationAccountype = firstMember != null ? firstMember.DestinationAccountNumber : "N/A";
+}
+
 <style>
     .is-invalid {
         border-color: red !important;
@@ -19,19 +25,19 @@
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label">@GlobalBulkOperation.SimulationType</label>
                         <div class="col-sm-8">
-                            <div class="form-control">@Model.SimulationType</div>
+                            <div class="form-control">@(Model.SimulationType?.ToUpper())</div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Branch</label>
                         <div class="col-sm-8">
-                            <div class="form-control">@Model.BranchName (@Model.BranchCode)</div>
+                            <div class="form-control">@(Model.BranchName?.ToUpper()) (@Model.BranchCode)</div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Bank</label>
                         <div class="col-sm-8">
-                            <div class="form-control">@Model.BankName (@Model.BankCode)</div>
+                            <div class="form-control">@(Model.BankName?.ToUpper()) (@Model.BankCode)</div>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -44,6 +50,18 @@
                         <label class="col-sm-4 col-form-label">@GlobalBulkOperation.TotalMembers</label>
                         <div class="col-sm-8">
                             <div class="form-control">@Model.TotalMembers</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Source Account Type</label>
+                        <div class="col-sm-8">
+                            <div class="form-control">@(sourceAccountype?.ToUpper())</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Destination Account Type</label>
+                        <div class="col-sm-8">
+                            <div class="form-control">@(destinationAccountype?.ToUpper())</div>
                         </div>
                     </div>
                 </div>
@@ -59,7 +77,7 @@
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Status</label>
                         <div class="col-sm-8">
-                            <span class="badge @Model.ApprovalStatusBadge">@Model.ApprovalStatus</span>
+                            <span class="badge @Model.ApprovalStatusBadge">@(Model.ApprovalStatus?.ToUpper())</span>
                         </div>
                     </div>
 
@@ -67,13 +85,13 @@
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label">@GlobalBulkOperation.CreatedBy</label>
                         <div class="col-sm-8">
-                            <div class="form-control">@(string.IsNullOrEmpty(Model.CreatedBy) ? "N/A" : Model.CreatedBy)</div>
+                            <div class="form-control">@(string.IsNullOrEmpty(Model.CreatedBy) ? "N/A" : Model.CreatedBy.ToUpper())</div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label">@GlobalBulkOperation.ApprovedBy</label>
                         <div class="col-sm-8">
-                            <div class="form-control">@(string.IsNullOrEmpty(Model.ApprovalBy) ? "N/A" : Model.ApprovalBy)</div>
+                            <div class="form-control">@(string.IsNullOrEmpty(Model.ApprovalBy) ? "N/A" : Model.ApprovalBy.ToUpper())</div>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -173,6 +191,9 @@
                             <h1 class="card-title text-primary">
                                 <i class="mdi mdi-bank-transfer me-2"></i>@GlobalBulkOperation.TransferDetails
                             </h1>
+                            <p class="card-text lead">
+                               @(Model.SimulationType?.ToUpper())
+                            </p>
                             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                         </div>
                     </div>

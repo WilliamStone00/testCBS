@@ -531,10 +531,110 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalLoanDeliquencyConfiguration.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\LoanProductCategory\GlobalLoanProductCategory.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanProductCategory.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\LoanProductCollateral\GlobalLoanProductCollateral.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanProductCollateral.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\LoanProduct\GlobalLoanProduct.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalLoanProduct.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\LoanPurpose\GlobalLoanPurpose.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanPurpose.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\LoanRepaymentBackOffice\GlobalLoanRepaymentBackOffice.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanRepaymentBackOffice.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\LoanTerm\GlobalLoanTerm.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanTerm.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ManuallyJournalEntry\GlobalManuallyJournalEntry.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalManuallyJournalEntry.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberAccountActivationPolicy\GlobalMemberAccountActivationPolicy.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalMemberAccountActivationPolicy.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberNoneCashOperation\GlobalMemberNoneCashOperation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalMemberNoneCashOperation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MemberOrdinaryAccountsF8\GlobalMemberOrdinaryAccountsF8.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalMemberOrdinaryAccountsF8.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MembersCategory\GlobalMembersCategory.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalMembersCategory.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MembersFSeries\GlobalMembersFSeries.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalMembersFSeries.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MenuMaster\GlobalMenuMaster.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalMenuMaster.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MenuTranslation\GlobalMenuTranslation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalMenuTranslation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MFAVerification\GlobalMFAVerification.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalMFAVerification.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Migration\GlobalMigration.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalMigration.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MobileMoneyBackOffice\GlobalMobileMoneyBackOffice.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalMobileMoneyBackOffice.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\MobileMoneyCashTopup\GlobalMobileMoneyCashTopup.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalMobileMoneyCashTopup.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Notification\GlobalNotification.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalNotification.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\OldLoanAccountingMaping\GlobalOldLoanAccountingMaping.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalOldLoanAccountingMaping.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\OpenningOfDay\GlobalOpenningOfDay.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalOpenningOfDay.resx</DependentUpon>
     </Compile>
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
@@ -661,8 +761,27 @@
     <Compile Include="Controllers\UserManagement\MFAVerificationController.cs" />
     <Compile Include="Controllers\UserManagement\UserManagementController.cs" />
     <Compile Include="Filter\MaliciousContentScannerService.cs" />
+    <Compile Include="WAF\Middleware\Correlation\CorrelationIdMiddleware.cs" />
+    <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureFilter.cs" />
+    <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureMiddleware.cs" />
+    <Compile Include="WAF\Services\Validation\PatternValidator.cs" />
+    <Compile Include="WAF\Utilities\AllowedOriginHelper.cs" />
     <Compile Include="Utility\CidrUtility.cs" />
     <Compile Include="Utility\Middlware logger\MiddlewareFileLogger.cs" />
+    <Compile Include="WAF\Utilities\WAFBypassHelper.cs" />
+    <Compile Include="WAF\Middleware\Core\TSCWAFMiddleware.cs" />
+    <Compile Include="WAF\Middleware\Core\WAFContext.cs" />
+    <Compile Include="WAF\Middleware\Core\WAFRequestAnalyzer.cs" />
+    <Compile Include="WAF\Utilities\RequestCaptureHelper.cs" />
+    <Compile Include="WAF\Services\Cookie\UserContextResolver.cs" />
+    <Compile Include="WAF\Services\DDoS\BlockCacheService.cs" />
+    <Compile Include="WAF\Services\DDoS\RateLimitConfigHolder.cs" />
+    <Compile Include="WAF\Services\DDoS\RateLimiterService.cs" />
+    <Compile Include="WAF\Services\GeoIP\GeoIpResolver.cs" />
+    <Compile Include="WAF\Services\Validation\BodyScanner.cs" />
+    <Compile Include="WAF\Services\Validation\HeaderValidator.cs" />
+    <Compile Include="WAF\Services\Validation\PathValidator.cs" />
+    <Compile Include="WAF\Services\Validation\SuspiciousEventHandler.cs" />
     <Content Include="AppFiles\Images\Avatar\avatarimg.jpg" />
     <Content Include="AppFiles\Images\Bank-deposit-slip-excel-template.jpg" />
     <Content Include="AppFiles\Images\BG.jpeg" />
@@ -2073,7 +2192,7 @@
     <Compile Include="Filter\AuthorizeAttributeEASIMS.cs" />
     <Compile Include="Filter\InputSanitizerAttribute.cs" />
     <Compile Include="Filter\GlobalExceptionFilter.cs" />
-    <Compile Include="Filter\RateLimitingMiddleware.cs" />
+    <Compile Include="Filter\TSCWAFMiddleware.cs" />
     <Compile Include="Filter\RequestThrottlingFilter.cs" />
     <Compile Include="Filter\SessionLockCheckAttribute.cs" />
     <Compile Include="Filter\UserAuditFilter.cs" />
@@ -4753,6 +4872,66 @@
     <Content Include="Content\bootstrap-grid.rtl.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="App_GlobalResources\ManuallyJournalEntry\GlobalManuallyJournalEntry.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalManuallyJournalEntry.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberAccountActivationPolicy\GlobalMemberAccountActivationPolicy.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalMemberAccountActivationPolicy.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberNoneCashOperation\GlobalMemberNoneCashOperation.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalMemberNoneCashOperation.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MemberOrdinaryAccountsF8\GlobalMemberOrdinaryAccountsF8.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalMemberOrdinaryAccountsF8.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MembersCategory\GlobalMembersCategory.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalMembersCategory.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MembersFSeries\GlobalMembersFSeries.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalMembersFSeries.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MenuMaster\GlobalMenuMaster.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalMenuMaster.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MenuTranslation\GlobalMenuTranslation.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalMenuTranslation.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MFAVerification\GlobalMFAVerification.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalMFAVerification.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Migration\GlobalMigration.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalMigration.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MobileMoneyBackOffice\GlobalMobileMoneyBackOffice.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalMobileMoneyBackOffice.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\MobileMoneyCashTopup\GlobalMobileMoneyCashTopup.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalMobileMoneyCashTopup.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Notification\GlobalNotification.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalNotification.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\OldLoanAccountingMaping\GlobalOldLoanAccountingMaping.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalOldLoanAccountingMaping.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\OpenningOfDay\GlobalOpenningOfDay.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalOpenningOfDay.Designer.cs</LastGenOutput>
+    </Content>
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -4760,6 +4939,8 @@
     <Content Include="RateLimitConfig\_Create.cshtml" />
     <Content Include="RateLimitConfig\_Data.cshtml" />
     <Content Include="RateLimitConfig\Index.cshtml" />
+    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Resources\TextFile1.txt" />
     <Content Include="Mvc.sitemap" />
     <Content Include="DataSet\Transaction\TransactionDS.xsc">
@@ -5390,6 +5571,26 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanProduct.Designer.cs</LastGenOutput>
     </Content>
+    <Content Include="App_GlobalResources\LoanProductCategory\GlobalLoanProductCategory.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanProductCategory.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LoanProductCollateral\GlobalLoanProductCollateral.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanProductCollateral.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LoanPurpose\GlobalLoanPurpose.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanPurpose.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LoanRepaymentBackOffice\GlobalLoanRepaymentBackOffice.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanRepaymentBackOffice.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LoanTerm\GlobalLoanTerm.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanTerm.Designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -5526,6 +5727,7 @@
     <Content Include="Scripts\Js\Crud\Remittance\RemittanceQuery.js" />
     <Content Include="Scripts\Js\Crud\Remittance\RemittanceRequest.js" />
     <Content Include="Scripts\Js\Crud\SMSActivityLog\SMSActivityLog.js" />
+    <Content Include="Scripts\Js\Crud\User\FChangePassword.js" />
     <Content Include="Scripts\Js\Crud\User\UserConnected.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\Pending.js" />
     <Content Include="Scripts\Js\Crud\WithdrawalNotification\Requests.js" />
@@ -5569,6 +5771,7 @@
     <Content Include="Scripts\Js\main.js\Connection_checker.js" />
     <Content Include="Scripts\Js\main.js\clientDataAfterLogin.js" />
     <Content Include="Scripts\Js\main.js\clintLoginData.js" />
+    <Content Include="Scripts\Js\main.js\PasswordGenerator.js" />
     <Content Include="Scripts\Js\main.js\StaticAutomatedJournalEntry.js" />
     <Content Include="Scripts\Js\main.js\Account_Upload.js" />
     <Content Include="Scripts\Js\main.js\Account.js" />
@@ -6560,6 +6763,10 @@
     <Content Include="Views\WithdrawalNotification\_ValidatePendingRequest.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\AdvancedSheild\_PolicyTips.cshtml" />
+    <Content Include="Views\Shared\_LayoutChangePassword.cshtml" />
+    <Content Include="Views\Shared\_PasswordPolicyPanel.cshtml" />
+    <Content Include="Views\Shared\_MfaLayout.cshtml" />
+    <Content Include="Views\UserManagement\_UserOverridePolicy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -1,9 +1,10 @@
-﻿<div class="table-responsive">
+﻿@using Resources
+<div class="table-responsive">
     <div class="modal fade" id="exLargeModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title card-title justify-content-center" id="exampleModalLabel3"> Loading ...</h2>
+                    <h2 class="modal-title card-title justify-content-center" id="exampleModalLabel3"> @GlobalManuallyJournalEntry.Loading_ ...</h2>
                     <button type="button"
                             class="btn-close"
                             data-bs-dismiss="modal"
@@ -18,9 +19,9 @@
                         <table class="table table-hover" id="AccountingEventEntriesDataTable">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Account Description</th>
-                                    <th>Debit</th>
-                                    <th>Credit</th>
+                                    <th>@GlobalManuallyJournalEntry.AccountDescription</th>
+                                    <th>@GlobalManuallyJournalEntry.Debit</th>
+                                    <th>@GlobalManuallyJournalEntry.Credit</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -34,10 +35,10 @@
                 <div class="modal-footer">
                     <button type="button"
                             class="btn btn-primary" id="submitButton">
-                        <i class="mdi mdi-account-edit me-1"></i>  Post Entries
+                        <i class="mdi mdi-account-edit me-1"></i>  @GlobalManuallyJournalEntry.PostEntries
                     </button>
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Close
+                        @GlobalShared.Close
                     </button>
                 </div>
             </div>

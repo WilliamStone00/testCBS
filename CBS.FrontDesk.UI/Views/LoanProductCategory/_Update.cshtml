@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductCategory
+    @using Resources
 <div class="card-body">
 
     @using (Html.BeginForm("Update", "LoanProductCategory", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
@@ -11,14 +12,14 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                        <label>Name</label>
+                        <label>@GlobalLoanProductCategory.Name</label>
                     </div>
                 </div>
                 <div class="col-md-12 mb-3">
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 200px;" })
                         @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                        <label>Description</label>
+                        <label>@GlobalLoanProductCategory.Description</label>
                     </div>
                 </div>
             </fieldset>
@@ -27,7 +28,7 @@
     </div>
     <div class="mt-4">
 
-        <button type="submit" class="btn btn-primary me-2">Update</button>
+        <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
 
     </div>
 }

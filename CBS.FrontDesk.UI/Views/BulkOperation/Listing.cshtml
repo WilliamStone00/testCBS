@@ -3,295 +3,573 @@
     ViewBag.Title = @GlobalBulkOperation.BulkOperationQueryOverview;
 }
 @using Newtonsoft.Json;
+
+<style>
+    .steps {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+    }
+
+    .steps:before {
+        content: "";
+        position: absolute;
+        top: 20px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #e9ecef;
+        z-index: 1;
+    }
+
+    .step {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        flex: 1;
+    }
+
+    .step-number {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 10px;
+        font-weight: bold;
+        border: 3px solid white;
+    }
+
+    .step-content {
+        padding: 0 10px;
+    }
+
+    .filter-section {
+        transition: all 0.3s ease;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 5px;
+    }
+</style>
+
 <div class="row">
     <div class="col-12">
-        <div class="card bg-light mb-2">
+        <!-- Enhanced Header Section -->
+        <div class="card bg-light mb-3 shadow-sm">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-database-export me-2"></i>@GlobalBulkOperation.BulkOperationManagement
+                    <i class="mdi mdi-database-export me-2"></i> @GlobalBulkOperation.BulkOperationManagement
                 </h1>
-                <p class="card-text">
-                    @GlobalBulkOperation.ExecuteBatchActionsOnUsersRolesOrOrganizational.
+                <p class="card-text lead">
+                    Execute batch actions across multiple users accounts with precision and control.
                 </p>
-                <p class="card-text text-black fw-bold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalBulkOperation.UseFiltersToRefineSelectionsBeforeApplyingBulkChanges.
-                </p>
-                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
-             
+                <div class="alert alert-light border-primary mb-0 mt-3">
+                    <i class="mdi mdi-alert-circle-outline text-primary me-2"></i>
+                    <strong>Pro Tip:</strong> @GlobalBulkOperation.UseFiltersToRefineSelectionsBeforeApplyingBulkChanges.
+                </div>
+                <hr class="my-3" style="border: 2px solid rgba(128, 128, 128, 0.3);" />
             </div>
         </div>
     </div>
 </div>
 
-<div class="card mb-3">
-    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-filter-outline me-2"></i> @GlobalBulkOperation.TIPSFORBulkOPERATIONSFILTERING</span>
-        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+@*<div class="row">
+        <div class="col-12">
+            <div class="card bg-light mb-2">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary">
+                        <i class="mdi mdi-database-export me-2"></i>@GlobalBulkOperation.BulkOperationManagement
+                    </h1>
+                    <p class="card-text">
+                        @GlobalBulkOperation.ExecuteBatchActionsOnUsersRolesOrOrganizational.
+                    </p>
+                    <p class="card-text text-black fw-bold">
+                        <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalBulkOperation.UseFiltersToRefineSelectionsBeforeApplyingBulkChanges.
+                    </p>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<!-- Workflow Guidance Section -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+        <h6 class="mb-0"><i class="mdi mdi-road-variant text-primary me-1"></i>  Bulk Operation Workflow</h6>
+        <button class="btn btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
-    </h6>
-    <div id="collapseTips" class="collapse">
+    </div>
+    <div id="collapseTips" class="collapse show">
         <div class="card-body">
-            <ul class="mb-0">
-                <li><i class="mdi mdi-office-building text-primary me-2"></i><strong>@GlobalBulkOperation.Branch:</strong> @GlobalBulkOperation.FilterUsersByOrganizationalBranchOrLocation.</li>
-                <li><i class="mdi mdi-toggle-switch text-warning me-2"></i><strong>@GlobalBulkOperation.Status:</strong> @GlobalBulkOperation.FilterByActiveInactiveCompletedOrSuspendedAccounts.</li>
-                <li><i class="mdi mdi-calendar-start text-info me-2"></i><strong>@GlobalBulkOperation.FromDate:</strong> @GlobalBulkOperation.SetTheStartDateRangeForUserRegistrationActivity.</li>
-                <li><i class="mdi mdi-calendar-end text-info me-2"></i><strong>@GlobalBulkOperation.ToDate:</strong> @GlobalBulkOperation.SetTheEndDateRangeForUserRegistrationActivity.</li>
-                <li><i class="mdi mdi-refresh text-success me-2"></i><strong>@GlobalBulkOperation.ApplyFilters:</strong> @GlobalBulkOperation.CombineFilters.</li>
-            </ul>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number bg-light text-primary">1</div>
+                    <div class="step-content">
+                        <h6>Simulate</h6>
+                        <p class="small text-muted">Simulate an operation </p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number bg-light text-primary">2</div>
+                    <div class="step-content">
+                        <h6>Filter & Select</h6>
+                        <p class="small text-muted">Use the filters below to target specific records</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number bg-light text-primary">3</div>
+                    <div class="step-content">
+                        <h6>Preview</h6>
+                        <p class="small text-muted">Review selected records in the data table</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number bg-light text-primary">4</div>
+                    <div class="step-content">
+                        <h6>Execute</h6>
+                        <p class="small text-muted">Complete the bulk operation</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="row mb-3">
-    <div class="col-12 text-end">
-        <a href="/BulkOperation" class="btn btn-primary shadow-sm">
-            <i class="mdi mdi-account-plus-outline me-1"></i> @GlobalBulkOperation.SimulateABulkOperation
-        </a>
+    <!-- Filtering Tips Section -->
+<div class="card  mb-4">
+    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+        <h6 class="mb-0"><i class="mdi mdi-filter-outline text-primary me-1"></i> @GlobalBulkOperation.TIPSFORBulkOPERATIONSFILTERING</h6>
+        <button class="btn btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </div>
+    <div id="collapseTips" class="collapse show">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="alert alert-light border mb-3">
+                        <i class="mdi mdi-office-building text-primary me-2"></i>
+                        <strong>@GlobalBulkOperation.Branch:</strong>
+                        <span class="small">@GlobalBulkOperation.FilterUsersByOrganizationalBranchOrLocation</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="alert alert-light border mb-3">
+                        <i class="mdi mdi-toggle-switch text-warning me-2"></i>
+                        <strong>@GlobalBulkOperation.Status:</strong>
+                        <span class="small">@GlobalBulkOperation.FilterByActiveInactiveCompletedOrSuspendedAccounts</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="alert alert-light border mb-3">
+                        <i class="mdi mdi-calendar-range text-info me-2"></i>
+                        <strong>Date Range:</strong>
+                        <span class="small">@GlobalBulkOperation.SetTheStartDateRangeForUserRegistrationActivity</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="alert alert-light border mb-3">
+                        <i class="mdi mdi-filter-plus text-success me-2"></i>
+                        <strong>Combined Filters:</strong>
+                        <span class="small">@GlobalBulkOperation.CombineFilters</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalBulkOperation.AdvancedUserFilters</h5>
-    <div class="card p-3 mb-3 bg-light">
-        <div class="row mb-3">
-            <div class="col-md-4 form-check">
-                <input type="checkbox" class="form-check-input" id="byBranch" />
-                <label class="form-check-label fw-bold" for="byBranch">@GlobalBulkOperation.FilterByBranchName</label>
+    @*<div class="card mb-3">
+            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                <span><i class="mdi mdi-filter-outline me-2"></i> @GlobalBulkOperation.TIPSFORBulkOPERATIONSFILTERING</span>
+                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </h6>
+            <div id="collapseTips" class="collapse">
+                <div class="card-body">
+                    <ul class="mb-0">
+                        <li><i class="mdi mdi-office-building text-primary me-2"></i><strong>@GlobalBulkOperation.Branch:</strong> @GlobalBulkOperation.FilterUsersByOrganizationalBranchOrLocation.</li>
+                        <li><i class="mdi mdi-toggle-switch text-warning me-2"></i><strong>@GlobalBulkOperation.Status:</strong> @GlobalBulkOperation.FilterByActiveInactiveCompletedOrSuspendedAccounts.</li>
+                        <li><i class="mdi mdi-calendar-start text-info me-2"></i><strong>@GlobalBulkOperation.FromDate:</strong> @GlobalBulkOperation.SetTheStartDateRangeForUserRegistrationActivity.</li>
+                        <li><i class="mdi mdi-calendar-end text-info me-2"></i><strong>@GlobalBulkOperation.ToDate:</strong> @GlobalBulkOperation.SetTheEndDateRangeForUserRegistrationActivity.</li>
+                        <li><i class="mdi mdi-refresh text-success me-2"></i><strong>@GlobalBulkOperation.ApplyFilters:</strong> @GlobalBulkOperation.CombineFilters.</li>
+                    </ul>
+                </div>
             </div>
-            <div class="col-md-4 form-check">
-                <input type="checkbox" class="form-check-input" id="byStatus" />
-                <label class="form-check-label fw-bold" for="byStatus">@GlobalBulkOperation.FilterByStatus</label>
-            </div>
-            <div class="col-md-4 form-check">
-                <input type="checkbox" class="form-check-input" id="byDate" />
-                <label class="form-check-label fw-bold" for="byDate">@GlobalBulkOperation.FilterByBetweenDates</label>
-            </div>
-        </div>
+        </div>*@
 
-        <div id="branchFilterSection" class="row mb-3" style="display:none;">
-            <div class="col-md-12">
+    <!-- Action Button -->
+    <div class="row mb-3">
+        <div class="col-12 text-end">
+            <a href="/BulkOperation" class="btn btn-primary shadow-sm px-4">
+                <i class="mdi mdi-account-plus-outline me-1"></i> @GlobalBulkOperation.SimulateABulkOperation
+            </a>
+        </div>
+    </div>
+    @*<div class="row mb-3">
+            <div class="col-12 text-end">
+                <a href="/BulkOperation" class="btn btn-primary shadow-sm">
+                    <i class="mdi mdi-account-plus-outline me-1"></i> @GlobalBulkOperation.SimulateABulkOperation
+                </a>
+            </div>
+        </div>*@
+
+
+    <!-- Filter Panel -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+        <h6 class="mb-0"><i class="mdi mdi-filter-outline text-primary me-1"></i> @GlobalBulkOperation.AdvancedUserFilters</h6>
+        <button class="btn btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </div>
+    <div id="collapseTips" class="collapse show">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <div class="filter-toggle-group mb-3">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="byBranch" checked>
+                            <label class="form-check-label" for="byBranch">@GlobalBulkOperation.Branch</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="byStatus">
+                            <label class="form-check-label" for="byStatus">@GlobalBulkOperation.Status</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="byDate">
+                            <label class="form-check-label" for="byDate">@GlobalBulkOperation.FilterByBetweenDates</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Filter Sections -->
+            <div id="branchFilterSection" class="filter-section mb-3">
                 <label class="form-label fw-bold">@GlobalBulkOperation.SelectBranch</label>
-                @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "---"+ @GlobalBulkOperation.SelectBranch +"---", new { @class = "form-control select2", id = "branchInput" })
+                @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"),
+                    "---" + @GlobalBulkOperation.SelectBranch + "---",
+                    new { @class = "form-select select2", id = "branchInput" })
+            </div>
+
+            <div id="statusFilterSection" class="filter-section mb-3" style="display:none;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">@GlobalBulkOperation.SelectStatus</label>
+                        <select class="form-select select2" id="statusInput">
+                            <option value="">--- @GlobalBulkOperation.AllStatuses ---</option>
+                            <option value="Approved">@GlobalBulkOperation.Approved</option>
+                            <option value="Pending">@GlobalBulkOperation.Pending</option>
+                            <option value="Reviewed">@GlobalBulkOperation.Reviewed</option>
+                            <option value="Rejected">@GlobalBulkOperation.Rejected</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="dateRangeSection" class="filter-section mb-3" style="display:none;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">@GlobalBulkOperation.FromDate</label>
+                        <input type="date" id="createdFrom" class="form-control" placeholder="@GlobalBulkOperation.CreatedFrom" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">@GlobalBulkOperation.ToDate</label>
+                        <input type="date" id="createdTo" class="form-control" placeholder="@GlobalBulkOperation.CreatedTo" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="row mt-4">
+                <div class="col-md-12 d-flex gap-2">
+                    <button id="applyFilterBtn" class="btn btn-primary flex-grow-1">
+                        <i class="mdi mdi-magnify me-1"></i> Apply Filters
+                    </button>
+                    <button id="resetFilterBtn" class="btn btn-outline-secondary flex-grow-1">
+                        <i class="mdi mdi-refresh me-1"></i> Reset
+                    </button>
+                </div>
             </div>
         </div>
-
-        <div id="statusFilterSection" class="row mb-3" style="display:none;">
-            <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalBulkOperation.SelectStatus</label>
-                <select class="form-control select2" id="statusInput">
-                    <option value="">--- @GlobalBulkOperation.AllStatuses ---</option>
-                    <option value="Approved">@GlobalBulkOperation.Approved</option>
-                    <option value="Pending">@GlobalBulkOperation.Pending</option>
-                    <option value="Reviewed">@GlobalBulkOperation.Reviewed</option>
-                    <option value="Rejected">@GlobalBulkOperation.Rejected</option>
-                </select>
-            </div>
-        </div>
-
-        <div id="dateRangeSection" class="row mb-3" style="display:none;">
-            <div class="col-md-6">
-                <input type="date" id="createdFrom" class="form-control" placeholder="@GlobalBulkOperation.CreatedFrom" />
-            </div>
-            <div class="col-md-6">
-                <input type="date" id="createdTo" class="form-control" placeholder="@GlobalBulkOperation.CreatedTo" />
-            </div>
-        </div>
-
     </div>
-    <div class="row mt-2">
-        <div class="col-md-12 d-flex">
-            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
-            <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
-            @*<button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-export"></i> Export</button>*@
+    
+ </div>
+
+
+    <!-- Data Table Section -->
+<div class="card shadow-sm">
+    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+        <h6 class="mb-0"><i class="mdi mdi-table text-primary me-1"></i>Filtered Results</h6>
+        <button class="btn btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </div>
+    <div id="collapseTips" class="collapse show">
+        <div class="card-body">
+            @Html.Partial("_model")
+            <div id="userTableView">
+                @Html.Partial("_SimulationDataTable")
+            </div>
         </div>
     </div>
+     
+    </div>
 
-</div>
 
-    @Html.Partial("_model")
+
+    <!--<div class="card shadow p-3 mb-4">
+        <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalBulkOperation.AdvancedUserFilters</h5>
+        <div class="card p-3 mb-3 bg-light">
+            <div class="row mb-3">
+                <div class="col-md-4 form-check">
+                    <input type="checkbox" class="form-check-input" id="byBranch" />
+                    <label class="form-check-label fw-bold" for="byBranch">@GlobalBulkOperation.FilterByBranchName</label>
+                </div>
+                <div class="col-md-4 form-check">
+                    <input type="checkbox" class="form-check-input" id="byStatus" />
+                    <label class="form-check-label fw-bold" for="byStatus">@GlobalBulkOperation.FilterByStatus</label>
+                </div>
+                <div class="col-md-4 form-check">
+                    <input type="checkbox" class="form-check-input" id="byDate" />
+                    <label class="form-check-label fw-bold" for="byDate">@GlobalBulkOperation.FilterByBetweenDates</label>
+                </div>
+            </div>
+
+            <div id="branchFilterSection" class="row mb-3" style="display:none;">
+                <div class="col-md-12">
+                    <label class="form-label fw-bold">@GlobalBulkOperation.SelectBranch</label>
+                    @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "---" + @GlobalBulkOperation.SelectBranch + "---", new { @class = "form-control select2", id = "branchInput" })
+                </div>
+            </div>
+
+            <div id="statusFilterSection" class="row mb-3" style="display:none;">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">@GlobalBulkOperation.SelectStatus</label>
+                    <select class="form-control select2" id="statusInput">
+                        <option value="">--- @GlobalBulkOperation.AllStatuses ---</option>
+                        <option value="Approved">@GlobalBulkOperation.Approved</option>
+                        <option value="Pending">@GlobalBulkOperation.Pending</option>
+                        <option value="Reviewed">@GlobalBulkOperation.Reviewed</option>
+                        <option value="Rejected">@GlobalBulkOperation.Rejected</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="dateRangeSection" class="row mb-3" style="display:none;">
+                <div class="col-md-6">
+                    <input type="date" id="createdFrom" class="form-control" placeholder="@GlobalBulkOperation.CreatedFrom" />
+                </div>
+                <div class="col-md-6">
+                    <input type="date" id="createdTo" class="form-control" placeholder="@GlobalBulkOperation.CreatedTo" />
+                </div>
+            </div>
+
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
+                <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>-->
+    @*<button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-export"></i> Export</button>*@
+    <!--</div>
+    </div>
+    @Html.Partial("_model")-->
     <!-- DataTable Partial -->
-    <div id="userTableView">
-        @Html.Partial("_SimulationDataTable")
-    </div>
+    <!--<div id="userTableView">
+            @Html.Partial("_SimulationDataTable")
+        </div>
+
+    </div>-->
 
 
-  @section Scripts {
-      <script>
 
-          $(document).ready(function () {
-              initFilterToggles();
-              loadBulkOperationDataTable();
-              bindFilterActions();
-          });
+    @section Scripts {
+        <script>
 
-          function resetFilterForm() {
-              $(' #createdFrom, #createdTo').val('');
-              $('#isActive, #isBlocked, #isVerified').val('');
-              $('#branchInput').val('').trigger('change');
-              $('#byBranch, #byUser, #byDate').prop('checked', false);
-              $('#branchFilterSection, #statusFilterSection, #dateRangeSection').hide();
-          }
+            $(document).ready(function () {
+                initFilterToggles();
+                loadBulkOperationDataTable();
+                bindFilterActions();
+            });
 
-          // ✅ Filter toggle control
-          function initFilterToggles() {
-              console.log('Does #byBranch exist?', $('#byBranch').length); // Should log 1
-              $('#byBranch').change(function () {
-                  $('#branchFilterSection').slideToggle(this.checked);
-                  if (!this.checked) $('#branchInput').val('').trigger('change');
-              });
+            function resetFilterForm() {
+                $(' #createdFrom, #createdTo').val('');
+                $('#isActive, #isBlocked, #isVerified').val('');
+                $('#branchInput').val('').trigger('change');
+                $('#byBranch, #byUser, #byDate').prop('checked', false);
+                $('#branchFilterSection, #statusFilterSection, #dateRangeSection').hide();
+            }
 
-              $('#byStatus').change(function () {
-                  $('#statusFilterSection').slideToggle(this.checked);
-                  if (!this.checked) $('#statusInput').val('').trigger('change');
-              });
+            // ✅ Filter toggle control
+            function initFilterToggles() {
+                console.log('Does #byBranch exist?', $('#byBranch').length); // Should log 1
+                $('#byBranch').change(function () {
+                    $('#branchFilterSection').slideToggle(this.checked);
+                    if (!this.checked) $('#branchInput').val('').trigger('change');
+                });
 
-
-              $('#byDate').change(function () {
-                  $('#dateRangeSection').slideToggle(this.checked);
-                  if (!this.checked) $('#createdFrom, #createdTo').val('');
-              });
-          }
-
-          // 🎯 Bind button actions
-          function bindFilterActions() {
-              const table = $('#myDataTable').DataTable();
-
-              $('#applyFilterBtn').click(() => {
-                  //if (!isDateRangeValid()) return;
-                  table.ajax.reload();
-              });
-
-              $('#resetFilterBtn').click(() => {
-                  resetFilterForm();
-                  table.ajax.reload();
-              });
-
-              $('#exportBtn').click(() => {
-                  if (!isDateRangeValid()) return;
-                  const query = $.param(collectFilterData());
-                  window.location.href = `/UserManagement/DownloadUsers?${query}`;
-              });
-          }
-
-          function getSearchParameters(d) {
-              d.searchCriteria = $('#searchCriteria').val();
-              d.dateFrom = $('#dateFrom').val();
-              d.dateTo = $('#dateTo').val();
-              d.status = $('#status').val();
-              d.branchid = $('#branchInput').val();
-          }
-
-          function loadBulkOperationDataTable() {
-              $('#myDataTable').DataTable({
-                  destroy: true,
-                  serverSide: true,
-                  order: [[0, 'desc']],
-                  ajax: {
-                      url: '/BulkOperation/LoadBulkOperationData',
-                      type: 'POST',
-                      data: getSearchParameters,
-                      dataSrc: function (json) {
-                          return json.data;
-                      }
-                  },
-                  columns: [
-                      {
-                          data: 'CreatedDate',
-                          title: 'Date',
-                          render: (data) => moment(data).format('DD/MM/YYYY HH:mm:ss')
-                      },
-                      {
-                          data: 'BranchName',
-                          title: 'Branch Name',
-                          render: (data) => data || 'N/A'
-                      },
-                      {
-                          data: 'SimulationType',
-                          title: 'Simulation Type',
-                          render: (data) => data || 'N/A'
-                      },
-                      {
-                          data: 'TotalMembers',
-                          title: 'Total Accounts',
-                          render: (data) => data
-                      },
-                      {
-                          data: 'TotalVolume',
-                          title: 'Total Volume',
-                          render: (data) => formatCurrency(data)
-                      },
-                      {
-                          data: 'CreatedBy',
-                          title: 'Created By',
-                          render: (data) => data || 'N/A'
-                      },
-                      {
-                          data: 'ApprovalStatus',
-                          title: 'Approval Status',
-                          render: (data) => {
-                              let badgeClass = '';
-                              switch (data) {
-                                  case 'Pending':
-                                      badgeClass = 'bg-warning text-dark';
-                                      break;
-                                  case 'Reviewed':
-                                      badgeClass = 'bg-info text-white';
-                                      break;
-                                  case 'Approved':
-                                      badgeClass = 'bg-success text-white';
-                                      break;
-                                  default:
-                                      badgeClass = 'bg-secondary text-white';
-                              }
-                              return `<span class="badge ${badgeClass}">${data}</span>`;
-                          }
-                      },
-                      {
-                          data: 'ApprovalBy',
-                          title: 'Approval By',
-                          render: (data) => data || 'N/A'
-                      },
-                      {
-                          data: 'ApprovalValidationDate',
-                          title: 'Approval Date',
-                          render: (data) => {
-                              const csharpMinDate = new Date('0001-01-01T00:00:00');
-                              if (!data || new Date(data).getTime() <= csharpMinDate.getTime()) {
-                                  return 'N/A';
-                              }
-                              return moment(data).format('DD/MM/YYYY HH:mm:ss');
-                          }
-                      },
-                      {
-                          data: 'Id',
-                          orderable: false,
-                          searchable: false,
-                          render: function (id) {
-                              return `
-                        <div class="text-center">
-                            <a href="/BulkOperation/Details?KEY=${id}" class="btn btn-sm btn-outline-primary" title="Detail Simulation">
-                            <i class="fas fa-user-cog me-1"></i> View </a>
-                        </div>`;
-                          }
-                      }
-                  ],
-                  language: {
-                      emptyTable: "No Bulk Oprations available for the selected criteria."
-                  },
-                  dom: 'rtip'
-              });
-          }
+                $('#byStatus').change(function () {
+                    $('#statusFilterSection').slideToggle(this.checked);
+                    if (!this.checked) $('#statusInput').val('').trigger('change');
+                });
 
 
-          // Function to format currency in NGN
-          function formatCurrency(amount) {
-              return new Intl.NumberFormat('en-NG', {
-                  minimumFractionDigits: 1,
-                  maximumFractionDigits: 1
-              }).format(amount);
-          }
-      </script>
+                $('#byDate').change(function () {
+                    $('#dateRangeSection').slideToggle(this.checked);
+                    if (!this.checked) $('#createdFrom, #createdTo').val('');
+                });
+            }
+
+            // 🎯 Bind button actions
+            function bindFilterActions() {
+                const table = $('#myDataTable').DataTable();
+
+                $('#applyFilterBtn').click(() => {
+                    //if (!isDateRangeValid()) return;
+                    table.ajax.reload();
+                });
+
+                $('#resetFilterBtn').click(() => {
+                    resetFilterForm();
+                    table.ajax.reload();
+                });
+
+                $('#exportBtn').click(() => {
+                    if (!isDateRangeValid()) return;
+                    const query = $.param(collectFilterData());
+                    window.location.href = `/UserManagement/DownloadUsers?${query}`;
+                });
+            }
+
+            function getSearchParameters(d) {
+                d.searchCriteria = $('#searchCriteria').val();
+                d.dateFrom = $('#dateFrom').val();
+                d.dateTo = $('#dateTo').val();
+                d.status = $('#status').val();
+                d.branchid = $('#branchInput').val();
+            }
+
+            function loadBulkOperationDataTable() {
+                $('#myDataTable').DataTable({
+                    "destroy": true,
+                    "serverSide": false,
+                     //"processing": true, // Add processing indicator
+                    "info": true,
+                    "stateSave": true,
+                    "lengthMenu": [[10, 20, 50, 100], [10, 20, 50, 100]],
+                    "searching": true,
+                    "paging": true, // Ensure pagination is enabled
+                    order: [[0, 'desc']],
+                    ajax: {
+                        url: '/BulkOperation/LoadBulkOperationData',
+                        type: 'POST',
+                        data: getSearchParameters,
+                        dataSrc: function (json) {
+                            return json.data;
+                        }
+                    },
+                    columns: [
+                        {
+                            data: 'CreatedDate',
+                            title: 'Date',
+                            render: (data) => moment(data).format('DD/MM/YYYY HH:mm:ss')
+                        },
+                        {
+                            data: 'BranchName',
+                            title: 'Branch Name',
+                            render: (data) => data || 'N/A'
+                        },
+                        {
+                            data: 'SimulationType',
+                            title: 'Simulation Type',
+                            render: (data) => data || 'N/A'
+                        },
+                        {
+                            data: 'TotalMembers',
+                            title: 'Total Accounts',
+                            render: (data) => data
+                        },
+                        {
+                            data: 'TotalVolume',
+                            title: 'Total Volume',
+                            render: (data) => formatCurrency(data)
+                        },
+                        {
+                            data: 'CreatedBy',
+                            title: 'Created By',
+                            render: (data) => data || 'N/A'
+                        },
+                        {
+                            data: 'ApprovalStatus',
+                            title: 'Approval Status',
+                            render: (data) => {
+                                let badgeClass = '';
+                                switch (data) {
+                                    case 'Pending':
+                                        badgeClass = 'bg-warning text-dark';
+                                        break;
+                                    case 'Reviewed':
+                                        badgeClass = 'bg-info text-white';
+                                        break;
+                                    case 'Approved':
+                                        badgeClass = 'bg-success text-white';
+                                        break;
+                                    default:
+                                        badgeClass = 'bg-secondary text-white';
+                                }
+                                return `<span class="badge ${badgeClass}">${data}</span>`;
+                            }
+                        },
+                        {
+                            data: 'ApprovalBy',
+                            title: 'Approval By',
+                            render: (data) => data || 'N/A'
+                        },
+                        {
+                            data: 'ApprovalValidationDate',
+                            title: 'Approval Date',
+                            render: (data) => {
+                                const csharpMinDate = new Date('0001-01-01T00:00:00');
+                                if (!data || new Date(data).getTime() <= csharpMinDate.getTime()) {
+                                    return 'N/A';
+                                }
+                                return moment(data).format('DD/MM/YYYY HH:mm:ss');
+                            }
+                        },
+                        {
+                            data: 'Id',
+                            orderable: false,
+                            searchable: false,
+                            render: function (id) {
+                                return `
+                                        <div class="text-center">
+                                            <a href="/BulkOperation/Details?KEY=${id}" class="btn btn-sm btn-outline-primary" title="Detail Simulation">
+                                            <i class="fas fa-user-cog me-1"></i> View </a>
+                                        </div>`;
+                            }
+                        }
+                    ],
+                    language: {
+                        emptyTable: "No Bulk Oprations available for the selected criteria.",
+                        //"processing": "Processing...",  Add processing text
+                        "search": "Search :" // Customize search label
+                    }
+                });
+            }
+
+
+            // Function to format currency in NGN
+            function formatCurrency(amount) {
+                return new Intl.NumberFormat('en-NG', {
+                    minimumFractionDigits: 1,
+                    maximumFractionDigits: 1
+                }).format(amount);
+            }
+        </script>
         @*<script src="~/Scripts/Js/Crud/BulkOperation/BulkSimulationQuery.js"></script>*@
     }
 

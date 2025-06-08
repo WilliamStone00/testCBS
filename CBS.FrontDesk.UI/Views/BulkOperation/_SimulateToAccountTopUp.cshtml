@@ -5,15 +5,15 @@
     <div class="row">
         <div class="col-md-12">
             <div class="mb-3">
-                @Html.LabelFor(m => m.DestinationAccountType, @GlobalBulkOperation.DestinationAccountType, new { @class = "form-label" })
+                @Html.LabelFor(m => m.DestinationAccountType, @GlobalBulkOperation.SimulationTopupDestinationAccountType, new { @class = "form-label" })
                 @Html.DropDownListFor(m => m.DestinationAccountType,
                     new SelectList(Model.SavingProducts, "Name", "Name"),
-                    @GlobalBulkOperation.SelectAccountType,
-                    new { @class = "form-select" })
+                    @GlobalBulkOperation.SimulationTopupDestinationAccountType,
+                    new { @class = "form-select select2" })
             </div>
             <div class="col-md-12">
                 <div class="mb-3">
-                    @Html.LabelFor(m => m.TargetAmount, @GlobalBulkOperation.TargetAccountBalance, new { @class = "form-label" })
+                    @Html.LabelFor(m => m.TargetAmount, @GlobalBulkOperation.SimulationTopupAmount, new { @class = "form-label" })
                     @Html.TextBoxFor(m => m.TargetAmount, new { @class = "form-control", type = "number", step = "0.01" })
                 </div>
             </div>

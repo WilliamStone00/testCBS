@@ -34,10 +34,10 @@
                             <td>@item.IPRequestLimit</td>
                             <td>@item.IPTimeWindowSeconds</td>
                             <td>
-                                @if (item.WhiteListedCountriesCode != null && item.WhiteListedCountriesCode.Any())
+                                @if (item.WhitelistedCountriesCode != null && item.WhitelistedCountriesCode.Any())
                                 {
                                     <ul class="mb-0 ps-3 small">
-                                        @foreach (var header in item.WhiteListedCountriesCode)
+                                        @foreach (var header in item.WhitelistedCountriesCode)
                                         {
                                             <li>@header</li>
                                         }

@@ -1,0 +1,408 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Calculated_on_the_loans_outstanding_balance" xml:space="preserve">
+    <value> Calculated on the loan's outstanding balance</value>
+  </data>
+  <data name="ABValidation" xml:space="preserve">
+    <value>AB.Validation</value>
+  </data>
+  <data name="AccountNumber" xml:space="preserve">
+    <value>Account number</value>
+  </data>
+  <data name="Accounts" xml:space="preserve">
+    <value>Accounts</value>
+  </data>
+  <data name="Administrative_Charges" xml:space="preserve">
+    <value>Administrative Charges</value>
+  </data>
+  <data name="AI" xml:space="preserve">
+    <value>A.I</value>
+  </data>
+  <data name="amounts_to_repay_for_principal_interest_VAT_and_penalties" xml:space="preserve">
+    <value>amounts to repay for principal, interest, VAT, and penalties</value>
+  </data>
+  <data name="AmountToDebit" xml:space="preserve">
+    <value>Amount to debit</value>
+  </data>
+  <data name="Applicable_for_overdue_installments" xml:space="preserve">
+    <value>Applicable for overdue installments</value>
+  </data>
+  <data name="Applied_to_overdue_repayments" xml:space="preserve">
+    <value>Applied to overdue repayments</value>
+  </data>
+  <data name="Automatically_calculated_from_interest" xml:space="preserve">
+    <value>Automatically calculated from interest</value>
+  </data>
+  <data name="A_mismatch_between_debited_accounts_and_loan_repayment_details_will_prevent_submission" xml:space="preserve">
+    <value>A mismatch between debited accounts and loan repayment details will prevent submission</value>
+  </data>
+  <data name="BackOfficeLoanRepaymentManagement" xml:space="preserve">
+    <value>Back Office Loan Repayment Management</value>
+  </data>
+  <data name="Balance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="BalanceRemaining" xml:space="preserve">
+    <value>Balance remaining</value>
+  </data>
+  <data name="Based_on_the_outstanding_balance" xml:space="preserve">
+    <value>Based on the outstanding balance</value>
+  </data>
+  <data name="BranchCode" xml:space="preserve">
+    <value>Branch code</value>
+  </data>
+  <data name="BranchName" xml:space="preserve">
+    <value>Branch name</value>
+  </data>
+  <data name="by_selecting_the_appropriate_ledger_account_and_entering_loan_repayment_details" xml:space="preserve">
+    <value>by selecting the appropriate ledger account and entering loan repayment details</value>
+  </data>
+  <data name="cannot_be_refunded" xml:space="preserve">
+    <value>cannot be refunded</value>
+  </data>
+  <data name="cannot_be_reversed" xml:space="preserve">
+    <value>cannot be reversed</value>
+  </data>
+  <data name="Capital" xml:space="preserve">
+    <value>Capital</value>
+  </data>
+  <data name="capital_repayment_interest_VAT_and_penalty" xml:space="preserve">
+    <value>capital repayment, interest, VAT, and penalty</value>
+  </data>
+  <data name="Check_confirmation_to_ensure_the_repayment_was_successful" xml:space="preserve">
+    <value>Check confirmation to ensure the repayment was successful</value>
+  </data>
+  <data name="Click" xml:space="preserve">
+    <value>Click</value>
+  </data>
+  <data name="Conf" xml:space="preserve">
+    <value>Conf</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="ConfirmRepayment" xml:space="preserve">
+    <value>Confirm repayment</value>
+  </data>
+  <data name="Confirm_Transaction" xml:space="preserve">
+    <value>Confirm Transaction</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Derived_from_the_interest_portion" xml:space="preserve">
+    <value>Derived from the interest portion</value>
+  </data>
+  <data name="EfficientlyBySelectingTheAccountToDebitAndEntering" xml:space="preserve">
+    <value>efficiently by selecting the account(s) to debit and entering the correct loan payment details</value>
+  </data>
+  <data name="EnsureThe" xml:space="preserve">
+    <value>Ensure the</value>
+  </data>
+  <data name="Ensure_the" xml:space="preserve">
+    <value>Ensure the</value>
+  </data>
+  <data name="EnterMemberReferenceNumber" xml:space="preserve">
+    <value>Enter member reference number</value>
+  </data>
+  <data name="EnterReasonForTransaction" xml:space="preserve">
+    <value>Enter reason for transaction...</value>
+  </data>
+  <data name="EnterThe10DigitMemberReferenceNumber" xml:space="preserve">
+    <value>Enter the 10-digit Member Reference Number. This includes a 3-digit Branch Code followed by a 7-digit Member Code</value>
+  </data>
+  <data name="Enter_the" xml:space="preserve">
+    <value>Enter the</value>
+  </data>
+  <data name="except_in_cases_of" xml:space="preserve">
+    <value>except in cases of</value>
+  </data>
+  <data name="Excess_Debit" xml:space="preserve">
+    <value>Excess Debit</value>
+  </data>
+  <data name="First" xml:space="preserve">
+    <value>First</value>
+  </data>
+  <data name="HELPTIPS" xml:space="preserve">
+    <value>HELP TIPS</value>
+  </data>
+  <data name="IfAllValuesMatchTheRepaymentIsProcessedSuccessfully" xml:space="preserve">
+    <value>If all values match, the repayment is processed successfully</value>
+  </data>
+  <data name="If_a_duplicate_transaction_occurs" xml:space="preserve">
+    <value>If a duplicate transaction occurs</value>
+  </data>
+  <data name="Inconsistency_between_selected_ledge_amount" xml:space="preserve">
+    <value>Inconsistency between selected ledger amount and repayment detail totals will block submission</value>
+  </data>
+  <data name="Interest" xml:space="preserve">
+    <value>Interest</value>
+  </data>
+  <data name="inTheLoanTable" xml:space="preserve">
+    <value>in the loan table</value>
+  </data>
+  <data name="LAmount" xml:space="preserve">
+    <value>L.Amount</value>
+  </data>
+  <data name="Ledger_Bank_Standing_Order_Loan_Repayment_Management" xml:space="preserve">
+    <value>Ledger / Bank Standing Order Loan Repayment Management</value>
+  </data>
+  <data name="ledger_debit_equals_the_total_loan_repayment_amount" xml:space="preserve">
+    <value>ledger debit total equals the total loan repayment amount</value>
+  </data>
+  <data name="ledger_or_bank_standing_order_account" xml:space="preserve">
+    <value>ledger or bank standing order account</value>
+  </data>
+  <data name="ledger_or_standing_order_balances" xml:space="preserve">
+    <value>ledger or standing order balances</value>
+  </data>
+  <data name="Ledger_Standing_Order_Repayment_Panel" xml:space="preserve">
+    <value>Ledger / Standing Order Repayment Panel</value>
+  </data>
+  <data name="LoanRepaymentProcess" xml:space="preserve">
+    <value>Loan Repayment Process</value>
+  </data>
+  <data name="Loan_repayments" xml:space="preserve">
+    <value>Loan repayments</value>
+  </data>
+  <data name="Loan_Repayment_Fees_Deductions" xml:space="preserve">
+    <value>Loan Repayment Fees &amp; Deductions</value>
+  </data>
+  <data name="Loan_Repayment_Management_Back_Office" xml:space="preserve">
+    <value>Loan Repayment Management Back-Office</value>
+  </data>
+  <data name="LRef" xml:space="preserve">
+    <value>L. Ref</value>
+  </data>
+  <data name="May_apply_based_on_loan_policy" xml:space="preserve">
+    <value>May apply based on loan policy</value>
+  </data>
+  <data name="May_apply_depending_on_loan_agreement" xml:space="preserve">
+    <value>May apply depending on loan agreement</value>
+  </data>
+  <data name="membersBalances" xml:space="preserve">
+    <value>members' balances</value>
+  </data>
+  <data name="MembersName" xml:space="preserve">
+    <value>Member's name</value>
+  </data>
+  <data name="MEMBERS_ACCOUNT_BALANCES" xml:space="preserve">
+    <value>MEMBER'S ACCOUNT BALANCES</value>
+  </data>
+  <data name="MEMBERS_OPENED_LOANS" xml:space="preserve">
+    <value>MEMBER'S OPENED LOANS</value>
+  </data>
+  <data name="NextEnterThe" xml:space="preserve">
+    <value>Next, enter the</value>
+  </data>
+  <data name="OverallTotalRepayment" xml:space="preserve">
+    <value>Overall total repayment</value>
+  </data>
+  <data name="Overpayment" xml:space="preserve">
+    <value>Overpayment</value>
+  </data>
+  <data name="Penalty" xml:space="preserve">
+    <value>Penalty</value>
+  </data>
+  <data name="PerformSecureCashDepositsIntoMemberAccounts" xml:space="preserve">
+    <value>Perform secure cash deposits into member accounts. Follow the guidelines outlined in the Help Tips section above</value>
+  </data>
+  <data name="Processing_fees" xml:space="preserve">
+    <value>Processing fees</value>
+  </data>
+  <data name="ProcessLoanRepaymentsFrom" xml:space="preserve">
+    <value>Process loan repayments from</value>
+  </data>
+  <data name="Process_loan_repayments_from" xml:space="preserve">
+    <value>Process loan repayments from</value>
+  </data>
+  <data name="ProductID" xml:space="preserve">
+    <value>Product id</value>
+  </data>
+  <data name="Refund_Policy_for_Loan_Repayments" xml:space="preserve">
+    <value>Refund Policy for Loan Repayments</value>
+  </data>
+  <data name="Refund_request_must_be_submitted" xml:space="preserve">
+    <value>Refund request must be submitted</value>
+  </data>
+  <data name="Refund_request_to_be_validated_by_management" xml:space="preserve">
+    <value>Refund request to be validated by management</value>
+  </data>
+  <data name="Repayments_made_from_ledgers" xml:space="preserve">
+    <value>Repayments made from ledgers</value>
+  </data>
+  <data name="ReprintReceipt" xml:space="preserve">
+    <value>Reprint receipt</value>
+  </data>
+  <data name="selectAndEnterAmountsToDebitFromMembersAccounts" xml:space="preserve">
+    <value>select and enter amounts to debit from members' accounts</value>
+  </data>
+  <data name="SelectGL" xml:space="preserve">
+    <value>Select GL</value>
+  </data>
+  <data name="SelectSourceAccount" xml:space="preserve">
+    <value>Select source account</value>
+  </data>
+  <data name="Select_the" xml:space="preserve">
+    <value>Select the</value>
+  </data>
+  <data name="SourceAccounts" xml:space="preserve">
+    <value>Source accounts</value>
+  </data>
+  <data name="System_Error" xml:space="preserve">
+    <value>System Error</value>
+  </data>
+  <data name="System_Errors" xml:space="preserve">
+    <value>System Errors</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="TotalCalculatedVATIfApplicable" xml:space="preserve">
+    <value>Total calculated VAT (If applicable)</value>
+  </data>
+  <data name="TotalDebited" xml:space="preserve">
+    <value>Total debited</value>
+  </data>
+  <data name="TotalRepayment" xml:space="preserve">
+    <value>Total repayment</value>
+  </data>
+  <data name="total_amount_debited_matches_the_loan_repayment_sum" xml:space="preserve">
+    <value>total amount debited matches the loan repayment sum</value>
+  </data>
+  <data name="to_debit" xml:space="preserve">
+    <value>to debit</value>
+  </data>
+  <data name="to_process" xml:space="preserve">
+    <value>to process</value>
+  </data>
+  <data name="to_validate_the_payment" xml:space="preserve">
+    <value>to validate the payment</value>
+  </data>
+  <data name="TransactionNoteReason" xml:space="preserve">
+    <value>Transaction note (Reason)</value>
+  </data>
+  <data name="VAT" xml:space="preserve">
+    <value>VAT</value>
+  </data>
+  <data name="Verified_duplicate_transactions_may_be_corrected" xml:space="preserve">
+    <value>Verified duplicate transactions may be corrected</value>
+  </data>
+</root>

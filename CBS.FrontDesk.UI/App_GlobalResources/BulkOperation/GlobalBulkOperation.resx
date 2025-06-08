@@ -354,8 +354,8 @@
   <data name="Secure" xml:space="preserve">
     <value>Secure</value>
   </data>
-  <data name="SelectAccountType" xml:space="preserve">
-    <value>Select account type</value>
+  <data name="SimulationContributionSourceAccountType" xml:space="preserve">
+    <value>Select Contribution Account to Be Debited</value>
   </data>
   <data name="SelectBranch" xml:space="preserve">
     <value>Select branch</value>
@@ -391,7 +391,7 @@
     <value>Simulation details</value>
   </data>
   <data name="SimulationType" xml:space="preserve">
-    <value>SimulationType</value>
+    <value>Simulation Name</value>
   </data>
   <data name="SourceAccount" xml:space="preserve">
     <value>Source account</value>
@@ -408,8 +408,8 @@
   <data name="SourceType" xml:space="preserve">
     <value>Source type</value>
   </data>
-  <data name="StartAccountRange" xml:space="preserve">
-    <value>Start account range</value>
+  <data name="SimulationContributionStartMemberAccount" xml:space="preserve">
+    <value>Start Contribution Member Reference</value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>Status</value>
@@ -474,13 +474,43 @@
   <data name="Date" xml:space="preserve">
     <value>Date</value>
   </data>
-  <data name="DestinationAccountType" xml:space="preserve">
-    <value>Destination account type</value>
-  </data>
-  <data name="TargetAccountBalance" xml:space="preserve">
-    <value>Target account balance</value>
+  <data name="SimulationContributionDestinationAccountType" xml:space="preserve">
+    <value>Contribution account to be credited</value>
   </data>
   <data name="SelectAccount" xml:space="preserve">
     <value>Select account</value>
+  </data>
+  <data name="SimulationTopupSourceAccountType" xml:space="preserve">
+    <value>Select Topup Account To Be Debited</value>
+  </data>
+  <data name="SimulationTopupStartMemberAccount" xml:space="preserve">
+    <value>Start Topup Member Reference</value>
+  </data>
+  <data name="SimulationContributionMinimumAccountBalance" xml:space="preserve">
+    <value>Contribution Minimum Account Balance Eligibilty</value>
+  </data>
+  <data name="SimulationTopupMinimumAccountBalance" xml:space="preserve">
+    <value>Topup Minimum Account Balance</value>
+  </data>
+  <data name="SimulationTopupEndMemberAccount" xml:space="preserve">
+    <value>End Topup Member Reference</value>
+  </data>
+  <data name="SimulationContributionEndMemberAccount" xml:space="preserve">
+    <value>End Contribution Member Reference</value>
+  </data>
+  <data name="SimulationContributionMaximumAccountBalance" xml:space="preserve">
+    <value>Contribution Maximum Account Balance Eligibilty</value>
+  </data>
+  <data name="SimulationTopupMaximumAccountBalance" xml:space="preserve">
+    <value>Topup Maximum Account Balance</value>
+  </data>
+  <data name="SimulationTopupDestinationAccountType" xml:space="preserve">
+    <value>account to Top up</value>
+  </data>
+  <data name="SimulationTopupAmount" xml:space="preserve">
+    <value>Amount To Topup To</value>
+  </data>
+  <data name="SimulationContributionAmount" xml:space="preserve">
+    <value>Contribution Amount </value>
   </data>
 </root>

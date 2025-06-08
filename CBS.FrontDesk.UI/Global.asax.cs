@@ -9,6 +9,7 @@ using CBS.FrontDesk.UI.Controllers.ErrorHandler;
 using CBS.FrontDesk.UI.Filter;
 using CBS.FrontDesk.UI.Filters;
 using CBS.FrontDesk.UI.Utility.Middlware_logger;
+using CBS.FrontDesk.UI.WAF.Middleware.Core;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
@@ -80,9 +81,9 @@ namespace CBS.FrontDesk.UI
             MvcHandler.DisableMvcResponseHeader = true;
             //GlobalFilters.Filters.Add(new UserAuditFilter()); // Register UserAuditFilter
             ValueProviderFactories.Factories.Add(new JsonValueProviderFactory());
-            ConnectionMonitoringService connectionService = new ConnectionMonitoringService();
-            var configService = new RateLimitConfigService(); // or resolve from container
-            RateLimitConfigHolder.LoadAsync(configService).GetAwaiter().GetResult(); // One-time safe call
+            //ConnectionMonitoringService connectionService = new ConnectionMonitoringService();
+            //var configService = new RateLimitConfigService(); // or resolve from container
+            //RateLimitConfigHolder.LoadAsync(configService).GetAwaiter().GetResult(); // One-time safe call
             // Start IP Unblock Service
             //new UnblockIpService();
         }
@@ -454,6 +455,19 @@ namespace CBS.FrontDesk.UI
             //        }
             //    }
             //}
+        }
+        public class CorrelationIdActionFilter : ActionFilterAttribute
+        {
+            public override void OnActionExecuting(ActionExecutingContext filterContext)
+            {
+                var httpContext = filterContext.HttpContext;
+                var correlationId = httpContext.Items["CorrelationId"]?.ToString() ??
+                                    httpContext.Request.Headers[CorrelationConstants.HeaderKey] ??
+                                    Guid.NewGuid().ToString();
+
+                httpContext.Items["CorrelationId"] = correlationId;
+                httpContext.Response.Headers[CorrelationConstants.HeaderKey] = correlationId;
+            }
         }
 
         protected void Application_PostAuthenticateRequest(object sender, EventArgs e)

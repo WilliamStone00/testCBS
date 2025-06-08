@@ -1,6 +1,8 @@
 ﻿@{@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
+
 ViewBag.Title = "Members Account F8";
 }
+@using Resources
 
 
 <div class="row">
@@ -16,7 +18,7 @@ ViewBag.Title = "Members Account F8";
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
                         <i class="mdi mdi-file-document me-2"></i>
-                        Members Ordinary Account F8
+                        @GlobalMemberOrdinaryAccountsF8.MembersOrdinaryAccountF8
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"
@@ -33,7 +35,7 @@ ViewBag.Title = "Members Account F8";
                                             </a>
                                         </div>*@
                                         <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                            <a href="/MemberOrdinaryAccountsF8/DownloadFileF8" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Export to excel">
+                                            <a href="/MemberOrdinaryAccountsF8/DownloadFileF8" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalMemberOrdinaryAccountsF8.ExportToExcel">
                                                 <span class="tf-icons mdi mdi-download mdi-18px"></span>
                                             </a>
                                         </div>
@@ -59,20 +61,20 @@ ViewBag.Title = "Members Account F8";
 
                                 <div class="row g-4 mb-3">
                                     <div class="col-md-4">
-                                        <label for="branchInput">Branch</label>
+                                        <label for="branchInput">@GlobalMemberOrdinaryAccountsF8.Branch</label>
                                         @Html.DropDownListFor(
                                             m => m.InitiateLoanDownloadCommand.BranchId,
                                             new SelectList(ViewBag.Branches, "id", "name"),
-                                            "---Select Branch---",
+                                            "---"+ @GlobalMemberOrdinaryAccountsF8.SelectBranch+"---",
                                             new { @class = "form-control shadow-box select2", @id = "branchInput", @onchange = "loadByBbranch(this.value)" }
                                         )
                                     </div>
                                     <div class="col-md-8">
                                         <div class="row g-4">
                                             <div class="col-md-12">
-                                                <label for="branchInput">Search Criterial</label>
+                                                <label for="branchInput">@GlobalMemberOrdinaryAccountsF8.SearchCriterial</label>
                                                 <div class="input-group">
-                                                    <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="Enter search criteria...">
+                                                    <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="@GlobalMemberOrdinaryAccountsF8.EnterSearchCriteria...">
                                                     <button class="btn btn-primary" onclick="manualSearch()">Search</button>
                                                 </div>
                                             </div>
