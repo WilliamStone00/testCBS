@@ -761,8 +761,27 @@
     <Compile Include="Controllers\UserManagement\MFAVerificationController.cs" />
     <Compile Include="Controllers\UserManagement\UserManagementController.cs" />
     <Compile Include="Filter\MaliciousContentScannerService.cs" />
+    <Compile Include="WAF\Middleware\Correlation\CorrelationIdMiddleware.cs" />
+    <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureFilter.cs" />
+    <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureMiddleware.cs" />
+    <Compile Include="WAF\Services\Validation\PatternValidator.cs" />
+    <Compile Include="WAF\Utilities\AllowedOriginHelper.cs" />
     <Compile Include="Utility\CidrUtility.cs" />
     <Compile Include="Utility\Middlware logger\MiddlewareFileLogger.cs" />
+    <Compile Include="WAF\Utilities\WAFBypassHelper.cs" />
+    <Compile Include="WAF\Middleware\Core\TSCWAFMiddleware.cs" />
+    <Compile Include="WAF\Middleware\Core\WAFContext.cs" />
+    <Compile Include="WAF\Middleware\Core\WAFRequestAnalyzer.cs" />
+    <Compile Include="WAF\Utilities\RequestCaptureHelper.cs" />
+    <Compile Include="WAF\Services\Cookie\UserContextResolver.cs" />
+    <Compile Include="WAF\Services\DDoS\BlockCacheService.cs" />
+    <Compile Include="WAF\Services\DDoS\RateLimitConfigHolder.cs" />
+    <Compile Include="WAF\Services\DDoS\RateLimiterService.cs" />
+    <Compile Include="WAF\Services\GeoIP\GeoIpResolver.cs" />
+    <Compile Include="WAF\Services\Validation\BodyScanner.cs" />
+    <Compile Include="WAF\Services\Validation\HeaderValidator.cs" />
+    <Compile Include="WAF\Services\Validation\PathValidator.cs" />
+    <Compile Include="WAF\Services\Validation\SuspiciousEventHandler.cs" />
     <Content Include="AppFiles\Images\Avatar\avatarimg.jpg" />
     <Content Include="AppFiles\Images\Bank-deposit-slip-excel-template.jpg" />
     <Content Include="AppFiles\Images\BG.jpeg" />
@@ -2173,7 +2192,7 @@
     <Compile Include="Filter\AuthorizeAttributeEASIMS.cs" />
     <Compile Include="Filter\InputSanitizerAttribute.cs" />
     <Compile Include="Filter\GlobalExceptionFilter.cs" />
-    <Compile Include="Filter\RateLimitingMiddleware.cs" />
+    <Compile Include="Filter\TSCWAFMiddleware.cs" />
     <Compile Include="Filter\RequestThrottlingFilter.cs" />
     <Compile Include="Filter\SessionLockCheckAttribute.cs" />
     <Compile Include="Filter\UserAuditFilter.cs" />
@@ -6747,6 +6766,7 @@
     <Content Include="Views\Shared\_LayoutChangePassword.cshtml" />
     <Content Include="Views\Shared\_PasswordPolicyPanel.cshtml" />
     <Content Include="Views\Shared\_MfaLayout.cshtml" />
+    <Content Include="Views\UserManagement\_UserOverridePolicy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

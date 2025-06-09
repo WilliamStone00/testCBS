@@ -28,7 +28,6 @@ namespace CBS.FrontDesk.Data.Entity.RequestManagement
         public string City { get; set; }
         public string Region { get; set; }
         public string Country { get; set; }
-
         public string BranchId { get; set; }
         public string BranchCode { get; set; }
         public string BranchName { get; set; }
@@ -37,6 +36,13 @@ namespace CBS.FrontDesk.Data.Entity.RequestManagement
         public DateTime Timestamp { get; set; }
         public bool IsAuthenticated { get; set; } // ✅ New
         public string FullUrl { get; set; }
+        public string RequestBody { get; set; }
+        public string ActionMethod { get; set; }
+        public bool IsAjaxRequest { get; set; }
+        public string CorrelationId { get; set; }
+        public string ResponseBody { get; set; }
+
+        public string RawHeaders { get; set; }
     }
     public class LogRateLimitTrackerCommand
     {
@@ -59,14 +65,18 @@ namespace CBS.FrontDesk.Data.Entity.RequestManagement
         public string City { get; set; }
         public string Region { get; set; }
         public string Country { get; set; }
-
         public string BranchCode { get; set; }
         public string PhoneNumber { get; set; }
         public string FullName { get; set; }
         public bool IsAuthenticated { get; set; } // ✅ New
         public string FullUrl { get; set; }
         public string ServiceName { get; set; }
-      
+        public string RequestBody { get; set; }
+        public string ActionMethod { get; set; }
+        public bool IsAjaxRequest { get; set; }
+        public string CorrelationId { get; set; }
+        public string ResponseBody { get; set; }
+        public string RawHeaders { get; set; }
     }
     public class GetRateLimitTrackerDataTableQuery
     {

@@ -49,36 +49,39 @@
 <!-- Tips Section -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> Security & Profile Tips</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUserTips" aria-expanded="false" aria-controls="collapseUserTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </h6>
     <div id="collapseUserTips" class="collapse">
         <div class="card-body">
-            <ul class="mb-0">
-                <li><i class="mdi mdi-account-edit-outline text-primary me-2"></i> <strong>Update profile:</strong> Keep your name, email, phone, and address up to date.</li>
-                <li><i class="mdi mdi-lock-reset text-primary me-2"></i> <strong>Manage passwords:</strong> Change or reset your password periodically.</li>
-                <li><i class="mdi mdi-shield-key-outline text-primary me-2"></i> <strong>Session security:</strong> Sessions expire after <strong>1 hour</strong>. Logout when inactive.</li>
-                <li><i class="mdi mdi-shield-refresh-outline text-success me-2"></i> <strong>Session recovery code:</strong> Regenerate your code after password changes or exposure.</li>
-                <li><i class="mdi mdi-account-key-outline text-info me-2"></i> <strong>MFA:</strong> Enable Multi-Factor Authentication to protect your login.</li>
-                <li><i class="mdi mdi-bank-outline text-info me-2"></i> <strong>Branch & role:</strong> Ensure roles and branch access match your responsibilities.</li>
-                <li><i class="mdi mdi-lock-alert-outline text-danger me-2"></i> <strong>Account lock:</strong> Blocked users can be re-enabled via admin.</li>
-                <li><i class="mdi mdi-clock-alert-outline text-warning me-2"></i> <strong>Inactivity suspension:</strong> Accounts inactive for over 1 month will be suspended.</li>
-                <li><i class="mdi mdi-calendar-alert text-warning me-2"></i> <strong>Password expiration:</strong> Change your password if older than 3 months.</li>
-                <li><i class="mdi mdi-email-outline text-primary me-2"></i> <strong>Verify contact:</strong> Ensure your email and phone are verified to receive security alerts.</li>
+            <ul class="mb-0 list-unstyled ps-2">
+                <li class="mb-2"><i class="mdi mdi-account-edit-outline text-primary me-2"></i><strong>Keep your profile updated:</strong> Ensure your name, email, phone, and address are accurate at all times.</li>
+                <li class="mb-2"><i class="mdi mdi-lock-reset text-primary me-2"></i><strong>Reset your password regularly:</strong> Change your password every 90 days or sooner if compromised.</li>
+                <li class="mb-2"><i class="mdi mdi-shield-key-outline text-info me-2"></i><strong>Enable MFA:</strong> Add Multi-Factor Authentication to protect your account against unauthorized access.</li>
+                <li class="mb-2"><i class="mdi mdi-shield-refresh-outline text-success me-2"></i><strong>Regenerate recovery codes:</strong> Do this after a password reset or suspected compromise.</li>
+                <li class="mb-2"><i class="mdi mdi-clock-outline text-warning me-2"></i><strong>Session timeout:</strong> Sessions automatically expire after <strong>1 hour</strong> of inactivity for security.</li>
+                <li class="mb-2"><i class="mdi mdi-lock-alert-outline text-danger me-2"></i><strong>Account lockout:</strong> Multiple failed logins will temporarily lock your account. Contact an admin for reactivation.</li>
+                <li class="mb-2"><i class="mdi mdi-calendar-alert text-warning me-2"></i><strong>Password expiration:</strong> Passwords older than 90 days will require updating.</li>
+                <li class="mb-2"><i class="mdi mdi-account-key-outline text-info me-2"></i><strong>Verify your contacts:</strong> Email and phone must be verified to receive alerts and recovery links.</li>
+                <li class="mb-2"><i class="mdi mdi-bank-outline text-secondary me-2"></i><strong>Role and branch accuracy:</strong> Ensure your assigned branch and roles reflect your responsibilities.</li>
+                <li class="mb-2"><i class="mdi mdi-clock-alert-outline text-warning me-2"></i><strong>Inactivity suspension:</strong> Accounts inactive for over <strong>30 days</strong> may be automatically suspended.</li>
+
                 <li>
-                    <i class="mdi mdi-shield-alert-outline text-warning me-2"></i> <strong>Best practices:</strong>
-                    <ul>
-                        <li>Never share your password or recovery code.</li>
-                        <li>Use strong passwords with numbers and symbols.</li>
-                        <li>Be alert to unfamiliar logins and IPs.</li>
+                    <i class="mdi mdi-shield-alert-outline text-warning me-2"></i><strong>Best practices:</strong>
+                    <ul class="ms-4 mt-1">
+                        <li><i class="mdi mdi-check-bold text-success me-1"></i> Never share your password or recovery code.</li>
+                        <li><i class="mdi mdi-check-bold text-success me-1"></i> Use complex passwords with upper/lowercase, numbers, and symbols.</li>
+                        <li><i class="mdi mdi-check-bold text-success me-1"></i> Be alert to unfamiliar devices or login locations.</li>
+                        <li><i class="mdi mdi-check-bold text-success me-1"></i> Log out from shared or public devices after use.</li>
                     </ul>
                 </li>
             </ul>
         </div>
     </div>
 </div>
+
 <div class="card-header text-body d-flex align-items-center justify-content-between">
     <div>
         <i class="fas fa-user-plus me-2"></i>
@@ -105,7 +108,7 @@
                     <a class="nav-link" id="vtab-recovery" data-bs-toggle="pill" href="#tab-recovery" role="tab" aria-selected="false">Recovery Code</a>
                     <a class="nav-link" id="vtab-permission" data-bs-toggle="pill" href="#tab-permission" role="tab" aria-selected="false">User Permissions</a>
                     <a class="nav-link" id="vtab-actions" data-bs-toggle="pill" href="#tab-actions" role="tab" aria-selected="false">Action Logs</a>
-
+                    <a class="nav-link" id="vtab-override" data-bs-toggle="pill" href="#tab-override" role="tab" aria-selected="false">Override Policy</a>
                 </div>
             </div>
         </div>
@@ -126,9 +129,8 @@
                     <div class="tab-pane fade" id="tab-session" role="tabpanel">@Html.Partial("_UserSessions")</div>
                     <div class="tab-pane fade" id="tab-recovery" role="tabpanel">@Html.Partial("_UserGenerateNewRecoveryCode")</div>
                     <div class="tab-pane fade" id="tab-permission" role="tabpanel">@Html.Partial("_UserManagePermissions")</div>
-                    <div class="tab-pane fade" id="tab-actions" role="tabpanel">
-                        @Html.Partial("_UserActionLogs")
-                    </div>
+                    <div class="tab-pane fade" id="tab-actions" role="tabpanel">@Html.Partial("_UserActionLogs")</div>
+                    <div class="tab-pane fade" id="tab-override" role="tabpanel">@Html.Partial("_UserOverridePolicy")</div>
                 </div>
             </div>
         </div>
@@ -184,7 +186,7 @@
             }).get();
 
             if (selected.length === 0) {
-                appalert("Please select permission(s) to delete.",3,1);
+                appalert("Please select permission(s) to delete.", 3, 1);
                 return;
             }
 
@@ -199,7 +201,7 @@
                         traditional: true, // Needed to serialize array properly
                         success: function (response) {
                             if (response.success) {
-                               
+
                                 appalert(response.message, 1, 1);
                                 setTimeout(() => location.reload(), 1000);
                             } else {
@@ -207,14 +209,14 @@
                             }
                         },
                         error: function () {
-                            appalert("Something went wrong while deleting permissions.",3,1);
-                            
+                            appalert("Something went wrong while deleting permissions.", 3, 1);
+
                         }
                     });
                 },
                 function () {
                     // ❌ User clicked CANCEL
-                    appalert("Deletion cancelled.",3,1);
+                    appalert("Deletion cancelled.", 3, 1);
                 });
         });
 
