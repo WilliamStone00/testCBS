@@ -46,7 +46,22 @@
                 <label>Address</label>
             </div>
         </div>
-
+        <!-- Profile Selection Section -->
+        <div class="col-12">
+            <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-shield-account-outline me-1"></i> Account Profile</h6>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group ps-2">
+                @foreach (SelectListItem profile in ViewBag.AccountPolicyProfiles)
+                {
+                    <div class="form-check form-check-inline me-4">
+                        @Html.RadioButtonFor(m => m.AccountTypePolicyProfile, profile.Value, new { @class = "form-check-input", id = profile.Value })
+                        <label class="form-check-label" for="@profile.Value">@profile.Text</label>
+                    </div>
+                }
+                @Html.ValidationMessageFor(m => m.AccountTypePolicyProfile, "", new { @class = "text-danger" })
+            </div>
+        </div>
         <!-- ID Card Section -->
         <div class="col-12">
             <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-card-account-details-outline me-1"></i> ID Card Details</h6>
@@ -117,6 +132,8 @@
                 <label>Allowed IP (Example: 192.168.11.1)</label>
             </div>
         </div>
+
+
         <!-- Language Preference Section -->
         <div class="col-12">
             <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-translate me-1"></i> Language Preference</h6>
@@ -126,6 +143,40 @@
                 @Html.DropDownListFor(m => m.UserPreferedLanguage, new SelectList(ViewBag.Languages, "Key", "Value"), "---Select Language---", new { @class = "form-control select2" })
                 @Html.ValidationMessageFor(m => m.UserPreferedLanguage, "", new { @class = "text-danger" })
                 <label>Preferred Language</label>
+            </div>
+        </div>
+        <!-- Account Policy Override Section -->
+        <div class="col-12">
+            <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-lock-alert-outline me-1"></i> Override Security Policy</h6>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.PolicyOverride.PasswordNeverExpires, new { @class = "form-check-input", id = "PasswordNeverExpires" })
+                <label class="form-check-label" for="PasswordNeverExpires">Password Never Expires</label>
+            </div>
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.PolicyOverride.IgnoreMFARequirement, new { @class = "form-check-input", id = "IgnoreMFARequirement" })
+                <label class="form-check-label" for="IgnoreMFARequirement">Ignore MFA Requirement</label>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.PolicyOverride.AllowWeakPassword, new { @class = "form-check-input", id = "AllowWeakPassword" })
+                <label class="form-check-label" for="AllowWeakPassword">Allow Weak Password</label>
+            </div>
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.PolicyOverride.BypassLockoutPolicy, new { @class = "form-check-input", id = "BypassLockoutPolicy" })
+                <label class="form-check-label" for="BypassLockoutPolicy">Bypass Lockout Policy</label>
+            </div>
+        </div>
+
+        <div class="col-md-12 mt-2">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.PolicyOverride.CustomExpiryDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                @Html.ValidationMessageFor(m => m.PolicyOverride.CustomExpiryDate, "", new { @class = "text-danger" })
+                <label>Custom Expiry Date</label>
             </div>
         </div>
 

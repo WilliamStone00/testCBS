@@ -14,33 +14,45 @@ namespace CBS.FrontDesk.Data.Entity.RequestManagement
     {
         public string Id { get; set; }
 
+        // Rate limiting
         public int RequestLimit { get; set; }
-
         public int TimeWindowSeconds { get; set; }
-
         public int BlockDurationMinutes { get; set; }
 
         public int IPRequestLimit { get; set; }
-
         public int IPTimeWindowSeconds { get; set; }
 
+        // Header & IP whitelisting
         public List<string> WhitelistedHeaders { get; set; } = new List<string>();
+        public List<string> WhitelistedCidrs { get; set; } = new List<string>();
+        public List<string> WhitelistedCountriesCode { get; set; } = new List<string>();
 
-        public List<string> CameroonCidrs { get; set; } = new List<string>();
-
+        // Path & extension exclusions
         public List<string> ExcludedPaths { get; set; } = new List<string>();
-
-        public string[] SuspiciousIndicators { get; set; } = Array.Empty<string>();
-
         public List<string> ExcludedSubstrings { get; set; } = new List<string>();
-
         public List<string> ExcludedExtensions { get; set; } = new List<string>();
 
-        public string[] BadUserAgents { get; set; } = Array.Empty<string>();
+        // Threat signatures
+        public List<string> BadUserAgents { get; set; } = new List<string>(); // changed to List
+        public List<string> SuspiciousIndicators { get; set; } = new List<string>();
 
-        public List<string> WhiteListedCountriesCode { get; set; } = new List<string>();
+        // Header validation
+        public List<string> AllowedOrigins { get; set; } = new List<string>();
+        public List<string> TelemetryHeaderPrefixes { get; set; } = new List<string>();
+        public List<string> HighRiskHeaderKeys { get; set; } = new List<string>();
+        public List<string> ProtectedPathRefererRequired { get; set; } = new List<string>();
+        public List<string> SensitiveHeaderMissingCheckPaths { get; set; } = new List<string>();
+        public List<string> SpoofedForwardedForIndicators { get; set; } = new List<string>();
+        public List<string> AllowedHeaderValuePattern { get; set; } = new List<string>();
 
+        // Payload scanning
+        public List<string> SuspiciousFormKeyPatterns { get; set; } = new List<string>();
+        public List<string> BlockedFileExtensions { get; set; } = new List<string>();
+        public int MaxUploadFileSizeKb { get; set; }
+        public DateTime Timestamp { get; set; }
+        // 🧩 5. View & State Management (Optional: decorate with [JsonIgnore] if needed)
         public string Action { get; set; }
+        public string Option { get; set; }
     }
 
     public class NoScriptInjectionAttribute : ValidationAttribute

@@ -94,6 +94,14 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
             data.ResetPassword=new ResetPassword { userName=data.userName, password="000000", ResetPasswordReason=data.ResetPasswordReason };
             ViewBag.Branches = await _userManagementServices.GetBranches();
             ViewBag.Languages = LanguageHelper.GetLanguages(); // Call and assign the list of languages
+            ViewBag.AccountPolicyProfiles = Enum.GetValues(typeof(AccountPolicyProfile))
+            .Cast<AccountPolicyProfile>()
+            .Select(p => new SelectListItem
+            {
+                Text = p.ToString(),
+                Value = p.ToString()
+            })
+            .ToList();
             return View(data);
         }
         public async Task<ActionResult> UserProfile(string serviceoption = null, string KEY = null, string ReadOptions = null, string path = null, string group = null, string datefrom = null, string dateto = null)
@@ -106,6 +114,14 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
             ViewBag.Languages = LanguageHelper.GetLanguages(); // Call and assign the list of languages
             await GetList();
             ViewBag.Branches = await _userManagementServices.GetBranches();
+            ViewBag.AccountPolicyProfiles = Enum.GetValues(typeof(AccountPolicyProfile))
+            .Cast<AccountPolicyProfile>()
+            .Select(p => new SelectListItem
+            {
+                Text = p.ToString(),
+                Value = p.ToString()
+            })
+            .ToList();
             return View(data);
         }
         public async Task<ActionResult> Create(string serviceoption = null, string KEY = null, string ReadOptions = null, string path = null, string group = null, string datefrom = null, string dateto = null)
@@ -113,7 +129,14 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
             ViewBag.Roles = await _userManagementServices.GetRoles();
             ViewBag.Branches = await _userManagementServices.GetBranches();
             ViewBag.Languages = LanguageHelper.GetLanguages(); // Call and assign the list of languages
-
+            ViewBag.AccountPolicyProfiles = Enum.GetValues(typeof(AccountPolicyProfile))
+            .Cast<AccountPolicyProfile>()
+            .Select(p => new SelectListItem
+            {
+                Text = p.ToString(),
+                Value = p.ToString()
+            })
+            .ToList();
             return View(new User());
         }
 
@@ -142,7 +165,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
         public async Task<ActionResult> AddOrEdit(User model)
         {
 
-            if (model.Option == "Profile"||model.Option == "ChangeLanguage"|| model.Option == "BlackList"||model.Option == "ChangeRole"||model.Option == "ChangeBranch"||model.Option == "ActivateDeactivateAccount")
+            if (model.Option == "Profile"||model.Option == "ChangeLanguage"|| model.Option == "BlackList"||model.Option == "ChangeRole"||model.Option == "ChangeBranch"||model.Option == "ActivateDeactivateAccount"||model.Option == "OverridePolicy")
             {
                 var data = await _userManagementServices.UpdateUserProfile(model);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });

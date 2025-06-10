@@ -224,7 +224,6 @@ namespace CBS.BusinessService.RequestLoggerServicesP
                 Longitude=lon,
                 PhoneNumber=tel,
                 Region=region
-
             };
 
             try
