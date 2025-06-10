@@ -2,7 +2,7 @@
 
 
 
-
+@using Resources
 <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
 
     <div class="accordion-item active">
@@ -15,15 +15,15 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-bank-plus me-2"></i>
-                CASH REQUISITION FOR STILL
+                @GlobalTellerCashDemand.CASH_REQUISITION_FOR_STILL
             </button>
         </h2>
         <div class="demo-inline-spacing text-end" style="padding-right:2em">
 
-            <a type="button" onclick="LoadDataGen('CashFlowManagement','ListOfCashReplenishmentData','_CashReplenishmentRequestData',0,'datalistingview_CashReplenishmentRequest')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+            <a type="button" onclick="LoadDataGen('CashFlowManagement','ListOfCashReplenishmentData','_CashReplenishmentRequestData',0,'datalistingview_CashReplenishmentRequest')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
                 <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
             </a>
-            <a type="button" onclick="AddORUpdateGen(null,'datalistingview_CashReplenishmentRequest','_CreateCashReplenishmentRequest','new','CashFlowManagement')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+            <a type="button" onclick="AddORUpdateGen(null,'datalistingview_CashReplenishmentRequest','_CreateCashReplenishmentRequest','new','CashFlowManagement')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
                 <span class="tf-icons mdi mdi-plus mdi-18px"></span>
             </a>
 

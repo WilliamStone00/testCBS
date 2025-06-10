@@ -1,28 +1,28 @@
-﻿
+﻿@using Resources
 
 @model CBS.FrontDesk.Data.Entity.SavingProducts.CashReplenishmentSubTeller
 
 <fieldset class="fieldset-custom">
-    <legend>Request Filters</legend>
+    <legend>@GlobalRemittance.RequestFilters</legend>
     <hr />
     <div class="row g-4">
         <div class="col-md-6">
-            <label for="branchInput">Branch</label>
-            @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---Select Branch---", new { @class = "form-control select2", @id = "branchInput" })
+            <label for="branchInput">@GlobalRemittance.Branch</label>
+            @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalRemittance.SelectBranch+"---", new { @class = "form-control select2", @id = "branchInput" })
         </div>
         <div class="col-md-6">
             <div class="row g-4">
                 <div class="col-md-6">
-                    <label for="dateFromInput">Date From</label>
+                    <label for="dateFromInput">@GlobalRemittance.DateFrom</label>
                     <div class="input-group">
-                        <input type="date" id="dateFromInput" class="form-control shadow-box date-picker" placeholder="Date From">
+                        <input type="date" id="dateFromInput" class="form-control shadow-box date-picker" placeholder="@GlobalRemittance.DateFrom">
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label for="dateToInput">Date To</label>
+                    <label for="dateToInput">@GlobalRemittance.DateTo</label>
                     <div class="input-group">
-                        <input type="date" id="dateToInput" class="form-control shadow-box date-picker" placeholder="Date To">
-                        <button class="btn btn-primary btn-sm" onclick="SearchByDates('_CashReplenishmentSubTellerData','datalistingview','SubTellerCashRequisition')">Search</button>
+                        <input type="date" id="dateToInput" class="form-control shadow-box date-picker" placeholder="@GlobalRemittance.DateTo">
+                        <button class="btn btn-primary btn-sm" onclick="SearchByDates('_CashReplenishmentSubTellerData','datalistingview','SubTellerCashRequisition')">@GlobalShared.Search</button>
 
                     </div>
                 </div>

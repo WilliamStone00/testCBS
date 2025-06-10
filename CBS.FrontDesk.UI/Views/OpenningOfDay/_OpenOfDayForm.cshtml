@@ -11,17 +11,17 @@
 {
 
     <fieldset class="fieldset-custom">
-        <legend id="select_base"  class="underline-blue-bold">@GlobalOpenningOfDay.OPEN OF THE TILL AS OF ACCOUNTING DAY [@Model.OpenningOfDayRequest.AccountingDay]</legend>
+        <legend id="select_base"  class="underline-blue-bold">@GlobalOpenningOfDay.OPEN_OF_THE_TILL_AS_OF_ACCOUNTING_DAY [@Model.OpenningOfDayRequest.AccountingDay]</legend>
         <div class="row mt-2 gy-4">
             @Html.HiddenFor(model => model.OpenningOfDayRequest.InitialAmount)
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    <span class="formatted-amount shadow-box float-start">@GlobalOpenningOfDay.Balance Brought Forward: @Model.OpenningOfDayRequest.Amount.ToString("#,##0.0")</span>
+                    <span class="formatted-amount shadow-box float-start">@GlobalOpenningOfDay.BalanceBroughtForward: @Model.OpenningOfDayRequest.Amount.ToString("#,##0.0")</span>
                 </div>
             </div>
             <div class="col-md-6" hidden="hidden">
                 <div class="form-floating form-floating-outline">
-                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalOpenningOfDay.Total amount: 0.0</span>
+                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalOpenningOfDay.TotalAmount: 0.0</span>
                     <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                     <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.OpenningOfDayRequest.InitialAmount">
                 </div>
@@ -152,15 +152,15 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.OpenningOfDayRequest.Comment, new { @class = "form-control formatted-amount shadow-box", @style = "height: 70px;" })
                     @Html.ValidationMessageFor(m => m.OpenningOfDayRequest.Comment, "", new { @class = "text-danger " })
-                    <label for="formValidationDob">@GlobalOpenningOfDay.Open of day note</label>
+                    <label for="formValidationDob">@GlobalOpenningOfDay.OpenOfDayNote</label>
                 </div>
             </div>
 
         </div>
         <div class="mt-4">
-            <button type="submit" id="btnSave" class="btn btn-primary me-2">@GlobalOpenningOfDay.Open the day</button>
+            <button type="submit" id="btnSave" class="btn btn-primary me-2">@GlobalOpenningOfDay.OpenTheDay</button>
             <button type="button" class="btn btn-secondary me-2" onclick="Reprint(); return false;">
-                <i class="fas fa-print me-1"></i> @GlobalOpenningOfDay.Print
+                <i class="fas fa-print me-1"></i> @GlobalShared.Print
             </button>
         </div>
     </fieldset>

@@ -1,52 +1,52 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SMSP.Sms
-
+@using Resources
 <div class="card-body">
     <table class="table table-bordered table-striped" id="smsDetailsTable">
         <tbody>
             <!-- General Information -->
             <tr class="table-primary">
-                <td colspan="2" class="font-weight-bold text-center">General Information</td>
+                <td colspan="2" class="font-weight-bold text-center">@GlobalSMSActivityLog.GeneralInformation</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">SMS ID:</td>
+                <td class="font-weight-bold">@GlobalSMSActivityLog.SMSID:</td>
                 <td>@Model.Id</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">Operation Type:</td>
+                <td class="font-weight-bold">@GlobalSMSActivityLog.OperationType:</td>
                 <td>@Model.OperationType</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">Branch Code:</td>
+                <td class="font-weight-bold">@GlobalSMSActivityLog.BranchCode:</td>
                 <td>@Model.BranchCode</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">Branch Name:</td>
+                <td class="font-weight-bold">@GlobalSMSActivityLog.BranchName:</td>
                 <td>@Model.BranchName</td>
             </tr>
 
             <!-- Sender Information -->
             <tr class="table-primary">
-                <td colspan="2" class="font-weight-bold text-center">Sender Information</td>
+                <td colspan="2" class="font-weight-bold text-center">@GlobalSMSActivityLog.SenderInformation</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">Sender:</td>
+                <td class="font-weight-bold">@GlobalSMSActivityLog.Sender:</td>
                 <td>@Model.Sender</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">Send By:</td>
+                <td class="font-weight-bold">@GlobalSMSActivityLog.SendBy:</td>
                 <td>@Model.SendBy</td>
             </tr>
 
             <!-- Recipient Information -->
             <tr class="table-primary">
-                <td colspan="2" class="font-weight-bold text-center">Recipient Information</td>
+                <td colspan="2" class="font-weight-bold text-center">@GlobalSMSActivityLog.RecipientInformation</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">Member Name:</td>
+                <td class="font-weight-bold">@GlobalSMSActivityLog.MemberName:</td>
                 <td>@Model.MemberName</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">Member Reference:</td>
+                <td class="font-weight-bold">@GlobalSMSActivityLog.MemberReference:</td>
                 <td>@Model.MemberReference</td>
             </tr>
             <tr>
@@ -56,27 +56,27 @@
 
             <!-- Message Details -->
             <tr class="table-primary">
-                <td colspan="2" class="font-weight-bold text-center">Message Details</td>
+                <td colspan="2" class="font-weight-bold text-center">@GlobalSMSActivityLog.MessageDetails</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">Message:</td>
+                <td class="font-weight-bold">@GlobalSMSActivityLog.Message:</td>
                 <td>@Model.Message</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">Service Name:</td>
+                <td class="font-weight-bold">@GlobalSMSActivityLog.ServiceName:</td>
                 <td>@Model.ServiceName</td>
             </tr>
 
             <!-- Cost & Status -->
             <tr class="table-primary">
-                <td colspan="2" class="font-weight-bold text-center">Cost & Status</td>
+                <td colspan="2" class="font-weight-bold text-center">@GlobalSMSActivityLog.CostStatus</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">Cost:</td>
+                <td class="font-weight-bold">@GlobalSMSActivityLog.Cost:</td>
                 <td>XAF @Model.Cost.ToString("#,##0.00")</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">Status:</td>
+                <td class="font-weight-bold">@GlobalSMSActivityLog.Status:</td>
                 <td>
                     <span class="badge bg-@(Model.Status == "Successful" ? "success" : "danger")">
                         @Model.Status
@@ -84,16 +84,16 @@
                 </td>
             </tr>
             <tr>
-                <td class="font-weight-bold">Status Description:</td>
+                <td class="font-weight-bold">@GlobalSMSActivityLog.StatusDescription:</td>
                 <td>@Model.StatusDescription</td>
             </tr>
 
             <!-- Dates -->
             <tr class="table-primary">
-                <td colspan="2" class="font-weight-bold text-center">Dates</td>
+                <td colspan="2" class="font-weight-bold text-center">@GlobalSMSActivityLog.Dates</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">Created Date:</td>
+                <td class="font-weight-bold">@GlobalSMSActivityLog.CreatedDate:</td>
                 <td>@Model.CreatedDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
             </tr>
         </tbody>

@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+    @using Resources
 <div class="col">
 
     <div class="row my-4">
@@ -11,7 +12,7 @@
                             data-bs-target="#collapseDeliveryAddress"
                             aria-expanded="true"
                             aria-controls="collapseDeliveryAddress">
-                        Details
+                        @GlobalOtherTransaction.Details
                     </button>
                 </h2>
                 <div id="collapseDeliveryAddress"
@@ -23,48 +24,48 @@
                             {
                                 <input type="hidden" name="ServiceOption" value="primary_OtherTransaction" id="ServiceOption" />
                                 <fieldset class="fieldset-custom">
-                                    <legend>OtherTransaction details</legend>
+                                    <legend>@GlobalOtherTransaction.OtherTransactionDetails</legend>
                                     <div class="row mt-2 gy-4">
 
                                         <div class="col-12">
                                             <div class="form-check">
                                                 @Html.RadioButtonFor(m => m.OtherTransaction.TransactionType, "Income", new { @class = "form-check-input", id = "incomeOption" })
-                                                <label class="form-check-label" for="incomeOption">Income</label>
+                                                <label class="form-check-label" for="incomeOption">@GlobalOtherTransaction.Income</label>
                                             </div>
                                             <div class="form-check">
                                                 @Html.RadioButtonFor(m => m.OtherTransaction.TransactionType, "Expense", new { @class = "form-check-input", id = "expenseOption" })
-                                                <label class="form-check-label" for="expenseOption">Expenses</label>
+                                                <label class="form-check-label" for="expenseOption">@GlobalOtherTransaction.Expenses</label>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-check">
                                                 @Html.RadioButtonFor(m => m.OtherTransaction.SourceType, "MemberAccount", new { @class = "form-check-input", id = "incomeOption" })
-                                                <label class="form-check-label" for="incomeOption">Pay with member's account</label>
+                                                <label class="form-check-label" for="incomeOption">@GlobalOtherTransaction.PayWithMembersAccount</label>
                                             </div>
                                             <div class="form-check">
                                                 @Html.RadioButtonFor(m => m.OtherTransaction.SourceType, "CashCollection", new { @class = "form-check-input", id = "expenseOption" })
-                                                <label class="form-check-label" for="expenseOption">Collect cash from member</label>
+                                                <label class="form-check-label" for="expenseOption">@GlobalOtherTransaction.CollectCashFromMember</label>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(m => m.OtherTransaction.EventCode, new SelectList(ViewBag.Branches, "Id", "Name"), "---Select branch---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.DropDownListFor(m => m.OtherTransaction.EventCode, new SelectList(ViewBag.Branches, "Id", "Name"), "---"+ @GlobalOtherTransaction.SelectBranch+"---", new { @class = "form-control select2", @search = "true" })
                                                 @Html.ValidationMessageFor(m => m.OtherTransaction.EventCode, "", new { @class = "text-danger" })
-                                                <label>Event Code</label>
+                                                <label>@GlobalOtherTransaction.EventCode</label>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(m => m.OtherTransaction.AccountNumber, new SelectList(ViewBag.Source, "Value", "Text"), "---Source account---", new { @class = "form-control select2", @search = "true" })
+                                                @Html.DropDownListFor(m => m.OtherTransaction.AccountNumber, new SelectList(ViewBag.Source, "Value", "Text"), "---"+ @GlobalOtherTransaction.SourceAccount+"---", new { @class = "form-control select2", @search = "true" })
                                                 @Html.ValidationMessageFor(m => m.OtherTransaction.AccountNumber, "", new { @class = "text-danger " })
-                                                <label for="formValidationDob">Select member account</label>
+                                                <label for="formValidationDob">@GlobalOtherTransaction.SelectMemberAccount</label>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextAreaFor(m => m.OtherTransaction.Description, new { @class = "form-control", @style = "height: 75px;", @id = "DepositerNote" })
                                                 @Html.ValidationMessageFor(m => m.OtherTransaction.Description, "", new { @class = "text-danger" })
-                                                <label>Description</label>
+                                                <label>@GlobalOtherTransaction.Description</label>
                                             </div>
                                         </div>
                                     </div>

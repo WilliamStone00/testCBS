@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Resources
+@{
     var selectedLang = "en"; // Default if session is missing
 
     if (Session != null && Session["SelectedLanguage"] != null)
@@ -21,14 +22,14 @@
             <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);" onclick="setLanguage('en', '~/AppFiles/Images/Lang/united_kingdom_64.png')">
                 <i class="mdi mdi-flag-variant-outline text-primary me-2"></i>
                 <img src="~/AppFiles/Images/Lang/united_kingdom_64.png" alt="English" width="20" class="me-2" />
-                <span>English</span>
+                <span>@GlobalShared.English</span>
             </a>
         </li>
         <li>
             <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);" onclick="setLanguage('fr', '~/AppFiles/Images/Lang/france_64.png')">
                 <i class="mdi mdi-flag-variant-outline text-danger me-2"></i>
                 <img src="~/AppFiles/Images/Lang/france_64.png" alt="French" width="20" class="me-2" />
-                <span>Français</span>
+                <span>@GlobalShared.French</span>
             </a>
         </li>
     </ul>

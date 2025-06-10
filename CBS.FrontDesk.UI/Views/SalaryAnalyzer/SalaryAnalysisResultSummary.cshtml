@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
+    @using Resources
 @{
     ViewBag.Title = "Salary Analysis Result Summary";
 }
@@ -8,10 +9,10 @@
             <!-- Page Header -->
             <div class="card-header text-center bg-light">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-file-cabinet me-2"></i> SALARY ANALYSIS RESULT SUMMARY
+                    <i class="mdi mdi-file-cabinet me-2"></i> @GlobalSalaryAnalyzer.SALARY_ANALYSIS_RESULT_SUMMARY
                 </h1>
                 <p class="card-text text-muted">
-                    View, analyze, and manage detailed salary analysis results. Use the tools below to explore data or view existing records.
+                    @GlobalSalaryAnalyzer.ViewAnalyzeAndManageDetailedSalaryAnalysisResults.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -19,7 +20,7 @@
             <!-- Tips Section -->
             <div class="card mb-2">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> TIPS</span>
+                    <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> @GlobalSalaryAnalyzer.TIPS</span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSalaryAnalysisTips" aria-expanded="false" aria-controls="collapseSalaryAnalysisTips">
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
@@ -27,12 +28,12 @@
                 <div id="collapseSalaryAnalysisTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-file-document-outline text-primary me-2"></i> Use the <strong>"Run Salary Analysis"</strong> button to process detailed salary data.</li>
-                            <li><i class="mdi mdi-eye-outline text-primary me-2"></i> Click the <strong>"View Detailed Results"</strong> button to access previously analyzed results.</li>
-                            <li><i class="mdi mdi-alert-outline text-warning me-2"></i> Ensure data integrity by validating uploaded salary records.</li>
-                            <li><i class="mdi mdi-database-search-outline text-primary me-2"></i> Use search tools to locate specific analysis results quickly.</li>
-                            <li><i class="mdi mdi-alert-decagram-outline text-danger me-2"></i> Address discrepancies like mismatches or errors promptly.</li>
-                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> Edit analysis results to incorporate necessary updates.</li>
+                            <li><i class="mdi mdi-file-document-outline text-primary me-2"></i> @GlobalSalaryAnalyzer.UseThe <strong>"@GlobalSalaryAnalyzer.RunSalaryAnalysis"</strong> @GlobalSalaryAnalyzer.buttonToProcessDetailedSalaryData.</li>
+                            <li><i class="mdi mdi-eye-outline text-primary me-2"></i> @GlobalSalaryAnalyzer.ClickThe <strong>"@GlobalSalaryAnalyzer.ViewDetailedResults"</strong> @GlobalSalaryAnalyzer.buttoToAccessPreviouslyAnalyzedResults.</li>
+                            <li><i class="mdi mdi-alert-outline text-warning me-2"></i> @GlobalSalaryAnalyzer.EnsureDataIntegrityByValidatingUploadedSalaryRecords.</li>
+                            <li><i class="mdi mdi-database-search-outline text-primary me-2"></i> @GlobalSalaryAnalyzer.UseSearchToolsToLocateSpecificAnalysisResultsQuickly.</li>
+                            <li><i class="mdi mdi-alert-decagram-outline text-danger me-2"></i> @GlobalSalaryAnalyzer.AddressDiscrepanciesLikeMismatchesOrErrorsPromptly.</li>
+                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> @GlobalSalaryAnalyzer.EditAnalysisResultsToIncorporateNecessaryUpdates.</li>
                         </ul>
                     </div>
                 </div>
@@ -49,7 +50,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-chart-bar me-1"></i> Detailed Results
+                            <i class="mdi mdi-chart-bar me-1"></i> @GlobalSalaryAnalyzer.DetailedResults
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -61,8 +62,8 @@
                                     <div class="card mb-3">
                                         <div class="card-body d-flex justify-content-end align-items-center">
                                             <!-- Export Salary Analysis -->
-                                            <button type="button" class="btn btn-label-info btn-sm me-2" data-bs-toggle="tooltip" title="Export Salary Analysis to Excel" onclick="exportSalaryAnalysis('@Model.FileUpload.Id')">
-                                                <i class="mdi mdi-file-download-outline mdi-18px"></i> Export to Excel
+                                            <button type="button" class="btn btn-label-info btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalSalaryAnalyzer.ExportSalaryAnalysisToExcel" onclick="exportSalaryAnalysis('@Model.FileUpload.Id')">
+                                                <i class="mdi mdi-file-download-outline mdi-18px"></i> @GlobalShared.ExportToExcel
                                             </button>
 
                                             <!-- Execute Salary to Member Accounts -->
@@ -74,9 +75,9 @@
 
                                             <!-- Delete Analysis -->
                                             <a type="button" href="#" class="btn btn-label-danger btn-sm"
-                                               data-bs-toggle="tooltip" title="Delete Analysis"
+                                               data-bs-toggle="tooltip" title="@GlobalSalaryAnalyzer.DeleteAnalysis"
                                                onclick="deleteAnalysis('@Model.SalaryUploadModelSummaryDto.FileUploadId')">
-                                                <i class="mdi mdi-delete-outline mdi-18px"></i> Delete Analysis
+                                                <i class="mdi mdi-delete-outline mdi-18px"></i> @GlobalSalaryAnalyzer.DeleteAnalysis
                                             </a>
                                         </div>
                                     </div>

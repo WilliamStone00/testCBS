@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Resources
+@{
     ViewBag.Title = "Salary Upload";
 }
 <div class="row">
@@ -7,10 +8,10 @@
             <!-- Page Header -->
             <div class="card-header text-center bg-light">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-upload-multiple me-2"></i> Salary Upload Management
+                    <i class="mdi mdi-upload-multiple me-2"></i> @GlobalSalaryUpload.SalaryUploadManagement
                 </h1>
                 <p class="card-text text-muted">
-                    Easily manage and upload employee salary files for various groups, including Civil Servants, Private Institutions, Internal Staff, and Daily Servers. Ensure accuracy and compliance with the required formats.
+                    @GlobalSalaryUpload.EasilyManageAndUploadEmployeeSalaryFiles.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -18,7 +19,7 @@
             <!-- Tips Section -->
             <div class="card">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+                    <span><i class="mdi mdi-information-outline me-2"></i> @GlobalSalaryUpload.TIPS</span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSalaryUploadTips" aria-expanded="false" aria-controls="collapseSalaryUploadTips">
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
@@ -26,12 +27,12 @@
                 <div id="collapseSalaryUploadTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure the salary file is formatted as <strong>Salary Code, Matricule, Name, NetSalary For Cilvil Servants file</strong>.</li>
-                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Select the appropriate <strong>Salary Type</strong> before uploading (e.g., Civil Servants, Private Institutions, Internal Staff, or Daily Servers).</li>
-                            <li><i class="mdi mdi-view-list-outline text-primary me-2"></i> Click on the <strong>View List</strong> button to access all previously uploaded salary files.</li>
-                            <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Double-check files for formatting errors (e.g., invalid Matricule, missing names, or incorrect salary amounts) before submission to avoid rejections.</li>
-                            <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> Keep track of uploaded files and their processing status to ensure timely payroll execution.</li>
-                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> Use the upload form to add new salary files.</li>
+                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalSalaryUpload.EnsureTheSalaryFileIsFormattedAs <strong>@GlobalSalaryUpload.SalaryCodeMatriculeNameNetSalaryForCilvilServantsFile</strong>.</li>
+                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalSalaryUpload.SelectTheAppropriate <strong>@GlobalSalaryUpload.SalaryType</strong> @GlobalSalaryUpload.beforeUploadingCivilServants.</li>
+                            <li><i class="mdi mdi-view-list-outline text-primary me-2"></i> @GlobalSalaryUpload.ClickOnThe <strong>@GlobalShared.ViewList</strong> @GlobalSalaryUpload.buttonToAccessAllPreviouslyUploadedSalaryFiles.</li>
+                            <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalSalaryUpload.DoubleCheckFilesForFormattingErrors.</li>
+                            <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> @GlobalSalaryUpload.KeepTrackOfUploadedFiles.</li>
+                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> @GlobalSalaryUpload.UseTheUploadFormToAddNewSalaryFiles.</li>
                         </ul>
                     </div>
                 </div>
@@ -48,7 +49,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-file-upload me-1"></i> Salary Upload
+                            <i class="mdi mdi-file-upload me-1"></i> @GlobalSalaryUpload.SalaryUpload
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -59,11 +60,11 @@
                                 <div class="change-group">
                                     <div class="card mb-3">
                                         <div class="card-body d-flex justify-content-end align-items-center">
-                                            <a type="button" href="/SalaryUpload/UploadedSalaryFiles" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="View List">
-                                                <i class="mdi mdi-view-list mdi-18px"></i> View List
+                                            <a type="button" href="/SalaryUpload/UploadedSalaryFiles" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+                                                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
                                             </a>
-                                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_SalaryUploadForm','new','SalaryUpload')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="Upload New Salary File">
-                                                <i class="mdi mdi-plus mdi-18px"></i> Upload New File
+                                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_SalaryUploadForm','new','SalaryUpload')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalSalaryUpload.UploadNewSalaryFile">
+                                                <i class="mdi mdi-plus mdi-18px"></i> @GlobalSalaryUpload.UploadNewFile
                                             </a>
                                         </div>
                                     </div>

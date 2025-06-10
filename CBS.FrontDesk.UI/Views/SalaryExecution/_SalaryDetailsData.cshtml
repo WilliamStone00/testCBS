@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.ExecuteSalaryCarrier
-
+@using Resources
 
 
 <fieldset class="fieldset-custom">
@@ -12,7 +12,7 @@
                 <div class="col">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h5 class="card-title text-primary">Total Members</h5>
+                            <h5 class="card-title text-primary">@GlobalSalaryExecution.TotalMembers</h5>
                             <p class="card-text fs-5 fw-bold text-info">
                                 @Model.DashboardViewModel.TotalMembers.ToString("N0") <!-- Display total number of members -->
                             </p>
@@ -24,7 +24,7 @@
                 <div class="col">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h5 class="card-title text-primary">Total Net Salary</h5>
+                            <h5 class="card-title text-primary">@GlobalSalaryExecution.TotalNetSalary</h5>
                             <p class="card-text fs-5 fw-bold text-success">
                                 @Model.DashboardViewModel.TotalNetSalary.ToString("N1") <!-- Display total net salary -->
                             </p>
@@ -36,7 +36,7 @@
                 <div class="col">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h5 class="card-title text-primary">Total Standing Order Amount</h5>
+                            <h5 class="card-title text-primary">@GlobalSalaryExecution.TotalStandingOrderAmount</h5>
                             <p class="card-text fs-5 fw-bold text-warning">
                                 @Model.DashboardViewModel.TotalStandingOrderAmount.ToString("N1") <!-- Display total standing order amount -->
                             </p>
@@ -48,7 +48,7 @@
                 <div class="col">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h5 class="card-title text-primary">Total Savings</h5>
+                            <h5 class="card-title text-primary">@GlobalSalaryExecution.TotalSavings</h5>
                             <p class="card-text fs-5 fw-bold text-info">
                                 @Model.DashboardViewModel.TotalSavings.ToString("N1")
                             </p>
@@ -60,7 +60,7 @@
                 <div class="col">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h5 class="card-title text-primary">Total Loan Repayment</h5>
+                            <h5 class="card-title text-primary">@GlobalSalaryExecution.TotalLoanRepayment</h5>
                             <p class="card-text fs-5 fw-bold text-success">
                                 @Model.DashboardViewModel.TotalLoanRepayment.ToString("N1")
                             </p>
@@ -72,7 +72,7 @@
                 <div class="col">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h5 class="card-title text-primary">Total Charges</h5>
+                            <h5 class="card-title text-primary">@GlobalSalaryExecution.TotalCharges</h5>
                             <p class="card-text fs-5 fw-bold text-warning">
                                 @Model.DashboardViewModel.TotalCharges.ToString("N1")
                             </p>
@@ -84,7 +84,7 @@
                 <div class="col">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h5 class="card-title text-primary">Total Shares</h5>
+                            <h5 class="card-title text-primary">@GlobalSalaryExecution.TotalShares</h5>
                             <p class="card-text fs-5 fw-bold text-info">
                                 @Model.DashboardViewModel.TotalShares.ToString("N1")
                             </p>
@@ -96,7 +96,7 @@
                 <div class="col">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h5 class="card-title text-primary">Total Preference Shares</h5>
+                            <h5 class="card-title text-primary">@GlobalSalaryExecution.TotalPreferenceShares</h5>
                             <p class="card-text fs-5 fw-bold text-success">
                                 @Model.DashboardViewModel.TotalPreferenceShares.ToString("N1")
                             </p>
@@ -108,7 +108,7 @@
                 <div class="col">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h5 class="card-title text-primary">Total Loan Interest</h5>
+                            <h5 class="card-title text-primary">@GlobalSalaryExecution.TotalLoanInterest</h5>
                             <p class="card-text fs-5 fw-bold text-warning">
                                 @Model.DashboardViewModel.TotalLoanInterest.ToString("N1")
                             </p>
@@ -127,22 +127,22 @@
                         <thead class="table-light">
                             <tr>
                                 <th>#</th>
-                                <th>Matricule</th>
-                                <th>Reference</th>
-                                <th>Name</th>
-                                <th>N.Salary</th> <!-- ✅ Net Salary -->
-                                <th>S.Order</th> <!-- ✅ Standing Order -->
-                                <th>Savings</th>
-                                <th>Deposit</th>
-                                <th>Shares</th>
-                                <th>P.Shares</th> <!-- ✅ Preference Shares -->
-                                <th>L.Rep</th> <!-- ✅ Loan Repayment -->
+                                <th>@GlobalSalaryExecution.Matricule</th>
+                                <th>@GlobalSalaryExecution.Reference</th>
+                                <th>@GlobalSalaryExecution.Name</th>
+                                <th>@GlobalSalaryExecution.NSalary</th> <!-- ✅ Net Salary -->
+                                <th>@GlobalSalaryExecution.SOrder</th> <!-- ✅ Standing Order -->
+                                <th>@GlobalSalaryExecution.Savings</th>
+                                <th>@GlobalSalaryExecution.Deposit</th>
+                                <th>@GlobalSalaryExecution.Shares</th>
+                                <th>@GlobalSalaryExecution.P_Shares</th> <!-- ✅ Preference Shares -->
+                                <th>@GlobalSalaryExecution.L_Rep</th> <!-- ✅ Loan Repayment -->
                                 <th>L.C</th> <!-- ✅ Loan Repayment -->
-                                <th>L.INT</th> <!-- ✅ Loan Repayment -->
-                                <th>L.VAT</th> <!-- ✅ Loan Repayment -->
-                                <th>Charges</th> <!-- ✅ NEW: Charges Added -->
-                                <th>Salary</th> <!-- ✅ Salary remains after Charges -->
-                                <th>D.Status</th>
+                                <th>@GlobalSalaryExecution.L_INT</th> <!-- ✅ Loan Repayment -->
+                                <th>@GlobalSalaryExecution.L_VAT</th> <!-- ✅ Loan Repayment -->
+                                <th>@GlobalSalaryExecution.Charges</th> <!-- ✅ NEW: Charges Added -->
+                                <th>@GlobalSalaryExecution.Salary</th> <!-- ✅ Salary remains after Charges -->
+                                <th>@GlobalSalaryExecution.D.Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -172,11 +172,11 @@
                                     <td>
                                         @if (salary.Status)
                                         {
-                                            <span class="badge bg-success">Executed</span> <!-- ✅ Green for Executed -->
+                                            <span class="badge bg-success">@GlobalShared.Executed</span> <!-- ✅ Green for Executed -->
                                         }
                                         else
                                         {
-                                            <span class="badge bg-warning text-dark">Pending</span> <!-- ✅ Yellow for Pending -->
+                                            <span class="badge bg-warning text-dark">@GlobalShared.Pending</span> <!-- ✅ Yellow for Pending -->
                                         }
                                     </td>
                                 </tr>
@@ -187,7 +187,7 @@
                 else
                 {
                     <div class="text-center my-3">
-                        <p>No salary uploads found.</p>
+                        <p>@GlobalSalaryExecution.NoSalaryUploadsFound.</p>
                     </div>
                 }
             </div>

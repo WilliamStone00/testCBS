@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = ViewBag.ReportTitle;
 }
-
+@using Resources
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,8 +29,8 @@
         };
     </script>
     <p>
-        The PDF report is being opened in a new window. If it doesn't open, <a href="@ViewBag.UrlToOpen" target="_blank">click here</a>.
-        Or go back to your page <a href="@ViewBag.CurrentUrl">Back</a>.
+        @GlobalShared.ThePDFReportIsBeingOpenedInANewWindowIfItDoesntOpen, <a href="@ViewBag.UrlToOpen" target="_blank">@GlobalShared.clickHere</a>.
+        @GlobalShared.OrGoBackToYourPage <a href="@ViewBag.CurrentUrl">@GlobalShared.Back</a>.
     </p>
 </body>
 </html>

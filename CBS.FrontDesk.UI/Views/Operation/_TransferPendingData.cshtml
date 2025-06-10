@@ -1,29 +1,29 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
-
+@using Resources
 <fieldset class="fieldset-custom">
     @if (!Model.Transfers.Any())
     {
         <div class="text-center my-3">
-            <p>No pending transfer(s) are available for the moment</p>
+            <p>@GlobalOperation.NoPendingTransferAreAvailableForTheMoment</p>
         </div>
     }
     else
     {
         <div class="table-responsive mb-3">
             <div class="card-header">
-                <h5 class="card-title">Transfers</h5>
+                <h5 class="card-title">@GlobalOperation.Transfers</h5>
             </div>
 
             <table class="table table-hover table-striped table-bordered align-middle" id="myDataTableT">
                 <thead class="table-light">
                     <tr>
-                        <th style="width: 15%;">Date</th>
-                        <th style="width: 15%;">Sending Account</th>
-                        <th style="width: 15%;">Receiving Account</th>
-                        <th style="width: 10%;">Amount</th>
-                        <th style="width: 10%;">Status</th>
-                        <th style="width: 25%;">Initiator</th>
-                        <th style="width: 10%;">Action</th>
+                        <th style="width: 15%;">@GlobalOperation.Date</th>
+                        <th style="width: 15%;">@GlobalOperation.SendingAccount</th>
+                        <th style="width: 15%;">@GlobalOperation.ReceivingAccount</th>
+                        <th style="width: 10%;">@GlobalOperation.Amount</th>
+                        <th style="width: 10%;">@GlobalShared.Status</th>
+                        <th style="width: 25%;">@GlobalOperation.Initiator</th>
+                        <th style="width: 10%;">@GlobalShared.Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,26 +38,26 @@
                                 <!-- Beautified Status with Badges -->
                                 @if (d.Status == "Pending")
                                 {
-                                    <span class="badge bg-warning text-dark">Pending</span>
+                                    <span class="badge bg-warning text-dark">@GlobalShared.Pending</span>
                                 }
                                 else if (d.Status == "Approved")
                                 {
-                                    <span class="badge bg-success">Approved</span>
+                                    <span class="badge bg-success">@GlobalShared.Approved</span>
                                 }
                                 else if (d.Status == "Rejected")
                                 {
-                                    <span class="badge bg-danger">Rejected</span>
+                                    <span class="badge bg-danger">@GlobalShared.Rejected</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">Unknown</span>
+                                    <span class="badge bg-secondary">@GlobalOperation.Unknown</span>
                                 }
                             </td>
                             <td>@d.InitiatedByUSerName</td>
                             <td>
                                 <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_TransferConfirmation','confirmation_request','Operation')"
-                                   class="btn btn-sm btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Select to approve">
-                                    Approve
+                                   class="btn btn-sm btn-outline-primary" data-toggle="tooltip" data-placement="top" title="@GlobalOperation.SelectToApprove">
+                                    @GlobalShared.Approve
                                 </a>
                             </td>
                         </tr>

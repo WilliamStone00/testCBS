@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Tax
+    @using Resources
 <div class="card-body">
     @using (Html.BeginForm("Create", "Tax", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
@@ -7,52 +8,52 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                    <label>Tax name</label>
+                    <label>@GlobalTax.TaxName</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.TaxRate, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.TaxRate, "", new { @class = "text-danger" })
-                    <label>Rate in percentage (%)</label>
+                    <label>@GlobalTax.RateInPercentage (%)</label>
                 </div>
             </div>
             <div class="col-12">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.AppliedOnInterest, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="isActive">Apply tax on interest</label>
+                    <label class="form-check-label" for="isActive">@GlobalTax.ApplyTaxOnInterest</label>
                 </div>
             </div>
             <div class="col-12">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.AppliedWhenLoanRequestIsGreaterThanSaving, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="isActive">Applied tax if loan loan amount requested is greater than saving balance</label>
+                    <label class="form-check-label" for="isActive">@GlobalTax.AppliedTaxIfLoanAmountRequestedIsGreaterThanSavingBalance</label>
                 </div>
             </div>
             <div class="col-12">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.IsVat, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="isActive">Check this option if the tax you are creating is VAT</label>
+                    <label class="form-check-label" for="isActive">@GlobalTax.CheckThisOptionIfTheTaxYouAreCreatingIsVAT</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.SavingControlAmount, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.SavingControlAmount, "", new { @class = "text-danger" })
-                    <label>Control saving amount (Flat)</label>
+                    <label>@GlobalTax.ControlSavingAmountFlat</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 200px;" })
                     @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                    <label>Description</label>
+                    <label>@GlobalTax.Description</label>
                 </div>
             </div>
         </div>
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary me-2">Save</button>
-            <button type="reset" class="btn btn-outline-secondary">Reset</button>
+            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+            <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
         </div>
     }
 </div>

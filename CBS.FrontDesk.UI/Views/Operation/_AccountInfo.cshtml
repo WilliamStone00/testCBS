@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+    @using Resources
 @{
     var status = false;
     string comment = "No initial deposit has been made.";
@@ -20,7 +21,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-folder-information-outline me-2"></i>
-                ACCOUNT INFORMATION
+                @GlobalOperation.ACCOUNT_INFORMATION
             </button>
         </h2>
         <div id="accordionPopoutIcon-3"
@@ -37,7 +38,7 @@
                                     <br />
                                     <div class="text-center my-3">
                                         <p>No initial deposit is done into account number: @Model.AccountNumber </p>
-                                        <a href="/Operation/Deposit?KEY=@Model.AccountNumber" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="Perform member deposit operation">
+                                        <a href="/Operation/Deposit?KEY=@Model.AccountNumber" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="@GlobalOperation.PerformMemberDepositOperation">
                                             <span class="tf-icons mdi mdi-octagram-plus mdi-18px"></span>
                                         </a>
                                     </div>
@@ -54,13 +55,13 @@
                                                 <div class="d-flex align-items-center flex-wrap gap-2">
                                                     <div class="card-info">
                                                         <div class="d-flex align-items-center">
-                                                            <h5 class="mb-0">Balance: @Model.Balance.ToString("#,##0.0")</h5>
+                                                            <h5 class="mb-0">@GlobalOperation.Balance: @Model.Balance.ToString("#,##0.0")</h5>
                                                         </div>
-                                                        <small>Account Number: <b>@Model.AccountNumber</b></small><br />
-                                                        <small>Opening balance: <b>N/A</b></small><br />
-                                                        <small class="mb-0">Account Name: <b>@Model.Product.name</b></small><br />
-                                                        <small class="mb-0">Account Status: <b>@Model.Status</b></small><br />
-                                                        <small class="mb-0">Date created: <b>@Model.CreatedDate</b></small>
+                                                        <small>@GlobalOperation.AccountNumber: <b>@Model.AccountNumber</b></small><br />
+                                                        <small>@GlobalOperation.OpeningBalance: <b>N/A</b></small><br />
+                                                        <small class="mb-0">@GlobalOperation.AccountName: <b>@Model.Product.name</b></small><br />
+                                                        <small class="mb-0">@GlobalOperation.AccountStatus: <b>@Model.Status</b></small><br />
+                                                        <small class="mb-0">@GlobalOperation.DateCreated: <b>@Model.CreatedDate</b></small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -70,18 +71,18 @@
                                 <br />
                                 <div class="card mb-4">
                                     <div class="card-header">
-                                        <h5 class="card-title">ACCOUNTS</h5>
+                                        <h5 class="card-title">@GlobalOperation.ACCOUNTS</h5>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive mb-3">
                                             <table class="table table-hover" id="myDataTableT">
                                                 <thead class="table-light">
                                                     <tr>
-                                                        <th>Account Type</th>
-                                                        <th>Status</th>
-                                                        <th>Balance</th>
-                                                        <th>Balance B/F</th>
-                                                        <th>Account Number</th>
+                                                        <th>@GlobalOperation.AccountType</th>
+                                                        <th>@GlobalShared.Status</th>
+                                                        <th>@GlobalOperation.Balance</th>
+                                                        <th>@GlobalOperation.Balance B/F</th>
+                                                        <th>@GlobalOperation.AccountNumber</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -100,7 +101,7 @@
                                                                 }
                                                                 else
                                                                 {
-                                                                    <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">In-Active</span></label>
+                                                                    <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalOperation.InActive</span></label>
                                                                 }
                                                             </td>
                                                             <td style="width: 15%;">@Convert.ToDecimal(d.balance).ToString("#,##0.0")</td>
@@ -110,7 +111,7 @@
                                                     }
                                                 </tbody>                                                <tfoot>
                                                     <tr>
-                                                        <td colspan="2">Total Balance:</td>
+                                                        <td colspan="2">@GlobalOperation.TotalBalance:</td>
                                                         <td colspan="3"><span id="totalBalance">@Model.AccountBalance.accounts.Sum(x => x.Balance).ToString("#,##0.0")</span></td>
                                                     </tr>
                                                 </tfoot>

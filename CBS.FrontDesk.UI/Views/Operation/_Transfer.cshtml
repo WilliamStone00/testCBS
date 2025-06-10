@@ -1,42 +1,42 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
-
+@using Resources
 @using (Html.BeginForm("Deposit", "Operation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
     <input type="hidden" name="OperationType" value="Transfer" id="OperationType" />
     <fieldset class="fieldset-custom">
-        <legend>Account to account transfer request</legend>
+        <legend>@GlobalOperation.AccountToAccountTransferRequest</legend>
         <div class="row mt-2 gy-4">
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.TransferRequest.SenderAccountNumber, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.TransferRequest.SenderAccountNumber, "", new { @class = "text-danger " })
-                    <label for="formValidationDob">Enter sending account number</label>
+                    <label for="formValidationDob">@GlobalOperation.EnterSendingAccountNumber</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.TransferRequest.ReceiverAccountNumber, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.TransferRequest.ReceiverAccountNumber, "", new { @class = "text-danger " })
-                    <label for="formValidationDob">Enter recieving account number</label>
+                    <label for="formValidationDob">@GlobalOperation.EnterRecievingAccountNumber</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.TransferRequest.Amount, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.TransferRequest.Amount, "", new { @class = "text-danger" })
-                    <label>Enter amount</label>
+                    <label>@GlobalOperation.EnterAmount</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.TransferRequest.Note, new { @class = "form-control", @style = "height: 75px;" })
                     @Html.ValidationMessageFor(m => m.TransferRequest.Note, "", new { @class = "text-danger" })
-                    <label>Note</label>
+                    <label>@GlobalOperation.Note</label>
                 </div>
             </div>
         </div>
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary me-2">Place a request</button>
+            <button type="submit" class="btn btn-primary me-2">@GlobalOperation.PlaceARequest</button>
         </div>
     </fieldset>
 }
