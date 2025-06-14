@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accounting Mapping For Operations.
+        /// </summary>
+        internal static string AccountingMappingForOperations {
+            get {
+                return ResourceManager.GetString("AccountingMappingForOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to account is active.
         /// </summary>
         internal static string accountIsActive {
@@ -241,6 +250,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to From branch float account number.
+        /// </summary>
+        internal static string FromBranchFloatAccountNumber {
+            get {
+                return ResourceManager.GetString("FromBranchFloatAccountNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to has already been approved.
         /// </summary>
         internal static string hasAlreadyBeenApproved {
@@ -345,6 +363,24 @@ namespace Resources {
         internal static string notValidated {
             get {
                 return ResourceManager.GetString("notValidated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operation event code.
+        /// </summary>
+        internal static string OperationEventCode {
+            get {
+                return ResourceManager.GetString("OperationEventCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ProvideThe16DigitAccountNumberThatServesAsReference {
+            get {
+                return ResourceManager.GetString("ProvideThe16DigitAccountNumberThatServesAsReference", resourceCulture);
             }
         }
         

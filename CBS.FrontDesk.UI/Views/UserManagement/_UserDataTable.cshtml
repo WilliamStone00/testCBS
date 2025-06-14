@@ -1,15 +1,15 @@
-﻿
+﻿@using Resources
 <div class="card p-3 shadow mb-4">
     <div class="table-responsive">
         <table id="myDataTable" class="table table-bordered table-striped">
             <thead class="table-light">
                 <tr>
-                    <th>Full Name</th>
-                    <th>UserName</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Phone</th>
-                    <th>Last Login</th>
+                    <th>@GlobalUserManagement.FullName</th>
+                    <th>@GlobalUserManagement.Username</th>
+                    <th>@GlobalUserManagement.Role</th>
+                    <th>@GlobalShared.Status</th>
+                    <th>@GlobalUserManagement.Phone</th>
+                    <th>@GlobalUserManagement.LastLogin</th>
                     <th>Actions</th>
                 </tr>
             </thead>

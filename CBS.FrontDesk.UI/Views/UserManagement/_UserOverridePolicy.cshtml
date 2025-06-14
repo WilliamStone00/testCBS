@@ -1,8 +1,8 @@
 ﻿@model CBS.FrontDesk.Data.UserManagement.User
-
+@using Resources
 <div class="modal-header text-white mb-2">
     <h5 class="modal-title">
-        <i class="fas fa-user-shield me-2"></i> Account Override Policy
+        <i class="fas fa-user-shield me-2"></i> @GlobalUserManagement.AccountOverridePolicy
     </h5>
 </div>
 
@@ -20,46 +20,46 @@
             <!-- 🔐 Override Policy Section -->
             <div class="col-12">
                 <h6 class="text-primary border-bottom pb-1">
-                    <i class="mdi mdi-shield-account-outline me-1"></i> Override Security Rules
+                    <i class="mdi mdi-shield-account-outline me-1"></i> @GlobalUserManagement.OverrideSecurityRules
                 </h6>
             </div>
 
             <div class="col-md-6">
                 <div class="form-check mb-2">
                     @Html.CheckBoxFor(m => m.PolicyOverride.PasswordNeverExpires, new { @class = "form-check-input", id = "PasswordNeverExpires" })
-                    <label class="form-check-label" for="PasswordNeverExpires" data-bs-toggle="tooltip" title="Disables password expiry for this account.">Password Never Expires</label>
+                    <label class="form-check-label" for="PasswordNeverExpires" data-bs-toggle="tooltip" title="@GlobalUserManagement.DisablesPasswordExpiryForThisAccount.">@GlobalUserManagement.PasswordNeverExpires</label>
                 </div>
 
                 <div class="form-check mb-2">
                     @Html.CheckBoxFor(m => m.PolicyOverride.IgnoreMFARequirement, new { @class = "form-check-input", id = "IgnoreMFARequirement" })
-                    <label class="form-check-label" for="IgnoreMFARequirement" data-bs-toggle="tooltip" title="Skips MFA for login. Not recommended for normal users.">Ignore MFA Requirement</label>
+                    <label class="form-check-label" for="IgnoreMFARequirement" data-bs-toggle="tooltip" title="@GlobalUserManagement.SkipsMFAForLoginNotRecommendedForNormalUsers.">@GlobalUserManagement.IgnoreMFARequirement</label>
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="form-check mb-2">
                     @Html.CheckBoxFor(m => m.PolicyOverride.AllowWeakPassword, new { @class = "form-check-input", id = "AllowWeakPassword" })
-                    <label class="form-check-label" for="AllowWeakPassword" data-bs-toggle="tooltip" title="Allows passwords that don't meet policy strength requirements.">Allow Weak Password</label>
+                    <label class="form-check-label" for="AllowWeakPassword" data-bs-toggle="tooltip" title="@GlobalUserManagement.AllowsPasswordsThatDontMeetPolicyStrengthRequirements.">@GlobalUserManagement.AllowWeakPassword</label>
                 </div>
 
                 <div class="form-check mb-2">
                     @Html.CheckBoxFor(m => m.PolicyOverride.BypassLockoutPolicy, new { @class = "form-check-input", id = "BypassLockoutPolicy" })
-                    <label class="form-check-label" for="BypassLockoutPolicy" data-bs-toggle="tooltip" title="Prevents the account from being locked due to multiple failed login attempts.">Bypass Lockout Policy</label>
+                    <label class="form-check-label" for="BypassLockoutPolicy" data-bs-toggle="tooltip" title="@GlobalUserManagement.PreventsTheAccountFromBeingLockedDueToMultipleFailedLoginAttempts.">@GlobalUserManagement.BypassLockoutPolicy</label>
                 </div>
             </div>
 
             <div class="col-md-12">
                 <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.PolicyOverride.CustomExpiryDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", placeholder = "Custom Expiry Date" })
+                    @Html.TextBoxFor(m => m.PolicyOverride.CustomExpiryDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", placeholder = @GlobalUserManagement.CustomExpiryDate })
                     @Html.ValidationMessageFor(m => m.PolicyOverride.CustomExpiryDate, "", new { @class = "text-danger" })
-                    <label>Custom Expiry Date</label>
+                    <label>@GlobalUserManagement.CustomExpiryDate</label>
                 </div>
             </div>
 
             <!-- ✅ Submit -->
             <div class="col-12 text-end mt-4">
                 <button type="submit" class="btn btn-primary shadow-sm px-4">
-                    <i class="fas fa-save me-1"></i> Save Policy
+                    <i class="fas fa-save me-1"></i> @GlobalUserManagement.SavePolicy
                 </button>
             </div>
         </div>

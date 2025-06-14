@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.VaultManagement.Vault
-
+@using Resources
 
 @using (Html.BeginForm("VaultInitialization", "Vault", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
@@ -11,7 +11,7 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.VaultInitializationCommand.AmountInHand, new { @class = "form-control formatted-amount shadow-box", @id = "AmountInHand", @oninput = "calculateTotalAmount()" })
                     @Html.ValidationMessageFor(m => m.VaultInitializationCommand.AmountInHand, "", new { @class = "text-danger" })
-                    <label for="AmountInHand">Cash in Hand</label>
+                    <label for="AmountInHand">@GlobalVault.CashInHand</label>
                 </div>
             </div>
             <!-- Cash in Vault -->
@@ -19,7 +19,7 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.VaultInitializationCommand.AmountInVault, new { @class = "form-control formatted-amount shadow-box", @id = "AmountInVault", @oninput = "calculateTotalAmount()" })
                     @Html.ValidationMessageFor(m => m.VaultInitializationCommand.AmountInVault, "", new { @class = "text-danger" })
-                    <label for="AmountInVault">Cash in Vault</label>
+                    <label for="AmountInVault">@GlobalVault.CashInVault</label>
                 </div>
             </div>
 
@@ -28,19 +28,19 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.VaultInitializationCommand.TotalAmount, new { @class = "form-control formatted-amount shadow-box", @readonly = "readonly", @id = "TotalAmount" })
                     @Html.ValidationMessageFor(m => m.VaultInitializationCommand.TotalAmount, "", new { @class = "text-danger" })
-                    <label for="TotalAmount">Total Cash In @Session["BranchName"]</label>
+                    <label for="TotalAmount">@GlobalVault.TotalCashIn @Session["BranchName"]</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     <span class="formatted-amount shadow-box float-start" id="balanceBroughtForward">
-                        Balance Brought Forward: 0 XAF
+                        @GlobalVault.BalanceBroughtForward: 0 XAF
                     </span>
                 </div>
             </div>
             <div class="col-md-6" hidden="hidden">
                 <div class="form-floating form-floating-outline">
-                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalVault.TotalAmount: 0.0</span>
                     <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                     <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="0">
                 </div>
@@ -48,7 +48,7 @@
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     <span class="formatted-amount shadow-box" id="lblBalance">
-                        Balance: 0 XAF
+                        @GlobalVault.Balance: 0 XAF
                     </span>
                 </div>
             </div>
@@ -173,19 +173,19 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.VaultInitializationCommand.Note, new { @class = "form-control", @style = "height: 90px;" })
                     @Html.ValidationMessageFor(m => m.VaultInitializationCommand.Note, "", new { @class = "text-danger " })
-                    <label for="formValidationDob">Drop a note</label>
+                    <label for="formValidationDob">@GlobalVault.DropANote</label>
                 </div>
             </div>
             <!-- Checkbox for CanProceed -->
             <div class="col-md-12 d-flex align-items-center">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.VaultInitializationCommand.CanProceed, new { @class = "form-check-input", @id = "canProceedCheckbox", @onchange = "toggleExecution()" })
-                    <label class="form-check-label" for="canProceedCheckbox">Can Proceed to execute deficits or supplus</label>
+                    <label class="form-check-label" for="canProceedCheckbox">@GlobalVault.CanProceedToExecuteDeficitsOrSupplus</label>
                 </div>
             </div>
         </div>
         <div class="mt-4">
-            <button type="submit" id="btnSave" class="btn btn-primary me-2">Initialize vailt</button>
+            <button type="submit" id="btnSave" class="btn btn-primary me-2">@GlobalVault.InitializeVault</button>
         </div>
     </fieldset>
 }

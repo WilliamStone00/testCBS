@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.WithdrawalNotificationForm
-
+@using Resources
 
 <table class="table">
     <thead>
@@ -9,21 +9,21 @@
     </thead>
     <tbody>
         <tr>
-            <td><strong>Reference Code:</strong></td>
+            <td><strong>@GlobalWithdrawalNotification.ReferenceCode:</strong></td>
             <td><span id="calculatedBalance">@Model.WithdrawalNotification.TransactionReference</span></td>
         </tr>
         <tr>
-            <td><strong>Member:</strong></td>
+            <td><strong>@GlobalWithdrawalNotification.Member:</strong></td>
             <td><span id="notes10000Required">@Model.Customer.name</span></td>
         </tr>
         <tr>
-            <td><strong>Photo:</strong></td>
+            <td><strong>@GlobalWithdrawalNotification.Photo:</strong></td>
             <td>
-                <img id="customerPhoto" src="@Model.Customer.photoUrl" alt="Customer Photo" style="max-width: 100px; height: auto;">
+                <img id="customerPhoto" src="@Model.Customer.photoUrl" alt="@GlobalWithdrawalNotification.CustomerPhoto" style="max-width: 100px; height: auto;">
             </td>
         </tr>
         <tr>
-            <td><strong>Telephone:</strong></td>
+            <td><strong>@GlobalWithdrawalNotification.Telephone:</strong></td>
             <td><span id="notes2000Required">@Model.Customer.Phone</span></td>
         </tr>
        
@@ -32,65 +32,65 @@
     </tbody>
     <thead>
         <tr>
-            <th colspan="2" class="separation-text"><h5 class="card-title">REQUEST INFO</h5></th>
+            <th colspan="2" class="separation-text"><h5 class="card-title">@GlobalWithdrawalNotification.REQUESTINFO</h5></th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td><strong>Request date:</strong></td>
+            <td><strong>@GlobalWithdrawalNotification.RequestDate:</strong></td>
             <td><span id="notes5000Required">@Model.WithdrawalNotification.NotificationDate.ToShortDateString()</span></td>
         </tr>
         <tr>
-            <td><strong>Requested amount:</strong></td>
+            <td><strong>@GlobalWithdrawalNotification.RequestedAmount:</strong></td>
             <td><span id="notes5000Required">@Model.WithdrawalNotification.AmountRequired.ToString("#,##0.0 XAF")</span></td>
         </tr>
         <tr>
-            <td><strong>Account number:</strong></td>
+            <td><strong>@GlobalWithdrawalNotification.AccountNumber:</strong></td>
             <td><span id="coins100Required">@Model.WithdrawalNotification.AccountNumber</span></td>
         </tr>
         <tr>
-            <td><strong>Reason:</strong></td>
+            <td><strong>@GlobalWithdrawalNotification.Reason:</strong></td>
             <td><span id="coins50Required">@Model.WithdrawalNotification.ReasonForWithdrawal</span></td>
         </tr>
         <tr>
-            <td><strong>Intended date of withdrawal:</strong></td>
+            <td><strong>@GlobalWithdrawalNotification.IntendedDateOfWithdrawal:</strong></td>
             <td><span id="notes5000Required">@Model.WithdrawalNotification.DateOfIntendedWithdrawal.ToShortDateString()</span></td>
         </tr>
         <tr>
-            <td><strong>Grace period:</strong></td>
+            <td><strong>@GlobalWithdrawalNotification.GracePeriod:</strong></td>
             <td><span id="notes5000Required">@Model.WithdrawalNotification.GracePeriodDate.ToShortDateString()</span></td>
         </tr>
 
         <tr>
-            <td><strong>Initiated by:</strong></td>
+            <td><strong>@GlobalWithdrawalNotification.InitiatedBy:</strong></td>
             <td><span id="notes5000Required">@Model.WithdrawalNotification.ServiceClearName</span></td>
         </tr>
         <tr>
-            <td><strong>Status:</strong></td>
+            <td><strong>@GlobalShared.Status:</strong></td>
             <td><span id="notes5000Required">@Model.WithdrawalNotification.ApprovalStatus, By @Model.WithdrawalNotification.ApprovedByName</span></td>
         </tr>
         <tr>
-            <td><strong>Comment:</strong></td>
+            <td><strong>@GlobalWithdrawalNotification.Comment:</strong></td>
             <td><span id="notes5000Required">@Model.WithdrawalNotification.ApprovalComment</span></td>
         </tr>
         <tr>
-            <td><strong>Approved date:</strong></td>
+            <td><strong>@GlobalWithdrawalNotification.ApprovedDate:</strong></td>
             <td><span id="notes5000Required">@Model.WithdrawalNotification.ApprovalDate.ToShortDateString()</span></td>
         </tr>
         <tr>
-            <td><strong>Form fee:</strong></td>
+            <td><strong>@GlobalWithdrawalNotification.FormFee:</strong></td>
             <td><span id="notes5000Required">@Model.WithdrawalNotification.FormNotificationCharge.ToString("#,##0")</span></td>
         </tr>
         <tr>
-            <td><strong>Is the form fee paid:</strong></td>
+            <td><strong>@GlobalWithdrawalNotification.IsTheFormFeePaid:</strong></td>
             <td><span id="notes5000Required">@Model.WithdrawalNotification.IsNotificationPaid</span></td>
         </tr>
         <tr>
-            <td><strong>Is withdrawal done:</strong></td>
+            <td><strong>@GlobalWithdrawalNotification.IsWithdrawalDone:</strong></td>
             <td><span id="notes5000Required">@Model.WithdrawalNotification.IsWithdrawalDone, Date: @Model.WithdrawalNotification.DateWithdrawalWasDone</span></td>
         </tr>
         <tr>
-            <td><strong>Cashier:</strong></td>
+            <td><strong>@GlobalWithdrawalNotification.Cashier:</strong></td>
             <td><span id="notes5000Required">@Model.WithdrawalNotification.TellerCaise, @Model.WithdrawalNotification.TellerName </span></td>
         </tr>
            </tbody>

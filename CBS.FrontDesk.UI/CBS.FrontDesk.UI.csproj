@@ -771,6 +771,46 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalTellerCashDemand.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\TellerManagement\GlobalTellerManagement.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalTellerManagement.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\TellerProvissioing\GlobalTellerProvissioing.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalTellerProvissioing.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ThirdPartyBranch\GlobalThirdPartyBranch.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalThirdPartyBranch.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ThirdPartyInstitution\GlobalThirdPartyInstitution.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalThirdPartyInstitution.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\TransactionReversal\GlobalTransactionReversal.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalTransactionReversal.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\UserManagement\GlobalUserManagement.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalUserManagement.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Vault\GlobalVault.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalVault.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\WithdrawalNotification\GlobalWithdrawalNotification.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalWithdrawalNotification.resx</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
     <Compile Include="Controllers\Accounting\AccountEntry.cs" />
@@ -5174,6 +5214,38 @@
     <Content Include="App_GlobalResources\TellerCashDemand\GlobalTellerCashDemand.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalTellerCashDemand.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\TellerManagement\GlobalTellerManagement.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalTellerManagement.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\TellerProvissioing\GlobalTellerProvissioing.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalTellerProvissioing.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ThirdPartyBranch\GlobalThirdPartyBranch.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalThirdPartyBranch.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ThirdPartyInstitution\GlobalThirdPartyInstitution.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalThirdPartyInstitution.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\TransactionReversal\GlobalTransactionReversal.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalTransactionReversal.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\UserManagement\GlobalUserManagement.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalUserManagement.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Vault\GlobalVault.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalVault.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\WithdrawalNotification\GlobalWithdrawalNotification.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalWithdrawalNotification.Designer.cs</LastGenOutput>
     </Content>
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>

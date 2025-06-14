@@ -1,8 +1,8 @@
 ﻿@model CBS.FrontDesk.Data.UserManagement.User
-
+ @using Resources
 <div class="modal-header text-white mb-2">
     <h5 class="modal-title">
-        <i class="fas fa-user-tag me-2"></i> Change User Role
+        <i class="fas fa-user-tag me-2"></i> @GlobalUserManagement.ChangeUserRole
     </h5>
 </div>
 
@@ -14,9 +14,9 @@
 
         <div class="row mb-4">
             <div class="col-12">
-                <label class="form-label fw-bold text-secondary">Select Role</label>
+                <label class="form-label fw-bold text-secondary">@GlobalUserManagement.SelectRole</label>
                 <div class="shadow-sm rounded">
-                    @Html.DropDownListFor(m => m.roleID, new SelectList(ViewBag.Roles, "Value", "Text"), "---Select Role---", new { @class = "form-control select2" })
+                    @Html.DropDownListFor(m => m.roleID, new SelectList(ViewBag.Roles, "Value", "Text"), "---"+@GlobalUserManagement.SelectRole+"---", new { @class = "form-control select2" })
                 </div>
             </div>
         </div>
@@ -24,7 +24,7 @@
 
         <div class="col-12 text-end">
             <button type="submit" class="btn btn-primary">
-                <i class="fas fa-user-check me-1"></i> Update Role
+                <i class="fas fa-user-check me-1"></i> @GlobalUserManagement.UpdateRole
             </button>
         </div>
     }

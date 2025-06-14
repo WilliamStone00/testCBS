@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.UserManagement.User
-
+@using Resources
 @{
     ViewBag.Title = "User Account Manager";
 }
@@ -35,10 +35,10 @@
         <div class="card bg-light mb-2 shadow-sm">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-group-outline me-2"></i> USER ACCOUNT MANAGER [@Model.name.ToUpper()]
+                    <i class="mdi mdi-account-group-outline me-2"></i> @GlobalUserManagement.USER_ACCOUNT_MANAGER [@Model.name.ToUpper()]
                 </h1>
                 <p class="card-text">
-                    Manage user accounts, credentials, roles, MFA, sessions, recovery codes, and permissions in one place. Ensure secure access and user management across your organization.
+                    @GlobalUserManagement.ManageUserAccountsCredentialsRolesMFASessions.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -49,7 +49,7 @@
 <!-- Tips Section -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> Security & Profile Tips</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalUserManagement.SecurityProfileTips</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUserTips" aria-expanded="false" aria-controls="collapseUserTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -57,24 +57,24 @@
     <div id="collapseUserTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0 list-unstyled ps-2">
-                <li class="mb-2"><i class="mdi mdi-account-edit-outline text-primary me-2"></i><strong>Keep your profile updated:</strong> Ensure your name, email, phone, and address are accurate at all times.</li>
-                <li class="mb-2"><i class="mdi mdi-lock-reset text-primary me-2"></i><strong>Reset your password regularly:</strong> Change your password every 90 days or sooner if compromised.</li>
-                <li class="mb-2"><i class="mdi mdi-shield-key-outline text-info me-2"></i><strong>Enable MFA:</strong> Add Multi-Factor Authentication to protect your account against unauthorized access.</li>
-                <li class="mb-2"><i class="mdi mdi-shield-refresh-outline text-success me-2"></i><strong>Regenerate recovery codes:</strong> Do this after a password reset or suspected compromise.</li>
-                <li class="mb-2"><i class="mdi mdi-clock-outline text-warning me-2"></i><strong>Session timeout:</strong> Sessions automatically expire after <strong>1 hour</strong> of inactivity for security.</li>
-                <li class="mb-2"><i class="mdi mdi-lock-alert-outline text-danger me-2"></i><strong>Account lockout:</strong> Multiple failed logins will temporarily lock your account. Contact an admin for reactivation.</li>
-                <li class="mb-2"><i class="mdi mdi-calendar-alert text-warning me-2"></i><strong>Password expiration:</strong> Passwords older than 90 days will require updating.</li>
-                <li class="mb-2"><i class="mdi mdi-account-key-outline text-info me-2"></i><strong>Verify your contacts:</strong> Email and phone must be verified to receive alerts and recovery links.</li>
-                <li class="mb-2"><i class="mdi mdi-bank-outline text-secondary me-2"></i><strong>Role and branch accuracy:</strong> Ensure your assigned branch and roles reflect your responsibilities.</li>
-                <li class="mb-2"><i class="mdi mdi-clock-alert-outline text-warning me-2"></i><strong>Inactivity suspension:</strong> Accounts inactive for over <strong>30 days</strong> may be automatically suspended.</li>
+                <li class="mb-2"><i class="mdi mdi-account-edit-outline text-primary me-2"></i><strong>@GlobalUserManagement.KeepYourProfileUpdated:</strong> @GlobalUserManagement.EnsureYourNameEmailPhoneAndAddressAreAccurateAtAllTimes.</li>
+                <li class="mb-2"><i class="mdi mdi-lock-reset text-primary me-2"></i><strong>@GlobalUserManagement.ResetYourPasswordRegularly:</strong> @GlobalUserManagement.ChangeYourPasswordEvery90DaysOrSoonerIfCompromised.</li>
+                <li class="mb-2"><i class="mdi mdi-shield-key-outline text-info me-2"></i><strong>@GlobalUserManagement.EnableMFA:</strong> @GlobalUserManagement.AddMultiFactorAuthenticationToProtectYourAccountAgainstUnauthorizedAccess.</li>
+                <li class="mb-2"><i class="mdi mdi-shield-refresh-outline text-success me-2"></i><strong>@GlobalUserManagement.RegenerateRecoveryCodes:</strong> @GlobalUserManagement.DoThisAfterAPasswordResetOrSuspectedCompromise.</li>
+                <li class="mb-2"><i class="mdi mdi-clock-outline text-warning me-2"></i><strong>@GlobalUserManagement.SessionTimeout:</strong> @GlobalUserManagement.SessionsAutomaticallyExpireAfter <strong>@GlobalUserManagement._1hour</strong> @GlobalUserManagement.ofInactivityForSecurity.</li>
+                <li class="mb-2"><i class="mdi mdi-lock-alert-outline text-danger me-2"></i><strong>@GlobalUserManagement.AccountLockout:</strong> @GlobalUserManagement.MultipleFailedLoginsWillTemporarilyLockYourAccount.</li>
+                <li class="mb-2"><i class="mdi mdi-calendar-alert text-warning me-2"></i><strong>@GlobalUserManagement.PasswordExpiration:</strong> @GlobalUserManagement.PasswordsOlderThan90DaysWillRequireUpdating.</li>
+                <li class="mb-2"><i class="mdi mdi-account-key-outline text-info me-2"></i><strong>@GlobalUserManagement.VerifyYourContacts:</strong> @GlobalUserManagement.EmailAndPhoneMustBeVerifiedToReceiveAlertsAndRecoveryLinks.</li>
+                <li class="mb-2"><i class="mdi mdi-bank-outline text-secondary me-2"></i><strong>@GlobalUserManagement.RoleAndBranchAccuracy:</strong> @GlobalUserManagement.EnsureYourAssignedBranchAndRolesReflectYourResponsibilities.</li>
+                <li class="mb-2"><i class="mdi mdi-clock-alert-outline text-warning me-2"></i><strong>@GlobalUserManagement.Suspension:</strong> @GlobalUserManagement.AccountsInactiveForOver <strong>@GlobalUserManagement._30Days</strong> @GlobalUserManagement.mayBeAutomaticallySuspended.</li>
 
                 <li>
-                    <i class="mdi mdi-shield-alert-outline text-warning me-2"></i><strong>Best practices:</strong>
+                    <i class="mdi mdi-shield-alert-outline text-warning me-2"></i><strong>@GlobalUserManagement.BestPractices:</strong>
                     <ul class="ms-4 mt-1">
-                        <li><i class="mdi mdi-check-bold text-success me-1"></i> Never share your password or recovery code.</li>
-                        <li><i class="mdi mdi-check-bold text-success me-1"></i> Use complex passwords with upper/lowercase, numbers, and symbols.</li>
-                        <li><i class="mdi mdi-check-bold text-success me-1"></i> Be alert to unfamiliar devices or login locations.</li>
-                        <li><i class="mdi mdi-check-bold text-success me-1"></i> Log out from shared or public devices after use.</li>
+                        <li><i class="mdi mdi-check-bold text-success me-1"></i> @GlobalUserManagement.NeverShareYourPasswordOrRecoveryCode.</li>
+                        <li><i class="mdi mdi-check-bold text-success me-1"></i> @GlobalUserManagement.UseComplexPasswordsWithUpperLowercaseNumbersAndSymbols.</li>
+                        <li><i class="mdi mdi-check-bold text-success me-1"></i> @GlobalUserManagement.BeAlertToUnfamiliarDevicesOrLoginLocations.</li>
+                        <li><i class="mdi mdi-check-bold text-success me-1"></i> @GlobalUserManagement.LogOutFromSharedOrPublicDevicesAfterUse.</li>
                     </ul>
                 </li>
             </ul>
@@ -85,10 +85,10 @@
 <div class="card-header text-body d-flex align-items-center justify-content-between">
     <div>
         <i class="fas fa-user-plus me-2"></i>
-        <h5 class="d-inline mb-0">ACCOUNT MANAGER</h5>
+        <h5 class="d-inline mb-0">@GlobalUserManagement.ACCOUNT_MANAGER</h5>
     </div>
-    <a href="/UserManagement" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Back to Users List">
-        <i class="mdi mdi-view-list me-1"></i> View Users
+    <a href="/UserManagement" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="@GlobalUserManagement.BackToUsersList">
+        <i class="mdi mdi-view-list me-1"></i> @GlobalUserManagement.ViewUsers
     </a>
 </div>
 <div class="row">
@@ -97,18 +97,18 @@
         <div class="card h-100 shadow-sm border">
             <div class="card-body p-2">
                 <div class="nav flex-column nav-pills nav-flat" id="userAccountTabs" role="tablist" aria-orientation="vertical">
-                    <a class="nav-link active" id="vtab-awareness" data-bs-toggle="pill" href="#tab-awareness" role="tab" aria-selected="true">Security Awareness</a>
-                    <a class="nav-link" id="vtab-profile" data-bs-toggle="pill" href="#tab-profile" role="tab" aria-selected="false">Update Profile</a>
-                    <a class="nav-link" id="vtab-reset" data-bs-toggle="pill" href="#tab-reset" role="tab" aria-selected="false">Reset Password</a>
-                    <a class="nav-link" id="vtab-activation" data-bs-toggle="pill" href="#tab-activation" role="tab" aria-selected="false">Activate/Deactivate</a>
-                    <a class="nav-link" id="vtab-mfa" data-bs-toggle="pill" href="#tab-mfa" role="tab" aria-selected="false">MFA Status</a>
-                    <a class="nav-link" id="vtab-role" data-bs-toggle="pill" href="#tab-role" role="tab" aria-selected="false">Change Role</a>
-                    <a class="nav-link" id="vtab-branch" data-bs-toggle="pill" href="#tab-branch" role="tab" aria-selected="false">Change Branch</a>
-                    <a class="nav-link" id="vtab-session" data-bs-toggle="pill" href="#tab-session" role="tab" aria-selected="false">User Sessions</a>
-                    <a class="nav-link" id="vtab-recovery" data-bs-toggle="pill" href="#tab-recovery" role="tab" aria-selected="false">Recovery Code</a>
-                    <a class="nav-link" id="vtab-permission" data-bs-toggle="pill" href="#tab-permission" role="tab" aria-selected="false">User Permissions</a>
-                    <a class="nav-link" id="vtab-actions" data-bs-toggle="pill" href="#tab-actions" role="tab" aria-selected="false">Action Logs</a>
-                    <a class="nav-link" id="vtab-override" data-bs-toggle="pill" href="#tab-override" role="tab" aria-selected="false">Override Policy</a>
+                    <a class="nav-link active" id="vtab-awareness" data-bs-toggle="pill" href="#tab-awareness" role="tab" aria-selected="true">@GlobalUserManagement.SecurityAwareness</a>
+                    <a class="nav-link" id="vtab-profile" data-bs-toggle="pill" href="#tab-profile" role="tab" aria-selected="false">@GlobalUserManagement.UpdateProfile</a>
+                    <a class="nav-link" id="vtab-reset" data-bs-toggle="pill" href="#tab-reset" role="tab" aria-selected="false">@GlobalUserManagement.ResetPassword</a>
+                    <a class="nav-link" id="vtab-activation" data-bs-toggle="pill" href="#tab-activation" role="tab" aria-selected="false">@GlobalUserManagement.ActivateDeactivate</a>
+                    <a class="nav-link" id="vtab-mfa" data-bs-toggle="pill" href="#tab-mfa" role="tab" aria-selected="false">@GlobalUserManagement.MFAStatus</a>
+                    <a class="nav-link" id="vtab-role" data-bs-toggle="pill" href="#tab-role" role="tab" aria-selected="false">@GlobalUserManagement.ChangeRole</a>
+                    <a class="nav-link" id="vtab-branch" data-bs-toggle="pill" href="#tab-branch" role="tab" aria-selected="false">@GlobalUserManagement.ChangeBranch</a>
+                    <a class="nav-link" id="vtab-session" data-bs-toggle="pill" href="#tab-session" role="tab" aria-selected="false">@GlobalUserManagement.UserSessions</a>
+                    <a class="nav-link" id="vtab-recovery" data-bs-toggle="pill" href="#tab-recovery" role="tab" aria-selected="false">@GlobalUserManagement.RecoveryCode</a>
+                    <a class="nav-link" id="vtab-permission" data-bs-toggle="pill" href="#tab-permission" role="tab" aria-selected="false">@GlobalUserManagement.UserPermissions</a>
+                    <a class="nav-link" id="vtab-actions" data-bs-toggle="pill" href="#tab-actions" role="tab" aria-selected="false">@GlobalUserManagement.ActionLogs</a>
+                    <a class="nav-link" id="vtab-override" data-bs-toggle="pill" href="#tab-override" role="tab" aria-selected="false">@GlobalUserManagement.OverridePolicy</a>
                 </div>
             </div>
         </div>

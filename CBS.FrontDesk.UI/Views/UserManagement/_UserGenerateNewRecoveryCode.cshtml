@@ -1,8 +1,8 @@
 ﻿@model CBS.FrontDesk.Data.UserManagement.User
-
+@using Resources
 <div class="modal-header text-white mb-2">
     <h5 class="modal-title">
-        <i class="fas fa-shield-alt me-2"></i> Generate New Session Recovery Code
+        <i class="fas fa-shield-alt me-2"></i> @GlobalUserManagement.GenerateNewSessionRecoveryCode
     </h5>
 </div>
 
@@ -16,25 +16,25 @@
             <div class="col-12">
                 <div class="form-floating shadow-sm">
                     <input type="text" class="form-control" id="oldCode" value="@Model.SessionRecoveryCode" readonly />
-                    <label>Current Recovery Code</label>
+                    <label>@GlobalUserManagement.CurrentRecoveryCode</label>
                 </div>
-                <small class="text">This is the currently assigned session recovery code.</small>
+                <small class="text">@GlobalUserManagement.ThisIsTheCurrentlyAssignedSessionRecoveryCode.</small>
             </div>
         </div>
 
         <div class="alert alert-info mt-4">
-            <h6><i class="fas fa-info-circle me-1"></i> Why regenerate a recovery code?</h6>
+            <h6><i class="fas fa-info-circle me-1"></i> @GlobalUserManagement.WhyRegenerateARecoveryCode?</h6>
             <ul class="mb-0 ps-3">
-                <li>To revoke an existing code that may have been exposed.</li>
-                <li>When users suspect unauthorized access to their account.</li>
-                <li>As a regular security hygiene best practice.</li>
-                <li>Recovery codes are used to invalidate all open sessions and regain exclusive access.</li>
+                <li>@GlobalUserManagement.ToRevokeAnExistingCodeThatMayHaveBeenExposed.</li>
+                <li>@GlobalUserManagement.WhenUsersSuspectUnauthorizedAccessToTheirAccount.</li>
+                <li>@GlobalUserManagement.aRegularSecurityHygieneBestPractice.</li>
+                <li>@GlobalUserManagement.codesAreUsedToInvalidateAllOpenSessions.</li>
             </ul>
         </div>
 
         <div class="text-end mt-3">
             <button type="submit" class="btn btn-primary shadow-sm">
-                <i class="fas fa-sync-alt me-1"></i> Generate New Code
+                <i class="fas fa-sync-alt me-1"></i> @GlobalUserManagement.GenerateNewCode
             </button>
         </div>
     }

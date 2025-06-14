@@ -1,16 +1,16 @@
 ﻿@{
     ViewBag.Title = "Teller Management";
 }
-
+@using Resources
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12">
         <div class="card">
             <div class="card-header text-center">
                 <h4 class="card-title text-primary">
-                    <i class="mdi mdi-cash-multiple me-2"></i> Teller's Account Management
+                    <i class="mdi mdi-cash-multiple me-2"></i> @GlobalTellerManagement.TellersAccountManagement
                 </h4>
                 <p class="card-text text-muted">
-                    Manage and configure teller accounts effectively. Use the options below to view, add, or update tellers.
+                    @GlobalTellerManagement.ManageAndConfigureTellerAccountsEffectively.
                 </p>
             </div>
             <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
@@ -23,7 +23,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-cash-multiple me-2"></i> Manage Teller Accounts
+                            <i class="mdi mdi-cash-multiple me-2"></i> @GlobalTellerManagement.ManageTellerAccounts
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -41,16 +41,16 @@
                                                    onclick="LoadDataGen('TellerManagement', 'myDataTable', '_PrimaryTellerData', 0, 'datalistingview', null, null, 'list')"
                                                    class="btn btn-default btn-sm"
                                                    data-bs-toggle="tooltip"
-                                                   title="View the list of tellers">
-                                                    <i class="mdi mdi-view-list mdi-18px"></i> View List
+                                                   title="@GlobalTellerManagement.ViewTheListOfTellers">
+                                                    <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
                                                 </a>
                                                 <!-- Add New Button -->
                                                 <a type="button"
                                                    onclick="AddORUpdateGen(null, 'datalistingview', '_PrimaryTeller', 'new', 'TellerManagement', null)"
                                                    class="btn btn-default btn-sm"
                                                    data-bs-toggle="tooltip"
-                                                   title="Add a new teller">
-                                                    <i class="mdi mdi-plus mdi-18px"></i> Add New
+                                                   title="@GlobalTellerManagement.AddANewTeller">
+                                                    <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.AddNew
                                                 </a>
                                             </div>
                                         </div>

@@ -1,11 +1,11 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.TransactionReversal
-
+@using Resources
 
 
 @using (Html.BeginForm("Create", "TransactionReversal", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
     <fieldset class="fieldset-custom">
-        <legend id="select_base">Approval Form</legend>
+        <legend id="select_base">@GlobalTransactionReversal.ApprovalForm</legend>
         <br />
         <input type="hidden" name="Option" value="approved" id="Option" />
         @Html.HiddenFor(model => model.ApprovedReversalRequestCommand.Id)
@@ -15,13 +15,13 @@
             <div class="col-3">
                 <div class="form-check">
                     @Html.RadioButtonFor(m => m.ApprovedReversalRequestCommand.Status, "Approved", new { @class = "form-check-input", id = "Approved" })
-                    <label class="form-check-label" for="Approved">Approved</label>
+                    <label class="form-check-label" for="Approved">@GlobalShared.Approved</label>
                 </div>
             </div>
             <div class="col-3">
                 <div class="form-check">
                     @Html.RadioButtonFor(m => m.ApprovedReversalRequestCommand.Status, "Rejected", new { @class = "form-check-input", id = "Rejected" })
-                    <label class="form-check-label" for="Rejected">Rejected</label>
+                    <label class="form-check-label" for="Rejected">@GlobalShared.Rejected</label>
                 </div>
             </div>
         </div>
@@ -31,12 +31,12 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextAreaFor(m => m.ApprovedReversalRequestCommand.ApprovedComment, new { @class = "form-control", @style = "height: 150px;" })
                 @Html.ValidationMessageFor(m => m.ApprovedReversalRequestCommand.ApprovedComment, "", new { @class = "text-danger " })
-                <label>Comment</label>
+                <label>@GlobalTransactionReversal.Comment</label>
             </div>
         </div>
     </div>
         <div class="mt-4">
-            <button type="submit" id="btnSave" class="btn btn-primary me-2">Approval Request</button>
+            <button type="submit" id="btnSave" class="btn btn-primary me-2">@GlobalTransactionReversal.ApprovalRequest</button>
         </div>
     </fieldset>
 }

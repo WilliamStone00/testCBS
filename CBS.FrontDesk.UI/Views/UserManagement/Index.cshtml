@@ -1,19 +1,19 @@
 ﻿@{
     ViewBag.Title = "User Management Overview";
 }
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-group me-2"></i> USER MANAGEMENT
+                    <i class="mdi mdi-account-group me-2"></i> @GlobalUserManagement.USER_MANAGEMENT
                 </h1>
                 <p class="card-text">
-                    Manage system users, track roles and statuses, and apply filters to search by user details, status, and organization unit.
+                    @GlobalUserManagement.ManageSystemUsersTrackRolesAndStatuses.
                 </p>
                 <p class="card-text text-black fw-bold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use filters like role, branch, and date to manage and audit user access effectively.
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalUserManagement.UseFiltersLikeRoleBranchAndDateToManage.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -23,7 +23,7 @@
 
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR USER FILTERING</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalUserManagement.TIPS_FOR_USER_FILTERING</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -31,11 +31,11 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-account-check-outline text-success me-2"></i><strong>Role:</strong> Filter users by assigned role.</li>
-                <li><i class="mdi mdi-office-building text-primary me-2"></i><strong>Branch:</strong> View users by organizational branch.</li>
-                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>Created Date:</strong> Narrow by registration period.</li>
-                <li><i class="mdi mdi-toggle-switch text-warning me-2"></i><strong>Status:</strong> Filter by active, blocked, or verification status.</li>
-                <li><i class="mdi mdi-refresh text-info me-2"></i><strong>Refresh:</strong> Ensure data is up to date.</li>
+                <li><i class="mdi mdi-account-check-outline text-success me-2"></i><strong>@GlobalUserManagement.Role:</strong> @GlobalUserManagement.FilterUsersByAssignedRole.</li>
+                <li><i class="mdi mdi-office-building text-primary me-2"></i><strong>@GlobalUserManagement.Branch:</strong> @GlobalUserManagement.ViewUsersByOrganizationalBranch.</li>
+                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>@GlobalUserManagement.CreatedDate:</strong> @GlobalUserManagement.NarrowByRegistrationPeriod.</li>
+                <li><i class="mdi mdi-toggle-switch text-warning me-2"></i><strong>@GlobalShared.Status:</strong> @GlobalUserManagement.FilterByActiveBlockedOrVerificationStatus.</li>
+                <li><i class="mdi mdi-refresh text-info me-2"></i><strong>@GlobalUserManagement.Refresh:</strong> @GlobalUserManagement.EnsureDataIsUpToDate.</li>
             </ul>
         </div>
     </div>
@@ -43,82 +43,82 @@
 <div class="row mb-3">
     <div class="col-12 text-end">
         <a href="@Url.Action("Create", "UserManagement")" class="btn btn-primary shadow-sm">
-            <i class="mdi mdi-account-plus-outline me-1"></i> Create New User
+            <i class="mdi mdi-account-plus-outline me-1"></i> @GlobalUserManagement.CreateNewUser
         </a>
     </div>
 </div>
 
 <div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Advanced User Filters</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalUserManagement.AdvancedUserFilters</h5>
     <div class="card p-3 mb-3 bg-light">
         <div class="row mb-3">
             <div class="col-md-4 form-check">
                 <input type="checkbox" class="form-check-input" id="byBranch" />
-                <label class="form-check-label fw-bold" for="byBranch">Filter by branch name</label>
+                <label class="form-check-label fw-bold" for="byBranch">@GlobalUserManagement.FilterByBranchName</label>
             </div>
             <div class="col-md-4 form-check">
                 <input type="checkbox" class="form-check-input" id="byUser" />
-                <label class="form-check-label fw-bold" for="byUser">Filter by user names</label>
+                <label class="form-check-label fw-bold" for="byUser">@GlobalUserManagement.FilterByUserNames</label>
             </div>
             <div class="col-md-4 form-check">
                 <input type="checkbox" class="form-check-input" id="byDate" />
-                <label class="form-check-label fw-bold" for="byDate">Filter By last login dates</label>
+                <label class="form-check-label fw-bold" for="byDate">@GlobalUserManagement.FilterByLastLoginDates</label>
             </div>
         </div>
 
         <div id="branchFilterSection" class="row mb-3" style="display:none;">
             <div class="col-md-12">
-                <label class="form-label fw-bold">Select Branch</label>
-                @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", id = "branchInput" })
+                <label class="form-label fw-bold">@GlobalUserManagement.SelectBranch</label>
+                @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "---"+ @GlobalUserManagement.SelectBranch +"---", new { @class = "form-control select2", id = "branchInput" })
             </div>
         </div>
-        <input type="hidden" id="userName" class="form-control" placeholder="Username" />
+        <input type="hidden" id="userName" class="form-control" placeholder="@GlobalUserManagement.Username" />
         <div id="userFilterSection" class="row mb-3" style="display:none;">
             @*<div class="col-md-4">
                 <label class="form-label fw-bold">Search by username</label>
                 <input type="text" id="userName" class="form-control" placeholder="Username" />
             </div>*@
             <div class="col-md-6">
-                <label class="form-label fw-bold">Search by firstname [or user name or full name]</label>
-                <input type="text" id="firstName" class="form-control" placeholder="Search by firstname [or user name or full name]" />
+                <label class="form-label fw-bold">@GlobalUserManagement.SearchByFirstnameOrUserNameOrFullName</label>
+                <input type="text" id="firstName" class="form-control" placeholder="@GlobalUserManagement.SearchByFirstnameOrUserNameOrFullName" />
             </div>
             <div class="col-md-6">
-                <label class="form-label fw-bold">Search by lastname [or user name or full name]</label>
-                <input type="text" id="lastName" class="form-control" placeholder="Search by lastname [or user name or full name]" />
+                <label class="form-label fw-bold">@GlobalUserManagement.SearchByLastnameOrUserNameOrFullName</label>
+                <input type="text" id="lastName" class="form-control" placeholder="@GlobalUserManagement.SearchByLastnameOrUserNameOrFullName" />
             </div>
         </div>
         <div id="dateRangeSection" class="row mb-3" style="display:none;">
             <div class="col-md-6">
-                <input type="date" id="createdFrom" class="form-control" placeholder="Created From" />
+                <input type="date" id="createdFrom" class="form-control" placeholder="@GlobalUserManagement.CreatedFrom" />
             </div>
             <div class="col-md-6">
-                <input type="date" id="createdTo" class="form-control" placeholder="Created To" />
+                <input type="date" id="createdTo" class="form-control" placeholder="@GlobalUserManagement.CreatedTo" />
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-3">
                 <select id="isActive" class="form-select">
-                    <option value="true">Active Status [Yes]</option>
-                    <option value="false">Active Status [No]</option>
+                    <option value="true">@GlobalUserManagement.ActiveStatus [@GlobalUserManagement.Yes]</option>
+                    <option value="false">@GlobalUserManagement.ActiveStatus [@GlobalUserManagement.No]</option>
                 </select>
             </div>
             <div class="col-md-3">
                 <select id="isVerified" class="form-select">
-                    <option value="false">Email Verified [No]</option>
-                    <option value="true">Email Verified [Yes]</option>
+                    <option value="false">@GlobalUserManagement.EmailVerified [@GlobalUserManagement.No]</option>
+                    <option value="true">@GlobalUserManagement.EmailVerified [@GlobalUserManagement.Yes]</option>
                 </select>
             </div>
             <div class="col-md-6">
-                <input type="text" id="role" class="form-control" placeholder="Role (optional)" />
+                <input type="text" id="role" class="form-control" placeholder="@GlobalUserManagement.RoleOptional" />
             </div>
         </div>
     </div>
     <div class="row mt-2">
         <div class="col-md-12 d-flex">
-            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
-            <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
-            <button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-export"></i> Export</button>
+            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalUserManagement.ApplyFilter</button>
+            <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset</button>
+            <button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-export"></i> @GlobalShared.Export</button>
         </div>
     </div>
 </div>

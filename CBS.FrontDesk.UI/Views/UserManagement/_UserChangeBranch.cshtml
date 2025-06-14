@@ -1,8 +1,8 @@
 ﻿@model CBS.FrontDesk.Data.UserManagement.User
-
+@using Resources
 <div class="modal-header text-white mb-2">
     <h5 class="modal-title">
-        <i class="fas fa-code-branch me-2"></i> Change User Branch
+        <i class="fas fa-code-branch me-2"></i> @GlobalUserManagement.ChangeUserBranch
     </h5>
 </div>
 
@@ -15,14 +15,14 @@
         <div class="row gy-3">
             <div class="col-12">
                 <div class="form-floating shadow-sm">
-                    @Html.DropDownListFor(m => m.BranchID, new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", id = "branchDropdown" })
-                    <label for="branchDropdown">Select Branch</label>
+                    @Html.DropDownListFor(m => m.BranchID, new SelectList(ViewBag.Branches, "Id", "Name"), "---"+ @GlobalUserManagement.SelectBranch +"---", new { @class = "form-control select2", id = "branchDropdown" })
+                    <label for="branchDropdown">@GlobalUserManagement.SelectBranch</label>
                 </div>
             </div>
 
             <div class="text-end mt-4">
                 <button type="submit" class="btn btn-primary shadow-sm">
-                    <i class="fas fa-check-circle me-1"></i> Change
+                    <i class="fas fa-check-circle me-1"></i> @GlobalUserManagement.Change
                 </button>
             </div>
         </div>
