@@ -81,23 +81,7 @@ namespace CBS.FrontDesk.UI.WAF.Middleware.Core
                 reason = r;
                 return true;
             }
-
-            // 2️⃣ Check for suspicious static path keywords (e.g., "/.env", "/admin.js")
-            if (_pathValidator.HasSuspiciousKeyword(ctx.Path))
-            {
-                var r = $"🚨 Suspicious keyword detected in static path: {ctx.Path}";
-                reason = r;
-                Task.Run(() => _suspiciousHandler.Handle("Static-Path-Suspicious", r, ctx, ctx.FullUrl, "Static-Asset-Filter")).GetAwaiter().GetResult();
-                return true;
-            }
-
-            // ✅ Whitelisted static resources (e.g., .css, .jpg)
-            if (_pathValidator.IsExcludedStaticAssetPath(ctx.Path))
-            {
-                reason = "✅ Skipped WAF for safe static asset";
-                return false;
-            }
-
+            
             // 3️⃣ Validate IP format and perform GeoIP country filtering
             if (!_geoResolver.IsValidIPv4(ctx.Ip))
             {
@@ -122,15 +106,29 @@ namespace CBS.FrontDesk.UI.WAF.Middleware.Core
                 Task.Run(() => _suspiciousHandler.Handle("GeoIP-CIDR", r, ctx, ctx.FullUrl, "GeoIP-CIDR-Restriction")).GetAwaiter().GetResult();
                 return true;
             }
-
-            // 4️⃣ Validate request headers (User-Agent, Referer, Origin, etc.)
-            if (_headerValidator.IsSuspiciousHeaders(ctx, out string headerReason))
+         
+            // ✅ Whitelisted static resources (e.g., .css, .jpg)
+            if (_pathValidator.IsExcludedStaticAssetPath(ctx.Path))
             {
-                var r = headerReason;
+                reason = "✅ Skipped WAF for safe static asset";
+                return false;
+            }
+            // 2️⃣ Check for suspicious static path keywords (e.g., "/.env", "/admin.js")
+            if (_pathValidator.HasSuspiciousKeyword(ctx.Path))
+            {
+                var r = $"🚨 Suspicious keyword detected in static path: {ctx.Path}";
                 reason = r;
-                Task.Run(() => _suspiciousHandler.Handle("Header-Validation", r, ctx, ctx.FullUrl, "Header-Filter")).GetAwaiter().GetResult();
+                Task.Run(() => _suspiciousHandler.Handle("Static-Path-Suspicious", r, ctx, ctx.FullUrl, "Static-Asset-Filter")).GetAwaiter().GetResult();
                 return true;
             }
+            // 4️⃣ Validate request headers (User-Agent, Referer, Origin, etc.)
+            //if (_headerValidator.IsSuspiciousHeaders(ctx, out string headerReason))
+            //{
+            //    var r = headerReason;
+            //    reason = r;
+            //    Task.Run(() => _suspiciousHandler.Handle("Header-Validation", r, ctx, ctx.FullUrl, "Header-Filter")).GetAwaiter().GetResult();
+            //    return true;
+            //}
 
             // 5️⃣ Block based on known suspicious paths (e.g. "/phpmyadmin", "/admin/delete")
             if (_pathValidator.IsSuspiciousPath(ctx.Path))

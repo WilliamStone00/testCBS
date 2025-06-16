@@ -187,92 +187,90 @@ namespace CBS.FrontDesk.UI.WAF.Middleware.Core
             response.TrySkipIisCustomErrors = true;
 
             response.Write($@"
-            <!DOCTYPE html>
-            <html lang='en'>
-            <head>
-                <meta charset='UTF-8' />
-                <title>TRUSTSOFTCREDIT - Access Denied</title>
-                <style>
-                    body {{
-                        font-family: 'Segoe UI', sans-serif;
-                        background-color: #f5f7fa;
-                        margin: 0;
-                    }}
-                    .top-bar {{
-                        background-color: #326183;
-                        padding: 15px;
-                        color: white;
-                        font-size: 22px;
-                        text-align: center;
-                        letter-spacing: 3px;
-                    }}
-                    .container {{
-                        margin: 60px auto;
-                        max-width: 620px;
-                        padding: 30px;
-                        border: 2px solid #d9534f;
-                        border-radius: 8px;
-                        background-color: #fff;
-                        text-align: center;
-                    }}
-                    h1 {{
-                        color: #d9534f;
-                    }}
-                    .message {{
-                        font-size: 16px;
-                        margin: 15px 0;
-                        color: #444;
-                    }}
-                    .button {{
-                        background-color: #326183;
-                        color: white;
-                        padding: 10px 25px;
-                        font-size: 15px;
-                        border: none;
-                        border-radius: 5px;
-                        cursor: pointer;
-                        text-decoration: none;
-                        margin-top: 20px;
-                    }}
-                    .footer {{
-                        background-color: #326183;
-                        color: white;
-                        font-size: 13px;
-                        text-align: center;
-                        padding: 12px;
-                        position: fixed;
-                        bottom: 0;
-                        width: 100%;
-                    }}
-                    .footer b {{
-                        color: #e6e6e6;
-                    }}
-                    .access-icon {{
-                        width: 80px;
-                        height: 80px;
-                        margin-bottom: 20px;
-                    }}
-                </style>
-            </head>
-            <body>
-                <div class='top-bar'>T R U S T S O F T C R E D I T - ACCESS DENIED</div>
-                <div class='container'>
-                    <img class='access-icon' src='https://cdn-icons-png.flaticon.com/512/1828/1828843.png' alt='Access Denied Icon' />
-                    <h1>ACCESS DENIED</h1>
-                    <div class='message'>
-                        <strong>Status Code:</strong> 403<br />
-                        <strong>Message:</strong> Access Denied. You are not authorized to view this resource.<br />
-                        <strong>Details:</strong> {reason}<br />
-                        <strong>Client:</strong> IP = {ctx.Ip}, Country = {ctx.Country}<br />
-                    </div>
-                    <a href='/' class='button'>Return to Home</a>
-                    <p class='message'>If you believe this is an error, please contact your system administrator.</p>
-                </div>
-                <div class='footer'>
-                    Copyright © 2024 by <b>F L U X SARL Cameroon</b>
-                </div>
-            </body>
-            </html>");
+    <!DOCTYPE html>
+    <html lang='en'>
+    <head>
+        <meta charset='UTF-8' />
+        <title>TRUSTSOFTCREDIT - Access Denied</title>
+        <style>
+            body {{
+                font-family: 'Segoe UI', sans-serif;
+                background-color: #f5f7fa;
+                margin: 0;
+            }}
+            .top-bar {{
+                background-color: #326183;
+                padding: 15px;
+                color: white;
+                font-size: 22px;
+                text-align: center;
+                letter-spacing: 3px;
+            }}
+            .container {{
+                margin: 60px auto;
+                max-width: 620px;
+                padding: 30px;
+                border: 2px solid #d9534f;
+                border-radius: 8px;
+                background-color: #fff;
+                text-align: center;
+            }}
+            h1 {{
+                color: #d9534f;
+            }}
+            .message {{
+                font-size: 16px;
+                margin: 15px 0;
+                color: #444;
+            }}
+            .button {{
+                background-color: #326183;
+                color: white;
+                padding: 10px 25px;
+                font-size: 15px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                text-decoration: none;
+                margin-top: 20px;
+            }}
+            .footer {{
+                background-color: #326183;
+                color: white;
+                font-size: 13px;
+                text-align: center;
+                padding: 12px;
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+            }}
+            .footer b {{
+                color: #e6e6e6;
+            }}
+            .access-icon {{
+                width: 80px;
+                height: 80px;
+                margin-bottom: 20px;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class='top-bar'>T R U S T S O F T C R E D I T - ACCESS DENIED</div>
+        <div class='container'>
+            <img class='access-icon' src='https://cdn-icons-png.flaticon.com/512/1828/1828843.png' alt='Access Denied Icon' />
+            <h1>ACCESS DENIED</h1>
+            <div class='message'>
+                <strong>Status Code:</strong> 403 - Forbidden<br />
+                You are not authorized to access this page.<br />
+                Please return to the home page or contact your administrator.
+            </div>
+            <a href='/' class='button'>Return to Home</a>
+        </div>
+        <div class='footer'>
+            Copyright © 2024 by <b>F L U X SARL Cameroon</b>
+        </div>
+    </body>
+    </html>");
 
             response.End();
         }

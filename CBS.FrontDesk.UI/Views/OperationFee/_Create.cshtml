@@ -105,6 +105,13 @@
                         <label class="form-check-label" for="DailyCollections">Daily collections</label>
                     </div>
                 </div>
+                <!-- ✅ New Option: Daily Saver Registration Fee -->
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "DailySaverRegistrationFee", new { @class = "form-check-input shadow-input-boxes", id = "DailySaverRegistrationFee" })
+                        <label class="form-check-label" for="DailySaverRegistrationFee">Daily Saver Registration/Onboarding Fee</label>
+                    </div>
+                </div>
             </div>
            
             <!-- Operation Fee Type -->

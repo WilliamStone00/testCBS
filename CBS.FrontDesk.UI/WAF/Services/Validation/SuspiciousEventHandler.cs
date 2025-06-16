@@ -106,7 +106,7 @@ namespace CBS.FrontDesk.UI.WAF.Services.Validation
                 // 1. Block at DB level
                 await _rateLimitedUserService.BlockUser(
                     ctx.Ip, ctx.Username, blacklistingType,
-                    TimeSpan.FromMinutes(ctx.limitConfig.BlockDurationMinutes),
+                    TimeSpan.FromDays(ctx.limitConfig.BlockDurationMinutes),
                     fullReason,
                     ctx.Location, ctx.Latitude, ctx.Longitude,
                     ctx.City, ctx.Region, ctx.Country,

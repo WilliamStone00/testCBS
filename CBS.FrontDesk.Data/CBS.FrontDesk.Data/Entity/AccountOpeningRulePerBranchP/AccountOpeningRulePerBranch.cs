@@ -29,7 +29,9 @@ namespace CBS.FrontDesk.Data.Entity.AccountOpeningRulePerBranchP
         [Range(0, double.MaxValue, ErrorMessage = "Minimum opening balance must be a non-negative number.")]
         public decimal MinimumOpeningBalance { get; set; }
         public string ProductName { get; set; }
-        // Navigation property (optional in validation context)
+        public decimal MinimumOpeningBalanceDailySaverShare { get; set; }
+        public bool IsDailySaver { get; set; }
+
         public SavingProduct SavingProduct { get; set; }
     }
     public class GetAllAccountOpeningRulesQuery

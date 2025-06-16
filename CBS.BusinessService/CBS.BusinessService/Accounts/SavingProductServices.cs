@@ -234,6 +234,9 @@ namespace CBS.BusinessService.Accounts
                     SavingProduct.RequiredOpeningBalancePhysicalPerson = model.RequiredOpeningBalancePhysicalPerson;
                     SavingProduct.CanPayInInstallmentPhysicalPerson = model.CanPayInInstallmentPhysicalPerson;
                     SavingProduct.CanPayInInstallmentMoralPerson = model.CanPayInInstallmentMoralPerson;
+                    SavingProduct.MinDailySaverSharesOpeningBalancePerson = model.MinDailySaverSharesOpeningBalancePerson;
+                    SavingProduct.MinDailySaverSharesOpeningBalanceMoral = model.MinDailySaverSharesOpeningBalanceMoral;
+
 
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.Id), SavingProduct);
                     if (response.IsSuccess)

@@ -509,7 +509,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public List<WithdrawalLimit> WithdrawalParameters { get; set; }
         public List<TransferLimit> TransferParameters { get; set; }
         public string UpdateOption { get; set; }
-
+        public decimal MinDailySaverSharesOpeningBalancePerson { get; set; }
+        public decimal MinDailySaverSharesOpeningBalanceMoral { get; set; }
 
         public SavingProduct()
         {

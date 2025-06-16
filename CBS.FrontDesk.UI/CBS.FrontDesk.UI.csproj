@@ -6767,6 +6767,7 @@
     <Content Include="Views\Shared\_PasswordPolicyPanel.cshtml" />
     <Content Include="Views\Shared\_MfaLayout.cshtml" />
     <Content Include="Views\UserManagement\_UserOverridePolicy.cshtml" />
+    <Content Include="Views\BlacklistUser\WAFDashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.DataTable;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,6 +12,10 @@ namespace CBS.FrontDesk.Data.Entity.RequestManagement
     {
         public string IpOrUser { get; set; }
         public string Username { get; set; }
+    }
+    public class DeleteMultipleBlockedUsersCommand
+    {
+        public List<string> Ids { get; set; }
     }
     public class RateLimitedUser
     {
@@ -110,6 +115,15 @@ namespace CBS.FrontDesk.Data.Entity.RequestManagement
         public List<PieChartEntry> SuspiciousPathByBranch { get; set; }
         public List<BarChartEntry> BlocksByBranch { get; set; }
         public List<BlockedUserEntry> BlockedUsers { get; set; }
+        public List<BranchGeoBlockEntry> GeoBranchAnalytics { get; set; }
+
+    }
+    public class BranchGeoBlockEntry
+    {
+        public string BranchName { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public int BlockCount { get; set; }
     }
     public class SummaryStats
     {
@@ -143,4 +157,30 @@ namespace CBS.FrontDesk.Data.Entity.RequestManagement
         public string Branch { get; set; }
         public DateTime Timestamp { get; set; }
     }
+ 
+
+    public class GetWafDashboardQuery
+    {
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+    }
+    public class GetBlockedUsersDataTableQuery
+    {
+        public DataTableOptions Options { get; set; } = new DataTableOptions();
+
+        public string IpAddress { get; set; }
+        public string UserName { get; set; }
+        public string BlockType { get; set; }
+        public string BranchId { get; set; }
+        public string Country { get; set; }
+        public string Region { get; set; }
+        public string City { get; set; }
+        public string Cidr { get; set; }
+        public bool OnlyActive { get; set; } = true;
+
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+
+    }
+
 }

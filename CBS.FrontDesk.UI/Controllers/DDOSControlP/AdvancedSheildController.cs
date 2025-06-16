@@ -30,6 +30,7 @@ namespace CBS.FrontDesk.UI.Controllers.DDOSControlP
             ViewBag.CountriesCode= await _countryServices.GetCountries();
             return View(new RateLimitConfig());
         }
+
         [HttpPost]
         public async Task<ActionResult> AddOrUpdate(RateLimitConfig model,
             string WhitelistedHeaders,

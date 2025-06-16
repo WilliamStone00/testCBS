@@ -6,10 +6,12 @@ namespace CBS.FrontDesk.Helper
     public abstract class APICallHelper
     {   //RateLimitedUser
         public const string AddRateLimitedUser = "api/v1/blocked-users/block";
-        public const string Get_Delete_RateLimitedUser = "/api/v1/blocked-users/{0}";         // ✅ GET by ID or DELETE
+        public const string Get_Delete_RateLimitedUser = "/api/v1/blocked-users/{0}";
+        public const string Delete_MultipleBlockedUsers = "/api/v1/blocked-users/delete-multiple"; // ✅ GET by ID or DELETE
         public const string GetAllRateLimitedUsers = "/api/v1/blocked-users/all";
         public const string CheckRateLimitBlock = "/api/v1/blocked-users/is-blocked";     // ✅ NEW ENDPOINT FOR CHECK
-
+        public const string BlockedUsersDatatable = "/api/v1/blocked-users/datatable";
+        public const string WafDashBoardForBlockedUSers = "/api/v1/blocked-users/dashboard";
         //PasswordPolicyManagement
         public const string AddPasswordPolicyManagement = "/api/v1/PasswordPolicyManagement/add";
         public const string UpdatePasswordPolicyManagement = "/api/v1/PasswordPolicyManagement/update";

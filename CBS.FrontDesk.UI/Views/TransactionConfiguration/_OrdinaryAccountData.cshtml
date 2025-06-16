@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
-    @using Resources
+@using Resources
 @if (Model.SavingProducts.Count == 0)
 {
     <div class="text-center my-3">
@@ -56,11 +56,11 @@ else
                             <td style="width:20%">
                                 @if (!d.IsUsedForTellerProvisioning)
                                 {
-                                    <a href="/TransactionConfiguration/PolicyandSharing?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_OrdinaryAccountData.ConfigureProductOperationPoliciesTooltip, @d.Name)">@Globals_OrdinaryAccountData.Policies</a> |
-                                    <a href="/TransactionConfiguration/AccountMapping?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_OrdinaryAccountData.ConfigureProductAccountMappingTooltip, @d.Name)">@Globals_OrdinaryAccountData.Mappings</a> |
-                                    <a href="/TransactionConfiguration/AccountMappingInfo?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_OrdinaryAccountData.ConfigureProductAccountMappingTooltip, @d.Name)">@Globals_OrdinaryAccountData.Simulation</a>
+                                    <a href="/TransactionConfiguration/PolicyandSharing?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_OrdinaryAccountData.Policies, @d.Name)">@Globals_OrdinaryAccountData.Policies |</a>
+                                    <a href="/TransactionConfiguration/AccountMapping?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_OrdinaryAccountData.Mappings, @d.Name)">@Globals_OrdinaryAccountData.Mappings |</a>
+                                    <a href="/TransactionConfiguration/AccountMappingInfo?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_OrdinaryAccountData.Simulation, @d.Name)">@Globals_OrdinaryAccountData.Simulation</a>
 
-}
+                                }
                             </td>
                         </tr>
                     }

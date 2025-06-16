@@ -217,6 +217,48 @@
         </div>
     </fieldset>
 
+    if (Model.SavingProduct.AccountType == "MemberShare")
+    {
+        <fieldset class="fieldset-custom mt-4">
+            <legend>Daily Saver Minimum Share Opening Balances</legend>
+            <div class="row gy-3">
+
+                <!-- 🟢 Group: Moral Person -->
+                <div class="col-12">
+                    <h6 class="text-primary border-bottom pb-1">
+                        <i class="bi bi-person-badge me-1"></i> Moral Person
+                    </h6>
+                </div>
+
+                <!-- Daily Saver Shares - Moral Minimum -->
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.SavingProduct.MinDailySaverSharesOpeningBalanceMoral, new { @class = "form-control", type = "number", step = "0.01" })
+                        @Html.ValidationMessageFor(m => m.SavingProduct.MinDailySaverSharesOpeningBalanceMoral, "", new { @class = "text-danger" })
+                        <label>Minimum Daily Saver Shares Opening Balance</label>
+                    </div>
+                </div>
+
+                <!-- 🔵 Group: Physical Person -->
+                <div class="col-12 mt-4">
+                    <h6 class="text-primary border-bottom pb-1">
+                        <i class="bi bi-person-lines-fill me-1"></i> Physical Person
+                    </h6>
+                </div>
+
+                <!-- Daily Saver Shares - Physical Minimum -->
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.SavingProduct.MinDailySaverSharesOpeningBalancePerson, new { @class = "form-control", type = "number", step = "0.01" })
+                        @Html.ValidationMessageFor(m => m.SavingProduct.MinDailySaverSharesOpeningBalancePerson, "", new { @class = "text-danger" })
+                        <label>Minimum Daily Saver Shares Opening Balance</label>
+                    </div>
+                </div>
+
+            </div>
+        </fieldset>
+
+    }
 
     <fieldset class="fieldset-custom">
         <legend>@Globals_ProductConfig.ThirdPartiesAccountTypes</legend>

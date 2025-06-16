@@ -24,6 +24,8 @@ using CBS.FrontDesk.Helper.Helper;
 using CBS.BusinessService.UserManagement;
 using MongoDB.Driver.Linq;
 using DocumentFormat.OpenXml.EMMA;
+using CBS.FrontDesk.Data.Entity.CMoney;
+using CBS.FrontDesk.Data.Entity.DataTable;
 
 namespace CBS.BusinessService.RequestLoggerServicesP
 {
@@ -86,6 +88,33 @@ namespace CBS.BusinessService.RequestLoggerServicesP
 
             return ExecutionMessage;
         }
+        public async Task<ExecutionMessages> DeleteAsync(List<string> ids)
+        {
+            try
+            {
+                var req = new DeleteMultipleBlockedUsersCommand { Ids=ids };
+                var response = await _identityServerBaseUrl.PostAsync<ResponseObject<bool>>(
+                     APICallHelper.Delete_MultipleBlockedUsers, req);
+
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                }
+                else
+                {
+                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+            }
+
+            return ExecutionMessage;
+        }
 
         /// <summary>
         /// Deletes a blocked user by ID.
@@ -124,6 +153,7 @@ namespace CBS.BusinessService.RequestLoggerServicesP
         {
             try
             {
+
                 var response = await _identityServerBaseUrl.GetAsync<ResponseObject<RateLimitedUser>>(
                     string.Format(APICallHelper.Get_Delete_RateLimitedUser, id));
 
@@ -152,6 +182,49 @@ namespace CBS.BusinessService.RequestLoggerServicesP
                 throw new Exception("❌ Failed to retrieve all RateLimitedUser records", ex);
             }
         }
+        public async Task<WafDashboardData> WafDashBoardForBlockedUSers(GetWafDashboardQuery command)
+        {
+            try
+            {
+                var response = await _identityServerBaseUrl.PostAsync<ResponseObject<WafDashboardData>>(
+                     APICallHelper.WafDashBoardForBlockedUSers, command);
+
+                return response?.ApiResponseData.Data ?? new WafDashboardData();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("❌ Failed to retrieve all RateLimitedUser records", ex);
+            }
+        }
+        public async Task<CustomDataTable> GetDataTableAsync(GetBlockedUsersDataTableQuery loansDataTableQuery)
+        {
+            loansDataTableQuery.Options.sortColumnName = "Timestamp";
+            if (!IsHeadOffice())
+            {
+                loansDataTableQuery.BranchId=GetBranchID();
+            }
+            // Make API call to fetch the DataTable result
+            var couApiResponse = await _identityServerBaseUrl.PostAsync<ResponseObject<CustomDataTable>>(
+                APICallHelper.BlockedUsersDatatable,
+                loansDataTableQuery
+            );
+
+            // Return response if successful
+            if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+            {
+                return couApiResponse.ApiResponseData.Data;
+            }
+
+            // Return an empty DataTable if the request fails
+            return new CustomDataTable(
+                draw: Convert.ToInt32(loansDataTableQuery.Options.draw),
+                recordsTotal: 0,
+                recordsFiltered: 0,
+                data: new List<object>(), // No data
+                dataTableOptions: loansDataTableQuery.Options
+            );
+        }
+        //WafDashBoardForBlockedUSers
         public async Task<bool> CheckIsBlocked(CheckRateLimitBlockQuery rateLimitBlockQuery)
         {
             try
