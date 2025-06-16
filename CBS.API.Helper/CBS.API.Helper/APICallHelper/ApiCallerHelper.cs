@@ -54,6 +54,8 @@ namespace CBS.API.Helper
 
         }
 
+        
+
         public async Task<(List<IndividualProfile> customers, PaginationMetadata pagination)> GetCustomersWithPagination(string apiUrl)
         {
             try
