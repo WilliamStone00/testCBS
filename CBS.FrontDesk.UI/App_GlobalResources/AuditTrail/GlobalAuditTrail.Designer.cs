@@ -637,7 +637,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select this option and enter the type of action (e.g., .
+        ///   Looks up a localized string similar to Select this option and enter the type of action (e.g.,.
         /// </summary>
         internal static string SelectThisOptionAndEnterTheTypeOfAction {
             get {

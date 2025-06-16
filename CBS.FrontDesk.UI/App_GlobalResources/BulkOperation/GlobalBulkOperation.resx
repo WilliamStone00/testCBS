@@ -511,6 +511,6 @@
     <value>Amount To Topup To</value>
   </data>
   <data name="SimulationContributionAmount" xml:space="preserve">
-    <value>Contribution Amount </value>
+    <value>Contribution Amount</value>
   </data>
 </root>

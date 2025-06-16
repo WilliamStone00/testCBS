@@ -224,7 +224,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  Calculated on the loan&apos;s outstanding balance.
+        ///   Looks up a localized string similar to Calculated on the loan&apos;s outstanding balance.
         /// </summary>
         internal static string Calculated_on_the_loans_outstanding_balance {
             get {

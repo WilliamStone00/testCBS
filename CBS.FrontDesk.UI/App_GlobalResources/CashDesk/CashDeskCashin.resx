@@ -372,9 +372,6 @@
   <data name="ScenarioExamples" xml:space="preserve">
     <value>Scenario Examples:</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="TheCashierCollectsTheChargeFromTheMemberDuringTheOperationCashOperation" xml:space="preserve">
     <value>The cashier collects the charge from the member during the operation (cash operation):</value>
   </data>

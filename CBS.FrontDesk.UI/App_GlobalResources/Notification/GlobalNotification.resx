@@ -199,7 +199,7 @@
     <value>Cash Replenishment Request Status</value>
   </data>
   <data name="was replenished" xml:space="preserve">
-    <value>wasReplenished</value>
+    <value>was replenished</value>
   </data>
   <data name="hasBeenApprovedBy" xml:space="preserve">
     <value>has been approved by</value>
@@ -217,7 +217,7 @@
     <value>Amount authorized by</value>
   </data>
   <data name="TotalAmount" xml:space="preserve">
-    <value> Total amount</value>
+    <value>Total amount</value>
   </data>
   <data name="Balance" xml:space="preserve">
     <value>Balance</value>

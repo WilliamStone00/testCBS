@@ -147,4 +147,7 @@
   <data name="SharingLabel" xml:space="preserve">
     <value>Partage</value>
   </data>
+  <data name="UpdateButton" xml:space="preserve">
+    <value>Mettre à jour</value>
+  </data>
 </root>

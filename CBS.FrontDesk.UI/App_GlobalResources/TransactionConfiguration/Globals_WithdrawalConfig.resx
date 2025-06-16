@@ -122,7 +122,7 @@
     <comment>Part de CamCCUL</comment>
   </data>
   <data name="DestinationBranchShare" xml:space="preserve">
-    <value>Destination Branch Share </value>
+    <value>Destination Branch Share</value>
     <comment>Part de la succursale de destination</comment>
   </data>
   <data name="EnterNotificationDuration" xml:space="preserve">

@@ -232,7 +232,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scenario 2 (Separate VAT): .
+        ///   Looks up a localized string similar to Scenario 2 (Separate VAT):.
         /// </summary>
         internal static string Scenario2SeparateVAT {
             get {
@@ -340,7 +340,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VAT is calculated as part of the interest using the formula: .
+        ///   Looks up a localized string similar to VAT is calculated as part of the interest using the formula:.
         /// </summary>
         internal static string VATCalculationFormula {
             get {

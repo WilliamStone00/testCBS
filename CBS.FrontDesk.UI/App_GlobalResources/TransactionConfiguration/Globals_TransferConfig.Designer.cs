@@ -169,7 +169,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Source branch share .
+        ///   Looks up a localized string similar to Source branch share.
         /// </summary>
         internal static string SourceBranchShare {
             get {

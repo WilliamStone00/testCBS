@@ -322,7 +322,7 @@
     <value>Perform cashout</value>
   </data>
   <data name="PerformTransfer" xml:space="preserve">
-    <value />
+    <value>Perform Transfer</value>
   </data>
   <data name="PermitDepositsDirectlyIntoThisAccount" xml:space="preserve">
     <value>Permit deposits directly into this account.</value>

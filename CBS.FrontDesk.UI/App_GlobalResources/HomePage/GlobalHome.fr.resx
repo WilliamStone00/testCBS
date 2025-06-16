@@ -124,13 +124,13 @@
     <value>Accueil</value>
   </data>
   <data name="NoInternetConnection" xml:space="preserve">
-    <value />
+    <value>Pas de connexion Internet</value>
   </data>
   <data name="PartnerText" xml:space="preserve">
     <value>Votre partenaire sécurisé et fiable. FLUX !</value>
   </data>
   <data name="RETRY" xml:space="preserve">
-    <value />
+    <value>RÉESSAYER</value>
   </data>
   <data name="SatisfactionText" xml:space="preserve">
     <value>Flux SARL ! : Autonomiser les entreprises. Améliorer les vies.</value>
@@ -142,6 +142,6 @@
     <value>BIENVENUE À</value>
   </data>
   <data name="YouAreCurrentlyOffline" xml:space="preserve">
-    <value />
+    <value>Vous êtes actuellement hors ligne. Veuillez vérifier votre connexion Internet et réessayer</value>
   </data>
 </root>

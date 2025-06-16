@@ -23,7 +23,7 @@ namespace CBS.FrontDesk.UI.WAF.Services.DDoS
         private static DateTime _lastFetched = DateTime.MinValue;
 
         // ⏳ Refresh interval threshold (every 10 minutes)
-        private static readonly TimeSpan RefreshInterval = TimeSpan.FromMinutes(5);
+        private static readonly TimeSpan RefreshInterval = TimeSpan.FromMinutes(2);
 
         /// <summary>
         /// Retrieves the cached rate-limiting configuration, refreshing it from the source if expired.
@@ -36,7 +36,6 @@ namespace CBS.FrontDesk.UI.WAF.Services.DDoS
             {
                 // ⚠️ Blocking Task.Run used to synchronously get the result
                 _config = Task.Run(() => new RateLimitConfigService().GetAllAsync()).Result?.FirstOrDefault();
-
                 // 🕓 Track the refresh time
                 _lastFetched = DateTime.UtcNow;
 

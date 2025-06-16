@@ -1897,7 +1897,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Occumation.
+        ///   Looks up a localized string similar to Occupation.
         /// </summary>
         internal static string Occumation {
             get {

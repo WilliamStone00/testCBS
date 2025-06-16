@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ActiveStatus" xml:space="preserve">
+    <value>Statut actif</value>
+  </data>
+  <data name="AddNewVault" xml:space="preserve">
+    <value>Ajouter un nouveau coffre</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Adresse</value>
+  </data>
+  <data name="AddVault" xml:space="preserve">
+    <value>Ajouter un coffre</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Montant</value>
+  </data>
+  <data name="AuthorizedPersons" xml:space="preserve">
+    <value>Personnes autorisées</value>
+  </data>
+  <data name="Balance" xml:space="preserve">
+    <value>Solde</value>
+  </data>
+  <data name="BalanceBroughtForward" xml:space="preserve">
+    <value>Solde reporté</value>
+  </data>
+  <data name="BranchCode" xml:space="preserve">
+    <value>Code de l'agence</value>
+  </data>
+  <data name="BranchID" xml:space="preserve">
+    <value>ID de l'agence</value>
+  </data>
+  <data name="CanProceedToExecuteDeficitsOrSupplus" xml:space="preserve">
+    <value>Peut procéder à l'exécution des déficits ou des excédents</value>
+  </data>
+  <data name="CashInHand" xml:space="preserve">
+    <value>Argent liquide en main</value>
+  </data>
+  <data name="CashInVault" xml:space="preserve">
+    <value>Argent dans le coffre</value>
+  </data>
+  <data name="CurrentBalance" xml:space="preserve">
+    <value>Solde actuel</value>
+  </data>
+  <data name="Denominations" xml:space="preserve">
+    <value>Dénominations</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Diamention" xml:space="preserve">
+    <value>Dimension</value>
+  </data>
+  <data name="Dimensions" xml:space="preserve">
+    <value>Dimensions</value>
+  </data>
+  <data name="DoneBy" xml:space="preserve">
+    <value>Fait par</value>
+  </data>
+  <data name="DropANote" xml:space="preserve">
+    <value>Déposez une note</value>
+  </data>
+  <data name="EnsureAllDenominationsAreAccuratelyEntered" xml:space="preserve">
+    <value>Assurez-vous que toutes les dénominations sont saisies avec précision</value>
+  </data>
+  <data name="EnsureTheVaultBalanceReflectsThePhysicalCashAvailable" xml:space="preserve">
+    <value>Assurez-vous que le solde du coffre reflète l'argent physique disponible et correspond au bilan</value>
+  </data>
+  <data name="EnsureTheVaultNameAndBranchDetailsAreAccurateBeforeSubmission" xml:space="preserve">
+    <value>Assurez-vous que le nom du coffre et les détails de la succursale sont exacts avant la soumission</value>
+  </data>
+  <data name="ForExample" xml:space="preserve">
+    <value>Par exemple</value>
+  </data>
+  <data name="HELPTIPS" xml:space="preserve">
+    <value>CONSEILS</value>
+  </data>
+  <data name="IfThe" xml:space="preserve">
+    <value>Si le</value>
+  </data>
+  <data name="IfYouHave5NotesOfN10000Enter5UnderTheN10000Field" xml:space="preserve">
+    <value>Si vous avez 5 billets de 10 000 N, entrez "5" sous le champ N10 000</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inactif</value>
+  </data>
+  <data name="Init" xml:space="preserve">
+    <value>Init</value>
+  </data>
+  <data name="InitialiseTheVaultOfThisBranch" xml:space="preserve">
+    <value>Initialiser le coffre de cette succursale</value>
+  </data>
+  <data name="InitializationOf" xml:space="preserve">
+    <value>Initialisation de</value>
+  </data>
+  <data name="Initialize" xml:space="preserve">
+    <value>Initialiser</value>
+  </data>
+  <data name="InitializeVault" xml:space="preserve">
+    <value>Initialiser le coffre</value>
+  </data>
+  <data name="InitializeVaultButtonIsGreyedOut" xml:space="preserve">
+    <value>Le bouton Initialiser le coffre est désactivé</value>
+  </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>Est actif</value>
+  </data>
+  <data name="itIndicatesMismatchedValuesOrMissingInformation" xml:space="preserve">
+    <value>cela indique des valeurs incompatibles ou des informations manquantes</value>
+  </data>
+  <data name="LastOperation" xml:space="preserve">
+    <value>Dernière opération</value>
+  </data>
+  <data name="LastOperationAmount" xml:space="preserve">
+    <value>Montant de la dernière opération</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Emplacement</value>
+  </data>
+  <data name="LocationCouldJustBeThelocationWhereTheVaultInLocatedInYourOffice" xml:space="preserve">
+    <value>Emplacement (pourrait être simplement l'emplacement où le coffre est situé dans votre bureau)</value>
+  </data>
+  <data name="ManageAllVaultRelatedOperationsInYourBranchEfficiently" xml:space="preserve">
+    <value>Gérez toutes les opérations liées au coffre dans votre succursale de manière efficace. Utilisez les options ci-dessous pour afficher les coffres existants ou en ajouter de nouveaux</value>
+  </data>
+  <data name="ManageTheInitializationProcessOfTheVaultEfficiently" xml:space="preserve">
+    <value>Gérez efficacement le processus d'initialisation du coffre. Assurez-vous que tous les détails sont exacts pour une configuration correcte</value>
+  </data>
+  <data name="MaximumCapacity" xml:space="preserve">
+    <value>Capacité maximale</value>
+  </data>
+  <data name="MaximumCapacityMustBeAvalidNumericalValueRepresentingTheVaultStorageLimit" xml:space="preserve">
+    <value>La capacité maximale doit être une valeur numérique valide représentant la limite de stockage du coffre</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="NoAuthorizedPersons" xml:space="preserve">
+    <value>Pas de personnes autorisées</value>
+  </data>
+  <data name="NoOperationsPerformed" xml:space="preserve">
+    <value>Aucune opération effectuée</value>
+  </data>
+  <data name="NoVaultsHaveBeenConfiguredYet" xml:space="preserve">
+    <value>Aucun coffre n'a été configuré</value>
+  </data>
+  <data name="OnceCreatedVaultDetailsCanOnlyBeUpdatedByAuthorizedPersonnel" xml:space="preserve">
+    <value>Une fois créé, les détails du coffre ne peuvent être mis à jour que par du personnel autorisé</value>
+  </data>
+  <data name="OperationType" xml:space="preserve">
+    <value>Type d'opération</value>
+  </data>
+  <data name="PreviousBalance" xml:space="preserve">
+    <value>Solde précédent</value>
+  </data>
+  <data name="Reference" xml:space="preserve">
+    <value>Référence</value>
+  </data>
+  <data name="SelectBranch" xml:space="preserve">
+    <value>Sélectionner une succursale</value>
+  </data>
+  <data name="TheSystemWillAutomaticallyCalculateTheTotalForAllDenominations" xml:space="preserve">
+    <value>Le système calculera automatiquement le total de toutes les dénominations</value>
+  </data>
+  <data name="TIPS" xml:space="preserve">
+    <value>CONSEILS</value>
+  </data>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>Montant total</value>
+  </data>
+  <data name="TotalCashIn" xml:space="preserve">
+    <value>Argent total en caisse</value>
+  </data>
+  <data name="UseTheIsActiveCheckboxToEnableOrDisable" xml:space="preserve">
+    <value>Utilisez la case à cocher "Est actif" pour activer ou désactiver le coffre à des fins opérationnelles</value>
+  </data>
+  <data name="VaultDetails" xml:space="preserve">
+    <value>Détails du coffre</value>
+  </data>
+  <data name="VaultID" xml:space="preserve">
+    <value>ID du coffre</value>
+  </data>
+  <data name="VaultInformations" xml:space="preserve">
+    <value>Informations sur le coffre</value>
+  </data>
+  <data name="VaultInitialization" xml:space="preserve">
+    <value>Initialisation du coffre</value>
+  </data>
+  <data name="VaultInitializationEnsuresAccurateRecordsOfCash" xml:space="preserve">
+    <value>L'initialisation du coffre garantit des enregistrements précis de l'argent et des dénominations au début des opérations, en accord avec le bilan après la migration. Suivez ces conseils</value>
+  </data>
+  <data name="VaultInitializationIsAcriticalStepEspeciallyAfterSystemMigration" xml:space="preserve">
+    <value>L'initialisation du coffre est une étape critique, en particulier après la migration du système, pour aligner le bilan et rapprocher l'argent en caisse avant que les opérations ne puissent commencer. Vérifiez toutes les valeurs d'entrée pour l'exactitude</value>
+  </data>
+  <data name="VaultManagement" xml:space="preserve">
+    <value>Gestion du coffre</value>
+  </data>
+  <data name="VaultName" xml:space="preserve">
+    <value>Nom du coffre</value>
+  </data>
+  <data name="VaultOperations" xml:space="preserve">
+    <value>Opérations du coffre</value>
+  </data>
+  <data name="VAULTS" xml:space="preserve">
+    <value>COFFRES</value>
+  </data>
+  <data name="VAULT_DETAILS" xml:space="preserve">
+    <value>DÉTAILS DU COFFRE</value>
+  </data>
+  <data name="VerifyThatTotalsMatchTheExpectedAmountsInTheVault" xml:space="preserve">
+    <value>Vérifiez que les totaux correspondent aux montants attendus dans le coffre</value>
+  </data>
+  <data name="ViewDetailsAndManageVaultRelatedInformationEfficiently" xml:space="preserve">
+    <value>Affichez et gérez efficacement les informations liées au coffre</value>
+  </data>
+  <data name="ViewMore" xml:space="preserve">
+    <value>Afficher plus</value>
+  </data>
+</root>

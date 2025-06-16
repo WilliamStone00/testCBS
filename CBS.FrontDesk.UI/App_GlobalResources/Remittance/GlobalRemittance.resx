@@ -412,7 +412,7 @@
     <value>Sub Tellers Requests</value>
   </data>
   <data name="TheChargesAreAddedOnTopOfTheSpecifiedAmount" xml:space="preserve">
-    <value>The charges are added on top of the specified amount. The sender pays the specified amount </value>
+    <value>The charges are added on top of the specified amount. The sender pays the specified amount</value>
   </data>
   <data name="TheChargesAreIncludedInTheSpecifiedAmount" xml:space="preserve">
     <value>The charges are included in the specified amount. The sender's specified amount remains unchanged</value>

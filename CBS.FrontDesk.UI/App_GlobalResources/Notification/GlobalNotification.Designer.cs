@@ -601,7 +601,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  Total amount.
+        ///   Looks up a localized string similar to Total amount.
         /// </summary>
         internal static string TotalAmount {
             get {
@@ -637,7 +637,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to wasReplenished.
+        ///   Looks up a localized string similar to was replenished.
         /// </summary>
         internal static string was_replenished {
             get {

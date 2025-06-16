@@ -250,7 +250,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OfficeType.
+        ///   Looks up a localized string similar to Office type.
         /// </summary>
         internal static string OfficeType {
             get {
@@ -331,7 +331,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tell.
+        ///   Looks up a localized string similar to Till.
         /// </summary>
         internal static string Tell {
             get {

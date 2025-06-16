@@ -106,7 +106,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Makesure the chart of account you are creating if found under an existing chart of account.
+        ///   Looks up a localized string similar to Make sure the chart of account you are creating if found under an existing chart of account.
         /// </summary>
         internal static string MakesureTheChartOfAccount {
             get {

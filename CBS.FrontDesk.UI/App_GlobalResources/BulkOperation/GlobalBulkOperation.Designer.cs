@@ -907,7 +907,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contribution Amount .
+        ///   Looks up a localized string similar to Contribution Amount.
         /// </summary>
         internal static string SimulationContributionAmount {
             get {

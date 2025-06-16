@@ -70,27 +70,34 @@ namespace CBS.FrontDesk.UI.WAF.Services.DDoS
         /// <returns>True if blocked; false otherwise</returns>
         public async Task<bool> IsBlockedAsync(string ip, string username = null)
         {
-            var cacheKey = GetCacheKey(ip);
+            var cacheKey = GetCacheKey(ip); // or use both ip+username if needed
 
-            // ✅ 1. Fast check via in-memory cache
+            // ✅ If cached and not expired
             if (_cache.Contains(cacheKey))
-                return true;
+            {
+                var cached = _cache.Get(cacheKey);
+                if (cached is DateTime expiresAt && expiresAt > DateTime.UtcNow)
+                    return true;
+            }
 
-            // ✅ 2. Fallback to database service
-            var isBlocked = await _rateLimitedUserService.CheckIsBlocked(new CheckRateLimitBlockQuery
+            // ✅ Check DB only if not in cache
+            var isBlockedFromDb = await _rateLimitedUserService.CheckIsBlocked(new CheckRateLimitBlockQuery
             {
                 IpOrUser = ip,
                 Username = username
             });
 
-            //if (isBlocked)
-            //{
-            //    // 🧠 Cache future checks to avoid DB load
-            //    BlockIp(ip, TimeSpan.FromMinutes(10));
-            //}
+            if (isBlockedFromDb)
+            {
+                _cache.Set(cacheKey, DateTime.UtcNow.AddMinutes(1), new CacheItemPolicy
+                {
+                    AbsoluteExpiration = DateTimeOffset.UtcNow.AddMinutes(1)
+                });
+            }
 
-            return isBlocked;
+            return isBlockedFromDb;
         }
+
 
         /// <summary>
         /// Removes a blocked IP from the in-memory cache.
@@ -107,6 +114,11 @@ namespace CBS.FrontDesk.UI.WAF.Services.DDoS
         public int GetBlockedCount()
         {
             return (int)_cache.GetCount();
+        }
+        public void ReleaseFromBlockCache(string ip)
+        {
+            var cacheKey = GetCacheKey(ip);
+            _cache.Remove(cacheKey); // 🔁 Evicts from memory
         }
 
         /// <summary>

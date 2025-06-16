@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Destination Branch Share .
+        ///   Looks up a localized string similar to Destination Branch Share.
         /// </summary>
         internal static string DestinationBranchShare {
             get {

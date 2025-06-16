@@ -79,7 +79,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BalanceSheetAccount.
+        ///   Looks up a localized string similar to Balance Sheet Account.
         /// </summary>
         internal static string BalanceSheetAccount {
             get {
@@ -115,7 +115,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IsDirectAccount.
+        ///   Looks up a localized string similar to Is direct account.
         /// </summary>
         internal static string IsDirectAccount {
             get {
@@ -124,7 +124,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RootAccount.
+        ///   Looks up a localized string similar to Root Account.
         /// </summary>
         internal static string RootAccount {
             get {
@@ -133,7 +133,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SelectToEdit.
+        ///   Looks up a localized string similar to Select to edit.
         /// </summary>
         internal static string SelectToEdit {
             get {

@@ -88,7 +88,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  LIAISON LEDGER PER BRANCH.
+        ///   Looks up a localized string similar to LIAISON LEDGER PER BRANCH.
         /// </summary>
         internal static string LIAISONLEDGERPERBRANCH {
             get {
