@@ -1351,10 +1351,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalMemberNoneCashOperation.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanApplication1.designer.cs">
+    <Compile Include="App_GlobalResources\MemberOperation\Member_Global_LoanApplication.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Global_LoanApplication.resx</DependentUpon>
+      <DependentUpon>Member_Global_LoanApplication.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\MemberOrdinaryAccountsF8\GlobalMemberOrdinaryAccountsF8.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -3159,12 +3159,12 @@
     <Compile Include="App_GlobalResources\MemberOperation\Global_LoanApplication.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Global_LoanApplication.resx</DependentUpon>
+      <DependentUpon>Member_Global_LoanApplication.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\MemberOperation\Global_LoanApplication.fr.designer.cs">
+    <Compile Include="App_GlobalResources\MemberOperation\Member_Global_LoanApplication.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Global_LoanApplication.fr.resx</DependentUpon>
+      <DependentUpon>Member_Global_LoanApplication.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\MemberOperation\Global_LoanApplicationCancellation.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -5971,9 +5971,9 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Global_AddtachedLoanDocument.Designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\MemberOperation\Global_LoanApplication.resx">
+    <Content Include="App_GlobalResources\MemberOperation\Member_Global_LoanApplication.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Global_LoanApplication1.designer.cs</LastGenOutput>
+      <LastGenOutput>Member_Global_LoanApplication.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\MemberOperation\Global_SharedLoanTerm.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -6051,9 +6051,9 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanApplicationApproval.fr.designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\MemberOperation\Global_LoanApplication.fr.resx">
+    <Content Include="App_GlobalResources\MemberOperation\Member_Global_LoanApplication.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Global_LoanApplication.fr.designer.cs</LastGenOutput>
+      <LastGenOutput>Member_Global_LoanApplication.fr.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\MemberOperation\Global_AddLoanGuarantor.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
