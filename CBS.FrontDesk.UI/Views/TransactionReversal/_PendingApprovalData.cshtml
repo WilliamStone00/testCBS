@@ -1,11 +1,11 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.TransactionReversal
-
+@using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">Pending approvals request</legend>
+    <legend id="select_base">@GlobalTransactionReversal.PendingApprovalsRequest</legend>
     @if (Model.ReversalRequests.Count() == 0)
     {
         <div class="text-center my-3">
-            <p>No Data Found</p>
+            <p>@GlobalTransactionReversal.NoDataFound</p>
         </div>
     }
     else
@@ -14,11 +14,11 @@
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>Date</th>
-                        <th>Amount</th>
-                        <th>Branch</th>
-                        <th>Validated by</th>
-                        <th>Validation comment</th>
+                        <th>@GlobalTransactionReversal.Date</th>
+                        <th>@GlobalTransactionReversal.Amount</th>
+                        <th>@GlobalTransactionReversal.Branch</th>
+                        <th>@GlobalTransactionReversal.ValidatedBy</th>
+                        <th>@GlobalTransactionReversal.ValidationComment</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -32,7 +32,7 @@
                         <td style="width:20%">@d.ValidatedBy</td>
                         <td style="width:20%">@d.ValidationComment</td>
                         <td style="width:10%">
-                            <a href="/TransactionReversal/RequestApprovalForm?key=@d.Id" class="mr-2" data-toggle="tooltip" data-placement="top" title="Approve @d.Amount reversla request">Approve</a>
+                            <a href="/TransactionReversal/RequestApprovalForm?key=@d.Id" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Approve @d.Amount @GlobalTransactionReversal.reverslaRequest">@GlobalShared.Approve</a>
                         </td>
                     </tr>
                     }

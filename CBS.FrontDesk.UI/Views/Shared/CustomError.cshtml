@@ -7,7 +7,7 @@
     Layout = "~/Views/Shared/_ErrorLayout.cshtml";
     var showDiagnostics = HttpContext.Current.IsDebuggingEnabled;
 }
-
+@using Resources
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -29,7 +29,7 @@
                     {
                         <div class="alert alert-warning bg-light-subtle p-3 rounded mt-4">
                             <h6 class="text-warning fw-bold mb-2">
-                                <i class="mdi mdi-bug-outline me-1"></i> Diagnostic Information
+                                <i class="mdi mdi-bug-outline me-1"></i> @GlobalShared.DiagnosticInformation
                             </h6>
                             <pre class="small text-dark mb-0" style="white-space: pre-wrap;">@stackTrace</pre>
                         </div>
@@ -39,12 +39,12 @@
                     <br />
                     <div class="text-center mb-4">
                         <a href="@Url.Action("Index", "Home")" class="btn btn-outline-primary">
-                            <i class="mdi mdi-home-outline me-1"></i> Return to Home
+                            <i class="mdi mdi-home-outline me-1"></i> @GlobalShared.ReturnToHome
                         </a>
                         <br />
                         <br />
                         <p class="text-muted small mt-3 mb-0">
-                            If the issue continues, please contact technical support.
+                            @GlobalShared.IfTheissueContinuesPleaseContactTechnicalSupport.
                         </p>
                     </div>
 

@@ -1,12 +1,12 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.RequestManagement.IdleTime>
-
+@using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">PASSWORD POLICY CONFIGURATIONS</legend>
+    <legend id="select_base">@GlobalPasswordPolicyManagement.PASSWORD_POLICY_CONFIGURATIONS</legend>
 
     @if (!Model.Any())
     {
         <div class="text-center my-3">
-            <p>No password policy configurations defined.</p>
+            <p>@GlobalPasswordPolicyManagement.NoPasswordPolicyConfigurationsDefined.</p>
         </div>
     }
     else
@@ -15,13 +15,13 @@
             <table class="table table-hover table-bordered align-middle" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th style="width: 10%;">Scope</th>
-                        <th style="width: 10%;">Idle.Time-out</th>
-                        <th style="width: 10%;">Login Attempts</th>
-                        <th style="width: 10%;">Reset After (days)</th>
-                        <th style="width: 10%;">Block Inactive (days)</th>
-                        <th style="width: 30%;">Password Rules</th>
-                        <th style="width: 10%;">Options</th>
+                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.Scope</th>
+                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.IdleTimeout</th>
+                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.LoginAttempts</th>
+                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.ResetAfterDays</th>
+                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.BlockInactiveDays</th>
+                        <th style="width: 30%;">@GlobalPasswordPolicyManagement.PasswordRules</th>
+                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.Options</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,7 +31,7 @@
                             <td>
                                 @if (item.IsCentral)
                                 {
-                                    <span class="badge bg-primary">Central</span>
+                                    <span class="badge bg-primary">@GlobalPasswordPolicyManagement.Central</span>
                                 }
                                 else
                                 {
@@ -55,7 +55,7 @@
                                         }
                                         @if (item.PasswordPolicies.Count > 5)
                                         {
-                                            <li class="text-muted">...and more</li>
+                                            <li class="text-muted">...@GlobalPasswordPolicyManagement.andMore</li>
                                         }
                                     </ul>
                                 }
@@ -71,7 +71,7 @@
                                        class="btn btn-sm btn-outline-primary"
                                        data-bs-toggle="tooltip"
                                        title="Edit Config">
-                                        <i class="fas fa-edit me-1"></i> Edit
+                                        <i class="fas fa-edit me-1"></i> @GlobalShared.Edit
                                     </a>
 
                                     <!-- ❌ Reset/Delete Button remains unchanged -->
@@ -80,7 +80,7 @@
                                             onclick="DeleteDynamic('PasswordPolicyManagement','Delete','@item.Id','myDataTable','_Data', 2,'datalistingview')"
                                             data-bs-toggle="tooltip"
                                             title="Delete Config">
-                                        <i class="fas fa-trash-alt me-1"></i> Reset
+                                        <i class="fas fa-trash-alt me-1"></i> @GlobalShared.Reset
                                     </button>
                                 </div>
                             </td>

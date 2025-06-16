@@ -1,4 +1,5 @@
-﻿@using Resources
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+@using Resources
 @{
     ViewBag.Title = @GlobalAccountingChart.AccountingChart;
 }
@@ -7,7 +8,7 @@
     <a type="button" id="loadChartOfAccount" class="btn btn-icon btn-label-secondary" data-bs-toggle="tooltip" title="@GlobalAccountingChart.ReloadChartOfAccount">
         <span class="tf-icons mdi mdi-refresh-auto mdi-18px"></span>
     </a>
-    <div>&nbsp;</div> 
+    <div>&nbsp;</div>
     <div class="row">
         <!-- Context Menu -->
         <div class="col-md-6 col-6">

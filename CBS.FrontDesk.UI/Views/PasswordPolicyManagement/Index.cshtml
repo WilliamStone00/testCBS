@@ -1,19 +1,19 @@
 ﻿@{
     ViewBag.Title = "Idle Timeout & Password Policy Configuration";
 }
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-timer-sand-empty me-2"></i> Idle Timeout & Password Policy Configuration
+                    <i class="mdi mdi-timer-sand-empty me-2"></i> @GlobalPasswordPolicyManagement.IdleTimeoutPasswordPolicyConfiguration
                 </h1>
                 <p class="card-text">
-                    Use this interface to define rules for user inactivity, password expiration, and complexity enforcement.
-                    Administrators can configure centralized or branch-specific controls to enforce system-wide security hygiene.
+                    @GlobalPasswordPolicyManagement.UseThisInterfaceToDefineRulesForUserInactivity.
+                    @GlobalPasswordPolicyManagement.AdministratorsCanConfigureCentralized.
                     <br />
-                    Settings include lockout thresholds, idle duration before session termination, and detailed password policy enforcement.
+                    @GlobalPasswordPolicyManagement.SettingsIncludeLockoutThresholds.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -23,10 +23,10 @@
 <!-- Create Button Outside Header -->
 <div class="d-flex justify-content-end mb-2">
     <a href="/PasswordPolicyManagement" class="btn btn-sm btn-outline-primary me-2">
-        <i class="mdi mdi-plus"></i> Create New Policy
+        <i class="mdi mdi-plus"></i> @GlobalPasswordPolicyManagement.CreateNewPolicy
     </a>
-    <a type="button" onclick="LoadDataGen('PasswordPolicyManagement','myDataTable','_Data',0,'datalistingview')" class="btn btn-label-primary btn-sm" data-bs-toggle="tooltip" title="View Existing Configs">
-        <i class="mdi mdi-view-list mdi-18px"></i> View List
+    <a type="button" onclick="LoadDataGen('PasswordPolicyManagement','myDataTable','_Data',0,'datalistingview')" class="btn btn-label-primary btn-sm" data-bs-toggle="tooltip" title="@GlobalPasswordPolicyManagement.ViewExistingConfigs">
+        <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
     </a>
 </div>
 

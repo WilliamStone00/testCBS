@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
-
+@using Resources
 
 <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
 
@@ -13,7 +13,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-format-list-numbered me-2"></i>
-                TRANSACTIONS
+                @GlobalOperation.TRANSACTIONS
             </button>
         </h2>
         <div id="accordionPopoutIcon-3"
@@ -25,10 +25,10 @@
                         <div class="card mb-4">
                             <div class="card-body d-sm-flex d-block">
                                 <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('Operation', null,'GetReport', '@Model.AccountNumber', 'List', 'customer_account_transaction', null,'customer_account_transaction','DownloadExcelFile',null,'@Model.AccountNumber')" data-bs-toggle="tooltip" title="Export members account @Model.AccountNumber statements">
+                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('Operation', null,'GetReport', '@Model.AccountNumber', 'List', 'customer_account_transaction', null,'customer_account_transaction','DownloadExcelFile',null,'@Model.AccountNumber')" data-bs-toggle="tooltip" title="@GlobalOperation.ExportMembersAccount @Model.AccountNumber @GlobalOperation.statements">
                                         <span class="tf-icons mdi mdi-file-excel mdi-18px"></span>
                                     </a>
-                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('Operation', null,'GetReport', null, 'List', 'export_transactions', null,'Transaction_Staement','DownloadExcelFile',null,'Transaction_Staement')" data-bs-toggle="tooltip" title="Print customer account statements">
+                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('Operation', null,'GetReport', null, 'List', 'export_transactions', null,'Transaction_Staement','DownloadExcelFile',null,'Transaction_Staement')" data-bs-toggle="tooltip" title="@GlobalOperation.PrintCustomerAccountStatements">
                                         <span class="tf-icons mdi mdi-printer mdi-18px"></span>
                                     </a>
                                 </div>
@@ -39,12 +39,12 @@
                             <table class="table table-hover" id="myDataTableT">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Date</th>
-                                        <th>Amount</th>
-                                        <th>Fee</th>
-                                        <th>Credit</th>
-                                        <th>Debit</th>
-                                        <th>Balance</th>
+                                        <th>@GlobalOperation.Date</th>
+                                        <th>@GlobalOperation.Amount</th>
+                                        <th>@GlobalOperation.Fee</th>
+                                        <th>@GlobalOperation.Credit</th>
+                                        <th>@GlobalOperation.Debit</th>
+                                        <th>@GlobalOperation.Balance</th>
                                     </tr>
                                 </thead>
                                 <tbody>

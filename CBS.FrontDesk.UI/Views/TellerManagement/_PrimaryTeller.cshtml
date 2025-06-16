@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+    @using Resources
 <div class="col">
 
     <div class="row my-4">
@@ -11,7 +12,7 @@
                     {
                         <input type="hidden" name="ServiceOption" value="primary_teller" id="ServiceOption" />
                         <fieldset class="fieldset-custom">
-                            <legend>Teller Personal Information</legend>
+                            <legend>@GlobalTellerManagement.TellerPersonalInformation</legend>
                             <div class="row mt-2 gy-4">
 
 
@@ -19,176 +20,176 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Teller.code, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Teller.code, "", new { @class = "text-danger" })
-                                        <label>Teller code</label>
+                                        <label>@GlobalTellerManagement.TellerCode</label>
                                     </div>
                                 </div>
                                 <div class="col-md-10">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Teller.name, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Teller.name, "", new { @class = "text-danger" })
-                                        <label>Teller name</label>
+                                        <label>@GlobalTellerManagement.TellerName</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-check">
                                         @Html.CheckBoxFor(m => m.Teller.isPrimary, new { @class = "form-check-input" })
-                                        <label class="form-check-label" for="isActive">Set as primary teller</label>
+                                        <label class="form-check-label" for="isActive">@GlobalTellerManagement.SetAsPrimaryTeller</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Teller.MinimumAmountToManage, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Teller.MinimumAmountToManage, "", new { @class = "text-danger" })
-                                        <label>Minimum amount teller can hold</label>
+                                        <label>@GlobalTellerManagement.MinimumAmountTellerCanHold</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Teller.MaximumAmountToManage, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Teller.MaximumAmountToManage, "", new { @class = "text-danger" })
-                                        <label>Maximum amount teller can hold</label>
+                                        <label>@GlobalTellerManagement.MaximumAmountTellerCanHold</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.Teller.branchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---Select branch---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.DropDownListFor(m => m.Teller.branchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---"+ @GlobalTellerManagement.SelectBranch+"---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.Teller.branchId, "", new { @class = "text-danger" })
-                                        <label>Branch</label>
+                                        <label>@GlobalTellerManagement.Branch</label>
                                     </div>
                                 </div>
                             </div>
                         </fieldset>
                         <fieldset class="fieldset-custom">
-                            <legend>Teller Types</legend>
+                            <legend>@GlobalTellerManagement.TellerTypes</legend>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-check form-check-inline" id="accountType">
                                         @Html.RadioButtonFor(m => m.Teller.TellerType, "PhysicalTeller", new { id = "PhysicalTeller", @class = "form-check-input" })
-                                        <label class="form-check-label" for="PhysicalTeller">Physical Office Teller</label>
+                                        <label class="form-check-label" for="PhysicalTeller">@GlobalTellerManagement.PhysicalOfficeTeller</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.Teller.TellerType, "MobileMoneyMTN", new { id = "MobileMoneyMTN", @class = "form-check-input" })
-                                        <label class="form-check-label" for="MobileMoneyMTN">V-Teller (Mobile Money MTN)</label>
+                                        <label class="form-check-label" for="MobileMoneyMTN">@GlobalTellerManagement.VTeller (Mobile Money MTN)</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.Teller.TellerType, "MomocashCollectionMTN", new { id = "MomocashCollectionMTN", @class = "form-check-input" })
-                                        <label class="form-check-label" for="MomocashCollectionMTN">V-Teller Momocash Collection (Mobile Money MTN)</label>
+                                        <label class="form-check-label" for="MomocashCollectionMTN">@GlobalTellerManagement.VTellerMomocashCollection (Mobile Money MTN)</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.Teller.TellerType, "MobileMoneyORANGE", new { id = "MobileMoneyORANGE", @class = "form-check-input" })
-                                        <label class="form-check-label" for="MobileMoneyORANGE">V-Teller (Orange Money)</label>
+                                        <label class="form-check-label" for="MobileMoneyORANGE">@GlobalTellerManagement.VTeller (Orange Money)</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.Teller.TellerType, "MomocashCollectionOrange", new { id = "MomocashCollectionOrange", @class = "form-check-input" })
-                                        <label class="form-check-label" for="MomocashCollectionOrange">V-Teller Momocash Collection (Orange Money)</label>
+                                        <label class="form-check-label" for="MomocashCollectionOrange">@GlobalTellerManagement.VTellerMomocashCollection (Orange Money)</label>
                                     </div>
 
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.Teller.TellerType, "OtherVirtualTeller", new { id = "OtherVirtualTeller", @class = "form-check-input" })
-                                        <label class="form-check-label" for="OtherVirtualTeller">Other V-Teller Services (Like GAV, etc)</label>
+                                        <label class="form-check-label" for="OtherVirtualTeller">@GlobalTellerManagement.OtherVTellerServices (Like GAV, etc)</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.Teller.TellerType, "DailyCollector", new { id = "DailyCollector", @class = "form-check-input" })
-                                        <label class="form-check-label" for="DailyCollector">Feild Daily Collector Teller</label>
+                                        <label class="form-check-label" for="DailyCollector">@GlobalTellerManagement.FeildDailyCollectorTeller</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.Teller.TellerType, "NoneCashTeller", new { id = "NoneCashTeller", @class = "form-check-input" })
-                                        <label class="form-check-label" for="NoneCashTeller">Non Cash Management Teller. (No cash is treated)</label>
+                                        <label class="form-check-label" for="NoneCashTeller">@GlobalTellerManagement.NonCashManagementTeller</label>
                                     </div>
                                 </div>
                             </div>
                         </fieldset>
                         <fieldset class="fieldset-custom">
-                            <legend>Teller Operational Behaviour</legend>
+                            <legend>@GlobalTellerManagement.TellerOperationalBehaviour</legend>
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-check">
                                         @Html.CheckBoxFor(m => m.Teller.activeStatus, new { @class = "form-check-input" })
-                                        <label class="form-check-label" for="isActive">Check to keep teller active</label>
+                                        <label class="form-check-label" for="isActive">@GlobalTellerManagement.CheckToKeepTellerActive</label>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-check">
                                         @Html.CheckBoxFor(m => m.Teller.PerformCashIn, new { @class = "form-check-input" })
-                                        <label class="form-check-label" for="activeStatus">Check to perform cashin.</label>
+                                        <label class="form-check-label" for="activeStatus">@GlobalTellerManagement.CheckToPerformCashin.</label>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-check">
                                         @Html.CheckBoxFor(m => m.Teller.PerformCashOut, new { @class = "form-check-input" })
-                                        <label class="form-check-label" for="activeStatus">Check to perform cash-out.</label>
+                                        <label class="form-check-label" for="activeStatus">@GlobalTellerManagement.CheckToPerformCashOut.</label>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-check">
                                         @Html.CheckBoxFor(m => m.Teller.PerformTransfer, new { @class = "form-check-input" })
-                                        <label class="form-check-label" for="activeStatus">Check to perform cash transfer.</label>
+                                        <label class="form-check-label" for="activeStatus">@GlobalTellerManagement.CheckToPerformCashTransfer.</label>
                                     </div>
                                 </div>
                             </div>
                         </fieldset>
                         <fieldset class="fieldset-custom">
-                            <legend>Teller Operation Types</legend>
+                            <legend>@GlobalTellerManagement.TellerOperationTypes</legend>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-check form-check-inline" id="accountType">
                                         @Html.RadioButtonFor(m => m.Teller.OperationType, "Cash", new { id = "Cash", @class = "form-check-input" })
-                                        <label class="form-check-label" for="Cash">Performs Cash Operations</label>
+                                        <label class="form-check-label" for="Cash">@GlobalTellerManagement.PerformsCashOperations</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.Teller.OperationType, "NoneCash", new { id = "NoneCash", @class = "form-check-input" })
-                                        <label class="form-check-label" for="NoneCash">Performs Non Cash Operation.</label>
+                                        <label class="form-check-label" for="NoneCash">@GlobalTellerManagement.PerformsNonCashOperation.</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.Teller.OperationType, "Both_Cash_NoneCash", new { id = "NoneCash", @class = "form-check-input" })
-                                        <label class="form-check-label" for="NoneCash">Performs "<b>Non Cash</b>" and "<b>Cash</b>" Operations. [Both Operations].</label>
+                                        <label class="form-check-label" for="NoneCash">@GlobalTellerManagement.Performs "<b>@GlobalTellerManagement.NonCash</b>" @GlobalTellerManagement.and "<b>@GlobalTellerManagement.Cash</b>" @GlobalTellerManagement.operationsBothOperations.</label>
                                     </div>
                                 </div>
                             </div>
                         </fieldset>
                         <fieldset class="fieldset-custom">
-                            <legend>Operation Limits</legend>
+                            <legend>@GlobalTellerManagement.OperationLimits</legend>
                             <div class="row mt-2 gy-4">
                                 <div class="col-md-3">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Teller.MinimumDepositAmount, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Teller.MinimumDepositAmount, "", new { @class = "text-danger" })
-                                        <label>Minimum deposit amount to peform</label>
+                                        <label>@GlobalTellerManagement.MinimumDepositAmountToPerform</label>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Teller.MaximumDepositAmount, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Teller.MaximumDepositAmount, "", new { @class = "text-danger" })
-                                        <label>Maximum deposit amount to peform</label>
+                                        <label>@GlobalTellerManagement.MaximumDepositAmountToPerform</label>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Teller.MinimumWithdrawalAmount, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Teller.MinimumWithdrawalAmount, "", new { @class = "text-danger" })
-                                        <label>Minimum withdrawal amount to peform</label>
+                                        <label>@GlobalTellerManagement.MinimumWithdrawalAmountToPerform</label>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Teller.MaximumWithdrawalAmount, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Teller.MaximumWithdrawalAmount, "", new { @class = "text-danger" })
-                                        <label>Maximum withdrawal amount to peform</label>
+                                        <label>@GlobalTellerManagement.MaximumWithdrawalAmountToPerform</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Teller.MinimumTransferAmount, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Teller.MinimumTransferAmount, "", new { @class = "text-danger" })
-                                        <label>Minimum transfter amount to peform</label>
+                                        <label>@GlobalTellerManagement.MinimumTransfterAmountToPerform</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Teller.MaximumTransferAmount, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.Teller.MaximumTransferAmount, "", new { @class = "text-danger" })
-                                        <label>Maximum transfter amount to peform</label>
+                                        <label>@GlobalTellerManagement.MaximumTransfterAmountToPerform</label>
                                     </div>
                                 </div>
                             </div>
@@ -196,35 +197,35 @@
                         </fieldset>
 
                         <fieldset class="fieldset-custom">
-                            <legend>Cash Ceiling Monitoring</legend>
+                            <legend>@GlobalTellerManagement.CashCeilingMonitoring</legend>
                             <div class="row gy-4">
 
                                 <div class="col-md-3">
                                     <div class="form-check">
                                         @Html.CheckBoxFor(m => m.Teller.IsBlockedDueToCashCeilling, new { @class = "form-check-input" })
-                                        <label class="form-check-label">Blocked Due to Ceiling</label>
+                                        <label class="form-check-label">@GlobalTellerManagement.BlockedDueToCeiling</label>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Teller.DateOfBlocked, "{0:yyyy-MM-dd HH:mm}", new { @class = "form-control", @readonly = "readonly", type = "datetime-local" })
-                                        <label>Date Blocked</label>
+                                        <label>@GlobalTellerManagement.DateBlocked</label>
                                     </div>
                                 </div>
 
                                 <div class="col-md-5">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Teller.Blockedby, new { @class = "form-control", @readonly = "readonly" })
-                                        <label>Blocked By</label>
+                                        <label>@GlobalTellerManagement.BlockedBy</label>
                                     </div>
                                 </div>
 
                                 <div class="col-md-12 mt-2">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.TextAreaFor(m => m.Teller.Comment, new { @class = "form-control", @readonly = "readonly", rows = "5", placeholder = "Reason or Notes" })
+                                        @Html.TextAreaFor(m => m.Teller.Comment, new { @class = "form-control", @readonly = "readonly", rows = "5", placeholder = @GlobalTellerManagement.ReasonOrNotes })
                                         @Html.ValidationMessageFor(m => m.Teller.Comment, "", new { @class = "text-danger" })
-                                        <label>Comment</label>
+                                        <label>@GlobalTellerManagement.Comment</label>
                                     </div>
                                 </div>
 
@@ -245,11 +246,11 @@
                         <div class="mt-4">
                             @if (Model.Teller.id == null)
                             {
-                                <button type="submit" class="btn btn-primary me-2">Save</button>
+                                <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
                                 <input type="hidden" name="Action" value="insert" id="Action" />
                             }
                             else
-                            { <button type="submit" class="btn btn-primary me-2">Update</button>
+                            { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                                 @Html.HiddenFor(m => m.Teller.id)
                                 <input type="hidden" name="Action" value="update" id="Action" />
                             }

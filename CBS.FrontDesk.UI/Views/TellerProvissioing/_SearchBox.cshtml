@@ -1,26 +1,26 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.DailyTeller
-
+@using Resources
 <fieldset class="fieldset-custom">
-    <legend>Filter tellers in operation</legend>
+    <legend>@GlobalTellerProvissioing.FilterTellersInOperation</legend>
     <hr />
     <div class="row g-4">
         <div class="col-md-6">
-            <label for="branchInput">Branch</label>
-            @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---Select Branch---", new { @class = "form-control select2", @id = "branchInput" })
+            <label for="branchInput">@GlobalTellerProvissioing.Branch</label>
+            @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalTellerProvissioing.SelectBranch+"---", new { @class = "form-control select2", @id = "branchInput" })
         </div>
         <div class="col-md-6">
             <div class="row g-4">
                 <div class="col-md-6">
-                    <label for="dateFromInput">Date From</label>
+                    <label for="dateFromInput">@GlobalTellerProvissioing.DateFrom</label>
                     <div class="input-group">
-                        <input type="date" id="dateFromInput" class="form-control shadow-box date-picker" placeholder="Date From">
+                        <input type="date" id="dateFromInput" class="form-control shadow-box date-picker" placeholder="@GlobalTellerProvissioing.DateFrom">
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label for="dateToInput">Date To</label>
+                    <label for="dateToInput">@GlobalTellerProvissioing.DateTo</label>
                     <div class="input-group">
-                        <input type="date" id="dateToInput" class="form-control shadow-box date-picker" placeholder="Date To">
-                        <button class="btn btn-primary btn-sm" onclick="SearchByDates('_Data','datalistingview')">Search</button>
+                        <input type="date" id="dateToInput" class="form-control shadow-box date-picker" placeholder="@GlobalTellerProvissioing.DateTo">
+                        <button class="btn btn-primary btn-sm" onclick="SearchByDates('_Data','datalistingview')">@GlobalShared.Search</button>
 
                     </div>
                 </div>

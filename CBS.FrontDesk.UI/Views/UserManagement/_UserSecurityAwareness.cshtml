@@ -1,96 +1,99 @@
-﻿<div class="tab-pane fade show active" id="tab-awareness" role="tabpanel">
+﻿@using Resources
+<div class="tab-pane fade show active" id="tab-awareness" role="tabpanel">
     <h5 class="text-primary mb-3">
-        <i class="mdi mdi-shield-account-outline me-2"></i>User Security Awareness
+        <i class="mdi mdi-shield-account-outline me-2"></i>@GlobalUserManagement.UserSecurityAwareness
     </h5>
 
     <div class="alert alert-info shadow-sm mb-4">
         <i class="mdi mdi-security me-2"></i>
-        <strong>Trust Soft Credit (TSC)</strong> enforces a comprehensive security policy framework. All users must comply with these security and usage standards to ensure protection of personal, organizational, and system-wide data.
+        <strong>Trust Soft Credit (TSC)</strong> @GlobalUserManagement.enforcesAcomprehensiveSecurityPolicyFramework.
     </div>
 
     <!-- 🔐 ACCOUNT POLICIES -->
-    <h6 class="text-secondary fw-bold mt-4">🔐 Account Compliance Policies</h6>
+    <h6 class="text-secondary fw-bold mt-4">🔐 @GlobalUserManagement.AccountCompliancePolicies</h6>
     <ul>
-        <li><strong>Inactivity Lock:</strong> Accounts are automatically disabled after a configured period of user inactivity (e.g., 12 days).</li>
-        <li><strong>No Login After Creation:</strong> Newly created accounts must be accessed within <strong>3 days</strong>; otherwise, they will be automatically disabled.</li>
-        <li><strong>MFA Enforcement:</strong> Users are required to activate Multi-Factor Authentication within <strong>3 days</strong> of account creation.</li>
-        <li><strong>Account Lockout:</strong> Accounts are locked after <strong>3 failed login attempts</strong> to prevent brute-force attacks.</li>
-        <li><strong>Branch and IP Restrictions:</strong> Login is restricted to authorized branches and approved IP address ranges.</li>
-        <li><strong>Password Expiration:</strong> Users must <strong>change their password every 90 days</strong> in accordance with the organization's fraud prevention and security policies.</li>
+        <li><strong>@GlobalUserManagement.InactivityLock:</strong> @GlobalUserManagement.AccountsAreAutomaticallyDisabledAfterAConfiguredPeriodOfUserInactivity (e.g., @GlobalUserManagement._12Days).</li>
+        <li><strong>@GlobalUserManagement.NoLoginAfterCreation:</strong> @GlobalUserManagement.NewlyCreatedAccountsMustBeAccessedWithin <strong>@GlobalUserManagement._3Days</strong>; @GlobalUserManagement.otherwiseTheyWillBeAutomaticallyDisabled.</li>
+        <li><strong>@GlobalUserManagement.MFAEnforcement:</strong> @GlobalUserManagement.UsersAreRequiredToActivateMultiFactorAuthenticationWithin <strong>@GlobalUserManagement._3Days</strong> @GlobalUserManagement.ofAccountCreation.</li>
+        <li><strong>@GlobalUserManagement.AccountLockout:</strong> @GlobalUserManagement.AccountsAreLockedAfter <strong>@GlobalUserManagement._3FailedLoginAttempts</strong> @GlobalUserManagement.toPreventBruteForceAttacks.</li>
+        <li><strong>@GlobalUserManagement.BranchAndIPRestrictions:</strong> @GlobalUserManagement.LoginIsRestrictedToAuthorizedBranchesAndApprovedIPAddressRanges.</li>
+        <li><strong>@GlobalUserManagement.PasswordExpiration:</strong> @GlobalUserManagement.UsersMust <strong>@GlobalUserManagement.changeTheirPasswordEvery90Days</strong> @GlobalUserManagement.inAccordanceWithTheOrganizationsFraudPreventionAndSecurityPolicies.</li>
     </ul>
+
+  
 
     <div class="alert alert-warning mt-3 shadow-sm">
         <i class="mdi mdi-alert-outline me-2"></i>
-        <strong>Important:</strong> Failure to comply with any of the above policies will result in the <strong>automatic blocking of your account</strong> by the system.
-        If your account is blocked, please contact your administrator or IT support team for assistance.
+        <strong>@GlobalUserManagement.Important:</strong> @GlobalUserManagement.FailureToComplyWithAnyOfTheAbovePoliciesWillResultInThe <strong>@GlobalUserManagement.automaticBlockingOfYourAccount</strong> @GlobalUserManagement.byTheSystem.
+        @GlobalUserManagement.IfYourAccountIsBlockedPleaseContactYourAdministrator.
     </div>
 
 
 
     <!-- 🔑 PASSWORD POLICIES -->
-    <h6 class="text-secondary fw-bold mt-4">🔐 Password Policy</h6>
+    <h6 class="text-secondary fw-bold mt-4">🔐 @GlobalUserManagement.PasswordPolicy</h6>
     <ul>
-        <li><strong>Length:</strong> Passwords must be between <strong>8 and 128 characters</strong>.</li>
+        <li><strong>@GlobalUserManagement.Length:</strong> @GlobalUserManagement.PasswordsMustBeBetween <strong>@GlobalUserManagement._8And128Characters</strong>.</li>
         <li>
-            <strong>Composition:</strong> Must include at least:
+            <strong>@GlobalUserManagement.Composition:</strong> @GlobalUserManagement.MustIncludeAtLeast:
             <ul>
-                <li>One uppercase letter (A–Z)</li>
-                <li>One lowercase letter (a–z)</li>
-                <li>One digit (0–9)</li>
-                <li><strong>Three non-repeating special characters</strong> from the approved set <code>!@@#$%^&*()_+-=[]{}|;:,.&lt;&gt;?</code>, distributed across the password.</li>
+                <li>@GlobalUserManagement.OneUppercaseLetter (A–Z)</li>
+                <li>@GlobalUserManagement.OneLowercaseLetter (a–z)</li>
+                <li>@GlobalUserManagement.OneDigit (0–9)</li>
+                <li><strong>@GlobalUserManagement.ThreeNonRepeatingSpecialCharacters</strong> @GlobalUserManagement.fromTheApprovedSet <code>!@@#$%^&*()_+-=[]{}|;:,.&lt;&gt;?</code>, @GlobalUserManagement.distributedAcrossThePassword.</li>
             </ul>
         </li>
-        <li><strong>Username Exclusion:</strong> Your password must not contain your username.</li>
-        <li><strong>Common Word Filter:</strong> Forbidden words like <code>admin</code>, <code>password</code>, <code>welcome</code>, etc., are not allowed.</li>
-        <li><strong>Calendar Year Restriction:</strong> Passwords must not include years such as <code>1999</code>, <code>2024</code>, etc. These make passwords easier to guess.</li>
-        <li><strong>Repetition Avoidance:</strong> Serial patterns (e.g., <code>1234</code>, <code>abcd</code>) are disallowed.</li>
-        <li><strong>Password History:</strong> You cannot reuse your last <strong>5 previously used passwords</strong>.</li>
-        <li><strong>Password Expiration:</strong> Passwords must be changed every <strong>90 days</strong> in accordance with the fraud prevention policy.</li>
+        <li><strong>@GlobalUserManagement.UsernameExclusion:</strong> @GlobalUserManagement.YourPasswordMustNotContainYourUsername.</li>
+        <li><strong>@GlobalUserManagement.CommonWordFilter:</strong> @GlobalUserManagement.ForbiddenWordsLike <code>admin</code>, <code>password</code>, <code>welcome</code>, etc., @GlobalUserManagement.areNotAllowed.</li>
+        <li><strong>@GlobalUserManagement.CalendarYearRestriction:</strong> @GlobalUserManagement.PasswordsMustNotIncludeYearsSuchAs <code>1999</code>, <code>2024</code>, etc. @GlobalUserManagement.TheseMakePasswordsEasierToGuess.</li>
+        <li><strong>@GlobalUserManagement.RepetitionAvoidance:</strong> @GlobalUserManagement.SerialPatterns (e.g., <code>1234</code>, <code>abcd</code>) @GlobalUserManagement.areDisallowed.</li>
+        <li><strong>@GlobalUserManagement.PasswordHistory:</strong> @GlobalUserManagement.YouCannotReuseYourLast <strong>@GlobalUserManagement._5PreviouslyUsedPasswords</strong>.</li>
+        <li><strong>@GlobalUserManagement.PasswordExpiration:</strong> @GlobalUserManagement.PasswordsMustBeChangedEvery <strong>@GlobalUserManagement._90days</strong> @GlobalUserManagement.accordanceWithTheFraudPreventionPolicy.</li>
     </ul>
 
 
     <!-- 📱 MFA -->
-    <h6 class="text-secondary fw-bold mt-4">📱 Multi-Factor Authentication (MFA)</h6>
+    <h6 class="text-secondary fw-bold mt-4">📱 @GlobalUserManagement.MultiFactorAuthenticationMFA</h6>
     <ul>
-        <li>MFA is <strong>mandatory</strong> by policy.</li>
-        <li>The default MFA method is <strong>TOTP (Time-based One-Time Password)</strong> using apps like Google Authenticator.</li>
-        <li>Other supported types include <strong>SMS</strong> and <strong>Email</strong>-based tokens.</li>
-        <li>Users must activate MFA within <strong>3 days after account creation</strong> or risk account suspension.</li>
+        <li>@GlobalUserManagement.MFAIs <strong>@GlobalUserManagement.mandatory</strong> @GlobalUserManagement.byPolicy.</li>
+        <li>@GlobalUserManagement.TheDefaultMFAMethodIs <strong>@GlobalUserManagement.TOTPTimeBasedOneTimePassword</strong> @GlobalUserManagement.usingAppsLikeGoogleAuthenticator.</li>
+        <li>@GlobalUserManagement.OtherSupportedTypesInclude <strong>SMS</strong> @GlobalUserManagement.and <strong>Email</strong>-based tokens.</li>
+        <li>@GlobalUserManagement.UsersMustActivateMFAWithin <strong>@GlobalUserManagement.DaysAfterAccountCreation</strong> @GlobalUserManagement.orRiskAccountSuspension.</li>
     </ul>
 
     <!-- ⏳ SESSION MANAGEMENT -->
-    <h6 class="text-secondary fw-bold mt-4">⏳ Idle Time & Session Management</h6>
+    <h6 class="text-secondary fw-bold mt-4">⏳ @GlobalUserManagement.IdleTimeSessionManagement</h6>
     <ul>
-        <li><strong>Session Timeout:</strong> Sessions are automatically terminated after <strong>15 minutes</strong> of inactivity.</li>
-        <li><strong>Idle Account Policy:</strong> Users who remain inactive for several days may have their accounts auto-blocked.</li>
-        <li><strong>Secure Cookies:</strong> All session cookies are <code>HttpOnly</code>, <code>Secure</code>, and <code>SameSite=Strict</code>.</li>
-        <li><strong>Multiple Session Enforcement:</strong> TSC monitors simultaneous logins and terminates overlapping sessions to prevent abuse.</li>
+        <li><strong>@GlobalUserManagement.SessionTimeout:</strong> @GlobalUserManagement.SessionsAreAutomaticallyTerminatedAfter <strong>15 minutes</strong> @GlobalUserManagement.ofInactivity.</li>
+        <li><strong>@GlobalUserManagement.IdleAccountPolicy:</strong> @GlobalUserManagement.UsersWhoRemainInactiveForSeveralDaysMayHaveTheirAccountsAutoBlocked.</li>
+        <li><strong>@GlobalUserManagement.SecureCookies:</strong> @GlobalUserManagement.AllSessionCookiesAre <code>@GlobalUserManagement.HttpOnly</code>, <code>@GlobalUserManagement.Secure</code>, @GlobalUserManagement.and <code>@GlobalUserManagement.SameSiteStrict</code>.</li>
+        <li><strong>@GlobalUserManagement.MultipleSessionEnforcement:</strong> @GlobalUserManagement.TSCMonitorsSimultaneousLoginsAndTerminatesOverlappingSessionsToPreventAbuse.</li>
     </ul>
 
     <!-- 🧪 EXAMPLES -->
     <h6 class="text-secondary fw-bold mt-4">🧪 Examples</h6>
-    <p><strong class="text-primary">✅ Very Strong Password:</strong> <code>Xr@91$FeB!tYz2025</code></p>
-    <p><strong class="text-danger">❌ Very Weak Passwords:</strong> <code>password123</code>, <code>admin</code>, <code>12345678</code></p>
+    <p><strong class="text-primary">✅ @GlobalUserManagement.VeryStrongPassword:</strong> <code>Xr@91$FeB!tYz2025</code></p>
+    <p><strong class="text-danger">❌ @GlobalUserManagement.VeryWeakPasswords:</strong> <code>password123</code>, <code>admin</code>, <code>12345678</code></p>
 
     <!-- 🛡️ BEST PRACTICES -->
-    <h6 class="text-secondary fw-bold mt-4">🛡️ Best Practices to Stay Secure</h6>
+    <h6 class="text-secondary fw-bold mt-4">🛡️ @GlobalUserManagement.BestPracticesToStaySecure</h6>
     <ul>
-        <li>Use a <strong>unique password</strong> that you do not use on other systems.</li>
-        <li><strong>Never share your password or MFA code</strong> with anyone — not even IT staff.</li>
-        <li><strong>Logout</strong> from shared computers and clear browser data after use.</li>
-        <li>Keep your devices, browsers, and OS updated to patch known vulnerabilities.</li>
+        <li>@GlobalUserManagement.UseA <strong>@GlobalUserManagement.uniquePassword</strong> @GlobalUserManagement.ThatYouDoNotUseOnOtherSystems.</li>
+        <li><strong>@GlobalUserManagement.NeverShareYourPasswordOrMFACode</strong> @GlobalUserManagement.withAnyoneNotEvenITStaff.</li>
+        <li><strong>@GlobalUserManagement.Logout</strong> @GlobalUserManagement.fromSharedComputersAndClearBrowserDataAfterUse.</li>
+        <li>@GlobalUserManagement.KeepYourDevicesBrowsersAndOSUpdatedToPatchKnownVulnerabilities.</li>
     </ul>
 
     <!-- 🚫 THREATS -->
-    <h6 class="text-secondary fw-bold mt-4">🚫 Protect Yourself from Threats</h6>
+    <h6 class="text-secondary fw-bold mt-4">🚫 @GlobalUserManagement.ProtectYourselfFromThreats</h6>
     <ul>
-        <li><strong>Phishing:</strong> Never enter your credentials on untrusted links or fake sites. TSC will never email you for your password.</li>
-        <li><strong>Session Hijacking:</strong> Use VPNs on public networks. Never leave active sessions open on shared devices.</li>
-        <li><strong>Unauthorized Access:</strong> Monitor your recent login history. Report suspicious behavior immediately.</li>
+        <li><strong>@GlobalUserManagement.Phishing:</strong> @GlobalUserManagement.NeverEnterYourCredentialsOnUntrustedLinksOrFakeSites.</li>
+        <li><strong>@GlobalUserManagement.SessionHijacking:</strong> @GlobalUserManagement.UseVPNsOnPublicNetworks.</li>
+        <li><strong>@GlobalUserManagement.UnauthorizedAccess:</strong> @GlobalUserManagement.MonitorYourRecentLoginHistory.</li>
     </ul>
 
     <!-- 📘 GLOSSARY -->
-    <h6 class="text-secondary fw-bold mt-4">📘 Key Abbreviations</h6>
+    <h6 class="text-secondary fw-bold mt-4">📘 @GlobalUserManagement.KeyAbbreviations</h6>
     <ul>
         <li><strong>MFA:</strong> Multi-Factor Authentication</li>
         <li><strong>TOTP:</strong> Time-based One-Time Password</li>
@@ -101,6 +104,6 @@
     <!-- ⚠️ ALERT -->
     <div class="alert alert-warning mt-4 shadow-sm">
         <i class="mdi mdi-alert-outline me-2"></i>
-        <strong>Important:</strong> If you notice unusual account activity or suspect compromise, <span class="text-danger">change your password immediately</span> and notify your system administrator.
+        <strong>@GlobalUserManagement.Important:</strong> @GlobalUserManagement.IfYouNoticeUnusualAccountActivityOrSuspectCompromise, <span class="text-danger">@GlobalUserManagement.changeYourPasswordImmediately</span> @GlobalUserManagement.andNotifyYourSystemAdministrator.
     </div>
 </div>

@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.VaultManagement.Vault
-
+@using Resources
 
 
 <fieldset class="fieldset-custom">
@@ -17,11 +17,11 @@
                         @Html.DropDownListFor(
                             m => m.AddVaultCommand.BranchId,
                             new SelectList(ViewBag.Branches, "Id", "Name"),
-                            "--- Select Branch ---",
+                            "---"+ @GlobalVault.SelectBranch+ "---",
                             new { @class = "form-control select2", id = "BranchId", @search = "true", onchange = "fetchBranchDetails(this.value)" }
                         )
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                        <label for="BranchId">Select Branch</label>
+                        <label for="BranchId">@GlobalVault.SelectBranch</label>
                     </div>
                 </div>
 
@@ -30,14 +30,14 @@
                 <div class="col-md-2">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.AddVaultCommand.BranchCode, new { @class = "form-control", @readonly = "readonly", id = "BranchCode" })
-                        <label for="BranchCode">Branch Code</label>
+                        <label for="BranchCode">@GlobalVault.BranchCode</label>
                     </div>
                 </div>
 
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.AddVaultCommand.Name, new { @class = "form-control", id = "VaultName", @readonly = "readonly" })
-                        <label for="VaultName">Vault Name</label>
+                        <label for="VaultName">@GlobalVault.VaultName</label>
                     </div>
                 </div>
 
@@ -46,28 +46,28 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.AddVaultCommand.MaximumCapacity, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.AddVaultCommand.MaximumCapacity, "", new { @class = "text-danger" })
-                        <label for="MaximumCapacity">Maximum Capacity</label>
+                        <label for="MaximumCapacity">@GlobalVault.MaximumCapacity</label>
                     </div>
                 </div>
                 <div class="col-md-7">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.AddVaultCommand.Diamention, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.AddVaultCommand.Diamention, "", new { @class = "text-danger", @placeholder = "3x3 Tall" })
-                        <label for="MaximumCapacity">Diamention (Example: 3x3 meter tall)</label>
+                        <label for="MaximumCapacity">@GlobalVault.Diamention (Example: 3x3 meter tall)</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.AddVaultCommand.Location, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.AddVaultCommand.Location, "", new { @class = "text-danger" })
-                        <label for="Location">Location (Could just be the location where the vault in located in your office.)</label>
+                        <label for="Location">@GlobalVault.LocationCouldJustBeThelocationWhereTheVaultInLocatedInYourOffice</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.AddVaultCommand.Address, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Location, "", new { @class = "text-danger" })
-                        <label for="Address">Address</label>
+                        <label for="Address">@GlobalVault.Address</label>
                     </div>
                 </div>
                 <!-- Description -->
@@ -75,7 +75,7 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.AddVaultCommand.Description, new { @class = "form-control", @style = "height: 200px;" })
                         @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                        <label for="Description">Description</label>
+                        <label for="Description">@GlobalVault.Description</label>
                     </div>
                 </div>
 
@@ -83,7 +83,7 @@
                 <div class="col-md-12">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.AddVaultCommand.IsActive, new { @class = "form-check-input", id = "isActive" })
-                        <label class="form-check-label" for="isActive">Active Status</label>
+                        <label class="form-check-label" for="isActive">@GlobalVault.ActiveStatus</label>
                     </div>
                 </div>
             </div>
@@ -92,12 +92,12 @@
             <div class="mt-4">
                 @if (ViewBag.Key != null)
                 {
-                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                 }
                 else
                 {
-                    <button type="submit" class="btn btn-primary me-2">Save</button>
-                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                    <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
                 }
             </div>
            

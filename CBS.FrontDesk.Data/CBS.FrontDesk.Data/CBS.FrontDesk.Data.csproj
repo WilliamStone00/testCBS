@@ -112,7 +112,14 @@
     <Compile Include="Entity\ChangeNumber\PhoneNumberChangeHistory.cs" />
     <Compile Include="Entity\Class1.cs" />
     <Compile Include="Entity\CMoney\CMoneyMembersActivationAccount.cs" />
-    <Compile Include="Entity\DailyCollectorManagement\Class1.cs" />
+    <Compile Include="Entity\DailyCollectionData\AgentAccount\AgentAccount.cs" />
+    <Compile Include="Entity\DailyCollectionData\AgentDailyCashLimit\AgentDailyCashLimit.cs" />
+    <Compile Include="Entity\DailyCollectionData\AgentDashBoard\AgentDashBoard.cs" />
+    <Compile Include="Entity\DailyCollectionData\Agent\Agent.cs" />
+    <Compile Include="Entity\DailyCollectionData\CommissionSetting\CommissionSetting.cs" />
+    <Compile Include="Entity\DailyCollectionData\DailyCustomer\DailyCustomer.cs" />
+    <Compile Include="Entity\DailyCollectionData\Zone\Zone.cs" />
+    <Compile Include="Entity\DailyCollectorManagement\DailyCollectionConfiguration.cs" />
     <Compile Include="Entity\DataSetLoanPortfolio\DelinquencyByAgeAndGenderRow.cs" />
     <Compile Include="Entity\DataSetLoanPortfolio\DelinquencyByAgeAndLoanTypeRow.cs" />
     <Compile Include="Entity\DataSetLoanPortfolio\DelinquencyByCategoryRow.cs" />
@@ -319,6 +326,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

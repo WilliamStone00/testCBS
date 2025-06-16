@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.UserManagement.User
+    @using Resources
 @{
     var created = Model.UserSession.CreatedDate;
     var expires = Model.UserSession.ExpiryDate;
@@ -15,7 +16,7 @@
 
 <div class="modal-header text-white mb-2">
     <h5 class="modal-title">
-        <i class="fas fa-info-circle me-2"></i> Session Recovery & Metadata
+        <i class="fas fa-info-circle me-2"></i> @GlobalUserManagement.SessionRecoveryMetadata
     </h5>
 </div>
 
@@ -32,36 +33,36 @@
 
         <div class="row mb-4">
             <div class="col-12">
-                <label class="form-label fw-bold text-secondary">Recovery Code</label>
+                <label class="form-label fw-bold text-secondary">@GlobalUserManagement.RecoveryCode</label>
                 <div class="form-control bg-white shadow-sm d-flex justify-content-between align-items-center">
                     <span class="text-primary fw-bold">@Model.SessionRecoveryCode</span>
                     @if (Model.UserSession?.IsDefaultSessionRecoveryCode == true)
                     {
-                        <span class="badge bg-danger"><i class="fas fa-gears me-2"></i>Default settings</span>
+                        <span class="badge bg-danger"><i class="fas fa-gears me-2"></i>@GlobalUserManagement.DefaultSettings</span>
                     }
                     else
                     {
-                        <span class="badge bg-primary"><i class="fas fa-gears me-2"></i>Custom settings</span>
+                <span class="badge bg-primary"><i class="fas fa-gears me-2"></i>@GlobalUserManagement.CustomSettings</span>
                     }
                 </div>
-                <small class="text">This is used to terminate all active sessions if your account is compromised.</small>
+                <small class="text">@GlobalUserManagement.ThisIsUsedToTerminateAllActiveSessionsIfYourAccountIsCompromised.</small>
             </div>
 
             <div class="col-12 mt-3 text-end">
                 <button type="submit" class="btn btn-outline-danger shadow-sm">
-                    <i class="fas fa-sync-alt me-1"></i> Terminate all active sessions
+                    <i class="fas fa-sync-alt me-1"></i> @GlobalUserManagement.TerminateAllActiveSessions
                 </button>
             </div>
         </div>
     }
     <!-- 🔐 SECURITY TIPS -->
     <div class="alert alert-warning mt-4 shadow-sm mb-3">
-        <strong>Security Tips:</strong>
+        <strong>@GlobalUserManagement.SecurityTips:</strong>
         <ul class="mb-0 mt-2 ps-3">
-            <li>Do not share your recovery code.</li>
-            <li>Generate a new code regularly for security hygiene.</li>
-            <li>Use recovery code only if you detect unauthorized access.</li>
-            <li>Consider changing your password after recovery.</li>
+            <li>@GlobalUserManagement.DoNotShareYourRecoveryCode.</li>
+            <li>@GlobalUserManagement.GenerateANewCodeRegularlyForSecurityHygiene.</li>
+            <li>@GlobalUserManagement.UseRecoveryCodeOnlyIfYouDetectUnauthorizedAccess.</li>
+            <li>@GlobalUserManagement.ConsiderChangingYourPasswordAfterRecovery.</li>
         </ul>
     </div>
     <!-- 📋 SESSION DETAILS TABLE -->
@@ -69,69 +70,69 @@
         <table class="table table-bordered table-striped shadow-sm">
             <tbody>
                 <tr>
-                    <th class="bg-light">Session Code</th>
+                    <th class="bg-light">@GlobalUserManagement.SessionCode</th>
                     <td>@Model.UserSession.SessionCode</td>
                 </tr>
                 <tr>
-                    <th class="bg-light">User Name</th>
+                    <th class="bg-light">@GlobalUserManagement.Username</th>
                     <td>@Model.UserSession.UserName</td>
                 </tr>
                 <tr>
-                    <th class="bg-light">Full Name</th>
+                    <th class="bg-light">@GlobalUserManagement.FullName</th>
                     <td>@Model.UserSession.FullName</td>
                 </tr>
                 <tr>
-                    <th class="bg-light">Role</th>
+                    <th class="bg-light">@GlobalUserManagement.Role</th>
                     <td>@Model.UserSession.Role</td>
                 </tr>
                 <tr>
-                    <th class="bg-light">Branch</th>
+                    <th class="bg-light">@GlobalUserManagement.Branch</th>
                     <td>@($"{Model.UserSession.BranchName} ({Model.UserSession.BranchCode})")</td>
                 </tr>
                 <tr>
-                    <th class="bg-light">IP Address</th>
+                    <th class="bg-light">@GlobalUserManagement.IPAddress</th>
                     <td>@Model.UserSession.IpAddress</td>
                 </tr>
                 <tr>
-                    <th class="bg-light">Created Date</th>
+                    <th class="bg-light">@GlobalUserManagement.CreatedDate</th>
                     <td>@Model.UserSession.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
                 </tr>
                 <tr>
-                    <th class="bg-light">Expires At</th>
+                    <th class="bg-light">@GlobalUserManagement.ExpiresAt</th>
                     <td>@Model.UserSession.ExpiryDate.ToString("dd/MM/yyyy HH:mm")</td>
                 </tr>
                 <tr>
-                    <th class="bg-light">Expire Time</th>
+                    <th class="bg-light">@GlobalUserManagement.ExpireTime</th>
                     <td>@expireHoursText</td>
                 </tr>
                 <tr>
-                    <th class="bg-light">Time Left</th>
+                    <th class="bg-light">@GlobalUserManagement.TimeLeft</th>
                     <td class="fw-bold text-@(timeLeft.TotalSeconds > 0 ? "primary" : "danger")">@timeLeftText</td>
                 </tr>
 
                 <tr>
-                    <th class="bg-light">Total Active Sessions</th>
+                    <th class="bg-light">@GlobalUserManagement.TotalActiveSessions</th>
                     <td>@Model.UserSession.NumberOfSessionsOpen</td>
                 </tr>
                 <tr>
-                    <th class="bg-light">Session Status</th>
+                    <th class="bg-light">@GlobalUserManagement.SessionStatus</th>
                     <td>
                         @if (Model.UserSession.SessionStatus == "Multiple_Sessions")
                         {
-                            <span class="badge bg-warning text-dark">Multiple Active</span>
+                            <span class="badge bg-warning text-dark">@GlobalUserManagement.MultipleActive</span>
                         }
                         else if (Model.UserSession.SessionStatus == "OK")
                         {
-                            <span class="badge bg-primary">Healthy</span>
+                            <span class="badge bg-primary">@GlobalUserManagement.Healthy</span>
                         }
                         else
                         {
-                            <span class="badge bg-danger">Invalid / Expired</span>
+                            <span class="badge bg-danger">@GlobalUserManagement.InvalidExpired</span>
                         }
                     </td>
                 </tr>
                 <tr>
-                    <th class="bg-light">Last Error Message</th>
+                    <th class="bg-light">@GlobalUserManagement.LastErrorMessage</th>
                     <td class="text-danger">@Model.UserSession.ErrorMessage</td>
                 </tr>
             </tbody>

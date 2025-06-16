@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.StandingOrderCarrier
-
+@using Resources
 <fieldset class="fieldset-custom">
    
 
@@ -20,14 +20,14 @@
                 {
                     <!-- Clickable photo for preview -->
                     <a href="#" data-bs-toggle="modal" data-bs-target="#photoPreviewModal">
-                        <img src="@Model.Customer.photoUrl" class="img-fluid preview-image" alt="Uploaded Image">
+                        <img src="@Model.Customer.photoUrl" class="img-fluid preview-image" alt="@GlobalShared.UploadedImage">
                     </a>
                     <!-- Modal for photo preview -->
                     <div class="modal fade" id="photoPreviewModal" tabindex="-1" aria-labelledby="photoPreviewModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-body">
-                                    <img src="@Model.Customer.photoUrl" class="img-fluid" alt="Uploaded Image">
+                                    <img src="@Model.Customer.photoUrl" class="img-fluid" alt="@GlobalShared.UploadedImage">
                                 </div>
                             </div>
                         </div>
@@ -51,14 +51,14 @@
                 {
                     <!-- Clickable signature for preview -->
                     <a href="#" data-bs-toggle="modal" data-bs-target="#signaturePreviewModal">
-                        <img src="@Model.Customer.signatureUrl" class="img-fluid preview-image" alt="Uploaded Signature">
+                        <img src="@Model.Customer.signatureUrl" class="img-fluid preview-image" alt="@GlobalShared.UploadedSignature">
                     </a>
                     <!-- Modal for signature preview -->
                     <div class="modal fade" id="signaturePreviewModal" tabindex="-1" aria-labelledby="signaturePreviewModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-body">
-                                    <img src="@Model.Customer.signatureUrl" class="img-fluid" alt="Uploaded Signature">
+                                    <img src="@Model.Customer.signatureUrl" class="img-fluid" alt="@GlobalShared.UploadedSignature">
                                 </div>
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                 }
                 else
                 {
-                    <img src="@Url.Content(Model.Customer.ImageVirtualNoSignaturePath)" class="img-fluid preview-image" alt="No Signature Found" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
+                    <img src="@Url.Content(Model.Customer.ImageVirtualNoSignaturePath)" class="img-fluid preview-image" alt="@GlobalShared.NoSignatureFound" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
 
                 }
                 <!-- ... Other content ... -->

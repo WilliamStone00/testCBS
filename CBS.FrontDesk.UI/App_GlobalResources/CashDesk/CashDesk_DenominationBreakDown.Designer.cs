@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Coins.
+        /// </summary>
+        internal static string Coins {
+            get {
+                return ResourceManager.GetString("Coins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DENOMINATION.
         /// </summary>
         internal static string Denomination {

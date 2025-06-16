@@ -1,11 +1,11 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.SavingProducts.CashReplenishmentSubTeller>
-
+@using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">Data listings </legend>
+    <legend id="select_base">@GlobalShared.DataListings </legend>
     @if (Model.Count() == 0)
     {
         <div class="text-center my-3">
-            <p>No Data Found</p>
+            <p>@GlobalShared.NoDataFound</p>
         </div>
     }
     else
@@ -14,11 +14,11 @@
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>Date</th>
-                        <th>Amount</th>
-                        <th>Branch</th>
-                        <th>Status</th>
-                        <th>Initiated by</th>
+                        <th>@GlobalShared.Date</th>
+                        <th>@GlobalSubTellerCashRequisition.Amount</th>
+                        <th>@GlobalSubTellerCashRequisition.Branch</th>
+                        <th>@GlobalShared.Status</th>
+                        <th>@GlobalSubTellerCashRequisition.InitiatedBy</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -32,7 +32,7 @@
                             <td style="width:10%">
                                 @if (d.ApprovedStatus == "Approved")
                                 {
-                                    <span class="badge bg-info">Approved</span>
+                                    <span class="badge bg-info">@GlobalShared.Approved</span>
                                 }
                                 else
                                 {
@@ -41,7 +41,7 @@
                             </td>
                             <td style="width:20%">@d.RequesterName</td>
                             <td style="width:10%">
-                                <a href="/SubTellerCashRequisition/RequestValidation?ProvisionKey=@d.Id" class="mr-2" data-toggle="tooltip" data-placement="top" title="Validate @d.RequestedAmount into operation.">Validate</a>
+                                <a href="/SubTellerCashRequisition/RequestValidation?ProvisionKey=@d.Id" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Validate @d.RequestedAmount @GlobalSubTellerCashRequisition.intoOperation.">@GlobalShared.Validate</a>
                             </td>
                         </tr>
                     }

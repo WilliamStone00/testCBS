@@ -271,8 +271,16 @@
     <Compile Include="CorrespondingBankBranchServices\BankZoneBranchServices.cs" />
     <Compile Include="CorrespondingBankBranchServices\BankingZoneServices.cs" />
     <Compile Include="CustomerManagement\CMoneyMemberServices.cs" />
+    <Compile Include="DailyCollectionServices\DailyCustomerServices.cs" />
+    <Compile Include="DailyCollectionServices\CommissionSettingServices.cs" />
+    <Compile Include="DailyCollectionServices\AgentDashBoardServices.cs" />
+    <Compile Include="DailyCollectionServices\AgentDailyCashLimitServices.cs" />
+    <Compile Include="DailyCollectionServices\AgentServices.cs" />
+    <Compile Include="DailyCollectionServices\AgentAccountServices.cs" />
+    <Compile Include="DailyCollectionServices\ZoneServices.cs" />
     <Compile Include="Loan\Config\LoanProductCategoryServices.cs" />
     <Compile Include="Loan\LoanportFolioFlattener\LoanDelinquencyFlattener.cs" />
+    <Compile Include="LocalizationService\LocalizationService.cs" />
     <Compile Include="PaymentReceiptMapping.cs" />
     <Compile Include="Config\EconomicActivityServices.cs" />
     <Compile Include="Config\CustomerCategoryServices.cs" />

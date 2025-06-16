@@ -1,4 +1,4 @@
-﻿
+﻿@using Resources
 
 @{
     ViewBag.Title = "Operation Charges Types";
@@ -16,7 +16,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-cash-multiple me-2"></i> Operation Charges Types
+                            <i class="mdi mdi-cash-multiple me-2"></i> @GlobalOperationFee.OperationChargesTypes
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -29,12 +29,12 @@
                                         <div class="card-body d-sm-flex d-block">
                                             <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0 ms-auto">
                                                 <div class="ms-3">
-                                                    <a type="button" onclick="LoadDataGen('OperationFee','myDataTable','_Data',0,'datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                                    <a type="button" onclick="LoadDataGen('OperationFee','myDataTable','_Data',0,'datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
                                                         <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                                     </a>
                                                 </div>
                                                 <div class="ms-3">
-                                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','OperationFee')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','OperationFee')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
                                                         <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                                     </a>
                                                 </div>

@@ -1,26 +1,26 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
-
+@using Resources
 <div class="card mb-4 border-2">
     <div class="card-header">
-        <h5 class="card-title">Notes Denomination</h5>
+        <h5 class="card-title">@GlobalOperation.NotesDenomination</h5>
     </div>
     <div class="card-body">
         <div class="mt-3">
             <table class="table">
                 <thead>
                     <tr>
-                        <th colspan="2" class="separation-text"><h5 class="card-title">Notes</h5></th>
+                        <th colspan="2" class="separation-text"><h5 class="card-title">@GlobalOperation.Notes</h5></th>
                     </tr>
                 </thead>
                 <thead>
                     <tr>
-                        <th>Notes</th>
-                        <th>Values</th>
+                        <th>@GlobalOperation.Notes</th>
+                        <th>@GlobalOperation.Values</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Balance:</strong></td>
+                        <td><strong>@GlobalOperation.Balance:</strong></td>
                         <td><span id="calculatedBalance">0.00</span></td>
                     </tr>
                     <tr>
@@ -46,7 +46,7 @@
                 </tbody>
                 <thead>
                     <tr>
-                        <th colspan="2" class="separation-text"><h5 class="card-title">Coins</h5></th>
+                        <th colspan="2" class="separation-text"><h5 class="card-title">@GlobalOperation.Coins</h5></th>
                     </tr>
                 </thead>
                 <tbody>

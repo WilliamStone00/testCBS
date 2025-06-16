@@ -1,69 +1,69 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
-
+@using Resources
 <div class="card mb-4 border-2 shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
-        <h5 class="card-title mb-0">Transfer Details</h5>
+        <h5 class="card-title mb-0">@GlobalOperation.TransferDetails</h5>
         <button class="btn btn-sm btn-light" onclick="printTransferDetails()">
-            <i class="fa fa-print"></i> Print
+            <i class="fa fa-print"></i> @GlobalShared.Print
         </button>
     </div>
     <div id="transferDetails" class="card-body">
 
         <div class="row mb-3">
             <div class="col-md-6 d-flex justify-content-between">
-                <strong>Source Account:</strong>
+                <strong>@GlobalOperation.SourceAccount:</strong>
                 <span>@Model.Transfer.SourceAccountNumber, @Model.Transfer.SourceAccountType</span>
             </div>
             <div class="col-md-6 d-flex justify-content-between">
-                <strong>Destination Account:</strong>
+                <strong>@GlobalOperation.DestinationAccount:</strong>
                 <span>@Model.Transfer.DestinationAccountNumber, @Model.Transfer.DestinationAccountType</span>
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-6 d-flex justify-content-between">
-                <strong>Source Branch:</strong>
+                <strong>@GlobalOperation.SourceBranch:</strong>
                 <span>@Model.Transfer.SourceBranchName</span>
             </div>
             <div class="col-md-6 d-flex justify-content-between">
-                <strong>Destination Branch:</strong>
+                <strong>@GlobalOperation.DestinationBranch:</strong>
                 <span>@Model.Transfer.DestinationAccountName</span>
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-6 d-flex justify-content-between">
-                <strong>Sender:</strong>
+                <strong>@GlobalOperation.Sender:</strong>
                 <span>@Model.Transfer.SenderName</span>
             </div>
             <div class="col-md-6 d-flex justify-content-between">
-                <strong>Receiver:</strong>
+                <strong>@GlobalOperation.Receiver:</strong>
                 <span>@Model.Transfer.RecieverName</span>
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-6 d-flex justify-content-between">
-                <strong>Amount:</strong>
+                <strong>@GlobalOperation.Amount:</strong>
                 <span>@Model.Transfer.Amount.ToString("#,##0.00") FCFA</span>
             </div>
             <div class="col-md-6 d-flex justify-content-between">
-                <strong>Status:</strong>
+                <strong>@GlobalShared.Status:</strong>
                 @if (Model.Transfer.Status == "Pending")
                 {
-                    <span class="badge bg-warning text-dark">Pending</span>
+                    <span class="badge bg-warning text-dark">@GlobalShared.Pending</span>
                 }
                 else if (Model.Transfer.Status == "Approved")
                 {
-                    <span class="badge bg-success">Approved</span>
+                    <span class="badge bg-success">@GlobalShared.Approved</span>
                 }
                 else if (Model.Transfer.Status == "Rejected")
                 {
-                    <span class="badge bg-danger">Rejected</span>
+                    <span class="badge bg-danger">@GlobalShared.Rejected</span>
                 }
                 else
                 {
-                    <span class="badge bg-secondary">Unknown</span>
+                    <span class="badge bg-secondary">@GlobalOperation.Unknown</span>
                 }
             </div>
         </div>
@@ -72,11 +72,11 @@
 
         <div class="row mb-3">
             <div class="col-md-6 d-flex justify-content-between">
-                <strong>Source Commission:</strong>
+                <strong>@GlobalOperation.SourceCommission:</strong>
                 <span>@Model.Transfer.SourceCommision.ToString("#,##0.00") FCFA</span>
             </div>
             <div class="col-md-6 d-flex justify-content-between">
-                <strong>Destination Commission:</strong>
+                <strong>@GlobalOperation.DestinationCommission:</strong>
                 <span>@Model.Transfer.DestinationCommision.ToString("#,##0.00") FCFA</span>
             </div>
         </div>
@@ -85,11 +85,11 @@
 
         <div class="row mb-3">
             <div class="col-md-6 d-flex justify-content-between">
-                <strong>Request Source:</strong>
+                <strong>@GlobalOperation.RequestSource:</strong>
                 <span>@Model.Transfer.SourceType</span>
             </div>
             <div class="col-md-6 d-flex justify-content-between">
-                <strong>Transaction Type:</strong>
+                <strong>@GlobalOperation.TransactionType:</strong>
                 <span>@Model.Transfer.TransactionType</span>
             </div>
         </div>
@@ -98,32 +98,32 @@
 
         <div class="row mb-3">
             <div class="col-md-6 d-flex justify-content-between">
-                <strong>Reference Number:</strong>
+                <strong>@GlobalOperation.ReferenceNumber:</strong>
                 <span>@Model.Transfer.TransactionRef</span>
             </div>
             <div class="col-md-6 d-flex justify-content-between">
-                <strong>Initiator:</strong>
+                <strong>@GlobalOperation.Initiator:</strong>
                 <span>@Model.Transfer.InitiatedByUSerName</span>
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-12 d-flex justify-content-between">
-                <strong>Initiator Comment:</strong>
+                <strong>@GlobalOperation.InitiatorComment:</strong>
                 <span>@Model.Transfer.InitiatorComment</span>
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-12 d-flex justify-content-between">
-                <strong>Approved By:</strong>
+                <strong>@GlobalOperation.ApprovedBy:</strong>
                 <span>@Model.Transfer.ApprovedByUserName</span>
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-12 d-flex justify-content-between">
-                <strong>Approval Comment:</strong>
+                <strong>@GlobalOperation.ApprovalComment:</strong>
                 <span>@Model.Transfer.ValidatorComment</span>
             </div>
         </div>
@@ -134,14 +134,14 @@
                 <span>@Model.Transfer.DateOfInitiation.ToString("dd-MM-yyyy, hh:mm:ss")</span>
             </div>
             <div class="col-md-6 d-flex justify-content-between">
-                <strong>Approval Date:</strong>
+                <strong>@GlobalOperation.ApprovalDate:</strong>
                 <span>@Model.Transfer.DateOfApproval?.ToString("dd-MM-yyyy, hh:mm:ss")</span>
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-6 d-flex justify-content-between">
-                <strong>Teller:</strong>
+                <strong>@GlobalOperation.Teller:</strong>
                 <span>@Model.Transfer.Teller.name</span>
             </div>
         </div>

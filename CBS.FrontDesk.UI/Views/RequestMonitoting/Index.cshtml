@@ -1,4 +1,5 @@
 ﻿@using CBS.FrontDesk.UI.Helper
+@using Resources
 @model CBS.FrontDesk.Data.Entity.RequestManagement.RateLimitDashboardDto
 
 @{
@@ -19,16 +20,16 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-shield-alert me-2"></i> Request Monitoring Dashboard
+                    <i class="mdi mdi-shield-alert me-2"></i> @GlobalRequestMonitoting.RequestMonitoringDashboard
                 </h1>
-                <p class="card-text">Analyze rate-limited access attempts across branches and IPs. Use date and branch filters to target specific requests.</p>
+                <p class="card-text">@GlobalRequestMonitoting.AnalyzeRateLimitedAccessAttempts.</p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
     </div>
 </div>
 <div class="text-muted text-end pe-2 small">
-    <i class="mdi mdi-timer"></i> Auto-refreshes every 1 minute
+    <i class="mdi mdi-timer"></i> @GlobalRequestMonitoting.AutoRefreshesEvery1Minute
 </div>
 
 
@@ -36,30 +37,30 @@
     <!-- Filters Section -->
     <div class="card p-3 mb-0 bg-light">
         <h5 class="text-primary mb-3">
-            <i class="mdi mdi-filter-outline me-1"></i> Filters
+            <i class="mdi mdi-filter-outline me-1"></i> @GlobalRequestMonitoting.Filters
         </h5>
 
         <form id="filterForm" method="get" asp-action="RateLimitDashboard" class="row g-3">
             <div class="col-md-4">
-                <label class="form-label fw-bold">Branch</label>
+                <label class="form-label fw-bold">@GlobalRequestMonitoting.Branch</label>
                 @Html.DropDownList(
                     "BranchId",
                     new SelectList(ViewBag.Branches, "Id", "Name", Context.Request.QueryString["BranchId"]),
-                    "--- Select Branch ---",
+                    "---"+ @GlobalRequestMonitoting.SelectBranch +"---",
                     new { @class = "form-control shadow-sm select2", @id = "branchInput" })
             </div>
             <div class="col-md-2">
-                <label class="form-label fw-bold">Top X</label>
-                <input type="number" name="QueryTopValue" value="@Context.Request.QueryString["QueryTopValue"]" class="form-control" placeholder="Top Count" />
+                <label class="form-label fw-bold">@GlobalRequestMonitoting.TopX</label>
+                <input type="number" name="QueryTopValue" value="@Context.Request.QueryString["QueryTopValue"]" class="form-control" placeholder="@GlobalRequestMonitoting.TopCount" />
             </div>
             <div class="col-md-3">
-                <label class="form-label fw-bold">Start Date</label>
+                <label class="form-label fw-bold">@GlobalRequestMonitoting.StartDate</label>
                 <input type="date" name="StartDate"
                        value="@(Context.Request.QueryString["StartDate"] ?? DateTime.Today.ToString("yyyy-MM-dd"))"
                        class="form-control" />
             </div>
             <div class="col-md-3">
-                <label class="form-label fw-bold">End Date</label>
+                <label class="form-label fw-bold">@GlobalRequestMonitoting.EndDate</label>
                 <input type="date" name="EndDate"
                        value="@(Context.Request.QueryString["EndDate"] ?? DateTime.Today.ToString("yyyy-MM-dd"))"
                        class="form-control" />
@@ -69,10 +70,10 @@
 
     <div class="mt-3 d-flex justify-content-between px-3">
         <button type="button" onclick="exportDashboard()" class="btn btn-outline-primary">
-            <i class="mdi mdi-file-excel"></i> Export to Excel
+            <i class="mdi mdi-file-excel"></i> @GlobalRequestMonitoting.ExportToExcel
         </button>
         <button type="submit" form="filterForm" class="btn btn-primary">
-            <i class="mdi mdi-magnify"></i> Apply Filters
+            <i class="mdi mdi-magnify"></i> @GlobalRequestMonitoting.ApplyFilters
         </button>
     </div>
 </div>
@@ -80,39 +81,39 @@
 <div class="row">
     <div class="col-md-6 mb-4">
         <div class="card p-3">
-            <h6 class="text-center text-primary">Top IPs</h6>
+            <h6 class="text-center text-primary">@GlobalRequestMonitoting.TopIPs</h6>
             <canvas id="topIpsChart" style="height: 300px;" class="chart-fixed"></canvas>
         </div>
     </div>
     <div class="col-md-6 mb-4">
         <div class="card p-3">
-            <h6 class="text-center text-primary">Top Users</h6>
+            <h6 class="text-center text-primary">@GlobalRequestMonitoting.TopUsers</h6>
             <canvas id="topUsersChart" style="height: 300px;" class="chart-fixed"></canvas>
         </div>
     </div>
     <div class="col-md-6 mb-4">
         <div class="card p-3">
-            <h6 class="text-center text-primary">Top Paths</h6>
+            <h6 class="text-center text-primary">@GlobalRequestMonitoting.TopPaths</h6>
             <canvas id="topPathsChart" style="height: 300px;" class="chart-fixed"></canvas>
         </div>
     </div>
     <div class="col-md-6 mb-4">
         <div class="card p-3">
-            <h6 class="text-center text-success">Blocked vs Non-Blocked</h6>
+            <h6 class="text-center text-success">@GlobalRequestMonitoting.BlockedVsNonBlocked</h6>
             <canvas id="blockStatusPie" style="height: 300px;" class="chart-fixed"></canvas>
         </div>
     </div>
 
     <div class="col-md-12 mb-4">
         <div class="card p-3">
-            <h6 class="text-center text-primary">Hourly Request Trends</h6>
+            <h6 class="text-center text-primary">@GlobalRequestMonitoting.HourlyRequestTrends</h6>
             <canvas id="hourlyRequestLine" style="height: 300px;" class="chart-fixed"></canvas>
         </div>
     </div>
 </div>
 
 <div class="text-muted small text-end" id="lastRefreshLabel">
-    <i class="mdi mdi-clock-outline"></i> Last refreshed: <span id="lastRefreshTime">never</span>
+    <i class="mdi mdi-clock-outline"></i> @GlobalRequestMonitoting.LastRefreshed: <span id="lastRefreshTime">@GlobalRequestMonitoting.never</span>
 </div>
 
 <div class="modal fade" id="logDetailModal" tabindex="-1" aria-labelledby="logDetailModalLabel" aria-hidden="true">
@@ -123,7 +124,7 @@
             <div id="logDetailLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
                 <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
                     <div class="spinner-border text-primary mb-3" role="status"></div>
-                    <p class="fw-semibold text-primary">Loading detailed logs, please wait...</p>
+                    <p class="fw-semibold text-primary">@GlobalRequestMonitoting.LoadingDetailedLogsPleaseWait...</p>
                 </div>
             </div>
 
@@ -133,12 +134,12 @@
                     <div class="card bg-light mb-2">
                         <div class="card-body text-center">
                             <h1 class="card-title text-primary" id="logDetailModalTitle">
-                                <i class="mdi mdi-chart-bar me-2"></i> Top 10 IP Activities
+                                <i class="mdi mdi-chart-bar me-2"></i> @GlobalRequestMonitoting.Top10IPActivities
                             </h1>
                             <p class="card-text text-muted fw-semibold" id="logDetailModalDescription">
-                                Filtered by Branch: <span class="text-dark" id="modalBranch">N/A</span>,
-                                Start Date: <span class="text-dark" id="modalStartDate">N/A</span>,
-                                End Date: <span class="text-dark" id="modalEndDate">N/A</span>
+                                @GlobalRequestMonitoting.FilteredByBranch: <span class="text-dark" id="modalBranch">N/A</span>,
+                                @GlobalRequestMonitoting.StartDate: <span class="text-dark" id="modalStartDate">N/A</span>,
+                                @GlobalRequestMonitoting.EndDate: <span class="text-dark" id="modalEndDate">N/A</span>
                             </p>
                             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                         </div>
@@ -152,19 +153,19 @@
                 <div id="logDetailTableContainer" class="px-3">
                     <div class="card p-3 shadow mb-4">
                         <h5 class="text-primary mb-3">
-                            <i class="mdi mdi-table"></i> Request Log Listing
+                            <i class="mdi mdi-table"></i> @GlobalRequestMonitoting.RequestLogListing
                         </h5>
                         <div class="table-responsive">
                             <table id="logDataTable" class="table table-bordered table-striped table-sm align-middle w-100">
                                 <thead class="table-light">
                                     <tr>
                                         <th>IP</th>
-                                        <th>User</th>
-                                        <th>Status</th>
-                                        <th>Branch</th>
-                                        <th>Location</th>
-                                        <th>Time</th>
-                                        <th>Action</th> <!-- NEW COLUMN -->
+                                        <th>@GlobalRequestMonitoting.User</th>
+                                        <th>@GlobalShared.Status</th>
+                                        <th>@GlobalRequestMonitoting.Branch</th>
+                                        <th>@GlobalRequestMonitoting.Location</th>
+                                        <th>@GlobalRequestMonitoting.Time</th>
+                                        <th>@GlobalShared.Action</th> <!-- NEW COLUMN --> 
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -177,10 +178,10 @@
             <!-- Modal Footer -->
             <div class="modal-footer justify-content-end">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close"></i> Close
+                    <i class="mdi mdi-close"></i> @GlobalShared.Close
                 </button>
                 <button type="button" class="btn btn-success" onclick="exportModalTableToExcel()">
-                    <i class="mdi mdi-file-excel"></i> Export to Excel
+                    <i class="mdi mdi-file-excel"></i> @GlobalShared.ExportToExcel
                 </button>
             </div>
 

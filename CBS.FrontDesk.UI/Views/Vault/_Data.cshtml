@@ -1,11 +1,11 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.VaultManagement.Vault>
-
+@using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">VAULTS</legend>
+    <legend id="select_base">@GlobalVault.VAULTS</legend>
     @if (!Model.Any())
     {
         <div class="text-center my-3">
-            <p>No vaults have been configured yet.</p>
+            <p>@GlobalVault.NoVaultsHaveBeenConfiguredYet.</p>
         </div>
     }
     else
@@ -14,11 +14,11 @@
             <table class="table table-hover table-bordered align-middle" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th style="width: 27%;">Vault Name</th>
+                        <th style="width: 27%;">@GlobalVault.VaultName</th>
                         <th style="width: 5%;">B.Code</th>
-                        <th style="width: 20%;" class="text-end">Maximum Capacity</th>
-                        <th style="width: 20%;" class="text-end">Current Balance</th>
-                        <th style="width: 8%;">Status</th>
+                        <th style="width: 20%;" class="text-end">@GlobalVault.MaximumCapacity</th>
+                        <th style="width: 20%;" class="text-end">@GlobalVault.CurrentBalance</th>
+                        <th style="width: 8%;">@GlobalShared.Status</th>
                         <th style="width: 20%;">Actions</th>
                     </tr>
                 </thead>
@@ -34,13 +34,13 @@
                                 @if (vault.IsActive)
                                 {
                                     <span class="badge rounded-pill bg-success fs-6">
-                                        <i class="fas fa-check-circle"></i> Active
+                                        <i class="fas fa-check-circle"></i> @GlobalShared.Active
                                     </span>
                                 }
                                 else
                                 {
                                     <span class="badge rounded-pill bg-danger fs-6">
-                                        <i class="fas fa-times-circle"></i> Inactive
+                                        <i class="fas fa-times-circle"></i> @GlobalVault.Inactive
                                     </span>
                                 }
                             </td>
@@ -52,8 +52,8 @@
                                             onclick="AddORUpdateGen('@vault.Id', 'datalistingview', '_Create', 'update', 'Vault', null, null)"
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="top"
-                                            title="Edit @vault.Name">
-                                        <i class="fas fa-edit me-1"></i> Edit
+                                            title="@GlobalShared.Edit @vault.Name">
+                                        <i class="fas fa-edit me-1"></i> @GlobalShared.Edit
                                     </button>
 
                                     <!-- Details Button -->
@@ -62,8 +62,8 @@
                                             onclick="showVaultDetails('@vault.Id')"
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="top"
-                                            title="View Details">
-                                        <i class="fas fa-info-circle me-1"></i> Details
+                                            title="@GlobalShared.ViewDetails">
+                                        <i class="fas fa-info-circle me-1"></i> @GlobalShared.Details
                                     </button>
 
                                     <!-- Init Button -->
@@ -71,8 +71,8 @@
                                        class="btn btn-sm btn-outline-warning d-flex align-items-center"
                                        data-bs-toggle="tooltip"
                                        data-bs-placement="top"
-                                       title="Initialization of @vault.Name">
-                                        <i class="fas fa-cogs me-1"></i> Init
+                                       title="@GlobalVault.InitializationOf @vault.Name">
+                                        <i class="fas fa-cogs me-1"></i> @GlobalVault.Init
                                     </a>
                                 </div>
                             </td>

@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
-
+@using Resources
 
 <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
     <input type="hidden" value="@Model.AccountName" id="accountname" />
@@ -18,7 +18,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
                         <i class="mdi mdi-octagram-plus me-2"></i>
-                        Deposit operation
+                        @GlobalOperation.DepositOperation
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"
@@ -39,13 +39,13 @@
                                         <div class="col-12">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.DepositRequest.isDepositDoneByAccountOwner, new { @class = "form-check-input", @onchange = "toggleDepositer(this.checked)" })
-                                                <label class="form-check-label" for="isActive">Uncheck if deposit is not done be account owner</label>
+                                                <label class="form-check-label" for="isActive">@GlobalOperation.UncheckIfDepositIsNotDoneByAccountOwner</label>
                                             </div>
                                         </div>
 
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
-                                                <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                                                <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalOperation.TotalAmount: 0.0</span>
                                             </div>
                                         </div>
 
@@ -139,7 +139,7 @@
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextAreaFor(m => m.DepositRequest.note, new { @class = "form-control", @style = "height: 75px;" })
                                                 @Html.ValidationMessageFor(m => m.DepositRequest.note, "", new { @class = "text-danger " })
-                                                <label for="formValidationDob">Reasons for deposit/saving</label>
+                                                <label for="formValidationDob">@GlobalOperation.ReasonsForDepositSaving</label>
                                             </div>
                                         </div>
 
@@ -162,7 +162,7 @@
                                 data-bs-target="#accordionPopoutIcon-T"
                                 aria-controls="accordionPopoutIcon-T">
                             <i class="mdi mdi-transfer me-2"></i>
-                            Depositors Information
+                            @GlobalOperation.DepositorsInformation
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-T"
@@ -199,7 +199,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
                         <i class="mdi mdi-octagram-plus me-2"></i>
-                        Withdrawal operation
+                        @GlobalOperation.WithdrawalOperation
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"
@@ -220,7 +220,7 @@
                                         <div class="row mt-2 gy-4">
                                             <div class="col-md-12">
                                                 <div class="form-floating form-floating-outline">
-                                                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                                                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalOperation.TotalAmount: 0.0</span>
                                                 </div>
                                             </div>
 
@@ -314,7 +314,7 @@
                                                 <div class="form-floating form-floating-outline">
                                                     @Html.TextAreaFor(m => m.DepositRequest.note, new { @class = "form-control", @style = "height: 75px;" })
                                                     @Html.ValidationMessageFor(m => m.DepositRequest.note, "", new { @class = "text-danger " })
-                                                    <label for="formValidationDob">Withdrawal note</label>
+                                                    <label for="formValidationDob">@GlobalOperation.WithdrawalNote</label>
                                                 </div>
                                             </div>
 
@@ -323,7 +323,7 @@
                                     else
                                     {
                                         <div class="text-center my-3">
-                                            <p>Withdrawal policy is not configure for Product @Model.Product.name</p>
+                                            <p>@GlobalOperation.WithdrawalPolicyIsNotConfigureForProduct @Model.Product.name</p>
                                         </div>
                                     }
                                 </div>
@@ -344,7 +344,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
                         <i class="mdi mdi-octagram-plus me-2"></i>
-                        Loan Repayment operation by cash
+                        @GlobalOperation.LoanRepaymentOperationByCash
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"
@@ -365,25 +365,25 @@
                                             <div class="col-md-4">
                                                 <div class="form-floating form-floating-outline">
                                                     <input type="text" name="DepositRequest.LoanId" value="N/A" id="loanid" class="form-control" readonly="readonly" />
-                                                    <label>Loan Id</label>
+                                                    <label>@GlobalOperation.LoanId</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-floating form-floating-outline">
                                                     <input type="text" name="paid" value="0.0" id="paid" class="form-control" readonly="readonly" />
-                                                    <label>Paid</label>
+                                                    <label>@GlobalOperation.Paid</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-floating form-floating-outline">
                                                     <input type="text" name="balance" value="0.0" id="balance" class="form-control" readonly="readonly" />
-                                                    <label>Balance</label>
+                                                    <label>@GlobalOperation.Balance</label>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-12">
                                                 <div class="form-floating form-floating-outline">
-                                                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                                                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalOperation.TotalAmount: 0.0</span>
                                                 </div>
                                             </div>
 
@@ -476,35 +476,35 @@
                                                 <div class="form-floating form-floating-outline">
                                                     @Html.TextBoxFor(m => m.DepositRequest.Principal, new { @class = "form-control" })
                                                     @Html.ValidationMessageFor(m => m.DepositRequest.Principal, "", new { @class = "text-danger " })
-                                                    <label>Principal</label>
+                                                    <label>@GlobalOperation.Principal</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-floating form-floating-outline">
                                                     @Html.TextBoxFor(m => m.DepositRequest.Interest, new { @class = "form-control" })
                                                     @Html.ValidationMessageFor(m => m.DepositRequest.Interest, "", new { @class = "text-danger " })
-                                                    <label>Interest</label>
+                                                    <label>@GlobalOperation.Interest</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-floating form-floating-outline">
                                                     @Html.TextBoxFor(m => m.DepositRequest.Tax, new { @class = "form-control" })
                                                     @Html.ValidationMessageFor(m => m.DepositRequest.Tax, "", new { @class = "text-danger " })
-                                                    <label>Vat</label>
+                                                    <label>@GlobalOperation.Vat</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-floating form-floating-outline">
                                                     @Html.TextBoxFor(m => m.DepositRequest.Penalty, new { @class = "form-control" })
                                                     @Html.ValidationMessageFor(m => m.DepositRequest.Penalty, "", new { @class = "text-danger " })
-                                                    <label>Penalty</label>
+                                                    <label>@GlobalOperation.Penalty</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-floating form-floating-outline">
                                                     @Html.TextAreaFor(m => m.DepositRequest.note, new { @class = "form-control", @style = "height: 75px;" })
                                                     @Html.ValidationMessageFor(m => m.DepositRequest.note, "", new { @class = "text-danger " })
-                                                    <label for="formValidationDob">Teller note</label>
+                                                    <label for="formValidationDob">@GlobalOperation.TellerNote</label>
                                                 </div>
                                             </div>
 
@@ -513,7 +513,7 @@
                                     else
                                     {
                                         <div class="text-center my-3">
-                                            <p>Deposit policy is not configure for Product @Model.Product.name</p>
+                                            <p>@GlobalOperation.DepositPolicyIsNotConfigureForProduct @Model.Product.name</p>
                                         </div>
                                     }
                                 </div>
@@ -531,7 +531,7 @@
                                 data-bs-target="#accordionPopoutIcon-T"
                                 aria-controls="accordionPopoutIcon-T">
                             <i class="mdi mdi-transfer me-2"></i>
-                            Loans
+                            @GlobalOperation.Loans
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-T"
@@ -562,8 +562,8 @@
         <div class="accordion-body">
             <div class="row g-4">
                 <div class="mt-4">
-                    <button type="submit" class="btn btn-primary me-2">Save</button>
-                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                    <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
                 </div>
             </div>
         </div>

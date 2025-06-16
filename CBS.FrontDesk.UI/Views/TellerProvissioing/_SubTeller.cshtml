@@ -1,12 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.OpeningOfTheDay
-
+@using Resources
 @using (Html.BeginForm("SubTeller", "TellerProvissioing", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
     <div class="row mt-2 gy-4">
 
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalTellerProvissioing.TotalAmount: 0.0</span>
             </div>
         </div>
 
@@ -97,28 +97,28 @@
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.SubTellerProvissioning.primaryTellerId, new SelectList(ViewBag.PrimaryTeller, "id", "name"), "---Select primary teller---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.SubTellerProvissioning.primaryTellerId, new SelectList(ViewBag.PrimaryTeller, "id", "name"), "---"+ @GlobalTellerProvissioing.SelectPrimaryTeller + "---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.SubTellerProvissioning.primaryTellerId, "", new { @class = "text-danger " })
-                <label for="formValidationDob">Select primary caisse</label>
+                <label for="formValidationDob">@GlobalTellerProvissioing.SelectPrimaryCaisse</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.SubTellerProvissioning.subTellerId, new SelectList(ViewBag.SubTellers, "id", "name"), "---Select teller box---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.SubTellerProvissioning.subTellerId, new SelectList(ViewBag.SubTellers, "id", "name"), "---"+ @GlobalTellerProvissioing.SelectTellerBox + "---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.SubTellerProvissioning.subTellerId, "", new { @class = "text-danger " })
-                <label for="formValidationDob">Select caisse to provision</label>
+                <label for="formValidationDob">@GlobalTellerProvissioing.SelectCaisseToProvision</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.SubTellerProvissioning.userId, new SelectList(ViewBag.TellerRoles, "id", "name"), "---Select user---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.SubTellerProvissioning.userId, new SelectList(ViewBag.TellerRoles, "id", "name"), "---"+ @GlobalTellerProvissioing.SelectUser+"---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.SubTellerProvissioning.userId, "", new { @class = "text-danger " })
-                <label for="formValidationDob">Select user to manage the selected caisse</label>
+                <label for="formValidationDob">@GlobalTellerProvissioing.SelectUserToManageTheSelectedCaisse</label>
             </div>
         </div>
     </div>
     <div class="mt-4">
-        <button type="submit" class="btn btn-primary me-2">Provision (Open the day)</button>
+        <button type="submit" class="btn btn-primary me-2">@GlobalTellerProvissioing.ProvisionOpenTheDay</button>
     </div>
 }
 

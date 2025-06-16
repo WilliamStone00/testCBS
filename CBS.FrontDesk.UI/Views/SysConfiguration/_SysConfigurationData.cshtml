@@ -1,17 +1,17 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.Config.System.SysConfiguration>
-
+@using Resources
 <fieldset class="fieldset-custom">
-    <legend>Operation year lising.</legend>
+    <legend>@GlobalSysConfiguration.OperationYearLising.</legend>
 
     @if (Model.Any())
     {<div class="table-responsive">
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>Name</th>
-                        <th>Current year</th>
-                        <th>Year status</th>
-                        <th>Day status</th>
+                        <th>@GlobalSysConfiguration.Name</th>
+                        <th>@GlobalSysConfiguration.CurrentYear</th>
+                        <th>@GlobalSysConfiguration.YearStatus</th>
+                        <th>@GlobalSysConfiguration.DayStatus</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -24,26 +24,26 @@
                             <td style="width:10%">
                                 @if (d.IsYearOpen)
                                 {
-                                    <span class="badge bg-info">Opened</span>
+                                    <span class="badge bg-info">@GlobalSysConfiguration.Opened</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-danger">Closed</span>
+                            <span class="badge bg-danger">@GlobalSysConfiguration.Closed</span>
                                 }
                             </td>
                             <td style="width:10%">
                                 @if (d.IsDayOpen)
                                 {
-                                    <span class="badge bg-info">Opened</span>
+                                    <span class="badge bg-info">@GlobalSysConfiguration.Opened</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-danger">Closed</span>
+                            <span class="badge bg-danger">@GlobalSysConfiguration.Closed</span>
                                 }
                             </td>
                             <td style="width:10%">
                                 
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_SysConfiguration','get','SysConfiguration','SysConfiguration')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Configure</a>
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_SysConfiguration','get','SysConfiguration','SysConfiguration')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.Name @GlobalShared.ToEdit">@GlobalSysConfiguration.Configure</a>
                             </td>
                         </tr>
                     }
@@ -57,10 +57,10 @@
     else
     {
 <div class="text-center my-3">
-    There is no running year configured. Click on the + to add new running year.
+    @GlobalSysConfiguration.ThereIsNoRunningYearConfigured.
     <br />
     <br />
-    <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','SysConfiguration','SysConfiguration')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+    <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','SysConfiguration','SysConfiguration')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
         <span class="tf-icons mdi mdi-plus mdi-18px"></span>
     </a>
 </div>

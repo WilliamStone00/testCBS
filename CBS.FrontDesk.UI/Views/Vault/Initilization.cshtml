@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.VaultManagement.Vault
+    @using Resources
 @{
     ViewBag.Title = "Vault Initialization";
 }
@@ -8,14 +9,14 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cash-multiple me-2"></i> Vault Initialization
+                    <i class="mdi mdi-cash-multiple me-2"></i> @GlobalVault.VaultInitialization
                 </h1>
                 <p class="card-text text-muted">
-                    Manage the initialization process of the vault efficiently. Ensure all details are accurate for proper setup.
+                    @GlobalVault.ManageTheInitializationProcessOfTheVaultEfficiently.
                 </p>
                 <p class="card-text text-danger fw-bold">
                     <i class="mdi mdi-alert-circle-outline me-2"></i>
-                    Vault initialization is a critical step, especially after system migration, to align the trial balance and reconcile the cash in hand before operations can begin. Double-check all input values for accuracy.
+                    @GlobalVault.VaultInitializationIsAcriticalStepEspeciallyAfterSystemMigration.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -27,7 +28,7 @@
 <div class="card mb-1">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span>
-            <i class="mdi mdi-information-outline me-2"></i> HELP TIPS
+            <i class="mdi mdi-information-outline me-2"></i> @GlobalVault.HELPTIPS
         </span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
             <i class="mdi mdi-chevron-down"></i>
@@ -36,18 +37,18 @@
     <div id="collapseHelpTips" class="collapse">
         <div class="card-body">
             <p class="text-muted mb-2">
-                Vault initialization ensures accurate records of cash and denominations at the start of operations, aligning with the trial balance post-migration. Follow these tips:
+                @GlobalVault.VaultInitializationEnsuresAccurateRecordsOfCash:
             </p>
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure all denominations are accurately entered.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Verify that totals match the expected amounts in the vault.</li>
-                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> If the <strong>Initialize Vault button is greyed out</strong>, it indicates mismatched values or missing information.</li>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Ensure the vault balance reflects the physical cash available and aligns with the trial balance.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalVault.EnsureAllDenominationsAreAccuratelyEntered.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalVault.VerifyThatTotalsMatchTheExpectedAmountsInTheVault.</li>
+                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> @GlobalVault.IfThe <strong>@GlobalVault.InitializeVaultButtonIsGreyedOut</strong>, @GlobalVault.itIndicatesMismatchedValuesOrMissingInformation.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalVault.EnsureTheVaultBalanceReflectsThePhysicalCashAvailable.</li>
             </ul>
-            <p class="text-muted">For example:</p>
+            <p class="text-muted">@GlobalVault.ForExample:</p>
             <ul class="list-unstyled">
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> If you have 5 notes of N10,000, enter "5" under the N10,000 field.</li>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> The system will automatically calculate the total for all denominations.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalVault.IfYouHave5NotesOfN10000Enter5UnderTheN10000Field.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalVault.TheSystemWillAutomaticallyCalculateTheTotalForAllDenominations.</li>
             </ul>
         </div>
     </div>
@@ -66,7 +67,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-cash-multiple me-2"></i>
-                            Vault Initialization
+                            @GlobalVault.VaultInitialization
                         </button>
                     </h2>
                    
@@ -78,11 +79,11 @@
                                 <div id="mainviewChange">
                                     <div class="card mb-1">
                                         <div class="card-body d-flex justify-content-end align-items-center">
-                                            <a type="button" onclick="LoadDataGen('Vault','myDataTable','_Data',0,'datalistingview')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="View List">
-                                                <i class="mdi mdi-view-list mdi-18px"></i> View List
+                                            <a type="button" onclick="LoadDataGen('Vault','myDataTable','_Data',0,'datalistingview')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+                                                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
                                             </a>
-                                            <a type="button" href="" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="Initialise the vault of this branch">
-                                                <i class="fas fa-cogs me-1"></i> Initialize
+                                            <a type="button" href="" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.InitialiseTheVaultOfThisBranch">
+                                                <i class="fas fa-cogs me-1"></i> @GlobalVault.Initialize
                                             </a>
                                         </div>
                                     </div>
@@ -104,10 +105,10 @@
             <div class="modal-header p-2">
                 <header class="w-100 text-center">
                     <h4 class="text-primary fw-bold mb-1">
-                        <i class="mdi mdi-lock me-2"></i> VAULT DETAILS
+                        <i class="mdi mdi-lock me-2"></i> @GlobalVault.VAULT_DETAILS
                     </h4>
                     <p class="text-muted mb-0">
-                        View details and manage vault-related information efficiently.
+                        @GlobalVault.ViewDetailsAndManageVaultRelatedInformationEfficiently.
                     </p>
                     <hr style="border: 1px solid rgba(128, 128, 128, 0.5);" />
                 </header>
@@ -118,7 +119,7 @@
                 </div>
             </div>
             <div class="modal-footer py-2">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">@GlobalShared.Close</button>
             </div>
         </div>
     </div>

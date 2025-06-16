@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
-
+@using Resources
 
 @{
     var name = $"{Model.Customer.firstName} {Model.Customer.lastName}";
@@ -17,7 +17,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-information me-2"></i>
-                <b> @Model.product.name.ToUpper() ACCOUNT CONFIGURATION DETAILS</b>
+                <b> @Model.product.name.ToUpper() @GlobalOperation.ACCOUNT_CONFIGURATION_DETAILS</b>
             </button>
         </h2>
         <div id="accordionPopoutIcon-3"
@@ -32,49 +32,49 @@
                                     <div class="col-md-8">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.accountName, new { @class = "form-control", @readonly = true })
-                                            <label>Member account name</label>
+                                            <label>@GlobalOperation.MemberAccountName</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.product.name, new { @class = "form-control", @readonly = true })
-                                            <label>Saving product</label>
+                                            <label>@GlobalOperation.SavingProduct</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.createdBy, new { @class = "form-control", @readonly = true })
-                                            <label>Saving officer</label>
+                                            <label>@GlobalOperation.SavingOfficer</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.createdDate, new { @class = "form-control", @readonly = true })
-                                            <label>Opening date</label>
+                                            <label>@GlobalOperation.OpeningDate</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.product.minAmount, new { @class = "form-control", @readonly = true })
-                                            <label>Minimum amount</label>
+                                            <label>@GlobalOperation.MinimumAmount</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.product.maxAmount, new { @class = "form-control", @readonly = true })
-                                            <label>Max amount</label>
+                                            <label>@GlobalOperation.MaxAmount</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.product.activeStatus, new { @class = "form-control", @readonly = true })
-                                            <label>Product active status</label>
+                                            <label>@GlobalOperation.ProductActiveStatus</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.product.postingFrequency, new { @class = "form-control", @readonly = true })
-                                            <label>Posting frequency</label>
+                                            <label>@GlobalOperation.PostingFrequency</label>
                                         </div>
                                     </div>
                                 </div>
@@ -98,7 +98,7 @@
                     data-bs-target="#accordionPopoutIcon-2"
                     aria-controls="accordionPopoutIcon-2">
                 <i class="mdi mdi-outdoor-lamp me-2"></i>
-                WITHDRAWAL CONFIGURATION
+                @GlobalOperation.WITHDRAWAL_CONFIGURATION
             </button>
         </h2>
         <div id="accordionPopoutIcon-2"
@@ -112,10 +112,10 @@
                                 <table class="table table-hover" id="myDataTableW">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Withdrawal Type</th>
-                                            <th>Fee</th>
-                                            <th>Min</th>
-                                            <th>Max</th>
+                                            <th>@GlobalOperation.WithdrawalType</th>
+                                            <th>@GlobalOperation.Fee</th>
+                                            <th>@GlobalOperation.Min</th>
+                                            <th>@GlobalOperation.Max</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -148,7 +148,7 @@
                     data-bs-target="#accordionPopoutIcon-1"
                     aria-controls="accordionPopoutIcon-1">
                 <i class="mdi mdi-octagram-plus me-2"></i>
-               DEPOSITS CONFIGURATION
+                @GlobalOperation.DEPOSITS_CONFIGURATION
             </button>
         </h2>
 
@@ -163,10 +163,10 @@
                                 <table class="table table-hover" id="myDataTableD">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Deposit type</th>
-                                            <th>Fee</th>
-                                            <th>Min</th>
-                                            <th>Max</th>
+                                            <th>@GlobalOperation.DepositType</th>
+                                            <th>@GlobalOperation.Fee</th>
+                                            <th>@GlobalOperation.Min</th>
+                                            <th>@GlobalOperation.Max</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -201,7 +201,7 @@
                     data-bs-target="#accordionPopoutIcon-T"
                     aria-controls="accordionPopoutIcon-T">
                 <i class="mdi mdi-transfer me-2"></i>
-                TRANSFER CONFIGURATION
+                @GlobalOperation.TRANSFER_CONFIGURATION
             </button>
         </h2>
 
@@ -216,11 +216,11 @@
                                 <table class="table table-hover" id="myDataTableT">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>transferType</th>
-                                            <th>Fee</th>
-                                            <th>Rate</th>
-                                            <th>Min</th>
-                                            <th>Max</th>
+                                            <th>@GlobalOperation.transferType</th>
+                                            <th>@GlobalOperation.Fee</th>
+                                            <th>@GlobalOperation.Rate</th>
+                                            <th>@GlobalOperation.Min</th>
+                                            <th>@GlobalOperation.Max</th>
                                         </tr>
                                     </thead>
                                     <tbody>

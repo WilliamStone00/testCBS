@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "Pending Approvals";
 }
+@using Resources
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
         <div class="card">
@@ -14,7 +15,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-cash-multiple me-2"></i>Pending Approvals
+                            <i class="mdi mdi-cash-multiple me-2"></i>@GlobalTransactionReversal.PendingApprovals
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"

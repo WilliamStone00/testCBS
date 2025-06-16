@@ -1,5 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
-<h4 class="card-header">Account initialization</h4>
+    @using Resources
+<h4 class="card-header">@GlobalOperation.AccountInitialization</h4>
 <div class="card-body pt-2 mt-1">
     @using (Html.BeginForm("Deposit", "Operation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return PostData(this);" }))
     {<input type="hidden" name="OperationType" value="InitialDeposit" id="OperationType" />
@@ -13,26 +14,26 @@
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Customer.name, new { @class = "form-control", @readonly = true })
-                    <label>Account holder name</label>
+                    <label>@GlobalOperation.AccountHolderName</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.AccountActivationRequest.accountNumber, new { @class = "form-control", @readonly = true })
-                    <label>Account number</label>
+                    <label>@GlobalOperation.AccountNumber</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.product.name, new { @class = "form-control", @readonly = true })
-                    <label>Account type</label>
+                    <label>@GlobalOperation.AccountType</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.AccountActivationRequest.amount, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.AccountActivationRequest.amount, "", new { @class = "text-danger" })
-                    <label style="color:blue">Enter initial deposit (min: @Model.product.minAmount, max: @Model.product.maxAmount)</label>
+                    <label style="color:blue">@GlobalOperation.EnterInitialDeposit (min: @Model.product.minAmount, max: @Model.product.maxAmount)</label>
                 </div>
             </div>
 
@@ -122,7 +123,7 @@
             </div>
         </div>
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary me-2">Open account</button>
+            <button type="submit" class="btn btn-primary me-2">@GlobalOperation.OpenAccount</button>
         </div>
     }
 </div>

@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.UserManagement.User
-
+@using Resources
 @{
     ViewBag.Title = "User management";
 }
@@ -11,10 +11,10 @@
         <div class="card bg-light mb-3 shadow-sm">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-group-outline me-2"></i> USER MANAGEMENT DASHBOARD
+                    <i class="mdi mdi-account-group-outline me-2"></i> @GlobalUserManagement.USER_MANAGEMENT_DASHBOARD
                 </h1>
                 <p class="card-text">
-                    Create and manage user accounts, define access roles, and ensure strong security posture. This interface provides full visibility and control over user identity, activity, and protection mechanisms.
+                    @GlobalUserManagement.CreateAndManageUserAccountsDefineAccessRoles.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -23,7 +23,7 @@
         <!-- Tips Section -->
         <div class="card shadow-sm mb-4">
             <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+                <span><i class="mdi mdi-information-outline me-2"></i> @GlobalUserManagement.TIPS</span>
                 <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUserTips" aria-expanded="false" aria-controls="collapseUserTips">
                     <i class="mdi mdi-chevron-down"></i>
                 </button>
@@ -34,43 +34,43 @@
                         <div class="col-md-6">
                             <div class="alert alert-primary d-flex align-items-center" role="alert">
                                 <i class="mdi mdi-account-edit-outline me-2"></i>
-                                Fill all required fields accurately.
+                                @GlobalUserManagement.FillAllRequiredFieldsAccurately.
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="alert alert-warning d-flex align-items-center" role="alert">
                                 <i class="mdi mdi-lock-reset me-2"></i>
-                                Users should change their passwords on first login.
+                                @GlobalUserManagement.UsersShouldChangeTheirPasswordsOnFirstLogin.
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="alert alert-info d-flex align-items-center" role="alert">
                                 <i class="mdi mdi-clock-alert-outline me-2"></i>
-                                Accounts inactive for over 1 month will be auto-suspended.
+                                @GlobalUserManagement.AccountsInactiveForOver1MonthWillBeAutoSuspended.
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="alert alert-success d-flex align-items-center" role="alert">
                                 <i class="mdi mdi-calendar-refresh me-2"></i>
-                                Passwords older than 3 months will prompt a forced change.
+                                @GlobalUserManagement.PasswordsOlderThan3MonthsWillPromptAForcedChange.
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="alert alert-danger d-flex align-items-center" role="alert">
                                 <i class="mdi mdi-security me-2"></i>
-                                Encourage MFA activation for enhanced login security.
+                                @GlobalUserManagement.EncourageMFAActivationForEnhancedLoginSecurity.
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="alert alert-secondary d-flex align-items-center" role="alert">
                                 <i class="mdi mdi-shield-refresh-outline me-2"></i>
-                                Session recovery codes must be regenerated after password updates.
+                                @GlobalUserManagement.SessionARecoveryCodesMustBeRegeneratedAfterPasswordUpdates.
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="alert alert-info d-flex align-items-center" role="alert">
                                 <i class="mdi mdi-email-outline me-2"></i>
-                                Ensure email and phone number are verified for alerts on security activities and breach notifications.
+                                @GlobalUserManagement.EnsureEmailAndPhoneNumberAreVerifiedForAlerts.
                             </div>
                         </div>
                     </div>
@@ -83,10 +83,10 @@
             <div class="card-header text-body d-flex align-items-center justify-content-between">
                 <div>
                     <i class="fas fa-user-plus me-2"></i>
-                    <h5 class="d-inline mb-0">USER ACCOUNT CREATION</h5>
+                    <h5 class="d-inline mb-0">@GlobalUserManagement.USER_ACCOUNT_CREATION</h5>
                 </div>
-                <a href="/UserManagement" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Go to users list">
-                    <i class="mdi mdi-view-list me-1"></i> View Users
+                <a href="/UserManagement" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="@GlobalUserManagement.GoToUsersList">
+                    <i class="mdi mdi-view-list me-1"></i> @GlobalUserManagement.ViewUsers
                 </a>
             </div>
             <div class="card-body">

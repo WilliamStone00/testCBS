@@ -1,11 +1,12 @@
 ﻿@model List<CBS.BusinessService.ThirdPartyBankAccount.ThirdPartyBranch>
-    <h4>Correspondant: @Model[0].ThirdPartyInstitutionId </h4>
+    @using Resources
+    <h4>@GlobalThirdPartyBranch.Correspondant: @Model[0].ThirdPartyInstitutionId </h4>
 <table class="table table-hover" id="myDataTable">
     <thead class="table-light">
         <tr>
   
-            <th>Name</th>
-            <th>Town</th>
+            <th>@GlobalThirdPartyBranch.Name</th>
+            <th>@GlobalThirdPartyBranch.Town</th>
 
             <th>Action</th>
         </tr>

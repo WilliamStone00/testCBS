@@ -1,11 +1,12 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashInfusionRequest
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.
+    @using Resources
 @{
     ViewBag.Title = "Index";
 }
 
 <div class="card mb-12">
     <div class="card-header">
-        <h5 class="card-title mb-0">BANKING OPERATIONS-CASH MANAGEMENT</h5>
+        <h5 class="card-title mb-0">@GlobalTellerCashDemand.BANKING_OPERATIONS_CASH_MANAGEMENT</h5>
     </div>
     <div class="card-body">
         <div class="row">
@@ -17,14 +18,14 @@
                         <li class="nav-item">
                             <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#restock">
                                 <i class="mdi mdi-book-open-page-variant me-2"></i>
-                                <span class="align-middle">Cash Replenishment</span>
+                                <span class="align-middle">@GlobalTellerCashDemand.CashReplenishment</span>
                             </button>
                         </li>
 
                         <li class="nav-item">
                             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#shipping">
                                 <i class="mdi mdi-book-edit me-2"></i>
-                                <span class="align-middle">Manual Entry</span>
+                                <span class="align-middle">@GlobalTellerCashDemand.ManualEntry</span>
                             </button>
                         </li>
 
@@ -37,10 +38,10 @@
                     <div class="tab-pane fade show active" id="restock" role="tabpanel">
                         <div class="row justify-content-end">
                             <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGen('BankingOperation','myDataTable_CashInfusion','_CashInfusionData',0,'datalistingview_CashInfusion',null,'CashInfusion')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                <a type="button" onclick="LoadDataGen('BankingOperation','myDataTable_CashInfusion','_CashInfusionData',0,'datalistingview_CashInfusion',null,'CashInfusion')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
                                     <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                 </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_CashInfusion','_CashInfusion','new','BankingOperation','CashInfusion')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_CashInfusion','_CashInfusion','new','BankingOperation','CashInfusion')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
                                     <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                 </a>
                             </div>
@@ -55,10 +56,10 @@
                     <div class="tab-pane fade" id="shipping" role="tabpanel">
                         <div class="row justify-content-end">
                             <div class="demo-inline-spacing text-end">
-                                <a type="button" onclick="LoadDataGen('BankingOperation','myDataTable_ManualAccountingEntry','_ManualAccountingEntryData',0,'datalistingview_ManualAccountingEntry',null,'ManualAccountingEntry')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                <a type="button" onclick="LoadDataGen('BankingOperation','myDataTable_ManualAccountingEntry','_ManualAccountingEntryData',0,'datalistingview_ManualAccountingEntry',null,'ManualAccountingEntry')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
                                     <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                 </a>
-                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_ManualAccountingEntry','_ManualAccountingEntry','new','BankingOperation','ManualAccountingEntry')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                <a type="button" onclick="AddORUpdateGen(null,'datalistingview_ManualAccountingEntry','_ManualAccountingEntry','new','BankingOperation','ManualAccountingEntry')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
                                     <span class="tf-icons mdi mdi-plus mdi-18px"></span>
                                 </a>
                             </div>

@@ -1,28 +1,29 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+    @using Resources
 <div class="card-body pt-2 mt-1">
     <fieldset class="fieldset-custom">
         @if (!Model.TransactionHistories.Any())
         {
             <div class="text-center my-3">
-                <p>No transaction(s) are available for account @Model.AccountNumber</p>
+                <p>@GlobalOperation.NoTransactionAreAvailableForAccount @Model.AccountNumber</p>
             </div>
         }
         else
         {
             <div class="table-responsive mb-3">
                 <div class="card-header">
-                    <h5 class="card-title">Account statements of @Model.AccountType (Acc No: @Model.AccountNumber)</h5>
+                    <h5 class="card-title">@GlobalOperation.AccountStatementsOf @Model.AccountType (Acc No: @Model.AccountNumber)</h5>
                 </div>
 
                 <table class="table table-hover" id="myDataTableT">
                     <thead class="table-light">
                         <tr>
-                            <th>Date</th>
-                            <th>Amount</th>
-                            <th>Fee</th>
-                            <th>Credit</th>
-                            <th>Debit</th>
-                            <th>Balance</th>
+                            <th>@GlobalOperation.Date</th>
+                            <th>@GlobalOperation.Amount</th>
+                            <th>@GlobalOperation.Fee</th>
+                            <th>@GlobalOperation.Credit</th>
+                            <th>@GlobalOperation.Debit</th>
+                            <th>@GlobalOperation.Balance</th>
                         </tr>
                     </thead>
                     <tbody>

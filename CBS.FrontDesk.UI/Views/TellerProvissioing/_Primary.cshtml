@@ -1,27 +1,27 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.OpeningOfTheDay
-
+@using Resources
 
 @using (Html.BeginForm("Primary", "TellerProvissioing", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
     <fieldset class="fieldset-custom">
-        <legend id="select_base">Confirmation In Dinominations</legend>
+        <legend id="select_base">@GlobalTellerProvissioing.ConfirmationInDinominations</legend>
         @Html.HiddenFor(model => model.PrimaryTellerProvissioning.ReplenishmentId)
         <div class="row mt-2 gy-4">
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    <span class="formatted-amount shadow-box float-start">Amount provisioned: @Model.PrimaryTellerProvissioning.Amount.ToString("#,##0.0")</span>
+                    <span class="formatted-amount shadow-box float-start">@GlobalTellerProvissioing.AmountProvisioned: @Model.PrimaryTellerProvissioning.Amount.ToString("#,##0.0")</span>
                 </div>
             </div>
             <div class="col-md-6" hidden="hidden">
                 <div class="form-floating form-floating-outline">
-                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalTellerProvissioing.TotalAmount: 0.0</span>
                     <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                     <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.PrimaryTellerProvissioning.Amount">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    <span class="formatted-amount shadow-box" id="lblBalance">Balance: @Model.PrimaryTellerProvissioning.Amount.ToString("#,##0.0")</span>
+                    <span class="formatted-amount shadow-box" id="lblBalance">@GlobalTellerProvissioing.Balance: @Model.PrimaryTellerProvissioning.Amount.ToString("#,##0.0")</span>
                 </div>
             </div>
             <div class="col-md-2">
@@ -114,12 +114,12 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.PrimaryTellerProvissioning.Note, new { @class = "form-control", @style = "height: 50px;" })
                     @Html.ValidationMessageFor(m => m.PrimaryTellerProvissioning.Note, "", new { @class = "text-danger " })
-                    <label for="formValidationDob">Provisioing Note</label>
+                    <label for="formValidationDob">@GlobalTellerProvissioing.ProvisioingNote</label>
                 </div>
             </div>
         </div>
         <div class="mt-4">
-            <button type="submit" id="btnSave" class="btn btn-primary me-2">Save</button>
+            <button type="submit" id="btnSave" class="btn btn-primary me-2">@GlobalShared.Save</button>
         </div>
     </fieldset>
 }

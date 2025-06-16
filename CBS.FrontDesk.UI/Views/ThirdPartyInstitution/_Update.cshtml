@@ -1,4 +1,5 @@
 ﻿@model CBS.BusinessService.ThirdPartyBankAccount.ThirdPartyInstitution
+    @using Resources
 <div class="card-body">
 
     @using (Html.BeginForm("Update", "ThirdPartyInstitution", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
@@ -9,28 +10,28 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                    <label>Name</label>
+                    <label>@GlobalThirdPartyInstitution.Name</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.InstitionType, new SelectList(ViewBag.InstitionType == null ? "" : ViewBag.InstitionType, "Id", "OperationEventName"), "---Select Operation Event---", new { @class = "form-control select2", @search = "true", id = "OperationEventId" })
+                    @Html.DropDownListFor(m => m.InstitionType, new SelectList(ViewBag.InstitionType == null ? "" : ViewBag.InstitionType, "Id", "OperationEventName"), "---"+ @GlobalThirdPartyInstitution.SelectOperationEvent + "---", new { @class = "form-control select2", @search = "true", id = "OperationEventId" })
                     @Html.ValidationMessageFor(model => model.InstitionType, "", new { @class = "text-danger" })
-                    <label for="OperationEventId">Instition Type</label>
+                    <label for="OperationEventId">@GlobalThirdPartyInstitution.InstitionType</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Code, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
-                    <label>Code</label>
+                    <label>@GlobalThirdPartyInstitution.Code</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.AccountManager, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.AccountManager, "", new { @class = "text-danger" })
-                    <label>Account Manager at the Bank</label>
+                    <label>@GlobalThirdPartyInstitution.AccountManagerAtTheBank</label>
                 </div>
             </div>
         </div>
@@ -38,7 +39,7 @@
 
         <div class="mt-4">
 
-            <button type="submit" class="btn btn-primary me-2">Update</button>
+            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
 
         </div>
     }

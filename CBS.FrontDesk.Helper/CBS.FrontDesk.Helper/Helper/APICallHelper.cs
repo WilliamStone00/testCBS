@@ -1082,5 +1082,35 @@ namespace CBS.FrontDesk.Helper
         public static string BulkOperationDataTablePaggination = "/api/v1/BulkOperations/simulation/data-table";
         public static string BulkOperationDetailsDataTablePaggination = "/api/v1/BulkOperations/simulation/details";
         public static object DeleteBulkOperations = "/api/v1/BulkOperations/simulation/delete";
+        //Zone
+        public static string Get_Update_Delete_Zone = "/api/v1/Zone/{0}";
+        public static string CreateZone = "/api/v1/Zone";
+        public static string GetAllZone = "/api/v1/Zones";
+
+        //Agent
+        public static string Get_Update_Delete_Agent = "/api/v1/Agent/{0}";
+        public static string CreateAgent = "/api/v1/Agent";
+        public static string GetAllAgent = "/api/v1/Agents";
+
+        //AgentAccount
+        public static string Get_Update_Delete_AgentAccount = "/api/v1/AgentAccount/{0}";
+        public static string CreateAgentAccount = "/api/v1/AgentAccount";
+        public static string GetAllAgentAccount = "/api/v1/AgentAccounts";
+        //AgentDailyCashLimit
+        public static string Get_Update_Delete_AgentDailyCashLimit = "/api/v1/AgentDailyCashLimit/{0}";
+        public static string CreateAgentDailyCashLimit = "/api/v1/AgentDailyCashLimit";
+        public static string GetAllAgentDailyCashLimit = "/api/v1/AgentDailyCashLimits";
+        //AgentDashBoard
+        public static string Get_Update_Delete_AgentDashBoard = "/api/v1/AgentDashBoard/{0}";
+        public static string CreateAgentDashBoard = "/api/v1/AgentDashBoard";
+        public static string GetAllAgentDashBoard = "/api/v1/AgentDashBoards";
+        //DailyCustomer
+        public static string Get_Update_Delete_DailyCustomer = "/api/v1/DailyCustomer/{0}";
+        public static string CreateDailyCustomer = "/api/v1/DailyCustomer";
+        public static string GetAllDailyCustomer = "/api/v1/DailyCustomers";
+        //CommissionSetting
+        public static string Get_Update_Delete_CommissionSetting = "/api/v1/CommissionSetting/{0}";
+        public static string CreateCommissionSetting = "/api/v1/CommissionSetting";
+        public static string GetAllCommissionSettings = "/api/v1/CommissionSettings";
     }
 }

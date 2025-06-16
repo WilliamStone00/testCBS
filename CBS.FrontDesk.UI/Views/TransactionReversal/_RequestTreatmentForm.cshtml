@@ -1,11 +1,11 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.TransactionReversal
-
+@using Resources
 
 
 @using (Html.BeginForm("Create", "TransactionReversal", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
     <fieldset class="fieldset-custom">
-        <legend id="select_base">Confirmation Form For Reversal</legend>
+        <legend id="select_base">@GlobalTransactionReversal.ConfirmationFormForReversal</legend>
         <input type="hidden" name="Option" value="treatement" id="Option" />
         @Html.HiddenFor(model => model.CashCompletionOfReversalCommand.Id)
     <div class="row mt-2 gy-4">
@@ -13,14 +13,14 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.ReversalRequest.Amount, new { @class = "form-control", @readonly = true })
                 @Html.ValidationMessageFor(m => m.ReversalRequest.Amount, "", new { @class = "text-danger " })
-                <label>Amount</label>
+                <label>@GlobalTransactionReversal.Amount</label>
             </div>
         </div>
         <div class="col-md-9">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.ReversalRequest.InitiatedBy, new { @class = "form-control", @readonly = true })
                 @Html.ValidationMessageFor(m => m.ReversalRequest.InitiatedBy, "", new { @class = "text-danger " })
-                <label>Initiated By</label>
+                <label>@GlobalTransactionReversal.InitiatedBy</label>
             </div>
         </div>
         @*<div class="col-md-3">
@@ -33,7 +33,7 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextAreaFor(m => m.ReversalRequest.ValidationComment, new { @class = "form-control", @style = "height: 150px;", @readonly = true })
                 @Html.ValidationMessageFor(m => m.ReversalRequest.ValidationComment, "", new { @class = "text-danger " })
-                <label>Validation comment</label>
+                <label>@GlobalTransactionReversal.ValidationComment</label>
             </div>
         </div>
 
@@ -41,13 +41,13 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextAreaFor(m => m.ReversalRequest.ApprovedComment, new { @class = "form-control", @style = "height: 150px;", @readonly = true })
                 @Html.ValidationMessageFor(m => m.ReversalRequest.ApprovedComment, "", new { @class = "text-danger " })
-                <label>Approval comment</label>
+                <label>@GlobalTransactionReversal.ApprovalComment</label>
             </div>
         </div>
 
     </div>
         <div class="mt-4">
-            <button type="submit" id="btnSave" class="btn btn-primary me-2">Confirm Reversal</button>
+            <button type="submit" id="btnSave" class="btn btn-primary me-2">@GlobalTransactionReversal.ConfirmReversal</button>
         </div>
     </fieldset>
 }
