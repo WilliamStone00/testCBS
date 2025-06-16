@@ -124,10 +124,10 @@
     <value>Event</value>
   </data>
   <data name="OperationEventAttribute" xml:space="preserve">
-    <value>Operation EventAttribute</value>
+    <value>Operation Event Attribute</value>
   </data>
   <data name="OperationEventAttribute " xml:space="preserve">
-    <value>Operation EventAttribute </value>
+    <value>Operation Event Attribute</value>
   </data>
   <data name="RuleEntryName" xml:space="preserve">
     <value>RuleEntry Name</value>

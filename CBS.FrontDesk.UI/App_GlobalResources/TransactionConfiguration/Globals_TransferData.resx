@@ -142,7 +142,7 @@
     <value>HeadOffice</value>
   </data>
   <data name="MaxAmount" xml:space="preserve">
-    <value>MaxbAmount</value>
+    <value>Max amount</value>
   </data>
   <data name="NoTransferPolicyIsConfigured" xml:space="preserve">
     <value>No transfer policy is configured.</value>

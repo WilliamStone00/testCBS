@@ -181,7 +181,7 @@
     <value>Name</value>
   </data>
   <data name="OfficeType" xml:space="preserve">
-    <value>OfficeType</value>
+    <value>Office type</value>
   </data>
   <data name="PageTitle" xml:space="preserve">
     <value>Branch Management</value>
@@ -208,7 +208,7 @@
     <value>Telephone</value>
   </data>
   <data name="Tell" xml:space="preserve">
-    <value>Tell</value>
+    <value>Till</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>Update</value>

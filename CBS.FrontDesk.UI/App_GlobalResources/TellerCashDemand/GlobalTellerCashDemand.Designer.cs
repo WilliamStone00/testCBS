@@ -376,7 +376,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Provide the 16 digit account number that serves as reference.
         /// </summary>
         internal static string ProvideThe16DigitAccountNumberThatServesAsReference {
             get {

@@ -628,7 +628,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IsCentral.
+        ///   Looks up a localized string similar to Is Central.
         /// </summary>
         internal static string IsCentral {
             get {

@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ABriefDescription" xml:space="preserve">
+    <value>Une brève description</value>
+  </data>
+  <data name="AccountMapping" xml:space="preserve">
+    <value>Mappage de compte</value>
+  </data>
+  <data name="AccountMappingDescription" xml:space="preserve">
+    <value>Utilisez cette section pour mapper les configurations de plan comptable au produit d'épargne. Cela garantit un suivi précis des transactions liées au produit.</value>
+  </data>
+  <data name="AccountMappingFor" xml:space="preserve">
+    <value>Mappage de compte pour</value>
+  </data>
+  <data name="AccountMappings" xml:space="preserve">
+    <value>Mappages de compte</value>
+  </data>
+  <data name="AccountName" xml:space="preserve">
+    <value>Nom du compte</value>
+  </data>
+  <data name="AccountType" xml:space="preserve">
+    <value>Type de compte</value>
+  </data>
+  <data name="AccountUsedToHoldThePrincipalAmountFor" xml:space="preserve">
+    <value>Compte utilisé pour détenir le montant principal pour</value>
+  </data>
+  <data name="ApplicableForChargesWithinTheSameBranch" xml:space="preserve">
+    <value>Applicable pour les frais au sein de la même succursale.</value>
+  </data>
+  <data name="ApplicableForInterBranchTransactions" xml:space="preserve">
+    <value>Applicable pour les transactions inter-succursales.</value>
+  </data>
+  <data name="CamCCULShareCashInCommission" xml:space="preserve">
+    <value>Commission d'encaissement part de CamCCUL</value>
+  </data>
+  <data name="CamCCULShareCashOutCommission" xml:space="preserve">
+    <value>Commission de retrait part de CamCCUL</value>
+  </data>
+  <data name="CamCCULShareTransferCommission" xml:space="preserve">
+    <value>Commission de transfert part de CamCCUL</value>
+  </data>
+  <data name="CapitalAccountDescription" xml:space="preserve">
+    <value>Capital (Ceci est un compte qui détient la somme des économies de ce produit.)</value>
+  </data>
+  <data name="CashInCommissionAccount" xml:space="preserve">
+    <value>Compte de commission d'encaissement</value>
+  </data>
+  <data name="CashOutCommissionAccount" xml:space="preserve">
+    <value>Compte de commission de retrait</value>
+  </data>
+  <data name="ChargesMapping" xml:space="preserve">
+    <value>Mappage des frais</value>
+  </data>
+  <data name="ChooseTheTypeOfOperationForThisChargeMapping" xml:space="preserve">
+    <value>Choisissez le type d'opération pour ce mappage de frais</value>
+  </data>
+  <data name="CivilServantsSalaryDestinationPayableAccount" xml:space="preserve">
+    <value>Compte payable de destination des salaires des fonctionnaires</value>
+  </data>
+  <data name="CivilServantsSalaryDestinationSalaryProductAccount" xml:space="preserve">
+    <value>Compte de produit de salaire de destination des salaires des fonctionnaires</value>
+  </data>
+  <data name="CivilServantsSalarySourceAccount" xml:space="preserve">
+    <value>Compte source des salaires des fonctionnaires</value>
+  </data>
+  <data name="CivilServantsSalarySourceSalaryAccount" xml:space="preserve">
+    <value>Compte de salaire source des fonctionnaires</value>
+  </data>
+  <data name="CMoneySharingGLMapping" xml:space="preserve">
+    <value>Partage CMoney mappage GL</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="CommissionAccountDescription" xml:space="preserve">
+    <value>Compte de commission. (Ce compte détient les commissions générées à partir des inter-opérations)</value>
+  </data>
+  <data name="ConfigureAccMapForTransRelTo" xml:space="preserve">
+    <value>Configurer les mappages de compte pour les transactions liées à</value>
+  </data>
+  <data name="ConfigureAccMapForTransRelToDescription" xml:space="preserve">
+    <value>Le mappage de compte garantit que toutes les opérations financières pour ce produit sont reflétées avec précision dans les comptes appropriés. Veuillez examiner et mapper les comptes avec soin.</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="FeePolicyType" xml:space="preserve">
+    <value>Type de politique de frais</value>
+  </data>
+  <data name="FluxAndPTMShareCashInCommission" xml:space="preserve">
+    <value>Commission d'encaissement part de Flux et PTM</value>
+  </data>
+  <data name="FluxAndPTMShareCashOutCommission" xml:space="preserve">
+    <value>Commission de retrait part de Flux et PTM</value>
+  </data>
+  <data name="FluxAndPTMShareTransferCommission" xml:space="preserve">
+    <value>Commission de transfert part de Flux et PTM</value>
+  </data>
+  <data name="ForChargesOnIncomingInternationalTransfers" xml:space="preserve">
+    <value>Pour les frais sur les transferts internationaux entrants.</value>
+  </data>
+  <data name="ForChargesOnOutgoingInternationalTransfers" xml:space="preserve">
+    <value>Pour les frais sur les transferts internationaux sortants.</value>
+  </data>
+  <data name="FormChargesMapping" xml:space="preserve">
+    <value>Mappage des frais de formulaire</value>
+  </data>
+  <data name="FormChargesMappingForSalaries" xml:space="preserve">
+    <value>Mappage des frais de formulaire pour les salaires</value>
+  </data>
+  <data name="FormFeeForCMoney" xml:space="preserve">
+    <value>Frais de formulaire pour CMoney</value>
+  </data>
+  <data name="FormFeeForMoralPerson" xml:space="preserve">
+    <value>Frais de formulaire pour les personnes morales</value>
+  </data>
+  <data name="FormFeeForPhysicalPerson" xml:space="preserve">
+    <value>Frais de formulaire pour les personnes physiques</value>
+  </data>
+  <data name="ForSelfToSelfTransfers" xml:space="preserve">
+    <value>Pour les transferts auto-adressés.</value>
+  </data>
+  <data name="HarmonizeChargesMappingTo" xml:space="preserve">
+    <value>Harmoniser le mappage des frais à</value>
+  </data>
+  <data name="HeadOfficeShareCashInCommission" xml:space="preserve">
+    <value>Commission d'encaissement part du siège social</value>
+  </data>
+  <data name="HeadOfficeShareCashOutCommission" xml:space="preserve">
+    <value>Commission de retrait part du siège social</value>
+  </data>
+  <data name="HeadOfficeShareTransferCommission" xml:space="preserve">
+    <value>Commission de transfert part du siège social</value>
+  </data>
+  <data name="HeadOfficeTransferCommission" xml:space="preserve">
+    <value>Commission de transfert du siège social</value>
+  </data>
+  <data name="IncomingInternational" xml:space="preserve">
+    <value>International entrant</value>
+  </data>
+  <data name="IncomingInternationalDescription" xml:space="preserve">
+    <value>Description internationale entrante</value>
+  </data>
+  <data name="InterBranch" xml:space="preserve">
+    <value>Inter-succursale</value>
+  </data>
+  <data name="InterBranchDescription" xml:space="preserve">
+    <value>Description inter-succursale</value>
+  </data>
+  <data name="InterestAccount" xml:space="preserve">
+    <value>Compte d'intérêts</value>
+  </data>
+  <data name="InterestAccountDescription" xml:space="preserve">
+    <value>Compte d'intérêts (Ceci est un compte qui reçoit tous les intérêts générés par les produits d'épargne)</value>
+  </data>
+  <data name="InterestExpenseAccount" xml:space="preserve">
+    <value>Compte de frais d'intérêts</value>
+  </data>
+  <data name="InterestExpenseAccountDescription" xml:space="preserve">
+    <value>Compte de frais d'intérêts (Ceci est un compte qui reçoit tous les intérêts payés à d'autres comptes)</value>
+  </data>
+  <data name="InThisStepTheCivilServantsSalaryPayableAccountIsDebitedAndTheMembersSalaryAccountsAreCredited" xml:space="preserve">
+    <value>Dans cette étape, le compte payable des salaires des fonctionnaires est débité et les comptes de salaire des membres sont crédités</value>
+  </data>
+  <data name="InThisStepThePrivateInstitutionsSalaryPayableAccountIsDebitedAndTheMembersSalaryAccountsAreCredited" xml:space="preserve">
+    <value>Dans cette étape, le compte payable des salaires des institutions privées est débité et les comptes de salaire des membres sont crédités</value>
+  </data>
+  <data name="LiaisonAccount" xml:space="preserve">
+    <value>Compte de liaison</value>
+  </data>
+  <data name="LiassonAccountDescription" xml:space="preserve">
+    <value>Compte de liaison. (Ce compte détient des liquidités pour la compensation gérée au niveau du siège social)</value>
+  </data>
+  <data name="Local" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="LocalDescription" xml:space="preserve">
+    <value>Description locale</value>
+  </data>
+  <data name="MapAccounts" xml:space="preserve">
+    <value>Mapper les comptes</value>
+  </data>
+  <data name="MapEvents" xml:space="preserve">
+    <value>Mapper les événements</value>
+  </data>
+  <data name="MappingCivilServantAndPrivateInstitutionForOrdinaryAccount" xml:space="preserve">
+    <value>Mappage des comptes ordinaires pour les fonctionnaires et les institutions privées</value>
+  </data>
+  <data name="MappingOrdinaryAccountsToTheAccountChart" xml:space="preserve">
+    <value>Mappage des comptes ordinaires au plan comptable</value>
+  </data>
+  <data name="MappingWithdrawalFormChargesOf" xml:space="preserve">
+    <value>Mappage des frais de formulaire de retrait de</value>
+  </data>
+  <data name="MapSelectedChargeType" xml:space="preserve">
+    <value>Associer le type de frais sélectionné</value>
+  </data>
+  <data name="NoOrdinaryAccountMapped" xml:space="preserve">
+    <value>Aucun compte ordinaire associer</value>
+  </data>
+  <data name="OperationType" xml:space="preserve">
+    <value>Type d'opération</value>
+  </data>
+  <data name="OperationTypeDescription" xml:space="preserve">
+    <value>Description du type d'opération</value>
+  </data>
+  <data name="OrdinaryAccountMapping" xml:space="preserve">
+    <value>Mappage de compte ordinaire</value>
+  </data>
+  <data name="OrdinaryAccountName" xml:space="preserve">
+    <value>Nom du compte ordinaire</value>
+  </data>
+  <data name="OutgoingInternational" xml:space="preserve">
+    <value>International sortant</value>
+  </data>
+  <data name="OutgoingInternationalDescription" xml:space="preserve">
+    <value>Description internationale sortante</value>
+  </data>
+  <data name="PartnerSharingGLMapping" xml:space="preserve">
+    <value>Mappage GL de partage partenaire</value>
+  </data>
+  <data name="PrincipalAccount" xml:space="preserve">
+    <value>Compte principal</value>
+  </data>
+  <data name="PrivateInstitutionsSalaryDestinationPayableAccount" xml:space="preserve">
+    <value>Compte payable de destination des salaires des institutions privées</value>
+  </data>
+  <data name="PrivateInstitutionsSalaryDestinationSalaryProductAccount" xml:space="preserve">
+    <value>Compte de produit de salaire de destination des salaires des institutions privées</value>
+  </data>
+  <data name="PrivateInstitutionsSalarySourceAccount" xml:space="preserve">
+    <value>Compte source des salaires des institutions privées</value>
+  </data>
+  <data name="PrivateInstitutionsSalarySourceSalaryAccount" xml:space="preserve">
+    <value>Compte de salaire source des institutions privées</value>
+  </data>
+  <data name="ProductCode" xml:space="preserve">
+    <value>Code produit</value>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Nom du produit</value>
+  </data>
+  <data name="Range" xml:space="preserve">
+    <value>Plage</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Enregistrer</value>
+  </data>
+  <data name="SavingProductNameDescription" xml:space="preserve">
+    <value>Description du nom du produit d'épargne</value>
+  </data>
+  <data name="SelectAnAccount" xml:space="preserve">
+    <value>Sélectionner un compte</value>
+  </data>
+  <data name="SelectEventCode" xml:space="preserve">
+    <value>Sélectionner un code d'événement</value>
+  </data>
+  <data name="SelectFees" xml:space="preserve">
+    <value>Sélectionner les frais</value>
+  </data>
+  <data name="SelectFeeType" xml:space="preserve">
+    <value>Sélectionner le type de frais</value>
+  </data>
+  <data name="SelectFeeTypeDescription" xml:space="preserve">
+    <value>Sélectionner la description du type de frais</value>
+  </data>
+  <data name="SelectSuspenseAccount" xml:space="preserve">
+    <value>Sélectionner le compte d'attente</value>
+  </data>
+  <data name="SelectTheAccountForTrackingCashInCommissionsAtTheHeadOffice" xml:space="preserve">
+    <value>Sélectionnez le compte pour suivre les commissions d'encaissement au siège social</value>
+  </data>
+  <data name="SelectTheAccountForTrackingCashInCommissionsForCamCCULShare" xml:space="preserve">
+    <value>Sélectionnez le compte pour suivre les commissions d'encaissement pour la part de CamCCUL</value>
+  </data>
+  <data name="SelectTheAccountForTrackingCashInCommissionsForFluxAndPTMShare" xml:space="preserve">
+    <value>Sélectionnez le compte pour suivre les commissions d'encaissement pour la part de Flux et PTM</value>
+  </data>
+  <data name="SelectTheAccountForTrackingCashOutCommissionsAtTheHeadOffice" xml:space="preserve">
+    <value>Sélectionnez le compte pour suivre les commissions de retrait au siège social</value>
+  </data>
+  <data name="SelectTheAccountForTrackingCashOutCommissionsForCamCCULShare" xml:space="preserve">
+    <value>Sélectionnez le compte pour suivre les commissions de retrait pour la part de CamCCUL</value>
+  </data>
+  <data name="SelectTheAccountForTrackingCashOutCommissionsForFluxAndPTMShare" xml:space="preserve">
+    <value>Sélectionnez le compte pour suivre les commissions de retrait pour la part de Flux et PTM</value>
+  </data>
+  <data name="SelectTheAccountForTrackingTransferCommissionsAtTheHeadOffice" xml:space="preserve">
+    <value>Sélectionnez le compte pour suivre les commissions de transfert au siège social</value>
+  </data>
+  <data name="SelectTheAccountForTrackingTransferCommissionsForCamCCULShare" xml:space="preserve">
+    <value>Sélectionnez le compte pour suivre les commissions de transfert pour la part de CamCCUL</value>
+  </data>
+  <data name="SelectTheAccountForTrackingTransferCommissionsForFluxAndPTMShare" xml:space="preserve">
+    <value>Sélectionnez le compte pour suivre les commissions de transfert pour la part de Flux et PTM</value>
+  </data>
+  <data name="SelectTheAccountForTrackingTransferCommissionsForHeadOfficeShare" xml:space="preserve">
+    <value>Sélectionnez le compte pour suivre les commissions de transfert pour la part du siège social</value>
+  </data>
+  <data name="SelectTheEventCodeAssociatedWithTheWithdrawalFormFeeForMoralPersons" xml:space="preserve">
+    <value>Sélectionnez le code d'événement associé aux frais de formulaire de retrait pour les personnes morales</value>
+  </data>
+  <data name="SelectTheEventCodeAssociatedWithTheWithdrawalFormFeeForPhysicalPersons" xml:space="preserve">
+    <value>Sélectionnez le code d'événement associé aux frais de formulaire de retrait pour les personnes physiques</value>
+  </data>
+  <data name="SelectTheEventCodeAssociatedWithTheWithdrawalFormFeeForSalary" xml:space="preserve">
+    <value>Sélectionnez le code d'événement associé aux frais de formulaire de retrait pour le salaire</value>
+  </data>
+  <data name="SelectTheEventCodeAssociatedWithTheWithdrawalFormFeeForThirdPartyApplication" xml:space="preserve">
+    <value>Sélectionnez le code d'événement associé aux frais de formulaire de retrait pour l'application tierce</value>
+  </data>
+  <data name="SelectTheFeeTypeToMapToThisProduct" xml:space="preserve">
+    <value>Sélectionnez le type de frais à associer à ce produit</value>
+  </data>
+  <data name="SelfTransfer" xml:space="preserve">
+    <value>Transfert automatique</value>
+  </data>
+  <data name="SelfTransferDescription" xml:space="preserve">
+    <value>Description du transfert automatique</value>
+  </data>
+  <data name="Step1ReceivingMoneyFromUBCCivilServants" xml:space="preserve">
+    <value>Étape 1 réception d'argent de l'UBC fonctionnaires</value>
+  </data>
+  <data name="Step1ReceivingMoneyFromUBCPrivateInstitutions" xml:space="preserve">
+    <value>Étape 1 réception d'argent de l'UBC institutions privées</value>
+  </data>
+  <data name="Step4DisbursementOfFundsIntoSalaryAccountsCivilServants" xml:space="preserve">
+    <value>Étape 4 déboursement de fonds dans les comptes de salaire des fonctionnaires</value>
+  </data>
+  <data name="Step4DisbursementOfFundsIntoSalaryAccountsPrivateInstitutions" xml:space="preserve">
+    <value>Étape 4 déboursement de fonds dans les comptes de salaire des institutions privées</value>
+  </data>
+  <data name="SuspenseAccount" xml:space="preserve">
+    <value>Compte d'attente</value>
+  </data>
+  <data name="SuspenseAccountForSalaryProcessing" xml:space="preserve">
+    <value>Compte d'attente pour le traitement des salaires</value>
+  </data>
+  <data name="TheNameOfTheProduct" xml:space="preserve">
+    <value>Le nom du produit</value>
+  </data>
+  <data name="TheNameOfTheSavingProductBeingMapped" xml:space="preserve">
+    <value>Le nom du produit d'épargne en cours de mappage</value>
+  </data>
+  <data name="TheNameOfTheSavingProductForWhichChargesAreBeingMapped" xml:space="preserve">
+    <value>Le nom du produit d'épargne pour lequel les frais sont en cours de mappage</value>
+  </data>
+  <data name="TheSuspenseAccountIsUsedToTemporarilyHoldSalariesForUnidentifiedSalaryEarnersFromTheListOfSalaryDisbursementsProvidedByTheStateOrPrivateInstitutions" xml:space="preserve">
+    <value>Le compte d'attente est utilisé pour détenir temporairement les salaires des salariés non identifiés à partir de la liste des déboursements de salaires fournie par l'État ou les institutions privées</value>
+  </data>
+  <data name="TheUniqueCodeAssignedTo" xml:space="preserve">
+    <value>Le code unique attribué à</value>
+  </data>
+  <data name="ThisStepInvolvesDebitingTheUBCCurrentAccountAndCreditingTheCivilServantsSalaryPayableAccount" xml:space="preserve">
+    <value>Cette étape consiste à débiter le compte courant de l'UBC et à créditer le compte payable des salaires des fonctionnaires</value>
+  </data>
+  <data name="ThisStepInvolvesDebitingTheUBCCurrentAccountAndCreditingThePrivateInstitutionsSalaryPayableAccount" xml:space="preserve">
+    <value>Cette étape consiste à débiter le compte courant de l'UBC et à créditer le compte payable des salaires des institutions privées</value>
+  </data>
+  <data name="ToChartOfAccountEvents" xml:space="preserve">
+    <value>Vers les événements du plan comptable</value>
+  </data>
+  <data name="ToTheMainChartOfAccounts" xml:space="preserve">
+    <value>Vers le plan comptable principal</value>
+  </data>
+  <data name="TracksCommissionGeneratedFromTransferOperationsFor" xml:space="preserve">
+    <value>Suit les commissions générées par les opérations de transfert pour</value>
+  </data>
+  <data name="TracksCommissionsFromCashInOperationsFor" xml:space="preserve">
+    <value>Suit les commissions des opérations d'encaissement pour</value>
+  </data>
+  <data name="TracksCommissionsFromCashOutOperationsFor" xml:space="preserve">
+    <value>Suit les commissions des opérations de retrait pour</value>
+  </data>
+  <data name="TracksInterestExpensesPaidTo" xml:space="preserve">
+    <value>Suit les frais d'intérêts payés à</value>
+  </data>
+  <data name="TracksInterestIncomeGeneratedFrom" xml:space="preserve">
+    <value>Suit les revenus d'intérêts générés par</value>
+  </data>
+  <data name="TransferCommissionAccount" xml:space="preserve">
+    <value>Compte de commission de transfert</value>
+  </data>
+  <data name="TransferFeeDescription" xml:space="preserve">
+    <value>Frais de transfert (Ceci est un compte qui reçoit tous les frais de transfert générés par ce produit d'épargne)</value>
+  </data>
+  <data name="UsedAsATransitAccountForInterBranchTransactionsFor" xml:space="preserve">
+    <value>Utilisé comme compte de transit pour les transactions inter-succursales pour</value>
+  </data>
+  <data name="ViewList" xml:space="preserve">
+    <value>Voir la liste</value>
+  </data>
+  <data name="WithdrawalFeeDescription" xml:space="preserve">
+    <value>Frais de retrait (Ceci est un compte qui reçoit tous les frais de retrait générés par ce produit d'épargne)</value>
+  </data>
+</root>

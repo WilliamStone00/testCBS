@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Balancing accountNumber.
+        ///   Looks up a localized string similar to Balancing account number.
         /// </summary>
         internal static string BalancingAccountNumber {
             get {
@@ -97,7 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Derterminant AccountNumber.
+        ///   Looks up a localized string similar to Derterminant account number.
         /// </summary>
         internal static string DerterminantAccountNumber {
             get {

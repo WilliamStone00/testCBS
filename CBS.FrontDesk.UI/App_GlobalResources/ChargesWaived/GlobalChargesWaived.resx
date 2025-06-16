@@ -172,7 +172,7 @@
     <value>Date waived</value>
   </data>
   <data name="EnterChargeToWaive" xml:space="preserve">
-    <value>Enter charge to waive. (Note that this is valid only for a day.</value>
+    <value>Enter charge to waive. (Note that this is valid only for a day).</value>
   </data>
   <data name="Expired" xml:space="preserve">
     <value>Expired</value>

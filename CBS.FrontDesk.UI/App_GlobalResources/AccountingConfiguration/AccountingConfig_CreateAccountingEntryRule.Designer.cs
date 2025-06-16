@@ -106,7 +106,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operation EventAttribute.
+        ///   Looks up a localized string similar to Operation Event Attribute.
         /// </summary>
         internal static string OperationEventAttribute {
             get {
@@ -115,7 +115,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operation EventAttribute .
+        ///   Looks up a localized string similar to Operation Event Attribute.
         /// </summary>
         internal static string OperationEventAttribute_ {
             get {

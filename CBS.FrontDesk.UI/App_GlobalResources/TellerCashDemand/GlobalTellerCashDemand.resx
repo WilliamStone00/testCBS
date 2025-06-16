@@ -223,7 +223,7 @@
     <value>Operation event code</value>
   </data>
   <data name="ProvideThe16DigitAccountNumberThatServesAsReference" xml:space="preserve">
-    <value />
+    <value>Provide the 16 digit account number that serves as reference</value>
   </data>
   <data name="PROVISION_BANK_TO_VAULT" xml:space="preserve">
     <value>PROVISION BANK TO VAULT</value>

@@ -124,7 +124,7 @@
     <value>Action</value>
   </data>
   <data name="BalanceSheetAccount" xml:space="preserve">
-    <value>BalanceSheetAccount</value>
+    <value>Balance Sheet Account</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
@@ -136,12 +136,12 @@
     <value>Edit</value>
   </data>
   <data name="IsDirectAccount" xml:space="preserve">
-    <value>IsDirectAccount</value>
+    <value>Is direct account</value>
   </data>
   <data name="RootAccount" xml:space="preserve">
-    <value>RootAccount</value>
+    <value>Root Account</value>
   </data>
   <data name="SelectToEdit" xml:space="preserve">
-    <value>SelectToEdit</value>
+    <value>Select to edit</value>
   </data>
 </root>

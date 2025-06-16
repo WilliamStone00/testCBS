@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Calculated_on_the_loans_outstanding_balance" xml:space="preserve">
-    <value> Calculated on the loan's outstanding balance</value>
+    <value>Calculated on the loan's outstanding balance</value>
   </data>
   <data name="ABValidation" xml:space="preserve">
     <value>AB.Validation</value>

@@ -175,7 +175,7 @@
     <value>A loan of 3,000,000 XAF with 100,000 XAF interest, where VAT is applied on top.</value>
   </data>
   <data name="Scenario2SeparateVAT" xml:space="preserve">
-    <value>Scenario 2 (Separate VAT): </value>
+    <value>Scenario 2 (Separate VAT):</value>
   </data>
   <data name="Scenario2SeparateVATDescription" xml:space="preserve">
     <value>A loan of 3,000,000 XAF with 100,000 XAF interest, where VAT is applied on top.</value>
@@ -211,7 +211,7 @@
     <value>VAT is calculated as 19.25% of the interest (19,250 XAF).</value>
   </data>
   <data name="VATCalculationFormula" xml:space="preserve">
-    <value>VAT is calculated as part of the interest using the formula: </value>
+    <value>VAT is calculated as part of the interest using the formula:</value>
   </data>
   <data name="VATInclusive" xml:space="preserve">
     <value>VAT-Inclusive</value>

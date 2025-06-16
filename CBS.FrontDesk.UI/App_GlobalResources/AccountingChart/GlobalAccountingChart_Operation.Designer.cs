@@ -61,7 +61,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AddNew.
+        ///   Looks up a localized string similar to Add new.
         /// </summary>
         internal static string AddNew {
             get {

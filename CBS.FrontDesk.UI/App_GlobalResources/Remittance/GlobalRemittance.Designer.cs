@@ -988,7 +988,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The charges are added on top of the specified amount. The sender pays the specified amount .
+        ///   Looks up a localized string similar to The charges are added on top of the specified amount. The sender pays the specified amount.
         /// </summary>
         internal static string TheChargesAreAddedOnTopOfTheSpecifiedAmount {
             get {

@@ -118,22 +118,22 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Action" xml:space="preserve">
-    <value />
+    <value>Action</value>
   </data>
   <data name="Categories" xml:space="preserve">
-    <value />
+    <value>Categories</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value />
+    <value>Description</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value />
+    <value>Name</value>
   </data>
   <data name="SelectToEdit" xml:space="preserve">
     <value>Select to edit</value>

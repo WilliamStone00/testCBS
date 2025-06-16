@@ -172,7 +172,7 @@
     <value>Activité économique</value>
   </data>
   <data name="EnableStopFurtherInterestCalculations" xml:space="preserve">
-    <value>Activez l'arrêt des calculs d'intérêts supplémentaires uniquement lorsque le prêt a été entièrement réglé.</value>
+    <value>Activez "l'arrêt des calculs d'intérêts supplémentaires" uniquement lorsque le prêt a été entièrement réglé.</value>
   </data>
   <data name="EnsureAllLoanDetails" xml:space="preserve">
     <value>Assurez-vous que tous les détails du prêt, y compris le type de prêt, la durée et le cycle de remboursement, sont sélectionnés avec précision.</value>
