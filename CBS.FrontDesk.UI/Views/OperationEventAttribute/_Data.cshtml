@@ -1,10 +1,11 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.Accounting.OperationEventAttributeDto>
+    @using Resources
 <table class="table table-hover" id="myDataTable">
     <thead class="table-light">
         <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Action</th>
+            <th>@GlobalOperationEventAttribute.Name</th>
+            <th>@GlobalOperationEventAttribute.Description</th>
+            <th>@GlobalShared.Action</th>
         </tr>
     </thead>
     <tbody>
@@ -14,8 +15,8 @@
                 <td style="width:35%">@d.Name</td>
                 <td style="width:35%">@d.OperationEventName</td>
                 <td style="width:25%">
-                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Update','update','OperationEventAttribute')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit</a>
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteRecordDataTable('OperationEventAttribute','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Update','update','OperationEventAttribute')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.Name @GlobalShared.ToEdit">@GlobalShared.Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.Name" onclick="DeleteRecordDataTable('OperationEventAttribute','@d.Id','myDataTable','_Data',0,'datalistingview')">@GlobalShared.Delete</a>
                 </td>
             </tr>
         }

@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+    @using Resources
 @{
     ViewBag.Title = "Failed -Cash Replenishment Request";
 
@@ -16,7 +17,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    <span style="color:red"> Request ReferenceId : @Model.DetailsDtoModel.id not validated </span>
+                    <span style="color:red"> @GlobalTellerCashDemand.RequestReferenceId : @Model.DetailsDtoModel.id @GlobalTellerCashDemand.notValidated </span>
                 </button>
             </h2>
             <div class="card-body">
@@ -26,49 +27,49 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Cash Replenishment Request Details</th>
+                                <th>@GlobalTellerCashDemand.CashReplenishmentRequestDetails</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
                             <tr>
-                                <td>Invoice Number</td>
+                                <td>@GlobalTellerCashDemand.InvoiceNumber</td>
                                 <td>@Model.DetailsDtoModel.id </td>
                             </tr>
                             <tr>
-                                <td>Amount Requested</td>
+                                <td>@GlobalTellerCashDemand.AmountRequested</td>
                                 <td>@Model.DetailsDtoModel.requestedAmount.ToString("N") </td>
                             </tr>
                             <tr>
-                                <td>Request Message</td>
+                                <td>@GlobalTellerCashDemand.RequestMessage</td>
                                 <td>@Model.DetailsDtoModel.requetcomment </td>
                             </tr>
                             <tr>
-                                <td>Requested By </td>
+                                <td>@GlobalTellerCashDemand.RequestedBy </td>
                                 <td> @Model.DetailsDtoModel.requesterUserId </td>
                             </tr>
                             <tr>
-                                <td>Approved By </td>
+                                <td>@GlobalTellerCashDemand.ApprovedBy </td>
                                 <td> @Model.DetailsDtoModel.approvedBy </td>
                             </tr>
                             <tr>
-                                <td>Amount Approved</td>
+                                <td>@GlobalTellerCashDemand.AmountApproved</td>
                                 <td>@Model.DetailsDtoModel.confirmedAmount.ToString("N") </td>
                             </tr>
 
 
                             <tr>
-                                <td>Approved Date</td>
+                                <td>@GlobalTellerCashDemand.ApprovedDate</td>
                                 <td>@Model.DetailsDtoModel.approvedDate </td>
                             </tr>
                             <tr>
-                                <td>Approved Message</td>
+                                <td>@GlobalTellerCashDemand.ApprovedMessage</td>
                                 <td>@Model.DetailsDtoModel.approvedComment </td>
                             </tr>
                             <tr>
 
 
-                                <td> Status</td>
+                                <td> @GlobalShared.Status</td>
                                 @if (@Model.DetailsDtoModel.approvedStatus.ToUpper().Equals("PENDING"))
                                 {
                                     <td class="badge bg-label-primary rounded-pill text-uppercase">
@@ -99,11 +100,11 @@
                     </table>
                 </div>
                 <div class="card card-action mb-5">
-                    <h5 class="card-header" style="color:red">Your cash replenishment request Failed. Kindly contact your technical support desk for assistance  </h5>
+                    <h5 class="card-header" style="color:red">@GlobalTellerCashDemand.YourCashReplenishmentRequestFailed  </h5>
                     <br>
                     <div class="col-12 shift-right">
                         <br>
-                        <a href="/TellerCashDemand/CreateCashReplenishmentRequest" type="submit" class="btn btn-primary click-to-go-back-to-menu">Make request </a>
+                        <a href="/TellerCashDemand/CreateCashReplenishmentRequest" type="submit" class="btn btn-primary click-to-go-back-to-menu">@GlobalTellerCashDemand.MakeRequest </a>
 
                     </div>
                     <br>

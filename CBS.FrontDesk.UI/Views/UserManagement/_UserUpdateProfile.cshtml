@@ -1,8 +1,8 @@
 ﻿@model CBS.FrontDesk.Data.UserManagement.User
-
+@using Resources
 <div class="modal-header text-white mb-2">
     <h5 class="modal-title">
-        <i class="fas fa-user-edit me-2"></i> Update User Profile
+        <i class="fas fa-user-edit me-2"></i> @GlobalUserManagement.UpdateUserProfile
     </h5>
 </div>
 
@@ -10,59 +10,59 @@
     <!-- 🚦 Account Status Display -->
     <div class="row mb-3 px-2">
         <div class="col-md-4">
-            <label class="fw-bold text-secondary">Account Status:</label>
+            <label class="fw-bold text-secondary">@GlobalUserManagement.AccountStatus:</label>
             @if (Model.isActive)
             {
-                <span class="badge bg-success">Active</span>
+                <span class="badge bg-success">@GlobalShared.Active</span>
             }
             else
             {
-                <span class="badge bg-danger">Inactive</span>
+                <span class="badge bg-danger">@GlobalUserManagement.Inactive</span>
             }
         </div>
         <div class="col-md-4">
-            <label class="fw-bold text-secondary">Blocked:</label>
+            <label class="fw-bold text-secondary">@GlobalShared.Blocked:</label>
             @if (Model.IsBlocked)
             {
-                <span class="badge bg-danger">Blocked</span>
+                <span class="badge bg-danger">@GlobalShared.Blocked</span>
             }
             else
             {
-                <span class="badge bg-success">Not Blocked</span>
+                <span class="badge bg-success">@GlobalUserManagement.NotBlocked</span>
             }
         </div>
         <div class="col-md-4">
-            <label class="fw-bold text-secondary">Verified:</label>
+            <label class="fw-bold text-secondary">@GlobalUserManagement.Verified:</label>
             @if (Model.IsVerified)
             {
-                <span class="badge bg-success">Verified</span>
+                <span class="badge bg-success">@GlobalUserManagement.Verified</span>
             }
             else
             {
-                <span class="badge bg-secondary">Not Verified</span>
+                <span class="badge bg-secondary">@GlobalUserManagement.NotVerified</span>
             }
         </div>
         <div class="col-md-4 mt-3">
-            <label class="fw-bold text-secondary">MFA Enabled:</label>
+            <label class="fw-bold text-secondary">@GlobalUserManagement.MFAEnabled:</label>
             @if (Model.IsGoogleAuthenticatorEnabled)
             {
-                <span class="badge bg-success">Yes</span>
+                <span class="badge bg-success">@GlobalUserManagement.Yes</span>
             }
             else
             {
-                <span class="badge bg-secondary">No</span>
+                <span class="badge bg-secondary">@GlobalUserManagement.No</span>
             }
         </div>
         <div class="col-md-4 mt-3">
-            <label class="fw-bold text-secondary">Opened date:</label>
+            <label class="fw-bold text-secondary">@GlobalUserManagement.OpenedDate:</label>
             <span class="badge bg-light text-dark">@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</span>
         </div>
         <div class="col-md-4 mt-3">
-            <label class="fw-bold text-secondary">Last Login:</label>
+            <label class="fw-bold text-secondary">@GlobalUserManagement.LastLogin:</label>
             <span class="badge bg-light text-dark">@Model.LastLoginDate.ToString("dd/MM/yyyy HH:mm")</span>
         </div>
         <div class="col-md-12 mt-3">
-            <label class="fw-bold text-secondary">Role:</label>
+            <label class="fw-bold text-secondary">@GlobalUserManagement.Role:</label>
             <span class="badge bg-info text-black">
                 @if (Session["Roles"] is string[] rolesArrayUnique && rolesArrayUnique.Length > 0)
                 {
@@ -88,7 +88,7 @@
                 <img src="@(string.IsNullOrEmpty(Model.profilePhoto) ? Url.Content(Model.ImageVirtualPath ?? "~/Appfiles/Images/p.jpg") : Model.profilePhoto)"
                      alt="Profile Image" id="previewimage" class="img-fluid rounded-circle shadow-sm mb-2"
                      style="width: 140px; height: 140px; object-fit: cover; border: 3px solid #ddd;" />
-                <p class="mt-2 text-muted">Profile Picture</p>
+                <p class="mt-2 text-muted">@GlobalUserManagement.ProfilePicture</p>
             </div>
         </div>
     </div>
@@ -103,81 +103,81 @@
         <div class="row gy-3">
             <!-- Profile & Address -->
             <div class="col-12">
-                <h6 class="text-primary border-bottom pb-1"><i class="mdi mdi-account-outline"></i> Profile & Address</h6>
+                <h6 class="text-primary border-bottom pb-1"><i class="mdi mdi-account-outline"></i> @GlobalUserManagement.ProfileAddress</h6>
             </div>
             <div class="col-md-6">
                 <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.firstName, new { @class = "form-control", placeholder = "First Name", required = "required" })
+                    @Html.TextBoxFor(m => m.firstName, new { @class = "form-control", placeholder = @GlobalUserManagement.FirstName, required = "required" })
                     @Html.ValidationMessageFor(m => m.firstName, "", new { @class = "text-danger" })
-                    <label>First Name</label>
+                    <label>@GlobalUserManagement.FirstName</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.lastName, new { @class = "form-control", placeholder = "Last Name", required = "required" })
+                    @Html.TextBoxFor(m => m.lastName, new { @class = "form-control", placeholder = @GlobalUserManagement.LastName, required = "required" })
                     @Html.ValidationMessageFor(m => m.lastName, "", new { @class = "text-danger" })
-                    <label>Last Name</label>
+                    <label>@GlobalUserManagement.LastName</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.email, new { @class = "form-control", placeholder = "Email", required = "required", type = "email" })
+                    @Html.TextBoxFor(m => m.email, new { @class = "form-control", placeholder = @GlobalUserManagement.Email , required = "required", type = "email" })
                     @Html.ValidationMessageFor(m => m.email, "", new { @class = "text-danger" })
-                    <label>Email</label>
+                    <label>@GlobalUserManagement.Email</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.phoneNumber, new { @class = "form-control", placeholder = "Phone Number", required = "required" })
+                    @Html.TextBoxFor(m => m.phoneNumber, new { @class = "form-control", placeholder = @GlobalUserManagement.PhoneNumber, required = "required" })
                     @Html.ValidationMessageFor(m => m.phoneNumber, "", new { @class = "text-danger" })
-                    <label>Phone Number</label>
+                    <label>@GlobalUserManagement.PhoneNumber</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating shadow-sm">
                     @Html.TextAreaFor(m => m.address, new { @class = "form-control", placeholder = "Address", style = "height: 100px;", required = "required" })
                     @Html.ValidationMessageFor(m => m.address, "", new { @class = "text-danger" })
-                    <label>Address</label>
+                    <label>@GlobalUserManagement.Address</label>
                 </div>
             </div>
 
             <!-- ID Card -->
             <div class="col-12">
-                <h6 class="text-primary border-bottom pt-3 pb-1"><i class="mdi mdi-card-account-details-outline"></i> ID Card</h6>
+                <h6 class="text-primary border-bottom pt-3 pb-1"><i class="mdi mdi-card-account-details-outline"></i> @GlobalUserManagement.IDCard</h6>
             </div>
             <div class="col-md-6">
                 <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.NationalIdentityCardNumber, new { @class = "form-control", placeholder = "National ID", required = "required" })
+                    @Html.TextBoxFor(m => m.NationalIdentityCardNumber, new { @class = "form-control", placeholder = @GlobalUserManagement.NationalID , required = "required" })
                     @Html.ValidationMessageFor(m => m.NationalIdentityCardNumber, "", new { @class = "text-danger" })
-                    <label>National ID Card Number</label>
+                    <label>@GlobalUserManagement.NationalIDCardNumber</label>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.IssueDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required" })
                     @Html.ValidationMessageFor(m => m.IssueDate, "", new { @class = "text-danger" })
-                    <label>Issue Date</label>
+                    <label>@GlobalUserManagement.IssueDate</label>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.ExpiryDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required" })
                     @Html.ValidationMessageFor(m => m.ExpiryDate, "", new { @class = "text-danger" })
-                    <label>Expiry Date</label>
+                    <label>@GlobalUserManagement.ExpiryDate</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.PlaceOfIssue, new { @class = "form-control", placeholder = "Place of Issue", required = "required" })
+                    @Html.TextBoxFor(m => m.PlaceOfIssue, new { @class = "form-control", placeholder = @GlobalUserManagement.PlaceOfIssue, required = "required" })
                     @Html.ValidationMessageFor(m => m.PlaceOfIssue, "", new { @class = "text-danger" })
-                    <label>Place of Issue</label>
+                    <label>@GlobalUserManagement.PlaceOfIssue</label>
                 </div>
             </div>
 
 
             <div class="col-12 text-end mt-3">
                 <button type="submit" class="btn btn-primary shadow-sm px-4">
-                    <i class="fas fa-save me-1"></i> Update
+                    <i class="fas fa-save me-1"></i> @GlobalShared.Update
                 </button>
             </div>
         </div>

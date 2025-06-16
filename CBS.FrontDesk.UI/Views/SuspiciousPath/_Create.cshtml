@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.RequestManagement.SuspiciousPath
-
+@using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">SUSPICIOUS PATH</legend>
+    <legend id="select_base">@GlobalSuspiciousPath.SUSPICIOUS_PATH</legend>
     <div class="card-body">
         @using (Html.BeginForm("AddOrUpdate", "SuspiciousPath", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
@@ -12,7 +12,7 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Pattern, new { @class = "form-control", placeholder = "/wp-login.php or ^/admin.*" })
                         @Html.ValidationMessageFor(m => m.Pattern, "", new { @class = "text-danger" })
-                        <label for="Pattern">Request Path Pattern</label>
+                        <label for="Pattern">@GlobalSuspiciousPath.RequestPathPattern</label>
                     </div>
                 </div>
 
@@ -20,7 +20,7 @@
                 <div class="col-md-2 d-flex align-items-center">
                     <div class="form-check mt-2">
                         @Html.CheckBoxFor(m => m.IsRegex, new { @class = "form-check-input", id = "IsRegex" })
-                        <label class="form-check-label" for="IsRegex">Regex?</label>
+                        <label class="form-check-label" for="IsRegex">@GlobalSuspiciousPath.Regex?</label>
                     </div>
                 </div>
 
@@ -31,11 +31,11 @@
                 @if (Model.Id == null)
                 {
                     @Html.HiddenFor(m => m.Id)
-                    <button type="submit" class="btn btn-primary me-2">Save</button>
+                <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
                     <input type="hidden" name="Action" value="insert" id="Action" />
                 }
                 else
-                { <button type="submit" class="btn btn-primary me-2">Update</button>
+                { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                     @Html.HiddenFor(m => m.Id)
                     <input type="hidden" name="Action" value="update" id="Action" />
                 }

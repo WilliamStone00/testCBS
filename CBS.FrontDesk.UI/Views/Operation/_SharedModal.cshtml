@@ -1,12 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
-
+@using Resources
 @if (Model.Customer != null)
 {
     <div class="modal fade" id="customerInfoModal" tabindex="-1" aria-labelledby="customerInfoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="customerInfoModalLabel">Member Information</h5>
+                    <h5 class="modal-title" id="customerInfoModalLabel">@GlobalOperation.Member Information</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -18,14 +18,14 @@
                             {
                                 <!-- Clickable photo for preview -->
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#photoPreviewModal">
-                                    <img src="@Model.Customer.photoUrl" class="img-fluid preview-image" alt="Uploaded Image">
+                                    <img src="@Model.Customer.photoUrl" class="img-fluid preview-image" alt="@GlobalShared.UploadedImage">
                                 </a>
                                 <!-- Modal for photo preview -->
                                 <div class="modal fade" id="photoPreviewModal" tabindex="-1" aria-labelledby="photoPreviewModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-body">
-                                                <img src="@Model.Customer.photoUrl" class="img-fluid" alt="Uploaded Image">
+                                                <img src="@Model.Customer.photoUrl" class="img-fluid" alt="@GlobalShared.UploadedImage">
                                             </div>
                                         </div>
                                     </div>
@@ -33,7 +33,7 @@
                             }
                             else
                             {
-                                <img src="@Url.Content(Model.Customer.ImageNoVirtualPath)" class="img-fluid preview-image" alt="No Signature Found" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
+                                <img src="@Url.Content(Model.Customer.ImageNoVirtualPath)" class="img-fluid preview-image" alt="@GlobalShared.NoSignatureFound" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
                             }
                             <!-- ... Other content ... -->
                         </div>
@@ -45,51 +45,51 @@
                                     <span>@Model.Customer.taxIdentificationNumber</span>
                                 </li>
                                 <li class="mb-3">
-                                    <span class="fw-medium text-heading me-2">Identity Number:</span>
+                                    <span class="fw-medium text-heading me-2">@GlobalShared.IdentityNumber:</span>
                                     <span>@Model.Customer.idNumber</span>
                                 </li>
                                 <li class="mb-3">
-                                    <span class="fw-medium text-heading me-2">Email:</span>
+                                    <span class="fw-medium text-heading me-2">@GlobalShared.Email:</span>
                                     <span>@Model.Customer.email</span>
                                 </li>
                                 <li class="mb-3">
-                                    <span class="fw-medium text-heading me-2">Status:</span>
+                                    <span class="fw-medium text-heading me-2">@GlobalShared.Status:</span>
                                     <span class="badge bg-label-success rounded-pill">
 
 
 
                                         @if (@Model.Customer.active)
                                         {
-                                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Active</span></label>
+                                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalShared.Active</span></label>
                                         }
                                         else
                                         {
-                                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Not active</span></label>
+                                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalShared.NotActive</span></label>
                                         }
                                     </span>
                                 </li>
                                 <li class="mb-3">
-                                    <span class="fw-medium text-heading me-2">Telephone:</span>
+                                    <span class="fw-medium text-heading me-2">@GlobalOperation.Telephone:</span>
                                     <span>@Model.Customer.phone</span>
                                 </li>
                                 <li class="mb-3">
-                                    <span class="fw-medium text-heading me-2">Home phone number:</span>
+                                    <span class="fw-medium text-heading me-2">@GlobalOperation.HomePhoneNumber:</span>
                                     <span>@Model.Customer.phone</span>
                                 </li>
                                 <li class="mb-3">
-                                    <span class="fw-medium text-heading me-2">Address:</span>
+                                    <span class="fw-medium text-heading me-2">@GlobalOperation.Address:</span>
                                     <span>@Model.Customer.address</span>
                                 </li>
                                 <li class="mb-3">
-                                    <span class="fw-medium text-heading me-2">Online banking status</span>
+                                    <span class="fw-medium text-heading me-2">@GlobalOperation.OnlineBankingStatus</span>
                                     <span class="badge bg-label-success rounded-pill">
                                         @if (@Model.Customer.isUseOnLineMobileBanking)
                                         {
-                                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Active</span></label>
+                                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalOperation.Active</span></label>
                                         }
                                         else
                                         {
-                                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Not active</span></label>
+                                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalOperation.NotActive</span></label>
                                         }
                                     </span>
                                 </li>
@@ -105,6 +105,6 @@
 else
 {
     <div class="text-center my-3">
-        <p>Reload page to get customer details.</p>
+        <p>@GlobalOperation.ReloadPageToGetCustomerDetails.</p>
     </div>
 }

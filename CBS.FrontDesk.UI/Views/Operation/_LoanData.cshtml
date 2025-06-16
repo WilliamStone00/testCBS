@@ -1,34 +1,35 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+    @using Resources
 @if (Model.Loans.Count == 0)
 {
     <div class="text-center my-3">
-        <p>No loans have been contracted by @Model.Customer.name</p>
+        <p>@GlobalOperation.NoLoansHaveBeenContractedBy @Model.Customer.name</p>
     </div>
 }
 else
 {
     <div class="card-header">
-        <h6 class="card-title">Member's Current Loan(s)</h6>
+        <h6 class="card-title">@GlobalOperation.MembersCurrentLoan</h6>
     </div>
     <div class="table-responsive mb-3">
 
         <table class="table table-hover" id="myDataTable_customer_loan">
             <thead class="table-light">
                 <tr>
-                    <th style="width: 7%">Action</th>
-                    <th style="width: 7%">Date</th>
-                    <th style="width: 8%">Maturity Date</th>
-                    <th style="width: 10%">Principal</th>
-                    <th style="width: 7%">Interest Rate</th>
-                    <th style="width: 8%">Accrual interest</th>
-                    <th style="width: 8%">Tax</th>
-                    <th style="width: 8%">Penalty</th>
-                    <th style="width: 8%">Due</th>
-                    <th style="width: 8%">Paid</th>
-                    <th style="width: 8%">Balance</th>
-                    <th style="width: 8%">Last Payment</th>
-                    <th style="width: 7%">Status</th>
-                    <th style="width: 7%">State</th>
+                    <th style="width: 7%">@GlobalShared.Action</th>
+                    <th style="width: 7%">@GlobalOperation.Date</th>
+                    <th style="width: 8%">@GlobalOperation.MaturityDate</th>
+                    <th style="width: 10%">@GlobalOperation.Principal</th>
+                    <th style="width: 7%">@GlobalOperation.Interest Rate</th>
+                    <th style="width: 8%">@GlobalOperation.AccrualInterest</th>
+                    <th style="width: 8%">@GlobalOperation.Tax</th>
+                    <th style="width: 8%">@GlobalOperation.Penalty</th>
+                    <th style="width: 8%">@GlobalOperation.Due</th>
+                    <th style="width: 8%">@GlobalOperation.Paid</th>
+                    <th style="width: 8%">@GlobalOperation.Balance</th>
+                    <th style="width: 8%">@GlobalOperation.LastPayment</th>
+                    <th style="width: 7%">@GlobalShared.Status</th>
+                    <th style="width: 7%">@GlobalOperation.State</th>
 
                 </tr>
             </thead>
@@ -37,7 +38,7 @@ else
                 {
                     <tr>
                         <td style="width: 7%">
-                            <a href="#" onclick="GetLoan('@d.Id')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select loan to repay.">
+                            <a href="#" onclick="GetLoan('@d.Id')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalOperation.SelectLoanToRepay.">
                                 Select
                             </a>
                         </td>
@@ -56,11 +57,11 @@ else
                         <td style="width: 7%">
                             @if (d.IsCurrentLoan)
                             {
-                                <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Current</span>
+                                <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalOperation.Current</span>
                             }
                             else
                             {
-                                <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">Restructured</span>
+                        <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalOperation.Restructured</span>
                             }
                         </td>
 

@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+    @using Resources
 @{
     ViewBag.Title = "Cash desk remittance";
 }
@@ -19,7 +20,7 @@
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-bank me-2"></i>
                             @*<i class="mdi mdi-cash-bank me-2"></i>*@
-                            <span id="cashDeskOperations">REMITTANCE CASH OPERATIONS</span>
+                            <span id="cashDeskOperations">@GlobalRemittanceCashDesk.REMITTANCE_CASH_OPERATIONS</span>
                         </button>
                     </h2>
                     <hr />
@@ -44,25 +45,25 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="paymentModalLabel">Loan Payment</h5>
+                <h5 class="modal-title" id="paymentModalLabel">@GlobalRemittanceCashDesk.LoanPayment</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="modalAmount">Enter Amount:</label>
-                    <input type="number" class="form-control" id="modalAmount" placeholder="Enter amount">
+                    <label for="modalAmount">@GlobalRemittanceCashDesk.EnterAmount:</label>
+                    <input type="number" class="form-control" id="modalAmount" placeholder="@GlobalRemittanceCashDesk.EnterAmount">
                 </div>
                 <div class="form-group">
-                    <label for="modalInterest">Enter Interest:</label>
-                    <input type="number" class="form-control" id="modalInterest" placeholder="Enter interest">
+                    <label for="modalInterest">@GlobalRemittanceCashDesk.EnterInterest:</label>
+                    <input type="number" class="form-control" id="modalInterest" placeholder="@GlobalRemittanceCashDesk.EnterInterest">
                 </div>
                 <div class="form-group">
-                    <label for="modalPenalty">Enter Penalty:</label>
-                    <input type="number" class="form-control" id="modalPenalty" placeholder="Enter penalty">
+                    <label for="modalPenalty">@GlobalRemittanceCashDesk.EnterPenalty:</label>
+                    <input type="number" class="form-control" id="modalPenalty" placeholder="@GlobalRemittanceCashDesk.EnterPenalty">
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
                 <button type="button" class="btn btn-primary" id="modalOkButton" onclick="applyPayment()">OK</button>
             </div>
         </div>

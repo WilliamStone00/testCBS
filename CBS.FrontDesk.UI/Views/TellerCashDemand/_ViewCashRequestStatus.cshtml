@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+    @using Resources
 @{
     ViewBag.Title = "View Cash Replenishment Details";
 
@@ -17,7 +18,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    Request ReferenceId :@Model.CashReplenimentRequestdto.Id Amount : XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N")
+                    @GlobalTellerCashDemand.RequestReferenceId :@Model.CashReplenimentRequestdto.Id @GlobalTellerCashDemand.Amount : XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N")
                 </button>
             </h2>
             <div class="card-body">
@@ -27,7 +28,7 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Cash Replenishment Details</th>
+                                <th>@GlobalTellerCashDemand.CashReplenishmentDetails</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -35,32 +36,32 @@
                             @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
                             {
                                 <tr>
-                                    <td>Branch Office</td>
+                                    <td>@GlobalTellerCashDemand.BranchOffice</td>
                                     <td>@Model.CashReplenimentRequestdto.BranchOffice </td>
                                 </tr>
                             }
                             <tr>
-                                <td>Invoice Number</td>
+                                <td>@GlobalTellerCashDemand.InvoiceNumber</td>
                                 <td>@Model.CashReplenimentRequestdto.ReferenceId </td>
                             </tr>
                             <tr>
-                                <td>Amount Requested</td>
+                                <td>@GlobalTellerCashDemand.AmountRequested</td>
                                 <td>XAF @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") </td>
                             </tr>
                             <tr>
-                                <td>Request Message</td>
+                                <td>@GlobalTellerCashDemand.RequestMessage</td>
                                 <td>@Model.CashReplenimentRequestdto.RequestMessage </td>
                             </tr>
                             <tr>
-                                <td>Requested By </td>
+                                <td>@GlobalTellerCashDemand.RequestedBy </td>
                                 <td> @Model.CashReplenimentRequestdto.IssuedBy </td>
                             </tr>
                             <tr>
-                                <td>Requested Date</td>
+                                <td>@GlobalTellerCashDemand.RequestedDate</td>
                                 <td>@Model.CashReplenimentRequestdto.IssuedDate </td>
                             </tr>
                             <tr>
-                                <td>Status</td>
+                                <td>@GlobalShared.Status</td>
                                 @if (@Model.CashReplenimentRequestdto.IsApproved)
                                 {
                                     <td class="badge bg-label-success rounded-pill text-uppercase">
@@ -90,25 +91,25 @@
                     </table>
                 </div>
                 <div class="card card-action mb-5">
-                    <h5 class="card-header">Cash Replenishment Request Status</h5>
+                    <h5 class="card-header">@GlobalTellerCashDemand.CashReplenishmentRequestStatus</h5>
                     <div class="card-body">
                         <div class="mb-3 col-12 mb-0">
                             @if (@Model.CashReplenimentRequestdto.IsApproved)
                             {
                                 <div class="alert alert-outline-success" role="alert">
-                                    <h6 class="alert-heading mb-1">@Model.CashReplenimentRequestdto.RequestMessage account is active.</h6>
-                                    <p class="mb-0">Un-check the box and click on de-activate button to de-activate account</p>
+                                    <h6 class="alert-heading mb-1">@Model.CashReplenimentRequestdto.RequestMessage @GlobalTellerCashDemand.accountIsActive.</h6>
+                                    <p class="mb-0">@GlobalTellerCashDemand.UnCheckTheBoxAndClickOnDeActivateButtonToDeactivateAccount</p>
                                 </div>
                             }
                             else
                             {<div class="alert alert-outline-primary" role="alert">
-                                    <h6 class="alert-heading mb-1">ReferenceId :@Model.CashReplenimentRequestdto.Id  with Amount XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") has not yet been approved</h6>
-                                    <p class="mb-0">Select source account to which the vault will be </p>
+                                 <h6 class="alert-heading mb-1">@GlobalTellerCashDemand.ReferenceId :@Model.CashReplenimentRequestdto.Id  @GlobalTellerCashDemand.withAmount XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") @GlobalTellerCashDemand.hasNotYetBeenApproved</h6>
+                                    <p class="mb-0">@GlobalTellerCashDemand.SelectSourceAccountToWhichTheVaultWillBe </p>
                                 </div>
                             }
                             <div class="text-end" style="padding-right:2em">
 
-                                <a type="button" onclick="LoadDataGen('CashFlowManagement','ListOfCashReplenishmentData','_CashReplenishmentRequestDataWithOutApproval',0,'datalistingview_CashReplenishmentRequest')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Close">
+                                <a type="button" onclick="LoadDataGen('CashFlowManagement','ListOfCashReplenishmentData','_CashReplenishmentRequestDataWithOutApproval',0,'datalistingview_CashReplenishmentRequest')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.Close">
                                     <span class="tf-icons mdi mdi-close mdi-18px"></span>
                                 </a>
 

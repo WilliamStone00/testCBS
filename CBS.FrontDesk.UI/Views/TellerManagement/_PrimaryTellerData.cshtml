@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+    @using Resources
 <fieldset class="fieldset-custom">
     <legend>Teller Data</legend>
     @if (Model.Tellers.Any())
@@ -6,12 +7,12 @@
         <table class="table table-hover table-responsive table-auto" id="myDataTable">
             <thead class="table-light">
                 <tr>
-                    <th>Teller</th>
-                    <th>Code</th>
-                    <th>Max limit</th>
-                    <th>Teller type</th>
-                    <th>Status</th>
-                    <th>Branch</th>
+                    <th>@GlobalTellerManagement.Teller</th>
+                    <th>@GlobalTellerManagement.Code</th>
+                    <th>@GlobalTellerManagement.MaxLimit</th>
+                    <th>@GlobalTellerManagement.TellerType</th>
+                    <th>@GlobalShared.Status</th>
+                    <th>@GlobalTellerManagement.Branch</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -27,7 +28,7 @@
                         <td>
                             @if (d.isPrimary)
                             {
-                                <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Primary</span></label>
+                                <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalTellerManagement.Primary</span></label>
                             }
                             else
                             {
@@ -37,21 +38,21 @@
                         <td>
                             @if (d.activeStatus)
                             {
-                                <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Active</span></label>
+                                <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalShared.Active</span></label>
                             }
                             else
                             {
-                                <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">In-Active</span></label>
+                                <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalTellerManagement.InActive</span></label>
                             }
                         </td>
                         <td>@d.Branch.Name</td>
                         <td>
-                            <a href="#" onclick="AddORUpdateGen('@d.id','datalistingview','_PrimaryTeller','get','TellerManagement',null)" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.name to edit">Edit |</a>
+                            <a href="#" onclick="AddORUpdateGen('@d.id','datalistingview','_PrimaryTeller','get','TellerManagement',null)" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.name @GlobalShared.ToEdit">@GlobalShared.Edit |</a>
                             @if (d.TellerType == "MobileMoneyMTN" || d.TellerType == "MomocashCollectionMTN" || d.TellerType == "MomocashCollectionOrange" || d.TellerType == "MobileMoneyORANGE")
                             {
-                                <a href="/TellerManagement/MMConfiguration?key=@d.id" target="_parent" class="mr-2" data-toggle="tooltip" data-placement="top" title="Configure @d.TellerType">MMConfig |</a>
+                                <a href="/TellerManagement/MMConfiguration?key=@d.id" target="_parent" class="mr-2" data-toggle="tooltip" data-placement="top" title="Configure @d.TellerType">@GlobalTellerManagement.MMConfig |</a>
                             }
-                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.name" onclick="DeleteRecordDataTable('TellerManagement','@d.id','myDataTable','_PrimaryTellerData',0,'datalistingview')">Delete</a>
+                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.name" onclick="DeleteRecordDataTable('TellerManagement','@d.id','myDataTable','_PrimaryTellerData',0,'datalistingview')">@GlobalShared.Delete</a>
                         </td>
                     </tr>
                 }
@@ -61,8 +62,8 @@
     else
     {
         <div class="text-center my-5">
-            <p>No data available. Click below to add new:</p>
-            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_PrimaryTeller','new','TellerManagement',null)" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+            <p>@GlobalTellerManagement.NoDataAvailableClickBelowToAddNew:</p>
+            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_PrimaryTeller','new','TellerManagement',null)" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
                 <span class="tf-icons mdi mdi-plus mdi-18px"></span>
             </a>
         </div>

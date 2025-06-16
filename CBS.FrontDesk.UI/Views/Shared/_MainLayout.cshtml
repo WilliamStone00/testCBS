@@ -1,4 +1,4 @@
-﻿
+﻿@using Resources
 <!DOCTYPE html>
 <html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed layout-compact" dir="ltr"
       data-theme="theme-default"
@@ -1158,7 +1158,7 @@
                 <!-- 🌐 Modal Header -->
                 <div class="modal-header bg-light text-center border-0 flex-column">
                     <h3 class="text-danger fw-bold mb-2" id="sessionTimeoutLabel">
-                        <i class="mdi mdi-timer-alert-outline me-2"></i> TSC: SESSION EXPIRATION WARNING
+                        <i class="mdi mdi-timer-alert-outline me-2"></i> TSC: @GlobalShared.SESSION_EXPIRATION_WARNING
                     </h3>
                     <hr class="w-75 mt-2 mb-0" style="border: 2px solid rgba(128, 128, 128, 0.4);" />
                 </div>
@@ -1167,11 +1167,11 @@
                 <div class="card mx-3 mb-4 shadow-sm border-0">
                     <div class="card-body text-center">
                         <small class="text-black fw-semibold mb-2" style="font-size: 1.1rem;">
-                            Your session will expire soon due to inactivity.<br />
-                            Please confirm to stay connected.
+                            @GlobalShared.YourSessionWillExpireSoonDueToInactivity.<br />
+                            @GlobalShared.PleaseConfirmToStayConnected.
                         </small> <br />
                         <h4 class="text-primary fw-bold mb-3">
-                            <i class="mdi mdi-timer-sand me-2"></i> Time Remaining: <span id="countdown" class="text-danger">30</span> seconds
+                            <i class="mdi mdi-timer-sand me-2"></i> @GlobalShared.TimeRemaining: <span id="countdown" class="text-danger">30</span> seconds
                         </h4>
                     </div>
                 </div>
@@ -1179,10 +1179,10 @@
                 <!-- 🔘 Footer with Actions -->
                 <div class="modal-footer d-flex justify-content-center gap-4 border-0 mb-3">
                     <button type="button" id="renewSessionBtn" class="btn btn-primary btn-lg px-5">
-                        <i class="mdi mdi-check-bold me-1"></i> Stay Signed In
+                        <i class="mdi mdi-check-bold me-1"></i> @GlobalShared.StaySignedIn
                     </button>
                     <button type="button" id="logoutSessionBtn" class="btn btn-danger btn-lg px-5">
-                        <i class="mdi mdi-logout me-1"></i> Logout Now
+                        <i class="mdi mdi-logout me-1"></i> @GlobalShared.LogoutNow
                     </button>
                 </div>
 

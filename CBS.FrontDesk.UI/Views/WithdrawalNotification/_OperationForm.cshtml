@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.WithdrawalNotificationForm
+    @using Resources
 @using (Html.BeginForm("Create", "WithdrawalNotification", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithdrawalFromRequest(this);" }))
 {
 
@@ -7,20 +8,20 @@
     <input type="hidden" value="@Model.Customer.CustomerId" id="customerid" />
     <div class="form-wrapper">
         <fieldset class="fieldset-custom">
-            <legend>Saving Withdrawal Request</legend>
+            <legend>@GlobalWithdrawalNotification.SavingWithdrawalRequest</legend>
             <hr />
             <div class="change-group">
                 <div class="row mt-2 gy-4">
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
+                            <span class="formatted-amount shadow-box float-start">@GlobalWithdrawalNotification.MembersName: @Model.Customer.name</span>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
                             <span class="formatted-amount shadow-box text-green" id="lblDepositRequest_amount">
-                                Account balance: @Model.WithdrawalNotification.AccountBalance.ToString("#,##0.0")
+                                @GlobalWithdrawalNotification.AccountBalance: @Model.WithdrawalNotification.AccountBalance.ToString("#,##0.0")
                             </span>
                         </div>
 
@@ -29,38 +30,38 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.WithdrawalNotification.AccountNumber, new { @class = "form-control", @readonly = true })
                             @Html.ValidationMessageFor(m => m.WithdrawalNotification.AccountNumber, "", new { @class = "text-danger" })
-                            <label>Account number</label>
+                            <label>@GlobalWithdrawalNotification.AccountNumber</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.WithdrawalNotification.AmountRequired, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.WithdrawalNotification.AmountRequired, "", new { @class = "text-danger" })
-                            <label>Requested amount</label>
+                            <label>@GlobalWithdrawalNotification.RequestedAmount</label>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.WithdrawalNotification.FormNotificationCharge, new { @class = "form-control", @readonly = true })
                             @Html.ValidationMessageFor(m => m.WithdrawalNotification.FormNotificationCharge, "", new { @class = "text-danger" })
-                            <label>Form charges</label>
+                            <label>@GlobalWithdrawalNotification.FormCharges</label>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.WithdrawalNotification.LoanBalance, new { @class = "form-control", @readonly = true })
                             @Html.ValidationMessageFor(m => m.WithdrawalNotification.LoanBalance, "", new { @class = "text-danger" })
-                            <label>Loan balance</label>
+                            <label>@GlobalWithdrawalNotification.LoanBalance</label>
                         </div>
                     </div>
                     <fieldset class="form-group">
-                        <legend>Intended date for withdrawal</legend>
+                        <legend>@GlobalWithdrawalNotification.IntendedDateOfWithdrawal</legend>
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <div class="form-floating form-floating-outline">
                                     @Html.DropDownListFor(m => m.WithdrawalNotification.DateOfIntendedWithdrawalYear,
                                                           Enumerable.Range(DateTime.Now.Year - 0, 1).Reverse().Select(y => new SelectListItem { Value = y.ToString(), Text = y.ToString() }),
-                                                          "Intended Year",
+                                                          @GlobalWithdrawalNotification.IntendedYear,
                                                           new { @class = "form-control select2", @search = "true", @id = "DateOfIntendedWithdrawalYear" })
                                     @Html.ValidationMessageFor(m => m.WithdrawalNotification.DateOfIntendedWithdrawalYear, "", new { @class = "text-danger" })
                                 </div>
@@ -70,7 +71,7 @@
                                 <div class="form-floating form-floating-outline">
                                     @Html.DropDownListFor(m => m.WithdrawalNotification.DateOfIntendedWithdrawalMonth,
                                                           System.Globalization.DateTimeFormatInfo.InvariantInfo.MonthNames.Take(12).Select((month, index) => new SelectListItem { Value = (index + 1).ToString(), Text = month }),
-                                                          "Intended Month",
+                                                          @GlobalWithdrawalNotification.IntendedMonth,
                                                           new { @class = "form-control select2", @search = "true", @id = "DateOfIntendedWithdrawalMonth" })
                                     @Html.ValidationMessageFor(m => m.WithdrawalNotification.DateOfIntendedWithdrawalMonth, "", new { @class = "text-danger" })
                                 </div>
@@ -80,7 +81,7 @@
                                 <div class="form-floating form-floating-outline">
                                     @Html.DropDownListFor(m => m.WithdrawalNotification.DateOfIntendedWithdrawalDay,
                                                           Enumerable.Range(1, 31).Select(d => new SelectListItem { Value = d.ToString(), Text = d.ToString() }),
-                                                          "Intended Day",
+                                                          @GlobalWithdrawalNotification.IntendedDay,
                                                           new { @class = "form-control select2", @search = "true", @id = "DateOfIntendedWithdrawalDay" })
                                     @Html.ValidationMessageFor(m => m.WithdrawalNotification.DateOfIntendedWithdrawalDay, "", new { @class = "text-danger" })
                                 </div>
@@ -91,7 +92,7 @@
                                 <div class="form-floating form-floating-outline">
                                     @Html.DropDownListFor(m => m.WithdrawalNotification.GracePeriodDateYear,
                                                           Enumerable.Range(DateTime.Now.Year - 0, 1).Reverse().Select(y => new SelectListItem { Value = y.ToString(), Text = y.ToString() }),
-                                                          "Year of grace period",
+                                                          @GlobalWithdrawalNotification.YearOfGracePeriod,
                                                           new { @class = "form-control select2", @search = "true", @id = "GracePeriodYear" })
                                     @Html.ValidationMessageFor(m => m.WithdrawalNotification.GracePeriodDateYear, "", new { @class = "text-danger" })
                                 </div>
@@ -101,7 +102,7 @@
                                 <div class="form-floating form-floating-outline">
                                     @Html.DropDownListFor(m => m.WithdrawalNotification.GracePeriodDateMonth,
                                                           System.Globalization.DateTimeFormatInfo.InvariantInfo.MonthNames.Take(12).Select((month, index) => new SelectListItem { Value = (index + 1).ToString(), Text = month }),
-                                                          "Month of grace period",
+                                                          @GlobalWithdrawalNotification.MonthOfGracePeriod,
                                                           new { @class = "form-control select2", @search = "true", @id = "GracePeriodMonth" })
                                     @Html.ValidationMessageFor(m => m.WithdrawalNotification.GracePeriodDateMonth, "", new { @class = "text-danger" })
                                 </div>
@@ -111,7 +112,7 @@
                                 <div class="form-floating form-floating-outline">
                                     @Html.DropDownListFor(m => m.WithdrawalNotification.GracePeriodDateDay,
                                                           Enumerable.Range(1, 31).Select(d => new SelectListItem { Value = d.ToString(), Text = d.ToString() }),
-                                                          "Day of grace period",
+                                                          @GlobalWithdrawalNotification.DayOfGracePeriod,
                                                           new { @class = "form-control select2", @search = "true", @id = "GracePeriodDay" })
                                     @Html.ValidationMessageFor(m => m.WithdrawalNotification.GracePeriodDateDay, "", new { @class = "text-danger" })
                                 </div>
@@ -119,24 +120,24 @@
                         </div>
                     </fieldset>
                     <fieldset class="form-group">
-                        <legend>Select reason for withdrawal</legend>
+                        <legend>@GlobalWithdrawalNotification.SelectReasonForWithdrawal</legend>
                         <div class="row">
                             <div class="col-4">
                                 <div class="form-check">
                                     @Html.RadioButtonFor(m => m.WithdrawalNotification.ReasonForWithdrawal, "LoanRepayment", new { @class = "form-check-input", id = "loanRepayment", @onclick = "toggleLoanRepaymentDiv()" })
-                                    <label class="form-check-label" for="loanRepayment">Loan repayment</label>
+                                    <label class="form-check-label" for="loanRepayment">@GlobalWithdrawalNotification.LoanRepayment</label>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-check">
                                     @Html.RadioButtonFor(m => m.WithdrawalNotification.ReasonForWithdrawal, "Consumption", new { @class = "form-check-input", id = "consumption", @checked = "checked", @onclick = "toggleLoanRepaymentDiv()" })
-                                    <label class="form-check-label" for="consumption">Consumption</label>
+                                    <label class="form-check-label" for="consumption">@GlobalWithdrawalNotification.Consumption</label>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-check">
                                     @Html.RadioButtonFor(m => m.WithdrawalNotification.ReasonForWithdrawal, "Others", new { @class = "form-check-input", id = "others", @onclick = "toggleLoanRepaymentDiv()" })
-                                    <label class="form-check-label" for="others">Others</label>
+                                    <label class="form-check-label" for="others">@GlobalWithdrawalNotification.Others</label>
                                 </div>
                             </div>
                         </div>
@@ -146,18 +147,18 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextAreaFor(m => m.WithdrawalNotification.Purpose, new { @class = "form-control", @style = "height: 75px;" })
                             @Html.ValidationMessageFor(m => m.WithdrawalNotification.Purpose, "", new { @class = "text-danger" })
-                            <label>Purpose of withdrawing from saving</label>
+                            <label>@GlobalWithdrawalNotification.PurposeOfWithdrawingFromSaving</label>
                         </div>
                     </div>
                 </div>
                 <div class="mt-4">
                     @if (ViewBag.Key != null)
                     {
-                        <button type="submit" class="btn btn-primary me-2">Update</button>
+                        <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                     }
                     else
                     {
-                        <button type="submit" class="btn btn-primary me-2">Save</button>
+                        <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
                     }
                 </div>
             </div>

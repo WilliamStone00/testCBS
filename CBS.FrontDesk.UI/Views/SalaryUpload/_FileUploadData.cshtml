@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
-
+@using Resources
 <fieldset class="fieldset-custom">
     <div class="mb-3 border-2">
         <div id="datalistingview_inner">
@@ -9,11 +9,11 @@
                     <table class="table table-hover" id="myDataTable">
                         <thead class="table-light">
                             <tr>
-                                <th>File Name</th>
-                                <th>Uploaded By</th>
-                                <th>Uploaded On</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <th>@GlobalSalaryUpload.FileName</th>
+                                <th>@GlobalSalaryUpload.UploadedBy</th>
+                                <th>@GlobalSalaryUpload.UploadedOn</th>
+                                <th>@GlobalShared.Status</th>
+                                <th>@GlobalShared.Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -41,8 +41,8 @@
                                                     href="/SalaryUpload/DownloadFile?fileId=@file.Id"
                                                     data-bs-toggle="tooltip"
                                                     data-bs-placement="top"
-                                                    title="Download @file.FileName">
-                                                <i class="fas fa-download me-1"></i> Download
+                                                    title="@GlobalShared.Download @file.FileName">
+                                                <i class="fas fa-download me-1"></i> @GlobalShared.Download
                                             </a>
                                             <!-- Details Button -->
                                             <a type="button"
@@ -50,8 +50,8 @@
                                                     href="/SalaryUpload/Detail?fileUploadid=@file.Id"
                                                     data-bs-toggle="tooltip" target="_blank"
                                                     data-bs-placement="top"
-                                                    title="View Details">
-                                                <i class="fas fa-info-circle me-1"></i> Details
+                                                    title="@GlobalShared.ViewDetails">
+                                                <i class="fas fa-info-circle me-1"></i> @GlobalShared.Details
                                             </a>
                                             <!-- Delete Button -->
                                             <button type="button"
@@ -59,8 +59,8 @@
                                                     onclick="DeleteFileRecord('SalaryUpload','@file.Id','myDataTable','_FileUploadData',0,'datalistingview')"
                                                     data-bs-toggle="tooltip"
                                                     data-bs-placement="top"
-                                                    title="Delete @file.FileName">
-                                                <i class="fas fa-trash-alt me-1"></i> Delete
+                                                    title="@GlobalShared.Delete @file.FileName">
+                                                <i class="fas fa-trash-alt me-1"></i> @GlobalShared.Delete
                                             </button>
                                         </div>
                                     </td>
@@ -73,7 +73,7 @@
                 {
 
                     <div class="text-center my-3">
-                        <p>No files uploaded yet.</p>
+                        <p>@GlobalShared.NoFilesUploadedYet.</p>
                     </div>
                 }
             </div>

@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+    @using Resources
 @{
     ViewBag.Title = "All members account";
 }
@@ -17,7 +18,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
                         <i class="mdi mdi-format-list-numbered me-2"></i>
-                        All NETWORK MEMBERS ACCOUNTS
+                        @GlobalSaving.All_NETWORK_MEMBERS_ACCOUNTS
                     </button>
                 </h2>
                 <div id="accordionPopoutIcon-3"
@@ -29,10 +30,10 @@
                                 <div class="card mb-4">
                                     <div class="card-body d-sm-flex d-block">
                                         <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                            <a href="#" onclick="LoadAccounts('local')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="Load local members accounts">
+                                            <a href="#" onclick="LoadAccounts('local')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="@GlobalSaving.LoadLocalMembersAccounts">
                                                 <span class="tf-icons mdi mdi-database mdi-18px"></span>
                                             </a>
-                                            <a href="#" onclick="LoadAccounts('all')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="Load all network members accounts">
+                                            <a href="#" onclick="LoadAccounts('all')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="@GlobalSaving.LoadAllNetworkMembersAccounts">
                                                 <span class="tf-icons mdi mdi-database mdi-18px"></span>
                                             </a>
                                         </div>
@@ -43,12 +44,12 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-8 d-flex align-items-center">
-                                                <label for="manualSearchInput" class="search-label">Search by account number or member's name or telephone number...</label>
+                                                <label for="manualSearchInput" class="search-label">@GlobalSaving.SearchByAccountNumberOrMembersNameOrTelephoneNumber...</label>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="input-group">
                                                     <input type="text" id="manualSearchInput" class="form-control shadow-box" placeholder="Enter search criteria...">
-                                                    <button class="btn btn-primary" onclick="manualSearch()">Search</button>
+                                                    <button class="btn btn-primary" onclick="manualSearch()">@GlobalShared.Search</button>
                                                 </div>
                                             </div>
                                         </div>

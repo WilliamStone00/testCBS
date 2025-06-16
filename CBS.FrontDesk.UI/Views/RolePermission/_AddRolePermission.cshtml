@@ -1,14 +1,14 @@
 ﻿@model CBS.FrontDesk.Data.Entity.PermissionMenuLoaderDto
-
+@using Resources
 <fieldset class="fieldset-custom">
     <form id="menuForm">
         <div class="table-responsive">
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>MenuText</th>
-                        <th>Parent</th>
-                        <th>Description</th>
+                        <th>@GlobalRolePermission.MenuText</th>
+                        <th>@GlobalRolePermission.Parent</th>
+                        <th>@GlobalRolePermission.Description</th>
                         <th> <label><input type="checkbox" id="selectAll"></label></th>
                     </tr>
                 </thead>

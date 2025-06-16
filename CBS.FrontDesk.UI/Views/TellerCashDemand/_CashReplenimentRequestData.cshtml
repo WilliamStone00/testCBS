@@ -1,4 +1,5 @@
 ﻿@model  CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+    @using Resources
 @{
     ViewBag.Title = "Cash Replenishment requests";
 
@@ -15,7 +16,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-bank-plus me-2"></i>
-                PROVISION BANK TO VAULT
+                @GlobalTellerCashDemand.PROVISION_BANK_TO_VAULT
             </button>
         </h2>
         <div id="accordionPopoutIcon-3"
@@ -24,16 +25,16 @@
             <div class="accordion-body">
                 <div id="mainviewChange">
                     <div class="change-group">
-                        <h2>List of Cash Replenishments</h2>
+                        <h2>@GlobalTellerCashDemand.ListOfCashReplenishments</h2>
 
                         <table class="table table-hover" id="ListOfCashReplenishmentData">
                             <thead class="table-light">
                                 <tr>
-                                    <th>ReferenceId</th>
-                                    <th>Amount</th>
-                                    <th>RequestMessage</th>
-                                    <th>IssuedBy</th>
-                                    <th>IssuedDate</th>
+                                    <th>@GlobalTellerCashDemand.ReferenceId</th>
+                                    <th>@GlobalTellerCashDemand.Amount</th>
+                                    <th>@GlobalTellerCashDemand.RequestMessage</th>
+                                    <th>@GlobalTellerCashDemand.IssuedBy</th>
+                                    <th>@GlobalTellerCashDemand.IssuedDate</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

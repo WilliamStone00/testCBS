@@ -320,11 +320,11 @@
     <value>Map events</value>
     <comment>Associer les événements</comment>
   </data>
-  <data name="Mapping ordinary accounts to the account chart." xml:space="preserve">
-    <value />
-  </data>
   <data name="MappingCivilServantAndPrivateInstitutionForOrdinaryAccount" xml:space="preserve">
     <value>MappingCivilServantAndPrivateInstitutionForOrdinaryAccount</value>
+  </data>
+  <data name="MappingOrdinaryAccountsToTheAccountChart" xml:space="preserve">
+    <value>Mapping ordinary accounts to the account chart</value>
   </data>
   <data name="MappingWithdrawalFormChargesOf" xml:space="preserve">
     <value>Mapping withdrawal form charges of</value>

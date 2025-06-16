@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
-
+@using Resources
 @{
     ViewBag.Title = "Teller Cash Replenishment Request";
 
@@ -35,7 +35,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(model => model.CashInfusionRequest.RequestedAmount, new { @class = "form-control", placeholder = "XFA 0.0" })
                                         @Html.ValidationMessageFor(model => model.CashInfusionModel.Amount, "", new { @class = "text-danger" })
-                                        <label for="Amount">Amount</label>
+                                        <label for="Amount">@GlobalTellerCashDemand.Amount</label>
                                     </div>
                                 </div>
 
@@ -45,15 +45,15 @@
                                         @Html.TextAreaFor(m => m.CashInfusionRequest.Requetcomment, new { @class = "form-control", @style = "height: 200px;" })
                                         @Html.ValidationMessageFor(model => model.CashInfusionRequest.Requetcomment, "", new { @class = "text-danger" })
 
-                                        <label for="Description"> RequestMessage</label>
+                                        <label for="Description"> @GlobalTellerCashDemand.RequestMessage</label>
                                     </div>
                                 </div>
 
                             </div>
 
                             <div class="mt-4">
-                                <button type="submit" class="btn btn-primary me-2">Send Request</button>
-                                <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                                <button type="submit" class="btn btn-primary me-2">@GlobalTellerCashDemand.SendRequest</button>
+                                <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
                             </div>
                         }
 

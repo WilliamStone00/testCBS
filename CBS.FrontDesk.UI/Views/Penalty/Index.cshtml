@@ -1,4 +1,4 @@
-﻿
+﻿@using Resources
 
 @{
     ViewBag.Title = "Penalty";
@@ -29,14 +29,14 @@
                                     <div class="card mb-4">
                                         <div class="card-body d-sm-flex d-block">
                                             <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                                LOAN PRODUCT PENALTY CONFIGUATIONS
+                                                @GlobalPenalty.LOAN_PRODUCT_PENALTY_CONFIGUATIONS
                                             </div>
                                         </div>
 
                                     </div>
                                     <div class="row justify-content-end">
                                         <div class="demo-inline-spacing text-end">
-                                            <a type="button" onclick="LoadDataGen('Penalty','myDataTable','_Data',0,'datalistingview',null,null,'list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                            <a type="button" onclick="LoadDataGen('Penalty','myDataTable','_Data',0,'datalistingview',null,null,'list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
                                                 <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                             </a>
                                         </div>

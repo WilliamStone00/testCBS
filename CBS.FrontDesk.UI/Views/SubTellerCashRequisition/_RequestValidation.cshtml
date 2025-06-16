@@ -1,35 +1,36 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.CashReplenishmentSubTeller
+    @using Resources
 @using (Html.BeginForm("Create", "SubTellerCashRequisition", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
 
     @Html.HiddenFor(model => model.Id)
     @Html.HiddenFor(model => model.RequestedAmount)
     <fieldset class="fieldset-custom">
-        <legend id="select_base">Request Validation</legend>
+        <legend id="select_base">@GlobalSubTellerCashRequisition.RequestValidation</legend>
         <div class="row mt-2 gy-4">
 
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    <span class="formatted-amount shadow-box float-start">Requested Amount: @Model.RequestedAmount.ToString("#,##0.0")</span>
+                    <span class="formatted-amount shadow-box float-start">@GlobalSubTellerCashRequisition.RequestedAmount: @Model.RequestedAmount.ToString("#,##0.0")</span>
                 </div>
             </div>
             <div class="col-md-6" hidden="hidden">
                 <div class="form-floating form-floating-outline">
-                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">Total amount: 0.0</span>
+                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalSubTellerCashRequisition.TotalAmount: 0.0</span>
                     <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                     <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.RequestedAmount">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    <span class="formatted-amount shadow-box" id="lblBalance">Balance: @Model.RequestedAmount.ToString("#,##0.0")</span>
+                    <span class="formatted-amount shadow-box" id="lblBalance">@GlobalSubTellerCashRequisition.Balance: @Model.RequestedAmount.ToString("#,##0.0")</span>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.Requetcomment, new { @class = "form-control", @style = "height: 70px;" })
                     @Html.ValidationMessageFor(m => m.Requetcomment, "", new { @class = "text-danger " })
-                    <label for="formValidationDob">Request Note</label>
+                    <label for="formValidationDob">@GlobalSubTellerCashRequisition.RequestNote</label>
                 </div>
             </div>
             <legend>Denomination</legend>
@@ -152,20 +153,20 @@
             <div class="col-12">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.Approved, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="isActive">Check to approve</label>
+                    <label class="form-check-label" for="isActive">@GlobalSubTellerCashRequisition.CheckToApprove</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.ApprovedComment, new { @class = "form-control", @style = "height: 70px;" })
                     @Html.ValidationMessageFor(m => m.ApprovedComment, "", new { @class = "text-danger " })
-                    <label for="formValidationDob">Approval note</label>
+                    <label for="formValidationDob">@GlobalSubTellerCashRequisition.ApprovalNote</label>
                 </div>
             </div>
 
         </div>
         <div class="mt-4">
-            <button type="submit" id="btnSave" class="btn btn-primary me-2">Approved</button>
+            <button type="submit" id="btnSave" class="btn btn-primary me-2">@GlobalShared.Approved</button>
         </div>
     </fieldset>
 }

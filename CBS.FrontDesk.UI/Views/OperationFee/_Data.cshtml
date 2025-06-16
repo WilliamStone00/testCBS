@@ -1,4 +1,5 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.SavingProducts.OperationFee>
+    @using Resources
 <fieldset class="fieldset-custom">
     <legend>Charges listing</legend>
     @if (Model.Count == 0)
@@ -13,12 +14,12 @@
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Applied</th>
-                        <th>Entity</th>
-                        <th>Description</th>
-                        <th>Action</th>
+                        <th>@GlobalOperationFee.Name</th>
+                        <th>@GlobalOperationFee.Type</th>
+                        <th>@GlobalOperationFee.Applied</th>
+                        <th>@GlobalOperationFee.Entity</th>
+                        <th>@GlobalOperationFee.DescriptionLc</th>
+                        <th>@GlobalShared.Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,27 +31,27 @@
                             <td style="width:10%">
                                 @if (d.IsAppliesOnHoliday)
                                 {
-                                    <span class="badge bg-info">Only on holidays</span>
+                                    <span class="badge bg-info">@GlobalOperationFee.OnlyOnHolidays</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-warning">Normal days</span>
+                                    <span class="badge bg-warning">@GlobalOperationFee.NormalDays</span>
                                 }
                             </td>
                             <td style="width:10%">
                                 @if (d.IsMoralPerson)
                                 {
-                                    <span class="badge bg-info">Moral</span>
+                                    <span class="badge bg-info">@GlobalOperationFee.Moral</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-warning">Physical</span>
+                                    <span class="badge bg-warning">@GlobalOperationFee.Physical</span>
                                 }
                             </td>
                             <td style="width:35%">@d.Description</td>
                             <td style="width:15%">
-                                <a href="#" onclick="AddORUpdateGen(@d.Id,'datalistingview','_Create','update','OperationFee')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">Edit</a> |
-                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.Name" onclick="DeleteRecordDataTable('OperationFee','@d.Id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                                <a href="#" onclick="AddORUpdateGen(@d.Id,'datalistingview','_Create','update','OperationFee')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.Name @GlobalShared.ToEdit">@GlobalShared.Edit</a> |
+                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.Name" onclick="DeleteRecordDataTable('OperationFee','@d.Id','myDataTable','_Data',0,'datalistingview')">@GlobalShared.Delete</a>
                             </td>
                         </tr>
                     }

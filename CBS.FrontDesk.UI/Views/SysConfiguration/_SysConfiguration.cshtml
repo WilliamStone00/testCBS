@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Config.System.SysConfiguration
-
+@using Resources
 
 
 
@@ -17,7 +17,7 @@
                             data-bs-target="#collapseDeliveryAddress"
                             aria-expanded="true"
                             aria-controls="collapseDeliveryAddress">
-                        Runing Year Profile
+                        @GlobalSysConfiguration.RuningYearProfile
                     </button>
                 </h2>
                 <div id="collapseDeliveryAddress"
@@ -33,26 +33,26 @@
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                                            <label>Name</label>
+                                            <label>@GlobalSysConfiguration.Name</label>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.Value, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.Value, "", new { @class = "text-danger" })
-                                            <label>Value</label>
+                                            <label>@GlobalSysConfiguration.Value</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 75px;" })
                                             @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                                            <label>Description</label>
+                                            <label>@GlobalSysConfiguration.Description</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary me-2">update</button>
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                                     @Html.HiddenFor(m => m.Id)
                                     <input type="hidden" name="ServiceOption" value="profile" id="ServiceOption" />
                                 </div>
@@ -69,7 +69,7 @@
                             data-bs-target="#collapsePaymentMethod3"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod3">
-                        Open Or close of system year
+                        @GlobalSysConfiguration.OpenOrCloseOfSystemYear
                     </button>
                 </h2>
                 <div id="collapsePaymentMethod3"
@@ -80,7 +80,7 @@
                         @using (Html.BeginForm("AddOrUpdate", "SysConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                         {
                             <fieldset class="fieldset-custom">
-                                <legend>System Year Status</legend>
+                                <legend>@GlobalSysConfiguration.SystemYearStatus</legend>
                                 <div class="row g-4">
                                     <div class="col-12">
                                         <div class="form-check">
@@ -99,11 +99,11 @@
                                                 }*@
                                             @if (Model.IsYearOpen)
                                             {
-                                                <span class="status-label running">Running</span>
+                                                <span class="status-label running">@GlobalSysConfiguration.Running</span>
                                             }
                                             else
                                             {
-                                                <span class="status-label closed">Closed</span>
+                                                <span class="status-label closed">@GlobalShared.Closed</span>
                                             }
 
                                         </div>
@@ -114,12 +114,12 @@
                                     <input type="hidden" name="ServiceOption" value="close_open_year" id="ServiceOption" />
                                     @if (Model.IsYearOpen)
                                     {
-                                        <button type="submit" class="btn btn-primary me-2">Uncheck to Close the year.</button>
+                                        <button type="submit" class="btn btn-primary me-2">@GlobalSysConfiguration.UncheckToCloseTheYear.</button>
 
                                     }
                                     else
                                     {
-                                        <button type="submit" class="btn btn-primary me-2">Check to open the year.</button>
+                                        <button type="submit" class="btn btn-primary me-2">@GlobalSysConfiguration.CheckToOpenTheYear.</button>
 
                                     }
                                 </div>
@@ -136,7 +136,7 @@
                             data-bs-target="#collapsePaymentMethod55"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod55">
-                        Set Automatic Charging System
+                        @GlobalSysConfiguration.SetAutomaticChargingSystem
 
                     </button>
                 </h2>
@@ -148,7 +148,7 @@
                         @using (Html.BeginForm("AddOrUpdate", "SysConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                         {
                             <fieldset class="fieldset-custom">
-                                <legend>System Daily Status</legend>
+                                <legend>@GlobalSysConfiguration.SystemDailyStatus</legend>
                                 <div class="row g-4">
                                     <div class="col-12">
                                         <div class="form-check">
@@ -156,11 +156,11 @@
 
                                             @if (Model.UseAutomaticChargingSystem)
                                             {
-                                                <span class="status-label running">ON</span>
+                                                <span class="status-label running">@GlobalSysConfiguration.ON</span>
                                             }
                                             else
                                             {
-                                                <span class="status-label closed">OFF</span>
+                                                <span class="status-label closed">@GlobalSysConfiguration.OFF</span>
                                             }
                                         </div>
                                     </div>
@@ -168,12 +168,12 @@
                                 <div class="mt-4">
                                     @if (Model.UseAutomaticChargingSystem)
                                     {
-                                        <button type="submit" class="btn btn-primary me-2">Uncheck to set it OFF</button>
+                                        <button type="submit" class="btn btn-primary me-2">@GlobalSysConfiguration.UncheckToSetItOFF</button>
 
                                     }
                                     else
                                     {
-                                        <button type="submit" class="btn btn-primary me-2">Check to set it ON.</button>
+                                        <button type="submit" class="btn btn-primary me-2">@GlobalSysConfiguration.CheckToSetItON.</button>
 
                                     }                                   @Html.HiddenFor(m => m.Id)
 
@@ -193,7 +193,7 @@
                             data-bs-target="#collapsePaymentMethod5"
                             aria-expanded="false"
                             aria-controls="collapsePaymentMethod5">
-                        Open Or Close Of System Daily Operations
+                        @GlobalSysConfiguration.OpenOrCloseOfSystemDailyOperations
 
                     </button>
                 </h2>
@@ -205,7 +205,7 @@
                         @using (Html.BeginForm("AddOrUpdate", "SysConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                         {
                             <fieldset class="fieldset-custom">
-                                <legend>System Daily Status</legend>
+                                <legend>@GlobalSysConfiguration.SystemDailyStatus</legend>
                                 <div class="row g-4">
                                     <div class="col-12">
                                         <div class="form-check">
@@ -225,11 +225,11 @@
 
                                             @if (Model.IsDayOpen)
                                             {
-                                                <span class="status-label running">Running</span>
+                                                <span class="status-label running">@GlobalSysConfiguration.Running</span>
                                             }
                                             else
                                             {
-                                                <span class="status-label closed">Closed</span>
+                                                <span class="status-label closed">@GlobalShared.Closed</span>
                                             }
 
 
@@ -239,12 +239,12 @@
                                 <div class="mt-4">
                                     @if (Model.IsDayOpen)
                                     {
-                                        <button type="submit" class="btn btn-primary me-2">Uncheck to Close the day.</button>
+                                        <button type="submit" class="btn btn-primary me-2">@GlobalSysConfiguration.UncheckToCloseTheDay.</button>
 
                                     }
                                     else
                                     {
-                                        <button type="submit" class="btn btn-primary me-2">Check to open the day.</button>
+                                        <button type="submit" class="btn btn-primary me-2">@GlobalSysConfiguration.CheckToOpenTheDay.</button>
 
                                     }                                   @Html.HiddenFor(m => m.Id)
 
@@ -263,7 +263,7 @@
                             data-bs-target="#collapseDeliveryOptions"
                             aria-expanded="false"
                             aria-controls="collapseDeliveryOptions">
-                        Set System Days Off
+                        @GlobalSysConfiguration.SetSystemDaysOff
 
                     </button>
                 </h2>
@@ -281,7 +281,7 @@
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.MondayIsHoliday, new { @class = "form-check-input" })
                                             <label class="form-check-label" for="isActive">
-                                                Monday
+                                                @GlobalSysConfiguration.Monday
                                             </label>
                                         </div>
                                     </div>
@@ -289,7 +289,7 @@
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.TuesDayIsHoliday, new { @class = "form-check-input" })
                                             <label class="form-check-label" for="isActive">
-                                                Tuesday
+                                                @GlobalSysConfiguration.Tuesday
                                             </label>
                                         </div>
                                     </div>
@@ -297,7 +297,7 @@
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.MWednessdayIsHoliday, new { @class = "form-check-input" })
                                             <label class="form-check-label" for="isActive">
-                                                Wednesday
+                                                @GlobalSysConfiguration.Wednesday
                                             </label>
                                         </div>
                                     </div>
@@ -305,7 +305,7 @@
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.ThursdayIsHoliday, new { @class = "form-check-input" })
                                             <label class="form-check-label" for="isActive">
-                                                Thursday
+                                                @GlobalSysConfiguration.Thursday
                                             </label>
                                         </div>
                                     </div>
@@ -313,7 +313,7 @@
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.FridayIsHoliday, new { @class = "form-check-input" })
                                             <label class="form-check-label" for="isActive">
-                                                Friday
+                                                @GlobalSysConfiguration.Friday
                                             </label>
                                         </div>
                                     </div>
@@ -321,7 +321,7 @@
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.SaturdayIsHoliday, new { @class = "form-check-input" })
                                             <label class="form-check-label" for="isActive">
-                                                Saturday
+                                                @GlobalSysConfiguration.Saturday
                                             </label>
                                         </div>
                                     </div>
@@ -329,14 +329,14 @@
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.SundayIsHoliday, new { @class = "form-check-input" })
                                             <label class="form-check-label" for="isActive">
-                                                Sunday
+                                                @GlobalSysConfiguration.Sunday
                                             </label>
                                         </div>
                                     </div>
 
                                 </div>
                                 <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary me-2">update</button>
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                                     @Html.HiddenFor(m => m.Id)
                                     <input type="hidden" name="ServiceOption" value="set_off_days" id="ServiceOption" />
                                 </div>

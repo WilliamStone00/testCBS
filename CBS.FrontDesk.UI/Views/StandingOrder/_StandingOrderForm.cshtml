@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.StandingOrderCarrier
-
+@using Resources
 
 
 <div class="accordion" id="standingOrderAccordion">
@@ -7,7 +7,7 @@
     <div class="accordion-item mb-3">
         <h2 class="accordion-header" id="standingOrderFormHeading">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#standingOrderFormCollapse" aria-expanded="false" aria-controls="standingOrderFormCollapse">
-                STANDING ORDER FORM
+                @GlobalStandingOrder.STANDING_ORDER_FORM
             </button>
         </h2>
         <div id="standingOrderFormCollapse" class="accordion-collapse collapse show" aria-labelledby="standingOrderFormHeading" data-bs-parent="#standingOrderAccordion">
@@ -15,7 +15,7 @@
                 <!-- Tips Section -->
                 <div class="card mb-2">
                     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                        <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+                        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalStandingOrder.TIPS</span>
                         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStandingOrderTipsx" aria-expanded="false" aria-controls="collapseStandingOrderTips">
                             <i class="mdi mdi-chevron-down"></i>
                         </button>
@@ -23,14 +23,14 @@
                     <div id="collapseStandingOrderTipsx" class="collapse">
                         <div class="card-body">
                             <ul class="mb-0">
-                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure the account holder's name and reference number are accurate before submission.</li>
-                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> If making payments to external accounts, double-check the account number and holder's name.</li>
-                                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Use appropriate source and destination account types based on the standing order's purpose.</li>
-                                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Choose realistic start and end dates to ensure seamless execution.</li>
-                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Regularly review active standing orders to align with current financial needs.</li>
-                                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Set the "Is Automatic" option for system-managed execution if manual intervention is not required.</li>
-                                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> If creating a standing order for loan repayment, ensure the balance covers the amount.</li>
-                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use the "Personal Note" field to document the purpose or special instructions for the standing order.</li>
+                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalStandingOrder.EnsureTheAccountHoldersName.</li>
+                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalStandingOrder.IfMakingPaymentsToExternalAccounts.</li>
+                                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalStandingOrder.UseAppropriateSourceAndDestinationAccountTypes.</li>
+                                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalStandingOrder.ChooseRealisticStartAndEndDates.</li>
+                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalStandingOrder.RegularlyReviewActiveStandingOrders.</li>
+                                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalStandingOrder.SetTheIsAutomaticOptionForSystemManagedExecution.</li>
+                                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalStandingOrder.IfCreatingAStandingOrderForLoanRepayment.</li>
+                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalStandingOrder.UseThePersonalNoteFieldToDocumentThePurpose.</li>
                             </ul>
                         </div>
                     </div>
@@ -46,20 +46,20 @@
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.MemberName, new { @class = "form-control shadow-input-boxes", @readonly = true })
-                                        <label>Account Holder Name</label>
+                                        <label>@GlobalStandingOrder.AccountHolderName</label>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.Amount, new { @class = "form-control shadow-input-boxes", type = "number", step = "0.01" })
                                         @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.Amount, "", new { @class = "text-danger" })
-                                        <label>Amount</label>
+                                        <label>@GlobalStandingOrder.Amount</label>
                                     </div>
                                 </div>
                                 <div class="col-md-9">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.MemberId, new { @class = "form-control shadow-input-boxes", @readonly = true })
-                                        <label>Account Reference Number</label>
+                                        <label>@GlobalStandingOrder.AccountReferenceNumber</label>
                                     </div>
                                 </div>
                             </div>
@@ -67,7 +67,7 @@
                             <!-- Source Account Type -->
                             <div class="row mt-2 gy-2">
                                 <div class="col-md-12">
-                                    <label class="form-label fw-bold">Source Account Type</label>
+                                    <label class="form-label fw-bold">@GlobalStandingOrder.SourceAccountType</label>
                                     <div class="d-flex align-items-center">
                                         @foreach (var type in new[] { "Salary", "Deposit" })
                                         {
@@ -87,7 +87,7 @@
                                 <div class="col-md-12">
                                     <div class="form-check">
                                         @Html.CheckBoxFor(m => m.AddOrUpdateStandingOrderCommand.ExternalAccount, new { @class = "form-check-input", @id = "externalAccountCheckbox", @onchange = "toggleExternalAccountSection()" })
-                                        <label class="form-check-label" for="externalAccountCheckbox">Make payment to an external account</label>
+                                        <label class="form-check-label" for="externalAccountCheckbox">@GlobalStandingOrder.MakePaymentToAnExternalAccount</label>
                                     </div>
                                 </div>
                             </div>
@@ -96,7 +96,7 @@
                             <!-- Destination Account Section -->
                             <div id="destinationAccountSection" class="row mt-2 gy-2">
                                 <div class="col-md-12">
-                                    <label class="form-label fw-bold">Destination Account Type</label>
+                                    <label class="form-label fw-bold">@GlobalStandingOrder.DestinationAccountType</label>
                                     <div class="d-flex align-items-center">
                                         @foreach (var type in new[] { "Loan", "Savings", "OrdinaryShares", "PreferenceShare", "None" })
                                         {
@@ -118,14 +118,14 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.ExternalAccountNumber, new { @class = "form-control shadow-input-boxes" })
                                         @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.ExternalAccountNumber, "", new { @class = "text-danger" })
-                                        <label>External Account Number</label>
+                                        <label>@GlobalStandingOrder.ExternalAccountNumber</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.ExternalAccountHolderName, new { @class = "form-control shadow-input-boxes" })
                                         @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.ExternalAccountHolderName, "", new { @class = "text-danger" })
-                                        <label>External Account Holder Name</label>
+                                        <label>@GlobalStandingOrder.ExternalAccountHolderName</label>
                                     </div>
                                 </div>
                             </div>
@@ -136,7 +136,7 @@
                             <!-- Purpose -->
                             <div class="row mt-2 gy-2">
                                 <div class="col-md-12">
-                                    <label class="form-label fw-bold">Purpose</label>
+                                    <label class="form-label fw-bold">@GlobalStandingOrder.Purpose</label>
                                     <div class="d-flex align-items-center">
                                         @foreach (var purpose in new[] { "Loan_Repayment", "Cashin_to_Savings", "Cashin_to_OShare", "Payment_to_Ex_Account" })
                                         {
@@ -158,14 +158,14 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.StartDate, new { @class = "form-control shadow-input-boxes date-picker" })
                                         @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.StartDate, "", new { @class = "text-danger" })
-                                        <label>Start Date</label>
+                                        <label>@GlobalStandingOrder.StartDate</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.AddOrUpdateStandingOrderCommand.EndDate, new { @class = "form-control shadow-input-boxes date-picker" })
                                         @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.EndDate, "", new { @class = "text-danger" })
-                                        <label>End Date</label>
+                                        <label>@GlobalStandingOrder.EndDate</label>
                                     </div>
                                 </div>
                             </div>
@@ -174,7 +174,7 @@
                             <!-- Frequency and Priority -->
                             <div class="row mt-2 gy-2">
                                 <div class="col-md-12">
-                                    <label class="form-label fw-bold">Frequency</label>
+                                    <label class="form-label fw-bold">@GlobalStandingOrder.Frequency</label>
                                     <div class="d-flex align-items-center">
                                         @foreach (var frequency in new[] { "Monthly", "Weekly" })
                                         {
@@ -189,7 +189,7 @@
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label class="form-label fw-bold">Priority</label>
+                                    <label class="form-label fw-bold">@GlobalStandingOrder.Priority</label>
                                     <div class="d-flex align-items-center">
                                         @foreach (var priority in new[] { "High", "Medium", "Low" })
                                         {
@@ -210,13 +210,13 @@
                                 <div class="col-md-6">
                                     <div class="form-check">
                                         @Html.CheckBoxFor(m => m.AddOrUpdateStandingOrderCommand.IsActive, new { @class = "form-check-input", @id = "IsActive" })
-                                        <label class="form-check-label" for="IsActive">Keep this order active.</label>
+                                        <label class="form-check-label" for="IsActive">@GlobalStandingOrder.KeepThisOrderActive.</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-check">
                                         @Html.CheckBoxFor(m => m.AddOrUpdateStandingOrderCommand.IsAutomatic, new { @class = "form-check-input", @id = "IsAutomatic" })
-                                        <label class="form-check-label" for="IsAutomatic">Executed by system automatically.</label>
+                                        <label class="form-check-label" for="IsAutomatic">@GlobalStandingOrder.ExecutedBySystemAutomatically.</label>
                                     </div>
                                 </div>
                             </div>
@@ -228,7 +228,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextAreaFor(m => m.AddOrUpdateStandingOrderCommand.PersonalNote, new { @class = "form-control", @style = "height: 150px;" })
                                         @Html.ValidationMessageFor(m => m.AddOrUpdateStandingOrderCommand.PersonalNote, "", new { @class = "text-danger" })
-                                        <label for="Description">Personal note</label>
+                                        <label for="Description">@GlobalStandingOrder.PersonalNote</label>
                                     </div>
                                 </div>
                             </div>
@@ -237,13 +237,13 @@
                                 @if (ViewBag.Key != null)
                                 {
                                     <input type="hidden" name="Action" value="update" />
-                                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                                 }
                                 else
                                 {
                                     <input type="hidden" name="Action" value="insert" />
-                                    <button type="submit" class="btn btn-primary me-2">Save</button>
-                                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                                    <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
                                 }
                             </div>
                         </div>

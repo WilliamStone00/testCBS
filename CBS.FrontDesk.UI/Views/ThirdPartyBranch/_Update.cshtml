@@ -1,4 +1,5 @@
 ﻿@model CBS.BusinessService.ThirdPartyBankAccount.ThirdPartyBranch
+    @using Resources
 <div class="card-body">
 
     @using (Html.BeginForm("Update", "ThirdPartyInstitution", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
@@ -9,35 +10,35 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                    <label>Name</label>
+                    <label>@GlobalThirdPartyBranch.Name</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.RegionId, new SelectList(ViewBag.Region == null ? "" : ViewBag.Region, "Text", "Value"), "---Select Region---", new { @class = "form-control select2", @search = "true", id = "Region" })
+                    @Html.DropDownListFor(m => m.RegionId, new SelectList(ViewBag.Region == null ? "" : ViewBag.Region, "Text", "Value"), "---"+ @GlobalThirdPartyBranch.SelectRegion+"---", new { @class = "form-control select2", @search = "true", id = "Region" })
                     @Html.ValidationMessageFor(model => model.RegionId, "", new { @class = "text-danger" })
-                    <label for="RegionId">Region</label>
+                    <label for="RegionId">@GlobalThirdPartyBranch.Region</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.DivisionId, new SelectList(ViewBag.Division == null ? "" : ViewBag.Division, "Text", "Value"), "---Select Division---", new { @class = "form-control select2", @search = "true", id = "Division" })
+                    @Html.DropDownListFor(m => m.DivisionId, new SelectList(ViewBag.Division == null ? "" : ViewBag.Division, "Text", "Value"), "---"+ @GlobalThirdPartyBranch.SelectDivision+"---", new { @class = "form-control select2", @search = "true", id = "Division" })
 
                     @Html.ValidationMessageFor(m => m.DivisionId, "", new { @class = "text-danger" })
-                    <label>Division</label>
+                    <label>@GlobalThirdPartyBranch.Division</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.SubdivisionId, new SelectList(ViewBag.Subdivision == null ? "" : ViewBag.Subdivision, "Text", "Value"), "---Select Subdivision---", new { @class = "form-control select2", @search = "true", id = "Subdivision" })
+                    @Html.DropDownListFor(m => m.SubdivisionId, new SelectList(ViewBag.Subdivision == null ? "" : ViewBag.Subdivision, "Text", "Value"), "---"+ @GlobalThirdPartyBranch.SelectSubdivision+"---", new { @class = "form-control select2", @search = "true", id = "Subdivision" })
 
                     @Html.ValidationMessageFor(m => m.SubdivisionId, "", new { @class = "text-danger" })
-                    <label>Sub division</label>
+                    <label>@GlobalThirdPartyBranch.SubDivision</label>
                 </div>
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.TownId, new SelectList(ViewBag.Town == null ? "" : ViewBag.Town, "Text", "Value"), "---Select Town---", new { @class = "form-control select2", @search = "true", id = "Town" })
+                    @Html.DropDownListFor(m => m.TownId, new SelectList(ViewBag.Town == null ? "" : ViewBag.Town, "Text", "Value"), "---"+ @GlobalThirdPartyBranch.SelectTown+"---", new { @class = "form-control select2", @search = "true", id = "Town" })
                     @Html.ValidationMessageFor(m => m.TownId, "", new { @class = "text-danger" })
-                    <label>Town</label>
+                    <label>@GlobalThirdPartyBranch.Town</label>
                 </div>
 
             </div>
@@ -45,7 +46,7 @@
 
         <div class="mt-4">
 
-            <button type="submit" class="btn btn-primary me-2">Update</button>
+            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
 
         </div>
     }

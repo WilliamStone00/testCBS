@@ -9,7 +9,7 @@
     Layout = "~/Views/Shared/_ErrorLayout.cshtml";
     var showDiagnostics = HttpContext.Current.IsDebuggingEnabled;
 }
-
+@using Resources
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -41,13 +41,13 @@
                     {
                         <div class="alert alert-warning bg-light-subtle p-3 rounded mt-4">
                             <h6 class="text-warning fw-bold mb-2">
-                                <i class="mdi mdi-alert-outline me-1"></i> Rate Limit Exceeded
+                                <i class="mdi mdi-alert-outline me-1"></i> @GlobalShared.RateLimitExceeded
                             </h6>
                             <p class="small text-dark mb-0">
-                                Your IP Address: <strong>@userIp</strong>
+                                @GlobalShared.YourIPAddress: <strong>@userIp</strong>
                             </p>
                             <p class="small text-dark mb-0">
-                                Your IP has been temporarily restricted for 30 minutes due to excessive requests.
+                                @GlobalShared.YourIPHasBeenTemporarilyRestrictedFor30MinutesDueToExcessiveRequests.
                             </p>
                         </div>
                     }
@@ -57,7 +57,7 @@
                     {
                         <div class="alert alert-warning bg-light-subtle p-3 rounded mt-4">
                             <h6 class="text-warning fw-bold mb-2">
-                                <i class="mdi mdi-bug-outline me-1"></i> Diagnostic Information
+                                <i class="mdi mdi-bug-outline me-1"></i> @GlobalShared.DiagnosticInformation
                             </h6>
                             <pre class="small text-dark mb-0" style="white-space: pre-wrap;">@stackTrace</pre>
                         </div>
@@ -67,12 +67,12 @@
                     <hr class="mb-4" />
                     <div class="text-center mb-4">
                         <a href="@Url.Action("Index", "Home")" class="btn btn-outline-primary">
-                            <i class="mdi mdi-home-outline me-1"></i> Return to Home
+                            <i class="mdi mdi-home-outline me-1"></i> @GlobalShared.ReturnToHome
                         </a>
                     </div>
 
                     <p class="text-muted small mt-3 mb-0 text-center">
-                        If the issue continues, please contact technical support.
+                        @GlobalShared.IfTheissueContinuesPleaseContactTechnicalSupport.
                     </p>
                 </div>
             </div>

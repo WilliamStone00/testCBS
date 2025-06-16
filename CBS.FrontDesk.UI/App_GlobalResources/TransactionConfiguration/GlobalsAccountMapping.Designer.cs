@@ -621,20 +621,20 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mapping ordinary accounts to the account chart.
+        /// </summary>
+        internal static string MappingOrdinaryAccountsToTheAccountChart {
+            get {
+                return ResourceManager.GetString("MappingOrdinaryAccountsToTheAccountChart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mapping withdrawal form charges of.
         /// </summary>
         internal static string MappingWithdrawalFormChargesOf {
             get {
                 return ResourceManager.GetString("MappingWithdrawalFormChargesOf", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string Mapping_ordinary_accounts_to_the_account_chart_ {
-            get {
-                return ResourceManager.GetString("Mapping ordinary accounts to the account chart.", resourceCulture);
             }
         }
         

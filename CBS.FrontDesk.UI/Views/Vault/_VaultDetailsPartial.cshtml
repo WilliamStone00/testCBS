@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.VaultManagement.Vault
-
+@using Resources
 @{
     var recentOperations = Model.VaultOperations.OrderByDescending(op => op.OperationDate).Take(5);
 }
@@ -10,7 +10,7 @@
         <div class="accordion-item mb-2">
             <h2 class="accordion-header" id="detailsHeader">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#detailsCollapse" aria-expanded="true" aria-controls="detailsCollapse">
-                    Vault Informations
+                    @GlobalVault.VaultInformations
                 </button>
             </h2>
             <div id="detailsCollapse" class="accordion-collapse collapse show" aria-labelledby="detailsHeader" data-bs-parent="#vaultAccordion">
@@ -18,71 +18,71 @@
                     <table class="table table-bordered table-striped">
                         <tbody>
                             <tr class="table-primary">
-                                <td colspan="2" class="font-weight-bold text-center">Vault Details</td>
+                                <td colspan="2" class="font-weight-bold text-center">@GlobalVault.VaultDetails</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Vault ID:</td>
+                                <td class="font-weight-bold">@GlobalVault.VaultID:</td>
                                 <td>@Model.Id</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Name:</td>
+                                <td class="font-weight-bold">@GlobalVault.Name:</td>
                                 <td>@Model.Name</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Branch ID:</td>
+                                <td class="font-weight-bold">@GlobalVault.BranchID:</td>
                                 <td>@Model.BranchId</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Branch Code:</td>
+                                <td class="font-weight-bold">@GlobalVault.BranchCode:</td>
                                 <td>@Model.BranchCode</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Description:</td>
+                                <td class="font-weight-bold">@GlobalVault.Description:</td>
                                 <td>@Model.Description</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Location:</td>
+                                <td class="font-weight-bold">@GlobalVault.Location:</td>
                                 <td>@Model.Location</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Address:</td>
+                                <td class="font-weight-bold">@GlobalVault.Address:</td>
                                 <td>@Model.Address</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Dimensions:</td>
+                                <td class="font-weight-bold">@GlobalVault.Dimensions:</td>
                                 <td>@Model.Diamention</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Maximum Capacity:</td>
+                                <td class="font-weight-bold">@GlobalVault.MaximumCapacity:</td>
                                 <td>@Model.MaximumCapacity.ToString("#,##0.0") FCFA</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Current Balance:</td>
+                                <td class="font-weight-bold">@GlobalVault.CurrentBalance:</td>
                                 <td>@Model.CurrentBalance.ToString("#,##0.0") FCFA</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Previous Balance:</td>
+                                <td class="font-weight-bold">@GlobalVault.PreviousBalance:</td>
                                 <td>@Model.PreviouseBalance.ToString("#,##0.0") FCFA</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Is Active:</td>
+                                <td class="font-weight-bold">@GlobalVault.IsActive:</td>
                                 <td>
                                     @if (Model.IsActive)
                                     {
-                                        <span class="badge bg-primary text-white">Active</span>
+                                        <span class="badge bg-primary text-white">@GlobalShared.Active</span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-danger text-white">Inactive</span>
+                                        <span class="badge bg-danger text-white">@GlobalVault.Inactive</span>
                                     }
                                 </td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Last Operation:</td>
+                                <td class="font-weight-bold">@GlobalVault.LastOperation:</td>
                                 <td>@Model.LastOperation</td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Last Operation Amount:</td>
+                                <td class="font-weight-bold">@GlobalVault.LastOperationAmount:</td>
                                 <td>@Model.LastOperationAmount.ToString("#,##0.00") FCFA</td>
                             </tr>
                         </tbody>
@@ -95,7 +95,7 @@
         <div class="accordion-item mb-2">
             <h2 class="accordion-header" id="denominationsHeader">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#denominationsCollapse" aria-expanded="false" aria-controls="denominationsCollapse">
-                    Denominations
+                    @GlobalVault.Denominations
                 </button>
             </h2>
             <div id="denominationsCollapse" class="accordion-collapse collapse" aria-labelledby="denominationsHeader" data-bs-parent="#vaultAccordion">
@@ -129,7 +129,7 @@
                         </tbody>
                         <tfoot>
                             <tr class="table-light">
-                                <td class="font-weight-bold text-end">Current Balance:</td>
+                                <td class="font-weight-bold text-end">@GlobalVault.CurrentBalance:</td>
                                 <td class="text-center">
                                     @{
                                         var total = (Model.ClosingNote10000 * 10000) +
@@ -162,7 +162,7 @@
         <div class="accordion-item mb-2">
             <h2 class="accordion-header" id="authorizedPersonsHeader">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#authorizedPersonsCollapse" aria-expanded="false" aria-controls="authorizedPersonsCollapse">
-                    Authorized Persons
+                    @GlobalVault.AuthorizedPersons
                 </button>
             </h2>
             <div id="authorizedPersonsCollapse" class="accordion-collapse collapse" aria-labelledby="authorizedPersonsHeader" data-bs-parent="#vaultAccordion">
@@ -174,7 +174,7 @@
                             {
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <div>
-                                        <strong>Name:</strong> @person.Name
+                                        <strong>@GlobalVault.Name:</strong> @person.Name
                                     </div>
                                     <span class="badge @((person.IsLeader) ? "bg-primary" : "bg-secondary") text-white">
                                         @((person.IsLeader) ? "Leader" : "Member")
@@ -185,7 +185,7 @@
                     }
                     else
                     {
-                        <p class="text-muted">No authorized persons.</p>
+                <p class="text-muted">@GlobalVault.NoAuthorizedPersons.</p>
                     }
                 </div>
             </div>
@@ -195,7 +195,7 @@
         <div class="accordion-item mb-2">
             <h2 class="accordion-header" id="vaultOperationsHeader">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#vaultOperationsCollapse" aria-expanded="false" aria-controls="vaultOperationsCollapse">
-                    Vault Operations
+                    @GlobalVault.VaultOperations
                 </button>
             </h2>
             <div id="vaultOperationsCollapse" class="accordion-collapse collapse" aria-labelledby="vaultOperationsHeader" data-bs-parent="#vaultAccordion">
@@ -207,10 +207,10 @@
                             @foreach (var operation in recentOperations)
                             {
                                 <li class="list-group-item">
-                                    <strong>Operation Type:</strong> @operation.OperationType <br />
-                                    <strong>Amount:</strong> @operation.Amount.ToString("#,##0.0") FCFA <br />
-                                    <strong>Done By:</strong> @operation.DoneBy <br />
-                                    <strong>Reference:</strong> @operation.Reference
+                                    <strong>@GlobalVault.OperationType:</strong> @operation.OperationType <br />
+                                    <strong>@GlobalVault.Amount:</strong> @operation.Amount.ToString("#,##0.0") FCFA <br />
+                                    <strong>@GlobalVault.DoneBy:</strong> @operation.DoneBy <br />
+                                    <strong>@GlobalVault.Reference:</strong> @operation.Reference
                                 </li>
                             }
                         </ul>
@@ -218,14 +218,14 @@
                         {
                             <div class="text-center mt-3">
                                 <button type="button" class="btn btn-outline-primary btn-sm" onclick="viewAllVaultOperations()">
-                                    View More
+                                    @GlobalVault.ViewMore
                                 </button>
                             </div>
                         }
                     }
                     else
                     {
-                        <p class="text-muted">No operations performed.</p>
+                        <p class="text-muted">@GlobalVault.NoOperationsPerformed.</p>
                     }
                 </div>
             </div>

@@ -1,5 +1,5 @@
 ﻿
-
+@using Resources
 <style>
     .text-center label {
         font-size: 16px;
@@ -108,7 +108,7 @@
                 <!-- Accounting Day -->
                 <span class="text-muted mx-2">|</span>
                 <span id="accountingDayStatus" style="display: none; color: green;">🟢</span>
-                <span class="fw-bold text-primary" id="accountingDayLabel">Loading...</span>
+                <span class="fw-bold text-primary" id="accountingDayLabel">@GlobalShared.Loading...</span>
                 <span class="text-danger small ms-2" id="accountingDayError"></span>
 
                 <!-- Close bracket -->
@@ -231,7 +231,7 @@
                     <ul class="dropdown-menu dropdown-menu-end py-0">
                         <li class="dropdown-menu-header border-bottom">
                             <div class="dropdown-header d-flex align-items-center py-3">
-                                <h6 class="mb-0 me-auto">Notification</h6>
+                                <h6 class="mb-0 me-auto">@GlobalShared.Notification</h6>
                                 <span class="badge rounded-pill bg-label-primary" id="totalNotification">0</span>
                             </div>
                         </li>
@@ -248,7 +248,7 @@
                                         <div class="d-flex flex-column flex-grow-1 overflow-hidden w-px-200">
                                             <h6 class="mb-1 text-truncate" id="userName">Charles Franklin</h6>
                                             <div class="mb-1 text-truncate" id="branchName">Upstation-Bamenda</div>
-                                            <small class="text-truncate text-body" id="indent_action">Accepted your connection</small>
+                                            <small class="text-truncate text-body" id="indent_action">@GlobalShared.AcceptedYourConnection</small>
                                         </div>
                                         <div class="flex-shrink-0 dropdown-notifications-actions">
                                             <small class="text-muted" id="vAge_of_notification">12hr ago</small>
@@ -260,7 +260,7 @@
                         </li>
                         <li class="dropdown-menu-footer border-top p-2">
                             <a href="/Notification/Index" class="btn btn-primary d-flex justify-content-center" id="simulateNotificationButton">
-                                View all notifications
+                                @GlobalShared.View all notifications
                             </a>
                         </li>
                     </ul>
@@ -302,7 +302,7 @@
                         <li>
                             <a class="dropdown-item" href="/UserManagement/MyProfile?KEY=@Session["UserID"].ToString()">
                                 <i class="mdi mdi-account-outline me-2"></i>
-                                <span class="align-middle">My Profile</span>
+                                <span class="align-middle">@GlobalShared.MyProfile</span>
                             </a>
                         </li>
                         @*<li>
@@ -341,7 +341,7 @@
                         <li>
                             <a class="dropdown-item" href="/Authentication/Logout">
                                 <i class="mdi mdi-logout me-2"></i>
-                                <span class="align-middle">Log Out</span>
+                                <span class="align-middle">@GlobalShared.LogOut</span>
                             </a>
                         </li>
                     </ul>
@@ -368,8 +368,8 @@ else
 ">
         <i class="mdi mdi-alert-circle-outline" style="font-size: 30px; color: #f0ad4e;"></i>
         <div class="mt-2">
-            Your session has expired or is invalid.<br />
-            <small class="d-block mt-1 text-muted">Redirecting you to login...</small>
+            @GlobalShared.YourSessionHasExpiredOrIsInvalid.<br />
+            <small class="d-block mt-1 text-muted">@GlobalShared.RedirectingYouToLogin...</small>
         </div>
     </div>
 

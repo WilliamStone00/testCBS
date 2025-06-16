@@ -1,6 +1,6 @@
-﻿ 
+﻿@using Resources
 @{
-    ViewBag.Title = "Accounting Reports";
+    ViewBag.Title = @GlobalReports.AccountingReports;
 }
  
 
@@ -12,3 +12,4 @@
         }
     </script>
 }
+<a href="~/Views/Reports/AccountingPDFReport.cshtml">~/Views/Reports/AccountingPDFReport.cshtml</a>

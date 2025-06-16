@@ -1,4 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+    @using Resources
 @{
     var AmountPayable = Model.Remittance.Amount + Model.Remittance.Fee;
     var AmountReceivable = Model.Remittance.Amount;
@@ -7,7 +8,7 @@
 {
     <div class="form-wrapper">
         <fieldset class="fieldset-custom">
-            <legend style="color: green">REMITTANCE CASH IN</legend>
+            <legend style="color: green">@GlobalRemittanceCashDesk.REMITTANCE_CASH_IN</legend>
             <hr style="border: 2px solid green;" />
 
             <!-- Member's Name and Amount Section -->
@@ -16,13 +17,13 @@
                     <input type="hidden" id="remittanceID" value="@Model.Remittance.Id" />
                     <div class="col-md-8">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box float-start">Service: @Model.Customer.name</span>
+                            <span class="formatted-amount shadow-box float-start">@GlobalRemittanceCashDesk.Service: @Model.Customer.name</span>
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount"><b>Payable Amount: @AmountPayable.ToString("#,##0.0")</b></span>
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount"><b>@GlobalRemittanceCashDesk.PayableAmount: @AmountPayable.ToString("#,##0.0")</b></span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="@AmountReceivable">
                         </div>
                     </div>
@@ -32,52 +33,52 @@
                     <div class="mb-0">
                         <div class="row">
                             <div class="col-md-6">
-                                <p><strong>Date:</strong> @Model.Remittance.InitiationDate</p>
-                                <p><strong>Sender:</strong> @Model.Remittance.SenderName, [Tel: @Model.Remittance.SenderPhoneNumber]</p>
-                                <p><strong>Receiver:</strong> @Model.Remittance.ReceiverName, [Tel: @Model.Remittance.ReceiverPhoneNumber]</p>
-                                <p><strong>Source Branch:</strong> @Model.Remittance.SourceBranchName</p>
-                                <p><strong>Reference:</strong> @Model.Remittance.TransactionReference</p>
+                                <p><strong>@GlobalRemittanceCashDesk.Date:</strong> @Model.Remittance.InitiationDate</p>
+                                <p><strong>@GlobalRemittanceCashDesk.Sender:</strong> @Model.Remittance.SenderName, [Tel: @Model.Remittance.SenderPhoneNumber]</p>
+                                <p><strong>@GlobalRemittanceCashDesk.Receiver:</strong> @Model.Remittance.ReceiverName, [Tel: @Model.Remittance.ReceiverPhoneNumber]</p>
+                                <p><strong>@GlobalRemittanceCashDesk.SourceBranch:</strong> @Model.Remittance.SourceBranchName</p>
+                                <p><strong>@GlobalRemittanceCashDesk.Reference:</strong> @Model.Remittance.TransactionReference</p>
                             </div>
                             <div class="col-md-6">
-                                <p><strong>Initiated Amount:</strong> @Model.Remittance.InitailAmount.ToString("#,##0.0")</p>
-                                <p><strong>Fee:</strong> @Model.Remittance.Fee.ToString("#,##0.0"), [Sender CNI: @Model.Remittance.SenderCNI]</p>
+                                <p><strong>@GlobalRemittanceCashDesk.InitiatedAmount:</strong> @Model.Remittance.InitailAmount.ToString("#,##0.0")</p>
+                                <p><strong>@GlobalRemittanceCashDesk.Fee:</strong> @Model.Remittance.Fee.ToString("#,##0.0"), [Sender CNI: @Model.Remittance.SenderCNI]</p>
                                 <p>
-                                    <strong>Total Amount Payable:</strong>
+                                    <strong>@GlobalRemittanceCashDesk.TotalAmountPayable:</strong>
                                     @AmountPayable.ToString("#,##0.0")
                                 </p>
                                 <p>
-                                    <strong>Total Amount Receivable:</strong>
+                                    <strong>@GlobalRemittanceCashDesk.TotalAmountReceivable:</strong>
                                     @AmountReceivable.ToString("#,##0.0")
                                 </p>
                                 <p>
-                                    <strong>Status:</strong>
+                                    <strong>@GlobalShared.Status:</strong>
                                     @if (Model.Remittance.Status == "Rejected")
                                     {
-                                        <span class="badge bg-danger">Rejected</span>
+                                        <span class="badge bg-danger">@GlobalShared.Rejected</span>
                                     }
                                     else if (Model.Remittance.Status == "Pending")
                                     {
-                                        <span class="badge bg-warning text-dark">Pending</span>
+                                        <span class="badge bg-warning text-dark">@GlobalShared.Pending</span>
                                     }
                                     else if (Model.Remittance.Status == "Paid")
                                     {
-                                        <span class="badge bg-warning text-dark">Cash Collected By @Model.Remittance.SourceTellerName</span>
+                                        <span class="badge bg-warning text-dark">@GlobalRemittanceCashDesk.CashCollectedBy @Model.Remittance.SourceTellerName</span>
                                     }
                                     else if (Model.Remittance.Status == "Withdrawn")
                                     {
-                                        <span class="badge bg-warning text-dark">Cash Withdrawned By @Model.Remittance.ReceiverName</span>
+                                        <span class="badge bg-warning text-dark">@GlobalRemittanceCashDesk.CashWithdrawnedBy @Model.Remittance.ReceiverName</span>
                                     }
                                     else if (Model.Remittance.TransferType == "Incoming_International")
                                     {
-                                        <span class="badge bg-danger">Can't cashin for @Model.Remittance.TransferType</span>
+                                        <span class="badge bg-danger">@GlobalRemittanceCashDesk.CantCashinFor @Model.Remittance.TransferType</span>
                                     }
                                     else if (Model.Remittance.ChargeType == "Inclussive")
                                     {
-                                        <span class="badge bg-success">Charge Included</span>
+                                        <span class="badge bg-success">@GlobalRemittanceCashDesk.ChargeIncluded</span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-warning text-dark">Charge Excluded</span>
+                                        <span class="badge bg-warning text-dark">@GlobalRemittanceCashDesk.ChargeExcluded</span>
                                     }
                                 </p>
 
@@ -90,14 +91,14 @@
                         <table class="table table-hover" id="myDataTableT">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="display:none;">ProductID</th>
-                                    <th>Remittance Account Type</th>
-                                    <th>Balance</th>
-                                    <th>Amount</th>
-                                    <th>Fee</th>
-                                    <th>Total</th>
+                                    <th style="display:none;">@GlobalRemittanceCashDesk.ProductID</th>
+                                    <th>@GlobalRemittanceCashDesk.RemittanceAccountType</th>
+                                    <th>@GlobalRemittanceCashDesk.Balance</th>
+                                    <th>@GlobalRemittanceCashDesk.Amount</th>
+                                    <th>@GlobalRemittanceCashDesk.Fee</th>
+                                    <th>@GlobalRemittanceCashDesk.Total</th>
                                     <th>Conf</th>
-                                    <th>Inc</th>
+                                    <th>@GlobalRemittanceCashDesk.Inc</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -134,11 +135,11 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="4" style="text-align: right;"><strong>Total:</strong></td>
+                                    <td colspan="4" style="text-align: right;"><strong>@GlobalRemittanceCashDesk.Total:</strong></td>
                                     <td id="tableTotal">0</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4" style="text-align: right;"><strong>Balance:</strong></td>
+                                    <td colspan="4" style="text-align: right;"><strong>@GlobalRemittanceCashDesk.Balance:</strong></td>
                                     <td id="tableBalance">0</td>
                                 </tr>
                             </tfoot>
@@ -173,13 +174,13 @@
                         }*@
 
                     <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostCashIn()">
-                        <i class="fas fa-money-bill-wave me-1"></i> Cash-In
+                        <i class="fas fa-money-bill-wave me-1"></i> @GlobalRemittanceCashDesk.CashIn
                     </button>
                     <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
-                        <i class="fas fa-print me-1"></i> Re-print
+                        <i class="fas fa-print me-1"></i> @GlobalRemittanceCashDesk.RePrint
                     </button>
                     <button type="reset" class="btn btn-outline-secondary">
-                        <i class="fas fa-sync-alt me-1"></i> Reset
+                        <i class="fas fa-sync-alt me-1"></i> @GlobalShared.Reset
                     </button>
 
                 </div>
@@ -187,10 +188,10 @@
             <hr style="border: 2px solid green;" />
 
             <p class="mt-3 text-center shadow-box">
-                Important Notification
+                @GlobalRemittanceCashDesk.ImportantNotification
             </p>
             <p class="mt-2 text-center shadow-box">
-                This remittance of @AmountReceivable.ToString("#,##0.0") is eligible for withdrawal from <u>any branch within the network</u>. <br />Please provide your transaction reference and valid identification at the branch for processing.
+                @GlobalRemittanceCashDesk.ThisRemittanceOf @AmountReceivable.ToString("#,##0.0") @GlobalRemittanceCashDesk.isEligibleForWithdrawalFrom <u>@GlobalRemittanceCashDesk.AnyBranchWithinTheNetwork</u>. <br />@GlobalRemittanceCashDesk.PleaseProvideYourTransactionReference.
             </p>
         </fieldset>
 
@@ -207,7 +208,7 @@ else if (ViewBag.Operation == "cashout")
 
     <div class="form-wrapper">
         <fieldset class="fieldset-custom">
-            <legend style="color: red">REMITTANCE CASH OUT</legend>
+            <legend style="color: red">@GlobalRemittanceCashDesk.REMITTANCE_CASH_OUT</legend>
             <hr style="border: 2px solid red;" />
             <input type="hidden" id="remittanceID" value="@Model.Remittance.Id" />
 
@@ -216,24 +217,24 @@ else if (ViewBag.Operation == "cashout")
                 <div class="accordion-item mt-4">
                     <h2 class="accordion-header" id="otpHeader">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#otpVerification" aria-expanded="true" aria-controls="otpVerification">
-                            OTP Verification
+                            @GlobalRemittanceCashDesk.OTPVerification
                         </button>
                     </h2>
                     <div id="otpVerification" class="accordion-collapse collapse show" aria-labelledby="otpHeader" data-bs-parent="#remittanceAccordion">
                         <div class="accordion-body">
                             <div class="otp-container text-center mt-4">
-                                <p>An OTP has been sent to your registered phone number. Please check your messages.</p>
+                                <p>@GlobalRemittanceCashDesk.AnOTPHasBeenSentToYourRegisteredPhoneNumber.</p>
                                 @if (Model.SavingProduct.OTPControl)
                                 {
                                     <button type="button" class="btn btn-primary" onclick="generateOtp()">
-                                        <i class="fas fa-sync-alt me-1"></i> Generate OTP
+                                        <i class="fas fa-sync-alt me-1"></i> @GlobalRemittanceCashDesk.GenerateOTP
                                     </button>
                                 }
                                 else
                                 {
-                                    <p class="mt-2 text-danger">OTP is not enabled for this type of remittance @Model.SavingProduct.AccountType. Please proceed without OTP or contact support.</p>
+                                    <p class="mt-2 text-danger">@GlobalRemittanceCashDesk.OTPIsNotEnabledForThisTypeOfRemittance @Model.SavingProduct.AccountType. @GlobalRemittanceCashDesk.PleaseProceedWithoutOTPOrContactSupport.</p>
                                 }
-                                <p class="mt-2 text-muted">If you encounter issues, please contact support.</p>
+                                <p class="mt-2 text-muted">@GlobalRemittanceCashDesk.IfYouEncounterIssuesPleaseContactSupport.</p>
                             </div>
                             <input type="hidden" id="transactionReferenceID" value="@Model.Remittance.TransactionReference" />
                             <input type="hidden" id="receiverPhoneNumberID" value="@Model.Remittance.ReceiverPhoneNumber" />
@@ -245,38 +246,38 @@ else if (ViewBag.Operation == "cashout")
                 <div class="accordion-item mt-4">
                     <h2 class="accordion-header" id="receiverInfoHeader">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#receiverInfo" aria-expanded="true" aria-controls="receiverInfo">
-                            Receiver Information Verification
+                            @GlobalRemittanceCashDesk.ReceiverInformationVerification
                         </button>
                     </h2>
                     <div id="receiverInfo" class="accordion-collapse collapse show" aria-labelledby="receiverInfoHeader" data-bs-parent="#remittanceAccordion">
                         <div class="accordion-body">
                             <div class="row mt-2 gy-4">
                                 <div class="col-md-6">
-                                    <label for="ReceiverCNI">Receiver CNI:</label>
+                                    <label for="ReceiverCNI">@GlobalRemittanceCashDesk.ReceiverCNI:</label>
                                     <input type="text" class="form-control shadow-input-boxes" id="ReceiverCNI" value="@Model.Remittance.ReceiverCNI">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="ReceiverName">Receiver Name:</label>
+                                    <label for="ReceiverName">@GlobalRemittanceCashDesk.ReceiverName:</label>
                                     <input type="text" class="form-control shadow-input-boxes" id="ReceiverName" readonly="readonly" value="@Model.Remittance.ReceiverName">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="ReceiverCNIDateOfIssue">CNI Date of Issue:</label>
+                                    <label for="ReceiverCNIDateOfIssue">@GlobalRemittanceCashDesk.CNIDateOfIssue:</label>
                                     <input type="date" class="form-control shadow-input-boxes" id="ReceiverCNIDateOfIssue" value="@Model.Remittance.CapturedReceiverCNIDateOfIssue">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="ReceiverCNIDateOfExpiration">CNI Date of Expiration:</label>
+                                    <label for="ReceiverCNIDateOfExpiration">@GlobalRemittanceCashDesk.CNIDateOfExpiration:</label>
                                     <input type="date" class="form-control shadow-input-boxes" id="ReceiverCNIDateOfExpiration" value="@Model.Remittance.CapturedReceiverCNIDateOfExpiration">
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="ReceiverCNIPlcaceOfIssue">CNI Place of Issue:</label>
+                                    <label for="ReceiverCNIPlcaceOfIssue">@GlobalRemittanceCashDesk.CNIPlaceOfIssue:</label>
                                     <input type="text" class="form-control shadow-input-boxes" id="ReceiverCNIPlcaceOfIssue" value="@Model.Remittance.CapturedReceiverCNIPlcaceOfIssue">
                                 </div>
                                 <div class="col-md-2">
-                                    <label for="ReceiverCNIPlcaceOfIssue">Secret code:</label>
+                                    <label for="ReceiverCNIPlcaceOfIssue">@GlobalRemittanceCashDesk.SecretCode:</label>
                                     <input type="text" class="form-control shadow-input-boxes" id="SenderSecreteCode" readonly="readonly" value="@Model.Remittance.SenderSecreteCode">
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="ReceiverPhoneNumber">Receiver Phone Number:</label>
+                                    <label for="ReceiverPhoneNumber">@GlobalRemittanceCashDesk.ReceiverPhoneNumber:</label>
                                     <input type="text" class="form-control shadow-input-boxes" id="ReceiverPhoneNumber" readonly="readonly" value="@Model.Remittance.ReceiverPhoneNumber">
                                 </div>
                                 <div class="col-md-2">
@@ -293,7 +294,7 @@ else if (ViewBag.Operation == "cashout")
                 <div class="accordion-item mt-4">
                     <h2 class="accordion-header" id="cashoutHeader">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cashoutInfo" aria-expanded="false" aria-controls="cashoutInfo">
-                            Cashout Dashboard
+                            @GlobalRemittanceCashDesk.CashoutDashboard
                         </button>
                     </h2>
                     <div id="cashoutInfo" class="accordion-collapse collapse" aria-labelledby="cashoutInfoHeader" data-bs-parent="#remittanceAccordion">
@@ -305,7 +306,7 @@ else if (ViewBag.Operation == "cashout")
                                 <div class="row mt-2 gy-4">
                                     <div class="col-md-8">
                                         <div class="form-floating form-floating-outline">
-                                            <span class="formatted-amount shadow-box float-start">Service: @Model.Customer.name</span>
+                                            <span class="formatted-amount shadow-box float-start">@GlobalRemittanceCashDesk.Service: @Model.Customer.name</span>
                                         </div>
                                     </div>
 
@@ -320,49 +321,49 @@ else if (ViewBag.Operation == "cashout")
                                     <div class="mb-0">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <p><strong>Date:</strong> @Model.Remittance.InitiationDate</p>
-                                                <p><strong>Sender:</strong> @Model.Remittance.SenderName, [Tel: @Model.Remittance.SenderPhoneNumber]</p>
-                                                <p><strong>Receiver:</strong> @Model.Remittance.ReceiverName, [Tel: @Model.Remittance.ReceiverPhoneNumber]</p>
-                                                <p><strong>Branch:</strong> @Model.Remittance.SourceBranchName</p>
-                                                <p><strong>Reference:</strong> @Model.Remittance.TransactionReference</p>
+                                                <p><strong>@GlobalRemittanceCashDesk.Date:</strong> @Model.Remittance.InitiationDate</p>
+                                                <p><strong>@GlobalRemittanceCashDesk.Sender:</strong> @Model.Remittance.SenderName, [Tel: @Model.Remittance.SenderPhoneNumber]</p>
+                                                <p><strong>@GlobalRemittanceCashDesk.Receiver:</strong> @Model.Remittance.ReceiverName, [Tel: @Model.Remittance.ReceiverPhoneNumber]</p>
+                                                <p><strong>@GlobalRemittanceCashDesk.Branch:</strong> @Model.Remittance.SourceBranchName</p>
+                                                <p><strong>@GlobalRemittanceCashDesk.Reference:</strong> @Model.Remittance.TransactionReference</p>
                                             </div>
                                             <div class="col-md-6">
-                                                <p><strong>Initiated Amount:</strong> @Model.Remittance.InitailAmount.ToString("#,##0.0")</p>
-                                                <p><strong>Fee:</strong> @Model.Remittance.Fee.ToString("#,##0.0"), [Sender CNI: @Model.Remittance.SenderCNI]</p>
+                                                <p><strong>@GlobalRemittanceCashDesk.InitiatedAmount:</strong> @Model.Remittance.InitailAmount.ToString("#,##0.0")</p>
+                                                <p><strong>@GlobalRemittanceCashDesk.Fee:</strong> @Model.Remittance.Fee.ToString("#,##0.0"), [Sender CNI: @Model.Remittance.SenderCNI]</p>
                                                 <p>
-                                                    <strong>Total Amount Payable:</strong>
+                                                    <strong>@GlobalRemittanceCashDesk.TotalAmountPayable:</strong>
                                                     @Model.Remittance.Amount.ToString("#,##0.0")
                                                 </p>
                                                 <p>
-                                                    <strong>Total Amount Receivable:</strong>
+                                                    <strong>@GlobalRemittanceCashDesk.TotalAmountReceivable:</strong>
                                                     @AmountReceivable.ToString("#,##0.0")
                                                 </p>
                                                 <p>
                                                 <p>
-                                                    <strong>Status:</strong>
+                                                    <strong>@GlobalShared.Status:</strong>
                                                     @if (Model.Remittance.Status == "Rejected")
                                                     {
-                                                        <span class="badge bg-danger">Rejected</span>
+                                                        <span class="badge bg-danger">@GlobalShared.Rejected</span>
                                                     }
                                                     else if (Model.Remittance.Status == "Pending")
                                                     {
-                                                        <span class="badge bg-warning text-dark">Pending</span>
+                                                        <span class="badge bg-warning text-dark">@GlobalShared.Pending</span>
                                                     }
                                                     else if (Model.Remittance.Status == "Paid")
                                                     {
-                                                        <span class="badge bg-warning text-dark">Cash Collected By @Model.Remittance.SourceTellerName</span>
+                                                        <span class="badge bg-warning text-dark">@GlobalRemittanceCashDesk.CashCollectedBy @Model.Remittance.SourceTellerName</span>
                                                     }
                                                     else if (Model.Remittance.Status == "Withdrawn")
                                                     {
-                                                        <span class="badge bg-warning text-dark">Cash Withdrawned By @Model.Remittance.ReceiverName</span>
+                                                        <span class="badge bg-warning text-dark">@GlobalRemittanceCashDesk.CashWithdrawnedBy @Model.Remittance.ReceiverName</span>
                                                     }
                                                     else if (Model.Remittance.ChargeType == "Inclussive")
                                                     {
-                                                        <span class="badge bg-success">Charge Included</span>
+                                                        <span class="badge bg-success">@GlobalRemittanceCashDesk.ChargeIncluded</span>
                                                     }
                                                     else
                                                     {
-                                                        <span class="badge bg-warning text-dark">Charge Excluded</span>
+                                                        <span class="badge bg-warning text-dark">@GlobalRemittanceCashDesk.ChargeExcluded</span>
                                                     }
                                                 </p>
                                             </div>
@@ -372,14 +373,14 @@ else if (ViewBag.Operation == "cashout")
                                         <table class="table table-hover" id="myDataTableT">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th style="display:none;">ProductID</th>
-                                                    <th>Remittance Account Type</th>
-                                                    <th>Balance</th>
-                                                    <th>Amount</th>
-                                                    <th>Fee/Charges</th>
-                                                    <th>Total</th>
+                                                    <th style="display:none;">@GlobalRemittanceCashDesk.ProductID</th>
+                                                    <th>@GlobalRemittanceCashDesk.RemittanceAccountType</th>
+                                                    <th>@GlobalRemittanceCashDesk.Balance</th>
+                                                    <th>@GlobalRemittanceCashDesk.Amount</th>
+                                                    <th>@GlobalRemittanceCashDesk.Fee/Charges</th>
+                                                    <th>@GlobalRemittanceCashDesk.Total</th>
                                                     <th>Conf</th>
-                                                    <th>Inc</th>
+                                                    <th>@GlobalRemittanceCashDesk.Inc</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -409,11 +410,11 @@ else if (ViewBag.Operation == "cashout")
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <td colspan="4" style="text-align: right;"><strong>Total:</strong></td>
+                                                    <td colspan="4" style="text-align: right;"><strong>@GlobalRemittanceCashDesk.Total:</strong></td>
                                                     <td id="tableTotal">0</td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="4" style="text-align: right;"><strong>Balance:</strong></td>
+                                                    <td colspan="4" style="text-align: right;"><strong>@GlobalRemittanceCashDesk.Balance:</strong></td>
                                                     <td id="tableBalance">0</td>
                                                 </tr>
                                             </tfoot>
@@ -426,13 +427,13 @@ else if (ViewBag.Operation == "cashout")
                                     <input type="hidden" name="OperationType" value="RemittanceOUT" id="OperationType" />
                                     <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
                                     <button type="submit" id="submit" class="btn btn-danger me-2" onclick="PostCashOut()">
-                                        <i class="fas fa-money-bill-wave me-1"></i> Cash-out
+                                        <i class="fas fa-money-bill-wave me-1"></i> @GlobalRemittanceCashDesk.Cashout
                                     </button>
                                     <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
-                                        <i class="fas fa-print me-1"></i> Re-print
+                                        <i class="fas fa-print me-1"></i> @GlobalRemittanceCashDesk.RePrint
                                     </button>
                                     <button type="reset" class="btn btn-outline-secondary">
-                                        <i class="fas fa-sync-alt me-1"></i> Reset
+                                        <i class="fas fa-sync-alt me-1"></i> @GlobalShared.Reset
                                     </button>
                                 </div>
                             </div>
@@ -447,10 +448,10 @@ else if (ViewBag.Operation == "cashout")
 
 
             <p class="mt-3 text-center shadow-box">
-                Important Notification
+                @GlobalRemittanceCashDesk.ImportantNotification
             </p>
             <p class="mt-2 text-center shadow-box">
-                This remittance of @AmountReceivable.ToString("#,##0.0") is eligible for withdrawal from <u>any branch within the network</u>. <br />Please provide your transaction reference and valid identification at the branch for processing.
+                @GlobalRemittanceCashDesk.ThisRemittanceOf @AmountReceivable.ToString("#,##0.0") @GlobalRemittanceCashDesk.isEligibleForWithdrawalFrom <u>@GlobalRemittanceCashDesk.AnyBranchWithinTheNetwork</u>. <br />@GlobalRemittanceCashDesk.PleaseProvideYourTransactionReference.
             </p>
         </fieldset>
     </div>
@@ -462,20 +463,20 @@ else if (ViewBag.Operation == "cashoutt")
 {
     <div class="form-wrapper">
         <fieldset class="fieldset-custom">
-            <legend style="color: red">REMITTANCE CASH OUT</legend>
+            <legend style="color: red">@GlobalRemittanceCashDesk.REMITTANCE_CASH_OUT</legend>
             <hr style="border: 2px solid red;" />
             <input type="hidden" id="remittanceID" value="@Model.Remittance.Id" />
             <div class="change-group">
                 <div class="row mt-2 gy-4">
                     <div class="col-md-8">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
+                            <span class="formatted-amount shadow-box float-start">@GlobalRemittanceCashDesk.MembersName: @Model.Customer.name</span>
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount"><b>Total Payable: @AmountPayable.ToString("#,##0.0")</b></span>
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount"><b>@GlobalRemittanceCashDesk.TotalPayable: @AmountPayable.ToString("#,##0.0")</b></span>
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="@AmountPayable">
                         </div>
                     </div>
@@ -484,49 +485,49 @@ else if (ViewBag.Operation == "cashoutt")
                     <div class="mb-0">
                         <div class="row">
                             <div class="col-md-6">
-                                <p><strong>Date:</strong> @Model.Remittance.InitiationDate</p>
-                                <p><strong>Sender:</strong> @Model.Remittance.SenderName, [Tel: @Model.Remittance.SenderPhoneNumber]</p>
-                                <p><strong>Receiver:</strong> @Model.Remittance.ReceiverName, [Tel: @Model.Remittance.ReceiverPhoneNumber]</p>
-                                <p><strong>Branch:</strong> @Model.Remittance.SourceBranchName</p>
-                                <p><strong>Reference:</strong> @Model.Remittance.TransactionReference</p>
+                                <p><strong>@GlobalRemittanceCashDesk.Date:</strong> @Model.Remittance.InitiationDate</p>
+                                <p><strong>@GlobalRemittanceCashDesk.Sender:</strong> @Model.Remittance.SenderName, [Tel: @Model.Remittance.SenderPhoneNumber]</p>
+                                <p><strong>@GlobalRemittanceCashDesk.Receiver:</strong> @Model.Remittance.ReceiverName, [Tel: @Model.Remittance.ReceiverPhoneNumber]</p>
+                                <p><strong>@GlobalRemittanceCashDesk.Branch:</strong> @Model.Remittance.SourceBranchName</p>
+                                <p><strong>@GlobalRemittanceCashDesk.Reference:</strong> @Model.Remittance.TransactionReference</p>
                             </div>
                             <div class="col-md-6">
-                                <p><strong>Initiated Amount:</strong> @Model.Remittance.InitailAmount.ToString("#,##0.0")</p>
-                                <p><strong>Fee:</strong> @Model.Remittance.Fee.ToString("#,##0.0"), [Sender CNI: @Model.Remittance.SenderCNI]</p>
+                                <p><strong>@GlobalRemittanceCashDesk.InitiatedAmount:</strong> @Model.Remittance.InitailAmount.ToString("#,##0.0")</p>
+                                <p><strong>@GlobalRemittanceCashDesk.Fee:</strong> @Model.Remittance.Fee.ToString("#,##0.0"), [Sender CNI: @Model.Remittance.SenderCNI]</p>
                                 <p>
-                                    <strong>Total Amount Payable:</strong>
+                                    <strong>@GlobalRemittanceCashDesk.TotalAmountPayable:</strong>
                                     @AmountPayable.ToString("#,##0.0")
                                 </p>
                                 <p>
-                                    <strong>Total Amount Receivable:</strong>
+                                    <strong>@GlobalRemittanceCashDesk.TotalAmountReceivable:</strong>
                                     @AmountReceivable.ToString("#,##0.0")
                                 </p>
                                 <p>
                                 <p>
-                                    <strong>Status:</strong>
+                                    <strong>@GlobalShared.Status:</strong>
                                     @if (Model.Remittance.Status == "Rejected")
                                     {
-                                        <span class="badge bg-danger">Rejected</span>
+                                        <span class="badge bg-danger">@GlobalShared.Rejected</span>
                                     }
                                     else if (Model.Remittance.Status == "Pending")
                                     {
-                                        <span class="badge bg-warning text-dark">Pending</span>
+                                        <span class="badge bg-warning text-dark">@GlobalShared.Pending</span>
                                     }
                                     else if (Model.Remittance.Status == "Paid")
                                     {
-                                        <span class="badge bg-warning text-dark">Cash Collected By @Model.Remittance.SourceTellerName</span>
+                                        <span class="badge bg-warning text-dark">@GlobalRemittanceCashDesk.CashCollectedBy @Model.Remittance.SourceTellerName</span>
                                     }
                                     else if (Model.Remittance.Status == "Withdrawn")
                                     {
-                                        <span class="badge bg-warning text-dark">Cash Withdrawned By @Model.Remittance.ReceiverName</span>
+                                        <span class="badge bg-warning text-dark">@GlobalRemittanceCashDesk.CashWithdrawnedBy @Model.Remittance.ReceiverName</span>
                                     }
                                     else if (Model.Remittance.ChargeType == "Inclussive")
                                     {
-                                        <span class="badge bg-success">Charge Included</span>
+                                        <span class="badge bg-success">@GlobalRemittanceCashDesk.ChargeIncluded</span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-warning text-dark">Charge Excluded</span>
+                                        <span class="badge bg-warning text-dark">@GlobalRemittanceCashDesk.ChargeExcluded</span>
                                     }
                                 </p>
                             </div>
@@ -536,14 +537,14 @@ else if (ViewBag.Operation == "cashoutt")
                         <table class="table table-hover" id="myDataTableT">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="display:none;">ProductID</th>
-                                    <th>Remittance Account Type</th>
-                                    <th>Balance</th>
-                                    <th>Amount</th>
-                                    <th>Fee/Charges</th>
-                                    <th>Total</th>
+                                    <th style="display:none;">@GlobalRemittanceCashDesk.ProductID</th>
+                                    <th>@GlobalRemittanceCashDesk.RemittanceAccountType</th>
+                                    <th>@GlobalRemittanceCashDesk.Balance</th>
+                                    <th>@GlobalRemittanceCashDesk.Amount</th>
+                                    <th>@GlobalRemittanceCashDesk.Fee/Charges</th>
+                                    <th>@GlobalRemittanceCashDesk.Total</th>
                                     <th>Conf</th>
-                                    <th>Inc</th>
+                                    <th>@GlobalRemittanceCashDesk.Inc</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -573,11 +574,11 @@ else if (ViewBag.Operation == "cashoutt")
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="4" style="text-align: right;"><strong>Total:</strong></td>
+                                    <td colspan="4" style="text-align: right;"><strong>@GlobalRemittanceCashDesk.Total:</strong></td>
                                     <td id="tableTotal">0</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4" style="text-align: right;"><strong>Balance:</strong></td>
+                                    <td colspan="4" style="text-align: right;"><strong>@GlobalRemittanceCashDesk.Balance:</strong></td>
                                     <td id="tableBalance">0</td>
                                 </tr>
                             </tfoot>
@@ -590,23 +591,23 @@ else if (ViewBag.Operation == "cashoutt")
                     <input type="hidden" name="OperationType" value="RemittanceOUT" id="OperationType" />
                     <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
                     <button type="submit" id="submit" class="btn btn-danger me-2" onclick="PostCashOut()">
-                        <i class="fas fa-money-bill-wave me-1"></i> Cash-out
+                        <i class="fas fa-money-bill-wave me-1"></i> @GlobalRemittanceCashDesk.Cashout
                     </button>
                     <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
-                        <i class="fas fa-print me-1"></i> Re-print
+                        <i class="fas fa-print me-1"></i> @GlobalRemittanceCashDesk.RePrint
                     </button>
                     <button type="reset" class="btn btn-outline-secondary">
-                        <i class="fas fa-sync-alt me-1"></i> Reset
+                        <i class="fas fa-sync-alt me-1"></i> @GlobalShared.Reset
                     </button>
                 </div>
             </div>
             <hr style="border: 2px solid red;" />
 
             <p class="mt-3 text-center shadow-box">
-                Important Notification
+                @GlobalRemittanceCashDesk.ImportantNotification
             </p>
             <p class="mt-2 text-center shadow-box">
-                This remittance of @AmountReceivable.ToString("#,##0.0") is eligible for withdrawal from <u>any branch within the network</u>. <br />Please provide your transaction reference and valid identification at the branch for processing.
+                @GlobalRemittanceCashDesk.ThisRemittanceOf @AmountReceivable.ToString("#,##0.0") @GlobalRemittanceCashDesk.isEligibleForWithdrawalFrom <u>@GlobalRemittanceCashDesk.AnyBranchWithinTheNetwork</u>. <br />@GlobalRemittanceCashDesk.PleaseProvideYourTransactionReference.
             </p>
         </fieldset>
     </div>

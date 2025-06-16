@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.StandingOrderCarrier
-
+@using Resources
 <div class="row invoice-preview">
     <div class="col-xl-3 col-md-4 col-12 invoice-actions">
         @Html.Partial("_CustomerCard")
@@ -10,8 +10,8 @@
                 <div id="mainviewChange">
                     <div class="card mb-1">
                         <div class="card-body d-flex justify-content-end align-items-center">
-                            <a type="button" onclick="GetMember()" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="Add New order">
-                                <i class="mdi mdi-plus mdi-18px"></i> Add new order
+                            <a type="button" onclick="GetMember()" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalStandingOrder.AddNewOrder">
+                                <i class="mdi mdi-plus mdi-18px"></i> @GlobalStandingOrder.AddNewOrder
                             </a>
                         </div>
                     </div>
@@ -23,10 +23,10 @@
                             <table class="table table-hover" id="myDataTable">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Source Account</th>
-                                        <th>Destination Account</th>
-                                        <th>Amount</th>
-                                        <th>Active status</th>
+                                        <th>@GlobalStandingOrder.SourceAccount</th>
+                                        <th>@GlobalStandingOrder.DestinationAccount</th>
+                                        <th>@GlobalStandingOrder.Amount</th>
+                                        <th>@GlobalStandingOrder.ActiveStatus</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -40,11 +40,11 @@
                                             <td>
                                                 @if (order.IsActive)
                                                 {
-                                                    <span class="badge bg-success">Yes</span>
+                                                    <span class="badge bg-success">@GlobalStandingOrder.Yes</span>
                                                 }
                                                 else
                                                 {
-                                                    <span class="badge bg-danger">No</span>
+                                                    <span class="badge bg-danger">@GlobalStandingOrder.No</span>
                                                 }
                                             </td>
                                             <td>
@@ -55,8 +55,8 @@
                                                             onclick="AddORUpdateGen('@order.Id', 'datalistingview', '_StandingOrderDesk', 'update', 'StandingOrder', null, null)"
                                                             data-bs-toggle="tooltip"
                                                             data-bs-placement="top"
-                                                            title="Edit @order.MemberName">
-                                                        <i class="fas fa-edit me-1"></i> Edit
+                                                            title="@GlobalShared.Edit @order.MemberName">
+                                                        <i class="fas fa-edit me-1"></i> @GlobalShared.Edit
                                                     </button>
                                                     <!-- Details Button -->
                                                     <button type="button"
@@ -64,8 +64,8 @@
                                                             onclick="showStandingOrderDetails('@order.Id')"
                                                             data-bs-toggle="tooltip"
                                                             data-bs-placement="top"
-                                                            title="View Details">
-                                                        <i class="fas fa-info-circle me-1"></i> Details
+                                                            title="@GlobalShared.ViewDetails">
+                                                        <i class="fas fa-info-circle me-1"></i> @GlobalShared.Details
                                                     </button>
                                                     <!-- Delete Button -->
                                                     <button type="button"
@@ -73,8 +73,8 @@
                                                             onclick="DeleteRecordDataTable('StandingOrder','@order.Id','myDataTable','_StandingOrderDataPerMember',0,'datalistingview','@order.MemberId','my_orders')"
                                                             data-bs-toggle="tooltip"
                                                             data-bs-placement="top"
-                                                            title="Delete @order.MemberName">
-                                                        <i class="fas fa-trash-alt me-1"></i> Delete
+                                                            title="@GlobalShared.Delete @order.MemberName">
+                                                        <i class="fas fa-trash-alt me-1"></i> @GlobalShared.Delete
                                                     </button>
                                                 </div>
                                             </td>
@@ -88,7 +88,7 @@
                         {
 
                             <div class="text-center my-3">
-                                <p>No standing orders found.</p>
+                                <p>@GlobalStandingOrder.NoStandingOrdersFound.</p>
                             </div>
                         }
                     </div>

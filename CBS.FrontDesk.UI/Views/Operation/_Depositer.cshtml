@@ -1,50 +1,51 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+    @using Resources
 <div class="col-md-9">
     <div class="form-floating form-floating-outline">
         @Html.TextBoxFor(m => m.DepositRequest.depositorName, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.DepositRequest.depositorName, "", new { @class = "text-danger" })
-        <label>Depositor name</label>
+        <label>@GlobalOperation.DepositorName</label>
     </div>
 </div>
 <div class="col-md-3">
     <div class="form-floating form-floating-outline">
         @Html.TextBoxFor(m => m.DepositRequest.depositerTelephone, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.DepositRequest.depositerTelephone, "", new { @class = "text-danger" })
-        <label>Phone number</label>
+        <label>@GlobalOperation.PhoneNumber</label>
     </div>
 </div>
 <div class="col-md-6">
     <div class="form-floating form-floating-outline">
         @Html.TextBoxFor(m => m.DepositRequest.depositorIDNumber, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.DepositRequest.depositorIDNumber, "", new { @class = "text-danger" })
-        <label>CNI</label>
+        <label>@GlobalOperation.CNI</label>
     </div>
 </div>
 <div class="col-md-3">
     <div class="form-floating form-floating-outline">
         @Html.TextBoxFor(m => m.DepositRequest.depositorIDIssueDate, new { @class = "form-control date-picker" })
         @Html.ValidationMessageFor(m => m.DepositRequest.depositorIDIssueDate, "", new { @class = "text-danger" })
-        <label>Date Issue</label>
+        <label>@GlobalOperation.DateIssue</label>
     </div>
 </div>
 <div class="col-md-3">
     <div class="form-floating form-floating-outline">
         @Html.TextBoxFor(m => m.DepositRequest.depositorIDExpiryDate, new { @class = "form-control date-picker" })
         @Html.ValidationMessageFor(m => m.DepositRequest.depositorIDExpiryDate, "", new { @class = "text-danger" })
-        <label>Date Expire</label>
+        <label>@GlobalOperation.DateExpire</label>
     </div>
 </div>
 <div class="col-md-12">
     <div class="form-floating form-floating-outline">
         @Html.TextBoxFor(m => m.DepositRequest.depositorIDNumberPlaceOfIssue, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.DepositRequest.depositorIDNumberPlaceOfIssue, "", new { @class = "text-danger" })
-        <label>Place of issue</label>
+        <label>@GlobalOperation.PlaceOfIssue</label>
     </div>
 </div>
 <div class="col-md-12">
     <div class="form-floating form-floating-outline">
         @Html.TextAreaFor(m => m.DepositRequest.depositerNote, new { @class = "form-control", @style = "height: 200px;" })
         @Html.ValidationMessageFor(m => m.DepositRequest.depositerNote, "", new { @class = "text-danger" })
-        <label>Depositer note</label>
+        <label>@GlobalOperation.DepositerNote</label>
     </div>
 </div>

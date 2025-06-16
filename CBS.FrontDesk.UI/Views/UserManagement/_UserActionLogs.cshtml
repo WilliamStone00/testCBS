@@ -1,12 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.UserManagement.User
-
+@using Resources
 <div class="accordion" id="userActionLogAccordion">
 
     <!-- 📜 Section: User Action Logs -->
     <div class="accordion-item mb-3">
         <h2 class="accordion-header" id="headingActionLogs">
             <button class="accordion-button bg-info text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseActionLogs" aria-expanded="false" aria-controls="collapseActionLogs">
-                <i class="fas fa-history me-2"></i> System Action Logs for @Model.userName
+                <i class="fas fa-history me-2"></i> @GlobalUserManagement.SystemActionLogsFor @Model.userName
             </button>
         </h2>
         <div id="collapseActionLogs" class="accordion-collapse collapse show" aria-labelledby="headingActionLogs" data-bs-parent="#userActionLogAccordion">
@@ -18,12 +18,12 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>Action</th>
-                                    <th>Description</th>
-                                    <th>Performed By</th>
-                                    <th>From Branch</th>
-                                    <th>Date</th>
-                                    <th>Comments</th>
-                                    <th>Details</th>
+                                    <th>@GlobalUserManagement.Description</th>
+                                    <th>@GlobalUserManagement.PerformedBy</th>
+                                    <th>@GlobalUserManagement.FromBranch</th>
+                                    <th>@GlobalUserManagement.Date</th>
+                                    <th>@GlobalUserManagement.Comments</th>
+                                    <th>@GlobalShared.Details</th>
 
                                 </tr>
                             </thead>
@@ -44,7 +44,7 @@
                                             <button type="button" class="btn btn-sm btn-outline-primary"
                                                     data-url="#"
                                                     onclick="openModalFromUrl(this)">
-                                                <i class="fas fa-eye"></i> View
+                                                <i class="fas fa-eye"></i> @GlobalShared.View
                                             </button>
                                         </td>
 
@@ -55,7 +55,7 @@
                         @if (Model.AccountSystemActionLogs.Count > 20)
                         {
                             <div class="text-muted small fst-italic mt-2">
-                                Showing latest 20 of @Model.AccountSystemActionLogs.Count log(s).
+                                @GlobalUserManagement.ShowingLatest20Of @Model.AccountSystemActionLogs.Count log(s).
                             </div>
                         }
                     </div>
@@ -63,7 +63,7 @@
                 else
                 {
                     <div class="alert alert-warning">
-                        <i class="fas fa-exclamation-circle me-1"></i> No system actions have been logged for this user.
+                        <i class="fas fa-exclamation-circle me-1"></i> @GlobalUserManagement.NoSystemActionsHaveBeenLoggedForThisUser.
                     </div>
                 }
             </div>

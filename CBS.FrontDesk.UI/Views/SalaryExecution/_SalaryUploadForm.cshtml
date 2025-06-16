@@ -1,24 +1,24 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.ExecuteSalaryCarrier
-
+@using Resources
 
 <fieldset class="fieldset-custom">
-    <legend id="select_base">Analyzed Salary Upload Form</legend>
+    <legend id="select_base">@GlobalSalaryExecution.AnalyzedSalaryUploadForm</legend>
     <div class="card-body">
         @using (Html.BeginForm("UploadAnalysedSalaryFile", "SalaryExecution", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
             <div class="row mt-2 gy-4">
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.UploadAnalysedSalaryCommand.UploadFileId, new SelectList(ViewBag.Files, "Value", "Text"), "---Select an analysed file to re-upload---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.UploadAnalysedSalaryCommand.UploadFileId, new SelectList(ViewBag.Files, "Value", "Text"), "---"+ @GlobalSalaryExecution.SelectAnAnalysedFileToReUpload + "---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.UploadAnalysedSalaryCommand.UploadFileId, "", new { @class = "text-danger " })
-                        <label>Select a system analysed file.</label>
+                        <label>@GlobalSalaryExecution.SelectASystemAnalysedFile.</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         <input type="file" id="file" name="UploadAnalysedSalaryCommand.File" class="form-control" required />
                         @Html.ValidationMessageFor(m => m.UploadAnalysedSalaryCommand.File, "", new { @class = "text-danger " })
-                    <label>Select modify analysed salary file to map with the system analyzed selected above.</label>
+                    <label>@GlobalSalaryExecution.SelectModifyAnalysedSalaryFileToMapWithTheSystemAnalyzedSelectedAbove.</label>
                     </div>
                 </div>
 
@@ -26,8 +26,8 @@
             </div>
 
             <div class="mt-4">
-                <button type="submit" class="btn btn-primary me-2">Upload</button>
-                <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                <button type="submit" class="btn btn-primary me-2">@GlobalShared.Upload</button>
+                <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
             </div>
         }
     </div>
