@@ -679,6 +679,7 @@
     <Compile Include="Controllers\CustomerManagement\GroupTypeController.cs" />
     <Compile Include="Controllers\CustomerManagement\IndividualController.cs" />
     <Compile Include="Controllers\CustomerManagement\Policy\MemberAccountActivationPolicyController.cs" />
+    <Compile Include="Controllers\DailyCollectorManagement\DailyCollectionSettingController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectorManagementController.cs" />
     <Compile Include="Controllers\DDOSControlP\BlacklistUserController.cs" />
     <Compile Include="Controllers\DDOSControlP\PasswordPolicyManagementController.cs" />
@@ -2833,6 +2834,7 @@
     <Content Include="aspnet_client\system_web\4_0_30319\crystalreportviewers13\prompting\js\promptengine_strings_zh_TW.js" />
     <Content Include="aspnet_client\system_web\4_0_30319\crystalreportviewers13\urlreporting\activexviewer.js" />
     <Content Include="aspnet_client\system_web\4_0_30319\crystalreportviewers13\urlreporting\appletviewer.js" />
+    <Content Include="CBSTemp\ui\assets\css\Commission.css" />
     <Content Include="CBSTemp\ui\assets\alertifyjs\alertify.js" />
     <Content Include="CBSTemp\ui\assets\alertifyjs\alertify.min.js" />
     <Content Include="CBSTemp\ui\assets\alertifyjs\css\alertify.css" />
@@ -5685,6 +5687,7 @@
     <Content Include="Scripts\Js\CashMovementTracker\CashMovementTracker.js" />
     <Content Include="Scripts\Js\CMoney\cmoney.js" />
     <Content Include="Scripts\Js\CMoney\cmMembers.js" />
+    <Content Include="Scripts\Js\CommissionManagement\CommissionManagement.js" />
     <Content Include="Scripts\Js\Crud\AccountingDay\AccountingDayStatus.js" />
     <Content Include="Scripts\Js\Crud\AccountOpeningRulePerBranch\AccountOpeningRulePerBranch.js" />
     <Content Include="Scripts\Js\Crud\AuditTrail\Audits.js" />
@@ -6767,6 +6770,11 @@
     <Content Include="Views\Shared\_PasswordPolicyPanel.cshtml" />
     <Content Include="Views\Shared\_MfaLayout.cshtml" />
     <Content Include="Views\UserManagement\_UserOverridePolicy.cshtml" />
+    <Content Include="Views\DailyCollectionSetting\Index.cshtml" />
+    <Content Include="Views\DailyCollectionSetting\_CreateAgentDailyCashLimit.cshtml" />
+    <Content Include="Views\DailyCollectionSetting\_CreateCommissionSetting.cshtml" />
+    <Content Include="Views\DailyCollectionSetting\_CreateZone.cshtml" />
+    <Content Include="Views\DailyCollectionSetting\_CommissionSettingData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -6774,6 +6782,7 @@
     <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
+    <Folder Include="Controllers\DailyCollectionManagement\" />
     <Folder Include="Hub\" />
     <Folder Include="Views\Language\" />
   </ItemGroup>

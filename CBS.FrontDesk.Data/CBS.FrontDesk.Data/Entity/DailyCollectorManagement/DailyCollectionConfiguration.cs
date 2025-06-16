@@ -1,4 +1,5 @@
 ﻿
+using CBS.FrontDesk.Data.Entity.DailyCollectionData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,18 +69,6 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectorManagement
         public bool IsByBranch { get; set; }
     }
 
-    public class Zone  
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string BranchId { get; set; }
-        public string RegionId { get; set; }
-        public string DivisionId { get; set; }
-        public string SubDivisionId { get; set; }
-        public string TownId { get; set; }
-
-    }
-
 
     public class AgentDto  
     {
@@ -118,23 +107,32 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectorManagement
         }
     }
 
-    public class Agent : BaseEntity
+    public class DailyCollectionConfiguration
     {
-        public string Id { get; set; }
-      
-        public string LastName { get; set; }
-        public string FirstName { get; set; }
 
-        public string MiddleName { get; set; }
-        public string CNI { get; set; }
-        public string PhoneNumber { get; set; }
-
-        public string Email { get; set; }
-        public string Address { get; set; }
-        public string BranchId { get; set; }
-        public AgentResouceInformation ResouceInformation { get; set; }
+        public Zone Zone { get; set; }= new Zone();
+        public List<Zone > Zones { get; set; } = new List<Zone >();
+        public CommissionSetting CommissionSetting { get; set; } = new CommissionSetting();
+        public List<CommissionSetting > CommissionSettings { get; set; } = new List<CommissionSetting> ();
+        public AgentDailyCashLimit AgentDailyCashLimit { get; set; } = new AgentDailyCashLimit();
+        public List<AgentDailyCashLimit> AgentDailyCashLimits { get; set; } = new List<AgentDailyCashLimit>();
+        public string ServiceOption { get; set; }
+        public string Action { get; set; }
+        public string KEY { get; set; } = "KEY";
     }
+    public class DailyAgentManagement
+    {
 
+        public Agent Agent { get; set; }
+        public List<Agent> Agents { get; set; } = new List<Agent>();
+        public AgentAccount AgentAccount { get; set; }
+        public List<AgentAccount> AgentAccounts { get; set; }
+        public DailyCustomer DailyCustomer { get; set; }
+        public List<DailyCustomer> DailyCustomers { get; set; }
+        public string ServiceOption { get; set; }
+        public string Action { get; set; }
+        public string KEY { get; set; } = "KEY";
+    }
     public class AgentResouceInformation
     {
 
@@ -147,23 +145,17 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectorManagement
     }
 
 
-    public class AgentAccount : BaseEntity
+
+    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
+    public class Resource
     {
-        public string Id { get; set; }
-        public double AccountBalance { get; set; }
-        public string AgentId { get; set; }
-        public string BranchId { get; set; }
+        public string personInformation { get; set; }
+        public List<string> personDocument { get; set; }
+        public string resourceType { get; set; }
+        public string agentId { get; set; }
     }
 
-    public class CommissionSetting : BaseEntity
-    {
-        public string Id { get; set; }
-        public string AgentShare { get; set; }
 
-        public string BranchShare { get; set; }
-        public string BranchId { get; set; }
-        public string AgentId { get; set; }
-        public bool Isglobal { get; set; }
-        public bool IsBranch { get; set; }
-    }
+
+
 }
