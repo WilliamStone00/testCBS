@@ -42,10 +42,10 @@
                 <td>@(d.CommissionProviderShare)%</td>
                 <td>@d.AgentShare</td>
                 <td>
-                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CommissionSetting','_CreateCommissionSetting','update','DailyCollectionSetting','CommissionSetting')" class="Modelr-2" data-toggle="tooltip" title="Edit">
+                    <a href="#" class="btn btn-dark" onclick="AddORUpdateGen('@d.Id','datalistingview_CommissionSetting','_CreateCommissionSetting','update','DailyCollectionSetting','commissionSetting')" class="Modelr-2" data-toggle="tooltip" title="Edit">
                         Edit
                     </a> |
-                    <a href="#" onclick="DeleteDataConfiguration('DailyCollectionSetting','@d.Id','myDataTable','_CommissionSettingData',0,'datalistingview_CommissionSetting','CommissionSetting')" class="text-danger" data-toggle="tooltip" title="Delete">
+                    <a href="#"  class="btn btn-danger" onclick="DeleteData('DailyCollectionSetting','@d.Id','myDataTable','_CommissionSettingData',0,'datalistingview_CommissionSetting','commissionSetting')" class="text-danger" data-toggle="tooltip" title="Delete">
                         Delete
                     </a>
                 </td>
