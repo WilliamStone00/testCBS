@@ -223,7 +223,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter charge to waive. (Note that this is valid only for a day..
+        ///   Looks up a localized string similar to Enter charge to waive. (Note that this is valid only for a day)..
         /// </summary>
         internal static string EnterChargeToWaive {
             get {

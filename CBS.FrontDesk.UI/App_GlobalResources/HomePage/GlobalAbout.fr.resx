@@ -123,4 +123,7 @@
   <data name="AboutInformation" xml:space="preserve">
     <value>Utilisez cette zone pour fournir des informations supplémentaires.</value>
   </data>
+  <data name="ContactUs" xml:space="preserve">
+    <value>Contactez Nous</value>
+  </data>
 </root>

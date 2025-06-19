@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddNew" xml:space="preserve">
-    <value>AddNew</value>
+    <value>Add new</value>
     <comment>Ajouter</comment>
   </data>
   <data name="Delete" xml:space="preserve">

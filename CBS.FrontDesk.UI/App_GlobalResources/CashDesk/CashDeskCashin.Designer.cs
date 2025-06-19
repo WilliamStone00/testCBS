@@ -827,15 +827,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The cashier collects the charge from the member during the operation (cash operation):.
         /// </summary>
         internal static string TheCashierCollectsTheChargeFromTheMemberDuringTheOperationCashOperation {

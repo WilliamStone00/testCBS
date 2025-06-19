@@ -88,6 +88,7 @@ function toggleCommissionType(isProportional) {
     updateCommissionTypeCards();
 }
 
+
 function updateCommissionTypeCards() {
     const cards = document.querySelectorAll('.commission-type-card');
     const isProportional = document.getElementById('proportionalTrue').checked;
@@ -537,5 +538,60 @@ function previewConfiguration() {
                 btn.innerHTML = '<i class="mdi mdi-check-circle-outline me-1"></i> Confirm & Submit';
                 btn.disabled = false;
             });
+    });
+}
+function DeleteData(controller, KEY, tableID, partialView, order, divToLoadTheData, serviceOption) {
+
+    alertify.confirm("DELETE WARNING!!!", "Are you sure, you want to delete this file?\nYou won't be able to revert this! ",
+        function () {
+            var url = "/" + controller + "/Delete?KEY=" + KEY + "&serviceOption=" + serviceOption;
+            $.ajax({
+                type: "Get",
+                url: url,
+                success: function (response) {
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+                        LoadDataTable(controller, tableID, "InitializeData", KEY, partialView, order, "list", divToLoadTheData, serviceOption)
+                    }
+                    else {
+                        appalert(response.message, 3, 1);
+                    }
+
+                }, error: function (err) {
+
+                    appalert(err.statusText, 3, 1);
+                }
+            });
+        },
+        function () {
+            appalert('Transaction cancelled', 3, 1);
+
+        }
+
+    );
+
+
+}
+
+
+function LoadDataTable(controller, tableID, action, KEY, partialView, order, path, diveToloadtheData, serviceOption) {
+    var encodedURL = '/' + controller + '/' + action +
+        '?KEY=' + encodeURIComponent(KEY) +
+        '&partialView=' + encodeURIComponent(partialView) +
+        '&serviceOption=' + encodeURIComponent(serviceOption) +
+        '&path=' + encodeURIComponent(path);
+    console.log(encodedURL + " tableId= " + tableID + " divloader:" + diveToloadtheData + " order:" + order);
+
+    $.ajax({
+        type: "GET",
+        url: encodedURL,
+        success: function (data) {
+            $('#' + diveToloadtheData).html(data);
+            console.log($('#DataTablePosition').length);
+            LoadDT(tableID, order);
+        },
+        error: function (err) {
+            appalert(err.statusText, 1, 3);
+        }
     });
 }

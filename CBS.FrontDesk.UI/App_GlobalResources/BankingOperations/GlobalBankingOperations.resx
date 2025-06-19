@@ -151,7 +151,7 @@
     <value>Click to view pending transaction reversal request</value>
   </data>
   <data name="FailedRequestApprovalView" xml:space="preserve">
-    <value>Failed_RequestApproval_View</value>
+    <value>Failed Request Approval View</value>
   </data>
   <data name="HasAlreadyBeenRejected" xml:space="preserve">
     <value>has already been rejected</value>

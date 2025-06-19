@@ -101,6 +101,7 @@ namespace CBS.BusinessService.UserManagement
         {
             try
             {
+
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
                 var roles = await ApiCallerHelper.GetAsync<ResponseObject<List<UserRoleDto>>>(APICallHelper.GetAllUserRoles);
                 if (IsHeadOffice())

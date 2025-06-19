@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Action" xml:space="preserve">
-    <value />
+    <value>Action</value>
   </data>
   <data name="Active" xml:space="preserve">
     <value>Actif</value>
@@ -142,10 +142,10 @@
     <value>Nom de la branche</value>
   </data>
   <data name="BranchOffice" xml:space="preserve">
-    <value />
+    <value>Agence</value>
   </data>
   <data name="Code" xml:space="preserve">
-    <value />
+    <value>Code</value>
   </data>
   <data name="DateOfCreation" xml:space="preserve">
     <value>Date de création</value>
@@ -154,7 +154,7 @@
     <value>Email</value>
   </data>
   <data name="HeadOffice" xml:space="preserve">
-    <value />
+    <value>Siège Social</value>
   </data>
   <data name="HeadOfficeAddress" xml:space="preserve">
     <value>Adresse du siège social</value>
@@ -166,7 +166,7 @@
     <value>Numéro d'immatriculation</value>
   </data>
   <data name="Inactive" xml:space="preserve">
-    <value />
+    <value>Inactif</value>
   </data>
   <data name="IsThisBranchLinkedToAnyBank" xml:space="preserve">
     <value>Cette branche est-elle liée à une banque ?</value>
@@ -178,13 +178,13 @@
     <value>Motto</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value />
+    <value>Nom</value>
   </data>
   <data name="OfficeType" xml:space="preserve">
-    <value />
+    <value>Type d'agence</value>
   </data>
   <data name="PageTitle" xml:space="preserve">
-    <value>Gestion des branches</value>
+    <value>Gestion des agences</value>
   </data>
   <data name="PBox" xml:space="preserve">
     <value>PBox</value>
@@ -199,7 +199,7 @@
     <value>Définir comme branche du siège social</value>
   </data>
   <data name="Status" xml:space="preserve">
-    <value />
+    <value>Statut</value>
   </data>
   <data name="TaxPayerNumber" xml:space="preserve">
     <value>Numéro de contribuable</value>
@@ -208,7 +208,7 @@
     <value>Téléphone</value>
   </data>
   <data name="Tell" xml:space="preserve">
-    <value />
+    <value>Tenue de caisse</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>Mettre à jour</value>

@@ -19,14 +19,14 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
 {
-    public class DailyCollectionSettingController : BaseController 
+    public class DailyCollectionSettingController : BaseController
     {
-        private   BranchServices _branchService;
-        private   LocalizationService _localizationService;
-        private   CommissionSettingServices _commissionSettingServices;
-        private   AgentDailyCashLimitServices _agentDailyCashLimitServices;
-        private   UserManagementServices _userManagementServices;
-        private   ZoneServices _zoneServices;
+        private BranchServices _branchService;
+        private LocalizationService _localizationService;
+        private CommissionSettingServices _commissionSettingServices;
+        private AgentDailyCashLimitServices _agentDailyCashLimitServices;
+        private UserManagementServices _userManagementServices;
+        private ZoneServices _zoneServices;
         public DailyCollectionSettingController()
         {
             _branchService = new BranchServices();
@@ -54,8 +54,8 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
         {
             var BranList = (await _branchService.GetBranches()).ToList();
             ViewBag.Branches = BuildBranch(BranList);
-            ViewBag.OperationTypes =GetOperationTypes();
-            ViewBag.ProviderTypes =GetProviderTypes();
+            ViewBag.OperationTypes = GetOperationTypes();
+            ViewBag.ProviderTypes = GetProviderTypes();
 
         }
         [HttpGet]
@@ -70,7 +70,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
 
                 // Get all user roles and filter by branch and teller status
                 var agents = (await _userManagementServices.GetUSerRoles())
-                    .Where(u => u.branchId == branchId && u.RoleName== "Daily_Collector_Agent") // Filter by branch and tellers
+                    .Where(u => u.branchId == branchId && u.RoleName == "Daily_Collector_Agent") // Filter by branch and tellers
                     .Select(a => new SelectListItem
                     {
                         Value = a.UserId.ToString(), // Using UserId as value
@@ -91,8 +91,8 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             }
         }
         public static List<SelectListItem> GetOperationTypes()
-            {
-                return new List<SelectListItem>
+        {
+            return new List<SelectListItem>
         {
             new SelectListItem { Value = "", Text = "Select Operation Type" },
             new SelectListItem { Value = "SUB", Text = "Subscription (SUB)" },
@@ -100,11 +100,11 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             new SelectListItem { Value = "WDR", Text = "Withdrawal (WDR)" },
             new SelectListItem { Value = "LPR", Text = "Loan Repayment (LPR)" }
         };
-            }
+        }
 
-            public static List<SelectListItem> GetProviderTypes()
-            {
-                return new List<SelectListItem>
+        public static List<SelectListItem> GetProviderTypes()
+        {
+            return new List<SelectListItem>
         {
             new SelectListItem { Value = "", Text = "Select Provider Type" },
             new SelectListItem { Value = "DestinationBranch", Text = "Destination Branch" },
@@ -112,8 +112,8 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             new SelectListItem { Value = "AgentBranch", Text = "Agent Branch" },
             new SelectListItem { Value = "HeadOffice", Text = "Head Office" }
         };
-            }
-    
+        }
+
         private dynamic BuildBranch(List<Branch> listOfItems)
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
@@ -136,7 +136,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                 if (path == "list")
                 {
                     var data = await _zoneServices.GetZones();
-                 
+
                     var sysData = new DailyCollectionConfiguration { Zones = data.ToList() };
                     return PartialView(partialView, sysData);
 
@@ -145,12 +145,12 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                 else if (path == "new")
                 {
 
-                   
+
                     return PartialView(partialView, new DailyCollectionConfiguration { Zone = new Data.Entity.DailyCollectionData.Zone() });
 
                 }
-            
-             
+
+
 
                 else
                 {
@@ -179,9 +179,6 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                     return PartialView(partialView, new DailyCollectionConfiguration { CommissionSetting = new Data.Entity.DailyCollectionData.CommissionSetting() });
 
                 }
-
-
-
                 else
                 {
                     var data = await _commissionSettingServices.GetCommissionSettingById(KEY);
@@ -235,9 +232,9 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                 if (model.Action == "insert")
                 {
                     serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
-                  
+
                 }
-                else 
+                else
                 {
                     serviceAction = await GetUpdateServiceActionAsync(model.ServiceOption, model);
                 }
@@ -268,7 +265,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                     serviceAction = await GetUpdateServiceActionAsync(model.ServiceOption, model);
                 }
             }
-          
+
             if (serviceAction != null)
             {
                 try
@@ -290,9 +287,9 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             //
             if (serviceOption == "zone")
             {
-          
-                    return () => _zoneServices.Create(model.Zone);
-                 
+
+                return () => _zoneServices.Create(model.Zone);
+
             }
             else if (serviceOption == "agentDailyCashLimit")
             {
@@ -303,9 +300,9 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                 return () => _commissionSettingServices.Create(model.CommissionSetting);
 
             }
-            else  
+            else
             {
-                return   null;
+                return null;
             }
         }
 
@@ -324,9 +321,28 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             {
                 return () => _commissionSettingServices.Update(model.CommissionSetting);
             }
-           
+
             else
             {
+                return null;
+            }
+        }
+
+
+        public async Task<ActionResult> Delete(string KEY, string serviceOption)
+        {
+
+
+            if (serviceOption == "commissionSetting")
+            {
+                var data = await _commissionSettingServices.Delete(KEY);
+                return Json(new { success = data, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+
+            }
+            else 
+            {
+
                 return null;
             }
         }

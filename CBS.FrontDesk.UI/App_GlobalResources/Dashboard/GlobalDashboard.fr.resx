@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ActiveAccounts" xml:space="preserve">
+    <value>Comptes actifs</value>
+  </data>
+  <data name="ActiveMembers" xml:space="preserve">
+    <value>Membres actifs</value>
+  </data>
+  <data name="April" xml:space="preserve">
+    <value>Avril</value>
+  </data>
+  <data name="August" xml:space="preserve">
+    <value>Août</value>
+  </data>
+  <data name="Branch_Code" xml:space="preserve">
+    <value>Code de l'agence</value>
+  </data>
+  <data name="Branch_Name" xml:space="preserve">
+    <value>Nom de l'agence</value>
+  </data>
+  <data name="CashIn" xml:space="preserve">
+    <value>Encaissement</value>
+  </data>
+  <data name="CashInBank" xml:space="preserve">
+    <value>Encaissement en banque</value>
+  </data>
+  <data name="CashInDailyCollections" xml:space="preserve">
+    <value>Encaissement des collectes quotidiennes</value>
+  </data>
+  <data name="CashInHand" xml:space="preserve">
+    <value>Encaissement en main</value>
+  </data>
+  <data name="CashInHandAccount" xml:space="preserve">
+    <value>Compte d'encaissement en main</value>
+  </data>
+  <data name="CashInMTN" xml:space="preserve">
+    <value>Encaissement MTN</value>
+  </data>
+  <data name="CashInMTNVolume" xml:space="preserve">
+    <value>Encaissement MTN - Volume</value>
+  </data>
+  <data name="CashInOrange" xml:space="preserve">
+    <value>Encaissement Orange</value>
+  </data>
+  <data name="CashInOrangeVolume" xml:space="preserve">
+    <value>Encaissement Orange - Volume</value>
+  </data>
+  <data name="CashInVolume" xml:space="preserve">
+    <value>Volume d'encaissement</value>
+  </data>
+  <data name="CashOperationsBy" xml:space="preserve">
+    <value>Opérations de caisse par</value>
+  </data>
+  <data name="CashOperationsSummaries" xml:space="preserve">
+    <value>Résumés des opérations de caisse</value>
+  </data>
+  <data name="CashOut" xml:space="preserve">
+    <value>Sortie de caisse</value>
+  </data>
+  <data name="CashOutDailyCollections" xml:space="preserve">
+    <value>Sortie de caisse des collectes quotidiennes</value>
+  </data>
+  <data name="CashOutMTN" xml:space="preserve">
+    <value>Sortie de caisse MTN</value>
+  </data>
+  <data name="CashOutMTNVolume" xml:space="preserve">
+    <value>Sortie de caisse MTN - Volume</value>
+  </data>
+  <data name="CashOutOrange" xml:space="preserve">
+    <value>Sortie de caisse Orange</value>
+  </data>
+  <data name="CashOutOrangeVolume" xml:space="preserve">
+    <value>Sortie de caisse Orange - Volume</value>
+  </data>
+  <data name="CashOutVolume" xml:space="preserve">
+    <value>Volume de sortie de caisse</value>
+  </data>
+  <data name="ClosedAccounts" xml:space="preserve">
+    <value>Comptes fermés</value>
+  </data>
+  <data name="DailyCollections" xml:space="preserve">
+    <value>Collectes quotidiennes</value>
+  </data>
+  <data name="DailyDashboard" xml:space="preserve">
+    <value>Tableau de bord quotidien</value>
+  </data>
+  <data name="DAILYDASHBOARDVIEWFOROPERATIONS" xml:space="preserve">
+    <value>VUE DU TABLEAU DE BORD QUOTIDIEN POUR LES OPÉRATIONS. (SIÈGE SOCIAL)</value>
+  </data>
+  <data name="DAILYDASHBOARDVIEWFOROPERATIONSBRANCHNAME" xml:space="preserve">
+    <value>VUE DU TABLEAU DE BORD QUOTIDIEN POUR LES OPÉRATIONS</value>
+  </data>
+  <data name="DailyIncomeCollected" xml:space="preserve">
+    <value>Revenus quotidiens collectés</value>
+  </data>
+  <data name="DailyOperations" xml:space="preserve">
+    <value>Opérations quotidiennes</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="December" xml:space="preserve">
+    <value>Décembre</value>
+  </data>
+  <data name="Deposits" xml:space="preserve">
+    <value>Dépôts</value>
+  </data>
+  <data name="February" xml:space="preserve">
+    <value>Février</value>
+  </data>
+  <data name="FINANCIALANALITICDASHBOARD" xml:space="preserve">
+    <value>TABLEAU DE BORD ANALYTIQUE FINANCIER (SIÈGE SOCIAL)</value>
+  </data>
+  <data name="HeadOfficeDashboard" xml:space="preserve">
+    <value>Tableau de bord du siège social</value>
+  </data>
+  <data name="HighestViews" xml:space="preserve">
+    <value>Vues les plus élevées</value>
+  </data>
+  <data name="HODashboard" xml:space="preserve">
+    <value>Tableau de bord du siège social</value>
+  </data>
+  <data name="InitialDeposits" xml:space="preserve">
+    <value>Dépôts initiaux</value>
+  </data>
+  <data name="January" xml:space="preserve">
+    <value>Janvier</value>
+  </data>
+  <data name="July" xml:space="preserve">
+    <value>Juillet</value>
+  </data>
+  <data name="June" xml:space="preserve">
+    <value>Juin</value>
+  </data>
+  <data name="Loan" xml:space="preserve">
+    <value>Prêt</value>
+  </data>
+  <data name="LoanDeliquencies" xml:space="preserve">
+    <value>Impayés de prêt</value>
+  </data>
+  <data name="LoanRepayment" xml:space="preserve">
+    <value>Remboursement de prêt</value>
+  </data>
+  <data name="LOANUC" xml:space="preserve">
+    <value>PRÊT</value>
+  </data>
+  <data name="March" xml:space="preserve">
+    <value>Mars</value>
+  </data>
+  <data name="May" xml:space="preserve">
+    <value>Mai</value>
+  </data>
+  <data name="MEMBERSHIP" xml:space="preserve">
+    <value>ADHÉSION</value>
+  </data>
+  <data name="MembershipLc" xml:space="preserve">
+    <value>Adhésion</value>
+  </data>
+  <data name="MobileMoneyMTN" xml:space="preserve">
+    <value>Mobile money-MTN</value>
+  </data>
+  <data name="MobileMoneyORANGE" xml:space="preserve">
+    <value>Mobile money-ORANGE</value>
+  </data>
+  <data name="MoralPersons" xml:space="preserve">
+    <value>Personnes morales</value>
+  </data>
+  <data name="MTNMobileMoneyBalance" xml:space="preserve">
+    <value>Solde MTN Mobile Money</value>
+  </data>
+  <data name="NewMembers" xml:space="preserve">
+    <value>Nouveaux membres</value>
+  </data>
+  <data name="November" xml:space="preserve">
+    <value>Novembre</value>
+  </data>
+  <data name="NumberOfLoans" xml:space="preserve">
+    <value>Nombre de prêts</value>
+  </data>
+  <data name="NumberOfOnlineBranches" xml:space="preserve">
+    <value>Nombre d'agences en ligne</value>
+  </data>
+  <data name="October" xml:space="preserve">
+    <value>Octobre</value>
+  </data>
+  <data name="OnlineBranches" xml:space="preserve">
+    <value>Agences en ligne</value>
+  </data>
+  <data name="OrangeMoneyBalance" xml:space="preserve">
+    <value>Solde Orange Money</value>
+  </data>
+  <data name="ORDINARYACCOUNTS" xml:space="preserve">
+    <value>COMPTES ORDINAIRES</value>
+  </data>
+  <data name="OrdinaryShares" xml:space="preserve">
+    <value>Actions ordinaires</value>
+  </data>
+  <data name="OtherExpense" xml:space="preserve">
+    <value>Autre dépense</value>
+  </data>
+  <data name="PhysicalPersons" xml:space="preserve">
+    <value>Personnes physiques</value>
+  </data>
+  <data name="PreferenceShares" xml:space="preserve">
+    <value>Actions préférentielles</value>
+  </data>
+  <data name="Refund" xml:space="preserve">
+    <value>Remboursement</value>
+  </data>
+  <data name="RemainingVolume" xml:space="preserve">
+    <value>Volume restant</value>
+  </data>
+  <data name="Savings" xml:space="preserve">
+    <value>Épargne</value>
+  </data>
+  <data name="SeeAll" xml:space="preserve">
+    <value>Voir tout</value>
+  </data>
+  <data name="September" xml:space="preserve">
+    <value>Septembre</value>
+  </data>
+  <data name="Sub_Till_Balance" xml:space="preserve">
+    <value>Solde de la sous-caisse</value>
+  </data>
+  <data name="TCIN" xml:space="preserve">
+    <value>TCIN</value>
+  </data>
+  <data name="TCOUT" xml:space="preserve">
+    <value>TCOUT</value>
+  </data>
+  <data name="TillBalance" xml:space="preserve">
+    <value>Solde de la caisse</value>
+  </data>
+  <data name="TotalBalance" xml:space="preserve">
+    <value>Solde total</value>
+  </data>
+  <data name="TotalBlockedAmount" xml:space="preserve">
+    <value>Montant total bloqué</value>
+  </data>
+  <data name="TotalBranches" xml:space="preserve">
+    <value>Total des agences</value>
+  </data>
+  <data name="TotalExpenseBalance" xml:space="preserve">
+    <value>Solde total des dépenses</value>
+  </data>
+  <data name="TotalExpenses" xml:space="preserve">
+    <value>Dépenses totales</value>
+  </data>
+  <data name="TotalIncome" xml:space="preserve">
+    <value>Revenu total</value>
+  </data>
+  <data name="TotalIncomeBalance" xml:space="preserve">
+    <value>Solde total des revenus</value>
+  </data>
+  <data name="TotalLiquidity" xml:space="preserve">
+    <value>Liquidité totale</value>
+  </data>
+  <data name="TotalMembers" xml:space="preserve">
+    <value>Total des membres</value>
+  </data>
+  <data name="TotalSavings" xml:space="preserve">
+    <value>Épargne totale</value>
+  </data>
+  <data name="TotalShares" xml:space="preserve">
+    <value>Total des actions</value>
+  </data>
+  <data name="TotalSharesBalance" xml:space="preserve">
+    <value>Solde total des actions</value>
+  </data>
+  <data name="Transfer" xml:space="preserve">
+    <value>Transfert</value>
+  </data>
+  <data name="TRIALBALANCE" xml:space="preserve">
+    <value>BALANCE DES COMPTES</value>
+  </data>
+  <data name="ViewAllOpenBranches" xml:space="preserve">
+    <value>Afficher toutes les agences ouvertes</value>
+  </data>
+  <data name="VolumeGranted" xml:space="preserve">
+    <value>Volume accordé</value>
+  </data>
+  <data name="Withdrawals" xml:space="preserve">
+    <value>Retraits</value>
+  </data>
+</root>

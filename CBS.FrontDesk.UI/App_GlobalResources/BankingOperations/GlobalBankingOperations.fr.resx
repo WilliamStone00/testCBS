@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ACCOUNTINGTRANSACTIONREVERSALREQUEST" xml:space="preserve">
+    <value>DEMANDE D'INVERSION DE TRANSACTION COMPTABLE</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="ApprovedBy" xml:space="preserve">
+    <value>Approuvé par</value>
+  </data>
+  <data name="ApprovedDate" xml:space="preserve">
+    <value>Date d'approbation</value>
+  </data>
+  <data name="ApprovedMessage" xml:space="preserve">
+    <value>Message d'approbation</value>
+  </data>
+  <data name="ApprovedMessageDescription" xml:space="preserve">
+    <value>Description du message d'approbation</value>
+  </data>
+  <data name="BackToHome" xml:space="preserve">
+    <value>Retour à l'accueil</value>
+  </data>
+  <data name="BANKINGOPERATIONSCASHMANAGEMENT" xml:space="preserve">
+    <value>OPÉRATIONS BANCAIRES - GESTION DE LA TRÉSORERIE</value>
+  </data>
+  <data name="BankOperations" xml:space="preserve">
+    <value>Opérations bancaires</value>
+  </data>
+  <data name="ClickToApproveToTransactionReversalRequest" xml:space="preserve">
+    <value>Cliquez pour approuver la demande d'inversion de transaction</value>
+  </data>
+  <data name="ClickToViewPendingTransactionReversalRequest" xml:space="preserve">
+    <value>Cliquez pour afficher la demande d'inversion de transaction en attente</value>
+  </data>
+  <data name="FailedRequestApprovalView" xml:space="preserve">
+    <value>Page des demande d'approbation échouée</value>
+  </data>
+  <data name="HasAlreadyBeenRejected" xml:space="preserve">
+    <value>La demande d'approbation a déjà été rejetée</value>
+  </data>
+  <data name="hasBeenSuccesfullyApproved" xml:space="preserve">
+    <value>a été approuvée avec succès</value>
+  </data>
+  <data name="hasBeenSuccesfullySentForApproval" xml:space="preserve">
+    <value>a été envoyée avec succès pour approbation</value>
+  </data>
+  <data name="HavingReferenceId" xml:space="preserve">
+    <value>ayant l'ID de référence</value>
+  </data>
+  <data name="havingTransactionReferenceId" xml:space="preserve">
+    <value>ayant l'ID de référence de transaction</value>
+  </data>
+  <data name="InTheSystemPleasekindlyContactSystemAdmin" xml:space="preserve">
+    <value>dans le système. Veuillez contacter l'administrateur système pour obtenir de l'aide</value>
+  </data>
+  <data name="IsPendingForApproval" xml:space="preserve">
+    <value>est en attente d'approbation</value>
+  </data>
+  <data name="IssuedBy" xml:space="preserve">
+    <value>Émis par</value>
+  </data>
+  <data name="IssuedDate" xml:space="preserve">
+    <value>Date d'émission</value>
+  </data>
+  <data name="ListOfTransactionReversalRequest" xml:space="preserve">
+    <value>Liste des demandes d'inversion de transaction</value>
+  </data>
+  <data name="MakeDecision" xml:space="preserve">
+    <value>Prendre une décision</value>
+  </data>
+  <data name="ReferenceId" xml:space="preserve">
+    <value>ID de référence</value>
+  </data>
+  <data name="RequestedBy" xml:space="preserve">
+    <value>Demandé par</value>
+  </data>
+  <data name="RequestedDate" xml:space="preserve">
+    <value>Date de la demande</value>
+  </data>
+  <data name="RequestMessage" xml:space="preserve">
+    <value>Message de la demande</value>
+  </data>
+  <data name="SelectDecision" xml:space="preserve">
+    <value>Sélectionner la décision</value>
+  </data>
+  <data name="SelectYourDecisionAndClickOnApprovedAccount" xml:space="preserve">
+    <value>Sélectionnez votre décision et cliquez sur le bouton d'approbation de la demande pour approuver la demande</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+  <data name="SuccessfullTransactionReversalRequestApproval" xml:space="preserve">
+    <value>Approbation réussie de la demande d'inversion de transaction</value>
+  </data>
+  <data name="SuccessfullyTransactionReversalRequest" xml:space="preserve">
+    <value>Demande d'inversion de transaction réussie</value>
+  </data>
+  <data name="ThereIsNoEntryWithReferenceId" xml:space="preserve">
+    <value>Il n'y a pas d'entrée avec l'ID de référence</value>
+  </data>
+  <data name="TheTransactionReversalRequestIssuedBy" xml:space="preserve">
+    <value>La demande d'inversion de transaction émise par</value>
+  </data>
+  <data name="TransactionReferenceId" xml:space="preserve">
+    <value>ID de référence de transaction</value>
+  </data>
+  <data name="TransactionReversalDetailData" xml:space="preserve">
+    <value>Données détaillées de l'inversion de transaction</value>
+  </data>
+  <data name="TransactionReversalRequestDetails" xml:space="preserve">
+    <value>Détails de la demande d'inversion de transaction</value>
+  </data>
+  <data name="TransactionReversalRequestStatus" xml:space="preserve">
+    <value>Statut de la demande d'inversion de transaction</value>
+  </data>
+  <data name="TransactionReversalRequestWithReferenceId" xml:space="preserve">
+    <value>Demande d'inversion de transaction avec l'ID de référence</value>
+  </data>
+  <data name="TransactionReversalRequestWithTransactionReferenceId" xml:space="preserve">
+    <value>Demande d'inversion de transaction avec l'ID de référence de transaction</value>
+  </data>
+  <data name="ViewTransactionReversalRequest" xml:space="preserve">
+    <value>Afficher la demande d'inversion de transaction</value>
+  </data>
+  <data name="WithReference" xml:space="preserve">
+    <value>avec la référence</value>
+  </data>
+  <data name="YouHaveJustRejectedTheTransactionReversalRequestIssuedBy" xml:space="preserve">
+    <value>Vous venez de rejeter la demande d'inversion de transaction émise par</value>
+  </data>
+  <data name="YouHaveJustTheApprovedTransactionReversalRequestIssuedBy" xml:space="preserve">
+    <value>Vous venez d'approuver la demande d'inversion de transaction émise par</value>
+  </data>
+  <data name="YourTransactionReversalRequestHasBeenSentSuccesfully" xml:space="preserve">
+    <value>Votre demande d'inversion de transaction a été envoyée avec succès. Attendez patiemment l'approbation de votre gestionnaire</value>
+  </data>
+  <data name="YourTransactionReversalRequestFailed" xml:space="preserve">
+    <value>Votre demande d'inversion de transaction a échoué. Veuillez contacter votre service d'assistance technique pour obtenir de l'aide</value>
+  </data>
+  <data name="FailedTransactionReversalRequest" xml:space="preserve">
+    <value>Demande d'inversion de transaction échouée</value>
+  </data>
+  <data name="TransactionReversalRequest" xml:space="preserve">
+    <value>Demande d'inversion de transaction</value>
+  </data>
+  <data name="ACCOUNTINGENTRYADJUSTMENT" xml:space="preserve">
+    <value>AJUSTEMENT D'ÉCRITURE COMPTABLE</value>
+  </data>
+  <data name="TransactionReference" xml:space="preserve">
+    <value>Référence de transaction</value>
+  </data>
+  <data name="SendRequest" xml:space="preserve">
+    <value>Envoyer la demande</value>
+  </data>
+  <data name="PROVISIONBANKTOVAULT" xml:space="preserve">
+    <value>PROVISION DE LA BANQUE AU VAULT</value>
+  </data>
+  <data name="SelectSourceAccount" xml:space="preserve">
+    <value>Sélectionner le compte source</value>
+  </data>
+  <data name="EntryType" xml:space="preserve">
+    <value>Type d'écriture</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Montant</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="ReferenceNumber" xml:space="preserve">
+    <value>Numéro de référence</value>
+  </data>
+  <data name="SelectDestinationAccount" xml:space="preserve">
+    <value>Sélectionner le compte de destination</value>
+  </data>
+  <data name="ThisIsAManualEntryTransactionReference" xml:space="preserve">
+    <value>Il s'agit d'une référence de transaction manuelle qui sera suivie dans le système concernant cette opération spécifique</value>
+  </data>
+  <data name="SelectBookingDirection" xml:space="preserve">
+    <value>Sélectionner le sens d'enregistrement</value>
+  </data>
+  <data name="SelectAccount" xml:space="preserve">
+    <value>Sélectionner le compte</value>
+  </data>
+  <data name="AddEntries" xml:space="preserve">
+    <value>Ajouter des écritures</value>
+  </data>
+  <data name="AccountName" xml:space="preserve">
+    <value>Nom du compte</value>
+  </data>
+  <data name="AddJournalEntries" xml:space="preserve">
+    <value>Ajouter des écritures comptables</value>
+  </data>
+</root>

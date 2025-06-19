@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountingEventItems" xml:space="preserve">
+    <value>éléments d'événement comptable</value>
+  </data>
+  <data name="AMeaningfulNarrationOrDescriptionIsVitalForAccountabilityAndFinancialClarity" xml:space="preserve">
+    <value>Une narration ou une description significative est vitale pour la clarté et la responsabilité financières.</value>
+  </data>
+  <data name="BranchLevelConfig" xml:space="preserve">
+    <value>Configuration au niveau de l'agence</value>
+  </data>
+  <data name="CashDeskManagement" xml:space="preserve">
+    <value>Gestion de la caisse</value>
+  </data>
+  <data name="CashOutPayments" xml:space="preserve">
+    <value>paiements de sortie de caisse</value>
+  </data>
+  <data name="ClearBeneficiaryInfo" xml:space="preserve">
+    <value>Informations claires sur le bénéficiaire</value>
+  </data>
+  <data name="DenominationBreakdown" xml:space="preserve">
+    <value>Répartition des dénominations</value>
+  </data>
+  <data name="EachTransactionIsRecordedAgainstAConfigured" xml:space="preserve">
+    <value>Chaque transaction est enregistrée par rapport à un</value>
+  </data>
+  <data name="EventItem" xml:space="preserve">
+    <value>élément d'événement</value>
+  </data>
+  <data name="ForThoseOperationsPleaseUseTheirRespectiveModules" xml:space="preserve">
+    <value>Pour ces opérations, veuillez utiliser leurs modules respectifs.</value>
+  </data>
+  <data name="GeneralLedgerGLAccounts" xml:space="preserve">
+    <value>Comptes du grand livre (GL)</value>
+  </data>
+  <data name="GLAccount" xml:space="preserve">
+    <value>Compte GL</value>
+  </data>
+  <data name="GLPosting" xml:space="preserve">
+    <value>Comptabilisation GL</value>
+  </data>
+  <data name="IncludingExpensesMadeTo" xml:space="preserve">
+    <value>y compris les dépenses effectuées pour</value>
+  </data>
+  <data name="MandatoryEventItem" xml:space="preserve">
+    <value>Élément d'événement obligatoire</value>
+  </data>
+  <data name="Member" xml:space="preserve">
+    <value>membre</value>
+  </data>
+  <data name="Members" xml:space="preserve">
+    <value>membres</value>
+  </data>
+  <data name="MemberVsNonMember" xml:space="preserve">
+    <value>Membre ou non-membre</value>
+  </data>
+  <data name="NarrationMatters" xml:space="preserve">
+    <value>Narration importante</value>
+  </data>
+  <data name="NonLoanAndNonWithdrawalCashOuts" xml:space="preserve">
+    <value>non-prêt et non-retrait de caisse</value>
+  </data>
+  <data name="NonMembers" xml:space="preserve">
+    <value>non-membres</value>
+  </data>
+  <data name="NonMemberStaff" xml:space="preserve">
+    <value>non-membre/personnel</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Remarque :</value>
+  </data>
+  <data name="OnlyEventItemsAuthorizedForYourBranchWillBeVisibleInTheDropdown" xml:space="preserve">
+    <value>Seuls les éléments d'événement autorisés pour votre agence seront visibles dans la liste déroulante.</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+    <value>ou</value>
+  </data>
+  <data name="OrA" xml:space="preserve">
+    <value>ou un</value>
+  </data>
+  <data name="OtherCashOutOperations" xml:space="preserve">
+    <value>Autres opérations de sortie de caisse</value>
+  </data>
+  <data name="OtherExpenseOperations" xml:space="preserve">
+    <value>Opérations de dépenses autres</value>
+  </data>
+  <data name="OtherExpenses" xml:space="preserve">
+    <value>Autres dépenses</value>
+  </data>
+  <data name="RefersToPhysicalCashPaidOut" xml:space="preserve">
+    <value>se référer aux espèces payées physiquement au guichet et enregistrées directement contre</value>
+  </data>
+  <data name="Reminder" xml:space="preserve">
+    <value>Rappel</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>requis</value>
+  </data>
+  <data name="SearchRequired" xml:space="preserve">
+    <value>recherche requise</value>
+  </data>
+  <data name="SelectingAnEventItemIs" xml:space="preserve">
+    <value>La sélection d'un élément d'événement est</value>
+  </data>
+  <data name="Staff" xml:space="preserve">
+    <value>personnel</value>
+  </data>
+  <data name="TheActualAmountDisbursedShouldBeBrokenDownUsingTheDenominationInterfaceToMatchTheTotalCashOut" xml:space="preserve">
+    <value>Le montant réel distribué doit être ventilé à l'aide de l'interface de dénomination pour correspondre au total de la sortie de caisse.</value>
+  </data>
+  <data name="TheRecipientsNameIsRequiredForAllTransactions" xml:space="preserve">
+    <value>Le nom du destinataire est requis pour toutes les transactions - cela garantit la traçabilité et l'exactitude des rapports.</value>
+  </data>
+  <data name="ThisInterfaceManages" xml:space="preserve">
+    <value>Cette interface gère</value>
+  </data>
+  <data name="ThisInterfaceSupportsGLLinked" xml:space="preserve">
+    <value>Cette interface prend en charge les éléments liés au GL</value>
+  </data>
+  <data name="ThisModuleIsDesignedFor" xml:space="preserve">
+    <value>Ce module est conçu pour</value>
+  </data>
+  <data name="TiedToTheSelected" xml:space="preserve">
+    <value>lié à l'élément sélectionné</value>
+  </data>
+  <data name="TipsAndGuidelinesForOtherExpense" xml:space="preserve">
+    <value>Conseils et lignes directrices pour les autres dépenses</value>
+  </data>
+  <data name="ToEnsureProperGLMappingAndAuditTrail" xml:space="preserve">
+    <value>pour assurer une cartographie GL appropriée et une piste d'audit.</value>
+  </data>
+  <data name="TRUSTSOFTCREDITTSC" xml:space="preserve">
+    <value>TRUST SOFT CREDIT (TSC)</value>
+  </data>
+  <data name="UseTheRadioButtonsToIndicateWhetherTheRecipientIsA" xml:space="preserve">
+    <value>Utilisez les boutons radio pour indiquer si le destinataire est un</value>
+  </data>
+  <data name="UsingPredefined" xml:space="preserve">
+    <value>en utilisant des éléments prédéfinis</value>
+  </data>
+  <data name="WelcomeToTheCashDeskOf" xml:space="preserve">
+    <value>Bienvenue à la caisse de</value>
+  </data>
+  <data name="WithOptionalMemberAssociation" xml:space="preserve">
+    <value>avec association de membre facultative. Utilisez d'autres modules pour les retraits standard de membres ou les décaissements de prêts.</value>
+  </data>
+</root>

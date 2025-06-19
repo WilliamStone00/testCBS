@@ -121,7 +121,7 @@
     <value>Balancing account</value>
   </data>
   <data name="BalancingAccountNumber" xml:space="preserve">
-    <value>Balancing accountNumber</value>
+    <value>Balancing account number</value>
   </data>
   <data name="Booking" xml:space="preserve">
     <value>Booking</value>
@@ -130,7 +130,7 @@
     <value>Derterminant</value>
   </data>
   <data name="DerterminantAccountNumber" xml:space="preserve">
-    <value>Derterminant AccountNumber</value>
+    <value>Derterminant account number</value>
   </data>
   <data name="EntryRule" xml:space="preserve">
     <value>Entry rule</value>

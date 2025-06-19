@@ -673,7 +673,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Perform Transfer.
         /// </summary>
         internal static string PerformTransfer {
             get {

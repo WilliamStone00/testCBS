@@ -538,7 +538,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to InThisStepTheCivilServantsSalaryPayableAccountIsDebitedAndTheMembersSalaryAccountsAreCredited.
+        ///   Looks up a localized string similar to In this step the civil servants salary payable account is debited and the members salary accounts are credited.
         /// </summary>
         internal static string InThisStepTheCivilServantsSalaryPayableAccountIsDebitedAndTheMembersSalaryAccountsAreCredited {
             get {
@@ -548,7 +548,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to InThisStepThePrivateInstitutionsSalaryPayableAccountIsDebitedAndTheMembersSalaryAccountsAreCredited.
+        ///   Looks up a localized string similar to In this step the private institutions salary payable account is debited and the members salary accounts are credited.
         /// </summary>
         internal static string InThisStepThePrivateInstitutionsSalaryPayableAccountIsDebitedAndTheMembersSalaryAccountsAreCredited {
             get {
@@ -639,7 +639,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MapSelectedChargeType.
+        ///   Looks up a localized string similar to Map selected charge type.
         /// </summary>
         internal static string MapSelectedChargeType {
             get {
@@ -873,7 +873,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SelectTheAccountForTrackingCashInCommissionsForCamCCULShare.
+        ///   Looks up a localized string similar to Select the account for tracking cashIn commissions for CamCCUL share.
         /// </summary>
         internal static string SelectTheAccountForTrackingCashInCommissionsForCamCCULShare {
             get {
@@ -882,7 +882,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SelectTheAccountForTrackingCashInCommissionsForFluxAndPTMShare.
+        ///   Looks up a localized string similar to Select the account for tracking cashIn commissions for Flux and PTM share.
         /// </summary>
         internal static string SelectTheAccountForTrackingCashInCommissionsForFluxAndPTMShare {
             get {
@@ -900,7 +900,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SelectTheAccountForTrackingCashOutCommissionsForCamCCULShare.
+        ///   Looks up a localized string similar to Select the account for tracking cashout commissions for CamCCUL share.
         /// </summary>
         internal static string SelectTheAccountForTrackingCashOutCommissionsForCamCCULShare {
             get {
@@ -909,7 +909,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SelectTheAccountForTrackingCashOutCommissionsForFluxAndPTMShare.
+        ///   Looks up a localized string similar to Select the account for tracking cashout commissions for Flux and PTM share.
         /// </summary>
         internal static string SelectTheAccountForTrackingCashOutCommissionsForFluxAndPTMShare {
             get {
@@ -918,7 +918,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SelectTheAccountForTrackingTransferCommissionsAtTheHeadOffice.
+        ///   Looks up a localized string similar to Select the account for tracking transfer commissions at the Head Office.
         /// </summary>
         internal static string SelectTheAccountForTrackingTransferCommissionsAtTheHeadOffice {
             get {
@@ -927,7 +927,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SelectTheAccountForTrackingTransferCommissionsForCamCCULShare.
+        ///   Looks up a localized string similar to Select the account for tracking transfer commissions for CamCCUL share.
         /// </summary>
         internal static string SelectTheAccountForTrackingTransferCommissionsForCamCCULShare {
             get {
@@ -936,7 +936,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SelectTheAccountForTrackingTransferCommissionsForFluxAndPTMShare.
+        ///   Looks up a localized string similar to Select theaccount for tracking transfer commissions for Flux and PTM Share.
         /// </summary>
         internal static string SelectTheAccountForTrackingTransferCommissionsForFluxAndPTMShare {
             get {
@@ -990,7 +990,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SelectTheFeeTypeToMapToThisProduct.
+        ///   Looks up a localized string similar to Select the fee type to map to this product.
         /// </summary>
         internal static string SelectTheFeeTypeToMapToThisProduct {
             get {
@@ -999,7 +999,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SelfTransfer.
+        ///   Looks up a localized string similar to Self transfer.
         /// </summary>
         internal static string SelfTransfer {
             get {
@@ -1008,7 +1008,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SelfTransferDescription.
+        ///   Looks up a localized string similar to Self transfer description.
         /// </summary>
         internal static string SelfTransferDescription {
             get {
@@ -1017,7 +1017,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Step1ReceivingMoneyFromUBCCivilServants.
+        ///   Looks up a localized string similar to Step1 receiving money from UBC Civil servants.
         /// </summary>
         internal static string Step1ReceivingMoneyFromUBCCivilServants {
             get {
@@ -1026,7 +1026,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Step1ReceivingMoneyFromUBCPrivateInstitutions.
+        ///   Looks up a localized string similar to Step1 receiving money from UBC private institutions.
         /// </summary>
         internal static string Step1ReceivingMoneyFromUBCPrivateInstitutions {
             get {
@@ -1035,7 +1035,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Step4DisbursementOfFundsIntoSalaryAccountsCivilServants.
+        ///   Looks up a localized string similar to Step4 disbursement of funds into salary accounts civil servants.
         /// </summary>
         internal static string Step4DisbursementOfFundsIntoSalaryAccountsCivilServants {
             get {
@@ -1044,7 +1044,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Step4DisbursementOfFundsIntoSalaryAccountsPrivateInstitutions.
+        ///   Looks up a localized string similar to Step4 disbursement of funds into salary accounts private institutions.
         /// </summary>
         internal static string Step4DisbursementOfFundsIntoSalaryAccountsPrivateInstitutions {
             get {
@@ -1098,7 +1098,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TheSuspenseAccountIsUsedToTemporarilyHoldSalariesForUnidentifiedSalaryEarnersFromTheListOfSalaryDisbursementsProvidedByTheStateOrPrivateInstitutions.
+        ///   Looks up a localized string similar to The suspense account is used to temporarily hold salaries for unidentified salary earners from the list of salary disbursements provided by the state or private institutions.
         /// </summary>
         internal static string TheSuspenseAccountIsUsedToTemporarilyHoldSalariesForUnidentifiedSalaryEarnersFromTheListOfSalaryDisbursementsProvidedByTheStateOrPrivateInstitutions {
             get {
@@ -1117,7 +1117,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ThisStepInvolvesDebitingTheUBCCurrentAccountAndCreditingTheCivilServantsSalaryPayableAccount.
+        ///   Looks up a localized string similar to This step involves debiting the UBC current account and crediting the civil servants salary payable account.
         /// </summary>
         internal static string ThisStepInvolvesDebitingTheUBCCurrentAccountAndCreditingTheCivilServantsSalaryPayableAccount {
             get {
@@ -1127,7 +1127,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ThisStepInvolvesDebitingTheUBCCurrentAccountAndCreditingThePrivateInstitutionsSalaryPayableAccount.
+        ///   Looks up a localized string similar to This step involves debiting the UBC current account and crediting the private institutions salary payable account.
         /// </summary>
         internal static string ThisStepInvolvesDebitingTheUBCCurrentAccountAndCreditingThePrivateInstitutionsSalaryPayableAccount {
             get {

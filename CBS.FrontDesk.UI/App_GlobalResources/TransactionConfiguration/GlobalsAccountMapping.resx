@@ -295,10 +295,10 @@
     <comment>Compte de frais d'intérêts (C'est un compte qui reçoit tous les intérêts payés à d'autres comptes)</comment>
   </data>
   <data name="InThisStepTheCivilServantsSalaryPayableAccountIsDebitedAndTheMembersSalaryAccountsAreCredited" xml:space="preserve">
-    <value>InThisStepTheCivilServantsSalaryPayableAccountIsDebitedAndTheMembersSalaryAccountsAreCredited</value>
+    <value>In this step the civil servants salary payable account is debited and the members salary accounts are credited</value>
   </data>
   <data name="InThisStepThePrivateInstitutionsSalaryPayableAccountIsDebitedAndTheMembersSalaryAccountsAreCredited" xml:space="preserve">
-    <value>InThisStepThePrivateInstitutionsSalaryPayableAccountIsDebitedAndTheMembersSalaryAccountsAreCredited</value>
+    <value>In this step the private institutions salary payable account is debited and the members salary accounts are credited</value>
   </data>
   <data name="LiaisonAccount" xml:space="preserve">
     <value>Liaison Account</value>
@@ -331,7 +331,7 @@
     <comment>Mappage des frais de formulaire de retrait de</comment>
   </data>
   <data name="MapSelectedChargeType" xml:space="preserve">
-    <value>MapSelectedChargeType</value>
+    <value>Map selected charge type</value>
     <comment>Associer le type de frais sélectionné</comment>
   </data>
   <data name="NoOrdinaryAccountMapped" xml:space="preserve">
@@ -414,69 +414,64 @@
     <value>Select the account for tracking cashin commissions at the head office</value>
   </data>
   <data name="SelectTheAccountForTrackingCashInCommissionsForCamCCULShare" xml:space="preserve">
-    <value>SelectTheAccountForTrackingCashInCommissionsForCamCCULShare</value>
+    <value>Select the account for tracking cashIn commissions for CamCCUL share</value>
   </data>
   <data name="SelectTheAccountForTrackingCashInCommissionsForFluxAndPTMShare" xml:space="preserve">
-    <value>SelectTheAccountForTrackingCashInCommissionsForFluxAndPTMShare</value>
+    <value>Select the account for tracking cashIn commissions for Flux and PTM share</value>
   </data>
   <data name="SelectTheAccountForTrackingCashOutCommissionsAtTheHeadOffice" xml:space="preserve">
     <value>Select the account for tracking cashout commissions at the head office</value>
   </data>
   <data name="SelectTheAccountForTrackingCashOutCommissionsForCamCCULShare" xml:space="preserve">
-    <value>SelectTheAccountForTrackingCashOutCommissionsForCamCCULShare</value>
+    <value>Select the account for tracking cashout commissions for CamCCUL share</value>
   </data>
   <data name="SelectTheAccountForTrackingCashOutCommissionsForFluxAndPTMShare" xml:space="preserve">
-    <value>SelectTheAccountForTrackingCashOutCommissionsForFluxAndPTMShare</value>
+    <value>Select the account for tracking cashout commissions for Flux and PTM share</value>
   </data>
   <data name="SelectTheAccountForTrackingTransferCommissionsAtTheHeadOffice" xml:space="preserve">
-    <value>SelectTheAccountForTrackingTransferCommissionsAtTheHeadOffice</value>
+    <value>Select the account for tracking transfer commissions at the Head Office</value>
   </data>
   <data name="SelectTheAccountForTrackingTransferCommissionsForCamCCULShare" xml:space="preserve">
-    <value>SelectTheAccountForTrackingTransferCommissionsForCamCCULShare</value>
+    <value>Select the account for tracking transfer commissions for CamCCUL share</value>
   </data>
   <data name="SelectTheAccountForTrackingTransferCommissionsForFluxAndPTMShare" xml:space="preserve">
-    <value>SelectTheAccountForTrackingTransferCommissionsForFluxAndPTMShare</value>
+    <value>Select theaccount for tracking transfer commissions for Flux and PTM Share</value>
   </data>
   <data name="SelectTheAccountForTrackingTransferCommissionsForHeadOfficeShare" xml:space="preserve">
     <value>Select the account for tracking transfer commissions for head office share</value>
   </data>
   <data name="SelectTheEventCodeAssociatedWithTheWithdrawalFormFeeForMoralPersons" xml:space="preserve">
     <value>Select the event code associated with the withdrawal form fee for moral persons</value>
-    <comment>Sélectionnez le code d'événement associé aux frais de formulaire de retrait pour les personnes morales.</comment>
   </data>
   <data name="SelectTheEventCodeAssociatedWithTheWithdrawalFormFeeForPhysicalPersons" xml:space="preserve">
     <value>Select the event code associated with the withdrawal form fee for physical persons</value>
-    <comment>Sélectionnez le code d'événement associé aux frais de formulaire de retrait pour les personnes physiques.</comment>
   </data>
   <data name="SelectTheEventCodeAssociatedWithTheWithdrawalFormFeeForSalary" xml:space="preserve">
     <value>SelectTheEventCodeAssociatedWithTheWithdrawalFormFeeForSalary</value>
-    <comment>Sélectionnez le code d'événement associé aux frais de formulaire de retrait pour le salaire.</comment>
   </data>
   <data name="SelectTheEventCodeAssociatedWithTheWithdrawalFormFeeForThirdPartyApplication" xml:space="preserve">
     <value>SelectTheEventCodeAssociatedWithTheWithdrawalFormFeeForThirdPartyApplication</value>
-    <comment>Sélectionnez le code d'événement associé aux frais de formulaire de retrait pour l'application tierce.</comment>
   </data>
   <data name="SelectTheFeeTypeToMapToThisProduct" xml:space="preserve">
-    <value>SelectTheFeeTypeToMapToThisProduct</value>
-    <comment> Sélectionnez le type de frais à associer à ce produit.</comment>
+    <value>Select the fee type to map to this product</value>
   </data>
   <data name="SelfTransfer" xml:space="preserve">
-    <value>SelfTransfer</value>
+    <value>Self transfer</value>
   </data>
   <data name="SelfTransferDescription" xml:space="preserve">
-    <value>SelfTransferDescription</value>
+    <value>Self transfer description</value>
   </data>
   <data name="Step1ReceivingMoneyFromUBCCivilServants" xml:space="preserve">
-    <value>Step1ReceivingMoneyFromUBCCivilServants</value>
+    <value>Step1 receiving money from UBC Civil servants</value>
   </data>
   <data name="Step1ReceivingMoneyFromUBCPrivateInstitutions" xml:space="preserve">
-    <value>Step1ReceivingMoneyFromUBCPrivateInstitutions</value>
+    <value>Step1 receiving money from UBC private institutions</value>
   </data>
   <data name="Step4DisbursementOfFundsIntoSalaryAccountsCivilServants" xml:space="preserve">
-    <value>Step4DisbursementOfFundsIntoSalaryAccountsCivilServants</value>
+    <value>Step4 disbursement of funds into salary accounts civil servants</value>
   </data>
   <data name="Step4DisbursementOfFundsIntoSalaryAccountsPrivateInstitutions" xml:space="preserve">
-    <value>Step4DisbursementOfFundsIntoSalaryAccountsPrivateInstitutions</value>
+    <value>Step4 disbursement of funds into salary accounts private institutions</value>
   </data>
   <data name="SuspenseAccount" xml:space="preserve">
     <value>Suspense account</value>
@@ -496,16 +491,16 @@
     <comment>Le nom du produit d'épargne pour lequel les frais sont en cours de mappage.</comment>
   </data>
   <data name="TheSuspenseAccountIsUsedToTemporarilyHoldSalariesForUnidentifiedSalaryEarnersFromTheListOfSalaryDisbursementsProvidedByTheStateOrPrivateInstitutions" xml:space="preserve">
-    <value>TheSuspenseAccountIsUsedToTemporarilyHoldSalariesForUnidentifiedSalaryEarnersFromTheListOfSalaryDisbursementsProvidedByTheStateOrPrivateInstitutions</value>
+    <value>The suspense account is used to temporarily hold salaries for unidentified salary earners from the list of salary disbursements provided by the state or private institutions</value>
   </data>
   <data name="TheUniqueCodeAssignedTo" xml:space="preserve">
     <value>The unique code assigned to</value>
   </data>
   <data name="ThisStepInvolvesDebitingTheUBCCurrentAccountAndCreditingTheCivilServantsSalaryPayableAccount" xml:space="preserve">
-    <value>ThisStepInvolvesDebitingTheUBCCurrentAccountAndCreditingTheCivilServantsSalaryPayableAccount</value>
+    <value>This step involves debiting the UBC current account and crediting the civil servants salary payable account</value>
   </data>
   <data name="ThisStepInvolvesDebitingTheUBCCurrentAccountAndCreditingThePrivateInstitutionsSalaryPayableAccount" xml:space="preserve">
-    <value>ThisStepInvolvesDebitingTheUBCCurrentAccountAndCreditingThePrivateInstitutionsSalaryPayableAccount</value>
+    <value>This step involves debiting the UBC current account and crediting the private institutions salary payable account</value>
   </data>
   <data name="ToChartOfAccountEvents" xml:space="preserve">
     <value>To chart of account events</value>

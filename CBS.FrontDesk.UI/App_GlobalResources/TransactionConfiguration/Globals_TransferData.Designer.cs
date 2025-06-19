@@ -133,7 +133,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaxbAmount.
+        ///   Looks up a localized string similar to Max amount.
         /// </summary>
         internal static string MaxAmount {
             get {

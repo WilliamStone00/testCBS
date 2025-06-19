@@ -223,7 +223,7 @@
     <value>Select Search Option</value>
   </data>
   <data name="SelectThisOptionAndEnterTheTypeOfAction" xml:space="preserve">
-    <value>Select this option and enter the type of action (e.g., </value>
+    <value>Select this option and enter the type of action (e.g.,</value>
   </data>
   <data name="SelectThisOptionToFilterLogsByBranchName" xml:space="preserve">
     <value>Select this option to filter logs by branch name</value>
