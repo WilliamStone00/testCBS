@@ -236,12 +236,12 @@ namespace CBS.FrontDesk.UI.ReportForm
                     // ✅ Set the main data source for the report.
                     reportDoc.SetDataSource(mainData);
 
-                    // ✅ Apply report parameters from the session data.
-                    ApplyReportParameters(reportDoc);
+                  
 
                     // ✅ Bind data to any subreports associated with the main report.
                     BindSubReports(reportDoc);
-
+                    // ✅ Apply report parameters from the session data.
+                    ApplyReportParameters(reportDoc);
                     // ✅ Determine the export format using the specified export action (e.g., PDF, Excel, Word).
                     ExportFormatType format = GetExportFormat(exportAction);
 

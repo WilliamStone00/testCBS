@@ -1,7 +1,7 @@
 ﻿
 $(document).ready(function () {
     // Function to toggle MFI and Event sections and update the label
-   
+
     $('#eventDiv').hide();  // Show EventDiv if needed
 
     // Initial load: hide/show based on checkbox state
@@ -12,16 +12,16 @@ $(document).ready(function () {
         toggleSections();
     });
 });
- function toggleSections() {
-        if ($('#isCentralisedCheck').is(':checked')) {
-            $('#mfi').show();  // Show MFI if IsCentralised is checked
-            $('#isCentralisedLabel').text("Uncheck to centralise this policy");  // Update label text
-        } else {
-            $('#mfi').hide();  // Hide MFI if IsCentralised is not checked
-            $('#isCentralisedLabel').text("Check to de-centralise this policy");  // Revert label text
-        }
-
+function toggleSections() {
+    if ($('#isCentralisedCheck').is(':checked')) {
+        $('#mfi').show();  // Show MFI if IsCentralised is checked
+        $('#isCentralisedLabel').text("Uncheck to centralise this policy");  // Update label text
+    } else {
+        $('#mfi').hide();  // Hide MFI if IsCentralised is not checked
+        $('#isCentralisedLabel').text("Check to de-centralise this policy");  // Revert label text
     }
+
+}
 function AddORUpdateGenCustom(KEY, divToLoadData, partialView, path, controller, serviceOption, feeid) {
     // Initialize data and reset the main form
     EditResetMainCustom(KEY, partialView, divToLoadData, controller, "InitializeData", null, path, null, serviceOption);
@@ -62,7 +62,7 @@ function GetFee(KEY) {
             console.log(data.FeeType); // Output the FeeType received from the server to the console
 
             // Show or hide the eventDiv based on the OperationFeeType
-            if (data.OperationFeeType === "MemberShip") {
+            if (data.OperationFeeType === "MemberShip" || data.OperationFeeType === "DailySaverRegistrationFee") {
                 $('#eventDiv').show(); // Show the eventDiv if OperationFeeType is "MemberShip"
             } else {
                 $('#eventDiv').hide(); // Hide the eventDiv if OperationFeeType is not "MemberShip"
@@ -79,7 +79,8 @@ function GetFee(KEY) {
                 $('#range input[type="text"]').val(''); // Reset input values
                 $('#range').hide(); // Hide the entire #range section
             }
-            else if (data.OperationFeeType === "MemberShip") {
+            else if (data.OperationFeeType === "MemberShip" || data.OperationFeeType === "DailySaverRegistrationFee")
+            {
                 $('#memberShip').show(); // Show input for range
                 $('#range').show(); // Show input for range
                 $('#amountfrom').hide(); // Show input for range
@@ -100,7 +101,7 @@ function GetFee(KEY) {
             }
 
             // Output the selected FeeType to the UI
-            $('#select_base').html("Configuration option: " + data.FeeType + "[" + data.OperationFeeType+"]");
+            $('#select_base').html("Configuration option: " + data.FeeType + "[" + data.OperationFeeType + "]");
         },
         error: function (err) { // Callback function executed if there's an error in the AJAX request
             appalert(err.statusText, 1, 3); // Show an alert with the error message

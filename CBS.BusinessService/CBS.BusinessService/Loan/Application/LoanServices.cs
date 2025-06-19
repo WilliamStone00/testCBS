@@ -21,6 +21,8 @@ using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.ReportDataSetDto.LoanPortFolioDataSet;
 using CBS.BusinessService.LoanportFolioFlattener;
 using CBS.NLoan.Data.Dto.DataSetLoanPortfolio;
+using CBS.FrontDesk.Data.ReportDataSetDto.LoanDeliquentAnalysis;
+using Microsoft.Owin.Logging;
 
 namespace CBS.BusinessService
 {
@@ -619,6 +621,62 @@ namespace CBS.BusinessService
             }
 
         }
+        public async Task<LoanDelinquencyReportDto> GetLoanDelinquencyReportAsync(GenerateLoanPortfolioReportCommand reportCommand)
+        {
+            try
+            {
+                bool isSingleBranch = false;
+
+                // If not head office, use user's branch
+                if (!IsHeadOffice())
+                {
+                    isSingleBranch = true;
+                    reportCommand.BranchId = GetBranchID();
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(reportCommand.BranchId))
+                    {
+                        reportCommand.BranchId = "All";
+                    }
+                }
+
+                // Build API call
+                var queryString = ToQueryString(reportCommand);
+                var fullUrl = $"{APICallHelper.GetLoanPortFolioAlpha}?{queryString}";
+
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<LoanDelinquencyReportDto>>(fullUrl);
+
+                if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+                {
+                    var report = couApiResponse.ApiResponseData.Data;
+                    var branches = await _branchServices.GetBranches();
+
+                    // If "All", fallback to default branch to fetch bank metadata
+                    if (IsHeadOffice() && reportCommand.BranchId == "All")
+                    {
+                        reportCommand.BranchId = GetBranchID();
+                    }
+
+                    var branch = branches.FirstOrDefault(x => x.Id == reportCommand.BranchId);
+
+                    // Enrich the report with metadata
+                    var enrichedReport = LoanDelinquencyFlattener.FlattenAll(report, branch);
+
+                    // Add flattened rows (optional, used in Crystal or API)
+                    enrichedReport.FlattenedRows = LoanDelinquencyFlattener.FlattenToFlatRows(enrichedReport);
+
+                    return enrichedReport;
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public LoanPortfolioAnalysis MapToLoanPortfolioAnalysis(LoanPortfolioAnalysis reportDto,Branch branch)
         {
             var headOffice = branch.Bank;

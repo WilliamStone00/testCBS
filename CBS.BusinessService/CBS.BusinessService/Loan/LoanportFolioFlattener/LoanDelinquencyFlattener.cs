@@ -1,5 +1,6 @@
 ﻿using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.ReportDataSetDto;
+using CBS.FrontDesk.Data.ReportDataSetDto.LoanDeliquentAnalysis;
 using CBS.FrontDesk.Data.ReportDataSetDto.LoanPortFolioDataSet;
 using CBS.NLoan.Data.Dto.DataSetLoanPortfolio;
 using System;
@@ -253,6 +254,107 @@ namespace CBS.BusinessService.LoanportFolioFlattener
                 rpt.PortfolioDetails = report.PortfolioDetails;
             }
             return rpt;
+        }
+
+        /// <summary>
+        /// Enriches the original report with branch and head office info.
+        /// </summary>
+        public static LoanDelinquencyReportDto FlattenAll(LoanDelinquencyReportDto report, Branch branch)
+        {
+            var headOffice = branch?.Bank ?? new Bank(); // fallback
+
+            report.Logo = branch.LogoUrl ?? headOffice.LogoUrl;
+            report.BranchName = branch.Name;
+            report.BranchCode = branch.BranchCode;
+            report.BranchAddress = branch.Address;
+            report.BranchTelephone = branch.Telephone;
+
+            report.HeadOfficeName = headOffice.Name;
+            report.HeadOfficeAddress = headOffice.Address;
+            report.HeadOfficeTelephone = headOffice.Telephone;
+            report.HeadOfficeEmail = headOffice.Email;
+            report.HeadOfficeWebSite = headOffice.WebSite;
+            report.HeadOfficeInitial = headOffice.BankInitial;
+            report.HeadOfficeCode = headOffice.BankCode;
+
+            return report;
+        }
+
+        /// <summary>
+        /// Converts the structured report into flat rows for Crystal Reports.
+        /// </summary>
+        public static List<FlatLoanDelinquencyRow> FlattenToFlatRows(LoanDelinquencyReportDto report)
+        {
+            var flatRows = new List<FlatLoanDelinquencyRow>();
+
+            // Helper for shared metadata
+            FlatLoanDelinquencyRow PopulateShared(FlatLoanDelinquencyRow row)
+            {
+                row.ReportDate = report.ReportDate;
+
+                row.BranchName = report.BranchName;
+                row.BranchCode = report.BranchCode;
+                row.BranchAddress = report.BranchAddress;
+                row.BranchTelephone = report.BranchTelephone;
+
+                row.HeadOfficeName = report.HeadOfficeName;
+                row.HeadOfficeAddress = report.HeadOfficeAddress;
+                row.HeadOfficeTelephone = report.HeadOfficeTelephone;
+                row.HeadOfficeEmail = report.HeadOfficeEmail;
+                row.HeadOfficeWebSite = report.HeadOfficeWebSite;
+                row.HeadOfficeInitial = report.HeadOfficeInitial;
+                row.HeadOfficeCode = report.HeadOfficeCode;
+                row.LogoUrl = report.Logo;
+
+                return row;
+            }
+
+            foreach (var item in report.CategorySummaries)
+            {
+                flatRows.Add(PopulateShared(new FlatLoanDelinquencyRow
+                {
+                    Section = "CATEGORY",
+                    Category = item.Category,
+                    TotalCount = item.TotalCount,
+                    MaleCount = item.MaleCount,
+                    FemaleCount = item.FemaleCount,
+                    GroupCount = item.GroupCount,
+                    TotalBalance = item.TotalBalance,
+                    MaleBalance = item.MaleBalance,
+                    FemaleBalance = item.FemaleBalance,
+                    GroupBalance = item.GroupBalance,
+                    Percentage = item.PercentageOfTotalLoans
+                }));
+            }
+
+            foreach (var g in report.GenderSummariesAfter60Days)
+            {
+                flatRows.Add(PopulateShared(new FlatLoanDelinquencyRow
+                {
+                    Section = "GENDER",
+                    Gender = g.Gender,
+                    TotalAmount = g.TotalAmount,
+                    DelinquentAmount = g.DelinquentAmount,
+                    DelinquentLoanCount = g.DelinquentLoanCount,
+                    Percentage = g.PercentageOfTotalDelinquency
+                }));
+            }
+
+            foreach (var lt in report.LoanTypeSummariesAfter60Days)
+            {
+                flatRows.Add(PopulateShared(new FlatLoanDelinquencyRow
+                {
+                    Section = "LOAN_TYPE",
+                    LoanType = lt.LoanType,
+                    TotalAmount = lt.TotalAmount,
+                    MaleBalance = lt.MaleAmount,
+                    FemaleBalance = lt.FemaleAmount,
+                    GroupBalance = lt.GroupAmount,
+                    Percentage = lt.PercentageOfTotalDelinquency
+                }));
+            }
+
+            return flatRows;
         }
     }
 

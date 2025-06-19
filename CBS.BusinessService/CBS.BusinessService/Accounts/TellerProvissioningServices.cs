@@ -42,11 +42,13 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                if (!ComputeDenomination(model.CurrencyNotes, Convert.ToInt32(model.InitialAmount)))
+                var (isValid, discrepancyMessage) = ValidateDenominations(model.CurrencyNotes, model.InitialAmount);
+
+                if (!isValid)
                 {
-                    GetExecutionMessages(model, false, $"{model.Amount}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "The amount you entered does not match the breakdown of the currency denominations provided. Please verify that the total cash amount you input aligns with the individual denominations listed. This ensures that the total cash in hand is accurate and properly accounted for. Review the denomination details and adjust the entered amount accordingly."
-);
+                    string errorMessage = $"{discrepancyMessage}";
+                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                       ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
                     return ExecutionMessage;
                 }
 
@@ -81,8 +83,6 @@ namespace CBS.BusinessService.Accounts
         {
             var branch = await _brancheServices.GetBranch(GetBranchID());
 
-
-
             var tillDs = new TillOpenAndClossingDS
             {
                 UserIdInChargeOfThisTeller = tellerProvisioningHistory.UserIdInChargeOfThisTeller,
@@ -104,34 +104,50 @@ namespace CBS.BusinessService.Accounts
                 SubTellerComment = tellerProvisioningHistory.SubTellerComment,
                 Note = tellerProvisioningHistory.Note,
                 ClossedStatus = tellerProvisioningHistory.ClossedStatus,
-                TillName = tellerProvisioningHistory.Teller.name, // Assuming you have a TillName property in the Branch object
+                TillName = tellerProvisioningHistory.Teller.name,
                 InitialPrinting = tellerProvisioningHistory.InitialPrinting,
+
+                // Opening Notes
                 OpeningNote10000 = tellerProvisioningHistory.OpeningNote10000,
                 OpeningNote5000 = tellerProvisioningHistory.OpeningNote5000,
                 OpeningNote2000 = tellerProvisioningHistory.OpeningNote2000,
                 OpeningNote1000 = tellerProvisioningHistory.OpeningNote1000,
                 OpeningNote500 = tellerProvisioningHistory.OpeningNote500,
+
+                // Opening Coins (with new denominations)
                 OpeningCoin500 = tellerProvisioningHistory.OpeningCoin500,
+                OpeningCoin350 = tellerProvisioningHistory.OpeningCoin350,
+                OpeningCoin250 = tellerProvisioningHistory.OpeningCoin250,
+                OpeningCoin200 = tellerProvisioningHistory.OpeningCoin200,
+                OpeningCoin150 = tellerProvisioningHistory.OpeningCoin150,
                 OpeningCoin100 = tellerProvisioningHistory.OpeningCoin100,
                 OpeningCoin50 = tellerProvisioningHistory.OpeningCoin50,
                 OpeningCoin25 = tellerProvisioningHistory.OpeningCoin25,
                 OpeningCoin10 = tellerProvisioningHistory.OpeningCoin10,
                 OpeningCoin5 = tellerProvisioningHistory.OpeningCoin5,
                 OpeningCoin1 = tellerProvisioningHistory.OpeningCoin1,
+
+                // Closing Notes
                 ClosingNote10000 = tellerProvisioningHistory.ClosingNote10000,
                 ClosingNote5000 = tellerProvisioningHistory.ClosingNote5000,
                 ClosingNote2000 = tellerProvisioningHistory.ClosingNote2000,
                 ClosingNote1000 = tellerProvisioningHistory.ClosingNote1000,
                 ClosingNote500 = tellerProvisioningHistory.ClosingNote500,
+
+                // Closing Coins (with new denominations)
                 ClosingCoin500 = tellerProvisioningHistory.ClosingCoin500,
+                ClosingCoin350 = tellerProvisioningHistory.ClosingCoin350,
+                ClosingCoin250 = tellerProvisioningHistory.ClosingCoin250,
+                ClosingCoin200 = tellerProvisioningHistory.ClosingCoin200,
+                ClosingCoin150 = tellerProvisioningHistory.ClosingCoin150,
                 ClosingCoin100 = tellerProvisioningHistory.ClosingCoin100,
                 ClosingCoin50 = tellerProvisioningHistory.ClosingCoin50,
                 ClosingCoin25 = tellerProvisioningHistory.ClosingCoin25,
                 ClosingCoin10 = tellerProvisioningHistory.ClosingCoin10,
                 ClosingCoin5 = tellerProvisioningHistory.ClosingCoin5,
                 ClosingCoin1 = tellerProvisioningHistory.ClosingCoin1,
-                //TotalOpeningAmount = tellerProvisioningHistory.TotalOpeningAmount,
-                //TotalClosingAmount = tellerProvisioningHistory.TotalClosingAmount,
+
+                //Meta & Branch Info
                 Id = tellerProvisioningHistory.Id,
                 IsPrimaryTeller = tellerProvisioningHistory.IsPrimaryTeller,
                 TellerType = tellerProvisioningHistory.Teller?.isPrimary == true ? "Primary-Till" : "Sub-Till",
@@ -148,7 +164,7 @@ namespace CBS.BusinessService.Accounts
                 HeadOfficeInitial = branch.Bank.BankInitial,
                 HeadOfficeCode = branch.Bank.BankCode
             };
-            // Convert the single instance to a list
+
             var tillDsList = new List<TillOpenAndClossingDS> { tillDs };
             HttpContext.Current.Session["rptSource"] = tillDsList;
         }
@@ -259,10 +275,13 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                if (!ComputeDenomination(model.CurrencyNotes, Convert.ToInt32(model.InitialAmount)))
+                var (isValid, discrepancyMessage) = ValidateDenominations(model.CurrencyNotes, model.InitialAmount);
+
+                if (!isValid)
                 {
-                    GetExecutionMessages(model, false, $"{model.InitialAmount}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "The amount you entered does not match the breakdown of the currency denominations provided. Please verify that the total cash amount you input aligns with the individual denominations listed. This ensures that the total cash in hand is accurate and properly accounted for. Review the denomination details and adjust the entered amount accordingly.");
+                    string errorMessage = $"{discrepancyMessage}";
+                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                       ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
                     return ExecutionMessage;
                 }
                 var response = await _transactionApiHelper.PostAsync<ServiceResponse<TellerProvioningHistory>>(APICallHelper.OpenningOfDaySubTeller, model);

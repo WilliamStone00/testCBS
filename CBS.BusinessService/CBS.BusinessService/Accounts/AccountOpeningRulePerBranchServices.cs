@@ -2,22 +2,17 @@
 using BusinessServices;
 using CBS.API.Helper;
 using CBS.BusinessService.Config;
-using CBS.FrontDesk.Data.Entity.AccountingDayObject;
 using CBS.FrontDesk.Data.Entity.AccountOpeningRulePerBranchP;
-using CBS.FrontDesk.Data.Entity.LoanConf;
-using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CBS.BusinessService.Accounts
 {
-   
+
     public class AccountOpeningRulePerBranchServices : BaseService
     {
         private readonly ApiCallerHelper _transactionApiHelper;

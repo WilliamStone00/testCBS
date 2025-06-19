@@ -610,6 +610,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllLoanByCustomerId = "/api/v1/Loan/GetAllLoanByCustomerId";
         public static string GetLoan = "/api/v1/Loan/{0}";
         public static string GetLoanPortFolio = "/api/v1/Loan/generate-delinquent-loan-report";
+        public static string GetLoanPortFolioAlpha = "/api/v1/Loan/generate-delinquency-analytics-report-alpha";
         public static string GetLoans = "/api/v1/Loans/GetAllLoans";
         public static string InitiateBulkDownloadLoans = "/api/v1/FileDownloadInfo/InitiateBulkDownloadLoans";
         public static string BulkDownloadDeleteAndGetLoan = "/api/v1/FileDownloadInfo/{0}";

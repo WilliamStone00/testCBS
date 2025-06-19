@@ -516,6 +516,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppFiles\Reporting\Loan\LoanDeliquentReport\DeliquentLoanSummaryMAINRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeliquentLoanSummaryMAINRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Loan\LoanDeliquentReport\SubDelinquencyByGenderSummaryRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubDelinquencyByGenderSummaryRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Loan\LoanDeliquentReport\SubDelinquencyByLoanTypeSummaryRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubDelinquencyByLoanTypeSummaryRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Loan\LoanDeliquentReport\SubLoanDelinquencyCategorySummaryRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubLoanDelinquencyCategorySummaryRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="App_GlobalResources\AccountingConfiguration\GlobalAccount.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -936,6 +960,11 @@
     <Compile Include="Controllers\TransactionManagement\WithdrawalNotificationController.cs" />
     <Compile Include="Controllers\UserManagement\MFAVerificationController.cs" />
     <Compile Include="Controllers\UserManagement\UserManagementController.cs" />
+    <Compile Include="DataSet\Loan\DeliquentLoanSummaryDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeliquentLoanSummaryDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Filter\MaliciousContentScannerService.cs" />
     <Compile Include="WAF\Middleware\Correlation\CorrelationIdMiddleware.cs" />
     <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureFilter.cs" />
@@ -5249,6 +5278,17 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalWithdrawalNotification.Designer.cs</LastGenOutput>
     </Content>
+    <Content Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsc">
+      <DependentUpon>DeliquentLoanSummaryDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DeliquentLoanSummaryDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xss">
+      <DependentUpon>DeliquentLoanSummaryDataSet.xsd</DependentUpon>
+    </Content>
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -5908,6 +5948,22 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanTerm.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\Loan\LoanDeliquentReport\DeliquentLoanSummaryMAINRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DeliquentLoanSummaryMAINRPT.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Loan\LoanDeliquentReport\SubDelinquencyByGenderSummaryRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SubDelinquencyByGenderSummaryRPT.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Loan\LoanDeliquentReport\SubDelinquencyByLoanTypeSummaryRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SubDelinquencyByLoanTypeSummaryRPT.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Loan\LoanDeliquentReport\SubLoanDelinquencyCategorySummaryRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SubLoanDelinquencyCategorySummaryRPT.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -7096,6 +7152,7 @@
     <Folder Include="AppFiles\BarCodeImages\" />
     <Folder Include="AppFiles\Images\BarCodes\" />
     <Folder Include="AppFiles\Migration\TrialBalance\" />
+    <Folder Include="AppFiles\Reporting\Loan\LoanSituationAlpha\" />
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
     <Folder Include="Controllers\DailyCollectionManagement\" />

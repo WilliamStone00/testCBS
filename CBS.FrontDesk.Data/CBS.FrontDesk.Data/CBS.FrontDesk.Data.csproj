@@ -315,6 +315,12 @@
     <Compile Include="ReportDataSetDto\LoanPortFolioDataSet\FlatTargetGroupRecord.cs" />
     <Compile Include="ReportDataSetDto\LoanPortFolioDataSet\FlatZoneRecord.cs" />
     <Compile Include="ReportDataSetDto\LoanPortFolioDataSet\LoanDelinquencyReportResultRPT.cs" />
+    <Compile Include="ReportDataSetDto\LoanDeliquentAnalysis\DelinquencyByGenderSummary.cs" />
+    <Compile Include="ReportDataSetDto\LoanDeliquentAnalysis\DelinquencyByLoanTypeSummary.cs" />
+    <Compile Include="ReportDataSetDto\LoanDeliquentAnalysis\LoanDelinquencyCategorySummary.cs" />
+    <Compile Include="ReportDataSetDto\LoanDeliquentAnalysis\LoanDelinquencyEntry.cs" />
+    <Compile Include="ReportDataSetDto\LoanDeliquentAnalysis\LoanDelinquencyReportDto.cs" />
+    <Compile Include="ReportDataSetDto\LoanDeliquentAnalysis\LoanDeliquentDto.cs" />
     <Compile Include="ReportDataSetDto\TransactionReportDS.cs" />
     <Compile Include="Entity\ThirdPartyInstitution.cs" />
     <Compile Include="UserManagement\Request\UserAllowedIP.cs" />
