@@ -93,7 +93,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accounting\ProductAccountingBook.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Entity\Accounting\BlacklistAccount.cs" />
     <Compile Include="Entity\Accounting\Enumeration.cs" />
     <Compile Include="Entity\Accounting\TrialBalanceDt.cs" />
@@ -129,6 +128,8 @@
     <Compile Include="Entity\DataSetLoanPortfolio\DelinquencyCellData.cs" />
     <Compile Include="Entity\DataSetLoanPortfolio\LoanDelinquencyReportResult.cs" />
     <Compile Include="Entity\DataSetLoanPortfolio\LoanPortfolioDto.cs" />
+    <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportRPT.cs" />
+    <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportDtoMapper.cs" />
     <Compile Include="Entity\MemberNoneCashOperationsP\MemberNoneCashOperation.cs" />
     <Compile Include="Entity\MenuTranslationP\MenuTranslation.cs" />
     <Compile Include="Entity\RequestManagement\IdleTime.cs" />

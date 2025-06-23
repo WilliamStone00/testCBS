@@ -30,6 +30,8 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto.LoanDeliquentAnalysis
         public int DeliquentDays { get; set; }
         public decimal Fine { get; set; }
         public decimal VAT { get; set; }
+        public int Installments { get; set; }
+        public string LoanAccountNumber { get; set; }
         public string LoanManager { get; set; }
         public DateTime LoanDate { get; set; }
         public DateTime LastRepaymentDate { get; set; }

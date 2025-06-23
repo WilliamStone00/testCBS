@@ -231,6 +231,7 @@
     <Compile Include="Accounting\TellerCashReplenishmentServices.cs" />
     <Compile Include="Accounting\TransactionReferenceValidator.cs" />
     <Compile Include="Accounts\AccountOpeningRulePerBranchServices.cs" />
+    <Compile Include="Accounts\GeneralStatisticReport\GeneralStatisticReportServices.cs" />
     <Compile Include="Accounts\SalaryAnalysisResultServices.cs" />
     <Compile Include="Accounts\MemberNoneCashOperationServices.cs" />
     <Compile Include="Accounts\SalaryExecutionServices.cs" />

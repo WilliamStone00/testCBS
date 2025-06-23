@@ -20,7 +20,7 @@ using System.Web.UI.WebControls;
 
 namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 {
-    //[CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
 
     public class LoanRepaymentBackOfficeController : BaseController
     {

@@ -401,6 +401,13 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                         if (LoanDelinquencyReport == null || LoanDelinquencyReport.CategorySummaries == null || !LoanDelinquencyReport.FlattenedRows.Any())
                             return Json(new { success = false, message = "No delinquency data found." });
                         break;
+                    case "loansituations":
+                        relativeReportPath = "Loan/LoanSituationAlpha/LoanSituationAlphaRPT.rpt";
+                        reportTitle = $"LOANS SITUATION REPORT";
+                        LoanDelinquencyReport = await _LoanServices.GetLoanDelinquencyReportAsync(reportCommand);
+                        if (LoanDelinquencyReport == null || LoanDelinquencyReport.CategorySummaries == null || !LoanDelinquencyReport.LoanEntries.Any())
+                            return Json(new { success = false, message = "No loan situation data found." });
+                        break;
 
                     case "delinquentloan":
                         relativeReportPath = "Loan/PortFolio/DelinquentLoansRPT.rpt";
@@ -476,6 +483,10 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                     };
                     // ✅ Main report data can be the full report metadata (if used in header)
                     Session["MainData"] = new List<LoanDelinquencyReportDto> { LoanDelinquencyReport };
+                }
+                else if (mainReportType=="loansituations")
+                {
+                    Session["MainData"] = LoanDelinquencyReport.LoanEntries;
                 }
                 else
                 {

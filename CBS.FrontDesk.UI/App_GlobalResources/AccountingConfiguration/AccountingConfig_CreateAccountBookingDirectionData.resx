@@ -129,4 +129,8 @@
   <data name="SelectAccount" xml:space="preserve">
     <value>Select Account</value>
   </data>
+  <data name="ViewPendingRequests" xml:space="preserve">
+    <value>View pending request</value>
+    <comment>View pending request</comment>
+  </data>
 </root>
