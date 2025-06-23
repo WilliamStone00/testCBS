@@ -81,11 +81,11 @@
 
                                                             if (d.IsOwner)
                                                             {
-                                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.ViewStatus</a>
+                                                               <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ViewDepositRequestStatus','depositRequest','CashFlowManagement')" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToEdit">@GlobalCashFlowManagement.ViewStatus</a>
                                                             }
                                                             else
                                                             {
-                                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ApproveCashDepositRequest','approveDepositNotification','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToApprove">@GlobalCashFlowManagement.Approve</a>
+                                                               <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_CashDepositRequest','_ApproveCashDepositRequest','approveDepositNotification','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ApprovedBy @GlobalCashFlowManagement.CashRequestToApprove">@GlobalCashFlowManagement.Approve</a>
 
                                                             }
 

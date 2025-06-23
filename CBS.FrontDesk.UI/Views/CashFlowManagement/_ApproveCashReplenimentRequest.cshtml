@@ -149,6 +149,14 @@
                                         <label for="Account">@GlobalCashFlowManagement.MakeDecision</label>
                                     </div>
                                 </div>
+                                <div class="form-check mb-3" id="hideBranchID">
+                                    <div class="form-floating form-floating-outline">
+
+                                        @Html.DropDownListFor(m => m.CashReplenimentRequestdto.CorrespondingBranchId, new SelectList(ViewBag.ZoneBranch == null ? "" : ViewBag.ZoneBranch, "Text", "Value"), "", new { @class = "form-control select2", @id = "CorrespondingBranchID", @search = "true" })
+                                        @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.CorrespondingBranchId, "", new { @class = "text-danger" })
+                                        <label for="Account">@GlobalCashFlowManagement.SelectBranch</label>
+                                    </div>
+                                </div>
                                 <div id="hideAccountId">
                                     <div class="form-check mb-3">
                                         <div class="form-floating form-floating-outline">
@@ -158,14 +166,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-check mb-3" id="hideBranchID">
-                                    <div class="form-floating form-floating-outline">
 
-                                        @Html.DropDownListFor(m => m.CashReplenimentRequestdto.CorrespondingBranchId, new SelectList(ViewBag.ZoneBranch == null ? "" : ViewBag.ZoneBranch, "Text", "Value"), "", new { @class = "form-control select2", @id = "CorrespondingBranchID", @search = "true" })
-                                        @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.CorrespondingBranchId, "", new { @class = "text-danger" })
-                                        <label for="Account">@GlobalCashFlowManagement.SelectBranch</label>
-                                    </div>
-                                </div>
                                 <div class="form-check mb-3">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.CashReplenimentRequestdto.AmountApproved, new { @class = "form-control" })
@@ -188,6 +189,7 @@
                                     <input type="hidden" name="Action" value="insert" id="Action" />
 
                                 </div>
+
 
                             }
 

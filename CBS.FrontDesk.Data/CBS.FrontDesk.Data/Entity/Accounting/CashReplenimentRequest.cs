@@ -9,21 +9,23 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 {
     public enum CashReplishmentRequestStatus
     {
-        Pending,
-        Awaiting_Branch_Transfer,
+        Pending, // Initiated request for either cash out or cash in
+        Awaiting_Branch_Transfer, // Head office has Redirect Request for Internal Branch Transfer 
         Awaiting_Branch_CashClearing,
         Awaiting_Bank_CashOut,
         CashInFusion,
         Approved,
-        PendingApproval,
+        AcknowledgeApproved,// Acknowlege Head Office Request
         RedirectToBranchBCO,
         RedirectToBranchBD,
         RedirectToBranchBTB,
         Rejected,
         Awaiting_uploaded_bank_deposit_receipt,
- Cancel,
-        Completed
+
+        Completed,
+        Cancel
     }
+ 
     public enum CashRequisitionType
     {
         ORDER,
@@ -32,8 +34,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     }
     public class CashReplenimentRequest
     {
-        
-                    public string CorrespondingBranch { get; set; }
+        public string CorrespondingBranch { get; set; }
         public string BranchOffice { get; set; }
         public string Id { get; set; }
         public string ReferenceId { get; set; }
@@ -65,6 +66,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string TempId3 { get; set; } = "AccountId";
         public string TempData { get; set; } 
         public string CashReplishmentRequestStatus { get; set; } = "Pendding";
+        public string  AcknowledgementStatus { get; set; }  
         public CashApprovalResponse ConvertToCashApprovalResponse(bool Approved)
         { return new CashApprovalResponse { ApprovedMessage =this.ApprovedMessage, IsApproved=Approved,Id= this.Id }; }
 

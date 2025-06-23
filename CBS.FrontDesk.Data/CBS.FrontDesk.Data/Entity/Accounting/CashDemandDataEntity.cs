@@ -6,14 +6,24 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting
 {
+
+    public class ReferenceConfirmationRequest
+    {
+        public string ReferenceCode { get; set; }
+        public string UserInput { get; set; }
+        public string Message { get; set; }
+    }
+
     public class CashDemandDataEntity
     {
         public List<UsersNotification> UsersNotifications { get; set; } = new List<UsersNotification>();
         public CashInfusion CashInfusionModel { get; set; } = new CashInfusion();
         public CashInfusionRequest CashInfusionRequest { get; set; } = new CashInfusionRequest();
         public Approval Approval { get; set; } = new Approval();
+          public RedirectedForBankCashOut RedirectedForBankCashOut { get; set; } = new RedirectedForBankCashOut();
         public BankCashOut BankCashOut { get; set; } = new BankCashOut(); 
         public BankDepositCashClearing BankDepositCashClearing { get; set; } = new BankDepositCashClearing();
+        public Acknowledge Acknowledge { get; set; } = new Acknowledge();
         public CashClearing CashClearing { get; set; } = new CashClearing();
         public BranchToBranchTransfer BranchToBranchTransfer { get; set; } = new BranchToBranchTransfer();
         public DetailsDto DetailsDto { get; set; } = new DetailsDto();
@@ -29,9 +39,10 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public List<CashReplenimentRequestDto> ListCashReplenimentRequestDto { get; set; } = new List<CashReplenimentRequestDto>();
         public List<DetailsDto> DetailsDtos { get; set; } = new List<DetailsDto>();
         public QueryModel QueryModel { get; set; }
-        public string ServiceOption { get; set; }
+        public string ServiceOption { get; set; } //
         public string Id { get; set; }
         public string Action { get; set; }
+        public string enteredReference { get; set; }
 
     }
 
