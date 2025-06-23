@@ -95,5 +95,14 @@ namespace Resources {
                 return ResourceManager.GetString("SelectAccount", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View pending request.
+        /// </summary>
+        internal static string ViewPendingRequests {
+            get {
+                return ResourceManager.GetString("ViewPendingRequests", resourceCulture);
+            }
+        }
     }
 }

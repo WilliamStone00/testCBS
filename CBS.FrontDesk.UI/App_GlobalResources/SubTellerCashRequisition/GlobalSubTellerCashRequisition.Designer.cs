@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add new request.
+        /// </summary>
+        internal static string AddNewRequest {
+            get {
+                return ResourceManager.GetString("AddNewRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Amount.
         /// </summary>
         internal static string Amount {
@@ -124,6 +133,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View and manage pending requests.
+        /// </summary>
+        internal static string PendingRequests {
+            get {
+                return ResourceManager.GetString("PendingRequests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Main till cash request validation.
+        /// </summary>
+        internal static string PRIMAR_TELLER_CASH_REQUEST_VALIDATION {
+            get {
+                return ResourceManager.GetString("PRIMAR_TELLER_CASH_REQUEST_VALIDATION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Requested amount.
         /// </summary>
         internal static string RequestedAmount {
@@ -160,11 +187,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select branch.
+        /// </summary>
+        internal static string SelectBranch {
+            get {
+                return ResourceManager.GetString("SelectBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cash requesition sub-till.
+        /// </summary>
+        internal static string SubTellerCashRequisition {
+            get {
+                return ResourceManager.GetString("SubTellerCashRequisition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub till requests.
+        /// </summary>
+        internal static string SubTellersRequests {
+            get {
+                return ResourceManager.GetString("SubTellersRequests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total amount.
         /// </summary>
         internal static string TotalAmount {
             get {
                 return ResourceManager.GetString("TotalAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View and manage pending requests.
+        /// </summary>
+        internal static string ViewPendingRequests {
+            get {
+                return ResourceManager.GetString("ViewPendingRequests", resourceCulture);
             }
         }
     }

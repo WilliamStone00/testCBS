@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddNewRequest" xml:space="preserve">
+    <value>Add new request</value>
+  </data>
   <data name="Amount" xml:space="preserve">
     <value>Amount</value>
   </data>
@@ -138,6 +141,12 @@
   <data name="intoOperation" xml:space="preserve">
     <value>into operation</value>
   </data>
+  <data name="PendingRequests" xml:space="preserve">
+    <value>View and manage pending requests</value>
+  </data>
+  <data name="PRIMAR_TELLER_CASH_REQUEST_VALIDATION" xml:space="preserve">
+    <value>Main till cash request validation</value>
+  </data>
   <data name="RequestedAmount" xml:space="preserve">
     <value>Requested amount</value>
   </data>
@@ -150,7 +159,20 @@
   <data name="RequestValidation" xml:space="preserve">
     <value>Request validation</value>
   </data>
+  <data name="SelectBranch" xml:space="preserve">
+    <value>Select branch</value>
+  </data>
+  <data name="SubTellerCashRequisition" xml:space="preserve">
+    <value>Cash requesition sub-till</value>
+    <comment>Cash requesition sub-till</comment>
+  </data>
+  <data name="SubTellersRequests" xml:space="preserve">
+    <value>Sub till requests</value>
+  </data>
   <data name="TotalAmount" xml:space="preserve">
     <value>Total amount</value>
+  </data>
+  <data name="ViewPendingRequests" xml:space="preserve">
+    <value>View and manage pending requests</value>
   </data>
 </root>

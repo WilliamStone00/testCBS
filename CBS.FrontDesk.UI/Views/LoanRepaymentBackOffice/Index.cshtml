@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
-    @using Resources
+@using Resources
 @{
     ViewBag.Title = "Loan Repayment - Member Balances";
 }
@@ -142,102 +142,6 @@
 </div>
 
 @section Scripts {
-    <script>
-        //function calculateVatOnly(loanId) {
-        //    const interestInput = document.getElementById("interest-" + loanId);
-        //    const vatInput = document.getElementById("vat-" + loanId);
-
-        //    const rawInterest = parseFloat((interestInput.value || "0").replace(/,/g, '')) || 0;
-        //    const vatRate = parseFloat(interestInput.dataset.vatrate || "0");
-        //    const loanAmount = parseFloat(interestInput.dataset.loanamount || "0");
-
-        //    let vat = 0;
-        //    if (loanAmount >= 2000000) {
-        //        vat = Math.round(rawInterest * (vatRate / 100));
-        //    }
-
-        //    vatInput.value = vat.toLocaleString('en-US');
-
-        //    // 🔐 Store the original value
-        //    interestInput.dataset.original = rawInterest.toFixed(0);
-
-        //    updateGrandTotals();
-        //}
-
-
-
-        //function calculateVatAndAdjustInterest(loanId) {
-        //    const interestInput = document.getElementById("interest-" + loanId);
-        //    const vatInput = document.getElementById("vat-" + loanId);
-        //    const capitalInput = document.getElementById("capital-" + loanId);
-        //    const penaltyInput = document.getElementById("penalty-" + loanId);
-        //    const totalField = document.getElementById("total-" + loanId);
-
-        //    const originalInterest = parseFloat(interestInput.dataset.original || "0") || 0;
-        //    const vat = parseFloat((vatInput?.value || "0").replace(/,/g, '')) || 0;
-        //    const capital = parseFloat(capitalInput?.value || "0") || 0;
-        //    const penalty = parseFloat(penaltyInput?.value || "0") || 0;
-
-        //    const netInterest = Math.max(originalInterest - vat, 0);
-
-        //    interestInput.value = netInterest.toFixed(0);
-
-        //    // ✅ Update row total cell
-        //    const rowTotal = capital + netInterest + vat + penalty;
-        //    if (totalField) {
-        //        totalField.innerText = formatCurrencyNoName(rowTotal);
-        //    }
-
-        //    updateGrandTotals(); // Recalculate footer totals
-        //}
-
-
-
-        //function updateGrandTotals() {
-        //    let totalRepayment = 0;
-        //    let totalVat = 0;
-        //    let totalDebited = 0;
-
-        //    // 🔹 Sum account entries
-        //    document.querySelectorAll(".amount-input").forEach(input => {
-        //        const val = parseFloat(input.value) || 0;
-        //        totalDebited += val;
-        //    });
-
-        //    // 🔹 Sum loan repayments
-        //    document.querySelectorAll("#loanRepaymentTable tr").forEach(row => {
-        //        const loanId = row.id.replace("row-", "");
-
-        //        const interest = parseFloat(document.getElementById("interest-" + loanId)?.value || 0); // already net!
-        //        const vat = parseFloat(document.getElementById("vat-" + loanId)?.value.replace(/,/g, '') || 0);
-        //        const capital = parseFloat(document.getElementById("capital-" + loanId)?.value || 0);
-        //        const penalty = parseFloat(document.getElementById("penalty-" + loanId)?.value || 0);
-
-        //        const rowTotal = capital + interest + vat + penalty; // ✅ no double VAT deduction
-        //        totalRepayment += rowTotal;
-        //        totalVat += vat;
-        //    });
-
-        //    // 🔹 Update UI
-        //    document.getElementById("totalRepaymentAmount").innerText = formatCurrencyNoName(totalRepayment);
-        //    document.getElementById("calculatedVat").innerText = formatCurrencyNoName(totalVat);
-        //    document.getElementById("totalDebitedAmount").innerText = formatCurrency(totalDebited);
-
-        //    const balance = totalDebited - totalRepayment;
-        //    document.getElementById("remainingBalance").innerText = formatCurrency(balance);
-
-        //    const balanceIndicator = document.getElementById("balanceIndicator");
-        //    if (balanceIndicator) {
-        //        if (balance === 0) {
-        //            balanceIndicator.innerHTML = " ✅";
-        //            balanceIndicator.style.color = "green";
-        //        } else {
-        //            balanceIndicator.innerHTML = " ❌";
-        //            balanceIndicator.style.color = "red";
-        //        }
-        //    }
-        //}
-
-    </script>
+    @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/Js/Crud/LoanRepaymentBackOffice/LoanRepaymentBackOffice.js"></script>
 }

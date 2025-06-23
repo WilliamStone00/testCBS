@@ -1,0 +1,178 @@
+﻿@model CBS.FrontDesk.Data.Entity.GeneralStatisticReport.GeneralStatisticsDashboard
+
+@{
+    ViewBag.Title = "General Statistics Dashboard";
+}
+
+<!-- Dashboard Header -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-chart-box-outline me-2"></i> General Statistics Dashboard
+                </h1>
+                <p class="card-text">
+                    An interactive intelligence dashboard for analyzing membership trends, account composition, loan exposure, demographic distribution, and operational gaps across selected branches and periods.
+                </p>
+                <p class="card-text text-black fw-bold">
+                    <i class="mdi mdi-lightbulb-on-outline me-1"></i> Use the tabs below to explore segmented insights: 📊 Overview, 💰 Loans, 📈 Accounts, 👥 Demographics, and ⚠️ Gaps in compliance.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> Tips for Interpreting Dashboard Insights</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><strong>📊 Overview:</strong> Shows overall membership, gender splits, and compliance between total loans and savings.</li>
+                <li><strong>📈 Account Insights:</strong> Visualizes account balances by type and group, and their distribution ratios.</li>
+                <li><strong>💰 Loan Insights:</strong> Breaks down loans by status and category, allowing monitoring of lending exposure.</li>
+                <li><strong>👥 Demographics:</strong> Summarizes membership across gender and group types with percentage distribution.</li>
+                <li><strong>⚠️ Missing Records:</strong> Flags members who are approved but lack valid financial accounts for operations.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<!-- Collapsible Filter Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-filter-outline me-2"></i> Report Filters</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="true" aria-controls="collapseFilter">
+            <i class="mdi mdi-tune"></i> Toggle Filter
+        </button>
+    </h6>
+    <div id="collapseFilter" class="collapse show">
+        <div class="card-body" id="filterView">
+            @Html.Partial("_ReportFilter")
+        </div>
+    </div>
+</div>
+
+
+<!-- Dashboard: Hidden until data is returned -->
+<div id="datalistingview" style="display:none;">
+    <!-- Dashboard content will be loaded here via AJAX -->
+</div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <script>
+        $(document).ready(function () {
+            const filterKey = "tscGeneralStatsFilters";
+
+            // Hide dashboard initially
+            $("#datalistingview").hide();
+
+            // Restore saved filters from localStorage
+            const saved = localStorage.getItem(filterKey);
+            if (saved) {
+                const filters = JSON.parse(saved);
+                $("#branchInput").val(filters.BranchId).trigger("change");
+                $("#startDate").val(filters.StartDate);
+                $("#endDate").val(filters.EndDate);
+                $("#accountTypes").val(filters.AccountTypes).trigger("change");
+                $("#accountProfiles").val(filters.AccountProfiles).trigger("change");
+                $("#loanStatus").val(filters.LoanStatus).trigger("change");
+                $("#mainReportType").val(filters.MainReportType);
+            }
+
+            // Expand filter section on page load if dashboard is not shown
+            const filterCollapse = bootstrap.Collapse.getOrCreateInstance(document.getElementById('collapseFilter'));
+            if (!$("#datalistingview").is(":visible")) {
+                filterCollapse.show();
+            }
+
+            // Reset button clears fields and localStorage
+            $("#resetFilterBtn").click(function () {
+                localStorage.removeItem(filterKey);
+                $("#branchInput").val("").trigger("change");
+                $("#startDate").val("");
+                $("#endDate").val("");
+                $("#accountTypes").val([]).trigger("change");
+                $("#accountProfiles").val([]).trigger("change");
+                $("#loanStatus").val("all").trigger("change");
+                $("#mainReportType").val("");
+                $("#datalistingview").hide();
+
+                // Expand filter again
+                filterCollapse.show();
+            });
+
+            // Apply filter and load dashboard
+            $("#applyFilterBtn").click(function () {
+                const requestData = {
+                    BranchId: $("#branchInput").val(),
+                    StartDate: $("#startDate").val(),
+                    EndDate: $("#endDate").val(),
+                    AccountTypes: $("#accountTypes").val(),
+                    AccountProfiles: $("#accountProfiles").val(),
+                    LoanStatus: $("#loanStatus").val(),
+                    MainReportType: $("#mainReportType").val()
+                };
+
+                // Save filters
+                localStorage.setItem(filterKey, JSON.stringify(requestData));
+
+                $.ajax({
+                    url: "/GeneralStatisticReport/Dashboard",
+                    type: "POST",
+                    data: requestData,
+                    beforeSend: function () {
+                        $("#applyFilterBtn").prop("disabled", true).html("<i class='mdi mdi-loading mdi-spin'></i> Loading...");
+                    },
+                    success: function (response) {
+                        if (response && typeof response === "string" && response.trim().length > 0) {
+                            $("#datalistingview").html(response).show();
+                            renderDashboardCharts();
+
+                            // Collapse filter section after success
+                            filterCollapse.hide();
+                        } else {
+                            $("#datalistingview").hide();
+                            alert("No data found for the selected criteria.");
+                        }
+                    },
+                    error: function (xhr) {
+                        console.error(xhr);
+                        alert("An error occurred while loading the dashboard.");
+                        $("#datalistingview").hide();
+                    },
+                    complete: function () {
+                        $("#applyFilterBtn").prop("disabled", false).html("<i class='mdi mdi-magnify'></i> Apply Filter");
+                    }
+                });
+            });
+
+            // Export the report
+            $("#exportBtn").click(function () {
+                const params = {
+                    BranchId: $("#branchInput").val(),
+                    StartDate: $("#startDate").val(),
+                    EndDate: $("#endDate").val(),
+                    AccountTypes: $("#accountTypes").val() || [],
+                    AccountProfiles: $("#accountProfiles").val() || [],
+                    LoanStatus: $("#loanStatus").val(),
+                    MainReportType: $("#mainReportType").val()
+                };
+                const queryString = $.param(params, true);
+                window.location.href = `/GeneralStatisticReport/GeneralReport?${queryString}`;
+            });
+        });
+    </script>
+
+
+
+}

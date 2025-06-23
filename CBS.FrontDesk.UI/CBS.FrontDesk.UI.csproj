@@ -540,6 +540,12 @@
       <DependentUpon>SubLoanDelinquencyCategorySummaryRPT.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Loan\LoanSituationAlpha\LoanSituationAlphaRPT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LoanSituationAlphaRPT.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="App_GlobalResources\AccountCategory\GlobalsAccountCategory.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -634,11 +640,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingConfig_ChartOfAccount.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateAccountBookingDirectionData.fr.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AccountingConfig_CreateAccountBookingDirectionData.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateAccountingEntryRule.fr.designer.cs">
       <AutoGen>True</AutoGen>
@@ -2016,6 +2017,7 @@
     <Compile Include="Controllers\DDOSControlP\RequestMonitotingController.cs" />
     <Compile Include="Controllers\DDOSControlP\SuspiciousPathController.cs" />
     <Compile Include="Controllers\Error\ErrorController.cs" />
+    <Compile Include="Controllers\GeneralStatisticReport\GeneralStatisticReportController.cs" />
     <Compile Include="Controllers\Home\DashboardController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="Controllers\LoanApplicationP\LoanApplicationController.cs" />
@@ -2094,6 +2096,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DeliquentLoanSummaryDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet\Loan\GeneralStatisticsDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeneralStatisticsDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Filter\MaliciousContentScannerService.cs" />
     <Compile Include="WAF\Middleware\Correlation\CorrelationIdMiddleware.cs" />
@@ -6719,6 +6726,17 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalWithdrawalNotification.fr.designer.cs</LastGenOutput>
     </Content>
+    <Content Include="DataSet\Loan\GeneralStatisticsDataSet.xsc">
+      <DependentUpon>GeneralStatisticsDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSet\Loan\GeneralStatisticsDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GeneralStatisticsDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="DataSet\Loan\GeneralStatisticsDataSet.xss">
+      <DependentUpon>GeneralStatisticsDataSet.xsd</DependentUpon>
+    </Content>
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -7470,10 +7488,6 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>AccountingConfig_ChartOfAccount.fr.designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateAccountBookingDirectionData.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AccountingConfig_CreateAccountBookingDirectionData.fr.designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateAccountingEntryRule.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>AccountingConfig_CreateAccountingEntryRule.fr.designer.cs</LastGenOutput>
@@ -7994,6 +8008,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanTerm.fr.designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\Loan\LoanSituationAlpha\LoanSituationAlphaRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LoanSituationAlphaRPT.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -8168,6 +8186,7 @@
     <Content Include="Scripts\Js\Dashboard\Dailyoperations\HeadOffice.js" />
     <Content Include="Scripts\Js\Dashboard\Dailyoperations\BranchOffice.js" />
     <Content Include="Scripts\Js\Dashboard\OpenBranches.js" />
+    <Content Include="Scripts\Js\GeneralStatisticReport\GeneralStatistics.js" />
     <Content Include="Scripts\Js\main.js\AutoJournalEntry.js" />
     <Content Include="Scripts\Js\main.js\CashFlowManagementDeposit.js" />
     <Content Include="Scripts\Js\main.js\CashTracker.js" />
@@ -9178,12 +9197,16 @@
     <Content Include="Views\DailyCollectionSetting\_CreateZone.cshtml" />
     <Content Include="Views\DailyCollectionSetting\_CommissionSettingData.cshtml" />
     <Content Include="Views\CashFlowManagement\_Acknowledgement.cshtml" />
+    <Content Include="Views\GeneralStatisticReport\Index.cshtml" />
+    <Content Include="Views\GeneralStatisticReport\Dashboard.cshtml" />
+    <Content Include="Views\GeneralStatisticReport\_Dashboard.cshtml" />
+    <Content Include="Views\GeneralStatisticReport\_ReportFilter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
     <Folder Include="AppFiles\Images\BarCodes\" />
     <Folder Include="AppFiles\Migration\TrialBalance\" />
-    <Folder Include="AppFiles\Reporting\Loan\LoanSituationAlpha\" />
+    <Folder Include="AppFiles\Reporting\Loan\GeneralStatistics\" />
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
     <Folder Include="Controllers\DailyCollectionManagement\" />
@@ -9198,10 +9221,6 @@
     <ProjectReference Include="..\CBS.BusinessService\CBS.BusinessService\CBS.FrontDesk.Service.csproj">
       <Project>{c8e30e49-fc55-431e-9832-cf6f28e30c30}</Project>
       <Name>CBS.FrontDesk.Service</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CBS.FrontDesk.Data\CBS.FrontDesk.Data\CBS.FrontDesk.Data.csproj">
-      <Project>{0D7085DF-13B8-4FCE-9E8F-F0FA88FCE730}</Project>
-      <Name>CBS.FrontDesk.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper.csproj">
       <Project>{192960F3-C2BA-4286-A4E6-F0B94DA85450}</Project>

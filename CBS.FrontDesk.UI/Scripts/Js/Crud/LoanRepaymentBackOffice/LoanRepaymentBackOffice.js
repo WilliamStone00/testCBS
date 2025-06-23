@@ -136,20 +136,31 @@ function bindInterestFieldEvents() {
 }
 
 
-// 🔹 Bind on DOM ready
+// 🔹 Bind interest field events once DOM is fully loaded
 document.addEventListener("DOMContentLoaded", function () {
-    bindInterestFieldEvents();
+    bindInterestFieldEvents(); // Initial bind for static content
 });
 
-// 🔹 Rebind if dynamic content is injected
-const observer = new MutationObserver(() => {
-    bindInterestFieldEvents();
-});
-
+// 🔹 Rebind only once for dynamically loaded content
 const datalist = document.getElementById("datalistingview");
 if (datalist) {
+    let isBound = false;
+
+    const observer = new MutationObserver((mutationsList, observerInstance) => {
+        if (!isBound) {
+            bindInterestFieldEvents();
+            isBound = true;
+
+            // Disconnect after first successful dynamic binding
+            observerInstance.disconnect();
+            console.log("✅ Dynamic content observed and bound. Observer disconnected.");
+        }
+    });
+
     observer.observe(datalist, { childList: true, subtree: true });
 }
+
+
 
 
 
@@ -278,6 +289,7 @@ function collectDeposits() {
 
     console.log("✅ FINAL VALIDATION PASSED. Ready to Submit!");
     return [{ AccountToBeDebiteds: accountsToBeDebited, LoanToBeRefundeds: loansToBeRefunded }];
+
 }
 
 
@@ -323,6 +335,16 @@ function PostLoanRepayment() {
 
     var note = $('#Note').val().trim();
     var wordCount = note.split(/\s+/).filter(word => word.length > 0).length;
+    console.log("🧾 Raw deposits object returned from collectDeposits():", deposits);
+
+    if (!deposits) {
+        console.error("❌ collectDeposits() returned null or undefined.");
+        return;
+    }
+    console.log("✅ collectDeposits - Final structure being returned:", {
+        AccountToBeDebiteds: accountsToBeDebited,
+        LoanToBeRefundeds: loansToBeRefunded
+    });
 
     if (note === "") {
         appalert("❌ Please enter a note for this transaction.", 3, 1);
@@ -333,10 +355,27 @@ function PostLoanRepayment() {
         appalert("❌ The note must contain at least 20 words.", 3, 1);
         return;
     }
+    var accountsToBeDebited = deposits[0].AccountToBeDebiteds || [];
 
-    var accountsToBeDebited = deposits[0].AccountsToBeDebited || [];
-    var loansToBeRefunded = deposits[0].LoansToBeRefunded[0];
+    if (!deposits[0].LoanToBeRefundeds || deposits[0].LoanToBeRefundeds.length === 0) {
+        appalert("❌ No loan selected for repayment. Please check the loan section.", 3, 1);
+        return;
+    }
 
+    /*var loansToBeRefunded = deposits[0].LoansToBeRefunded[0];*/
+    if (!Array.isArray(deposits[0].LoanToBeRefundeds)) {
+        console.error("🚨 LoanToBeRefundeds is not an array:", deposits[0].LoanToBeRefundeds);
+        appalert("❌ Invalid loan data returned. Please verify form entries.", 3, 1);
+        return;
+    }
+
+    if (deposits[0].LoanToBeRefundeds.length === 0) {
+        console.error("🚨 LoanToBeRefundeds array is empty.");
+        appalert("❌ No loan has been entered for repayment.", 3, 1);
+        return;
+    }
+
+    var loansToBeRefunded = deposits[0].LoanToBeRefundeds[0];
     var totalDebited = parseFloat(accountsToBeDebited.reduce((sum, acc) => sum + acc.Amount, 0)) || 0;
     var totalLoanAmount = parseFloat(loansToBeRefunded.TotalAmount) || 0;
 
@@ -344,7 +383,7 @@ function PostLoanRepayment() {
     var interest = parseFloat(loansToBeRefunded.Interest) || 0;
     var penalty = parseFloat(loansToBeRefunded.Penalty) || 0;
     var vat = parseFloat(loansToBeRefunded.Vat) || 0; // ✅ Read VAT from collected data
-    var loanAmountContracted = parseFloat(loansToBeRefunded.LoanAmountContracted) || 0;
+    var loanAmountContracted = parseFloat(loansToBeRefunded.LoanAmount) || 0;
 
     console.log("🔹 Loan Amount Contracted:", loanAmountContracted);
     console.log("🔹 Total Debited:", totalDebited);
@@ -368,18 +407,18 @@ function PostLoanRepayment() {
 
     // 📋 Loan breakdown
     var loanSummary = `
-        <br><strong>Loan Repayment Details:</strong><br>
-        🔹 Contracted Loan Amount: ${formatCurrency(loanAmountContracted)}<br>
-        🔹 Capital: ${formatCurrency(capital)}<br>
-        🔹 Interest: ${formatCurrency(interest)}<br>
-        🔹 Penalty: ${formatCurrency(penalty)}<br>
-        ${vat > 0 ? `🔹 VAT (19.25% of Interest): ${formatCurrency(vat)}<br>` : ""}
-        <hr>
-        <strong>Total Loan Amount to be Paid: ${formatCurrency(Math.round(totalLoanAmount))}</strong><br>
-    `;
+            <br><strong>Loan Repayment Details:</strong><br>
+            🔹 Contracted Loan Amount: ${formatCurrency(loanAmountContracted)}<br>
+            🔹 Capital: ${formatCurrency(capital)}<br>
+            🔹 Interest: ${formatCurrency(interest)}<br>
+            🔹 Penalty: ${formatCurrency(penalty)}<br>
+            ${vat > 0 ? `🔹 VAT (19.25% of Interest): ${formatCurrency(vat)}<br>` : ""}
+            <hr>
+            <strong>Total Loan Amount to be Paid: ${formatCurrency(Math.round(totalLoanAmount))}</strong><br>
+        `;
 
     var message = `Are you sure you want to proceed with this loan repayment?<br>
-                   ${accountsSummary} ${loanSummary}`;
+                       ${accountsSummary} ${loanSummary}`;
 
     confirmTransaction(
         'Confirm Loan Repayment Operation',
@@ -500,7 +539,7 @@ function GetObject(KEY, divToLoadData, partialView, path) {
 function SearchByCustomerNumber(partialView, divToloadPV) {
 
     AddORUpdateGen($('#manualSearchInput').val(), divToloadPV, partialView, 'search', "LoanRepaymentBackOffice");
-  
+
 }
 function GetMember() {
     var operation = $("#currentselectedOperation").val();
@@ -511,8 +550,8 @@ function GetMember() {
 
 function GetMemberData(Key, partialView, divToloadPV, path) {
     $("#currentselectedOperation").val(path);
-   
-    
+
+
     AddORUpdateGen(Key, divToloadPV, partialView, path, "LoanRepaymentBackOffice");
     //calculateBalance();
 }

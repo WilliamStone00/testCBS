@@ -1,0 +1,76 @@
+﻿<!-- Report Filters -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Report Filters</h5>
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label class="form-label fw-bold">Branch</label>
+            @Html.DropDownList("branchInput",
+                new SelectList(ViewBag.Branches as List<SelectListItem> ?? new List<SelectListItem>(), "Value", "Text", null),
+                "--- Select Branch ---",
+                new { @class = "form-control select2", id = "branchInput" })
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-bold">Start Date</label>
+            <input type="date" name="startDate" id="startDate" class="form-control" readonly="readonly"/>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-bold">End Date</label>
+            <input type="date" name="endDate" id="endDate" class="form-control" readonly="readonly" />
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label fw-bold">Account Types</label>
+            @Html.DropDownList("accountTypes",
+                new SelectList(ViewBag.AccountTypes as List<SelectListItem> ?? new List<SelectListItem>(), "Value", "Text", null),
+                "--- Select Account Type ---",
+                new { @class = "form-control select2", id = "accountTypes", multiple = "multiple" })
+        </div>
+        <div class="col-md-6">
+            <label class="form-label fw-bold">Account Profiles</label>
+            @Html.DropDownList("accountProfiles",
+                new SelectList(ViewBag.AccountProfiles as List<SelectListItem> ?? new List<SelectListItem>(), "Value", "Text", null),
+                "--- Select Account Profile ---",
+                new { @class = "form-control select2", id = "accountProfiles", multiple = "multiple" })
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label fw-bold">Loan Status</label>
+            @Html.DropDownList("loanStatus",
+                new SelectList(new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "-- Select Status --", Value = "" },
+                    new SelectListItem { Text = "All", Value = "All" },
+                    new SelectListItem { Text = "Active", Value = "Opened" },
+                    new SelectListItem { Text = "Closed", Value = "Closed" }
+                }, "Value", "Text", null),
+                new { @class = "form-control", id = "loanStatus" })
+        </div>
+        <div class="col-md-6">
+            <label class="form-label fw-bold">Main Report Type</label>
+            @Html.DropDownList("mainReportType",
+                new SelectList(new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "-- Select Report Type --", Value = "" },
+                    new SelectListItem { Text = "📌 General Member's Statistical Report", Value = "generalmembersreport" },
+                    new SelectListItem { Text = "📋 Approved Members Listing", Value = "generalmemberslisting" },
+                    new SelectListItem { Text = "❗ Members Without Active Accounts", Value = "customerslistingwithoutaccount" },
+                    new SelectListItem { Text = "📊 Gender Distribution Summary Report", Value = "customergendersummary" },
+                    new SelectListItem { Text = "📈 General Member & Account Statistics Report", Value = "generalstatistics" }
+                }, "Value", "Text", null),
+                new { @class = "form-control select2", id = "mainReportType" })
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-md-12 d-flex">
+            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
+            <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+            <button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-export"></i> Export</button>
+        </div>
+    </div>
+</div>

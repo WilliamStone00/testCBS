@@ -433,6 +433,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllDailyTellerByBranch = "/api/v1/DailyTeller/Branch";
         public static string CreateDailyTeller = "/api/v1/DailyTeller";
 
+        public static string GetGeneralStatistics = "/api/v1/GeneralStatisticsReport";
 
         //Accounting DayHF
 

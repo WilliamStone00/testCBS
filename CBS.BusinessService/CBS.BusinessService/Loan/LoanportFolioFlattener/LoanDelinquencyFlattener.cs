@@ -263,12 +263,14 @@ namespace CBS.BusinessService.LoanportFolioFlattener
         {
             var headOffice = branch?.Bank ?? new Bank(); // fallback
 
+            // Inject Branch Info
             report.Logo = branch.LogoUrl ?? headOffice.LogoUrl;
             report.BranchName = branch.Name;
             report.BranchCode = branch.BranchCode;
             report.BranchAddress = branch.Address;
             report.BranchTelephone = branch.Telephone;
 
+            // Inject Head Office Info
             report.HeadOfficeName = headOffice.Name;
             report.HeadOfficeAddress = headOffice.Address;
             report.HeadOfficeTelephone = headOffice.Telephone;
@@ -276,6 +278,29 @@ namespace CBS.BusinessService.LoanportFolioFlattener
             report.HeadOfficeWebSite = headOffice.WebSite;
             report.HeadOfficeInitial = headOffice.BankInitial;
             report.HeadOfficeCode = headOffice.BankCode;
+
+            // Update each LoanEntry
+            if (report.LoanEntries?.Any() == true)
+            {
+                foreach (var loan in report.LoanEntries)
+                {
+                    // Branch Info
+                    loan.BranchName = branch?.Name;
+                    loan.BranchCode = branch?.BranchCode;
+                    loan.BranchTelephone = branch?.Telephone;
+                    loan.BranchAddress = branch?.Address;
+                    loan.Logo = branch?.LogoUrl ?? headOffice?.LogoUrl;
+
+                    // Head Office Info
+                    loan.HeadOfficeName = headOffice?.Name;
+                    loan.HeadOfficeAddress = headOffice?.Address;
+                    loan.HeadOfficeTelephone = headOffice?.Telephone;
+                    loan.HeadOfficeEmail = headOffice?.Email;
+                    loan.HeadOfficeWebSite = headOffice?.WebSite;
+                    loan.HeadOfficeInitial = headOffice?.BankInitial;
+                    loan.HeadOfficeCode = headOffice?.BankCode;
+                }
+            }
 
             return report;
         }
