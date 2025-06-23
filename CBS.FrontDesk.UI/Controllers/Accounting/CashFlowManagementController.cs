@@ -1648,7 +1648,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[]
             { new System.Web.WebPages.Html.SelectListItem { Text = "Pending", Value = "Pending" },
                 new System.Web.WebPages.Html.SelectListItem { Text = "Approved", Value = "Approved" },
-                  new System.Web.WebPages.Html.SelectListItem { Text = "Acknowledge Head Office Decision", Value = "Acknowledgement" },
+                  new System.Web.WebPages.Html.SelectListItem { Text = "Acknowledge Head Office Request", Value = "Approved" },
 
                  new System.Web.WebPages.Html.SelectListItem { Text = "Waiting_Branch_Bank_CashOut", Value = "RedirectToBranchBCO" },
 
