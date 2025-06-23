@@ -941,8 +941,9 @@ namespace CBS.FrontDesk.Helper
         public static string AccountingEntry_Get_reference_Id = "/api/v1/AccountingEntry/GetAccountingEntryByReferenceIdQuery/{0}";
         public static string AccountingEntry_ReverseEntry = "/api/v1/AccountingEntry/ReverseAccountingEntry";
         public static string PostAutomatedEventEntryCommand_url = "/api/v1/AccountingEntries/PostAutomatedEventEntryCommand";
-        //Post_AccountingEntry_Entries
+        //Post_AccountingEntry_Entries 
         public static string AccountingEntry_Entries_branchId_accountId = "/api/v1/AccountingEntries/{0}/{1}";
+        public static string AccountingEntry_BankingOperationRedirectedForBankCashOut = "/api/v1/BankingOperation/RedirectedForBankCashOut";
         public static string AccountingEntry_Entries = "/api/v1/AccountingEntries";
         public static string AccountingEntry_Posting_Entries = "/api/v1/AccountingEntries/RetrieveEntries";
         public static string Trialbalance4Column_Entries = "/api/v1/AccountingEntries/Trialbalance4Column";
@@ -975,7 +976,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetBankTransactionQueryByReferenceIdURL = "/api/v1/BankingOperation/GetBankTransactionQueryByReferenceId/{0}";
         public static string GetCashReplenishmentRequestById = "/api/v1/BankingOperation/GetCashReplenishmentRequestById/{0}";
         public static string GetAllDepositNotificationRequestRequests = "/api/v1/BankingOperation/GetAllDepositNotificationQuery";
-        ///BankingOperation/GetAllDepositNotificationRedirectionQuery   
+        public static string AcceptanceRequestURl = "/api/v1/BankingOperation/AcceptanceCashReplenishmentCommand";
         public static string Url_Get_AllCashRelenishmentRequest = "/api/v1/BankingOperation/CashReplenishmentQueryFilter";//?status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}";
         public static string Url_Get_AllBankDepositeRequest = "/api/v1/BankingOperation/GetDepositNotificationQueryFilter";//?status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}";
 

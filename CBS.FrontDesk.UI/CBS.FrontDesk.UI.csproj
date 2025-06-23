@@ -9121,6 +9121,7 @@
     <Content Include="Views\DailyCollectionSetting\_CreateCommissionSetting.cshtml" />
     <Content Include="Views\DailyCollectionSetting\_CreateZone.cshtml" />
     <Content Include="Views\DailyCollectionSetting\_CommissionSettingData.cshtml" />
+    <Content Include="Views\CashFlowManagement\_Acknowledgement.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

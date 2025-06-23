@@ -8,40 +8,35 @@
     LoadCashReplenishmentDataDT("GetAllCashRequestDataTable")
     
     $(document).on('change', '#MakeDecision', function () {
-
-      
-        // Get the selected value  
+        // Get the selected value
         var selectedValue = $(this).val();
         console.log(selectedValue);
         var branchId = $('#branchID').val();
-
         // Log the value to the console
         console.log("Branch ID:", branchId);
         $('#selectedDecision').val(selectedValue);
-        if (selectedValue === 'RedirectToBranchBTB' ||  selectedValue === 'Approved') {
-            // Show the element 
-            console.log(selectedValue);
-        
-
-         
+ 
                 if (selectedValue === 'Approved') {
                     $('#hideBranchID').hide();
                     $('#hideAmount').show();
                     $('#hideAccountId').show();
                     loadAccountBalance(branchId);
-                } else {
+                } else if (selectedValue === 'RedirectToBranchBTB') {
                     $('#hideBranchID').show();
                     $('#hideAmount').show();
                     $('#hideAccountId').hide();
                     loadBranch(branchId)
+                } else if (selectedValue === 'RedirectToBranchBCO') {
+                    $('#hideBranchID').show();
+                    $('#hideAmount').show();
+                    $('#hideAccountId').show();
+                    loadBranch(branchId)
+                } else {
+                    $('#hideBranchID').hide();
+                    $('#hideAmount').hide();
+                    $('#hideAccountId').hide();
                 }
-             
-        } else {
-            // Hide the element
-            $('#hideBranchID').hide();
-            $('#hideAmount').hide();
-            $('#hideAccountId').hide();
-        }
+    
     });
 
 
@@ -80,6 +75,109 @@
     });
 
 });
+ 
+
+function AjaxPostConfirmation(form) {
+
+    const $referenceDisplay = $('#referenceDisplay2');
+    const actualReference = $.trim($referenceDisplay.text());
+
+    const $userInput = $('#enteredReference');
+    const enteredReference = $.trim($userInput.val());
+    console.log(enteredReference + ' ' + actualReference);
+    if (!actualReference) {
+        appalert('Error: Reference code not found. Please refresh the page and try again.',2,1);
+        return;
+    }
+
+    if (!enteredReference) {
+        appalert('Please enter the reference code to proceed.',2,1);
+        $userInput.focus();
+        return;
+    }
+
+    if (enteredReference.toLowerCase() === actualReference.toLowerCase()) {
+        appalert('✅ Reference code matched! Proceeding with submission...', 1, 1);
+        formData = new FormData(form);
+
+        $.validator.unobtrusive.parse(form);
+        if ($(form).valid()) {
+            alertify.confirm("Confirmation", "Are you sure you want to perform this action! ",
+                function () {
+
+
+                    var ajaxConfig = {
+                        type: 'POST',
+                        url: form.action,
+                        data: formData,
+                        success: function (response) {
+
+                            if (response.success) {
+                                if (response.status === "Exist") {
+                                    appalert(response.message, 3, 1);
+                                }
+                                else if (response.status === "Failed") {
+                                    appalert(response.message, 2, 1);
+                                }
+                                else {
+                                    appalert(response.message, 1, 1);
+
+                                }
+                                if (response.option === 'Update' && response.reloadDataView === "Yes") {
+                                    LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                                }
+                                else if (response.optype === 'Insert' && response.reloadDataView === "Yes") {
+                                    EditResetMain("KEY", response.option, response.divLoaderCreator, response.controllerName, response.reinitializedActionName, response.groupID);
+                                }
+                                else if (response.reloadDataView === "Yes") {
+                                    LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                                }
+                            }
+                            else {
+                                if (response.Status === "Exist") {
+                                    appalert(response.message, 3, 1);
+                                }
+                                else {
+                                    appalert(response.message, 2, 1);
+                                }
+
+                            }
+
+                        }
+                        , error: function (err) {
+                            console.log(err.statusText);
+                            appalert(err.statusText, 0, 1);
+                        }
+                    };
+
+                    if ($(form).attr('enctype') === "multipart/form-data") {
+                        ajaxConfig["contentType"] = false;
+                        ajaxConfig["processData"] = false;
+                    }
+                    console.log(ajaxConfig);
+                    $.ajax(ajaxConfig);
+                },
+                function () {
+                    appalert('Transaction cancelled', 3, 1);
+
+                }
+
+            );
+        }
+        return false;
+
+    } else {
+        appalert('❌ Reference code does not match. Please check and try again.',2,1);
+        $userInput.focus().select();
+    }
+   
+
+
+}
+
+
+
+
 function Search(controller, tableDiv, partialView, datalistViewDIV, filterOption) {
     // if (e) e.preventDefault(); // Prevent default if the event is passed
 
@@ -894,6 +992,8 @@ function calculateCashBalance() {
         document.getElementById("lblBalanceDeposit").style.color = "black";
     }
 }
+
+
 
 
 

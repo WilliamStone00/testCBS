@@ -178,6 +178,43 @@ namespace CBS.BusinessService
             return ExecutionMessage;
         }
 
+        public async Task<ExecutionMessages> RedirectedForBankCashOutRequest(RedirectedForBankCashOut model)
+        {
+            try
+            {
+                //if (string.IsNullOrEmpty(model.Message))
+                //{
+                //    string message = "The Bank Deposit Request message is required opertion failed";
+                //    GetExecutionMessages(model, false, message, MessagesResults.Failed,
+                //       ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, message);
+
+                //}
+                // Make an API call to create an individual profile
+
+
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<RedirectedForBankCashOut>>(APICallHelper.AccountingEntry_BankingOperationRedirectedForBankCashOut, model  );
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
         public async Task<ExecutionMessages> DepositNotificationRequest(DepositNotification model)
         {
             try
@@ -1249,6 +1286,37 @@ namespace CBS.BusinessService
             }
             catch (Exception ex)
 
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
+        //BankDepositCashClearing
+        public async Task<IExecutionMessages> AcceptanceRequestURl(string model)
+        {
+            try
+            {
+
+                var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.AcceptanceRequestURl, new { Id = model });
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"Transaction was successfull", MessagesResults.Success,
+
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
             {
                 // Log and handle exception
                 GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,

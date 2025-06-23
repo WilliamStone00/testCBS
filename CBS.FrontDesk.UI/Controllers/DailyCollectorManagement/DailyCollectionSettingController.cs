@@ -204,9 +204,6 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                     return PartialView(partialView, new DailyCollectionConfiguration { AgentDailyCashLimit = new Data.Entity.DailyCollectionData.AgentDailyCashLimit() });
 
                 }
-
-
-
                 else
                 {
                     var data = await _agentDailyCashLimitServices.GetAgentDailyCashLimitById(KEY);

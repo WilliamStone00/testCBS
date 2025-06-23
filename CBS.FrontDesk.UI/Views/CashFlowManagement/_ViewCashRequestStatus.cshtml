@@ -7,7 +7,7 @@
 
 <div class="row invoice-preview">
     <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
-   
+
 
         <div class="accordion-item active">
             <h2 class="accordion-header text-body d-flex justify-content-between"
@@ -75,7 +75,7 @@
                                         }
                                         else
                                         {
-                                    <div> @GlobalCashFlowManagement.RequestHasBeenRedirectedTo @Model.CashReplenimentRequestdto.CorrespondingBranch</div>
+                                            <div> @GlobalCashFlowManagement.RequestHasBeenRedirectedTo @Model.CashReplenimentRequestdto.CorrespondingBranch</div>
                                         }
                                     </td>
                                 </tr>
@@ -160,7 +160,7 @@
 
                                 <tr>
                                     <td>Status</td>
-                                    <td class="badge bg-label-primary rounded-pill text-uppercase">
+                                    <td class="badge bg-label-primary text-uppercase">
                                         @Model.CashReplenimentRequestdto.Status,Has been redirected to @Model.CashReplenimentRequestdto.CorrespondingBranch for BANK CASH OUT
                                     </td>
                                 </tr>
@@ -178,10 +178,12 @@
 
                                 </tr>
                                 <tr>
-                                    <td>Bank Transaction</td>
+                                    <td>Action</td>
 
-                                    <td class="badge bg-label-warning rounded-pill">
-                                        NOT YET COMPLETED
+                                    <td class="badge bg-label-warning">
+                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#acknowledgementModal">
+                                            Acknowledge
+                                        </button>
                                     </td>
 
                                 </tr>
@@ -237,10 +239,12 @@
                         <span class="tf-icons mdi mdi-close mdi-18px"></span>
                     </a>
                 </div>
-           
+
             </div>
         </div>
 
+        @Html.Partial("_Acknowledgement")
         @Html.Partial("_ViewBankTransaction")
     </div>
 </div>
+ 

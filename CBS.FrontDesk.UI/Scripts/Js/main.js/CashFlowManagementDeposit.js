@@ -843,3 +843,47 @@ function calculateCashBalance() {
 
 
 
+       // Copy Reference
+    function copyReference() {
+        const copyText = document.getElementById("approvalReference");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile compatibility
+        document.execCommand("copy");
+
+        // Optional small toast or alert
+        $('#referenceCopiedToast').toast({ delay: 2000 }).toast('show');
+    }
+
+    // Confirm Reference via AJAX
+function confirmRedirectCashOut() {
+    const reference = document.getElementById("approvalReference").value;
+    const payload = {
+        acknowledge: {
+            reference: reference
+        }
+    };
+
+    $.ajax({
+            url: '/CashFlowManagement/Acknowledgement', // Replace with your actual API/controller route
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(payload),
+            success: function (response) {
+                if (response.success) {
+                    $('#acknowledgementModal').modal('hide');
+
+                    // Show success toast
+                    $('#acknowledgeSuccessToast').toast({ delay: 4000 }).toast('show');
+                } else {
+                    // Show failure toast
+                    $('#acknowledgeFailureToast .toast-body').text(response.message || "Acknowledgment failed.");
+                    $('#acknowledgeFailureToast').toast({ delay: 4000 }).toast('show');
+                }
+            },
+            error: function (xhr, status, error) {
+                // Show error toast
+                $('#acknowledgeFailureToast .toast-body').text("❌ Error occurred: " + error);
+                $('#acknowledgeFailureToast').toast({ delay: 4000 }).toast('show');
+            }
+        });
+    }
