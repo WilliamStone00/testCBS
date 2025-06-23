@@ -16,6 +16,7 @@ using CBS.FrontDesk.Data.Entity.MemberOperation;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.ReportDataSetDto;
+using CBS.FrontDesk.Data.ReportDataSetDto.LoanDeliquentAnalysis;
 using CBS.FrontDesk.Data.ReportDataSetDto.LoanPortFolioDataSet;
 using CBS.FrontDesk.UI.Helper;
 using CrystalDecisions.CrystalReports.Engine;
@@ -55,7 +56,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
         {
             var Branches = await _branchServices.GetBranches();
             ViewBag.Branches = Branches;
-            return View(new Loan { InitiateLoanDownloadCommand=new InitiateLoanDownloadCommand()});
+            return View(new Loan { InitiateLoanDownloadCommand=new InitiateLoanDownloadCommand() });
         }
         public async Task<ActionResult> Configuration()
         {
@@ -68,7 +69,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
             var loan = await _LoanServices.GetLoanWithCustomerAndBranch(KEY);
             return View(loan);
         }
-       
+
 
         // Action to handle file download
         public async Task<ActionResult> DownloadFile(string fileId = null)
@@ -197,10 +198,10 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                 var loans1 = JsonConvert.DeserializeObject<List<Loan>>(
                     JsonConvert.SerializeObject(dataTable.data)
                 );
-                
+
                 string exportedBy = Session["FullName"].ToString();
                 var branches = await _branchServices.GetBranches();
-                var loans=_LoanServices.MapLoansWithBranchDetails(branches.ToList(), loans1);
+                var loans = _LoanServices.MapLoansWithBranchDetails(branches.ToList(), loans1);
 
                 // Generate Excel file
                 //var exportFile = new ExportFileResult();
@@ -224,19 +225,19 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                         // Return file to client for download
                         return File(exportFilec.Content, exportFilec.ContentType, exportFilec.FileName);
                     case "All_Loans":
-                        var exportFile=LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
+                        var exportFile = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
                         // Return file to client for download
                         return File(exportFile.Content, exportFile.ContentType, exportFile.FileName);
-                       
+
                     default:
                         var exportFiler = LoanExcelGenerator.GenerateLoanExcel(loans, Branch, exportedBy, fileTitle: exportReportType, dateFrom, dateTo);
                         // Return file to client for download
                         return File(exportFiler.Content, exportFiler.ContentType, exportFiler.FileName);
                 }
 
-               
 
-               
+
+
             }
             catch (Exception ex)
             {
@@ -270,7 +271,8 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                     EndDate = endDate ?? DateTime.MinValue,
                     BranchId = branchid,
                     DeliquentStatus = deliquentstatus,
-                    Status = status, MemberId="n/a",
+                    Status = status,
+                    MemberId="n/a",
                 };
 
                 var dataTable = await _LoanServices.GetDataTableAsync(query, searchCriteria);
@@ -369,13 +371,16 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
         {
             try
             {
-                
+                var LoanDelinquencyReportResultRPT = new LoanDelinquencyReportResultRPT();
+                var LoanDelinquencyReport = new LoanDelinquencyReportDto();
 
-                var loanPortfolioAnalysis = await _LoanServices.GetLoanPortfolioAnalysisAsync(reportCommand);
-                if (loanPortfolioAnalysis == null)
-                    return Json(new { success = false, message = "No data found." });
+
+
 
                 string mainReportType = (reportCommand.MainReportType ?? "All").ToLowerInvariant();
+
+
+
                 string relativeReportPath;
                 string reportTitle;
 
@@ -384,14 +389,32 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                     case "currentloan":
                         relativeReportPath = "Loan/PortFolio/CurrentLoanRPT.rpt";
                         reportTitle = "Current Loans Report";
+                        LoanDelinquencyReportResultRPT = await _LoanServices.GetLoanPortfolioAnalysisAsync(reportCommand);
+                        if (LoanDelinquencyReportResultRPT == null)
+                            return Json(new { success = false, message = "No data found." });
                         break;
+                    case "delinquentloansummary":
+                        relativeReportPath = "Loan/LoanDeliquentReport/DeliquentLoanSummaryMAINRPT.rpt";
+                        reportTitle = $"LOANS DELINQUENCY SUMMARY REPORT";
+                        LoanDelinquencyReport = await _LoanServices.GetLoanDelinquencyReportAsync(reportCommand);
+
+                        if (LoanDelinquencyReport == null || LoanDelinquencyReport.CategorySummaries == null || !LoanDelinquencyReport.FlattenedRows.Any())
+                            return Json(new { success = false, message = "No delinquency data found." });
+                        break;
+
                     case "delinquentloan":
                         relativeReportPath = "Loan/PortFolio/DelinquentLoansRPT.rpt";
                         reportTitle = "PORTFOLIO OF DELINQUENT LOANS ";
+                        LoanDelinquencyReportResultRPT = await _LoanServices.GetLoanPortfolioAnalysisAsync(reportCommand);
+                        if (LoanDelinquencyReportResultRPT == null)
+                            return Json(new { success = false, message = "No data found." });
                         break;
                     case "loanbypurpose":
                         relativeReportPath = "Loan/PortFolio/LoanByPurposeRPT.rpt";
                         reportTitle = "Loans by Purpose Report";
+                        LoanDelinquencyReportResultRPT = await _LoanServices.GetLoanPortfolioAnalysisAsync(reportCommand);
+                        if (LoanDelinquencyReportResultRPT == null)
+                            return Json(new { success = false, message = "No data found." });
                         break;
                     default:
                         relativeReportPath = "Loan/PortFolio/MainPortFolioRPT.rpt";
@@ -412,10 +435,11 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                 {
                     { "DateFrom", startDate.ToString("dd/MM/yyyy") },
                     { "DateTo", endDate.ToString("dd/MM/yyyy") },
-                    { "BranchName", loanPortfolioAnalysis.BranchName },
+                    { "BranchName",  mainReportType=="delinquentloansummary"?LoanDelinquencyReport.BranchName:LoanDelinquencyReportResultRPT.BranchName },
                     { "CurrentYear", DateTime.Now.Year.ToString() },
                     { "PrintedBy", Session["FullName"]?.ToString() ?? "System" },
-                    { "ReportTitle", reportTitle }
+                    { "ReportTitle", reportTitle },
+                    { "PrintedOn", DateTime.Now.ToString("dd/MM/yyyy, hh:mm:ss") }
                 };
 
 
@@ -429,37 +453,50 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                     bool ShouldInclude(string name) =>
                         selectedReports.Contains("All", StringComparer.OrdinalIgnoreCase) ||
                         selectedReports.Contains(name, StringComparer.OrdinalIgnoreCase);
-
+                   
                     subReportData = new Dictionary<string, object>
                     {
-                        { "Flat_AgeAndGenderSubReport", ShouldInclude("Flat_AgeAndGender") ? loanPortfolioAnalysis.Flat_AgeAndGender : null },
-                        { "Flat_AgeAndLoanTypeSubReport", ShouldInclude("Flat_AgeAndLoanType") ? loanPortfolioAnalysis.Flat_AgeAndLoanType : null },
-                        { "Flat_ByLoanTermSubReport", ShouldInclude("Flat_ByLoanTerm") ? loanPortfolioAnalysis.Flat_ByLoanTerm : null },
-                        { "Flat_ByTargetGroupSubReport", ShouldInclude("Flat_ByTargetGroup") ? loanPortfolioAnalysis.Flat_ByTargetGroup : null },
-                        { "Flat_ByCategorySubReport", ShouldInclude("Flat_ByCategory") ? loanPortfolioAnalysis.Flat_ByCategory : null },
-                        { "Flat_ByZoneSubReport", ShouldInclude("Flat_ByZone") ? loanPortfolioAnalysis.Flat_ByZone : null },
-                        { "PortfolioDetailsSubReport", ShouldInclude("PortfolioDetails") ? loanPortfolioAnalysis.PortfolioDetails : null }
+                        { "Flat_AgeAndGenderSubReport", ShouldInclude("Flat_AgeAndGender") ? LoanDelinquencyReportResultRPT.Flat_AgeAndGender : null },
+                        { "Flat_AgeAndLoanTypeSubReport", ShouldInclude("Flat_AgeAndLoanType") ? LoanDelinquencyReportResultRPT.Flat_AgeAndLoanType : null },
+                        { "Flat_ByLoanTermSubReport", ShouldInclude("Flat_ByLoanTerm") ? LoanDelinquencyReportResultRPT.Flat_ByLoanTerm : null },
+                        { "Flat_ByTargetGroupSubReport", ShouldInclude("Flat_ByTargetGroup") ? LoanDelinquencyReportResultRPT.Flat_ByTargetGroup : null },
+                        { "Flat_ByCategorySubReport", ShouldInclude("Flat_ByCategory") ? LoanDelinquencyReportResultRPT.Flat_ByCategory : null },
+                        { "Flat_ByZoneSubReport", ShouldInclude("Flat_ByZone") ? LoanDelinquencyReportResultRPT.Flat_ByZone : null },
+                        { "PortfolioDetailsSubReport", ShouldInclude("PortfolioDetails") ? LoanDelinquencyReportResultRPT.PortfolioDetails : null }
                     };
                 }
-
-                if (mainReportType == "delinquentloan")
+                else if (mainReportType == "delinquentloansummary")
                 {
-                    Session["MainData"] = loanPortfolioAnalysis.PortfolioDetails;
+                    // ✅ Map subreport names to the expected dataset from the DTO
+                    subReportData = new Dictionary<string, object>
+                    {
+                        { "SubDelinquencyByGenderSummaryRPT", LoanDelinquencyReport.GenderSummariesAfter60Days },
+                        { "SubDelinquencyByLoanTypeSummaryRPT", LoanDelinquencyReport.LoanTypeSummariesAfter60Days },
+                        { "SubLoanDelinquencyCategorySummaryRPT", LoanDelinquencyReport.CategorySummaries }
+                    };
+                    // ✅ Main report data can be the full report metadata (if used in header)
+                    Session["MainData"] = new List<LoanDelinquencyReportDto> { LoanDelinquencyReport };
                 }
                 else
                 {
-                    Session["MainData"] = new List<LoanDelinquencyReportResultRPT> { loanPortfolioAnalysis };
+                    if (mainReportType == "delinquentloan")
+                    {
+                        Session["MainData"] = LoanDelinquencyReportResultRPT.PortfolioDetails;
+                    }
+                    else
+                    {
+                        Session["MainData"] = new List<LoanDelinquencyReportResultRPT> { LoanDelinquencyReportResultRPT };
+                    }
                 }
 
                 Session["ReportParameters"] = parameters;
                 Session["SubReportsData"] = subReportData;
-
                 // ✅ Return viewer URL to the AJAX call
                 string reportPathParam = HttpUtility.UrlEncode(relativeReportPath);
                 string reportNameParam = HttpUtility.UrlEncode(reportTitle);
                 string viewerUrl = Url.Content($"/ReportForm/ReportViewer.aspx?reportPath={reportPathParam}&reportName={reportNameParam}");
 
-                return Json(new{ success = true,redirectUrl = viewerUrl});
+                return Json(new { success = true, redirectUrl = viewerUrl });
             }
             catch (Exception ex)
             {
@@ -467,111 +504,6 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
             }
         }
 
-        //public async Task<ActionResult> LoanPortfolioStatistics(GenerateLoanPortfolioReportCommand reportCommand)
-        //{
-        //    try
-        //    {
-        //        string userDateFormat = "yyyy/MM/dd";
-
-        //        // ✅ Get full CultureInfo object from base controller
-        //        CultureInfo userCulture = GetUserCultureInfo();
-        //        string cultureCode = userCulture.Name; // e.g., "en-US" or "fr-FR"
-
-        //        string startInput = reportCommand.StartDate.ToString(userDateFormat, userCulture);
-        //        string endInput = reportCommand.EndDate.ToString(userDateFormat, userCulture);
-
-        //        DateTime startDate, endDate;
-        //        LocalizedDateConverter.ConvertDateRange(
-        //            startInput, endInput, out startDate, out endDate, cultureCode, userDateFormat
-        //        );
-
-        //        reportCommand.StartDate = startDate;
-        //        reportCommand.EndDate = endDate;
-
-        //        var loanPortfolioAnalysis = await _LoanServices.GetLoanPortfolioAnalysisAsync(reportCommand);
-        //        if (loanPortfolioAnalysis == null)
-        //            return Json(new { success = false, message = "No data found." });
-
-        //        string mainReportType = (reportCommand.MainReportType ?? "All").ToLowerInvariant();
-        //        string relativeReportPath;
-        //        string reportTitle;
-
-        //        switch (mainReportType)
-        //        {
-        //            case "currentloan":
-        //                relativeReportPath = "Loan/PortFolio/CurrentLoanRPT.rpt";
-        //                reportTitle = "Current Loans Report";
-        //                break;
-        //            case "delinquentloan":
-        //                relativeReportPath = "Loan/PortFolio/DelinquentLoansRPT.rpt";
-        //                reportTitle = "Delinquent Loans Report";
-        //                break;
-        //            case "loanbypurpose":
-        //                relativeReportPath = "Loan/PortFolio/LoanByPurposeRPT.rpt";
-        //                reportTitle = "Loans by Purpose Report";
-        //                break;
-        //            default:
-        //                relativeReportPath = "Loan/PortFolio/MainPortFolioRPT.rpt";
-        //                reportTitle = "Loan Portfolio Analysis Report";
-        //                break;
-        //        }
-
-        //        var parameters = new Dictionary<string, object>
-        //        {
-        //            { "DateFrom", startDate },
-        //            { "DateTo", endDate },
-        //            { "BranchName", loanPortfolioAnalysis.BranchName },
-        //            { "PrintedBy", Session["FullName"]?.ToString() ?? "System" },
-        //            { "ReportTitle", reportTitle }
-        //        };
-
-        //        var subReportData = new Dictionary<string, object>();
-        //        if (mainReportType == "all")
-        //        {
-        //            var selectedReports = string.IsNullOrWhiteSpace(reportCommand.SubReportType)
-        //                ? new List<string> { "All" }
-        //                : reportCommand.SubReportType.Split(',').Select(s => s.Trim()).ToList();
-
-        //            bool ShouldInclude(string name) =>
-        //                selectedReports.Contains("All", StringComparer.OrdinalIgnoreCase) ||
-        //                selectedReports.Contains(name, StringComparer.OrdinalIgnoreCase);
-
-        //            subReportData = new Dictionary<string, object>
-        //            {
-        //                { "Flat_AgeAndGenderSubReport", ShouldInclude("Flat_AgeAndGender") ? loanPortfolioAnalysis.Flat_AgeAndGender : null },
-        //                { "Flat_AgeAndLoanTypeSubReport", ShouldInclude("Flat_AgeAndLoanType") ? loanPortfolioAnalysis.Flat_AgeAndLoanType : null },
-        //                { "Flat_ByLoanTermSubReport", ShouldInclude("Flat_ByLoanTerm") ? loanPortfolioAnalysis.Flat_ByLoanTerm : null },
-        //                { "Flat_ByTargetGroupSubReport", ShouldInclude("Flat_ByTargetGroup") ? loanPortfolioAnalysis.Flat_ByTargetGroup : null },
-        //                { "Flat_ByCategorySubReport", ShouldInclude("Flat_ByCategory") ? loanPortfolioAnalysis.Flat_ByCategory : null },
-        //                { "Flat_ByZoneSubReport", ShouldInclude("Flat_ByZone") ? loanPortfolioAnalysis.Flat_ByZone : null },
-        //                { "PortfolioDetailsSubReport", ShouldInclude("PortfolioDetails") ? loanPortfolioAnalysis.PortfolioDetails : null }
-        //            };
-        //        }
-
-        //        if (mainReportType == "delinquentloan")
-        //        {
-        //            Session["MainData"] = loanPortfolioAnalysis.PortfolioDetails;
-        //        }
-        //        else
-        //        {
-        //            Session["MainData"] = new List<LoanDelinquencyReportResultRPT> { loanPortfolioAnalysis };
-        //        }
-
-        //        Session["ReportParameters"] = parameters;
-        //        Session["SubReportsData"] = subReportData;
-
-        //        string reportPathParam = HttpUtility.UrlEncode(relativeReportPath);
-        //        string reportNameParam = HttpUtility.UrlEncode(reportTitle);
-
-        //        return Redirect($"/ReportViewer.aspx?reportPath={reportPathParam}&reportName={reportNameParam}");
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { success = false, message = $"Error: {ex.Message}" });
-        //    }
-        //}
 
         [HttpGet]
         public async Task<ActionResult> LoanPortfolioReport()
