@@ -9222,10 +9222,6 @@
       <Project>{c8e30e49-fc55-431e-9832-cf6f28e30c30}</Project>
       <Name>CBS.FrontDesk.Service</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CBS.FrontDesk.Data\CBS.FrontDesk.Data\CBS.FrontDesk.Data.csproj">
-      <Project>{0D7085DF-13B8-4FCE-9E8F-F0FA88FCE730}</Project>
-      <Name>CBS.FrontDesk.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper.csproj">
       <Project>{192960F3-C2BA-4286-A4E6-F0B94DA85450}</Project>
       <Name>CBS.FrontDesk.Helper</Name>
