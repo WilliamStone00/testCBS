@@ -26,7 +26,24 @@ namespace CBS.FrontDesk.Data.Entity.GeneralStatisticReport
         public List<LoanCategoryGenderSummary> LoanTypeSummaries { get; set; } = new List<LoanCategoryGenderSummary>();
         public List<LoanCategoryGenderSummary> LoanCategorySummaries { get; set; }= new List<LoanCategoryGenderSummary>();
         public List<LoanCategoryGenderSummary> LoanTargetSummaries { get; set; }= new List<LoanCategoryGenderSummary>();
+        public List<GeneralStatisticsFlatRow> GeneralStatisticsFlatRow { get; set; } = new List<GeneralStatisticsFlatRow>();
 
+    }
+    public class GeneralStatisticsFlatRow
+    {
+        public string Title { get; set; }
+
+        public int MenCount { get; set; }
+        public int WomenCount { get; set; }
+        public int GroupsCount { get; set; }
+        public int TotalCount => MenCount + WomenCount + GroupsCount;
+
+        public decimal MenAmount { get; set; }
+        public decimal WomenAmount { get; set; }
+        public decimal GroupsAmount { get; set; }
+        public decimal TotalAmount => MenAmount + WomenAmount + GroupsAmount;
+
+        public string DataGroup { get; set; } // e.g. Account, LoanSummary, LoanType
     }
 
     public class AccountTypeGenderSummary

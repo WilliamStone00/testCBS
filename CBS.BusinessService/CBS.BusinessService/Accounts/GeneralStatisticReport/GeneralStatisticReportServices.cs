@@ -72,6 +72,8 @@ namespace CBS.BusinessService.Accounts.GeneralStatisticReport
 
                     // Enrich the report with metadata
                     var enrichedReport = GeneralStatisticsReportDtoMapper.AddBranchGetReportRPTMapper(report, branch);
+                    var flatRows = GeneralStatisticsReportDtoMapper.FlattenToRows(report);
+                    enrichedReport.GeneralStatisticsFlatRow=flatRows;
                     return enrichedReport;
                 }
 

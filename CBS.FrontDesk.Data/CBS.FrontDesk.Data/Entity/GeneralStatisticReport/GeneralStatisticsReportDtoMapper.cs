@@ -54,5 +54,78 @@ namespace CBS.FrontDesk.Data.Entity.GeneralStatisticReport
 
             return rpt;
         }
+
+        public static List<GeneralStatisticsFlatRow> FlattenToRows(GeneralStatisticsReportRPT rpt)
+        {
+            var rows = new List<GeneralStatisticsFlatRow>();
+
+            if (rpt == null) return rows;
+
+            // Account types: SAVINGS, DEPOSITS, SHARES
+            rows.AddRange(rpt.AccountTypeSummaries.Select(x => new GeneralStatisticsFlatRow
+            {
+                Title = x.AccountType,
+                MenCount = x.MenCount,
+                WomenCount = x.WomenCount,
+                GroupsCount = x.GroupsCount,
+                MenAmount = x.MenAmount,
+                WomenAmount = x.WomenAmount,
+                GroupsAmount = x.GroupsAmount,
+                DataGroup = "Account"
+            }));
+
+            // Loan summaries: OUTSTANDING, GRANTED THIS MONTH
+            rows.AddRange(rpt.LoanSummaries.Select(x => new GeneralStatisticsFlatRow
+            {
+                Title = x.Category,
+                MenCount = x.MenCount,
+                WomenCount = x.WomenCount,
+                GroupsCount = x.GroupsCount,
+                MenAmount = x.MenAmount,
+                WomenAmount = x.WomenAmount,
+                GroupsAmount = x.GroupsAmount,
+                DataGroup = "LoanSummary"
+            }));
+
+            // Loan types: MEDICAL, CONTRACT, EDUCATION etc.
+            rows.AddRange(rpt.LoanTypeSummaries.Select(x => new GeneralStatisticsFlatRow
+            {
+                Title = x.Category,
+                MenCount = x.MenCount,
+                WomenCount = x.WomenCount,
+                GroupsCount = x.GroupsCount,
+                MenAmount = x.MenAmount,
+                WomenAmount = x.WomenAmount,
+                GroupsAmount = x.GroupsAmount,
+                DataGroup = "LoanType"
+            }));
+
+            // Optionally include categories or targets
+            rows.AddRange(rpt.LoanCategorySummaries.Select(x => new GeneralStatisticsFlatRow
+            {
+                Title = x.Category,
+                MenCount = x.MenCount,
+                WomenCount = x.WomenCount,
+                GroupsCount = x.GroupsCount,
+                MenAmount = x.MenAmount,
+                WomenAmount = x.WomenAmount,
+                GroupsAmount = x.GroupsAmount,
+                DataGroup = "LoanCategory"
+            }));
+
+            rows.AddRange(rpt.LoanTargetSummaries.Select(x => new GeneralStatisticsFlatRow
+            {
+                Title = x.Category,
+                MenCount = x.MenCount,
+                WomenCount = x.WomenCount,
+                GroupsCount = x.GroupsCount,
+                MenAmount = x.MenAmount,
+                WomenAmount = x.WomenAmount,
+                GroupsAmount = x.GroupsAmount,
+                DataGroup = "LoanTarget"
+            }));
+
+            return rows;
+        }
     }
 }

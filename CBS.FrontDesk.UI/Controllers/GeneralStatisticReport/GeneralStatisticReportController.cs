@@ -188,10 +188,10 @@ namespace CBS.FrontDesk.UI.Controllers.GeneralStatisticReport
                 {
                     subReportData = new Dictionary<string, object>
                 {
-                    { "MembersWithAccountsRPT", generalStatisticsReport.MembersWithAccounts },
-                    { "AccountTypeSummariesRPT", generalStatisticsReport.AccountTypeSummaries },
-                    { "LoanSummariesRPT", generalStatisticsReport.LoanSummaries },
-                    { "LoanBreakdowns", generalStatisticsReport.LoanBreakdowns }
+                    { "SubMembersWithAccountsRPT", generalStatisticsReport.MembersWithAccounts },
+                    { "SubAccountTypeSummariesRPT", generalStatisticsReport.AccountTypeSummaries },
+                    { "SubLoanSummariesRPT", generalStatisticsReport.LoanSummaries },
+                    { "SubLoanBreakdowns", generalStatisticsReport.LoanBreakdowns }
                 };
 
                     Session["MainData"] = new List<GeneralStatisticsReportRPT> { generalStatisticsReport };
