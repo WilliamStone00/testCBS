@@ -162,6 +162,10 @@
       <Project>{7789de1e-5232-46a6-9a96-1dd39e708eeb}</Project>
       <Name>CBS.API.Helper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\CBS.FrontDesk.Data\CBS.FrontDesk.Data\CBS.FrontDesk.Data.csproj">
+      <Project>{0d7085df-13b8-4fce-9e8f-f0fa88fce730}</Project>
+      <Name>CBS.FrontDesk.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
