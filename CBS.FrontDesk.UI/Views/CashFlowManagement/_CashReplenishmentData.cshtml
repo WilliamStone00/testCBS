@@ -431,7 +431,18 @@
                                                             if (d.IsOwner)
                                                             {
 
-                                                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_pendingCashMovement','_CreateBankCashOutApproval','bankCashOutApproval','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to Upload">Bank Cash Out </a>
+ 
+                                                                if (d.AcknowledgementStatus == "Pending")
+                                                                {
+                                                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_pendingCashMovement','_Acknowledgement','acknowledgement','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Awaiting your acknowledgement">Accept</a>
+
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_pendingCashMovement','_CreateBankCashOutApproval','bankCashOutApproval','CashFlowManagement')" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Select @d.ApprovedBy Cash Request to Upload">Bank Cash Out </a>
+
+                                                                }
+
                                                             }
                                                             else
                                                             {

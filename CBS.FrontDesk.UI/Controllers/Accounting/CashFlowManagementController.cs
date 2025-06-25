@@ -487,7 +487,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             
             List<ChartOfAccountStateDto> listOfAccounts = new List<ChartOfAccountStateDto>();
-            listOfAccounts = await _chartOfAccountManagementPositionService.GetAllBranchAccountUsedToCreditCashFlow("560", "3");
+             //listOfAccounts = await _chartOfAccountManagementPositionService.GetAllBranchAccountUsedToCreditCashFlow("560", "3");
             
             var listOfBankAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(Id);
 
@@ -501,7 +501,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     {
                         listOfAccounts.Remove(model);
                     }
-                    listOfAccounts.Add(new ChartOfAccountStateDto { Id = $"{item.ChartOfAccountManagementPositionId}-{item.Id}", GeneralRepresentation = $"[{item.AccountNumberCU}-{item.AccountName}-{item.CurrentBalance}]" });
+                    listOfAccounts.Add(new ChartOfAccountStateDto { Id = $"{item.Id}", GeneralRepresentation = $"[{item.AccountNumberCU}-{item.AccountName}-{item.CurrentBalance}]" });
 
                 }
             }
@@ -599,15 +599,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else if (model.ServiceOption.Equals("bankCashOutApproval")) //(path == "")
             {
+                model.CashReplenimentRequest = await _accountingEntryServices.GetCashReplenishmentRequestIdReference(model.BankCashOut.ReferenceId);
                 model.BankCashOut.TransactionType = "CASH OUT";
                 model.BankCashOut.Id = BaseUtilities.GenerateInsuranceUniqueNumber(15, "BCO");
                 //        model.BankCashOut.Balance = (await _AccountServices.GetAccount(model.BankCashOut.FromAccountId)).CurrentBalance.ToString();
 
                 var accountList = (await _AccountServices.GetAccountInfoByEventCode(new EventRequest { EventCode = "Bank_To_Transit", ToBranchCode = _AccountServices.GetBranchCode(), ToBranchId = _AccountServices.GetBranchID() }));
-                var fromAccount = accountList.Where(x => x.Type.ToLower() == "source").FirstOrDefault();
+                //var fromAccount = accountList.Where(x => x.Type.ToLower() == "source").FirstOrDefault();
                 var toAccount = accountList.Where(x => x.Type.ToLower() == "destination").FirstOrDefault();
                 model.BankCashOut.ToAccountId = toAccount.Id;
-                //model.BankCashOut.FromAccountId = model.CashReplenimentRequest.TempData;
+                model.BankCashOut.FromAccountId = model.CashReplenimentRequest.TempData;
 
                var datac = await _accountingEntryServices.CreateBankCashTransaction(model.BankCashOut);
                 return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
@@ -968,10 +969,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     var listOfAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.CorrespondingBranchId);
                     ViewBag.Accounts = BuildDropDown(GenerateAccountListView(listOfAccounts));
                 }
-                var modsx = await _AccountServices.GetAccount(cashDemandDataEntity.BankCashOut.FromAccountId);
+                var accountId = cashDemandDataEntity.BankCashOut.FromAccountId;
+                var modsx = await _AccountServices.GetAccount(accountId);
                 if (modsx==null)
                 {
-                    var modelx = await _chartOfAccountManagementPositionService.GetChartOfAccountManagementPosition(cashDemandDataEntity.BankCashOut.FromAccountId);
+                    var modelx = await _chartOfAccountManagementPositionService.GetChartOfAccountManagementPosition(cashDemandDataEntity.BankCashOut.FromAccountId.Split('-')[0]);
                     cashDemandDataEntity.BankCashOut.FromAccountName = $"{modelx.AccountNumber}{modelx.PositionNumber}[BCD]-{modelx.Description}:0 FCFA";
                 }
                 else
@@ -1646,10 +1648,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 new System.Web.WebPages.Html.SelectListItem { Text = "Approved", Value = "Approved" },
                   new System.Web.WebPages.Html.SelectListItem { Text = "Acknowledge Head Office Request", Value = "Approved" },
 
-                 new System.Web.WebPages.Html.SelectListItem { Text = "Waiting_Branch_Bank_CashOut", Value = "RedirectToBranchBCO" },
+                 new System.Web.WebPages.Html.SelectListItem { Text = "Authorized_Bank_CashOut", Value = "RedirectToBranchBCO" },
 
                  //new System.Web.WebPages.Html.SelectListItem { Text = "Redirected_Branch_Bank_CashOut", Value = "Approved" },
-                  new System.Web.WebPages.Html.SelectListItem { Text = "Waiting_For_Branch_Transfer", Value = "RedirectToBranchBTB" },
+                  new System.Web.WebPages.Html.SelectListItem { Text = "Authorized_Branch_Transfer", Value = "RedirectToBranchBTB" },
                            new System.Web.WebPages.Html.SelectListItem { Text = "Completed", Value = "Completed" },
        new System.Web.WebPages.Html.SelectListItem { Text = "Cash Clearing", Value = "Awaiting_Branch_CashClearing" },
                 new System.Web.WebPages.Html.SelectListItem { Text = "Rejected", Value = "Rejected" } }.ToList();
