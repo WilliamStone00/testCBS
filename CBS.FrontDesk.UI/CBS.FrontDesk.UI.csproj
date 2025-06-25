@@ -516,6 +516,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppFiles\Reporting\Loan\GeneralStatistics\GeneralStatisticsMAINRPT.cs">
+      <DependentUpon>GeneralStatisticsMAINRPT.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Loan\GeneralStatistics\SubAccountTypeSummariesRPT.cs">
+      <DependentUpon>SubAccountTypeSummariesRPT.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Loan\LoanDeliquentReport\DeliquentLoanSummaryMAINRPT.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -7396,6 +7408,14 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanTerm.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\Loan\GeneralStatistics\GeneralStatisticsMAINRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>GeneralStatisticsMAINRPT.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Loan\GeneralStatistics\SubAccountTypeSummariesRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SubAccountTypeSummariesRPT.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Loan\LoanDeliquentReport\DeliquentLoanSummaryMAINRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DeliquentLoanSummaryMAINRPT.cs</LastGenOutput>
@@ -9206,7 +9226,6 @@
     <Folder Include="AppFiles\BarCodeImages\" />
     <Folder Include="AppFiles\Images\BarCodes\" />
     <Folder Include="AppFiles\Migration\TrialBalance\" />
-    <Folder Include="AppFiles\Reporting\Loan\GeneralStatistics\" />
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
     <Folder Include="Controllers\DailyCollectionManagement\" />
