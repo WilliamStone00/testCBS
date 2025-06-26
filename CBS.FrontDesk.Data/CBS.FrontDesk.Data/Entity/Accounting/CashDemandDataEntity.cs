@@ -23,7 +23,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
           public RedirectedForBankCashOut RedirectedForBankCashOut { get; set; } = new RedirectedForBankCashOut();
         public BankCashOut BankCashOut { get; set; } = new BankCashOut(); 
         public BankDepositCashClearing BankDepositCashClearing { get; set; } = new BankDepositCashClearing();
-        public Acknowledge Acknowledge { get; set; } = new Acknowledge();
+        //public Acknowledge Acknowledge { get; set; } = new Acknowledge();
         public CashClearing CashClearing { get; set; } = new CashClearing();
         public BranchToBranchTransfer BranchToBranchTransfer { get; set; } = new BranchToBranchTransfer();
         public DetailsDto DetailsDto { get; set; } = new DetailsDto();
@@ -44,8 +44,14 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Action { get; set; }
         public string enteredReference { get; set; }
 
+        public string AcknowledgementType { get; set; } 
+
     }
 
+    public enum AcknowledgementType
+    {
+        InterBranch,BankCashOut, RedirectedBankCashOut
+    }
 
     public class EventCodeQuery 
     {

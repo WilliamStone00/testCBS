@@ -64,7 +64,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string TempId1 { get; set; } = "Pendding";
         public string TempId2 { get; set; } = "Pendding";
         public string TempId3 { get; set; } = "AccountId";
-        public string TempData { get; set; } 
+        public string TempData { get; set; }
+        public string StatusOption { get; set; }
         public string CashReplishmentRequestStatus { get; set; } = "Pendding";
         public string  AcknowledgementStatus { get; set; }  
         public CashApprovalResponse ConvertToCashApprovalResponse(bool Approved)

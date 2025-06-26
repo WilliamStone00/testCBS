@@ -163,7 +163,7 @@
       <Name>CBS.API.Helper</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\CBS.FrontDesk.Data\CBS.FrontDesk.Data\CBS.FrontDesk.Data.csproj">
-      <Project>{0D7085DF-13B8-4FCE-9E8F-F0FA88FCE730}</Project>
+      <Project>{0d7085df-13b8-4fce-9e8f-f0fa88fce730}</Project>
       <Name>CBS.FrontDesk.Data</Name>
     </ProjectReference>
   </ItemGroup>
