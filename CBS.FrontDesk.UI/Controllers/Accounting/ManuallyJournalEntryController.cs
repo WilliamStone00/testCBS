@@ -5,6 +5,7 @@ using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
@@ -31,6 +32,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Services.Description;
 using System.Web.WebPages.Html;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -75,7 +77,7 @@ namespace CBS.FrontDesk.UI.Controllers
            
         }
         public async Task<ActionResult> Index()
-        {
+         {
             await GetList();
             return View(new ManuallyJournalEntryDataSet { });
         }
@@ -202,19 +204,27 @@ namespace CBS.FrontDesk.UI.Controllers
         {
 
 
-            var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
+            try
+            {
+                var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
 
-            var CreditAccounts = BuildMenuViewBag(await GetAllAccountOpenForJEAsync( await GetAllAccountsExcludingOperationsAccountIncludingBlacklistedAccountAsync()));
-            ViewBag.Accounts = CreditAccounts;
-            ViewBag.BookingDirections = await GetBookingDirections();
-            ViewBag.ChartOfAccountManagementPositions = BuildMenuCOAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList());
-            ViewBag.DoubbleEntryValidation = await GetDoubbleEntryValidation();
-            ViewBag.ListOfEligibleBranch = BuildBranchViewBag((await _branchService.GetBranches()).ToList());
-            ViewBag.EntryTypes = BuildEntryTypesViewBag();
-            ViewBag.LevelOfExecution = BuildLevelOfExecutionViewBag();
-            ViewBag.IsInterBranchTransaction = BuildIsInterBranchTransactionViewBag();
-            ViewBag.IsChainEntry = await GetEntrySystem();
-            ViewBag.AccountingEventRuleIds = BuildAccountingRuleViewBag((await _AccountingRuleServices.GetAccountingRules()).ToList());
+                var CreditAccounts = BuildMenuViewBag(await _AccountServices.GetJournalEntryMFIAccountQuery(_AccountServices.GetBranchID()));
+                ViewBag.Accounts = CreditAccounts;
+                ViewBag.BookingDirections = await GetBookingDirections();
+                ViewBag.ChartOfAccountManagementPositions = BuildMenuCOAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList());
+                ViewBag.DoubbleEntryValidation = await GetDoubbleEntryValidation();
+                ViewBag.ListOfEligibleBranch = BuildBranchViewBag((await _branchService.GetBranches()).ToList());
+                ViewBag.EntryTypes = BuildEntryTypesViewBag();
+                ViewBag.LevelOfExecution = BuildLevelOfExecutionViewBag();
+                ViewBag.IsInterBranchTransaction = BuildIsInterBranchTransactionViewBag();
+                ViewBag.IsChainEntry = await GetEntrySystem();
+                ViewBag.AccountingEventRuleIds = BuildAccountingRuleViewBag((await _AccountingRuleServices.GetAccountingRules()).ToList());
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         private async Task GetExInfoList()
         {
@@ -270,17 +280,30 @@ namespace CBS.FrontDesk.UI.Controllers
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
         }
+        [HttpGet]
+        public async Task<ActionResult> GetBranchAccount(string BranchId)
+        {
+            var ListOfData = BuildMenuViewBag(await _AccountServices.GetJournalEntryMFIAccountQuery(BranchId));
+            return Json(BuildDropDown(ListOfData), JsonRequestBehavior.AllowGet);
+        }
+        private List<StringValues> BuildDropDown(List<Data.Account> ListOfData)
+        {
+            List<StringValues> list = new List<StringValues>();
+            foreach (var item in ListOfData)
+            {
+
+                list.Add(new StringValues { Text = $"{item.AccountNumberCU}-{item.AccountName}", Value = item.Id });
+
+            }
+
+            return list;
+        }
+
         public async Task<ActionResult> GetAccountMFIChartOfAccount()
         {
-
-
             try
             {
                 var AccountData = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
-
-
-
-
                 return Json(BuildMenuCOAccountViewBag(AccountData.ToList()), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -288,13 +311,13 @@ namespace CBS.FrontDesk.UI.Controllers
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
         }
-        private dynamic BuildBranchViewBag(List<Branch> listOfItems)
+        private dynamic BuildBranchViewBag(List<CBS.FrontDesk.Data.Entity.Config.Branch> listOfItems)
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-            //     listOfItems.Remove(listOfItems.Where(x => x.BranchCode == "000").FirstOrDefault());
+ 
             foreach (var item in listOfItems)
             {
-                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = item.Id, Text = $"{item.Name}" });
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = $"{item.Name}", Text =  item.Id });
             }
             return selectListItems;
         }
@@ -721,7 +744,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
         }
 
-        private dynamic BuildAllBrachScope(List<Branch> collection, AccountingEventRule model)
+        private dynamic BuildAllBrachScope(List<CBS.FrontDesk.Data.Entity.Config.Branch> collection, AccountingEventRule model)
         {
             List<string> branchString = new List<string>();
             foreach (var item in model.ListOfEligibleBranchId)
@@ -802,9 +825,9 @@ namespace CBS.FrontDesk.UI.Controllers
             return listOfBranch;
         }
 
-        private List<Branch> GetSetOfBranchesActivatedForEvents(List<Branch> enumerable, List<string> listOfEligibleBranchId)
+        private List<CBS.FrontDesk.Data.Entity.Config.Branch> GetSetOfBranchesActivatedForEvents(List<CBS.FrontDesk.Data.Entity.Config.Branch> enumerable, List<string> listOfEligibleBranchId)
         {
-            List<Branch> listOfBranch = new List<Branch>();
+            List<CBS.FrontDesk.Data.Entity.Config.Branch> listOfBranch = new List<CBS.FrontDesk.Data.Entity.Config.Branch>();
             foreach (var item in listOfEligibleBranchId)
             {
                 listOfBranch.Add(enumerable.Find(x => x.Id == item));

@@ -43,6 +43,11 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             await GetList();
             return View(new DailyCollectionConfiguration());
         }
+        public async Task<ActionResult> CollectionZonification()
+        {
+            await GetList();
+            return View(new DailyCollectionConfiguration());
+        }
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
             await GetList();
@@ -141,7 +146,6 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                     return PartialView(partialView, sysData);
 
                 }
-
                 else if (path == "new")
                 {
 
@@ -149,9 +153,6 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                     return PartialView(partialView, new DailyCollectionConfiguration { Zone = new Data.Entity.DailyCollectionData.Zone() });
 
                 }
-
-
-
                 else
                 {
                     var data = await _zoneServices.GetZoneById(KEY);
