@@ -107,7 +107,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string BranchId { get; set; }
         public string ExternalBranchId { get; set; }
         public bool IsInterBranchTransaction { get; set; }
-        public static AccountingEntryPayloadCommand ConvertToAccountingEntryPayloadCommand(List<EntryTempData> entries, string branchId)
+        public static AccountingEntryPayloadCommand ConvertToAccountingEntryPayloadCommand(List<EntryTempData> entries, bool IsHeadOffice, string branchId)
         {
             List<EntryTempDatas> accountingEntries = new List<EntryTempDatas>();
             foreach (var Item in entries)
@@ -120,11 +120,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                     AccountNumber = Item.AccountNumber,
                     AccountingEventId = Item.AccountingEventId,
                     BookingDirection = Item.BookingDirection,
-                    BranchId = branchId,
+                    BranchId = IsHeadOffice? entries[0].BranchId: branchId,
                     Amount = Convert.ToDecimal(Item.Amount),
                     AccountBalance = Item.AccountBalance ?? "0",
                     Description = Item.Description,
-                    ExternalBranchId = branchId,
+                    ExternalBranchId = IsHeadOffice ? entries[0].BranchId : branchId,
                     Reference = Item.Reference,
                     ValueDate = Item.ValueDate
                 });
@@ -132,8 +132,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             return new AccountingEntryPayloadCommand
             {
                 EntryTempDatas = accountingEntries,
-                BranchId = branchId,
-                ExternalBranchId = branchId,
+                BranchId = IsHeadOffice ? entries[0].BranchId : branchId,
+                ExternalBranchId = IsHeadOffice ? entries[0].BranchId : branchId,
                 AccountingEventRuleId = null,
                 IsDoubleValidationNeeded = true,
                 IsInterBranchTransaction = false,

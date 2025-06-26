@@ -15,7 +15,7 @@
                         <div class="form-floating form-floating-outline">
                             @Html.DropDownListFor(
                                 model => model.QueryModel.BranchId,
-                                new SelectList(ViewBag.Branches ?? "", "Value", "Text"),
+                                new SelectList(ViewBag.Branches ?? "", "Text", "Value"),
                                 new { @class = "form-control select2", @search = "true" }
                             )
                             @Html.ValidationMessageFor(model => model.QueryModel.BranchId, "", new { @class = "text-danger" })

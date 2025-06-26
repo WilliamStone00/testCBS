@@ -259,7 +259,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BranchId.
+        ///   Looks up a localized string similar to Select the branch and scope of your entries.
         /// </summary>
         internal static string BranchId {
             get {
