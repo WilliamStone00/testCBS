@@ -31,8 +31,7 @@ namespace CBS.FrontDesk.UI.WAF.Services.Validation
         /// <param name="allowedFileMimeTypes">Whitelisted file types to scan.</param>
         public BodyScanner(
             MaliciousContentScannerService scanner,
-            int maxFileScanSizeInBytes = 1024 * 1024,
-            IEnumerable<string> allowedFileMimeTypes = null)
+            int maxFileScanSizeInBytes = 1024 * 1024,IEnumerable<string> allowedFileMimeTypes = null)
         {
             _scanner = scanner;
             _maxFileSizeInBytes = maxFileScanSizeInBytes;
@@ -78,6 +77,7 @@ namespace CBS.FrontDesk.UI.WAF.Services.Validation
         /// <summary>
         /// Scans multipart/form-data (form fields and files) for suspicious keys or malicious content.
         /// </summary>
+
         public bool IsMaliciousMultipart(HttpRequest request, WAFContext context, out string reason)
         {
             reason = null;
@@ -111,9 +111,11 @@ namespace CBS.FrontDesk.UI.WAF.Services.Validation
                     var file = request.Files[fileKey];
                     if (file != null && file.ContentLength > 0 && file.ContentLength <= _maxFileSizeInBytes)
                     {
-                        var mime = file.ContentType.ToLowerInvariant();
+                        var mime = file.ContentType?.ToLowerInvariant() ?? string.Empty;
+                        var extension = Path.GetExtension(file.FileName)?.ToLowerInvariant();
 
-                        if (_allowedMimeTypes.Contains(mime))
+                        // ✅ Accept if MIME is allowed or extension is .txt
+                        if (_allowedMimeTypes.Contains(mime) || extension == ".txt")
                         {
                             using (var reader = new StreamReader(file.InputStream))
                             {
@@ -128,6 +130,10 @@ namespace CBS.FrontDesk.UI.WAF.Services.Validation
 
                             file.InputStream.Position = 0; // Reset for downstream access
                         }
+                        else
+                        {
+                            reason = $"⚠️ File '{file.FileName}' skipped due to unsupported MIME type ({mime}) or extension ({extension})";
+                        }
                     }
                 }
             }
@@ -139,6 +145,69 @@ namespace CBS.FrontDesk.UI.WAF.Services.Validation
 
             return false;
         }
+
+
+        //public bool IsMaliciousMultipart(HttpRequest request, WAFContext context, out string reason)
+        //{
+        //    reason = null;
+
+        //    if (request.HttpMethod != "POST" || !request.ContentType?.StartsWith("multipart/form-data", StringComparison.OrdinalIgnoreCase) == true)
+        //        return false;
+
+        //    try
+        //    {
+        //        // 🔍 Scan form fields
+        //        foreach (string key in request.Form.AllKeys)
+        //        {
+        //            var value = request.Form[key];
+
+        //            if (IsSuspiciousKey(key, out var matchedKeyPattern))
+        //            {
+        //                reason = $"🚨 Suspicious form key name: '{key}'. Pattern: {matchedKeyPattern}";
+        //                return true;
+        //            }
+
+        //            if (!string.IsNullOrWhiteSpace(value) && _scanner.IsMalicious(value, out var matchedValue))
+        //            {
+        //                reason = $"🚨 Malicious field value in '{key}'. Pattern: {matchedValue}";
+        //                return true;
+        //            }
+        //        }
+
+        //        // 🗃️ Scan uploaded files
+        //        foreach (string fileKey in request.Files.AllKeys)
+        //        {
+        //            var file = request.Files[fileKey];
+        //            if (file != null && file.ContentLength > 0 && file.ContentLength <= _maxFileSizeInBytes)
+        //            {
+        //                var mime = file.ContentType.ToLowerInvariant();
+
+        //                if (_allowedMimeTypes.Contains(mime))
+        //                {
+        //                    using (var reader = new StreamReader(file.InputStream))
+        //                    {
+        //                        string fileContent = reader.ReadToEnd();
+
+        //                        if (_scanner.IsMalicious(fileContent, out var matchedPattern))
+        //                        {
+        //                            reason = $"🚨 Malicious pattern in file '{file.FileName}'. Pattern: {matchedPattern}";
+        //                            return true;
+        //                        }
+        //                    }
+
+        //                    file.InputStream.Position = 0; // Reset for downstream access
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        reason = $"⚠️ Multipart scan failed: {ex.Message}";
+        //        return true;
+        //    }
+
+        //    return false;
+        //}
 
         /// <summary>
         /// Determines if a form key contains suspicious naming (e.g., encoded or obfuscated).
