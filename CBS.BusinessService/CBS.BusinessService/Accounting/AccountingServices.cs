@@ -373,6 +373,50 @@ namespace CBS.BusinessService.Accounting
             }
             catch (Exception ex)
             {
+                // Log and handle exception 
+                throw (ex);
+            }
+        }
+
+        public async Task<List<FrontDesk.Data.Account>> GetAllBranch(string BranchId)
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Account>>>(string.Format(APICallHelper.GetAccountByBranchIdUrl,BranchId));
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData != null)
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<FrontDesk.Data.Account>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
+
+        public async Task<List<FrontDesk.Data.Account>> GetJournalEntryMFIAccountQuery(string BranchId)
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Account>>>(string.Format( APICallHelper.GetJournalEntryMFIAccountQueryUrl, BranchId));
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData != null)
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<FrontDesk.Data.Account>();
+            }
+            catch (Exception ex)
+            {
                 // Log and handle exception
                 throw (ex);
             }

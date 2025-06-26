@@ -837,13 +837,13 @@ namespace CBS.FrontDesk.Helper
         public static string GetProductAccountingBookbyproductnameUrl = "/api/v1/ProductAccountingBook/GetProductAccountingConfigurations/{0}";
         public static string GetProductAccountingBookbyproductTypeUrl = "/api/v1/ProductAccountingBook/GetAllProductAccountingConfigurations/{0}";
         //AccountCategory AccountProduct {name}
-        //GetAllowAnonymous,Update,Delete AccountCategory By Id
+        //GetAllowAnonymous,Update,Delete AccountCategory By Id  
         public static string Get_Update_Delete_ChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition/{0}";
         public static string Get_ChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition/{0}";
         public static string GetAllChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPositions";
         public static string DownloadChartOfAccountManagementPositionUrl = "/api/v1/ChartOfAccountManagementPositions/DownloadQuery";
         public static string CreateChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition";
-
+        public static string GetJournalEntryMFIAccountQueryUrl = "/api/v1/ChartOfAccountManagementPosition/GetJournalEntryMFIChartOfAccountQuery/{0}";
         //DocumentType
         public static string Create_DocumentType = "/api/v1/DocumentType";
         public static string Get_Update_Delete_DocumentType = "/api/v1/DocumentType/{0}";
@@ -899,7 +899,7 @@ namespace CBS.FrontDesk.Helper
         // POST  Create a ChartOfAccount
         public static string ManualEntriePosting = "/api/v1/AccountingEntry/ManualPostingEventCommand";
 
-        //Account/api/v1/AccountingEntry/AddCashInfusionCommand
+        //Account/api/v1/AccountingEntry/AddCashInfusionCommand  
         //Credit a specifique Account record AddCashInfusionCommand   
         public static string CashInfusion = "/api/v1/AccountingEntry/AddCashInfusionCommand";
         public static string GetAccountByReference = "/api/v1/Account/GetAccountByReference/{0}";
@@ -908,7 +908,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAccount = "/api/v1/Account/{0}";
         public static string Delete_Account = "/api/v1/Account/{0}";
         public static string GetAccountByAccountNumberUrl = "/api/v1/Account/GetAccountByAccountNumberRef/{0}";
-
+        public static string GetAccountByBranchIdUrl = "/api/v1/Account/GetAccountByBranchIDQuery/{0}";
         public static string GetAlAccounts = "/api/v1/Accounts";
         public static string GetAllLiaisonAccount = "/api/v1/Accounts/LiaisonAccount";
         public static string GetAllAccountByBranch = "/api/v1/Accounts/{0}";

@@ -51,8 +51,15 @@ $(document).ready(function () {
     });
 
 
-    $(document).on('change', '#EntryTempData_AccountId', function () {
+    $(document).on('change', '#EntryTempData_BranchId', function () {
         // Get the selected value (AccountId) from the dropdown
+        var selectedValue = $(this).val();
+        // Call the `loadAccountById` function with the selected AccountId
+        loadBranchBankAccount(selectedValue);
+    });
+
+    $(document).on('change', '#EntryTempData_AccountId', function () {
+        // Get the selected value (AccountId) from the dropdown 
         var selectedValue = $(this).val();
         // Call the `loadAccountById` function with the selected AccountId
         loadAccountById(selectedValue);
@@ -364,6 +371,30 @@ function loadBranchUsers(branchId) {
         }
     });
 }
+
+
+function loadBranchBankAccount(branchId) {
+    console.log(branchId);
+    // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
+    $.ajax({
+        url: '/ManuallyJournalEntry/GetBranchAccount',
+        type: 'GET',
+        dataType: 'json',
+        data: { BranchId: branchId },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo
+            $('#EntryTempData_AccountId').empty();
+            // Add new options based on the fetched data
+             $.each(data, function (index, item) {
+                    $('#EntryTempData_AccountId').append($('<option>').text(item.Text).attr('value', item.Value));
+                });
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
 function loadIssuingBranchUsers(branchId) {
     console.log(branchId);
     // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId

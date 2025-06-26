@@ -513,4 +513,8 @@
   <data name="InCaseYouWishToHaveDataAboveThePeriod" xml:space="preserve">
     <value>In case you wish to have data above the period of year please kindly contact your  system administrator</value>
   </data>
+  <data name="BranchId" xml:space="preserve">
+    <value>BranchId</value>
+    <comment>Branch</comment>
+  </data>
 </root>
