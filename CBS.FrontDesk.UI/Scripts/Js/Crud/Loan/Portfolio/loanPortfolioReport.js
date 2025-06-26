@@ -1,19 +1,12 @@
 ﻿$(document).ready(function () {
     $('.select2').select2({ width: '100%' });
 
+    // 🔄 Submit Handler
     $('#generateReportBtn').on('click', function () {
         let btn = $(this);
         btn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Generating...');
 
-        const subReports = $('#SubReportType').val();
-        const payload = {
-            BranchId: $('#BranchId').val(),
-            StartDate: $('#StartDate').val(),
-            EndDate: $('#EndDate').val(),
-            SubReportType: subReports ? subReports.join(',') : 'All',
-            ReportDownloadType: $('#ReportDownloadType').val(),
-            MainReportType: $('#MainReportType').val()
-        };
+        const payload = buildLoanPortfolioReportPayload();
 
         $.ajax({
             url: '/Loan/LoanPortfolioStatistics',
@@ -21,7 +14,6 @@
             data: payload,
             success: function (response) {
                 if (response.success && response.redirectUrl) {
-                    // ✅ Open the viewer tab only after success
                     window.open(response.redirectUrl, '_blank');
                     appalert("✅ Viewer launched in a new tab.", 1, 1);
                 } else {
@@ -37,3 +29,28 @@
         });
     });
 });
+
+/**
+ * 🔧 Builds the payload object for loan portfolio report
+ * Can be reused by other service/report functions.
+ */
+function buildLoanPortfolioReportPayload() {
+    const isMainReport = $('#toggleReportType').is(':checked');
+
+    const subReports = $('#SubReportType').val() || [];
+    const queryParam = $('#QueryParam').val() || '';
+    const queryParamValue = $('#QueryParamValue').val() || '';
+
+    return {
+        BranchId: $('#BranchId').val() || $('#BranchIdQuery').val(),
+        StartDate: $('#StartDate').val(),
+        EndDate: $('#EndDate').val(),
+        SubReportType: isMainReport && subReports.length ? subReports.join(',') : 'All',
+        ReportDownloadType: $('#ReportDownloadType').val(),
+        MainReportType: $('#MainReportType').val(),
+        FilterByParam: !isMainReport,
+        QueryParam: !isMainReport ? queryParam : '',
+        QueryParamValue: !isMainReport ? queryParamValue : ''
+    };
+}
+

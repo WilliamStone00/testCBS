@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class GeneralStatisticsMAINRPT : ReportClass {
+    public class SubSummariesFlattenRPT : ReportClass {
         
-        public GeneralStatisticsMAINRPT() {
+        public SubSummariesFlattenRPT() {
         }
         
         public override string ResourceName {
             get {
-                return "GeneralStatisticsMAINRPT.rpt";
+                return "SubSummariesFlattenRPT.rpt";
             }
             set {
                 // Do nothing
@@ -41,8 +41,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics.GeneralStatisticsMAINR" +
-                    "PT.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics.SubSummariesFlattenRPT" +
+                    ".rpt";
             }
             set {
                 // Do nothing
@@ -67,7 +67,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection1 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -75,7 +75,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -83,7 +83,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section ReportFooterSection1 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection1 {
             get {
                 return this.ReportDefinition.Sections[4];
             }
@@ -91,7 +91,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section PageFooterSection2 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
             get {
                 return this.ReportDefinition.Sections[5];
             }
@@ -99,41 +99,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_PrintedBy {
+        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
             get {
-                return this.DataDefinition.ParameterFields[0];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_DateFrom {
-            get {
-                return this.DataDefinition.ParameterFields[1];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_DateTo {
-            get {
-                return this.DataDefinition.ParameterFields[2];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_PrintedOn {
-            get {
-                return this.DataDefinition.ParameterFields[3];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_CurrentYear {
-            get {
-                return this.DataDefinition.ParameterFields[4];
+                return this.ReportDefinition.Sections[6];
             }
         }
         
@@ -141,31 +109,15 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public CrystalDecisions.Shared.IParameterField Parameter_ReportTitle {
             get {
-                return this.DataDefinition.ParameterFields[5];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_SubLiquidityRatioChartRPTrpt_ReportTitle {
-            get {
-                return this.DataDefinition.ParameterFields[6];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_SubSummariesFlattenRPTrpt_ReportTitle {
-            get {
-                return this.DataDefinition.ParameterFields[7];
+                return this.DataDefinition.ParameterFields[0];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedGeneralStatisticsMAINRPT : Component, ICachedReport {
+    public class CachedSubSummariesFlattenRPT : Component, ICachedReport {
         
-        public CachedGeneralStatisticsMAINRPT() {
+        public CachedSubSummariesFlattenRPT() {
         }
         
         [Browsable(false)]
@@ -202,7 +154,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            GeneralStatisticsMAINRPT rpt = new GeneralStatisticsMAINRPT();
+            SubSummariesFlattenRPT rpt = new SubSummariesFlattenRPT();
             rpt.Site = this.Site;
             return rpt;
         }

@@ -1,0 +1,133 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
+@using Resources
+
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3">
+        <i class="mdi mdi-filter-outline me-1"></i> @GlobalLoan.GenerateLoanPortfolioReport
+    </h5>
+
+    <!-- 🔘 Main Toggle and Shared Filters -->
+    <div class="card p-3 mb-3 bg-light">
+        <div class="row mb-3">
+            <!-- Shared Branch Filter -->
+            <div class="col-md-3 form-check">
+                <input type="checkbox" class="form-check-input" id="byBranch" />
+                <label class="form-check-label fw-bold" for="byBranch">@GlobalLoan.FilterByBranch</label>
+            </div>
+
+            <!-- Master Report Type Toggle -->
+            <div class="col-md-3 form-check">
+                <input type="checkbox" class="form-check-input" id="toggleReportType" checked />
+                <label class="form-check-label fw-bold text-primary" id="toggleReportLabel" for="toggleReportType">Main Reports</label>
+            </div>
+
+            <!-- Shared Date Range Filter -->
+            <div class="col-md-3 form-check">
+                <input type="checkbox" class="form-check-input" id="byDate" />
+                <label class="form-check-label fw-bold" for="byDate">@GlobalLoan.FilterByDateRange</label>
+            </div>
+        </div>
+
+        <!-- Shared Branch Dropdown -->
+        <div class="row mb-3" id="branchFilterSection" style="display: none;">
+            <div class="col-md-12">
+                <label for="BranchId" class="form-label fw-bold">@GlobalLoan.SelectBranch</label>
+                @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "---" + @GlobalLoan.SelectBranch + "---", new { @class = "form-control select2" })
+            </div>
+        </div>
+
+        <!-- Shared Date Range Inputs -->
+        <div class="row mb-3" id="dateRangeSection" style="display: none;">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">@GlobalLoan.StartDate</label>
+                <input type="date" id="StartDate" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">@GlobalLoan.EndDate</label>
+                <input type="date" id="EndDate" class="form-control" />
+            </div>
+        </div>
+    </div>
+
+    <!-- 🧾 Main Reports Section -->
+    <div id="mainFilterSection" class="card p-3 mb-3 bg-light">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">@GlobalLoan.MainReportType</label>
+                <select id="MainReportType" class="form-select">
+                    @*<option value="CurrentLoan">@GlobalLoan.CurrentLoanSummary</option>*@
+                    <option value="DelinquentLoan">Loan Portfolio with Delinquency Insight</option>
+                    <option value="delinquentloansummary">Loan Delinquency Summary by PAR, Gender, and Loan Type</option>
+                    <option value="delinquentloanslistingwithaging">Delinquent Loans with Aging Breakdown</option>
+                    <option value="loansituations">Loan Situation Report (Current Performing Loans)</option>
+                    @*<option value="LoanByPurpose">@GlobalLoan.LoanByPurpose</option>*@
+                </select>
+                
+            </div>
+            <div class="col-md-6" id="subreportSection" style="display: none;">
+                <label class="form-label fw-bold">Subreport Type(s)</label>
+                <select id="SubReportType" class="form-select select2" multiple>
+                    <option value="Flat_AgeAndGender">@GlobalLoan.DelinquencyAccordingToAgesAndGender</option>
+                    <option value="Flat_AgeAndLoanType">@GlobalLoan.DelinquencyAccordingToAgesAndLoanTypes</option>
+                    <option value="Flat_ByZone">@GlobalLoan.DelinquencyAccordingToZones</option>
+                    <option value="Flat_ByLoanTerm">@GlobalLoan.DelinquencyAccordingToLoanTerms</option>
+                    <option value="Flat_ByTargetGroup">@GlobalLoan.DelinquencyAccordingToTargetGroups</option>
+                    <option value="Flat_ByCategory">@GlobalLoan.DelinquencyAccordingToCategories</option>
+                </select>
+                <small class="text">@GlobalLoan.HoldCtrlToSelectMultiple</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📊 Breakdown Reports Section -->
+    <div id="queryFilterSection" class="card p-3 mb-3 bg-light" style="display: none;">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Filter Parameter</label>
+                <select id="QueryParam" class="form-select">
+                    <option value="">-- Select Parameter --</option>
+                    <option value="loanbygender">Loan by Gender</option>
+                    <option value="loanbytypes">Loan by Types</option>
+                    <option value="loanbytarget">Loan by Target</option>
+                    <option value="loanbystatus">Loan by Status</option>
+                    <option value="loanbyproduct">Loan by Product</option>
+                    <option value="loanbycategory">Loan by Category</option>
+                    <option value="loanbydelinquencyconfig">Loan by Delinquency Config</option>
+                    <option value="loanbylegalform">Loan by Legal Form</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Filter Value</label>
+                <select id="QueryParamValue" class="form-select">
+                    <option value="">-- Select Value --</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Format -->
+    <div class="row mb-3" style="display:none">
+        <div class="col-md-12">
+            <label class="form-label fw-bold">@GlobalLoan.ExportFormat</label>
+            <select id="ReportDownloadType" class="form-select">
+                <option value="PDF">PDF</option>
+                <option value="Excel">Excel</option>
+                <option value="Word">Word</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="row mb-3">
+        <div class="col-md-6 d-flex align-items-end">
+            <button id="generateReportBtn" class="btn btn-primary w-100">
+                <i class="mdi mdi-file-chart-outline me-1"></i> @GlobalLoan.GenerateReport
+            </button>
+        </div>
+        <div class="col-md-6 d-flex align-items-end">
+            <button id="resetReportBtn" class="btn btn-dark w-100">
+                <i class="mdi mdi-refresh me-1"></i> @GlobalLoan.ResetFilters
+            </button>
+        </div>
+    </div>
+</div>

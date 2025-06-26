@@ -23,6 +23,7 @@ using CBS.BusinessService.LoanportFolioFlattener;
 using CBS.NLoan.Data.Dto.DataSetLoanPortfolio;
 using CBS.FrontDesk.Data.ReportDataSetDto.LoanDeliquentAnalysis;
 using Microsoft.Owin.Logging;
+using CBS.FrontDesk.Data.Entity.DataSetLoanPortfolio;
 
 namespace CBS.BusinessService
 {
@@ -317,7 +318,7 @@ namespace CBS.BusinessService
         {
             try
             {
-                var getAllLoanQuery = new GetAllLoanQuery { BranchId = GetBranchID(), IsByBranch=true, QueryParam="Pending"};
+                var getAllLoanQuery = new GetAllLoanQuery { BranchId = GetBranchID(), IsByBranch=true, QueryParam="Pending" };
                 var couApiResponse = await _loanConfigApiHelper.PostAsync<ResponseObject<List<Loan>>>(APICallHelper.GetLoans, getAllLoanQuery);
                 if (couApiResponse.IsSuccess)
                 {
@@ -376,12 +377,12 @@ namespace CBS.BusinessService
                     // FileDownloadDto should contain file data and metadata
                     return couApiResponse.ApiResponseData.Data;
                 }
-                return new FileDownloadDto { ErrorMessage = couApiResponse.Message};
+                return new FileDownloadDto { ErrorMessage = couApiResponse.Message };
 
             }
             catch (Exception ex)
             {
-               throw ex;
+                throw ex;
             }
         }
 
@@ -528,7 +529,7 @@ namespace CBS.BusinessService
             return new SelectList(values.ToList(), "Value", "Text", defaultSelectedValue);
 
         }
-     
+
         public async Task<Loan> GetLoan(string id)
         {
             try
@@ -572,6 +573,72 @@ namespace CBS.BusinessService
             }
 
         }
+        public List<LoanDeliquentDto> OrderDelinquentLoans(List<LoanDeliquentDto> loans)
+        {
+            if (loans == null || !loans.Any())
+                return new List<LoanDeliquentDto>();
+
+            return loans
+                .OrderBy(l => l.LoanType != "Main_Loan")  // Main_Loan first
+                .ThenBy(l => l.DaysFrom)                  // Then by DaysFrom (PAR structure)
+                .ThenBy(l => l.CustomerId)                // Finally by CustomerId
+                .ToList();
+        }
+        public List<LoanDeliquentDto> OrderAndSummarizeDelinquentLoans(List<LoanDeliquentDto> loans)
+        {
+            if (loans == null || !loans.Any())
+                return new List<LoanDeliquentDto>();
+
+            var summary = new LoanDeliquentDto();
+            decimal totalSavings = 0;
+            foreach (var loan in loans)
+            {
+                totalSavings+=loan.SavingBalance;
+                bool isCurrent = loan.DeliquentStatus?.Trim().Equals("Current", StringComparison.OrdinalIgnoreCase) == true;
+
+                if (isCurrent)
+                {
+                    summary.TotalCurrentLoanCount++;
+                    summary.TotalCurrentCapital += loan.LoanAmount;
+                    summary.TotalCurrentBalance += loan.Balance;
+                    summary.TotalCurrentInterest += loan.InterestForcasted;
+                }
+                else
+                {
+                    summary.TotalDelinquentLoanCount++;
+                    summary.TotalDelinquentCapital += loan.LoanAmount;
+                    summary.TotalDelinquentBalance += loan.Balance;
+                    summary.TotalDelinquentInterest += loan.InterestForcasted;
+                }
+            }
+
+            // Compute derived metrics
+            decimal totalCapital = summary.TotalCapital;
+            decimal totalDelinquentCapital = summary.TotalDelinquentCapital;
+
+            //summary.PortfolioInsight = totalCapital switch
+            //{
+            //    > 0 when summary.DefaultRate < 5 => "✅ Portfolio is healthy.",
+            //    > 0 when summary.DefaultRate < 15 => "⚠️ Moderate default risk.",
+            //    > 0 => "❌ High default risk. Immediate action needed.",
+            //    _ => "No loan data to analyze."
+            //};
+
+            // Label the summary row
+            summary.CustomerName = "SUMMARY (OUTSTANDING)";
+            summary.CustomerId = "TOTAL";
+            summary.DeliquentStatus = "Summary";
+
+            // Order and return the list
+            var ordered = loans
+                .OrderBy(l => l.LoanType != "Main_Loan")
+                .ThenBy(l => l.DaysFrom)
+                .ThenBy(l => l.CustomerId)
+                .ToList();
+
+            ordered.Add(summary);
+            return ordered;
+        }
 
         public async Task<LoanDelinquencyReportResultRPT> GetLoanPortfolioAnalysisAsync(GenerateLoanPortfolioReportCommand reportCommand)
         {
@@ -608,8 +675,8 @@ namespace CBS.BusinessService
                             reportCommand.BranchId=GetBranchID();
                         }
                     }
-                   
-                    var mappingobject = LoanDelinquencyFlattener.FlattenAll(loan, branches.FirstOrDefault(x=>x.Id==reportCommand.BranchId));
+
+                    var mappingobject = LoanDelinquencyFlattener.FlattenAll(loan, branches.FirstOrDefault(x => x.Id==reportCommand.BranchId));
                     return mappingobject;
                 }
                 return null;
@@ -677,10 +744,10 @@ namespace CBS.BusinessService
             }
         }
 
-        public LoanPortfolioAnalysis MapToLoanPortfolioAnalysis(LoanPortfolioAnalysis reportDto,Branch branch)
+        public LoanPortfolioAnalysis MapToLoanPortfolioAnalysis(LoanPortfolioAnalysis reportDto, Branch branch)
         {
             var headOffice = branch.Bank;
-           
+
 
             var analysis = new LoanPortfolioAnalysis
             {
@@ -769,6 +836,97 @@ namespace CBS.BusinessService
             };
 
             return analysis;
+        }
+
+        public List<LoanPortfolioDto> QueryLoans(List<LoanPortfolioDto> loanPortfolioDtos, string queryParam)
+        {
+            if (string.IsNullOrWhiteSpace(queryParam))
+                return loanPortfolioDtos.OrderBy(x => x.LoanDate).ToList();
+
+            queryParam = queryParam.ToLowerInvariant();
+
+            switch (queryParam)
+            {
+                case "loanbytypes":
+                    return loanPortfolioDtos
+                        .Where(x => !string.IsNullOrEmpty(x.LoanType))
+                        .OrderBy(x => x.LoanDate)
+                        .ToList();
+                case "loanbytarget":
+                    return loanPortfolioDtos
+                        .Where(x => !string.IsNullOrEmpty(x.LoanTarget))
+                        .OrderBy(x => x.LoanDate)
+                        .ToList();
+                case "loanbystatus":
+                    return loanPortfolioDtos
+                        .Where(x => !string.IsNullOrEmpty(x.LoanStatus))
+                        .OrderBy(x => x.LoanDate)
+                        .ToList();
+                case "loanbyproduct":
+                    return loanPortfolioDtos
+                        .Where(x => !string.IsNullOrEmpty(x.ProductType))
+                        .OrderBy(x => x.LoanDate)
+                        .ToList();
+                case "loanbycategory":
+                    return loanPortfolioDtos
+                        .Where(x => !string.IsNullOrEmpty(x.LoanCategory))
+                        .OrderBy(x => x.LoanDate)
+                        .ToList();
+                case "loanbygender":
+                    return loanPortfolioDtos
+                        .Where(x => !string.IsNullOrEmpty(x.Gender))
+                        .OrderBy(x => x.LoanDate)
+                        .ToList();
+                case "loanbydelinquencyconfig":
+                    return loanPortfolioDtos
+                        .Where(x => !string.IsNullOrEmpty(x.DelinquencyConfigName))
+                        .OrderBy(x => x.LoanDate)
+                        .ToList();
+                case "loanbylegalform":
+                    return loanPortfolioDtos
+                        .Where(x => !string.IsNullOrEmpty(x.LegalForm))
+                        .OrderBy(x => x.LoanDate)
+                        .ToList();
+                default:
+                    return loanPortfolioDtos.OrderBy(x => x.LoanDate).ToList();
+            }
+        }
+        public List<string> GetLoanDropdownQueryOptions(string queryParam)
+        {
+            if (string.IsNullOrWhiteSpace(queryParam))
+                return new List<string>();
+
+            queryParam = queryParam.ToLowerInvariant();
+
+            switch (queryParam)
+            {
+                case "loanbygender":
+                    return new List<string> { "Male", "Female", "Group" };
+
+                case "loanbytypes":
+                    return new List<string> { "Short Term", "Medium Term", "Long Term", "Emergency Loan", "Business Loan" };
+
+                case "loanbytarget":
+                    return new List<string> { "Salary Earners", "Business Owners", "Farmers", "Traders", "Others" };
+
+                case "loanbystatus":
+                    return new List<string> { "Active", "Closed", "In Default", "Pending" };
+
+                case "loanbyproduct":
+                    return new List<string> { "Micro Loan", "Housing Loan", "Education Loan", "Agricultural Loan" };
+
+                case "loanbycategory":
+                    return new List<string> { "Granted This Month", "Outstanding", "Overdue", "Recovered" };
+
+                case "loanbydelinquencyconfig":
+                    return new List<string> { "0–30 Days", "31–60 Days", "61–90 Days", "90+ Days" };
+
+                case "loanbylegalform":
+                    return new List<string> { "Individual", "Group", "Corporation" };
+
+                default:
+                    return new List<string>();
+            }
         }
 
     }

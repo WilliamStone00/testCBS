@@ -43,155 +43,97 @@
     </div>
 </div>
 
-<!-- Filter Section -->
-<div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalLoan.GenerateLoanPortfolioReport</h5>
-    <div class="card p-3 mb-3 bg-light">
-
-        <!-- Toggle Options -->
-        <div class="row mb-3">
-            <div class="col-md-4 form-check">
-                <input type="checkbox" class="form-check-input" id="byBranch" />
-                <label class="form-check-label fw-bold" for="byBranch">@GlobalLoan.FilterByBranch</label>
-            </div>
-            <div class="col-md-4 form-check">
-                <input type="checkbox" class="form-check-input" id="byMainReport" />
-                <label class="form-check-label fw-bold" for="byMainReport">@GlobalLoan.FilterByMainReportType</label>
-            </div>
-            <div class="col-md-4 form-check">
-                <input type="checkbox" class="form-check-input" id="byDate" />
-                <label class="form-check-label fw-bold" for="byDate">@GlobalLoan.FilterByDateRange</label>
-            </div>
-        </div>
-
-        <!-- Branch Section -->
-        <div id="branchFilterSection" class="row mb-3" style="display: none;">
-            <div class="col-md-12">
-                <label for="BranchId" class="form-label fw-bold">@GlobalLoan.SelectBranch</label>
-                @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "---" + @GlobalLoan.SelectBranch +"---", new { @class = "form-control select2" })
-            </div>
-        </div>
-
-        <!-- Main Report Type + Subreport on same line -->
-        <div class="row mb-3" id="mainReportTypeSection" style="display: none;">
-            <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalLoan.MainReportType</label>
-                <select id="MainReportType" class="form-select">
-                    <option value="All">@GlobalLoan.FullLoanPortfolioReport</option>
-                    <option value="CurrentLoan">@GlobalLoan.CurrentLoanSummary</option>
-                    <option value="DelinquentLoan">@GlobalLoan.DelinquentLoanSummary</option>
-                    <option value="delinquentloansummary">Loan deliquent summary report</option>
-                    <option value="loansituations">Loan situation</option>
-                    <option value="LoanByPurpose">@GlobalLoan.LoanByPurpose</option>
-                </select>
-            </div>
-            <div class="col-md-6" id="subreportSection" style="display: none;">
-                <label class="form-label fw-bold">Subreport Type(s)</label>
-                <select id="SubReportType" class="form-select select2" multiple>
-                    <option value="Flat_AgeAndGender">@GlobalLoan.DelinquencyAccordingToAgesAndGender</option>
-                    <option value="Flat_AgeAndLoanType">@GlobalLoan.DelinquencyAccordingToAgesAndLoanTypes</option>
-                    <option value="Flat_ByZone">@GlobalLoan.DelinquencyAccordingToZones</option>
-                    <option value="Flat_ByLoanTerm">@GlobalLoan.DelinquencyAccordingToLoanTerms</option>
-                    <option value="Flat_ByTargetGroup">@GlobalLoan.DelinquencyAccordingToTargetGroups</option>
-                    <option value="Flat_ByCategory">@GlobalLoan.DelinquencyAccordingToCategories</option>
-                   
-                </select>
-                <small class="text">@GlobalLoan.HoldCtrlToSelectMultiple</small>
-            </div>
-        </div>
-
-        <!-- Date Range Section -->
-        <div id="dateRangeSection" class="row mb-3" style="display: none;">
-            <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalLoan.StartDate</label>
-                <input type="date" id="StartDate" class="form-control" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalLoan.EndDate</label>
-                <input type="date" id="EndDate" class="form-control" />
-            </div>
-        </div>
-
-        <!-- Export Format and Action -->
-        <div class="row mb-3">
-            <div class="col-md-12">
-                <label class="form-label fw-bold">@GlobalLoan.ExportFormat</label>
-                <select id="ReportDownloadType" class="form-select">
-                    <option value="PDF">PDF</option>
-                    <option value="Excel">Excel</option>
-                    <option value="Word">Word</option>
-                </select>
-            </div>
-        </div>
-
-
-    </div>
-    <div class="row mb-3">
-        <div class="col-md-6 d-flex align-items-end">
-            <button id="generateReportBtn" class="btn btn-primary w-100">
-                <i class="mdi mdi-file-chart-outline me-1"></i> @GlobalLoan.GenerateReport
-            </button>
-        </div>
-        <div class="col-md-6 d-flex align-items-end">
-            <button id="resetReportBtn" class="btn btn-secondary w-100">
-                <i class="mdi mdi-refresh me-1"></i> @GlobalLoan.ResetFilters
-            </button>
-        </div>
-    </div>
-</div>
-
+@Html.Partial("_FIlterQuery")
 <!-- Section to Show Status or Report Downloads -->
 <div id="reportStatusArea" class="mt-3"></div>
 
 @section Scripts {
     <script src="~/Scripts/Js/Crud/Loan/Portfolio/loanPortfolioReport.js"></script>
     <script>
-        $(function () {
-            function resetBranch() {
-                $('#BranchId').val('').trigger('change');
-            }
-            function resetMainReport() {
-                $('#MainReportType').val('All');
-                $('#SubReportType').val(null).trigger('change');
-            }
-            function resetDateRange() {
-                $('#StartDate').val('');
-                $('#EndDate').val('');
-            }
+    $(function () {
+        function resetMainReport() {
+            $('#MainReportType').val('CurrentLoan');
+            $('#SubReportType').val([]).trigger('change');
+        }
 
-            $('#byBranch').on('change', function () {
-                $('#branchFilterSection').toggle(this.checked);
-                if (!this.checked) resetBranch();
-            });
+        function resetQueryParam() {
+            $('#QueryParam').val('');
+            $('#QueryParamValue').html('<option value="">-- Select Value --</option>');
+        }
 
-            $('#byMainReport').on('change', function () {
-                $('#mainReportTypeSection').toggle(this.checked);
-                const showSubreports = $('#MainReportType').val() === "All";
-                $('#subreportSection').toggle(showSubreports);
-                if (!this.checked) resetMainReport();
-            });
+        function resetDateBranch() {
+            $('#BranchId').val('').trigger('change');
+            $('#StartDate, #EndDate').val('');
+        }
 
-            $('#byDate').on('change', function () {
-                $('#dateRangeSection').toggle(this.checked);
-                if (!this.checked) resetDateRange();
-            });
+        function toggleSections() {
+            const isMain = $('#toggleReportType').is(':checked');
+            $('#toggleReportLabel').text(isMain ? 'Main Reports' : 'Breakdown Reports');
 
-            $('#MainReportType').on('change', function () {
-                const selected = $(this).val();
-                $('#subreportSection').toggle(selected === "All");
-            });
+            $('#mainFilterSection').toggle(isMain);
+            $('#queryFilterSection').toggle(!isMain);
 
-            $('#resetReportBtn').on('click', function () {
-                $('#byBranch, #byMainReport, #byDate').prop('checked', false);
-                resetBranch();
-                resetMainReport();
-                resetDateRange();
-                $('#branchFilterSection, #mainReportTypeSection, #dateRangeSection, #subreportSection').hide();
-                $('#ReportDownloadType').val('PDF');
-            });
+            resetMainReport();
+            resetQueryParam();
+        }
 
-            $('.select2').select2({ width: '100%' });
-            $('#subreportSection').hide();
+        function toggleBranch() {
+            const show = $('#byBranch').is(':checked');
+            $('#branchFilterSection').toggle(show);
+        }
+
+        function toggleDate() {
+            const show = $('#byDate').is(':checked');
+            $('#dateRangeSection').toggle(show);
+        }
+
+        // Subreport toggle
+        $('#MainReportType').on('change', function () {
+            $('#subreportSection').toggle($(this).val() === 'All');
         });
+
+        // Load filter values dynamically
+        $('#QueryParam').on('change', function () {
+            const selectedParam = $(this).val();
+            const $dropdown = $('#QueryParamValue');
+            $dropdown.html('<option>Loading...</option>');
+
+            if (!selectedParam) {
+                $dropdown.html('<option value="">-- Select Value --</option>');
+                return;
+            }
+
+            $.get('@Url.Action("GetLoanFilterValues", "Loan")', { queryParam: selectedParam }, function (data) {
+                $dropdown.empty().append('<option value="">-- Select Value --</option>');
+                $.each(data, function (i, val) {
+                    $dropdown.append(`<option value="${val}">${val}</option>`);
+                });
+            }).fail(function () {
+                $dropdown.html('<option value="">-- Load Failed --</option>');
+            });
+        });
+
+        // Event bindings
+        $('#toggleReportType').on('change', toggleSections);
+        $('#byBranch').on('change', toggleBranch);
+        $('#byDate').on('change', toggleDate);
+
+        $('#resetReportBtn').on('click', function () {
+            $('input[type=checkbox]').prop('checked', false);
+            resetMainReport();
+            resetQueryParam();
+            resetDateBranch();
+            $('#ReportDownloadType').val('PDF');
+            $('#toggleReportType').prop('checked', true);
+            toggleSections();
+            toggleBranch();
+            toggleDate();
+        });
+
+        // Init
+        $('.select2').select2({ width: '100%' });
+        toggleSections();
+    });
     </script>
+
 }
