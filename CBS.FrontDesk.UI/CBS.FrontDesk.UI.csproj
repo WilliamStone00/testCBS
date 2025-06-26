@@ -522,6 +522,18 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Loan\GeneralStatistics\SubSummariesFlattenRPT.cs">
+      <DependentUpon>SubSummariesFlattenRPT.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Loan\GeneralStatistics\SubLiquidityRatioChartRPT.cs">
+      <DependentUpon>SubLiquidityRatioChartRPT.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Loan\GeneralStatistics\SubAccountTypeSummariesRPT.cs">
       <DependentUpon>SubAccountTypeSummariesRPT.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -551,6 +563,30 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SubLoanDelinquencyCategorySummaryRPT.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Loan\LoanSituationAlpha\DeliquentLoanListingWithAgingRPTREserved.cs">
+      <DependentUpon>DeliquentLoanListingWithAgingRPTREserved.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Loan\LoanSituationAlpha\DeliquentLoanListingWithAgingRPT.cs">
+      <DependentUpon>DeliquentLoanListingWithAgingRPT.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Loan\LoanSituationAlpha\LoanByTypesRPT.cs">
+      <DependentUpon>LoanByTypesRPT.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Loan\LoanSituationAlpha\LoanByDeliquentStatusRPT.cs">
+      <DependentUpon>LoanByDeliquentStatusRPT.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="AppFiles\Reporting\Loan\LoanSituationAlpha\LoanSituationAlphaRPT.cs">
       <AutoGen>True</AutoGen>
@@ -2051,6 +2087,7 @@
     <Compile Include="Controllers\Loan\Configuration\LoanTermController.cs" />
     <Compile Include="Controllers\Loan\Configuration\PenaltyController.cs" />
     <Compile Include="Controllers\Loan\Configuration\TaxController.cs" />
+    <Compile Include="Controllers\Loan\LoanPortfolioReportHelper.cs" />
     <Compile Include="Controllers\Loan\LoanTransactions\LoanController.cs" />
     <Compile Include="Controllers\Localization\LocalizationController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\LoanRepaymentBackOfficeController.cs" />
@@ -7412,6 +7449,14 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>GeneralStatisticsMAINRPT.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Loan\GeneralStatistics\SubSummariesFlattenRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SubSummariesFlattenRPT.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Loan\GeneralStatistics\SubLiquidityRatioChartRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SubLiquidityRatioChartRPT.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Loan\GeneralStatistics\SubAccountTypeSummariesRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>SubAccountTypeSummariesRPT.cs</LastGenOutput>
@@ -8028,6 +8073,22 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanTerm.fr.designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\Loan\LoanSituationAlpha\DeliquentLoanListingWithAgingRPTREserved.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DeliquentLoanListingWithAgingRPTREserved.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Loan\LoanSituationAlpha\DeliquentLoanListingWithAgingRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DeliquentLoanListingWithAgingRPT.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Loan\LoanSituationAlpha\LoanByTypesRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LoanByTypesRPT.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Loan\LoanSituationAlpha\LoanByDeliquentStatusRPT.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LoanByDeliquentStatusRPT.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Loan\LoanSituationAlpha\LoanSituationAlphaRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LoanSituationAlphaRPT.cs</LastGenOutput>
@@ -9221,6 +9282,7 @@
     <Content Include="Views\GeneralStatisticReport\Dashboard.cshtml" />
     <Content Include="Views\GeneralStatisticReport\_Dashboard.cshtml" />
     <Content Include="Views\GeneralStatisticReport\_ReportFilter.cshtml" />
+    <Content Include="Views\Loan\_FIlterQuery.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

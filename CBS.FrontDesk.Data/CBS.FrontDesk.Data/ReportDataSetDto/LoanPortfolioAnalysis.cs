@@ -82,12 +82,26 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
     public class GenerateLoanPortfolioReportCommand
     {
         public string BranchId { get; set; }
+
         public string StartDate { get; set; }
+
         public string EndDate { get; set; }
-        public string SubReportType { get; set; } // Comma-separated
+
+        public string SubReportType { get; set; } // Comma-separated for multi-select
+
         public string ReportDownloadType { get; set; } // PDF, Excel, Word
+
         public string MainReportType { get; set; } // All, CurrentLoan, DelinquentLoan, LoanByPurpose
+
+        // ✅ New: Apply filtering based on selected loan portfolio category (e.g., Gender, Type)
+        public bool FilterByParam { get; set; }
+
+        public string QueryParam { get; set; } // e.g., "loanbygender", "loanbyproduct"
+
+        public string QueryParamValue { get; set; } // e.g., "Male", "Micro Loan"
     }
+
+
     public class LoanPortfolioAnalysis
     {
         public string Logo { get; set; }

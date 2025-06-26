@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
+namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.LoanSituationAlpha {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class GeneralStatisticsMAINRPT : ReportClass {
+    public class DeliquentLoanListingWithAgingRPT : ReportClass {
         
-        public GeneralStatisticsMAINRPT() {
+        public DeliquentLoanListingWithAgingRPT() {
         }
         
         public override string ResourceName {
             get {
-                return "GeneralStatisticsMAINRPT.rpt";
+                return "DeliquentLoanListingWithAgingRPT.rpt";
             }
             set {
                 // Do nothing
@@ -41,8 +41,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics.GeneralStatisticsMAINR" +
-                    "PT.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.Loan.LoanSituationAlpha.DeliquentLoanListingW" +
+                    "ithAgingRPT.rpt";
             }
             set {
                 // Do nothing
@@ -67,7 +67,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection1 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -75,7 +75,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection2 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -83,7 +83,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section ReportFooterSection1 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[4];
             }
@@ -91,7 +91,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section PageFooterSection2 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection2 {
             get {
                 return this.ReportDefinition.Sections[5];
             }
@@ -99,7 +99,47 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_PrintedBy {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection1 {
+            get {
+                return this.ReportDefinition.Sections[6];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
+            get {
+                return this.ReportDefinition.Sections[7];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.CrystalReports.Engine.Section PageFooterSection1 {
+            get {
+                return this.ReportDefinition.Sections[8];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.CrystalReports.Engine.Section PageFooterSection2 {
+            get {
+                return this.ReportDefinition.Sections[9];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
+            get {
+                return this.ReportDefinition.Sections[10];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.Shared.IParameterField Parameter_ReportTitle {
             get {
                 return this.DataDefinition.ParameterFields[0];
             }
@@ -123,7 +163,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_PrintedOn {
+        public CrystalDecisions.Shared.IParameterField Parameter_PrintedBy {
             get {
                 return this.DataDefinition.ParameterFields[3];
             }
@@ -131,7 +171,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_CurrentYear {
+        public CrystalDecisions.Shared.IParameterField Parameter_PrintedOn {
             get {
                 return this.DataDefinition.ParameterFields[4];
             }
@@ -139,33 +179,17 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_ReportTitle {
+        public CrystalDecisions.Shared.IParameterField Parameter_CurrentYear {
             get {
                 return this.DataDefinition.ParameterFields[5];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_SubLiquidityRatioChartRPTrpt_ReportTitle {
-            get {
-                return this.DataDefinition.ParameterFields[6];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_SubSummariesFlattenRPTrpt_ReportTitle {
-            get {
-                return this.DataDefinition.ParameterFields[7];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedGeneralStatisticsMAINRPT : Component, ICachedReport {
+    public class CachedDeliquentLoanListingWithAgingRPT : Component, ICachedReport {
         
-        public CachedGeneralStatisticsMAINRPT() {
+        public CachedDeliquentLoanListingWithAgingRPT() {
         }
         
         [Browsable(false)]
@@ -202,7 +226,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Loan.GeneralStatistics {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            GeneralStatisticsMAINRPT rpt = new GeneralStatisticsMAINRPT();
+            DeliquentLoanListingWithAgingRPT rpt = new DeliquentLoanListingWithAgingRPT();
             rpt.Site = this.Site;
             return rpt;
         }

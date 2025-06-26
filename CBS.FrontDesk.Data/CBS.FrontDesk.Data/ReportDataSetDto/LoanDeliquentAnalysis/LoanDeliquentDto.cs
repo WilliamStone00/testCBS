@@ -8,6 +8,7 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto.LoanDeliquentAnalysis
 {
     public class LoanDeliquentDto
     {
+
         public string Id { get; set; }
         public string CustomerId { get; set; }
         public string CustomerName { get; set; }
@@ -45,6 +46,7 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto.LoanDeliquentAnalysis
         public string LoanCategory { get; set; }
         public string LoanTarget { get; set; }
         public string DeliquentStatus { get; set; }
+        public decimal SavingBalance { get; set; }
         public string LoanDuration { get; set; }
         public string LoanDeliquencyConfigurationId { get; set; }
         public string DelinquencyConfigName { get; set; }
@@ -54,9 +56,43 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto.LoanDeliquentAnalysis
         public string PhoneNumber { get; set; }
         public string FullName { get; set; }
         public int Age { get; set; }
-        public string Logo { get; set; }
+        public int DaysFrom { get; set; }
         public string BranchName { get; set; }
         public string BranchCode { get; set; }
+        // 🔽 Summary Properties for Report Footer Calculations 🔽
+        public int TotalCurrentLoanCount { get; set; }
+        public int TotalDelinquentLoanCount { get; set; }
+        public int TotalLoanCount => TotalCurrentLoanCount + TotalDelinquentLoanCount;
+        public decimal TotalCapital { get; set; }
+        public decimal TotalBalance { get; set; }
+        public decimal TotalInterest { get; set; }
+        public decimal TotalCurrentCapital { get; set; }
+        public decimal TotalDelinquentCapital { get; set; }
+        //  public decimal TotalCapital => TotalCurrentCapital + TotalDelinquentCapital;
+
+        public decimal TotalCurrentBalance { get; set; }
+        public decimal TotalDelinquentBalance { get; set; }
+        //public decimal TotalBalance => TotalCurrentBalance + TotalDelinquentBalance;
+
+        public decimal TotalCurrentInterest { get; set; }
+        public decimal TotalDelinquentInterest { get; set; }
+        //public decimal TotalInterest => TotalCurrentInterest + TotalDelinquentInterest;
+
+        public string PortfolioInsight { get; set; }
+        public decimal TotalSavings { get; set; }
+        public decimal DefaultRate { get; set; }
+        public decimal LoanToSavingsRatio { get; set; }
+        public decimal DelinquencyToSavingsRatio { get; set; }
+        public decimal SavingsCoverageRatio { get; set; }
+        public string LiquidityRiskLevel { get; set; }
+        public string LoanToSavingsRatioExplanation { get; set; }
+        public string DelinquencyToSavingsRatioExplanation { get; set; }
+        public string SavingsCoverageRatioExplanation { get; set; }
+        public string DefaultRateExplanation { get; set; }
+        public string InsightMethodology { get; set; }
+        public decimal TotalOutstandingLoanBalance { get; set; }
+
+        public string Logo { get; set; }
         public string BranchAddress { get; set; }
         public string BranchTelephone { get; set; }
         public string HeadOfficeName { get; set; }

@@ -55,31 +55,39 @@ namespace CBS.FrontDesk.UI.ReportForm
         /// <param name="e">Event data associated with the initialization event.</param>
         protected void Page_Init(object sender, EventArgs e)
         {
-            // ✅ Check if the page is being reloaded (e.g., due to a postback event like pagination or export).
-            if (IsPostBack)
+            try
             {
-                // ✅ Attempt to retrieve the cached report document from the session.
-                if (Session["ReportDocument"] is ReportDocument cachedDoc)
+                if (!IsPostBack)
                 {
-                    // ✅ Rebind the cached report document to the CrystalReportViewer control.
-                    // This ensures that the report maintains its state during postbacks.
-                    CrystalReportViewer1.ReportSource = cachedDoc;
-                    CrystalReportViewer1.DataBind(); // Apply data binding to refresh the report view.
+                    // 🧠 First-time load (initial request)
+                    LoadAndBindCrystalReport();
                 }
                 else
                 {
-                    // ❌ If the report document is not found in the session, the session has likely expired.
-                    // Display a clear, user-friendly error message with action options.
-
-                    ShowError(@"
-                ⚠️ <strong>SESSION EXPIRED:</strong><br/>
-                The report session has expired or is unavailable.<br/>
-                Please return to the reporting module and regenerate the report.<br/><br/>
-                <a href='javascript:window.close();' style='color: red; font-weight: bold;'>Close this tab</a> or 
-                <a href='/Home/Index' style='color: green; font-weight: bold;'>Go to Home Page</a>.");
+                    // 🔁 Postback: Restore the cached report from session
+                    if (Session["ReportDocument"] is ReportDocument cachedDoc)
+                    {
+                        CrystalReportViewer1.ReportSource = cachedDoc;
+                        CrystalReportViewer1.DataBind(); // Refresh viewer
+                    }
+                    else
+                    {
+                        // ⚠️ Session expired or missing
+                        ShowError(@"
+                        ⚠️ <strong>SESSION EXPIRED:</strong><br/>
+                        The report session has expired or is unavailable.<br/>
+                        Please return to the reporting module and regenerate the report.<br/><br/>
+                        <a href='javascript:window.close();' style='color: red; font-weight: bold;'>Close this tab</a> or 
+                        <a href='/Home/Index' style='color: green; font-weight: bold;'>Go to Home Page</a>.");
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                ShowError($"❌ <strong>Unexpected Error during report initialization:</strong><br/>Details: {ex.Message}");
+            }
         }
+
 
         /// <summary>
         /// Handles the initial report load and export actions based on query string parameters.
@@ -506,7 +514,7 @@ namespace CBS.FrontDesk.UI.ReportForm
 
                 // ✅ Assign the report to the CrystalReportViewer control for rendering.
                 CrystalReportViewer1.ReportSource = rd;
-                CrystalReportViewer1.DataBind();
+                //CrystalReportViewer1.DataBind();
 
                 // ✅ Cache the report document in the session for postbacks and export operations.
                 Session["ReportDocument"] = rd;

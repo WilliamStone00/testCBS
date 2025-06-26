@@ -113,6 +113,9 @@ namespace CBS.FrontDesk.UI.Controllers.GeneralStatisticReport
                 MembersWithAccounts = report.MembersWithAccounts,
                 AccountTypeSummaries = report.AccountTypeSummaries,
                 LoanSummaries = report.LoanSummaries,
+                LoanCategorySummaries=report.LoanCategorySummaries,
+                LoanTargetSummaries=report.LoanTargetSummaries,
+                LoanTypeSummaries=report.LoanTypeSummaries,
                 LoanBreakdowns = report.LoanBreakdowns,
                 MembersDetails = report.MembersDetails,
                 MissingCustomers = report.MissingCustomers,
@@ -161,8 +164,8 @@ namespace CBS.FrontDesk.UI.Controllers.GeneralStatisticReport
 
                     case "general":
                     case "generalstatistics":
-                        relativeReportPath = "Reports/Members/GeneralStatisticsMAINRPT.rpt";
-                        reportTitle = "📈 General Member & Account Statistics Report";
+                        relativeReportPath = "Loan/GeneralStatistics/GeneralStatisticsMAINRPT.rpt";
+                        reportTitle = "📊 COMPREHENSIVE MEMBER AND FINANCIAL PERFORMANCE REPORT";
                         break;
 
                     default:
@@ -186,14 +189,19 @@ namespace CBS.FrontDesk.UI.Controllers.GeneralStatisticReport
 
                 if (mainReportType == "general" || mainReportType =="generalstatistics")
                 {
-                    subReportData = new Dictionary<string, object>
-                {
-                    { "SubMembersWithAccountsRPT", generalStatisticsReport.MembersWithAccounts },
-                    { "SubAccountTypeSummariesRPT", generalStatisticsReport.AccountTypeSummaries },
-                    { "SubLoanSummariesRPT", generalStatisticsReport.LoanSummaries },
-                    { "SubLoanBreakdowns", generalStatisticsReport.LoanBreakdowns }
-                };
+                    //subReportData = new Dictionary<string, object>
+                    //{
+                    //    { "SubMembersWithAccountsRPT", generalStatisticsReport.MembersWithAccounts },
+                    //    { "SubAccountTypeSummariesRPT", generalStatisticsReport.AccountTypeSummaries },
+                    //    { "SubLoanSummariesRPT", generalStatisticsReport.LoanSummaries },
+                    //    { "SubLoanBreakdowns", generalStatisticsReport.LoanByPurpose }
+                    //};
 
+                    subReportData = new Dictionary<string, object>
+                    {
+                        { "SubSummariesFlattenRPT", generalStatisticsReport.GeneralStatisticsFlatRow },
+                        { "SubLiquidityRatioChartRPT", generalStatisticsReport.LiquidityRatioChart }
+                    };
                     Session["MainData"] = new List<GeneralStatisticsReportRPT> { generalStatisticsReport };
                     Session["SubReportsData"] = subReportData;
                 }

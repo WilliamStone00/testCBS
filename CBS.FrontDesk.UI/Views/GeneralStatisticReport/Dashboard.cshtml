@@ -3,7 +3,11 @@
 @{
     ViewBag.Title = "General Statistics Dashboard";
 }
-
+<style>
+    .sticky-top {
+        top: 70px; /* adjust if navbar is present */
+    }
+</style>
 <!-- Dashboard Header -->
 <div class="row">
     <div class="col-12">
@@ -13,10 +17,10 @@
                     <i class="mdi mdi-chart-box-outline me-2"></i> General Statistics Dashboard
                 </h1>
                 <p class="card-text">
-                    An interactive intelligence dashboard for analyzing membership trends, account composition, loan exposure, demographic distribution, and operational gaps across selected branches and periods.
+                    A smart dashboard for exploring membership trends, account balances, loan exposure, demographics, and compliance gaps across branches and periods.
                 </p>
                 <p class="card-text text-black fw-bold">
-                    <i class="mdi mdi-lightbulb-on-outline me-1"></i> Use the tabs below to explore segmented insights: 📊 Overview, 💰 Loans, 📈 Accounts, 👥 Demographics, and ⚠️ Gaps in compliance.
+                    <i class="mdi mdi-lightbulb-on-outline me-1"></i> Explore insights via tabs: 📊 Overview, 💰 Loans, 📈 Accounts, 👥 Demographics, ⚠️ Compliance Gaps.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -24,8 +28,9 @@
     </div>
 </div>
 
+
 <!-- Tips Section -->
-<div class="card mb-3">
+<div class="card mb-2">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> Tips for Interpreting Dashboard Insights</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
@@ -35,15 +40,43 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><strong>📊 Overview:</strong> Shows overall membership, gender splits, and compliance between total loans and savings.</li>
-                <li><strong>📈 Account Insights:</strong> Visualizes account balances by type and group, and their distribution ratios.</li>
-                <li><strong>💰 Loan Insights:</strong> Breaks down loans by status and category, allowing monitoring of lending exposure.</li>
-                <li><strong>👥 Demographics:</strong> Summarizes membership across gender and group types with percentage distribution.</li>
-                <li><strong>⚠️ Missing Records:</strong> Flags members who are approved but lack valid financial accounts for operations.</li>
+
+                <li>
+                    <strong>📊 Overview:</strong>
+                    Provides a quick summary of total membership across genders and groups. This section helps you identify general participation trends, evaluate growth, and verify if the member base aligns with institutional targets.
+                </li>
+
+                <li>
+                    <strong>📈 Account Insights:</strong>
+                    Displays account balances categorized by type (e.g., savings, deposits, shares) and ownership (individuals or groups). Use this view to assess deposit mobilization efforts, balance distributions, and concentration risks.
+                </li>
+
+                <li>
+                    <strong>💰 Loan Insights:</strong>
+                    Breaks down outstanding and disbursed loans by status (active, closed), loan type, and product category. Enables you to track lending performance, monitor exposure, and detect unhealthy accumulation in certain categories.
+                </li>
+
+                <li>
+                    <strong>👥 Demographics:</strong>
+                    Analyzes member composition by gender and group form (individuals vs cooperatives). This is useful for compliance with gender or inclusion policies, as well as for assessing targeted outreach effectiveness.
+                </li>
+
+                <li>
+                    <strong>⚠️ Gaps in Compliance:</strong>
+                    Flags members who are fully registered and approved but lack any financial account (savings or loan). This helps in identifying onboarding or operational bottlenecks that may prevent full participation in the institution's services.
+                </li>
+
+                <li>
+                    <strong>📌 Recommendations:</strong>
+                    Use filters above to narrow your analysis to a specific branch, time period, or product group. After analyzing a dashboard, you may export the data or use it to guide policy or product interventions.
+                </li>
+
             </ul>
         </div>
     </div>
 </div>
+
+
 
 
 <!-- Collapsible Filter Section -->
@@ -54,18 +87,50 @@
             <i class="mdi mdi-tune"></i> Toggle Filter
         </button>
     </h6>
-    <div id="collapseFilter" class="collapse show">
+    <div id="collapseFilter" class="show">
         <div class="card-body" id="filterView">
             @Html.Partial("_ReportFilter")
         </div>
     </div>
 </div>
 
+<!--<div class="card mb-3 border-0 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary bg-light">
+        <span><i class="mdi mdi-view-dashboard-outline me-2"></i> Dashboard</span>
+        <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDashboard" aria-expanded="true" aria-controls="collapseDashboard">
+            <i class="mdi mdi-chevron-down"></i> Toggle Dashboard
+        </button>
+    </h6>
 
-<!-- Dashboard: Hidden until data is returned -->
-<div id="datalistingview" style="display:none;">
-    <!-- Dashboard content will be loaded here via AJAX -->
+    <div id="collapseDashboard" class="collapse show">
+        <div class="card-body">
+            <div id="datalistingview" class="p-3 border rounded bg-light shadow-sm" style="display: none;">-->
+<!-- Dashboard content will be loaded here via AJAX -->
+<!--</div>
+        </div>
+    </div>
+</div>-->
+<!-- 🔒 Hidden initially until data is found -->
+<div id="dashboardCardContainer" style="display: none;">
+    <div class="card mb-3 border-0 shadow-sm">
+        <h6 class="card-header d-flex justify-content-between align-items-center text-primary bg-light">
+            <span><i class="mdi mdi-view-dashboard-outline me-2"></i> Dashboard</span>
+            <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDashboard" aria-expanded="true" aria-controls="collapseDashboard">
+                <i class="mdi mdi-chevron-down"></i> Toggle Dashboard
+            </button>
+        </h6>
+
+        <div id="collapseDashboard" class="collapse show">
+            <div class="card-body">
+                <div id="datalistingview" class="p-3 border rounded bg-light shadow-sm">
+                    <!-- Dashboard content will be loaded here via AJAX -->
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
@@ -73,7 +138,8 @@
         $(document).ready(function () {
             const filterKey = "tscGeneralStatsFilters";
 
-            // Hide dashboard initially
+            // Hide dashboard card and content initially
+            $("#dashboardCardContainer").hide();
             $("#datalistingview").hide();
 
             // Restore saved filters from localStorage
@@ -89,13 +155,11 @@
                 $("#mainReportType").val(filters.MainReportType);
             }
 
-            // Expand filter section on page load if dashboard is not shown
+            // Expand filter section on load
             const filterCollapse = bootstrap.Collapse.getOrCreateInstance(document.getElementById('collapseFilter'));
-            if (!$("#datalistingview").is(":visible")) {
-                filterCollapse.show();
-            }
+            //filterCollapse.show();
 
-            // Reset button clears fields and localStorage
+            // Reset all filters and hide dashboard
             $("#resetFilterBtn").click(function () {
                 localStorage.removeItem(filterKey);
                 $("#branchInput").val("").trigger("change");
@@ -105,13 +169,16 @@
                 $("#accountProfiles").val([]).trigger("change");
                 $("#loanStatus").val("all").trigger("change");
                 $("#mainReportType").val("");
+
+                // Hide dashboard
+                $("#dashboardCardContainer").hide();
                 $("#datalistingview").hide();
 
-                // Expand filter again
+                // Re-expand filters
                 filterCollapse.show();
             });
 
-            // Apply filter and load dashboard
+            // Apply filter
             $("#applyFilterBtn").click(function () {
                 const requestData = {
                     BranchId: $("#branchInput").val(),
@@ -123,7 +190,7 @@
                     MainReportType: $("#mainReportType").val()
                 };
 
-                // Save filters
+                // Save to localStorage
                 localStorage.setItem(filterKey, JSON.stringify(requestData));
 
                 $.ajax({
@@ -135,13 +202,17 @@
                     },
                     success: function (response) {
                         if (response && typeof response === "string" && response.trim().length > 0) {
-                            $("#datalistingview").html(response).show();
+                            $("#datalistingview").html(response);
+                            $("#dashboardCardContainer").show();
+                            $("#datalistingview").show();
+
                             renderDashboardCharts();
 
-                            // Collapse filter section after success
+                            // Collapse filters after load
                             filterCollapse.hide();
                         } else {
                             $("#datalistingview").hide();
+                            $("#dashboardCardContainer").hide();
                             alert("No data found for the selected criteria.");
                         }
                     },
@@ -149,6 +220,7 @@
                         console.error(xhr);
                         alert("An error occurred while loading the dashboard.");
                         $("#datalistingview").hide();
+                        $("#dashboardCardContainer").hide();
                     },
                     complete: function () {
                         $("#applyFilterBtn").prop("disabled", false).html("<i class='mdi mdi-magnify'></i> Apply Filter");
@@ -156,22 +228,93 @@
                 });
             });
 
-            // Export the report
+            // Export logic using AJAX to prevent immediate redirection
             $("#exportBtn").click(function () {
                 const params = {
                     BranchId: $("#branchInput").val(),
                     StartDate: $("#startDate").val(),
                     EndDate: $("#endDate").val(),
-                    AccountTypes: $("#accountTypes").val() || [],
                     AccountProfiles: $("#accountProfiles").val() || [],
                     LoanStatus: $("#loanStatus").val(),
                     MainReportType: $("#mainReportType").val()
                 };
-                const queryString = $.param(params, true);
-                window.location.href = `/GeneralStatisticReport/GeneralReport?${queryString}`;
+
+                // Handle AccountTypes manually to be serialized as multiple keys
+                const accountTypes = $("#accountTypes").val() || [];
+                let queryString = $.param(params, true);
+
+                // Append AccountTypes correctly
+                accountTypes.forEach(type => {
+                    queryString += `&AccountTypes=${encodeURIComponent(type)}`;
+                });
+
+                $.ajax({
+                    url: "/GeneralStatisticReport/GeneralReport?" + queryString,
+                    type: "POST",
+                    success: function (response) {
+                        if (response.success && response.redirectUrl) {
+                            window.open(response.redirectUrl, '_blank'); // Opens in new tab
+                        } else {
+                            alert(response.message || "Report export failed.");
+                        }
+                    },
+
+                    error: function (xhr) {
+                        console.error(xhr);
+                        alert("An error occurred while exporting the report.");
+                    },
+                    beforeSend: function () {
+                        $("#exportBtn").prop("disabled", true).html("<i class='mdi mdi-loading mdi-spin'></i> Generating...");
+                    },
+                    complete: function () {
+                        $("#exportBtn").prop("disabled", false).html("<i class='mdi mdi-file-export'></i> Export");
+                    }
+                });
             });
+
         });
     </script>
+
+    <script>
+        $(document).ready(function () {
+            // 🔁 Helper to reset a select element
+            function resetSelect(selector) {
+                $(selector).val('').trigger('change');
+            }
+
+            // 🟩 Branch Toggle
+            $('#enableBranch').on('change', function () {
+                if (this.checked) {
+                    $('.branch-section').removeClass('d-none');
+                } else {
+                    $('.branch-section').addClass('d-none');
+                    resetSelect('#branchInput');
+                }
+            }).trigger('change');
+
+            // 📅 Date Range Toggle
+            $('#enableDateRange').on('change', function () {
+                if (this.checked) {
+                    $('.date-range-section').removeClass('d-none');
+                } else {
+                    $('.date-range-section').addClass('d-none');
+                    $('#startDate').val('');
+                    $('#endDate').val('');
+                }
+            }).trigger('change');
+
+            // 📊 Report Type Toggle
+            $('#enableReportType').on('change', function () {
+                if (this.checked) {
+                    $('.report-type-section').removeClass('d-none');
+                } else {
+                    $('.report-type-section').addClass('d-none');
+                    resetSelect('#mainReportType');
+                }
+            }).trigger('change');
+        });
+    </script>
+
 
 
 
