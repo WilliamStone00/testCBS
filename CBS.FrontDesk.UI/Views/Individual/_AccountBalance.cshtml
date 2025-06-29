@@ -2,9 +2,9 @@
     @using Resources
 @{
     var status = false;
-    var balance = Model.AccountBalance.accounts.Sum(x => x.Balance);
+    var balance = Model.CustomerAccounts.Sum(x => x.balance);
     string comment = "No initial deposit has been made.";
-    if (Model.AccountBalance.accounts.Any())
+    if (Model.CustomerAccounts.Any())
     {
         status = true;
 

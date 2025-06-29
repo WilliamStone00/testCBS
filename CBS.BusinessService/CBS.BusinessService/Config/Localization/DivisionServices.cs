@@ -16,10 +16,12 @@ namespace CBS.BusinessService.Config.Localization
     public class DivisionServices : BaseService
     {
         private readonly ApiCallerHelper _bankConfigApiHelper;
+        private readonly RegionServices _regionServices;
 
-        public DivisionServices()
+        public DivisionServices(RegionServices regionServices = null)
         {
-            _bankConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
+            _bankConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["SystemConfigurationBaseUrl"].ToString());
+            _regionServices=regionServices;
         }
 
         public async Task<ExecutionMessages> Delete(string id)
@@ -51,11 +53,11 @@ namespace CBS.BusinessService.Config.Localization
         }
         public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions)
         {
-            Func<Task<List<Division>>> getDataFunc = async () => (await GetCountries()).ToList();
+            Func<Task<List<Division>>> getDataFunc = async () => (await GetDivisions()).ToList();
             var dataTable = await DatatableHelper.GenerateDataTable<Division>(dataTableOptions, getDataFunc);
             return dataTable;
         }
-        public async Task<IEnumerable<Division>> GetCountries()
+        public async Task<IEnumerable<Division>> GetDivisions()
         {
             try
             {
@@ -68,7 +70,7 @@ namespace CBS.BusinessService.Config.Localization
                 throw;
             }
         }
-        private async Task<Division> GetDivision(string id)
+        public async Task<Division> GetDivision(string id)
         {
             try
             {
@@ -111,5 +113,12 @@ namespace CBS.BusinessService.Config.Localization
             return ExecutionMessage;
         }
 
+       
+
+        public async Task<List<Division>> GetDivisionsByRegionId(string key)
+        {
+            var divisions = await GetDivisions();
+            return divisions.Where(x => x.RegionId==key).ToList();
+        }
     }
 }

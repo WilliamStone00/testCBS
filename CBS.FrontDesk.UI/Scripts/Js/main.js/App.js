@@ -907,6 +907,69 @@ function DeleteWithRedirect(controller, KEY, option, url_redirect) {
 
 
 }
+function deleteEntity({
+    key,
+    type,
+    deleteUrl = '/Globalization/Delete',
+    reloadUrl = null,
+    refresh = true,
+    containerId = null,
+    partialView = null,
+    path = null,
+    parentKey = null,
+    onSuccess = null,
+    onFailure = null
+}) {
+    if (!key || !type) {
+        console.error("Missing required parameters: key or type");
+        return;
+    }
+
+    alertify.confirm(
+        "DELETE WARNING!!!",
+        "Are you sure you want to delete this item? This action cannot be undone.",
+        function () {
+            $.post(deleteUrl, { key, type }, function (res) {
+                if (res.success) {
+                    showSuccessMessage(res.message);
+
+                    // Optional success callback
+                    if (typeof onSuccess === "function") {
+                        onSuccess(res);
+                    }
+
+                    // Reload the data table if requested
+                    if (refresh && reloadUrl && containerId) {
+                        $.get(reloadUrl, {
+                            key: parentKey || null,
+                            path: path,
+                            partialView: partialView
+                        }, function (html) {
+                            $('#' + containerId).html(html);
+                        });
+                    }
+
+                } else {
+                    appalert(res.message || "Deletion failed.", 3, 1);
+                    if (typeof onFailure === "function") {
+                        onFailure(res);
+                    }
+                }
+            }).fail(function (err) {
+                appalert(err.statusText || "Server error occurred.", 3, 1);
+                if (typeof onFailure === "function") {
+                    onFailure(err);
+                }
+            });
+        },
+        function () {
+            appalert("Transaction cancelled", 3, 1);
+        }
+    );
+}
+
+
+
 //LoadDataTableNew("Country", "myDataTable", "InitializeData", null, "_Data", 1);
 function DeleteRecordDataTable(controller, KEY, tableID, partialView, order, divToLoadTheData, Key2, path) {
 
@@ -1354,6 +1417,42 @@ function AjaxPostAndUpdateValidationDecision(form) {
     }
     return false;
 
+}
+
+function openGlobalizationModal(
+    key,
+    modalId = 'globalizationModal',
+    contentId = 'globalizationFormContainer',
+    controller,
+    actionMethod,
+    partialView,
+    path,
+    modalTitle,
+    titleElementId = 'globalizationModalTitleText',
+    mode = 'id'
+) {
+    $('#' + titleElementId).html(modalTitle);
+    $('#' + contentId).html('');
+    $('#globalizationLoader').removeClass('d-none');
+
+    $.ajax({
+        type: "GET",
+        url: `/${controller}/${actionMethod}?key=${key}&partialView=${partialView}&path=${path}&mode=${mode}`,
+        success: function (html) {
+            $('#' + contentId).html(html);
+            $('#' + modalId).modal('show');
+        },
+        error: function (err) {
+            if (err.status === 401) {
+                window.location.href = '/Authentication/Login';
+            } else {
+                appalert(err.statusText || "Failed to load data.", 3, 1);
+            }
+        },
+        complete: function () {
+            $('#globalizationLoader').addClass('d-none');
+        }
+    });
 }
 
 

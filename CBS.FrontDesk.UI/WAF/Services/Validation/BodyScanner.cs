@@ -36,7 +36,7 @@ namespace CBS.FrontDesk.UI.WAF.Services.Validation
             _scanner = scanner;
             _maxFileSizeInBytes = maxFileScanSizeInBytes;
             _allowedMimeTypes = new HashSet<string>(
-                (allowedFileMimeTypes ?? new[] { "text/plain", "text/csv", "text/xml", "application/xml" })
+                (allowedFileMimeTypes ?? new[] { /*"text/plain",*/ "text/csv", "text/xml", "application/xml" })
                 .Select(m => m.ToLowerInvariant())
             );
         }
@@ -106,36 +106,36 @@ namespace CBS.FrontDesk.UI.WAF.Services.Validation
                 }
 
                 // 🗃️ Scan uploaded files
-                foreach (string fileKey in request.Files.AllKeys)
-                {
-                    var file = request.Files[fileKey];
-                    if (file != null && file.ContentLength > 0 && file.ContentLength <= _maxFileSizeInBytes)
-                    {
-                        var mime = file.ContentType?.ToLowerInvariant() ?? string.Empty;
-                        var extension = Path.GetExtension(file.FileName)?.ToLowerInvariant();
+                //foreach (string fileKey in request.Files.AllKeys)
+                //{
+                //    var file = request.Files[fileKey];
+                //    if (file != null && file.ContentLength > 0 && file.ContentLength <= _maxFileSizeInBytes)
+                //    {
+                //        var mime = file.ContentType?.ToLowerInvariant() ?? string.Empty;
+                //        var extension = Path.GetExtension(file.FileName)?.ToLowerInvariant();
 
-                        // ✅ Accept if MIME is allowed or extension is .txt
-                        if (_allowedMimeTypes.Contains(mime) || extension == ".txt")
-                        {
-                            using (var reader = new StreamReader(file.InputStream))
-                            {
-                                string fileContent = reader.ReadToEnd();
+                //        // ✅ Accept if MIME is allowed or extension is .txt
+                //        if (_allowedMimeTypes.Contains(mime) || extension == ".txt")
+                //        {
+                //            using (var reader = new StreamReader(file.InputStream))
+                //            {
+                //                string fileContent = reader.ReadToEnd();
 
-                                if (_scanner.IsMalicious(fileContent, out var matchedPattern))
-                                {
-                                    reason = $"🚨 Malicious pattern in file '{file.FileName}'. Pattern: {matchedPattern}";
-                                    return true;
-                                }
-                            }
+                //                if (_scanner.IsMalicious(fileContent, out var matchedPattern))
+                //                {
+                //                    reason = $"🚨 Malicious pattern in file '{file.FileName}'. Pattern: {matchedPattern}";
+                //                    return true;
+                //                }
+                //            }
 
-                            file.InputStream.Position = 0; // Reset for downstream access
-                        }
-                        else
-                        {
-                            reason = $"⚠️ File '{file.FileName}' skipped due to unsupported MIME type ({mime}) or extension ({extension})";
-                        }
-                    }
-                }
+                //            file.InputStream.Position = 0; // Reset for downstream access
+                //        }
+                //        else
+                //        {
+                //            reason = $"⚠️ File '{file.FileName}' skipped due to unsupported MIME type ({mime}) or extension ({extension})";
+                //        }
+                //    }
+                //}
             }
             catch (Exception ex)
             {

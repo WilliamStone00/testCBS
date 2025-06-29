@@ -1,0 +1,56 @@
+﻿@model CBS.FrontDesk.Data.Entity.Config.GlobalizationViewModel
+
+<!-- Section Title -->
+<div class="col-12">
+    <h6 class="text-primary border-bottom pt-2 pb-2">
+        <i class="mdi mdi-earth me-1"></i> Country Management
+    </h6>
+</div>
+
+<!-- Country Form -->
+@using (Html.BeginForm("SaveCountry", "Globalization", FormMethod.Post, new
+{
+    enctype = "multipart/form-data",
+    onsubmit = "return AjaxPostAndUpdate(this);"
+}))
+{
+    <div class="row g-3 mb-4" id="countryForm">
+
+        @Html.HiddenFor(m => m.Country.Id)
+
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.Country.Code, new { @class = "form-control", placeholder = "Country Code", required = "required" })
+                <label>Country Code</label>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.Country.Name, new { @class = "form-control", placeholder = "Country Name", required = "required" })
+                <label>Country Name</label>
+            </div>
+        </div>
+
+        <div class="col-12 text-end">
+            @if (!string.IsNullOrWhiteSpace(Model.Country.Id))
+            {
+                <button type="submit" class="btn btn-primary px-4 me-2">
+                    <i class="bi bi-check2-circle"></i> Update
+                </button>
+                <button type="button" class="btn btn-outline-secondary" onclick="location.reload()">
+                    <i class="bi bi-arrow-clockwise"></i> Reset
+                </button>
+            }
+            else
+            {
+                <button type="submit" class="btn btn-success px-4">
+                    <i class="bi bi-save2"></i> Save Country
+                </button>
+            }
+        </div>
+    </div>
+}
+
+<!-- Success Message -->
+<div id="successMessageCountry" class="alert alert-success d-none"></div>

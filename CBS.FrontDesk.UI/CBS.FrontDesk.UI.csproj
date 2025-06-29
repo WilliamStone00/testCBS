@@ -2045,7 +2045,7 @@
     <Compile Include="Controllers\ChangeCustomerNumber\ChangeNumberController.cs" />
     <Compile Include="Controllers\CMoney\CMoneyMembershipController.cs" />
     <Compile Include="Controllers\Commitee\LoanCommiteeController.cs" />
-    <Compile Include="Controllers\Configuration\Localization\CountryController.cs" />
+    <Compile Include="Controllers\Configuration\Localization\GlobalizationController.cs" />
     <Compile Include="Controllers\Configuration\Organ\BankController.cs" />
     <Compile Include="Controllers\Configuration\Organ\BranchManagementController.cs" />
     <Compile Include="Controllers\Configuration\Organ\EconomicActivityController.cs" />
@@ -9283,6 +9283,17 @@
     <Content Include="Views\GeneralStatisticReport\_Dashboard.cshtml" />
     <Content Include="Views\GeneralStatisticReport\_ReportFilter.cshtml" />
     <Content Include="Views\Loan\_FIlterQuery.cshtml" />
+    <Content Include="Views\Globalization\Index.cshtml" />
+    <Content Include="Views\Globalization\_TownForm.cshtml" />
+    <Content Include="Views\Globalization\_SubDivisionForm.cshtml" />
+    <Content Include="Views\Globalization\_CountryForm.cshtml" />
+    <Content Include="Views\Globalization\_RegionForm.cshtml" />
+    <Content Include="Views\Globalization\_DivisionForm.cshtml" />
+    <Content Include="Views\Globalization\_CountryDataTable.cshtml" />
+    <Content Include="Views\Globalization\_RegionDataTable.cshtml" />
+    <Content Include="Views\Globalization\_DivisionDataTable.cshtml" />
+    <Content Include="Views\Globalization\_SubDivisionDataTable.cshtml" />
+    <Content Include="Views\Globalization\_TownDataTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
