@@ -580,7 +580,7 @@ namespace CBS.BusinessService.CustomerManagement
             {
 
                 var cusResponseObject = await GetSingleCustomer(id);
-                var accountBalance = await GetCustomerBalance(id);
+                //var accountBalance = await GetCustomerBalance(id);
                 var accounts = await GetCustomerAccounts(id);
                 //var policies = await _memberAccountActivationPolicyServices.GetMemberAccountActivationPolicys();
                 var memberAccountActivation = await _memberAccountActivationServices.GetMemberAccountActivationByMemberId(id);
@@ -592,7 +592,7 @@ namespace CBS.BusinessService.CustomerManagement
                 var addaccount = new AddCustomerAccount { customerId = id };
                 var nextOfKingsMember = new MembershipNextOfKing { CustomerId = id };
                 var cardSignatureSpecimen = new CardSignatureSpecimen { CustomerId = id };
-                var result = new IndividualCustomerProfile(data.First(), aggregrates, accountBalance, accounts, addaccount, nextOfKingsMember, cardSignatureSpecimen);
+                var result = new IndividualCustomerProfile(data.First(), aggregrates, accounts, addaccount, nextOfKingsMember, cardSignatureSpecimen);
                 result.SavingProducts = aggregrates.Savings;
                 result.AddCustomerAccount.CustomerName = result.CustomerList.name;
                 //var policy = new MemberRegistrationFeePolicy();

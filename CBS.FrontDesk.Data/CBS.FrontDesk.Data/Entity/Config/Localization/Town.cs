@@ -10,8 +10,18 @@ namespace CBS.FrontDesk.Data.Entity.Config
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public string SubdivisionId { get; set; } // Foreign key
-        public SubDivision Subdivision { get; set; }
+
+        public string SubdivisionId { get; set; }
+        public string SubdivisionName { get; set; }
+
+        public string DivisionId { get; set; }
+        public string DivisionName { get; set; }
+
+        public string RegionId { get; set; }
+        public string RegionName { get; set; }
+
+        public string CountryId { get; set; }
+        public string CountryName { get; set; }
     }
 
 }

@@ -10,12 +10,14 @@ namespace CBS.FrontDesk.Data.Entity.Config
     public class Division
     {
         public string Id { get; set; }
-        [Required]
         public string Name { get; set; }
-        [Required]
-        public string RegionId { get; set; } // Foreign key
-        public Region Region { get; set; }
-        public List<SubDivision> Subdivisions { get; set; }
+
+        // Flattened fields
+        public string RegionId { get; set; }
+        public string RegionName { get; set; }
+
+        public string CountryId { get; set; }
+        public string CountryName { get; set; }
     }
 
 }

@@ -19,7 +19,7 @@ namespace CBS.BusinessService.Config.Localization
 
         public RegionServices()
         {
-            _bankConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
+            _bankConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["SystemConfigurationBaseUrl"].ToString());
         }
 
         public async Task<ExecutionMessages> Delete(string id)
@@ -51,11 +51,11 @@ namespace CBS.BusinessService.Config.Localization
         }
         public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions)
         {
-            Func<Task<List<Region>>> getDataFunc = async () => (await GetCountries()).ToList();
+            Func<Task<List<Region>>> getDataFunc = async () => (await GetRegions()).ToList();
             var dataTable = await DatatableHelper.GenerateDataTable<Region>(dataTableOptions, getDataFunc);
             return dataTable;
         }
-        public async Task<IEnumerable<Region>> GetCountries()
+        public async Task<IEnumerable<Region>> GetRegions()
         {
             try
             {
@@ -68,7 +68,7 @@ namespace CBS.BusinessService.Config.Localization
                 throw;
             }
         }
-        private async Task<Region> GetRegion(string id)
+        public async Task<Region> GetRegion(string id)
         {
             try
             {
@@ -111,5 +111,10 @@ namespace CBS.BusinessService.Config.Localization
             return ExecutionMessage;
         }
 
+        public async Task<IEnumerable<Region>> GetRegionsByCountryId(string countryId)
+        {
+            var regions = await GetRegions();
+            return regions.Where(x=>x.CountryId==countryId);
+        }
     }
 }
