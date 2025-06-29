@@ -36,7 +36,7 @@ using CBS.BusinessService.UserManagement;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
-    [CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute] 
     public class AccountingConfigurationController : BaseController
     {
         private readonly AccountingEntryRuleService _Service;
@@ -257,12 +257,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             ViewBag.AccountCartegories = await _AccountCategoryServices.GetAccountCategory();
             ViewBag.OperationEventType = await BuildMenuOperationEventViewBagAsync();
             ViewBag.Document = await BuildMenuViewBagAsync();
-            ViewBag.DocumentType = await BuildMenuViewBagAsync();
             ViewBag.OperationSide = BuildMenuViewBagopside();
-            ViewBag.GrossAccount = BuildMenuAccountViewBag(listAccounts.ToList());
-            ViewBag.GrossExceptionAccount = BuildMenuAccountViewBag(listAccounts.ToList());
-            ViewBag.ProvisionAccount = BuildMenuAccountViewBag(listAccounts.ToList());
-            ViewBag.ProvisionExceptionAccount = BuildMenuAccountViewBag(listAccounts.ToList());
+ 
         }
         private async Task<dynamic> BuildMenuOperationEventViewBagAsync()
         {
@@ -370,13 +366,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         }
         private async Task<dynamic> BuildMenuViewBagAsync()
         {
-            var listOfItems = await _documentRefereceCodeServices.GetAllReport();
+            var listOfItems = await _documentRefereceCodeServices.GetAllDocument();
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
             selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select Financial Statement" });
             foreach (var item in listOfItems)
             {
                
-                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.id, Value = $"{item.name}" });
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = $"{item.name}", Value = item.id });
                 
 
             }
@@ -552,6 +548,38 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         }
 
 
+        
+        public async Task<ActionResult> GetAccountDetailsByReference(string id)
+        {
+            try
+            {
+                string userKey = "reference" + _AccountServices.GetUserID();
+                IEnumerable<FinancialDocumentReferenceDto> listFinancialDocumentReference = (IEnumerable<FinancialDocumentReferenceDto>)this.HttpContext.Session[userKey];
+
+                var model = listFinancialDocumentReference.Where(x => x.Id == id);
+                return Json(model, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public async Task<ActionResult> GetAllDocumentReference()
+        {
+            try
+            {
+                var dataList = await _documentRefereceCodeServices.GetAllDocumentReferenceCodeModel();
+                string userKey = "reference" + _AccountServices.GetUserID();
+
+                this.HttpContext.Session[userKey] = dataList;
+
+                return Json(dataList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
         public async Task<ActionResult> GetDocumentType(string DocumentId)
         {
 
@@ -858,21 +886,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
 
             }
-            else if (model.ServiceOption == "trialbalancereference")
-            {
-                if (model.Action == "insert")
-                {
-                    serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
-                }
-                else
-                {
-
-                    serviceAction = await  GetUpdateServiceActionAsync(model.ServiceOption, model);
-                }
-
-
-            }
-            else if (model.ServiceOption == "documentReferenceCode")
+           
+            else if (model.ServiceOption == "FinancialDocumentReference")
             {
                 if (model.Action == "insert")
                 {
@@ -1002,10 +1017,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 return () => _accountingEntryRuleService.Create(model.AccountingRuleEntry);
             }
-            else if (serviceOption == "documentReferenceCode")
+            else if (serviceOption == "FinancialDocumentReference")
             {
 
-                return () => _documentRefereceCodeServices.Create(model.DocumentReferenceCode);
+                return () => _documentRefereceCodeServices.Create(model.FinancialDocumentReference);
             }
       
             else if (serviceOption == "chartOfAccount")
@@ -1158,7 +1173,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         }
 
         private async Task<PartialViewResult> GetServiceAction(string path, string partialView, string key, string serviceOption)
-        {
+       {
             if (serviceOption == "account")
             {
                 if (path == "list")
@@ -1371,14 +1386,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
 
             }
-            else if (serviceOption == "documentReferenceCode")
+            else if (serviceOption == "FinancialDocumentReference")
             {
                 if (path == "list")
                 {
 
                     var data = await _documentRefereceCodeServices.GetAllDocumentReferenceCodeModel();
 
-                    var sysData = new AccountingConfiguration { DocumentReferenceCodeDataDtos = data.ToList() };
+                    var sysData = new AccountingConfiguration { FinancialDocumentReferences = data.ToList() };
                     return PartialView(partialView, sysData);
 
                 }

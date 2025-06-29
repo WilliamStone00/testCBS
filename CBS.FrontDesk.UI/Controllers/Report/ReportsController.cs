@@ -428,6 +428,299 @@ namespace CBS.FrontDesk.UI.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Generates and exports accounting reports as PDF documents
+        /// Supports multiple report types: Trial Balance (4/6 column), Journal Entries, General Ledger, and Manual Entries
+        /// </summary>
+        /// <param name="FileType">Optional parameter for file type specification (currently unused)</param>
+        /// <returns>ActionResult - typically returns a View or PDF response</returns>
+        //public ActionResult AccountingPDFReport(string FileType = "")
+        //{
+        //    try
+        //    {
+        //        // Retrieve report configuration from session
+        //        var reportConfiguration = GetReportConfigurationFromSession();
+
+        //        // Validate session data before proceeding
+        //        if (!IsValidReportConfiguration(reportConfiguration))
+        //        {
+        //            return HandleInvalidConfiguration();
+        //        }
+
+        //        // Generate the PDF report
+        //        var pdfBytes = GenerateReportPdf(reportConfiguration);
+
+        //        // Return the PDF to the client
+        //        return DeliverPdfResponse(pdfBytes, reportConfiguration.ReportType);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception for debugging purposes
+        //        LogException(ex);
+
+        //        // Return user-friendly error response
+        //        return HandleReportGenerationError();
+        //    }
+        //}
+
+        #region Private Helper Methods
+
+        /// <summary>
+        /// Extracts report configuration parameters from the current session
+        /// </summary>
+        /// <returns>ReportConfiguration object containing session parameters</returns>
+        private ReportConfiguration GetReportConfigurationFromSession()
+        {
+            var session = System.Web.HttpContext.Current.Session;
+
+            return new ReportConfiguration
+            {
+                ReportSource = session["rptSource"],
+                FileType = session["fileType"]?.ToString() ?? string.Empty,
+                ReportPath = session["rptpath"]?.ToString() ?? string.Empty,
+                ReportType = session["rptType"]?.ToString() ?? string.Empty
+            };
+        }
+
+        /// <summary>
+        /// Validates that the report configuration contains required data
+        /// </summary>
+        /// <param name="config">Report configuration to validate</param>
+        /// <returns>True if configuration is valid, false otherwise</returns>
+        private bool IsValidReportConfiguration(ReportConfiguration config)
+        {
+            return config.ReportSource != null &&
+                   config.ReportSource.ToString() != "empty" &&
+                   !string.IsNullOrEmpty(config.FileType) &&
+                   !string.IsNullOrEmpty(config.ReportPath) &&
+                   !string.IsNullOrEmpty(config.ReportType);
+        }
+
+        /// <summary>
+        /// Generates PDF bytes for the specified report configuration
+        /// </summary>
+        /// <param name="config">Report configuration containing data source and settings</param>
+        /// <returns>Byte array containing the generated PDF</returns>
+        private byte[] GenerateReportPdf(ReportConfiguration config)
+        {
+            ReportDocument reportDocument = new ReportDocument();
+
+            try
+            {
+                // Load the Crystal Report template
+                string reportTemplatePath = Server.MapPath(config.ReportPath);
+                reportDocument.Load(reportTemplatePath);
+
+                // Set the data source based on report type
+                SetReportDataSource(reportDocument, config);
+
+                // Export report to PDF format
+                using (Stream stream = reportDocument.ExportToStream(ExportFormatType.PortableDocFormat))
+                {
+                    byte[] pdfBytes = new byte[stream.Length];
+                    stream.Read(pdfBytes, 0, pdfBytes.Length);
+                    return pdfBytes;
+                }
+            }
+            finally
+            {
+                // Ensure proper cleanup of Crystal Report resources
+                CleanReport(reportDocument);
+            }
+        }
+
+        /// <summary>
+        /// Sets the appropriate data source for the report based on file type
+        /// </summary>
+        /// <param name="reportDocument">Crystal Report document to configure</param>
+        /// <param name="config">Report configuration containing data source and type information</param>
+        private void SetReportDataSource(ReportDocument reportDocument, ReportConfiguration config)
+        {
+            switch (GetReportTypeFromFileType(config.FileType))
+            {
+                case ReportType.TrialBalance6Column:
+                    SetTrialBalance6ColumnDataSource(reportDocument, config.ReportSource);
+                    break;
+
+                case ReportType.TrialBalance4Column:
+                    SetTrialBalance4ColumnDataSource(reportDocument, config.ReportSource);
+                    break;
+
+                case ReportType.JournalEntry:
+                    SetJournalEntryDataSource(reportDocument, config.ReportSource);
+                    break;
+
+                case ReportType.GeneralLedger:
+                    SetGeneralLedgerDataSource(reportDocument, config.ReportSource);
+                    break;
+
+                case ReportType.ManualEntry:
+                    SetManualEntryDataSource(reportDocument, config.ReportSource);
+                    break;
+
+                default:
+                    throw new ArgumentException($"Unsupported file type: {config.FileType}");
+            }
+        }
+
+        /// <summary>
+        /// Determines the report type based on the file type string
+        /// </summary>
+        /// <param name="fileType">File type string from session</param>
+        /// <returns>Corresponding ReportType enum value</returns>
+        private ReportType GetReportTypeFromFileType(string fileType)
+        {
+            if (fileType.Contains("TB6")) return ReportType.TrialBalance6Column;
+            if (fileType.Contains("TB4")) return ReportType.TrialBalance4Column;
+            if (fileType.Contains("JE")) return ReportType.JournalEntry;
+            if (fileType.Contains("GL")) return ReportType.GeneralLedger;
+            if (fileType.Contains("MET")) return ReportType.ManualEntry;
+
+            return ReportType.Unknown;
+        }
+
+        /// <summary>
+        /// Sets data source for 6-column Trial Balance reports
+        /// </summary>
+        private void SetTrialBalance6ColumnDataSource(ReportDocument reportDocument, object dataSource)
+        {
+            var trialBalance6ColumnDto = (List<TrialBalance6ColumnDto>)dataSource;
+            reportDocument.SetDataSource(trialBalance6ColumnDto);
+        }
+
+        /// <summary>
+        /// Sets data source for 4-column Trial Balance reports
+        /// </summary>
+        private void SetTrialBalance4ColumnDataSource(ReportDocument reportDocument, object dataSource)
+        {
+            var trialBalance4ColumnDto = (List<TrialBalance4ColumnDto>)dataSource;
+            reportDocument.SetDataSource(trialBalance4ColumnDto);
+        }
+
+        /// <summary>
+        /// Sets data source for Journal Entry reports
+        /// </summary>
+        private void SetJournalEntryDataSource(ReportDocument reportDocument, object dataSource)
+        {
+            var journalEntryDto = (AccountingEntriesReport)dataSource;
+            var processedData = journalEntryDto.BuildJournalEntry(journalEntryDto, GetUserDto().FullName);
+            reportDocument.SetDataSource(processedData);
+        }
+
+        /// <summary>
+        /// Sets data source for General Ledger reports
+        /// </summary>
+        private void SetGeneralLedgerDataSource(ReportDocument reportDocument, object dataSource)
+        {
+            var accountingGeneralLedgerDetails = (AccountingGeneralLedgerDetails)dataSource;
+            var convertedData = accountingGeneralLedgerDetails.ConvertToGeneralLedgerDto(accountingGeneralLedgerDetails);
+            reportDocument.SetDataSource(convertedData);
+        }
+
+        /// <summary>
+        /// Sets data source for Manual Entry reports
+        /// </summary>
+        private void SetManualEntryDataSource(ReportDocument reportDocument, object dataSource)
+        {
+            var manualEntries = (List<ManualEntry>)dataSource;
+            reportDocument.SetDataSource(manualEntries);
+        }
+
+        /// <summary>
+        /// Delivers the PDF response to the client browser
+        /// </summary>
+        /// <param name="pdfBytes">PDF content as byte array</param>
+        /// <param name="reportType">Type of report for filename generation</param>
+        /// <returns>ActionResult that writes PDF to response</returns>
+        private ActionResult DeliverPdfResponse(byte[] pdfBytes, string reportType)
+        {
+            // Generate unique filename with timestamp
+            string fileName = GenerateReportFileName(reportType);
+
+            // Configure response headers for PDF delivery
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("Content-Disposition", $"attachment; filename={fileName}.pdf");
+
+            // Write PDF content to response
+            Response.BinaryWrite(pdfBytes);
+            Response.Flush();
+            Response.End();
+
+            return new EmptyResult();
+        }
+
+        /// <summary>
+        /// Generates a unique filename for the report
+        /// </summary>
+        /// <param name="reportType">Type of report</param>
+        /// <returns>Formatted filename string</returns>
+        private string GenerateReportFileName(string reportType)
+        {
+            return $"{reportType}-{DateTime.UtcNow:dd_MM_yyyy_HHmmss}";
+        }
+
+        /// <summary>
+        /// Handles cases where session configuration is invalid
+        /// </summary>
+        /// <returns>ActionResult with error message</returns>
+        private ActionResult HandleInvalidConfiguration()
+        {
+            Response.Write("<H2>Invalid report configuration. Please try again.</H2>");
+            return View();
+        }
+
+        /// <summary>
+        /// Handles report generation errors
+        /// </summary>
+        /// <returns>ActionResult with error message</returns>
+        private ActionResult HandleReportGenerationError()
+        {
+            Response.Write("<H2>An error occurred while generating the report</H2>");
+            return View();
+        }
+
+        /// <summary>
+        /// Logs exceptions for debugging purposes
+        /// </summary>
+        /// <param name="exception">Exception to log</param>
+        private void LogException(Exception exception)
+        {
+            // TODO: Implement proper logging mechanism
+            // Example: Logger.Error("Report generation failed", exception);
+            System.Diagnostics.Debug.WriteLine($"Report generation error: {exception}");
+        }
+
+        #endregion
+
+        #region Helper Classes and Enums
+
+        /// <summary>
+        /// Configuration object for report generation
+        /// </summary>
+        private class ReportConfiguration
+        {
+            public object ReportSource { get; set; }
+            public string FileType { get; set; }
+            public string ReportPath { get; set; }
+            public string ReportType { get; set; }
+        }
+
+        /// <summary>
+        /// Enumeration of supported report types
+        /// </summary>
+        private enum ReportType
+        {
+            Unknown,
+            TrialBalance6Column,
+            TrialBalance4Column,
+            JournalEntry,
+            GeneralLedger,
+            ManualEntry
+        }
+
+        #endregion
         public void CleanReport(ReportDocument rd)
         {
             if (rd != null)

@@ -849,14 +849,14 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_DocumentType = "/api/v1/DocumentType/{0}";
         public static string GetAllDocumentTypes = "/api/v1/DocumentType";
 
-        //DocumentReference   
+        //DocumentReference    FinancialReport/FinancialReportConfigurationOnMongoDB
 
         public static string Get_DocumentType_By_DocumentReference = "/api/v1/DocumentTypeByDocumentReference/{0}";
         public static string UpdateDocumentReferenceCode = "/api/v1/FinancialReport/DocumentReferenceCode/Update/{0}";
         public static string Delete_DocumentReference = "/api/v1/FinancialReport/DocumentReferenceCode/Delete/{0}";
         public static string GetDocumentReferenceCode = "/api/v1/FinancialReport/GetDocumentReferenceCodeById/{0}";
-        public static string GetAllDocumentReferenceCode = "/api/v1/FinancialReport/DocumentReferenceCode";
-        public static string CreateDocumentReferenceCode = "/api/v1/FinancialReport/DocumentReferenceCode/Create";
+        public static string GetAllDocumentReferenceCode = "/api/v1/FinancialDocumentReferences";
+        public static string CreateDocumentReferenceCode = "/api/v1/FinancialDocumentReference";
         public static string GetCorrespondingmappingByDocumentRefenceId = "/api/v1/FinancialReport/GetCorrespondingMappingByDocumentReferenceCodeIdQuery/{0}";
         public static string GetCorrespondingmappingExceptionByDocumentRefenceId = "/api/v1/FinancialReport/GetCorrespondingMappingExceptionsByDocumentReferenceCodeIdQuery/{0}";
 

@@ -1,5 +1,6 @@
 ﻿using CBS.API.Helper;
 using CBS.FrontDesk.Data;
+using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using CBS.FrontDesk.Service;
@@ -52,11 +53,11 @@ namespace CBS.BusinessService.Accounting
             }
             return ExecutionMessage;
         }
-        public async Task<IEnumerable<Document>> GetAllReport()
+        public async Task<IEnumerable<Document>> GetAllDocument()
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<Document>>>(APICallHelper.Get_Update_Delete_Document);
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<Document>>>(APICallHelper.GetAllDocument);
                 if (couApiResponse.IsSuccess)
                 {
 
@@ -98,28 +99,54 @@ namespace CBS.BusinessService.Accounting
             }
             catch (Exception ex)
             {
-                // Log and handle exception
+                // Log and handle exception 
                 throw;
             }
         }
-        public async Task<IEnumerable<DocumentReferenceCodeDto>> GetAllDocumentReferenceCodeModel()
+
+        public async Task<IEnumerable<FinancialDocumentReferenceDto>> GetAllFinancialDocumentReferenceDtoModel()
         {
             try
             {
-                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<DocumentReferenceCodeDto>>>(APICallHelper.GetAllDocumentReferenceCode);
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<FinancialDocumentReferenceDto>>>(APICallHelper.GetAllDocumentReferenceCode);
                 if (couApiResponse.IsSuccess)
                 {
 
                     if (couApiResponse.ApiResponseData == null)
                     {
-                        return new List<DocumentReferenceCodeDto>();
+                        return new List<FinancialDocumentReferenceDto>();
                     }
                     else
                     {
                         return couApiResponse.ApiResponseData.Data;
                     }
                 }
-                return new List<DocumentReferenceCodeDto>();
+                return new List<FinancialDocumentReferenceDto>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        public async Task<IEnumerable<FinancialDocumentReferenceDto>> GetAllDocumentReferenceCodeModel()
+        {
+            try
+            {
+                var couApiResponse = await _loanConfigApiHelper.GetAsync<ResponseObject<List<FinancialDocumentReferenceDto>>>(APICallHelper.GetAllDocumentReferenceCode);
+                if (couApiResponse.IsSuccess)
+                {
+
+                    if (couApiResponse.ApiResponseData == null)
+                    {
+                        return new List<FinancialDocumentReferenceDto>();
+                    }
+                    else
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+                }
+                return new List<FinancialDocumentReferenceDto>();
             }
             catch (Exception ex)
             {
@@ -212,23 +239,26 @@ namespace CBS.BusinessService.Accounting
 
 
 
-        public async Task<ExecutionMessages> Create(DocumentReferenceCode model)
+
+
+        public async Task<ExecutionMessages> Create(FinancialDocumentReference model)
         {
             try
             {
-
-             var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<DocumentReferenceCodeDto>>(APICallHelper.CreateDocumentReferenceCode,DocumentPasser( model));
+                model.Id = "XXXX";
+                model.CorrespondingAccount.Category = "WWWWWW";
+             var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<DocumentReferenceCodeDto>>(APICallHelper.CreateDocumentReferenceCode, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
-                    GetExecutionMessages(response, true, $"{model.ReferenceCode} -{model.Description} has been created successfully ", MessagesResults.Success,
+                    GetExecutionMessages(response, true, $"{model.Reference} -{model.DescriptionEn} has been created successfully ", MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
                 {
                     // Failed creation
-                    GetExecutionMessages(model, false, $"{model.ReferenceCode} -{model.Description} Creation Failed", MessagesResults.Failed,
+                    GetExecutionMessages(model, false, $"{model.Reference} -{model.DescriptionEn} Creation Failed", MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }

@@ -719,6 +719,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingConfig_CreateDocumentReferenceCode.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateFinancialReferenceCode.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingConfig_CreateFinancialReferenceCode.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateIncomeStatementStructure.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -4246,6 +4251,7 @@
     <Content Include="CBSTemp\ui\assets\alertifyjs\notify.js" />
     <Content Include="CBSTemp\ui\assets\audio\Water_Lily.mp3" />
     <Content Include="CBSTemp\ui\assets\css\demo.css" />
+    <Content Include="CBSTemp\ui\assets\css\FinancialReferenceDocument.css" />
     <Content Include="CBSTemp\ui\assets\img\.DS_Store" />
     <Content Include="CBSTemp\ui\assets\img\avatars\1.png" />
     <Content Include="CBSTemp\ui\assets\img\avatars\10.png" />
@@ -8093,6 +8099,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LoanSituationAlphaRPT.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateFinancialReferenceCode.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingConfig_CreateFinancialReferenceCode.Designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -8267,6 +8277,8 @@
     <Content Include="Scripts\Js\Dashboard\Dailyoperations\HeadOffice.js" />
     <Content Include="Scripts\Js\Dashboard\Dailyoperations\BranchOffice.js" />
     <Content Include="Scripts\Js\Dashboard\OpenBranches.js" />
+    <Content Include="Scripts\Js\FinanstatementConfig\DocumentReferenceConfig.js" />
+    <Content Include="Scripts\Js\FinanstatementConfig\DocumentReferenceData.js" />
     <Content Include="Scripts\Js\GeneralStatisticReport\GeneralStatistics.js" />
     <Content Include="Scripts\Js\main.js\AutoJournalEntry.js" />
     <Content Include="Scripts\Js\main.js\CashFlowManagementDeposit.js" />
@@ -9283,6 +9295,8 @@
     <Content Include="Views\GeneralStatisticReport\_Dashboard.cshtml" />
     <Content Include="Views\GeneralStatisticReport\_ReportFilter.cshtml" />
     <Content Include="Views\Loan\_FIlterQuery.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateFinancialReferenceCode.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_FinancialDocumentReferenceData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
