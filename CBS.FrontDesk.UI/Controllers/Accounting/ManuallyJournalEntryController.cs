@@ -255,6 +255,12 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             return selectListItems;
         }
+
+        /// <summary>
+        /// Retrieves users filtered by branch ID and returns them in a format suitable for approver selection
+        /// </summary>
+        /// <param name="branchId">The branch ID to filter users by. Use "XXXXX" to get all users regardless of branch</param>
+        /// <returns>JSON result containing formatted user data for approver selection, or null if an error occurs</returns>
         public async Task<ActionResult> GetBranchUsersByBranchId(string branchId)
         {
 
