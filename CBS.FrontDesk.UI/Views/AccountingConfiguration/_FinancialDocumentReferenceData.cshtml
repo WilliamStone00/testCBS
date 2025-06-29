@@ -1,0 +1,82 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+<!-- View Implementation -->
+
+ 
+        <div class="card-header">
+            <h3 class="card-title">System References</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover" id="myDataTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>Reference</th>
+                        <th>Description</th>
+                        <th>Document Name</th>
+                        <th>Accounts Summary</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+ 
+
+<!-- Financial Document Modal -->
+<div class="modal fade" id="financialDocumentModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Document</h5>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body" id="financialDocumentContent">
+                <!-- Partial content loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Account Details Modal -->
+<div class="modal fade" id="accountDetailsModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Account Details</h5>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body" id="accountDetailsContent">
+                <!-- Loaded dynamically -->
+            </div>
+        </div>
+    </div>
+</div><!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Confirm Deletion</h5>
+                <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body" id="deleteModalBody">Are you sure you want to delete this document reference?</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button id="confirmDeleteBtn" type="button" class="btn btn-danger">Yes, Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Account Details Partial View (_AccountDetails.cshtml) -->
+@*@functions {
+        string GetCategoryBadgeClass(string category)
+        {
+            return category?.ToLower() switch
+            {
+                "revenue" => "success",
+                "asset" => "primary",
+                "liabilities" => "warning",
+                "expense" => "danger",
+                _ => "secondary"
+            };
+        }
+    }*@

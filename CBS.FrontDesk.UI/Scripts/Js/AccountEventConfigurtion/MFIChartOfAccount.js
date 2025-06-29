@@ -86,6 +86,8 @@ function LoadDataTableNewVersion(controller, tableID, action, KEY, partialView, 
         type: "GET",
         url: encodedURL,
         success: function (data) {
+          
+            console.log(data);
             // Insert the received data into the specified div
             $('#' + diveToloadtheData).html(data);
 

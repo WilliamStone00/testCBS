@@ -95,6 +95,7 @@
     <Compile Include="Accounting\ProductAccountingBook.cs" />
     <Compile Include="Entity\Accounting\Acknowledge.cs" />
     <Compile Include="Entity\Accounting\BlacklistAccount.cs" />
+    <Compile Include="Entity\Accounting\FinancialDocumentReference.cs" />
     <Compile Include="Entity\Accounting\Enumeration.cs" />
     <Compile Include="Entity\Accounting\TrialBalanceDt.cs" />
     <Compile Include="Entity\AccountOpeningRulePerBranchP\AccountOpeningRulePerBranch.cs" />
@@ -179,7 +180,7 @@
     <Compile Include="Entity\Accounting\CashInfusionRequest.cs" />
     <Compile Include="Entity\Accounting\BranchLiaisonLedgerEntry.cs" />
     <Compile Include="Entity\Accounting\ChartofAccountManagementPosition.cs" />
-    <Compile Include="Entity\Accounting\Class1.cs" />
+    <Compile Include="Entity\Accounting\TrialBalanceFile.cs" />
     <Compile Include="Entity\Accounting\DocumentConfiguration.cs" />
     <Compile Include="Entity\Accounting\FSDocument.cs" />
     <Compile Include="Entity\Accounting\DepositNotificationDto.cs" />

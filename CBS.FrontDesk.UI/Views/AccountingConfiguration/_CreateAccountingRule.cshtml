@@ -20,6 +20,7 @@
                     @using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         <input type="hidden" name="ServiceOption" value="accountingRule" id="ServiceOptionn" />
+                        @Html.Hidden("Id", Model.FinancialDocumentReference.Id, new { id = "xxxxx" })
                         <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
                             <div class="col-12">
                                 <div class="card">
@@ -33,14 +34,14 @@
                                         <div class="row mt-2 gy-4">
                                             <div class="col-md-12">
                                                 <div class="form-floating form-floating-outline">
-                                                    @Html.DropDownListFor(m => m.AccountingRule.MFI_ChartOfAccountId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), "---"+@AccountingConfig_CreateAccountingRule.SelectEntryRule+"---", new { @class = "form-control select2", @search = "true" })
+                                                    @Html.DropDownListFor(m => m.AccountingRule.MFI_ChartOfAccountId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), "---" + @AccountingConfig_CreateAccountingRule.SelectEntryRule + "---", new { @class = "form-control select2", @search = "true" })
                                                     @Html.ValidationMessageFor(m => m.AccountingRule.MFI_ChartOfAccountId, "", new { @class = "text-danger" })
                                                     <label>@AccountingConfig_CreateAccountingRule.AccountingEntryRule</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-floating form-floating-outline">
-                                                    @Html.DropDownListFor(m => m.AccountingRule.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---"+@AccountingConfig_CreateAccountingRule.SelectDirection+"---", new { @class = "form-control select2", @search = "true" })
+                                                    @Html.DropDownListFor(m => m.AccountingRule.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---" + @AccountingConfig_CreateAccountingRule.SelectDirection + "---", new { @class = "form-control select2", @search = "true" })
                                                     @Html.ValidationMessageFor(m => m.AccountingRule.BookingDirection, "", new { @class = "text-danger" })
                                                     <label>@AccountingConfig_CreateAccountingRule.BookingDirection</label>
                                                 </div>
@@ -67,7 +68,7 @@
                         </div>
                     }
 
-                  
+
                 </div>
 
             </div>

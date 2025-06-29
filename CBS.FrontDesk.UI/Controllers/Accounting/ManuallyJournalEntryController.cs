@@ -283,7 +283,7 @@ namespace CBS.FrontDesk.UI.Controllers
         [HttpGet]
         public async Task<ActionResult> GetBranchAccount(string BranchId)
         {
-            var ListOfData = BuildMenuViewBag(await _AccountServices.GetJournalEntryMFIAccountQuery(BranchId));
+            var ListOfData = await _AccountServices.GetJournalEntryMFIAccountQuery(BranchId);
             return Json(BuildDropDown(ListOfData), JsonRequestBehavior.AllowGet);
         }
         private List<StringValues> BuildDropDown(List<Data.Account> ListOfData)
