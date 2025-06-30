@@ -56,10 +56,10 @@
                          </div>
 
                      </div>
-                    <div class="mt-4">
+                    <div class="mt-4 justify-content-end gap-2">
                         @if (Model.ChartofAccountManagementPosition.Id == null)
                         {
-                            <button type="submit" class="btn btn-primary me-2" id="btnSave">@GlobalShared.Save</button>
+                            <button type="submit" class="btn btn-primary me-2 bg-primary" id="btnSave">@GlobalShared.Save</button>
                             <input type="hidden" name="Action" value="insert" id="Action" />
                         }
                         else

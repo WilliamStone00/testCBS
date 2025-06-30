@@ -1,9 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
 
 
-<div class="card-header">
-    <h3> Financial DocumentReference Configuration </h3>
-</div>
+
 
 @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateForFS(this);" }))
 {
@@ -108,32 +106,7 @@
     <div class="accounts-container">
         <h4>📈 Provision Accounts</h4>
         <div id="provisionAccounts">
-            @if (Model.FinancialDocumentReference.CorrespondingAccount.ProvisionAccounts != null)
-            {
-                for (int i = 0; i < Model.FinancialDocumentReference.CorrespondingAccount.ProvisionAccounts.Count; i++)
-                {
-                    <div class="account-item">
-                        <button type="button" class="remove-account" onclick="removeAccount(this)" title="Remove Account">×</button>
-                        <div class="row gy-3">
-                            <div class="col-md-6">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.FinancialDocumentReference.CorrespondingAccount.ProvisionAccounts[i].AccountNumber, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.FinancialDocumentReference.CorrespondingAccount.ProvisionAccounts[i].AccountNumber, "", new { @class = "text-danger" })
-                                    <label>AccountNumber</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.FinancialDocumentReference.CorrespondingAccount.ProvisionAccounts[i].DocumentBooking, new SelectList(ViewBag.DebitCreditList == null ? "" : ViewBag.DebitCreditList, "Value", "Text"), "--- Select Booking Direction ---", new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.FinancialDocumentReference.CorrespondingAccount.ProvisionAccounts[i].DocumentBooking, "", new { @class = "text-danger" })
-                                    <label>Document Booking</label>
-                                </div>
-                            </div>
-                        </div>
-                        @Html.HiddenFor(m => m.FinancialDocumentReference.CorrespondingAccount.ProvisionAccounts[i].AccountNumber)
-                    </div>
-                }
-            }
+          
         </div>
         <button type="button" class="btn btn-secondary" onclick="addAccount('provision')">+ Add ProvisionAccount</button>
     </div>
@@ -141,32 +114,7 @@
     <div id="conditionSection" class="accounts-container" style="display:none;">
         <h4>⚙️ ConditionAccounts</h4>
         <div id="containsconditionAccounts">
-            @if (Model.FinancialDocumentReference.CorrespondingAccount.ContainsConditionAccounts != null)
-            {
-                for (int i = 0; i < Model.FinancialDocumentReference.CorrespondingAccount.ContainsConditionAccounts.Count; i++)
-                {
-                    <div class="account-item">
-                        <button type="button" class="remove-account" onclick="removeAccount(this)" title="Remove Account">×</button>
-                        <div class="row gy-3">
-                            <div class="col-md-12">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.FinancialDocumentReference.CorrespondingAccount.ContainsConditionAccounts[i].AccountNumber, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.FinancialDocumentReference.CorrespondingAccount.ContainsConditionAccounts[i].AccountNumber, "", new { @class = "text-danger" })
-                                    <label>Account Number</label>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.FinancialDocumentReference.CorrespondingAccount.ContainsConditionAccounts[i].DocumentBooking, new SelectList(ViewBag.DebitCreditList == null ? "" : ViewBag.DebitCreditList, "Value", "Text"), "--- Select Booking Direction ---", new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.FinancialDocumentReference.CorrespondingAccount.ContainsConditionAccounts[i].DocumentBooking, "", new { @class = "text-danger" })
-                                    <label>Document Booking</label>
-                                </div>
-                            </div>
-                        </div>
-                        @Html.HiddenFor(m => m.FinancialDocumentReference.CorrespondingAccount.ContainsConditionAccounts[i].AccountNumber)
-                    </div>
-                }
-            }
+          
         </div>
         <button type="button" class="btn btn-secondary" onclick="addAccount('condition')">+ Add ConditionAccount</button>
     </div>
@@ -176,64 +124,14 @@
         <div class="accounts-container">
             <h4>❗GrossExceptionAccounts</h4>
             <div id="grossExceptionAccounts">
-                @if (Model.FinancialDocumentReference.CorrespondingAccount.GrossExceptionAccounts != null)
-                {
-                    for (int i = 0; i < Model.FinancialDocumentReference.CorrespondingAccount.GrossExceptionAccounts.Count; i++)
-                    {
-                        <div class="account-item">
-                            <button type="button" class="remove-account" onclick="removeAccount(this)" title="Remove Account">×</button>
-                            <div class="row gy-3">
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.FinancialDocumentReference.CorrespondingAccount.GrossExceptionAccounts[i].AccountNumber, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.FinancialDocumentReference.CorrespondingAccount.GrossExceptionAccounts[i].AccountNumber, "", new { @class = "text-danger" })
-                                        <label>AccountNumber</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.FinancialDocumentReference.CorrespondingAccount.GrossExceptionAccounts[i].DocumentBooking, new SelectList(ViewBag.DebitCreditList == null ? "" : ViewBag.DebitCreditList, "Value", "Text"), "--- Select Booking Direction ---", new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.FinancialDocumentReference.CorrespondingAccount.GrossExceptionAccounts[i].DocumentBooking, "", new { @class = "text-danger" })
-                                        <label>Document Booking</label>
-                                    </div>
-                                </div>
-                                @Html.HiddenFor(m => m.FinancialDocumentReference.CorrespondingAccount.GrossExceptionAccounts[i].AccountNumber)
-                            </div>
-                        </div>
-                    }
-                }
+            
             </div>
             <button type="button" class="btn btn-secondary" onclick="addAccount('grossException')">+ Add GrossExceptionAccount</button>
         </div>
         <div class="accounts-container">
             <h4>❗ ProvisionExceptionAccounts</h4>
             <div id="provisionExceptionAccounts">
-                @if (Model.FinancialDocumentReference.CorrespondingAccount.ProvisionExceptionAccounts != null)
-                {
-                    for (int i = 0; i < Model.FinancialDocumentReference.CorrespondingAccount.ProvisionExceptionAccounts.Count; i++)
-                    {
-                        <div class="account-item">
-                            <button type="button" class="remove-account" onclick="removeAccount(this)" title="Remove Account">×</button>
-                            <div class="row gy-3">
-                                <div class="col-md-4">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.FinancialDocumentReference.CorrespondingAccount.ProvisionExceptionAccounts[i].AccountNumber, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.FinancialDocumentReference.CorrespondingAccount.ProvisionExceptionAccounts[i].AccountNumber, "", new { @class = "text-danger" })
-                                        <label>AccountNumber</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.FinancialDocumentReference.CorrespondingAccount.ProvisionExceptionAccounts[i].DocumentBooking, new SelectList(ViewBag.DebitCreditList == null ? "" : ViewBag.DebitCreditList, "Value", "Text"), "--- Select Booking Direction ---", new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.FinancialDocumentReference.CorrespondingAccount.ProvisionExceptionAccounts[i].DocumentBooking, "", new { @class = "text-danger" })
-                                        <label>Document Booking</label>
-                                    </div>
-                                </div>
-                            </div>
-                            @Html.HiddenFor(m => m.FinancialDocumentReference.CorrespondingAccount.ProvisionExceptionAccounts[i].AccountNumber)
-                        </div>
-                    }
-                }
+              
             </div>
             <button type="button" class="btn btn-secondary" onclick="addAccount('provisionException')">+ Add ProvisionExceptionAccount</button>
         </div>
@@ -241,17 +139,25 @@
 
     <!-- Submit Buttons -->
 <div class="mt-4 d-flex justify-content-end gap-2">
-    @if (Model.FinancialDocumentReference?.Id == null)
-    {
-        <button type="submit" class="btn btn-primary bg-primary">Save</button>
+    @*@if (Model.FinancialDocumentReference?.Id == null)
+        {*@
+    <div id="addReference">
+        <button type="submit" class="btn btn-primary bg-primary" id="btn-name">Save</button>
+        @Html.HiddenFor(m => m.FinancialDocumentReference.Id)
         <input type="hidden" name="Action" value="insert" id="Action" />
-    }
-    else
-    {
-        <button type="submit" class="btn btn-primary bg-primary">Update</button>
+    </div>
+    <div id="updateReference">
+        <button type="submit" class="btn btn-primary bg-primary" id="btn-name">Update</button>
         @Html.HiddenFor(m => m.FinancialDocumentReference.Id)
         <input type="hidden" name="Action" value="update" id="Action" />
-    }
+    </div>
+    @*}
+        else
+        {
+            <button type="submit" class="btn btn-primary bg-primary">Update</button>
+
+            <input type="hidden" name="Action" value="update" id="Action" />
+        }*@
 
     <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button>
 </div>

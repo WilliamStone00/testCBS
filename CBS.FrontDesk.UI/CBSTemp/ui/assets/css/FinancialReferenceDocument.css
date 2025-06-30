@@ -152,10 +152,7 @@ body {
 }
 
 .account-item {
-    display: flex;
-    align-items: flex-end;
-    gap: 10px;
-    margin-bottom: 1rem;
+
 }
 
     .account-item .form-group {
