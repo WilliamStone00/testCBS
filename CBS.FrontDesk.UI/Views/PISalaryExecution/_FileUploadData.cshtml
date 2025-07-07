@@ -1,0 +1,82 @@
+﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.ExecuteSalaryCarrier
+@using Resources
+<fieldset class="fieldset-custom">
+    <div class="mb-3 border-2">
+        <div id="datalistingview_inner">
+            <div class="table-responsive mb-3">
+                @if (Model.FileUploads != null && Model.FileUploads.Any())
+                {
+                    <table class="table table-hover" id="myDataTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>@GlobalSalaryExecution.FileName</th>
+                                <th>@GlobalSalaryExecution.UploadedBy</th>
+                                <th>@GlobalSalaryExecution.UploadedOn</th>
+                                <th>@GlobalShared.Status</th>
+                                <th>@GlobalShared.Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var file in Model.FileUploads)
+                            {
+                                <tr>
+                                    <td>@file.FileName</td>
+                                    <td>@file.UploadedBy</td>
+                                    <td>@file.UploadedOn.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(file.SalaryProcessingStatus))
+                                        {
+                                            <span class="badge bg-info">@file.SalaryProcessingStatus</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">N/A</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="d-flex justify-content-center align-items-center gap-2">
+                                            <!-- Download Button -->
+                                            <a type="button"
+                                                    class="btn btn-sm btn-outline-primary d-flex align-items-center"
+                                                    href="/SalaryUpload/DownloadFile?fileId=@file.Id"
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-placement="top"
+                                                    title="@GlobalShared.Download @file.FileName">
+                                                <i class="fas fa-download me-1"></i> @GlobalShared.Download
+                                            </a>
+                                            <!-- Details Button -->
+                                            <a type="button"
+                                                    class="btn btn-sm btn-outline-info d-flex align-items-center"
+                                                    href="/PISalaryExecution/Detail?fileUploadid=@file.Id"
+                                                    data-bs-toggle="tooltip" target="_blank"
+                                                    data-bs-placement="top"
+                                                    title="@GlobalShared.ViewDetails">
+                                                <i class="fas fa-info-circle me-1"></i> @GlobalShared.Details
+                                            </a>
+                                            <!-- Delete Button -->
+                                            <button type="button"
+                                                    class="btn btn-sm btn-outline-danger d-flex align-items-center"
+                                                    onclick="DeleteFileRecord('SalaryUpload','@file.Id','myDataTable','_FileUploadData',0,'datalistingview')"
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-placement="top"
+                                                    title="@GlobalShared.Delete @file.FileName">
+                                                <i class="fas fa-trash-alt me-1"></i> @GlobalShared.Delete
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+
+                    <div class="text-center my-3">
+                        <p>@GlobalSalaryExecution.NoSalaryUploadsFound.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</fieldset>

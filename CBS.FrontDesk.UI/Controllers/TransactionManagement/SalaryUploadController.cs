@@ -22,6 +22,11 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
         public ActionResult Index()
         {
+            ViewBag.HeadOffice="No";
+            if (_salaryAnalysisResultServices.IsHeadOffice())
+            {
+                ViewBag.HeadOffice="Yes";
+            }
             return View(new SalaryUploadModelCarrier());
         }
         public ActionResult UploadedSalaryFiles()

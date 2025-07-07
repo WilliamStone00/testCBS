@@ -1,0 +1,250 @@
+﻿
+/* ✅ Button Styles */
+.btn-tsc {
+    background-color: #198754;
+    color: #fff;
+    border: none;
+}
+
+    .btn-tsc:hover {
+        background-color: #157347;
+        color: #fff;
+    }
+
+.btn-tsc-dark {
+    background-color: #14532d;
+    color: #fff;
+    border: none;
+}
+
+    .btn-tsc-dark:hover {
+        background-color: #0f3f23;
+        color: #fff;
+    }
+
+/* ✅ Background Colors */
+.bg-tsc {
+    background-color: #026937 !important;
+}
+
+.bg-tsc-dark {
+    background-color: #014F2A !important;
+}
+
+.bg-tsc-light {
+    background-color: #38B080 !important;
+}
+
+/* ✅ Text Colors */
+.text-tsc {
+    color: #026937 !important; /* TSC Green */
+}
+
+.text-tsc-dark {
+    color: #014F2A !important; /* Darker TSC Green */
+}
+
+.text-tsc-light {
+    color: #38B080 !important; /* Lighter/Accent Green */
+}
+
+/*DATATABLE SECTION*/
+
+/* Styling for table with ID 'myDataTable' */
+#myDataTable, #myDataTableT {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    #myDataTable th, #myDataTable td,
+    #myDataTableT th, #myDataTableT td {
+        border: 1px solid black; /* Thin border */
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Smoky effect */
+        padding: 8px;
+        text-align: left;
+    }
+
+    #myDataTable2 thead, #myDataTableT thead {
+        background-color: #f8f9fa;
+    }
+
+
+#myDataTable2, #myDataTableT2 {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    #myDataTable2 th, #myDataTable2 td,
+    #myDataTableT2 th, #myDataTableT2 td {
+        border: 1px solid black; /* Thin border */
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Smoky effect */
+        padding: 8px;
+        text-align: left;
+    }
+
+    #myDataTable2 thead, #myDataTableT2 thead {
+        background-color: #f8f9fa;
+    }
+
+/* Custom fieldset styling */
+.fieldset-custom {
+    border: 1px solid blue; /* Thin blue outline */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Space inside the fieldset */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Smoky shadow effect */
+    background-color: #f9f9f9; /* Light background color */
+    margin-bottom: 20px; /* Space below the fieldset */
+}
+
+    .fieldset-custom legend {
+        font-size: 16px; /* Adjust the font size for the legend */
+        font-weight: bold; /* Bold text */
+        padding: 0; /* Remove padding around the text */
+        border: none; /* Remove any border around the legend */
+        color: #333; /* Dark text color */
+        margin-bottom: 10px; /* Space below the legend */
+    }
+    /*BANNER STYLER*/
+
+/* The blurred background effect */
+.blur-background {
+    filter: blur(5px);
+    transition: filter 0.3s ease;
+}
+/* Only blur the page content, not the modal */
+#pageContent.blur-background {
+    filter: blur(5px);
+    transition: filter 0.3s ease;
+}
+
+#floatingCountdownText, #countdown {
+    transition: color 0.5s ease;
+}
+
+#countdown {
+    transition: color 0.5s ease, font-size 0.5s ease;
+}
+
+#internetStatusBanner {
+    display: none; /* Hide it purely through CSS before any JS runs */
+}
+/* Dark semi-transparent overlay */
+#darkOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Soft black overlay */
+    z-index: 1040; /* Just below the Bootstrap modal (z-index 1050) */
+    display: none;
+}
+
+
+/*BG*/
+.bg-green {
+    background-color: #28a745;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+.bg-orange {
+    background-color: #fd7e14;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+.badge {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.modal-header {
+    background-color: Background;
+    color: white;
+    border-bottom: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.modal-title {
+    font-weight: bold;
+}
+
+.close {
+    color: white;
+    opacity: 1;
+}
+
+    .close:hover {
+        color: #ff6b6b;
+    }
+
+.modal-body {
+    padding: 20px;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.modal-footer {
+    border-top: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.btn-secondary {
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+    .btn-secondary:hover {
+        background-color: #495057;
+        border-color: #495057;
+    }
+
+
+
+.fieldset-custom {
+    border: 2px solid #007bff; /* Custom border color */
+    border-radius: 5px; /* Rounded corners */
+    padding: 15px;
+    background-color: #f8f9fa; /* Light background color */
+}
+
+.table {
+    margin-bottom: 0; /* Remove bottom margin */
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f2f2f2; /* Alternating row colors */
+}
+
+.table-hover tbody tr:hover {
+    background-color: #e9ecef; /* Hover color */
+}
+
+.table-bordered th, .table-bordered td {
+    border: 1px solid #dee2e6; /* Border color */
+}
+
+thead th {
+    background-color: #343a40; /* Dark background for header */
+    color: #ffffff; /* White text color */
+    text-align: center; /* Center align text */
+}
+
+tbody td {
+    vertical-align: middle; /* Center align content vertically */
+}
+
+.alert {
+    margin-bottom: 0; /* Remove bottom margin for alerts */
+}

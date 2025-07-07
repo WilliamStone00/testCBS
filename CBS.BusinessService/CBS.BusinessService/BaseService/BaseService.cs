@@ -223,13 +223,23 @@ namespace BusinessServices
             return true;
         }
         /// <summary>
-        /// Validates that the sum of denominations in a `BulkDeposit` object matches the entered amount.
+        /// Validates whether the declared cash amount matches the actual calculated cash value,
+        /// and ensures teller acknowledgment is provided in case of a discrepancy.
+        ///
+        /// This protects the institution by requiring internal reconciliation or explicit override
+        /// confirmation before proceeding with end-of-day operations.
         /// </summary>
-        /// <param name="currencyNotes">The `CurrencyNotes` object containing denomination counts.</param>
-        /// <param name="amount">The entered amount in the `BulkDeposit` object.</param>
-        /// <returns>A tuple containing a boolean indicating validation success and a discrepancy message if any.</returns>
-        public (bool, string) ValidateDenominations(CurrencyNotes currencyNotes, decimal amount)
+        /// <param name="currencyNotes">Submitted cash note/coin structure.</param>
+        /// <param name="amount">Declared cash amount from the teller.</param>
+        /// <param name="proceedWithDiscrepancy">Whether the teller chose to proceed with a known difference.</param>
+        /// <returns>
+        /// A tuple:
+        /// - bool: Indicates whether validation passed or not.
+        /// - string: An advisory or error message.
+        /// </returns>
+        public (bool, string) ValidateDenominations(CurrencyNotes currencyNotes, decimal amount, bool proceedWithDiscrepancy=false)
         {
+            // 1. Calculate the total value from cash notes/coins
             decimal calculatedAmount =
                 (currencyNotes.note10000 * 10000) +
                 (currencyNotes.note5000 * 5000) +
@@ -248,16 +258,24 @@ namespace BusinessServices
                 (currencyNotes.coin5 * 5) +
                 (currencyNotes.coin1 * 1);
 
+            // 2. If exact match, validation passes
             if (calculatedAmount == amount)
             {
                 return (true, string.Empty);
             }
 
-            decimal discrepancy = calculatedAmount - amount;
-            string discrepancyType = discrepancy > 0 ? "Excess" : "Shortage";
-            string discrepancyMessage = $"Denomination sum is {discrepancyType} by {Math.Abs(discrepancy):N2}. Entered Amount: {amount:N2}, Calculated Amount: {calculatedAmount:N2}.";
+            // 3. If mismatch and teller has NOT acknowledged intent to proceed, reject
+            if (!proceedWithDiscrepancy)
+            {
+                string warning =
+                    "A cash difference has been detected. Please review your entries and reconcile your cash before attempting to close the day. " +
+                    "If you've verified the discrepancy and still wish to proceed, kindly confirm your intent by checking the acknowledgment box.";
+                return (false, warning);
+            }
 
-            return (false, discrepancyMessage);
+            // 4. If mismatch acknowledged, proceed with warning but pass validation
+            return (true,
+                "Cash difference acknowledged. Your confirmation has been recorded. This action may be subject to post-verification.");
         }
 
         public static DataTable ConvertToDataTable<T>(T obj, string tableName)

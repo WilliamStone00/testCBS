@@ -1,4 +1,5 @@
 ﻿using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using System;
 using System.Collections.Generic;
@@ -141,7 +142,20 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation
         {
             PaymentDetails = new HashSet<PaymentDetail>();
         }
+        public class GetPaymentReceiptsDataTableQuery
+        {
+            public DataTableOptions Options { get; set; } = new DataTableOptions();
 
+            public string BranchId { get; set; }
+            public DateTime StartDate { get; set; }
+            public DateTime EndDate { get; set; }
+
+            public string TransactionReference { get; set; }
+            public string MemberReference { get; set; } // ✅ Corrected field
+            public string MemberName { get; set; }
+
+          
+        }
         /// <summary>
         /// Calculates the total amount of all denominations.
         /// </summary>

@@ -12,7 +12,7 @@ using System.Web.UI.WebControls;
 
 namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 {
-    //[CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
     public class SalaryExecutionController : BaseController
     {
         // GET: SalaryExecutionServices
@@ -34,6 +34,12 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             ViewBag.Files=fileUploads.ToList();
             return View(new ExecuteSalaryCarrier());
         }
+        public async Task<ActionResult> PISalary()
+        {
+            var fileUploads = await _salaryUploadServices.GetValues(new GetAllFileUploadSalaryFileActivatedQuery { Both = false, Status = true });
+            ViewBag.Files=fileUploads.ToList();
+            return View(new ExecuteSalaryCarrier());
+        }
         public ActionResult UploadedSalaryFiles()
         {
             return View(new ExecuteSalaryCarrier());
@@ -43,13 +49,30 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var salaryExtractDtos = await _salaryExecutionServices.GetAExecutedSalaryFileByFileUploadId(fileUploadid);
             var fileUpload = await _salaryExecutionServices.GetFileUpload(fileUploadid);
             var dashboardViewModel= _salaryExecutionServices.GetDashboardSummary(salaryExtractDtos.ToList());
-            var stringValues = await _individualProfileServices.GetMemberByCustomerTypeDropDown("all")
-;            return View( new ExecuteSalaryCarrier { SalaryExtractes=salaryExtractDtos.ToList(),FileUpload=fileUpload, DashboardViewModel=dashboardViewModel, StringValues=stringValues.ToList() });
-        }
-      
-       
+            if (fileUpload.FileCategory=="")
+            {
+                var stringValues = await _individualProfileServices.GetMemberByCustomerTypeDropDown()
+; return View(new ExecuteSalaryCarrier { SalaryExtractes=salaryExtractDtos.ToList(), FileUpload=fileUpload, DashboardViewModel=dashboardViewModel, StringValues=stringValues.ToList() });
 
-      
+            }
+            else
+            {
+                var stringValues = await _individualProfileServices.GetMemberByCustomerTypeDropDown("all")
+; return View(new ExecuteSalaryCarrier { SalaryExtractes=salaryExtractDtos.ToList(), FileUpload=fileUpload, DashboardViewModel=dashboardViewModel, StringValues=stringValues.ToList() });
+
+            }
+        }
+
+        public async Task<ActionResult> PISalaryDetail(string fileUploadid)
+        {
+            var salaryExtractDtos = await _salaryExecutionServices.GetAExecutedSalaryFileByFileUploadId(fileUploadid);
+            var fileUpload = await _salaryExecutionServices.GetFileUpload(fileUploadid);
+            var dashboardViewModel = _salaryExecutionServices.GetDashboardSummary(salaryExtractDtos.ToList());
+            var stringValues = await _individualProfileServices.GetMemberByCustomerTypeDropDown()
+; return View(new ExecuteSalaryCarrier { SalaryExtractes=salaryExtractDtos.ToList(), FileUpload=fileUpload, DashboardViewModel=dashboardViewModel, StringValues=stringValues.ToList() });
+        }
+
+
 
         [HttpPost]
         public async Task<ActionResult> UploadAnalysedSalaryFile(ExecuteSalaryCarrier model)

@@ -115,7 +115,9 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                     model.UpdateLoanProductCommand.LoanTermId = model.AddLoanProductCommand.LoanTermId;
                     model.UpdateLoanProductCommand.LoanProductCategoryId = model.AddLoanProductCommand.LoanProductCategoryId;
                     model.UpdateLoanProductCommand.IsProductWithSavingFacilities = model.AddLoanProductCommand.IsProductWithSavingFacilities;
-                }
+                    model.UpdateLoanProductCommand.IsMortgage = model.AddLoanProductCommand.IsMortgage;
+
+    }
                 else if (model.ServiceOption == "duration")
                 {
                     var selectedLoanTerm = await _loanTermServices.GetLoanTerm(model.UpdateLoanProductCommand.LoanTermId); // Fetch LoanTerm details

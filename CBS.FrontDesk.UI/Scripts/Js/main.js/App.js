@@ -680,46 +680,47 @@ function PrintSingleObject(controller, objectID, path, rptType) {
 
 }
 function LoadDT(tableID, order) {
-    // Ensure tableID is valid
     if (!tableID) {
-        console.error('TableID is required');
+        console.error('❌ TableID is required');
         return;
     }
 
-    const tableSelector = '#' + tableID;
+    const tableSelector = `#${tableID}`;
 
-    // Destroy existing DataTable instance if it exists
+    // Destroy existing DataTable
     if ($.fn.DataTable.isDataTable(tableSelector)) {
         $(tableSelector).DataTable().destroy();
-        $(tableSelector).empty(); // Clear the table contents
+        $(tableSelector).empty();
     }
 
-    // Common configuration options
     const config = {
         responsive: false,
-        columnDefs: [{
-            orderable: true,
-            targets: 0
-        }],
+        columnDefs: [{ orderable: true, targets: 0 }],
         oLanguage: {
             sLengthMenu: "_MENU_",
             sSearch: ""
         },
-        aLengthMenu: [[10, 15, 20, 100, 500, 1000, 2000, 5000, 10000],
-        [10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]],
+        aLengthMenu: [
+            [10, 15, 20, 100, 500, 1000, 2000, 5000, 10000],
+            [10, 15, 20, 100, 500, 1000, 2000, 5000, 10000]
+        ],
         bInfo: true,
         pageLength: 4
     };
 
-    // Set order based on parameter
-    config.order = [[order, order === "desc" ? "desc" : "asc"]];
+    // ✅ Handle order logic
+    if (Array.isArray(order) && order.length === 2) {
+        config.order = [order]; // e.g., [ [1, "desc"] ]
+    } else if (typeof order === "number") {
+        config.order = [[order, "asc"]]; // Default to ascending
+    } else {
+        config.order = [[0, "asc"]]; // Fallback
+    }
 
     try {
-        // Initialize DataTable with configuration
-        const dataTable = $(tableSelector).DataTable(config);
-        return dataTable; // Return the instance for further manipulation if needed
+        return $(tableSelector).DataTable(config);
     } catch (error) {
-        console.error('Error initializing DataTable:', error);
+        console.error("❌ Error initializing DataTable:", error);
         return null;
     }
 }

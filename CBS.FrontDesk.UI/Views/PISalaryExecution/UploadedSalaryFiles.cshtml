@@ -1,0 +1,73 @@
+﻿@using Resources
+@{
+    ViewBag.Title = "PI Salary files";
+}
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+        <div class="card">
+            <!-- Page Header -->
+            <div class="card-header text-center bg-light">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-upload-multiple me-2"></i> @GlobalSalaryExecution.UploadedSalaryFiles
+                </h1>
+                <p class="card-text text-muted">
+                    @GlobalSalaryExecution.UploadManageAndReviewSalaryFilesSeamlessly.
+                </p>
+                <hr class="border border-secondary" />
+            </div>
+
+            <!-- Tips Section -->
+            <div class="card">
+                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                    <span><i class="mdi mdi-information-outline me-2"></i> @GlobalSalaryExecution.TipsBestPractices</span>
+                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSalaryUploadTips" aria-expanded="false">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                </h6>
+                <div id="collapseSalaryUploadTips" class="collapse">
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.Download:</strong> @GlobalSalaryExecution.RetrieveUploadedFilesAnytimeForReference.</li>
+                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.Details:</strong> @GlobalSalaryExecution.ViewFileRecordsAndInsights.</li>
+                            <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> <strong>@GlobalShared.Delete:</strong> @GlobalSalaryExecution.RemoveOutdatedOrIncorrectFilesWithCaution.</li>
+                            <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>@GlobalSalaryExecution.VerifyRegularly:</strong> @GlobalSalaryExecution.EnsureUploadedFilesMatchPayrollRecords.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File Uploads & Listing -->
+            <div class="accordion mt-3">
+                <div class="accordion-item">
+                    <h2 class="accordion-header d-flex justify-content-between">
+                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#fileListSection" aria-expanded="true">
+                            <i class="mdi mdi-file-upload me-1"></i> @GlobalSalaryExecution.UploadedFiles
+                        </button>
+                    </h2>
+                    <div id="fileListSection" class="accordion-collapse collapse show">
+                        <div class="accordion-body">
+                            <div class="d-flex justify-content-end mb-3">
+                                <a onclick="LoadDataGen('PISalaryExecution', 'myDataTable', '_FileUploadData', 0, 'datalistingview')" class="btn btn-label-primary btn-sm me-2">
+                                    <i class="mdi mdi-view-list mdi-18px"></i> @GlobalSalaryExecution.ViewFiles
+                                </a>
+                                <a href="/PISalaryExecution" class="btn btn-label-secondary btn-sm">
+                                    <i class="mdi mdi-plus mdi-18px"></i> @GlobalSalaryExecution.UploadNewAnalyzedFile
+                                </a>
+                            </div>
+                            <div id="datalistingview"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            LoadDataGen('PISalaryExecution', 'myDataTable', '_FileUploadData', 0, 'datalistingview');
+        });
+    </script>
+}

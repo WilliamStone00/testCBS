@@ -412,6 +412,7 @@ namespace CBS.BusinessService.Config
         {
             try
             {
+                model.IsProductWithSavingFacilities = model.LoanTypeCategory=="SSF" ? true : false;
 
                 // Make an API call to create an individual profile
                 var response = await _loanConfigApiHelper.PostAsync<ServiceResponse<LoanProduct>>(APICallHelper.CreateLoanProduct, model);
@@ -462,7 +463,8 @@ namespace CBS.BusinessService.Config
                     IsPaidFeeBeforeProcessing = product.IsPaidFeeBeforeProcessing,
                     LoanTerm = product.LoanTerm,
                     LoanMaximumAmount = product.LoanMaximumAmount,
-                    ProductName = product.ProductName,
+                    LoanTypeCategory=product.LoanTypeCategory,
+                    ProductName = product.ProductName, 
                     LoanInterestPeriod = product.LoanInterestPeriod,
                     MinimumInterestRate = product.MinimumInterestRate,
                     MaximumInterestRate = product.MaximumInterestRate,
@@ -562,9 +564,12 @@ namespace CBS.BusinessService.Config
                         LoanProduct.TargetType = model.TargetType;
                         LoanProduct.LoanProductCategoryId = model.LoanProductCategoryId;
                         LoanProduct.LoanTermId = model.LoanTermId;
-                        LoanProduct.IsProductWithSavingFacilities = model.IsProductWithSavingFacilities;
-
-
+                        LoanProduct.LoanTermId = model.LoanTermId;
+                        LoanProduct.IsProductWithSavingFacilities = model.LoanTypeCategory=="SSF" ? true : false;
+                        LoanProduct.LoanTypeCategory = model.LoanTypeCategory;
+                        LoanProduct.IsMortgage = model.IsMortgage;
+                        
+                        //
                     }
                     else if (model.ServiceOption == "mortgage")
                     {

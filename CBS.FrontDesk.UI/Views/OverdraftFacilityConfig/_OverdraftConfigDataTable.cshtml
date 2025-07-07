@@ -1,0 +1,55 @@
+﻿<!-- Table Section -->
+<div class="table-responsive">
+    <table id="overdraftConfigTable" class="table table-striped table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Product</th>
+                <th>Max OD %</th>
+                <th>Fee Rate (%)</th>
+                <th>Status</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be populated dynamically via AJAX -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#overdraftConfigTable').DataTable({
+            ajax: {
+                url: '/api/v1/OverdraftFacilityConfig/datatable',
+                dataSrc: ''
+            },
+            columns: [
+                { data: 'productName' },
+                { data: 'maxOverdraftAsPercentageOfSalary' },
+                { data: 'defaultOverdraftFeeRate' },
+                {
+                    data: 'isActive',
+                    render: x => x
+                        ? '<span class="badge bg-success">Active</span>'
+                        : '<span class="badge bg-secondary">Inactive</span>'
+                },
+                {
+                    data: 'id',
+                    className: 'text-center',
+                    render: function (id) {
+                        return `
+                            <button class="btn btn-sm btn-outline-primary me-1" title="Edit" onclick="openOverdraftConfigModal('${id}')">
+                                <i class="mdi mdi-pencil-outline"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-info me-1" title="Details" onclick="viewOverdraftConfigDetails('${id}')">
+                                <i class="mdi mdi-eye-outline"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-warning" title="Map Config" onclick="mapOverdraftConfig('${id}')">
+                                <i class="mdi mdi-link-variant"></i>
+                            </button>`;
+                    }
+                }
+            ]
+        });
+    });
+</script>

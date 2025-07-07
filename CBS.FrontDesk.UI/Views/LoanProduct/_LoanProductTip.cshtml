@@ -1,0 +1,114 @@
+﻿<div class="card mb-2">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Tips for Configuring Loan Products Effectively</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    <strong>Loan Term:</strong> Use Short, Medium, or Long Term to comply with COBAC risk and provisioning rules.
+                </li>
+                <li>
+                    <i class="mdi mdi-target-variant text-primary me-2"></i>
+                    <strong>Target:</strong> Select the intended customer group like Individual, SME, or Group to support segmentation and reporting.
+                </li>
+                <li>
+                    <i class="mdi mdi-tag-multiple-outline text-info me-2"></i>
+                    <strong>Product Category:</strong> Choose based on loan use (e.g. Consumption, Investment, Working Capital) for proper PCMF classification.
+                </li>
+                <li>
+                    <i class="mdi mdi-sitemap-outline text-success me-2"></i>
+                    <strong>Loan Type Category:</strong> Identify if the product is an Overdraft, Line of Credit, SSF-based, or Main Loan. This affects accounting and liquidity reports.
+                </li>
+                <li>
+                    <i class="mdi mdi-alert-octagon-outline text-danger me-2"></i>
+                    <strong>Exceptional Loan:</strong> This loan type is reserved for special, non-standard credit arrangements that fall outside the structure of classic or revolving loan products. It is typically used in rare or sensitive scenarios where standard loan policies do not apply. Examples include:
+                    <ul class="mt-1">
+                        <li>⚖️ <em>Court-mandated loans</em> issued based on legal judgments or settlements</li>
+                        <li>🔁 <em>Rescheduled or restructured delinquent loans</em> under exceptional board approval</li>
+                        <li>🎗️ <em>Humanitarian or donor-funded relief credit</em> granted after disasters or crises</li>
+                        <li>🤝 <em>One-time internal loans</em> to staff or community members under special authorization</li>
+                    </ul>
+                    These products must be handled with extra care and require <strong>written justification</strong> and <strong>prior validation</strong> from Internal Control, Compliance, or the Board of Directors. They are not intended for public offer or routine lending, and must be clearly documented for audit and regulatory reporting purposes.
+                </li>
+                <li>
+                    <i class="mdi mdi-format-list-bulleted-type text-warning me-2"></i>
+                    <strong>Chart of Account Mapping:</strong> Every loan product must be linked to the correct PCMF Chart of Account. For example, loans of short term must map to short-term loan accounts.
+                </li>
+                <li>
+                    <i class="mdi mdi-timer-sand text-info me-2"></i>
+                    <strong>Respect PCMF Loan Terms:</strong> When mapping to COA, ensure that the selected term (Short, Medium, Long) matches the PCMF account level structure.
+                </li>
+                <li>
+                    <i class="mdi mdi-file-chart-outline text-secondary me-2"></i>
+                    <strong>Reporting Alignment:</strong> Proper setup ensures automatic generation of SESAME and COBAC reports across branches.
+                </li>
+                <li>
+                    <i class="mdi mdi-lock-alert-outline text-danger me-2"></i>
+                    <strong>Don’t Edit Active Products:</strong> Instead, deactivate and clone to avoid inconsistencies in audit trails or regulatory forms.
+                </li>
+                <li>
+                    <i class="mdi mdi-refresh-auto text-info me-2"></i>
+                    <strong>Review Quarterly:</strong> Validate product configurations regularly to align with evolving COBAC standards or business strategy.
+                </li>
+                <li>
+                    <i class="mdi mdi-account-check-outline text-primary me-2"></i>
+                    <strong>Assign Only Authorized Editors:</strong> Product configuration rights should be restricted to approved officers or compliance managers.
+                </li>
+            </ul>
+        </div>
+
+        <div class="card mb-2 border">
+            <div class="card-header fw-bold text-primary">
+                <i class="mdi mdi-timetable me-1"></i> Standard Loan Term Classification (COBAC / PCMF)
+            </div>
+            <div class="card-body p-3">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 20%;">Loan Term</th>
+                                <th style="width: 25%;">Duration (Max)</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Short Term</strong></td>
+                                <td>Up to 12 months</td>
+                                <td>
+                                    Typically used for working capital, treasury needs, or revolving credits. Must be recorded under <strong>short-term loan accounts</strong> in PCMF.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Medium Term</strong></td>
+                                <td>Greater than 12 months and up to 36 months</td>
+                                <td>
+                                    Applied to equipment financing, business expansion, or personal projects. Mapped to <strong>medium-term loan accounts</strong> in PCMF.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Long Term</strong></td>
+                                <td>Above 36 months</td>
+                                <td>
+                                    Used for long-duration projects like housing, agriculture investments, or asset acquisition. Must be posted to <strong>long-term loan accounts</strong>.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-muted mt-3 mb-0">
+                    These classifications are essential for provisioning rules, PCMF account mapping, and generating valid SESAME reports. Always ensure your loan products respect this term structure.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>

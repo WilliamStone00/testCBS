@@ -1,0 +1,64 @@
+﻿<div class="alert alert-warning alert-dismissible fade show d-flex align-items-center shadow-sm mb-2" role="alert">
+    <i class="mdi mdi-alert-decagram-outline fs-4 me-2 text-warning"></i>
+    <div>
+        <strong>Transfer Request Notice:</strong> This action only submits a <u>request</u>. Member account balances will <strong>not</strong> be affected until <strong>validation</strong> is completed by the authorized control unit.
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div class="row mb-2">
+    <div class="col-12">
+        <div class="card border-info shadow-sm">
+            <div class="card-header bg-light text-primary fw-bold d-flex justify-content-between align-items-center">
+                <span>
+                    <i class="mdi mdi-information-outline me-2"></i> Account Transfer Guidelines
+                </span>
+                <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#transferGuidelinesBody">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </div>
+
+            <div id="transferGuidelinesBody" class="collapse">
+                <div class="card-body">
+                    <ul class="mb-3 list-unstyled">
+                        <li class="mb-2">
+                            <i class="mdi mdi-checkbox-marked-circle-outline text-success me-2"></i>
+                            <strong>Transfer Request:</strong> This does <u>not</u> affect member balances until validation is completed.
+                        </li>
+                        <li class="mb-2">
+                            <i class="mdi mdi-account-arrow-right-outline text-info me-2"></i>
+                            <strong>Sender Account:</strong> Select only one source account and ensure the amount is within available balance.
+                        </li>
+                        <li class="mb-2">
+                            <i class="mdi mdi-account-search-outline text-primary me-2"></i>
+                            <strong>Receiver Account:</strong> Use the receiver’s reference number to search and select their valid destination account.
+                        </li>
+                        <li class="mb-2">
+                            <i class="mdi mdi-comment-edit-outline text-secondary me-2"></i>
+                            <strong>Note:</strong> You may provide a reason for the transfer. The system appends accountant name and timestamp automatically.
+                        </li>
+                        <li class="mb-2">
+                            <i class="mdi mdi-currency-usd text-warning me-2"></i>
+                            <strong>Transfer Fees:</strong> If applicable, fees will be captured separately and included in total for audit purposes.
+                        </li>
+                        <li class="mb-2">
+                            <i class="mdi mdi-alert-octagram-outline text-danger me-2"></i>
+                            <strong>Important:</strong> Transactions require supervisor or system validation before impacting any account.
+                        </li>
+                        <li class="mb-2">
+                            <i class="mdi mdi-shield-lock-outline text-success me-2"></i>
+                            <strong>Irreversible:</strong> Once validated, this operation is final. Always double-check sender, receiver, and amounts.
+                        </li>
+                    </ul>
+
+                    <hr />
+
+                    <p class="text-muted mb-0">
+                        <i class="mdi mdi-help-circle-outline me-2"></i>
+                        For mistakes or corrections, contact your audit/control unit before validation is finalized.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

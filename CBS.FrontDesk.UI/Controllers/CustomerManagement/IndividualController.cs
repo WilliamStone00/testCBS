@@ -344,6 +344,17 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
+            else if (model.option == "updatePISCA")
+            {
+                var command = new TagPISCollectionProfileCommand
+                {
+                    CustomerId = model.CustomerList.CustomerId,
+                    TagAsPISCollectionProfile = model.CustomerList.TagAsPISCollectionProfile
+                };
+
+                var data = await _individualProfileServices.TagMemberProfilePIS(command);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+            }
 
             else if (model.option == "upload")
             {///NextofkingsPhoto,NextofkingsSignature,CustomerPhoto,CustomerSignature,CustomerOtherDocument
@@ -416,7 +427,18 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
             var data = await _individualProfileServices.Delete(id);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
-        
+        public async Task<ActionResult> TagMemberPISCA(TagPISCollectionProfileCommand command)
+        {
+            var result = await _individualProfileServices.TagMemberProfilePIS(command);
+            return Json(new
+            {
+                success = result.Result,
+                status = result.MessageStatus,
+                message = Messaging.MessageResult(result)
+            });
+        }
+
+
         public async Task<ActionResult> RemoveAccount(string id)
         {
             var data = await _accountServices.Delete(id);

@@ -269,6 +269,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string ErrorMessage { get; set; }
         public decimal CashAtHand { get; set; }
         public DateTime? AccountingDay { get; set; }
+        public bool ProceedWithDiscrepancy { get; set; }
         public Teller Teller { get; set; }
     }
     public class GetDailyTellerByUserIdQuery

@@ -764,6 +764,19 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
+        public async Task<List<Account>> GetAllCustomerAccountsByCustomerId(string customerID)
+        {
+            try
+            {
+                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<List<Account>>>(string.Format(APICallHelper.GetCustomerAccounts, customerID));
+                return cusResponseObject.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
         private CustomerAccountDto MapCustomersToAccounts(IndividualProfile a, CustomerAccount caAccount, Branch b)
         {
             return new CustomerAccountDto

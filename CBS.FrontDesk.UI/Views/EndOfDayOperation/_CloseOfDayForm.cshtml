@@ -18,23 +18,23 @@
         <div class="row mt-2 gy-4">
             @Html.HiddenFor(model => model.CloseOfDayRequest.Amount)
             @Html.HiddenFor(model => model.CloseOfDayRequest.CashAtHand)
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    <span class="formatted-amount shadow-box float-start">@GlobalEndOfDayOperation.CloseOfDayBalance: @Model.CloseOfDayRequest.Amount.ToString("#,##0.0")</span>
-                </div>
+            @*<div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                <span class="formatted-amount shadow-box float-start">@GlobalEndOfDayOperation.CloseOfDayBalance: @Model.CloseOfDayRequest.Amount.ToString("#,##0.0")</span>
             </div>
-            <div class="col-md-6" hidden="hidden">
-                <div class="form-floating form-floating-outline">
-                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalEndOfDayOperation.TotalAmount: 0.0</span>
-                    <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
-                    <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.CloseOfDayRequest.Amount">
-                </div>
+        </div>*@
+            @*<div class="col-md-6" hidden="hidden">
+            <div class="form-floating form-floating-outline">
+                <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalEndOfDayOperation.TotalAmount: 0.0</span>
+                <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
+                <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.CloseOfDayRequest.Amount">
             </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    <span class="formatted-amount shadow-box" id="lblBalance">@GlobalEndOfDayOperation.Balance: @Model.CloseOfDayRequest.Amount.ToString("#,##0.0")</span>
-                </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                <span class="formatted-amount shadow-box" id="lblBalance">@GlobalEndOfDayOperation.Balance: @Model.CloseOfDayRequest.Amount.ToString("#,##0.0")</span>
             </div>
+        </div>*@
             <input type="hidden" name="Option" id="Option" value="@ViewBag.Option" />
             <div class="col-md-2">
                 <div class="form-floating form-floating-outline">
@@ -157,10 +157,29 @@
                     <label for="formValidationDob">@GlobalEndOfDayOperation.OpenOfDayNote</label>
                 </div>
             </div>
+            <div class="col-md-12 mt-3">
+                <div class="form-floating form-floating-outline">
+                    <div class="form-check form-switch">
+                        @Html.CheckBoxFor(m => m.ProceedWithDiscrepancy, new { @class = "form-check-input", @id = "proceedCheckbox", onchange = "toggleCloseButton()" })
+                        <label class="form-check-label fw-bold text-danger" for="proceedCheckbox">
+                            I acknowledge the difference (deficit or surplus) and wish to proceed with the closure.
+                        </label>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.ProceedWithDiscrepancy, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
 
         </div>
         <div class="mt-4">
-            <button type="submit" id="btnSave" class="btn btn-primary me-2">@GlobalEndOfDayOperation.CloseTheDay</button>
+            
+
+            <button type="submitx" id="btnSavee" class="btn btn-primary me-2">
+                @GlobalEndOfDayOperation.CloseTheDay
+            </button>
+
+            @*<button type="submit" id="btnSave" class="btn btn-primary me-2">@GlobalEndOfDayOperation.CloseTheDay</button>*@
             <button type="button" class="btn btn-secondary me-2" onclick="Reprint(); return false;">
                 <i class="fas fa-print me-1"></i> @GlobalShared.Print
             </button>
@@ -169,3 +188,18 @@
     </fieldset>
 }
 
+@*<script>
+    function toggleCloseButton() {
+        const checkbox = document.getElementById('proceedCheckbox');
+        const btn = document.getElementById('btnSave');
+
+        if (checkbox.checked) {
+            btn.removeAttribute('disabled');
+        } else {
+            btn.setAttribute('disabled', 'disabled');
+        }
+    }
+
+    // Optional: Trigger on load (in case of server re-rendering with checkbox pre-checked)
+    window.onload = toggleCloseButton;
+</script>*@

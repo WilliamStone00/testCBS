@@ -316,13 +316,13 @@
     <value>Total members</value>
   </data>
   <data name="TotalNetSalary" xml:space="preserve">
-    <value>Total net salary</value>
+    <value>Gross Salary</value>
   </data>
   <data name="TotalRepayment" xml:space="preserve">
     <value>Total repayment</value>
   </data>
   <data name="TotalSalary" xml:space="preserve">
-    <value>Total salary</value>
+    <value>Net Salary</value>
   </data>
   <data name="TotalSavings" xml:space="preserve">
     <value>Total savings</value>

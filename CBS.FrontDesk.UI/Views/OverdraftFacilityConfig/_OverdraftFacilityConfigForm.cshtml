@@ -1,0 +1,411 @@
+﻿@model CBS.FrontDesk.Data.Entity.Overdraft.OverdraftFacilityConfig
+@using (Html.BeginForm("AddOrEdit", "OverdraftFacility", FormMethod.Post, new { onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    @Html.ValidationSummary(true, "Please correct the errors and try again.", new { @class = "alert alert-danger" })
+
+<div class="row gy-3">
+
+    <!-- 🏢 Centralisation & Branch Scope -->
+    <div class="col-12">
+        <h6 class="text-primary border-bottom pt-2 pb-1">
+            <i class="mdi mdi-office-building-marker-outline me-1"></i> Centralisation & Branch Scope
+        </h6>
+    </div>
+    <div class="col-md-4">
+        <div class="form-check">
+            @Html.CheckBoxFor(m => m.IsCentralised, new { @class = "form-check-input", id = "IsCentralised" })
+            <label class="form-check-label" for="IsCentralised">Centralised Configuration</label>
+            <small class="text-muted d-block">💡 Enable this if the configuration should apply to all branches.</small>
+        </div>
+    </div>
+    <div class="col-md-8" id="branchSelectorContainer">
+        <div class="form-floating shadow-sm">
+            @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", id = "BranchId" })
+            <label>Select Branch</label>
+            <small class="text-muted d-block">💡 Select the branch this overdraft setting applies to if not centralised.</small>
+        </div>
+    </div>
+
+    <!-- ✅ Eligibility & Product Binding -->
+    <div class="col-12">
+        <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-bank-outline me-1"></i> Eligibility & Product Binding</h6>
+    </div>
+    <div class="col-md-12">
+        <div class="form-floating shadow-sm">
+            @Html.DropDownListFor(m => m.ProductId, new SelectList(ViewBag.Products, "Value", "Text"), "--- Select Product ---", new { @class = "form-control select2" })
+            <label>Select Account Product</label>
+            <small class="text-muted d-block">💡 Choose the main account type this overdraft applies to (e.g., Salary Account).</small>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-floating shadow-sm">
+            @Html.TextBoxFor(m => m.MinimumCreditScoreRequired, new { @class = "form-control", type = "number" })
+            <label>Min Credit Score</label>
+            <small class="text-muted d-block">💡 Minimum credit score a customer must have to be eligible.</small>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-floating shadow-sm">
+            @Html.TextBoxFor(m => m.MaxOverdraftAsPercentageOfSalary, new { @class = "form-control", type = "number" })
+            <label>Max OD % of Salary</label>
+            <small class="text-muted d-block">💡 Internal policy cap on OD limit based on salary (e.g., 75%).</small>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-floating shadow-sm">
+            @Html.TextBoxFor(m => m.MaxPercentageAllowedByState, new { @class = "form-control", type = "number" })
+            <label>Max Allowed % by State</label>
+            <small class="text-muted d-block">💡 Maximum percentage allowed by law or regulator (e.g., 50%).</small>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-check">
+            @Html.CheckBoxFor(m => m.IsSalaryAccountProduct, new { @class = "form-check-input", id = "IsSalaryAccountProduct" })
+            <label class="form-check-label" for="IsSalaryAccountProduct">Salary Account Product</label>
+            <small class="text-muted d-block">💡 Check this if the overdraft is for accounts receiving salaries.</small>
+        </div>
+        <div class="form-check">
+            @Html.CheckBoxFor(m => m.RequireSalaryAccountLink, new { @class = "form-check-input", id = "RequireSalaryAccountLink" })
+            <label class="form-check-label" for="RequireSalaryAccountLink">Require Salary Link</label>
+            <small class="text-muted d-block">💡 Ensure the customer has a linked salary account to qualify.</small>
+        </div>
+    </div>
+
+
+
+    <!-- 💰 Limit & Pricing Rules -->
+    <div class="col-12">
+        <h6 class="text-primary border-bottom pt-2 pb-1">
+            <i class="mdi mdi-cash-multiple me-1"></i> Limit & Pricing
+        </h6>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating shadow-sm">
+            @Html.TextBoxFor(m => m.DefaultOverdraftLimit, new { @class = "form-control" })
+            <label>Default OD Limit</label>
+            <small class="text-muted d-block">💡 This is the base overdraft limit assigned to newly eligible accounts.</small>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating shadow-sm">
+            @Html.TextBoxFor(m => m.DefaultOverdraftFeeRate, new { @class = "form-control" })
+            <label>Fee Rate (%)</label>
+            <small class="text-muted d-block">💡 The interest or fee charged on the utilized overdraft amount.</small>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating shadow-sm">
+            @Html.TextBoxFor(m => m.MaximumUtilizationPercentage, new { @class = "form-control" })
+            <label>Max Utilization %</label>
+            <small class="text-muted d-block">💡 Limit what percentage of the approved OD can be used (e.g., 90%).</small>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-check">
+            @Html.CheckBoxFor(m => m.EnableTieredInterestRate, new { @class = "form-check-input", id = "EnableTieredInterestRate" })
+            <label class="form-check-label" for="EnableTieredInterestRate">Enable Tiered Interest</label>
+            <small class="text-muted d-block">💡 Allows different interest rates depending on how much of the OD is used.</small>
+        </div>
+    </div>
+
+    <div class="col-12" id="interestTierConfig" style="display:none;">
+        <div class="alert alert-info small py-2">
+            <i class="mdi mdi-information-outline me-1"></i>
+            Define interest rate tiers (e.g., 0–50% = 3%, 50–100% = 5%).
+        </div>
+        @*@Html.Partial("_InterestTierConfigPartial", Model.InterestTiers)*@
+    </div>
+
+    <!-- 🔄 Usage Access & Disbursement -->
+    <div class="col-12">
+        <h6 class="text-primary border-bottom pt-2 pb-1">
+            <i class="mdi mdi-transfer me-1"></i> Usage & Disbursement
+        </h6>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating shadow-sm">
+            @Html.TextBoxFor(m => m.ExceedLimitFeeRate, new { @class = "form-control" })
+            <label>Exceed Limit Fee (%)</label>
+            <small class="text-muted d-block">💡 Penalty rate charged when the customer exceeds their overdraft limit.</small>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-check">
+            @Html.CheckBoxFor(m => m.AutoDisburseToLinkedAccount, new { @class = "form-check-input", id = "AutoDisburseToLinkedAccount" })
+            <label class="form-check-label" for="AutoDisburseToLinkedAccount">Auto Disburse</label>
+            <small class="text-muted d-block">💡 Automatically disburse overdraft funds to the customer’s linked account.</small>
+        </div>
+
+        <div class="form-check">
+            @Html.CheckBoxFor(m => m.AllowPartialDraw, new { @class = "form-check-input", id = "AllowPartialDraw" })
+            <label class="form-check-label" for="AllowPartialDraw">Allow Partial Draw</label>
+            <small class="text-muted d-block">💡 Permit customers to draw only part of the approved overdraft limit.</small>
+        </div>
+
+        <div class="form-check">
+            @Html.CheckBoxFor(m => m.AllowExceedingLimitWithFee, new { @class = "form-check-input", id = "AllowExceedingLimitWithFee" })
+            <label class="form-check-label" for="AllowExceedingLimitWithFee">Allow Exceeding Limit</label>
+            <small class="text-muted d-block">💡 Allow customers to go beyond their limit for a fee, useful in emergencies.</small>
+        </div>
+
+        <div class="form-check">
+            @Html.CheckBoxFor(m => m.StopTransactionsWhenOverLimit, new { @class = "form-check-input", id = "StopTransactionsWhenOverLimit" })
+            <label class="form-check-label" for="StopTransactionsWhenOverLimit">Block When Over Limit</label>
+            <small class="text-muted d-block">💡 If enabled, blocks all transactions once the overdraft limit is exceeded.</small>
+        </div>
+    </div>
+
+    <!-- 📆 Tenure & Expiry -->
+    <!-- 📆 Tenure & Expiry -->
+    <div class="col-12">
+        <h6 class="text-primary border-bottom pt-2 pb-1">
+            <i class="mdi mdi-calendar me-1"></i> Tenure & Expiry
+        </h6>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating shadow-sm">
+            @Html.TextBoxFor(m => m.MaximumOverdraftTenureInDays, new { @class = "form-control", type = "number" })
+            <label>Max Tenure (Days)</label>
+            <small class="text-muted d-block">💡 Total number of days the overdraft remains valid before it expires.</small>
+        </div>
+    </div>
+
+    @*<div class="col-md-4">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.ExpiryDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                <label>Expiry Date</label>
+                <small class="text-muted d-block">💡 Fixed expiration date if this configuration uses a fixed term.</small>
+            </div>
+        </div>*@
+
+    <div class="col-md-6">
+        <div class="form-check">
+            @Html.CheckBoxFor(m => m.HasExpiry, new { @class = "form-check-input", id = "HasExpiry" })
+            <label class="form-check-label" for="HasExpiry">Has Expiry</label>
+            <small class="text-muted d-block">💡 Check if this overdraft should automatically expire after a fixed term.</small>
+        </div>
+
+        <div class="form-check">
+            @Html.CheckBoxFor(m => m.IsRenewable, new { @class = "form-check-input", id = "IsRenewable" })
+            <label class="form-check-label" for="IsRenewable">Renewable</label>
+            <small class="text-muted d-block">💡 If checked, the overdraft can be renewed after it expires.</small>
+        </div>
+    </div>
+
+    <!-- 💳 Repayment & Recovery -->
+    <div class="col-12">
+        <h6 class="text-primary border-bottom pt-2 pb-1">
+            <i class="mdi mdi-cash-refund me-1"></i> Repayment & Recovery
+        </h6>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-check">
+            @Html.CheckBoxFor(m => m.AutoRecoverOnDeposit, new { @class = "form-check-input", id = "AutoRecoverOnDeposit" })
+            <label class="form-check-label" for="AutoRecoverOnDeposit">Auto Recover on Deposit</label>
+            <small class="text-muted d-block">💡 Automatically deduct overdraft used from any future deposits (e.g. salary, transfers).</small>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-check">
+            @Html.CheckBoxFor(m => m.AllowManualRepayment, new { @class = "form-check-input", id = "AllowManualRepayment" })
+            <label class="form-check-label" for="AllowManualRepayment">Allow Manual Repayment</label>
+            <small class="text-muted d-block">💡 Allow customers to repay overdraft manually through teller or mobile app.</small>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-floating shadow-sm">
+            @Html.TextBoxFor(m => m.GracePeriodInDays, new { @class = "form-control", type = "number" })
+            <label>Grace Period (Days)</label>
+            <small class="text-muted d-block">💡 Number of days after usage before recovery or penalties begin.</small>
+        </div>
+    </div>
+    <!-- 🔁 Auto Replenishment -->
+    <div class="col-12">
+        <h6 class="text-primary border-bottom pt-2 pb-1">
+            <i class="mdi mdi-autorenew me-1"></i> Auto Replenishment
+        </h6>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-floating shadow-sm">
+            @Html.TextBoxFor(m => m.AutoReplenishmentFrequencyInDays, new { @class = "form-control", type = "number" })
+            <label>Replenishment Frequency (Days)</label>
+            <small class="text-muted d-block">💡 Set how often the available overdraft limit is refreshed (e.g. every 30 days).</small>
+        </div>
+    </div>
+
+    @*<div class="col-md-3">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.DaysBeforeUsageTriggersInterest, new { @class = "form-control", type = "number" })
+                <label>Trigger Interest After (Days)</label>
+                <small class="text-muted d-block">💡 Defines how long a customer can use the overdraft before interest starts.</small>
+            </div>
+        </div>*@
+
+
+    <!-- ⬆️ Top-Up Management -->
+    <!-- ⬆️ Top-Up Request & Fees -->
+    <div class="col-12">
+        <h6 class="text-primary border-bottom pt-2 pb-1">
+            <i class="mdi mdi-cash-plus me-1"></i> Top-Up Request & Fees
+        </h6>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-check">
+            @Html.CheckBoxFor(m => m.AllowTopUpRequest, new { @class = "form-check-input", id = "AllowTopUpRequest" })
+            <label class="form-check-label" for="AllowTopUpRequest">Allow Top-Up Request</label>
+            <small class="text-muted d-block">💡 Enable this to allow customers to request an increase in their overdraft limit.</small>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-floating shadow-sm">
+            @Html.TextBoxFor(m => m.MaxTopUpLimit, new { @class = "form-control" })
+            <label>Max Top-Up Limit</label>
+            <small class="text-muted d-block">💡 Specify the highest amount that can be requested as a top-up.</small>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-floating shadow-sm">
+            @Html.TextBoxFor(m => m.TopUpFeePercentage, new { @class = "form-control" })
+            <label>Top-Up Fee (%)</label>
+            <small class="text-muted d-block">💡 Fee charged on the approved top-up amount (e.g. 2%).</small>
+        </div>
+    </div>
+
+    <!-- 🔔 Notifications & Alerts -->
+    <div class="col-12">
+        <h6 class="text-primary border-bottom pt-2 pb-1">
+            <i class="mdi mdi-bell-ring-outline me-1"></i> Notifications & Alerts
+        </h6>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-check">
+            @Html.CheckBoxFor(m => m.NotifyCustomerOnUsage, new { @class = "form-check-input", id = "NotifyCustomerOnUsage" })
+            <label class="form-check-label" for="NotifyCustomerOnUsage">Notify on Usage</label>
+            <small class="text-muted d-block">💡 Send SMS/email alerts when the customer begins using overdraft or passes a threshold.</small>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating shadow-sm">
+            @Html.TextBoxFor(m => m.NotificationThresholdPercentage, new { @class = "form-control", type = "number" })
+            <label>Threshold (%)</label>
+            <small class="text-muted d-block">💡 Set the usage percentage that triggers a notification (e.g., 80%).</small>
+        </div>
+    </div>
+
+    <!-- 💰 Income-Based Limit Banding -->
+    <!-- 💰 Income-Based Limits -->
+    <div class="col-12">
+        <h6 class="text-primary border-bottom pt-2 pb-1">
+            <i class="mdi mdi-account-cash-outline me-1"></i> Income-Based Limits
+        </h6>
+    </div>
+
+    <div class="col-md-12">
+        <div class="alert alert-secondary small">
+            <i class="mdi mdi-information-outline me-1"></i>
+            This section allows you to define overdraft limits based on income or salary bands. Useful for scaling overdraft facilities proportionally to customer earnings.
+        </div>
+
+        @*@Html.Partial("_IncomeBasedLimitBandPartial", Model.IncomeBasedLimitBands)*@
+        <small class="text-muted d-block mt-1">💡 Use this section to define OD tiers for customers with different salary ranges (e.g. 0–100k = 20k OD, 100k+ = 50k OD).</small>
+    </div>
+
+    <!-- ⚠️ Penalty Settings -->
+    <div class="col-12">
+        <h6 class="text-primary border-bottom pt-2 pb-1">
+            <i class="mdi mdi-alert-circle-outline me-1"></i> Penalties & Sanctions
+        </h6>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-check">
+            @Html.CheckBoxFor(m => m.ApplyPenaltyToThisConfig, new { @class = "form-check-input", id = "ApplyPenaltyToThisConfig" })
+            <label class="form-check-label" for="ApplyPenaltyToThisConfig">Apply Penalty</label>
+            <small class="text-muted d-block">💡 Enable this if penalty rules (like late fees or breach charges) should apply to this overdraft.</small>
+        </div>
+    </div>
+
+    <div class="col-md-12" id="penaltyDropdownContainer">
+        <div class="form-floating shadow-sm">
+            @Html.ListBoxFor(m => m.PenaltyId, new MultiSelectList(ViewBag.Penalties, "Id", "Name"), new { @class = "form-control select2", multiple = "multiple" })
+            <label>Select Applicable Penalties</label>
+            <small class="text-muted d-block">💡 Choose one or more penalties that apply when the member violates overdraft terms (e.g., repayment delay).</small>
+        </div>
+    </div>
+
+
+
+</div>
+
+    <!-- 🔘 Actions -->
+    <div class="col-12 text-end mt-3">
+        <button type="submit" class="btn btn-primary shadow-sm px-4">
+            <i class="fas fa-save me-1"></i> Save Configuration
+        </button>
+        <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">
+            Reset
+        </button>
+    </div>
+}
+
+<script>
+    $(function () {
+        $('#EnableTieredInterestRate').on('change', function () {
+            $('#interestTierConfig').toggle(this.checked);
+        }).trigger('change');
+    });
+</script>
+<script>
+    function toggleBranchSelector() {
+        const isCentralised = $('#IsCentralised').is(':checked');
+        const $branchContainer = $('#branchSelectorContainer');
+
+        if (isCentralised) {
+            $branchContainer.hide();
+            $('#BranchId').val('').trigger('change'); // Clear value and update select2
+        } else {
+            $branchContainer.show();
+        }
+    }
+    $(function () {
+        function togglePenaltyDropdown() {
+            const $penaltyContainer = $('#penaltyDropdownContainer');
+            const $penaltySelect = $('#PenaltyId');
+
+            if ($('#ApplyPenaltyToThisConfig').is(':checked')) {
+                $penaltyContainer.show();
+            } else {
+                // Clear selection
+                $penaltySelect.val(null).trigger('change'); // for select2
+                $penaltyContainer.hide();
+            }
+        }
+
+        // Initial load
+        togglePenaltyDropdown();
+
+        // On change
+        $('#ApplyPenaltyToThisConfig').on('change', togglePenaltyDropdown);
+    });
+    // On page load
+    $(document).ready(function () {
+        toggleBranchSelector();
+        $('#IsCentralised').on('change', toggleBranchSelector);
+    });
+</script>
