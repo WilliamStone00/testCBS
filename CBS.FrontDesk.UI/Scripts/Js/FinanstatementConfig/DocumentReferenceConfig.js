@@ -159,7 +159,7 @@ function collecteFormData(form) {
             ContainsException: formData.get('FinancialDocumentReference.CorrespondingAccount.ContainsException') === 'true',
             GrossAccounts: collectAccounts('grossAccounts'),
             ProvisionAccounts: collectAccounts('provisionAccounts'),
-            ContainsConditionAccounts: collectAccounts('ContainsConditionAccounts'),
+            ContainsConditionAccounts: collectAccounts('ConditionAccounts'),
             GrossExceptionAccounts: collectAccounts('grossExceptionAccounts'),
             ProvisionExceptionAccounts: collectAccounts('provisionExceptionAccounts')
 
@@ -283,7 +283,7 @@ function collectAccounts(containerId) {
             });
         }
     });
-
+    console.log("Logging Collection:" + containerId + " Values" + accounts);
     return accounts;
 }
 
@@ -310,9 +310,9 @@ function addAccount(type) {
 
     // Create the HTML for the new account item
     accountItem.innerHTML = `
-    <div class="row">
+    <div class="account-item gy-1">
         <!-- Account Number Field - 40% width -->
-       <div class="col-md-5 col-12">
+       <div class="col-md-5 col-12 ">
             <div class="form-floating form-floating-outline">
                 <input type="text" 
                     name="FinancialDocumentReference.CorrespondingAccount.${type.charAt(0).toUpperCase() + type.slice(1)}Accounts[${index}].AccountNumber"
@@ -340,9 +340,9 @@ function addAccount(type) {
         </div>
         
         <!-- Remove Button - 20% width -->
-       <div class="col-md-2 col-12 d-flex align-items-end">
+       <div class="col-md-1 col-12 d-flex align-items-end">
             <button type="button" 
-                class="btn btn-danger btn-sm w-100" 
+                class="btn btn-danger btn-sm w-20" 
                 onclick="removeAccount(this)"
                 title="Remove Account">
                 <i class="fas fa-times"></i>
@@ -756,26 +756,25 @@ function editDocument(id) {
         accounts.forEach((account, index) => {
             $container.className = 'account-item  border rounded';
             $container.append(`
-    <div class="row">
+   <div class="account-item gy-1">
         <!-- Account Number Field - 40% width -->
-        <div class="col-md-5 col-12">
+       <div class="col-md-5 col-12 ">
             <div class="form-floating form-floating-outline">
-                <input type="text" 
-                    name="FinancialDocumentReference.CorrespondingAccount.${accountType}[${index}].AccountNumber"
-                    class="form-control" 
-                    value="${account.AccountNumber || ''}" 
-                    placeholder="Enter Account Number"
-                    required />
+                <input type="text"
+                  name="FinancialDocumentReference.CorrespondingAccount.${accountType}[${index}].AccountNumber"
+                    class="form-control"  
+                   value="${account.AccountNumber}" placeholder="Account Number" required />
+
                 <label>Account Number</label>
+
             </div>
         </div>
-        
         <!-- Document Booking Field - 40% width -->
         <div class="col-md-5 col-12">
             <div class="form-floating form-floating-outline">
-                <select class="form-control select2"
-                    name="FinancialDocumentReference.CorrespondingAccount.${accountType}[${index}].DocumentBooking"
-                    required>
+                <select class="form-control select2 col-md-5 col-12"
+                   name="FinancialDocumentReference.CorrespondingAccount.${accountType}[${index}].DocumentBooking"
+                   search=true  required>
                     <option value="">--- Select Document Booking ---</option>
                     <option value="DEBIT" ${account.DocumentBooking === 'DEBIT' ? 'selected' : ''}>DEBIT</option>
                     <option value="CREDIT" ${account.DocumentBooking === 'CREDIT' ? 'selected' : ''}>CREDIT</option>
@@ -786,10 +785,9 @@ function editDocument(id) {
             </div>
         </div>
         
-        <!-- Remove Button - 20% width -->
-        <div class="col-md-2 col-12 d-flex align-items-end">
+    <div class="col-md-1 col-12 d-flex align-items-end">
             <button type="button" 
-                class="btn btn-danger btn-sm remove-account w-100"
+                class="btn btn-danger remove-account w-20"
                 title="Remove Account">
                <i class="fas fa-times"></i>
             </button>
@@ -888,41 +886,3 @@ function loadAccounts(containerId, accounts, namePrefix) {
     console.log(`✅ Successfully rendered ${accounts.length} account(s) in '${containerId}'`);
 }
 
-
-function loadAccounts000(containerId, accounts, accountType) {
-    const container = document.getElementById(containerId);
-    if (!container || !accounts) return;
-
-    container.innerHTML = '';
-
-    accounts.forEach((account, index) => {
-        const accountItem = document.createElement('div');
-        accountItem.className = 'account-item mb-3 p-3 border rounded';
-
-        accountItem.innerHTML = `
-            <button type="button" class="btn btn-danger btn-sm float-end" onclick="removeAccount(this)">×</button>
-            <div class="row gy-3">
-                <div class="col-md-6">
-                    <div class="form-floating form-floating-outline">
-                        <input type="text" name="FinancialDocumentReference.CorrespondingAccount.${accountType}[${index}].AccountNumber"
-                            class="form-control" value="${account.AccountNumber}" placeholder="Account Number" required />
-                        <label>Account Number</label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating form-floating-outline">
-                        <select name="FinancialDocumentReference.CorrespondingAccount.${accountType}[${index}].DocumentBooking"
-                            class="form-control" required>
-                            <option value="">--- Select Booking Direction ---</option>
-                            <option value="Debit" ${account.DocumentBooking === 'Debit' ? 'selected' : ''}>Debit</option>
-                            <option value="Credit" ${account.DocumentBooking === 'Credit' ? 'selected' : ''}>Credit</option>
-                        </select>
-                        <label>Document Booking</label>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        container.appendChild(accountItem);
-    });
-}

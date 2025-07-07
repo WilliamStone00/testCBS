@@ -326,8 +326,10 @@ namespace CBS.FrontDesk.UI.Controllers
 
         public ActionResult AccountingPDFReport(string FileType = "")
         {
+            var Message = (string)this.HttpContext.Session["errorMessage"];
             try
             {
+   
                 var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
                 //string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
                 string fileType = System.Web.HttpContext.Current.Session["fileType"].ToString();
@@ -391,10 +393,6 @@ namespace CBS.FrontDesk.UI.Controllers
                         rd.SetDataSource(listData);
 
                     }
-
-
-
-
                     string SavedFileName = string.Format($"{rptType}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
                     //Export the report to a byte array
                     Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
@@ -414,15 +412,10 @@ namespace CBS.FrontDesk.UI.Controllers
                     CleanReport(rd);
 
                 }
-
-
-
             }
             catch (Exception ex)
             {
-                // Log the exception
-                // Handle specific exceptions if needed
-                Response.Write("<H2>An error occurred while generating the report</H2>");
+                return Json(Message, JsonRequestBehavior.AllowGet);
             }
 
             return View();

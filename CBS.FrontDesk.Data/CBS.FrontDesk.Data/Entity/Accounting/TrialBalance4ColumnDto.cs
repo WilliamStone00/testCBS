@@ -164,7 +164,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     
         public List<BalanceSheetAccount> Accounts { get; set; }
         public List<TrialBalanceDt> TrialBalanceDt { get; set; }
-
+        public string Message { get; set; }
 
 
         public List<BalanceSheetInfo> ConvertToBalanceSheetInfo(string PrintersName, string Date, string categoryA, string categoryB)

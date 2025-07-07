@@ -516,6 +516,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppFiles\Reporting\Accounting\PandLReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PandLReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Loan\GeneralStatistics\GeneralStatisticsMAINRPT.cs">
       <DependentUpon>GeneralStatisticsMAINRPT.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -2233,12 +2239,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LiaisonLedger.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="AppFiles\Reporting\Accounting\PandLReport.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PandLReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\PrintedManualJE.cs">
@@ -6930,10 +6930,6 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalAccountUpload.Designer.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="AppFiles\Reporting\Accounting\PandLReport.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>PandLReport.cs</LastGenOutput>
-    </EmbeddedResource>
     <Content Include="App_GlobalResources\CashDesk\OtherCashTransactions.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>OtherCashTransactions.Designer.cs</LastGenOutput>
@@ -7451,6 +7447,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanTerm.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\PandLReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PandLReport.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Loan\GeneralStatistics\GeneralStatisticsMAINRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>GeneralStatisticsMAINRPT.cs</LastGenOutput>

@@ -31,7 +31,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     }
     public class AccountingEntriesReport : ReportHeader
     {
-
+        public string Message { get; set; }
         public List<AccountingEntryDto> AccountingEntries { get; set; }
 
         public List<JournalEntryDto>  BuildJournalEntry(AccountingEntriesReport Entries,string username)
