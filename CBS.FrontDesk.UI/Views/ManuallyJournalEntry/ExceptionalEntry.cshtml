@@ -29,11 +29,19 @@
                                             @Html.ValidationMessageFor(m => m.EntryTempData.Reference, "", new { @class = "text-danger" })
                                         </h5>
                                     </div>
+
                                     <div class="row card-body">
                                         <div class="row mt-2 gy-4">
                                             <div class="col-md-12">
                                                 <div class="form-floating form-floating-outline">
-                                                    @Html.DropDownListFor(m => m.EntryTempData.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---"+ @GlobalManuallyJournalEntry.SelectAccount+"---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
+                                                    @Html.DropDownListFor(m => m.EntryTempData.BranchId, new SelectList(ViewBag.ListOfEligibleBranch == null ? "" : ViewBag.ListOfEligibleBranch, "Text", "Value"), "---" + @GlobalManuallyJournalEntry.SelectEligibleBranches + "---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
+                                                    @Html.ValidationMessageFor(m => m.EntryTempData.BranchId, "", new { @class = "text-danger" })
+                                                    <label>@GlobalManuallyJournalEntry.BranchId</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.DropDownListFor(m => m.EntryTempData.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---" + @GlobalManuallyJournalEntry.SelectAccount + "---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
                                                     @Html.ValidationMessageFor(m => m.EntryTempData.AccountId, "", new { @class = "text-danger" })
                                                     <label>@GlobalManuallyJournalEntry.AccountName</label>
                                                 </div>
@@ -56,7 +64,7 @@
                                             <input type="hidden" name="EntryTempData.AccountCategoryId" id="EntryTempData_AccountCategoryId" value="" />
                                             <div class="col-md-12">
                                                 <div class="form-floating form-floating-outline">
-                                                    @Html.DropDownListFor(m => m.EntryTempData.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---"+ @GlobalManuallyJournalEntry.SelectDirection+"---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
+                                                    @Html.DropDownListFor(m => m.EntryTempData.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---" + @GlobalManuallyJournalEntry.SelectDirection + "---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
                                                     @Html.ValidationMessageFor(m => m.EntryTempData.BookingDirection, "", new { @class = "text-danger" })
                                                     <label>@GlobalManuallyJournalEntry.BookingDirection</label>
                                                 </div>

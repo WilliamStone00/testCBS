@@ -888,7 +888,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPositions";
         public static string DownloadChartOfAccountManagementPositionUrl = "/api/v1/ChartOfAccountManagementPositions/DownloadQuery";
         public static string CreateChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition";
-        public static string GetJournalEntryMFIAccountQueryUrl = "/api/v1/ChartOfAccountManagementPosition/GetJournalEntryMFIChartOfAccountQuery/{0}";
+        public static string GetJournalEntryMFIAccountQueryUrl = "/api/v1/Account/GetJournalEntryMFIChartOfAccountQuery/{0}";
         //DocumentType
         public static string Create_DocumentType = "/api/v1/DocumentType";
         public static string Get_Update_Delete_DocumentType = "/api/v1/DocumentType/{0}";
