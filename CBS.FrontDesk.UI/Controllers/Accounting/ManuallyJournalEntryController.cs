@@ -29,6 +29,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.DynamicData;
 using System.Web.Mvc;
 using System.Web.Services.Description;
 using System.Web.WebPages.Html;
@@ -234,6 +235,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
             var CreditAccounts = BuildMenuViewBag(listAccounts);
             ViewBag.Accounts = CreditAccounts;
+            ViewBag.ListOfEligibleBranch = BuildBranchViewBag((await _branchService.GetBranches()).ToList());
             ViewBag.BookingDirections = await GetBookingDirections();
 
         }
@@ -289,8 +291,18 @@ namespace CBS.FrontDesk.UI.Controllers
         [HttpGet]
         public async Task<ActionResult> GetBranchAccount(string BranchId)
         {
-            var ListOfData = await _AccountServices.GetJournalEntryMFIAccountQuery(BranchId);
-            return Json(BuildDropDown(ListOfData), JsonRequestBehavior.AllowGet);
+            if (_AccountServices.IsHeadOffice())
+            {
+                var ListOfData = await _AccountServices.GetAllAccounting();
+                ListOfData = ListOfData.Where(x=>x.AccountOwnerId== BranchId).ToList();
+                return Json(BuildDropDown(ListOfData), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var ListOfData = await _AccountServices.GetJournalEntryMFIAccountQuery(BranchId);
+                return Json(BuildDropDown(ListOfData), JsonRequestBehavior.AllowGet);
+            }
+             
         }
         private List<StringValues> BuildDropDown(List<Data.Account> ListOfData)
         {
