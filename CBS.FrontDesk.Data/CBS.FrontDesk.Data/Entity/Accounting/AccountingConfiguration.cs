@@ -69,6 +69,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string ManualOperationCode { get; set; }
         public string ManualOperationName { get; set; }
         public string ServiceOption { get; set; }
+        public string BankName { get; set; }
         public string Action { get; set; }
         public string KEY { get; set; } = "KEY";
     }

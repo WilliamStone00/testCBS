@@ -9,12 +9,12 @@
     <Shape ID="DesignTable:TrialBalance6Column" ZOrder="9" X="70" Y="88" Height="239" Width="188" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="627" />
     <Shape ID="DesignTable:TrialBalance8Column" ZOrder="8" X="360" Y="88" Height="239" Width="188" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="766" />
     <Shape ID="DesignTable:GeneralLedger" ZOrder="6" X="960" Y="106" Height="239" Width="157" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="672" />
-    <Shape ID="DesignTable:JournalEntries" ZOrder="7" X="682" Y="118" Height="372" Width="157" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="628" SplitterPosition="368" />
+    <Shape ID="DesignTable:JournalEntries" ZOrder="7" X="682" Y="118" Height="714" Width="157" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="628" SplitterPosition="710" />
     <Shape ID="DesignTable:AccountEntryReciept" ZOrder="4" X="1125" Y="100" Height="239" Width="187" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="235" />
     <Shape ID="DesignTable:BalanceSheet" ZOrder="2" X="109" Y="418" Height="581" Width="157" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="577" />
     <Shape ID="DesignTable:GeneralLedgerStatement" ZOrder="5" X="1577" Y="118" Height="239" Width="210" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="653" />
     <Shape ID="DesignTable:ManaulJour" ZOrder="3" X="1367" Y="47" Height="239" Width="157" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="615" />
-    <Shape ID="DesignTable:IncomeAndExpense" ZOrder="1" X="497" Y="356" Height="428" Width="180" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="424" />
+    <Shape ID="DesignTable:IncomeAndExpense" ZOrder="1" X="341" Y="355" Height="486" Width="184" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="482" />
   </Shapes>
   <Connectors />
 </DiagramLayout>

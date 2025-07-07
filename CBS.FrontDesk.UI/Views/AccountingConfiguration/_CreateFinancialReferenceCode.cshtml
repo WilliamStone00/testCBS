@@ -1,9 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
 
 
-<div class="card-header">
-    <h3> Financial DocumentReference Configuration </h3>
-</div>
+ 
 
 @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateForFS(this);" }))
 {
@@ -241,18 +239,26 @@
 
     <!-- Submit Buttons -->
 <div class="mt-4 d-flex justify-content-end gap-2">
-    @if (Model.FinancialDocumentReference?.Id == null)
-    {
-        <button type="submit" class="btn btn-primary bg-primary">Save</button>
-        <input type="hidden" name="Action" value="insert" id="Action" />
-    }
-    else
-    {
-        <button type="submit" class="btn btn-primary bg-primary">Update</button>
-        @Html.HiddenFor(m => m.FinancialDocumentReference.Id)
-        <input type="hidden" name="Action" value="update" id="Action" />
-    }
+
+    @*@if (Model.FinancialDocumentReference.Id == null)
+    {*@
+        <div id="addReference">
+            <button type="submit" class="btn btn-primary bg-primary">Save</button>
+            @Html.HiddenFor(m => m.FinancialDocumentReference.Id)
+            <input type="hidden" name="Action" value="insert" id="Action" />
+        </div>
+      
+        <div id="updateReference">
+            <button type="submit" class="btn btn-primary bg-primary">Update</button>
+            @Html.HiddenFor(m => m.FinancialDocumentReference.Id)
+            <input type="hidden" name="Action" value="update" id="Action" />
+        </div>
+
+    @*}*@
+
+
 
     <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button>
 </div>
+  
 }

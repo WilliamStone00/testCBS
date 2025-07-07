@@ -152,10 +152,10 @@ body {
 }
 
 .account-item {
-    display: flex;
-    align-items: flex-end;
     gap: 10px;
-    margin-bottom: 1rem;
+    margin-bottom: 20px;
+    display: flex;
+  
 }
 
     .account-item .form-group {
@@ -165,9 +165,9 @@ body {
 
     .account-item input,
     .account-item select {
-        padding: 8px;
+        padding: 5px;
         font-size: 14px;
-        width: 200px;
+        width: 520px;
     }
 
     .account-item button {
@@ -236,4 +236,4 @@ body {
     }
 }
 
-</style >
+

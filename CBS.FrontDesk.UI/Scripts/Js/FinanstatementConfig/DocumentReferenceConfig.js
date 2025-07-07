@@ -1,4 +1,6 @@
 ﻿$(document).ready(function () {
+    showInsertMode();
+    $('#updateReference').hide();
     $(document).on('change', '#FinancialDocumentReference_DocumentId', function () {
         var selectedValue = $(this).val();
         var IdModel = "";
@@ -11,18 +13,18 @@
             success: function (data) {
                 // Clear existing options in the OperationEventAttributeId combo
                 $('#FinancialDocumentReference_DocumentTypeId').empty();
-                    // Add new options based on the fetched data
-                    $.each(data, function (index, item) {
-                        $('#FinancialDocumentReference_DocumentTypeId').append($('<option>').text(item.Value).attr('value', item.Text));
-                    });
-                   
+                // Add new options based on the fetched data
+                $.each(data, function (index, item) {
+                    $('#FinancialDocumentReference_DocumentTypeId').append($('<option>').text(item.Value).attr('value', item.Text));
+                });
+
             },
             error: function (xhr, status, error) {
                 console.error(xhr.responseText);
             }
         });
-});
-/*    LoadDataForEventRule();*/
+    });
+    /*    LoadDataForEventRule();*/
 });
 
 /**
@@ -41,23 +43,26 @@ function showTab(tabName, event) {
     // Show the selected tab content
     document.getElementById(tabName + '-tab').classList.add('active');
 
-    // Mark the clicked button as active
+    // Mark the clicked button as active 
     event.target.classList.add('active');
-    if (tabName=="view") {
+    if (tabName == "view") {
         loadDocuments();
+    } else {
+      
+        resetForm();
     }
 }
-    /**
-    * GLOBAL DATA STORAGE
-    * Array to hold all financial documents in memory
-    */
-    let documents = [];
+/**
+* GLOBAL DATA STORAGE
+* Array to hold all financial documents in memory
+*/
+let documents = [];
 
-    /**
-     * FORM SUBMISSION HANDLER
-     * Processes form submission via AJAX
-     * @param {HTMLElement} form - The form element being submitted
-    */
+/**
+ * FORM SUBMISSION HANDLER
+ * Processes form submission via AJAX
+ * @param {HTMLElement} form - The form element being submitted
+*/
 function AjaxPostAndUpdateForFS(form) {
     console.log("Form Action:", form.action);
     console.log("Form Method:", form.method);
@@ -154,7 +159,7 @@ function collecteFormData(form) {
             ContainsException: formData.get('FinancialDocumentReference.CorrespondingAccount.ContainsException') === 'true',
             GrossAccounts: collectAccounts('grossAccounts'),
             ProvisionAccounts: collectAccounts('provisionAccounts'),
-            ContainsConditionAccounts: collectAccounts('ContainsConditionAccounts'),
+            ContainsConditionAccounts: collectAccounts('ConditionAccounts'),
             GrossExceptionAccounts: collectAccounts('grossExceptionAccounts'),
             ProvisionExceptionAccounts: collectAccounts('provisionExceptionAccounts')
 
@@ -176,15 +181,15 @@ function collecteFormData(form) {
 }
 
 
-    /**
-     * MESSAGE DISPLAY SYSTEM
-     * Shows success or error messages to the user with auto-removal
-     * @param {string} message - Text to display to user
-    * @param {string} type - 'success' or 'error' for styling
-    */
-    function showMessage(message, type) {
-        // Remove any existing messages first
-        document.querySelectorAll('.alert').forEach(msg => msg.remove());
+/**
+ * MESSAGE DISPLAY SYSTEM
+ * Shows success or error messages to the user with auto-removal
+ * @param {string} message - Text to display to user
+* @param {string} type - 'success' or 'error' for styling
+*/
+function showMessage(message, type) {
+    // Remove any existing messages first
+    document.querySelectorAll('.alert').forEach(msg => msg.remove());
 
     // Create new message element
     const messageDiv = document.createElement('div');
@@ -195,186 +200,244 @@ function collecteFormData(form) {
     const cardBody = document.querySelector('.card-body');
     cardBody.insertBefore(messageDiv, cardBody.firstChild);
 
-        // Auto-remove message after 5 seconds
-        setTimeout(() => messageDiv.remove(), 5000);
-    }
+    // Auto-remove message after 5 seconds
+    setTimeout(() => messageDiv.remove(), 5000);
+}
 
-    /**
-     * UNIQUE ID GENERATOR
-     * Creates unique document IDs using timestamp and random string  FinancialDocumentReference_DocumentId
-     * @returns {string} Unique document ID
-    */
-    function generateId() {
-        return 'DOC' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-    }
+/**
+ * UNIQUE ID GENERATOR
+ * Creates unique document IDs using timestamp and random string  FinancialDocumentReference_DocumentId
+ * @returns {string} Unique document ID
+*/
+function generateId() {
+    return 'DOC' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+}
 
 
+
+
+
+
+/**
+ * CONDITIONAL SECTION VISIBILITY
+ * Shows/hides account sections based on checkbox states
+ * @param {string} sectionType - 'condition' or 'exception'
+*/
  
 
+function toggleAccountSection(type) {
+    console.log("🔀 toggleAccountSection called with type: "+type);
 
+    if (type === 'condition') {
+        const conditionCheckbox = $('input[name="FinancialDocumentReference.CorrespondingAccount.ContainsCondition"]');
 
-    /**
-     * CONDITIONAL SECTION VISIBILITY
-     * Shows/hides account sections based on checkbox states
-     * @param {string} sectionType - 'condition' or 'exception'
-    */
-    function toggleAccountSection(sectionType) {
-        if (sectionType === 'condition') {
-            const checkbox = document.querySelector('input[name="FinancialDocumentReference.CorrespondingAccount.ContainsCondition"]');
-    const section = document.getElementById('conditionSection');
-    section.style.display = checkbox.checked ? 'block' : 'none';
-        } else if (sectionType === 'exception') {
-            const checkbox = document.querySelector('input[name="FinancialDocumentReference.CorrespondingAccount.ContainsException"]');
-    const section = document.getElementById('exceptionSection');
-    section.style.display = checkbox.checked ? 'block' : 'none';
+        if (conditionCheckbox.length) {
+            const isChecked = conditionCheckbox.is(':checked');
+            console.log(`📌 'ContainsCondition' checkbox is ${isChecked ? 'checked' : 'unchecked'}`);
+            $('#conditionSection').toggle(isChecked);
+            console.log(`📂 '#conditionSection' is now ${isChecked ? 'visible' : 'hidden'}`);
+        } else {
+            console.warn("⚠️ 'ContainsCondition' checkbox not found in the DOM.");
         }
     }
 
-    /**
-     * ACCOUNT COLLECTION UTILITY
-     * Extracts account data from a specific container
-     * @param {string} containerId - ID of the container holding account inputs
-    * @returns {Array} Array of account objects
-    */
-    function collectAccounts(containerId) {
-        const container = document.getElementById(containerId);
+    if (type === 'exception') {
+        const exceptionCheckbox = $('input[name="FinancialDocumentReference.CorrespondingAccount.ContainsException"]');
+
+        if (exceptionCheckbox.length) {
+            const isChecked = exceptionCheckbox.is(':checked');
+            console.log(`📌 'ContainsException' checkbox is ${isChecked ? 'checked' : 'unchecked'}`);
+            $('#exceptionSection').toggle(isChecked);
+            console.log(`📂 '#exceptionSection' is now ${isChecked ? 'visible' : 'hidden'}`);
+        } else {
+            console.warn("⚠️ 'ContainsException' checkbox not found in the DOM.");
+        }
+    }
+
+    if (type !== 'condition' && type !== 'exception') {
+        console.warn(`⚠️ Unknown toggle type '${type}' passed to toggleAccountSection.`);
+    }
+}
+
+
+/**
+ * ACCOUNT COLLECTION UTILITY
+ * Extracts account data from a specific container
+ * @param {string} containerId - ID of the container holding account inputs
+* @returns {Array} Array of account objects
+*/
+function collectAccounts(containerId) {
+    const container = document.getElementById(containerId);
     const accounts = [];
 
     if (!container) return accounts;
 
-        container.querySelectorAll('.account-item').forEach(item => {
-            const accountNumber = item.querySelector('input[name$="AccountNumber"]')?.value;
-    const documentBooking = item.querySelector('select[name$="DocumentBooking"]')?.value;
+    container.querySelectorAll('.account-item').forEach(item => {
+        const accountNumber = item.querySelector('input[name$="AccountNumber"]')?.value;
+        const documentBooking = item.querySelector('select[name$="DocumentBooking"]')?.value;
 
-    if (accountNumber && documentBooking) {
-        accounts.push({
-            AccountNumber: accountNumber,
-            DocumentBooking: documentBooking
-        });
-            }
-        });
-
+        if (accountNumber && documentBooking) {
+            accounts.push({
+                AccountNumber: accountNumber,
+                DocumentBooking: documentBooking
+            });
+        }
+    });
+    console.log("Logging Collection:" + containerId + " Values" + accounts);
     return accounts;
-    }
+}
 
-    /**
-     * DYNAMIC ACCOUNT INPUT CREATION containsconditionAccounts
-     * Adds new account input fields to specified account type container
-     * @param {string} type - Account type ('gross', 'provision', 'condition', etc.)
-    */
-    function addAccount(type) {
-        const containerMap = {
+/**
+ * DYNAMIC ACCOUNT INPUT CREATION containsconditionAccounts
+ * Adds new account input fields to specified account type container
+ * @param {string} type - Account type ('gross', 'provision', 'condition', etc.)
+*/
+function addAccount(type) {
+    const containerMap = {
         gross: 'grossAccounts',
-            provision: 'provisionAccounts',
-            condition: 'containsconditionAccounts',
-    grossException: 'grossExceptionAccounts',
-    provisionException: 'provisionExceptionAccounts'
-        };
+        provision: 'provisionAccounts',
+        condition: 'containsconditionAccounts',
+        grossException: 'grossExceptionAccounts',
+        provisionException: 'provisionExceptionAccounts'
+    };
 
     const containerId = containerMap[type];
     const container = document.getElementById(containerId);
     const index = container.querySelectorAll('.account-item').length;
 
     const accountItem = document.createElement('div');
-    accountItem.className = 'account-item mb-3 p-3 border rounded';
+  
 
     // Create the HTML for the new account item
     accountItem.innerHTML = `
-      
-    <div class="row gy-3 account-item>
-        <div class="col-6">
+    <div class="account-item gy-1">
+        <!-- Account Number Field - 40% width -->
+       <div class="col-md-5 col-12 ">
             <div class="form-floating form-floating-outline">
-                <input type="text" name="FinancialDocumentReference.CorrespondingAccount.${type.charAt(0).toUpperCase() + type.slice(1)}Accounts[${index}].AccountNumber"
-                    class="form-control"  placeholder="Account Number" required />
+                <input type="text" 
+                    name="FinancialDocumentReference.CorrespondingAccount.${type.charAt(0).toUpperCase() + type.slice(1)}Accounts[${index}].AccountNumber"
+                    class="form-control"  
+                    placeholder="Account Number" 
+                    required />
                 <label>Account Number</label>
             </div>
         </div>
-        <div class="col-6">
+        
+        <!-- Document Booking Field - 40% width -->
+        <div class="col-md-5 col-12">
             <div class="form-floating form-floating-outline">
                 <select name="FinancialDocumentReference.CorrespondingAccount.${type.charAt(0).toUpperCase() + type.slice(1)}Accounts[${index}].DocumentBooking"
-                    class="form-control select2" type="search" required>
+                    class="form-control select2" search=true
+                    required>
                     <option value="">--- Select Booking Direction ---</option>
                     <option value="DEBIT">DEBIT</option>
                     <option value="CREDIT">CREDIT</option>
                     <option value="NEGATE">NEGATE</option>
-                      <option value="NONE">NONE</option>
+                    <option value="NONE">NONE</option>
                 </select>
                 <label>Document Booking</label>
             </div>
         </div>
-         <button type="button" class="btn btn-danger btn-sm float-end" onclick="removeAccount(this)">×</button>
-    </div> 
-    `;
+        
+        <!-- Remove Button - 20% width -->
+       <div class="col-md-1 col-12 d-flex align-items-end">
+            <button type="button" 
+                class="btn btn-danger btn-sm w-20" 
+                onclick="removeAccount(this)"
+                title="Remove Account">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+`;
 
     container.appendChild(accountItem);
-    }
- 
+}
 
 
-    /**
-     * ACCOUNT REMOVAL
-     * Removes an account item from the form
-     * @param {HTMLElement} button - The remove button that was clicked
-    */
-    function removeAccount(button) {
-        button.closest('.account-item').remove();
-        // Reindex remaining accounts if needed
-    }
 
-    /**
-     * FORM RESET UTILITY
-     * Clears all form inputs and resets to default state
-     */
-    function resetForm() {
-        document.querySelector('form').reset();
+/**
+ * ACCOUNT REMOVAL
+ * Removes an account item from the form
+ * @param {HTMLElement} button - The remove button that was clicked
+*/
+function removeAccount(button) {
+    button.closest('.account-item').remove();
+    // Reindex remaining accounts if needed
+}
+
+/**
+ * FORM RESET UTILITY
+ * Clears all form inputs and resets to default state
+ */
+function resetForm() {
+    $('select[name="FinancialDocumentReference.DocumentId"]').val('').trigger('change');
+    $('select[name="FinancialDocumentReference.DocumentTypeId"]').val('').trigger('change').scrollTop('');
+
+    // Reset text input fields
+    $('input[name="FinancialDocumentReference.Reference"]').val('');
+    $('input[name="FinancialDocumentReference.DescriptionEn"]').val('');
+    $('input[name="FinancialDocumentReference.DescriptionFr"]').val('');
+    $('input[name="FinancialDocumentReference.DescriptionSp"]').val('');
     document.getElementById('conditionSection').style.display = 'none';
     document.getElementById('exceptionSection').style.display = 'none';
-
+    showInsertMode();
     // Clear all account containers
-    ['grossAccounts', 'provisionAccounts', 'conditionAccounts', 
-         'grossExceptionAccounts', 'provisionExceptionAccounts'].forEach(id => {
+    ['grossAccounts', 'provisionAccounts', 'conditionAccounts',
+        'grossExceptionAccounts', 'provisionExceptionAccounts'].forEach(id => {
             const container = document.getElementById(id);
-    if (container) container.innerHTML = '';
+            if (container) container.innerHTML = '';
         });
-    }
+}
+function showInsertMode() {
+    $('#addReference').show();
+    $('#updateReference').hide();
+    console.log("🟢 Insert mode activated.");
+}
 
- 
+function showUpdateMode() {
+    $('#addReference').hide();
+    $('#updateReference').show();
+    console.log("🟡 Update mode activated.");
+}
 
 
 
- 
 
- 
 
-    /**
-     * DELETE DOCUMENT
-     * Removes a document from the collection
-     * @param {string} id - The ID of the document to delete
-    */
-    function deleteDocument(id) {
-        if (!confirm('Are you sure you want to delete this document?')) return;
-        
-        documents = documents.filter(doc => doc.Id !== id);
+
+
+
+
+/**
+ * DELETE DOCUMENT
+ * Removes a document from the collection
+ * @param {string} id - The ID of the document to delete
+*/
+function deleteDocument(id) {
+    if (!confirm('Are you sure you want to delete this document?')) return;
+
+    documents = documents.filter(doc => doc.Id !== id);
     showMessage('Document deleted successfully', 'success');
- 
-    }
 
-    // Initialize when DOM is loaded
-    document.addEventListener('DOMContentLoaded', function() {
-        // Set up event listeners for checkboxes
-        const conditionCheckbox = document.querySelector('input[name="FinancialDocumentReference.CorrespondingAccount.ContainsCondition"]');
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function () {
+    // Set up event listeners for checkboxes
+    const conditionCheckbox = document.querySelector('input[name="FinancialDocumentReference.CorrespondingAccount.ContainsCondition"]');
     const exceptionCheckbox = document.querySelector('input[name="FinancialDocumentReference.CorrespondingAccount.ContainsException"]');
 
     if (conditionCheckbox) {
         conditionCheckbox.addEventListener('change', () => toggleAccountSection('condition'));
-        }
+    }
 
     if (exceptionCheckbox) {
         exceptionCheckbox.addEventListener('change', () => toggleAccountSection('exception'));
-        }
+    }
 
- 
-    });
+
+});
 
 let deleteParams = {};
 
@@ -507,91 +570,238 @@ function getCategoryBadgeClass(category) {
         default: return 'secondary';
     }
 }
-
- function editDocument(id) {
-/*    try {*/
-        // Show loading state (optional)
-        showLoadingState();
-
-        // Log the URL being called
-        const url = `/AccountingConfiguration/GetAccountDetailsByReference/${id}`;
-        console.log('Calling URL:', url);
-        console.log('Document ID:', id);
-
-        const response =  fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                // Add CSRF token if needed (for ASP.NET)
-               // 'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value,
-                // Add other headers if needed
-             //   'X-Requested-With': 'XMLHttpRequest'
-            }
-        });
-        console.log('Response status:', response.status);
-        console.log('Response headers:', response.headers);
-
-        if (!response.ok) {
-            const errorText =  response.text();
-            console.error('Error response:', errorText);
-            throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
-        }
-
-        const doc =  response.json();
-        console.log('Received document:', doc);
-
  
+ 
+function setDropdownValuesAfterLoad(doc) {
+ 
+    $('select[name="FinancialDocumentReference.DocumentId"]').val(doc.DocumentId);
+    // Set DocumentTypeId without triggering change
+    $('select[name="FinancialDocumentReference.DocumentTypeId"]').val(doc.DocumentTypeId);
+}
+ 
+// Only trigger cascade if not in update mode
+function handleDocumentChange(isUpdateMode,selectedValue) {
+    if (!isUpdateMode) {
+        // Only load B options when inserting new data
+        loadDropdownDocumentTypeOptions(selectedValue);
+    }
+    // Always update the form value
+    setDropdownDocumentValue(selectedValue);
+}
+// Set dropdown A value without triggering change events
+function setDropdownDocumentValue(value, silent = false) {
+    const dropdownA = document.getElementById('FinancialDocumentReference_DocumentId');
+    dropdownA.value = value;
+
+    // If you need to trigger change events for other listeners
+    if (!silent) {
+        dropdownA.dispatchEvent(new Event('change'));
+    }
+}
+
+
+function loadDropdownDocumentTypeOptions(selectedAValue) {
+    const dropdownB = document.getElementById('FinancialDocumentReference_DocumentTypeId');
+
+    // Clear existing options
+    dropdownB.innerHTML = '<option value="">Select...</option>';
+
+    // Show loading state
+    dropdownB.disabled = true;
+
+    // Fetch data (replace with your actual data source)
+    fetch('/AccountingConfiguration/GetAccountDetailsByReference?id='+selectedAValue)
+        .then(response => response.json())
+        .then(data => {
+            // Populate dropdown B with new options
+            data.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.id;
+                option.textContent = item.name;
+                dropdownB.appendChild(option);
+            });
+
+            dropdownB.disabled = false;
+        })
+        .catch(error => {
+            console.error('Error loading dropdown B options:', error);
+            dropdownB.disabled = false;
+        });
+}
+
+// Set dropdown B value (usually called after options are loaded)
+function setDropdownDocumentTypeValue(value) {
+    const dropdownB = document.getElementById('FinancialDocumentReference_DocumentTypeId');
+    console.log("FinancialDocumentReference_DocumentTypeId=" + value);
+    dropdownB.value = value;
+}
+function editDocument(id) {
+    console.log("▶️ editDocument called with ID:", id);
+
+    // 1. Validate the input ID
+    if (!id) {
+        console.error('❌ Document ID is undefined or null.');
+        return;
+    }
+
+    // 2. Indicate loading state
+    console.log("⏳ Showing loading state...");
+    showLoadingState();
+    showTab('add', { target: $('.nav-tab').first()[0] });
+
+    // 3. Construct API URL
+    const url = `/AccountingConfiguration/GetAccountDetailsByReference/${id}`;
+    console.log("🌐 API URL:", url);
+
+    // 4. Make AJAX GET request
+    $.ajax({
+        url: url,
+        method: 'GET',
+        dataType: 'json',
+        success: handleDocumentLoadSuccess,
+        error: handleDocumentLoadError
+    });
+
+    function handleDocumentLoadSuccess(data) {
+        console.log('✅ AJAX call successful. Raw response:', data);
+
+        // 5. Extract document from response
+        const doc = data?.FinancialDocumentReference || (Array.isArray(data) ? data[0] : data);
+
         if (!doc) {
-            throw new Error('Document not found');
+            console.warn('⚠️ Document not found or response is invalid.');
+            alert('Document not found or response is invalid.');
+            hideLoadingState();
+            return;
         }
 
-        // Set form values
-        document.querySelector('input[name="FinancialDocumentReference.Id"]').value = doc.Id;
-        document.querySelector('input[name="FinancialDocumentReference.Reference"]').value = doc.Reference;
-        document.querySelector('input[name="FinancialDocumentReference.DescriptionEn"]').value = doc.DescriptionEn;
-        document.querySelector('input[name="FinancialDocumentReference.DescriptionFr"]').value = doc.DescriptionFr || '';
-        document.querySelector('input[name="FinancialDocumentReference.DescriptionSp"]').value = doc.DescriptionSp || '';
-        document.querySelector('select[name="FinancialDocumentReference.DocumentId"]').value = doc.DocumentId;
-        document.querySelector('select[name="FinancialDocumentReference.DocumentTypeId"]').value = doc.DocumentTypeId;
+        // 6. Reset form before populating new data
+        resetForm();
 
-        // Set checkboxes
-        document.querySelector('input[name="FinancialDocumentReference.CorrespondingAccount.ContainsCondition"]').checked = doc.CorrespondingAccount.ContainsCondition;
-        document.querySelector('input[name="FinancialDocumentReference.CorrespondingAccount.ContainsException"]').checked = doc.CorrespondingAccount.ContainsException;
+        // 7. Populate basic form fields
+        console.log("📄 Setting basic form fields...");
+        $('#FinancialDocumentReference_Id').val(doc.Id);
+        $('#FinancialDocumentReference_Reference').val(doc.Reference);
+        $('#FinancialDocumentReference_DescriptionEn').val(doc.DescriptionEn);
+        $('#FinancialDocumentReference_DescriptionFr').val(doc.DescriptionFr || '');
+        $('#FinancialDocumentReference_DescriptionSp').val(doc.DescriptionSp || '');
 
-        // Toggle sections
-        toggleAccountSection('condition');
-        toggleAccountSection('exception');
+        // 8. Handle dropdowns with proper initialization
+        //$('#FinancialDocumentReference_DocumentId').val(doc.DocumentId).trigger('change');
+        //$('select[name="FinancialDocumentReference.DocumentTypeId"]').val(doc.DocumentTypeId);
+        handleDocumentChange(true, doc.DocumentId);
+        setDropdownDocumentTypeValue(doc.DocumentTypeId);
+        // Set DocumentTypeId without triggering change
+        showUpdateMode();
+        // 9. Handle CorrespondingAccount section
+        if (doc.CorrespondingAccount && typeof doc.CorrespondingAccount === 'object') {
+            const ca = doc.CorrespondingAccount;
+            console.log("📦 Processing CorrespondingAccount...", ca);
 
-        // Load accounts
-        loadAccounts('grossAccounts', doc.CorrespondingAccount.GrossAccounts, 'GrossAccounts');
-        loadAccounts('provisionAccounts', doc.CorrespondingAccount.ProvisionAccounts, 'ProvisionAccounts');
-        loadAccounts('containsconditionAccounts', doc.CorrespondingAccount.ContainsConditionAccounts, 'containsconditionAccounts');
-        loadAccounts('grossExceptionAccounts', doc.CorrespondingAccount.GrossExceptionAccounts, 'GrossExceptionAccounts');
-        loadAccounts('provisionExceptionAccounts', doc.CorrespondingAccount.ProvisionExceptionAccounts, 'ProvisionExceptionAccounts');
+            // Set checkboxes and toggle sections
+            const hasCondition = !!ca.ContainsCondition;
+            const hasException = !!ca.ContainsException;
 
-        // Set action to update
-        document.querySelector('input[name="Action"]').value = 'update';
+            $('#FinancialDocumentReference_CorrespondingAccount_ContainsCondition')
+                .prop('checked', hasCondition)
+                .trigger('change');
 
-        // Scroll to form
-        document.querySelector('.card').scrollIntoView();
+            $('#FinancialDocumentReference_CorrespondingAccount_ContainsException')
+                .prop('checked', hasException)
+                .trigger('change');
 
-    //} catch (error) {
-    //    console.error('Error fetching document:', error);
+            // Load account sections
+            loadAccountSection('grossAccounts', ca.GrossAccounts, 'GrossAccounts');
+            loadAccountSection('provisionAccounts', ca.ProvisionAccounts, 'ProvisionAccounts');
 
-    //    // Handle different types of errors
-    //    if (error.message.includes('404')) {
-    //        showErrorMessage('Document not found');
-    //    } else if (error.message.includes('403')) {
-    //        showErrorMessage('Access denied');
-    //    } else if (error.message.includes('500')) {
-    //        showErrorMessage('Server error. Please try again later.');
-    //    } else {
-    //        showErrorMessage('Failed to load document. Please try again.');
-    //    }
-    //} finally {
-    //    // Hide loading state (optional)
-    //    hideLoadingState();
-    //}
+            if (hasCondition) {
+                loadAccountSection('containsconditionAccounts', ca.ContainsConditionAccounts, 'ContainsConditionAccounts');
+            }
+
+            if (hasException) {
+                loadAccountSection('grossExceptionAccounts', ca.GrossExceptionAccounts, 'GrossExceptionAccounts');
+                loadAccountSection('provisionExceptionAccounts', ca.ProvisionExceptionAccounts, 'ProvisionExceptionAccounts');
+            }
+        }
+
+        // 10. Set form action 
+        console.log("🔄 Setting form action to 'update'...");
+
+        // 11. Initialize plugins and finalize
+        $('.select2').select2();
+        hideLoadingState();
+
+        // 12. Scroll to form
+        console.log("📜 Scrolling to form...");
+        $('html, body').animate({
+            scrollTop: $('.card').offset().top - 20
+        }, 500);
+    }
+
+    function handleDocumentLoadError(xhr) {
+        console.error('❌ AJAX error occurred:', xhr.responseText);
+        hideLoadingState();
+        alert(`Error loading document: ${xhr.statusText}`);
+    }
+
+    function loadAccountSection(containerId, accounts, accountType) {
+        if (!Array.isArray(accounts)) {
+            console.log(`ℹ️ No accounts to load for '${containerId}'.`);
+            return;
+        }
+
+        const $container = $(`#${containerId}`).empty();
+        console.log(`📥 Loading ${accounts.length} account(s) into '${containerId}'...`);
+
+        accounts.forEach((account, index) => {
+            $container.className = 'account-item  border rounded';
+            $container.append(`
+   <div class="account-item gy-1">
+        <!-- Account Number Field - 40% width -->
+       <div class="col-md-5 col-12 ">
+            <div class="form-floating form-floating-outline">
+                <input type="text"
+                  name="FinancialDocumentReference.CorrespondingAccount.${accountType}[${index}].AccountNumber"
+                    class="form-control"  
+                   value="${account.AccountNumber}" placeholder="Account Number" required />
+
+                <label>Account Number</label>
+
+            </div>
+        </div>
+        <!-- Document Booking Field - 40% width -->
+        <div class="col-md-5 col-12">
+            <div class="form-floating form-floating-outline">
+                <select class="form-control select2 col-md-5 col-12"
+                   name="FinancialDocumentReference.CorrespondingAccount.${accountType}[${index}].DocumentBooking"
+                   search=true  required>
+                    <option value="">--- Select Document Booking ---</option>
+                    <option value="DEBIT" ${account.DocumentBooking === 'DEBIT' ? 'selected' : ''}>DEBIT</option>
+                    <option value="CREDIT" ${account.DocumentBooking === 'CREDIT' ? 'selected' : ''}>CREDIT</option>
+                    <option value="NEGATE" ${account.DocumentBooking === 'NEGATE' ? 'selected' : ''}>NEGATE</option>
+                    <option value="NONE" ${account.DocumentBooking === 'NONE' ? 'selected' : ''}>NONE</option>
+                </select>
+                <label>Document Booking</label>
+            </div>
+        </div>
+        
+    <div class="col-md-1 col-12 d-flex align-items-end">
+            <button type="button" 
+                class="btn btn-danger remove-account w-20"
+                title="Remove Account">
+               <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+`);
+        });
+
+        // Initialize select2 and remove handlers for new elements
+        $container.find('.select2').select2();
+        $container.find('.remove-account').click(function () {
+            $(this).closest('.account-item').remove();
+        });
+    }
 }
 
 // Helper functions (implement as needed)
@@ -618,41 +828,61 @@ function showErrorMessage(message) {
     // Display error message to user
     alert(message); // Replace with a better UI notification
 }
+function loadAccounts(containerId, accounts, namePrefix) {
+    console.log(`📥 loadAccounts called for container: '${containerId}', namePrefix: '${namePrefix}'`);
 
-function loadAccounts(containerId, accounts, accountType) {
-    const container = document.getElementById(containerId);
-    if (!container || !accounts) return;
+    const $container = $('#' + containerId);
+    if (!$container.length) {
+        console.log(`⚠️ Container with ID '${containerId}' not found in the DOM.`);
+        return;
+    }
 
-    container.innerHTML = '';
+    // Clear existing content
+    $container.empty();
+    console.log(`🧹 Cleared container '${containerId}'`);
+
+    // Validate account array
+    if (!Array.isArray(accounts)) {
+        console.log(`⚠️ Provided accounts for '${namePrefix}' is not a valid array.`);
+        return;
+    }
+
+    console.log(`🔄 Rendering ${accounts.length} account(s) into '${containerId}'`);
 
     accounts.forEach((account, index) => {
-        const accountItem = document.createElement('div');
-        accountItem.className = 'account-item mb-3 p-3 border rounded';
+        console.log(`🔧 Rendering account #${index + 1}:`, account);
 
-        accountItem.innerHTML = `
-            <button type="button" class="btn btn-danger btn-sm float-end" onclick="removeAccount(this)">×</button>
-            <div class="row gy-3">
-                <div class="col-md-6">
-                    <div class="form-floating form-floating-outline">
-                        <input type="text" name="FinancialDocumentReference.CorrespondingAccount.${accountType}[${index}].AccountNumber"
-                            class="form-control" value="${account.AccountNumber}" placeholder="Account Number" required />
-                        <label>Account Number</label>
+        const html = `
+            <div class="account-item">
+                <button type="button" class="remove-account" onclick="removeAccount(this)" title="Remove Account">×</button>
+                <div class="row gy-3">
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" class="form-control" 
+                                name="FinancialDocumentReference.CorrespondingAccount.${namePrefix}[${index}].AccountNumber" 
+                                value="${account.AccountNumber || ''}" />
+                            <label>Account Number</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <select name="FinancialDocumentReference.CorrespondingAccount.${namePrefix}[${index}].DocumentBooking"
+                                    class="form-control">
+                                <option value="">--- Select Booking Direction ---</option>
+                                <option value="DEBIT" ${account.DocumentBooking === 'DEBIT' ? 'selected' : ''}>DEBIT</option>
+                                <option value="CREDIT" ${account.DocumentBooking === 'CREDIT' ? 'selected' : ''}>CREDIT</option>
+                                <option value="NONE" ${account.DocumentBooking === 'NONE' ? 'selected' : ''}>NONE</option>
+                                <option value="NEGATE" ${account.DocumentBooking === 'NEGATE' ? 'selected' : ''}>NEGATE</option>
+                            </select>
+                            <label>Document Booking</label>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-floating form-floating-outline">
-                        <select name="FinancialDocumentReference.CorrespondingAccount.${accountType}[${index}].DocumentBooking"
-                            class="form-control" required>
-                            <option value="">--- Select Booking Direction ---</option>
-                            <option value="Debit" ${account.DocumentBooking === 'Debit' ? 'selected' : ''}>Debit</option>
-                            <option value="Credit" ${account.DocumentBooking === 'Credit' ? 'selected' : ''}>Credit</option>
-                        </select>
-                        <label>Document Booking</label>
-                    </div>
-                </div>
-            </div>
-        `;
+            </div>`;
 
-        container.appendChild(accountItem);
+        $container.append(html);
     });
+
+    console.log(`✅ Successfully rendered ${accounts.length} account(s) in '${containerId}'`);
 }
+

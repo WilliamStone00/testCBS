@@ -438,6 +438,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         [HttpPost]
         public async Task<ActionResult> PostSearch(AccountingEntryQuery model)
         {
+            string Message = ""; bool HasPassed = false;
             try
             {
                 if (Request.IsAjaxRequest())
@@ -450,13 +451,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     {
                         case "JE":
                             {
-                                if (model.SystemQuery.FileType.ToLower()=="pdf")
-                                {
+                              
                                     string fileTitle = $"JournalEntries_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
                                     var account = await _accountingServices.PostJournalEntries(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId , BranchIds = model.SystemQuery.BranchIds }, APICallHelper.JournalEntryUrl);
 
                                     this.HttpContext.Session["rptSource"] = account;
-                                    string ReportName = $"JournalEntries.rpt";
+                                 
+;                                    string ReportName = $"JournalEntries.rpt";
                                     if (account.AccountingEntries == null)
                                     {
                                         this.HttpContext.Session["rptSource"] = "empty";
@@ -466,19 +467,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     this.HttpContext.Session["ReportName"] = $"{ReportName}";
                                     this.HttpContext.Session["rptType"] = $"{model.SystemQuery.ReportType}";
                                     this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
-                                }
-                                else
-                                {
-                                    string fileTitle = $"JournalEntries_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
-                                    var account = await _accountingServices.PostJE(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId, BranchIds = model.SystemQuery.BranchIds }, APICallHelper.JournalEntryUrl);
-
-                                }
+                                HasPassed = account.AccountingEntries.Count() > 0;
+                            
+                                Message = HasPassed ? "" : await GetProfessionalMessage(model.SystemQuery, "JOURNAL ENTRIES");
                             }
                             break;
                         case "GL":
                             {
-                                if (model.SystemQuery.FileType.ToLower() == "pdf")
-                                {
+                                
                                     string fileTitle = $"GeneralLedger_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
                                     string ReportName = $"GeneralLedger.rpt";
                                     var account = await _acountServices.GenerateAccountingLedgerForAnumber(model.SystemQuery);//new SystemQuery { BranchId = model.SystemQuery.BranchId, FileType = model.SystemQuery.FileType, AccountIds = model.SystemQuery.AccountIds, FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate });
@@ -493,9 +489,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                         this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
                                         this.HttpContext.Session["rptSource"] = (account != null) ? account : new AccountingGeneralLedgerDetails();
                                     }
-
+                                HasPassed = account.LedgerDetails.Count() > 0;
+                                Message = account.Message;
                                     if (account == null)
                                     {
+
                                         this.HttpContext.Session["rptSource"] = "empty";
                                     }
                                     this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
@@ -504,11 +502,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     this.HttpContext.Session["fileType"] = $"GL";
                                     this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
 
-                                }
-                                else
-                                {
-                                    var account = await _acountServices.GenerateAccountingLedgerForAnumber(model.SystemQuery); //( model.SystemQuery);
-                                }
+
+                                HasPassed = account.LedgerDetails.Count() > 0;
+                                Message = HasPassed ? "" : await GetProfessionalMessage(model.SystemQuery, "General Ledger");
                             }
                             break;
                         case "LL":
@@ -547,8 +543,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             break;
                         case "TB4":
                             {
-                                if (model.SystemQuery.FileType.ToLower() == "pdf")
-                                {
+                               
                                     string fileTitle = $"TB4C{model.SystemQuery.FromDate.Date.ToString("yyyyMMddhhmmss")}";
                                     var account = await _acountServices.GenerateTrialBalance_4column(model.SystemQuery);
                                    
@@ -565,23 +560,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     {
                                         this.HttpContext.Session["rptSource"] = "empty";
                                     }
+                           
                                     this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
                                     this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
                                     this.HttpContext.Session["ReportName"] = $"{ReportName}";
                                     this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
 
-                                }
-                                else
-                                {
-                                    var account = await _acountServices.GenerateTrialBalance_4column(model.SystemQuery);
-                                }
+                                HasPassed = account.Count() > 0;
+                                Message = HasPassed ? "" : await GetProfessionalMessage(model.SystemQuery, "TRIAL BALANCE SHEET 4 COLUMN");
 
                             }
                             break;
                         case "TB6":
                             {
-                                if (model.SystemQuery.FileType.ToLower() == "pdf")
-                                {
+                           
                                     string fileTitle = $"TB6C{model.SystemQuery.FromDate.Date.ToString("yyyyMMddhhmmss")}";
                                     string ReportName = $"TrialBalance8Column.rpt";
                                     var account = await _acountServices.GenerateTrialBalance_6column(model.SystemQuery);
@@ -596,19 +588,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
                                     this.HttpContext.Session["ReportName"] = $"{ReportName}";
                                     this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
+                                    HasPassed = account.Count() > 0;
+                                    Message = HasPassed ? "" : await GetProfessionalMessage(model.SystemQuery,"TRIAL BALANCE SHEET 6 COLUMN");
 
-
-                                }
-                                else
-                                {
-                                    var account = await _acountServices.GenerateTrialBalance_6column(model.SystemQuery);
-                                }
+                                
                             }
                             break;
                         case "BS":
                             {
-                                if (model.SystemQuery.FileType.ToLower() == "pdf")
-                                {
+                                
                                     string fileTitle = $"BalanceSheet_{model.SystemQuery.FromDate.ToString("ddMMyyyy")}";
                                     var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "BALANCESHEET").First();
                                     var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate,FromDate= model.SystemQuery.FromDate, DocumentId = DocModel.id, FileType="pdf" };
@@ -627,20 +615,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     this.HttpContext.Session["ReportName"] = $"{ReportName}";
                                     this.HttpContext.Session["rptSource"] = account;
                                     this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
-                                }
-                                else
-                                {
-                                    var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "BALANCESHEET").First();
-                                    var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate, FromDate = model.SystemQuery.FromDate, DocumentId = DocModel.id, FileType = "pdf" };
-                                    var account = await _acountServices.GenerateBalanceSheet(modelx);
-                                }
+                                HasPassed = account.TrialBalanceDt.Count() > 0;
+                                Message = HasPassed ? "" : await GetProfessionalMessage(model.SystemQuery,"BALANCE SHEET");
 
                             }
                             break;
                         case "PANDL":
                             {
-                                if (model.SystemQuery.FileType.ToLower() == "pdf")
-                                {
+                                
                                     string fileTitle = $"InComeStatement{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
                                     var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "PROFITANDLOSS").First();
                                     var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate, FromDate = model.SystemQuery.FromDate, DocumentId = DocModel.id, FileType = "pdf" };
@@ -653,19 +635,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                     this.HttpContext.Session["ReportName"] = $"{ReportName}";
                                     this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{ReportName}";
                                     this.HttpContext.Session["rpttitle"] = $"{fileTitle}";
-                                }
-                                else
-                                {
-                                    var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "PROFITANDLOSS").First();
-                                    var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate, FromDate = model.SystemQuery.FromDate, DocumentId = DocModel.id, FileType = "pdf" };
-                                    var account = await _accountingServices.PostJE(new JEQuery { FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate, FileType = model.SystemQuery.FileType, BranchId = model.SystemQuery.BranchId }, APICallHelper.AccountingEntry_IncomeStatement);
-
-                                }
+                                HasPassed = account.Accounts.Count() > 0;
+                                Message = HasPassed ? "" : await GetProfessionalMessage(model.SystemQuery, "PROFIT AND LOST");
                             }
                             break;
                     }
 
-                    return Json(new { success = true, message = "Report generated successfully" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = HasPassed, message = Message }, JsonRequestBehavior.AllowGet);
                     // Return a JSON result
                   
                 }
@@ -686,6 +662,67 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
 
         }
+
+        private async Task<string> GetMessageBalanceSheet(SystemQuery systemQuery)
+        {
+            string Message = "";
+            if (_acountServices.GetBranchID() == systemQuery.BranchId)
+            {
+                Message = "There are no records found in the Accounting MicroService system for the branch :  " + _acountServices.GetBranchCode() + "-" + _acountServices.GetBranchName() + " for the period of " + systemQuery.FromDate + " to " + systemQuery.ToDate;
+            }
+            else
+            {
+                var branch = (await _branchServices.GetBranches()).Where(x => x.Id == systemQuery.BranchId).FirstOrDefault();
+                Message = "There are no records found in the Accounting MicroService system for the branch :  " + branch.BranchCode + "-" + branch.Name + " for the period of " + systemQuery.FromDate + " to " + systemQuery.ToDate;
+
+            }
+            return Message;
+        }
+
+        // Professional business version
+        private async Task<string> GetProfessionalMessage(SystemQuery systemQuery, string document)
+        {
+            try
+            {
+                var (branchCode, branchName) = await GetBranchInfo(systemQuery);
+                var period = $"{systemQuery.FromDate:yyyy-MM-dd} to {systemQuery.ToDate:yyyy-MM-dd}";
+
+                return $"Report Generation Status: No Data Available\n\n" +
+                       $"Document Type: {document}\n" +
+                       $"Branch: {branchCode} - {branchName}\n" +
+                       $"Period: {period}\n\n" +
+                       $"The system could not locate any records matching your criteria. " +
+                       $"Please verify the date range and branch selection, or contact your system administrator for assistance.";
+            }
+            catch
+            {
+                return $"Unable to generate {document.ToLower()} - no matching records found. " +
+                       $"Please review your search parameters.";
+            }
+        }
+        /// <summary>
+        /// Gets branch information based on the system query
+        /// </summary>
+        private async Task<(string branchCode, string branchName)> GetBranchInfo(SystemQuery systemQuery)
+        {
+            if (_acountServices.GetBranchID() == systemQuery.BranchId)
+            {
+                // Current user's branch
+                return (_acountServices.GetBranchCode(), _acountServices.GetBranchName());
+            }
+            else
+            {
+                // Different branch - fetch from service
+                var branch = (await _branchServices.GetBranches())
+                    .FirstOrDefault(x => x.Id == systemQuery.BranchId);
+
+                return branch != null
+                    ? (branch.BranchCode, branch.Name)
+                    : ("Unknown", "Unknown Branch");
+            }
+        }
+
+
         public async Task<ActionResult> DownloadFiles(string fileId = null)
         {
             if (string.IsNullOrEmpty(fileId))

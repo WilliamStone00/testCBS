@@ -1952,8 +1952,13 @@ function AjaxPostSearch(form) {
                         appalert("Report [" + getReportTitle(model.ReportType) + "] has been generated successfully", 1, 1);
                         if (model.FileType.toLowerCase() === "pdf")
                         {
-                            openReportWindow(model.FileType, model.ReportType);
-                            LoadDataGen('AccountingStatements', 'myDataTable', '_DownloadedReportData', 'DESC', 'datalistingview', 'xxx', 'Reports', 'list');
+                            if (response.success)
+                            {
+                                openReportWindow(model.FileType, model.ReportType);
+                                LoadDataGen('AccountingStatements', 'myDataTable', '_DownloadedReportData', 'DESC', 'datalistingview', 'xxx', 'Reports', 'list');
+                            } else {
+                                appalert(response.message, 0, 1);
+                            }
 
                         } else {
                             LoadDataGen('AccountingStatements', 'myDataTable', '_DownloadedReportData', 'DESC', 'datalistingview', 'xxx', 'Reports', 'list');

@@ -64,6 +64,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private const string CLASS_4_Payabels = "THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)";
         private const string CLASS_4_Simple = "THIRD PARTY ACCOUNTS AND ACCRUALS";
         private const string CLASS_4_Recievabels = "THIRD PARTY ACCOUNTS AND ACCRUALS(Recievables)";
+        private   string BranchName = "";
         public AccountingConfigurationController()
         {
             _AccountingRuleServices = new AccountingRuleService();
@@ -158,7 +159,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         public async Task<ActionResult> Index()
         {
             await GetList();
-            return View(new AccountingConfiguration());
+            return View(new AccountingConfiguration { BankName = _AccountServices.GetBankName() });
         }
         public async Task<ActionResult> JournalEntryConfig()
         {
@@ -246,7 +247,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             ViewBag.ChartOfAccountManagementPositions = BuildMenuAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList(), listAccounts.ToList());
             var BranList = (await _branchService.GetBranches()).ToList();
             ViewBag.BranchCode = BuildBranchCode(BranList);
-
+ 
             ViewBag.Branches = BuildBranch(BranList);
             ViewBag.ChartOfAccounts = BuildMenuAccountViewBag(listAccounts.ToList());
             ViewBag.AccountingRuleEntries = BuildAccountingRuleEntryViewBag((await _accountingEntryRuleService.GetAccountingRuleEntries()).ToList());
