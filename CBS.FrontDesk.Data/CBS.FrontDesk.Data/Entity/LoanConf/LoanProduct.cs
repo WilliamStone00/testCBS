@@ -265,6 +265,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool ShorteeMustHaveFundToGuranteeLoan { get; set; }
         public bool Co_obligorMustHaveFundToGuranteeLoan { get; set; }
         public decimal MinimumPercentageCoverageOfShortee { get; set; }
+        public string LoanTypeCategory { get; set; }
+        
 
         public bool IsChargesApplied { get; set; }
         public decimal MinimumChargesToAppliedInPercentage { get; set; }
@@ -341,6 +343,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public LoanTerm LoanTerm { get; set; }
         public bool IsProductWithSavingFacilities { get; set; }
         public bool IsPaidFeeBeforeProcessing { get; set; }
+
     }
 
     public class LoanProductObject
@@ -389,6 +392,10 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string LoanProductCategoryId { get; set; }
         public bool IsProductWithSavingFacilities { get; set; }
         public bool IsPaidFeeBeforeProcessing { get; set; }
+        public string LoanTypeCategory { get; set; }
+        public bool IsMortgage { get; set; }
+
+
     }
 
     public class UpdateLoanProductCommand
@@ -396,7 +403,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string Id { get; set; }
         public string ProductCode { get; set; }
         public bool InterestMustBePaidUpFront { get; set; }
-
+        public string LoanTypeCategory { get; set; }
         public string ProductName { get; set; }
         public string LoanInterestPeriod { get; set; }//Per Day, Per Week, Per Month, Per Year
         public decimal MinimumInterestRate { get; set; }

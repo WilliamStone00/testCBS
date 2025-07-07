@@ -68,16 +68,19 @@ namespace CBS.BusinessService.Config
                     string currentBranchId = GetBranchID();
                     branches = branches.Where(b => b.Id == currentBranchId).ToList();
                 }
-
-                // Add "All" option as the default
-                var defaultBranch = new Branch
+                else
                 {
-                    Id = "x",
-                    BranchCode = "All",
-                    Name = "All Branches"
-                };
+                    // Add "All" option as the default
+                    var defaultBranch = new Branch
+                    {
+                        Id = "All",
+                        BranchCode = "All",
+                        Name = "All Branches"
+                    };
 
-                branches.Insert(0, defaultBranch);
+                    branches.Insert(0, defaultBranch);
+                }
+                
 
                 // Format the Name and order by BranchCode
                 return branches
@@ -108,6 +111,15 @@ namespace CBS.BusinessService.Config
                     branches = couApiResponse.ApiResponseData.Data
                         .Where(x => x.BankId == id)
                         .ToList();
+                    // Add "All" option as the default
+                    var defaultBranch = new Branch
+                    {
+                        Id = "All",
+                        BranchCode = "All",
+                        Name = "All Branches"
+                    };
+
+                    branches.Insert(0, defaultBranch);
                 }
                 else
                 {
@@ -116,15 +128,7 @@ namespace CBS.BusinessService.Config
                         .ToList();
                 }
 
-                // Add "All" option as the default
-                var defaultBranch = new Branch
-                {
-                    Id = "x",
-                    BranchCode = "All",
-                    Name = "All Branches"
-                };
-
-                branches.Insert(0, defaultBranch);
+               
 
                 // Format and order branches
                 var formattedBranches = branches

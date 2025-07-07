@@ -109,7 +109,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             }
             else if (model.Option == "SubTeller")
             {
-                var data = await _subTellerEndOfDay.EndTheDay(model.CloseOfDayRequest);
+                var data = await _subTellerEndOfDay.EndTheDay(model.CloseOfDayRequest,model.ProceedWithDiscrepancy);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }

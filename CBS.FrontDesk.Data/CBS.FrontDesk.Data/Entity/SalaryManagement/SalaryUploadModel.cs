@@ -133,7 +133,6 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
 
     public class FileUploadDto
     {
-        public string FileCode { get; set; }
         public string Id { get; set; } // Unique Identifier for the file
         public string FileName { get; set; } // Original file name
         public string FilePath { get; set; } // Path where the file is stored
@@ -146,6 +145,8 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         public string FileCategory { get; set; }
         public string SalaryProcessingStatus { get; set; }
         public bool IsAvalaibleForExecution { get; set; }
+        public string FileCode { get; set; }
+        public string FileType { get; set; }
         public int TotalBranchesThatHaveExecutedPayrol { get; set; }
         public int TotalBranchesInvolvedInPayrolProcessing { get; set; }
         public List<SalaryUploadModel> SalaryUploadModels { get; set; }

@@ -275,7 +275,9 @@
     <Compile Include="Accounting\TellerCashReplenishmentServices.cs" />
     <Compile Include="Accounting\TransactionReferenceValidator.cs" />
     <Compile Include="Accounts\AccountOpeningRulePerBranchServices.cs" />
+    <Compile Include="Accounts\AccountToAccountTransferService.cs" />
     <Compile Include="Accounts\GeneralStatisticReport\GeneralStatisticReportServices.cs" />
+    <Compile Include="Accounts\MemberReceiptsP\MemberReceiptServices.cs" />
     <Compile Include="Accounts\SalaryAnalysisResultServices.cs" />
     <Compile Include="Accounts\MemberNoneCashOperationServices.cs" />
     <Compile Include="Accounts\SalaryExecutionServices.cs" />
@@ -326,6 +328,7 @@
     <Compile Include="DailyCollectionServices\ZoneServices.cs" />
     <Compile Include="Loan\Config\LoanProductCategoryServices.cs" />
     <Compile Include="Loan\LoanportFolioFlattener\LoanDelinquencyFlattener.cs" />
+    <Compile Include="Loan\Overdraft\OverdraftFacilityConfigServices.cs" />
     <Compile Include="LocalizationService\LocalizationService.cs" />
     <Compile Include="PaymentReceiptMapping.cs" />
     <Compile Include="Config\EconomicActivityServices.cs" />

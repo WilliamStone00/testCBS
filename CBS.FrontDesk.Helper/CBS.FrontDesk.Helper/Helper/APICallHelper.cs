@@ -350,8 +350,14 @@ namespace CBS.FrontDesk.Helper
         public static string GetSavingProducts = "/api/v1/SavingProduct";
         public static string GetCustomerBalance = "/api/v1/Account/Balance/Customer/{0}";
         public static string UpdateIndividualProfile = "/api/v1/Customer/{0}";
+       
         public static string ActivateOrDiactivateCustomer = "/api/v1/Customer/ActivateOrDis-activate";
         public static string GetAccountBalanceByAccountNumber = "/api/v1/Account/AccountNumber/{0}";
+
+
+        public static string TagPISProfile = "/api/v1/private-institution/tag/{0}";
+        public static string GetAllPISProfileByBranch = "/api/v1/private-institution/profiles/byBranch/{0}";
+        public static string GetAllPISProfile = "/api/v1/private-institution/profiles/all";
 
         public static string GetCustomerAccounts = "/api/v1/Account/Customer/{0}";
         public static string InitialDeposit = "/api/v1/Transaction/Initiate/{0}";
@@ -641,6 +647,12 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllLoanAmortizationByLoanIdQuery = "/api/LoanAmortization/Installments/GetAllLoanAmortizationByLoanIdQuery/{0}";
         public static string LoanInstallationSimulation = "/api/LoanAmortization/Loan/Simulation";
 
+        //PaymentReceipt
+        public static string GetPaymentReceiptById = "/api/v1/PaymentReceipt/{0}";
+        public static string GetPaymentReceiptByMemberId = "/api/v1/PaymentReceipt/ByMember/{0}";
+        public static string GetPaymentReceiptDatatable = "/api/v1/PaymentReceipt/data-table";
+        public static string GetPaymentReceiptByMemberAndDate = "/api/v1/PaymentReceipt/ByMemberAndDate";
+
         //Tax  
         public static string Get_Update_Delete_Tax = "/api/v1/Tax/{0}";
         public static string GetAllTax = "/api/v1/Taxs";
@@ -709,6 +721,39 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_LoanPurpose = "/api/v1/LoanPurpose/{0}";
         public static string GetAllLoanPurpose = "/api/v1/LoanPurposes";
         public static string CreateLoanPurpose = "/api/v1/LoanPurpose";
+
+
+        //OverdraftFacilityConfig
+        public static string OverdraftFacilityConfigUpdate = "/api/v1/OverdraftFacilityConfig/update";
+        public static string OverdraftFacilityConfigDelete = "/api/v1/OverdraftFacilityConfig/delete/{0}";
+        public static string OverdraftFacilityConfigCreate = "/api/v1/OverdraftFacilityConfig/create";
+        public static string OverdraftFacilityConfigGet = "/api/v1/OverdraftFacilityConfig/get/{0}";
+        public static string OverdraftFacilityConfigGetAll = "/api/v1/OverdraftFacilityConfig/list";
+        public static string OverdraftFacilityConfigDT = "/api/v1/OverdraftFacilityConfig/datatable";
+
+        //OverdraftInterestTier
+        public static string OverdraftInterestTierUpdate = "/api/v1/OverdraftInterestTier/update";
+        public static string OverdraftInterestTierDelete = "/api/v1/OverdraftInterestTier/delete/{0}";
+        public static string OverdraftInterestTierCreate = "/api/v1/OverdraftInterestTier/create";
+        public static string OverdraftInterestTierGet = "/api/v1/OverdraftInterestTier/get/{0}";
+        public static string OverdraftInterestTierGetAll = "/api/v1/OverdraftInterestTier/list";
+        public static string OverdraftInterestTierDT = "/api/v1/OverdraftInterestTier/datatable";
+
+        //OverdraftLimitBand
+        public static string OverdraftLimitBandUpdate = "/api/v1/OverdraftLimitBand/update";
+        public static string OverdraftLimitBandDelete = "/api/v1/OverdraftLimitBand/delete/{0}";
+        public static string OverdraftLimitBandCreate = "/api/v1/OverdraftLimitBand/create";
+        public static string OverdraftLimitBandGet = "/api/v1/OverdraftLimitBand/get/{0}";
+        public static string OverdraftLimitBandGetAll = "/api/v1/OverdraftLimitBand/list";
+        public static string OverdraftLimitBandDT = "/api/v1/OverdraftLimitBand/datatable";
+
+        // OverdraftServiceActivation
+        public static string OverdraftServiceActivationSubmit = "/api/v1/OverdraftServiceActivation/submit";
+        public static string OverdraftServiceActivationApprove = "/api/v1/OverdraftServiceActivation/approve";
+        public static string OverdraftServiceActivationGetById = "/api/v1/OverdraftServiceActivation/{id}";
+        public static string OverdraftServiceActivationDT = "/api/v1/OverdraftServiceActivation/datatable";
+
+
         //Fee
         public static string Get_Update_Delete_Fee = "/api/v1/Fee/{0}";
         public static string GetAllFee = "/api/v1/Fees";

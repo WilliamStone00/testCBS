@@ -1,0 +1,108 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.AccountToAccountTransferDto
+
+
+@{
+    var amount = Model.TransfterRequest.Amount;
+    var fee = Model.TransfterRequest.Charges;
+    var total = amount + fee;
+}
+
+<div class="px-3 py-2">
+    <p class="text-secondary mb-3">
+        Please carefully review the transfer request summary below before proceeding with approval or rejection.
+    </p>
+
+    <!-- Transfer Details Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-sm text-nowrap align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th colspan="2" class="text-tsc fw-bold">
+                        <i class="mdi mdi-transfer me-1"></i> Transfer Summary
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th class="bg-light text-end" style="width: 30%;">
+                        <i class="mdi mdi-account-arrow-right-outline text-tsc me-1"></i> Sender
+                    </th>
+                    <td>
+                        @Model.TransfterRequest.SenderName <br />
+                        <small class="text-muted">Acct: <code>@Model.TransfterRequest.SourceAccountNumber</code></small>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th class="bg-light text-end">
+                        <i class="mdi mdi-account-arrow-left-outline text-tsc-dark me-1"></i> Receiver
+                    </th>
+                    <td>
+                        @Model.TransfterRequest.RecieverName <br />
+                        <small class="text-muted">Acct: <code>@Model.TransfterRequest.DestinationAccountNumber</code></small>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th class="bg-light text-end">
+                        <i class="mdi mdi-currency-usd text-warning me-1"></i> Transfer Amount
+                    </th>
+                    <td>
+                        <strong>@amount.ToString("N0") FCFA</strong><br />
+                        <span class="text-muted">Fee: @fee.ToString("N0") FCFA</span><br />
+                        <span class="fw-bold text-dark">Total: @total.ToString("N0") FCFA</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th class="bg-light text-end">
+                        <i class="mdi mdi-calendar-check-outline text-primary me-1"></i> Initiated On
+                    </th>
+                    <td>@Model.TransfterRequest.DateOfInitiation.ToString("ddd, dd MMM yyyy - HH:mm")</td>
+                </tr>
+
+                <tr>
+                    <th class="bg-light text-end">
+                        <i class="mdi mdi-account-outline text-muted me-1"></i> Initiated By
+                    </th>
+                    <td>@Model.TransfterRequest.InitiatedByUSerName</td>
+                </tr>
+
+                <tr>
+                    <th class="bg-light text-end">
+                        <i class="mdi mdi-text-box-outline text-secondary me-1"></i> Description
+                    </th>
+                    <td>
+                        @(!string.IsNullOrWhiteSpace(Model.TransfterRequest.InitiatorComment)
+                            ? Model.TransfterRequest.InitiatorComment
+                            : "No description provided.")
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Approval Note -->
+    <div class="mb-3">
+        <label for="ValidatorComment" class="form-label fw-bold text-tsc-dark">
+            <i class="mdi mdi-comment-processing-outline me-1"></i> Approval Notes (Atleast 5 characters)
+        </label>
+        <textarea id="ValidatorComment" class="form-control shadow-sm" rows="3"
+                  placeholder="Enter remarks or justification for approval or rejection..."></textarea>
+    </div>
+
+    <!-- Hidden Fields -->
+    <input type="hidden" id="approveTransferId" value="@Model.TransfterRequest.Id" />
+    <input type="hidden" id="summaryTransferAmount" value="@amount" />
+    <input type="hidden" id="summaryTransferFee" value="@fee" />
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-end gap-2">
+        <button class="btn btn-success" onclick="approveOrRejectTransfer('Approved')">
+            <i class="mdi mdi-check"></i> Approve
+        </button>
+        <button class="btn btn-danger" onclick="approveOrRejectTransfer('Rejected')">
+            <i class="mdi mdi-close"></i> Reject
+        </button>
+    </div>
+</div>

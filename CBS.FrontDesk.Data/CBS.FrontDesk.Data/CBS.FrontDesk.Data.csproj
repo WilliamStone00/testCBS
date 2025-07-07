@@ -134,6 +134,7 @@
     <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportDtoMapper.cs" />
     <Compile Include="Entity\MemberNoneCashOperationsP\MemberNoneCashOperation.cs" />
     <Compile Include="Entity\MenuTranslationP\MenuTranslation.cs" />
+    <Compile Include="Entity\Overdraft\OverdraftFacilityConfig.cs" />
     <Compile Include="Entity\RequestManagement\IdleTime.cs" />
     <Compile Include="Entity\RequestManagement\RateLimitDashboardDto.cs" />
     <Compile Include="Entity\RequestManagement\ClientDataModel.cs" />

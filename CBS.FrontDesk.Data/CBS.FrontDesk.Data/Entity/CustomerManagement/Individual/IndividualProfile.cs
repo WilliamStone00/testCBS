@@ -93,7 +93,7 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string BankName { get; set; }
         public string Matricule { get; set; }
         public string AccountConfirmationNumber { get; set; }
-
+        public bool TagAsPISCollectionProfile { get; set; }
         public string MembershipApplicantDate { get; set; }
         public string MembershipApplicantProposedByReferral1 { get; set; }
         public string MembershipApplicantProposedByReferral2 { get; set; }

@@ -303,21 +303,64 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string DepositorIDExpiryDate { get; set; }
 
     }
+    public class SenderInfoDto
+    {
+        public IndividualProfile Customer { get; set; } = new IndividualProfile();
+
+        public Branch Branch { get; set; } = new Branch();
+
+        public List<Account> Accounts { get; set; } = new List<Account>();
+    }
+    public class ReceiverInfoDto
+    {
+        public IndividualProfile Customer { get; set; } = new IndividualProfile();
+
+        public Branch Branch { get; set; } = new Branch();
+
+        public List<Account> Accounts { get; set; } = new List<Account>();
+    }
+    public class AccountToAccountTransferDto
+    {
+        public TransferRequest Transfer { get; set; }
+
+        public SenderInfoDto Sender { get; set; }
+
+        public ReceiverInfoDto Receiver { get; set; }
+        public Transfer TransfterRequest { get; set; }
+        public List<Transfer> TransfterRequests { get; set; }
+
+        public AccountToAccountTransferDto()
+        {
+            Transfer = new TransferRequest();
+            Sender = new SenderInfoDto();
+            Receiver = new ReceiverInfoDto();
+            TransfterRequest=new Transfer();
+            TransfterRequests=new List<Transfer>();
+        }
+    }
+
+
     public class TransferRequest
     {
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a positive whole number")]
         [Range(1, int.MaxValue, ErrorMessage = "Amount must be a positive value")]
-        public int Amount { get; set; }
+        public decimal Amount { get; set; }
+
         [Required(ErrorMessage = "Sender account number is required")]
         public string SenderAccountNumber { get; set; }
+
         [Required(ErrorMessage = "Receiver account number is required")]
         public string ReceiverAccountNumber { get; set; }
+        public decimal Fee { get; set; }
+        public decimal Total { get; set; }
         public string Note { get; set; }
+
         public TransferRequest()
         {
             Note = "Commencing transfer process now. Initiating transfer from [Sender's Account] to [Receiver's Account]. Thank you for your patience.";
         }
     }
+
     public class TransferConfirmation
     {
         [Required]
@@ -334,42 +377,48 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
     }
     public class Transfer
     {
-        public string Id { get; set; }
-        public string SourceAccountNumber { get; set; }
-        public string DestinationAccountNumber { get; set; }
-        public string SourceAccountType { get; set; }
-        public string DestinationAccountType { get; set; }
+        public string Id { get; set; } = string.Empty;
+        public string SourceAccountNumber { get; set; } = string.Empty;
+        public string DestinationAccountNumber { get; set; } = string.Empty;
+        public string SourceAccountType { get; set; } = string.Empty;
+        public string DestinationAccountType { get; set; } = string.Empty;
         public decimal Charges { get; set; }
+        public decimal Total { get; set; }
+
         public decimal Tax { get; set; }
-        public string TransactionRef { get; set; }
-        public string TransactionType { get; set; }
+        public string TransactionRef { get; set; } = string.Empty;
+        public string TransactionType { get; set; } = string.Empty;
         public decimal SourceCommision { get; set; }
         public decimal DestinationCommision { get; set; }
+        public DateTime AccountingDate { get; set; }
         public bool IsInterBranchOperation { get; set; }
         public decimal Amount { get; set; }
-        public string SourceType { get; set; }
-        public string Status { get; set; }
-        public string ApprovedByUserName { get; set; }
-        public string InitiatedByUSerName { get; set; }
+        public string SourceType { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+        public string ApprovedByUserName { get; set; } = string.Empty;
+        public string InitiatedByUSerName { get; set; } = string.Empty;
         public DateTime DateOfInitiation { get; set; } = DateTime.Now;
         public DateTime DateOfApproval { get; set; } = DateTime.MinValue;
-        public string InitiatorComment { get; set; }
-        public string ValidatorComment { get; set; }
-        public string BranchId { get; set; }
-        public string AccountId { get; set; }
-        public string TellerId { get; set; }
-        public string SourceBrachId { get; set; }
-        public string DestinationBrachId { get; set; }
-        public string SourceAccountName { get; set; }
-        public string DestinationAccountName { get; set; }
-        public string SenderName { get; set; }
-        public string RecieverName { get; set; }
-
-        public string SourceBranchName { get; set; }
-        public string DestinationBranchName { get; set; }
-        public virtual Account Account { get; set; }
-        public virtual Teller Teller { get; set; }
- 
+        public string InitiatorComment { get; set; } = string.Empty;
+        public string ValidatorComment { get; set; } = string.Empty;
+        public string BranchId { get; set; } = string.Empty;
+        public string SourceAccountName { get; set; } = string.Empty;
+        public string DestinationAccountName { get; set; } = string.Empty;
+        public string SenderName { get; set; } = string.Empty;
+        public string RecieverName { get; set; } = string.Empty;
+        public string SourceBranchName { get; set; } = string.Empty;
+        public string DestinationBranchName { get; set; } = string.Empty;
+        public string AccountId { get; set; } = string.Empty;
+        public string TellerId { get; set; } = string.Empty;
+        public List<Account> SenderAccounts { get; set; } = new List<Account>();
+        public List<Account> ReceiverAccounts { get; set; } = new List<Account>();
+        //public Account SenderAccount { get; set; } = new Account();
+        //public Account ReceiverAccount { get; set; } = new Account();
+        public Teller Teller { get; set; } = new Teller();
+        public string SourceBrachId { get; set; } = string.Empty;
+        public string DestinationBrachId { get; set; } = string.Empty;
+        public string SendingCustomerId { get; set; } = string.Empty;
+        public string ReceivingCustomerId { get; set; } = string.Empty;
     }
 
     //

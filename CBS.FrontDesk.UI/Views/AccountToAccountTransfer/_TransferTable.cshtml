@@ -1,0 +1,55 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.AccountToAccountTransferDto
+
+<div class="table-responsive mt-3">
+    <table class="table table-bordered table-hover table-striped" id="myDataTable">
+        <thead class="table-light text-center align-middle">
+            <tr>
+                <th>Date</th>
+                <th>Sender Name</th>
+                <th>Receiver Name</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Initiated By</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var transfer in Model.TransfterRequests.OrderByDescending(t => t.DateOfInitiation))
+            {
+                <tr class="text-center align-middle">
+                    <td>@transfer.DateOfInitiation.ToString("dd-MMM-yyyy HH:mm")</td>
+                    <td class="text-start">@transfer.SenderName</td>
+                    <td class="text-start">@transfer.RecieverName</td>
+                    <td class="text-end fw-bold">@transfer.Amount.ToString("#,##0.00")</td>
+                    <td>
+                        <span class="badge bg-@(transfer.Status == "Approved" ? "success" : transfer.Status == "Pending" ? "warning text-dark" : "danger")">
+                            @transfer.Status
+                        </span>
+                    </td>
+                    <td>@transfer.InitiatedByUSerName</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-sm btn-outline-info" title="Details" onclick="openTransferModal('InitializeData',@transfer.Id,'Details','details','_TransferDetails')">
+                                <i class="mdi mdi-eye-outline"></i>
+                            </button>
+
+                            @if (!string.Equals(transfer.Status, "Approved", StringComparison.OrdinalIgnoreCase))
+                            {
+                                @*<button class="btn btn-sm btn-outline-primary" title="Edit">
+                                    <i class="mdi mdi-pencil"></i>
+                                </button>*@
+                                <button class="btn btn-sm btn-outline-success" onclick="openTransferModal('InitializeData',@transfer.Id,'Approve or Reject Request','details','_TransferApprove')" title="Approve">
+                                    <i class="mdi mdi-check-bold"></i>
+                                </button>
+                                @*<button class="btn btn-sm btn-outline-danger" title="Delete">
+                                    <i class="mdi mdi-delete"></i>
+                                </button>*@
+                            }
+                        </div>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

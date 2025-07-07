@@ -325,6 +325,11 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public SavingProduct product { get; set; }
 
     }
+    public class TagPISCollectionProfileCommand
+    {
+        public string CustomerId { get; set; }
+        public bool TagAsPISCollectionProfile { get; set; } // true = tag, false = untag
+    }
     public class MemberAccountActivation
     {
         public string Id { get; set; }

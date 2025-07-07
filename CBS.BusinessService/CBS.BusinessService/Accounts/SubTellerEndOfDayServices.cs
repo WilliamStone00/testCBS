@@ -45,12 +45,12 @@ namespace CBS.BusinessService.Accounts
 
             return totalNotesValue == amount;
         }
-        public async Task<ExecutionMessages> EndTheDay(CloseOfDayRequest model)
+        public async Task<ExecutionMessages> EndTheDay(CloseOfDayRequest model, bool proceedWithDiscrepancy)
         {
             try
             {
 
-                var (isValid, discrepancyMessage) = ValidateDenominations(model.CurrencyNotes, model.Amount);
+                var (isValid, discrepancyMessage) = ValidateDenominations(model.CurrencyNotes, model.Amount, proceedWithDiscrepancy);
 
                 if (!isValid)
                 {
