@@ -132,6 +132,19 @@ namespace CBS.BusinessService.DailyCollectionServices
             return ExecutionMessage;
         }
 
-        
+        public async Task<CollectorSalarySummaryDto> GetAgentActivitiesAsync(CollectorSalaryInfo salary)
+        {
+            //{branchId}/{agentId}/{month}/{operationType}
+            string _baseUrl = string.Format(APICallHelper.GetAgentActivities, salary.BranchId, salary.CollectorId, salary.Month, salary.OperationType);
+            var apiResponse = await _dailyCollectionApiHelper.GetAsync<ResponseObject<CollectorSalarySummaryDto>>(_baseUrl);
+            if (apiResponse.IsSuccess)
+            {
+                return apiResponse.ApiResponseData.Data;
+            }
+            else
+            {
+                return new CollectorSalarySummaryDto();
+            }
+        }
     }
 }

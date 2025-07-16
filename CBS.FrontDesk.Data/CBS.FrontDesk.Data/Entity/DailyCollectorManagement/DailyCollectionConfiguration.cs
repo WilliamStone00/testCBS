@@ -106,11 +106,24 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectorManagement
             ImageVirtualNoSignaturePath = "~/AppFiles/Images/no signature.png";
         }
     }
+    public class CollectorSalaryInfo
+    {
+        // 👤 Collector Info
+        public string CollectorId { get; set; }
+        // 🏢 Branch Info
+        public string BranchId { get; set; }
+        // 📅 Period & Operation Context
+        public string Month { get; set; }    // Format: YYYY-MM
+        public string OperationType { get; set; }           // e.g. "CashIn", "LoanRepayment", "OnboardingFee"
+        public string MemberReference { get; set; }
 
+    }
     public class DailyCollectionConfiguration
     {
 
         public Zone Zone { get; set; }= new Zone();
+        public CollectorSalaryInfo CollectorSalarySummary { get; set; } = new CollectorSalaryInfo();
+        public CollectorSalarySummaryDto CollectorData { get; set; } = new CollectorSalarySummaryDto();
         public List<Zone > Zones { get; set; } = new List<Zone >();
         public CommissionSetting CommissionSetting { get; set; } = new CommissionSetting();
         public List<CommissionSetting > CommissionSettings { get; set; } = new List<CommissionSetting> ();
@@ -120,6 +133,9 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectorManagement
         public string Action { get; set; }
         public string KEY { get; set; } = "KEY";
     }
+
+
+
     public class DailyAgentManagement
     {
 

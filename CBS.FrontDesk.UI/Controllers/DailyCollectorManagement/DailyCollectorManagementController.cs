@@ -2,33 +2,44 @@
 using CBS.BusinessService.Config;
 using CBS.BusinessService.DailyCollectionServices;
 using CBS.BusinessService.Session;
+using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.DailyCollectionData;
 using CBS.FrontDesk.Data.Entity.DailyCollectorManagement;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.UserManagement;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-
+// 
 namespace CBS.FrontDesk.UI.Controllers
 {
+    //DailyAgentManagement/AddOrUpdate
     public class DailyAgentManagementController : BaseController
     {
         private BranchServices _branchService;
         private AgentServices _agentServices;
+        private UserManagementServices _userServices;
         private AgentAccountServices _agentAccountServices;
         public DailyAgentManagementController()
         {
             _branchService = new BranchServices();
             _agentServices = new AgentServices();
+            _userServices = new UserManagementServices();
             _agentAccountServices = new AgentAccountServices();
 
 
         }
         public async Task<ActionResult> Index()
+        {
+            await GetList();
+            return View(new DailyCollectionConfiguration());
+        }
+        public async Task<ActionResult> CommissionPayment()
         {
             await GetList();
             return View(new DailyAgentManagement());
@@ -96,11 +107,38 @@ namespace CBS.FrontDesk.UI.Controllers
 
             }
         }
+        private dynamic BuildOperationTypes()
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select Option" });
 
+            //selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "Subscription", Value = $"SUB" });
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "Deposit", Value = $"CashIn" });
+
+            return selectListItems;
+
+        }
+        private async Task<dynamic> BuildDailyCollectorAsync()
+        {
+            var listUSERS = (await _userServices.GetDailyCollectors()).ToList();
+         
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+          
+            foreach (var item in listUSERS)
+            {
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.FirstName+" "+ item.LastName, Value = item.UserId.ToString() });
+
+            }
+
+            return selectListItems;
+
+        }
         private async Task GetList()
         {
             var BranList = (await _branchService.GetBranches()).ToList();
             ViewBag.Branches = BuildBranch(BranList);
+            ViewBag.OperationTypes = BuildOperationTypes();
+            ViewBag.DailyCollectors =await BuildDailyCollectorAsync();
         }
         private dynamic BuildBranch(List<Branch> listOfItems)
         {
@@ -110,7 +148,7 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 if (!item.BranchCode.Equals("000"))
                 {
-                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.Name}" });
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text =  $"{item.Name}", Value = item.Id });
                 }
 
             }
@@ -119,74 +157,67 @@ namespace CBS.FrontDesk.UI.Controllers
         }
         [HttpPost]
      
-        public async Task<ActionResult> AddOrUpdate(DailyAgentManagement model)
+        private async Task<ActionResult> RetrieveAgentActivitiesAsync(DailyCollectionConfiguration model)
         {
-            Func<Task<ExecutionMessages>> serviceAction = null;
-
-            if (model.ServiceOption == "agent")
+            var modelResult  =  _agentServices.GetAgentActivitiesAsync(model.CollectorSalarySummary);
+            if (modelResult != null) 
             {
-                //return () => _AccountServices.Create(model.Account);
-                if (model.Action == "insert")
-                {
-                    serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
-
-                }
-                else
-                {
-                    serviceAction = await GetUpdateServiceActionAsync(model.ServiceOption, model);
-                }
-
-
+                return Json( new { DataModel = modelResult, Message = "Upload Ok" }, JsonRequestBehavior.AllowGet );
             }
-            else if(model.ServiceOption == "agentAccount")
-            {
-                //return () => _AccountServices.Create(model.Account);
-                if (model.Action == "insert")
-                {
-                    serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
-
-                }
-                else
-                {
-                    serviceAction = await GetUpdateServiceActionAsync(model.ServiceOption, model);
-                }
-
-
-            }
-
-
-            if (serviceAction != null)
-            {
-                try
-                {
-                    var data = await serviceAction();
-                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-                }
-                catch (Exception ex)
-                {
-                    return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
-                }
-            }
-
-            return Json(new { success = false, status = false, message = "Invalid option selected." });
-        }
-
-        private async Task<Func<Task<ExecutionMessages>>> GetUpdateServiceActionAsync(string serviceOption, DailyAgentManagement model)
-        {
-            if (serviceOption == "agent")
-            {
-
-                return () => _agentServices.Create(model.Agent);
-
-            }
-            else if (serviceOption == "agentAccount")
-            {
-                return () => _agentAccountServices.Create(model.AgentAccount);
-            }
-
             else
             {
-                return null;
+                return Json(new { DataModel = modelResult, Message = "Error occured getting customer infomation " }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> RetrieveAgentActivitiesAsync(string Month, string BranchId, string CollectorId, string OperationType, string MemberReference)
+        {
+            try
+            {
+                // Validate input
+                if (string.IsNullOrEmpty(Month) || BranchId.IsNullOrEmpty()|| CollectorId.IsNullOrEmpty())
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Invalid parameters supplied."
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+                // Example: Fetch data from service/repository
+                var activities = await _agentServices.GetAgentActivitiesAsync(new CollectorSalaryInfo
+                {
+                    Month = Month,
+                    BranchId = BranchId,
+                    CollectorId = CollectorId,
+                    OperationType = OperationType,
+                    MemberReference = MemberReference
+                });
+
+                if (activities == null )
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "No activities found for the provided parameters."
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+                return Json(new
+                {
+                    success = true,
+                    data = activities
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+               
+                return Json(new
+                {
+                    success = false,
+                    message = "An error occurred while processing your request."
+                }, JsonRequestBehavior.AllowGet);
             }
         }
 

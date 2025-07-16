@@ -1,32 +1,33 @@
-﻿using CBS.FrontDesk.Data.Entity.Accounting;
-using CBS.FrontDesk.Helper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessServices;
+﻿using BusinessServices;
 using CBS.API.Helper;
-using System.Configuration;
-using CBS.FrontDesk.Data.Message;
+using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounts;
+using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
-using CBS.FrontDesk.Data.UserManagement;
-using System.Runtime.InteropServices;
-using CBS.FrontDesk.Data;
-using DocumentFormat.OpenXml.EMMA;
-using CBS.FrontDesk.Data.Entity.CustomerManagement;
-using System.Web;
-using System.IO;
-using DocumentFormat.OpenXml.Office2010.Excel;
+using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Config;
-using CBS.BusinessService.Config;
-using CBS.BusinessService.Accounts;
-using CBS.BusinessService.Accounting;
-using System.Threading;
+using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.UserManagement;
+using CBS.FrontDesk.Helper;
+using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.Xml;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web;
 
 
 namespace CBS.BusinessService
@@ -36,6 +37,8 @@ namespace CBS.BusinessService
         private readonly ApiCallerHelper _accountingApiCallerHelper;
         private readonly ApiCallerHelper _TransactionBaseUrl;
         private readonly ApiCallerHelper _IdentityServerBaseUrl;
+        private readonly object _logger;
+
         private AccountingServices _accountServices { get; set; }
         public BranchServices branchServices { get;   set; }
 
@@ -476,45 +479,81 @@ namespace CBS.BusinessService
 
             return null;
         }
+        //public async Task<BalanceSheetData> GetBalanceSheetDataEntries(BSQuery model)
+        //{
+        //    //Task<ServiceResponseXX<BalanceSheetData>> apiCallTask = null;
+
+
+        //    try
+        //    {
+        //        // Create a task for the API call
+        //        var apiCallTask = await _accountingApiCallerHelper.PostAsync<ResponseObject<BalanceSheetData>>(APICallHelper.BalanceSheet_EntriesUrl, model, 300);
+        //        if (apiCallTask.IsSuccess)
+        //        {
+
+        //                return apiCallTask.ApiResponseData.Data;
+
+
+        //        }
+        //        else
+        //        {
+        //            return null; 
+        //        }
+
+        //    }
+        //    catch (OperationCanceledException ex)
+        //    {
+        //        // This could happen if the timeout occurs and the API call is cancelled
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log and handle exception
+        //        GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+        //            SystemMessageStatus.Failed.ToString(), ex);
+
+
+        //    }
+
+
+        //    return null;
+        //}
+
+
         public async Task<BalanceSheetData> GetBalanceSheetDataEntries(BSQuery model)
         {
-            //Task<ServiceResponseXX<BalanceSheetData>> apiCallTask = null;
-     
-
             try
             {
-                // Create a task for the API call
-                var apiCallTask = await _accountingApiCallerHelper.PostAsync<ResponseObject<BalanceSheetData>>(APICallHelper.BalanceSheet_EntriesUrl, model, 300);
+ 
+
+                var apiCallTask = await _accountingApiCallerHelper
+                    .PostAsync<ResponseObject<BalanceSheetData>>(APICallHelper.BalanceSheet_EntriesUrl, model, 300);
+
                 if (apiCallTask.IsSuccess)
-                {
-                   
-                        return apiCallTask.ApiResponseData.Data;
-
-
+                { 
+                    return apiCallTask.ApiResponseData.Data;
                 }
                 else
                 {
-                    return null; 
+             
+                    return null;
                 }
-
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException ex)
             {
-                // This could happen if the timeout occurs and the API call is cancelled
+         
 
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
             }
             catch (Exception ex)
             {
-                // Log and handle exception
-                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
-                    SystemMessageStatus.Failed.ToString(), ex);
-
-
+               
             }
-
 
             return null;
         }
+
         public async Task<List<AccountingEntry>> RetrieveAccountingEntries(JEQuery model)
         {
             try

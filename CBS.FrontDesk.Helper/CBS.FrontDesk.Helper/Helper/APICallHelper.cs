@@ -1139,8 +1139,8 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_Agent = "/api/v1/Agent/{0}";
         public static string CreateAgent = "/api/v1/Agent";
         public static string GetAllAgent = "/api/v1/Agents";
-
-        //AgentAccount
+        public static string GetAgentActivities = "/api/v1/Agent/GetAgentActivities/{0}/{1}/{2}/{3}";
+ 
         public static string Get_Update_Delete_AgentAccount = "/api/v1/AgentAccount/{0}";
         public static string CreateAgentAccount = "/api/v1/AgentAccount";
         public static string GetAllAgentAccount = "/api/v1/AgentAccounts";

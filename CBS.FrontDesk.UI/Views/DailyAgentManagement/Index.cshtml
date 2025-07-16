@@ -1,0 +1,182 @@
+﻿@model CBS.FrontDesk.Data.Entity.DailyCollectorManagement.DailyCollectionConfiguration
+
+    <div class="container">
+        <div class="header">
+            <h1>💰 Daily Collector Salary Payment</h1>
+            <p>Manage collector salaries and revenue distribution</p>
+        </div>
+
+        <div class="filters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="month">📅 Select Month & Year</label>
+                    @Html.TextBoxFor(m => m.CollectorSalarySummary.Month, new
+                    {
+                        @class = "form-control",
+                        type = "month",
+                        id = "month",
+                        name = "month"
+                    })
+                    @Html.ValidationMessageFor(m => m.CollectorSalarySummary.Month, "", new { @class = "text-danger" })
+                </div>
+                @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
+                {
+                    <div class="filter-group">
+                        <label for="branch">🏢 Select Branch</label>
+
+                        @Html.DropDownListFor(m => m.CollectorSalarySummary.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Value", "Text"), "--- Select Branch", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.CollectorSalarySummary.BranchId, "", new { @class = "text-danger" })
+
+                    </div>
+                }
+                <div class="filter-group">
+                    <label for="collector">📚 Operation Type</label>
+
+                    @Html.DropDownListFor(m => m.CollectorSalarySummary.OperationType, new SelectList(ViewBag.OperationTypes == null ? "" : ViewBag.OperationTypes, "Value", "Text"), "--- Select Operation Types", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.CollectorSalarySummary.OperationType, "", new { @class = "text-danger" })
+                </div>
+
+            </div>
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="collector">👤 Select Daily Collector</label>
+
+                    @Html.DropDownListFor(m => m.CollectorSalarySummary.CollectorId, new SelectList(ViewBag.DailyCollectors == null ? "" : ViewBag.DailyCollectors, "Value", "Text"), "--- Select Daily Collectors", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.CollectorSalarySummary.BranchId, "", new { @class = "text-danger" })
+                </div>
+                <div class="filter-group">
+                    <label for="collector">👤 Enter Collectors MemberReference</label>
+                    @Html.TextBoxFor(m => m.CollectorSalarySummary.MemberReference, new { @class = "form-control", @id = "MemberReference" })
+                    @Html.ValidationMessageFor(m => m.CollectorSalarySummary.MemberReference, "", new { @class = "text-danger" })
+                </div>
+                <div class="filter-group">
+                    <label>&nbsp;</label>
+                    <button class="load-btn btn-primary" onclick="loadData()">🔍 Load Data</button>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div class="content">
+            <div id="results" class="hidden">
+                <div class="card shadow p-3 mb-4">
+                    <h2>👤 Collector Information</h2>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Collector Name</strong>
+                            <span id="collectorName"></span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Collector ID</strong>
+                            <span id="collectorId"></span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Branch</strong>
+                            <span id="branchInfo"></span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Period</strong>
+                            <span id="periodInfo"></span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Operation Type</strong>
+                            <span id="operationType"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-stats">
+                    <div class="stat-card">
+                        <h3>👥 Active Members</h3>
+                        <div class="value" id="totalMembers"></div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>💵 Total Collected</h3>
+                        <div class="value" id="totalCollected"></div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>💰 Total Fees</h3>
+                        <div class="value" id="totalFees"></div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>📊 To Distribute</h3>
+                        <div class="value" id="totalDistribute"></div>
+                    </div>
+                </div>
+
+                <div class="members-section">
+                    <h2 class="section-title">👥 Member Activity Statistics</h2>
+                    <button id="toggleBtn" class="btn-primary">Hide Member Activities</button>
+                    <table class="members-table">
+                        <thead>
+                            <tr>
+                                <th>Member ID</th>
+                                <th>Member Name</th>
+                                <th>Total Activity</th>
+                                <th>Fee Charged</th>
+                                <th>Last Transaction</th>
+                            </tr>
+                        </thead>
+                        <tbody id="membersTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="stakeholder-section">
+                    <h2 class="section-title">💼 Revenue Distribution by Stakeholder</h2>
+                    <div class="stakeholder-grid">
+                        @foreach (var item in Model.CollectorData.SharedAmounts)
+                        {
+                            <div class="stakeholder-card">
+                                @if (item.Stakeholder.ToLower().Contains("cam"))
+                                {
+                                    <h4>🏦 @item.Stakeholder</h4>
+                                    <div class="amount">@item.Amount FCFA</div>
+                                    <div class="percentage">(@item.Percentage%)</div>
+                                }
+                                else if (item.Stakeholder.ToLower().Contains("daily"))
+                                {
+                                    <h4>👤@item.Stakeholder</h4>
+                                    <div class="amount">@item.Amount FCFA</div>
+                                    <div class="percentage">(@item.Percentage%)</div>
+                                }
+                                else if (item.Stakeholder.ToLower().Contains("branch"))
+                                {
+                                    <h4>🏢 Branch Commission</h4>
+                                    <div class="amount">@item.Amount FCFA</div>
+                                    <div class="percentage">(@item.Percentage%)</div>
+                                }
+                                else if (item.Stakeholder.ToLower().Contains("incentive"))
+                                {
+                                    <h4>🎯 @item.Stakeholder</h4>
+                                    <div class="amount">@item.Amount FCFA</div>
+                                    <div class="percentage">(@item.Percentage%)</div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="payment-section">
+                    <h3>💳 Ready to Process Payment</h3>
+                    <button class="payment-btn" onclick="processPayment()">
+                        💰 Pay Agent Now
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    @section Styles {
+
+        <link href="~/CBSTemp/ui/assets/css/CommissionPayment.css" rel="stylesheet" />
+    }
+
+
+    @section Scripts {@Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/CommissionManagement/CommissionPayment.js"></script>
+
+    }
+

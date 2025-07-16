@@ -1,0 +1,195 @@
+﻿
+@{
+    ViewBag.Title = "CommissionPayment";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Saving Salary Management</title>
+   
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 Daily Saving Salary System</h1>
+            <p>Manage collector salaries and revenue distribution</p>
+        </div>
+
+        <div class="filters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="month">📅 Select Month & Year</label>
+                    <input type="month" id="month" name="month" value="2024-07">
+                </div>
+                <div class="filter-group">
+                    <label for="branch">🏢 Select Branch</label>
+                    <select id="branch" name="branch">
+                        <option value="">-- Select Branch --</option>
+                        <option value="BR001">Douala Central - BR001</option>
+                        <option value="BR002">Yaoundé Main - BR002</option>
+                        <option value="BR003">Bafoussam - BR003</option>
+                        <option value="BR004">Bamenda - BR004</option>
+                        <option value="BR005">Bertoua - BR005</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="collector">👤 Select Daily Collector</label>
+                    <select id="collector" name="collector">
+                        <option value="">-- Select Collector --</option>
+                        <option value="COL001">Jean-Paul Mvondo</option>
+                        <option value="COL002">Marie Ngono</option>
+                        <option value="COL003">Pierre Kamga</option>
+                        <option value="COL004">Sarah Biya</option>
+                        <option value="COL005">Emmanuel Fru</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>&nbsp;</label>
+                    <button class="load-btn" onclick="loadData()">🔍 Load Data</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div id="results" class="hidden">
+                <div class="collector-info">
+                    <h2>👤 Collector Information</h2>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Collector Name</strong>
+                            <span id="collectorName">Jean-Paul Mvondo</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Collector ID</strong>
+                            <span id="collectorId">COL001</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Branch</strong>
+                            <span id="branchInfo">Douala Central - BR001</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Period</strong>
+                            <span id="periodInfo">July 2024</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Operation Type</strong>
+                            <span id="operationType">CashIn & LoanRepayment</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-stats">
+                    <div class="stat-card">
+                        <h3>👥 Active Members</h3>
+                        <div class="value" id="totalMembers">45</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>💵 Total Collected</h3>
+                        <div class="value" id="totalCollected">2,450,000</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>💰 Total Fees</h3>
+                        <div class="value" id="totalFees">125,000</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>📊 To Distribute</h3>
+                        <div class="value" id="totalDistribute">118,750</div>
+                    </div>
+                </div>
+
+                <div class="members-section">
+                    <h2 class="section-title">👥 Member Activity Statistics</h2>
+                    <table class="members-table">
+                        <thead>
+                            <tr>
+                                <th>Member ID</th>
+                                <th>Member Name</th>
+                                <th>Total Activity</th>
+                                <th>Fee Charged</th>
+                                <th>Last Transaction</th>
+                            </tr>
+                        </thead>
+                        <tbody id="membersTableBody">
+                            <tr>
+                                <td>MEM001</td>
+                                <td>Alice Mbarga</td>
+                                <td class="amount">75,000 FCFA</td>
+                                <td class="amount">3,750 FCFA</td>
+                                <td>2024-07-14</td>
+                            </tr>
+                            <tr>
+                                <td>MEM002</td>
+                                <td>Robert Ndong</td>
+                                <td class="amount">120,000 FCFA</td>
+                                <td class="amount">6,000 FCFA</td>
+                                <td>2024-07-13</td>
+                            </tr>
+                            <tr>
+                                <td>MEM003</td>
+                                <td>Grace Eyenga</td>
+                                <td class="amount">50,000 FCFA</td>
+                                <td class="amount">2,500 FCFA</td>
+                                <td>2024-07-12</td>
+                            </tr>
+                            <tr>
+                                <td>MEM004</td>
+                                <td>Paul Essomba</td>
+                                <td class="amount">95,000 FCFA</td>
+                                <td class="amount">4,750 FCFA</td>
+                                <td>2024-07-14</td>
+                            </tr>
+                            <tr>
+                                <td>MEM005</td>
+                                <td>Lydia Fokou</td>
+                                <td class="amount">85,000 FCFA</td>
+                                <td class="amount">4,250 FCFA</td>
+                                <td>2024-07-11</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="stakeholder-section">
+                    <h2 class="section-title">💼 Revenue Distribution by Stakeholder</h2>
+                    <div class="stakeholder-grid">
+                        <div class="stakeholder-card">
+                            <h4>🏦 CamCCUL</h4>
+                            <div class="amount">59,375 FCFA</div>
+                            <div class="percentage">(50.0%)</div>
+                        </div>
+                        <div class="stakeholder-card">
+                            <h4>👤 Daily Collector</h4>
+                            <div class="amount">35,625 FCFA</div>
+                            <div class="percentage">(30.0%)</div>
+                        </div>
+                        <div class="stakeholder-card">
+                            <h4>🏢 Branch Commission</h4>
+                            <div class="amount">17,812 FCFA</div>
+                            <div class="percentage">(15.0%)</div>
+                        </div>
+                        <div class="stakeholder-card">
+                            <h4>🎯 Incentive Pool</h4>
+                            <div class="amount">5,938 FCFA</div>
+                            <div class="percentage">(5.0%)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-section">
+                    <h3>💳 Ready to Process Payment</h3>
+                    <button class="payment-btn" onclick="processPayment()">
+                        💰 Pay Agent Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+</body>
+</html>
+
