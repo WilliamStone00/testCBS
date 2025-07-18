@@ -207,7 +207,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                     ViewBag.CalculateInterestOn = productEnumAgregates.CalculateInterestOn;
                     var penalty = await _PenaltyServices.GetPenalty(KEY);
 
-                    return PartialView(partialView, penalty.LoanProduct);
+                    return PartialView(partialView, penalty);
                 }
                 else if (path == "add_penalty")
                 {
@@ -261,7 +261,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             var loanTerms = await _loanTermServices.GetLoanTerms();
 
             ViewBag.SheduleTypes = _LoanProductServices.GetScheduleTypes();
-            ViewBag.Penalties = agreggates.Penalties;
+            ViewBag.Penalties = productEnumAgregates.Penalties;
             ViewBag.ProductCategories = loanProductCategories;
             ViewBag.LoanTerms = loanTerms;
             ViewBag.Fees = agreggates.Fees;

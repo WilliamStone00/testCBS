@@ -12,11 +12,13 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
     public class LoanProducct
     {
+        public string PenaltyId { get; set; }
+
         public string Id { get; set; }
 
         [Required]
         public string ProductCode { get; set; }
-
+        public string LoanTypeCategory { get; set; }
         [Required]
         public string ProductName { get; set; }
 
@@ -244,6 +246,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
     public class LoanProduct
     {
+        public string PenaltyId { get; set; }
+
         public string Id { get; set; }
         public string ProductCode { get; set; }
         public string LoanProductCategoryId { get; set; }
@@ -400,6 +404,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
     public class UpdateLoanProductCommand
     {
+        public string PenaltyId { get; set; }
         public string Id { get; set; }
         public string ProductCode { get; set; }
         public bool InterestMustBePaidUpFront { get; set; }
@@ -601,6 +606,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public List<StringValues> LoanCategories { get; set; } = new List<StringValues>();
         public List<StringValues> LoanDeliquenciesStatus { get; set; } = new List<StringValues>();
         public List<StringValues> LoanApplicationTypes { get; set; } = new List<StringValues>();
+        public List<StringValues> Penalties { get; set; } = new List<StringValues>();
 
         //LoanDeliquenciesStatus
         //ApprovalStatus

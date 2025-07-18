@@ -222,6 +222,17 @@ namespace BusinessServices
             }
             return true;
         }
+        public List<StringValues> GetPenaltyTypes()
+        {
+            return new List<StringValues>
+            {
+                new StringValues { Text = "Late Repayment Penalty", Value = "Late_Repayment_Penalty" },
+                new StringValues { Text = "Penalty After Maturity Date", Value = "Penalty_After_Maturity_Date" },
+                new StringValues { Text = "Overdraft Breach Penalty", Value = "Overdraft_Breach_Penalty" },
+                new StringValues { Text = "Grace Period Violation", Value = "Grace_Period_Violation" },
+                new StringValues { Text = "Exceed Utilization Limit", Value = "Exceed_Utilization_Limit" }
+            };
+        }
         /// <summary>
         /// Validates whether the declared cash amount matches the actual calculated cash value,
         /// and ensures teller acknowledgment is provided in case of a discrepancy.

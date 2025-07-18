@@ -30,13 +30,21 @@
     <div class="col-12">
         <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-bank-outline me-1"></i> Eligibility & Product Binding</h6>
     </div>
+
     <div class="col-md-12">
         <div class="form-floating shadow-sm">
             @Html.DropDownListFor(m => m.ProductId, new SelectList(ViewBag.Products, "Value", "Text"), "--- Select Product ---", new { @class = "form-control select2" })
-            <label>Select Account Product</label>
-            <small class="text-muted d-block">💡 Choose the main account type this overdraft applies to (e.g., Salary Account).</small>
+            <label>Select Loan Product</label>
+            <small class="text-muted d-block">
+                💡 Select the loan product to which this overdraft configuration is limited.
+                The configuration will remain strictly confined to the scope of the selected product,
+                in accordance with COBAC-compliant credit linkage rules.
+            </small>
+
         </div>
     </div>
+
+
     <div class="col-md-6">
         <div class="form-floating shadow-sm">
             @Html.TextBoxFor(m => m.MinimumCreditScoreRequired, new { @class = "form-control", type = "number" })
@@ -71,7 +79,13 @@
         </div>
     </div>
 
-
+    <div class="col-md-12">
+        <div class="form-floating shadow-sm">
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            <label>Configuration name</label>
+            <small class="text-muted d-block">💡 Configuration name. This name must be unique.</small>
+        </div>
+    </div>
 
     <!-- 💰 Limit & Pricing Rules -->
     <div class="col-12">
@@ -161,7 +175,6 @@
         </div>
     </div>
 
-    <!-- 📆 Tenure & Expiry -->
     <!-- 📆 Tenure & Expiry -->
     <div class="col-12">
         <h6 class="text-primary border-bottom pt-2 pb-1">
@@ -343,7 +356,7 @@
 
     <div class="col-md-12" id="penaltyDropdownContainer">
         <div class="form-floating shadow-sm">
-            @Html.ListBoxFor(m => m.PenaltyId, new MultiSelectList(ViewBag.Penalties, "Id", "Name"), new { @class = "form-control select2", multiple = "multiple" })
+            @Html.ListBoxFor(m => m.PenaltyId, new MultiSelectList(ViewBag.Penalties, "Value", "Text"), new { @class = "form-control select2", multiple = "multiple" })
             <label>Select Applicable Penalties</label>
             <small class="text-muted d-block">💡 Choose one or more penalties that apply when the member violates overdraft terms (e.g., repayment delay).</small>
         </div>

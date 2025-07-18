@@ -17,6 +17,11 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.Data.Entity.SavingProducts
 {
+    public class ToggleRemoteCloseDto
+    {
+        public string TellerId { get; set; }
+        public bool Enable { get; set; }
+    }
 
     public class SavingConfiguration
     {
@@ -584,8 +589,11 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         [StringLength(50, ErrorMessage = "TellerType cannot exceed 50 characters.")]
         public string TellerType { get; set; } // VirtualTeller, PhysicalTeller, DailyCollectorTeller, NoneCashTeller
+        public bool AllowRemoteTellerClose { get; set; }
 
         public bool PerformCashIn { get; set; }
+        public bool ShowbalancesOnCloseOfDay { get; set; }
+        public bool ShowbalancesOnOpenOfDay { get; set; }
 
         public bool PerformCashOut { get; set; }
 

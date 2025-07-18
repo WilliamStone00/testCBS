@@ -30,18 +30,20 @@ namespace CBS.FrontDesk.UI.Controllers.Overdraft
         private readonly OverdraftFacilityConfigServices _overdraftFacilityConfigServices;
         private readonly BranchServices _branchServices;
         private readonly LoanProductServices _loanProductServices;
-
+        private readonly PenaltyServices _penaltyServices;
         private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
 
-        public OverdraftFacilityConfigController(OverdraftFacilityConfigServices cashDeskService = null, ChartOfAccountServicesAnnex chartOfAccountServices = null, BranchServices memberNoneCashOperationServices = null, LoanProductServices loanProductServices = null)
+        public OverdraftFacilityConfigController(OverdraftFacilityConfigServices cashDeskService = null, ChartOfAccountServicesAnnex chartOfAccountServices = null, BranchServices memberNoneCashOperationServices = null, LoanProductServices loanProductServices = null, PenaltyServices penaltyServices = null)
         {
             _overdraftFacilityConfigServices = cashDeskService;
             this.chartOfAccountServices=chartOfAccountServices;
             _branchServices=memberNoneCashOperationServices;
             _loanProductServices=loanProductServices;
+            _penaltyServices=penaltyServices;
         }
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
+            await LoadDropdowns();
             return View();
         }
         public ActionResult Transfters()
@@ -120,12 +122,9 @@ namespace CBS.FrontDesk.UI.Controllers.Overdraft
             ViewBag.chartOfAccounts = chartOfAccounts.ToList();
             var Products = await _loanProductServices.GetStringValuesAsync();
             ViewBag.Products = Products.ToList();
-
-            
-
             var branches = await _branchServices.GetBranches();
             ViewBag.branches = branches.ToList();
-            ViewBag.Penalties = branches.ToList();
+            ViewBag.Penalties = (await _penaltyServices.GetStringValuesAsync()).ToList();
             
             return true;
         }

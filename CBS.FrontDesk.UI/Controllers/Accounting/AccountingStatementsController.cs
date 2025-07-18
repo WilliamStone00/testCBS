@@ -489,9 +489,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                         this.HttpContext.Session["rptType"] = $"{model.SystemQuery.FileType}";
                                         this.HttpContext.Session["rptSource"] = (account != null) ? account : new AccountingGeneralLedgerDetails();
                                     }
-                                HasPassed = account.LedgerDetails.Count() > 0;
-                                Message = account.Message;
-                                    if (account == null)
+                                
+                                if (account == null)
                                     {
 
                                         this.HttpContext.Session["rptSource"] = "empty";

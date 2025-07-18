@@ -241,7 +241,11 @@ namespace CBS.BusinessService.AccountingDayObject
 
                 if (model.IsCentraliseOpening)
                 {
-                    model.Branches = new List<BranchListing>();
+                    if (!model.Branches.Any())
+                    {
+                        model.Branches = new List<BranchListing>();
+                    }
+
                 }
 
                 // Filter out branches with null BranchId

@@ -747,11 +747,11 @@ namespace CBS.FrontDesk.Helper
         public static string OverdraftLimitBandGetAll = "/api/v1/OverdraftLimitBand/list";
         public static string OverdraftLimitBandDT = "/api/v1/OverdraftLimitBand/datatable";
 
-        // OverdraftServiceActivation
-        public static string OverdraftServiceActivationSubmit = "/api/v1/OverdraftServiceActivation/submit";
-        public static string OverdraftServiceActivationApprove = "/api/v1/OverdraftServiceActivation/approve";
-        public static string OverdraftServiceActivationGetById = "/api/v1/OverdraftServiceActivation/{id}";
-        public static string OverdraftServiceActivationDT = "/api/v1/OverdraftServiceActivation/datatable";
+        // OverdraftActivation
+        public static string OverdraftServiceActivationSubmit = "/api/v1/OverdraftActivation/submit";
+        public static string OverdraftServiceActivationApprove = "/api/v1/OverdraftActivation/approve";
+        public static string OverdraftServiceActivationGetById = "/api/v1/OverdraftActivation/{id}";
+        public static string OverdraftServiceActivationDT = "/api/v1/OverdraftActivation/datatable";
 
 
         //Fee

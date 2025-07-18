@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
@@ -49,7 +50,23 @@ namespace CBS.BusinessService.Config
             }
             return ExecutionMessage;
         }
-        
+        public async Task<IEnumerable<StringValues>> GetStringValuesAsync()
+        {
+            try
+            {
+                var loanProducts = await GetPenaltys();
+                var results = (from a in loanProducts
+                               select
+                             new StringValues { Text = $"[{a.PenaltyName}] [{a.PenaltyType}]", Value = a.Id }).ToList();
+
+                return results;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
         public async Task<IEnumerable<Penalty>> GetPenaltys()
         {
             try
@@ -117,35 +134,19 @@ namespace CBS.BusinessService.Config
             try
             {
 
-                var Penalty = await GetPenalty(model.Id);
-                if (Penalty != null)
+                var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<Penalty>>(string.Format(APICallHelper.Get_Update_Delete_Penalty, model.Id), model);
+                if (response.IsSuccess)
                 {
-                    Penalty.Id = model.Id;
-                    Penalty.IsRate = model.IsRate;
-                    Penalty.PenaltyName = model.PenaltyName;
-                    Penalty.LoanProductId = model.LoanProductId;
-                    Penalty.PenaltyType = model.PenaltyType;
-                    Penalty.PenaltyValue = model.PenaltyValue;
-                    Penalty.RecuringInterval = model.RecuringInterval;
-                    Penalty.RecurringPeriod = model.RecurringPeriod;
-                    Penalty.WaivePenaltyOnBranchHolidays = model.WaivePenaltyOnBranchHolidays;
-                    Penalty.CalculatePenaltyOn = model.CalculatePenaltyOn;
-                    Penalty.DaysToApplyPenalty = model.DaysToApplyPenalty;
-                    Penalty.Description = model.Description;
-                    var response = await _loanConfigApiHelper.PutAsync<ServiceResponse<Penalty>>(string.Format(APICallHelper.Get_Update_Delete_Penalty, model.Id), Penalty);
-                    if (response.IsSuccess)
-                    {
-                        // Successful creation
-                        GetExecutionMessages(response, true, $"{model.PenaltyName}", MessagesResults.Success,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
-                        return ExecutionMessage;
-                    }
-                    else
-                    {
-                        // Failed creation
-                        GetExecutionMessages(model, false, model.PenaltyName, MessagesResults.Failed,
-                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
-                    }
+                    // Successful creation
+                    GetExecutionMessages(response, true, $"{model.PenaltyName}", MessagesResults.Success,
+                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, model.PenaltyName, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
 
             }

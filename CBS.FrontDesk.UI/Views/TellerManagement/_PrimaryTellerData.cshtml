@@ -47,13 +47,49 @@
                         </td>
                         <td>@d.Branch.Name</td>
                         <td>
-                            <a href="#" onclick="AddORUpdateGen('@d.id','datalistingview','_PrimaryTeller','get','TellerManagement',null)" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.name @GlobalShared.ToEdit">@GlobalShared.Edit |</a>
+                            <div class="d-inline me-2">
+                                <a href="#" onclick="AddORUpdateGen('@d.id','datalistingview','_PrimaryTeller','get','TellerManagement',null)"
+                                   data-bs-toggle="tooltip" data-bs-placement="top" title="@GlobalShared.Select @d.name @GlobalShared.ToEdit">
+                                    <i class="mdi mdi-pencil text-primary"></i> @GlobalShared.Edit
+                                </a>
+                            </div>
+
                             @if (d.TellerType == "MobileMoneyMTN" || d.TellerType == "MomocashCollectionMTN" || d.TellerType == "MomocashCollectionOrange" || d.TellerType == "MobileMoneyORANGE")
                             {
-                                <a href="/TellerManagement/MMConfiguration?key=@d.id" target="_parent" class="mr-2" data-toggle="tooltip" data-placement="top" title="Configure @d.TellerType">@GlobalTellerManagement.MMConfig |</a>
+                                <div class="d-inline me-2">
+                                    <a href="/TellerManagement/MMConfiguration?key=@d.id" target="_parent"
+                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Configure @d.TellerType">
+                                        <i class="mdi mdi-cog-outline text-warning"></i> @GlobalTellerManagement.MMConfig
+                                    </a>
+                                </div>
                             }
-                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.name" onclick="DeleteRecordDataTable('TellerManagement','@d.id','myDataTable','_PrimaryTellerData',0,'datalistingview')">@GlobalShared.Delete</a>
+
+                            @*<div class="d-inline me-2">
+                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="@GlobalShared.Delete @d.name"
+                                   onclick="DeleteRecordDataTable('TellerManagement','@d.id','myDataTable','_PrimaryTellerData',0,'datalistingview')">
+                                    <i class="mdi mdi-delete-outline text-danger"></i> @GlobalShared.Delete
+                                </a>
+                            </div>*@
+
+                            <div class="d-inline">
+                                @if (d.AllowRemoteTellerClose)
+                                {
+                                    <a href="#" class="badge bg-success fs-tiny" title="Click to disable remote close"
+                                       onclick="ToggleRemoteClose('@d.id', false)">
+                                        🔓 Enabled
+                                    </a>
+                                }
+                                else
+                                {
+                            <a href="#" class="badge bg-secondary fs-tiny" title="Click to enable remote close"
+                               onclick="ToggleRemoteClose('@d.id', true)">
+                                🔒 Disabled
+
+                            </a>
+                                }
+                            </div>
                         </td>
+
                     </tr>
                 }
             </tbody>

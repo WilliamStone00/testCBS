@@ -732,7 +732,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             }
             else if (serviceOption == "teller")
             {
-                return () => _tellerServices.Update(model.Teller);
+                return () => _tellerServices.Update(model.Teller,null,false);
             }
             else
             {

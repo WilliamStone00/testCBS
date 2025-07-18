@@ -195,6 +195,10 @@
   <data name="DateBlocked" xml:space="preserve">
     <value>Date blocked</value>
   </data>
+  <data name="DayEndVisibilitySettings" xml:space="preserve">
+    <value>Day-End Visibility Settings</value>
+    <comment>Day-End Visibility Settings</comment>
+  </data>
   <data name="EnterAUniqueCodeForTheTellerManagingThisAccount" xml:space="preserve">
     <value>Enter a unique code for the teller managing this account</value>
   </data>
@@ -404,6 +408,14 @@
   </data>
   <data name="SetThresholdsForAccountBalanceAlerts" xml:space="preserve">
     <value>Set thresholds for account balance alerts. Users will be notified when their balance falls below or exceeds specified levels. Ensure appropriate values to avoid unnecessary alerts</value>
+  </data>
+  <data name="ShowBalancesOnCloseOfDay" xml:space="preserve">
+    <value>Show balances on close of day</value>
+    <comment>Show balances on close of day</comment>
+  </data>
+  <data name="ShowBalancesOnOpenOfDay" xml:space="preserve">
+    <value>Show balances on open of day</value>
+    <comment>Show balances on open of day</comment>
   </data>
   <data name="SpecifyTheAccountAssociatedWith" xml:space="preserve">
     <value>Specify the account associated with</value>
