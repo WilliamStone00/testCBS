@@ -1,13 +1,9 @@
-﻿ 
-* {
+﻿* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-.highlight {
-    background-color: #dfe6e9;
-    border: 2px solid #0984e3;
-}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #f8f9fa;
@@ -26,7 +22,7 @@ body {
 }
 
 .header {
- 
+    background: #2c3e50;
     color: white;
     padding: 30px;
     text-align: center;
@@ -85,7 +81,7 @@ body {
         }
 
 .load-btn {
-
+    background: #34495e;
     color: white;
     border: none;
     padding: 12px 30px;
@@ -108,8 +104,8 @@ body {
 }
 
 .collector-info {
-    color: saddlebrown;
-    background-color: rgb(222, 222, 227);
+    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+    color: white;
     padding: 25px;
     border-radius: 12px;
     margin-bottom: 30px;
@@ -263,13 +259,12 @@ body {
 .payment-section {
     text-align: center;
     padding: 30px;
-    color:saddlebrown;
-    background-color: rgb(222, 222, 227);
+    
     border-radius: 12px;
 }
 
 .payment-btn {
-    background: linear-gradient(135deg, #00a8ff 0%, #0097e6 100%);
+    background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
     color: white;
     border: none;
     padding: 15px 40px;
@@ -288,7 +283,7 @@ body {
     }
 
 .payment-section h3 {
-    color: white;
+    color: darkblue;
     margin-bottom: 20px;
     font-size: 1.3em;
 }
@@ -310,5 +305,3 @@ body {
         grid-template-columns: 1fr;
     }
 }
-
- 

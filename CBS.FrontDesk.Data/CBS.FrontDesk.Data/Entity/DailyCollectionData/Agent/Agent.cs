@@ -14,36 +14,15 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectionData
     }
 
 
-    public class CollectorSalarySummaryDto
+
+
+    public class CollectorDto
     {
         // 👤 Collector Info
-        public string CollectorId { get; set; }
-        public string CollectorName { get; set; }
+        public string collectorName { get; set; }
+        public string amount { get; set; }
 
-        // 🏢 Branch Info
-        public string BranchId { get; set; }
-        public string BranchName { get; set; }
-        public string BranchCode { get; set; }
-
-        // 📅 Period & Operation Context
-        public string Month { get; set; }                   // Format: YYYY-MM
-        public string OperationType { get; set; }           // e.g. "CashIn", "LoanRepayment", "OnboardingFee"
-
-        // 📊 Aggregated Per-Member Stats
-        public List<MemberOperationSummary> MemberStats { get; set; }  
-
-        // 📈 Summary Metrics
-        public int TotalMembersWithActivity => MemberStats?.Count ?? 0;
-        public decimal TotalValueCollected => MemberStats?.Sum(m => m.TotalActivityAmount) ?? 0m;
-
-        public decimal TotalFeeCharged { get; set; }            // Total computed fees across all members
-        public decimal TotalAmountToDistribute { get; set; }    // Net distributable value
-
-        // 📤 Stakeholder Breakdown
-        public List<SharedAmountBreakdown> SharedAmounts { get; set; } = new List<SharedAmountBreakdown>();
     }
-
-
     public class MemberOperationSummary
     {
         public string MemberId { get; set; }
@@ -58,5 +37,33 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectionData
         public string Stakeholder { get; set; } // e.g. "DailyCollector", "CamCCUL"
         public decimal Amount { get; set; }
         public decimal Percentage { get; set; }
+    }
+
+
+    public class PayDailyCollectorCommission 
+    {
+        /// <summary>
+        /// The ID of the daily collector who is to receive the commission.
+        /// </summary>
+        public string DailyCollectorId { get; set; }
+
+        public string MemberReference { get; set; }
+
+        /// <summary>
+        /// The ID of the branch processing the payment.
+        /// </summary>
+        public string BranchId { get; set; }
+
+        /// <summary>
+        /// Total amount to be distributed across stakeholders.
+        /// </summary>
+        public decimal TotalAmountToShare { get; set; }
+
+        /// <summary>
+        /// List of shared breakdowns with percentage and amount per stakeholder.
+        /// </summary>
+        public List<SharedAmountBreakdown> SharedAmounts { get; set; } 
+        public int Month { get; set; }
+        public int Year { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿
 using CBS.FrontDesk.Data.Entity.DailyCollectionData;
+using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -106,6 +107,15 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectorManagement
             ImageVirtualNoSignaturePath = "~/AppFiles/Images/no signature.png";
         }
     }
+
+    public class DailyCollectorInfo
+    {
+
+        public string userId { get; set; }
+     
+        public string name { get; set; }
+
+    }
     public class CollectorSalaryInfo
     {
         // 👤 Collector Info
@@ -123,6 +133,7 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectorManagement
 
         public Zone Zone { get; set; }= new Zone();
         public CollectorSalaryInfo CollectorSalarySummary { get; set; } = new CollectorSalaryInfo();
+        public DailyCollectionDashboardActivitiesQuery  DashboardActivities  { get; set; } = new DailyCollectionDashboardActivitiesQuery();
         public CollectorSalarySummaryDto CollectorData { get; set; } = new CollectorSalarySummaryDto();
         public List<Zone > Zones { get; set; } = new List<Zone >();
         public CommissionSetting CommissionSetting { get; set; } = new CommissionSetting();
@@ -133,8 +144,49 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectorManagement
         public string Action { get; set; }
         public string KEY { get; set; } = "KEY";
     }
+    public class DailyCollectionDashboardActivitiesQuery
+    {
+        public string CollectorId { get; set; }
+        public string Month { get; set; }
 
+        public string BranchId { get; set; }
 
+        public DailyCollectionActivitiesQuery ConvertToDailyCollectionActivitiesQuery()
+        {
+            var model = new DailyCollectionActivitiesQuery();
+            model.CollectorId = CollectorId;
+            model.BranchId = BranchId;
+            // Parse Month format: YYYY-MM
+            if (!string.IsNullOrEmpty(this.Month))
+            {
+                var monthParts = this.Month.Split('-');
+                if (monthParts.Length == 2)
+                {
+                    if (int.TryParse(monthParts[0], out int year) && int.TryParse(monthParts[1], out int month))
+                    {
+                        model.Year = year;
+                        model.Month = month;
+                    }
+                    else
+                    {
+                        throw new FormatException($"Invalid month format: {this.Month}. Expected format: YYYY-MM");
+                    }
+                }
+                else
+                {
+                    throw new FormatException($"Invalid month format: {this.Month}. Expected format: YYYY-MM");
+                }
+            }
+            return model;
+        }
+    }
+    public class DailyCollectionActivitiesQuery
+    {
+        public string CollectorId { get; set; }
+        public int Year { get; set; }
+        public int Month { get; set; }
+        public string BranchId { get; set; }
+    }
 
     public class DailyAgentManagement
     {

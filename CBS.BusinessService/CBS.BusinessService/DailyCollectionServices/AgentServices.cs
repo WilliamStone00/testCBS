@@ -4,7 +4,9 @@ using CBS.API.Helper;
 using CBS.BusinessService.Session;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.DailyCollectionData;
+using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
 using CBS.FrontDesk.Data.Entity.DailyCollectorManagement;
+using CBS.FrontDesk.Data.Entity.DashBoards;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
@@ -24,11 +26,12 @@ namespace CBS.BusinessService.DailyCollectionServices
     public class AgentServices : BaseService
     {
         private readonly ApiCallerHelper _dailyCollectionApiHelper;
+        private readonly ApiCallerHelper _savingConfigApiHelper;
 
         public AgentServices( )
         {
             _dailyCollectionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["DailyCollectionBaseUrl"].ToString());
-            
+            _savingConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
         }
  
 
@@ -132,6 +135,35 @@ namespace CBS.BusinessService.DailyCollectionServices
             return ExecutionMessage;
         }
 
+
+        public async Task<FinancialReportData> GetAllActivitiesAsync(DailyCollectionActivitiesQuery salary)
+        {
+            //{branchId}/{agentId}/{month}/{operationType}
+            string _baseUrl = string.Format(APICallHelper.GetCollectorsHistory, salary.CollectorId, salary.Year, salary.Month, salary.BranchId);
+            var apiResponse = await _savingConfigApiHelper.GetAsync<ResponseObject<FinancialReportData>>(_baseUrl);
+            if (apiResponse.IsSuccess)
+            {
+                return apiResponse.ApiResponseData.Data;
+            }
+            else
+            {
+                return new FinancialReportData();
+            }
+        }
+        public async Task<List<DailyCollectorInfo>> GetAgentActiveAgent(string branchId, int month , int year)
+        {
+            string _baseUrl = string.Format(APICallHelper.GetActiveDailyCollectors, branchId,month, year);
+
+            var apiResponse = await _savingConfigApiHelper.GetAsync<ResponseObject<List<DailyCollectorInfo>>>(_baseUrl);
+            if (apiResponse.IsSuccess)
+            {
+                return apiResponse.ApiResponseData.Data;
+            }
+            else
+            {
+                return new List<DailyCollectorInfo>();
+            }
+        }
         public async Task<CollectorSalarySummaryDto> GetAgentActivitiesAsync(CollectorSalaryInfo salary)
         {
             //{branchId}/{agentId}/{month}/{operationType}
@@ -144,6 +176,36 @@ namespace CBS.BusinessService.DailyCollectionServices
             else
             {
                 return new CollectorSalarySummaryDto();
+            }
+        }
+
+        public async Task<FinancialSummary> GetDailyCollectionActivitiesAsync(DailyCollectionDashboardActivitiesQuery model)
+        {
+            var salary = model.ConvertToDailyCollectionActivitiesQuery();
+            //{branchId}/{agentId}/{month}/{operationType}
+            string _baseUrl = string.Format(APICallHelper.GetCollectorsHistory, salary.BranchId, salary.CollectorId, salary.Month);
+            var apiResponse = await _dailyCollectionApiHelper.GetAsync<ResponseObject<FinancialSummary>>(_baseUrl);
+            if (apiResponse.IsSuccess)
+            {
+                return apiResponse.ApiResponseData.Data;
+            }
+            else
+            {
+                return new FinancialSummary();
+            }
+        }
+
+        public async Task<ResponseObject<bool>> PayAgentActivitiesAsync(PayDailyCollectorCommission modelData)
+        {
+    
+            var apiResponse = await _savingConfigApiHelper.PostAsync<ResponseObject<bool>>(APICallHelper.PayDailyCollectorCommission, modelData);
+            if (apiResponse.IsSuccess)
+            {
+                return apiResponse.ApiResponseData;
+            }
+            else
+            {
+                return new ResponseObject<bool>();
             }
         }
     }

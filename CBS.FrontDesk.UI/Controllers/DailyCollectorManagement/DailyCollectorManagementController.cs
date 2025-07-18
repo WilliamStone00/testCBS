@@ -8,6 +8,7 @@ using CBS.FrontDesk.Data.Entity.DailyCollectionData;
 using CBS.FrontDesk.Data.Entity.DailyCollectorManagement;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.UserManagement;
+using DocumentFormat.OpenXml.EMMA;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace CBS.FrontDesk.UI.Controllers
         public async Task<ActionResult> CommissionPayment()
         {
             await GetList();
-            return View(new DailyAgentManagement());
+            return View(new DailyCollectionConfiguration());
         }
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
@@ -73,7 +74,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 }
                 else
                 {
-   
+
                     var data = await _agentServices.GetAgentById(KEY);
                     return PartialView(partialView, new DailyAgentManagement { Agent = data });
 
@@ -118,15 +119,14 @@ namespace CBS.FrontDesk.UI.Controllers
             return selectListItems;
 
         }
-        private async Task<dynamic> BuildDailyCollectorAsync()
+        private async Task<List<System.Web.WebPages.Html.SelectListItem>> BuildDailyCollectorAsync(List<DailyCollectorInfo> listOfCollector)
         {
-            var listUSERS = (await _userServices.GetDailyCollectors()).ToList();
-         
+        
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-          
-            foreach (var item in listUSERS)
+
+            foreach (var item in listOfCollector)
             {
-                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.FirstName+" "+ item.LastName, Value = item.UserId.ToString() });
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.name , Value = item.userId.ToString() });
 
             }
 
@@ -138,7 +138,7 @@ namespace CBS.FrontDesk.UI.Controllers
             var BranList = (await _branchService.GetBranches()).ToList();
             ViewBag.Branches = BuildBranch(BranList);
             ViewBag.OperationTypes = BuildOperationTypes();
-            ViewBag.DailyCollectors =await BuildDailyCollectorAsync();
+            //ViewBag.DailyCollectors =await BuildDailyCollectorAsync();
         }
         private dynamic BuildBranch(List<Branch> listOfItems)
         {
@@ -148,7 +148,7 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 if (!item.BranchCode.Equals("000"))
                 {
-                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text =  $"{item.Name}", Value = item.Id });
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = $"{item.Name}", Value = item.Id });
                 }
 
             }
@@ -156,19 +156,143 @@ namespace CBS.FrontDesk.UI.Controllers
 
         }
         [HttpPost]
-     
-        private async Task<ActionResult> RetrieveAgentActivitiesAsync(DailyCollectionConfiguration model)
+        public async Task<ActionResult> PayDailyCollectorCommission(CollectorDto collector)
         {
-            var modelResult  =  _agentServices.GetAgentActivitiesAsync(model.CollectorSalarySummary);
-            if (modelResult != null) 
+            var sessionKey = "rptSource" + _agentServices.GetUserID();
+            var modelData = this.HttpContext.Session[sessionKey] as PayDailyCollectorCommission;
+
+            if (modelData == null)
             {
-                return Json( new { DataModel = modelResult, Message = "Upload Ok" }, JsonRequestBehavior.AllowGet );
+                return Json(new { success = false, message = "Session expired or report data not found." }, JsonRequestBehavior.AllowGet);
+            }
+
+            var result = await _agentServices.PayAgentActivitiesAsync(modelData);
+
+            if (result != null)
+            {
+                return Json(new { success = true, data = result, message = "Payment successfully processed." }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { DataModel = modelResult, Message = "Error occured getting customer infomation " }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = false, message = "Error occurred while processing payment." }, JsonRequestBehavior.AllowGet);
             }
         }
+        [HttpGet]
+        public async Task<JsonResult> RetrieveDailyCollectionDashboardActivitiesAsync(string Month, string BranchId, string CollectorId)
+        {
+            try
+            {
+                // Validate input
+                if (string.IsNullOrEmpty(Month) || BranchId.IsNullOrEmpty() || CollectorId.IsNullOrEmpty())
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Invalid parameters supplied."
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+                // Example: Fetch data from service/repository
+                var activities = await _agentServices.GetAllActivitiesAsync((new DailyCollectionDashboardActivitiesQuery
+                {
+                    Month = Month,
+                    BranchId = BranchId,
+                    CollectorId = CollectorId,
+
+                }).ConvertToDailyCollectionActivitiesQuery());
+
+                if (activities == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "No activities found for the provided parameters."
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+
+                return Json(new
+                {
+                    success = true,
+                    data = activities
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new
+                {
+                    success = false,
+                    message = "An error occurred while processing your request."
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        [HttpGet]
+        public async Task<JsonResult> GetActiveAgentBYBranch(string BranchId, string month)
+        {
+            int Year = 0; int Month = 0;
+            try
+            {
+                // Validate input
+                if (BranchId.IsNullOrEmpty())
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Invalid parameters supplied."
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+                // Example: Fetch data from service/repository
+                if (!string.IsNullOrEmpty(month))
+                {
+                    var monthParts = month.Split('-');
+                    if (monthParts.Length == 2)
+                    {
+                        if (int.TryParse(monthParts[0], out int year) && int.TryParse(monthParts[1], out int months))
+                        {
+                            Year = year;
+                            Month = months;
+                        }
+                        else
+                        {
+                            throw new FormatException($"Invalid month format: {month}. Expected format: YYYY-MM");
+                        }
+                    }
+                    else
+                    {
+                        throw new FormatException($"Invalid month format: {month}. Expected format: YYYY-MM");
+                    }
+                }
+                var activities = await _agentServices.GetAgentActiveAgent(BranchId, Month, Year);
+                if (activities == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "No activities found for the provided parameters."
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+                var dee = await BuildDailyCollectorAsync(activities);
+                return Json(new
+                {
+              
+                    data = dee
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new
+                {
+                    success = false,
+                    message = "An error occurred while processing your request."
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
 
         [HttpGet]
         public async Task<JsonResult> RetrieveAgentActivitiesAsync(string Month, string BranchId, string CollectorId, string OperationType, string MemberReference)
@@ -176,7 +300,7 @@ namespace CBS.FrontDesk.UI.Controllers
             try
             {
                 // Validate input
-                if (string.IsNullOrEmpty(Month) || BranchId.IsNullOrEmpty()|| CollectorId.IsNullOrEmpty())
+                if (string.IsNullOrEmpty(Month) || BranchId.IsNullOrEmpty() || CollectorId.IsNullOrEmpty())
                 {
                     return Json(new
                     {
@@ -195,13 +319,17 @@ namespace CBS.FrontDesk.UI.Controllers
                     MemberReference = MemberReference
                 });
 
-                if (activities == null )
+                if (activities == null)
                 {
                     return Json(new
                     {
                         success = false,
                         message = "No activities found for the provided parameters."
                     }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    this.HttpContext.Session["rptSource" + _agentServices.GetUserID()] = activities.ConvertToPayDailyCollectorCommission();
                 }
 
                 return Json(new
@@ -212,7 +340,62 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             catch (Exception ex)
             {
-               
+
+                return Json(new
+                {
+                    success = false,
+                    message = "An error occurred while processing your request."
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        [HttpGet]
+        public async Task<JsonResult> RetrieveFinancialActivitiesStatics(string Month, string BranchId, string CollectorId)
+        {
+            try
+            {
+                // Validate input
+                if (string.IsNullOrEmpty(Month) || BranchId.IsNullOrEmpty() || CollectorId.IsNullOrEmpty())
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Invalid parameters supplied."
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+                // Example: Fetch data from service/repository
+                var activities = await _agentServices.GetAgentActivitiesAsync(new CollectorSalaryInfo
+                {
+                    Month = Month,
+                    BranchId = BranchId,
+                    CollectorId = CollectorId,
+
+                });
+
+                if (activities == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "No activities found for the provided parameters."
+                    }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    this.HttpContext.Session["rptSource" + _agentServices.GetUserID()] = activities.ConvertToPayDailyCollectorCommission();
+                }
+
+                return Json(new
+                {
+                    success = true,
+                    data = activities
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+
                 return Json(new
                 {
                     success = false,
@@ -233,7 +416,7 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 return () => _agentAccountServices.Create(model.AgentAccount);
             }
-            
+
             else
             {
                 return null;

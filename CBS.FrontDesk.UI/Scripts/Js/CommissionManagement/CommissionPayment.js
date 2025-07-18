@@ -236,7 +236,6 @@ function formatToFrench(date) {
 
 // Helper function to get appropriate error message
 function getErrorMessage(xhr, status, error) {
-    // Try to get message from response
     if (xhr.responseText) {
         const responseText = xhr.responseText.trim();
 
@@ -245,15 +244,23 @@ function getErrorMessage(xhr, status, error) {
                 const responseData = JSON.parse(responseText);
                 if (responseData.message) return responseData.message;
                 if (responseData.error) return responseData.error;
+                if (responseData.detail) return responseData.detail;
+                if (responseData.msg) return responseData.msg;
             } catch (e) {
-                // Not JSON, use raw text if it's short
+                // Not JSON, return if short
                 if (responseText.length < 200) {
                     return responseText;
                 }
+                console.warn("Non-JSON response:", responseText);
+            }
+        } else {
+            // If HTML, extract <title> or fallback
+            const titleMatch = responseText.match(/<title>(.*?)<\/title>/i);
+            if (titleMatch && titleMatch[1]) {
+                return titleMatch[1];
             }
         }
     }
-
     // Default messages based on status
     const statusMessages = {
         0: 'Network error. Please check your connection.',
@@ -301,13 +308,13 @@ function displayValidationErrors(errors) {
 // Helper function to show success message
 function showSuccessMessage(message) {
     // You can customize this based on your UI framework
-    alert(message); // Replace with toast notification or custom modal
+    appalert(message); // Replace with toast notification or custom modal
 }
 
 // Helper function to show error message
 function showErrorMessage(message) {
     // You can customize this based on your UI framework
-    alert(message); // Replace with toast notification or custom modal
+    appalert(message); // Replace with toast notification or custom modal
 }
 
 // Helper function to display the loaded data
@@ -375,23 +382,74 @@ function updateStakeholderDistribution(totalAmount) {
 
 
 function processPayment() {
-    const collectorName = document.getElementById('collectorName').textContent;
-    const amount = document.getElementById('totalDistribute').textContent;
+    const collectorName = document.getElementById('collectorName')?.textContent?.trim();
+    const amount = document.getElementById('totalDistribute')?.textContent?.trim();
+
+    if (!collectorName || !amount) {
+        showErrorMessage("Collector name or amount is missing.");
+        return;
+    }
 
     if (confirm(`Are you sure you want to process payment of ${amount} FCFA to ${collectorName}?`)) {
-        // Show processing animation
         const payBtn = document.querySelector('.payment-btn');
         payBtn.textContent = '⏳ Processing Payment...';
         payBtn.disabled = true;
 
-        // Simulate payment processing
-        setTimeout(() => {
-            alert(`✅ Payment of ${amount} FCFA successfully processed to ${collectorName}!`);
-            payBtn.textContent = '✅ Payment Completed';
-            payBtn.style.background = '#28a745';
-        }, 2000);
+        const requestData = {
+            CollectorName: collectorName, // Matches C# DTO property
+            Amount: amount                // Matches C# DTO property
+        };
+
+        $.ajax({
+            url: '/DailyAgentManagement/PayDailyCollectorCommission',
+            type: 'POST',
+            dataType: 'json',
+            data: requestData,
+
+            success: function (response) {
+                if (response.success) {
+                    appalert(`✅ Payment of ${amount} FCFA successfully processed to ${collectorName}!`);
+                    payBtn.textContent = '✅ Payment Completed';
+                    payBtn.style.backgroundColor = '#28a745';
+                } else {
+                    if (response.errors) {
+                        displayValidationErrors(response.errors);
+                    } else {
+                        showErrorMessage(response.message || 'Payment failed. Please try again.');
+                    }
+                }
+            },
+
+            error: function (xhr, status, error) {
+                this.retryCount = this.retryCount || 0;
+
+                console.group(`AJAX Error - Attempt ${this.retryCount + 1}`);
+                console.log('Status:', status);
+                console.log('Error:', error);
+                console.log('HTTP Status:', xhr.status);
+                console.log('Response Text:', xhr.responseText);
+                console.groupEnd();
+
+                if ((xhr.status === 0 || xhr.status >= 500) && this.retryCount < 3) {
+                    this.retryCount++;
+                    setTimeout(() => {
+                        $.ajax(this);
+                    }, 1000 * this.retryCount);
+                    return;
+                }
+
+                const errorMessage = getErrorMessage(xhr, status, error);
+                showErrorMessage(errorMessage);
+            },
+
+            complete: function () {
+                resetButton();
+            }
+        });
     }
 }
+
+
 
 // Format numbers with commas
 function formatNumber(num) {
