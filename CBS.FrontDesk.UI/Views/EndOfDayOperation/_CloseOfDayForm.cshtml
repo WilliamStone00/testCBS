@@ -5,201 +5,207 @@
 
     @Html.Partial("_GeneralErrorDiv")
 
-
 }
-@using (Html.BeginForm("CloseTheDay", "EndOfDayOperation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+else
 {
+    using (Html.BeginForm("CloseTheDay", "EndOfDayOperation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
 
-    <fieldset class="fieldset-custom">
-        <legend id="select_base" class="underline-blue-bold">
-            @GlobalEndOfDayOperation.CLOSEOFTHETILLASOFACCOUNTINGDAY [@Model.CloseOfDayRequest.AccountingDay]
-        </legend>
+        <fieldset class="fieldset-custom">
+            <legend id="select_base" class="underline-blue-bold">
+                @GlobalEndOfDayOperation.CLOSEOFTHETILLASOFACCOUNTINGDAY [@Model.CloseOfDayRequest.AccountingDay]
+            </legend>
 
-        <div class="row mt-2 gy-4">
-            @Html.HiddenFor(model => model.CloseOfDayRequest.Amount)
-            @Html.HiddenFor(model => model.CloseOfDayRequest.CashAtHand)
-            @*<div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                <span class="formatted-amount shadow-box float-start">@GlobalEndOfDayOperation.CloseOfDayBalance: @Model.CloseOfDayRequest.Amount.ToString("#,##0.0")</span>
-            </div>
-        </div>*@
-            @*<div class="col-md-6" hidden="hidden">
-            <div class="form-floating form-floating-outline">
-                <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalEndOfDayOperation.TotalAmount: 0.0</span>
-                <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
-                <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.CloseOfDayRequest.Amount">
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-floating form-floating-outline">
-                <span class="formatted-amount shadow-box" id="lblBalance">@GlobalEndOfDayOperation.Balance: @Model.CloseOfDayRequest.Amount.ToString("#,##0.0")</span>
-            </div>
-        </div>*@
-            <input type="hidden" name="Option" id="Option" value="@ViewBag.Option" />
-            <div class="col-md-2">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.note10000, new { @class = "form-control", @id = "Notes_note10000", @oninput = "calculateBalance()" })
-                    @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.note10000, "", new { @class = "text-danger " })
-                    <label>N10,000</label>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.note5000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note5000", @oninput = "calculateBalance()" })
-                    @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.note5000, "", new { @class = "text-danger " })
-                    <label>N5,000</label>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.note2000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note2000", @oninput = "calculateBalance()" })
-                    @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.note2000, "", new { @class = "text-danger " })
-                    <label>N2,000</label>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.note1000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note1000", @oninput = "calculateBalance()" })
-                    @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.note1000, "", new { @class = "text-danger " })
-                    <label>N1,000</label>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.note500, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note500", @oninput = "calculateBalance()" })
-                    @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.note500, "", new { @class = "text-danger " })
-                    <label>N500</label>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin500, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin500", @oninput = "calculateBalance()" })
-                    @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin500, "", new { @class = "text-danger " })
-                    <label>C500</label>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin350, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin350", @oninput = "calculateBalance()" })
-                    @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin350, "", new { @class = "text-danger " })
-                    <label>C350</label>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin250, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin250", @oninput = "calculateBalance()" })
-                    @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin250, "", new { @class = "text-danger " })
-                    <label>C250</label>
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin200, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin200", @oninput = "calculateBalance()" })
-                    @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin200, "", new { @class = "text-danger " })
-                    <label>C200</label>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin150, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin150", @oninput = "calculateBalance()" })
-                    @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin150, "", new { @class = "text-danger " })
-                    <label>C150</label>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin100, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin100", @oninput = "calculateBalance()" })
-                    @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin100, "", new { @class = "text-danger " })
-                    <label>C100</label>
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin50, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin50", @oninput = "calculateBalance()" })
-                    @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin50, "", new { @class = "text-danger " })
-                    <label>C50</label>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin25, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin25", @oninput = "calculateBalance()" })
-                    @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin25, "", new { @class = "text-danger " })
-                    <label>C25</label>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin10, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin10", @oninput = "calculateBalance()" })
-                    @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin10, "", new { @class = "text-danger " })
-                    <label>C10</label>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin5, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin5", @oninput = "calculateBalance()" })
-                    @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin5, "", new { @class = "text-danger " })
-                    <label>C5</label>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin1, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin1", @oninput = "calculateBalance()" })
-                    @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin1, "", new { @class = "text-danger " })
-                    <label>C1</label>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextAreaFor(m => m.CloseOfDayRequest.Comment, new { @class = "form-control formatted-amount shadow-box", @style = "height: 70px;" })
-                    @Html.ValidationMessageFor(m => m.CloseOfDayRequest.Comment, "", new { @class = "text-danger " })
-                    <label for="formValidationDob">@GlobalEndOfDayOperation.OpenOfDayNote</label>
-                </div>
-            </div>
-            <div class="col-md-12 mt-3">
-                <div class="form-floating form-floating-outline">
-                    <div class="form-check form-switch">
-                        @Html.CheckBoxFor(m => m.ProceedWithDiscrepancy, new { @class = "form-check-input", @id = "proceedCheckbox", onchange = "toggleCloseButton()" })
-                        <label class="form-check-label fw-bold text-danger" for="proceedCheckbox">
-                            I acknowledge the difference (deficit or surplus) and wish to proceed with the closure.
-                        </label>
+            <div class="row mt-2 gy-4">
+                @Html.HiddenFor(model => model.CloseOfDayRequest.Amount)
+                @Html.HiddenFor(model => model.CloseOfDayRequest.CashAtHand)
+                @if (Model.Teller.ShowbalancesOnCloseOfDay)
+                {
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box float-start">@GlobalEndOfDayOperation.CloseOfDayBalance: @Model.CloseOfDayRequest.Amount.ToString("#,##0.0")</span>
+                        </div>
                     </div>
-                    @Html.ValidationMessageFor(m => m.ProceedWithDiscrepancy, "", new { @class = "text-danger" })
+                    <div class="col-md-6" hidden="hidden">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalEndOfDayOperation.TotalAmount: 0.0</span>
+                            <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
+                            <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.CloseOfDayRequest.Amount">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box" id="lblBalance">@GlobalEndOfDayOperation.Balance: @Model.CloseOfDayRequest.Amount.ToString("#,##0.0")</span>
+                        </div>
+                    </div>
+                }
+                <input type="hidden" name="Option" id="Option" value="@ViewBag.Option" />
+                <div class="col-md-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.note10000, new { @class = "form-control", @id = "Notes_note10000", @oninput = "calculateBalance()" })
+                        @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.note10000, "", new { @class = "text-danger " })
+                        <label>N10,000</label>
+                    </div>
                 </div>
+                <div class="col-md-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.note5000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note5000", @oninput = "calculateBalance()" })
+                        @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.note5000, "", new { @class = "text-danger " })
+                        <label>N5,000</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.note2000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note2000", @oninput = "calculateBalance()" })
+                        @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.note2000, "", new { @class = "text-danger " })
+                        <label>N2,000</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.note1000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note1000", @oninput = "calculateBalance()" })
+                        @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.note1000, "", new { @class = "text-danger " })
+                        <label>N1,000</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.note500, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note500", @oninput = "calculateBalance()" })
+                        @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.note500, "", new { @class = "text-danger " })
+                        <label>N500</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin500, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin500", @oninput = "calculateBalance()" })
+                        @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin500, "", new { @class = "text-danger " })
+                        <label>C500</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin350, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin350", @oninput = "calculateBalance()" })
+                        @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin350, "", new { @class = "text-danger " })
+                        <label>C350</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin250, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin250", @oninput = "calculateBalance()" })
+                        @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin250, "", new { @class = "text-danger " })
+                        <label>C250</label>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin200, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin200", @oninput = "calculateBalance()" })
+                        @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin200, "", new { @class = "text-danger " })
+                        <label>C200</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin150, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin150", @oninput = "calculateBalance()" })
+                        @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin150, "", new { @class = "text-danger " })
+                        <label>C150</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin100, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin100", @oninput = "calculateBalance()" })
+                        @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin100, "", new { @class = "text-danger " })
+                        <label>C100</label>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin50, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin50", @oninput = "calculateBalance()" })
+                        @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin50, "", new { @class = "text-danger " })
+                        <label>C50</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin25, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin25", @oninput = "calculateBalance()" })
+                        @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin25, "", new { @class = "text-danger " })
+                        <label>C25</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin10, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin10", @oninput = "calculateBalance()" })
+                        @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin10, "", new { @class = "text-danger " })
+                        <label>C10</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin5, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin5", @oninput = "calculateBalance()" })
+                        @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin5, "", new { @class = "text-danger " })
+                        <label>C5</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.CloseOfDayRequest.CurrencyNotes.coin1, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin1", @oninput = "calculateBalance()" })
+                        @Html.ValidationMessageFor(m => m.CloseOfDayRequest.CurrencyNotes.coin1, "", new { @class = "text-danger " })
+                        <label>C1</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextAreaFor(m => m.CloseOfDayRequest.Comment, new { @class = "form-control formatted-amount shadow-box", @style = "height: 70px;" })
+                        @Html.ValidationMessageFor(m => m.CloseOfDayRequest.Comment, "", new { @class = "text-danger " })
+                        <label for="formValidationDob">@GlobalEndOfDayOperation.OpenOfDayNote</label>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-3">
+                    <div class="form-floating form-floating-outline">
+                        <div class="form-check form-switch">
+                            @Html.CheckBoxFor(m => m.ProceedWithDiscrepancy, new { @class = "form-check-input", @id = "proceedCheckbox", onchange = "toggleCloseButton()" })
+                            <label class="form-check-label fw-bold text-danger" for="proceedCheckbox">
+                                I acknowledge the difference (deficit or surplus) and wish to proceed with the closure.
+                            </label>
+                        </div>
+                        @Html.ValidationMessageFor(m => m.ProceedWithDiscrepancy, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
             </div>
+            <div class="mt-4">
 
 
+                <button type="submitx" id="btnSavee" class="btn btn-primary me-2">
+                    @GlobalEndOfDayOperation.CloseTheDay
+                </button>
 
-        </div>
-        <div class="mt-4">
-            
+                @*<button type="submit" id="btnSave" class="btn btn-primary me-2">@GlobalEndOfDayOperation.CloseTheDay</button>*@
+                <button type="button" class="btn btn-secondary me-2" onclick="Reprint(); return false;">
+                    <i class="fas fa-print me-1"></i> @GlobalShared.Print
+                </button>
 
-            <button type="submitx" id="btnSavee" class="btn btn-primary me-2">
-                @GlobalEndOfDayOperation.CloseTheDay
-            </button>
+            </div>
+        </fieldset>
+    }
 
-            @*<button type="submit" id="btnSave" class="btn btn-primary me-2">@GlobalEndOfDayOperation.CloseTheDay</button>*@
-            <button type="button" class="btn btn-secondary me-2" onclick="Reprint(); return false;">
-                <i class="fas fa-print me-1"></i> @GlobalShared.Print
-            </button>
-
-        </div>
-    </fieldset>
 }
 
 @*<script>
-    function toggleCloseButton() {
-        const checkbox = document.getElementById('proceedCheckbox');
-        const btn = document.getElementById('btnSave');
+        function toggleCloseButton() {
+            const checkbox = document.getElementById('proceedCheckbox');
+            const btn = document.getElementById('btnSave');
 
-        if (checkbox.checked) {
-            btn.removeAttribute('disabled');
-        } else {
-            btn.setAttribute('disabled', 'disabled');
+            if (checkbox.checked) {
+                btn.removeAttribute('disabled');
+            } else {
+                btn.setAttribute('disabled', 'disabled');
+            }
         }
-    }
 
-    // Optional: Trigger on load (in case of server re-rendering with checkbox pre-checked)
-    window.onload = toggleCloseButton;
-</script>*@
+        // Optional: Trigger on load (in case of server re-rendering with checkbox pre-checked)
+        window.onload = toggleCloseButton;
+    </script>*@

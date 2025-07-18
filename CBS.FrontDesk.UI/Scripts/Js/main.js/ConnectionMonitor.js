@@ -59,12 +59,18 @@ function startSessionTimers() {
     clearInterval(modalCountdownTimer);
 
     let expireAt = localStorage.getItem(STORAGE_KEY);
-    if (!expireAt || isNaN(expireAt) || Date.now() >= parseInt(expireAt)) {
+    if (!expireAt || isNaN(expireAt)) {
         setSessionExpireAt();
         expireAt = localStorage.getItem(STORAGE_KEY);
     }
 
-    sessionRemainingSeconds = Math.floor((parseInt(expireAt) - Date.now()) / 1000);
+    const now = Date.now();
+    if (now >= parseInt(expireAt)) {
+        forceLogout(); // ⛔ Immediately logout if expired
+        return;
+    }
+
+    sessionRemainingSeconds = Math.floor((parseInt(expireAt) - now) / 1000);
     const warningTime = (sessionRemainingSeconds - sessionWarningMinutes * 60) * 1000;
     const logoutTime = sessionRemainingSeconds * 1000;
 
@@ -74,11 +80,11 @@ function startSessionTimers() {
 
     logoutTimer = setTimeout(forceLogout, logoutTime);
 
-    // Reset timers on interaction
     ['click', 'keypress', 'scroll', 'touchstart'].forEach(event => {
         document.addEventListener(event, resetSessionTimers);
     });
 }
+
 
 /**
  * Reset session timers and update expiration timestamp.
@@ -105,26 +111,23 @@ function showWarningModal() {
  * Start the countdown timer in the warning modal.
  */
 function startModalCountdown() {
-    let expireAt = localStorage.getItem(STORAGE_KEY);
-    let remainingSeconds = Math.floor((parseInt(expireAt) - Date.now()) / 1000);
-
-    if (remainingSeconds > sessionWarningMinutes * 60) {
-        $('#sessionTimeoutModal').modal('hide');
-        return;
-    }
-
     clearInterval(modalCountdownTimer);
 
     modalCountdownTimer = setInterval(() => {
-        remainingSeconds--;
-        updateCountdownDisplay(remainingSeconds);
+        const expireAt = parseInt(localStorage.getItem(STORAGE_KEY));
+        const now = Date.now();
+        let remainingSeconds = Math.floor((expireAt - now) / 1000);
 
         if (remainingSeconds <= 0) {
+            updateCountdownDisplay(0);
             clearInterval(modalCountdownTimer);
             forceLogout();
+        } else {
+            updateCountdownDisplay(remainingSeconds);
         }
     }, 1000);
 }
+
 
 /**
  * Update the countdown display in the warning modal.
@@ -154,12 +157,12 @@ function fetchAccountingDate() {
             const error = document.getElementById("accountingDayError");
 
             if (res.success) {
-                label.textContent = 'Accounting Day: ' + res.data;
+                label.textContent = 'AD: ' + res.data;
                 label.style.color = 'gray';
                 icon.style.display = 'inline';
                 error.textContent = '';
             } else {
-                label.textContent = 'Accounting Day: N/A';
+                label.textContent = 'AD: N/A';
                 label.style.color = 'red';
                 icon.style.display = 'none';
                 error.textContent = 'Error: Could not load accounting day.';
@@ -167,7 +170,7 @@ function fetchAccountingDate() {
         },
         error: function () {
             const label = document.getElementById("accountingDayLabel");
-            label.textContent = 'Accounting Day: Error';
+            label.textContent = 'AD: Error';
             label.style.color = 'red';
         }
     });
@@ -250,4 +253,13 @@ document.addEventListener("DOMContentLoaded", function () {
     startOverallSessionTimer();
 
     setInterval(fetchAccountingDate, 5 * 60 * 1000); // Refresh accounting date every 5 mins
+});
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        const expireAt = parseInt(localStorage.getItem(STORAGE_KEY));
+        if (Date.now() >= expireAt) {
+            forceLogout();
+        }
+    }
 });

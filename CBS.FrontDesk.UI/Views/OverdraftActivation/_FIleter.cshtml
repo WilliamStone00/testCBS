@@ -1,0 +1,49 @@
+﻿<div class="card border-light shadow-sm mb-4">
+    <div class="card-header bg-primary text-white fw-semibold">
+        <i class="mdi mdi-filter-outline me-2"></i> Filter Overdraft Activation Requests
+    </div>
+    <div class="card-body">
+        <form id="filterForm" class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label">Status</label>
+                <select name="Status" class="form-select">
+                    <option value="">-- All --</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Activated">Activated</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Branch</label>
+                <select name="BranchId" class="form-select">
+                    <option value="">-- All Branches --</option>
+                    @foreach (var branch in ViewBag.Branches as List<SelectListItem>)
+                    {
+                        <option value="@branch.Value">@branch.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Customer ID</label>
+                <input type="text" name="CustomerId" class="form-control" placeholder="e.g. CUST00123" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">From Date</label>
+                <input type="date" name="FromDate" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">To Date</label>
+                <input type="date" name="ToDate" class="form-control" />
+            </div>
+            <div class="col-md-12 text-end">
+                <button type="button" class="btn btn-primary me-2" onclick="loadOverdraftData()">
+                    <i class="mdi mdi-magnify me-1"></i> Search
+                </button>
+                <button type="button" class="btn btn-outline-secondary" onclick="resetOverdraftFilters()">
+                    <i class="mdi mdi-refresh me-1"></i> Reset
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -58,69 +58,13 @@
                 <div class="card-body">
                     <div id="overdraftConfigDataTableContainer">
                         <!-- Table will be loaded via JS/DataTable -->
-                        @Html.Partial("_OverdraftConfigDataTable")
+                        @Html.Partial("_OverdraftFacilityConfigForm")
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-<!-- 🔽 Overdraft Config Modal -->
-<div class="modal fade" id="overdraftConfigModal" tabindex="-1" aria-labelledby="overdraftConfigModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-scrollable">
-        <div class="modal-content position-relative">
-
-            <!-- Loader Overlay -->
-            <div id="overdraftConfigLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none" style="z-index: 1055;">
-                <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
-                    <div class="spinner-border text-tsc mb-3" role="status"></div>
-                    <p class="fw-semibold text-tsc">Loading form... Please wait.</p>
-                </div>
-            </div>
-
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <div class="w-100">
-                    <div class="card bg-light mb-2">
-                        <div class="card-body text-center">
-                            <h1 class="card-title text-tsc" id="overdraftConfigModalLabel">
-                                <i class="mdi mdi-bank-settings-outline me-2"></i> Configure Overdraft Facility
-                            </h1>
-                            <p class="card-text">Use this form to create or update overdraft rules linked to an account product.</p>
-                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Scrollable Form Section -->
-            <div class="modal-body overflow-auto px-3 pb-3" style="max-height: calc(90vh - 180px);">
-                @Html.Partial("_TipOverdraftConfigs")
-                <div id="overdraftConfigFormContainer">
-                    <!-- _OverdraftFacilityConfigForm will be loaded here -->
-                </div>
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="modal-footer justify-content-between">
-                <span class="text-muted fw-semibold">
-                    Config ID: <span class="text-dark" id="configSelectedId">[new]</span>
-                </span>
-                <!-- Modal Footer -->
-                <div class="modal-footer bg-white sticky-bottom" style="z-index: 1050;">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        <i class="mdi mdi-close"></i> Close
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
 
 
 @section Scripts {

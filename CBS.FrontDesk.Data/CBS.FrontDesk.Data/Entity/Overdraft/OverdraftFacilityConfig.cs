@@ -15,6 +15,7 @@ namespace CBS.FrontDesk.Data.Entity.Overdraft
         // ==============================
         // ✅ Eligibility & Product Binding
         // ==============================
+        public string Name { get; set; }
 
         public string ProductId { get; set; }
         // The ID of the main account product this config applies to (e.g., Salary or Current account).
@@ -180,64 +181,6 @@ namespace CBS.FrontDesk.Data.Entity.Overdraft
         public bool IsCentralised { get; set; }
         public virtual OverdraftFacilityConfig OverdraftFacilityConfig { get; set; }
 
-    }
-    public class OverdraftServiceActivation
-    {
-        public string Id { get; set; }
-
-        // ================================
-        // 🧾 Account & Customer Info
-        // ================================
-        public string AccountId { get; set; }
-        public string CustomerId { get; set; }
-        public string CustomerName { get; set; }
-
-        // ================================
-        // 🏦 Branch Metadata
-        // ================================
-        public string BranchId { get; set; }
-        public string BranchCode { get; set; }
-        public string BranchName { get; set; }
-
-        // ================================
-        // 📌 Overdraft Config Reference
-        // ================================
-        public string OverdraftConfigId { get; set; }            // ✅ ID of the config used for validation
-
-        // ================================
-        // 💰 Overdraft Terms
-        // ================================
-        public decimal RequestedLimit { get; set; }
-
-        public bool FlatInterestRate { get; set; }
-        public bool PayAsYouGoInterest { get; set; }
-        public decimal InterestRate { get; set; }
-
-        public decimal PenaltyRate { get; set; }
-
-        public string LinkedSalaryAccountId { get; set; }
-        public List<string> RecoverySourceAccountIds { get; set; }
-
-        public bool AutoRecoverOnDeposit { get; set; } = true;
-        public bool IsSalaryOverdraftAccount { get; set; }
-
-        // ================================
-        // 🔁 Auto Provisioning
-        // ================================
-        public bool AutoProvisionEnabled { get; set; } = false;
-        public int? AutoProvisionFrequencyInDays { get; set; }
-
-        // ================================
-        // 🚦 Workflow Status & Approval
-        // ================================
-        public string Status { get; set; }
-
-        public string RequestedBy { get; set; }
-        public DateTime RequestedAt { get; set; }
-        public string ApprovedBy { get; set; }
-        public DateTime ApprovedAt { get; set; }
-        public DateTime ExpiryDate { get; set; }
-        public string RejectionReason { get; set; }
     }
 
 }

@@ -83,14 +83,26 @@ namespace CBS.BusinessService.Config
                 throw;
             }
         }
+
         public async Task<IEnumerable<StringValues>> GetStringValuesAsync()
         {
             try
             {
                 var loanProducts = await GetLoanProducts();
+
                 var results = (from a in loanProducts
-                               select
-                             new StringValues { Text = $"[{a.ProductCode}] [{a.ProductName}]", Value = a.Id }).ToList();
+                               let badge = GetLoanTypeBadge(a.LoanTypeCategory)
+                               select new StringValues
+                               {
+                                   Text = $"{badge} [{a.ProductCode}] {a.ProductName} " +
+                                          $"| 📦C: {a.LoanProductCategory?.Name ?? "N/A"} " +
+                                          $"| 🕒T: {a.LoanTerm?.Name ?? "N/A"} " +
+                                          $"| 💰A {a.LoanMinimumAmount:N0} XAF–{a.LoanMaximumAmount:N0} XAF " +
+                                          $"| ⏳D {a.LoanTerm?.MinInMonth}-{a.LoanTerm?.MaxInMonth} {a.LoanDurationPeriod} " +
+                                          $"| ⏳I {a.MinimumInterestRate}-{a.MaximumInterestRate}" +
+                                          $"{(a.IsMortgage ? "| 🏠 Mortgage" : "")} ",
+                                   Value = a.Id
+                               }).ToList();
 
                 return results;
             }
@@ -100,6 +112,25 @@ namespace CBS.BusinessService.Config
                 throw;
             }
         }
+
+        // 🧩 Helper to get LoanType badge
+        private string GetLoanTypeBadge(string type)
+        {
+            switch (type)
+            {
+                case "LineOfCredit":
+                    return "[LOC]";
+                case "Overdraft":
+                    return "[ODT]";
+                case "SSF":
+                    return "[SSF]";
+                case "Main_Loan":
+                    return "[ML]";
+                default:
+                    return "[N/A]";
+            }
+        }
+
         public async Task<IEnumerable<StringValues>> GetLoanProductsDropDown()
         {
             try
@@ -464,10 +495,11 @@ namespace CBS.BusinessService.Config
                     LoanTerm = product.LoanTerm,
                     LoanMaximumAmount = product.LoanMaximumAmount,
                     LoanTypeCategory=product.LoanTypeCategory,
-                    ProductName = product.ProductName, 
+                    ProductName = product.ProductName,
                     LoanInterestPeriod = product.LoanInterestPeriod,
                     MinimumInterestRate = product.MinimumInterestRate,
                     MaximumInterestRate = product.MaximumInterestRate,
+                    PenaltyId=product.PenaltyId,
                     LoanDurationPeriod = product.LoanDurationPeriod,
                     MinimumDurationPeriod = product.MinimumDurationPeriod,
                     MaximumDurationPeriod = product.MaximumDurationPeriod,
@@ -568,7 +600,7 @@ namespace CBS.BusinessService.Config
                         LoanProduct.IsProductWithSavingFacilities = model.LoanTypeCategory=="SSF" ? true : false;
                         LoanProduct.LoanTypeCategory = model.LoanTypeCategory;
                         LoanProduct.IsMortgage = model.IsMortgage;
-                        
+
                         //
                     }
                     else if (model.ServiceOption == "mortgage")
@@ -693,14 +725,15 @@ namespace CBS.BusinessService.Config
                     else if (model.ServiceOption == "charges")
                     {
                         LoanProduct.IsChargesApplied = model.IsChargesApplied;
-                        LoanProduct.MinimumChargesToAppliedInPercentage = model.MinimumChargesToAppliedInPercentage;
-                        LoanProduct.MaximumChargesToAppliedPercentage = model.MaximumChargesToAppliedPercentage;
-                        LoanProduct.ChargesAreAppliedToInterestOrBalance = model.ChargesAreAppliedToInterestOrBalance;
-                        LoanProduct.ChargesStopAfterHowManyDaysFromStart = model.ChargesStopAfterHowManyDaysFromStart;
-                        LoanProduct.DefaultChargeToAppliedPercentage = model.DefaultChargeToAppliedPercentage;
-                        LoanProduct.MinimumChargesStartDayAfterLoanDueDate = model.MinimumChargesStartDayAfterLoanDueDate;
-                        LoanProduct.MaximumChargesStartDayAfterLoanDueDate = model.MaximumChargesStartDayAfterLoanDueDate;
-                        LoanProduct.DefaulChargesStartDayAfterLoanDueDate = model.DefaulChargesStartDayAfterLoanDueDate;
+                        LoanProduct.PenaltyId = model.PenaltyId;
+                        //LoanProduct.MinimumChargesToAppliedInPercentage = model.MinimumChargesToAppliedInPercentage;
+                        //LoanProduct.MaximumChargesToAppliedPercentage = model.MaximumChargesToAppliedPercentage;
+                        //LoanProduct.ChargesAreAppliedToInterestOrBalance = model.ChargesAreAppliedToInterestOrBalance;
+                        //LoanProduct.ChargesStopAfterHowManyDaysFromStart = model.ChargesStopAfterHowManyDaysFromStart;
+                        //LoanProduct.DefaultChargeToAppliedPercentage = model.DefaultChargeToAppliedPercentage;
+                        //LoanProduct.MinimumChargesStartDayAfterLoanDueDate = model.MinimumChargesStartDayAfterLoanDueDate;
+                        //LoanProduct.MaximumChargesStartDayAfterLoanDueDate = model.MaximumChargesStartDayAfterLoanDueDate;
+                        //LoanProduct.DefaulChargesStartDayAfterLoanDueDate = model.DefaulChargesStartDayAfterLoanDueDate;
 
                     }
                     var dataobject = ProductMappingToUpdateObject(LoanProduct, model.ServiceOption, LoanProduct.UpdateOption);

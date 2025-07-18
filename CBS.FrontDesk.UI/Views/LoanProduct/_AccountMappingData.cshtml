@@ -79,13 +79,23 @@
                             }
                         </td>
                         <td>
-                            @if (d.IsProductWithSavingFacilities)
+                            @switch (d.LoanTypeCategory)
                             {
-                                <span class="badge bg-info">@GlobalLoanProduct.SSF</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-primary">@GlobalLoanProduct.MAIN</span>
+                                case "LineOfCredit":
+                                    <span class="badge bg-dark">LOC</span>
+                                    break;
+                                case "Overdraft":
+                                    <span class="badge bg-secondary">ODT</span>
+                                    break;
+                                case "SSF":
+                                    <span class="badge bg-info">SSF</span>
+                                    break;
+                                case "Main_Loan":
+                                    <span class="badge bg-primary">ML</span>
+                                    break;
+                                default:
+                                    <span class="badge bg-danger">N/A</span>
+                                    break;
                             }
                         </td>
                         <td>

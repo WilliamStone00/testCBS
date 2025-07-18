@@ -41,9 +41,10 @@ namespace CBS.BusinessService.Accounts
         private readonly UserManagementServices _userManagementServices;
         private readonly ApiCallerHelper _BranchConfigApiHelper;
         private readonly IndividualProfileServices _individualProfileServices;
+        private readonly TellerServices _tellerServices;
 
         private readonly BranchServices _branchServices;
-        public AccountServices(UserManagementServices userManagementServices = null, IndividualProfileServices individualProfileServices = null, BranchServices branchServices = null, ApiCallerHelper branchConfigApiHelper = null)
+        public AccountServices(UserManagementServices userManagementServices = null, IndividualProfileServices individualProfileServices = null, BranchServices branchServices = null, ApiCallerHelper branchConfigApiHelper = null, TellerServices tellerServices = null)
         {
             _customerApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["CustomerBaseUrl"].ToString());
             _transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
@@ -51,6 +52,7 @@ namespace CBS.BusinessService.Accounts
             _individualProfileServices = individualProfileServices;
             _branchServices = branchServices;
             _BranchConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
+            _tellerServices=tellerServices;
         }
 
         //public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions, string path)
@@ -602,10 +604,14 @@ namespace CBS.BusinessService.Accounts
                 var cusResponseObject = await _transactionApiHelper.PostAsync<ResponseObject<TellerProvioningHistory>>(APICallHelper.GetTellerAccountInfo, getTellerAccountBalanceQuery);
                 if (cusResponseObject.ApiResponseData != null)
                 {
+
+                    var teller = await _tellerServices.GetTeller(cusResponseObject.ApiResponseData.Data.TellerId);
+
                     if (isOpen)
                     {
+
                         var closeOfDayRequest = Mapper(cusResponseObject.ApiResponseData.Data, false);
-                        var endofDay = new EndOfTheDay { CloseOfDayRequest = closeOfDayRequest, Teller = cusResponseObject.ApiResponseData.Data.Teller, CashAtHand = closeOfDayRequest.CashAtHand, HasError = false, ErrorMessage = null, AccountingDay = cusResponseObject.ApiResponseData.Data.OpenedDate };
+                        var endofDay = new EndOfTheDay { CloseOfDayRequest = closeOfDayRequest, Teller =teller, CashAtHand = closeOfDayRequest.CashAtHand, HasError = false, ErrorMessage = null, AccountingDay = cusResponseObject.ApiResponseData.Data.OpenedDate };
                         return endofDay;
                     }
                     else
@@ -613,18 +619,16 @@ namespace CBS.BusinessService.Accounts
                         if (getTellerAccountBalanceQuery.IsPrimary)
                         {
                             var closeOfDayRequest = Mapper(cusResponseObject.ApiResponseData.Data, false);
-                            var endofDay = new EndOfTheDay { CloseOfDayRequest = closeOfDayRequest, Teller = cusResponseObject.ApiResponseData.Data.Teller, CashAtHand = closeOfDayRequest.CashAtHand, HasError = false, ErrorMessage = null, AccountingDay = cusResponseObject.ApiResponseData.Data.OpenedDate };
+                            var endofDay = new EndOfTheDay { CloseOfDayRequest = closeOfDayRequest, Teller = teller, CashAtHand = closeOfDayRequest.CashAtHand, HasError = false, ErrorMessage = null, AccountingDay = cusResponseObject.ApiResponseData.Data.OpenedDate };
                             return endofDay;
                         }
                         else
                         {
                             var closeOfDayRequest = Mapper(ResetDenominations(cusResponseObject.ApiResponseData.Data), false);
-                            var endofDay = new EndOfTheDay { CloseOfDayRequest = closeOfDayRequest, Teller = cusResponseObject.ApiResponseData.Data.Teller, CashAtHand = closeOfDayRequest.CashAtHand, HasError = false, ErrorMessage = null, AccountingDay = cusResponseObject.ApiResponseData.Data.OpenedDate };
+                            var endofDay = new EndOfTheDay { CloseOfDayRequest = closeOfDayRequest, Teller = teller, CashAtHand = closeOfDayRequest.CashAtHand, HasError = false, ErrorMessage = null, AccountingDay = cusResponseObject.ApiResponseData.Data.OpenedDate };
                             return endofDay;
                         }
                     }
-
-
                 }
                 return new EndOfTheDay { CashAtHand = 0, HasError = true, ErrorMessage = $"{cusResponseObject.Message}" };
             }
@@ -634,6 +638,7 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
+
         public TellerProvioningHistory ResetDenominations(TellerProvioningHistory tellerProvioningHistory)
         {
             // Reset Opening Notes and Coins Counts

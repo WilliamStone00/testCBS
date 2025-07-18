@@ -541,7 +541,7 @@ namespace CBS.BusinessService.CustomerManagement
                 IsMemberOfACompany = a.IsMemberOfACompany,
                 LegalForm = a.LegalForm ?? string.Empty,
                 MembershipApprovalStatus = a.MembershipApprovalStatus ?? string.Empty,
-                branchCode = a.branchCode ?? string.Empty,
+                branchCode = b.BranchCode ?? string.Empty,
                 CustomerCategory = a.CustomerCategory,
                 CustomerCategoryId = a.CustomerCategoryId,
                 EmployerAddress = a.EmployerAddress ?? string.Empty,

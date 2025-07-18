@@ -104,7 +104,7 @@ namespace CBS.BusinessService.Accounts
                 SubTellerComment = tellerProvisioningHistory.SubTellerComment,
                 Note = tellerProvisioningHistory.Note,
                 ClossedStatus = tellerProvisioningHistory.ClossedStatus,
-                TillName = tellerProvisioningHistory.Teller.name,
+                TillName = tellerProvisioningHistory.Teller?.name,
                 InitialPrinting = tellerProvisioningHistory.InitialPrinting,
 
                 // Opening Notes

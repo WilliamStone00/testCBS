@@ -296,6 +296,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Day-End Visibility Settings.
+        /// </summary>
+        internal static string DayEndVisibilitySettings {
+            get {
+                return ResourceManager.GetString("DayEndVisibilitySettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter a unique code for the teller managing this account.
         /// </summary>
         internal static string EnterAUniqueCodeForTheTellerManagingThisAccount {
@@ -922,6 +931,24 @@ namespace Resources {
         internal static string SetThresholdsForAccountBalanceAlerts {
             get {
                 return ResourceManager.GetString("SetThresholdsForAccountBalanceAlerts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show balances on close of day.
+        /// </summary>
+        internal static string ShowBalancesOnCloseOfDay {
+            get {
+                return ResourceManager.GetString("ShowBalancesOnCloseOfDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show balances on open of day.
+        /// </summary>
+        internal static string ShowBalancesOnOpenOfDay {
+            get {
+                return ResourceManager.GetString("ShowBalancesOnOpenOfDay", resourceCulture);
             }
         }
         

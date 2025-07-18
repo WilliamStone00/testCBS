@@ -14,8 +14,6 @@
                         <fieldset class="fieldset-custom">
                             <legend>@GlobalTellerManagement.TellerPersonalInformation</legend>
                             <div class="row mt-2 gy-4">
-
-
                                 <div class="col-md-2">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.Teller.code, new { @class = "form-control" })
@@ -195,7 +193,51 @@
                             </div>
 
                         </fieldset>
+                        <fieldset class="fieldset-custom">
+                            <legend>@GlobalTellerManagement.DayEndVisibilitySettings</legend>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.Teller.ShowbalancesOnOpenOfDay, new { @class = "form-check-input" })
+                                        <label class="form-check-label">@GlobalTellerManagement.ShowBalancesOnOpenOfDay</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.Teller.ShowbalancesOnCloseOfDay, new { @class = "form-check-input" })
+                                        <label class="form-check-label">@GlobalTellerManagement.ShowBalancesOnCloseOfDay</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="fieldset-custom">
+                            <legend>Remote Daily Collector Close Authorization</legend>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.Teller.AllowRemoteTellerClose, new { @class = "form-check-input", id = "AllowRemoteTellerClose" })
+                                        <label class="form-check-label" for="AllowRemoteTellerClose">
+                                            ✅ Permit Daily Collectors to initiate <strong>End of Day (Close)</strong> from the Collector App,
+                                            <u>only when physically in front of the Primary Teller</u>.
+                                            This enables faster cash handover and validation.
+                                        </label>
+                                    </div>
+                                </div>
 
+                                <div class="col-md-12 mt-2">
+                                    @{
+                                        var isAllowed = Model.Teller.AllowRemoteTellerClose;
+                                        var badgeClass = isAllowed ? "badge bg-success" : "badge bg-warning";
+                                        var badgeText = isAllowed
+                                            ? "🔓 Remote Collector Closure Enabled (in presence of Primary Teller)"
+                                            : "🔒 Remote Collector Closure Disabled";
+                                    }
+                                    <span class="@badgeClass px-3 py-2 fs-6">
+                                        @badgeText
+                                    </span>
+                                </div>
+                            </div>
+                        </fieldset>
                         <fieldset class="fieldset-custom">
                             <legend>@GlobalTellerManagement.CashCeilingMonitoring</legend>
                             <div class="row gy-4">
@@ -251,9 +293,9 @@
                             }
                             else
                             { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
-                                @Html.HiddenFor(m => m.Teller.id)
-                                <input type="hidden" name="Action" value="update" id="Action" />
-                            }
+                            @Html.HiddenFor(m => m.Teller.id)
+                            <input type="hidden" name="Action" value="update" id="Action" />
+                        }
                         </div>
                     }
 

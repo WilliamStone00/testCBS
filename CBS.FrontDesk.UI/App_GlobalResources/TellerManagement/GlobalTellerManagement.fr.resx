@@ -195,6 +195,9 @@
   <data name="DateBlocked" xml:space="preserve">
     <value>Date de blocage</value>
   </data>
+  <data name="DayEndVisibilitySettings" xml:space="preserve">
+    <value>Paramètres de visibilité en fin de journée</value>
+  </data>
   <data name="EnterAUniqueCodeForTheTellerManagingThisAccount" xml:space="preserve">
     <value>Entrez un code unique pour le caissier gérant ce compte</value>
   </data>
@@ -404,6 +407,12 @@
   </data>
   <data name="SetThresholdsForAccountBalanceAlerts" xml:space="preserve">
     <value>Définissez les seuils pour les alertes de solde de compte. Les utilisateurs seront avertis lorsque leur solde tombe en dessous ou dépasse les niveaux spécifiés. Assurez-vous de valeurs appropriées pour éviter les alertes inutiles</value>
+  </data>
+  <data name="ShowBalancesOnCloseOfDay" xml:space="preserve">
+    <value>Afficher les soldes à la clôture de la journée</value>
+  </data>
+  <data name="ShowBalancesOnOpenOfDay" xml:space="preserve">
+    <value>Afficher les soldes à l'ouverture de la journée</value>
   </data>
   <data name="SpecifyTheAccountAssociatedWith" xml:space="preserve">
     <value>Spécifiez le compte associé avec</value>

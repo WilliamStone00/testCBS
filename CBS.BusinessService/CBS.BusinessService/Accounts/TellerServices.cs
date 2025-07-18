@@ -82,6 +82,7 @@ namespace CBS.BusinessService.Accounts
                                   isPrimary = teller.isPrimary,
                                   name = teller.name,
                                   code = teller.code,
+                                  AllowRemoteTellerClose=teller.AllowRemoteTellerClose,
                                   bankId = teller.bankId,
                                   PerformCashIn = teller.PerformCashIn,
                                   PerformCashOut = teller.PerformCashOut,
@@ -238,60 +239,87 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> Update(Teller model)
+        public async Task<ExecutionMessages> Update(Teller model, ToggleRemoteCloseDto toggleRemote, bool istoogle = false)
         {
             try
             {
+                var idToUse = istoogle ? toggleRemote.TellerId : model.id;
+                var existingTeller = await GetTeller(idToUse);
 
-                var Teller = await GetTeller(model.id);
-                if (Teller != null)
+                if (existingTeller == null)
                 {
-                    Teller.code = model.code;
-                    Teller.name = model.name;
-                    Teller.MinimumAmountToManage = model.MinimumAmountToManage;
-                    Teller.MaximumAmountToManage = model.MaximumAmountToManage;
-                    Teller.MinimumWithdrawalAmount = model.MinimumWithdrawalAmount;
-                    Teller.MaximumWithdrawalAmount = model.MaximumWithdrawalAmount;
-                    Teller.MaximumTransferAmount = model.MaximumTransferAmount;
-                    Teller.MinimumTransferAmount = model.MinimumTransferAmount;
-                    Teller.MaximumDepositAmount = model.MaximumDepositAmount;
-                    Teller.MinimumDepositAmount = model.MinimumDepositAmount;
-                    Teller.isPrimary = model.isPrimary;
-                    Teller.activeStatus = model.activeStatus;
-                    Teller.inUseStatus = model.inUseStatus;
-                    Teller.PerformTransfer = model.PerformTransfer;
-                    Teller.PerformCashIn = model.PerformCashIn;
-                    Teller.PerformCashOut = model.PerformCashOut;
-                    Teller.TellerType = model.TellerType;
-                    Teller.OperationType = model.OperationType;
-                    Teller.IsBlockedDueToCashCeilling = model.IsBlockedDueToCashCeilling;
-                    Teller.Comment = model.Comment;
-                    Teller.Blockedby = GetUserFullName();
-                    var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<Teller>>(string.Format(APICallHelper.Get_Update_Delete_Teller, model.id), Teller);
-                    if (response.IsSuccess)
-                    {
-                        // Successful creation
-                        GetExecutionMessages(response, true, null, MessagesResults.Success,
-                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
-                        return ExecutionMessage;
-                    }
-                    else
-                    {
-                        // Failed creation
-                        GetExecutionMessages(model, false, $"{Teller.name}", MessagesResults.Failed,
-                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
-                    }
+                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
+                        "Teller not found.");
+                    return ExecutionMessage;
                 }
 
+                // 🛠 Apply updates from model to the retrieved teller
+                ApplyTellerUpdates(existingTeller, model,istoogle);
+
+                // 🔄 Make API call
+                var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<Teller>>(
+                    string.Format(APICallHelper.Get_Update_Delete_Teller, idToUse),
+                    existingTeller
+                );
+
+                // ✅ Handle success
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                }
+                else
+                {
+                    GetExecutionMessages(model, false, existingTeller.name, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
             }
             catch (Exception ex)
             {
-                // Log and handle exception
-                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
-                    SystemMessageStatus.Failed.ToString(), ex);
+                GetExecutionMessages(null, false, null, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Failed.ToString(), ex);
             }
+
             return ExecutionMessage;
         }
+        private void ApplyTellerUpdates(Teller target, Teller source, bool status)
+        {
+            if (source==null)
+            {
+                target.AllowRemoteTellerClose=status;
+            }
+            else
+            {
+                target.code = source.code;
+                target.name = source.name;
+                target.MinimumAmountToManage = source.MinimumAmountToManage;
+                target.MaximumAmountToManage = source.MaximumAmountToManage;
+                target.MinimumWithdrawalAmount = source.MinimumWithdrawalAmount;
+                target.MaximumWithdrawalAmount = source.MaximumWithdrawalAmount;
+                target.MaximumTransferAmount = source.MaximumTransferAmount;
+                target.MinimumTransferAmount = source.MinimumTransferAmount;
+                target.MaximumDepositAmount = source.MaximumDepositAmount;
+                target.MinimumDepositAmount = source.MinimumDepositAmount;
+                target.isPrimary = source.isPrimary;
+                target.activeStatus = source.activeStatus;
+                target.inUseStatus = source.inUseStatus;
+                target.PerformTransfer = source.PerformTransfer;
+                target.PerformCashIn = source.PerformCashIn;
+                target.PerformCashOut = source.PerformCashOut;
+                target.TellerType = source.TellerType;
+                target.AllowRemoteTellerClose = source.AllowRemoteTellerClose;
+                target.OperationType = source.OperationType;
+                target.IsBlockedDueToCashCeilling = source.IsBlockedDueToCashCeilling;
+                target.Comment = source.Comment;
+                target.ShowbalancesOnCloseOfDay = source.ShowbalancesOnCloseOfDay;
+                target.ShowbalancesOnOpenOfDay = source.ShowbalancesOnOpenOfDay;
+                target.Blockedby = GetUserFullName();
+            }
+            
+        }
+
+
         public async Task<ExecutionMessages> UpdateMobileMoneyConfiguration(MobileMoneyTellerConfigurationCommand model, string action)
         {
             try

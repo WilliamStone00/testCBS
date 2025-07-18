@@ -50,7 +50,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 var openOfDay = await _acountServices.GetTellerAccount(new GetTellerAccountBalanceQuery("N/A", true, false, true),false);
                 ViewBag.Error = openOfDay.ErrorMessage;
                 ViewBag.HasError = openOfDay.HasError;
-                return View(new EndOfTheDay { CloseOfDayRequest = new CloseOfDayRequest { AccountingDay = openOfDay.AccountingDay, Amount = openOfDay.CashAtHand, CashAtHand = openOfDay.CashAtHand, CurrencyNotes = openOfDay.CloseOfDayRequest.CurrencyNotes, ClossedStatus = "Pending", Comment = $"As Primary Teller, {Session["FullName"].ToString()} is concluding operations for the day on [{openOfDay.AccountingDay}] with a final total.CashAtHand of {openOfDay.CashAtHand.ToString("#,##0")}. Date: [{DateTime.Now}]" } });
+                return View(new EndOfTheDay { CloseOfDayRequest = new CloseOfDayRequest { AccountingDay = openOfDay.AccountingDay, Amount = openOfDay.CashAtHand, CashAtHand = openOfDay.CashAtHand, CurrencyNotes = openOfDay.CloseOfDayRequest.CurrencyNotes, ClossedStatus = "Pending", Comment = $"As Primary Teller, {Session["FullName"].ToString()} is concluding operations for the day on [{openOfDay.AccountingDay}] with a final total.CashAtHand of {openOfDay.CashAtHand.ToString("#,##0")}. Date: [{DateTime.Now}]" }, Teller=openOfDay.Teller });
                 //85,222,000.0
             }
             catch (Exception ex)
@@ -80,7 +80,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             //}
 
 
-            return View(new EndOfTheDay { CloseOfDayRequest = new CloseOfDayRequest {AccountingDay= openOfDay.AccountingDay, Amount = openOfDay.CashAtHand, CashAtHand = openOfDay.CashAtHand, CurrencyNotes = openOfDay.CloseOfDayRequest.CurrencyNotes,   ClossedStatus = "Pending", Comment = $"As Sub-Teller, {Session["FullName"].ToString()} is concluding operations for the day on [{openOfDay.AccountingDay}] with a final total.CashAtHand of {openOfDay.CashAtHand.ToString("#,##0")}. Date: [{DateTime.Now}]" } });
+            return View(new EndOfTheDay { CloseOfDayRequest = new CloseOfDayRequest {AccountingDay= openOfDay.AccountingDay, Amount = openOfDay.CashAtHand, CashAtHand = openOfDay.CashAtHand, CurrencyNotes = openOfDay.CloseOfDayRequest.CurrencyNotes,   ClossedStatus = "Pending", Comment = $"As Sub-Teller, {Session["FullName"].ToString()} is concluding operations for the day on [{openOfDay.AccountingDay}] with a final total.CashAtHand of {openOfDay.CashAtHand.ToString("#,##0")}. Date: [{DateTime.Now}]" }, Teller=openOfDay.Teller });
         }
 
 
@@ -103,7 +103,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         {
             if (model.Option == "Primary")
             {
-                var data = await _primaryTellerEndOfDayServices.EndTheDay(model.CloseOfDayRequest);
+                var data = await _primaryTellerEndOfDayServices.EndTheDay(model.CloseOfDayRequest, model.ProceedWithDiscrepancy);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }
