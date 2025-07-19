@@ -1163,5 +1163,10 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_CommissionSetting = "/api/v1/CommissionSetting/{0}";
         public static string CreateCommissionSetting = "/api/v1/CommissionSetting";
         public static string GetAllCommissionSettings = "/api/v1/CommissionSettings";
+
+        //MigrationGLReconciliation
+        public static string MigrationGLReconciliationInit = "/api/v1/MigrationGLReconciliation/add";
+        public static string MigrationGLReconciliationAccountList = "/api/v1/MigrationGLReconciliation/list";
+        public static string MigrationGLReconciliationAccount = "/api/v1/MigrationGLReconciliation/by-id/{0}";
     }
 }
