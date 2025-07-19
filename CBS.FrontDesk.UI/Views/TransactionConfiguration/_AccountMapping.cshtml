@@ -127,6 +127,38 @@
                                                 <small class="form-text text-muted">@GlobalsAccountMapping.TracksCommissionGeneratedFromTransferOperationsFor @Model.SavingProduct.Name.</small>
                                             </div>
                                         </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.TransitChartofAccountId,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                    "Select an account",
+                                                    new { @class = "form-control select2", @search = "true" }
+                                                )
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.TransitChartofAccountId, "", new { @class = "text-danger" })
+                                                <label>Transit Account (Local Use)</label>
+                                                <small class="form-text text-muted">
+                                                    This account is used to temporarily hold internal funds during local processing steps such as teller handovers, internal settlements, or pending adjustments within the same branch.
+                                                </small>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.SuspenseChartofAccountId,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                    "Select an account",
+                                                    new { @class = "form-control select2", @search = "true" }
+                                                )
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.SuspenseChartofAccountId, "", new { @class = "text-danger" })
+                                                <label>Suspense Account (Local Use)</label>
+                                                <small class="form-text text-muted">
+                                                    This account is used to hold unidentified or unbalanced amounts arising from local operations—such as data entry errors, pending approvals, or system mismatches—until they are properly resolved.
+                                                </small>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </fieldset>
 
@@ -297,6 +329,8 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
+
                                 </fieldset>
 
                                 <fieldset class="fieldset-custom">

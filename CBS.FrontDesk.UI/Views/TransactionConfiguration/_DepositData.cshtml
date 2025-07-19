@@ -35,7 +35,8 @@
                             <td>@d.HeadOfficeShare.ToString("#,##0") %</td>
                             <td>@d.FluxAndPTMShare.ToString("#,##0") %</td>
                             <td>
-                                <a href="#" onclick="AddORUpdateGen('@d.Id','myDataTable_Deposit','_DepositConfig','get','TransactionConfiguration','depositlimit')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_DepositData.Select, @d.Product.Name, @d.DepositType)">@Globals_DepositData.Edit</a> |
+
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_Deposit','_DepositConfig','get','TransactionConfiguration','depositlimit')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_DepositData.Select, @d.Product.Name, @d.DepositType)">@Globals_DepositData.Edit</a> |
                                 <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_DepositData.Delete, @d.Product.Name, @d.DepositType)" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.Id','myDataTable_Deposit','_DepositData',0,'datalistingview_Deposit',null,'cash_deposit_parameter')">@Globals_DepositData.Delete</a>
                             </td>
                         </tr>
