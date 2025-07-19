@@ -41,7 +41,7 @@
                                  @class = "form-control",
                                  type = "datetime-local",
                                  id = "fromDate"
-                             })   @*@Html.TextBoxFor(model => model.SystemQuery.FromDate, new { @class = "form-control", @id = "dateFrom", @autocomplete = "off" })*@
+                             })   
                             @Html.ValidationMessageFor(model => model.SystemQuery.FromDate, "", new { @class = "text-danger" })
                             <label>From Date</label>
                         </div>

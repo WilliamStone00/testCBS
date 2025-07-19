@@ -2054,6 +2054,7 @@
     <Compile Include="Controllers\CashDeskOperations\CashDeskController.cs" />
     <Compile Include="Controllers\CashDeskOperations\OtherTransactionController.cs" />
     <Compile Include="Controllers\ChangeCustomerNumber\ChangeNumberController.cs" />
+    <Compile Include="Controllers\DailyCollectorManagement\DailyCollectionDashboardController.cs" />
     <Compile Include="Controllers\MemberReceiptsP\MemberReceiptController.cs" />
     <Compile Include="Controllers\CMoney\CMoneyMembershipController.cs" />
     <Compile Include="Controllers\Commitee\LoanCommiteeController.cs" />
@@ -4255,6 +4256,8 @@
     <Content Include="CBSTemp\ui\assets\alertifyjs\css\themes\semantic.rtl.min.css" />
     <Content Include="CBSTemp\ui\assets\alertifyjs\notify.js" />
     <Content Include="CBSTemp\ui\assets\audio\Water_Lily.mp3" />
+    <Content Include="CBSTemp\ui\assets\css\CommissionPayment.css" />
+    <Content Include="CBSTemp\ui\assets\css\DailyCollectionDashBoard.css" />
     <Content Include="CBSTemp\ui\assets\css\demo.css" />
     <Content Include="CBSTemp\ui\assets\css\FinancialReferenceDocument.css" />
     <Content Include="CBSTemp\ui\assets\img\.DS_Store" />
@@ -8201,6 +8204,8 @@
     <Content Include="Scripts\Js\AccountEventConfigurtion\MFIChartOfAccount.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
     <Content Include="Scripts\Js\CashMovementTracker\CashMovementTracker.js" />
+    <Content Include="Scripts\Js\CommissionManagement\CommissionPayment.js" />
+    <Content Include="Scripts\Js\Dashboard\DailyCollection\DailyCollectionDashboard.js" />
     <Content Include="Scripts\Js\MemberReceiptsP\MemberReceipt.js" />
     <Content Include="Scripts\Js\CMoney\cmoney.js" />
     <Content Include="Scripts\Js\CMoney\cmMembers.js" />
@@ -9353,6 +9358,9 @@
     <Content Include="Views\OverdraftActivation\Requests.cshtml" />
     <Content Include="Views\OverdraftActivation\_ApproveTips.cshtml" />
     <Content Include="Views\OverdraftActivation\_FIleter.cshtml" />
+    <Content Include="Views\DailyAgentManagement\CommissionPayment.cshtml" />
+    <Content Include="Views\DailyAgentManagement\Index.cshtml" />
+    <Content Include="Views\DailyCollectionDashboard\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

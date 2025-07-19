@@ -1139,8 +1139,11 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_Agent = "/api/v1/Agent/{0}";
         public static string CreateAgent = "/api/v1/Agent";
         public static string GetAllAgent = "/api/v1/Agents";
-
-        //AgentAccount
+        public static string GetActiveDailyCollectors = "/api/v1/DailySavingsBackOffice/collectors?branchId={0}&month={1}&year={2}";
+        public static string GetAgentActivities = "/api/v1/Agent/GetAgentActivities/{0}/{1}/{2}/{3}";
+        public static string GetCollectorsHistory = "/api/v1/DailySavingsBackOffice/collector-history-with-dashboard?collectorId={0}&year={1}&month={2}&BranchId={3}";
+        public static string PayDailyCollectorCommission = "/api/v1/DailyCollections/PayDailyCollectorCommission";
+        ///
         public static string Get_Update_Delete_AgentAccount = "/api/v1/AgentAccount/{0}";
         public static string CreateAgentAccount = "/api/v1/AgentAccount";
         public static string GetAllAgentAccount = "/api/v1/AgentAccounts";

@@ -120,6 +120,9 @@
     <Compile Include="Entity\DailyCollectionData\CommissionSetting\CommissionSetting.cs" />
     <Compile Include="Entity\DailyCollectionData\DailyCustomer\DailyCustomer.cs" />
     <Compile Include="Entity\DailyCollectionData\Zone\Zone.cs" />
+    <Compile Include="Entity\DailyCollectionEntities\CollectorSalarySummaryDto.cs" />
+    <Compile Include="Entity\DailyCollectionEntities\FinancialReportData.cs" />
+    <Compile Include="Entity\DailyCollectionEntities\DailyDashBoardData.cs" />
     <Compile Include="Entity\DailyCollectorManagement\DailyCollectionConfiguration.cs" />
     <Compile Include="Entity\DataSetLoanPortfolio\DelinquencyByAgeAndGenderRow.cs" />
     <Compile Include="Entity\DataSetLoanPortfolio\DelinquencyByAgeAndLoanTypeRow.cs" />
