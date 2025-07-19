@@ -443,7 +443,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public bool OTPControl { get; set; }
         public decimal WithdrawalFormSavingFormFeeFor3PP { get; set; }
         public string EventCodeWithdrawalFormSavingFormFeeFor3PP { get; set; }
-
+        public string TransitChartofAccountId { get; set; }
+        public string SuspenseChartofAccountId { get; set; }
         public bool AutoVerifyRemittanceSender { get; set; }
         public bool AutoVerifyRemittanceReceiver { get; set; }
         public decimal MinimumOpeningBalanceMoralPerson { get; set; }
