@@ -2025,6 +2025,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalWithdrawalNotification.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\Accounting\AccountBalanceInitializationController.cs" />
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
     <Compile Include="Controllers\Accounting\AccountEntry.cs" />
@@ -8206,6 +8207,7 @@
     <Content Include="Scripts\Js\CashMovementTracker\CashMovementTracker.js" />
     <Content Include="Scripts\Js\CommissionManagement\CommissionPayment.js" />
     <Content Include="Scripts\Js\Dashboard\DailyCollection\DailyCollectionDashboard.js" />
+    <Content Include="Scripts\Js\main.js\AccountBalanceInitialization.js" />
     <Content Include="Scripts\Js\MemberReceiptsP\MemberReceipt.js" />
     <Content Include="Scripts\Js\CMoney\cmoney.js" />
     <Content Include="Scripts\Js\CMoney\cmMembers.js" />
@@ -9361,6 +9363,9 @@
     <Content Include="Views\DailyAgentManagement\CommissionPayment.cshtml" />
     <Content Include="Views\DailyAgentManagement\Index.cshtml" />
     <Content Include="Views\DailyCollectionDashboard\Index.cshtml" />
+    <Content Include="Views\AccountBalanceInitialization\Index.cshtml" />
+    <Content Include="Views\AccountBalanceInitialization\_AccountInitializationData.cshtml" />
+    <Content Include="Views\AccountBalanceInitialization\_CreateAccountBalanceInitialization.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -331,6 +331,7 @@
     <Compile Include="Loan\Overdraft\OverdraftActivationServices.cs" />
     <Compile Include="Loan\Overdraft\OverdraftFacilityConfigServices.cs" />
     <Compile Include="LocalizationService\LocalizationService.cs" />
+    <Compile Include="Migration\AccountMigrationServices.cs" />
     <Compile Include="PaymentReceiptMapping.cs" />
     <Compile Include="Config\EconomicActivityServices.cs" />
     <Compile Include="Config\CustomerCategoryServices.cs" />

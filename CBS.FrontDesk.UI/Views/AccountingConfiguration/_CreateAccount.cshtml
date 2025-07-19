@@ -7,7 +7,8 @@
 
             <div class="card-body">
                 @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-                {<input type="hidden" name="ServiceOption" value="account" id="ServiceOption" />
+                {
+                    <input type="hidden" name="ServiceOption" value="account" id="ServiceOption" />
                  <div class="row mt-2 gy-4">
                      @Html.HiddenFor(m => m.Account.BranchCode, new { @id = "BranchCode" })
                      <div class="col-md-12">

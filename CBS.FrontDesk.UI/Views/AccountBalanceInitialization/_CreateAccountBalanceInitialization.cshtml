@@ -1,0 +1,66 @@
+﻿@model CBS.FrontDesk.Data.AccountBalanInitConfiguration
+
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div id="datalistingview_AccountInitialize">
+                    <h5 class="card-title mb-3">Initialize Ordinary Account</h5>
+
+                    <div class="row gy-3">
+                        <!-- Branch Selection -->
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.InitInfoDto.BranchId, new SelectList(ViewBag.Branches, "Value", "Text"), "--- Select Branch ---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
+                                @Html.ValidationMessageFor(m => m.InitInfoDto.BranchId, "", new { @class = "text-danger" })
+                                <label>Branch</label>
+                            </div>
+                        </div>
+
+                        <!-- Account Type -->
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.InitInfoDto.ProductId, new SelectList(ViewBag.AccountTypes, "Value", "Text"), "--- Select Account Type ---", new { @class = "form-control select2 shadow-input-boxes" })
+                                @Html.ValidationMessageFor(m => m.InitInfoDto.ProductId, "", new { @class = "text-danger" })
+                                <label>Account Type</label>
+                            </div>
+                        </div>
+
+                        <!-- Total Member Balance -->
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.InitInfoDto.SubmittedMemberBalance, new { @class = "form-control", @id = "SubmittedMemberBalance" })
+                                @Html.ValidationMessageFor(m => m.InitInfoDto.SubmittedMemberBalance, "", new { @class = "text-danger" })
+                                <label>Total Member Balance</label>
+                            </div>
+                        </div>
+                            <!-- Trial Balance -->
+                            <div class="col-md-6">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.InitInfoDto.SubmittedGLBalance, new { @class = "form-control", @id = "SubmittedGLBalance" })
+                                    @Html.ValidationMessageFor(m => m.InitInfoDto.SubmittedGLBalance, "", new { @class = "text-danger" })
+                                    <label>Total Member Balance</label>
+                                </div>
+                            </div>
+
+                            <!-- Scenario Selection -->
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(m => m.InitInfoDto.ScenarioId, new SelectList(ViewBag.Scenarios, "Value", "Text"), "--- Select Scenario ---", new { @class = "form-control select2 shadow-input-boxes" })
+                                    @Html.ValidationMessageFor(m => m.InitInfoDto.ScenarioId, "", new { @class = "text-danger" })
+                                    <label>Scenario</label>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="col-md-12 mt-3 text-end">
+                                <button type="button" onclick="submitAccountData()" class="btn btn-primary">
+                                    Submit &nbsp; <i class="mdi mdi-plus-box-multiple"></i>
+                                </button>
+                            </div>
+                            <!-- Content -->
+
+                        </div>
+                    </div> <!-- .row -->
+            </div> <!-- .card-body -->
+        </div> <!-- .card -->
+    </div> <!-- .col -->
