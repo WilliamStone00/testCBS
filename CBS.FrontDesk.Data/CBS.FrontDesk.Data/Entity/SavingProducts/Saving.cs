@@ -444,7 +444,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public decimal WithdrawalFormSavingFormFeeFor3PP { get; set; }
         public string EventCodeWithdrawalFormSavingFormFeeFor3PP { get; set; }
         public string TransitChartofAccountId { get; set; }
-        public string SuspenseChartofAccountId { get; set; }
+        public string SuspenseChartOfAccountId { get; set; }
         public bool AutoVerifyRemittanceSender { get; set; }
         public bool AutoVerifyRemittanceReceiver { get; set; }
         public decimal MinimumOpeningBalanceMoralPerson { get; set; }
@@ -489,7 +489,6 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string CivilServantsSalaryDestinationPayableChartofAccountId { get; set; }
         public string CivilServantsSalarySourceSalaryChartofaccountId { get; set; }
         public string CivilServantsSalaryDestinationSalaryProductChartofAccountId { get; set; }
-        public string SuspenseChartOfAccountId { get; set; }
         public string PrivateInstitutionSalarySourceChartofAccountId { get; set; }
         public string PrivateInstitutionSalaryDestinationPayableChartofAccountId { get; set; }
         public string PrivateInstitutionSalarySourceSalaryChartofAccountId { get; set; }
