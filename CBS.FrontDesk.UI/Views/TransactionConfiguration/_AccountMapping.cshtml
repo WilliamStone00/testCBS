@@ -146,12 +146,12 @@
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.DropDownListFor(
-                                                    m => m.SavingProduct.SuspenseChartofAccountId,
+                                                    m => m.SavingProduct.SuspenseChartOfAccountId,
                                                     new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
                                                     "Select an account",
                                                     new { @class = "form-control select2", @search = "true" }
                                                 )
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.SuspenseChartofAccountId, "", new { @class = "text-danger" })
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.SuspenseChartOfAccountId, "", new { @class = "text-danger" })
                                                 <label>Suspense Account (Local Use)</label>
                                                 <small class="form-text text-muted">
                                                     This account is used to hold unidentified or unbalanced amounts arising from local operations—such as data entry errors, pending approvals, or system mismatches—until they are properly resolved.

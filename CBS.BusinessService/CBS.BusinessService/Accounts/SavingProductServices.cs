@@ -338,7 +338,7 @@ namespace CBS.BusinessService.Accounts
                     SavingProduct.ChartOfAccountIdSourceCMoneyTransferCommission = model.ChartOfAccountIdSourceCMoneyTransferCommission;
                     SavingProduct.ChartOfAccountIdDestinationCMoneyTransferCommission = model.ChartOfAccountIdDestinationCMoneyTransferCommission;
                     SavingProduct.TransitChartofAccountId  = model.TransitChartofAccountId;
-                    SavingProduct.SuspenseChartofAccountId  = model.SuspenseChartofAccountId;
+                    SavingProduct.SuspenseChartOfAccountId  = model.SuspenseChartOfAccountId;
 
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.Id), SavingProduct);
                     if (response.IsSuccess)
