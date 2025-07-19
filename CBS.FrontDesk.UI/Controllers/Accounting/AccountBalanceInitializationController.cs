@@ -131,7 +131,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         public async Task<ActionResult> Create(AccountBalanInitConfiguration model)
         {
            var datac = await AccountMigrationServices.MigrationGLReconciliation(model.InitInfoDto);
-           return Json(new { data = datac, status = datac==null , message = datac == null? "Processing Failed":"Processing Successfull" });
+           return Json(new { data = datac, status = datac.SuspenseGLAccount==null , message = datac == null? "Processing Failed":"Processing Successfull" });
         }
         private async Task<PartialViewResult> GetServiceAction(string path, string partialView, string key, string serviceOption)
         {

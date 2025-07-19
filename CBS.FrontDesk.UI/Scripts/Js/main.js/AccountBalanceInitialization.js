@@ -5,24 +5,42 @@ $(document).ready(function () {
 });
 function submitAccountData() {
     const container = document.getElementById("datalistingview_AccountInitialize");
-    var ddddatascope = getAccountInitializeFormData();
-    var datascope = createAccountBalanInitConfiguration(ddddatascope);
+    const initFormData = getAccountInitializeFormData();
+    const payload = createAccountBalanInitConfiguration(initFormData);
+
+    const confirmMsg = `
+You are about to initialize the following account:
+
+- Branch: ${initFormData.branchId}
+- Product Type: ${initFormData.productId}
+- Member Balance: ${initFormData.submittedMemberBalance}
+- GL Balance: ${initFormData.submittedGLBalance}
+- Scenario: ${initFormData.scenarioId}
+
+Do you want to continue?`;
+
+    if (!window.confirm(confirmMsg)) {
+        return; // Cancel submission
+    }
 
     $.ajax({
         url: '/AccountBalanceInitialization/Create',
         method: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify(datascope),
+        data: JSON.stringify(payload),
         success: function (response) {
-            if (response.status===true) {
-                loadAccountList(datascope.BranchId, datascope.ProductId);
+            if (response.status === true) {
+                GetAccountList(payload.branchId, payload.productId);
             } else {
-                appalert("This Account Initialization failed ", 1, 2);
+                appalert("This Account Initialization failed", 1, 2);
             }
-         
+        },
+        error: function () {
+            appalert("An error occurred during submission.", 1, 2);
         }
     });
 }
+
 function getAccountInitializeFormData() {
     return {
         branchId: document.getElementById('InitInfoDto_BranchId')?.value || "",
@@ -52,7 +70,38 @@ function createAccountBalanInitConfiguration(data) {
         ]
     };
 }
+
+
 function GetAccountList(BranchId, ProductId) {
+    $.getJSON('/AccountBalanceInitialization/GetAccountList?BranchId=' + BranchId + '&ProductId=' + ProductId, function (data) {
+        const list = data.MakeAccountPostingCommands;
+        const tbody = $('#depositTable tbody');
+        tbody.empty();
+
+        list.forEach((item, index) => {
+            const totalAmount = item.AmountCollection.reduce((acc, a) => acc + a.Amount, 0);
+            tbody.append(`
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${item.TransactionReferenceId}</td>
+                    <td>${item.AccountNumber}</td>
+                    <td>${item.AccountHolder}</td>
+                    <td>XAF ${totalAmount.toLocaleString()}</td>
+                    <td>${item.BranchCode}</td>
+                    <td>${formatDate(item.TransactionDate)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick='showDetails(${JSON.stringify(item)})'>🔍 View</button>
+                    </td>
+                </tr>
+            `);
+        });
+
+        // Replace the partial view content
+        $("#datalistingview_AccountInitialize").load("/AccountBalanceInitialization/_AccountInitializationData");
+    });
+}
+
+function GetAccountListqqq(BranchId, ProductId) {
     $.getJSON('/AccountBalanceInitialization/GetAccountList?BranchId=' + BranchId + '&ProductId=' + ProductId, function (data) {
         const list = data.MakeAccountPostingCommands;
         const tbody = $('#depositTable tbody');

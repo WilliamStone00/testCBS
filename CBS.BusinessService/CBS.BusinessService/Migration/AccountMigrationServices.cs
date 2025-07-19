@@ -50,7 +50,7 @@ namespace CBS.BusinessService.Migration
             }
             else
             {
-                return new AccountInitDto();
+                return null;
             }
         }
     
