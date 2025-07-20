@@ -9366,6 +9366,9 @@
     <Content Include="Views\AccountBalanceInitialization\Index.cshtml" />
     <Content Include="Views\AccountBalanceInitialization\_AccountInitializationData.cshtml" />
     <Content Include="Views\AccountBalanceInitialization\_CreateAccountBalanceInitialization.cshtml" />
+    <Content Include="Views\AccountBalanceInitialization\_CreateZeroOutRequest.cshtml" />
+    <Content Include="Views\AccountBalanceInitialization\IndexZeroOut.cshtml" />
+    <Content Include="Views\AccountBalanceInitialization\_ZeroOutAccountInitData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.AccountBalanInitConfiguration
 
-<div class="modal-body bg-light">
-    @using (Html.BeginForm("Create", "AccountBalanceInitialization", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+<div class="modal-body bg-light card-border-shadow-dark">
+    @using (Html.BeginForm("Create", "AccountBalanceInitialization", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPosting(this);" }))
     {
         @Html.ValidationSummary(true, "Please correct the errors and try again.", new { @class = "alert alert-danger" })
 

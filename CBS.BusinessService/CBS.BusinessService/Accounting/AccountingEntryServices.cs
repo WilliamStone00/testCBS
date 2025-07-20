@@ -1374,7 +1374,7 @@ namespace CBS.BusinessService
 
                 if (userLists.ApiResponseData != null)
                 {
-                    var braches = await GetBranches();
+                    var braches = await branchServices.GetBranches();
 
 
                     foreach (var a in userLists.ApiResponseData.Data)

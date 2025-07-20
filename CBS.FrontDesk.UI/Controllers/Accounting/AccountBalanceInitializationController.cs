@@ -7,6 +7,7 @@ using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Message;
+using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Newtonsoft.Json;
 using System;
@@ -38,16 +39,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         }
 
         [HttpGet]
-        public JsonResult GetAccountList(string BranchID,string ProductId)
+        public async Task<ActionResult> GetAccountList(string BranchID,string ProductId, string partialViews= "_AccountInitializationData")
         {
             // Normally pulled from DB or service
-            var result = AccountMigrationServices.MigrationGLReconciliationAccountList(new GetInfoDto { BranchId = BranchID, ProductId = ProductId });
+            var result = await AccountMigrationServices.MigrationGLReconciliationAccountList(new GetInfoDto { BranchId = BranchID, ProductId = ProductId });
             if (result == null)
             {
                 return Json(new { status = false, message = "No data found." }, JsonRequestBehavior.AllowGet);
             }
-           
-                return Json(result, JsonRequestBehavior.AllowGet);
+            //return PartialView(partialViews,result);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         private async Task GetList()
         {
@@ -131,7 +132,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         public async Task<ActionResult> Create(AccountBalanInitConfiguration model)
         {
            var data = await AccountMigrationServices.MigrationGLReconciliation(model.InitInfoDto);
-            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+            return Json(new { data=data.Data, success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
         }
         private async Task<PartialViewResult> GetServiceAction(string path, string partialView, string key, string serviceOption)
         {
