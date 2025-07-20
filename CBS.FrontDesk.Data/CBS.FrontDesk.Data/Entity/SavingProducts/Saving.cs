@@ -445,6 +445,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string EventCodeWithdrawalFormSavingFormFeeFor3PP { get; set; }
         public string TransitChartofAccountId { get; set; }
         public string SuspenseChartOfAccountId { get; set; }
+        public string MemberDeficitChartofAccountId { get; set; }
         public bool AutoVerifyRemittanceSender { get; set; }
         public bool AutoVerifyRemittanceReceiver { get; set; }
         public decimal MinimumOpeningBalanceMoralPerson { get; set; }

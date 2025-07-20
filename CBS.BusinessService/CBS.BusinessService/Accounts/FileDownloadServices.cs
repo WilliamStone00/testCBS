@@ -214,20 +214,14 @@ namespace CBS.BusinessService
                 throw ex;
             }
         }
-        public async Task<ExecutionMessages> InitiateBulkDownloadBranch(InitiateLoanDownloadCommand model)
+        public async Task<ExecutionMessages> InitiateBulkDownloadBranch(DownloadF8Filter model)
         {
             try
             {
-//                {
-//                    "isByBranch": true,
-//  "branchId": "string",
-//  "isUnpaidOnly": true,
-//  "queryParameter": "string"
-//}
-
-
-                model.IsByBranch = true;
-                model.BranchId = model.BranchId;
+                if (!IsHeadOffice())
+                {
+                    model.BranchId = GetBranchID();
+                }
                 var response = await _transactionApiHelper.PostAsync<ServiceResponse<FileDownloadInfo>>(APICallHelper.InitiateBulkDownloadIndividualAccountBalances, model);
                 if (response.IsSuccess)
                 {

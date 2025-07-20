@@ -2,9 +2,11 @@
 using CBS.API.Helper;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data;
+using CBS.FrontDesk.Data.Entity.AccountingDayObject;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
 using CBS.FrontDesk.Data.Entity.DailyCollectorManagement;
+using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
 using System.Collections.Generic;
@@ -40,19 +42,37 @@ namespace CBS.BusinessService.Migration
                 return new List<AccountInitDto>();
             }
         }
-        public async Task<AccountInitDto> MigrationGLReconciliation(InitInfoDto model)
+
+
+        public async Task<ExecutionMessages> MigrationGLReconciliation(InitInfoDto model)
         {
- 
-            var apiResponse = await _savingConfigApiHelper.PostAsync<ResponseObject<AccountInitDto>>(APICallHelper.MigrationGLReconciliationInit, model);
-            if (apiResponse.IsSuccess)
+            try
             {
-                return apiResponse.ApiResponseData.Data;
+                var response = await _savingConfigApiHelper.PostAsync<ResponseObject<AccountInitDto>>(APICallHelper.MigrationGLReconciliationInit, model);
+
+                if (response.ApiResponseData != null)
+                {
+                    // Successful operation
+                    GetExecutionMessages(response, true, null, MessagesResults.Success, ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                }
+                else
+                {
+                    // Failed operation
+                    GetExecutionMessages(model, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return null;
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
             }
+
+            return ExecutionMessage;
         }
+
+       
     
         public async Task<CollectorSalarySummaryDto> GetAccountList(string id)
         {

@@ -1,45 +1,82 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
-@using Resources
+﻿@model List<CBS.FrontDesk.Data.Entity.LoanConf.FileDownloadInfo>
+
 <fieldset class="fieldset-custom">
-    <legend id="select_base">@GlobalMemberOrdinaryAccountsF8.DownloadedFiles</legend>
-    @if (Model.FileDownloadInfoLoans.Count == 0)
+    <legend id="select_base">Downloaded Files</legend>
+
+    @if (Model == null || !Model.Any())
     {
         <div class="text-center my-3">
-            <p>@GlobalMemberOrdinaryAccountsF8.NoFileFound</p>
+            <p>No downloaded files found.</p>
         </div>
     }
     else
     {
+        <div class="text-end mb-2">
+            <button class="btn btn-danger btn-sm" onclick="DeleteAllDownloads()" data-bs-toggle="tooltip" title="Delete all downloaded files">
+                <i class="mdi mdi-delete-outline"></i> Delete All
+            </button>
+        </div>
+
         <div class="table-responsive mb-3">
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>@GlobalMemberOrdinaryAccountsF8.Date</th>
-                        <th>@GlobalMemberOrdinaryAccountsF8.FileName</th>
-                        <th>@GlobalMemberOrdinaryAccountsF8.Size</th>
-                        <th>@GlobalMemberOrdinaryAccountsF8.User</th>
-                        <th>@GlobalShared.Action</th>
+                        <th style="width: 20%">Date</th>
+                        <th style="width: 35%">File Name</th>
+                        <th style="width: 10%">Size</th>
+                        <th style="width: 17%">User</th>
+                        <th style="width: 18%">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var d in Model.FileDownloadInfoLoans.OrderByDescending(d => d.DateInitiated))
+                    @foreach (var d in Model.OrderByDescending(d => d.DateInitiated))
                     {
                         <tr>
-                            <td style="width:20%">@d.DateInitiated</td>
-                            <td style="width:35%">@d.FileName</td>
-                            <td style="width:10%">@d.Size</td>
-                            <td style="width:17%">@d.UserName</td>
-                            <td style="width:18%">
-                                <a href="/MemberOrdinaryAccountsF8/DownloadFileF8?fileId=@d.Id" onclick="" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.FileName @GlobalShared.ToDownload">@GlobalShared.Download</a> |
-                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.FileName" onclick="DeleteRecordThenReloadPage('MemberOrdinaryAccountsF8','@d.Id')">@GlobalShared.Delete</a>
+                            <td>@d.DateInitiated.ToString("dd-MM-yyyy HH:mm")</td>
+                            <td>@d.FileName</td>
+                            <td>@d.Size</td>
+                            <td>@d.UserName</td>
+                            <td>
+                                <a href="@Url.Action("DownloadFileF8", "MemberOrdinaryAccountsF8", new { fileId = d.Id })"
+                                   class="me-2"
+                                   data-bs-toggle="tooltip"
+                                   data-bs-placement="top"
+                                   title="Click to download @d.FileName">
+                                    Download
+                                </a> |
+                                <a href="#"
+                                   class="ms-2 text-danger"
+                                   onclick="DeleteRecordThenReloadPage('MemberOrdinaryAccountsF8','@d.Id')"
+                                   data-bs-toggle="tooltip"
+                                   data-bs-placement="top"
+                                   title="Delete @d.FileName">
+                                    Delete
+                                </a>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
-
     }
-
-
 </fieldset>
+<script>
+    function DeleteAllDownloads() {
+        if (confirm("Are you sure you want to delete all downloaded files?")) {
+            $.ajax({
+                url: '/MemberOrdinaryAccountsF8/DeleteAllDownloads',
+                type: 'POST',
+                success: function (response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert(response.message || "An error occurred while deleting.");
+                    }
+                },
+                error: function () {
+                    alert("Server error during delete all operation.");
+                }
+            });
+        }
+    }
+</script>

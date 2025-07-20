@@ -93,13 +93,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             // You need to replace this with your actual list source
             var scenarios = new List<(string Id, string Name)>
-    {
-        ("SC_001", "Scenario 1"),
-        ("SC_002", "Scenario 2"),
-        ("SC_003", "Scenario 3"),
-        ("SC_004", "Scenario 4"),
-        ("SC_005", "Scenario 5")
-    };
+            {
+                ("SC_001", "Scenario 1 [SC_001]"),
+                ("SC_002", "Scenario 2 [SC_002]"),
+                ("SC_003", "Scenario 3 [SC_003]"),
+                ("SC_004", "Scenario 4 [SC_004]"),
+                ("SC_005", "Scenario 5 [SC_005]")
+            };
 
             var selectListItems = new List<System.Web.WebPages.Html.SelectListItem>
     {
@@ -130,8 +130,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         [HttpPost]
         public async Task<ActionResult> Create(AccountBalanInitConfiguration model)
         {
-           var datac = await AccountMigrationServices.MigrationGLReconciliation(model.InitInfoDto);
-           return Json(new { data = datac, status = datac.SuspenseGLAccount==null , message = datac == null? "Processing Failed":"Processing Successfull" });
+           var data = await AccountMigrationServices.MigrationGLReconciliation(model.InitInfoDto);
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
         }
         private async Task<PartialViewResult> GetServiceAction(string path, string partialView, string key, string serviceOption)
         {

@@ -158,6 +158,21 @@
                                                 </small>
                                             </div>
                                         </div>
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                    m => m.SavingProduct.MemberDeficitChartofAccountId,
+                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                    "Select an account",
+                                                    new { @class = "form-control select2", @search = "true" }
+                                                )
+                                                @Html.ValidationMessageFor(m => m.SavingProduct.MemberDeficitChartofAccountId, "", new { @class = "text-danger" })
+                                                <label>Member Deficit Account</label>
+                                                <small class="form-text text-muted">
+                                                    This account tracks any temporary or unresolved negative balances linked to member activity, usually pending reimbursement or correction.
+                                                </small>
+                                            </div>
+                                        </div>
 
                                     </div>
                                 </fieldset>

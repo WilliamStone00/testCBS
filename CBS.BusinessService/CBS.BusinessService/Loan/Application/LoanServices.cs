@@ -251,7 +251,7 @@ namespace CBS.BusinessService
                     LoanDurarion = loan.LoanDurarion,
                     IndividualCustomer = loan.IndividualCustomer,
                     PaginationMetadata = loan.PaginationMetadata,
-                    FileDownloadInfoLoans = loan.FileDownloadInfoLoans,
+                    FileDownloadInfos = loan.FileDownloadInfos,
                     InitiateLoanDownloadCommand = loan.InitiateLoanDownloadCommand,
                     Refunds = loan.Refunds,
                     LoanAmortizations = loan.LoanAmortizations,
