@@ -159,7 +159,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
         // ✅ Export file and return updated list (instead of streaming file directly)
         [HttpPost]
-        public async Task<ActionResult> ExportMemberAccountBalances(string branchId, List<string> accountTypes)
+        public async Task<ActionResult> ExportMemberAccountBalances(string branchId, List<string> accountTypes, string AccountProfile)
         {
             if (string.IsNullOrWhiteSpace(branchId) || accountTypes == null || !accountTypes.Any())
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Missing branch or account type(s).");
@@ -167,7 +167,8 @@ namespace CBS.FrontDesk.UI.Controllers
             var filter = new DownloadF8Filter
             {
                 BranchId = branchId,
-                AccountTypes = accountTypes
+                AccountTypes = accountTypes,
+                AccountProfile=AccountProfile
             };
 
             var newExport = await _acountServices.InitiateBulkDownloadBranch(filter);
@@ -181,20 +182,14 @@ namespace CBS.FrontDesk.UI.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteAllFiles()
         {
             try
             {
-                return View();
-                //var result = await _acountServices.DeleteAllUserFiles();
-
-                //if (!result)
-                //    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Failed to delete files.");
-
-                //// Reload the updated list after deletion
-                //var downloads = await _acountServices.GetAllFileDownloadInfoPerUser();
-                //return PartialView("_FileDownloadData", downloads);
+                var result = await _acountServices.Delete();
+                // Reload the updated list after deletion
+                var downloads = await _acountServices.GetAllFileDownloadInfoPerUser();
+                return PartialView("_FileDownloadData", downloads);
             }
             catch (Exception ex)
             {
@@ -209,6 +204,11 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 ViewBag.Branches = await _branchServices.GetBranches();
                 ViewBag.AccountTypes = Enum.GetNames(typeof(AccountType)).Select(x => new SelectListItem
+                {
+                    Value = x,
+                    Text = x
+                }).ToList();
+                ViewBag.AccountProfiles = AccountProfileTypes.All.Select(x => new SelectListItem
                 {
                     Value = x,
                     Text = x

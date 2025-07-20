@@ -170,7 +170,33 @@ namespace CBS.BusinessService
             }
         }
 
+        //BulkDownloadDeleteAll
+        public async Task<ExecutionMessages> Delete()
+        {
+            try
+            {
+                var inResponse = await _transactionApiHelper.DeleteAsync<ServiceResponse<bool>>(APICallHelper.BulkDownloadDeleteAll);
+                if (inResponse.IsSuccess)
+                {
 
+                    GetExecutionMessages(inResponse, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
+                    return ExecutionMessage;
+
+                }
+                else
+                {
+                    // Handle failure scenario
+                    GetExecutionMessages(inResponse, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+            }
+            return ExecutionMessage;
+        }
         public async Task<ExecutionMessages> Delete(string id)
         {
             try
@@ -180,7 +206,7 @@ namespace CBS.BusinessService
                 {
 
                     GetExecutionMessages(inResponse, true, null, MessagesResults.Success,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
                 }

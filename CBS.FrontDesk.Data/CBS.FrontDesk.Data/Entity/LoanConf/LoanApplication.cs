@@ -638,6 +638,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         /// The list of account types to include in the export (e.g., Saving, Deposit, MemberShare).
         /// </summary>
         public List<string> AccountTypes { get; set; }
+        public string AccountProfile { get; set; }
     }
     public class FileDownloadInfo
     {
