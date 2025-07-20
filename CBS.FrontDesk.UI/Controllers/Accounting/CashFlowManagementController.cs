@@ -1323,7 +1323,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         Culture = CultureInfo.InvariantCulture
                     };
                     var modelc = JsonConvert.DeserializeObject<QueryFilter>(KEY, settings);
-                    var listBranch = await branchServices.GetBranches();
+                    //var listBranch = await branchServices.GetBranches();
                     var dataModel = await _accountingEntryServices.GetBankDepositEntries(modelc);
                     ViewBag.IsAuthourized = false;
                     var dataUserList = (await _accountingEntryServices.GetUserList()).ToList();
