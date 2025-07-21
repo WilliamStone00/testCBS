@@ -917,18 +917,30 @@ namespace CBS.BusinessService
                 if (couApiResponse.IsSuccess)
                 {
                     var user = await GetUser(couApiResponse.ApiResponseData.Data.IssuedBy);
-                    couApiResponse.ApiResponseData.Data.TempId1 = user.name + "," + user.phoneNumber + " ";
-                    couApiResponse.ApiResponseData.Data.TempId3 = couApiResponse.ApiResponseData.Data.TempData;
-                    if (couApiResponse.ApiResponseData.Data.Status != "Pending")
+                    if (user!=null)
                     {
-                        var userx = await GetUser(couApiResponse.ApiResponseData.Data.ApprovedBy);
-                        couApiResponse.ApiResponseData.Data.TempId2 = userx.name + "," + userx.phoneNumber + " ";
+                        couApiResponse.ApiResponseData.Data.TempId1 = user.name + "," + user.phoneNumber + " ";
+                        couApiResponse.ApiResponseData.Data.TempId3 = couApiResponse.ApiResponseData.Data.TempData;
+                        if (couApiResponse.ApiResponseData.Data.Status != "Pending")
+                        {
+                            var userx = await GetUser(couApiResponse.ApiResponseData.Data.ApprovedBy);
+                            couApiResponse.ApiResponseData.Data.TempId2 = userx.name + "," + userx.phoneNumber + " ";
+                            if (couApiResponse.ApiResponseData.Data.CorrespondingBranchId != "xxx" && couApiResponse.ApiResponseData.Data.CorrespondingBranchId != "1")
+                            {
+                                couApiResponse.ApiResponseData.Data.CorrespondingBranch = (await branchServices.GetBranch(couApiResponse.ApiResponseData.Data.CorrespondingBranchId)).Name;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        couApiResponse.ApiResponseData.Data.TempId3 = "UnKnown";
                         if (couApiResponse.ApiResponseData.Data.CorrespondingBranchId != "xxx" && couApiResponse.ApiResponseData.Data.CorrespondingBranchId != "1")
                         {
                             couApiResponse.ApiResponseData.Data.CorrespondingBranch = (await branchServices.GetBranch(couApiResponse.ApiResponseData.Data.CorrespondingBranchId)).Name;
                         }
                     }
-                    return couApiResponse.ApiResponseData.Data;
+
+                        return couApiResponse.ApiResponseData.Data;
                 }
                 return new CashReplenimentRequest();
             }
