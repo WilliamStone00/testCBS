@@ -4,7 +4,7 @@
  
 }
 <div class="table-responsive mb-3">
-    @if (Convert.ToBoolean(ViewBag.IsAuthourized) == false)
+    @if (Convert.ToBoolean(ViewBag.IsAuthourized) == true)
     {
         @Html.Partial("_GeneralErrorDiv")
     }

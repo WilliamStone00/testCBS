@@ -483,13 +483,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
 
         [HttpGet]
-        public async Task<ActionResult> GetBranchBankAccount(string Id)
+        public async Task<ActionResult> GetBranchBankAccount(string branchId)
         {
             
             List<ChartOfAccountStateDto> listOfAccounts = new List<ChartOfAccountStateDto>();
              //listOfAccounts = await _chartOfAccountManagementPositionService.GetAllBranchAccountUsedToCreditCashFlow("560", "3");
             
-            var listOfBankAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(Id);
+            var listOfBankAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(branchId);
 
             listOfBankAccounts = listOfBankAccounts.Where(c => c.Account2 == "56").ToList();
             if (listOfBankAccounts.Any())

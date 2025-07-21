@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    calculateCashBalance();
+   //calculateCashBalance();
     $('#hideBranchID').hide();
     $('#hideAccountId').hide();
  
@@ -23,7 +23,8 @@
             if (parts[0].includes('Approved')) {
                 $('#hideBranchID').hide();
                 $('#hideAccountId').show();
-               
+                console.log(branchId);
+                console.log(parts[0]);
                 GetBranchBankAccount(branchId);
             } else {
                 loadBranch();
@@ -288,6 +289,7 @@ function loadBranch() {
         type: 'GET',
         dataType: 'json',
         success: function (data) {
+            console.log(data);
             // Clear existing options in the OperationEventAttributeId combo  DepositNotificationDto_Temp3
             $('#CorrespondingBranchID').empty();
             $.each(data, function (index, item) {
@@ -311,7 +313,6 @@ function GetBranchBankAccount(BranchId) {
         dataType: 'json',
         data: { branchId: BranchId},
         success: function (data) {
-            // Clear existing options in the OperationEventAttributeId combo  DepositNotificationDto_Temp3
             $('#DepositNotificationDto_Temp3').empty();
             $.each(data, function (index, item) {
                 $('#DepositNotificationDto_Temp3').append($('<option>').text(item.Value).attr('value', item.Text));
