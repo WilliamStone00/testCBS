@@ -1,8 +1,6 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.LoanConf.FileDownloadInfo>
 
 <fieldset class="fieldset-custom">
-    <legend id="select_base">Downloaded Files</legend>
-
     @if (Model == null || !Model.Any())
     {
         <div class="text-center my-3">
@@ -11,11 +9,7 @@
     }
     else
     {
-        <div class="text-end mb-2">
-            <button class="btn btn-danger btn-sm" onclick="DeleteAllDownloads()" data-bs-toggle="tooltip" title="Delete all downloaded files">
-                <i class="mdi mdi-delete-outline"></i> Delete All
-            </button>
-        </div>
+ 
 
         <div class="table-responsive mb-3">
             <table class="table table-hover" id="myDataTable">
@@ -43,14 +37,6 @@
                                    data-bs-placement="top"
                                    title="Click to download @d.FileName">
                                     Download
-                                </a> |
-                                <a href="#"
-                                   class="ms-2 text-danger"
-                                   onclick="DeleteRecordThenReloadPage('MemberOrdinaryAccountsF8','@d.Id')"
-                                   data-bs-toggle="tooltip"
-                                   data-bs-placement="top"
-                                   title="Delete @d.FileName">
-                                    Delete
                                 </a>
                             </td>
                         </tr>
@@ -60,23 +46,3 @@
         </div>
     }
 </fieldset>
-<script>
-    function DeleteAllDownloads() {
-        if (confirm("Are you sure you want to delete all downloaded files?")) {
-            $.ajax({
-                url: '/MemberOrdinaryAccountsF8/DeleteAllDownloads',
-                type: 'POST',
-                success: function (response) {
-                    if (response.success) {
-                        location.reload();
-                    } else {
-                        alert(response.message || "An error occurred while deleting.");
-                    }
-                },
-                error: function () {
-                    alert("Server error during delete all operation.");
-                }
-            });
-        }
-    }
-</script>

@@ -621,6 +621,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetLoans = "/api/v1/Loans/GetAllLoans";
         public static string InitiateBulkDownloadLoans = "/api/v1/FileDownloadInfo/InitiateBulkDownloadLoans";
         public static string BulkDownloadDeleteAndGetLoan = "/api/v1/FileDownloadInfo/{0}";
+        public static string BulkDownloadDeleteAll = "/api/v1/FileDownloadInfos/delete-all";
         public static string GetAllBulkDownloadInfosLoan = "/api/v1/FileDownloadInfos";
         public static string GelLoansSearchByAnyCriterialQuery = "/api/v1/Loan/SearchByAnyCriterialQuery";
         public static string GetAllBulkDownloadInfosLoanPerUser = "/api/v1/FileDownloadInfos/GetAllFileDownloadInfoByUserIdQuery/{0}";
