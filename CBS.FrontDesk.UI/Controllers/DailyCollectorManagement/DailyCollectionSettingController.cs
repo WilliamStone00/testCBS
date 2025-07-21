@@ -55,6 +55,26 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
 
             return partialResult;
         }
+        public async Task<ActionResult> DailySaverAccountUpload()
+        {
+            ViewBag.Branches = BuildMenuISViewBag((await _branchService.GetBranches()).ToList());
+            ViewBag.BankName = _branchService.GetBankName();
+            return View(new AccountingConfiguration { BranchId = _branchService.GetBranchID() });
+        }
+        private dynamic BuildMenuISViewBag(List<Branch> listOfItems)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select Branch" });
+            foreach (var item in listOfItems)
+            {
+
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $" {item.Name}" });
+
+
+            }
+            return selectListItems;
+
+        }
         private async Task GetList()
         {
             var BranList = (await _branchService.GetBranches()).ToList();

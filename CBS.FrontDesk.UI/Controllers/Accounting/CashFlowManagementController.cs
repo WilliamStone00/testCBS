@@ -1022,8 +1022,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     {
                         balance = "0";
                         name = $"No Vault Found";
-                        ViewBag.IsSystemError = true;
+                        ViewBag.IsAuthourized = false;
                         ViewBag.Error = _AccountServices.GetUserFullName() + ", there is no liaison account : 451000 between " + _AccountServices.GetBranchName() + " and " + (await branchServices.GetBranch(OperationEventAttribute.BranchId)).Name + " please kindly contact the head office ";
+                       
+                        return PartialView(partialView, new CashDemandDataEntity { ListCashReplenimentRequestDto = new List<CashReplenimentRequestDto>() });
 
                     }
 
