@@ -558,7 +558,7 @@ function ApprovePostedEntriesTransactions(title, message, ajaxUrl, serviceoption
                 contentType: 'application/json',
                 data: { Id: Id, HasApproved: Response, Comment: comment },
                 success: function (response) {
-
+                    console.log(response);
                     if (response.status) {
                         appalert(response.message, 1, 1);
                         PrintDataEntries(true);
@@ -755,7 +755,7 @@ function GetCurrentPostedEntryTransactions(title, message, ajaxUrl, Id) {
             url: '/ManuallyJournalEntry/GetAccountBalance', // API endpoint
             type: 'GET', // HTTP method
             dataType: 'json', // Expected response format
-            data: { Id: AccountId }, // Send the selected AccountId as a parameter
+            data: { accountId: AccountId }, // Send the selected AccountId as a parameter
             success: function (data) {
                 // Process the response data
                 var model = extractAccountDetails(data);

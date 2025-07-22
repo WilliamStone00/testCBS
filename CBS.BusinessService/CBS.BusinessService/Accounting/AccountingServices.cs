@@ -354,12 +354,12 @@ namespace CBS.BusinessService.Accounting
                 throw (ex);
             }
         }
-        public async Task<List<FrontDesk.Data.Account>> GetAllBranchAccountUsedToCreditCashFlow(string BranchId)
+        public async Task<List<FrontDesk.Data.Account>> GetAllBranchAccountUsedToCreditCashFlow(string accountId)
         {
             try
             {
 
-                string Url = string.Format(APICallHelper.GetAllBranchAccountUsedToCreditCashFlow, BranchId);
+                string Url = string.Format(APICallHelper.GetAllBranchAccountUsedToCreditCashFlow, accountId);
                 var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Account>>>(Url);
                 if (couApiResponse.IsSuccess)
                 {

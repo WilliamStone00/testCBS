@@ -27,6 +27,8 @@
                 console.log(parts[0]);
                 GetBranchBankAccount(branchId);
             } else {
+                console.log(selectedValue);
+                console.log(branchId);
                 loadBranch();
                 console.log("has taged :"+selectedValue+"for options");
             }
@@ -333,7 +335,7 @@ function loadAccountBalance(accountId) {
         url: '/ManuallyJournalEntry/GetAccountBalance',
         type: 'GET',
         dataType: 'json',
-        data: { Id: accountId },
+        data: { accountId: accountId },
         success: function (data) {
             // Clear existing options in the OperationEventAttributeId combo 
             $('#BankCashOut_Balance').empty();

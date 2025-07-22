@@ -494,7 +494,7 @@ function loadAccountBalance(accountId) {
         url: '/CashFlowManagement/GetBranchBankAccount',
         type: 'GET',
         dataType: 'json',
-        data: { Id: accountId },
+        data: { accountId: accountId },
         success: function (data) {
             // Clear existing options in the OperationEventAttributeId combo  GetBranchBankAccount
             //$('#BankCashOut_Balance').empty();

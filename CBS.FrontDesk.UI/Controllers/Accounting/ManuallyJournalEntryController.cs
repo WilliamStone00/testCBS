@@ -142,61 +142,35 @@ namespace CBS.FrontDesk.UI.Controllers
                var users = await _userService.GetUsers();
             var usersx = users;
             var branch = await _branchService.GetBranches();
-            if (model.Status.ToUpper()== EntryStatus.Pending.ToString().ToUpper())
-            {
-                postedCollectionEntries = (from p in PostedEntries
-                               join u1 in users on p.CreatedBy equals u1.id.ToString()
-                               //join u2 in usersx on p.ApprovedBy equals u2.id.ToString()
-                               join b in branch on u1.BranchID equals b.Id.ToString()
-                               select new PostedEntryX
-                               {
-                                   Amount = Convert.ToDecimal(p.Amount.ToString("N")),
-                                   BranchCode = b.BranchCode,
-                                   CreatedBy = u1.firstName + " " + u1.lastName,
-                                   IssuedBy = u1.id.ToString(),
-                                   Description = p.Description,
-                                   CreatedDate = DateTime.ParseExact(p.CreatedDate, "dd-MMM-yy h:mm:ss tt", CultureInfo.InvariantCulture),
-                                   ApprovedBy = p.ApprovedBy,
-                                   EndorseBy = p.ApprovedBy,
-                                   ApprovedDate =DateTime.ParseExact(p.ApprovedDate, "dd-MMM-yy h:mm:ss tt", CultureInfo.InvariantCulture),
-                                   Status = p.Status,
-                                   PostingSource = p.PostingSource,
-                                   Id = p.Id,
-                                   EntryDetail = p.EntryDetail
+            bool isPending = model.Status.ToUpper() == EntryStatus.Pending.ToString().ToUpper();
+
+            postedCollectionEntries = (from p in PostedEntries
+                                       join u1 in users on p.CreatedBy equals u1.id.ToString()
+                                       join u2 in usersx on p.ApprovedBy equals u2.id.ToString() into approverJoin
+                                       from u2 in approverJoin.DefaultIfEmpty()
+                                       join b in branch on p.BranchId equals b.Id.ToString()
+                                       select new PostedEntryX
+                                       {
+                                           Amount = decimal.TryParse(p.Amount.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal amt) ? amt : 0,
+                                           BranchCode = b.BranchCode,
+                                           CreatedBy = $"{u1.firstName} {u1.lastName}",
+                                           IssuedBy = u1.id.ToString(),
+                                           Description = p.Description ?? string.Empty,
+                                           CreatedDate = DateTime.TryParseExact(p.CreatedDate, "dd-MMM-yy h:mm:ss tt",
+                                                       CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime createdDate)
+                                                       ? createdDate : DateTime.MinValue,
+                                           ApprovedBy = isPending ? p.ApprovedBy  : "NOT APPROVED",
+                                           EndorseBy = p.ApprovedBy,
+                                           ApprovedDate = DateTime.TryParseExact(p.ApprovedDate, "dd-MMM-yy h:mm:ss tt",
+                                                        CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime approvedDate)
+                                                        ? approvedDate : DateTime.MinValue,
+                                           Status = p.Status ?? string.Empty,
+                                           PostingSource = p.PostingSource ?? string.Empty,
+                                           Id = p.Id,
+                                           EntryDetail = p.EntryDetail
+                                       }).ToList();
 
 
-                               }).ToList();
-            }
-            else
-            {
-                postedCollectionEntries = (from p in PostedEntries
-                                           join u1 in users on p.CreatedBy equals u1.id.ToString()
-                                           join u2 in usersx on p.ApprovedBy equals u2.id.ToString()
-                                           join b in branch on u1.BranchID equals b.Id.ToString()
-                                           select new PostedEntryX
-                                           {
-                                               Amount = Convert.ToDecimal(p.Amount.ToString("N")),
-                                               BranchCode = b.BranchCode,
-                                               CreatedBy = u1.firstName + " " + u1.lastName,
-                                               IssuedBy = u1.id.ToString(),
-                                               Description = p.Description,
-                                               CreatedDate = DateTime.ParseExact(p.CreatedDate, "dd-MMM-yy h:mm:ss tt", CultureInfo.InvariantCulture),
-
-                                               ApprovedBy = u2.firstName + " " + u2.lastName,
-                                               EndorseBy = p.ApprovedBy,
-                                               ApprovedDate = DateTime.ParseExact(p.ApprovedDate, "dd-MMM-yy h:mm:ss tt", CultureInfo.InvariantCulture),
-
-                                               Status = p.Status,
-                                               PostingSource = p.PostingSource,
-                                               Id = p.Id,
-                                               EntryDetail = p.EntryDetail
-
-
-                                           }).ToList();
-            }
-             
-
-            
             this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()] = postedCollectionEntries;
             return new ManuallyJournalEntryDataSet { PostedEntriesX = postedCollectionEntries };
 
@@ -494,13 +468,13 @@ namespace CBS.FrontDesk.UI.Controllers
             return model.Name.ToLower() == "revenue";
         }
 
-        public async Task<ActionResult> GetAccountBalance(string Id)
+        public async Task<ActionResult> GetAccountBalance(string accountId)
         {
 
 
             try
             {
-                var AccountData = await _AccountServices.GetAccountWithAccountCartegorieStatus(Id);
+                var AccountData = await _AccountServices.GetAccountWithAccountCartegorieStatus(accountId);
                 var data = new ManuallyJournalEntryDataSet { Account = AccountData };
                 return Json(data, JsonRequestBehavior.AllowGet);
             }

@@ -9370,6 +9370,7 @@
     <Content Include="Views\AccountBalanceInitialization\IndexZeroOut.cshtml" />
     <Content Include="Views\AccountBalanceInitialization\_ZeroOutAccountInitData.cshtml" />
     <Content Include="Views\DailyCollectionSetting\DailySaverAccountUpload.cshtml" />
+    <Content Include="Views\AccountBalanceInitialization\_SearchOption.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

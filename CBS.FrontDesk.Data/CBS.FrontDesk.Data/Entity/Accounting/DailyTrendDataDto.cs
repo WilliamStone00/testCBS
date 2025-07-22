@@ -7,7 +7,14 @@ namespace CBS.FrontDesk.Data
     public class AccountBalanInitConfiguration
     {
         public InitInfoDto InitInfoDto { get; set; }
+        public GetInfoDto GetInfoDto { get; set; }
         public List<AccountInitDto> AccountInitDtos { get; set; }
+        public List<ZeroOutMemberBalanceSimulationDto> ZeroOutMemberBalanceSimulationDtos { get; set; }
+        public List<ZeroOutMemberBalanceSimulationDetailDto> ZeroOutMemberBalanceSimulationDetailDtos { get; set; }
+         public List<ZeroOutMemberBalanceSimulationCommand> ZeroOutMemberBalanceSimulationCommand { get; set; }
+        public string ServiceOption { get; set; }
+        
+
     }
     public class GetInfoDto
     {
@@ -16,7 +23,7 @@ namespace CBS.FrontDesk.Data
     }
     public class InitInfoDto
     {
-        public string ScenarioId { get; set; }
+        public string ScenarioId { get; set; } = "";
         public string ProductId { get; set; }
 
         public decimal SubmittedMemberBalance { get; set; }
@@ -73,31 +80,7 @@ namespace CBS.FrontDesk.Data
         public DateTime CreatedDate { get; set; }
         public string CreatedBy { get; set; }
     }
-    //public class ZeroOutMemberBalanceSimulationDto
-    //{
-    //    public string Id { get; set; }
-    //    public string MemberName { get; set; }
-    //    public string MemberReference { get; set; }
-    //    public string AccountNumber { get; set; }
-    //    public string AccountType { get; set; }
-    //    public decimal Balance { get; set; }
-    //    public decimal AmountToCredit { get; set; }
-    //    public string BranchId { get; set; }
-    //    public string BranchName { get; set; }
-    //    public string BranchCode { get; set; }
-    //    public decimal TotalBalance { get; set; }
-    //    public decimal NetBalance { get; set; }
-    //    public string ZeroOutMemberBalanceId { get; set; }
-    //    public string TransferStatus { get; set; }
-    //    public string TransferMessage { get; set; }
-    //    public DateTime TransferDate { get; set; }
-    //    public string ApprovalStatus { get; set; }
-    //    public DateTime ApprovalDate { get; set; }
-    //    public DateTime CreatedDate { get; set; }
-    //    public string CreatedBy { get; set; }
-
-    //    public virtual ICollection<ZeroOutMemberBalanceSimulationDetailDto> ZeroOutMemberBalanceSimulationDetails { get; set; }
-    //}
+ 
 
     public class ZeroOutMemberBalanceSimulationDetailDto
     {
