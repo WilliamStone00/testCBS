@@ -313,7 +313,7 @@ function GetBranchBankAccount(BranchId) {
         url: '/CashFlowManagement/GetBranchBankAccount',
         type: 'GET',
         dataType: 'json',
-        data: { branchId: BranchId},
+        data: { accountId: BranchId},
         success: function (data) {
             $('#DepositNotificationDto_Temp3').empty();
             $.each(data, function (index, item) {

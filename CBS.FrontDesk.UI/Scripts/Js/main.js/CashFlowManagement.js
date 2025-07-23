@@ -11,7 +11,7 @@
         // Get the selected value
         var selectedValue = $(this).val();
         console.log(selectedValue);
-        var branchId = $('#branchID').val();
+        var branchId = $('#CashReplenimentRequestdto_BranchId').val();
         // Log the value to the console
         console.log("Branch ID:", branchId);
         $('#selectedDecision').val(selectedValue);
