@@ -556,8 +556,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public PaginationMetadata PaginationMetadata { get; set; }
         public List<FileDownloadInfo> FileDownloadInfos { get; set; }
         public InitiateLoanDownloadCommand InitiateLoanDownloadCommand { get; set; }
-        public virtual ICollection<Refund> Refunds { get; set; }
-        public virtual ICollection<LoanAmortization> LoanAmortizations { get; set; }
+        public List<Refund> Refunds { get; set; }
+        public List<LoanAmortization> LoanAmortizations { get; set; }
         public List<DisburstedLoan> DisburstedLoans { get; set; }
         public List<DailyInterestCalculation> DailyInterestCalculations { get; set; }
         public bool IsCompleted { get; set; }

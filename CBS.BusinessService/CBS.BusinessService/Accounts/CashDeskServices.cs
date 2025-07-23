@@ -1256,38 +1256,12 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-
-        public async Task<List<MembersLoanDto>> GetMembersLoans(string customerId, string queryParameter)
+        public async Task<List<Loan>> GetMembersLoans(string customerId, string queryParameter)
         {
             try
             {
 
-                var loans = (from loan in await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId = customerId, QueryParameter = queryParameter })
-                             select new MembersLoanDto
-                             {
-                                 Id = loan.Id,
-                                 LoanApplicationId = loan.LoanApplicationId,
-                                 Principal = loan.Principal,
-                                 LoanAmount = loan.LoanAmount,
-                                 InterestRate = loan.InterestRate,
-                                 Paid = loan.Paid,
-                                 Balance = loan.Balance,
-                                 AccrualInterest = loan.AccrualInterest,
-                                 Tax = loan.Tax,
-                                 Penalty = loan.Penalty,
-                                 LoanDate = loan.LoanDate.ToString("dd/MM/yyyy hh:mm:ss"),
-                                 IsLoanDisbursed = loan.IsLoanDisbursted,
-                                 CustomerId = loan.CustomerId,
-                                 DueAmount = loan.DueAmount,
-                                 LoanStatus = loan.LoanStatus,
-                                 BranchCode = loan.BranchCode,
-                                 CustomerName = loan.CustomerName,
-                                 MaturityDate = loan.MaturityDate.ToString("dd/MM/yyyy hh:mm:ss"),
-                                 NumberOfInstallments = loan.NumberOfInstallments,
-                                 LoanType = loan.LoanType,
-                                 RepaymentCycle = loan.RepaymentCycle
-
-                             }).ToList();
+                var loans = (await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId = customerId, QueryParameter = queryParameter })).ToList();
 
                 return loans;
             }
@@ -1297,6 +1271,47 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
+
+        //public async Task<List<MembersLoanDto>> GetMembersLoans(string customerId, string queryParameter)
+        //{
+        //    try
+        //    {
+
+        //        var loans = (from loan in await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId = customerId, QueryParameter = queryParameter })
+        //                     select new MembersLoanDto
+        //                     {
+        //                         Id = loan.Id,
+        //                         LoanApplicationId = loan.LoanApplicationId,
+        //                         Principal = loan.Principal,
+        //                         LoanAmount = loan.LoanAmount,
+        //                         InterestRate = loan.InterestRate,
+        //                         Paid = loan.Paid,
+        //                         Balance = loan.Balance,
+        //                         AccrualInterest = loan.AccrualInterest,
+        //                         Tax = loan.Tax,
+        //                         Penalty = loan.Penalty,
+        //                         LoanDate = loan.LoanDate.ToString("dd/MM/yyyy hh:mm:ss"),
+        //                         IsLoanDisbursed = loan.IsLoanDisbursted,
+        //                         CustomerId = loan.CustomerId,
+        //                         DueAmount = loan.DueAmount,
+        //                         LoanStatus = loan.LoanStatus,
+        //                         BranchCode = loan.BranchCode,
+        //                         CustomerName = loan.CustomerName,
+        //                         MaturityDate = loan.MaturityDate.ToString("dd/MM/yyyy hh:mm:ss"),
+        //                         NumberOfInstallments = loan.NumberOfInstallments,
+        //                         LoanType = loan.LoanType,
+        //                         RepaymentCycle = loan.RepaymentCycle
+
+        //                     }).ToList();
+
+        //        return loans;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log and handle exception
+        //        throw ex;
+        //    }
+        //}
 
         public async Task<CashDesk> GetMember(string customerId)
         {

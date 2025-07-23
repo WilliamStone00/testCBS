@@ -101,7 +101,7 @@ function resetMemberFilters() {
 }
 
 $(document).ready(function () {
-    loadMemberData();
+    //loadMemberData();
 
     $('#applyFilterBtn').on('click', function (e) {
         e.preventDefault();
