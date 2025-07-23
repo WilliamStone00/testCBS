@@ -27,6 +27,8 @@
                 console.log(parts[0]);
                 GetBranchBankAccount(branchId);
             } else {
+                console.log(selectedValue);
+                console.log(branchId);
                 loadBranch();
                 console.log("has taged :"+selectedValue+"for options");
             }
@@ -311,7 +313,7 @@ function GetBranchBankAccount(BranchId) {
         url: '/CashFlowManagement/GetBranchBankAccount',
         type: 'GET',
         dataType: 'json',
-        data: { branchId: BranchId},
+        data: { accountId: BranchId},
         success: function (data) {
             $('#DepositNotificationDto_Temp3').empty();
             $.each(data, function (index, item) {
@@ -333,7 +335,7 @@ function loadAccountBalance(accountId) {
         url: '/ManuallyJournalEntry/GetAccountBalance',
         type: 'GET',
         dataType: 'json',
-        data: { Id: accountId },
+        data: { accountId: accountId },
         success: function (data) {
             // Clear existing options in the OperationEventAttributeId combo 
             $('#BankCashOut_Balance').empty();

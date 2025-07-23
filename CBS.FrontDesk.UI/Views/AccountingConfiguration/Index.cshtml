@@ -70,10 +70,12 @@
                  aria-labelledby="headingAccount"
                  data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    <div class="header">
-                        <h1>📊 General Ledger Accounts</h1>
-                        <p>Comprehensive implementation of league accounting chart for the of management system for complete financial record keeping and reporting</p>
+                    <div class="text-primary mb-3">
+                        <h4>📊 GENERAL LEDGER ACCOUNTS </h4>
+                        
+
                     </div>
+                    <p>Comprehensive implementation of league accounting chart for the of management system for complete financial record keeping and reporting</p>
                     <!-- Action Buttons -->
                     <div class="row mb-3 justify-content-end">
                         <div class="demo-inline-spacing text-end">
@@ -122,11 +124,12 @@
                  data-bs-parent="#accordionExample">
                 <div class="accordion-body">
 
-                    <div class="header">
-                       
-                        <h1>📚 @Model.BankName Accounting Chart Extention</h1>
-                        <p>Comprehensive solution mapping the league chartOfAccount and Affiliate ChartOfAccount</p>
+                    <div class="text-primary mb-3">
+
+                        <h5>📚 @Model.BankName Accounting Chart Extention</h5>
+
                     </div>
+                    <p class="text-primary mb-md-1">Comprehensive solution mapping the league chartOfAccount and Affiliate ChartOfAccount</p>
                     <!-- Action Buttons -->
                     <div class="row mb-3 justify-content-end">
                         <div class="demo-inline-spacing text-end">
@@ -176,33 +179,37 @@
                 <div class="accordion-body">
 
 
-                    <div class="header">
-                        <h1>🧾 Balance sheet and P&L Settings</h1>
-                        <p>Comprehensive solution for managing financial records, accounting workflows, and business intelligence</p>
-                    </div>
+                    <div class="card-title text-primary mb-3">
+                        <h4 class="text-primary mb-3">🧾 Balance sheet and P&L Settings</h4>
 
+                        <div class="clear">
+                            <p>Comprehensive solution for managing financial records, accounting workflows, and business intelligence</p>
+
+                        </div>
+                    </div>
+                   
 
                     <!-- Action Buttons -->
                     @*<div class="row mb-12 justify-content-end">
-                                                <div class="demo-inline-spacing text-end">
+                                <div class="demo-inline-spacing text-end">
 
-                                                    <button onclick="AddORUpdateGen(null,'datalistingview_FinancialReferenceCode','_CreateFinancialReferenceCode','new','AccountingConfiguration','FinancialDocumentReference')"
-                                                            title="@GlobalAccount.AddNew">
-                                                        <span>➕ Add New Reference</span>
-                                                    </button>
-                                                    <button onclick="LoadDataGeneration('AccountingConfiguration','myDataTable','_FinancialDocumentReferenceData','datalistingview_FinancialReferenceCode',0,'FinancialDocumentReference','list')"
-                                                            title="@GlobalAccount.ViewList">
+                                    <button onclick="AddORUpdateGen(null,'datalistingview_FinancialReferenceCode','_CreateFinancialReferenceCode','new','AccountingConfiguration','FinancialDocumentReference')"
+                                            title="@GlobalAccount.AddNew">
+                                        <span>➕ Add New Reference</span>
+                                    </button>
+                                    <button onclick="LoadDataGeneration('AccountingConfiguration','myDataTable','_FinancialDocumentReferenceData','datalistingview_FinancialReferenceCode',0,'FinancialDocumentReference','list')"
+                                            title="@GlobalAccount.ViewList">
 
-                                                        <span>📋 View References</span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                        <a href="~/Views/AccountingConfiguration/_FinancialDocumentReferenceData.cshtml">~/Views/AccountingConfiguration/_FinancialDocumentReferenceData.cshtml</a>
+                                        <span>📋 View References</span>
+                                    </button>
+                                </div>
+                            </div>
+        <a href="~/Views/AccountingConfiguration/_FinancialDocumentReferenceData.cshtml">~/Views/AccountingConfiguration/_FinancialDocumentReferenceData.cshtml</a>
 
 
-                                                <div id="datalistingview_FinancialReferenceCode">
+                                <div id="datalistingview_FinancialReferenceCode">
 
-                                                </div>*@
+                                </div>*@
                     <div class="nav-tabs">
                         <button class="nav-tab active bg-primary" onclick="showTab('add', event)">➕ Add New Document</button>
                         <button class="nav-tab bg-primary" onclick="showTab('view', event)">📋 View Documents</button>

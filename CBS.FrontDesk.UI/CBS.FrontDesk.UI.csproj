@@ -9372,6 +9372,7 @@
     <Content Include="Views\DailyCollectionSetting\DailySaverAccountUpload.cshtml" />
     <Content Include="Views\MembersFSeries\_LoansTablePartial.cshtml" />
     <Content Include="Views\MembersFSeries\_LoanDetailsModalPartial.cshtml" />
+    <Content Include="Views\AccountBalanceInitialization\_SearchOption.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

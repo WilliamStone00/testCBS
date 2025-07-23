@@ -11,7 +11,7 @@
         // Get the selected value
         var selectedValue = $(this).val();
         console.log(selectedValue);
-        var branchId = $('#branchID').val();
+        var branchId = $('#CashReplenimentRequestdto_BranchId').val();
         // Log the value to the console
         console.log("Branch ID:", branchId);
         $('#selectedDecision').val(selectedValue);
@@ -494,7 +494,7 @@ function loadAccountBalance(accountId) {
         url: '/CashFlowManagement/GetBranchBankAccount',
         type: 'GET',
         dataType: 'json',
-        data: { Id: accountId },
+        data: { accountId: accountId },
         success: function (data) {
             // Clear existing options in the OperationEventAttributeId combo  GetBranchBankAccount
             //$('#BankCashOut_Balance').empty();

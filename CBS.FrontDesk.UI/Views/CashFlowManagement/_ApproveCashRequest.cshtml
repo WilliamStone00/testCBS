@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
-    @using Resources
+@using Resources
 @{
     ViewBag.Title = @GlobalCashFlowManagement.ViewCashReplenishmentDetails;
 
@@ -107,8 +107,8 @@
                             }
                             else
                             {<div class="alert alert-outline-primary" role="alert">
-                                 <h6 class="alert-heading mb-1">@GlobalCashFlowManagement.ReferenceId :@Model.CashReplenimentRequestdto.Id  @GlobalCashFlowManagement.withAmount XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") @GlobalCashFlowManagement.HasNotYetBeenApproved</h6>
-                                 <p class="mb-0">@GlobalCashFlowManagement.SelectSourceAccountToWhichTheVaultWillBe </p>
+                                    <h6 class="alert-heading mb-1">@GlobalCashFlowManagement.ReferenceId :@Model.CashReplenimentRequestdto.Id  @GlobalCashFlowManagement.withAmount XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") @GlobalCashFlowManagement.HasNotYetBeenApproved</h6>
+                                    <p class="mb-0">@GlobalCashFlowManagement.SelectSourceAccountToWhichTheVaultWillBe </p>
                                 </div>
                             }
 
@@ -142,16 +142,16 @@
                                 else
                                 {
                                     @*if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
-                    {
-                        <div class="form-check mb-3">
-                            <div class="form-floating form-floating-outline">
+                                        {
+                                            <div class="form-check mb-3">
+                                                <div class="form-floating form-floating-outline">
 
-                                @Html.DropDownListFor(m => m.CashReplenimentRequestdto.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
-                                @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.BranchId, "", new { @class = "text-danger" })
-                                <label for="Account">Branch Office</label>
-                            </div>
-                        </div>
-                    }*@
+                                                    @Html.DropDownListFor(m => m.CashReplenimentRequestdto.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
+                                                    @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.BranchId, "", new { @class = "text-danger" })
+                                                    <label for="Account">Branch Office</label>
+                                                </div>
+                                            </div>
+                                        }*@
 
                                     <div class="form-check mb-3">
                                         <div class="form-floating form-floating-outline">
@@ -165,7 +165,7 @@
                                         <div class="form-check mb-3">
                                             <div class="form-floating form-floating-outline">
 
-                                                @Html.DropDownListFor(m => m.CashReplenimentRequestdto.CorrespondingBranchId, new SelectList(ViewBag.ZoneBranch == null ? "" : ViewBag.ZoneBranch, "Text", "Value"), "", new { @class = "form-control select2", @search = "true",  @id = "CorrespondingBranchID" })
+                                                @Html.DropDownListFor(m => m.CashReplenimentRequestdto.CorrespondingBranchId, new SelectList(ViewBag.ZoneBranch == null ? "" : ViewBag.ZoneBranch, "Text", "Value"), "", new { @class = "form-control select2", @search = "true", @id = "CorrespondingBranchID" })
                                                 @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.CorrespondingBranchId, "", new { @class = "text-danger" })
                                                 <label for="Account">@GlobalCashFlowManagement.SelectBranch</label>
                                             </div>
@@ -200,13 +200,16 @@
                                             <label for="Description"> @GlobalCashFlowManagement.ApprovedMessageDescription</label>
                                         </div>
                                     </div>
-                                    <div class="col-12 text-end">
-                                        <input type="hidden" id="selectedDecision" name="name" value="" />
-                                        <button type="submit" class="btn btn-primary me-2">@GlobalShared.Validate</button>
-                                        <input type="hidden" name="Action" value="insert" id="Action" />
 
-                                    </div>
+                                    @if (Convert.ToBoolean(ViewBag.IsAuthourized) == true)
+                                    {
+                                        <div class="col-12 text-end">
+                                            <input type="hidden" id="selectedDecision" name="name" value="" />
+                                            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Validate</button>
+                                            <input type="hidden" name="Action" value="insert" id="Action" />
 
+                                        </div>
+                                    }
                                 }
 
 
@@ -217,7 +220,7 @@
 
 
                     </div>
-                                </div>
+                </div>
 
             </div>
         </div>

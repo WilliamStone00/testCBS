@@ -9,6 +9,7 @@ using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Message;
 using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using Irony.Parsing;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Services.Description;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
@@ -43,7 +45,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             // Normally pulled from DB or service
             var result = await AccountMigrationServices.MigrationGLReconciliationAccountList(new GetInfoDto { BranchId = BranchID, ProductId = ProductId });
-            if (result == null)
+            if (result == null || result.Count()==0)
             {
                 return Json(new { status = false, message = "No data found." }, JsonRequestBehavior.AllowGet);
             }
@@ -58,7 +60,18 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             ViewBag.AccountTypes =await BuildAccountType();
             ViewBag.Scenarios =   BuildScenario();
         }
-
+        [HttpPost]
+        public async Task<ActionResult> PostGetAccountList(string BranchID, string ProductId, string partialViews = "_AccountInitializationData")
+        {
+            // Normally pulled from DB or service
+            var result = await AccountMigrationServices.MigrationGLReconciliationAccountList(new GetInfoDto { BranchId = BranchID, ProductId = ProductId });
+            if (result == null || result.Count() == 0)
+            {
+                return Json(new { status = false, message = "No data found." }, JsonRequestBehavior.AllowGet);
+            }
+            //return PartialView(partialViews,result);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         private async Task<List<System.Web.WebPages.Html.SelectListItem>> BuildAccountType( )
         {
             var listOfItems = await _savingProductServices.GetSavingProducts();
@@ -74,7 +87,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return selectListItems;
         }
 
-        private dynamic BuildBranch(List<Branch> listOfItems)
+        private dynamic BuildBranch(List<Data.Entity.Config. Branch> listOfItems)
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
             selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select BranchCode" });
@@ -146,10 +159,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 return PartialView(partialView, new AccountBalanInitConfiguration { });
             }
 
-                   
-            
 
-           
+
+
+
         }
 
 

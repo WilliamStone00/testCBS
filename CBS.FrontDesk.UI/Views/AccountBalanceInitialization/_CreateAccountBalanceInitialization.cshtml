@@ -62,7 +62,7 @@
 
             <div class="col-md-12">
                 <div class="form-floating shadow-sm">
-                    @Html.DropDownListFor(m => m.InitInfoDto.ScenarioId, new SelectList(ViewBag.Scenarios, "Value", "Text"), "--- Select Scenario ---", new { @class = "form-control select2" })
+                    @Html.TextAreaFor(m => m.InitInfoDto.ScenarioId, new { @class = "form-control", @style = "height: 200px;" })
                     @Html.ValidationMessageFor(m => m.InitInfoDto.ScenarioId, "", new { @class = "text-danger" })
                     <label>Scenario</label>
                 </div>

@@ -483,13 +483,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
 
         [HttpGet]
-        public async Task<ActionResult> GetBranchBankAccount(string branchId)
+        public async Task<ActionResult> GetBranchBankAccount(string accountId)
         {
             
             List<ChartOfAccountStateDto> listOfAccounts = new List<ChartOfAccountStateDto>();
              //listOfAccounts = await _chartOfAccountManagementPositionService.GetAllBranchAccountUsedToCreditCashFlow("560", "3");
             
-            var listOfBankAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(branchId);
+            var listOfBankAccounts = await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(accountId);
 
             listOfBankAccounts = listOfBankAccounts.Where(c => c.Account2 == "56").ToList();
             if (listOfBankAccounts.Any())
@@ -591,6 +591,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 model.CashReplenimentRequestdto.Status = model.CashReplenimentRequestdto.TempId2;
                 model.CashReplenimentRequestdto.CorrespondingBranchId = (model.CashReplenimentRequestdto.CashRequisitionType == CashRequisitionType.ORDER.ToString()) ? model.CashReplenimentRequestdto.CorrespondingBranchId : _accountingEntryServices.GetBranchID();
                 model.CashReplenimentRequestdto.TempId3= model.CashReplenimentRequestdto.TempId3;
+          
                 var datac = await _accountingEntryServices.CreateApprovalRequest(model.CashReplenimentRequestdto.ConvertToCashApprovalResponse(_AccountServices.GetBranchCode()), model.CashReplenimentRequestdto.BranchId == _AccountServices.GetBranchID());
 
                     return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
@@ -609,8 +610,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var toAccount = accountList.Where(x => x.Type.ToLower() == "destination").FirstOrDefault();
                 model.BankCashOut.ToAccountId = toAccount.Id;
                 model.BankCashOut.FromAccountId = model.CashReplenimentRequest.TempData;
-
-               var datac = await _accountingEntryServices.CreateBankCashTransaction(model.BankCashOut);
+                model.BankCashOut.BranchId = _accountingEntryServices.GetBranchID();
+                model.BankCashOut.BranchCode = _accountingEntryServices.GetBranchCode();
+                var datac = await _accountingEntryServices.CreateBankCashTransaction(model.BankCashOut);
                 return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
 
             }
@@ -628,6 +630,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
             else if (model.ServiceOption.Equals("CashClearing")) //(path == "")
             {
+                model.CashClearing.BranchId = _accountingEntryServices.GetBranchID();
+                model.CashClearing.BranchCode = _accountingEntryServices.GetBranchCode();
                 var datac = await _accountingEntryServices.CreateCashClearingTransaction(model.CashClearing);
 
                 return Json(new { success = datac.Result, status = datac.MessageStatus, message = Messaging.MessageResult(datac) });
@@ -874,9 +878,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 return PartialView(partialView, cashDemandDataEntity);
 
             }
-            else if (path.Contains("approve"))
+            else if (path=="approve")
             {
-                await GetList();
+               await GetList();
                 var OperationEventAttribute = await _accountingEntryServices.GetCashReplenimentRequest(KEY);
                 CashDemandDataEntity cashDemandDataEntity = new CashDemandDataEntity();
                 cashDemandDataEntity.CashReplenimentRequestdto = OperationEventAttribute.ConvertToCashReplenimentRequestDto();
@@ -887,6 +891,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             cashDemandDataEntity.CashReplenimentRequestdto.BranchOffice = branch_Name;
                 cashDemandDataEntity.CashReplenimentRequestdto.AmountApproved = OperationEventAttribute.AmountRequested.ToString();
                 this.HttpContext.Session["BranchOwerId"] = $"{cashDemandDataEntity.CashReplenimentRequestdto.BranchId}";
+                var listOfAccounts = await _chartOfAccountManagementPositionService.GetAllBranchAccountUsedToCreditCashFlow("560", "3"); //  await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
+                ViewBag.Accounts = BuildDropDown(GenerateChartOfAccountStateDto(listOfAccounts));
+                //var listBranch = await branchServices.GetBranches(); // await _bankZoneBranchServices.GetAllBranchPresentInZoneByParticipant(cashDemandDataEntity.CashReplenimentRequestdto.BranchId, "BRANCH");
+                //ViewBag.ZoneBranch = BuildDropDown(GenerateBranchBranchCode( listBranch.ToList()));// BuildDropDown(await GenerateBranchInZoneCode(listBranch, cashDemandDataEntity.CashReplenimentRequestdto.BranchId));
+                ViewBag.Decisions = BuildMenuViewBag();
                 if (branchServices.IsHeadOffice() == false)
                 {
                     ViewBag.IsAuthourized = false;
@@ -894,11 +903,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     return PartialView(partialView, cashDemandDataEntity);
                 }
                 ViewBag.IsAuthourized = true;
-                var listOfAccounts = await _chartOfAccountManagementPositionService.GetAllBranchAccountUsedToCreditCashFlow("560", "3"); //  await _AccountServices.GetAllBranchAccountUsedToCreditCashFlow(OperationEventAttribute.BranchId);
-                ViewBag.Accounts = BuildDropDown(GenerateChartOfAccountStateDto(listOfAccounts));
-                //var listBranch = await branchServices.GetBranches(); // await _bankZoneBranchServices.GetAllBranchPresentInZoneByParticipant(cashDemandDataEntity.CashReplenimentRequestdto.BranchId, "BRANCH");
-                //ViewBag.ZoneBranch = BuildDropDown(GenerateBranchBranchCode( listBranch.ToList()));// BuildDropDown(await GenerateBranchInZoneCode(listBranch, cashDemandDataEntity.CashReplenimentRequestdto.BranchId));
-                ViewBag.Decisions = BuildMenuViewBag();
+             
                 return PartialView(partialView, cashDemandDataEntity);
 
             }
