@@ -264,7 +264,7 @@ function resetDepositorForm() {
     $('#Note').val('')
 }
 function Reprint(redirectUrl) {
-    window.open(redirectUrl, '_blank');
+    //window.open(redirectUrl, '_blank');
     ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLessWithSubReports");
 }
 function ReprintLoan() {

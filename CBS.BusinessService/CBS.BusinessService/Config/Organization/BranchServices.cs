@@ -167,19 +167,31 @@ namespace CBS.BusinessService.Config
         {
             try
             {
-               
-                    var couApiResponse = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
-                    return couApiResponse.ApiResponseData.Data;
+                // Call the API to get all branches
+                var response = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
 
-                
+                // Validate response and data
+                var branches = response?.ApiResponseData?.Data ?? new List<Branch>();
 
+                // Format and return sorted list
+                return branches
+                    .Select(branch =>
+                    {
+                        branch.Name = $"[{branch.BranchCode}] [{branch.Name}]";
+                        return branch;
+                    })
+                    .OrderBy(branch => branch.BranchCode)
+                    .ToList();
             }
             catch (Exception ex)
             {
-                // Log and handle exception
-                throw;
+                // Log the error if a logging service is available
+                // _logger.LogError(ex, "Error while fetching liaison branches.");
+
+                throw new ApplicationException("An error occurred while retrieving liaison branches.", ex);
             }
         }
+
         public async Task<Branch> GetBranch(string id)
         {
             try
