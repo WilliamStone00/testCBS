@@ -26,14 +26,17 @@ namespace CBS.FrontDesk.UI.Controllers.Series
         // GET: MembersFSeries
         private readonly CashDeskServices _cashDeskService;
         private readonly AccountServices _accountServices;
+        private readonly LoanServices _loanServices;
+
         private readonly IndividualProfileServices _individualProfileServices;
         private readonly BranchServices _branchServices;
-        public MembersFSeriesController(CashDeskServices cashDeskService, AccountServices accountServices = null, IndividualProfileServices individualProfileServices = null, BranchServices branchServices = null)
+        public MembersFSeriesController(CashDeskServices cashDeskService, AccountServices accountServices = null, IndividualProfileServices individualProfileServices = null, BranchServices branchServices = null, LoanServices loanServices = null)
         {
             _cashDeskService = cashDeskService;
             _accountServices = accountServices;
             _individualProfileServices = individualProfileServices;
             _branchServices = branchServices;
+            _loanServices=loanServices;
         }
         public async Task<ActionResult> Index()
         {
@@ -275,14 +278,29 @@ namespace CBS.FrontDesk.UI.Controllers.Series
         }
         [HttpGet]
         //GetMembersLoans(string customerId, string queryParameter)
-        public async Task<ActionResult> GetFilteredLoans(string filter, string memberId)
-        {
-            // Fetch all loans first
-            var loans = await _cashDeskService.GetMembersLoans(memberId, filter); // Replace this with your actual loan retrieval logic
+        //public async Task<ActionResult> GetFilteredLoans(string filter, string memberId)
+        //{
+        //    // Fetch all loans first
+        //    var loans = await _cashDeskService.GetMembersLoans(memberId, filter); // Replace this with your actual loan retrieval logic
 
-            return Json(loans, JsonRequestBehavior.AllowGet);
+        //    return Json(loans, JsonRequestBehavior.AllowGet);
+        //}
+        public async Task<ActionResult> GetFilteredLoansPartial(string filter, string memberId)
+        {
+            var loans = await _cashDeskService.GetMembersLoans(memberId, filter);
+            var cdesk = new CashDesk { CustomerId=memberId, Loans=loans };
+            return PartialView("_LoansTablePartial", cdesk); // View name must match Razor file below
         }
-        
+        public async Task<ActionResult> LoanDetailsPartial(string loanId)
+        {
+            var loan = await _loanServices.GetLoan(loanId); // Include all accounts + loans
+            var cashDesk = new CashDesk { CustomerId=loan.CustomerId, Loan=loan,Refunds=loan.Refunds };
+            if (loan == null)
+                return PartialView("_LoanNotFound");
+            ViewBag.SelectedLoan = loan;
+            return PartialView("_LoanDetailsModalPartial", cashDesk);
+        }
+
 
     }
 }

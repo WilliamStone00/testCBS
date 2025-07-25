@@ -1,0 +1,191 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@{
+    var loan = Model.Loan;
+    var totalRefinancing = loan.RequestedAmount + loan.RestructuredBalance;
+}
+
+<div class="card-body">
+
+    <!-- Section Template -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-light fw-bold border-bottom">General Information</div>
+        <table class="table table-bordered table-sm mb-0">
+            <tbody>
+                <tr><td class="fw-bold">Loan ID</td><td>@loan.Id</td></tr>
+                <tr><td class="fw-bold">Loan Application ID</td><td>@loan.LoanApplicationId</td></tr>
+                <tr><td class="fw-bold">Customer</td><td>@loan.CustomerName (@loan.CustomerId)</td></tr>
+                <tr><td class="fw-bold">Branch</td><td>@loan.BranchName (@loan.BranchCode)</td></tr>
+                <tr>
+                    <td class="fw-bold">Loan Type</td>
+                    <td>
+                        @if (loan.LoanType == "Main_Loan")
+                        {
+                            <span class="badge bg-secondary">Main Loan</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-light border">@loan.LoanType</span>
+                        }
+                    </td>
+                </tr>
+                <tr><td class="fw-bold">Category</td><td>@loan.LoanCategory</td></tr>
+                <tr><td class="fw-bold">Target</td><td>@loan.LoanTarget</td></tr>
+                <tr><td class="fw-bold">Manager</td><td>@loan.LoanManager</td></tr>
+                <tr><td class="fw-bold">Journey</td><td>@loan.LoanJourneyStatus</td></tr>
+                <tr><td class="fw-bold">Status</td><td>@loan.LoanStatus</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-light fw-bold border-bottom">Loan Financial Summary</div>
+        <table class="table table-bordered table-sm mb-0">
+            <tbody>
+                <tr><td class="fw-bold">Requested Amount</td><td>@loan.RequestedAmount.ToString("N0") FCFA</td></tr>
+                <tr><td class="fw-bold">Approved Amount</td><td>@loan.LoanAmount.ToString("N0") FCFA</td></tr>
+                <tr><td class="fw-bold">Principal Paid</td><td>@loan.TotalPrincipalPaid.ToString("N0") FCFA</td></tr>
+                <tr><td class="fw-bold">Paid (Total)</td><td>@loan.Paid.ToString("N0") FCFA</td></tr>
+                <tr class="text-danger"><td class="fw-bold">Balance</td><td class="text-danger">@loan.Balance.ToString("N0") FCFA</td></tr>
+                <tr><td class="fw-bold">Due Amount</td><td>@loan.DueAmount.ToString("N0") FCFA</td></tr>
+                <tr><td class="fw-bold">Penalty</td><td>@loan.Penalty.ToString("N0") FCFA</td></tr>
+                <tr><td class="fw-bold">Tax</td><td>@loan.Tax.ToString("N0") FCFA</td></tr>
+                <tr><td class="fw-bold">Fee</td><td>@loan.Fee.ToString("N0") FCFA</td></tr>
+                <tr><td class="fw-bold">Last Payment</td><td>@loan.LastPayment.ToString("N0") FCFA</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-light fw-bold border-bottom">Interest Details</div>
+        <table class="table table-bordered table-sm mb-0">
+            <tbody>
+                <tr><td class="fw-bold">Forecasted Interest</td><td>@loan.InterestForcasted.ToString("N0") FCFA</td></tr>
+                <tr><td class="fw-bold">Interest Rate</td><td>@loan.InterestRate.ToString("0.0") %</td></tr>
+                <tr><td class="fw-bold">Accrued Interest</td><td>@loan.AccrualInterest.ToString("N0") FCFA</td></tr>
+                <tr><td class="fw-bold">Last Interest Calculated Value</td><td>@loan.LastCalculatedInterest.ToString("N0") FCFA</td></tr>
+                <tr><td class="fw-bold">Last Interest Calculated date</td><td>@loan.LastInterestCalculatedDate.ToString("dd/MM/yyyy")</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-light fw-bold border-bottom">Disbursement & Schedule</div>
+        <table class="table table-bordered table-sm mb-0">
+            <tbody>
+                <tr><td class="fw-bold">Loan Date</td><td>@loan.LoanDate.ToString("dd/MM/yyyy")</td></tr>
+                <tr><td class="fw-bold">Disbursement Date</td><td>@loan.DisbursementDate.ToString("dd/MM/yyyy")</td></tr>
+                <tr><td class="fw-bold">First Installment</td><td>@loan.FirstInstallmentDate.ToString("dd/MM/yyyy")</td></tr>
+                <tr><td class="fw-bold">Next Installment</td><td>@loan.NextInstallmentDate.ToString("dd/MM/yyyy")</td></tr>
+                <tr><td class="fw-bold">Maturity Date</td><td>@loan.MaturityDate.ToString("dd/MM/yyyy")</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-light fw-bold border-bottom">Guarantees & Coverage</div>
+        <table class="table table-bordered table-sm mb-0">
+            <tbody>
+                <tr><td class="fw-bold">Savings Pledged</td><td>@loan.Savings.ToString("N0") FCFA</td></tr>
+                <tr><td class="fw-bold">Shares (Ordinary)</td><td>@loan.OShares.ToString("N0") FCFA</td></tr>
+                <tr><td class="fw-bold">Shares (Preferred)</td><td>@loan.PShares.ToString("N0") FCFA</td></tr>
+                <tr><td class="fw-bold">Total Guarantee Fund</td><td>@loan.TotalFundGuranteed.ToString("N0") FCFA</td></tr>
+                <tr><td class="fw-bold">Liquidity Coverage</td><td>@loan.PercentageOfLiquidityCoverage %</td></tr>
+                <tr><td class="fw-bold">Collateral Coverage</td><td>@loan.PercentageOfCollateralCoverage %</td></tr>
+                <tr><td class="fw-bold">Overall Coverage</td><td>@loan.PercentageOfOverAllCoverage %</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-light fw-bold border-bottom">Delinquency & Risk</div>
+        <table class="table table-bordered table-sm mb-0">
+            <tbody>
+                <tr><td class="fw-bold">Is Delinquent</td><td><span class="badge bg-@(loan.IsDeliquentLoan ? "danger" : "success")">@((loan.IsDeliquentLoan ? "Yes" : "No"))</span></td></tr>
+                <tr><td class="fw-bold">Delinquent Days</td><td>@loan.DeliquentDays</td></tr>
+                <tr><td class="fw-bold">Delinquent Amount</td><td>@loan.DeliquentAmount.ToString("N0") FCFA</td></tr>
+                <tr><td class="fw-bold">Last Processed</td><td>@loan.LastDeliquecyProcessedDate?.ToString("dd/MM/yyyy")</td></tr>
+                <tr><td class="fw-bold">Is Restructured</td><td><span class="badge bg-@(loan.IsRestructured ? "warning" : "secondary")">@((loan.IsRestructured ? "Yes" : "No"))</span></td></tr>
+                <tr><td class="fw-bold">Write-Off</td><td><span class="badge bg-@(loan.IsWriteOffLoan ? "danger" : "secondary")">@((loan.IsWriteOffLoan ? "Yes" : "No"))</span></td></tr>
+                <tr><td class="fw-bold">Stopped Interest Calculation</td><td><span class="badge bg-@(loan.StopInterestCalculation ? "danger" : "success")">@((loan.StopInterestCalculation ? $"Yes by {loan.StoppedBy}" : "No"))</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-light fw-bold border-bottom">Repayment Summary & History</div>
+        <table class="table table-bordered table-sm mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Interest</th>
+                    <th>Penalty</th>
+                    <th>VAT</th>
+                    <th>Balance After</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (loan.Refunds?.Any() == true)
+                {
+                    foreach (var r in loan.Refunds.OrderByDescending(x => x.DateOfPayment))
+                    {
+                        <tr>
+                            <td>@r.DateOfPayment.ToString("dd/MM/yyyy")</td>
+                            <td>@r.Amount.ToString("N0")</td>
+                            <td>@r.Interest.ToString("N0")</td>
+                            <td>@r.Penalty.ToString("N0")</td>
+                            <td>@r.Tax.ToString("N0")</td>
+                            <td>@r.Balance.ToString("N0")</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="6" class="text-muted text-center">No repayments recorded.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-light fw-bold border-bottom">Interest Calculations (Top 10)</div>
+        @if (loan.DailyInterestCalculations?.Any() == true)
+        {
+            var top10 = loan.DailyInterestCalculations.OrderByDescending(x => x.Date).Take(10).ToList();
+            var totalVat = top10.Sum(x => x.CalculatedVat);
+            var projectedNewBalance = loan.Balance + loan.AccrualInterest;
+
+            <table class="table table-bordered table-sm mb-0">
+                <thead class="table-light">
+                    <tr><th>Date</th><th>Prev Bal</th><th>Rate</th><th>Interest</th><th>VAT %</th><th>VAT</th><th>New Bal</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var calc in top10)
+                    {
+                        <tr>
+                            <td>@calc.Date.ToString("dd/MM/yyyy")</td>
+                            <td>@calc.PreviouseBalance.ToString("N0")</td>
+                            <td>@calc.InterestRate.ToString("0.00")</td>
+                            <td>@calc.InterestCalculated.ToString("N0")</td>
+                            <td>@calc.VatRate.ToString("0.00")</td>
+                            <td>@calc.CalculatedVat.ToString("N0")</td>
+                            <td>@calc.NewBalance.ToString("N0")</td>
+                        </tr>
+                    }
+                    <tr class="table-light fw-bold text-end">
+                        <td colspan="3">Forecasted</td>
+                        <td>@loan.AccrualInterest.ToString("N0")</td>
+                        <td></td>
+                        <td>@totalVat.ToString("N0")</td>
+                        <td class="text-danger">Projected: @projectedNewBalance.ToString("N0")</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="p-3 text-muted">No interest calculations available.</div>
+        }
+    </div>
+
+</div>

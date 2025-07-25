@@ -1,4 +1,4 @@
-using CBS.BusinessService.Accounting;
+﻿using CBS.BusinessService.Accounting;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.UI.AppFiles.Reporting.Accounting;
@@ -32,6 +32,7 @@ namespace CBS.FrontDesk.UI.Controllers
         }
         public void ReportParameterLess()
         {
+            ReportDocument rd = new ReportDocument();
             try
             {
                 string strReportName = System.Web.HttpContext.Current.Session["ReportName"]?.ToString();
@@ -45,7 +46,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     return;
                 }
 
-                ReportDocument rd = new ReportDocument();
+                
                 string strRptPath = Server.MapPath(rptpath);
                 rd.Load(strRptPath);
                 if (rptSource.GetType() != typeof(string))
@@ -71,7 +72,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 string savedFileName = $"{rpttitle}-{DateTime.UtcNow.ToString("dd_mm_yyyy_hhmmss")}";
                 rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, savedFileName);
-                CleanReport(rd);
             }
             catch (Exception ex)
             {
@@ -79,10 +79,16 @@ namespace CBS.FrontDesk.UI.Controllers
                 // Handle specific exceptions if needed
                 Response.Write("<H2>An error occurred while generating the report</H2>");
             }
+            finally
+            {
+                CleanReport(rd); // ✅ Guaranteed cleanup
+            }
         }
 
         public void IncomeStatementSubReports()
-        {
+        {                // Create a new ReportDocument
+            ReportDocument rd = new ReportDocument();
+
             try
             {
                 // Retrieve parameters from session
@@ -97,8 +103,6 @@ namespace CBS.FrontDesk.UI.Controllers
                     return;
                 }
 
-                // Create a new ReportDocument
-                ReportDocument rd = new ReportDocument();
                 string strRptPath = HttpContext.Server.MapPath(rptpath);
                 rd.Load(strRptPath);
 
@@ -172,8 +176,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 string savedFileName = $"{rpttitle}-{DateTime.UtcNow:dd_MM_yyyy_HHmmss}";
                 rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, savedFileName);
 
-                // Clean up the report document
-                CleanReport(rd);
+                
             }
             catch (Exception ex)
             {
@@ -181,13 +184,19 @@ namespace CBS.FrontDesk.UI.Controllers
                 // Handle specific exceptions if needed
                 HttpContext.Response.Write("<H2>An error occurred while generating the report</H2>");
             }
+            finally
+            {
+                CleanReport(rd); // ✅ Guaranteed cleanup
+            }
         }
 
 
 
 
         public void ReportParameterLessWithSubReports()
-        {
+        {                // Create a new ReportDocument
+            ReportDocument rd = new ReportDocument();
+
             try
             {
                 // Retrieve parameters from session
@@ -202,8 +211,6 @@ namespace CBS.FrontDesk.UI.Controllers
                     return;
                 }
 
-                // Create a new ReportDocument
-                ReportDocument rd = new ReportDocument();
                 string strRptPath = HttpContext.Server.MapPath(rptpath);
                 rd.Load(strRptPath);
 
@@ -298,14 +305,16 @@ namespace CBS.FrontDesk.UI.Controllers
                 string savedFileName = $"{rpttitle}-{DateTime.UtcNow:dd_MM_yyyy_HHmmss}";
                 rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, savedFileName);
 
-                // Clean up the report document
-                CleanReport(rd);
             }
             catch (Exception ex)
             {
                 // Log the exception
                 // Handle specific exceptions if needed
                 HttpContext.Response.Write("<H2>An error occurred while generating the report</H2>");
+            }
+            finally
+            {
+                CleanReport(rd); // ✅ Guaranteed cleanup
             }
         }
         public ActionResult DownloadFromJquery(string Filename)
@@ -326,6 +335,8 @@ namespace CBS.FrontDesk.UI.Controllers
 
         public ActionResult AccountingPDFReport(string FileType = "")
         {
+            ReportDocument rd = new ReportDocument();
+
             var Message = (string)this.HttpContext.Session["errorMessage"];
             try
             {
@@ -337,7 +348,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 string rptType = System.Web.HttpContext.Current.Session["rptType"].ToString();
 
-                ReportDocument rd = new ReportDocument();
                 if (rptSource != "empty")
                 {
                     List<TrialBalance6ColumnDto> trialBalance6ColumnDto = new List<TrialBalance6ColumnDto>();
@@ -408,8 +418,6 @@ namespace CBS.FrontDesk.UI.Controllers
                     Response.BinaryWrite(bytes);
                     Response.Flush();
                     Response.End();
-                    //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
-                    CleanReport(rd);
 
                 }
             }
@@ -417,7 +425,10 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 return Json(Message, JsonRequestBehavior.AllowGet);
             }
-
+            finally
+            {
+                CleanReport(rd); // ✅ Guaranteed cleanup
+            }
             return View();
         }
 
@@ -729,6 +740,7 @@ namespace CBS.FrontDesk.UI.Controllers
         }
         public void ReportWithParameter()
         {
+            ReportDocument rd = new ReportDocument();
             try
             {
                 // Initialize validity flag
@@ -759,7 +771,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     if (isValid)
                     {
                         // Load and configure the report document
-                        ReportDocument rd = new ReportDocument();
+                       
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
 
@@ -805,8 +817,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
                     if (isValid)
                     {
-                        // Load and configure the report document
-                        ReportDocument rd = new ReportDocument();
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
 
@@ -825,8 +835,6 @@ namespace CBS.FrontDesk.UI.Controllers
                         string SavedFileName = $"{strtitle}-{DateTime.UtcNow.ToString("dd_MM_yyyy_HHmmss")}";
                         rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
 
-                        // Clean up the report document
-                        CleanReport(rd);
                     }
                     else
                     {
@@ -852,8 +860,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
                     if (isValid)
                     {
-                        // Load and configure the report document
-                        ReportDocument rd = new ReportDocument();
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
 
@@ -897,8 +903,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
                     if (isValid)
                     {
-                        // Load and configure the report document
-                        ReportDocument rd = new ReportDocument();
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
 
@@ -941,8 +945,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
                     if (isValid)
                     {
-                        // Load and configure the report document
-                        ReportDocument rd = new ReportDocument();
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
 
@@ -984,8 +986,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
                     if (isValid)
                     {
-                        // Load and configure the report document
-                        ReportDocument rd = new ReportDocument();
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
 
@@ -1004,7 +1004,6 @@ namespace CBS.FrontDesk.UI.Controllers
                         rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
 
                         // Clean up the report document
-                        CleanReport(rd);
                     }
                     else
                     {
@@ -1026,10 +1025,16 @@ namespace CBS.FrontDesk.UI.Controllers
                     Response.Write($"{ex.ToString()}<H2>Nothing Found; report session expired</H2>");
                 }
             }
+            finally
+            {
+                CleanReport(rd); // ✅ Guaranteed cleanup
+            }
         }
 
         public void ReportWithParameters()
         {
+            ReportDocument rd = new ReportDocument();
+
             try
             {
                 // Initialize validity flag
@@ -1054,7 +1059,6 @@ namespace CBS.FrontDesk.UI.Controllers
                 if (isValid)
                 {
                     // Load and configure the report document
-                    ReportDocument rd = new ReportDocument();
                     string strRptPath = Server.MapPath(rptpath);
                     rd.Load(strRptPath);
 
@@ -1094,6 +1098,10 @@ namespace CBS.FrontDesk.UI.Controllers
                     Response.Write($"{ex.ToString()}<H2>Nothing Found; report session expired</H2>");
                 }
             }
+            finally
+            {
+                CleanReport(rd); // ✅ Guaranteed cleanup
+            }
         }
 
 
@@ -1107,63 +1115,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
         }
 
-        //public ActionResult ReportWithParameters()
-        //{
-        //    try
-        //    {
-        //        bool isValid = true;
-        //        string strReportName = System.Web.HttpContext.Current.Session["ReportName"].ToString();
-        //        var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
-        //        var rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
-        //        string strFromDate = System.Web.HttpContext.Current.Session["DateFrom"].ToString();     // Setting FromDate 
-        //        string strToDate = System.Web.HttpContext.Current.Session["DateTo"].ToString();
-        //        string strDatePrinted = System.Web.HttpContext.Current.Session["DatePrinted"].ToString();// Setting ToDate
-        //        string strPrintedBy = System.Web.HttpContext.Current.Session["FullName"].ToString();// Setting ToDate  
-        //        string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
-        //        // Setting ToDate    
-
-        //        if (string.IsNullOrEmpty(strReportName))
-        //        {
-        //            isValid = false;
-        //        }
-        //        if (isValid)
-        //        {
-        //            ReportDocument rd = new ReportDocument();
-        //            string strRptPath = Server.MapPath(rptpath);
-        //            rd.Load(strRptPath);
-        //            if (rptSource != null && rptSource.GetType().ToString() != "System.String")
-        //                rd.SetDataSource(rptSource);
-        //            if (!string.IsNullOrEmpty(strFromDate))
-        //                rd.SetParameterValue("DateFrom", strFromDate);
-        //            if (!string.IsNullOrEmpty(strToDate))
-        //                rd.SetParameterValue("DateTo", strToDate);
-        //            if (!string.IsNullOrEmpty(strPrintedBy))
-        //                rd.SetParameterValue("PrintedBy", strPrintedBy);
-        //            if (!string.IsNullOrEmpty(strDatePrinted))
-        //                rd.SetParameterValue("DateNow", strDatePrinted);
-        //            string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.ToString("dd_mm_yyyy_hhmmss")}");
-        //            rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
-        //            CleanReport(rd);
-        //        }
-        //        else
-        //        {
-        //            Response.Write("<H2>Nothing Found; No Report Name found</H2>");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        if (ex.Message.Contains("Error in formula PercentagePassed"))
-        //        {
-        //            Response.Write("<H2>No Data was found</H2>");
-        //        }
-        //        else
-        //        {
-        //            Response.Write(ex.ToString() + "<H2>Nothing Found; report session expired</H2>");
-        //        }
-
-        //    }
-        //    return View();
-        //}
         public ActionResult DownloadExcelFilelist()
         {
             var rptSource = System.Web.HttpContext.Current.Session["rptSource" + Session.SessionID];
@@ -1452,7 +1403,8 @@ namespace CBS.FrontDesk.UI.Controllers
         //}
 
         public ActionResult DownloadExcelFileForTB4C()
-        {
+        {                    ReportDocument rd = new ReportDocument();
+
             var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
             string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
             string rpTType = System.Web.HttpContext.Current.Session["rptType"].ToString();
@@ -1470,7 +1422,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 if (rptSource != "empty")
                 {
-                    ReportDocument rd = new ReportDocument();
                     string strRptPath = Server.MapPath(rptpath);
                     rd.Load(strRptPath);
 

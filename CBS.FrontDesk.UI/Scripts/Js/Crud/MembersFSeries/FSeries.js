@@ -28,6 +28,62 @@ $(document).ready(function () {
     });
 
 });
+
+function loadLoanDetails(loanId) {
+    const modalEl = document.getElementById('loanDetailsModal');
+    const modalBody = modalEl.querySelector('.modal-body');
+    const customerNameLabel = document.getElementById('loanCustomerName');
+    const loanIdLabel = document.getElementById('loanIdDisplay');
+
+    // Reset modal content and labels
+    modalBody.querySelectorAll('.loan-details-container').forEach(el => el.remove());
+    customerNameLabel.textContent = '...';
+    loanIdLabel.textContent = loanId || '...';
+
+    $.get('/MembersFSeries/LoanDetailsPartial', { loanId: loanId })
+        .done(function (html) {
+            // Append the loaded HTML
+            const container = document.createElement('div');
+            container.classList.add('loan-details-container');
+            container.innerHTML = html;
+            modalBody.appendChild(container);
+
+            // Set customer name if provided in data attribute
+            const nameSpan = container.querySelector('[data-loan-customer-name]');
+            if (nameSpan) {
+                customerNameLabel.textContent = nameSpan.getAttribute('data-loan-customer-name');
+            }
+
+            loanIdLabel.textContent = loanId;
+
+            // Show modal
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        })
+        .fail(function () {
+            modalBody.innerHTML += `
+                <div class="alert alert-danger text-center loan-details-container">
+                    ❌ Failed to load loan details.
+                </div>
+            `;
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        });
+}
+
+
+function loadLoansPartial(memberId, filter) {
+    //$('#loansTableContainer').html('<div class="text-center p-3"><i class="spinner-border text-primary"></i> Loading...</div>');
+
+    $.get('/MembersFSeries/GetFilteredLoansPartial', { memberId: memberId, filter: filter })
+        .done(function (html) {
+            $('#loansTableContainer').html(html);
+        })
+        .fail(function () {
+            $('#loansTableContainer').html('<div class="alert alert-danger text-center">❌ Failed to load loan data.</div>');
+        });
+}
+
 function ModalShowUp() {
     $('#searchModal').modal('show')
 }
@@ -68,84 +124,90 @@ function ExportIndividaulReport(customerId, path) {
     });
 }
 // Function to fetch and load loans based on the selected filter
-function loadLoans(memberId) {
-    var filter = $('#loanFilterDropdown').val();
 
-    console.log('Filter:', filter, 'Member ID:', memberId);
+
+let loanTable;
+
+$(document).ready(function () {
+    loanTable = $('#myDataTableT2').DataTable({
+        paging: false,
+        searching: false,
+        info: false,
+        columns: [
+            { data: 'LoanDate' }, // Already formatted from server
+            {
+                data: 'LoanAmount',
+                render: function (data) {
+                    return formatXaf(data);
+                }
+            },
+            {
+                data: 'InterestRate',
+                render: function (data) {
+                    return data ? `${data}%` : '0%';
+                }
+            },
+            {
+                data: 'Paid',
+                render: function (data) {
+                    return formatXaf(data);
+                }
+            },
+            {
+                data: 'Balance',
+                render: function (data) {
+                    return `<span class="text-danger">${formatXaf(data)}</span>`;
+                }
+            },
+            { data: 'LoanStatus' }
+        ]
+    });
+});
+
+function loadLoans(memberId) {
+    const filter = $('#loanFilterDropdown').val();
 
     $.ajax({
         url: '/MembersFSeries/GetFilteredLoans',
         type: 'GET',
         data: { filter: filter, memberId: memberId },
         success: function (response) {
-            console.log('Response:', response);
-
-            $('#myDataTable tbody').empty();  // Clear the table rows
-
-            // Check if response has loans
             if (Array.isArray(response) && response.length > 0) {
-                // Show the table and hide the "no loans" message
                 $('#loansTableContainer').show();
                 $('#noLoansMessage').hide();
 
-                var totalPaid = 0;
-                var totalBalance = 0;
+                let totalPaid = 0;
+                let totalBalance = 0;
 
-                // Loop through the loans and append to the table
-                response.forEach(function (loan) {
-                    var loanDate = loan.LoanDate || 'N/A';
-                    var principal = typeof loan.Principal === 'number' ? loan.Principal.toLocaleString() : '0';
-                    var interestRate = loan.InterestRate || '0';
-                    var accrualInterest = typeof loan.AccrualInterest === 'number' ? loan.AccrualInterest.toLocaleString() : '0';
-                    var penalty = typeof loan.Penalty === 'number' ? loan.Penalty.toLocaleString() : '0';
-                    var tax = typeof loan.Tax === 'number' ? loan.Tax.toLocaleString() : '0';
-                    var paid = typeof loan.Paid === 'number' ? loan.Paid.toLocaleString() : '0';
-                    var balance = typeof loan.Balance === 'number' ? loan.Balance.toLocaleString() : '0';
-                    var loanAmount = typeof loan.LoanAmount === 'number' ? loan.LoanAmount.toLocaleString() : '0';
-                    var dueAmount = typeof loan.DueAmount === 'number' ? loan.DueAmount.toLocaleString() : '0';
-                    var loanStatus = loan.LoanStatus;
-                    var loanJourneyStatus = loan.LoanJourneyStatus;
-                    var row = `
-                        <tr>
-                            <td>${loanDate}</td>
-                            <td>${loanAmount}</td>
-                            <td>${interestRate}</td>
-                            <td>${accrualInterest}</td>
-                            <td>${penalty}</td>
-                            <td>${tax}</td>
-                            <td>${paid}</td>
-                            <td>${balance}</td>
-                            <td>${dueAmount}</td>
-                            <td>${loanStatus}</td>
-                            <td>${loanJourneyStatus}</td>
-                            <td>
-                            <a href="/Loan/Details?KEY=${loan.Id}" target="_blank">Details</a>
-                            </td>
-                        </tr>`;
-
-                    $('#myDataTable tbody').append(row);
-
+                response.forEach(loan => {
                     totalPaid += loan.Paid || 0;
                     totalBalance += loan.Balance || 0;
                 });
 
-                // Update totals
-                $('#totalPaid').text(totalPaid.toLocaleString());
-                $('#totalBalance').text(totalBalance.toLocaleString());
-            } else {
-                // If no loans, hide the table and show the message
-                $('#loansTableContainer').hide();
-                $('#noLoansMessage').show();
-            }
+                loanTable.clear().rows.add(response).draw();
 
+                $('#totalPaid').text(formatXaf(totalPaid));
+                $('#totalBalance').text(formatXaf(totalBalance));
+            } else {
+                loanTable.clear().draw();
+                $('#loansTableContainer').hide();
+                $('#noLoansMessage').text('No loans found.').show();
+            }
         },
-        error: function (xhr, status, error) {
-            console.error('Error fetching data:', xhr.responseText, 'Status:', status, 'Error:', error);
+        error: function () {
             $('#loansTableContainer').hide();
-            $('#noLoansMessage').text('Error fetching data').show();  // Show error message
+            $('#noLoansMessage').text('Error loading loan data.').show();
         }
     });
 }
+
+function formatXaf(value) {
+    return typeof value === 'number'
+        ? value.toLocaleString('en-CM', { style: 'currency', currency: 'XAF' })
+        : '0';
+}
+
+
 function showLoanDetails(loanId) {
     // Fetch loan details using AJAX
     $.ajax({

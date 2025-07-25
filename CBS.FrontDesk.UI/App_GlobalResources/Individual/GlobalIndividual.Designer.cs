@@ -700,7 +700,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Daily servers account.
+        ///   Looks up a localized string similar to Daily Collector&apos;s Transit.
         /// </summary>
         internal static string DailyServersAccount {
             get {

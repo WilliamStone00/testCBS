@@ -9371,6 +9371,8 @@
     <Content Include="Views\AccountBalanceInitialization\IndexZeroOut.cshtml" />
     <Content Include="Views\AccountBalanceInitialization\_ZeroOutAccountInitData.cshtml" />
     <Content Include="Views\DailyCollectionSetting\DailySaverAccountUpload.cshtml" />
+    <Content Include="Views\MembersFSeries\_LoansTablePartial.cshtml" />
+    <Content Include="Views\MembersFSeries\_LoanDetailsModalPartial.cshtml" />
     <Content Include="Views\AccountBalanceInitialization\_SearchOption.cshtml" />
     <Content Include="Views\DailyAgentManagement\UploadDailyCollectorOperation.cshtml" />
     <Content Include="Views\DailyAgentManagement\_UploadDailyCollectorOperations.cshtml" />
