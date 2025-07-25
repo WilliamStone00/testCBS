@@ -210,71 +210,71 @@ namespace CBS.FrontDesk.UI
         //    }
         //}
 
-        protected void Application_PreSendRequestHeaders()
-        {
-            // 🔐 1️⃣ Remove default server-identifying headers
-            Response.Headers.Remove("Server");
-            Response.Headers.Remove("X-AspNet-Version");
-            Response.Headers.Remove("X-Powered-By");
+        //protected void Application_PreSendRequestHeaders()
+        //{
+        //    // 🔐 1️⃣ Remove default server-identifying headers
+        //    Response.Headers.Remove("Server");
+        //    Response.Headers.Remove("X-AspNet-Version");
+        //    Response.Headers.Remove("X-Powered-By");
 
-            // 🛡️ 2️⃣ Apply custom branding (optional but obfuscates real tech stack)
-            Response.Headers.Add("Server", "SERVER FLUX TSC");
-            Response.Headers.Add("X-Powered-By", "FLUXSAL CAMEROON");
+        //    // 🛡️ 2️⃣ Apply custom branding (optional but obfuscates real tech stack)
+        //    Response.Headers.Add("Server", "SERVER FLUX TSC");
+        //    Response.Headers.Add("X-Powered-By", "FLUXSAL CAMEROON");
 
-            // 🔒 3️⃣ Enforce strict HTTPS with HSTS for 1 year and preload
-            Response.Headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains; preload";
+        //    // 🔒 3️⃣ Enforce strict HTTPS with HSTS for 1 year and preload
+        //    Response.Headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains; preload";
 
-            // 🌐 4️⃣ Dynamically set allowed connect-src domains for CSP
-            var connectSrcValues = string.Join(" ", AllowedOriginDomains.Prepend("'self'"));
+        //    // 🌐 4️⃣ Dynamically set allowed connect-src domains for CSP
+        //    var connectSrcValues = string.Join(" ", AllowedOriginDomains.Prepend("'self'"));
 
-            // 📜 5️⃣ Add Content-Security-Policy (CSP) for XSS protection
-            string contentSecurityPolicy = string.Join(" ",
-                "default-src 'self';",
-                "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://unpkg.com;",
-                "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;",
-                "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;",
-                $"connect-src {connectSrcValues};",
-                "img-src 'self' data:;",
-                "frame-src 'none';",
-                "object-src 'none';",
-                "base-uri 'self';",
-                "form-action 'self';"
-            );
+        //    // 📜 5️⃣ Add Content-Security-Policy (CSP) for XSS protection
+        //    string contentSecurityPolicy = string.Join(" ",
+        //        "default-src 'self';",
+        //        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://unpkg.com;",
+        //        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;",
+        //        "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;",
+        //        $"connect-src {connectSrcValues};",
+        //        "img-src 'self' data:;",
+        //        "frame-src 'none';",
+        //        "object-src 'none';",
+        //        "base-uri 'self';",
+        //        "form-action 'self';"
+        //    );
 
-            if (!Response.Headers.AllKeys.Contains("Content-Security-Policy"))
-                Response.Headers.Add("Content-Security-Policy", contentSecurityPolicy);
+        //    if (!Response.Headers.AllKeys.Contains("Content-Security-Policy"))
+        //        Response.Headers.Add("Content-Security-Policy", contentSecurityPolicy);
 
-            // 🔎 6️⃣ Privacy headers
-            if (!Response.Headers.AllKeys.Contains("Referrer-Policy"))
-                Response.Headers.Add("Referrer-Policy", "no-referrer");
+        //    // 🔎 6️⃣ Privacy headers
+        //    if (!Response.Headers.AllKeys.Contains("Referrer-Policy"))
+        //        Response.Headers.Add("Referrer-Policy", "no-referrer");
 
-            // 🎛️ 7️⃣ Permissions control
-            if (!Response.Headers.AllKeys.Contains("Permissions-Policy"))
-                Response.Headers.Add("Permissions-Policy", "geolocation=(), microphone=(), camera=(), payment=()");
+        //    // 🎛️ 7️⃣ Permissions control
+        //    if (!Response.Headers.AllKeys.Contains("Permissions-Policy"))
+        //        Response.Headers.Add("Permissions-Policy", "geolocation=(), microphone=(), camera=(), payment=()");
 
-            // 🛡️ 8️⃣ Anti-clickjacking
-            if (!Response.Headers.AllKeys.Contains("X-Frame-Options"))
-                Response.Headers.Add("X-Frame-Options", "DENY");
+        //    // 🛡️ 8️⃣ Anti-clickjacking
+        //    if (!Response.Headers.AllKeys.Contains("X-Frame-Options"))
+        //        Response.Headers.Add("X-Frame-Options", "DENY");
 
-            // 🧪 9️⃣ Prevent MIME-type sniffing
-            if (!Response.Headers.AllKeys.Contains("X-Content-Type-Options"))
-                Response.Headers.Add("X-Content-Type-Options", "nosniff");
+        //    // 🧪 9️⃣ Prevent MIME-type sniffing
+        //    if (!Response.Headers.AllKeys.Contains("X-Content-Type-Options"))
+        //        Response.Headers.Add("X-Content-Type-Options", "nosniff");
 
-            // 🧰 🔒 10️⃣ Legacy XSS filter (for older browsers)
-            if (!Response.Headers.AllKeys.Contains("X-XSS-Protection"))
-                Response.Headers.Add("X-XSS-Protection", "1; mode=block");
+        //    // 🧰 🔒 10️⃣ Legacy XSS filter (for older browsers)
+        //    if (!Response.Headers.AllKeys.Contains("X-XSS-Protection"))
+        //        Response.Headers.Add("X-XSS-Protection", "1; mode=block");
 
-            // 🍪 11️⃣ Secure all response cookies
-            foreach (var cookieKey in Response.Cookies.AllKeys)
-            {
-                var cookie = Response.Cookies[cookieKey];
-                if (cookie == null) continue;
+        //    // 🍪 11️⃣ Secure all response cookies
+        //    foreach (var cookieKey in Response.Cookies.AllKeys)
+        //    {
+        //        var cookie = Response.Cookies[cookieKey];
+        //        if (cookie == null) continue;
 
-                cookie.Secure = true; // Only send via HTTPS
-                cookie.HttpOnly = true; // JS cannot access
-                cookie.SameSite = SameSiteMode.Strict; // Prevent cross-origin usage
-            }
-        }
+        //        cookie.Secure = true; // Only send via HTTPS
+        //        cookie.HttpOnly = true; // JS cannot access
+        //        cookie.SameSite = SameSiteMode.Strict; // Prevent cross-origin usage
+        //    }
+        //}
         //protected void Application_PreSendRequestHeaders()
         //{
         //    // 🔄 Remove existing headers not removed by <remove> in web.config

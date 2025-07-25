@@ -5,7 +5,7 @@ using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity.AccountingDayObject;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
-using CBS.FrontDesk.Data.Entity.DailyCollectorManagement;
+ 
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;

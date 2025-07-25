@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CBS.FrontDesk.Data.Entity.DailyCollectorManagement
+namespace CBS.FrontDesk.Data.Entity 
 {
     public class DailyCollectorManagementData
     {
@@ -31,44 +31,7 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectorManagement
         public string option { get; set; }
     
     }
-    public abstract class ResourceParameter
-    {
-        public ResourceParameter(string OrderBy)
-        {
-            this.OrderBy = OrderBy;
-
-        }
-
-        const int MaxPageSize = 100;
-        public int Skip { get; set; } = 0;
-
-        private int _PageSize = 10;
-        public int PageSize
-        {
-            get
-            {
-                return _PageSize;
-            }
-            set
-            {
-
-                _PageSize = (value > MaxPageSize) ? MaxPageSize : value;
-            }
-        }
-
-        public string SearchQuery { get; set; }
-        public string OrderBy { get; set; }
-
-
-    }
-    public class PagginationResource : ResourceParameter
-    {
-        public PagginationResource() : base("CustomerId")
-        {
-        }
-        public string BranchId { get; set; }
-        public bool IsByBranch { get; set; }
-    }
+  
 
 
     public class AgentDto  
@@ -188,9 +151,12 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectorManagement
         public string BranchId { get; set; }
     }
 
+      //  public async Task<ActionResult> UploadDailyCollectorModel(UploadDailyCollectorData model)
+    //
     public class DailyAgentManagement
     {
-
+        public UploadDailyCollectorData UploadDailyCollectorData { get; set; }
+      
         public Agent Agent { get; set; }
         public List<Agent> Agents { get; set; } = new List<Agent>();
         public AgentAccount AgentAccount { get; set; }
@@ -200,6 +166,7 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectorManagement
         public string ServiceOption { get; set; }
         public string Action { get; set; }
         public string KEY { get; set; } = "KEY";
+        public string BranchId { get; set; }
     }
     public class AgentResouceInformation
     {

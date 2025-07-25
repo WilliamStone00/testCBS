@@ -8206,6 +8206,7 @@
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
     <Content Include="Scripts\Js\CashMovementTracker\CashMovementTracker.js" />
     <Content Include="Scripts\Js\CommissionManagement\CommissionPayment.js" />
+    <Content Include="Scripts\Js\CommissionManagement\DailyCollectionManagement.js" />
     <Content Include="Scripts\Js\Dashboard\DailyCollection\DailyCollectionDashboard.js" />
     <Content Include="Scripts\Js\main.js\AccountBalanceInitialization.js" />
     <Content Include="Scripts\Js\MemberReceiptsP\MemberReceipt.js" />
@@ -9373,6 +9374,8 @@
     <Content Include="Views\MembersFSeries\_LoansTablePartial.cshtml" />
     <Content Include="Views\MembersFSeries\_LoanDetailsModalPartial.cshtml" />
     <Content Include="Views\AccountBalanceInitialization\_SearchOption.cshtml" />
+    <Content Include="Views\DailyAgentManagement\UploadDailyCollectorOperation.cshtml" />
+    <Content Include="Views\DailyAgentManagement\_UploadDailyCollectorOperations.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

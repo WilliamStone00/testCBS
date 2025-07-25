@@ -318,6 +318,7 @@
     <Compile Include="CorrespondingBankBranchServices\BankZoneBranchServices.cs" />
     <Compile Include="CorrespondingBankBranchServices\BankingZoneServices.cs" />
     <Compile Include="CustomerManagement\CMoneyMemberServices.cs" />
+    <Compile Include="DailyCollectionServices\DailyCollectionMigrationServices.cs" />
     <Compile Include="DailyCollectionServices\CollectionZoningServices.cs" />
     <Compile Include="DailyCollectionServices\DailyCustomerServices.cs" />
     <Compile Include="DailyCollectionServices\CommissionSettingServices.cs" />

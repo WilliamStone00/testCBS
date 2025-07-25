@@ -119,8 +119,10 @@
     <Compile Include="Entity\DailyCollectionData\AgentDashBoard\AgentDashBoard.cs" />
     <Compile Include="Entity\DailyCollectionData\Agent\Agent.cs" />
     <Compile Include="Entity\DailyCollectionData\CommissionSetting\CommissionSetting.cs" />
+    <Compile Include="Entity\DailyCollectionData\DailyCustomer\Class1.cs" />
     <Compile Include="Entity\DailyCollectionData\DailyCustomer\DailyCustomer.cs" />
     <Compile Include="Entity\DailyCollectionData\Zone\Zone.cs" />
+    <Compile Include="Entity\DailyCollectionEntities\Class1.cs" />
     <Compile Include="Entity\DailyCollectionEntities\CollectorSalarySummaryDto.cs" />
     <Compile Include="Entity\DailyCollectionEntities\FinancialReportData.cs" />
     <Compile Include="Entity\DailyCollectionEntities\DailyDashBoardData.cs" />

@@ -1,11 +1,11 @@
-﻿using CBS.FrontDesk.Data.Entity.DailyCollectorManagement;
+﻿using CBS.FrontDesk.Data.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CBS.FrontDesk.Data.Entity.DailyCollectionData 
+namespace CBS.FrontDesk.Data.Entity 
 {
     public class DailyCustomer
     {

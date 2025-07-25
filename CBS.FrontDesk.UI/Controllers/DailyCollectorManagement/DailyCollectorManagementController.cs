@@ -1,17 +1,24 @@
 ﻿using CBS.API.Helper;
+using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.DailyCollectionServices;
 using CBS.BusinessService.Session;
 using CBS.BusinessService.UserManagement;
+using CBS.FrontDesk.Data;
+using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DailyCollectionData;
-using CBS.FrontDesk.Data.Entity.DailyCollectorManagement;
+using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
+ 
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.UserManagement;
+using CBS.FrontDesk.UI.Models;
 using DocumentFormat.OpenXml.EMMA;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -26,6 +33,7 @@ namespace CBS.FrontDesk.UI.Controllers
         private AgentServices _agentServices;
         private UserManagementServices _userServices;
         private AgentAccountServices _agentAccountServices;
+        private DailyCollectionMigrationServices _dailyCollectionMigrationServices;
         public DailyAgentManagementController()
         {
             _branchService = new BranchServices();
@@ -38,12 +46,12 @@ namespace CBS.FrontDesk.UI.Controllers
         public async Task<ActionResult> Index()
         {
             await GetList();
-            return View(new DailyCollectionConfiguration());
+            return View(new DailyAgentManagement());
         }
         public async Task<ActionResult> CommissionPayment()
         {
             await GetList();
-            return View(new DailyCollectionConfiguration());
+            return View(new DailyAgentManagement());
         }
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
@@ -108,6 +116,71 @@ namespace CBS.FrontDesk.UI.Controllers
 
             }
         }
+        public async Task<ActionResult> UploadDailyCollectorOperation()
+        {
+            ViewBag.Branches = BuildMenuISViewBag((await _branchService.GetBranches()).ToList());
+            ViewBag.BankName = _branchService.GetBankName();
+            return View(new DailyAgentManagement { BranchId = _branchService.GetBranchID() });
+        }
+        private dynamic BuildMenuISViewBag(List<Branch> listOfItems)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select BranchCode" });
+            foreach (var item in listOfItems)
+            {
+
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $" {item.Name}" });
+
+
+            }
+            return selectListItems;
+
+        }
+        [HttpPost]
+        public async Task<ActionResult> UploadDailyCollectorModel(UploadDailyCollectorData model)
+        {
+            try
+            {
+                // Step 1: Validate Model State (Data Annotation Checks)
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { success = false, message = "Invalid input. Please fill all required fields." }, JsonRequestBehavior.AllowGet);
+                }
+
+                // Step 2: Check if file was uploaded and has content
+                if (model.ExcelFile == null || model.ExcelFile.ContentLength == 0)
+                {
+                    return Json(new { success = false, message = "No file uploaded or file is empty." }, JsonRequestBehavior.AllowGet);
+                }
+
+                // Step 3: Validate Excel file extension
+                string fileExtension = Path.GetExtension(model.ExcelFile.FileName);
+                if (fileExtension != ".xlsx" && fileExtension != ".xls")
+                {
+                    return Json(new { success = false, message = "Invalid file format. Please upload a .xlsx or .xls file." }, JsonRequestBehavior.AllowGet);
+                }
+
+                // Step 4: (Optional) Save the file to a temp location or process directly from stream
+                string fileName = Path.GetFileName(model.ExcelFile.FileName);
+               await _dailyCollectionMigrationServices.UploadFile(model);
+
+                // Step 5: (Placeholder) Validate Excel structure and content here
+                // You can use a library like ClosedXML or ExcelDataReader here
+
+                // Example response for now:
+                return Json(new { success = true, message = "File uploaded and validated successfully." }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // Step 6: Log the exception and return error response
+                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($"StackTrace: {ex.StackTrace}");
+                return Json(new { success = false, message = $"An error occurred while processing the file: {ex.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+
         private dynamic BuildOperationTypes()
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
