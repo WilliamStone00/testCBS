@@ -5,9 +5,10 @@ using CBS.BusinessService.Config;
 using CBS.BusinessService.DailyCollectionServices;
 using CBS.BusinessService.LocalizationService;
 using CBS.BusinessService.UserManagement;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Config;
-using CBS.FrontDesk.Data.Entity.DailyCollectorManagement;
+ 
 using CBS.FrontDesk.Data.Message;
 using DocumentFormat.OpenXml;
 using System;

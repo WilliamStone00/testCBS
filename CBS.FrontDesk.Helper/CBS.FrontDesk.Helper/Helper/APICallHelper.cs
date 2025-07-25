@@ -1169,5 +1169,12 @@ namespace CBS.FrontDesk.Helper
         public static string MigrationGLReconciliationInit = "/api/v1/MigrationGLReconciliation/add";
         public static string MigrationGLReconciliationAccountList = "/api/v1/MigrationGLReconciliation/list";
         public static string MigrationGLReconciliationAccount = "/api/v1/MigrationGLReconciliation/by-id/{0}";
+
+
+        //DailySavingUpload
+        public static string Delete_DailySavingMigrationFile = "/api/v1/DailySavingMigrationFile/{0}";
+        public static string GetAllDailySavingMigrationFile = "/api/v1/DailySavingMigrationFile/all/{0}";
+        public static string DailySavingMigrationFileExecution = "/api/v1/DailySavingMigrationFileExecution";
+
     }
 }

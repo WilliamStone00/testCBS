@@ -5,7 +5,7 @@ using CBS.BusinessService.Session;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.DailyCollectionData;
 using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
-using CBS.FrontDesk.Data.Entity.DailyCollectorManagement;
+ 
 using CBS.FrontDesk.Data.Entity.DashBoards;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
