@@ -1049,6 +1049,9 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public DateTime DateOfOperation { get; set; }
         public string CNI { get; set; }
         public string TelephoneNumber { get; set; }
+        [Required]
+        public string ExternalBranchId { get; set; }
+
 
     }
 

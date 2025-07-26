@@ -28,13 +28,14 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         private readonly CashDeskServices _cashDeskService;
         private readonly AccountingServices _accountingServices;
         private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
+        private readonly BranchServices _branchServices;
 
-
-        public CashDeskController(CashDeskServices cashDeskService = null, AccountingServices accountingServices = null, ChartOfAccountServicesAnnex chartOfAccountServices = null)
+        public CashDeskController(CashDeskServices cashDeskService = null, AccountingServices accountingServices = null, ChartOfAccountServicesAnnex chartOfAccountServices = null, BranchServices branchServices = null)
         {
             _cashDeskService = cashDeskService;
             _accountingServices = accountingServices;
             this.chartOfAccountServices=chartOfAccountServices;
+            _branchServices=branchServices;
         }
         // GET: CashDesk
         //public ActionResult Index()
@@ -66,8 +67,10 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             ViewBag.Operation = "income_expense";
             var cashDesk = await _cashDeskService.GetOtherCashDeskTransactions();
+            ViewBag.Branches=await _branchServices.GetLiaison();
             //ViewBag.Members = _cashDeskService.LoadMembersToList(cashDesk.Customers);
             ViewBag.MemberAccounts = new SelectList(new List<StringValues>(), "None", "No-Account-Loaded");
+            ViewBag.OperationType = "cashin";
             await GetEventNames("FEE");
             //ViewBag.EventCodes = await _accountingServices.GetEventNames("INCOME");
             return View(cashDesk);
@@ -84,6 +87,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             var cashDesk = await _cashDeskService.GetOtherCashDeskTransactions();
             //ViewBag.Members = _cashDeskService.LoadMembersToList(cashDesk.Customers);
             ViewBag.MemberAccounts = new SelectList(new List<StringValues>(), "None", "No-Account-Loaded");
+            ViewBag.Branches=await _branchServices.GetLiaison();
             await GetEventNames("EXPENSE");
             //ViewBag.EventCodes = await _accountingServices.GetEventNames("INCOME");
             return View(cashDesk);
@@ -114,99 +118,97 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             try
             {
-                if (true)
-                {
-
-                }
-                ViewBag.OperationType="cashin";
                 ViewBag.KEY = KEY;
-                if (path=="")
-                {
+                ViewBag.OperationType = "cashin";
+
+                if (string.IsNullOrWhiteSpace(path))
                     path = "cashin";
-                }
+
+                ViewBag.Operation = path;
+
+                // 🔍 Handle member search by reference or ID
                 if (path == "search")
                 {
-                    if (KEY == null || KEY == "")
+                    if (string.IsNullOrWhiteSpace(KEY))
                     {
-                        ViewBag.message = "Empty data was submited. Please enter search criterial";
+                        ViewBag.message = "⚠️ No search input provided. Please enter a valid Member Reference or Account Number to proceed.\nResolution: Ensure the search field is filled before submitting.";
                         return PartialView("_DataNotFound", new CashDesk());
                     }
+
                     var cashDesk = await _cashDeskService.GetMember(KEY);
                     if (cashDesk == null)
                     {
-                        ViewBag.message = $"{KEY} was not found in the database.";
+                        ViewBag.message = $"❌ No data found for the reference '{KEY}'. The member may exist, but no ordinary member account is currently linked to this reference.\nResolution: Verify the member ID and ensure that the member has an active ordinary account.";
                         return PartialView("_DataNotFound", new CashDesk());
                     }
-                    return PartialView(partialView, cashDesk);
 
+                    // Check if ordinary account exists
+                    var hasOrdinaryAccount = cashDesk.BulkDeposits != null &&
+                                             cashDesk.BulkDeposits.Any(x =>
+                                                 !string.IsNullOrWhiteSpace(x.AccountType) &&
+                                                 x.AccountType.ToLower().Contains("ordinary"));
 
-                }
-                else if (path == "cashin" ||path=="repayment"|| path == "cashout" || path == "cashoutsws" || path == "repayment" || path == "withdrawalnotification" || path== "loanapplicationfeepayment" || path=="newsubcription")
-                {
-
-                    if (path.Contains("cashout"))
+                    if (!hasOrdinaryAccount)
                     {
-                        ViewBag.OperationType="cashout";
+                        ViewBag.message = $"✅ Member profile found for '{KEY}', but no ordinary member account is linked to this profile.\nResolution: Please ensure that an ordinary savings account is opened for this member.";
+                        return PartialView("_DataNotFound", new CashDesk());
                     }
-                    //newsubcription
-                    if (KEY == null || KEY == "")
+
+                    return PartialView(partialView, cashDesk);
+                }
+
+                // 💰 Handle operations like cashin, cashout, repayment, etc.
+                var validPaths = new[]
+                {
+            "cashin", "repayment", "cashout", "cashoutsws",
+            "withdrawalnotification", "loanapplicationfeepayment", "newsubcription"
+        };
+
+                if (validPaths.Contains(path))
+                {
+                    if (path.Contains("cashout"))
+                        ViewBag.OperationType = "cashout";
+
+                    if (string.IsNullOrWhiteSpace(KEY))
                     {
-                        ViewBag.message = "Empty data was submited. Please enter search criterial";
+                        ViewBag.message = "⚠️ You submitted an empty value. Please enter a valid Account Number or Reference.\nResolution: Fill in a valid account number or member reference before retrying.";
                         return PartialView("_DataNotFound", new CashDesk());
                     }
 
                     var cashDesk = await _cashDeskService.GetAccountByAccountNumberSearch(KEY, path);
                     if (cashDesk == null)
                     {
-
-                        ViewBag.message = $"{KEY} was not found in the database.";
+                        ViewBag.message = $"❌ No account found for the input '{KEY}'.\nResolution: Confirm that the account number or reference is correct and linked to a valid account.";
                         return PartialView("_DataNotFound", new CashDesk());
                     }
+
+                    // ✅ Check if all non-loan accounts start with MB
                     var nonLoanAccounts = cashDesk?.BulkDeposits?
-                    .Where(x => x.AccountType != null && !x.AccountType.ToLower().Contains("loan"))
-                    .ToList();
+                        .Where(x => x.AccountType != null && !x.AccountType.ToLower().Contains("loan"))
+                        .ToList();
 
-                    bool allAccountsAreMB = true;
-
-                    if (nonLoanAccounts != null && nonLoanAccounts.Any())
-                    {
-
-                        foreach (var acc in nonLoanAccounts)
-                        {
-                            if (string.IsNullOrWhiteSpace(acc.AccountNumber) || !acc.AccountNumber.Trim().ToUpper().StartsWith("MB"))
-                            {
-                                allAccountsAreMB = false;
-
-                            }
-                            else
-                            {
-                                allAccountsAreMB=true;
-                                break;
-                            }
-                        }
-
-                    }
+                    bool allAccountsAreMB = nonLoanAccounts != null && nonLoanAccounts.All(x =>
+                        !string.IsNullOrWhiteSpace(x.AccountNumber) &&
+                        x.AccountNumber.Trim().ToUpper().StartsWith("MB"));
 
                     ViewBag.AllAccountsAreMB = allAccountsAreMB;
-                    ViewBag.Operation = path;
 
-                    ViewBag.Operation = path;
                     return PartialView(partialView, cashDesk);
-
                 }
-                else if (path == "new_depositor")
+
+                // 🆕 New depositor form
+                if (path == "new_depositor")
                 {
                     return PartialView(partialView, new CashDesk());
-
                 }
-                ViewBag.message = "Invalid option selected";
-                return PartialView("_NoRecordFound", new CashDesk());
 
+                // ❌ Unknown operation path
+                ViewBag.message = $"❌ Invalid operation path '{path}' selected.\nResolution: Please choose a valid operation such as cashin, cashout, or repayment from the system menu.";
+                return PartialView("_NoRecordFound", new CashDesk());
             }
             catch (Exception ex)
             {
-
-                ViewBag.message = ex.Message; // Store error message
+                ViewBag.message = $"🚨 An unexpected error occurred: {ex.Message}\nResolution: Please contact system administrator if the issue persists.";
                 return PartialView("_NoRecordFound", new CashDesk());
             }
         }

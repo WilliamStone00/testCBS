@@ -222,6 +222,7 @@ namespace CBS.FrontDesk.UI.ReportForm
         /// <param name="exportAction">The export format action (e.g., `exportpdf`, `exportexcel`, `exportword`).</param>
         private void ExportReport(string reportPath, object mainData, string displayName, string exportAction)
         {
+            ReportDocument reportDoc = new ReportDocument();
             try
             {
                 // ✅ Resolve the full physical path to the report file.
@@ -235,35 +236,37 @@ namespace CBS.FrontDesk.UI.ReportForm
                     return;
                 }
 
-                // ✅ Using statement ensures that the report document resources are properly disposed of after use.
-                using (ReportDocument reportDoc = new ReportDocument())
-                {
-                    // ✅ Load the report file into the `ReportDocument` object.
-                    reportDoc.Load(filePath);
 
-                    // ✅ Set the main data source for the report.
-                    reportDoc.SetDataSource(mainData);
+                // ✅ Load the report file into the `ReportDocument` object.
+                reportDoc.Load(filePath);
 
-                  
+                // ✅ Set the main data source for the report.
+                reportDoc.SetDataSource(mainData);
 
-                    // ✅ Bind data to any subreports associated with the main report.
-                    BindSubReports(reportDoc);
-                    // ✅ Apply report parameters from the session data.
-                    ApplyReportParameters(reportDoc);
-                    // ✅ Determine the export format using the specified export action (e.g., PDF, Excel, Word).
-                    ExportFormatType format = GetExportFormat(exportAction);
 
-                    // ✅ Construct the filename with a timestamp to avoid filename collisions.
-                    string filename = $"{displayName.Replace(" ", "_")}_{DateTime.Now:yyyyMMdd_HHmmss}";
 
-                    // ✅ Export the report document to the specified format and send it as a response to the client.
-                    reportDoc.ExportToHttpResponse(format, Response, false, filename);
-                }
+                // ✅ Bind data to any subreports associated with the main report.
+                BindSubReports(reportDoc);
+                // ✅ Apply report parameters from the session data.
+                ApplyReportParameters(reportDoc);
+                // ✅ Determine the export format using the specified export action (e.g., PDF, Excel, Word).
+                ExportFormatType format = GetExportFormat(exportAction);
+
+                // ✅ Construct the filename with a timestamp to avoid filename collisions.
+                string filename = $"{displayName.Replace(" ", "_")}_{DateTime.Now:yyyyMMdd_HHmmss}";
+
+                // ✅ Export the report document to the specified format and send it as a response to the client.
+                reportDoc.ExportToHttpResponse(format, Response, false, filename);
+
             }
             catch (Exception ex)
             {
                 // ❌ Handle unexpected exceptions during report export and display a user-friendly error message.
                 ShowError($"⚠️ Export Error: {ex.Message}");
+            }
+            finally
+            {
+                CleanReport(reportDoc); // ✅ Guaranteed cleanup
             }
         }
 
@@ -684,6 +687,22 @@ namespace CBS.FrontDesk.UI.ReportForm
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
             }
+        }
+        /// <summary>
+        /// Configuration object for report generation
+        /// </summary>
+        public void CleanReport(ReportDocument rd)
+        {
+            if (rd != null)
+            {
+                rd.Close();
+                rd.Clone();
+                rd.Dispose();
+                rd = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+
         }
     }
 
