@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
 <div class="container">
     @*<fieldset class="fieldset">*@
-    <div class="card-body bg-light">
+    <div class="card-body bg-light card-border-shadow-dark">
         @using (Html.BeginForm("", ""))
         {
             <input type="hidden" name="ServiceOption" value="SearchAndFilter" id="ServiceOption" />
@@ -97,7 +97,7 @@
                 else
                 {
                     <!-- Filtering Option Dropdown for Non-Head Office -->
-                    <div class="col-md-12 mb-3">
+                    <div class="col-md-4 mb-3">
                         <div class="form-floating form-floating-outline">
                             @Html.DropDownListFor(
                                 model => model.QueryModel.Status,
@@ -110,6 +110,34 @@
                             <label>Select Filtering Option</label>
                         </div>
                     </div>
+                    <!-- From Date -->
+                    <div class="col-md-4 mb-sm-4">
+                        <div class="form-floating form-floating-outline mb-4">
+                            @Html.TextBoxFor(model => model.QueryModel.FromDate, new
+                            {
+                                @class = "form-control",
+                                type = "datetime-local",
+                                id = "fromDate"
+                            })
+                            <label for="fromDate">From Date</label>
+                            @Html.ValidationMessageFor(model => model.QueryModel.FromDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <!-- To Date -->
+                    <div class="col-md-4 mb-sm-4">
+                        <div class="form-floating form-floating-outline mb-4">
+                            @Html.TextBoxFor(model => model.QueryModel.ToDate, new
+                            {
+                                @class = "form-control",
+                                type = "datetime-local",
+                                id = "toDate"
+                            })
+                            <label for="toDate">To Date</label>
+                            @Html.ValidationMessageFor(model => model.QueryModel.ToDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
                 }
 
                 <!-- Hidden Input -->

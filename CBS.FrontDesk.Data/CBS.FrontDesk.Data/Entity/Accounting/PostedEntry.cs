@@ -35,15 +35,15 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             postedEntry.Status = model.Status;
             postedEntry.Description = model.Description;
             postedEntry.Amount = model.Amount;
-            postedEntry.CreatedDate = DateTime.ParseExact(model.CreatedDate, "dd-MMM-yy h:mm:ss tt", CultureInfo.InvariantCulture);
+            postedEntry.CreatedDate = model.CreatedDate ;// DateTime.ParseExact(model.CreatedDate, "dd-MMM-yy h:mm:ss tt", CultureInfo.InvariantCulture);
             postedEntry.ValidationMessage = model.ValidationMessage;               
             postedEntry.CreatedBy = model.CreatedBy;
             postedEntry.IssuedBy = model.CreatedBy;
             postedEntry.PostingSource = model.PostingSource;
             postedEntry.BranchCode = model.BranchCode;
             postedEntry.EntryDetail = model.EntryDetail;
-            
-        postedEntry.ApprovedDate = DateTime.ParseExact(model.ApprovedDate, "dd-MMM-yy h:mm:ss tt", CultureInfo.InvariantCulture);
+
+            postedEntry.ApprovedDate = model.ApprovedDate;// DateTime.ParseExact(model.ApprovedDate, "dd-MMM-yy h:mm:ss tt", CultureInfo.InvariantCulture);
 
             postedEntry.EndorseBy = model.ApprovedBy;
             return postedEntry;
@@ -75,9 +75,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string BranchCode { get; set; }
         public string PrintersName { get; set; }
         public string ApprovedBy { get; set; }
-        public DateTime ApprovedDate { get; set; }
-        public DateTime ValueDate { get; set; }
-        public DateTime IssuedDate { get; set; }
+        public string ApprovedDate { get; set; }
+        public string ValueDate { get; set; }
+        public string IssuedDate { get; set; }
         public decimal AccountBalance { get; set; }
         public string ApproveMessage { get; set; }
         public string Name { get; set; }
@@ -89,11 +89,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Status { get; set; }
         public string Description { get; set; }
         public decimal Amount { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public string CreatedDate { get; set; }
         public string CreatedBy { get; set; }
         public string IssuedBy { get; set; }
         public string BranchCode { get; set; }
-        public DateTime ApprovedDate { get; set; }
+        public string ApprovedDate { get; set; }
         public string ApprovedBy { get; set; }
         public string EndorseBy { get; set; }
         public string ValidationMessage { get; set; }
@@ -111,13 +111,31 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             postedEntry.Status = model.Status;
             postedEntry.Description = model.Description;
             postedEntry.Amount = model.Amount;
-            postedEntry.CreatedDate = model.ApprovedDate.ToLongDateString();
+            postedEntry.CreatedDate = model.CreatedDate;
             postedEntry.CreatedBy = model.CreatedBy;
             postedEntry.CreatedBy = model.CreatedBy;
             postedEntry.PostingSource = model.PostingSource;
             postedEntry.BranchCode = model.BranchCode;
             postedEntry.EntryDetail = model.EntryDetail;
-            postedEntry.ApprovedDate = model.ApprovedDate.ToLongDateString();
+            postedEntry.ApprovedDate = model.ApprovedDate;
+            postedEntry.ApprovedBy = model.ApprovedBy;
+            return postedEntry;
+
+        }
+        public PostedEntryStringDateX ConvertToPostedStingDateEntry(PostedEntryX model)
+        {
+            PostedEntryStringDateX postedEntry = new PostedEntryStringDateX();
+            postedEntry.Id = model.Id;
+            postedEntry.Status = model.Status;
+            postedEntry.Description = model.Description;
+            postedEntry.Amount = model.Amount;
+            postedEntry.CreatedDate = model.CreatedDate; //model.ApprovedDate.ToLongDateString();
+            postedEntry.CreatedBy = model.CreatedBy;
+            postedEntry.CreatedBy = model.CreatedBy;
+            postedEntry.PostingSource = model.PostingSource;
+            postedEntry.BranchCode = model.BranchCode;
+            postedEntry.EntryDetail = model.EntryDetail;
+            postedEntry.ApprovedDate = model.ApprovedDate;// model.ApprovedDate.ToLongDateString();
             postedEntry.ApprovedBy = model.ApprovedBy;
             return postedEntry;
 
@@ -144,7 +162,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 postedEntry.ApprovedDate = model.ApprovedDate;
                 postedEntry.ApproveMessage = model.ValidationMessage;
                 //postedEntry.CreatedBy = model.CreatedBy;
-                postedEntry.ValueDate = model.EntryDetail[0].ValueDate;
+                postedEntry.ValueDate = model.EntryDetail[0].ValueDate.ToString();
 
                 postedEntry.IssuedDate = model.CreatedDate;
                 postedEntry.Capital = "";
@@ -162,5 +180,30 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             return postedEntries;
 
         }
+    }
+
+    public class PostedEntryStringDateX
+    {
+        public string PostingSource { get; set; }
+        public string Id { get; set; }
+        public string Status { get; set; }
+        public string Description { get; set; }
+        public decimal Amount { get; set; }
+        public string CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public string IssuedBy { get; set; }
+        public string BranchCode { get; set; }
+        public string ApprovedDate { get; set; }
+        public string ApprovedBy { get; set; }
+        public string EndorseBy { get; set; }
+        public string ValidationMessage { get; set; }
+
+        public List<EntryTempDatas> EntryDetail { get; set; } = new List<EntryTempDatas>();
+
+        public PostedEntryStringDateX()
+        {
+
+        }
+    
     }
 }

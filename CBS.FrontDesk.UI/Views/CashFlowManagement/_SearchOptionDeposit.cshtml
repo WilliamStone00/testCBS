@@ -98,17 +98,44 @@
                 else
                 {
                     <!-- Filtering Option Dropdown for Non-Head Office -->
-                    <div class="col-md-12 mb-3">
+                    <div class="col-md-4 mb-sm-4">
                         <div class="form-floating form-floating-outline">
                             @Html.DropDownListFor(
                                 model => model.QueryModel.Status,
-               new SelectList(ViewBag.filteringOptions ?? "", "Value", "Text"),
+                              new SelectList(ViewBag.filteringOptions ?? "", "Value", "Text"),
 
 
                                 new { @class = "form-control select2", @search = "true", @id = "QueryModel_Status" }
                             )
                             @Html.ValidationMessageFor(model => model.QueryModel.Status, "", new { @class = "text-danger" })
                             <label>@GlobalCashFlowManagement.SelectFilteringOption</label>
+                        </div>
+                    </div>
+                    <!-- From Date -->
+                    <div class="col-md-4 mb-sm-4">
+                        <div class="form-floating form-floating-outline mb-4">
+                            @Html.TextBoxFor(model => model.QueryModel.FromDate, new
+                            {
+                                @class = "form-control",
+                                type = "datetime-local",
+                                id = "fromDate"
+                            })
+                            <label for="fromDate">@GlobalCashFlowManagement.FromDate</label>
+                            @Html.ValidationMessageFor(model => model.QueryModel.FromDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <!-- To Date -->
+                    <div class="col-md-4 mb-sm-4">
+                        <div class="form-floating form-floating-outline mb-4">
+                            @Html.TextBoxFor(model => model.QueryModel.ToDate, new
+                            {
+                                @class = "form-control",
+                                type = "datetime-local",
+                                id = "toDate"
+                            })
+                            <label for="toDate">@GlobalCashFlowManagement.ToDate</label>
+                            @Html.ValidationMessageFor(model => model.QueryModel.ToDate, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 }

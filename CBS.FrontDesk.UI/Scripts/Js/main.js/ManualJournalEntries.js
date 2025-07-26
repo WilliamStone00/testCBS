@@ -771,7 +771,45 @@ function GetCurrentPostedEntryTransactions(title, message, ajaxUrl, Id) {
                 console.error(xhr.responseText);
             }
         });
+      
     }
+
+ async function loadAccountByIdWithCallBack(AccountId) {
+    try {
+        const response = await fetch(`/ManuallyJournalEntry/GetAccountBalance?accountId=${AccountId}`);
+        console.log(response);
+        const model = extractAccountDetails(response);
+        return {
+            AccountBalance: model.CurrentBalance,
+            AccountName: model.AccountName,
+            AccountNumber: model.AccountNumberCU,
+            AccountId: model.Id,
+            AccountCategoryId: model.AccountCategoryId
+        };
+    } catch (error) {
+        console.error("Error:", error);
+        return null;
+    }
+}
+function loadAccountByIdWithCallBack(AccountId, callback) {
+    fetch(`/ManuallyJournalEntry/GetAccountBalance?accountId=${AccountId}`)
+        .then(response => {
+            console.log(response);
+            const model = extractAccountDetails(response);
+            const result = {
+                AccountBalance: model.CurrentBalance,
+                AccountName: model.AccountName,
+                AccountNumber: model.AccountNumberCU,
+                AccountId: model.Id,
+                AccountCategoryId: model.AccountCategoryId
+            };
+            callback(null, result);
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            callback(error, null);
+        });
+}
 
     function calculateDebitAndCreditTotals(entries) {
         // Initialize totals
@@ -803,8 +841,17 @@ function GetCurrentPostedEntryTransactions(title, message, ajaxUrl, Id) {
      * Adds an item to the shopping basket with validation
      * @returns {void}
      */
-    function addToBasket() {
+loadAccountByIdWithCallBack(123, (error, account) => {
+    if (error) {
+        console.error("Failed to load account:", error);
+        return;
+    }
+    console.log("Account loaded:", account);
+});
+     function addToBasket() {
         // Get form values
+       
+     
         const item = {
             reference: $('#EntryTempData_Reference').val().trim(),
             BranchId: $('#EntryTempData_BranchId').val().trim(),
@@ -819,11 +866,12 @@ function GetCurrentPostedEntryTransactions(title, message, ajaxUrl, Id) {
             valueDate: $("input[name='EntryTempData.ValueDate']").val(),
             description: $('#EntryTempData_Description').val().trim(),
             AccountCategoryId: $('#EntryTempData_AccountCategoryId').val().trim()
-        };
-
-        // Format account name and reference
-        item.accountName = `${item.accountNumber}-${item.accountName}`;
-        item.reference = `${item.reference}`;
+         };
+         var selectedText = $('#EntryTempData_AccountId option:selected').text();
+         // var selectedText = $('.select2').find('option:selected').text();
+      
+         item.accountName = selectedText.split('-')[1];
+         item.accountNumber = selectedText.split('-')[0];
 
         console.log('Processing item:', item);
 

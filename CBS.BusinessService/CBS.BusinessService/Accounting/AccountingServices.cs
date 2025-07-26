@@ -223,18 +223,18 @@ namespace CBS.BusinessService.Accounting
             {
                 var listOfCategories = (await accountCartegorieService.GetAccountCategory()).ToList();
                 var account = (await GetAllAccounting()).Where(i => i.Id.Equals(id)).FirstOrDefault();
-                var modelVal = listOfCategories.Find(x => x.Id == account.AccountCategoryId);
-                if (modelVal.Name == CLASS_4_Recievabels || account.AccountNumber.StartsWith("2") || // Fixed Assets
-                                                                                                     //   || // Inventory
-                                account.AccountNumber.StartsWith("5") || // Financial
-                                account.AccountNumber.StartsWith("6"))  // Expenses)
-                {
-                    account.AccountCategoryId = "debit";
-                }
-                else
-                {
-                    account.AccountCategoryId = "credit";
-                }
+                //var modelVal = listOfCategories.Find(x => x.Id == account.AccountCategoryId);
+                //if (modelVal.Name == CLASS_4_Recievabels || account.AccountNumber.StartsWith("2") || // Fixed Assets
+                //                                                                                     //   || // Inventory
+                //                account.AccountNumber.StartsWith("5") || // Financial
+                //                account.AccountNumber.StartsWith("6"))  // Expenses)
+                //{
+                //    account.AccountCategoryId = "debit";
+                //}
+                //else
+                //{
+                //    account.AccountCategoryId = "credit";
+                //}
                 return account;
             }
             catch (Exception ex)

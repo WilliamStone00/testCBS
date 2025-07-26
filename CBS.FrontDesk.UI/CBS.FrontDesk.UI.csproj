@@ -2037,6 +2037,7 @@
     <Compile Include="Controllers\Accounting\BankingOperationController.cs" />
     <Compile Include="Controllers\Accounting\BranchAccountJournalEntriesQueryObject.cs" />
     <Compile Include="Controllers\Accounting\CashFlowManagementController.cs" />
+    <Compile Include="Controllers\Accounting\CashMovementController.cs" />
     <Compile Include="Controllers\Accounting\CashMovementTrackerConfigurationController.cs" />
     <Compile Include="Controllers\Accounting\CashMovementTrackerController.cs" />
     <Compile Include="Controllers\Accounting\DocumentConfigurationController.cs" />
@@ -9376,6 +9377,7 @@
     <Content Include="Views\AccountBalanceInitialization\_SearchOption.cshtml" />
     <Content Include="Views\DailyAgentManagement\UploadDailyCollectorOperation.cshtml" />
     <Content Include="Views\DailyAgentManagement\_UploadDailyCollectorOperations.cshtml" />
+    <Content Include="Views\CashMovement\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
