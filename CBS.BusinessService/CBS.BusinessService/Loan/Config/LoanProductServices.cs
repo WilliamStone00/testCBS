@@ -499,7 +499,11 @@ namespace CBS.BusinessService.Config
                     LoanInterestPeriod = product.LoanInterestPeriod,
                     MinimumInterestRate = product.MinimumInterestRate,
                     MaximumInterestRate = product.MaximumInterestRate,
-                    PenaltyId=product.PenaltyId,
+                    BlockShareAccount = product.BlockShareAccount,
+                    BlockSavingAccount = product.BlockSavingAccount,
+                   
+
+        PenaltyId=product.PenaltyId,
                     LoanDurationPeriod = product.LoanDurationPeriod,
                     MinimumDurationPeriod = product.MinimumDurationPeriod,
                     MaximumDurationPeriod = product.MaximumDurationPeriod,

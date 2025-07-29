@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
-    @using Resources
+@using Resources
 @{
     var isNewSubscription = ViewBag.Operation?.ToString()?.ToLower() == "newsubcription";
 }
@@ -50,8 +50,7 @@
                             </label>
                         </div>
                     </div>
-
-                    @if (ViewBag.AllAccountsAreMB == true)
+                    @if (isNewSubscription)
                     {
                         <div class="col-md-12">
                             <div class="form-floating form-floating-outline mb-3">
@@ -64,6 +63,7 @@
                     {
                         <input type="hidden" id="CustomerAlphaNumber" value="0" />
                     }
+
 
                     <div class="table-responsive w-100">
                         <table class="table table-hover" id="myDataTableT">
@@ -127,9 +127,7 @@
                     <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostCashIn()">
                         <i class="fas fa-money-bill-wave me-1"></i> @CashDesk_OperationForm.CashInB
                     </button>
-                    <button type="submit" class="btn btn-secondary me-2" onclick="Reprint()">
-                        <i class="fas fa-print me-1"></i> @CashDesk_OperationForm.RePrint
-                    </button>
+                   
                     <button type="reset" class="btn btn-outline-secondary">
                         <i class="fas fa-sync-alt me-1"></i> @CashDesk_OperationForm.Reset
                     </button>

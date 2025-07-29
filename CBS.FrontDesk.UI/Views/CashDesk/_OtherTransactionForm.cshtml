@@ -26,7 +26,7 @@
                         "--- Select Branch ---",
                         new { @class = "form-control select2", @id = "ExternalBranchId" })
                     <label for="ExternalBranchId">Destination Branch</label>
-                    @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.ExternalBranchId, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.ExternalBranchId, "", new { @class = "text-danger"})
                 </div>
             </div>
 
@@ -60,10 +60,10 @@
             <div class="mb-4">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.BulkDeposit.OtherTransaction.MemberName, new
-                    {
-                        @class = "form-control",
-                        @id = "MemberName"
-                    })
+                   {
+                       @class = "form-control",
+                       @id = "Name"
+                   })
                     <label for="MemberName">@CashDesk_OtherTransactionForm.Name</label>
                     @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.MemberName, "", new { @class = "text-danger" })
                 </div>

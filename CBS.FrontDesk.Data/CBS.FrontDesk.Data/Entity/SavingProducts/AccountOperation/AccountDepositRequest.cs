@@ -193,7 +193,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public decimal Principal { get; set; }
         public string PaymentChannel { get; set; }
         public bool HideBalance { get; set; }
-
+        public string ExternalBranchId { get; set; }
         public string ReceiverCNI { get; set; }
         public string ReceiverName { get; set; }
         public string ReceiverCNIDateOfIssue { get; set; }

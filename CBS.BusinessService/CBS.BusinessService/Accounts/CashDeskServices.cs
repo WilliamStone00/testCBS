@@ -765,10 +765,10 @@ namespace CBS.BusinessService.Accounts
                     var addOtherTransaction = new AddOtherTransactionCommand
                     {
                         AccountNumber = a.AccountNumber,
-                        Amount = a.Amount,
+                        Amount = a.Amount,  
+                        ExternalBranchId=a.ExternalBranchId,
                         CurrencyNotesRequest = a.currencyNotes,
-                        CustomerId = (a.SourceType == "Member_Account" || (!string.IsNullOrEmpty(a.CustomerId) && a.SourceType != "Member_Account"))
-                 ? a.CustomerId
+                        CustomerId = (a.SourceType == "Member_Account" || (!string.IsNullOrEmpty(a.CustomerId) && a.SourceType != "Member_Account"))? a.CustomerId
                  : "N/A",
                         Direction = "",
                         Name = a.Period,
@@ -778,7 +778,10 @@ namespace CBS.BusinessService.Accounts
                         SourceType = a.SourceType,
                         TransactionType = "Income"
                     };
-
+                    if (addOtherTransaction.ExternalBranchId==null)
+                    {
+                        addOtherTransaction.ExternalBranchId=GetBranchID();
+                    }
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<OtherTransaction>>(APICallHelper.CreateOtherTransaction, addOtherTransaction);
                     if (response.ApiResponseData != null)
                     {
@@ -887,12 +890,17 @@ namespace CBS.BusinessService.Accounts
                         CustomerId = a.SourceType == "Member_Account" ? a.CustomerId : "N/A",
                         Direction = "N/A",
                         Name = a.Period,
+                        ExternalBranchId=a.ExternalBranchId,
                         Naration = a.Note,
                         EnventName = a.EventCode,
                         EventCode = a.EventCode,
                         SourceType = a.SourceType,
                         TransactionType = "Expense"
                     };
+                    if (addOtherTransaction.ExternalBranchId==null)
+                    {
+                        addOtherTransaction.ExternalBranchId=GetBranchID();
+                    }
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<OtherTransaction>>(APICallHelper.CreateOtherTransaction, addOtherTransaction);
                     if (response.ApiResponseData != null)
                     {
