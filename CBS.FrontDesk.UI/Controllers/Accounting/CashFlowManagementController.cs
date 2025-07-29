@@ -1332,7 +1332,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     var modelc = JsonConvert.DeserializeObject<QueryFilter>(KEY, settings);
                     //var listBranch = await branchServices.GetBranches();
                     var dataModel = await _accountingEntryServices.GetBankDepositEntries(modelc);
-                    ViewBag.IsAuthourized = false;
+                    ViewBag.IsAuthourized = true;
                     var dataUserList = (await _accountingEntryServices.GetUserList()).ToList();
                     var branchList = await branchServices.GetBranches();
                     foreach (var item in dataModel.ToList())
@@ -1648,14 +1648,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             //    ,
             //,Awaiting_uploaded_bank_deposit_receipt
-            //Awaiting_Bank_CashOut,
+            //,
             //,       
             var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[]
             { new System.Web.WebPages.Html.SelectListItem { Text = "Pending", Value = "Pending" },
                 new System.Web.WebPages.Html.SelectListItem { Text = "Approved", Value = "Approved" },
-                  new System.Web.WebPages.Html.SelectListItem { Text = "Acknowledge Head Office Request", Value = "Approved" },
+                  new System.Web.WebPages.Html.SelectListItem { Text = "Acknowledge Head Office Request", Value = "AcknowledgeApproved" },
 
-                 new System.Web.WebPages.Html.SelectListItem { Text = "Authorized_Bank_CashOut", Value = "RedirectToBranchBCO" },
+                 new System.Web.WebPages.Html.SelectListItem { Text = "Authorized_Bank_CashOut", Value = "Awaiting_Bank_CashOut" },
 
                  //new System.Web.WebPages.Html.SelectListItem { Text = "Redirected_Branch_Bank_CashOut", Value = "Approved" },
                   new System.Web.WebPages.Html.SelectListItem { Text = "Authorized_Branch_Transfer", Value = "RedirectToBranchBTB" },

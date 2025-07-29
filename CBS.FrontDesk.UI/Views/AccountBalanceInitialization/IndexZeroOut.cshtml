@@ -45,29 +45,27 @@
     <div class="row mb-3 justify-content-end">
         <div class="demo-inline-spacing text-end">
             <a class="btn btn-icon btn-label-primary btn-sm btn-fab demo"
-               onclick="LoadDataGeneration('AccountBalanceInitialization','depositTable','_AccountInitializationData','datalistingview_AccountInitialize',0,'account','list')"
+               onclick="LoadDataGeneration('AccountBalanceInitialization','depositTable','_ZeroOutAccountInitData','datalistingview_Zeronisation',0,'zeronisation','list')"
                title="View List">
                 <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
             </a>
             <a class="btn btn-icon btn-label-secondary btn-sm btn-fab demo"
-               onclick="AddORUpdateGen(null,'datalistingview_Account','_CreateAccountBalanceInitialization','new','AccountBalanceInitialization','account')"
+               onclick="AddORUpdateGen(null,'datalistingview_Zeronisation','_CreateZeroOutRequest','new','AccountBalanceInitialization','zeronisation')"
                title="AddNew">
                 <span class="tf-icons mdi mdi-plus mdi-18px"></span>
             </a>
  
         </div>
     </div>
-    <div id="datalistingview_AccountInitialize">
-        @Html.Partial("_CreateAccountBalanceInitialization")
+    <div id="datalistingview_Zeronisation">
+        @Html.Partial("_CreateZeroOutRequest")
 
     </div>
-    <div id="datalistingview_AccountInitializationData" class="bg-light mb-3"²>
-        @Html.Partial("_AccountInitializationData")
-    </div>
-   
+
 </div> <!-- .row -->
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
 <script src="~/Scripts/Js/main.js/AccountBalanceInitialization.js"></script>
 
 }
+ 

@@ -2171,6 +2171,7 @@
       <DependentUpon>GeneralStatisticsDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Filter\MaliciousContentScannerService.cs" />
+    <Compile Include="Helper\FileUploadHelper.cs" />
     <Compile Include="WAF\Middleware\Correlation\CorrelationIdMiddleware.cs" />
     <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureFilter.cs" />
     <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureMiddleware.cs" />
@@ -6484,6 +6485,8 @@
     <Content Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsc">
       <DependentUpon>DeliquentLoanSummaryDataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="AppFiles\CorrectedCollectorEntryFile.xlsx" />
+    <Content Include="AppFiles\SampleDailySaverToBeUploaded.xlsx" />
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -8210,6 +8213,8 @@
     <Content Include="Scripts\Js\CommissionManagement\DailyCollectionManagement.js" />
     <Content Include="Scripts\Js\Dashboard\DailyCollection\DailyCollectionDashboard.js" />
     <Content Include="Scripts\Js\main.js\AccountBalanceInitialization.js" />
+    <Content Include="Scripts\Js\main.js\DailySaverOperations.js" />
+    <Content Include="Scripts\Js\main.js\DailySaverUploud.js" />
     <Content Include="Scripts\Js\MemberReceiptsP\MemberReceipt.js" />
     <Content Include="Scripts\Js\CMoney\cmoney.js" />
     <Content Include="Scripts\Js\CMoney\cmMembers.js" />
@@ -9378,6 +9383,9 @@
     <Content Include="Views\DailyAgentManagement\UploadDailyCollectorOperation.cshtml" />
     <Content Include="Views\DailyAgentManagement\_UploadDailyCollectorOperations.cshtml" />
     <Content Include="Views\CashMovement\Index.cshtml" />
+    <Content Include="Views\DailyAgentManagement\UploadDailySavers.cshtml" />
+    <Content Include="Views\DailyAgentManagement\_uploadDailySavers.cshtml" />
+    <Content Include="Views\DailyAgentManagement\_UploadedDailyOperationData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

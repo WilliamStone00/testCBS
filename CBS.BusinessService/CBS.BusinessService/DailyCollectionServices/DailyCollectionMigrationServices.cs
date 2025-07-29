@@ -1,16 +1,21 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Mvc;
 
 namespace CBS.BusinessService.DailyCollectionServices
 {
@@ -139,57 +144,254 @@ namespace CBS.BusinessService.DailyCollectionServices
         {
             try
             {
+                // Validate input model
+                if (model == null)
+                {
+                    return GetExecutionMessages(null, false, "Model", MessagesResults.Failed,
+                        ExecutionProcessOption.ValidationError, SystemMessageStatus.Failed.ToString(), null,
+                        "Invalid request data. Please try again.");
+                }
+
                 // Validate input file
                 if (model.ExcelFile == null)
                 {
-                    return GetExecutionMessages(null, false, "File", MessagesResults.Failed,
+                    return GetExecutionMessages(model, false, "File", MessagesResults.Failed,
                         ExecutionProcessOption.NoFileWasSelected, SystemMessageStatus.Failed.ToString(), null,
-                        "No file was selected. Please upload a valid file.");
+                        "No file was selected. Please upload a valid Excel file.");
+                }
+
+                // Validate file extension
+                var allowedExtensions = new[] { ".xlsx", ".xls" };
+                var fileExtension = Path.GetExtension(model.ExcelFile.FileName)?.ToLowerInvariant();
+
+                if (string.IsNullOrEmpty(fileExtension) || !allowedExtensions.Contains(fileExtension))
+                {
+                    return GetExecutionMessages(model, false, "File", MessagesResults.Failed,
+                        ExecutionProcessOption.InvalidFileType, SystemMessageStatus.Failed.ToString(), null,
+                        "Invalid file type. Please upload a valid Excel file (.xlsx or .xls).");
+                }
+
+                // Validate file size (e.g., max 10MB)
+                const long maxFileSize = 10 * 1024 * 1024; // 10MB
+                if (model.ExcelFile.ContentLength > maxFileSize)
+                {
+                    return GetExecutionMessages(model, false, "File", MessagesResults.Failed,
+                        ExecutionProcessOption.FileSizeExceeded, SystemMessageStatus.Failed.ToString(), null,
+                        "File size exceeds the maximum limit of 10MB. Please upload a smaller file.");
+                }
+
+                // Validate required fields
+                if (string.IsNullOrWhiteSpace(model.BranchId))
+                {
+                    return GetExecutionMessages(model, false, "BranchId", MessagesResults.Failed,
+                        ExecutionProcessOption.ValidationError, SystemMessageStatus.Failed.ToString(), null,
+                        "Branch ID is required. Please provide a valid Branch ID.");
+                }
+
+                if (string.IsNullOrWhiteSpace(model.CollectorId))
+                {
+                    return GetExecutionMessages(model, false, "CollectorId", MessagesResults.Failed,
+                        ExecutionProcessOption.ValidationError, SystemMessageStatus.Failed.ToString(), null,
+                        "Collector ID is required. Please provide a valid Collector ID.");
                 }
 
                 // Prepare additional parameters
-                var additionalParams = new Dictionary<string, string>
-        {
-            { "UploadFileId", "model.UploadFileId" }
-        };
+                var additionalParams = new Dictionary<string, string>{
+                 { "formFile", model.ExcelFile.FileName }  };
+                var urlString = string.Format(APICallHelper.DailySavingMigrationFileExecution, model.BranchId, model.CollectorId);
+               var response = await _dailySavingApiHelper.UploadFileToApiAsync<DailySaverUploadResult>(model.ExcelFile, "formFile", urlString, additionalParams);
 
-                // Prepare file list
-                var httpPostedFileBases = new List<HttpPostedFileBase> { model.ExcelFile };
-
-                // Send request to API
-                var response = await _dailySavingApiHelper.PostFilesAndParamsAsync<ServiceResponse<bool>>(
-                    APICallHelper.DailySavingMigrationFileExecution, additionalParams, httpPostedFileBases);
-
+            
+       
                 // Process API response
-                if (response.ApiResponseData == null)
+                if (response == null)
                 {
-                    if (response.IsSuccess)
-                    {
-                        return GetExecutionMessages(response, true, null, MessagesResults.Success,
-                                 ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
-                                 "File uploaded successfully. Your data is being processed.");
-
-                    }
-
+                    return GetExecutionMessages(model, false, "Response", MessagesResults.Failed,
+                        ExecutionProcessOption.ApiResponseNull, SystemMessageStatus.Failed.ToString(), null,
+                        "No response received from server. Please try again later or contact support.");
                 }
 
-                // Handle failed response with user-friendly message
-                return GetExecutionMessages(model, false, null, MessagesResults.Failed,
-                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
-                    $"File upload failed. {response.Message ?? "Please try again later or contact support."}");
+                if (response.IsSuccess && response.ApiResponseData != null)
+                {
+                    // Check the actual response data
+                    if (response.ApiResponseData != null)
+                    {
+                        return GetExecutionMessages(response, true, "Upload", MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
+                            "File uploaded successfully. Your data is being processed.");
+                    }
+                    else
+                    {
+                        return GetExecutionMessages(model, false, "Processing", MessagesResults.Failed,
+                            ExecutionProcessOption.ProcessingFailed, SystemMessageStatus.Failed.ToString(), null,
+                            $"File upload processing failed. {response.Message ?? "Please verify your data and try again."}");
+                    }
+                }
+                else
+                {
+                    // Handle failed response with user-friendly message
+                    var errorMessage = !string.IsNullOrWhiteSpace(response.Message)
+                        ? response.Message
+                        : "File upload failed. Please try again later or contact support.";
+
+                    return GetExecutionMessages(model, false, "Upload", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
+                        errorMessage);
+                }
+            }
+            catch (ArgumentException argEx)
+            {
+                // Handle argument-specific exceptions
+                return GetExecutionMessages(model, false, "Arguments", MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Failed.ToString(), argEx,
+                    "Invalid input provided. Please check your data and try again.");
+            }
+            catch (HttpRequestException httpEx)
+            {
+                // Handle HTTP-specific exceptions
+                return GetExecutionMessages(model, false, "Network", MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Failed.ToString(), httpEx,
+                    "Network error occurred. Please check your connection and try again.");
+            }
+            catch (TaskCanceledException tcEx)
+            {
+                // Handle timeout exceptions
+                return GetExecutionMessages(model, false, "Timeout", MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Failed.ToString(), tcEx,
+                    "Request timed out. Please try again later.");
             }
             catch (Exception ex)
             {
-                // Handle exception with a detailed message
-                return GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
-                    SystemMessageStatus.Failed.ToString(), ex,
-                    "An error occurred while uploading the file. Please try again later or contact support.");
+                // Handle general exceptions
+                return GetExecutionMessages(model, false, "General", MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Failed.ToString(), ex,
+                    "An unexpected error occurred while uploading the file. Please try again later or contact support.");
             }
         }
 
+        public async Task<ExecutionMessages> UploadFile(UploadDailyCollectorOperationData model)
+        {
+            try
+            {
+                // Validate input model
+                if (model == null)
+                {
+                    return GetExecutionMessages(null, false, "Model", MessagesResults.Failed,
+                        ExecutionProcessOption.ValidationError, SystemMessageStatus.Failed.ToString(), null,
+                        "Invalid request data. Please try again.");
+                }
+
+                // Validate input file
+                if (model.ExcelFile == null)
+                {
+                    return GetExecutionMessages(model, false, "File", MessagesResults.Failed,
+                        ExecutionProcessOption.NoFileWasSelected, SystemMessageStatus.Failed.ToString(), null,
+                        "No file was selected. Please upload a valid Excel file.");
+                }
+
+                // Validate file extension
+                var allowedExtensions = new[] { ".xlsx", ".xls" };
+                var fileExtension = Path.GetExtension(model.ExcelFile.FileName)?.ToLowerInvariant();
+
+                if (string.IsNullOrEmpty(fileExtension) || !allowedExtensions.Contains(fileExtension))
+                {
+                    return GetExecutionMessages(model, false, "File", MessagesResults.Failed,
+                        ExecutionProcessOption.InvalidFileType, SystemMessageStatus.Failed.ToString(), null,
+                        "Invalid file type. Please upload a valid Excel file (.xlsx or .xls).");
+                }
+
+                // Validate file size (e.g., max 10MB)
+                const long maxFileSize = 10 * 1024 * 1024; // 10MB
+                if (model.ExcelFile.ContentLength > maxFileSize)
+                {
+                    return GetExecutionMessages(model, false, "File", MessagesResults.Failed,
+                        ExecutionProcessOption.FileSizeExceeded, SystemMessageStatus.Failed.ToString(), null,
+                        "File size exceeds the maximum limit of 10MB. Please upload a smaller file.");
+                }
+
+            
+
+                if (string.IsNullOrWhiteSpace(model.CollectorId))
+                {
+                    return GetExecutionMessages(model, false, "CollectorId", MessagesResults.Failed,
+                        ExecutionProcessOption.ValidationError, SystemMessageStatus.Failed.ToString(), null,
+                        "Collector ID is required. Please provide a valid Collector ID.");
+                }
+
+                // Prepare additional parameters
+                var additionalParams = new Dictionary<string, string>      {
+            { "file", model.ExcelFile.FileName }
+        };
+                var urlString = string.Format(APICallHelper.ManualEntryCollectorUploadFileExecution, model.CollectorId);
+                var response = await _dailySavingApiHelper.UploadFileToApiAsync<ManualEntryDailyCollectorUploadSummaryDto>(model.ExcelFile, "file", urlString, additionalParams);
 
 
-  
+
+                // Process API response
+                if (response == null)
+                {
+                    return GetExecutionMessages(model, false, "Response", MessagesResults.Failed,
+                        ExecutionProcessOption.ApiResponseNull, SystemMessageStatus.Failed.ToString(), null,
+                        "No response received from server. Please try again later or contact support.");
+                }
+
+                if (response.IsSuccess && response.ApiResponseData != null)
+                {
+                    // Check the actual response data
+                    if (response.ApiResponseData != null)
+                    {
+                        return GetExecutionMessages(response, true, "Upload", MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
+                            "File uploaded successfully. Your data is being processed.");
+                    }
+                    else
+                    {
+                        return GetExecutionMessages(model, false, "Processing", MessagesResults.Failed,
+                            ExecutionProcessOption.ProcessingFailed, SystemMessageStatus.Failed.ToString(), null,
+                            $"File upload processing failed. {response.Message ?? "Please verify your data and try again."}");
+                    }
+                }
+                else
+                {
+                    // Handle failed response with user-friendly message
+                    var errorMessage = !string.IsNullOrWhiteSpace(response.Message)
+                        ? response.Message
+                        : "File upload failed. Please try again later or contact support.";
+
+                    return GetExecutionMessages(model, false, "Upload", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
+                        errorMessage);
+                }
+            }
+            catch (ArgumentException argEx)
+            {
+                // Handle argument-specific exceptions
+                return GetExecutionMessages(model, false, "Arguments", MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Failed.ToString(), argEx,
+                    "Invalid input provided. Please check your data and try again.");
+            }
+            catch (HttpRequestException httpEx)
+            {
+                // Handle HTTP-specific exceptions
+                return GetExecutionMessages(model, false, "Network", MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Failed.ToString(), httpEx,
+                    "Network error occurred. Please check your connection and try again.");
+            }
+            catch (TaskCanceledException tcEx)
+            {
+                // Handle timeout exceptions
+                return GetExecutionMessages(model, false, "Timeout", MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Failed.ToString(), tcEx,
+                    "Request timed out. Please try again later.");
+            }
+            catch (Exception ex)
+            {
+                // Handle general exceptions
+                return GetExecutionMessages(model, false, "General", MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Failed.ToString(), ex,
+                    "An unexpected error occurred while uploading the file. Please try again later or contact support.");
+            }
+        }
     }
 
 }

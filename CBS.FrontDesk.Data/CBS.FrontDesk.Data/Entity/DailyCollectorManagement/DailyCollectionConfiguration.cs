@@ -156,7 +156,8 @@ namespace CBS.FrontDesk.Data.Entity
     public class DailyAgentManagement
     {
         public UploadDailyCollectorData UploadDailyCollectorData { get; set; }
-      
+        public DailyCollectionDashboardActivitiesQuery DashboardActivities { get; set; } = new DailyCollectionDashboardActivitiesQuery();
+        public CollectorSalarySummaryDto CollectorData { get; set; } = new CollectorSalarySummaryDto();
         public Agent Agent { get; set; }
         public List<Agent> Agents { get; set; } = new List<Agent>();
         public AgentAccount AgentAccount { get; set; }

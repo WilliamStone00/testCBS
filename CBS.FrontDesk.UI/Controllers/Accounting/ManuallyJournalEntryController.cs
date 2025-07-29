@@ -17,6 +17,7 @@ using DocumentFormat.OpenXml.Drawing.ChartDrawing;
 using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using DocumentFormat.OpenXml.Office2016.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.SignalR.Owin;
@@ -318,7 +319,9 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             else
             {
-                var ListOfData = await _AccountServices.GetJournalEntryMFIAccountQuery(BranchId);
+                //   var ListOfData = await _AccountServices.GetJournalEntryMFIAccountQuery(BranchId);
+                var ListOfData = await _AccountServices.GetAllAccounting();
+                ListOfData = ListOfData.Where(x => x.AccountOwnerId == BranchId).ToList();
                 return Json(BuildDropDown(ListOfData), JsonRequestBehavior.AllowGet);
             }
 

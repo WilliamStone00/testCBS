@@ -208,5 +208,19 @@ namespace CBS.BusinessService.DailyCollectionServices
                 return new ResponseObject<bool>();
             }
         }
+
+        public async Task<List<AgentDto>> GetAgentAllAgentByBranchIdAsync(string branchId)
+        {
+            string _baseUrl = string.Format(APICallHelper.GetAllAgentByBranchId, branchId);
+            var apiResponse = await _dailyCollectionApiHelper.GetAsync<ResponseObject<List<AgentDto>>>(_baseUrl);
+            if (apiResponse.IsSuccess)
+            {
+                return apiResponse.ApiResponseData.Data;
+            }
+            else
+            {
+                return new List<AgentDto>();
+            }
+        }
     }
 }

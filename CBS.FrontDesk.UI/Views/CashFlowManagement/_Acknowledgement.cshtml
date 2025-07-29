@@ -1,11 +1,10 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
 
 
+ 
 
-
-
-@*@if (Model.AcknowledgementType == "BankCashOut")
-{*@
+@if (Model.AcknowledgementType == "BankCashOut")
+{
    @using (Html.BeginForm("AddOrUpdate", "CashFlowManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostConfirmation(this);" }))
     {
         <input type="hidden" name="ServiceOption" value="acknowledgement" id="ServiceOption" />
@@ -41,7 +40,7 @@
     }
 
 
-@*}
+}
 else if (Model.AcknowledgementType == "InterBranch")
 {
     using (Html.BeginForm("AddOrUpdate", "CashFlowManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostConfirmation(this);" }))
@@ -118,7 +117,7 @@ else if (Model.AcknowledgementType == "RedirectedBankCashOut")
         </div>
     }
 
-}*@
+}
 
 
 

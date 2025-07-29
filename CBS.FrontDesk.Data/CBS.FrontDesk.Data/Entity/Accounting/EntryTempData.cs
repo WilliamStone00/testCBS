@@ -372,8 +372,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public class QueryModel: QueryFilter
     {
         public string Status { get; set; }
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
         public string BranchId { get; set; }
         public string IssuedBy { get; set; }
         public string ApprovedBy { get; set; } //
@@ -384,8 +384,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public class QueryFilter 
     {
         public string Status { get; set; }
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
         public string BranchId { get; set; }
         public string IssuedBy { get; set; }
         public string ApprovedBy { get; set; } //

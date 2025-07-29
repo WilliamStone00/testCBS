@@ -1140,6 +1140,7 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_Agent = "/api/v1/Agent/{0}";
         public static string CreateAgent = "/api/v1/Agent";
         public static string GetAllAgent = "/api/v1/Agents";
+        public static string GetAllAgentByBranchId = "/api/v1/Agents/by_branch/{0}";
         public static string GetActiveDailyCollectors = "/api/v1/DailySavingsBackOffice/collectors?branchId={0}&month={1}&year={2}";
         public static string GetAgentActivities = "/api/v1/Agent/GetAgentActivities/{0}/{1}/{2}/{3}";
         public static string GetCollectorsHistory = "/api/v1/DailySavingsBackOffice/collector-history-with-dashboard?collectorId={0}&year={1}&month={2}&BranchId={3}";
@@ -1171,10 +1172,10 @@ namespace CBS.FrontDesk.Helper
         public static string MigrationGLReconciliationAccount = "/api/v1/MigrationGLReconciliation/by-id/{0}";
 
 
-        //DailySavingUpload
+        //DailySavingUpload 
         public static string Delete_DailySavingMigrationFile = "/api/v1/DailySavingMigrationFile/{0}";
         public static string GetAllDailySavingMigrationFile = "/api/v1/DailySavingMigrationFile/all/{0}";
-        public static string DailySavingMigrationFileExecution = "/api/v1/DailySavingMigrationFileExecution";
-
+        public static string DailySavingMigrationFileExecution = "api/v1/DailySavingMigrationFileExecution/{0}/{1}";
+        public static string ManualEntryCollectorUploadFileExecution = "api/v1/ManualEntryCollectorUpload?collectorId={0}";
     }
 }

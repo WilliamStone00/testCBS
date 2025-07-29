@@ -8,6 +8,7 @@ using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
  
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using Microsoft.AspNet.SignalR.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -87,6 +88,14 @@ namespace CBS.BusinessService.Migration
             {
                 return new CollectorSalarySummaryDto();
             }
+        }
+
+        public async Task<ExecutionMessages> GetProductAccountToBeZeroOut(GetInfoDto model)
+        {
+          var data=   ZeroOutMemberBalanceSimulationDto.GenerateZeroOutMemberBalanceSimulations();
+
+            return   GetExecutionMessages(data, true, null, MessagesResults.Success, ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, "Transction was successful");
+
         }
     }
 }
