@@ -13,7 +13,7 @@ $(document).ready(function () {
     });
 });
 
-
+let Url = '/DailyAgentManagement/RetrieveDailyCollectionDashboardActivitiesAsync';
 async function loadDashBoardData() {
     // Show loading indicator
     $('.load-btn').prop('disabled', true).html('⏳ Loading...');
@@ -25,7 +25,7 @@ async function loadDashBoardData() {
         BranchId: $('select[name="DashboardActivities.BranchId"]').val(),
         CollectorId: $('select[name="DashboardActivities.CollectorId"]').val(),
     };
-    const dashboardUpdater = new DashboardUpdater('/DailyAgentManagement/RetrieveDailyCollectionDashboardActivitiesAsync');
+    const dashboardUpdater = new DashboardUpdater(Url);
     // Basic validation
 
     if (!formData.Month) {
@@ -35,7 +35,7 @@ async function loadDashBoardData() {
     console.log(formData);
     // AJAX POST request
     $.ajax({
-        url: '/DailyAgentManagement/RetrieveDailyCollectionDashboardActivitiesAsync', // Replace with your actual endpoint
+        url: Url, // Replace with your actual endpoint
         type: 'GET',
         data: {
             Month: formData.Month,
@@ -170,38 +170,100 @@ class DashboardUpdater {
         }
     }
 
-    async fetchData() {
+    //async fetchData() {
+    //    var formData = {
+
+    //        Month: $('#month').val(),
+
+    //        BranchId: $('select[name="DashboardActivities.BranchId"]').val(),
+
+    //        CollectorId: $('select[name="DashboardActivities.CollectorId"]').val(),
+
+    //    };
+    //    console.log("Month:" + formData.Month + " BranchId:" + formData.BranchId + " CollectorId:" + formData.CollectorId);
+    //    try {
+    //        const response = await fetch(this.apiEndpoint, {
+    //            method: 'GET',
+    //            headers: {
+    //                'Content-Type': 'application/json',
+    //                'Cache-Control': 'no-cache'
+    //            },
+    //            data: {
+
+    //                Month: formData.Month,
+
+    //                BranchId: formData.BranchId,
+
+    //                CollectorId: formData.CollectorId,
+
+    //            },
+    //            timeout: 30000 // 30 seconds timeout
+    //        });
+
+    //        if (!response.ok) {
+    //            throw new Error(`HTTP error! status: ${response.status}`);
+    //        }
+
+    //        const data = await response.json();
+
+    //        if (data.status !== 'SUCCESS') {
+    //            throw new Error(data.message || 'API returned unsuccessful status');
+    //        }
+
+    //        return data.data;
+    //    } catch (error) {
+    //        console.error('Error fetching data:', error);
+    //        throw error;
+    //    }
+   // }
+    async fetchData(Url) {
         var formData = {
-
             Month: $('#month').val(),
-
             BranchId: $('select[name="DashboardActivities.BranchId"]').val(),
-
             CollectorId: $('select[name="DashboardActivities.CollectorId"]').val(),
-
         };
+
         console.log("Month:" + formData.Month + " BranchId:" + formData.BranchId + " CollectorId:" + formData.CollectorId);
+
+        // Create URL with query parameters for GET request
+        const url = new URL(this.apiEndpoint);
+        Object.keys(formData).forEach(key => {
+            if (formData[key]) { // Only add non-empty values
+                url.searchParams.append(key, formData[key]);
+            }
+        });
+
+        // Create AbortController for timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 seconds timeout
+
         try {
-            const response = await fetch(this.apiEndpoint, {
+            const response = await fetch(url.toString(), {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Cache-Control': 'no-cache'
                 },
-                data: {
-
-                    Month: formData.Month,
-
-                    BranchId: formData.BranchId,
-
-                    CollectorId: formData.CollectorId,
-
-                },
-                timeout: 30000 // 30 seconds timeout
+                signal: controller.signal
             });
 
+            // Clear timeout if request completes
+            clearTimeout(timeoutId);
+
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                // Log response for debugging
+                const responseText = await response.text();
+                console.error('Response status:', response.status);
+                console.error('Response text:', responseText);
+                throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
+            }
+
+            // Check if response is actually JSON
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                const responseText = await response.text();
+                console.error('Non-JSON response:', responseText);
+                throw new Error('Server returned non-JSON response');
             }
 
             const data = await response.json();
@@ -211,12 +273,20 @@ class DashboardUpdater {
             }
 
             return data.data;
+
         } catch (error) {
+            // Clear timeout in case of error
+            clearTimeout(timeoutId);
+
+            if (error.name === 'AbortError') {
+                console.error('Request timed out');
+                throw new Error('Request timed out after 30 seconds');
+            }
+
             console.error('Error fetching data:', error);
             throw error;
         }
     }
-
     async fetchAndUpdateData() {
         if (this.isUpdating) {
             console.log('Update already in progress, skipping...');
@@ -227,7 +297,7 @@ class DashboardUpdater {
         this.showLoadingState();
 
         try {
-            const data = await this.fetchData();
+            const data = await this.fetchData(Url);
             this.updateDashboard(data);
             this.errorCount = 0; // Reset error count on successful update
             this.lastUpdateTime = new Date();
@@ -631,7 +701,7 @@ updateDashboard(data)
 // Usage Example and Initialization
 document.addEventListener('DOMContentLoaded', function () {
     // Initialize the dashboard updater
-    const API_ENDPOINT = '/DailyAgentManagement/RetrieveDailyCollectionDashboardActivitiesAsync'; // Replace with your actual API endpoint
+    const API_ENDPOINT = Url; // Replace with your actual API endpoint
     const dashboardUpdater = new DashboardUpdater(API_ENDPOINT);
 
     // Make the updater globally accessible for debugging

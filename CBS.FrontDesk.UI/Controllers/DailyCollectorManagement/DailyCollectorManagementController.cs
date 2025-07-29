@@ -26,7 +26,7 @@ using System.Web.Mvc;
 // 
 namespace CBS.FrontDesk.UI.Controllers
 {
-    //DailyAgentManagement/AddOrUpdate
+    //
     public class DailyAgentManagementController : BaseController
     {
         private BranchServices _branchService;
@@ -40,6 +40,7 @@ namespace CBS.FrontDesk.UI.Controllers
             _agentServices = new AgentServices();
             _userServices = new UserManagementServices();
             _agentAccountServices = new AgentAccountServices();
+            _dailyCollectionMigrationServices = new DailyCollectionMigrationServices();
 
 
         }
@@ -120,7 +121,14 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             ViewBag.Branches = BuildMenuISViewBag((await _branchService.GetBranches()).ToList());
             ViewBag.BankName = _branchService.GetBankName();
-            return View(new DailyAgentManagement { BranchId = _branchService.GetBranchID() });
+            return View(new UploadDailyCollectorData { });
+        }
+
+        public async Task<ActionResult> UploadDailySavers()
+        {
+            ViewBag.Branches = BuildMenuISViewBag((await _branchService.GetBranches()).ToList());
+            ViewBag.BankName = _branchService.GetBankName();
+            return View(new UploadDailyCollectorData ());
         }
         private dynamic BuildMenuISViewBag(List<Branch> listOfItems)
         {
@@ -179,6 +187,44 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<ActionResult> UploadDailyCollectorEndOfdayOperation(UploadDailyCollectorOperationData model)
+        {
+            try
+            {
+                // Step 1: Validate Model State (Data Annotation Checks)
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { success = false, message = "Invalid input. Please fill all required fields." }, JsonRequestBehavior.AllowGet);
+                }
+
+                // Step 2: Check if file was uploaded and has content
+                if (model.ExcelFile == null || model.ExcelFile.ContentLength == 0)
+                {
+                    return Json(new { success = false, message = "No file uploaded or file is empty." }, JsonRequestBehavior.AllowGet);
+                }
+
+                // Step 3: Validate Excel file extension
+                string fileExtension = Path.GetExtension(model.ExcelFile.FileName);
+                if (fileExtension != ".xlsx" && fileExtension != ".xls")
+                {
+                    return Json(new { success = false, message = "Invalid file format. Please upload a .xlsx or .xls file." }, JsonRequestBehavior.AllowGet);
+                }
+
+                // Step 4: (Optional) Save the file to a temp location or process directly from stream
+                string fileName = Path.GetFileName(model.ExcelFile.FileName);
+             var data=   await _dailyCollectionMigrationServices.UploadFile(model);
+                return Json(new { data = data, success = true, message = "File uploaded and validated successfully." }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // Step 6: Log the exception and return error response
+                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($"StackTrace: {ex.StackTrace}");
+                return Json(new { success = false, message = $"An error occurred while processing the file: {ex.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
 
 
         private dynamic BuildOperationTypes()
@@ -211,7 +257,16 @@ namespace CBS.FrontDesk.UI.Controllers
             var BranList = (await _branchService.GetBranches()).ToList();
             ViewBag.Branches = BuildBranch(BranList);
             ViewBag.OperationTypes = BuildOperationTypes();
-            //ViewBag.DailyCollectors =await BuildDailyCollectorAsync();
+            ViewBag.DailyCollectors =await BuildDailyCollectorAsync(GetSampleDailyCollectors());
+        }
+        public List<DailyCollectorInfo> GetSampleDailyCollectors()
+        {
+            return new List<DailyCollectorInfo>
+    {
+        new DailyCollectorInfo { userId = "COL001", name = "Alice Nkom" },
+        new DailyCollectorInfo { userId = "COL002", name = "Jean Dupont" },
+        new DailyCollectorInfo { userId = "COL003", name = "Fatou Bayo" }
+    };
         }
         private dynamic BuildBranch(List<Branch> listOfItems)
         {
@@ -256,39 +311,40 @@ namespace CBS.FrontDesk.UI.Controllers
             try
             {
                 // Validate input
-                if (string.IsNullOrEmpty(Month) || BranchId.IsNullOrEmpty() || CollectorId.IsNullOrEmpty())
-                {
-                    return Json(new
-                    {
-                        success = false,
-                        message = "Invalid parameters supplied."
-                    }, JsonRequestBehavior.AllowGet);
-                }
+                //if (string.IsNullOrEmpty(Month) || BranchId.IsNullOrEmpty() || CollectorId.IsNullOrEmpty())
+                //{
+                //    return Json(new
+                //    {
+                //        success = false,
+                //        message = "Invalid parameters supplied."
+                //    }, JsonRequestBehavior.AllowGet);
+                //}
 
                 // Example: Fetch data from service/repository
-                var activities = await _agentServices.GetAllActivitiesAsync((new DailyCollectionDashboardActivitiesQuery
-                {
-                    Month = Month,
-                    BranchId = BranchId,
-                    CollectorId = CollectorId,
+                //var activities = await _agentServices.GetAllActivitiesAsync((new DailyCollectionDashboardActivitiesQuery
+                //{
+                //    Month = Month,
+                //    BranchId = BranchId,
+                //    CollectorId = CollectorId,
 
-                }).ConvertToDailyCollectionActivitiesQuery());
+                //}).ConvertToDailyCollectionActivitiesQuery());
 
-                if (activities == null)
-                {
-                    return Json(new
-                    {
-                        success = false,
-                        message = "No activities found for the provided parameters."
-                    }, JsonRequestBehavior.AllowGet);
-                }
+                //if (activities == null)
+                //{
+                //    return Json(new
+                //    {
+                //        success = false,
+                //        message = "No activities found for the provided parameters."
+                //    }, JsonRequestBehavior.AllowGet);
+                //}
 
 
                 return Json(new
                 {
                     success = true,
-                    data = activities
-                }, JsonRequestBehavior.AllowGet);
+                    data = FinancialReportDataGenerator.GenerateTestData() ,
+                    JsonRequestBehavior.AllowGet
+                });
             }
             catch (Exception ex)
             {
@@ -422,6 +478,65 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<JsonResult> GetAgentAllAgentByBranch( string branchId)
+        {
+            try
+            {
+            
+                // Example: Fetch data from service/repository
+                var activities = await _agentServices.GetAgentAllAgentByBranchIdAsync(branchId);
+
+                if (activities == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "No activities found for the provided parameters."
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+                return Json(new
+                {
+                    success = true,
+                    data = await BuildAgentByBranch(activities)
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new
+                {
+                    success = false,
+                    message = "An error occurred while processing your request."
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        private async Task<List<System.Web.WebPages.Html.SelectListItem>> BuildAgentByBranch(List<AgentDto> listOfCollector)
+        {
+
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+
+            if (listOfCollector.Count()>1)
+            {
+                foreach (var item in listOfCollector)
+                {
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.FirstName == null ? item.FirstName : item.LastName == null ? "Name Not Define" : item.LastName, Value = item.Id.ToString() });
+
+                }
+            }
+            else
+            {
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text ="Collector 1",Value = "Collector1" });
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "Collector 2", Value = "Collector2" });
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "Collector 3", Value = "Collector3" });
+            }
+
+
+            return selectListItems;
+
+        }
+        
 
         [HttpGet]
         public async Task<JsonResult> RetrieveFinancialActivitiesStatics(string Month, string BranchId, string CollectorId)

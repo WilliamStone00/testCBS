@@ -31,18 +31,35 @@ namespace CBS.FrontDesk.UI.WAF.Services.DDoS
         /// <returns>Most recent <see cref="RateLimitConfig"/> object</returns>
         public static RateLimitConfig Get()
         {
-            // ⏱️ Only refresh if config is null or older than the threshold
-            if (_config == null || DateTime.UtcNow - _lastFetched > RefreshInterval)
+            try
             {
-                // ⚠️ Blocking Task.Run used to synchronously get the result
-                _config = Task.Run(() => new RateLimitConfigService().GetAllAsync()).Result?.FirstOrDefault();
-                // 🕓 Track the refresh time
-                _lastFetched = DateTime.UtcNow;
+                // ⏱️ Only refresh if config is null or older than the threshold
+                if (_config == null || DateTime.UtcNow - _lastFetched > RefreshInterval)
+                {
+                    if (_lastFetched.Equals(DateTime.MinValue))
+                    {
 
-                System.Diagnostics.Debug.WriteLine($"🔁 WAF config auto-refreshed at {_lastFetched:HH:mm:ss}");
+                    }
+                    else
+                    {
+                        // ⚠️ Blocking Task.Run used to synchronously get the result
+                        _config = Task.Run(() => new RateLimitConfigService().GetAllAsync()).Result?.FirstOrDefault();
+                        // 🕓 Track the refresh time
+                        _lastFetched = DateTime.UtcNow;
+
+                        System.Diagnostics.Debug.WriteLine($"🔁 WAF config auto-refreshed at {_lastFetched:HH:mm:ss}");
+
+                    }
+
+                }
+
+                return _config;
             }
+            catch (Exception ex)
+            {
 
-            return _config;
+                throw(ex);
+            }
         }
     }
 

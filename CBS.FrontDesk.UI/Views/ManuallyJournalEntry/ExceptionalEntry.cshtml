@@ -32,13 +32,17 @@
 
                                     <div class="row card-body">
                                         <div class="row mt-2 gy-4">
-                                            <div class="col-md-12">
-                                                <div class="form-floating form-floating-outline">
-                                                    @Html.DropDownListFor(m => m.EntryTempData.BranchId, new SelectList(ViewBag.ListOfEligibleBranch == null ? "" : ViewBag.ListOfEligibleBranch, "Text", "Value"), "---" + @GlobalManuallyJournalEntry.SelectEligibleBranches + "---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
-                                                    @Html.ValidationMessageFor(m => m.EntryTempData.BranchId, "", new { @class = "text-danger" })
-                                                    <label>@GlobalManuallyJournalEntry.BranchId</label>
+                                            @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
+                                            {
+                                                <div class="col-md-12">
+                                                    <div class="form-floating form-floating-outline">
+                                                        @Html.DropDownListFor(m => m.EntryTempData.BranchId, new SelectList(ViewBag.ListOfEligibleBranch == null ? "" : ViewBag.ListOfEligibleBranch, "Text", "Value"), "---" + @GlobalManuallyJournalEntry.SelectEligibleBranches + "---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
+                                                        @Html.ValidationMessageFor(m => m.EntryTempData.BranchId, "", new { @class = "text-danger" })
+                                                        <label>@GlobalManuallyJournalEntry.BranchId</label>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            }
+
                                             <div class="col-md-12">
                                                 <div class="form-floating form-floating-outline">
                                                     @Html.DropDownListFor(m => m.EntryTempData.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---" + @GlobalManuallyJournalEntry.SelectAccount + "---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })

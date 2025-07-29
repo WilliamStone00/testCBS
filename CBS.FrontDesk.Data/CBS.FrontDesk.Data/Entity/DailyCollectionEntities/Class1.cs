@@ -1,70 +1,145 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace CBS.FrontDesk.Data.Entity.DailyCollectionEntities
 {
-
-
-
-    public class  UploadDailyCollectorData
+    public class ManualEntryDailyCollectorUploadSummaryDto
     {
-        [Required(ErrorMessage = "Please select an Excel file to upload.")]
-        public HttpPostedFileBase ExcelFile { get; set; }
-        public string BranchId { get; set; }
-        public string CollectorId { get; set; }
+        public decimal TotalAmount { get; set; }
+        public int TotalMembers { get; set; }
+        public string BranchName { get; set; }
+        public string UploadedBy { get; set; }
+        public List<ManualEntryDailyCollectorUploadListDto> manualEntryDailyCollectorUploadListDtos { get; set; }
+
+        public static ManualEntryDailyCollectorUploadSummaryDto CreateSampleManualEntryUploadSummary()
+        {
+            var uploadList = new List<ManualEntryDailyCollectorUploadListDto>
+    {
+        new ManualEntryDailyCollectorUploadListDto
+        {
+            MemberReference = "MEM001",
+            MemberName = "John Smith",
+            Amount = 150.50m,
+            DailyCollectorName = "Alice Johnson",
+            MemberBranchCode = "BR001",
+            MemberBranchId = "1",
+            MemberBranchName = "Downtown Branch"
+        },
+        new ManualEntryDailyCollectorUploadListDto
+        {
+            MemberReference = "MEM002",
+            MemberName = "Sarah Wilson",
+            Amount = 200.00m,
+            DailyCollectorName = "Bob Martinez",
+            MemberBranchCode = "BR002",
+            MemberBranchId = "2",
+            MemberBranchName = "Uptown Branch"
+        },
+        new ManualEntryDailyCollectorUploadListDto
+        {
+            MemberReference = "MEM003",
+            MemberName = "Michael Brown",
+            Amount = 175.25m,
+            DailyCollectorName = "Carol Davis",
+            MemberBranchCode = "BR001",
+            MemberBranchId = "1",
+            MemberBranchName = "Downtown Branch"
+        },
+        new ManualEntryDailyCollectorUploadListDto
+        {
+            MemberReference = "MEM004",
+            MemberName = "Emma Thompson",
+            Amount = 300.75m,
+            DailyCollectorName = "Alice Johnson",
+            MemberBranchCode = "BR003",
+            MemberBranchId = "3",
+            MemberBranchName = "West Side Branch"
+        },
+        new ManualEntryDailyCollectorUploadListDto
+        {
+            MemberReference = "MEM005",
+            MemberName = "David Garcia",
+            Amount = 125.00m,
+            DailyCollectorName = "Bob Martinez",
+            MemberBranchCode = "BR002",
+            MemberBranchId = "2",
+            MemberBranchName = "Uptown Branch"
+        },
+        new ManualEntryDailyCollectorUploadListDto
+        {
+            MemberReference = "MEM006",
+            MemberName = "Lisa Anderson",
+            Amount = 250.30m,
+            DailyCollectorName = "Carol Davis",
+            MemberBranchCode = "BR001",
+            MemberBranchId = "1",
+            MemberBranchName = "Downtown Branch"
+        },
+        new ManualEntryDailyCollectorUploadListDto
+        {
+            MemberReference = "MEM007",
+            MemberName = "James Miller",
+            Amount = 180.90m,
+            DailyCollectorName = "Diana Rodriguez",
+            MemberBranchCode = "BR004",
+            MemberBranchId = "4",
+            MemberBranchName = "East End Branch"
+        },
+        new ManualEntryDailyCollectorUploadListDto
+        {
+            MemberReference = "MEM008",
+            MemberName = "Jennifer Lee",
+            Amount = 220.45m,
+            DailyCollectorName = "Alice Johnson",
+            MemberBranchCode = "BR003",
+            MemberBranchId = "3",
+            MemberBranchName = "West Side Branch"
+        },
+        new ManualEntryDailyCollectorUploadListDto
+        {
+            MemberReference = "MEM009",
+            MemberName = "Robert Taylor",
+            Amount = 195.80m,
+            DailyCollectorName = "Bob Martinez",
+            MemberBranchCode = "BR002",
+            MemberBranchId = "2",
+            MemberBranchName = "Uptown Branch"
+        },
+        new ManualEntryDailyCollectorUploadListDto
+        {
+            MemberReference = "MEM010",
+            MemberName = "Michelle White",
+            Amount = 165.15m,
+            DailyCollectorName = "Diana Rodriguez",
+            MemberBranchCode = "BR004",
+            MemberBranchId = "4",
+            MemberBranchName = "East End Branch"
+        }
+    };
+
+            return new ManualEntryDailyCollectorUploadSummaryDto
+            {
+                TotalAmount = uploadList.Sum(x => x.Amount),
+                TotalMembers = uploadList.Count,
+                BranchName = "Main Processing Center",
+                UploadedBy = "System Administrator",
+                manualEntryDailyCollectorUploadListDtos = uploadList
+            };
+        }
+
     }
-
-
-    public class ManualEntryDailyCollectorDetailsDto
+    public class ManualEntryDailyCollectorUploadListDto
     {
+        public string MemberReference { get; set; }
+        public string MemberName { get; set; }
+        public decimal Amount { get; set; }
+        public string DailyCollectorName { get; set; }
         public string MemberBranchCode { get; set; }
         public string MemberBranchId { get; set; }
         public string MemberBranchName { get; set; }
-        public decimal Amount { get; set; }
-        public string MemberName { get; set; }
-        public string MemberReference { get; set; }
-        public string AccountNumber { get; set; }
-        public string DailyCollectorName { get; set; }
-
-
-    }
-
-
-    public class ManualEntryDailyCollectorDto
-    {
-        public string Id { get; set; }
-        public string BranchCode { get; set; }
-
-        public string CollectorId { get; set; }
-        public string BranchId { get; set; }
-        public string BranchName { get; set; }
-        public decimal TotalAmount { get; set; }
-        public int TotalMember { get; set; }
-        public int TotalBranchesCollected { get; set; }
-        public string Status { get; set; }
-        public string UploadedBy { get; set; }
-        public DateTime UploadDateTime { get; set; }
-        public string ReviewedBy { get; set; }
-        public DateTime ReviewedDateTime { get; set; }
-        public string ReviewerStatement { get; set; }
-        public string ApprovedBy { get; set; }
-        public DateTime ApprovalDateTime { get; set; }
-        public string ApprovalStatement { get; set; }
-        public string CashDeskStatus { get; set; }
-        public string CashDeskDate { get; set; }
-        public string CashDeskName { get; set; }
-        public string CashDeskBranchId { get; set; }
-        public string CashDeskBranchName { get; set; }
-        public string CashDeskBranchCode { get; set; }
-        public decimal TotalCashInAmount { get; set; }
-        public bool CashInStatus { get; set; }
-        public string ManualEntryDailyCollectorId { get; set; }
-
-        public virtual ICollection<ManualEntryDailyCollectorDetailsDto> ManualEntryDailyCollectorDetailsDto { get; set; }
     }
 }
+   

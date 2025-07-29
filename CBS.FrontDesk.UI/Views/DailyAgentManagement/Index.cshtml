@@ -3,7 +3,7 @@
     ViewBag.Title = "DAILY COLLECTION DASHBOARD";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
-@model CBS.FrontDesk.Data.Entity.DailyCollectorManagement.DailyCollectionConfiguration
+@model CBS.FrontDesk.Data.Entity.DailyAgentManagement
 
 <div class="row">
     <div class="col-12">
@@ -60,10 +60,12 @@
                 <div class="col-md-4">
                     <label for="branch">🏢 Select Branch</label>
                     @Html.DropDownListFor(m => m.DashboardActivities.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Value", "Text"), "--- Select Branch", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.DashboardActivities.BranchId, "", new { @class = "text-danger" })
                 </div>
                 <div class="col-md-4">
                     <label for="collector">👤 Select Daily Collector</label>
                     @Html.DropDownListFor(m => m.DashboardActivities.CollectorId, new SelectList(ViewBag.DailyCollectors == null ? "" : ViewBag.DailyCollectors, "Value", "Text"), "--- Select Daily Collectors", new { @class = "form-control select2", @id = "DailyCollectorCollectorId", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.DashboardActivities.CollectorId, "", new { @class = "text-danger" })
                 </div>
               
             </div>
@@ -85,6 +87,8 @@
                 <div class="col-md-6">
                     <label for="collector">👤 Select Daily Collector</label>
                     @Html.DropDownListFor(m => m.DashboardActivities.CollectorId, new SelectList(ViewBag.DailyCollectors == null ? "" : ViewBag.DailyCollectors, "Value", "Text"), "--- Select Daily Collectors", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.DashboardActivities.CollectorId, "", new { @class = "text-danger" })
+
                 </div>
             </div>
         }

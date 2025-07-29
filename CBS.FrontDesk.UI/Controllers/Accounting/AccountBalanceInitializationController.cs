@@ -39,7 +39,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             await GetList();
             return View(new AccountBalanInitConfiguration());
         }
-
+        public async Task<ActionResult> IndexZeroOut()
+        {
+            await GetList();
+            return View(new AccountBalanInitConfiguration());
+        }
         [HttpGet]
         public async Task<ActionResult> GetAccountList(string BranchID,string ProductId, string partialViews= "_AccountInitializationData")
         {
@@ -140,7 +144,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
             return partialResult;
         }
+        
 
+        [HttpPost]
+        public async Task<ActionResult> CreateZeroOutRequest(GetInfoDto model)
+        {
+            var data = await AccountMigrationServices.GetProductAccountToBeZeroOut(model);
+            return Json(new { data = data, success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+        }
         [HttpPost]
         public async Task<ActionResult> Create(AccountBalanInitConfiguration model)
         {

@@ -1,83 +1,51 @@
 ﻿
-@model CBS.FrontDesk.Data.Entity.DailyAgentManagement
-@{
-    ViewBag.Title = "Upload DailyCollector Migration";
-    Layout = "~/Views/Shared/_MainLayout.cshtml";
-}
 
-<div class="col-12">
-    <div class="card mb-4">
-        <h5 class="card-title"></h5>
-        <div class="card-body">
-            <div class="card-body bg-light">
-                <form action="" class="dropzone needsclick dz-clickable " id="dropzone-basic">
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(m => m.UploadDailyCollectorData.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---Select Branch---", new { @class = "form-control select2", @search = "true", @id = "branchCodeDropdown" })
-                                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                                <label>Select Branch</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating form-floating-outline">
-                                @Html.DropDownListFor(m => m.UploadDailyCollectorData.CollectorId, new SelectList(ViewBag.OperationEventType == null ? "" : ViewBag.OperationEventType, "Text", "Value"), "--- Select  Collector ---", new { @class = "form-control select2", @search = "true", @id = "collectorDropdown" })
-
-                                @Html.ValidationMessageFor(m => m.UploadDailyCollectorData.CollectorId, "", new { @class = "text-danger" })
-                                <label> Select Collector</label>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="dz-message needsclick">
-
-                        <span class="note needsclick">
-                            The format Of This File.
-                            <span class="fw-medium">Respect </span>ColumnAsMentionBelow
-                        </span>
-                        <div class="table-responsive mb-3">
-                            <table class="table table-hover">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th colspan="8"><button class="btn btn-warning" id="downloadExcelButton">DownloadSampleExcelTrialBalanceFormat</button></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="mdi-cloud-download" id="ResultFile" colspan="8">
-                                            <div id="resultContainer" style="display: none;">
-                                                <h3>UploadResults:</h3>
-                                                <p>Total Daily Savers : <span id="totalDailySavers"></span></p>
-                                                <p>Total Volume: <span id="totalVolume"></span></p>
-                                                @*<p>AccountsExisting: <span id="accountsNotMatching"></span></p>*@
-                                                @*<a id="downloadLink" href="#" target="_blank">DownloadExcel</a>*@
-                                            </div>
-                                            <div id="progressBarContainer" style="display:none;">
-                                                <div class="progress">
-                                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                                        0%
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+@model CBS.FrontDesk.Data.Entity.DailyCollectionEntities.UploadDailyCollectorData
 
 
-                    </div>
-                    <div class="fallback">
-                        <input name="file" type="file" class="btn btn-primary" id="uploadedFile" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <button onclick="ReadExcelFile()" Id="ReadUploadedFile" class="btn btn-primary me-2">UploadFile</button>
+ 
+      
+            @Html.ValidationSummary(true, "Please correct the errors and try again.", new { @class = "alert alert-danger" })
 
-                    </div>
-                 
-                </form>
+            <div class="row bg-light">
+                <div class="col-md-6">
+        
+                        <label for="branch">🏢 Select Branch</label>
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "--- Select Branch", new { @class = "form-control select2", @search = "true", @id = "AgentBranchId" })
+                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+              
+                </div>
+                <div class="col-md-6">
+                  
+                        <label for="collector">👤 Select Daily Collector</label>
+                        @Html.DropDownListFor(m => m.CollectorId, new SelectList(ViewBag.DailyCollectors == null ? "" : ViewBag.DailyCollectors, "Text", "Value"), "--- Select Daily Collectors", new { @class = "form-control select2", @id = "CollectorxCollectorId", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.CollectorId, "", new { @class = "text-danger" })
+                  
+                </div>
+                <div class="col-md-6">
+                    <br />
+
+                    <button class="btn btn-warning" id="downloadExcelOPButton">Download sample file structure to be uploaded</button>
+                </div>
+
+                <!-- Excel File Upload -->
+                <div class="col-md-6">
+
+                    <label for="ExcelFile" class="form-label text-dark fw-bold">
+                        <i class="mdi mdi-file-excel me-1 text-success"></i> Upload Collectors Member Excel File
+                    </label>
+                    <input type="file" class="form-control" id="ExcelFile" name="ExcelFile" accept=".xlsx" required />
+
+                </div>
+                <!-- Submit Button -->
+                <div class="col-12 text-end">
+                    <br />
+                    <button type="submit" class="btn btn-primary" onclick="ReadExcelFile()">
+                        <i class="mdi mdi-cloud-upload me-1"></i> Upload & Process
+                    </button>
+                </div>
 
             </div>
-        </div>
-    </div>
-</div>
+        
+ 
 
