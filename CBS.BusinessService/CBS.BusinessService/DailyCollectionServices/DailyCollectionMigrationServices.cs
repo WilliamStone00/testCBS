@@ -55,12 +55,12 @@ namespace CBS.BusinessService.DailyCollectionServices
             }
             return ExecutionMessage;
         }
-        public async Task<IEnumerable<FileUploadDto>> GetFileUploads()
+        public async Task<IEnumerable<DailySavingMigrationFileUploadDto>> GetFileUploads()
         {
             try
             {
 
-                var couApiResponse = await _dailySavingApiHelper.GetAsync<ResponseObject<List<FileUploadDto>>>(string.Format(APICallHelper.GetAllDailySavingMigrationFile, "SalaryAnalysisExtract"));
+                var couApiResponse = await _dailySavingApiHelper.GetAsync<ResponseObject<List<DailySavingMigrationFileUploadDto>>>(string.Format(APICallHelper.GetAllDailyOperationFileUploadsByProcessingStatus, "ProcessingStatus"));
                 if (couApiResponse.IsSuccess)
                 {
                     var data = couApiResponse.ApiResponseData.Data;
@@ -72,7 +72,7 @@ namespace CBS.BusinessService.DailyCollectionServices
 
 
                 }
-                return new List<FileUploadDto>();
+                return new List<DailySavingMigrationFileUploadDto>();
             }
             catch (Exception ex)
             {

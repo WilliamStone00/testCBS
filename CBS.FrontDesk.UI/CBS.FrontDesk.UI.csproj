@@ -4261,6 +4261,8 @@
     <Content Include="CBSTemp\ui\assets\audio\Water_Lily.mp3" />
     <Content Include="CBSTemp\ui\assets\css\CommissionPayment.css" />
     <Content Include="CBSTemp\ui\assets\css\DailyCollectionDashBoard.css" />
+    <Content Include="CBSTemp\ui\assets\css\DailySavingOperations.css" />
+    <Content Include="CBSTemp\ui\assets\css\DailySavingOperationUpload.css" />
     <Content Include="CBSTemp\ui\assets\css\demo.css" />
     <Content Include="CBSTemp\ui\assets\css\FinancialReferenceDocument.css" />
     <Content Include="CBSTemp\ui\assets\img\.DS_Store" />
@@ -6485,8 +6487,8 @@
     <Content Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsc">
       <DependentUpon>DeliquentLoanSummaryDataSet.xsd</DependentUpon>
     </Content>
-    <Content Include="AppFiles\CorrectedCollectorEntryFile.xlsx" />
-    <Content Include="AppFiles\SampleDailySaverToBeUploaded.xlsx" />
+    <Content Include="AppFiles\Reporting\SampleDocument\SampleDailySaverToBeUploaded.xlsx" />
+    <Content Include="AppFiles\Reporting\SampleDocument\CorrectedCollectorEntryFile.xlsx" />
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -6823,7 +6825,7 @@
     <Content Include="DataSet\Accounting\AccountingDataSet.xsc">
       <DependentUpon>AccountingDataSet.xsd</DependentUpon>
     </Content>
-    <Content Include="AppFiles\UploadedSampleTrialBalance.xlsx" />
+    <Content Include="AppFiles\Reporting\SampleDocument\UploadedSampleTrialBalance.xlsx" />
     <Content Include="App_GlobalResources\HomePage\GlobalAbout.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalAbout.Designer.cs</LastGenOutput>
@@ -8211,6 +8213,7 @@
     <Content Include="Scripts\Js\CashMovementTracker\CashMovementTracker.js" />
     <Content Include="Scripts\Js\CommissionManagement\CommissionPayment.js" />
     <Content Include="Scripts\Js\CommissionManagement\DailyCollectionManagement.js" />
+    <Content Include="Scripts\Js\CommissionManagement\DSFileUploaded.js" />
     <Content Include="Scripts\Js\Dashboard\DailyCollection\DailyCollectionDashboard.js" />
     <Content Include="Scripts\Js\main.js\AccountBalanceInitialization.js" />
     <Content Include="Scripts\Js\main.js\DailySaverOperations.js" />
@@ -9386,6 +9389,8 @@
     <Content Include="Views\DailyAgentManagement\UploadDailySavers.cshtml" />
     <Content Include="Views\DailyAgentManagement\_uploadDailySavers.cshtml" />
     <Content Include="Views\DailyAgentManagement\_UploadedDailyOperationData.cshtml" />
+    <Content Include="Views\DailyAgentManagement\ListOfUploadedFiles.cshtml" />
+    <Content Include="Views\DailyAgentManagement\GetFileUploadApproval.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

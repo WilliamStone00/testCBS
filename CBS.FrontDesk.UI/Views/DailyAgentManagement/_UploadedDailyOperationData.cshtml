@@ -1,7 +1,6 @@
-﻿<div class="container">
+﻿<div class="container" id="HideDataResult">
     <div class="header">
-        <h1>Manual Entry Daily Collector Upload Summary</h1>
-        <p>Daily Collection Report</p>
+        <h4>Daily Collection Report</h4>
     </div>
 
     <div class="summary-section">
@@ -14,7 +13,7 @@
                 </div>
                 <div class="summary-item">
                     <span class="summary-label">Total Members:</span>
-                    <span class="summary-value" id="totalMembers" ></span>
+                    <span class="summary-value" id="totalMembers"></span>
                 </div>
             </div>
             <div>
@@ -46,9 +45,16 @@
             <tbody> </tbody>
         </table>
     </div>
-
+    <div class="col-12 text-end">
+        <br />
+        <button type="submit" class="btn btn-primary" onclick="">
+            <i class="mdi mdi-cloud-upload me-1"></i> Review Data
+        </button>
+    </div>
     <div class="footer">
         <p>Generated on: <span id="currentDate"></span></p>
         <p>Manual Entry Daily Collector Upload System</p>
     </div>
+
+
 </div>

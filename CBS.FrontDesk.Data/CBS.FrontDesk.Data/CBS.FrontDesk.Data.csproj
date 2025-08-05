@@ -138,6 +138,7 @@
     <Compile Include="Entity\DailyCollectionEntities\DailySaverUploadResult.cs" />
     <Compile Include="Entity\DailyCollectionEntities\CollectorSalarySummaryDto.cs" />
     <Compile Include="Entity\DailyCollectionEntities\FileApproval.cs" />
+    <Compile Include="Entity\DailyCollectionEntities\FileUploadCollectorDto.cs" />
     <Compile Include="Entity\DailyCollectionEntities\FinancialReportData.cs" />
     <Compile Include="Entity\DailyCollectionEntities\DailyDashBoardData.cs" />
     <Compile Include="Entity\DailyCollectionEntities\ManualEntryDailyCollectorDetailsDto.cs" />
