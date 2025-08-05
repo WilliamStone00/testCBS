@@ -753,4 +753,10 @@
   <data name="LoanProductListingForPolicySet" xml:space="preserve">
     <value>Liste des produits de prêt pour la définition de la politique</value>
   </data>
+  <data name="BlockedShareAccountForStandingOrders" xml:space="preserve">
+    <value>Bloquer le compte de part du membre pour les ordres permanents ou garanties.</value>
+  </data>
+  <data name="BlockedSavingAccountForStandingOrders" xml:space="preserve">
+    <value>Bloquer le compte d’épargne du membre pour les ordres permanents ou garanties.</value>
+  </data>
 </root>

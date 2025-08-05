@@ -753,4 +753,12 @@
   <data name="LoanProductListingForPolicySet" xml:space="preserve">
     <value>Loan product listing for policy set</value>
   </data>
+  <data name="BlockedShareAccountForStandingOrders" xml:space="preserve">
+    <value>Block member's share account for standing orders or loan security.</value>
+    <comment>Block member's share account for standing orders or loan security.</comment>
+  </data>
+  <data name="BlockedSavingAccountForStandingOrders" xml:space="preserve">
+    <value>Block member's saving account for standing orders or loan security.</value>
+    <comment>Block member's saving account for standing orders or loan security.</comment>
+  </data>
 </root>

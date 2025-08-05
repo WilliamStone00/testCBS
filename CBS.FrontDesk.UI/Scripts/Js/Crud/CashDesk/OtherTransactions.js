@@ -184,7 +184,7 @@ function validateTotalAmount(total, totalNotes) {
 
 function collectDeposits() {
     var deposits = [];
-
+    var externalBranchId = $("#ExternalBranchId").val();
     $('#myDataTableT tbody tr').each(function () {
         if ($(this).find('.form-check-input').prop('checked')) {
             var deposit = {};
@@ -200,6 +200,8 @@ function collectDeposits() {
             deposit.SourceType = $("input[name='BulkDeposit.OtherTransaction.SourceType']:checked").val(); // Get the selected source type
             deposit.EventCode = $('#BulkDeposit_OtherTransaction_EventCode').val(); // Assuming this is the selected event code value
             // Push the updated deposit object to the deposits array
+            // ✅ Only assign ExternalBranchId if inter-branch is checked
+            deposit.ExternalBranchId = externalBranchId;
             deposits.push(deposit);
         }
     });

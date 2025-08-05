@@ -1157,6 +1157,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string SourceType { get; set; }//Cash_Collection Or Member_Account
         public string CustomerId { get; set; }
         public string AccountNumber { get; set; }
+        public string ExternalBranchId { get; set; }
         public CurrencyNotes CurrencyNotesRequest { get; set; }
     }
     public class AddOtherTransactionMobileMoneyCommand

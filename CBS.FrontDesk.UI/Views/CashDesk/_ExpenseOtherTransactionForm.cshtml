@@ -83,7 +83,7 @@
                 <!-- 🔹 Member Name -->
                 <div class="col-md-12">
                     <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.BulkDeposit.OtherTransaction.MemberName, new { @class = "form-control", @id = "MemberName" })
+                        @Html.TextBoxFor(m => m.BulkDeposit.OtherTransaction.MemberName, new { @class = "form-control", @id = "Name" })
                         <label for="MemberName">@CashDesk_ExpenseOtherTransactionForm.EnterIndividualName</label>
                         @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.MemberName, "", new { @class = "text-danger" })
                     </div>

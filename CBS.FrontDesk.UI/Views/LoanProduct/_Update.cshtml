@@ -658,6 +658,21 @@ Model.UpdateLoanProductCommand.LoanMinimumAmount > Model.UpdateLoanProductComman
                                         @Html.HiddenFor(m => m.UpdateLoanProductCommand.LoanProductCategoryId)
                                         <input type="hidden" name="ServiceOption" value="gurantee" id="ServiceOption" />
                                     </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.BlockShareAccount, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="BlockShareAccount">@GlobalLoanProduct.BlockedShareAccountForStandingOrders</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.BlockSavingAccount, new { @class = "form-check-input" })
+                                            <label class="form-check-label" for="BlockSavingAccount">@GlobalLoanProduct.BlockedSavingAccountForStandingOrders</label>
+                                        </div>
+                                    </div>
+
+
                                 </fieldset>
                             }
                         </div>

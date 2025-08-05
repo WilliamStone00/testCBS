@@ -247,7 +247,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     public class LoanProduct
     {
         public string PenaltyId { get; set; }
-
+        public bool BlockShareAccount { get; set; }
+        public bool BlockSavingAccount { get; set; }
         public string Id { get; set; }
         public string ProductCode { get; set; }
         public string LoanProductCategoryId { get; set; }
@@ -415,6 +416,9 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal LoanMaximumAmount { get; set; }
         public string TargetType { get; set; }
         public string LoanProductCategoryId { get; set; }
+        public bool BlockShareAccount { get; set; }
+        public bool BlockSavingAccount { get; set; }
+
         public decimal MaximumInterestRate { get; set; }
         public string LoanDurationPeriod { get; set; }//Days, Weeks, Months, Years
         public int MinimumDurationPeriod { get; set; }
