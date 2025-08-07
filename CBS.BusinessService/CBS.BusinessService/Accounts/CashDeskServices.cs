@@ -765,10 +765,10 @@ namespace CBS.BusinessService.Accounts
                     var addOtherTransaction = new AddOtherTransactionCommand
                     {
                         AccountNumber = a.AccountNumber,
-                        Amount = a.Amount,
+                        Amount = a.Amount,  
+                        ExternalBranchId=a.ExternalBranchId,
                         CurrencyNotesRequest = a.currencyNotes,
-                        CustomerId = (a.SourceType == "Member_Account" || (!string.IsNullOrEmpty(a.CustomerId) && a.SourceType != "Member_Account"))
-                 ? a.CustomerId
+                        CustomerId = (a.SourceType == "Member_Account" || (!string.IsNullOrEmpty(a.CustomerId) && a.SourceType != "Member_Account"))? a.CustomerId
                  : "N/A",
                         Direction = "",
                         Name = a.Period,
@@ -778,7 +778,10 @@ namespace CBS.BusinessService.Accounts
                         SourceType = a.SourceType,
                         TransactionType = "Income"
                     };
-
+                    if (addOtherTransaction.ExternalBranchId==null)
+                    {
+                        addOtherTransaction.ExternalBranchId=GetBranchID();
+                    }
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<OtherTransaction>>(APICallHelper.CreateOtherTransaction, addOtherTransaction);
                     if (response.ApiResponseData != null)
                     {
@@ -887,12 +890,17 @@ namespace CBS.BusinessService.Accounts
                         CustomerId = a.SourceType == "Member_Account" ? a.CustomerId : "N/A",
                         Direction = "N/A",
                         Name = a.Period,
+                        ExternalBranchId=a.ExternalBranchId,
                         Naration = a.Note,
                         EnventName = a.EventCode,
                         EventCode = a.EventCode,
                         SourceType = a.SourceType,
                         TransactionType = "Expense"
                     };
+                    if (addOtherTransaction.ExternalBranchId==null)
+                    {
+                        addOtherTransaction.ExternalBranchId=GetBranchID();
+                    }
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<OtherTransaction>>(APICallHelper.CreateOtherTransaction, addOtherTransaction);
                     if (response.ApiResponseData != null)
                     {
@@ -1256,38 +1264,12 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-
-        public async Task<List<MembersLoanDto>> GetMembersLoans(string customerId, string queryParameter)
+        public async Task<List<Loan>> GetMembersLoans(string customerId, string queryParameter)
         {
             try
             {
 
-                var loans = (from loan in await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId = customerId, QueryParameter = queryParameter })
-                             select new MembersLoanDto
-                             {
-                                 Id = loan.Id,
-                                 LoanApplicationId = loan.LoanApplicationId,
-                                 Principal = loan.Principal,
-                                 LoanAmount = loan.LoanAmount,
-                                 InterestRate = loan.InterestRate,
-                                 Paid = loan.Paid,
-                                 Balance = loan.Balance,
-                                 AccrualInterest = loan.AccrualInterest,
-                                 Tax = loan.Tax,
-                                 Penalty = loan.Penalty,
-                                 LoanDate = loan.LoanDate.ToString("dd/MM/yyyy hh:mm:ss"),
-                                 IsLoanDisbursed = loan.IsLoanDisbursted,
-                                 CustomerId = loan.CustomerId,
-                                 DueAmount = loan.DueAmount,
-                                 LoanStatus = loan.LoanStatus,
-                                 BranchCode = loan.BranchCode,
-                                 CustomerName = loan.CustomerName,
-                                 MaturityDate = loan.MaturityDate.ToString("dd/MM/yyyy hh:mm:ss"),
-                                 NumberOfInstallments = loan.NumberOfInstallments,
-                                 LoanType = loan.LoanType,
-                                 RepaymentCycle = loan.RepaymentCycle
-
-                             }).ToList();
+                var loans = (await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId = customerId, QueryParameter = queryParameter })).ToList();
 
                 return loans;
             }
@@ -1297,6 +1279,47 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
+
+        //public async Task<List<MembersLoanDto>> GetMembersLoans(string customerId, string queryParameter)
+        //{
+        //    try
+        //    {
+
+        //        var loans = (from loan in await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId = customerId, QueryParameter = queryParameter })
+        //                     select new MembersLoanDto
+        //                     {
+        //                         Id = loan.Id,
+        //                         LoanApplicationId = loan.LoanApplicationId,
+        //                         Principal = loan.Principal,
+        //                         LoanAmount = loan.LoanAmount,
+        //                         InterestRate = loan.InterestRate,
+        //                         Paid = loan.Paid,
+        //                         Balance = loan.Balance,
+        //                         AccrualInterest = loan.AccrualInterest,
+        //                         Tax = loan.Tax,
+        //                         Penalty = loan.Penalty,
+        //                         LoanDate = loan.LoanDate.ToString("dd/MM/yyyy hh:mm:ss"),
+        //                         IsLoanDisbursed = loan.IsLoanDisbursted,
+        //                         CustomerId = loan.CustomerId,
+        //                         DueAmount = loan.DueAmount,
+        //                         LoanStatus = loan.LoanStatus,
+        //                         BranchCode = loan.BranchCode,
+        //                         CustomerName = loan.CustomerName,
+        //                         MaturityDate = loan.MaturityDate.ToString("dd/MM/yyyy hh:mm:ss"),
+        //                         NumberOfInstallments = loan.NumberOfInstallments,
+        //                         LoanType = loan.LoanType,
+        //                         RepaymentCycle = loan.RepaymentCycle
+
+        //                     }).ToList();
+
+        //        return loans;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log and handle exception
+        //        throw ex;
+        //    }
+        //}
 
         public async Task<CashDesk> GetMember(string customerId)
         {

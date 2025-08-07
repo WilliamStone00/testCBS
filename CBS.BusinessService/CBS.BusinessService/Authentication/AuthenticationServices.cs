@@ -81,7 +81,7 @@ namespace CBS.FrontDesk.Service
                 errormessage = response.Message;
             }
             catch (Exception ex)
-            {
+             {
 
                 GetExecutionMessages(null, false, request.UserName, MessagesResults.Error, ExecutionProcessOption.TryCatch,
                     SystemMessageStatus.Failed.ToString(), ex);

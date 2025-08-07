@@ -1,0 +1,258 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation.PaymentReceipt
+<style>
+    .section-header {
+        font-weight: bold;
+        color: #4CAF50;
+        margin-top: 1rem;
+        margin-bottom: .5rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .table-sm th.bg-label {
+        background-color: #EDEDED;
+        width: 200px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .table-sm td, .table-sm th {
+        vertical-align: middle;
+    }
+</style>
+<div class="px-3 py-2">
+
+    <!-- 🔷 Receipt Title -->
+    @if (!string.IsNullOrEmpty(Model.ReceiptTitle))
+    {
+        <h5 class="fw-bold text-uppercase text-primary border-bottom mb-3">
+            <i class="mdi mdi-receipt-text me-1"></i> @Model.ReceiptTitle
+        </h5>
+    }
+
+    <!-- 🔷 Member Information -->
+    <h6 class="fw-bold border-bottom text-primary">
+        <i class="mdi mdi-account-circle-outline me-1"></i> Member Information
+    </h6>
+    <table class="table table-sm table-bordered mb-3">
+        <tbody>
+            <tr><th class="bg-light" style="width: 220px;">Member Name</th><td>@Model.MemberName</td></tr>
+            <tr><th class="bg-light">Member Reference</th><td>@Model.MemberReference</td></tr>
+        </tbody>
+    </table>
+
+    <!-- 🔷 Depositor Information -->
+    <h6 class="fw-bold border-bottom text-primary">
+        <i class="mdi mdi-account-box-outline me-1"></i> Depositor Information
+    </h6>
+    <table class="table table-sm table-bordered mb-3">
+        <tbody>
+            <tr><th class="bg-light" style="width: 220px;">Depositor Name</th><td>@Model.DepositorName</td></tr>
+            <tr><th class="bg-light">Phone</th><td>@Model.DepositorPhone</td></tr>
+            <tr><th class="bg-light">CNI</th><td>@Model.DepositorCNI</td></tr>
+        </tbody>
+    </table>
+
+    <!-- 🔷 Account Information -->
+    <h6 class="fw-bold border-bottom text-primary">
+        <i class="mdi mdi-bank-outline me-1"></i> Account Information
+    </h6>
+    <table class="table table-sm table-bordered mb-3">
+        <tbody>
+            <tr>
+                <th class="bg-light" style="width: 220px;">Total Account Balances</th>
+                <td>@Model.TotalAccountBalances</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 🔷 Cashier Information -->
+    <h6 class="fw-bold border-bottom text-primary">
+        <i class="mdi mdi-human-greeting me-1"></i> Cashier Information
+    </h6>
+    <table class="table table-sm table-bordered mb-3">
+        <tbody>
+            <tr><th class="bg-light" style="width: 220px;">Cashier</th><td>@Model.CashierName</td></tr>
+            <tr><th class="bg-light">Till</th><td>@Model.TillName</td></tr>
+        </tbody>
+    </table>
+
+    <!-- 🔷 Teller Information -->
+    <h6 class="fw-bold border-bottom text-primary">
+        <i class="mdi mdi-account-badge-outline me-1"></i> Teller Information
+    </h6>
+    <table class="table table-sm table-bordered mb-3">
+        <tbody>
+            <tr><th class="bg-light" style="width: 220px;">Teller ID</th><td>@Model.TellerId</td></tr>
+            <tr><th class="bg-light">Branch</th><td>@Model.BranchId</td></tr>
+            <tr><th class="bg-light">Bank ID</th><td>@Model.BankId</td></tr>
+        </tbody>
+    </table>
+
+    <!-- 🔷 Transaction Details -->
+    <h6 class="fw-bold border-bottom text-primary">
+        <i class="mdi mdi-cash-multiple me-1"></i> Transaction Details
+    </h6>
+    <table class="table table-sm table-bordered mb-3">
+        <tbody>
+            <tr><th class="bg-light" style="width: 220px;">Transaction Date</th><td>@Model.Date.ToString("dd/MM/yyyy HH:mm")</td></tr>
+            <tr><th class="bg-light">Accounting Day</th><td>@Model.AccountingDay.ToString("dd/MM/yyyy")</td></tr>
+            <tr><th class="bg-light">Service Type</th><td>@Model.ServiceType</td></tr>
+            <tr><th class="bg-light">Operation Type</th><td>@Model.OperationType</td></tr>
+            <tr><th class="bg-light">Operation Grouping</th><td>@Model.OperationTypeGrouping</td></tr>
+            <tr><th class="bg-light">Receipt Type</th><td>@Model.ReceiptType</td></tr>
+            <tr><th class="bg-light">Internal Ref</th><td>@Model.InternalReferenceNumber</td></tr>
+            <tr><th class="bg-light">External Ref</th><td>@Model.ExternalReferenceNumber</td></tr>
+            <tr><th class="bg-light">Source of Request</th><td>@Model.SourceOfRequest</td></tr>
+            <tr><th class="bg-light">Portal Used</th><td>@Model.PortalUsed</td></tr>
+            <tr><th class="bg-light">Amount</th><td><strong>@Model.Amount.ToString("N0") FCFA</strong></td></tr>
+            <tr><th class="bg-light">Charges</th><td>@Model.Charges.ToString("N0") FCFA</td></tr>
+            <tr><th class="bg-light">Total Paid</th><td class="fw-bold text-success">@Model.TotalAmount.ToString("N0") FCFA</td></tr>
+            <tr><th class="bg-light">In Words</th><td>@Model.AmountInWord</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- 🔷 Breakdown Table -->
+@if (Model.PaymentDetails != null && Model.PaymentDetails.Any())
+{
+    <h6 class="fw-bold mt-4 border-bottom text-primary">
+        <i class="mdi mdi-format-list-bulleted-type me-1"></i> Breakdown
+    </h6>
+    <table class="table table-bordered table-sm">
+        <thead class="table-light">
+            <tr>
+                <th>Service</th>
+                <th>Amount</th>
+                @if (Model.ServiceType?.ToLower().Contains("loan") == true)
+                {
+                    <th>Interest</th>
+                    <th>VAT</th>
+                }
+                <th>Fee</th>
+                <th>Account No.</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PaymentDetails)
+            {
+                <tr>
+                    <td>@item.SericeName</td>
+                    <td>@item.Amount.ToString("N0")</td>
+                    @if (Model.ServiceType?.ToLower().Contains("loan") == true)
+                    {
+                        <td>@item.Interest.ToString("N0")</td>
+                        <td>@item.VAT.ToString("N0")</td>
+                    }
+                    <td>@item.Fee.ToString("N0")</td>
+                    <td>@item.AccountNumber</td>
+                    <td>@item.AccountBalance</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot class="table-light">
+            <tr>
+                <th>Total</th>
+                <th>@Model.PaymentDetails.Sum(x => x.Amount).ToString("N0")</th>
+                @if (Model.ServiceType?.ToLower().Contains("loan") == true)
+                {
+                    <th>@Model.PaymentDetails.Sum(x => x.Interest).ToString("N0")</th>
+                    <th>@Model.PaymentDetails.Sum(x => x.VAT).ToString("N0")</th>
+                }
+                <th>@Model.PaymentDetails.Sum(x => x.Fee).ToString("N0")</th>
+                <th colspan="2"></th>
+            </tr>
+        </tfoot>
+    </table>
+}
+
+<!-- 🔷 Denomination Sections -->
+@{
+    var notes = new[] {
+        ("10,000", Model.Note10000, Model.Note10000 * 10000),
+        ("5,000", Model.Note5000, Model.Note5000 * 5000),
+        ("2,000", Model.Note2000, Model.Note2000 * 2000),
+        ("1,000", Model.Note1000, Model.Note1000 * 1000),
+        ("500", Model.Note500, Model.Note500 * 500)
+    }.Where(x => x.Item2 > 0).ToList();
+
+    var coins = new[] {
+        ("500 coin", Model.Coin500, Model.Coin500 * 500),
+        ("350 coin", Model.Coin350, Model.Coin350 * 350),
+        ("250 coin", Model.Coin250, Model.Coin250 * 250),
+        ("200 coin", Model.Coin200, Model.Coin200 * 200),
+        ("150 coin", Model.Coin150, Model.Coin150 * 150),
+        ("100 coin", Model.Coin100, Model.Coin100 * 100),
+        ("50 coin", Model.Coin50, Model.Coin50 * 50),
+        ("25 coin", Model.Coin25, Model.Coin25 * 25),
+        ("10 coin", Model.Coin10, Model.Coin10 * 10),
+        ("5 coin", Model.Coin5, Model.Coin5 * 5),
+        ("1 coin", Model.Coin1, Model.Coin1 * 1)
+    }.Where(x => x.Item2 > 0).ToList();
+}
+
+@if (notes.Any())
+{
+    <h6 class="fw-bold mt-4 border-bottom text-primary">
+        <i class="mdi mdi-cash me-1"></i> Denominations - Notes
+    </h6>
+    <table class="table table-sm table-bordered mb-3">
+        <thead class="table-light">
+            <tr>
+                <th>Denomination</th>
+                <th>Qty</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var note in notes)
+            {
+                <tr>
+                    <td>@note.Item1 FCFA</td>
+                    <td>@note.Item2</td>
+                    <td>@note.Item3.ToString("N0")</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot class="table-light">
+            <tr>
+                <th colspan="2">Total Notes</th>
+                <th>@notes.Sum(x => x.Item3).ToString("N0")</th>
+            </tr>
+        </tfoot>
+    </table>
+}
+
+@if (coins.Any())
+{
+    <h6 class="fw-bold border-bottom text-primary">
+        <i class="mdi mdi-coin me-1"></i> Denominations - Coins
+    </h6>
+    <table class="table table-sm table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>Denomination</th>
+                <th>Qty</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var coin in coins)
+            {
+                <tr>
+                    <td>@coin.Item1</td>
+                    <td>@coin.Item2</td>
+                    <td>@coin.Item3.ToString("N0")</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot class="table-light">
+            <tr>
+                <th colspan="2">Total Coins</th>
+                <th>@coins.Sum(x => x.Item3).ToString("N0")</th>
+            </tr>
+        </tfoot>
+    </table>
+}

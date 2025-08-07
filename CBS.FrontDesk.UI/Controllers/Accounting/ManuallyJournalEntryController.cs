@@ -5,6 +5,7 @@ using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
@@ -16,6 +17,7 @@ using DocumentFormat.OpenXml.Drawing.ChartDrawing;
 using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using DocumentFormat.OpenXml.Office2016.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.SignalR.Owin;
@@ -28,9 +30,11 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.DynamicData;
 using System.Web.Mvc;
 using System.Web.Services.Description;
 using System.Web.WebPages.Html;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -69,10 +73,10 @@ namespace CBS.FrontDesk.UI.Controllers
         // GET:ManuallyJournalEntry/PendingAccountingEntries
         public async Task<ActionResult> ExceptionalEntry()
         {
- 
-              await GetExInfoList();
-                return View();
-           
+
+            await GetExInfoList();
+            return View();
+
         }
         public async Task<ActionResult> Index()
         {
@@ -96,17 +100,17 @@ namespace CBS.FrontDesk.UI.Controllers
         private dynamic BuildUserViewBag(List<User> listOfItems)
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text  = $"I don't know the issuer", Value = "XXXXX" });
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = $"I don't know the issuer", Value = "XXXXX" });
             foreach (var item in listOfItems)
             {
-                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem {  Text = $"{item.firstName} {item.name}", Value = item.id.ToString() });
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = $"{item.firstName} {item.name}", Value = item.id.ToString() });
             }
             return selectListItems;
         }
         private dynamic BuildUserApproverViewBag(List<User> listOfItems)
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = $"I don't know the approver" , Value = "XXXXX" });
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = $"I don't know the approver", Value = "XXXXX" });
             foreach (var item in listOfItems)
             {
                 selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = $"{item.firstName} {item.name}", Value = item.id.ToString() });
@@ -134,96 +138,124 @@ namespace CBS.FrontDesk.UI.Controllers
 
         public async Task<ManuallyJournalEntryDataSet> GetEntries(QueryFilter model, string filter)
         {
-            List<PostedEntryX> postedCollectionEntries = new List<PostedEntryX>();
-            var PostedEntries = await _Service.RetrieveManualEntriesWithFilterAsync(model); //()
-               var users = await _userService.GetUsers();
-            var usersx = users;
-            var branch = await _branchService.GetBranches();
-            if (model.Status.ToUpper()== EntryStatus.Pending.ToString().ToUpper())
+            try
             {
-                postedCollectionEntries = (from p in PostedEntries
-                               join u1 in users on p.CreatedBy equals u1.id.ToString()
-                               //join u2 in usersx on p.ApprovedBy equals u2.id.ToString()
-                               join b in branch on u1.BranchID equals b.Id.ToString()
-                               select new PostedEntryX
-                               {
-                                   Amount = Convert.ToDecimal(p.Amount.ToString("N")),
-                                   BranchCode = b.BranchCode,
-                                   CreatedBy = u1.firstName + " " + u1.lastName,
-                                   IssuedBy = u1.id.ToString(),
-                                   Description = p.Description,
-                                   CreatedDate = DateTime.ParseExact(p.CreatedDate, "dd-MMM-yy h:mm:ss tt", CultureInfo.InvariantCulture),
-                                   ApprovedBy = p.ApprovedBy,
-                                   EndorseBy = p.ApprovedBy,
-                                   ApprovedDate =DateTime.ParseExact(p.ApprovedDate, "dd-MMM-yy h:mm:ss tt", CultureInfo.InvariantCulture),
-                                   Status = p.Status,
-                                   PostingSource = p.PostingSource,
-                                   Id = p.Id,
-                                   EntryDetail = p.EntryDetail
+                List<PostedEntryX> postedCollectionEntries = new List<PostedEntryX>();
+                var PostedEntries = await _Service.RetrieveManualEntriesWithFilterAsync(model); //()
+                var users = await _userService.GetUsers();
+                var usersx = users;
+                var branch = await _branchService.GetBranches();
+                bool isPending = model.Status.ToUpper() == EntryStatus.Pending.ToString().ToUpper();
+
+                if (isPending)
+                {
+                    postedCollectionEntries = (from p in PostedEntries
+                                               join u1 in users on p.CreatedBy equals u1.id.ToString()
+                                               join b in branch on p.BranchId equals b.Id.ToString()
+                                               select new PostedEntryX
+                                               {
+                                                   Amount = decimal.TryParse(p.Amount.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal amt) ? amt : 0,
+                                                   BranchCode = b.BranchCode,
+                                                   CreatedBy = $"{u1.firstName} {u1.lastName}",
+                                                   IssuedBy = u1.id.ToString(),
+                                                   Description = p.Description ?? string.Empty,
+                                                   CreatedDate = p.CreatedDate,// DateTime.TryParseExact(p.CreatedDate, "dd-MMM-yy h:mm:ss tt",
+                                                   //            CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime createdDate)
+                                                   //            ? createdDate : DateTime.MinValue,
+                                                   ApprovedBy = isPending ? "NOT APPROVED" : p.ApprovedBy,
+                                                   EndorseBy = p.ApprovedBy,
+                                                   ApprovedDate = p.ApprovedDate,
+                                                   //DateTime.TryParseExact(p.ApprovedDate, "dd-MMM-yy h:mm:ss tt",
+                                                   //             CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime approvedDate)
+                                                   //             ? approvedDate : DateTime.MinValue,
+                                                   Status = p.Status ?? string.Empty,
+                                                   PostingSource = p.PostingSource ?? string.Empty,
+                                                   Id = p.Id,
+                                                   EntryDetail = p.EntryDetail
+                                               }).ToList();
+                }
+                else
+                {
+                    postedCollectionEntries = (from p in PostedEntries
+                                               join u1 in users on p.CreatedBy equals u1.id.ToString()
+                                               join u2 in usersx on p.ApprovedBy equals u2.id.ToString() into approverJoin
+                                               from u2 in approverJoin.DefaultIfEmpty()
+                                               join b in branch on p.BranchId equals b.Id.ToString()
+                                               select new PostedEntryX
+                                               {
+                                                   Amount = decimal.TryParse(p.Amount.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal amt) ? amt : 0,
+                                                   BranchCode = b.BranchCode,
+                                                   CreatedBy = $"{u1.firstName} {u1.lastName}",
+                                                   IssuedBy = u1.id.ToString(),
+                                                   Description = p.Description ?? string.Empty,
+                                                   CreatedDate = p.CreatedDate,
+                                                   //DateTime.TryParseExact( "dd-MMM-yy h:mm:ss tt",
+                                                   //            CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime createdDate)
+                                                   //            ? createdDate : DateTime.MinValue,
+                                                   ApprovedBy = isPending ? "NOT APPROVED" : p.ApprovedBy,
+                                                   EndorseBy = p.ApprovedBy,
+                                                   ApprovedDate = p.ApprovedDate,
+                                                   //DateTime.TryParseExact(p.ApprovedDate, "dd-MMM-yy h:mm:ss tt",
+                                                   //             CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime approvedDate)
+                                                   //             ? approvedDate : DateTime.MinValue,
+                                                   Status = p.Status ?? string.Empty,
+                                                   PostingSource = p.PostingSource ?? string.Empty,
+                                                   Id = p.Id,
+                                                   EntryDetail = p.EntryDetail
+                                               }).ToList();
+                }
 
 
-                               }).ToList();
-            }
-            else
-            {
-                postedCollectionEntries = (from p in PostedEntries
-                                           join u1 in users on p.CreatedBy equals u1.id.ToString()
-                                           join u2 in usersx on p.ApprovedBy equals u2.id.ToString()
-                                           join b in branch on u1.BranchID equals b.Id.ToString()
-                                           select new PostedEntryX
-                                           {
-                                               Amount = Convert.ToDecimal(p.Amount.ToString("N")),
-                                               BranchCode = b.BranchCode,
-                                               CreatedBy = u1.firstName + " " + u1.lastName,
-                                               IssuedBy = u1.id.ToString(),
-                                               Description = p.Description,
-                                               CreatedDate = DateTime.ParseExact(p.CreatedDate, "dd-MMM-yy h:mm:ss tt", CultureInfo.InvariantCulture),
 
-                                               ApprovedBy = u2.firstName + " " + u2.lastName,
-                                               EndorseBy = p.ApprovedBy,
-                                               ApprovedDate = DateTime.ParseExact(p.ApprovedDate, "dd-MMM-yy h:mm:ss tt", CultureInfo.InvariantCulture),
-
-                                               Status = p.Status,
-                                               PostingSource = p.PostingSource,
-                                               Id = p.Id,
-                                               EntryDetail = p.EntryDetail
-
-
-                                           }).ToList();
-            }
-             
-
+                this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()] = postedCollectionEntries;
+                return new ManuallyJournalEntryDataSet
+                {
+                    PostedEntriesX = postedCollectionEntries
             
-            this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()] = postedCollectionEntries;
-            return new ManuallyJournalEntryDataSet { PostedEntriesX = postedCollectionEntries };
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
 
         }
         private async Task GetList()
         {
 
 
-            var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
+            try
+            {
+                var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
 
-            var CreditAccounts = BuildMenuViewBag(await GetAllAccountOpenForJEAsync( await GetAllAccountsExcludingOperationsAccountIncludingBlacklistedAccountAsync()));
-            ViewBag.Accounts = CreditAccounts;
-            ViewBag.BookingDirections = await GetBookingDirections();
-            ViewBag.ChartOfAccountManagementPositions = BuildMenuCOAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList());
-            ViewBag.DoubbleEntryValidation = await GetDoubbleEntryValidation();
-            ViewBag.ListOfEligibleBranch = BuildBranchViewBag((await _branchService.GetBranches()).ToList());
-            ViewBag.EntryTypes = BuildEntryTypesViewBag();
-            ViewBag.LevelOfExecution = BuildLevelOfExecutionViewBag();
-            ViewBag.IsInterBranchTransaction = BuildIsInterBranchTransactionViewBag();
-            ViewBag.IsChainEntry = await GetEntrySystem();
-            ViewBag.AccountingEventRuleIds = BuildAccountingRuleViewBag((await _AccountingRuleServices.GetAccountingRules()).ToList());
+                var CreditAccounts = BuildMenuViewBag(await _AccountServices.GetJournalEntryMFIAccountQuery(_AccountServices.GetBranchID()));
+                ViewBag.Accounts = CreditAccounts;
+                ViewBag.BookingDirections = await GetBookingDirections();
+                ViewBag.ChartOfAccountManagementPositions = BuildMenuCOAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList());
+                ViewBag.DoubbleEntryValidation = await GetDoubbleEntryValidation();
+                ViewBag.ListOfEligibleBranch = BuildBranchViewBag((await _branchService.GetBranches()).ToList());
+                ViewBag.EntryTypes = BuildEntryTypesViewBag();
+                ViewBag.LevelOfExecution = BuildLevelOfExecutionViewBag();
+                ViewBag.IsInterBranchTransaction = BuildIsInterBranchTransactionViewBag();
+                ViewBag.IsChainEntry = await GetEntrySystem();
+                ViewBag.AccountingEventRuleIds = BuildAccountingRuleViewBag((await _AccountingRuleServices.GetAccountingRules()).ToList());
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         private async Task GetExInfoList()
         {
 
 
-            var listAccounts =  await _AccountServices.GetAllAccounting();
+            var listAccounts = await _AccountServices.GetAllAccounting();
 
             var CreditAccounts = BuildMenuViewBag(listAccounts);
             ViewBag.Accounts = CreditAccounts;
+            ViewBag.ListOfEligibleBranch = BuildBranchViewBag((await _branchService.GetBranches()).ToList());
             ViewBag.BookingDirections = await GetBookingDirections();
 
         }
@@ -245,6 +277,12 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             return selectListItems;
         }
+
+        /// <summary>
+        /// Retrieves users filtered by branch ID and returns them in a format suitable for approver selection
+        /// </summary>
+        /// <param name="branchId">The branch ID to filter users by. Use "XXXXX" to get all users regardless of branch</param>
+        /// <returns>JSON result containing formatted user data for approver selection, or null if an error occurs</returns>
         public async Task<ActionResult> GetBranchUsersByBranchId(string branchId)
         {
 
@@ -256,9 +294,9 @@ namespace CBS.FrontDesk.UI.Controllers
                 {
                     users = users.Where(x => x.BranchID == branchId).ToList();
                 }
-                 
-                  
-                    var AccountData = BuildUserApproverViewBag(users);
+
+
+                var AccountData = BuildUserApproverViewBag(users);
 
 
 
@@ -270,17 +308,42 @@ namespace CBS.FrontDesk.UI.Controllers
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
         }
+        [HttpGet]
+        public async Task<ActionResult> GetBranchAccount(string BranchId)
+        {
+            if (_AccountServices.IsHeadOffice())
+            {
+                var ListOfData = await _AccountServices.GetAllAccounting();
+                ListOfData = ListOfData.Where(x => x.AccountOwnerId == BranchId).ToList();
+                return Json(BuildDropDown(ListOfData), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                //   var ListOfData = await _AccountServices.GetJournalEntryMFIAccountQuery(BranchId);
+                var ListOfData = await _AccountServices.GetAllAccounting();
+                ListOfData = ListOfData.Where(x => x.AccountOwnerId == BranchId).ToList();
+                return Json(BuildDropDown(ListOfData), JsonRequestBehavior.AllowGet);
+            }
+
+        }
+        private List<StringValues> BuildDropDown(List<Data.Account> ListOfData)
+        {
+            List<StringValues> list = new List<StringValues>();
+            foreach (var item in ListOfData)
+            {
+
+                list.Add(new StringValues { Text = $"{item.AccountNumberCU}-{item.AccountName}", Value = item.Id });
+
+            }
+
+            return list;
+        }
+
         public async Task<ActionResult> GetAccountMFIChartOfAccount()
         {
-
-
             try
             {
                 var AccountData = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
-
-
-
-
                 return Json(BuildMenuCOAccountViewBag(AccountData.ToList()), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -288,13 +351,13 @@ namespace CBS.FrontDesk.UI.Controllers
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
         }
-        private dynamic BuildBranchViewBag(List<Branch> listOfItems)
+        private dynamic BuildBranchViewBag(List<CBS.FrontDesk.Data.Entity.Config.Branch> listOfItems)
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
-            //     listOfItems.Remove(listOfItems.Where(x => x.BranchCode == "000").FirstOrDefault());
+
             foreach (var item in listOfItems)
             {
-                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = item.Id, Text = $"{item.Name}" });
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = $"{item.Name}", Text = item.Id });
             }
             return selectListItems;
         }
@@ -365,7 +428,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 !CheckIfAccountIsOperationsAccount(account, accountingRules).Result)
                 .ToList();
         }
-       
+
         private Task<bool> CheckIfAccountIsOperationsAccount(Data.Account account, List<AccountingRuleEntry> accountingRules)
         {
             const string OPERATIONS_PREFIX_1 = "3";
@@ -406,7 +469,7 @@ namespace CBS.FrontDesk.UI.Controllers
         }
 
 
-     
+
 
         private Task<List<System.Web.WebPages.Html.SelectListItem>> GetBookingDirections()
         {
@@ -453,13 +516,13 @@ namespace CBS.FrontDesk.UI.Controllers
             return model.Name.ToLower() == "revenue";
         }
 
-        public async Task<ActionResult> GetAccountBalance(string Id)
+        public async Task<ActionResult> GetAccountBalance(string accountId)
         {
 
 
             try
             {
-                var AccountData = await _AccountServices.GetAccountWithAccountCartegorieStatus(Id);
+                var AccountData = await _AccountServices.GetAccountWithAccountCartegorieStatus(accountId);
                 var data = new ManuallyJournalEntryDataSet { Account = AccountData };
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
@@ -721,7 +784,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
         }
 
-        private dynamic BuildAllBrachScope(List<Branch> collection, AccountingEventRule model)
+        private dynamic BuildAllBrachScope(List<CBS.FrontDesk.Data.Entity.Config.Branch> collection, AccountingEventRule model)
         {
             List<string> branchString = new List<string>();
             foreach (var item in model.ListOfEligibleBranchId)
@@ -802,9 +865,9 @@ namespace CBS.FrontDesk.UI.Controllers
             return listOfBranch;
         }
 
-        private List<Branch> GetSetOfBranchesActivatedForEvents(List<Branch> enumerable, List<string> listOfEligibleBranchId)
+        private List<CBS.FrontDesk.Data.Entity.Config.Branch> GetSetOfBranchesActivatedForEvents(List<CBS.FrontDesk.Data.Entity.Config.Branch> enumerable, List<string> listOfEligibleBranchId)
         {
-            List<Branch> listOfBranch = new List<Branch>();
+            List<CBS.FrontDesk.Data.Entity.Config.Branch> listOfBranch = new List<CBS.FrontDesk.Data.Entity.Config.Branch>();
             foreach (var item in listOfEligibleBranchId)
             {
                 listOfBranch.Add(enumerable.Find(x => x.Id == item));
@@ -1066,7 +1129,7 @@ namespace CBS.FrontDesk.UI.Controllers
         [HttpGet]
         public async Task<ActionResult> ApproveEntries(string Id, bool HasApproved, string Comment)
         {
-            var model = new EntryApproval { HasApproved = HasApproved, Id = Id, Comment = Comment, BranchId = _Service.GetBranchID(),TransactionDate = BaseUtilities.UtcToLocal() };
+            var model = new EntryApproval { HasApproved = HasApproved, Id = Id, Comment = Comment, BranchId = _Service.GetBranchID(), TransactionDate = BaseUtilities.UtcToLocal() };
             try
             {
                 var data = await _Service.ApproveAccountingEntry(model);
@@ -1105,9 +1168,9 @@ namespace CBS.FrontDesk.UI.Controllers
                 //  string userPrefix = $"rpt_{_AccountServices.GetUserID()}_";
                 HttpContext.Session["rptSource"] = modelData;
                 HttpContext.Session["fileType"] = "MET";
-                HttpContext.Session["rptType"] = "Entry_"+id;
+                HttpContext.Session["rptType"] = "Entry_" + id;
                 string reportName = "PrintedManualJE.rpt";
-                HttpContext.Session[ "rptpath"] = $"~/AppFiles/Reporting/Accounting/{reportName}";
+                HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{reportName}";
 
                 return Json(new { success = true, message = "Report generated successfully" }, JsonRequestBehavior.AllowGet);
             }
@@ -1128,10 +1191,10 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             try
             {
-          
-              
 
-                var entry =await _Service.GetPostedEntryReference(id);
+
+
+                var entry = await _Service.GetPostedEntryReference(id);
                 var entryX = entry.ConvertToPostedEntry(entry);
                 var branchModel = await _branchService.GetBranch(entry.EntryDetail.ToArray()[0].BranchId);
 
@@ -1450,7 +1513,7 @@ namespace CBS.FrontDesk.UI.Controllers
                         Culture = CultureInfo.InvariantCulture
                     };
                     var modelc = JsonConvert.DeserializeObject<QueryFilter>(key, settings);
-             
+
                     var dataModel = await GetEntries(modelc, "Pending");
                     ViewBag.IsAuthourized = true;
                     return PartialView(partialView, dataModel);
@@ -1460,10 +1523,10 @@ namespace CBS.FrontDesk.UI.Controllers
                     ViewBag.IsAuthourized = false;
                     ViewBag.Error = _AccountServices.GetUserFullName() + ", You must select a date range you estimated the data was inputed";
 
-                    return PartialView(partialView, new ManuallyJournalEntryDataSet {  });
+                    return PartialView(partialView, new ManuallyJournalEntryDataSet { });
                 }
-                
-                
+
+
             }
             else if (serviceOption == "Account")
             {

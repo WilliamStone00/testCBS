@@ -19,7 +19,7 @@ namespace CBS.BusinessService.Config.Localization
 
         public TownServices()
         {
-            _bankConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
+            _bankConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["SystemConfigurationBaseUrl"].ToString());
         }
 
         public async Task<ExecutionMessages> Delete(string id)
@@ -51,11 +51,11 @@ namespace CBS.BusinessService.Config.Localization
         }
         public async Task<CustomDataTable> GetDataTable(DataTableOptions dataTableOptions)
         {
-            Func<Task<List<Town>>> getDataFunc = async () => (await GetCountries()).ToList();
+            Func<Task<List<Town>>> getDataFunc = async () => (await GetTowns()).ToList();
             var dataTable = await DatatableHelper.GenerateDataTable<Town>(dataTableOptions, getDataFunc);
             return dataTable;
         }
-        public async Task<IEnumerable<Town>> GetCountries()
+        public async Task<IEnumerable<Town>> GetTowns()
         {
             try
             {
@@ -68,7 +68,7 @@ namespace CBS.BusinessService.Config.Localization
                 throw;
             }
         }
-        private async Task<Town> GetTown(string id)
+        public async Task<Town> GetTown(string id)
         {
             try
             {
@@ -111,5 +111,10 @@ namespace CBS.BusinessService.Config.Localization
             return ExecutionMessage;
         }
 
+        public async Task<List<Town>> GetTownsBySubDivisionId(string key)
+        {
+            var towns = await GetTowns();
+            return towns.Where(x => x.SubdivisionId==key).ToList();
+        }
     }
 }

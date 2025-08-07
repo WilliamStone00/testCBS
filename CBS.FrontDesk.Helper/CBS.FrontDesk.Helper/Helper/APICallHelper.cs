@@ -350,8 +350,14 @@ namespace CBS.FrontDesk.Helper
         public static string GetSavingProducts = "/api/v1/SavingProduct";
         public static string GetCustomerBalance = "/api/v1/Account/Balance/Customer/{0}";
         public static string UpdateIndividualProfile = "/api/v1/Customer/{0}";
+       
         public static string ActivateOrDiactivateCustomer = "/api/v1/Customer/ActivateOrDis-activate";
         public static string GetAccountBalanceByAccountNumber = "/api/v1/Account/AccountNumber/{0}";
+
+
+        public static string TagPISProfile = "/api/v1/private-institution/tag/{0}";
+        public static string GetAllPISProfileByBranch = "/api/v1/private-institution/profiles/byBranch/{0}";
+        public static string GetAllPISProfile = "/api/v1/private-institution/profiles/all";
 
         public static string GetCustomerAccounts = "/api/v1/Account/Customer/{0}";
         public static string InitialDeposit = "/api/v1/Transaction/Initiate/{0}";
@@ -615,6 +621,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetLoans = "/api/v1/Loans/GetAllLoans";
         public static string InitiateBulkDownloadLoans = "/api/v1/FileDownloadInfo/InitiateBulkDownloadLoans";
         public static string BulkDownloadDeleteAndGetLoan = "/api/v1/FileDownloadInfo/{0}";
+        public static string BulkDownloadDeleteAll = "/api/v1/FileDownloadInfos/delete-all";
         public static string GetAllBulkDownloadInfosLoan = "/api/v1/FileDownloadInfos";
         public static string GelLoansSearchByAnyCriterialQuery = "/api/v1/Loan/SearchByAnyCriterialQuery";
         public static string GetAllBulkDownloadInfosLoanPerUser = "/api/v1/FileDownloadInfos/GetAllFileDownloadInfoByUserIdQuery/{0}";
@@ -640,6 +647,12 @@ namespace CBS.FrontDesk.Helper
         public static string GetLoanAmortizationByID = "/api/LoanAmortization/GetLoanAmortization/{0}";
         public static string GetAllLoanAmortizationByLoanIdQuery = "/api/LoanAmortization/Installments/GetAllLoanAmortizationByLoanIdQuery/{0}";
         public static string LoanInstallationSimulation = "/api/LoanAmortization/Loan/Simulation";
+
+        //PaymentReceipt
+        public static string GetPaymentReceiptById = "/api/v1/PaymentReceipt/{0}";
+        public static string GetPaymentReceiptByMemberId = "/api/v1/PaymentReceipt/ByMember/{0}";
+        public static string GetPaymentReceiptDatatable = "/api/v1/PaymentReceipt/data-table";
+        public static string GetPaymentReceiptByMemberAndDate = "/api/v1/PaymentReceipt/ByMemberAndDate";
 
         //Tax  
         public static string Get_Update_Delete_Tax = "/api/v1/Tax/{0}";
@@ -709,6 +722,39 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_LoanPurpose = "/api/v1/LoanPurpose/{0}";
         public static string GetAllLoanPurpose = "/api/v1/LoanPurposes";
         public static string CreateLoanPurpose = "/api/v1/LoanPurpose";
+
+
+        //OverdraftFacilityConfig
+        public static string OverdraftFacilityConfigUpdate = "/api/v1/OverdraftFacilityConfig/update";
+        public static string OverdraftFacilityConfigDelete = "/api/v1/OverdraftFacilityConfig/delete/{0}";
+        public static string OverdraftFacilityConfigCreate = "/api/v1/OverdraftFacilityConfig/create";
+        public static string OverdraftFacilityConfigGet = "/api/v1/OverdraftFacilityConfig/get/{0}";
+        public static string OverdraftFacilityConfigGetAll = "/api/v1/OverdraftFacilityConfig/list";
+        public static string OverdraftFacilityConfigDT = "/api/v1/OverdraftFacilityConfig/datatable";
+
+        //OverdraftInterestTier
+        public static string OverdraftInterestTierUpdate = "/api/v1/OverdraftInterestTier/update";
+        public static string OverdraftInterestTierDelete = "/api/v1/OverdraftInterestTier/delete/{0}";
+        public static string OverdraftInterestTierCreate = "/api/v1/OverdraftInterestTier/create";
+        public static string OverdraftInterestTierGet = "/api/v1/OverdraftInterestTier/get/{0}";
+        public static string OverdraftInterestTierGetAll = "/api/v1/OverdraftInterestTier/list";
+        public static string OverdraftInterestTierDT = "/api/v1/OverdraftInterestTier/datatable";
+
+        //OverdraftLimitBand
+        public static string OverdraftLimitBandUpdate = "/api/v1/OverdraftLimitBand/update";
+        public static string OverdraftLimitBandDelete = "/api/v1/OverdraftLimitBand/delete/{0}";
+        public static string OverdraftLimitBandCreate = "/api/v1/OverdraftLimitBand/create";
+        public static string OverdraftLimitBandGet = "/api/v1/OverdraftLimitBand/get/{0}";
+        public static string OverdraftLimitBandGetAll = "/api/v1/OverdraftLimitBand/list";
+        public static string OverdraftLimitBandDT = "/api/v1/OverdraftLimitBand/datatable";
+
+        // OverdraftActivation
+        public static string OverdraftServiceActivationSubmit = "/api/v1/OverdraftActivation/submit";
+        public static string OverdraftServiceActivationApprove = "/api/v1/OverdraftActivation/approve";
+        public static string OverdraftServiceActivationGetById = "/api/v1/OverdraftActivation/{id}";
+        public static string OverdraftServiceActivationDT = "/api/v1/OverdraftActivation/datatable";
+
+
         //Fee
         public static string Get_Update_Delete_Fee = "/api/v1/Fee/{0}";
         public static string GetAllFee = "/api/v1/Fees";
@@ -837,26 +883,26 @@ namespace CBS.FrontDesk.Helper
         public static string GetProductAccountingBookbyproductnameUrl = "/api/v1/ProductAccountingBook/GetProductAccountingConfigurations/{0}";
         public static string GetProductAccountingBookbyproductTypeUrl = "/api/v1/ProductAccountingBook/GetAllProductAccountingConfigurations/{0}";
         //AccountCategory AccountProduct {name}
-        //GetAllowAnonymous,Update,Delete AccountCategory By Id
+        //GetAllowAnonymous,Update,Delete AccountCategory By Id  
         public static string Get_Update_Delete_ChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition/{0}";
         public static string Get_ChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition/{0}";
         public static string GetAllChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPositions";
         public static string DownloadChartOfAccountManagementPositionUrl = "/api/v1/ChartOfAccountManagementPositions/DownloadQuery";
         public static string CreateChartOfAccountManagementPosition = "/api/v1/ChartOfAccountManagementPosition";
-
+        public static string GetJournalEntryMFIAccountQueryUrl = "/api/v1/Account/GetJournalEntryMFIChartOfAccountQuery/{0}";
         //DocumentType
         public static string Create_DocumentType = "/api/v1/DocumentType";
         public static string Get_Update_Delete_DocumentType = "/api/v1/DocumentType/{0}";
         public static string GetAllDocumentTypes = "/api/v1/DocumentType";
 
-        //DocumentReference   
+        //DocumentReference    FinancialReport/FinancialReportConfigurationOnMongoDB
 
         public static string Get_DocumentType_By_DocumentReference = "/api/v1/DocumentTypeByDocumentReference/{0}";
         public static string UpdateDocumentReferenceCode = "/api/v1/FinancialReport/DocumentReferenceCode/Update/{0}";
         public static string Delete_DocumentReference = "/api/v1/FinancialReport/DocumentReferenceCode/Delete/{0}";
         public static string GetDocumentReferenceCode = "/api/v1/FinancialReport/GetDocumentReferenceCodeById/{0}";
-        public static string GetAllDocumentReferenceCode = "/api/v1/FinancialReport/DocumentReferenceCode";
-        public static string CreateDocumentReferenceCode = "/api/v1/FinancialReport/DocumentReferenceCode/Create";
+        public static string GetAllDocumentReferenceCode = "/api/v1/FinancialDocumentReferences";
+        public static string CreateDocumentReferenceCode = "/api/v1/FinancialDocumentReference";
         public static string GetCorrespondingmappingByDocumentRefenceId = "/api/v1/FinancialReport/GetCorrespondingMappingByDocumentReferenceCodeIdQuery/{0}";
         public static string GetCorrespondingmappingExceptionByDocumentRefenceId = "/api/v1/FinancialReport/GetCorrespondingMappingExceptionsByDocumentReferenceCodeIdQuery/{0}";
 
@@ -899,7 +945,7 @@ namespace CBS.FrontDesk.Helper
         // POST  Create a ChartOfAccount
         public static string ManualEntriePosting = "/api/v1/AccountingEntry/ManualPostingEventCommand";
 
-        //Account/api/v1/AccountingEntry/AddCashInfusionCommand
+        //Account/api/v1/AccountingEntry/AddCashInfusionCommand  
         //Credit a specifique Account record AddCashInfusionCommand   
         public static string CashInfusion = "/api/v1/AccountingEntry/AddCashInfusionCommand";
         public static string GetAccountByReference = "/api/v1/Account/GetAccountByReference/{0}";
@@ -908,7 +954,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAccount = "/api/v1/Account/{0}";
         public static string Delete_Account = "/api/v1/Account/{0}";
         public static string GetAccountByAccountNumberUrl = "/api/v1/Account/GetAccountByAccountNumberRef/{0}";
-
+        public static string GetAccountByBranchIdUrl = "/api/v1/Account/GetAccountByBranchIDQuery/{0}";
         public static string GetAlAccounts = "/api/v1/Accounts";
         public static string GetAllLiaisonAccount = "/api/v1/Accounts/LiaisonAccount";
         public static string GetAllAccountByBranch = "/api/v1/Accounts/{0}";
@@ -1096,8 +1142,12 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_Agent = "/api/v1/Agent/{0}";
         public static string CreateAgent = "/api/v1/Agent";
         public static string GetAllAgent = "/api/v1/Agents";
-
-        //AgentAccount
+        public static string GetAllAgentByBranchId = "/api/v1/Agents/by_branch/{0}";
+        public static string GetActiveDailyCollectors = "/api/v1/DailySavingsBackOffice/collectors?branchId={0}&month={1}&year={2}";
+        public static string GetAgentActivities = "/api/v1/Agent/GetAgentActivities/{0}/{1}/{2}/{3}";
+        public static string GetCollectorsHistory = "/api/v1/DailySavingsBackOffice/collector-history-with-dashboard?collectorId={0}&year={1}&month={2}&BranchId={3}";
+        public static string PayDailyCollectorCommission = "/api/v1/DailyCollections/PayDailyCollectorCommission";
+        ///
         public static string Get_Update_Delete_AgentAccount = "/api/v1/AgentAccount/{0}";
         public static string CreateAgentAccount = "/api/v1/AgentAccount";
         public static string GetAllAgentAccount = "/api/v1/AgentAccounts";
@@ -1117,5 +1167,19 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_CommissionSetting = "/api/v1/CommissionSetting/{0}";
         public static string CreateCommissionSetting = "/api/v1/CommissionSetting";
         public static string GetAllCommissionSettings = "/api/v1/CommissionSettings";
+
+        //MigrationGLReconciliation
+        public static string MigrationGLReconciliationInit = "/api/v1/MigrationGLReconciliation/add";
+        public static string MigrationGLReconciliationAccountList = "/api/v1/MigrationGLReconciliation/list";
+        public static string MigrationGLReconciliationAccount = "/api/v1/MigrationGLReconciliation/by-id/{0}";
+
+
+        //DailySavingUpload /api/v1/ViewFileByFileUploadId/{FileUploadId}}
+        public static string Delete_DailySavingMigrationFile = "/api/v1/DailySavingMigrationFile/{0}";
+        public static string GetAllDailySavingMigrationFile = "/api/v1/DailySavingMigrationFile/all/{0}";
+        public static string DailySavingMigrationFileExecution = "api/v1/DailySavingMigrationFileExecution/{0}/{1}";
+        public static string ManualEntryCollectorUploadFileExecution = "api/v1/ManualEntryCollectorUpload?collectorId={0}";
+        public static string GetAllDailyOperationFileUploadsByProcessingStatus = "/api/v1/GetAllFileUploadsByProcessingStatus/{0}";
+        public static string ViewFileByFileUploadId = "/api/v1/ViewFileByFileUploadId/{0}}";
     }
 }

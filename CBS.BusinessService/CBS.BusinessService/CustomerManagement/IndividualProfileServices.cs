@@ -148,7 +148,25 @@ namespace CBS.BusinessService.CustomerManagement
             }
         }
 
+        public async Task<IEnumerable<IndividualProfile>> GetBranchPISCAMembers()
+        {
+            try
+            {
 
+                var couApiResponse = await _customerApiHelper.GetAsync<ResponseObject<List<IndividualProfile>>>(string.Format(APICallHelper.GetAllPISProfileByBranch, GetBranchID()));
+                if (couApiResponse.IsSuccess)
+                {
+                    var data = couApiResponse.ApiResponseData.Data;
+                    return data;
+                }
+                return new List<IndividualProfile>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
 
 
         // Other methods refactored similarly...
@@ -211,7 +229,8 @@ namespace CBS.BusinessService.CustomerManagement
                         MobileLoginId = x.MobileLoginId,
                         LegalForm = x.LegalForm,
                         MembershipApprovalStatus = x.MembershipApprovalStatus,
-                        Gender = x.Gender,  CustomerType=x.CustomerType,
+                        Gender = x.Gender,
+                        CustomerType=x.CustomerType,
                         Phone = x.Phone,
                         BranchId = x.BranchId,
                         BranchName = branch?.Name ?? "Unknown",
@@ -241,8 +260,8 @@ namespace CBS.BusinessService.CustomerManagement
                 }
             }
 
-         
-           
+
+
             // Make API call to fetch the DataTable result
             var couApiResponse = await _customerApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
                 APICallHelper.MembersDatatableQuery,
@@ -368,7 +387,26 @@ namespace CBS.BusinessService.CustomerManagement
             try
             {
 
+
                 var individuals = await GetMemberByCustomerType(memberCategory);
+                var stringValuesList = individuals
+                         .Select(x => new StringValues($"[{x.CustomerId}] [{x.FirstName} {x.LastName}]", x.CustomerId))
+                         .ToList();
+                return stringValuesList;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        public async Task<IEnumerable<StringValues>> GetMemberByCustomerTypeDropDown()
+        {
+            try
+            {
+
+
+                var individuals = await GetBranchPISCAMembers();
                 var stringValuesList = individuals
                          .Select(x => new StringValues($"[{x.CustomerId}] [{x.FirstName} {x.LastName}]", x.CustomerId))
                          .ToList();
@@ -478,6 +516,7 @@ namespace CBS.BusinessService.CustomerManagement
                 Address = a.Address ?? string.Empty,
                 BankId = a.BankId,
                 CountryId = a.CountryId,
+                TagAsPISCollectionProfile=a.TagAsPISCollectionProfile,
                 CustomerId = a.CustomerId,
                 DateOfBirth = a.DateOfBirth,
                 DivisionId = a.DivisionId,
@@ -502,7 +541,7 @@ namespace CBS.BusinessService.CustomerManagement
                 IsMemberOfACompany = a.IsMemberOfACompany,
                 LegalForm = a.LegalForm ?? string.Empty,
                 MembershipApprovalStatus = a.MembershipApprovalStatus ?? string.Empty,
-                branchCode = a.branchCode ?? string.Empty,
+                branchCode = b.BranchCode ?? string.Empty,
                 CustomerCategory = a.CustomerCategory,
                 CustomerCategoryId = a.CustomerCategoryId,
                 EmployerAddress = a.EmployerAddress ?? string.Empty,
@@ -578,59 +617,41 @@ namespace CBS.BusinessService.CustomerManagement
         {
             try
             {
+                // 🔄 Start tasks in parallel
+                var customerTask = GetSingleCustomer(id);
+                var accountsTask = GetCustomerAccounts(id);
 
-                var cusResponseObject = await GetSingleCustomer(id);
-                var accountBalance = await GetCustomerBalance(id);
-                var accounts = await GetCustomerAccounts(id);
-                //var policies = await _memberAccountActivationPolicyServices.GetMemberAccountActivationPolicys();
-                var memberAccountActivation = await _memberAccountActivationServices.GetMemberAccountActivationByMemberId(id);
+                // ⏳ Await both in parallel
+                await Task.WhenAll(customerTask, accountsTask);
+
+                var cusResponseObject = customerTask.Result;
+                var accounts = accountsTask.Result;
+
+                // 🔁 Join customer with branch and town
                 var data = (from a in new List<IndividualProfile> { cusResponseObject }
                             join b in aggregrates.Branches on a.BranchId equals b.Id
                             join t in aggregrates.Towns on a.TownId equals t.Id into townJoin
-                            from t in townJoin.DefaultIfEmpty() // Left join operation
+                            from t in townJoin.DefaultIfEmpty() // Left join
                             select TransformToCustomerList(a, b, t)).ToList();
+
+                // 🧱 Construct supporting models
                 var addaccount = new AddCustomerAccount { customerId = id };
                 var nextOfKingsMember = new MembershipNextOfKing { CustomerId = id };
                 var cardSignatureSpecimen = new CardSignatureSpecimen { CustomerId = id };
-                var result = new IndividualCustomerProfile(data.First(), aggregrates, accountBalance, accounts, addaccount, nextOfKingsMember, cardSignatureSpecimen);
-                result.SavingProducts = aggregrates.Savings;
+
+                // 📦 Build result
+                var result = new IndividualCustomerProfile(data.First(), aggregrates, accounts, addaccount, nextOfKingsMember, cardSignatureSpecimen)
+                {
+                    SavingProducts = aggregrates.Savings
+                };
                 result.AddCustomerAccount.CustomerName = result.CustomerList.name;
-                //var policy = new MemberRegistrationFeePolicy();
-                //if (policies.Any())
-                //{
-                //    policy = policies.Where(x => x.LegalForm == cusResponseObject.LegalForm).FirstOrDefault();
-                //}
-                //if (policy == null)
-                //{
-                //    policy = new MemberRegistrationFeePolicy();
-                //}
-                //if (memberAccountActivation == null)
-                //{
-                //    result.MemberAccountActivation = new MemberAccountActivation
-                //    {
-                //        CustomerId = id,
-                //        EntranceFee = policy.MaximumEntrancenFee,
-                //        ByeLawFee = policy.MaximumByeLawsFee,
-                //        LoanPolicyFee = policy.MaximumLoanPolicyFee,
-                //        MemberAccountActivationPolicyId = policy.Id,
-                //        Balance = policy.MaximumEntrancenFee + policy.MaximumByeLawsFee + policy.MaximumLoanPolicyFee,
-                //        AmountPaid = 0,
-                //        BuildingContribution = policy.MaximumBuildingContribution
-                //    };
-                //    result.option = "AddMemberAccount";
-                //}
-                //else
-                //{
-                //    result.MemberAccountActivation = memberAccountActivation;
-                //    result.option = "UpdateMemberAccount";
-                //}
 
                 return result;
             }
             catch (Exception ex)
             {
-                // Log and handle exception
-                throw ex;
+                // Log or rethrow as needed
+                throw;
             }
         }
         public async Task<IndividualCustomerProfile> GetCustomerLight(string id)
@@ -722,7 +743,7 @@ namespace CBS.BusinessService.CustomerManagement
             {
 
 
-               var subscriptionAggregatesResponse = await _bankConfigApiHelper.GetAsync<ResponseObject<Aggregrate>>(APICallHelper.SubcriptionAggregates);
+                var subscriptionAggregatesResponse = await _bankConfigApiHelper.GetAsync<ResponseObject<Aggregrate>>(APICallHelper.SubcriptionAggregates);
                 if (subscriptionAggregatesResponse.IsSuccess)
                 {
                     var aggregates = subscriptionAggregatesResponse?.ApiResponseData.Data ?? new Aggregrate();
@@ -872,6 +893,33 @@ namespace CBS.BusinessService.CustomerManagement
                 // Handle exception (you may add logger here if needed)
             }
 
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> TagMemberProfilePIS(TagPISCollectionProfileCommand objCustomerProfile)
+        {
+            try
+            {
+
+                var inResponse = await _customerApiHelper.PutAsync<ServiceResponse<bool>>(string.Format(APICallHelper.TagPISProfile, objCustomerProfile.CustomerId), objCustomerProfile);
+                if (inResponse.IsSuccess)
+                {
+                    // Handle success scenario
+                    GetExecutionMessages(inResponse, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
+                    return ExecutionMessage;
+
+                }
+                else
+                {
+                    // Handle failure scenario
+                    GetExecutionMessages(inResponse, false, null, MessagesResults.Failed, ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+            }
             return ExecutionMessage;
         }
         public async Task<ExecutionMessages> UpdateBankInfo(IndividualCustomerProfile objCustomerProfile)

@@ -3,8 +3,9 @@ using CBS.API.Helper;
 
 using CBS.BusinessService.Session;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.DailyCollectionData;
-using CBS.FrontDesk.Data.Entity.DailyCollectorManagement;
+using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
@@ -132,6 +133,6 @@ namespace CBS.BusinessService.DailyCollectionServices
             return ExecutionMessage;
         }
 
-        
+    
     }
 }

@@ -51,8 +51,15 @@ $(document).ready(function () {
     });
 
 
-    $(document).on('change', '#EntryTempData_AccountId', function () {
+    $(document).on('change', '#EntryTempData_BranchId', function () {
         // Get the selected value (AccountId) from the dropdown
+        var selectedValue = $(this).val();
+        // Call the `loadAccountById` function with the selected AccountId
+        loadBranchBankAccount(selectedValue);
+    });
+
+    $(document).on('change', '#EntryTempData_AccountId', function () {
+        // Get the selected value (AccountId) from the dropdown 
         var selectedValue = $(this).val();
         // Call the `loadAccountById` function with the selected AccountId
         loadAccountById(selectedValue);
@@ -364,6 +371,30 @@ function loadBranchUsers(branchId) {
         }
     });
 }
+
+
+function loadBranchBankAccount(branchId) {
+    console.log(branchId);
+    // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
+    $.ajax({
+        url: '/ManuallyJournalEntry/GetBranchAccount',
+        type: 'GET',
+        dataType: 'json',
+        data: { BranchId: branchId },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo
+            $('#EntryTempData_AccountId').empty();
+            // Add new options based on the fetched data
+             $.each(data, function (index, item) {
+                    $('#EntryTempData_AccountId').append($('<option>').text(item.Text).attr('value', item.Value));
+                });
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
 function loadIssuingBranchUsers(branchId) {
     console.log(branchId);
     // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
@@ -527,7 +558,7 @@ function ApprovePostedEntriesTransactions(title, message, ajaxUrl, serviceoption
                 contentType: 'application/json',
                 data: { Id: Id, HasApproved: Response, Comment: comment },
                 success: function (response) {
-
+                    console.log(response);
                     if (response.status) {
                         appalert(response.message, 1, 1);
                         PrintDataEntries(true);
@@ -724,7 +755,7 @@ function GetCurrentPostedEntryTransactions(title, message, ajaxUrl, Id) {
             url: '/ManuallyJournalEntry/GetAccountBalance', // API endpoint
             type: 'GET', // HTTP method
             dataType: 'json', // Expected response format
-            data: { Id: AccountId }, // Send the selected AccountId as a parameter
+            data: { accountId: AccountId }, // Send the selected AccountId as a parameter
             success: function (data) {
                 // Process the response data
                 var model = extractAccountDetails(data);
@@ -740,7 +771,45 @@ function GetCurrentPostedEntryTransactions(title, message, ajaxUrl, Id) {
                 console.error(xhr.responseText);
             }
         });
+      
     }
+
+ async function loadAccountByIdWithCallBack(AccountId) {
+    try {
+        const response = await fetch(`/ManuallyJournalEntry/GetAccountBalance?accountId=${AccountId}`);
+        console.log(response);
+        const model = extractAccountDetails(response);
+        return {
+            AccountBalance: model.CurrentBalance,
+            AccountName: model.AccountName,
+            AccountNumber: model.AccountNumberCU,
+            AccountId: model.Id,
+            AccountCategoryId: model.AccountCategoryId
+        };
+    } catch (error) {
+        console.error("Error:", error);
+        return null;
+    }
+}
+function loadAccountByIdWithCallBack(AccountId, callback) {
+    fetch(`/ManuallyJournalEntry/GetAccountBalance?accountId=${AccountId}`)
+        .then(response => {
+            console.log(response);
+            const model = extractAccountDetails(response);
+            const result = {
+                AccountBalance: model.CurrentBalance,
+                AccountName: model.AccountName,
+                AccountNumber: model.AccountNumberCU,
+                AccountId: model.Id,
+                AccountCategoryId: model.AccountCategoryId
+            };
+            callback(null, result);
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            callback(error, null);
+        });
+}
 
     function calculateDebitAndCreditTotals(entries) {
         // Initialize totals
@@ -772,10 +841,20 @@ function GetCurrentPostedEntryTransactions(title, message, ajaxUrl, Id) {
      * Adds an item to the shopping basket with validation
      * @returns {void}
      */
-    function addToBasket() {
+loadAccountByIdWithCallBack(123, (error, account) => {
+    if (error) {
+        console.error("Failed to load account:", error);
+        return;
+    }
+    console.log("Account loaded:", account);
+});
+     function addToBasket() {
         // Get form values
+       
+     
         const item = {
             reference: $('#EntryTempData_Reference').val().trim(),
+            BranchId: $('#EntryTempData_BranchId').val().trim(),
             accountBalance: $('#EntryTempData_AccountBalance').val(),
             accountId: $('#EntryTempData_AccountId').val(),
             accountName: $('#EntryTempData_AccountName').val(),
@@ -787,11 +866,12 @@ function GetCurrentPostedEntryTransactions(title, message, ajaxUrl, Id) {
             valueDate: $("input[name='EntryTempData.ValueDate']").val(),
             description: $('#EntryTempData_Description').val().trim(),
             AccountCategoryId: $('#EntryTempData_AccountCategoryId').val().trim()
-        };
-
-        // Format account name and reference
-        item.accountName = `${item.accountNumber}-${item.accountName}`;
-        item.reference = `${item.reference}`;
+         };
+         var selectedText = $('#EntryTempData_AccountId option:selected').text();
+         // var selectedText = $('.select2').find('option:selected').text();
+      
+         item.accountName = selectedText.split('-')[1];
+         item.accountNumber = selectedText.split('-')[0];
 
         console.log('Processing item:', item);
 

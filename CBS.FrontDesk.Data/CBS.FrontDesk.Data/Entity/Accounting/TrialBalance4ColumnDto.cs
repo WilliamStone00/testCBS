@@ -125,6 +125,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Description { get; set; }
         public string Reference { get; set; }
         public string EntryDate { get; set; }
+        public string ValueDate { get; set; }
         public string SumDebit { get; set; }
         public string SumCredit { get; set; }
         public string NumberEntries { get; set; }
@@ -164,7 +165,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     
         public List<BalanceSheetAccount> Accounts { get; set; }
         public List<TrialBalanceDt> TrialBalanceDt { get; set; }
-
+        public string Message { get; set; }
 
 
         public List<BalanceSheetInfo> ConvertToBalanceSheetInfo(string PrintersName, string Date, string categoryA, string categoryB)

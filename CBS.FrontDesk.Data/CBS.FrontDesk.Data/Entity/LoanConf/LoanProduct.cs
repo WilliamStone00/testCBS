@@ -12,11 +12,13 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
     public class LoanProducct
     {
+        public string PenaltyId { get; set; }
+
         public string Id { get; set; }
 
         [Required]
         public string ProductCode { get; set; }
-
+        public string LoanTypeCategory { get; set; }
         [Required]
         public string ProductName { get; set; }
 
@@ -244,6 +246,9 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
 
     public class LoanProduct
     {
+        public string PenaltyId { get; set; }
+        public bool BlockShareAccount { get; set; }
+        public bool BlockSavingAccount { get; set; }
         public string Id { get; set; }
         public string ProductCode { get; set; }
         public string LoanProductCategoryId { get; set; }
@@ -265,6 +270,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool ShorteeMustHaveFundToGuranteeLoan { get; set; }
         public bool Co_obligorMustHaveFundToGuranteeLoan { get; set; }
         public decimal MinimumPercentageCoverageOfShortee { get; set; }
+        public string LoanTypeCategory { get; set; }
+        
 
         public bool IsChargesApplied { get; set; }
         public decimal MinimumChargesToAppliedInPercentage { get; set; }
@@ -341,6 +348,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public LoanTerm LoanTerm { get; set; }
         public bool IsProductWithSavingFacilities { get; set; }
         public bool IsPaidFeeBeforeProcessing { get; set; }
+
     }
 
     public class LoanProductObject
@@ -389,20 +397,28 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string LoanProductCategoryId { get; set; }
         public bool IsProductWithSavingFacilities { get; set; }
         public bool IsPaidFeeBeforeProcessing { get; set; }
+        public string LoanTypeCategory { get; set; }
+        public bool IsMortgage { get; set; }
+
+
     }
 
     public class UpdateLoanProductCommand
     {
+        public string PenaltyId { get; set; }
         public string Id { get; set; }
         public string ProductCode { get; set; }
         public bool InterestMustBePaidUpFront { get; set; }
-
+        public string LoanTypeCategory { get; set; }
         public string ProductName { get; set; }
         public string LoanInterestPeriod { get; set; }//Per Day, Per Week, Per Month, Per Year
         public decimal MinimumInterestRate { get; set; }
         public decimal LoanMaximumAmount { get; set; }
         public string TargetType { get; set; }
         public string LoanProductCategoryId { get; set; }
+        public bool BlockShareAccount { get; set; }
+        public bool BlockSavingAccount { get; set; }
+
         public decimal MaximumInterestRate { get; set; }
         public string LoanDurationPeriod { get; set; }//Days, Weeks, Months, Years
         public int MinimumDurationPeriod { get; set; }
@@ -594,6 +610,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public List<StringValues> LoanCategories { get; set; } = new List<StringValues>();
         public List<StringValues> LoanDeliquenciesStatus { get; set; } = new List<StringValues>();
         public List<StringValues> LoanApplicationTypes { get; set; } = new List<StringValues>();
+        public List<StringValues> Penalties { get; set; } = new List<StringValues>();
 
         //LoanDeliquenciesStatus
         //ApprovalStatus

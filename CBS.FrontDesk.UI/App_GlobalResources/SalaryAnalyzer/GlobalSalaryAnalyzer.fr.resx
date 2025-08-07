@@ -316,7 +316,7 @@
     <value>Total de membres</value>
   </data>
   <data name="TotalNetSalary" xml:space="preserve">
-    <value>Salaire net total</value>
+    <value>Salaire Brut</value>
   </data>
   <data name="TotalRepayment" xml:space="preserve">
     <value>Remboursement total</value>

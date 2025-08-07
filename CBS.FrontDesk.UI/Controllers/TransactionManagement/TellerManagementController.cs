@@ -45,6 +45,40 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var data = new SavingConfiguration { Teller = teller, MobileMoneyTellerConfiguration = mobileMoneyTellerConfiguration };
             return View(data);
         }
+        [HttpPost]
+        public async Task<JsonResult> ToggleRemoteClose(ToggleRemoteCloseDto request)
+        {
+            if (string.IsNullOrWhiteSpace(request.TellerId))
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "❌ Teller ID is required."
+                });
+            }
+
+            try
+            {
+               
+                // 🔁 Call update method with toggle mode
+                var result = await _tellerServices.Update(null, request, true);
+
+                return Json(new
+                {
+                    success = result.Result,
+                    status = result.MessageStatus,
+                    message = Messaging.MessageResult(result)
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = $"❌ An unexpected error occurred while toggling remote close: {ex.Message}"
+                });
+            }
+        }
 
         [HttpPost]
         public async Task<ActionResult> AddOrUpdate(SavingConfiguration model)
@@ -92,7 +126,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
         private Func<Task<ExecutionMessages>> GetUpdateServiceAction(string serviceOption, SavingConfiguration model)
         {
-            return () => _tellerServices.Update(model.Teller);
+            return () => _tellerServices.Update(model.Teller,null,false);
         }
 
         private Func<Task<ExecutionMessages>> UpdateMobileMoneyCOnfigurations(string serviceOption, SavingConfiguration model)

@@ -31,7 +31,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     }
     public class AccountingEntriesReport : ReportHeader
     {
-
+        public string Message { get; set; }
         public List<AccountingEntryDto> AccountingEntries { get; set; }
 
         public List<JournalEntryDto>  BuildJournalEntry(AccountingEntriesReport Entries,string username)
@@ -48,7 +48,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 JournalEntryDto dto = new JournalEntryDto();
                 dto.AccountNumber = account.AccountNumberReference;
                 dto.Description = account.Naration;
-             
+                dto.ValueDate = account.ValueDate.ToString("dd-MM-yyyy");
                 dto.Reference = account.ReferenceID.ToString();
                 dto.EntryDate = account.EntryDate.ToString();
                 dto.Address = this.Address;

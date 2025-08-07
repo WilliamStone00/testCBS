@@ -169,6 +169,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Block member&apos;s saving account for standing orders or loan security..
+        /// </summary>
+        internal static string BlockedSavingAccountForStandingOrders {
+            get {
+                return ResourceManager.GetString("BlockedSavingAccountForStandingOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Block member&apos;s share account for standing orders or loan security..
+        /// </summary>
+        internal static string BlockedShareAccountForStandingOrders {
+            get {
+                return ResourceManager.GetString("BlockedShareAccountForStandingOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calculate penalty on.
         /// </summary>
         internal static string CalculatePenaltyOn {

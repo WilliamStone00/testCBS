@@ -1,0 +1,117 @@
+﻿<div class="modal fade" id="receiverSearchModal" tabindex="-1" aria-labelledby="receiverSearchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content position-relative">
+
+            <!-- Loader Overlay (Optional: if needed during network requests) -->
+            <div id="receiverLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                    <div class="spinner-border text-tsc mb-3" role="status"></div>
+                    <p class="fw-semibold text-tsc">Processing receiver search... Please wait.</p>
+                </div>
+            </div>
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="w-100">
+                    <div class="card bg-light mb-2">
+                        <div class="card-body text-center">
+                            <h1 class="card-title text-tsc" id="receiverSearchModalLabel">
+                                <i class="mdi mdi-account-search-outline me-2"></i> Search & Select Receiver
+                            </h1>
+                            <p class="card-text">To complete the transfer, search for and select the receiver's account below.</p>
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Receiver Tips Section -->
+            <div class="card m-3">
+                <h6 class="card-header d-flex justify-content-between align-items-center text-tsc">
+                    <span><i class="mdi mdi-information-outline me-2"></i> Why Receiver Selection Is Required</span>
+                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReceiverTips">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                </h6>
+                <div id="collapseReceiverTips" class="collapse">
+                    <div class="card-body">
+                        <ul class="mb-0" style="list-style: none; padding-left: 0;">
+                            <li class="mb-2">
+                                <i class="mdi mdi-check-decagram text-tsc me-2"></i>
+                                <strong>Validation:</strong> Receiver account must be confirmed to ensure funds are credited accurately.
+                            </li>
+                            <li class="mb-2">
+                                <i class="mdi mdi-shield-check-outline text-tsc-dark me-2"></i>
+                                <strong>Audit:</strong> All transfers require identifiable receiver information for traceability and audit compliance.
+                            </li>
+                            <li class="mb-2">
+                                <i class="mdi mdi-bank-transfer-in text-tsc-light me-2"></i>
+                                <strong>Accuracy:</strong> Prevents misrouting of internal transfers between accounts or branches.
+                            </li>
+                            <li class="mb-2">
+                                <i class="mdi mdi-alert-octagon-outline text-danger me-2"></i>
+                                <strong>Duplicate Account Check:</strong> Transfers from and to the same account or member are not allowed and will be automatically rejected.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Search Section -->
+            <div class="px-3">
+                <div class="mb-3">
+                    <label for="receiverSearchInput" class="form-label fw-bold">Receiver Reference Number</label>
+                    <div class="input-group shadow-sm">
+                        <input type="text" id="receiverSearchInput" class="form-control border border-success" maxlength="10" placeholder="e.g. 0120050002">
+                        <button class="btn btn-tsc" onclick="SearchReceiver()">
+                            <span id="receiverSearchBtnText"><i class="mdi mdi-magnify"></i> Search</span>
+                            <span id="receiverSearchSpinner" class="spinner-border spinner-border-sm d-none"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Receiver Info Result -->
+                <div id="receiverInfoSection" style="display:none;">
+                    <div class="mb-3">
+                        <span class="badge bg-tsc text-white">Receiver: <strong id="receiverFullName"></strong></span>
+                        <span class="badge bg-tsc-dark text-white">Branch: <strong id="receiverBranchName"></strong></span>
+                        <span class="badge bg-dark text-white">Code: <strong id="receiverBranchCode"></strong></span>
+                    </div>
+
+                    <div class="table-responsive border rounded">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th>Account Type</th>
+                                    <th>Balance</th>
+                                    <th>⇆ Select</th>
+                                </tr>
+                            </thead>
+                            <tbody id="receiverAccountBody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="receiverSearchFeedback" class="text-danger fw-bold mt-2"></div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer justify-content-between">
+                <span class="text-muted fw-semibold">
+                    Member Ref: <span class="text-dark" id="receiverSelectedId">[none]</span>
+                </span>
+                <div class="d-flex align-items-center">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="mdi mdi-close"></i> Close
+                    </button>
+                    <button type="button" id="confirmReceiverBtn" class="btn btn-tsc-dark ms-2" onclick="ApplyReceiverSelection()">
+                        <i class="mdi mdi-check-circle-outline"></i> Use Selected
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

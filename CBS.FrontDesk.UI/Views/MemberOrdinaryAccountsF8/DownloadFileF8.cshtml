@@ -1,95 +1,119 @@
-﻿@using Resources
-@*@{
-    ViewBag.Title = "Loan Reporting";
+﻿@{
+    ViewBag.Title = "Member Balances";
 }
+
 <div class="row">
-    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
-        <div class="card">
-            <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
-                <div class="accordion-item active">
-                    <h2 class="accordion-header text-body d-flex justify-content-between"
-                        id="accordionPopoutIconThree">
-                        <button type="button"
-                                class="accordion-button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#accordionPopoutIcon-3"
-                                aria-expanded="true"
-                                aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-cash-multiple me-2"></i> Members Accounts F8
-                        </button>
-                    </h2>
-                    <div id="accordionPopoutIcon-3"
-                         class="accordion-collapse collapse show"
-                         data-bs-parent="#accordionPopoutIcon">
-                        <div class="accordion-body">
-                            <div id="mainviewChange">
-                                <div class="change-group">
-                                    <div class="card mb-4">
-                                        <div class="card-body d-sm-flex d-block">
-                                            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0 ms-auto">
-                                                <div class="ms-3">
-                                                    <a type="button" href="/MemberOrdinaryAccountsF8/LoanReportGeneration" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View Downloaded Files">
-                                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                                    </a>
-                                                </div>
-                                                <div class="ms-3">
-                                                    <a type="button" href="/MemberOrdinaryAccountsF8" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Back to account listings">
-                                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-body">
-                                        @Html.Partial("_SearchBox")
-                                        <div id="datalistingview">
-                                            @Html.Partial("_FileDownloadData")
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="col-12">
+        <div class="card bg-light mb-2 shadow-sm border-0">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-bank me-2"></i> Members Account Balances
+                </h1>
+                <p class="card-text fs-6">
+                    This interface allows users to <strong>view, filter, and export</strong> detailed account balance information for registered members across various product types such as <span class="text-success">Savings</span>, <span class="text-info">Deposits</span>, and <span class="text-warning">Shares</span>.
+                </p>
+                <p class="card-text text-dark">
+                    The tool is optimized for <strong>back-office teams, accountants, auditors, and compliance officers</strong> who need to track member balances and perform reconciliation or analysis.
+                </p>
+                <p class="card-text">
+                    Once filtered, you can <strong>export the results</strong> to a structured Excel file. All your generated downloads will appear below and remain available until you delete them manually.
+                </p>
+                <hr style="border: 2px solid rgba(0, 128, 0, 0.4);" />
             </div>
         </div>
     </div>
-</div>*@
+</div>
 
 
-@{
-    ViewBag.Title = "Members F8 Balances";
-}
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
-                <div class="accordion-item active">
-                    <h2 class="accordion-header d-flex justify-content-between align-items-center" id="accordionPopoutIconThree">
-                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionPopoutIcon-3" aria-expanded="true" aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-file-excel me-2"></i> @GlobalMemberOrdinaryAccountsF8.MembersAccountsF8
-                        </button>
-                    </h2>
-                    <div id="accordionPopoutIcon-3" class="accordion-collapse collapse show" data-bs-parent="#accordionPopoutIcon">
-                        <div class="accordion-body">
-                            <div id="mainviewChange">
-                                <div class="change-group">
-                                    <div class="accordion-body">
-                                        <div id="datalistingviewx">
-                                            <br />
-                                            @Html.Partial("_SearchBox")
-                                        </div>
-                                        <div id="datalistingview">
-                                            @Html.Partial("_FileDownloadData")
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
+        <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> Tips for Filtering and Export</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="list-unstyled ms-2">
+                <li class="mb-2">
+                    <i class="mdi mdi-home-map-marker text-primary me-2"></i>
+                    <span class="fw-bold">Branch:</span>
+                    Select a branch to filter results for members registered at that location.
+                </li>
+                <li class="mb-2">
+                    <i class="mdi mdi-cash-multiple text-success me-2"></i>
+                    <span class="fw-bold">Account Type:</span>
+                    Choose one or more product types (e.g., Saving, Deposit, Shares) to refine your search.
+                </li>
+                <li class="mb-2">
+                    <i class="mdi mdi-file-export text-info me-2"></i>
+                    <span class="fw-bold">Export:</span>
+                    After applying filters, click <strong>Export to Excel</strong>. The system will prepare your file and list it in the downloaded files section below.
+                </li>
+                <li class="mb-2">
+                    <i class="mdi mdi-download-box-outline text-secondary me-2"></i>
+                    <span class="fw-bold">Download:</span>
+                    Once prepared, your export file will appear in the grid view. Click on it to download.
+                </li>
+                <li class="mb-2">
+                    <i class="mdi mdi-trash-can-outline text-danger me-2"></i>
+                    <span class="fw-bold">Delete All:</span>
+                    If the grid becomes too heavy or you no longer need old exports, use the <strong>Delete All</strong> button to clear all your downloaded files.
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+@using (Html.BeginForm("ExportMemberAccountBalances", "MemberOrdinaryAccountsF8", FormMethod.Post, new { id = "exportForm" }))
+{
+    <div class="card shadow p-3 mb-2">
+        <h5 class="text-primary mb-2"><i class="mdi mdi-filter-outline me-1"></i> Filter Options</h5>
+        <div class="card p-3 bg-light">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Branch</label>
+                    @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2" })
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Account Types</label>
+                    @Html.ListBox("AccountTypes", new MultiSelectList(ViewBag.AccountTypes, "Value", "Text"), new { @class = "form-control select2", multiple = "multiple" })
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Account Profile</label>
+                    @Html.DropDownList("accountProfile", new SelectList(ViewBag.AccountProfiles, "Value", "Text"), "--- Select Profile ---", new { @class = "form-control select2", id = "accountProfile" })
                 </div>
             </div>
         </div>
+
+        <div class="row mt-3">
+            <div class="col-md-12 d-flex">
+                <button type="submit" id="exportBtn" class="btn btn-primary w-100 me-2">
+                    <i class="mdi mdi-file-export"></i> Export to Excel
+                </button>
+                <button type="button" id="reloadFilterBtn" class="btn btn-dark w-100">
+                    <i class="mdi mdi-refresh"></i> Reload
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+
+<div class="card shadow-sm border-0 mb-2">
+    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 text-dark">
+            <i class="mdi mdi-download-box-outline me-1"></i> Downloaded Files
+        </h6>
+        <button class="btn btn-danger btn-sm" onclick="DeleteAllDownloads()">
+            <i class="mdi mdi-trash-can-outline me-1"></i> Delete All
+        </button>
+    </div>
+    <div class="card-body p-3" id="downloadListContainer">
+        @Html.Partial("_FileDownloadData")
     </div>
 </div>
 
@@ -97,33 +121,99 @@
 
 
 
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Reload filter data (same as re-applying with current filters)
+            $("#reloadFilterBtn").click(function () {
+                location.reload();
+            });
 
-<script>
-    $(document).ready(function () {
-        $('#myDataTable').DataTable({
-            "paging": true,
-            "ordering": true,
-            "searching": true,
-            "order": [[1, 'desc']], // Order by the second column (index 1) in descending order (date column)
-            "columnDefs": [
-                { type: 'date', targets: 1 } // Set the type of column 1 (date column) to 'date' for proper sorting
-            ],
-            "buttons": ['excel', 'csv', 'pdf', 'print'] // Enable export buttons
+        // Export to Excel
+        $('#exportBtn').click(function (e) {
+            e.preventDefault();
+
+            var form = $('#exportForm');
+            var formData = form.serialize();
+
+            $.ajax({
+                url: form.attr('action'),
+                method: 'POST',
+                data: formData,
+                traditional: true,
+                beforeSend: function () {
+                    $('#exportBtn').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Exporting...');
+                },
+                success: function (html) {
+                    $('#downloadListContainer').html(html);
+                    appalert("✅ Export completed and file ready for download.", 1, 3); // type: success
+                },
+                error: function (xhr) {
+                    appalert("❌ Export failed: " + xhr.responseText, 3, 4); // type: error
+                },
+                complete: function () {
+                    $('#exportBtn').prop('disabled', false).html('<i class="mdi mdi-file-export"></i> Export to Excel');
+                }
+            });
+        });
+
+        // Apply filter and reload member balances
+$("#applyFilterBtn").click(function () {
+    var data = {
+        branchId: $("#branchId").val(),
+        accountTypes: $("#accountTypes").val(),
+        accountProfile: $("#accountProfile").val()
+    };
+
+    if (!data.branchId || data.accountTypes.length === 0 || !data.accountProfile) {
+        appalert("⚠️ Please select Branch, Account Types, and Account Profile.", 2, 4); // type: warning
+        return;
+    }
+
+    $.ajax({
+        url: '@Url.Action("GetFilteredMemberBalances", "MemberOrdinaryAccountsF8")',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function (result) {
+            $("#memberBalancesTableView").html(result);
+        },
+        error: function () {
+            appalert("❌ An error occurred while loading member balances.", 3, 4);
+        }
+    });
+});
+
+        // Reset filter inputs
+        $("#resetFilterBtn").click(function () {
+            $("#branchId").val("").trigger("change");
+            $("#accountTypes").val([]).trigger("change");
         });
     });
-</script>
 
-
+    // Delete all downloaded files with confirmation
+    function DeleteAllDownloads() {
+        alertify.confirm(
+            'Delete All Downloads',
+            'Are you sure you want to delete all downloaded files?',
+            function () {
+                $.ajax({
+                    url: '/MemberOrdinaryAccountsF8/DeleteAllFiles',
+                    type: 'POST',
+                    success: function (response) {
+                        $('#downloadListContainer').html(response);
+                        appalert("✅ All downloaded files deleted successfully.", 1, 4);
+                    },
+                    error: function (xhr) {
+                        let message = xhr.responseText || "An unexpected server error occurred.";
+                        appalert("❌ " + message, 3, 4);
+                    }
+                });
+            },
+            function () {
+                appalert("ℹ️ Operation cancelled by user.", 2, 3); // type: info/warning
+            }
+        ).set({ labels: { ok: 'Yes, Delete', cancel: 'Cancel' } });
+    }
+    </script>
 }
-
-
-
-
-
-
-
-
-
-

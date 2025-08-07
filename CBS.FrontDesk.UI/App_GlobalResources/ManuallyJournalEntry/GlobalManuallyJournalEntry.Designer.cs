@@ -259,6 +259,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the branch and scope of your entries.
+        /// </summary>
+        internal static string BranchId {
+            get {
+                return ResourceManager.GetString("BranchId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Branch&apos;s eligible for the execution of.
         /// </summary>
         internal static string BranchsEligibleForTheExecutionOf {

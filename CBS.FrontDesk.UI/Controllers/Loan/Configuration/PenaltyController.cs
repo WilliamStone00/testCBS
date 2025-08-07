@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
-    [CheckSessionTimeOutAttribute]
+    //[CheckSessionTimeOutAttribute]
 
     public class PenaltyController : BaseController
     {
@@ -28,27 +28,25 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult> Create(Penalty model)
+        public async Task<ActionResult> AddOrEdit(Penalty model)
         {
+
             if (ModelState.IsValid)
             {
-                var data = await _PenaltyServices.Create(model);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                if (model.Id==null)
+                {
+                    var data = await _PenaltyServices.Create(model);
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+                }
+                var execution = await _PenaltyServices.Update(model);
+                return Json(new { success = execution.Result, status = execution.MessageStatus, message = Messaging.MessageResult(execution) });
+
             }
 
             return Json(new { success = false, status = false, message = "Fill the required fields." });
         }
-        [HttpPost]
-        public async Task<ActionResult> Update(Penalty model)
-        {
-            if (ModelState.IsValid)
-            {
-                var data = await _PenaltyServices.Update(model);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-            }
-
-            return Json(new { success = false, status = false, message = "Fill the required fields." });
-        }
+        
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
@@ -59,6 +57,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             }
             else if (path == "new")
             {
+                await GetValues();
                 return PartialView(partialView, new Penalty());
             }
             else
@@ -68,12 +67,36 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                 return PartialView(partialView, Penalty);
             }
         }
+        [HttpPost]
+        public async Task<JsonResult> DataTable()
+        {
+            var penalties = await _PenaltyServices.GetPenaltys();
+
+            // If paging/sorting/filtering were implemented, apply here
+            var data = penalties.Select(p => new
+            {
+                Id = p.Id,
+                PenaltyName = p.PenaltyName,
+                PenaltyType = p.PenaltyType,
+                PenaltyValue = p.PenaltyValue,
+                IsRate = p.IsRate,
+                CalculatePenaltyOn = p.CalculatePenaltyOn,
+                IsEnabled = p.IsEnabled
+            }).ToList();
+
+            return Json(new
+            {
+                data = data,
+                recordsTotal = data.Count,
+                recordsFiltered = data.Count
+            });
+        }
 
         public async Task<bool> GetValues()
         {
             var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
             ViewBag.CalculateInterestOn = productEnumAgregates.CalculateInterestOn;
-            ViewBag.PenaltyTypes = productEnumAgregates.PenaltyTypes; 
+            ViewBag.PenaltyTypes = _loanProductServices.GetPenaltyTypes().ToList(); 
             return true;
         }
 

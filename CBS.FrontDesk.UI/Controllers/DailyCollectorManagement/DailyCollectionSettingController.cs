@@ -5,9 +5,10 @@ using CBS.BusinessService.Config;
 using CBS.BusinessService.DailyCollectionServices;
 using CBS.BusinessService.LocalizationService;
 using CBS.BusinessService.UserManagement;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Config;
-using CBS.FrontDesk.Data.Entity.DailyCollectorManagement;
+ 
 using CBS.FrontDesk.Data.Message;
 using DocumentFormat.OpenXml;
 using System;
@@ -43,12 +44,37 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             await GetList();
             return View(new DailyCollectionConfiguration());
         }
+        public async Task<ActionResult> CollectionZonification()
+        {
+            await GetList();
+            return View(new DailyCollectionConfiguration());
+        }
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
             await GetList();
             var partialResult = await GetServiceAction(path, partialView, KEY, serviceOption);
 
             return partialResult;
+        }
+        public async Task<ActionResult> DailySaverAccountUpload()
+        {
+            ViewBag.Branches = BuildMenuISViewBag((await _branchService.GetBranches()).ToList());
+            ViewBag.BankName = _branchService.GetBankName();
+            return View(new AccountingConfiguration { BranchId = _branchService.GetBranchID() });
+        }
+        private dynamic BuildMenuISViewBag(List<Branch> listOfItems)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select Branch" });
+            foreach (var item in listOfItems)
+            {
+
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $" {item.Name}" });
+
+
+            }
+            return selectListItems;
+
         }
         private async Task GetList()
         {
@@ -141,7 +167,6 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                     return PartialView(partialView, sysData);
 
                 }
-
                 else if (path == "new")
                 {
 
@@ -149,9 +174,6 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                     return PartialView(partialView, new DailyCollectionConfiguration { Zone = new Data.Entity.DailyCollectionData.Zone() });
 
                 }
-
-
-
                 else
                 {
                     var data = await _zoneServices.GetZoneById(KEY);

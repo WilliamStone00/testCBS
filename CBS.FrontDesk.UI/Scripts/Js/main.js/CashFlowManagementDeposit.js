@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    calculateCashBalance();
+   //calculateCashBalance();
     $('#hideBranchID').hide();
     $('#hideAccountId').hide();
  
@@ -23,9 +23,12 @@
             if (parts[0].includes('Approved')) {
                 $('#hideBranchID').hide();
                 $('#hideAccountId').show();
-               
+                console.log(branchId);
+                console.log(parts[0]);
                 GetBranchBankAccount(branchId);
             } else {
+                console.log(selectedValue);
+                console.log(branchId);
                 loadBranch();
                 console.log("has taged :"+selectedValue+"for options");
             }
@@ -288,6 +291,7 @@ function loadBranch() {
         type: 'GET',
         dataType: 'json',
         success: function (data) {
+            console.log(data);
             // Clear existing options in the OperationEventAttributeId combo  DepositNotificationDto_Temp3
             $('#CorrespondingBranchID').empty();
             $.each(data, function (index, item) {
@@ -309,9 +313,8 @@ function GetBranchBankAccount(BranchId) {
         url: '/CashFlowManagement/GetBranchBankAccount',
         type: 'GET',
         dataType: 'json',
-        data: { branchId: BranchId},
+        data: { accountId: BranchId},
         success: function (data) {
-            // Clear existing options in the OperationEventAttributeId combo  DepositNotificationDto_Temp3
             $('#DepositNotificationDto_Temp3').empty();
             $.each(data, function (index, item) {
                 $('#DepositNotificationDto_Temp3').append($('<option>').text(item.Value).attr('value', item.Text));
@@ -332,7 +335,7 @@ function loadAccountBalance(accountId) {
         url: '/ManuallyJournalEntry/GetAccountBalance',
         type: 'GET',
         dataType: 'json',
-        data: { Id: accountId },
+        data: { accountId: accountId },
         success: function (data) {
             // Clear existing options in the OperationEventAttributeId combo 
             $('#BankCashOut_Balance').empty();

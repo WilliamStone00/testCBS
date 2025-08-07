@@ -15,6 +15,7 @@ using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.BusinessService.Config;
+using DocumentFormat.OpenXml.EMMA;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -46,11 +47,11 @@ namespace CBS.BusinessService.Accounts
 
             return totalNotesValue == amount;
         }
-        public async Task<ExecutionMessages> EndTheDay(CloseOfDayRequest model)
+        public async Task<ExecutionMessages> EndTheDay(CloseOfDayRequest model, bool proceedWithDiscrepancy)
         {
             try
             {
-                var (isValid, discrepancyMessage) = ValidateDenominations(model.CurrencyNotes, model.Amount);
+                var (isValid, discrepancyMessage) = ValidateDenominations(model.CurrencyNotes, model.Amount, proceedWithDiscrepancy);
 
                 if (!isValid)
                 {

@@ -17,6 +17,11 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.Data.Entity.SavingProducts
 {
+    public class ToggleRemoteCloseDto
+    {
+        public string TellerId { get; set; }
+        public bool Enable { get; set; }
+    }
 
     public class SavingConfiguration
     {
@@ -325,6 +330,11 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public SavingProduct product { get; set; }
 
     }
+    public class TagPISCollectionProfileCommand
+    {
+        public string CustomerId { get; set; }
+        public bool TagAsPISCollectionProfile { get; set; } // true = tag, false = untag
+    }
     public class MemberAccountActivation
     {
         public string Id { get; set; }
@@ -433,7 +443,9 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public bool OTPControl { get; set; }
         public decimal WithdrawalFormSavingFormFeeFor3PP { get; set; }
         public string EventCodeWithdrawalFormSavingFormFeeFor3PP { get; set; }
-
+        public string TransitChartofAccountId { get; set; }
+        public string SuspenseChartOfAccountId { get; set; }
+        public string MemberDeficitChartofAccountId { get; set; }
         public bool AutoVerifyRemittanceSender { get; set; }
         public bool AutoVerifyRemittanceReceiver { get; set; }
         public decimal MinimumOpeningBalanceMoralPerson { get; set; }
@@ -478,7 +490,6 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string CivilServantsSalaryDestinationPayableChartofAccountId { get; set; }
         public string CivilServantsSalarySourceSalaryChartofaccountId { get; set; }
         public string CivilServantsSalaryDestinationSalaryProductChartofAccountId { get; set; }
-        public string SuspenseChartOfAccountId { get; set; }
         public string PrivateInstitutionSalarySourceChartofAccountId { get; set; }
         public string PrivateInstitutionSalaryDestinationPayableChartofAccountId { get; set; }
         public string PrivateInstitutionSalarySourceSalaryChartofAccountId { get; set; }
@@ -579,8 +590,11 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         [StringLength(50, ErrorMessage = "TellerType cannot exceed 50 characters.")]
         public string TellerType { get; set; } // VirtualTeller, PhysicalTeller, DailyCollectorTeller, NoneCashTeller
+        public bool AllowRemoteTellerClose { get; set; }
 
         public bool PerformCashIn { get; set; }
+        public bool ShowbalancesOnCloseOfDay { get; set; }
+        public bool ShowbalancesOnOpenOfDay { get; set; }
 
         public bool PerformCashOut { get; set; }
 
@@ -1035,6 +1049,9 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public DateTime DateOfOperation { get; set; }
         public string CNI { get; set; }
         public string TelephoneNumber { get; set; }
+        [Required]
+        public string ExternalBranchId { get; set; }
+
 
     }
 
@@ -1140,6 +1157,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string SourceType { get; set; }//Cash_Collection Or Member_Account
         public string CustomerId { get; set; }
         public string AccountNumber { get; set; }
+        public string ExternalBranchId { get; set; }
         public CurrencyNotes CurrencyNotesRequest { get; set; }
     }
     public class AddOtherTransactionMobileMoneyCommand

@@ -248,6 +248,7 @@ namespace CBS.FrontDesk.Data.Entity.GeneralStatisticReport
         public const string MemberAccount = "MemberAccount";
         public const string DailyCollection = "DailyCollection";
         public const string MobileMoneyMTN = "MobileMoneyMTN";
+        public const string DailySaver = "DailySaver";
         public const string MobileMoneyOrange = "MobileMoneyOrange";
         public const string Remittance = "Remittance";
         public const string CivilServantsSalaryCollection = "CivilServantsSalaryCollection";
@@ -267,6 +268,7 @@ namespace CBS.FrontDesk.Data.Entity.GeneralStatisticReport
         {
             MemberAccount,
             DailyCollection,
+            DailySaver,
             MobileMoneyMTN,
             MobileMoneyOrange,
             Remittance,

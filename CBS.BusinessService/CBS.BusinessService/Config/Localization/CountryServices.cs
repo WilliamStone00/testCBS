@@ -20,7 +20,7 @@ namespace CBS.BusinessService.Config.Localization
 
         public CountryServices()
         {
-            _bankConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
+            _bankConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["SystemConfigurationBaseUrl"].ToString());
         }
 
         public async Task<ExecutionMessages> Delete(string id)
@@ -100,7 +100,11 @@ namespace CBS.BusinessService.Config.Localization
         {
             try
             {
-
+                if (model.Id!=null)
+                {
+                    return await Update(model);
+                }
+                
                 // Make an API call to create an individual profile
                 var response = await _bankConfigApiHelper.PostAsync<ServiceResponse<Country>>(APICallHelper.CreateCountry, model);
                 if (response.IsSuccess)
@@ -140,14 +144,14 @@ namespace CBS.BusinessService.Config.Localization
                     {
                         // Successful creation
                         GetExecutionMessages(response, true, $"{model.Name}", MessagesResults.Success,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                         return ExecutionMessage;
                     }
                     else
                     {
                         // Failed creation
                         GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
                 }
                

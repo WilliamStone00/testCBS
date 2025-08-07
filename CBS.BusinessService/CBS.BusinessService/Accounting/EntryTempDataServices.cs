@@ -7,6 +7,7 @@ using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using Microsoft.AspNet.SignalR.Hosting;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -42,8 +43,8 @@ namespace CBS.BusinessService.Accounting
 
                 // Make an API call to create an individual profile
 
-
-                var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.Post_AccountingEntry_Entries, EntryTempData.ConvertToAccountingEntryPayloadCommand(model, GetBranchID()));
+                var data = EntryTempData.ConvertToAccountingEntryPayloadCommand(model, this.IsHeadOffice(), GetBranchID());
+                var response = await _accountingApiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.Post_AccountingEntry_Entries, data);
                 if (response.IsSuccess)
                 {
                     // Successful creation

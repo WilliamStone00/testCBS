@@ -117,10 +117,13 @@ function adjustInterestWithVatLedger(loanId) {
 
 
 function updateLedgerRowTotal(loanId) {
-    const capital = parseFloat(document.getElementById(`capital-${loanId}`)?.value) || 0;
-    const interest = parseFloat(document.getElementById(`interest-${loanId}`)?.value) || 0;
-    const vat = parseFloat(document.getElementById(`vat-${loanId}`)?.value.replace(/,/g, '')) || 0;
-    const penalty = parseFloat(document.getElementById(`penalty-${loanId}`)?.value) || 0;
+    const parseNumber = (id) =>
+        parseFloat(document.getElementById(`${id}-${loanId}`)?.value.replace(/,/g, '')) || 0;
+
+    const capital = parseNumber('capital');
+    const interest = parseNumber('interest');
+    const vat = parseNumber('vat');
+    const penalty = parseNumber('penalty');
 
     const total = capital + interest + vat + penalty;
 
@@ -131,6 +134,7 @@ function updateLedgerRowTotal(loanId) {
 
     calculateLedgerGrandTotal();
 }
+
 
 function calculateLedgerGrandTotal() {
     let grandTotal = 0;
@@ -144,37 +148,48 @@ function calculateLedgerGrandTotal() {
     });
 }
 function calculateVatAndTotals(loanId) {
-    console.log("Calculating for loanId:", loanId);
-    var capitalInput = document.getElementById(`capital-${loanId}`);
-    var interestInput = document.getElementById(`interest-${loanId}`);
-    var penaltyInput = document.getElementById(`penalty-${loanId}`);
-    var vatInput = document.getElementById(`vat-${loanId}`);
+    const confirmCheckbox = document.getElementById(`confirm-${loanId}`);
 
-    if (!capitalInput || !interestInput || !penaltyInput || !vatInput) {
-        console.error("One or more input elements are missing for loanId:", loanId);
+    // ✅ Only calculate if this loan is selected/confirmed
+    if (!confirmCheckbox || !confirmCheckbox.checked) {
+        console.log(`Skipping loanId ${loanId} – not confirmed.`);
         return;
     }
 
-    var capital = parseFloat(capitalInput.value) || 0;
-    var interest = parseFloat(interestInput.value) || 0;
-    var penalty = parseFloat(penaltyInput.value) || 0;
+    console.log("Calculating VAT and total for loanId:", loanId);
 
-    var loanAmountEl = document.querySelector(`#row-${loanId} .loan-amount`);
-    if (!loanAmountEl) {
-        console.error("Loan amount element missing for loanId:", loanId);
+    // 🔹 Input fields
+    const capitalInput = document.getElementById(`capital-${loanId}`);
+    const interestInput = document.getElementById(`interest-${loanId}`);
+    const penaltyInput = document.getElementById(`penalty-${loanId}`);
+    const vatInput = document.getElementById(`vat-${loanId}`);
+    const totalSpan = document.getElementById(`total-${loanId}`);
+    const loanAmountEl = document.querySelector(`#row-${loanId} .loan-amount`);
+
+    // 🔸 Check for required DOM elements
+    if (!capitalInput || !interestInput || !penaltyInput || !vatInput || !loanAmountEl || !totalSpan) {
+        console.error("❌ Missing input or row element for loanId:", loanId);
         return;
     }
-    var loanAmount = parseFloat(loanAmountEl.getAttribute('data-loan-amount')) || 0;
 
-    var vat = loanAmount >= 2000000 ? interest * 0.1925 : 0;
+    // 🔹 Parse numeric values (defaults to 0)
+    const capital = parseFloat(capitalInput.value) || 0;
+    const interest = parseFloat(interestInput.value) || 0;
+    const penalty = parseFloat(penaltyInput.value) || 0;
+    const loanAmount = parseFloat(loanAmountEl.getAttribute('data-loan-amount')) || 0;
+
+    // 🔹 VAT logic (only if loan amount ≥ 2,000,000)
+    const vat = loanAmount >= 2000000 ? interest * 0.1925 : 0;
     vatInput.value = vat.toFixed(2);
 
-    var total = capital + interest + penalty + vat;
-    var totalSpan = document.getElementById(`total-${loanId}`);
-    if (totalSpan) {
-        totalSpan.innerText = total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
+    // 🔹 Total
+    const total = capital + interest + penalty + vat;
+    totalSpan.innerText = total.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
 
+    // 🔹 Update grand total (only from confirmed rows)
     calculateGrandTotal();
 }
 
@@ -193,25 +208,23 @@ function calculateGrandTotal() {
 
 
 function collectDeposits() {
-    var accountsToBeDebited = [];
-    var loansToBeRefunded = [];
-    var totalDebited = 0;
-    var totalRepayment = 0;
-    var selectedLoans = 0;
-    var hasInvalidLoans = false;
+    let accountsToBeDebited = [];
+    let loansToBeRefunded = [];
+    let totalDebited = 0;
+    let totalRepayment = 0;
 
     console.clear();
 
-    // Member and branch info
-    var memberReference = $('#customerId').val();
-    var memberName = $('#memberName').val();
-    var branchName = $('#branchName').val();
-    var branchCode = $('#branchCode').val();
-    var accountantName = $('#accountantName').val();
+    // 📌 Member and branch info
+    let memberReference = $('#customerId').val();
+    let memberName = $('#memberName').val();
+    let branchName = $('#branchName').val();
+    let branchCode = $('#branchCode').val();
+    let accountantName = $('#accountantName').val();
 
-    // Chart of account (ledger source)
-    var chartOfAccountId = $('#account_number').val();
-    var chartOfAccountName = $('#account_number option:selected').text().trim();
+    // 📌 Chart of account (ledger source)
+    let chartOfAccountId = $('#account_number').val();
+    let chartOfAccountName = $('#account_number option:selected').text().trim();
 
     if (!chartOfAccountId || chartOfAccountId === "0") {
         appalert("❌ Please select a source ledger account (GL) before proceeding.", 3, 1);
@@ -219,12 +232,17 @@ function collectDeposits() {
         return null;
     }
 
+    // 📝 Validate and prepare transaction note
     let transactionNote = getValidatedNote();
     if (!transactionNote) return null;
 
-    // 🟩 Collect Loans
+    // 📥 Collect only confirmed loan rows
+    let selectedLoans = 0;
+
     $('#loanRepaymentTable tr').each(function () {
-        let checkbox = $(this).find('.form-check-input');
+        let confirmChecked = $(this).find('.form-check-input[type=checkbox]').prop('checked');
+        if (!confirmChecked) return; // ✅ Skip if not selected
+
         let loanId = $(this).find('td:eq(0)').text().trim();
         let loanAmountContracted = parseFloat($(this).find('.loan-amount').data('loan-amount')) || 0;
 
@@ -233,14 +251,11 @@ function collectDeposits() {
         let penalty = parseFloat($(this).find('.penalty-input').val()) || 0;
         let vat = parseFloat($(this).find('.vat-input').val().replace(/,/g, '')) || 0;
 
-        // ✅ Use existing VAT & interest from input
         let totalAmount = capital + interest + vat + penalty;
 
-        if (totalAmount > 0) {
-            checkbox.prop('checked', true);
-        } else {
-            $(this).find('.total-span').html("⚠️ Missing Values").css("color", "orange");
-            hasInvalidLoans = true;
+        if (totalAmount <= 0) {
+            appalert("❌ Confirmed loan row must have at least one non-zero amount.", 3, 1);
+            return null;
         }
 
         loansToBeRefunded.push({
@@ -263,23 +278,30 @@ function collectDeposits() {
         selectedLoans++;
     });
 
-    // Final validations
+    // 🛑 Block if no loans selected
     if (selectedLoans === 0) {
-        appalert("❌ Please enter an amount and select at least one loan to process repayment.", 3, 1);
+        appalert("❌ Please confirm at least one loan row to process repayment.", 3, 1);
         return null;
     }
 
-    if (selectedLoans > 1) {
-        appalert("❌ Only one loan can be paid at an instant. Please deselect other loans.", 3, 1);
-        return null;
-    }
+    // 💳 Collect debits from account rows (Savings, Deposit, etc.)
+    $('#accountTable tbody tr').each(function () {
+        let amount = parseFloat($(this).find('input.amount-to-debit').val()) || 0;
+        if (amount <= 0) return;
 
-    if (hasInvalidLoans) {
-        appalert("❌ Some loans have missing values. Please enter valid amounts before proceeding.", 3, 1);
-        return null;
-    }
+        let accountNumber = $(this).data('account-number');
+        let accountName = $(this).data('account-name');
+        let accountId = $(this).data('account-id');
 
-    console.log("✅ All validations passed. Ready to submit.");
+        accountsToBeDebited.push({
+            AccountNumber: accountNumber,
+            AccountName: accountName,
+            AccountId: accountId,
+            Amount: amount
+        });
+
+        totalDebited += amount;
+    });
 
     return [{
         MemberReference: memberReference,
@@ -299,36 +321,29 @@ function collectDeposits() {
 
 
 function getValidatedNote() {
-    let noteInput = $('#Note').val().trim();
-    let memberName = $('#memberName').val().trim();
-    let memberId = $('#customerId').val().trim();
-    let branchName = $('#branchName').val().trim();
-    let branchCode = $('#branchCode').val().trim();
-    let accountantName = $('#accountantName').val().trim();
+    let noteInput = $('#Note').val()?.trim() || "";
+    let memberName = $('#memberName').val()?.trim() || "the member";
+    let memberId = $('#customerId').val()?.trim() || "N/A";
+    let branchName = $('#branchName').val()?.trim() || "their respective branch";
+    let branchCode = $('#branchCode').val()?.trim() || "N/A";
+    let accountantName = $('#accountantName').val()?.trim() || "the accountant";
 
-    // ✅ Get selected ledger account details from dropdown
-    let selectedLedgerId = $('#account_number').val();
-    let selectedLedgerName = $('#account_number option:selected').text().trim();
+    // ✅ Get selected ledger account info
+    let selectedLedgerId = $('#account_number').val() || "N/A";
+    let selectedLedgerName = $('#account_number option:selected').text()?.trim() || "the designated ledger account";
 
-    // Set safe defaults if fields are missing
-    memberName = memberName || "the member";
-    branchName = branchName || "their respective branch";
-    branchCode = branchCode || "N/A";
-    accountantName = accountantName || "the accountant";
-    selectedLedgerName = selectedLedgerName || "the designated ledger account";
-    selectedLedgerId = selectedLedgerId || "N/A";
-
+    // 📝 Build default transaction note
     let defaultNote = `This loan repayment transaction for ${memberName} (Member ID: ${memberId}) from ${branchName} (Branch Code: ${branchCode}) has been processed using ledger account '${selectedLedgerName}' (Ledger ID: ${selectedLedgerId}). This repayment may also represent a standing order instruction from the bank, executed manually by ${accountantName} to ensure proper reconciliation and compliance with the institution's loan portfolio management policies.`;
 
-    // ✅ If no note is provided, auto-fill
+    // 🛑 No note provided — auto-fill and return
     if (!noteInput) {
         $('#Note').val(defaultNote);
         console.log("✅ Auto-filled transaction note for ledger-based loan repayment.");
         return defaultNote;
     }
 
-    // ✅ Validate word count
-    let wordCount = noteInput.split(/\s+/).length;
+    // 🔍 Word count validation
+    let wordCount = noteInput.split(/\s+/).filter(word => word.length > 0).length;
     if (wordCount < 20) {
         appalert("❌ The transaction note must contain at least 20 words. Please provide more detailed justification.", 3, 1);
         $('#Note').addClass('border border-danger');
@@ -336,7 +351,7 @@ function getValidatedNote() {
         return null;
     }
 
-    // Remove error styling if valid
+    // ✅ Valid note
     $('#Note').removeClass('border border-danger');
     return noteInput;
 }
@@ -428,7 +443,6 @@ function PostLoanRepayment() {
         'LoanRepaymentGLAccountNoneCash', ledgerAccountId
     );
 }
-appalert("❌ Some loans have missing values. Please enter valid amounts before proceeding.", 3, 1);
 function confirmTransaction(title, message, ajaxUrl, data, operationType, ledgerAccountId) {
     console.log("🔍 Preparing to send data for operation:", operationType);
     console.log("📤 Data to be sent:", JSON.stringify(data, null, 2));

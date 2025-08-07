@@ -210,8 +210,8 @@ namespace CBS.BusinessService.Accounting
             dto.Credit = account.CrAmount;
             dto.Reference = account.ReferenceID.ToString();
             dto.EntryDate =account.EntryDate.ToString();
-                
-        dto.Address = model.Address;
+            dto.ValueDate = account.ValueDate.ToString("dd-MM-yyyy");
+                dto.Address = model.Address;
             dto.BranchLocation = model.Location;
             dto.Location = model.Location;
             dto.Capital = model.Capital;

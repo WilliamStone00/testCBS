@@ -37,6 +37,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         [Required]
         public DateTime ValueDate { get; set; }
         public CurrencyNotesRequest CurrencyNotes { get; set; }
+        public string BranchId { get; set; }
+        public string BranchCode { get; set; }
 
         public BankTransactionModel ConvertToTransferData()
         {
@@ -145,7 +147,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public decimal Amount { get; set; }
         [Required]
         public string ReferenceId { get; set; }
-     
+        public string BranchId { get; set; }
+        public string BranchCode { get; set; }
         public string Description { get; set; }
         [Required]
         public CurrencyNotesRequest CurrencyNotes { get; set; }

@@ -1,0 +1,152 @@
+﻿@{
+    ViewBag.Title = "Request for Overdraft Service Activations";
+}
+
+<div class="container">
+
+    <!-- 🔷 Page Header -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card bg-white border-primary shadow-sm">
+                <div class="card-body text-center">
+                    <h2 class="text-primary fw-bold">
+                        <i class="mdi mdi-bank-plus me-2"></i> Request for Overdraft Service Activations
+                    </h2>
+                    <p class="text-secondary fs-6 mb-2">
+                        Review and manage customer requests for activating overdraft facilities. Each request follows approval workflow and must comply with configured eligibility and product rules.
+                    </p>
+                    <p class="text-muted small">
+                        Ensure requests are processed after confirming customer qualification, financial limits, and overdraft configuration parameters.
+                    </p>
+                    <hr class="my-3" style="border-top: 2px dashed #0d6efd;" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 💡 Guidance Tip -->
+    @Html.Partial("_ApproveTips")
+
+    <!-- 🔍 Filter Form -->
+    @Html.Partial("_FIleter")
+    <!-- 🔧 Actions -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card bg-light border-0 shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="mb-2 mb-md-0">
+                        <span class="fw-semibold text-primary">
+                            <i class="mdi mdi-cog-outline me-1"></i> Manage Activation Requests
+                        </span>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a type="button"
+                           onclick="loadOverdraftData()"
+                           class="btn btn-outline-primary btn-sm"
+                           title="Reload the current request list">
+                            <i class="mdi mdi-refresh me-1"></i> Reload List
+                        </a>
+                        <button onclick="AddORUpdateGen(null,'overdraftRequestDataTableContainer','_OverdraftActivationRequestForm','new','Overdraft')"
+                                class="btn btn-primary btn-sm"
+                                title="Submit a new overdraft activation request">
+                            <i class="mdi mdi-plus-circle-outline me-1"></i> New Request
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📋 Data Table Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white py-2 px-3">
+                    <i class="mdi mdi-table me-2"></i> List of Overdraft Activation Requests
+                </div>
+                <div class="card-body">
+                    <div id="overdraftRequestDataTableContainer">
+                        @Html.Partial("_OverdraftActivationDataTable")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function loadOverdraftData() {
+            let table = $('#overdraftRequestsTable').DataTable({
+                destroy: true,
+                serverSide: true,
+                processing: true,
+                ajax: {
+                    url: '/Overdraft/LoadData',
+                    type: 'POST',
+                    data: function (d) {
+                        const filters = $('#filterForm').serializeArray();
+                        filters.forEach(f => d[f.name] = f.value);
+                        d.DataTableOptions = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            sortColumn: d.columns[d.order[0].column].data,
+                            sortDirection: d.order[0].dir
+                        };
+                    }
+                },
+                columns: [
+                    { data: 'CustomerName', title: 'Customer' },
+                    { data: 'AccountId', title: 'Account' },
+                    { data: 'BranchName', title: 'Branch' },
+                    { data: 'RequestedLimit', title: 'Limit' },
+                    { data: 'InterestRate', title: 'Interest (%)' },
+                    { data: 'Status', title: 'Status' },
+                    { data: 'RequestedAt', title: 'Requested On' },
+                    {
+                        data: 'Id',
+                        title: 'Actions',
+                        orderable: false,
+                        render: function (id, type, row) {
+                            return `
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <button type="button" class="btn btn-outline-success" title="Approve Request" onclick="approveRequest('${id}')">
+                                            <i class="mdi mdi-check-bold"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger" title="Reject Request" onclick="rejectRequest('${id}')">
+                                            <i class="mdi mdi-close-thick"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary" title="View Details" onclick="viewRequest('${id}')">
+                                            <i class="mdi mdi-eye-outline"></i>
+                                        </button>
+                                    </div>
+                                `;
+                        }
+                    }
+                ]
+            });
+        }
+
+        function resetOverdraftFilters() {
+            $('#filterForm')[0].reset();
+            loadOverdraftData();
+        }
+
+        function approveRequest(id) {
+            alert(`Approve request ID: ${id}`);
+        }
+
+        function rejectRequest(id) {
+            alert(`Reject request ID: ${id}`);
+        }
+
+        function viewRequest(id) {
+            window.location.href = `/Overdraft/Details?id=${id}`;
+        }
+
+        $(document).ready(function () {
+            loadOverdraftData();
+        });
+    </script>
+}

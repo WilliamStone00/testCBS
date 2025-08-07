@@ -554,10 +554,10 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string LoanDurarion { get; set; }
         public IndividualCustomerProfile IndividualCustomer { get; set; }
         public PaginationMetadata PaginationMetadata { get; set; }
-        public List<FileDownloadInfo> FileDownloadInfoLoans { get; set; }
+        public List<FileDownloadInfo> FileDownloadInfos { get; set; }
         public InitiateLoanDownloadCommand InitiateLoanDownloadCommand { get; set; }
-        public virtual ICollection<Refund> Refunds { get; set; }
-        public virtual ICollection<LoanAmortization> LoanAmortizations { get; set; }
+        public List<Refund> Refunds { get; set; }
+        public List<LoanAmortization> LoanAmortizations { get; set; }
         public List<DisburstedLoan> DisburstedLoans { get; set; }
         public List<DailyInterestCalculation> DailyInterestCalculations { get; set; }
         public bool IsCompleted { get; set; }
@@ -626,6 +626,19 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         {
             IsUnpaidOnly = true;
         }
+    }
+    public class DownloadF8Filter
+    {
+        /// <summary>
+        /// The branch ID for which the member account balances should be exported.
+        /// </summary>
+        public string BranchId { get; set; }
+
+        /// <summary>
+        /// The list of account types to include in the export (e.g., Saving, Deposit, MemberShare).
+        /// </summary>
+        public List<string> AccountTypes { get; set; }
+        public string AccountProfile { get; set; }
     }
     public class FileDownloadInfo
     {

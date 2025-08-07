@@ -9,24 +9,30 @@
             <div class="row mt-2 gy-4">
                 <div class="col-md-12">
                     <label class="form-label">@GlobalSalaryUpload.SalaryType:</label>
-                    <div class="d-flex align-items-center">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="salaryTypeCivil" name="AddSalaryUploadModelCommand.SalaryType" value="CivilServants" required />
-                            <label class="form-check-label" for="salaryTypeCivil">@GlobalSalaryUpload.CivilServants</label>
+
+                    @if (ViewBag.HeadOffice=="Yes")
+                    {
+                        <div class="d-flex align-items-center">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="salaryTypeCivil" name="AddSalaryUploadModelCommand.SalaryType" value="CivilServants" required />
+                                <label class="form-check-label" for="salaryTypeCivil">@GlobalSalaryUpload.CivilServants</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="salaryTypePrivate" name="AddSalaryUploadModelCommand.SalaryType" value="PrivateInstitutions" required />
+                                <label class="form-check-label" for="salaryTypePrivate">@GlobalSalaryUpload.PrivateInstitutions</label>
+                            </div>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="salaryTypePrivate" name="AddSalaryUploadModelCommand.SalaryType" value="PrivateInstitutions" required />
-                            <label class="form-check-label" for="salaryTypePrivate">@GlobalSalaryUpload.PrivateInstitutions</label>
+                    }
+                    else
+                    {
+                        <div class="d-flex align-items-center">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="salaryTypePrivate" name="AddSalaryUploadModelCommand.SalaryType" value="PrivateInstitutions" required />
+                                <label class="form-check-label" for="salaryTypePrivate">@GlobalSalaryUpload.PrivateInstitutions</label>
+                            </div>
                         </div>
-                        @*<div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="salaryTypeInternal" name="AddSalaryUploadModelCommand.SalaryType" value="InternalStaffs" required />
-                            <label class="form-check-label" for="salaryTypeInternal">Internal staff</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="salaryTypeDaily" name="AddSalaryUploadModelCommand.SalaryType" value="DailyServers" required />
-                            <label class="form-check-label" for="salaryTypeDaily">Daily Servers</label>
-                        </div>*@
-                    </div>
+                    }
+
                     @Html.ValidationMessageFor(m => m.AddSalaryUploadModelCommand.SalaryType, "", new { @class = "text-danger " })
                 </div>
                 <div class="col-md-12">

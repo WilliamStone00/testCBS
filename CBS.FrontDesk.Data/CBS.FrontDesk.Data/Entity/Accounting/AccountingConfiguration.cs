@@ -13,7 +13,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     {
         //
         public List<AccountBookingDirection> AccountBookingDirections { get; set; } = new List<AccountBookingDirection>();
-
+        public FinancialDocumentReference FinancialDocumentReference { get; set; } = new FinancialDocumentReference();
+        public List<FinancialDocumentReferenceDto> FinancialDocumentReferences { get; set; } = new List<FinancialDocumentReferenceDto>();
         public AccountBookingDirection AccountBookingDirection { get; set; } = new AccountBookingDirection();
         public TrialBalanceFile TrialBalanceFile { get; set; }
         public List<TrialBalanceFile> TrialBalanceFiles { get; set; } = new List<TrialBalanceFile>();
@@ -68,11 +69,10 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string ManualOperationCode { get; set; }
         public string ManualOperationName { get; set; }
         public string ServiceOption { get; set; }
+        public string BankName { get; set; }
         public string Action { get; set; }
         public string KEY { get; set; } = "KEY";
     }
-
-
-
+ 
 }
 

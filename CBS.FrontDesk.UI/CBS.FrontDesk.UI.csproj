@@ -516,6 +516,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppFiles\Reporting\Accounting\PandLReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PandLReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Loan\GeneralStatistics\GeneralStatisticsMAINRPT.cs">
       <DependentUpon>GeneralStatisticsMAINRPT.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -718,6 +724,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingConfig_CreateDocumentReferenceCode.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateFinancialReferenceCode.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingConfig_CreateFinancialReferenceCode.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateIncomeStatementStructure.fr.designer.cs">
       <AutoGen>True</AutoGen>
@@ -2014,6 +2025,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalWithdrawalNotification.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\Accounting\AccountBalanceInitializationController.cs" />
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
     <Compile Include="Controllers\Accounting\AccountEntry.cs" />
@@ -2025,6 +2037,7 @@
     <Compile Include="Controllers\Accounting\BankingOperationController.cs" />
     <Compile Include="Controllers\Accounting\BranchAccountJournalEntriesQueryObject.cs" />
     <Compile Include="Controllers\Accounting\CashFlowManagementController.cs" />
+    <Compile Include="Controllers\Accounting\CashMovementController.cs" />
     <Compile Include="Controllers\Accounting\CashMovementTrackerConfigurationController.cs" />
     <Compile Include="Controllers\Accounting\CashMovementTrackerController.cs" />
     <Compile Include="Controllers\Accounting\DocumentConfigurationController.cs" />
@@ -2043,9 +2056,11 @@
     <Compile Include="Controllers\CashDeskOperations\CashDeskController.cs" />
     <Compile Include="Controllers\CashDeskOperations\OtherTransactionController.cs" />
     <Compile Include="Controllers\ChangeCustomerNumber\ChangeNumberController.cs" />
+    <Compile Include="Controllers\DailyCollectorManagement\DailyCollectionDashboardController.cs" />
+    <Compile Include="Controllers\MemberReceiptsP\MemberReceiptController.cs" />
     <Compile Include="Controllers\CMoney\CMoneyMembershipController.cs" />
     <Compile Include="Controllers\Commitee\LoanCommiteeController.cs" />
-    <Compile Include="Controllers\Configuration\Localization\CountryController.cs" />
+    <Compile Include="Controllers\Configuration\Localization\GlobalizationController.cs" />
     <Compile Include="Controllers\Configuration\Organ\BankController.cs" />
     <Compile Include="Controllers\Configuration\Organ\BranchManagementController.cs" />
     <Compile Include="Controllers\Configuration\Organ\EconomicActivityController.cs" />
@@ -2090,11 +2105,14 @@
     <Compile Include="Controllers\Loan\LoanPortfolioReportHelper.cs" />
     <Compile Include="Controllers\Loan\LoanTransactions\LoanController.cs" />
     <Compile Include="Controllers\Localization\LocalizationController.cs" />
+    <Compile Include="Controllers\MemberNoneCashOperation\AccountToAccountTransferController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\LoanRepaymentBackOfficeController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\MemberNoneCashOperationController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\MobileMoneyBackOfficeController.cs" />
     <Compile Include="Controllers\MemberOperation\MemberOperationController.cs" />
     <Compile Include="Controllers\MembersFSerie\MembersFSeriesController.cs" />
+    <Compile Include="Controllers\Overdraft\OverdraftActivationController.cs" />
+    <Compile Include="Controllers\Overdraft\OverdraftFacilityConfigController.cs" />
     <Compile Include="Controllers\RemittanceP\RemittanceCashDeskController.cs" />
     <Compile Include="Controllers\RemittanceP\RemittanceController.cs" />
     <Compile Include="Controllers\Report\ReportsController.cs" />
@@ -2128,6 +2146,7 @@
     <Compile Include="Controllers\TransactionManagement\OperationFeeController.cs" />
     <Compile Include="Controllers\TransactionManagement\PrimaryTellerCashRequisitionController.cs" />
     <Compile Include="Controllers\TransactionManagement\SalaryAnalyzerController.cs" />
+    <Compile Include="Controllers\TransactionManagement\PISalaryExecutionController.cs" />
     <Compile Include="Controllers\TransactionManagement\SalaryExecutionController.cs" />
     <Compile Include="Controllers\TransactionManagement\SalaryUploadController.cs" />
     <Compile Include="Controllers\TransactionManagement\SavingController.cs" />
@@ -2152,6 +2171,7 @@
       <DependentUpon>GeneralStatisticsDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Filter\MaliciousContentScannerService.cs" />
+    <Compile Include="Helper\FileUploadHelper.cs" />
     <Compile Include="WAF\Middleware\Correlation\CorrelationIdMiddleware.cs" />
     <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureFilter.cs" />
     <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureMiddleware.cs" />
@@ -2228,12 +2248,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LiaisonLedger.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="AppFiles\Reporting\Accounting\PandLReport.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PandLReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\PrintedManualJE.cs">
@@ -4245,7 +4259,12 @@
     <Content Include="CBSTemp\ui\assets\alertifyjs\css\themes\semantic.rtl.min.css" />
     <Content Include="CBSTemp\ui\assets\alertifyjs\notify.js" />
     <Content Include="CBSTemp\ui\assets\audio\Water_Lily.mp3" />
+    <Content Include="CBSTemp\ui\assets\css\CommissionPayment.css" />
+    <Content Include="CBSTemp\ui\assets\css\DailyCollectionDashBoard.css" />
+    <Content Include="CBSTemp\ui\assets\css\DailySavingOperations.css" />
+    <Content Include="CBSTemp\ui\assets\css\DailySavingOperationUpload.css" />
     <Content Include="CBSTemp\ui\assets\css\demo.css" />
+    <Content Include="CBSTemp\ui\assets\css\FinancialReferenceDocument.css" />
     <Content Include="CBSTemp\ui\assets\img\.DS_Store" />
     <Content Include="CBSTemp\ui\assets\img\avatars\1.png" />
     <Content Include="CBSTemp\ui\assets\img\avatars\10.png" />
@@ -5895,6 +5914,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\TSC\TscStyles.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -6467,7 +6487,8 @@
     <Content Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsc">
       <DependentUpon>DeliquentLoanSummaryDataSet.xsd</DependentUpon>
     </Content>
-    <Content Include="AppFiles\BulkOperation\BulkOperationFileUpload.xlsx" />
+    <Content Include="AppFiles\Reporting\SampleDocument\SampleDailySaverToBeUploaded.xlsx" />
+    <Content Include="AppFiles\Reporting\SampleDocument\CorrectedCollectorEntryFile.xlsx" />
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -6804,7 +6825,7 @@
     <Content Include="DataSet\Accounting\AccountingDataSet.xsc">
       <DependentUpon>AccountingDataSet.xsd</DependentUpon>
     </Content>
-    <Content Include="AppFiles\UploadedSampleTrialBalance.xlsx" />
+    <Content Include="AppFiles\Reporting\SampleDocument\UploadedSampleTrialBalance.xlsx" />
     <Content Include="App_GlobalResources\HomePage\GlobalAbout.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalAbout.Designer.cs</LastGenOutput>
@@ -6925,10 +6946,6 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalAccountUpload.Designer.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="AppFiles\Reporting\Accounting\PandLReport.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>PandLReport.cs</LastGenOutput>
-    </EmbeddedResource>
     <Content Include="App_GlobalResources\CashDesk\OtherCashTransactions.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>OtherCashTransactions.Designer.cs</LastGenOutput>
@@ -7446,6 +7463,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanTerm.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\PandLReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PandLReport.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Loan\GeneralStatistics\GeneralStatisticsMAINRPT.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>GeneralStatisticsMAINRPT.cs</LastGenOutput>
@@ -8094,6 +8115,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LoanSituationAlphaRPT.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="App_GlobalResources\AccountingConfiguration\AccountingConfig_CreateFinancialReferenceCode.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingConfig_CreateFinancialReferenceCode.Designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -8186,17 +8211,27 @@
     <Content Include="Scripts\Js\AccountEventConfigurtion\MFIChartOfAccount.js" />
     <Content Include="Scripts\Js\Accounting\AccountingChart.js" />
     <Content Include="Scripts\Js\CashMovementTracker\CashMovementTracker.js" />
+    <Content Include="Scripts\Js\CommissionManagement\CommissionPayment.js" />
+    <Content Include="Scripts\Js\CommissionManagement\DailyCollectionManagement.js" />
+    <Content Include="Scripts\Js\CommissionManagement\DSFileUploaded.js" />
+    <Content Include="Scripts\Js\Dashboard\DailyCollection\DailyCollectionDashboard.js" />
+    <Content Include="Scripts\Js\main.js\AccountBalanceInitialization.js" />
+    <Content Include="Scripts\Js\main.js\DailySaverOperations.js" />
+    <Content Include="Scripts\Js\main.js\DailySaverUploud.js" />
+    <Content Include="Scripts\Js\MemberReceiptsP\MemberReceipt.js" />
     <Content Include="Scripts\Js\CMoney\cmoney.js" />
     <Content Include="Scripts\Js\CMoney\cmMembers.js" />
     <Content Include="Scripts\Js\CommissionManagement\CommissionManagement.js" />
     <Content Include="Scripts\Js\Crud\AccountingDay\AccountingDayStatus.js" />
     <Content Include="Scripts\Js\Crud\AccountOpeningRulePerBranch\AccountOpeningRulePerBranch.js" />
+    <Content Include="Scripts\Js\Crud\AccountToAccountTransfer\TransferApproval.js" />
     <Content Include="Scripts\Js\Crud\AuditTrail\Audits.js" />
     <Content Include="Scripts\Js\Crud\BulkOperation\BulkOperationValidation.js" />
     <Content Include="Scripts\Js\Crud\BulkOperation\BulkSimulationDetailsQuery.js" />
     <Content Include="Scripts\Js\Crud\BulkOperation\BulkSimulationQuery.js" />
     <Content Include="Scripts\Js\Crud\BulkOperation\MemberOperation.js" />
     <Content Include="Scripts\Js\Crud\BulkOperation\Simulation.js" />
+    <Content Include="Scripts\Js\Crud\AccountToAccountTransfer\AccountToAccountTransfer.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\CashDeskCashin.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\PreMemberOnboarding.js" />
     <Content Include="Scripts\Js\Crud\CashDesk\LoanRefpaymentSimulation.js" />
@@ -8268,6 +8303,8 @@
     <Content Include="Scripts\Js\Dashboard\Dailyoperations\HeadOffice.js" />
     <Content Include="Scripts\Js\Dashboard\Dailyoperations\BranchOffice.js" />
     <Content Include="Scripts\Js\Dashboard\OpenBranches.js" />
+    <Content Include="Scripts\Js\FinanstatementConfig\DocumentReferenceConfig.js" />
+    <Content Include="Scripts\Js\FinanstatementConfig\DocumentReferenceData.js" />
     <Content Include="Scripts\Js\GeneralStatisticReport\GeneralStatistics.js" />
     <Content Include="Scripts\Js\main.js\AutoJournalEntry.js" />
     <Content Include="Scripts\Js\main.js\CashFlowManagementDeposit.js" />
@@ -9017,8 +9054,6 @@
     <Content Include="Views\PasswordPolicyManagement\_Data.cshtml" />
     <Content Include="Views\PasswordPolicyManagement\_PolicyTips.cshtml" />
     <Content Include="Views\Penalty\Index.cshtml" />
-    <Content Include="Views\Penalty\_Data.cshtml" />
-    <Content Include="Views\Penalty\_Update.cshtml" />
     <Content Include="Views\PrimaryTellerCashRequisition\Index.cshtml" />
     <Content Include="Views\PrimaryTellerCashRequisition\PendingRequest.cshtml" />
     <Content Include="Views\PrimaryTellerCashRequisition\Request.cshtml" />
@@ -9284,14 +9319,78 @@
     <Content Include="Views\GeneralStatisticReport\_Dashboard.cshtml" />
     <Content Include="Views\GeneralStatisticReport\_ReportFilter.cshtml" />
     <Content Include="Views\Loan\_FIlterQuery.cshtml" />
-    <Content Include="Views\BulkOperation\BulkCashOperation.cshtml" />
-    <Content Include="Views\BulkOperation\_BulkOperationFileUploadPartial.cshtml" />
-    <Content Include="Views\BulkOperation\_BulkOperationFileContentPartial.cshtml" />
-    <Content Include="Views\BulkOperation\_ManualBulkOperationConfigurationPartial.cshtml" />
-    <Content Include="Views\BulkOperation\_FileBulkOperationConfigurationPartial.cshtml" />
-    <Content Include="Views\BulkOperation\_BulkOperationParameters.cshtml" />
-    <Content Include="Views\BulkOperation\_BulkOperationFileUploadTips.cshtml" />
-    <Content Include="Views\BulkOperation\_BulkOperationManualAccountEntryTips.cshtml" />
+    <Content Include="Views\Globalization\Index.cshtml" />
+    <Content Include="Views\Globalization\_TownForm.cshtml" />
+    <Content Include="Views\Globalization\_SubDivisionForm.cshtml" />
+    <Content Include="Views\Globalization\_CountryForm.cshtml" />
+    <Content Include="Views\Globalization\_RegionForm.cshtml" />
+    <Content Include="Views\Globalization\_DivisionForm.cshtml" />
+    <Content Include="Views\Globalization\_CountryDataTable.cshtml" />
+    <Content Include="Views\Globalization\_RegionDataTable.cshtml" />
+    <Content Include="Views\Globalization\_DivisionDataTable.cshtml" />
+    <Content Include="Views\Globalization\_SubDivisionDataTable.cshtml" />
+    <Content Include="Views\Globalization\_TownDataTable.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_CreateFinancialReferenceCode.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_FinancialDocumentReferenceData.cshtml" />
+    <Content Include="Views\PISalaryExecution\_FileUploadData.cshtml" />
+    <Content Include="Views\PISalaryExecution\_SalaryDetailsData.cshtml" />
+    <Content Include="Views\PISalaryExecution\_SalaryUploadForm.cshtml" />
+    <Content Include="Views\PISalaryExecution\Detail.cshtml" />
+    <Content Include="Views\PISalaryExecution\Index.cshtml" />
+    <Content Include="Views\PISalaryExecution\UploadedSalaryFiles.cshtml" />
+    <Content Include="Views\AccountToAccountTransfer\Index.cshtml" />
+    <Content Include="Views\AccountToAccountTransfer\_SendersForm.cshtml" />
+    <Content Include="Views\AccountToAccountTransfer\_SearchBoxSender.cshtml" />
+    <Content Include="Views\AccountToAccountTransfer\_ReceiversInformation.cshtml" />
+    <Content Include="Views\AccountToAccountTransfer\_ReceiversForm.cshtml" />
+    <Content Include="Views\AccountToAccountTransfer\_Tips.cshtml" />
+    <Content Include="Views\AccountToAccountTransfer\Transfters.cshtml" />
+    <Content Include="Views\AccountToAccountTransfer\_TransferTable.cshtml" />
+    <Content Include="Views\AccountToAccountTransfer\_TransferEdit.cshtml" />
+    <Content Include="Views\AccountToAccountTransfer\_TransferApprove.cshtml" />
+    <Content Include="Views\AccountToAccountTransfer\_TransferDetails.cshtml" />
+    <Content Include="Views\MemberReceipt\Index.cshtml" />
+    <Content Include="Views\MemberReceipt\_MemberReceiptDataTable.cshtml" />
+    <Content Include="Views\MemberReceipt\_Filter.cshtml" />
+    <Content Include="Views\MemberReceipt\_Tips.cshtml" />
+    <Content Include="Views\MemberReceipt\_ViewReceipt.cshtml" />
+    <Content Include="Views\MemberReceipt\_ReceiptSummaryTable.cshtml" />
+    <Content Include="Views\LoanProduct\_LoanProductTip.cshtml" />
+    <Content Include="Views\OverdraftFacilityConfig\_OverdraftFacilityDataTable.cshtml" />
+    <Content Include="Views\OverdraftFacilityConfig\_OverdraftFacilityConfigForm.cshtml" />
+    <Content Include="Views\OverdraftFacilityConfig\Index.cshtml" />
+    <Content Include="Views\OverdraftFacilityConfig\_TipOverdraftConfigs.cshtml" />
+    <Content Include="Views\Penalty\_TipPenaltyConfigs.cshtml" />
+    <Content Include="Views\Penalty\_PenaltyConfigForm.cshtml" />
+    <Content Include="Views\Penalty\_PenaltyConfigDataTable.cshtml" />
+    <Content Include="Views\OverdraftActivation\_OverdraftActivationDataTable.cshtml" />
+    <Content Include="Views\OverdraftActivation\_OverdraftActivationRequestForm.cshtml" />
+    <Content Include="Views\OverdraftActivation\_RequestTips.cshtml" />
+    <Content Include="Views\OverdraftActivation\Index.cshtml" />
+    <Content Include="Views\OverdraftActivation\Requests.cshtml" />
+    <Content Include="Views\OverdraftActivation\_ApproveTips.cshtml" />
+    <Content Include="Views\OverdraftActivation\_FIleter.cshtml" />
+    <Content Include="Views\DailyAgentManagement\CommissionPayment.cshtml" />
+    <Content Include="Views\DailyAgentManagement\Index.cshtml" />
+    <Content Include="Views\DailyCollectionDashboard\Index.cshtml" />
+    <Content Include="Views\AccountBalanceInitialization\Index.cshtml" />
+    <Content Include="Views\AccountBalanceInitialization\_AccountInitializationData.cshtml" />
+    <Content Include="Views\AccountBalanceInitialization\_CreateAccountBalanceInitialization.cshtml" />
+    <Content Include="Views\AccountBalanceInitialization\_CreateZeroOutRequest.cshtml" />
+    <Content Include="Views\AccountBalanceInitialization\IndexZeroOut.cshtml" />
+    <Content Include="Views\AccountBalanceInitialization\_ZeroOutAccountInitData.cshtml" />
+    <Content Include="Views\DailyCollectionSetting\DailySaverAccountUpload.cshtml" />
+    <Content Include="Views\MembersFSeries\_LoansTablePartial.cshtml" />
+    <Content Include="Views\MembersFSeries\_LoanDetailsModalPartial.cshtml" />
+    <Content Include="Views\AccountBalanceInitialization\_SearchOption.cshtml" />
+    <Content Include="Views\DailyAgentManagement\UploadDailyCollectorOperation.cshtml" />
+    <Content Include="Views\DailyAgentManagement\_UploadDailyCollectorOperations.cshtml" />
+    <Content Include="Views\CashMovement\Index.cshtml" />
+    <Content Include="Views\DailyAgentManagement\UploadDailySavers.cshtml" />
+    <Content Include="Views\DailyAgentManagement\_uploadDailySavers.cshtml" />
+    <Content Include="Views\DailyAgentManagement\_UploadedDailyOperationData.cshtml" />
+    <Content Include="Views\DailyAgentManagement\ListOfUploadedFiles.cshtml" />
+    <Content Include="Views\DailyAgentManagement\GetFileUploadApproval.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

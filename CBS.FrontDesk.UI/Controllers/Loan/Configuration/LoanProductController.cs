@@ -115,7 +115,9 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                     model.UpdateLoanProductCommand.LoanTermId = model.AddLoanProductCommand.LoanTermId;
                     model.UpdateLoanProductCommand.LoanProductCategoryId = model.AddLoanProductCommand.LoanProductCategoryId;
                     model.UpdateLoanProductCommand.IsProductWithSavingFacilities = model.AddLoanProductCommand.IsProductWithSavingFacilities;
-                }
+                    model.UpdateLoanProductCommand.IsMortgage = model.AddLoanProductCommand.IsMortgage;
+
+    }
                 else if (model.ServiceOption == "duration")
                 {
                     var selectedLoanTerm = await _loanTermServices.GetLoanTerm(model.UpdateLoanProductCommand.LoanTermId); // Fetch LoanTerm details
@@ -205,7 +207,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                     ViewBag.CalculateInterestOn = productEnumAgregates.CalculateInterestOn;
                     var penalty = await _PenaltyServices.GetPenalty(KEY);
 
-                    return PartialView(partialView, penalty.LoanProduct);
+                    return PartialView(partialView, penalty);
                 }
                 else if (path == "add_penalty")
                 {
@@ -259,7 +261,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             var loanTerms = await _loanTermServices.GetLoanTerms();
 
             ViewBag.SheduleTypes = _LoanProductServices.GetScheduleTypes();
-            ViewBag.Penalties = agreggates.Penalties;
+            ViewBag.Penalties = productEnumAgregates.Penalties;
             ViewBag.ProductCategories = loanProductCategories;
             ViewBag.LoanTerms = loanTerms;
             ViewBag.Fees = agreggates.Fees;

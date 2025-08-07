@@ -1,4 +1,4 @@
-using CBS.BusinessService.Accounting;
+﻿using CBS.BusinessService.Accounting;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.UI.AppFiles.Reporting.Accounting;
@@ -32,6 +32,7 @@ namespace CBS.FrontDesk.UI.Controllers
         }
         public void ReportParameterLess()
         {
+            ReportDocument rd = new ReportDocument();
             try
             {
                 string strReportName = System.Web.HttpContext.Current.Session["ReportName"]?.ToString();
@@ -45,7 +46,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     return;
                 }
 
-                ReportDocument rd = new ReportDocument();
+                
                 string strRptPath = Server.MapPath(rptpath);
                 rd.Load(strRptPath);
                 if (rptSource.GetType() != typeof(string))
@@ -71,7 +72,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 string savedFileName = $"{rpttitle}-{DateTime.UtcNow.ToString("dd_mm_yyyy_hhmmss")}";
                 rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, savedFileName);
-                CleanReport(rd);
             }
             catch (Exception ex)
             {
@@ -79,10 +79,16 @@ namespace CBS.FrontDesk.UI.Controllers
                 // Handle specific exceptions if needed
                 Response.Write("<H2>An error occurred while generating the report</H2>");
             }
+            finally
+            {
+                CleanReport(rd); // ✅ Guaranteed cleanup
+            }
         }
 
         public void IncomeStatementSubReports()
-        {
+        {                // Create a new ReportDocument
+            ReportDocument rd = new ReportDocument();
+
             try
             {
                 // Retrieve parameters from session
@@ -97,8 +103,6 @@ namespace CBS.FrontDesk.UI.Controllers
                     return;
                 }
 
-                // Create a new ReportDocument
-                ReportDocument rd = new ReportDocument();
                 string strRptPath = HttpContext.Server.MapPath(rptpath);
                 rd.Load(strRptPath);
 
@@ -172,8 +176,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 string savedFileName = $"{rpttitle}-{DateTime.UtcNow:dd_MM_yyyy_HHmmss}";
                 rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, savedFileName);
 
-                // Clean up the report document
-                CleanReport(rd);
+                
             }
             catch (Exception ex)
             {
@@ -181,13 +184,19 @@ namespace CBS.FrontDesk.UI.Controllers
                 // Handle specific exceptions if needed
                 HttpContext.Response.Write("<H2>An error occurred while generating the report</H2>");
             }
+            finally
+            {
+                CleanReport(rd); // ✅ Guaranteed cleanup
+            }
         }
 
 
 
 
         public void ReportParameterLessWithSubReports()
-        {
+        {                // Create a new ReportDocument
+            ReportDocument rd = new ReportDocument();
+
             try
             {
                 // Retrieve parameters from session
@@ -202,8 +211,6 @@ namespace CBS.FrontDesk.UI.Controllers
                     return;
                 }
 
-                // Create a new ReportDocument
-                ReportDocument rd = new ReportDocument();
                 string strRptPath = HttpContext.Server.MapPath(rptpath);
                 rd.Load(strRptPath);
 
@@ -298,14 +305,16 @@ namespace CBS.FrontDesk.UI.Controllers
                 string savedFileName = $"{rpttitle}-{DateTime.UtcNow:dd_MM_yyyy_HHmmss}";
                 rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, savedFileName);
 
-                // Clean up the report document
-                CleanReport(rd);
             }
             catch (Exception ex)
             {
                 // Log the exception
                 // Handle specific exceptions if needed
                 HttpContext.Response.Write("<H2>An error occurred while generating the report</H2>");
+            }
+            finally
+            {
+                CleanReport(rd); // ✅ Guaranteed cleanup
             }
         }
         public ActionResult DownloadFromJquery(string Filename)
@@ -326,8 +335,12 @@ namespace CBS.FrontDesk.UI.Controllers
 
         public ActionResult AccountingPDFReport(string FileType = "")
         {
+            ReportDocument rd = new ReportDocument();
+
+            var Message = (string)this.HttpContext.Session["errorMessage"];
             try
             {
+   
                 var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
                 //string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
                 string fileType = System.Web.HttpContext.Current.Session["fileType"].ToString();
@@ -335,7 +348,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 string rptType = System.Web.HttpContext.Current.Session["rptType"].ToString();
 
-                ReportDocument rd = new ReportDocument();
                 if (rptSource != "empty")
                 {
                     List<TrialBalance6ColumnDto> trialBalance6ColumnDto = new List<TrialBalance6ColumnDto>();
@@ -391,10 +403,6 @@ namespace CBS.FrontDesk.UI.Controllers
                         rd.SetDataSource(listData);
 
                     }
-
-
-
-
                     string SavedFileName = string.Format($"{rptType}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
                     //Export the report to a byte array
                     Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
@@ -410,24 +418,313 @@ namespace CBS.FrontDesk.UI.Controllers
                     Response.BinaryWrite(bytes);
                     Response.Flush();
                     Response.End();
-                    //rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
-                    CleanReport(rd);
 
                 }
-
-
-
             }
             catch (Exception ex)
             {
-                // Log the exception
-                // Handle specific exceptions if needed
-                Response.Write("<H2>An error occurred while generating the report</H2>");
+                return Json(Message, JsonRequestBehavior.AllowGet);
             }
-
+            finally
+            {
+                CleanReport(rd); // ✅ Guaranteed cleanup
+            }
             return View();
         }
 
+        /// <summary>
+        /// Generates and exports accounting reports as PDF documents
+        /// Supports multiple report types: Trial Balance (4/6 column), Journal Entries, General Ledger, and Manual Entries
+        /// </summary>
+        /// <param name="FileType">Optional parameter for file type specification (currently unused)</param>
+        /// <returns>ActionResult - typically returns a View or PDF response</returns>
+        //public ActionResult AccountingPDFReport(string FileType = "")
+        //{
+        //    try
+        //    {
+        //        // Retrieve report configuration from session
+        //        var reportConfiguration = GetReportConfigurationFromSession();
+
+        //        // Validate session data before proceeding
+        //        if (!IsValidReportConfiguration(reportConfiguration))
+        //        {
+        //            return HandleInvalidConfiguration();
+        //        }
+
+        //        // Generate the PDF report
+        //        var pdfBytes = GenerateReportPdf(reportConfiguration);
+
+        //        // Return the PDF to the client
+        //        return DeliverPdfResponse(pdfBytes, reportConfiguration.ReportType);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception for debugging purposes
+        //        LogException(ex);
+
+        //        // Return user-friendly error response
+        //        return HandleReportGenerationError();
+        //    }
+        //}
+
+        #region Private Helper Methods
+
+        /// <summary>
+        /// Extracts report configuration parameters from the current session
+        /// </summary>
+        /// <returns>ReportConfiguration object containing session parameters</returns>
+        private ReportConfiguration GetReportConfigurationFromSession()
+        {
+            var session = System.Web.HttpContext.Current.Session;
+
+            return new ReportConfiguration
+            {
+                ReportSource = session["rptSource"],
+                FileType = session["fileType"]?.ToString() ?? string.Empty,
+                ReportPath = session["rptpath"]?.ToString() ?? string.Empty,
+                ReportType = session["rptType"]?.ToString() ?? string.Empty
+            };
+        }
+
+        /// <summary>
+        /// Validates that the report configuration contains required data
+        /// </summary>
+        /// <param name="config">Report configuration to validate</param>
+        /// <returns>True if configuration is valid, false otherwise</returns>
+        private bool IsValidReportConfiguration(ReportConfiguration config)
+        {
+            return config.ReportSource != null &&
+                   config.ReportSource.ToString() != "empty" &&
+                   !string.IsNullOrEmpty(config.FileType) &&
+                   !string.IsNullOrEmpty(config.ReportPath) &&
+                   !string.IsNullOrEmpty(config.ReportType);
+        }
+
+        /// <summary>
+        /// Generates PDF bytes for the specified report configuration
+        /// </summary>
+        /// <param name="config">Report configuration containing data source and settings</param>
+        /// <returns>Byte array containing the generated PDF</returns>
+        private byte[] GenerateReportPdf(ReportConfiguration config)
+        {
+            ReportDocument reportDocument = new ReportDocument();
+
+            try
+            {
+                // Load the Crystal Report template
+                string reportTemplatePath = Server.MapPath(config.ReportPath);
+                reportDocument.Load(reportTemplatePath);
+
+                // Set the data source based on report type
+                SetReportDataSource(reportDocument, config);
+
+                // Export report to PDF format
+                using (Stream stream = reportDocument.ExportToStream(ExportFormatType.PortableDocFormat))
+                {
+                    byte[] pdfBytes = new byte[stream.Length];
+                    stream.Read(pdfBytes, 0, pdfBytes.Length);
+                    return pdfBytes;
+                }
+            }
+            finally
+            {
+                // Ensure proper cleanup of Crystal Report resources
+                CleanReport(reportDocument);
+            }
+        }
+
+        /// <summary>
+        /// Sets the appropriate data source for the report based on file type
+        /// </summary>
+        /// <param name="reportDocument">Crystal Report document to configure</param>
+        /// <param name="config">Report configuration containing data source and type information</param>
+        private void SetReportDataSource(ReportDocument reportDocument, ReportConfiguration config)
+        {
+            switch (GetReportTypeFromFileType(config.FileType))
+            {
+                case ReportType.TrialBalance6Column:
+                    SetTrialBalance6ColumnDataSource(reportDocument, config.ReportSource);
+                    break;
+
+                case ReportType.TrialBalance4Column:
+                    SetTrialBalance4ColumnDataSource(reportDocument, config.ReportSource);
+                    break;
+
+                case ReportType.JournalEntry:
+                    SetJournalEntryDataSource(reportDocument, config.ReportSource);
+                    break;
+
+                case ReportType.GeneralLedger:
+                    SetGeneralLedgerDataSource(reportDocument, config.ReportSource);
+                    break;
+
+                case ReportType.ManualEntry:
+                    SetManualEntryDataSource(reportDocument, config.ReportSource);
+                    break;
+
+                default:
+                    throw new ArgumentException($"Unsupported file type: {config.FileType}");
+            }
+        }
+
+        /// <summary>
+        /// Determines the report type based on the file type string
+        /// </summary>
+        /// <param name="fileType">File type string from session</param>
+        /// <returns>Corresponding ReportType enum value</returns>
+        private ReportType GetReportTypeFromFileType(string fileType)
+        {
+            if (fileType.Contains("TB6")) return ReportType.TrialBalance6Column;
+            if (fileType.Contains("TB4")) return ReportType.TrialBalance4Column;
+            if (fileType.Contains("JE")) return ReportType.JournalEntry;
+            if (fileType.Contains("GL")) return ReportType.GeneralLedger;
+            if (fileType.Contains("MET")) return ReportType.ManualEntry;
+
+            return ReportType.Unknown;
+        }
+
+        /// <summary>
+        /// Sets data source for 6-column Trial Balance reports
+        /// </summary>
+        private void SetTrialBalance6ColumnDataSource(ReportDocument reportDocument, object dataSource)
+        {
+            var trialBalance6ColumnDto = (List<TrialBalance6ColumnDto>)dataSource;
+            reportDocument.SetDataSource(trialBalance6ColumnDto);
+        }
+
+        /// <summary>
+        /// Sets data source for 4-column Trial Balance reports
+        /// </summary>
+        private void SetTrialBalance4ColumnDataSource(ReportDocument reportDocument, object dataSource)
+        {
+            var trialBalance4ColumnDto = (List<TrialBalance4ColumnDto>)dataSource;
+            reportDocument.SetDataSource(trialBalance4ColumnDto);
+        }
+
+        /// <summary>
+        /// Sets data source for Journal Entry reports
+        /// </summary>
+        private void SetJournalEntryDataSource(ReportDocument reportDocument, object dataSource)
+        {
+            var journalEntryDto = (AccountingEntriesReport)dataSource;
+            var processedData = journalEntryDto.BuildJournalEntry(journalEntryDto, GetUserDto().FullName);
+            reportDocument.SetDataSource(processedData);
+        }
+
+        /// <summary>
+        /// Sets data source for General Ledger reports
+        /// </summary>
+        private void SetGeneralLedgerDataSource(ReportDocument reportDocument, object dataSource)
+        {
+            var accountingGeneralLedgerDetails = (AccountingGeneralLedgerDetails)dataSource;
+            var convertedData = accountingGeneralLedgerDetails.ConvertToGeneralLedgerDto(accountingGeneralLedgerDetails);
+            reportDocument.SetDataSource(convertedData);
+        }
+
+        /// <summary>
+        /// Sets data source for Manual Entry reports
+        /// </summary>
+        private void SetManualEntryDataSource(ReportDocument reportDocument, object dataSource)
+        {
+            var manualEntries = (List<ManualEntry>)dataSource;
+            reportDocument.SetDataSource(manualEntries);
+        }
+
+        /// <summary>
+        /// Delivers the PDF response to the client browser
+        /// </summary>
+        /// <param name="pdfBytes">PDF content as byte array</param>
+        /// <param name="reportType">Type of report for filename generation</param>
+        /// <returns>ActionResult that writes PDF to response</returns>
+        private ActionResult DeliverPdfResponse(byte[] pdfBytes, string reportType)
+        {
+            // Generate unique filename with timestamp
+            string fileName = GenerateReportFileName(reportType);
+
+            // Configure response headers for PDF delivery
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("Content-Disposition", $"attachment; filename={fileName}.pdf");
+
+            // Write PDF content to response
+            Response.BinaryWrite(pdfBytes);
+            Response.Flush();
+            Response.End();
+
+            return new EmptyResult();
+        }
+
+        /// <summary>
+        /// Generates a unique filename for the report
+        /// </summary>
+        /// <param name="reportType">Type of report</param>
+        /// <returns>Formatted filename string</returns>
+        private string GenerateReportFileName(string reportType)
+        {
+            return $"{reportType}-{DateTime.UtcNow:dd_MM_yyyy_HHmmss}";
+        }
+
+        /// <summary>
+        /// Handles cases where session configuration is invalid
+        /// </summary>
+        /// <returns>ActionResult with error message</returns>
+        private ActionResult HandleInvalidConfiguration()
+        {
+            Response.Write("<H2>Invalid report configuration. Please try again.</H2>");
+            return View();
+        }
+
+        /// <summary>
+        /// Handles report generation errors
+        /// </summary>
+        /// <returns>ActionResult with error message</returns>
+        private ActionResult HandleReportGenerationError()
+        {
+            Response.Write("<H2>An error occurred while generating the report</H2>");
+            return View();
+        }
+
+        /// <summary>
+        /// Logs exceptions for debugging purposes
+        /// </summary>
+        /// <param name="exception">Exception to log</param>
+        private void LogException(Exception exception)
+        {
+            // TODO: Implement proper logging mechanism
+            // Example: Logger.Error("Report generation failed", exception);
+            System.Diagnostics.Debug.WriteLine($"Report generation error: {exception}");
+        }
+
+        #endregion
+
+        #region Helper Classes and Enums
+
+        /// <summary>
+        /// Configuration object for report generation
+        /// </summary>
+        private class ReportConfiguration
+        {
+            public object ReportSource { get; set; }
+            public string FileType { get; set; }
+            public string ReportPath { get; set; }
+            public string ReportType { get; set; }
+        }
+
+        /// <summary>
+        /// Enumeration of supported report types
+        /// </summary>
+        private enum ReportType
+        {
+            Unknown,
+            TrialBalance6Column,
+            TrialBalance4Column,
+            JournalEntry,
+            GeneralLedger,
+            ManualEntry
+        }
+
+        #endregion
         public void CleanReport(ReportDocument rd)
         {
             if (rd != null)
@@ -443,6 +740,7 @@ namespace CBS.FrontDesk.UI.Controllers
         }
         public void ReportWithParameter()
         {
+            ReportDocument rd = new ReportDocument();
             try
             {
                 // Initialize validity flag
@@ -473,7 +771,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     if (isValid)
                     {
                         // Load and configure the report document
-                        ReportDocument rd = new ReportDocument();
+                       
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
 
@@ -519,8 +817,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
                     if (isValid)
                     {
-                        // Load and configure the report document
-                        ReportDocument rd = new ReportDocument();
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
 
@@ -539,8 +835,6 @@ namespace CBS.FrontDesk.UI.Controllers
                         string SavedFileName = $"{strtitle}-{DateTime.UtcNow.ToString("dd_MM_yyyy_HHmmss")}";
                         rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
 
-                        // Clean up the report document
-                        CleanReport(rd);
                     }
                     else
                     {
@@ -566,8 +860,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
                     if (isValid)
                     {
-                        // Load and configure the report document
-                        ReportDocument rd = new ReportDocument();
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
 
@@ -611,8 +903,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
                     if (isValid)
                     {
-                        // Load and configure the report document
-                        ReportDocument rd = new ReportDocument();
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
 
@@ -655,8 +945,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
                     if (isValid)
                     {
-                        // Load and configure the report document
-                        ReportDocument rd = new ReportDocument();
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
 
@@ -698,8 +986,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
                     if (isValid)
                     {
-                        // Load and configure the report document
-                        ReportDocument rd = new ReportDocument();
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
 
@@ -718,7 +1004,6 @@ namespace CBS.FrontDesk.UI.Controllers
                         rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
 
                         // Clean up the report document
-                        CleanReport(rd);
                     }
                     else
                     {
@@ -740,10 +1025,16 @@ namespace CBS.FrontDesk.UI.Controllers
                     Response.Write($"{ex.ToString()}<H2>Nothing Found; report session expired</H2>");
                 }
             }
+            finally
+            {
+                CleanReport(rd); // ✅ Guaranteed cleanup
+            }
         }
 
         public void ReportWithParameters()
         {
+            ReportDocument rd = new ReportDocument();
+
             try
             {
                 // Initialize validity flag
@@ -768,7 +1059,6 @@ namespace CBS.FrontDesk.UI.Controllers
                 if (isValid)
                 {
                     // Load and configure the report document
-                    ReportDocument rd = new ReportDocument();
                     string strRptPath = Server.MapPath(rptpath);
                     rd.Load(strRptPath);
 
@@ -808,6 +1098,10 @@ namespace CBS.FrontDesk.UI.Controllers
                     Response.Write($"{ex.ToString()}<H2>Nothing Found; report session expired</H2>");
                 }
             }
+            finally
+            {
+                CleanReport(rd); // ✅ Guaranteed cleanup
+            }
         }
 
 
@@ -821,63 +1115,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
         }
 
-        //public ActionResult ReportWithParameters()
-        //{
-        //    try
-        //    {
-        //        bool isValid = true;
-        //        string strReportName = System.Web.HttpContext.Current.Session["ReportName"].ToString();
-        //        var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
-        //        var rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
-        //        string strFromDate = System.Web.HttpContext.Current.Session["DateFrom"].ToString();     // Setting FromDate 
-        //        string strToDate = System.Web.HttpContext.Current.Session["DateTo"].ToString();
-        //        string strDatePrinted = System.Web.HttpContext.Current.Session["DatePrinted"].ToString();// Setting ToDate
-        //        string strPrintedBy = System.Web.HttpContext.Current.Session["FullName"].ToString();// Setting ToDate  
-        //        string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
-        //        // Setting ToDate    
-
-        //        if (string.IsNullOrEmpty(strReportName))
-        //        {
-        //            isValid = false;
-        //        }
-        //        if (isValid)
-        //        {
-        //            ReportDocument rd = new ReportDocument();
-        //            string strRptPath = Server.MapPath(rptpath);
-        //            rd.Load(strRptPath);
-        //            if (rptSource != null && rptSource.GetType().ToString() != "System.String")
-        //                rd.SetDataSource(rptSource);
-        //            if (!string.IsNullOrEmpty(strFromDate))
-        //                rd.SetParameterValue("DateFrom", strFromDate);
-        //            if (!string.IsNullOrEmpty(strToDate))
-        //                rd.SetParameterValue("DateTo", strToDate);
-        //            if (!string.IsNullOrEmpty(strPrintedBy))
-        //                rd.SetParameterValue("PrintedBy", strPrintedBy);
-        //            if (!string.IsNullOrEmpty(strDatePrinted))
-        //                rd.SetParameterValue("DateNow", strDatePrinted);
-        //            string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.ToString("dd_mm_yyyy_hhmmss")}");
-        //            rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, SavedFileName);
-        //            CleanReport(rd);
-        //        }
-        //        else
-        //        {
-        //            Response.Write("<H2>Nothing Found; No Report Name found</H2>");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        if (ex.Message.Contains("Error in formula PercentagePassed"))
-        //        {
-        //            Response.Write("<H2>No Data was found</H2>");
-        //        }
-        //        else
-        //        {
-        //            Response.Write(ex.ToString() + "<H2>Nothing Found; report session expired</H2>");
-        //        }
-
-        //    }
-        //    return View();
-        //}
         public ActionResult DownloadExcelFilelist()
         {
             var rptSource = System.Web.HttpContext.Current.Session["rptSource" + Session.SessionID];
@@ -1166,7 +1403,8 @@ namespace CBS.FrontDesk.UI.Controllers
         //}
 
         public ActionResult DownloadExcelFileForTB4C()
-        {
+        {                    ReportDocument rd = new ReportDocument();
+
             var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
             string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
             string rpTType = System.Web.HttpContext.Current.Session["rptType"].ToString();
@@ -1184,7 +1422,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 if (rptSource != "empty")
                 {
-                    ReportDocument rd = new ReportDocument();
                     string strRptPath = Server.MapPath(rptpath);
                     rd.Load(strRptPath);
 

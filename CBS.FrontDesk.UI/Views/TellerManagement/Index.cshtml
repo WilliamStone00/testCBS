@@ -70,4 +70,55 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+<script>
+    function ToggleRemoteClose(tellerId, enable) {
+        const action = enable ? "ENABLE" : "DISABLE";
+        const emoji = enable ? "🔓" : "🔒";
+
+        const confirmTitle = `${emoji} Confirm Remote Close Update`;
+        const confirmMsg = `
+        <div class="text-start">
+            <p>You are about to <strong>${action}</strong> the <u>Remote Close of Day</u> feature for this teller.</p>
+            <ul class="mb-0 ps-3">
+                <li><strong>ENABLE:</strong> Allows the daily collector to close their cash operations from the mobile app, while physically in front of the Primary Teller.</li>
+                <li><strong>DISABLE:</strong> Restricts the collector from closing remotely. Only in-branch closure is allowed.</li>
+            </ul>
+            <p class="mt-2 text-danger fw-bold">Please confirm that this change is intentional.</p>
+        </div>
+    `;
+
+        alertify.confirm(
+            confirmTitle,
+            confirmMsg,
+            function () {
+                // ✅ Confirmed by user
+                $.ajax({
+                    url: `/TellerManagement/ToggleRemoteClose`,
+                    type: "POST",
+                    data: JSON.stringify({ tellerId: tellerId, enable: enable }),
+                    contentType: "application/json",
+                    success: function (response) {
+                        if (response.success) {
+                            appalert(response.message, 1, 1); // ✅ success alert
+                            // 🔁 Reload table data only
+                            LoadDataGen('TellerManagement', 'myDataTable', '_PrimaryTellerData', 0, 'datalistingview', null, null, 'list');
+                        } else {
+                            appalert(response.message, 2, 1); // ❌ failure alert
+                        }
+                    },
+                    error: function () {
+                        appalert("🚨 A network or server error occurred. Please try again.", 2, 1);
+                    }
+                });
+            },
+            function () {
+                appalert("🚨 Action canceled.", 2, 1);
+            }
+        ).set({
+            labels: { ok: `${action} NOW`, cancel: "Cancel" },
+            title: confirmTitle
+        });
+    }
+
+    </script>
 }

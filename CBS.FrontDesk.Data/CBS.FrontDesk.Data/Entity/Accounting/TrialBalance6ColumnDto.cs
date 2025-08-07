@@ -130,10 +130,12 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Address { get; set; }
         public string MainAccountNumber { get; set; }
         public List<LedgerDetails> LedgerDetails { get; set; }
+        public string Message { get; set; }
 
         public List< GeneralLedgerDto> ConvertToGeneralLedgerDto(AccountingGeneralLedgerDetails modelAcccount)
         {
-            List < GeneralLedgerDto > list = new List<GeneralLedgerDto>();
+          
+            List<GeneralLedgerDto> list = new List<GeneralLedgerDto>();
    
             foreach (var item in modelAcccount.LedgerDetails)
             {
@@ -149,8 +151,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                         ToDate = this.ToDate.ToString("yyyy-MM-dd"),
                         BranchName = this.BranchName,
                         BranchLocation = this.BranchLocation,
-                        BranchAddress = this.BranchAddress,
-            
+                        BranchAddress = this.BranchAddress,        
                         Capital = this.Capital,
                         ImmatriculationNumber = this.ImmatriculationNumber,
                         WebSite = this.WebSite,
@@ -176,7 +177,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                     model.Reference = entry.ReferenceID;
                     model.Representative = entry.Representative;
                     model.EntryDate = entry.EntryDate.ToString("yyyy-MM-dd");
-                
+                  
                     list.Add(model);
                 }
            
@@ -219,6 +220,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public decimal TotalDebit { get; set; }
         public decimal TotalCredit { get; set; }
         public double NumberCredit { get; set; }
+
+        public string Message { get; set; }
     }
 
  

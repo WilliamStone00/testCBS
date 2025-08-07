@@ -106,13 +106,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                     var data = await _documentRefereceCodeServices.GetAllDocumentReferenceCodeModel();
 
-                    var sysData = new DocumentConfiguration { DocumentReferenceCodes = data.ToList() };
+                    var sysData = new AccountingConfiguration { FinancialDocumentReferences = data.ToList() };
                     return PartialView(partialView, sysData);
 
                 }
                 else if (path == "new")
                 {
-
+                    
                     return PartialView(partialView, new DocumentConfiguration { ServiceOption = "documentReferenceCode", DocumentReferenceCode = new DocReferenceCode(), CorrespondingMapping = new CorrespondingMapping { } });
                 }
                 else if (path == "details")

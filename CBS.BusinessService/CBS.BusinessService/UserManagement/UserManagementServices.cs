@@ -96,7 +96,6 @@ namespace CBS.BusinessService.UserManagement
                 throw; // Cleaned up: rethrow preserves original stack trace
             }
         }
-
         public async Task<IEnumerable<UserRoleDto>> GetUSerRoles()
         {
             try
@@ -113,6 +112,30 @@ namespace CBS.BusinessService.UserManagement
                 {
                     var rolesx = roles.ApiResponseData.Data.Where(x => x.branchId == GetBranchID());
                     return rolesx;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task<IEnumerable<UserRoleDto>> GetDailyCollectors()
+        {
+            try
+            {
+
+                var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
+                var roles = await ApiCallerHelper.GetAsync<ResponseObject<List<UserRoleDto>>>(APICallHelper.GetAllUserRoles);
+                if (IsHeadOffice())
+                {
+                    return roles.ApiResponseData.Data.Where(x => x.RoleName.Equals("Daily_Collector_Agent"));
+          
+                }
+                else
+                {
+                    return roles.ApiResponseData.Data.Where(x => x.RoleName.Equals("Daily_Collector_Agent") && (x.branchId == GetBranchID()));
+
                 }
 
             }

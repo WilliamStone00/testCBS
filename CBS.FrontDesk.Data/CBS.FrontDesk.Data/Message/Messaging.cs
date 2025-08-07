@@ -110,6 +110,12 @@ namespace CBS.FrontDesk.Data.Message
         DefaultSuccessdMessages = 89,
         InvalidOption = 90,
         UnknownError = 91,
+        MissingData = 92,
+        ValidationError = 93,
+        FileSizeExceeded = 94,
+        InvalidFileType = 95,
+        ApiResponseNull = 96,
+        ProcessingFailed = 97,
     }
     public enum MessagesResults
     {

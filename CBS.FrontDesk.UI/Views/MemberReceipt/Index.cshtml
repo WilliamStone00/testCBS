@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Member Receipts Overview";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-receipt-text-outline me-2"></i> Member Receipts
+                </h1>
+                <p class="card-text">
+                    Track, search, and analyze member payment receipts across branches.
+                </p>
+                <p class="card-text text-muted small">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use filters like branch, date range, member reference, or transaction reference.
+                </p>
+                <hr style="border: 2px solid rgba(0, 128, 128, 0.2);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Tips Section -->
+@Html.Partial("_Tips")
+
+<!-- Advanced Filters -->
+@Html.Partial("_Filter")
+
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    @Html.Partial("_MemberReceiptDataTable")
+</div>
+<!-- Modal View Partial -->
+<div id="receiptModalContainer">
+   
+</div>
+@section Scripts {
+
+    <script src="~/Scripts/Js/MemberReceiptsP/MemberReceipt.js"></script>
+}

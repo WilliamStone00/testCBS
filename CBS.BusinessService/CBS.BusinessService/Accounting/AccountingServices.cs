@@ -223,18 +223,18 @@ namespace CBS.BusinessService.Accounting
             {
                 var listOfCategories = (await accountCartegorieService.GetAccountCategory()).ToList();
                 var account = (await GetAllAccounting()).Where(i => i.Id.Equals(id)).FirstOrDefault();
-                var modelVal = listOfCategories.Find(x => x.Id == account.AccountCategoryId);
-                if (modelVal.Name == CLASS_4_Recievabels || account.AccountNumber.StartsWith("2") || // Fixed Assets
-                                                                                                     //   || // Inventory
-                                account.AccountNumber.StartsWith("5") || // Financial
-                                account.AccountNumber.StartsWith("6"))  // Expenses)
-                {
-                    account.AccountCategoryId = "debit";
-                }
-                else
-                {
-                    account.AccountCategoryId = "credit";
-                }
+                //var modelVal = listOfCategories.Find(x => x.Id == account.AccountCategoryId);
+                //if (modelVal.Name == CLASS_4_Recievabels || account.AccountNumber.StartsWith("2") || // Fixed Assets
+                //                                                                                     //   || // Inventory
+                //                account.AccountNumber.StartsWith("5") || // Financial
+                //                account.AccountNumber.StartsWith("6"))  // Expenses)
+                //{
+                //    account.AccountCategoryId = "debit";
+                //}
+                //else
+                //{
+                //    account.AccountCategoryId = "credit";
+                //}
                 return account;
             }
             catch (Exception ex)
@@ -354,13 +354,57 @@ namespace CBS.BusinessService.Accounting
                 throw (ex);
             }
         }
-        public async Task<List<FrontDesk.Data.Account>> GetAllBranchAccountUsedToCreditCashFlow(string BranchId)
+        public async Task<List<FrontDesk.Data.Account>> GetAllBranchAccountUsedToCreditCashFlow(string accountId)
         {
             try
             {
 
-                string Url = string.Format(APICallHelper.GetAllBranchAccountUsedToCreditCashFlow, BranchId);
+                string Url = string.Format(APICallHelper.GetAllBranchAccountUsedToCreditCashFlow, accountId);
                 var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Account>>>(Url);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData != null)
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<FrontDesk.Data.Account>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception 
+                throw (ex);
+            }
+        }
+
+        public async Task<List<FrontDesk.Data.Account>> GetAllBranch(string BranchId)
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Account>>>(string.Format(APICallHelper.GetAccountByBranchIdUrl,BranchId));
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData != null)
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<FrontDesk.Data.Account>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
+
+        public async Task<List<FrontDesk.Data.Account>> GetJournalEntryMFIAccountQuery(string BranchId)
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Account>>>(string.Format( APICallHelper.GetJournalEntryMFIAccountQueryUrl, BranchId));
                 if (couApiResponse.IsSuccess)
                 {
                     if (couApiResponse.ApiResponseData != null)
@@ -388,7 +432,10 @@ namespace CBS.BusinessService.Accounting
                 {
                     if (couApiResponse.ApiResponseData != null)
                     {
-                        return couApiResponse.ApiResponseData.Data;
+                        
+                            return couApiResponse.ApiResponseData.Data;
+                       
+                        
                     }
 
                 }

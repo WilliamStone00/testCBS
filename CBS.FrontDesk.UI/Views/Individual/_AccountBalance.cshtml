@@ -1,14 +1,21 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
-    @using Resources
+@using Resources
 @{
     var status = false;
-    var balance = Model.AccountBalance.accounts.Sum(x => x.Balance);
+    var balance = Model.CustomerAccounts.Sum(x => x.balance);
     string comment = "No initial deposit has been made.";
-    if (Model.AccountBalance.accounts.Any())
+    if (Model.CustomerAccounts.Any())
     {
         status = true;
 
     }
+}
+@{
+    var isPIS = Model.CustomerList.TagAsPISCollectionProfile;
+    string pisBadgeClass = isPIS ? "bg-primary" : "bg-danger";
+    string pisStatusText = isPIS ? "Member profile is tagged for PISCA" : "Member profile is not tagged for PISCA";
+    string pisButtonLabel = isPIS ? "Untag from PISCA" : "Tag as PISCA";
+    string pisButtonClass = isPIS ? "btn-outline-danger" : "btn-outline-success";
 }
 <style>
     /* .card {
@@ -36,6 +43,11 @@
 
     .text-muted em {
         font-style: italic;
+    }
+
+    .card .badge {
+        font-size: 0.95rem;
+        padding: 0.45em 0.85em;
     }
 </style>
 
@@ -152,6 +164,26 @@ else
     </div>
 </div>
 
+<div class="col-lg-12 mb-3">
+    <div class="card border shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">Private Institution Salary Collection Account (PISCA)</h5>
+            <span class="badge @pisBadgeClass">@pisStatusText</span>
+        </div>
+        <div class="card-body">
+            <p class="mb-3 text-muted">
+                This member is currently <strong>@(isPIS ? "tagged" : "not tagged")</strong> for the PISCA program.
+                You can use the action below to <strong>@(isPIS ? "untag" : "tag")</strong> the member as a
+                Private Institution Salary Collection Account profile.
+            </p>
+            <button class="btn @pisButtonClass"
+                    onclick="togglePISStatus('@Model.CustomerList.CustomerId', @(isPIS.ToString().ToLower()))">
+                <i class="mdi mdi-account-check"></i> @pisButtonLabel
+            </button>
+        </div>
+    </div>
+</div>
+
 <!-- Delete Profile Section -->
 <div class="col-lg-12 mb-3">
     <div class="card card-action shadow-sm">
@@ -160,6 +192,54 @@ else
         </div>
     </div>
 </div>
+<script>
+    function togglePISStatus(customerId, currentStatus) {
+        const tagAsPIS = currentStatus !== "true";
+        const actionText = tagAsPIS ? "TAG" : "UNTAG";
+        const description = tagAsPIS
+            ? "This will tag the member as a Private Institution Salary Collection Account (PISCA) profile."
+            : "This will untag the member from the PISCA profile.";
+
+        alertify.confirm(
+            `${actionText} MEMBER AS PISCA`,
+            `
+            Are you sure you want to <b>${actionText}</b> this member as a PISCA profile?<br><br>
+            <b>Member ID:</b> ${customerId}<br>
+            <b>Action:</b> ${actionText}<br><br>
+            <span style="color:red;">This action will immediately affect payroll tagging status.</span><br><br>
+            <small class="text-muted">${description}</small>
+            `,
+            function () {
+                $.ajax({
+                    url: `/Individual/TagMemberPISCA`,
+                    method: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        customerId: customerId,
+                        tagAsPISCollectionProfile: tagAsPIS
+                    }),
+                    beforeSend: function () {
+                        appalert("Updating PISCA status...", 2, 0);
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            appalert(response.message, 1, 1);
+                            location.reload();
+                        } else {
+                            appalert(response.message, 3, 1);
+                        }
+                    },
+                    error: function (xhr) {
+                        appalert("Failed to update PISCA status: " + xhr.statusText, 3, 1);
+                    }
+                });
+            },
+            function () {
+                appalert("Operation cancelled.", 3, 1);
+            }
+        );
+    }
+</script>
 
 <script>
     // Function to load account details into the modal
