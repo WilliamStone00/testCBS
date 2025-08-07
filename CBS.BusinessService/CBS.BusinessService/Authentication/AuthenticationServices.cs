@@ -69,9 +69,6 @@ namespace CBS.FrontDesk.Service
 
                     var userAuth = response.ApiResponseData.Data;
 
-
-
-
                     response.ApiResponseData.Data.Branch = userAuth.Branch;
                     userAuth.password = request.Password;
                     GetExecutionMessages(userAuth, true, request.UserName, MessagesResults.Success,

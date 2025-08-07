@@ -6467,6 +6467,7 @@
     <Content Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsc">
       <DependentUpon>DeliquentLoanSummaryDataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="AppFiles\BulkOperation\BulkOperationFileUpload.xlsx" />
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -9283,6 +9284,14 @@
     <Content Include="Views\GeneralStatisticReport\_Dashboard.cshtml" />
     <Content Include="Views\GeneralStatisticReport\_ReportFilter.cshtml" />
     <Content Include="Views\Loan\_FIlterQuery.cshtml" />
+    <Content Include="Views\BulkOperation\BulkCashOperation.cshtml" />
+    <Content Include="Views\BulkOperation\_BulkOperationFileUploadPartial.cshtml" />
+    <Content Include="Views\BulkOperation\_BulkOperationFileContentPartial.cshtml" />
+    <Content Include="Views\BulkOperation\_ManualBulkOperationConfigurationPartial.cshtml" />
+    <Content Include="Views\BulkOperation\_FileBulkOperationConfigurationPartial.cshtml" />
+    <Content Include="Views\BulkOperation\_BulkOperationParameters.cshtml" />
+    <Content Include="Views\BulkOperation\_BulkOperationFileUploadTips.cshtml" />
+    <Content Include="Views\BulkOperation\_BulkOperationManualAccountEntryTips.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -9292,6 +9301,8 @@
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
     <Folder Include="Controllers\DailyCollectionManagement\" />
     <Folder Include="Hub\" />
+    <Folder Include="Views\BulkOperation\Contribution\" />
+    <Folder Include="Views\BulkOperation\Topup\" />
     <Folder Include="Views\Language\" />
   </ItemGroup>
   <ItemGroup>

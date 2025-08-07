@@ -513,4 +513,22 @@
   <data name="SimulationContributionAmount" xml:space="preserve">
     <value>Montant de la contribution</value>
   </data>
+  <data name="SelectOperationType" xml:space="preserve">
+    <value>Sélectionnez le type d'opération</value>
+  </data>
+  <data name="BulkOperationCashOutOrCashInAccount" xml:space="preserve">
+    <value>Compte de contribution pour les dépôts/retraits d'espèces en gros</value>
+  </data>
+  <data name="BulkCashOperationSimulation" xml:space="preserve">
+    <value>Simulation d'opération de traitement de fonds en vrac</value>
+  </data>
+  <data name="BulkCashOperationParameters" xml:space="preserve">
+    <value>Configurer les paramètres de fonctionnement de la destination</value>
+  </data>
+  <data name="BulkCashAccountList" xml:space="preserve">
+    <value>Configurer les comptes pour les opérations groupées</value>
+  </data>
+  <data name="BulkCashSimulationMethod" xml:space="preserve">
+    <value>Méthode de simulation de trésorerie en vrac</value>
+  </data>
 </root>

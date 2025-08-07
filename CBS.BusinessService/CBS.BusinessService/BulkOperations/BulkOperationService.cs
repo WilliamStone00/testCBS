@@ -9,12 +9,14 @@ using CBS.FrontDesk.Data.Entity.BulkOPeration;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNet.SignalR.Hosting;
+using Microsoft.Owin;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -65,6 +67,22 @@ namespace CBS.BusinessService.BulkOperations
                 data: new List<BulkOperationDataDetails>(), // No data
                 dataTableOptions: new DataTableOptions()
             );
+        }
+
+        public async Task<ServiceResponse<BulkCashOperationFileSummary>> ProcessBulkCashOperationFileAsync(HttpPostedFileBase file)
+        {
+
+            var response = await _transactionConfigApiHelper.UploadBulkCashPaymentFileAsync<ServiceResponse<BulkCashOperationFileSummary>>(file,APICallHelper.UploadBulkCashOperations);
+            if (response.IsSuccess)
+            {
+
+                return response.ApiResponseData;
+            }
+            else
+            {
+               
+                return null;
+            }
         }
 
         public async Task<List<SavingProduct>> GetSavingProducts()
@@ -200,7 +218,7 @@ namespace CBS.BusinessService.BulkOperations
 
                     BulkOperationContributionSimulationCommand simulateModel= new BulkOperationContributionSimulationCommand(model, selectedEvent.Text, branch);
                     // Make an API call to create an individual profile
-                    var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<CreateBulkOperationSimulation>>(APICallHelper.SimulateContribution, simulateModel);
+                    var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<CreateBulkOperationSimulation>>(APICallHelper.SimulateBulkAccountContribution, simulateModel);
                     if (response.IsSuccess)
                     {
                         // Successful creation
@@ -223,7 +241,7 @@ namespace CBS.BusinessService.BulkOperations
 
                     BulkOperationAccountTopupSimulationCommand simulateModel = new BulkOperationAccountTopupSimulationCommand(model, branch);
                     // Make an API call to create an individual profile
-                    var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<CreateBulkOperationSimulation>>(APICallHelper.SimulateAccountTopup, simulateModel);
+                    var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<CreateBulkOperationSimulation>>(APICallHelper.SimulateBulkAccountTopup, simulateModel);
                     if (response.ApiResponseData != null)
                     {
                         // Successful creation
@@ -269,6 +287,38 @@ namespace CBS.BusinessService.BulkOperations
                     {
                         // Failed creation
                         GetExecutionMessages(command, false, command.ApprovalStatus, MessagesResults.Failed,
+                            ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }   
+        
+        public async Task<ExecutionMessages> BulkCashInOrCashOutSimulation(SimulateBulkCreditOrDebitOperationCommand command)
+        {
+            try
+            {
+                  
+                    // Make an API call to create an individual profile
+                    var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<CreateBulkOperationSimulation>>(APICallHelper.SimulateBulkAccountCashInOrCashOut, command);
+                    if (response.IsSuccess)
+                    {
+                        // Successful creation
+                        GetExecutionMessages(response, true, $"{command.SimulationType}", MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(command, false, command.SimulationType, MessagesResults.Failed,
                             ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.Message);
                     }
 
@@ -336,6 +386,6 @@ namespace CBS.BusinessService.BulkOperations
             return string.IsNullOrWhiteSpace(data) ? string.Empty : data;
         }
 
-       
+      
     }
 }

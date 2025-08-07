@@ -513,4 +513,22 @@
   <data name="SimulationContributionAmount" xml:space="preserve">
     <value>Contribution Amount</value>
   </data>
+  <data name="SelectOperationType" xml:space="preserve">
+    <value>Select Operation Type</value>
+  </data>
+  <data name="BulkOperationCashOutOrCashInAccount" xml:space="preserve">
+    <value>Contribution Account For Bulk CashIn/Cashout</value>
+  </data>
+  <data name="BulkCashOperationSimulation" xml:space="preserve">
+    <value>Bulk Cash Operation Simulation</value>
+  </data>
+  <data name="BulkCashOperationParameters" xml:space="preserve">
+    <value>Configure Destination Operation Parameters</value>
+  </data>
+  <data name="BulkCashAccountList" xml:space="preserve">
+    <value>Configure Accounts For Bulk Operation</value>
+  </data>
+  <data name="BulkCashSimulationMethod" xml:space="preserve">
+    <value>Bulk Cash Simulation Method</value>
+  </data>
 </root>

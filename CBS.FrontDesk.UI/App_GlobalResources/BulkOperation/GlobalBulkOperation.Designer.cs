@@ -277,6 +277,51 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configure Accounts For Bulk Operation.
+        /// </summary>
+        internal static string BulkCashAccountList {
+            get {
+                return ResourceManager.GetString("BulkCashAccountList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configure Destination Operation Parameters.
+        /// </summary>
+        internal static string BulkCashOperationParameters {
+            get {
+                return ResourceManager.GetString("BulkCashOperationParameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bulk Cash Operation Simulation.
+        /// </summary>
+        internal static string BulkCashOperationSimulation {
+            get {
+                return ResourceManager.GetString("BulkCashOperationSimulation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bulk Cash Simulation Method.
+        /// </summary>
+        internal static string BulkCashSimulationMethod {
+            get {
+                return ResourceManager.GetString("BulkCashSimulationMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contribution Account For Bulk CashIn/Cashout.
+        /// </summary>
+        internal static string BulkOperationCashOutOrCashInAccount {
+            get {
+                return ResourceManager.GetString("BulkOperationCashOutOrCashInAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bulk operation details.
         /// </summary>
         internal static string BulkOperationDetails {
@@ -822,6 +867,15 @@ namespace Resources {
         internal static string SelectBranch {
             get {
                 return ResourceManager.GetString("SelectBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Operation Type.
+        /// </summary>
+        internal static string SelectOperationType {
+            get {
+                return ResourceManager.GetString("SelectOperationType", resourceCulture);
             }
         }
         
