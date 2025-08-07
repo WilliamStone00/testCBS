@@ -6489,6 +6489,7 @@
     </Content>
     <Content Include="AppFiles\Reporting\SampleDocument\SampleDailySaverToBeUploaded.xlsx" />
     <Content Include="AppFiles\Reporting\SampleDocument\CorrectedCollectorEntryFile.xlsx" />
+    <Content Include="AppFiles\BulkOperation\BulkOperationFileUpload.xlsx" />
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
