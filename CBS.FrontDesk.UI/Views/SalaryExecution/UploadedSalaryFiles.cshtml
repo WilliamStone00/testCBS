@@ -47,7 +47,7 @@
                     <div id="fileListSection" class="accordion-collapse collapse show">
                         <div class="accordion-body">
                             <div class="d-flex justify-content-end mb-3">
-                                <a onclick="LoadDataGen('SalaryExecution', 'myDataTable', '_FileUploadData', 0, 'datalistingview')" class="btn btn-label-primary btn-sm me-2">
+                                <a onclick="LoadDataGen('SalaryExecution', 'myDataTable', '_FileUploadData', 0, 'datalistingview',null,null,'cs_salary')" class="btn btn-label-primary btn-sm me-2">
                                     <i class="mdi mdi-view-list mdi-18px"></i> @GlobalSalaryExecution.ViewFiles
                                 </a>
                                 <a href="/SalaryExecution" class="btn btn-label-secondary btn-sm">
@@ -67,7 +67,7 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(document).ready(function () {
-            LoadDataGen('SalaryExecution', 'myDataTable', '_FileUploadData', 0, 'datalistingview');
+            LoadDataGen('SalaryExecution', 'myDataTable', '_FileUploadData', 0, 'datalistingview',null,null,'cs_salary');
         });
     </script>
 }

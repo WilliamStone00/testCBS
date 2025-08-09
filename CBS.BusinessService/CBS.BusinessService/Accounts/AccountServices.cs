@@ -596,7 +596,33 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-
+        public async Task<ExecutionMessages> InitialiseBalances(InitializeAccountCommand model)
+        {
+            try
+            {
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<Teller>>(APICallHelper.InitializeAccount, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
         public async Task<EndOfTheDay> GetTellerAccount(GetTellerAccountBalanceQuery getTellerAccountBalanceQuery, bool isOpen = true)
         {
             try

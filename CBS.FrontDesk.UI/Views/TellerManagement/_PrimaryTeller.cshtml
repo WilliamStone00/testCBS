@@ -283,6 +283,22 @@
 
                             </div>
                         </fieldset>
+                        <fieldset class="fieldset-custom">
+                            <legend>@GlobalTellerManagement.AccountNumber</legend>
+                            <div class="row mt-2 gy-4">
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.Teller.AccountNumber, new
+                                        {
+                                            @class = "form-control",
+                                            placeholder = @GlobalTellerManagement.AccountNumber
+                                        })
+                                        @Html.ValidationMessageFor(m => m.Teller.AccountNumber, "", new { @class = "text-danger" })
+                                        <label>@GlobalTellerManagement.AccountNumber</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
 
 
                         <div class="mt-4">

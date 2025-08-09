@@ -103,7 +103,6 @@ function resetMemberFilters() {
 }
 
 $(document).ready(function () {
-    loadMemberData();
 
     $('#applyFilterBtn').on('click', function (e) {
         e.preventDefault();

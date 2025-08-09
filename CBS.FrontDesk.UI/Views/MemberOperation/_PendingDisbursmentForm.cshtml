@@ -56,8 +56,39 @@
                             @Html.HiddenFor(m => m.Loan.CustomerName)
                             @Html.HiddenFor(m => m.Loan.BranchCode)
                             <input type="hidden" name="ServiceOption" value="pending_loan_disbursement" id="ServiceOption" />
+
                             <fieldset class="fieldset-custom">
                                 <div class="row g-4">
+
+                                    <!-- 🗓️ Accounting Date -->
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline position-relative">
+                                            @Html.TextBoxFor(
+                                              m => m.AddLoanDisbumentCommand.AccountingDate,
+                                              Model.AddLoanDisbumentCommand.AccountingDate == default(DateTime)
+                                                ? DateTime.Today.ToString("yyyy-MM-dd")
+                                                : "{0:yyyy-MM-dd}",
+                                              new
+                                                {
+                                                @class = "form-control accounting-date",
+                                                type = "date",
+                                                data_date_default = "today",   // auto-fill today if empty/MinValue
+                                                data_date_max = "today"        // prevent future dates (remove if not needed)
+                                                // data_date_min = "today"     // uncomment to only allow today & after
+                                              })
+                                            @Html.ValidationMessageFor(m => m.AddLoanDisbumentCommand.AccountingDate, "", new { @class = "text-danger" })
+                                            <label>@(Member_Global_LoanApplication.AccountingDate ?? "Accounting Date")</label>
+
+                                            <span class="position-absolute top-0 end-0 translate-middle-y mt-3 me-3 badge bg-open-green px-3">
+                                                <i class="mdi mdi-calendar-check-outline me-1"></i>
+                                                <span id="PendingDisbAccountingDateBadge"></span>
+                                            </span>
+                                        </div>
+                                        <small class="text-muted">
+                                            This date will be used as the accounting date for this disbursement (posting & audit).
+                                        </small>
+                                    </div>
+
                                     <!-- Checkbox -->
                                     <div class="col-12">
                                         <div class="form-check">
@@ -67,7 +98,6 @@
                                             </label>
                                         </div>
                                     </div>
-
 
                                     <!-- Status Dropdown -->
                                     <div class="col-md-12">

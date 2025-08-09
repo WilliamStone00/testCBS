@@ -4,133 +4,63 @@
     ViewBag.Title = GlobalLoanApplicationApproval.LoanApplicationApproval;
 }
 
-<div class="col-12">
-    <div class="row my-4">
-        <div class="accordion" id="collapsibleSection">
+<div class="row g-4">
+    <!-- 🗓️ Accounting Date -->
+    <div class="col-md-12">
+        <div class="form-floating form-floating-outline position-relative">
+            @Html.TextBoxFor(
+              m => m.UpdateLoanApplicationStatus.AccountingDate,
+              Model.UpdateLoanApplicationStatus.AccountingDate == default(DateTime)
+                ? DateTime.Today.ToString("yyyy-MM-dd")
+                : "{0:yyyy-MM-dd}",
+              new
+                   {
+                @class = "form-control accounting-date",
+                type = "date",
+                data_date_default = "today",   // auto-fill today if empty/MinValue
+                data_date_max = "today"        // prevent future dates (remove if not needed)
+                // data_date_min = "today"     // uncomment to only allow today & after
+              })
+            @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.AccountingDate, "", new { @class = "text-danger" })
+            <label>@(Member_Global_LoanApplication.AccountingDate ?? "Accounting Date")</label>
 
-            <!-- Loan Application Approval Section -->
-            <div class="card accordion-item mb-3">
-                <h2 class="accordion-header" id="headingLoanApproval">
-                    <button type="button"
-                            class="accordion-button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapseLoanApproval"
-                            aria-expanded="true"
-                            aria-controls="collapseLoanApproval">
-                        @GlobalLoanApplicationApproval.LoanApplicationApproval
-                    </button>
-                </h2>
+            <span class="position-absolute top-0 end-0 translate-middle-y mt-3 me-3 badge bg-open-green px-3">
+                <i class="mdi mdi-calendar-check-outline me-1"></i>
+                <span id="ApprovalAccountingDateBadge"></span>
+            </span>
+        </div>
+        <small class="text-muted">
+            This date will be used for accounting entries tied to this approval.
+        </small>
+    </div>
 
-                <div id="collapseLoanApproval"
-                     class="accordion-collapse collapse show"
-                     data-bs-parent="#collapsibleSection">
-                    <div class="accordion-body">
-                        <div class="card mb-4">
-                            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                                <span><i class="mdi mdi-information-outline me-2"></i> @GlobalLoanApplicationApproval.Tips</span>
-                                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanApprovalTips" aria-expanded="false" aria-controls="collapseLoanApprovalTips">
-                                    <i class="mdi mdi-chevron-down"></i>
-                                </button>
-                            </h6>
-                            <div id="collapseLoanApprovalTips" class="collapse">
-                                <div class="card-body">
-                                    <ul>
-                                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalLoanApplicationApproval.Tip9</li>
-                                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalLoanApplicationApproval.Tip10</li>
-                                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalLoanApplicationApproval.Tip11</li>
-                                        <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalLoanApplicationApproval.Tip12</li>
-                                        <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalLoanApplicationApproval.Tip13</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+    <div class="col-md-12">
+        <div class="form-floating">
+            @Html.TextBoxFor(m => m.UpdateLoanApplicationStatus.OTPCode, new { @class = "form-control", placeholder = @GlobalLoanApplicationApproval.EnterOTPCode, autocomplete = "one-time-code" })
+            @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.OTPCode, "", new { @class = "text-danger" })
+            <label for="UpdateLoanApplicationStatus_OTPCode">
+                @GlobalLoanApplicationApproval.EnterOTPCodeFrom @Model.Customer.name
+            </label>
+        </div>
+    </div>
 
-                        <hr />
-                        @Html.Partial("_SendOTP")
-                        <hr />
-                        @using (Html.BeginForm("Update", "MemberOperation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-                        {
-                            @Html.HiddenFor(m => m.UpdateLoanApplicationStatus.Id)
-                            @Html.HiddenFor(m => m.LoanApplication.Id)
+    <div class="col-md-12">
+        <div class="form-floating">
+            @Html.DropDownListFor(
+                m => m.UpdateLoanApplicationStatus.ApprovalStatus,
+                new SelectList(ViewBag.LoanApplicationStatus, "Value", "Text"),
+                "---Select---",
+                new { @class = "form-control select2", @search = "true", placeholder = @GlobalLoanApplicationApproval.SelectApprovalStatus })
+            @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.ApprovalStatus, "", new { @class = "text-danger" })
+            <label for="UpdateLoanApplicationStatus_ApprovalStatus">@GlobalLoanApplicationApproval.SelectApprovalStatus</label>
+        </div>
+    </div>
 
-                            <div class="row g-4">
-                                <div class="col-md-12">
-                                    <div class="form-floating">
-                                        @Html.TextBoxFor(m => m.UpdateLoanApplicationStatus.OTPCode, new { @class = "form-control", placeholder = @GlobalLoanApplicationApproval.EnterOTPCode })
-                                        @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.OTPCode, "", new { @class = "text-danger" })
-                                        <label for="UpdateLoanApplicationStatus_OTPCode">@GlobalLoanApplicationApproval.EnterOTPCodeFrom @Model.Customer.name</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-floating">
-                                        @Html.DropDownListFor(m => m.UpdateLoanApplicationStatus.ApprovalStatus, new SelectList(ViewBag.LoanApplicationStatus, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true", placeholder = @GlobalLoanApplicationApproval.SelectApprovalStatus })
-                                        @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.ApprovalStatus, "", new { @class = "text-danger" })
-                                        <label for="UpdateLoanApplicationStatus_ApprovalStatus">@GlobalLoanApplicationApproval.SelectApprovalStatus</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-floating">
-                                        @Html.TextAreaFor(m => m.UpdateLoanApplicationStatus.ApprovalComment, new { @class = "form-control", style = "height: 200px;", placeholder = @GlobalLoanApplicationApproval.AddAComment })
-                                        @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.ApprovalComment, "", new { @class = "text-danger" })
-                                        <label for="UpdateLoanApplicationStatus_ApprovalComment">@GlobalLoanApplicationApproval.Comment</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mt-4">
-                                <button type="submit" class="btn btn-primary">
-                                    @GlobalLoanApplicationApproval.Submit
-                                </button>
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>
-
-            <!-- Committee Actions Section -->
-            <div class="card accordion-item mb-3">
-                <h2 class="accordion-header" id="headingCommiteeActions">
-                    <button type="button"
-                            class="accordion-button collapsed"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapseCommiteeActions"
-                            aria-expanded="false"
-                            aria-controls="collapseCommiteeActions">
-                        @GlobalLoanApplicationApproval.CommitteeActions
-                    </button>
-                </h2>
-                <div id="collapseCommiteeActions"
-                     class="accordion-collapse collapse"
-                     aria-labelledby="headingCommiteeActions"
-                     data-bs-parent="#collapsibleSection">
-                    <div class="accordion-body">
-                        <div class="card mb-4">
-                            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                                <span><i class="mdi mdi-information-outline me-2"></i> @GlobalLoanApplicationApproval.Tips</span>
-                                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCommiteeActionsTips" aria-expanded="false" aria-controls="collapseCommiteeActionsTips">
-                                    <i class="mdi mdi-chevron-down"></i>
-                                </button>
-                            </h6>
-                            <div id="collapseCommiteeActionsTips" class="collapse">
-                                <div class="card-body">
-                                    <ul>
-                                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalLoanApplicationApproval.CommitteeTip1</li>
-                                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalLoanApplicationApproval.CommitteeTip2</li>
-                                        <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalLoanApplicationApproval.CommitteeTip3</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row g-4">
-                            @Html.Partial("_LoanCommiteeValidationData")
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+    <div class="col-md-12">
+        <div class="form-floating">
+            @Html.TextAreaFor(m => m.UpdateLoanApplicationStatus.ApprovalComment, new { @class = "form-control", style = "height: 200px;", placeholder = @GlobalLoanApplicationApproval.AddAComment })
+            @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.ApprovalComment, "", new { @class = "text-danger" })
+            <label for="UpdateLoanApplicationStatus_ApprovalComment">@GlobalLoanApplicationApproval.Comment</label>
         </div>
     </div>
 </div>

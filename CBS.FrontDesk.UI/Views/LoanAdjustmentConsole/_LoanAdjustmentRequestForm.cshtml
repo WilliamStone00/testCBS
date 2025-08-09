@@ -1,0 +1,164 @@
+﻿@model CBS.FrontDesk.Data.LoanAdjustmentP.LoanAdjustmentRequestDto
+
+@using (Html.BeginForm("SubmitAdjustment", "LoanAdjustmentConsole", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateResetLoanValue(this);" }))
+
+{
+
+    <!-- Hidden inputs filled by script -->
+    <input type="hidden" id="LoanId" name="LoanId" />
+    <input type="hidden" id="CustomerId" name="CustomerId" />
+    <input type="hidden" id="BranchId" name="BranchId" />
+
+    <div class="px-4">
+
+        <!-- SECTION: OLD LOAN DATA -->
+        <fieldset class="border rounded-3 p-3 mb-2">
+            <legend class="float-none w-auto px-2 text-success fw-bold small">
+                🧾 Current Loan Details
+            </legend>
+
+            <!-- 🔹 Row 1: Loan Amount, Balance, Interest, VAT -->
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-semibold">Loan Amount</label>
+                    <input type="text" id="oldLoanAmountLabel" class="form-control bg-light text-danger" readonly />
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-semibold">Balance</label>
+                    <input type="text" id="oldBalanceLabel" class="form-control bg-light text-danger" readonly />
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-semibold">Interest</label>
+                    <input type="text" id="oldInterestLabel" class="form-control bg-light text-danger" readonly />
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-semibold">VAT</label>
+                    <input type="text" id="oldVatLabel" class="form-control bg-light text-danger" readonly />
+                </div>
+            </div>
+
+            <!-- 🔹 Row 2: Penalty, Due Amount, Int Rate, VAT Rate -->
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-semibold">Penalty</label>
+                    <input type="text" id="oldPenaltyLabel" class="form-control bg-light text-danger" readonly />
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-semibold">Due Amount</label>
+                    <input type="text" id="oldDueAmountLabel" class="form-control bg-light text-danger" readonly />
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-semibold">Interest Rate %</label>
+                    <input type="text" id="oldIntRateLabel" class="form-control bg-light text-danger" readonly />
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-semibold">VAT Rate %</label>
+                    <input type="text" id="oldVatRateLabel" class="form-control bg-light text-danger" readonly />
+                </div>
+            </div>
+        </fieldset>
+
+
+
+        <!-- SECTION: NEW OVERRIDE INPUTS -->
+        <fieldset class="border rounded-3 p-3 mb-2">
+            <legend class="float-none w-auto px-2 text-danger fw-bold small">
+                ✏️ Override with New Values
+            </legend>
+         
+            <!-- 🔹 Row 1: Loan Amount, Balance, Interest, VAT -->
+            <div class="row">
+                <div class="col-md-3 mb-2">
+                    @Html.LabelFor(m => m.NewLoanAmount, "Loan Amount", new { @class = "form-label fw-bold" })
+                    @Html.TextBoxFor(m => m.NewLoanAmount, new { @class = "form-control", type = "number", step = "0.01", id = "NewLoanAmount" })
+                    @Html.ValidationMessageFor(m => m.NewLoanAmount, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-md-3 mb-2">
+                    @Html.LabelFor(m => m.NewBalance, "Balance", new { @class = "form-label fw-bold" })
+                    @Html.TextBoxFor(m => m.NewBalance, new { @class = "form-control", type = "number", step = "0.01", id = "NewBalance" })
+                    @Html.ValidationMessageFor(m => m.NewBalance, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-md-3 mb-2">
+                    @Html.LabelFor(m => m.NewInterest, "Interest", new { @class = "form-label fw-bold" })
+                    @Html.TextBoxFor(m => m.NewInterest, new { @class = "form-control", type = "number", step = "0.01", id = "NewInterest" })
+                    @Html.ValidationMessageFor(m => m.NewInterest, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-md-3 mb-2">
+                    @Html.LabelFor(m => m.NewVat, "VAT", new { @class = "form-label fw-bold" })
+                    @Html.TextBoxFor(m => m.NewVat, new { @class = "form-control", type = "number", step = "0.01", id = "NewVat" })
+                    @Html.ValidationMessageFor(m => m.NewVat, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <!-- 🔹 Row 2: Penalty, Due Amount, Int Rate, VAT Rate -->
+            <!-- 🔹 First Row: Penalty, Interest Rate, VAT Rate -->
+            <div class="row">
+                <!-- Penalty -->
+                <div class="col-md-4 mb-2">
+                    @Html.LabelFor(m => m.NewPenalty, "Penalty", new { @class = "form-label fw-bold" })
+                    @Html.TextBoxFor(m => m.NewPenalty, new { @class = "form-control", type = "number", step = "0.01", id = "NewPenalty", placeholder = "Penalty Amount" })
+                    @Html.ValidationMessageFor(m => m.NewPenalty, "", new { @class = "text-danger" })
+                </div>
+
+                <!-- Interest Rate -->
+                <div class="col-md-4 mb-2">
+                    @Html.LabelFor(m => m.NewIntRate, "Interest Rate %", new { @class = "form-label fw-bold" })
+                    @Html.TextBoxFor(m => m.NewIntRate, new { @class = "form-control", type = "number", step = "0.01", id = "NewIntRate", placeholder = "e.g. 2.5" })
+                    @Html.ValidationMessageFor(m => m.NewIntRate, "", new { @class = "text-danger" })
+                </div>
+
+                <!-- VAT Rate -->
+                <div class="col-md-4 mb-2">
+                    @Html.LabelFor(m => m.NewVatRate, "VAT Rate %", new { @class = "form-label fw-bold" })
+                    @Html.TextBoxFor(m => m.NewVatRate, new { @class = "form-control", type = "number", step = "0.01", id = "NewVatRate", placeholder = "e.g. 19.25" })
+                    @Html.ValidationMessageFor(m => m.NewVatRate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <!-- 🔹 Second Row: Due Amount only -->
+            <div class="row">
+                <div class="col-md-12 mb-2">
+                    <label for="newDueAmount" class="form-label fw-bold">Due Amount</label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.NewDueAmount, new { @class = "form-control", type = "number", step = "0.01", id = "newDueAmount", placeholder = "Total Due" })
+                        <span class="input-group-text bg-light">FCFA</span>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.NewDueAmount, "", new { @class = "text-danger" })
+
+                    <small class="text-muted mt-1 d-block">
+                        💰 <strong>Formatted:</strong> <span id="dueAmountFormatted">0.00</span>
+                    </small>
+                </div>
+            </div>
+
+            <!-- Reason (leave as is) -->
+            <div class="mb-1">
+                @Html.LabelFor(m => m.Reason, "Reason for Adjustment", new { @class = "form-label fw-bold" })
+                @Html.TextAreaFor(m => m.Reason, new
+                {
+                    @class = "form-control",
+                    rows = "4",
+                    placeholder = "Provide a detailed reason for this manual adjustment or waiver...",
+                    id = "Reason"
+                })
+                @Html.ValidationMessageFor(m => m.Reason, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="text-end mt-3">
+                <button type="submit" id="submitRequestBtn" class="btn btn-primary" disabled>
+                    <i class="bi bi-send"></i> Submit Adjustment Request
+                </button>
+
+            </div>
+        </fieldset>
+    </div>
+}

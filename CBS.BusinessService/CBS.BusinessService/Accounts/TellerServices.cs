@@ -82,13 +82,20 @@ namespace CBS.BusinessService.Accounts
                                   isPrimary = teller.isPrimary,
                                   name = teller.name,
                                   code = teller.code,
-                                  AllowRemoteTellerClose=teller.AllowRemoteTellerClose,
                                   bankId = teller.bankId,
-                                  PerformCashIn = teller.PerformCashIn,
-                                  PerformCashOut = teller.PerformCashOut,
-                                  PerformTransfer = teller.PerformTransfer,
-                                  TellerType = teller.TellerType,
                                   branchId = teller.branchId,
+                                  TellerType = teller.TellerType,
+                                  AllowRemoteTellerClose = teller.AllowRemoteTellerClose,
+                                  LikedMemberReference = teller.LikedMemberReference,
+                                  IsLinkedToCollectorTransit = teller.IsLinkedToCollectorTransit,
+                                  PerformCashIn = teller.PerformCashIn,
+                                  ShowbalancesOnCloseOfDay = teller.ShowbalancesOnCloseOfDay,
+                                  BalanceInitialization = teller.BalanceInitialization,
+                                  ShowbalancesOnOpenOfDay = teller.ShowbalancesOnOpenOfDay,
+                                  PerformCashOut = teller.PerformCashOut,
+                                  EventCode = teller.EventCode,
+                                  PerformTransfer = teller.PerformTransfer,
+                                  OperationType = teller.OperationType,
                                   MinimumAmountToManage = teller.MinimumAmountToManage,
                                   MaximumAmountToManage = teller.MaximumAmountToManage,
                                   MinimumDepositAmount = teller.MinimumDepositAmount,
@@ -97,13 +104,35 @@ namespace CBS.BusinessService.Accounts
                                   MaximumWithdrawalAmount = teller.MaximumWithdrawalAmount,
                                   MinimumTransferAmount = teller.MinimumTransferAmount,
                                   MaximumTransferAmount = teller.MaximumTransferAmount,
-                                  Branch = branch, // Assign correct branch
-                                  MapMobileMoneyToNoneMemberMobileMoneyReference = teller.MapMobileMoneyToNoneMemberMobileMoneyReference,
+                                  AccountNumber = teller.AccountNumber,
+                                  Branch = branch,
                                   inUseStatus = teller.inUseStatus,
                                   activeStatus = teller.activeStatus,
-                                  Transactions = teller.Transactions
+                                  OperationEventCode = teller.OperationEventCode,
+                                  MobileMoneyUserKeepingThePhone = teller.MobileMoneyUserKeepingThePhone,
+                                  MobileMoneyFloatNumber = teller.MobileMoneyFloatNumber,
+                                  MobileMoneyMinimumBalanceAlertLevel = teller.MobileMoneyMinimumBalanceAlertLevel,
+                                  MobileMoneyMaximumBalanceAlertLevel = teller.MobileMoneyMaximumBalanceAlertLevel,
+                                  FromAuxillaryAccountNumber_A = teller.FromAuxillaryAccountNumber_A,
+                                  ToBranchFloatAccountNumberAuxillary_A = teller.ToBranchFloatAccountNumberAuxillary_A,
+                                  FromHeadOfficeAccountNumber_B = teller.FromHeadOfficeAccountNumber_B,
+                                  ToBranchFloatAccountNumberHeadOffice_B = teller.ToBranchFloatAccountNumberHeadOffice_B,
+                                  FromBranchAccountNumber_C = teller.FromBranchAccountNumber_C,
+                                  ToBranchFloatAccountNumberBranch_C = teller.ToBranchFloatAccountNumberBranch_C,
+                                  FromBranchFloatAccountNumber_D = teller.FromBranchFloatAccountNumber_D,
+                                  ToHeadOfficeFloatAccountNumber_D = teller.ToHeadOfficeFloatAccountNumber_D,
+                                  PhoneNumberToRecieveAlert = teller.PhoneNumberToRecieveAlert,
+                                  MobileMoneyAlertMessageInFrench = teller.MobileMoneyAlertMessageInFrench,
+                                  MobileMoneyAlertMessageInEnglish = teller.MobileMoneyAlertMessageInEnglish,
+                                  IsBlockedDueToCashCeilling = teller.IsBlockedDueToCashCeilling,
+                                  DateOfBlocked = teller.DateOfBlocked,
+                                  Blockedby = teller.Blockedby,
+                                  Comment = teller.Comment,
+                                  InitializeAccountCommand = teller.InitializeAccountCommand,
+                                  Transactions = teller.Transactions,
+                                  MapMobileMoneyToNoneMemberMobileMoneyReference = teller.MapMobileMoneyToNoneMemberMobileMoneyReference
                               })
-                        .ToList(); // Ensure it's evaluated before returning
+                        .ToList();
                 }
                 else
                 {
@@ -119,7 +148,7 @@ namespace CBS.BusinessService.Accounts
                         {
                             teller.Branch = currentBranch; // Assign branch to each teller
                             return teller;
-                        }).Where(x=>x.branchId==currentBranch.Id)
+                        }).Where(x => x.branchId==currentBranch.Id)
                         .ToList();
                 }
             }
@@ -239,6 +268,52 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
+        public async Task<ExecutionMessages> Update(LinkCollectorTransitCommand linkCollectorTransitCommand)
+        {
+            try
+            {
+                var existingTeller = await GetTeller(linkCollectorTransitCommand.TellerId);
+                existingTeller.IsLinkedToCollectorTransit=linkCollectorTransitCommand.IsLinkedToCollectorTransit;
+                existingTeller.LikedMemberReference=linkCollectorTransitCommand.LikedMemberReference;
+                if (existingTeller.AccountNumber==null)
+                {
+                    existingTeller.AccountNumber="n/a";
+                }
+                if (existingTeller == null)
+                {
+                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
+                        "Teller not found.");
+                    return ExecutionMessage;
+                }
+
+                // 🔄 Make API call
+                var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<Teller>>(
+                    string.Format(APICallHelper.Get_Update_Delete_Teller, linkCollectorTransitCommand.TellerId),
+                    existingTeller
+                );
+
+                // ✅ Handle success
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                }
+                else
+                {
+                    GetExecutionMessages(existingTeller, false, existingTeller.name, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(null, false, null, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Failed.ToString(), ex);
+            }
+
+            return ExecutionMessage;
+        }
+
         public async Task<ExecutionMessages> Update(Teller model, ToggleRemoteCloseDto toggleRemote, bool istoogle = false)
         {
             try
@@ -255,7 +330,7 @@ namespace CBS.BusinessService.Accounts
                 }
 
                 // 🛠 Apply updates from model to the retrieved teller
-                ApplyTellerUpdates(existingTeller, model,istoogle);
+                ApplyTellerUpdates(existingTeller, model, istoogle);
 
                 // 🔄 Make API call
                 var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<Teller>>(
@@ -316,7 +391,7 @@ namespace CBS.BusinessService.Accounts
                 target.ShowbalancesOnOpenOfDay = source.ShowbalancesOnOpenOfDay;
                 target.Blockedby = GetUserFullName();
             }
-            
+
         }
 
 

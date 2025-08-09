@@ -187,13 +187,13 @@ namespace CBS.BusinessService.Accounts
             }
         }
         
-        public async Task<IEnumerable<StringValues>> GetValues(GetAllFileUploadSalaryFileActivatedQuery allFileUploadSalaryFileActivatedQuery)
+        public async Task<IEnumerable<StringValues>> GetValues(GetAllFileUploadSalaryFileActivatedQuery allFileUploadSalaryFileActivatedQuery, string path)
         {
             try
             {
                 List<StringValues> stringValues;
 
-                var fileUploads = await GetUploadDtosAsyncByStatus(allFileUploadSalaryFileActivatedQuery);
+                var fileUploads = await GetUploadDtosAsyncByStatus(allFileUploadSalaryFileActivatedQuery, path);
                     stringValues = (from a in fileUploads
                                     
                                     select new StringValues
@@ -201,8 +201,6 @@ namespace CBS.BusinessService.Accounts
                                         Text = $"[Salary Code: {a.FileCode}] [Execution State: {a.FileCategory}] [Name: {a.FileName}]",
                                         Value = $"{a.Id}",
                                     }).ToList();
-             
-
                 return stringValues;
             }
             catch (Exception ex)
@@ -212,29 +210,54 @@ namespace CBS.BusinessService.Accounts
             }
         }
 
-        public async Task<IEnumerable<FileUploadDto>> GetUploadDtosAsyncByStatus(GetAllFileUploadSalaryFileActivatedQuery allFileUploadSalaryFileActivatedQuery)
+        public async Task<IEnumerable<FileUploadDto>> GetUploadDtosAsyncByStatus(GetAllFileUploadSalaryFileActivatedQuery query, string path)
         {
             try
             {
-
-
-                var queryString = ToQueryString(allFileUploadSalaryFileActivatedQuery);
+                var queryString = ToQueryString(query);
                 var fullUrl = $"{APICallHelper.GetAllSalaryUploadByFileBaseOnStatus}?{queryString}";
                 var response = await _transactionApiHelper.GetAsync<ResponseObject<List<FileUploadDto>>>(fullUrl);
-                var data = new List<FileUploadDto>();
-                if (response.ApiResponseData != null)
-                {
-                    data = response.ApiResponseData.Data;
-                }
-                return data;
 
+                if (response?.ApiResponseData?.Data == null)
+                    return Enumerable.Empty<FileUploadDto>();
+
+                var data = response.ApiResponseData.Data;
+
+                // Normalize path
+                path = path?.ToLowerInvariant();
+
+                // Filter by file type
+                if (path == "cs_salary")
+                {
+                    data = data.Where(x => x.FileType?.ToLower().Contains("civil") == true).ToList();
+
+                    // ❌ No branch filtering for cs_salary
+                    return data;
+                }
+                else if (path == "ps_salary" || path == "pi_salary")
+                {
+                    data = data.Where(x => x.FileType?.ToLower().Contains("private") == true).ToList();
+
+                    // ✅ Filter by branch if not head office
+                    if (!IsHeadOffice())
+                    {
+                        var branchId = GetBranchID();
+                        data = data.Where(x => x.BranchId == branchId).ToList();
+                    }
+
+                    return data;
+                }
+               // BranchCode, Acc Number, Names, GSalary
+                // Fallback case — no filtering
+                return data;
             }
             catch (Exception ex)
             {
-                // Log and handle exception
+                // Optionally log the exception
                 throw;
             }
         }
+
 
         public async Task<FileUploadDto> GetFileUpload(string fileId)
         {

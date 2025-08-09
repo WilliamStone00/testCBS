@@ -20,6 +20,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string ApprovalComment { get; set; }
         [Required]
         public string OTPCode { get; set; }
+        public DateTime AccountingDate { get; set; }
         public UpdateLoanApplicationStatusCommand()
         {
             ApprovalComment = "Having received confirmation from the loan committee, I hereby approve this loan.";
@@ -357,6 +358,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         [Range(0, int.MaxValue, ErrorMessage = "Number of days to apply charges must be a non-negative number.")]
         public int NumberOfDaysToApplyCharges { get; set; }
         public OldLoanPayment OldLoanPayment { get; set; }
+        public DateTime AccountingDate { get; set; }
         public AddLoanApplicationCommand()
         {
             Amount = 0;
@@ -462,14 +464,49 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     }
     public class LoanData
     {
-        public decimal DueAmount { get; set; }
+        // 🧾 Financial Breakdown
         public decimal Principal { get; set; }
         public decimal AccrualInterest { get; set; }
         public decimal Tax { get; set; }
         public decimal Penalty { get; set; }
-        public string Id { get; set; }
-        public decimal VatRate { get; set; }
+        public decimal DueAmount { get; set; }     // Total amount to be refinanced
+        public decimal VatRate { get; set; }       // VAT rate used for Tax calculation
+        public decimal InterestRate { get; set; }  // Interest rate on the original loan
+
+        // 📌 Identifiers
+        public string Id { get; set; }             // Original Loan ID
+        public string LoanProductId { get; set; }
+        public string LoanProductName { get; set; }
+
+        // 👤 Member Info (Optional for display)
+        public string MemberId { get; set; }
+        public string MemberName { get; set; }
+
+        // 🏦 Loan Configuration
+        public string LoanType { get; set; }            // e.g., Long Term, Short Term
+        public string LoanTermName { get; set; }        // e.g., 12 Months
+        public string LoanTarget { get; set; }          // e.g., SME, Agriculture
+        public string LoanPurpose { get; set; }         // e.g., Buy Machinery
+        public string RepaymentPeriod { get; set; }     // e.g., Monthly
+        public int NumberOfInstallments { get; set; }
+        public string RepaymentFrequency { get; set; }  // e.g., Monthly, Weekly
+        public string RepaymentMode { get; set; }       // e.g., Equal Installments
+
+        // 📅 Loan Dates
+        public DateTime DisbursementDate { get; set; }
+        public DateTime? MaturityDate { get; set; }
+        public DateTime? LastRepaymentDate { get; set; }
+
+        // 📊 Status and Policy Info
+        public string LoanStatus { get; set; }          // e.g., Active, Closed, Delinquent
+        public string LoanCategory { get; set; }        // Main_Loan or SSF
+        public string DisbursementChannel { get; set; } // e.g., Cash, Account Transfer
+        public string InterestCalculationMethod { get; set; } // e.g., Flat, Declining
+
+        public string ProductCategoryId { get; set; } // e.g., Flat, Declining
+        public string ProductCategoryName { get; set; } // e.g., Flat, Declining
     }
+
 
     public class Loan
     {
@@ -670,44 +707,54 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     public class GetLoansDataTableQuery
     {
         /// <summary>
-        /// DataTable options containing pagination, sorting, and search parameters.
+        /// DataTable options for pagination, sorting, and search.
         /// </summary>
         public DataTableOptions DataTableOptions { get; set; }
 
-        /// <summary>
-        /// Optional filter to retrieve loans from a specific branch.
-        /// </summary>
+        /// <summary>Optional filter for branch ID.</summary>
         public string BranchId { get; set; }
 
-        /// <summary>
-        /// Optional filter to retrieve loans for a specific customer or member.
-        /// </summary>
+        /// <summary>Optional Loan ID (internal or account number).</summary>
+        public string LoanId { get; set; }
+
+        /// <summary>Optional member or customer ID.</summary>
         public string MemberId { get; set; }
 
-        /// <summary>
-        /// Optional loan status filter. 
-        /// Possible values: "Open", "Closed", "Refinanced", "Restructured", "Rescheduled".
-        /// Use "all" to include all statuses.
-        /// </summary>
+        /// <summary>Optional loan status: Open, Closed, Refinanced, etc.</summary>
         public string Status { get; set; }
 
-        /// <summary>
-        /// Optional start date to filter loans based on the loan creation date.
-        /// Only loans created on or after this date will be included.
-        /// </summary>
+        /// <summary>Optional disbursement status: Pending, Disbursed, etc.</summary>
+        public string DisburmentStatus { get; set; }
+
+        /// <summary>Optional start date of creation (inclusive).</summary>
         public DateTime? StartDate { get; set; }
 
-        /// <summary>
-        /// Optional end date to filter loans based on the loan creation date.
-        /// Only loans created on or before this date will be included.
-        /// </summary>
+        /// <summary>Optional end date of creation (inclusive).</summary>
         public DateTime? EndDate { get; set; }
 
-        /// <summary>
-        /// Optional filter to retrieve loans based on delinquency status.
-        /// Possible values: "Current", "Delinquent", or "all".
-        /// </summary>
+        /// <summary>Optional delinquency status: Current, Delinquent, or all.</summary>
         public string DeliquentStatus { get; set; }
+
+        /// <summary>Optional filter for migrated loans. Values: "Yes", "No".</summary>
+        public string IsMigratedLoan { get; set; }
+
+        /// <summary>Optional type of loan (e.g., TermLoan, Overdraft).</summary>
+        public string LoanTypes { get; set; }
+
+        /// <summary>Optional loan category (e.g., Personal, SME).</summary>
+        public string LoanCategory { get; set; }
+
+        /// <summary>Optional minimum number of delinquent days to filter.</summary>
+        public int DelinquentDays { get; set; }
+
+        /// <summary>Optional PAR (Portfolio At Risk) ID group.</summary>
+        public string ParId { get; set; }
+
+        /// <summary>Optional loan target (e.g., salary, agriculture, group).</summary>
+        public string LoanTarget { get; set; }
+
+        /// <summary>Optional loan type category (e.g., ShortTerm, LongTerm).</summary>
+        public string LoanTypeCategory { get; set; }
     }
     public class GetLoanApplicationsDataTableQuery
     {

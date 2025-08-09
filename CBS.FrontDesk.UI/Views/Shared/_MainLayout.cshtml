@@ -18,7 +18,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&ampdisplay=swap"  rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&ampdisplay=swap" rel="stylesheet" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
     <!-- Icons -->
@@ -33,7 +33,17 @@
     <link href="~/CBSTemp/ui/assets/vendor/css/rtl/theme-default.css" rel="stylesheet" type="text/css" />
     <link href="~/CBSTemp/ui/assets/css/demo.css" rel="stylesheet" type="text/css" />
     <link href="~/CBSTemp/ui/assets/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+   
     <style>
+        /* Reusable accounting date field tweaks */
+        .accounting-date {
+            padding-right: 2.25rem; /* space for native calendar icon */
+        }
+            /* Optional: tighter look */
+            .accounting-date::-webkit-datetime-edit,
+            .accounting-date::-webkit-date-and-time-value {
+                line-height: 1.25rem;
+            }
         /* Trial Balance Styles */
         #trialBalance .used-cell {
             text-decoration: line-through !important;
@@ -1123,35 +1133,62 @@
 
     @*<script src="~/Scripts/Js/main.js/clientDataAfterLogin.js"></script>*@
     <script src="~/Scripts/Js/main.js/ConnectionMonitor.js"></script>
-    @*<script>
-            function checkInternetConnection() {
-                if (!navigator.onLine) {
-                    redirectToNoInternet();
-                } else {
-                    // Double-check connectivity by making a lightweight request
-                    fetch("/Home/Ping")
-                        .then(response => {
-                            if (!response.ok) {
-                                redirectToNoInternet();
-                            }
-                        })
-                        .catch(() => {
-                            redirectToNoInternet();
-                        });
+    <script>
+        (function () {
+            function isoToday() {
+                const t = new Date();
+                return [
+                    t.getFullYear(),
+                    String(t.getMonth() + 1).padStart(2, '0'),
+                    String(t.getDate()).padStart(2, '0')
+                ].join('-');
+            }
+
+            function normalizeAccountingDate(input) {
+                if (!input) return;
+                const raw = (input.value || '').trim();
+
+                // Detect MinValue / empty
+                const looksMin =
+                    !raw || raw.startsWith('0001-01-01') ||
+                    raw === '01/01/0001' || raw === '0001/01/01';
+
+                // Behavior flags
+                const wantsDefaultToday = (input.dataset.dateDefault || '').toLowerCase() === 'today';
+                const wantsMaxToday = (input.dataset.dateMax || '').toLowerCase() === 'today';
+                const wantsMinToday = (input.dataset.dateMin || '').toLowerCase() === 'today';
+
+                if (looksMin && wantsDefaultToday) input.value = isoToday();
+                if (wantsMaxToday && !input.max) input.max = isoToday();
+                if (wantsMinToday && !input.min) input.min = isoToday();
+
+                // Adjust if value outside allowed range
+                if (input.max && input.value && input.value > input.max) input.value = input.max;
+                if (input.min && input.value && input.value < input.min) input.value = input.min;
+            }
+
+            function initAccountingDates(root) {
+                const scope = root || document;
+                scope.querySelectorAll('input[type="date"].accounting-date').forEach(normalizeAccountingDate);
+            }
+
+            document.addEventListener('DOMContentLoaded', () => initAccountingDates());
+
+            // For partial views loaded later
+            const mo = new MutationObserver(muts => {
+                for (const m of muts) {
+                    for (const n of m.addedNodes) {
+                        if (n.nodeType === 1) initAccountingDates(n);
+                    }
                 }
-            }
+            });
+            mo.observe(document.body, { childList: true, subtree: true });
 
-            function redirectToNoInternet() {
-                window.location.href = "/Home/NoInternet";
-            }
+            // Optional: expose for manual calls
+            window.initAccountingDates = initAccountingDates;
+        })();
+    </script>
 
-            // Initial check on page load
-            checkInternetConnection();
-
-            // Listen for connectivity changes
-            window.addEventListener('offline', redirectToNoInternet);
-            window.addEventListener('online', checkInternetConnection);
-        </script>*@
 
 
     @RenderSection("scripts", required: false)

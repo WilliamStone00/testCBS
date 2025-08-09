@@ -17,7 +17,7 @@ using System.Web.Services.Description;
 
 namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 {
-    //[CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
     public class SalaryAnalyzerController : BaseController
     {
         // GET: SalaryAnalyzer
@@ -191,14 +191,8 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             try
             {
                 SalaryUploadModelCarrier carrier = new SalaryUploadModelCarrier();
-
-                if (path == "list")
-                {
-                    var fileUploads = await _salaryUploadServices.GetUploadDtosAsyncByStatus(
-                        new GetAllFileUploadSalaryFileActivatedQuery { Both = false, Status = true }
-                    );
-                    carrier.FileUploads = fileUploads.ToList();
-                }
+                var fileUploads = await _salaryUploadServices.GetUploadDtosAsyncByStatus(new GetAllFileUploadSalaryFileActivatedQuery { Both = false, Status = true }, path);
+                carrier.FileUploads = fileUploads.ToList();
                 return PartialView(partialView, carrier);
             }
             catch (Exception ex)
@@ -222,7 +216,6 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 // Fetch salary analysis details and file upload data
                 var salaryAnalysis = await _salaryAnalysisResultServices.GetSalaryAnalysisResultByFileUploadId(fileUploadId);
-
                 
                 if (salaryAnalysis.Id == null)
                 {
@@ -249,8 +242,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 string exportedBy = Session["FullName"].ToString();
                 string salaryCode = fileUpload.FileCode;
                 // Generate Excel file
-                SalaryAnalysisResultDetailExcelGenerator.GenerateSalaryAnalysisExcel(salaryDetails, branchName, filePath, exportedDate, exportedBy, salaryCode);
-
+                //SalaryAnalysisResultDetailExcelGenerator.GenerateSalaryAnalysisExcel(salaryDetails, branchName, filePath, exportedDate, exportedBy, salaryCode);
+                SalarySheetExcelExporter.ExportToExcel(salaryDetails, branchName, filePath, exportedDate, exportedBy, salaryCode);
+                
                 // Return the file for download
                 byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
                 System.IO.File.Delete(filePath); // Clean up temporary file

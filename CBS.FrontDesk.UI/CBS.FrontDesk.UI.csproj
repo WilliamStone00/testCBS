@@ -2057,6 +2057,7 @@
     <Compile Include="Controllers\CashDeskOperations\OtherTransactionController.cs" />
     <Compile Include="Controllers\ChangeCustomerNumber\ChangeNumberController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectionDashboardController.cs" />
+    <Compile Include="Controllers\Loan\LoanAdjustmentP\LoanAdjustmentConsoleController.cs" />
     <Compile Include="Controllers\MemberReceiptsP\MemberReceiptController.cs" />
     <Compile Include="Controllers\CMoney\CMoneyMembershipController.cs" />
     <Compile Include="Controllers\Commitee\LoanCommiteeController.cs" />
@@ -2145,9 +2146,11 @@
     <Compile Include="Controllers\TransactionManagement\OperationController.cs" />
     <Compile Include="Controllers\TransactionManagement\OperationFeeController.cs" />
     <Compile Include="Controllers\TransactionManagement\PrimaryTellerCashRequisitionController.cs" />
+    <Compile Include="Controllers\TransactionManagement\PISalaryAnalyzerController.cs" />
     <Compile Include="Controllers\TransactionManagement\SalaryAnalyzerController.cs" />
     <Compile Include="Controllers\TransactionManagement\PISalaryExecutionController.cs" />
     <Compile Include="Controllers\TransactionManagement\SalaryExecutionController.cs" />
+    <Compile Include="Controllers\TransactionManagement\PISalaryUploadController.cs" />
     <Compile Include="Controllers\TransactionManagement\SalaryUploadController.cs" />
     <Compile Include="Controllers\TransactionManagement\SavingController.cs" />
     <Compile Include="Controllers\TransactionManagement\SavingProductFeeController.cs" />
@@ -2172,6 +2175,7 @@
     </Compile>
     <Compile Include="Filter\MaliciousContentScannerService.cs" />
     <Compile Include="Helper\FileUploadHelper.cs" />
+    <Compile Include="Helper\SalarySheetExcelExporter.cs" />
     <Compile Include="WAF\Middleware\Correlation\CorrelationIdMiddleware.cs" />
     <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureFilter.cs" />
     <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureMiddleware.cs" />
@@ -8211,6 +8215,8 @@
     <Content Include="Scripts\Js\CashMovementTracker\CashMovementTracker.js" />
     <Content Include="Scripts\Js\CommissionManagement\CommissionPayment.js" />
     <Content Include="Scripts\Js\CommissionManagement\DailyCollectionManagement.js" />
+    <Content Include="Scripts\Js\Crud\LoanAdjustmentConsole\LoanAdjustmentConsole.js" />
+    <Content Include="Scripts\Js\Crud\LoanAdjustmentConsole\LoanAdjustmentLoader.js" />
     <Content Include="Scripts\Js\Dashboard\DailyCollection\DailyCollectionDashboard.js" />
     <Content Include="Scripts\Js\main.js\AccountBalanceInitialization.js" />
     <Content Include="Scripts\Js\main.js\DailySaverOperations.js" />
@@ -9386,6 +9392,35 @@
     <Content Include="Views\DailyAgentManagement\UploadDailySavers.cshtml" />
     <Content Include="Views\DailyAgentManagement\_uploadDailySavers.cshtml" />
     <Content Include="Views\DailyAgentManagement\_UploadedDailyOperationData.cshtml" />
+    <Content Include="Views\PISalaryUpload\_FileUploadData.cshtml" />
+    <Content Include="Views\PISalaryUpload\_SalaryDetailsData.cshtml" />
+    <Content Include="Views\PISalaryUpload\_SalaryUploadForm.cshtml" />
+    <Content Include="Views\PISalaryUpload\Detail.cshtml" />
+    <Content Include="Views\PISalaryUpload\Index.cshtml" />
+    <Content Include="Views\PISalaryUpload\UploadedSalaryFiles.cshtml" />
+    <Content Include="Views\PISalaryAnalyzer\_FileUploadData.cshtml" />
+    <Content Include="Views\PISalaryAnalyzer\_SalaryAnalysisResultSummaryData.cshtml" />
+    <Content Include="Views\PISalaryAnalyzer\_SalaryDetailsData.cshtml" />
+    <Content Include="Views\PISalaryAnalyzer\_SalaryUploadForm.cshtml" />
+    <Content Include="Views\PISalaryAnalyzer\Detail.cshtml" />
+    <Content Include="Views\PISalaryAnalyzer\Index.cshtml" />
+    <Content Include="Views\PISalaryAnalyzer\SalaryAnalysisResultSummary.cshtml" />
+    <Content Include="Views\LoanAdjustmentConsole\_LoanAdjustmentRequestForm.cshtml" />
+    <Content Include="Views\LoanAdjustmentConsole\_LoanAdjustmentDetail.cshtml" />
+    <Content Include="Views\LoanAdjustmentConsole\_LoanAdjustmentSharedModal.cshtml" />
+    <Content Include="Views\LoanAdjustmentConsole\_FIlterQuery.cshtml" />
+    <Content Include="Views\LoanAdjustmentConsole\_LoanAdjustmentData.cshtml" />
+    <Content Include="Views\LoanAdjustmentConsole\_LoanIformation.cshtml" />
+    <Content Include="Views\LoanAdjustmentConsole\_LoanTerm.cshtml" />
+    <Content Include="Views\LoanAdjustmentConsole\_Refunds.cshtml" />
+    <Content Include="Views\LoanAdjustmentConsole\_RepaymentSchedle.cshtml" />
+    <Content Include="Views\LoanAdjustmentConsole\_SearchBox.cshtml" />
+    <Content Include="Views\LoanAdjustmentConsole\Details.cshtml" />
+    <Content Include="Views\LoanAdjustmentConsole\DownloadFile.cshtml" />
+    <Content Include="Views\LoanAdjustmentConsole\Index.cshtml" />
+    <Content Include="Views\LoanAdjustmentConsole\LoanAdjustment.cshtml" />
+    <Content Include="Views\LoanAdjustmentConsole\_LoanAdjustmentDetailModal.cshtml" />
+    <Content Include="Views\MemberOperation\_ExistingLoanDetailModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

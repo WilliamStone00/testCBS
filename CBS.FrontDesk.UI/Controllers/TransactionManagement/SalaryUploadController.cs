@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 {
-    //[CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
     public class SalaryUploadController : BaseController
     {
         // GET: SalaryUpload
@@ -188,14 +188,14 @@ TotalMembers=salaryUploadModels.Count(), TotalNetSalary=salaryUploadModels.Sum(x
                 if (path == "list")
                 {
                     var fileUploads = await _salaryUploadServices.GetUploadDtosAsyncByStatus(
-                        new GetAllFileUploadSalaryFileActivatedQuery { Both = true, Status = true }
+                        new GetAllFileUploadSalaryFileActivatedQuery { Both = true, Status = true }, path
                     );
                     carrier.FileUploads = fileUploads.ToList();
                 }
                 else if (path == "branches_view")
                 {
                     var fileUploads = await _salaryUploadServices.GetUploadDtosAsyncByStatus(
-                        new GetAllFileUploadSalaryFileActivatedQuery { Both = false, Status = true }
+                        new GetAllFileUploadSalaryFileActivatedQuery { Both = false, Status = true }, path
                     );
                     carrier.FileUploads = fileUploads.ToList();
                 }
