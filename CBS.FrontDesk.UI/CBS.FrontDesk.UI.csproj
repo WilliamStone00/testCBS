@@ -6494,6 +6494,7 @@
     </Content>
     <Content Include="AppFiles\Reporting\SampleDocument\SampleDailySaverToBeUploaded.xlsx" />
     <Content Include="AppFiles\Reporting\SampleDocument\CorrectedCollectorEntryFile.xlsx" />
+    <Content Include="AppFiles\BulkOperation\BulkOperationFileUpload.xlsx" />
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -9407,6 +9408,8 @@
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
     <Folder Include="Controllers\DailyCollectionManagement\" />
     <Folder Include="Hub\" />
+    <Folder Include="Views\BulkOperation\Contribution\" />
+    <Folder Include="Views\BulkOperation\Topup\" />
     <Folder Include="Views\Language\" />
   </ItemGroup>
   <ItemGroup>

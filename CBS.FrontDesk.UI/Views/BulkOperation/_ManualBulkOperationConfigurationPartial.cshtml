@@ -1,0 +1,148 @@
+﻿@using Resources
+@model CBS.FrontDesk.Data.Entity.BulkOperation.SimulateCashOutOrCashInBulkOperation
+@{
+    ViewBag.Title = @GlobalBulkOperation.SimulateBulkOperation;
+}
+
+<!-- Tips Section -->
+<div class="card shadow-sm mb-1">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalBulkOperation.TIPS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUserTips" aria-expanded="false" aria-controls="collapseUserTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseUserTips" class="collapse">
+        <div class="card-body">
+            <div class="row gy-2">
+                <div class="col-md-12">
+                    <h5 class="text-primary mb-3"><i class="mdi mdi-playlist-check me-2"></i> How to Execute a Bulk Cash Operation:</h5>
+                    <ol class="list-group list-group-numbered">
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Define Operation Type</div>
+                                Select whether this is a bulk cash in (deposit) or cash out (withdrawal) operation.
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Set Destination Account</div>
+                                Specify the central account that will receive funds (for cash in) or distribute funds (for cash out).
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Add Member Accounts</div>
+                                Add all member accounts that will participate in this bulk operation with their respective amounts.
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Run Simulation</div>
+                                Review the simulation results carefully before executing the actual operation.
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Execute Operation</div>
+                                After verifying simulation results, proceed with the actual bulk cash operation.
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="col-md-6 mt-3">
+                    <div class="alert alert-primary d-flex align-items-center" role="alert">
+                        <i class="mdi mdi-cash-check me-2"></i>
+                        Ensure all account numbers and amounts are accurate before submission.
+                    </div>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <div class="alert alert-warning d-flex align-items-center" role="alert">
+                        <i class="mdi mdi-alert-outline me-2"></i>
+                        Cash operations are immediate and cannot be easily reversed.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Operation Parameters Section -->
+@Html.Partial("_BulkOperationParameters")
+
+<!-- Operation Type Radio Buttons -->
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <label class="form-label m-1">Operation Scope</label>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.OperationScope, "Internal", new { @class = "form-check-input operation-type", id = "internalOperation" })
+                    <label class="form-check-label" for="internalOperation">
+                        <i class="mdi mdi-home-account me-1"></i> Internal Operation
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.OperationScope, "Interbranch", new { @class = "form-check-input operation-type", id = "interbranchOperation" })
+                    <label class="form-check-label" for="interbranchOperation">
+                        <i class="mdi mdi-bank-transfer me-1"></i> Interbranch Operation
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Account List Section -->
+<div class="accordion mb-2" id="accountListAccordion">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingAccountList">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAccountList" aria-expanded="true" aria-controls="collapseAccountList">
+                <i class="mdi mdi-account-details me-2"></i> @GlobalBulkOperation.BulkCashAccountList
+            </button>
+        </h2>
+        <div id="collapseAccountList" class="accordion-collapse collapse show" aria-labelledby="headingAccountList">
+            <div class="accordion-body">
+
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0" id="accountsTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Branch</th>
+                                <th>Member Reference</th>
+                                <th>Account Type</th>
+                                <th>Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="empty-row">
+                                <td colspan="4" class="text-center text-muted py-4">
+                                    <i class="mdi mdi-database-remove fs-3 d-block mb-2"></i>
+                                    No accounts added yet. Click "Add Account" to begin.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="d-flex justify-content-end align-items-center mt-2 mb-3">
+                    <button type="button" class="btn btn-sm btn-primary" id="addAccountBtn">
+                        <i class="mdi mdi-plus-circle-outline me-1"></i> Add Account
+                    </button>
+                </div>
+
+
+                <div class="mt-2">
+                    <small class="text-muted">
+                        <i class="mdi mdi-information-outline me-1"></i>
+                        You can add multiple accounts to process in this batch
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

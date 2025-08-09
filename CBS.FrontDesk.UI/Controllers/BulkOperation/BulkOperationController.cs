@@ -3,13 +3,19 @@ using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.BulkOperations;
 using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.BulkOperation;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -61,6 +67,115 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
         }
 
 
+        public async Task<ActionResult> BulkCashOperation()
+        {
+            var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
+            ViewBag.eventNames = await _accountingServices.GetEventNames(operationType);
+            ViewBag.chartOfAccounts = chartOfAccounts.ToList();
+            ViewBag.transferType = new List<StringValues>() { new StringValues {Text= "CashIn",Value= "CashIn"}, new StringValues {Text= "CashOut",Value= "CashOut"}, };
+            var Branches = await _branchServices.GetBranches();
+            var savingProduct = await _bulkOperationService.GetSavingProducts();
+            var savingOrdinaryProduct = savingProduct.Where(x => x.ProductCategory == "OrdinaryAccount").ToList();
+            //var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
+            return View(new SimulateCashOutOrCashInBulkOperation()
+            {
+                Branches = Branches.ToList(),
+               SavingProducts = savingOrdinaryProduct,
+            });
+        }
+
+        public async Task<ActionResult> DownloadBulkOperationFileTemplate()
+        {
+            try
+            {
+                const string fileName = "BulkOperationFileUpload.xlsx";
+                string directoryPath = Server.MapPath("~/AppFiles/BulkOperation");
+
+                // Validate directory exists
+                if (!Directory.Exists(directoryPath))
+                {
+                    return Json(new { success = false, status = false, message = "Bulk operation template directory not found" });
+                }
+
+                string filePath = Path.Combine(directoryPath, fileName);
+
+                // Validate file exists
+                if (!System.IO.File.Exists(filePath))
+                {
+                    return Json(new { success = false, status = false, message = "Template file not found" });
+                }
+
+                // Read file asynchronously
+                byte[] fileBytes;
+                using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true))
+                {
+                    fileBytes = new byte[fileStream.Length];
+                    await fileStream.ReadAsync(fileBytes, 0, (int)fileStream.Length);
+                }
+
+                // Return the file
+                return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Json(new { success = false, status = false, message = "Access denied to template file" });
+            }
+            catch (IOException ex)
+            {
+                return Json(new { success = false, status = false, message = $"Error reading template file: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+
+                // Log the exception here
+                return Json(new { success = false, status = false, message = $"An unexpected error occurred: {ex.Message}" });
+            }
+        }
+
+
+        public async Task<ActionResult> UploadBulkCashOperationFile(HttpPostedFileBase file)
+        {
+            try
+            {
+                // Validation (keep your existing validation code)
+
+                // Process the file
+                var result = await _bulkOperationService.ProcessBulkCashOperationFileAsync(file);
+
+                if (result== null || !result.Success)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message =result==null ? "Failed to process file" : result.Message ?? "Failed to process file",
+                        error = result== null ? null : result.Errors // Include any additional error details
+                    });
+                }
+
+
+                // Return proper JSON structure
+                return Json(new
+                {
+                    draw = Request.Form["draw"] ?? "1",
+                    recordsTotal = result.Data?.BulkCashOperationFileDetails?.Count ?? 0,
+                    recordsFiltered = result.Data?.BulkCashOperationFileDetails?.Count ?? 0,
+                    data = result.Data?.BulkCashOperationFileDetails ?? new List<BulkCashOperationFileDetails>(),
+                    success = true,
+                    message = "File processed successfully"
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // Log the error
+                return Json(new
+                {
+                    success = false,
+                    message = "An error occurred while processing your file.",
+                    error = ex.Message // Only include in development
+                });
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult> Simulate(SimulateBulkOperation model)
         {
@@ -95,6 +210,8 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             ViewBag.Branches = Branches;
             return View();
         }
+
+
 
         public async Task<ActionResult> Validation( string stimulationId, string approvalStatus,string description,string approvedBy)
         {
@@ -350,6 +467,66 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 Console.WriteLine($"Error generating Excel file: {ex.Message}");
                 return Json(new { success = false, message = "An error occurred while generating the Excel file." }, JsonRequestBehavior.AllowGet);
 
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SimulateCashOutOrCashInBulkOperation(SimulateCashOutOrCashInBulkOperation model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Invalid data submitted." });
+            }
+
+            try
+            {
+                // Process the simulation
+               // var results = _bulkOperationService.SimulateBulkOperation(model);
+
+                return Json(new
+                {
+                    success = true,
+                    message = "Simulation completed successfully."
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = $"Error during simulation: {ex.Message}"
+                });
+            }
+        }   
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SimulateCashOutOrCashInBulkFileOperation(SimulateCashOutOrCashInBulkOperation model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Invalid data submitted." });
+            }
+
+            try
+            {
+                // Process the simulation
+               // var results = _bulkOperationService.SimulateBulkOperation(model);
+
+                return Json(new
+                {
+                    success = true,
+                    message = "Simulation completed successfully."
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = $"Error during simulation: {ex.Message}"
+                });
             }
         }
 

@@ -1124,14 +1124,16 @@ namespace CBS.FrontDesk.Helper
         public static string Create_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation";
 
         //Bulk Operation
-        public static string SimulateAccountTopup= "/api/v1/BulkOperations/top-up/simulation";
+        public static string SimulateBulkAccountTopup= "/api/v1/BulkOperations/top-up/simulation";
+        public static string SimulateBulkAccountCashInOrCashOut= "/api/v1/BulkOperations/cash/simulation";
         public static string ConfirmBulkOperation= "/api/v1/BulkOperations/validation";
-        public static string SimulateContribution = "/api/v1/BulkOperations/contribution/simulation";
+        public static string SimulateBulkAccountContribution = "/api/v1/BulkOperations/contribution/simulation";
         public static string GetAllBulkOperations = "/api/v1/BulkOperations";
         public static string BulkOperationDataDetails = "/api/v1/BulkOperations/simulation/details/";
         public static string BulkOperationDataTablePaggination = "/api/v1/BulkOperations/simulation/data-table";
         public static string BulkOperationDetailsDataTablePaggination = "/api/v1/BulkOperations/simulation/details";
-        public static object DeleteBulkOperations = "/api/v1/BulkOperations/simulation/delete";
+        public static string DeleteBulkOperations = "/api/v1/BulkOperations/simulation/delete";
+        public static string UploadBulkCashOperations = "/api/v1/BulkCashUpload";
         //Zone
         public static string Get_Update_Delete_Zone = "/api/v1/Zone/{0}";
         public static string CreateZone = "/api/v1/Zone";
