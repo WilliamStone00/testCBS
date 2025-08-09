@@ -16,8 +16,8 @@
                 <div class="row g-3">
                     <!-- Branch Dropdown -->
                     <div class="col-md-12">
-                        @Html.LabelFor(m => m.BranchId, @GlobalBulkOperation.SelectBranch, new { @class = "form-label" })
-                        @Html.DropDownListFor(m => m.BranchId,
+                        @Html.LabelFor(m => m.BranchId2, @GlobalBulkOperation.SelectBranch, new { @class = "form-label" })
+                        @Html.DropDownListFor(m => m.BranchId2,
                             new SelectList(ViewBag.branches, "Id", "Name"),
                             @GlobalBulkOperation.Branch,
                             new { @class = "form-select select2", required = "required" })
@@ -25,16 +25,16 @@
                     </div>
 
                     <div class="col-md-6">
-                        @Html.LabelFor(m => m.TransferType, @GlobalBulkOperation.SelectOperationType, new { @class = "form-label" })
-                        @Html.DropDownListFor(m => m.TransferType,
+                        @Html.LabelFor(m => m.TransferType2, @GlobalBulkOperation.SelectOperationType, new { @class = "form-label" })
+                        @Html.DropDownListFor(m => m.TransferType2,
                             new SelectList(ViewBag.transferType, "Text", "Value"),
                             @GlobalBulkOperation.SelectOperationType,
                             new { @class = "form-select select2", required = "required" })
                         <div class="invalid-feedback">Please select an operation type</div>
                     </div>
                     <div class="col-md-6">
-                        @Html.LabelFor(m => m.AccountCartId, @GlobalBulkOperation.BulkOperationCashOutOrCashInAccount, new { @class = "form-label" })
-                        @Html.DropDownListFor(m => m.AccountCartId,
+                        @Html.LabelFor(m => m.AccountCartId2, @GlobalBulkOperation.BulkOperationCashOutOrCashInAccount, new { @class = "form-label" })
+                        @Html.DropDownListFor(m => m.AccountCartId2,
                             new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
                             @GlobalBulkOperation.SelectAccount,
                             new { @class = "form-select select2", required = "required" })
@@ -42,8 +42,8 @@
                     </div>
 
                     <div class="col-md-6">
-                        @Html.LabelFor(m => m.AccountDate, "Account Date", new { @class = "form-label" })
-                        @Html.TextBoxFor(m => m.AccountDate,
+                        @Html.LabelFor(m => m.AccountDate2, "Account Date", new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.AccountDate2,
                             Model.AccountDate.ToString("yyyy-MM-dd"),  /*< !--Format the date-- >*/
                             new
                             {
@@ -58,8 +58,8 @@
 
                     <!-- Title Field -->
                     <div class="col-md-6">
-                        @Html.LabelFor(m => m.OperationTitle, "Operation Title", new { @class = "form-label" })
-                        @Html.TextBoxFor(m => m.OperationTitle,
+                        @Html.LabelFor(m => m.OperationTitle2, "Operation Title", new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.OperationTitle2,
                             new
                                  {
                                      @class = "form-control",
@@ -71,8 +71,8 @@
 
                     <!-- Simulation Description -->
                     <div class="col-12">
-                        @Html.LabelFor(m => m.SimulationDescription, "Simulation Description", new { @class = "form-label" })
-                        @Html.TextAreaFor(m => m.SimulationDescription,
+                        @Html.LabelFor(m => m.SimulationDescription2, "Simulation Description", new { @class = "form-label" })
+                        @Html.TextAreaFor(m => m.SimulationDescription2,
                             new
                                  {
                                      @class = "form-control",

@@ -8,7 +8,6 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
 {
     public class SimulateBulkOperationDetailCommandDto
     {
-        public string MemberName { get; set; }
         public string BranchName { get; set; }
         public string BranchCode { get; set; }
         public string BranchId { get; set; }

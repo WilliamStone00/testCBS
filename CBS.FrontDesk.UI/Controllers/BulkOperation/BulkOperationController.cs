@@ -13,6 +13,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.SqlServer.Server;
 using Newtonsoft.Json;
 using System;
 using System.Buffers;
@@ -30,9 +31,9 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
     [CheckSessionTimeOutAttribute]
     public class BulkOperationController : BaseController
     {
-         private readonly BranchServices _branchServices;
-         private readonly BulkOperationService _bulkOperationService;
-         private readonly AccountingServices _accountingServices;
+        private readonly BranchServices _branchServices;
+        private readonly BulkOperationService _bulkOperationService;
+        private readonly AccountingServices _accountingServices;
         private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
         private string operationType;
 
@@ -72,16 +73,18 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
             ViewBag.eventNames = await _accountingServices.GetEventNames(operationType);
             ViewBag.chartOfAccounts = chartOfAccounts.ToList();
-            ViewBag.transferType = new List<StringValues>() { new StringValues {Text= "CashIn",Value= "CashIn"}, new StringValues {Text= "CashOut",Value= "CashOut"}, };
+
+            ViewBag.transferType = new List<StringValues>() { new StringValues { Text = "CashIn", Value = "CashIn" }, new StringValues { Text = "CashOut", Value = "CashOut" }, };
+            ViewBag.operationScope = new List<StringValues>() { new StringValues { Text = "Internal", Value = "Internal" }, new StringValues { Text = "InterBranch", Value = "InterBranch" }, };
             var Branches = await _branchServices.GetBranches();
             var savingProduct = await _bulkOperationService.GetSavingProducts();
             var savingOrdinaryProduct = savingProduct.Where(x => x.ProductCategory == "OrdinaryAccount").ToList();
+            ViewBag.branches = Branches.ToList();
+            ViewBag.savingProducts = savingOrdinaryProduct;
             //var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
-            return View(new SimulateCashOutOrCashInBulkOperation()
-            {
-                Branches = Branches.ToList(),
-               SavingProducts = savingOrdinaryProduct,
-            });
+            return View(new SimulateCashOutOrCashInBulkOperation() { Branches = Branches.ToList() });
+
+
         }
 
         public async Task<ActionResult> DownloadBulkOperationFileTemplate()
@@ -142,13 +145,13 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 // Process the file
                 var result = await _bulkOperationService.ProcessBulkCashOperationFileAsync(file);
 
-                if (result== null || !result.Success)
+                if (result == null || !result.Success)
                 {
                     return Json(new
                     {
                         success = false,
-                        message =result==null ? "Failed to process file" : result.Message ?? "Failed to process file",
-                        error = result== null ? null : result.Errors // Include any additional error details
+                        message = result == null ? "Failed to process file" : result.Message ?? "Failed to process file",
+                        error = result == null ? null : result.Errors // Include any additional error details
                     });
                 }
 
@@ -213,15 +216,15 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
 
 
 
-        public async Task<ActionResult> Validation( string stimulationId, string approvalStatus,string description,string approvedBy)
+        public async Task<ActionResult> Validation(string stimulationId, string approvalStatus, string description, string approvedBy)
         {
 
             ConfirmBulkOperationCommand command = new ConfirmBulkOperationCommand
             {
                 BulkOperationSimulationId = stimulationId,
-                ApprovalStatusDescription=description,
-                ApprovalStatus=approvalStatus,
-                ApprovalBy=approvedBy
+                ApprovalStatusDescription = description,
+                ApprovalStatus = approvalStatus,
+                ApprovalBy = approvedBy
             };
             if (string.IsNullOrEmpty(command.BulkOperationSimulationId))
             {
@@ -259,7 +262,7 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 return RedirectToAction("Listing", new { error = "Invalid operation ID" });
             }
 
-        
+
 
             try
             {
@@ -270,7 +273,7 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 }
 
                 bulkOperationDetailsData.ApprovalStatusBadge = GetBadge(bulkOperationDetailsData.ApprovalStatus);
-                return   PartialView("_TransferDetails", bulkOperationDetailsData);
+                return PartialView("_TransferDetails", bulkOperationDetailsData);
             }
             catch (Exception ex)
             {
@@ -322,13 +325,13 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 case "Review": return "bg-info text-white";
                 case "Approved": return "bg-success text-white";
                 default: return "bg-secondary text-white";
-              }
+            }
 
         }
 
 
 
-        public async Task<ActionResult> LoadBulkOperationData(string searchCriteria, string dateFrom= null, string dateTo=null, string operationStatus="", string branchid = null)
+        public async Task<ActionResult> LoadBulkOperationData(string searchCriteria, string dateFrom = null, string dateTo = null, string operationStatus = "", string branchid = null)
         {
 
             DateTime? startDate = null;
@@ -446,7 +449,7 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
         }
 
 
-        public async Task<ActionResult> DeleteBulkOperation(string simulationId,string simulationType)
+        public async Task<ActionResult> DeleteBulkOperation(string simulationId, string simulationType)
         {
             if (string.IsNullOrEmpty(simulationId))
             {
@@ -471,63 +474,148 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult SimulateCashOutOrCashInBulkOperation(SimulateCashOutOrCashInBulkOperation model)
+        public async Task<ActionResult> SimulateCashOutOrCashInBulkOperation(SimulateCashOutOrCashInBulkOperation simulateCashOutOrCashIn)
         {
             if (!ModelState.IsValid)
             {
                 return Json(new { success = false, message = "Invalid data submitted." });
             }
 
-            try
-            {
-                // Process the simulation
-               // var results = _bulkOperationService.SimulateBulkOperation(model);
 
-                return Json(new
-                {
-                    success = true,
-                    message = "Simulation completed successfully."
-                });
-            }
-            catch (Exception ex)
+            Func<Task<ExecutionMessages>> serviceAction = null;
+            var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
+            var eventNames = await _accountingServices.GetEventNames(operationType);
+            var Branches = await _branchServices.GetBranches();
+            var savingProduct = await _bulkOperationService.GetSavingProducts();
+
+            var currentEvent = eventNames.FirstOrDefault(x => x.Text == simulateCashOutOrCashIn.AccountCartId);
+       
+
+            List<SimulateBulkOperationDetailCommandDto> simulateBulkOperationDetails = new List<SimulateBulkOperationDetailCommandDto>();
+
+            foreach (var data in simulateCashOutOrCashIn.Accounts)
             {
-                return Json(new
+                var branch = Branches.Where(x => x.Id == data.BranchName).FirstOrDefault();
+
+                var currentProduct = savingProduct.FirstOrDefault(x => x.Id == data.AccountType);
+
+                var simulateBulkOperationDetail = new SimulateBulkOperationDetailCommandDto()
                 {
-                    success = false,
-                    message = $"Error during simulation: {ex.Message}"
-                });
+                    AccountType = currentProduct.AccountType,
+                    Amount = data.Amount,
+                    BranchCode = branch?.BranchCode,
+                    BranchId = branch?.Id,
+                    BranchName = branch?.Name,
+                    MemberReference = data.MemberReference
+                };
+
+                simulateBulkOperationDetails.Add(simulateBulkOperationDetail);
             }
-        }   
-        
+
+            string accountingDate = simulateCashOutOrCashIn.AccountDate.ToString("yyyy-MM-dd");
+
+            var request = new SimulateBulkCreditOrDebitOperationCommand()
+            {
+                AccountChart = currentEvent?.Text,
+                AccountChartId = currentEvent?.Value,
+                AccountingDate = accountingDate,
+                Description = simulateCashOutOrCashIn.SimulationDescription,
+                OperationType = simulateCashOutOrCashIn.TransferType,
+                SimulationType = simulateCashOutOrCashIn.OperationTitle,
+                SimulateBulkOperationDetails = simulateBulkOperationDetails
+
+            };
+
+
+            // var obj= JsonConvert.DeserializeObject<List<SimulateCashOutOrCashInBulkOperation>>(JsonConvert.SerializeObject(model));
+            // Process the simulation
+            serviceAction = async () => await _bulkOperationService.SimulateBulkCreditOrDebitOperation(request);
+
+            if (serviceAction != null)
+            {
+                try
+                {
+                    var data = await serviceAction();
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+                }
+            }
+
+            return Json(new { success = false, status = false, message = "Invalid option selected." });
+
+
+        }
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult SimulateCashOutOrCashInBulkFileOperation(SimulateCashOutOrCashInBulkOperation model)
+        public async Task<ActionResult> SimulateCashOutOrCashInBulkFileOperation(SimulateCashOutOrCashInBulkOperation simulateCashOutOrCashIn)
         {
             if (!ModelState.IsValid)
             {
                 return Json(new { success = false, message = "Invalid data submitted." });
             }
 
-            try
-            {
-                // Process the simulation
-               // var results = _bulkOperationService.SimulateBulkOperation(model);
 
-                return Json(new
-                {
-                    success = true,
-                    message = "Simulation completed successfully."
-                });
-            }
-            catch (Exception ex)
+            Func<Task<ExecutionMessages>> serviceAction = null;
+            var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
+            var eventNames = await _accountingServices.GetEventNames(operationType);
+            var Branches = await _branchServices.GetBranches();
+            var savingProduct = await _bulkOperationService.GetSavingProducts();
+
+            var currentEvent = eventNames.FirstOrDefault(x => x.Text == simulateCashOutOrCashIn.AccountCartId);
+
+            List<SimulateBulkOperationDetailCommandDto> simulateBulkOperationDetails = new List<SimulateBulkOperationDetailCommandDto>();
+
+            foreach (var data in simulateCashOutOrCashIn.AccountIIs)
             {
-                return Json(new
+                var branch = Branches.Where(x => x.BranchCode == data.BranchCode).FirstOrDefault();
+                var currentProduct = savingProduct.FirstOrDefault(x => x.Id == data.AccountType);
+                var simulateBulkOperationDetail = new SimulateBulkOperationDetailCommandDto()
                 {
-                    success = false,
-                    message = $"Error during simulation: {ex.Message}"
-                });
+                    AccountType = currentProduct.AccountType,
+                    Amount = data.Amount,
+                    BranchCode = branch?.BranchCode,
+                    BranchId = branch?.Id,
+                    BranchName = branch?.Name,
+                    MemberReference = data.MemberReference
+                };
+
+                simulateBulkOperationDetails.Add(simulateBulkOperationDetail);
             }
+            string accountingDate = simulateCashOutOrCashIn.AccountDate.ToString("yyyy-MM-dd");
+            var request = new SimulateBulkCreditOrDebitOperationCommand()
+            {
+                AccountChart = currentEvent?.Text,
+                AccountChartId = currentEvent?.Value,
+                AccountingDate = accountingDate,
+                Description = simulateCashOutOrCashIn.SimulationDescription,
+                OperationType = simulateCashOutOrCashIn.TransferType,
+                SimulationType = simulateCashOutOrCashIn.OperationTitle,
+                SimulateBulkOperationDetails = simulateBulkOperationDetails
+
+            };
+
+
+            // var obj= JsonConvert.DeserializeObject<List<SimulateCashOutOrCashInBulkOperation>>(JsonConvert.SerializeObject(model));
+            // Process the simulation
+            serviceAction = async () => await _bulkOperationService.SimulateBulkCreditOrDebitOperation(request);
+
+            if (serviceAction != null)
+            {
+                try
+                {
+                    var data = await serviceAction();
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+                }
+            }
+
+            return Json(new { success = false, status = false, message = "Invalid option selected." });
         }
 
 

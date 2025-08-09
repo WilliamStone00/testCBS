@@ -1,7 +1,6 @@
 ﻿<!-- Operation Parameters Section -->
 
-@using (Html.BeginForm("UploadBulkCashOperationFile", "BulkOperation", FormMethod.Post, new { id = "fileForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostBulkCashFileUploadOperation(this);" }))
-{
+
     <div class="accordion mb-4" id="fileUploadAccordion">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingFileUpload">
@@ -66,7 +65,7 @@
             </div>
         </div>
     </div>
-}
+
 
     <style>
         .file-upload-wrapper {

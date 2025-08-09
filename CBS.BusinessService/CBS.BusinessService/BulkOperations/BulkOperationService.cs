@@ -299,6 +299,41 @@ namespace CBS.BusinessService.BulkOperations
                     SystemMessageStatus.Failed.ToString(), ex);
             }
             return ExecutionMessage;
+        } 
+        
+        
+        
+        
+        public async Task<ExecutionMessages> SimulateBulkCreditOrDebitOperation(SimulateBulkCreditOrDebitOperationCommand command)
+        {
+            try
+            {
+                  
+                    // Make an API call to create an individual profile
+                    var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<CreateBulkOperationSimulation>>(APICallHelper.SimulateBulkCreditOrDebitOperation, command);
+                    if (response.IsSuccess)
+                    {
+                        // Successful creation
+                        GetExecutionMessages(response, true, $"{command.SimulationType}", MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        return ExecutionMessage;
+                    }
+                    else
+                    {
+                        // Failed creation
+                        GetExecutionMessages(command, false, command.SimulationType, MessagesResults.Failed,
+                            ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                    }
+
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
         }   
         
         public async Task<ExecutionMessages> BulkCashInOrCashOutSimulation(SimulateBulkCreditOrDebitOperationCommand command)
