@@ -571,10 +571,10 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             foreach (var data in simulateCashOutOrCashIn.AccountIIs)
             {
                 var branch = Branches.Where(x => x.BranchCode == data.BranchCode).FirstOrDefault();
-                var currentProduct = savingProduct.FirstOrDefault(x => x.Id == data.AccountType);
+              //  var currentProduct = savingProduct.FirstOrDefault(x => x.Id == data.AccountType);
                 var simulateBulkOperationDetail = new SimulateBulkOperationDetailCommandDto()
                 {
-                    AccountType = currentProduct.AccountType,
+                    AccountType = data.AccountType,
                     Amount = data.Amount,
                     BranchCode = branch?.BranchCode,
                     BranchId = branch?.Id,
