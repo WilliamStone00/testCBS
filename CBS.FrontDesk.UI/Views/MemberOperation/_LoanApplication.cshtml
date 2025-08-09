@@ -168,17 +168,17 @@
                                     </div>
                                 </div>
                                 @*<div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductCategoryId, new SelectList(ViewBag.Categories, "Id", "Name"), @Member_Global_LoanApplication.SelectLoanProductCategory, new { @class = "form-control select2", @search = "true", @id = "LoanCategoryId", @onchange = "GetLoanPurposes(this.value,'purposeId')" })
-                <label>@Member_Global_LoanApplication.SelectLoanProductCategory</label>
-            </div>
-        </div>*@
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductCategoryId, new SelectList(ViewBag.Categories, "Id", "Name"), @Member_Global_LoanApplication.SelectLoanProductCategory, new { @class = "form-control select2", @search = "true", @id = "LoanCategoryId", @onchange = "GetLoanPurposes(this.value,'purposeId')" })
+                                    <label>@Member_Global_LoanApplication.SelectLoanProductCategory</label>
+                                </div>
+                            </div>*@
                                 @*<div class="col-md-12">
-            <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanTermId, new SelectList(ViewBag.LoanTerms, "Id", "Name"), "---" + @Member_Global_LoanApplication.SelectLoanTerm + "---", new { @class = "form-control select2", @search = "true", @id = "LoanTermId", @onchange = "GetConfiuredTargets(this.value,'TargetId')" })
-                <label>@Member_Global_LoanApplication.SelectLoanTerm</label>
-            </div>
-        </div>*@
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanTermId, new SelectList(ViewBag.LoanTerms, "Id", "Name"), "---" + @Member_Global_LoanApplication.SelectLoanTerm + "---", new { @class = "form-control select2", @search = "true", @id = "LoanTermId", @onchange = "GetConfiuredTargets(this.value,'TargetId')" })
+                                    <label>@Member_Global_LoanApplication.SelectLoanTerm</label>
+                                </div>
+                            </div>*@
                                 <!-- ✅ Loan Term -->
                                 <div class="col-md-12" id="LoanTermSelect">
                                     <div class="form-floating form-floating-outline">
@@ -519,7 +519,7 @@
                                         </label>
                                     </div>
                                 </div>
-</fieldset>
+                        </fieldset>
                     </div>
                 </div>
             </div>
@@ -621,9 +621,47 @@
 
                             </div>
                         </fieldset>
+
+
+                        <!-- SECTION: Account Blocking Options -->
+                        <fieldset class="fieldset-custom border rounded-3 p-3 mb-3">
+                            <legend class="float-none w-auto px-2 text-primary fw-bold">
+                               Applicant Account Blocking Options
+                            </legend>
+
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.BlockShareAccount, new { @class = "form-check-input" })
+                                        <label class="form-check-label">Block Share Account</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.BlockSavingAccount, new { @class = "form-check-input" })
+                                        <label class="form-check-label">Block Saving Account</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.BlockSalryAccount, new { @class = "form-check-input" })
+                                        <label class="form-check-label">Block Salary Account</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <!-- End of Account Blocking Options -->
+
                     </div>
                 </div>
             </div>
+
+
+
+
+
             <div class="card accordion-item mb-3">
                 <h2 class="accordion-header" id="headingPaymentMethod4">
                     <button type="button"

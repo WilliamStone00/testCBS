@@ -243,7 +243,9 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal VatRate { get; set; }
         public bool IsThereGuarantor { get; set; }
 
-
+        public bool BlockShareAccount { get; set; }
+        public bool BlockSavingAccount { get; set; }
+        public bool BlockSalryAccount { get; set; }
         public bool IsThereCollateral { get; set; }
 
         [Range(0, 100, ErrorMessage = "Interest rate must be between 0 and 100.")]
