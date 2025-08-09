@@ -9433,7 +9433,16 @@
     <Content Include="Views\MemberOperation\_ExistingLoanDetailModal.cshtml" />
     <Content Include="Views\DailyAgentManagement\ListOfUploadedFiles.cshtml" />
     <Content Include="Views\DailyAgentManagement\GetFileUploadApproval.cshtml" />
-    <Content Include="Views\AccountingConfiguration\GetAllProductChartOfAccounting.cshtml" />
+    <Content Include="Views\BulkOperation\BulkCashOperation.cshtml" />
+    <Content Include="Views\BulkOperation\_BulkOperationFileContentPartial.cshtml" />
+    <Content Include="Views\BulkOperation\_BulkOperationFileUploadPartial.cshtml" />
+    <Content Include="Views\BulkOperation\_BulkOperationFileUploadTips.cshtml" />
+    <Content Include="Views\BulkOperation\_BulkOperationManualAccountEntryTips.cshtml" />
+    <Content Include="Views\BulkOperation\_BulkOperationParameters.cshtml" />
+    <Content Include="Views\BulkOperation\_FileBulkOperationConfigurationPartial.cshtml" />
+    <Content Include="Views\BulkOperation\_ManualBulkOperationConfigurationPartial.cshtml" />
+    <Content Include="Views\BulkOperation\_BulkOperationFileUploadParameters.cshtml" />
+    <Content Include="Views\BulkOperation\_BulkOperationParameters2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

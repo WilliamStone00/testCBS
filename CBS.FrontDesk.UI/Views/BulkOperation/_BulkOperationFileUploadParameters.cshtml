@@ -35,7 +35,7 @@
                     <div class="col-md-6">
                         @Html.LabelFor(m => m.AccountCartId, @GlobalBulkOperation.BulkOperationCashOutOrCashInAccount, new { @class = "form-label" })
                         @Html.DropDownListFor(m => m.AccountCartId,
-                            new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                            new SelectList(ViewBag.eventNames, "Text", "Value"),
                             @GlobalBulkOperation.SelectAccount,
                             new { @class = "form-select select2", required = "required" })
                         <div class="invalid-feedback">Please select a destination account</div>

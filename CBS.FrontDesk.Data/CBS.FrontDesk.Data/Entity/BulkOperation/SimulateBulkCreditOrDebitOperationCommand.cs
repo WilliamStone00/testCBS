@@ -13,7 +13,7 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
         public string SimulationType { get; set; }
         public string Description { get; set; }
         public string AccountChart { get; set; }
-        public DateTime AccountingDate { get; set; }
+        public string AccountingDate { get; set; }
         public List<SimulateBulkOperationDetailCommandDto> SimulateBulkOperationDetails { get; set; }
     }
 
