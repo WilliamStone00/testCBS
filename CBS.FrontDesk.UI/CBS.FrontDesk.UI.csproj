@@ -179,6 +179,9 @@
     <Reference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.Hosting.Server.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Hosting.Server.Abstractions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNetCore.Html.Abstractions, Version=2.3.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Html.Abstractions.2.3.0\lib\netstandard2.0\Microsoft.AspNetCore.Html.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNetCore.Http, Version=2.2.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.Http.2.2.2\lib\netstandard2.0\Microsoft.AspNetCore.Http.dll</HintPath>
     </Reference>
@@ -424,8 +427,8 @@
       <HintPath>..\packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceProcess" />
-    <Reference Include="System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Encodings.Web.6.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+    <Reference Include="System.Text.Encodings.Web, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.8.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.Json, Version=6.0.0.10, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Json.6.0.10\lib\net461\System.Text.Json.dll</HintPath>
@@ -2174,8 +2177,10 @@
       <DependentUpon>GeneralStatisticsDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Filter\MaliciousContentScannerService.cs" />
+    <Compile Include="Helper\HtmlHelperExtensions.cs" />
     <Compile Include="Helper\FileUploadHelper.cs" />
     <Compile Include="Helper\SalarySheetExcelExporter.cs" />
+    <Compile Include="Models\Class1.cs" />
     <Compile Include="WAF\Middleware\Correlation\CorrelationIdMiddleware.cs" />
     <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureFilter.cs" />
     <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureMiddleware.cs" />
@@ -4265,6 +4270,8 @@
     <Content Include="CBSTemp\ui\assets\audio\Water_Lily.mp3" />
     <Content Include="CBSTemp\ui\assets\css\CommissionPayment.css" />
     <Content Include="CBSTemp\ui\assets\css\DailyCollectionDashBoard.css" />
+    <Content Include="CBSTemp\ui\assets\css\DailySavingOperations.css" />
+    <Content Include="CBSTemp\ui\assets\css\DailySavingOperationUpload.css" />
     <Content Include="CBSTemp\ui\assets\css\demo.css" />
     <Content Include="CBSTemp\ui\assets\css\FinancialReferenceDocument.css" />
     <Content Include="CBSTemp\ui\assets\img\.DS_Store" />
@@ -6489,8 +6496,9 @@
     <Content Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsc">
       <DependentUpon>DeliquentLoanSummaryDataSet.xsd</DependentUpon>
     </Content>
-    <Content Include="AppFiles\CorrectedCollectorEntryFile.xlsx" />
-    <Content Include="AppFiles\SampleDailySaverToBeUploaded.xlsx" />
+    <Content Include="AppFiles\Reporting\SampleDocument\SampleDailySaverToBeUploaded.xlsx" />
+    <Content Include="AppFiles\Reporting\SampleDocument\CorrectedCollectorEntryFile.xlsx" />
+    <Content Include="AppFiles\BulkOperation\BulkOperationFileUpload.xlsx" />
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -6827,7 +6835,7 @@
     <Content Include="DataSet\Accounting\AccountingDataSet.xsc">
       <DependentUpon>AccountingDataSet.xsd</DependentUpon>
     </Content>
-    <Content Include="AppFiles\UploadedSampleTrialBalance.xlsx" />
+    <Content Include="AppFiles\Reporting\SampleDocument\UploadedSampleTrialBalance.xlsx" />
     <Content Include="App_GlobalResources\HomePage\GlobalAbout.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalAbout.Designer.cs</LastGenOutput>
@@ -8217,8 +8225,10 @@
     <Content Include="Scripts\Js\CommissionManagement\DailyCollectionManagement.js" />
     <Content Include="Scripts\Js\Crud\LoanAdjustmentConsole\LoanAdjustmentConsole.js" />
     <Content Include="Scripts\Js\Crud\LoanAdjustmentConsole\LoanAdjustmentLoader.js" />
+    <Content Include="Scripts\Js\CommissionManagement\DSFileUploaded.js" />
     <Content Include="Scripts\Js\Dashboard\DailyCollection\DailyCollectionDashboard.js" />
     <Content Include="Scripts\Js\main.js\AccountBalanceInitialization.js" />
+    <Content Include="Scripts\Js\main.js\AccountingBookingAlert.js" />
     <Content Include="Scripts\Js\main.js\DailySaverOperations.js" />
     <Content Include="Scripts\Js\main.js\DailySaverUploud.js" />
     <Content Include="Scripts\Js\MemberReceiptsP\MemberReceipt.js" />
@@ -9421,6 +9431,9 @@
     <Content Include="Views\LoanAdjustmentConsole\LoanAdjustment.cshtml" />
     <Content Include="Views\LoanAdjustmentConsole\_LoanAdjustmentDetailModal.cshtml" />
     <Content Include="Views\MemberOperation\_ExistingLoanDetailModal.cshtml" />
+    <Content Include="Views\DailyAgentManagement\ListOfUploadedFiles.cshtml" />
+    <Content Include="Views\DailyAgentManagement\GetFileUploadApproval.cshtml" />
+    <Content Include="Views\AccountingConfiguration\GetAllProductChartOfAccounting.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -9430,6 +9443,8 @@
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
     <Folder Include="Controllers\DailyCollectionManagement\" />
     <Folder Include="Hub\" />
+    <Folder Include="Views\BulkOperation\Contribution\" />
+    <Folder Include="Views\BulkOperation\Topup\" />
     <Folder Include="Views\Language\" />
   </ItemGroup>
   <ItemGroup>

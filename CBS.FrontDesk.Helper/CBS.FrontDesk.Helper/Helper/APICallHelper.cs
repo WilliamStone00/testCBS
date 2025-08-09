@@ -554,7 +554,8 @@ namespace CBS.FrontDesk.Helper
         public static string CreateBank = "/api/v1/Bank";
 
 
-        //Loan
+        //Loan         
+        public static string GetAllProductAccountingRules = "/api/v1/AccountType/GetAllMappedProduct";
         public static string Get_Update_Delete_Document = "/api/v1/Document/{0}";
         public static string GetAllDocument = "/api/v1/Documents";
         public static string CreateDocument = "/api/v1/Document";
@@ -1134,14 +1135,16 @@ namespace CBS.FrontDesk.Helper
         public static string Create_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation";
 
         //Bulk Operation
-        public static string SimulateAccountTopup= "/api/v1/BulkOperations/top-up/simulation";
+        public static string SimulateBulkAccountTopup= "/api/v1/BulkOperations/top-up/simulation";
+        public static string SimulateBulkAccountCashInOrCashOut= "/api/v1/BulkOperations/cash/simulation";
         public static string ConfirmBulkOperation= "/api/v1/BulkOperations/validation";
-        public static string SimulateContribution = "/api/v1/BulkOperations/contribution/simulation";
+        public static string SimulateBulkAccountContribution = "/api/v1/BulkOperations/contribution/simulation";
         public static string GetAllBulkOperations = "/api/v1/BulkOperations";
         public static string BulkOperationDataDetails = "/api/v1/BulkOperations/simulation/details/";
         public static string BulkOperationDataTablePaggination = "/api/v1/BulkOperations/simulation/data-table";
         public static string BulkOperationDetailsDataTablePaggination = "/api/v1/BulkOperations/simulation/details";
-        public static object DeleteBulkOperations = "/api/v1/BulkOperations/simulation/delete";
+        public static string DeleteBulkOperations = "/api/v1/BulkOperations/simulation/delete";
+        public static string UploadBulkCashOperations = "/api/v1/BulkCashUpload";
         //Zone
         public static string Get_Update_Delete_Zone = "/api/v1/Zone/{0}";
         public static string CreateZone = "/api/v1/Zone";
@@ -1183,10 +1186,12 @@ namespace CBS.FrontDesk.Helper
         public static string MigrationGLReconciliationAccount = "/api/v1/MigrationGLReconciliation/by-id/{0}";
 
 
-        //DailySavingUpload 
+        //DailySavingUpload /api/v1/ViewFileByFileUploadId/{FileUploadId}}
         public static string Delete_DailySavingMigrationFile = "/api/v1/DailySavingMigrationFile/{0}";
         public static string GetAllDailySavingMigrationFile = "/api/v1/DailySavingMigrationFile/all/{0}";
         public static string DailySavingMigrationFileExecution = "api/v1/DailySavingMigrationFileExecution/{0}/{1}";
         public static string ManualEntryCollectorUploadFileExecution = "api/v1/ManualEntryCollectorUpload?collectorId={0}";
+        public static string GetAllDailyOperationFileUploadsByProcessingStatus = "/api/v1/GetAllFileUploadsByProcessingStatus/{0}";
+        public static string ViewFileByFileUploadId = "/api/v1/ViewFileByFileUploadId/{0}}";
     }
 }

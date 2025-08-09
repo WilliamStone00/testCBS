@@ -1,9 +1,11 @@
 ﻿using CBS.API.Helper;
 using CBS.BusinessService;
 using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Service;
 using CBS.FrontDesk.UI.Controllers.ErrorHandler;
 using CBS.FrontDesk.UI.Filter;
@@ -67,6 +69,8 @@ namespace CBS.FrontDesk.UI
             .Where(origin => !string.IsNullOrWhiteSpace(origin))
             .Distinct()
             .ToList();
+ 
+   
         protected void Application_Start()
         {
 
@@ -113,47 +117,53 @@ namespace CBS.FrontDesk.UI
             {
                 lang = HttpContext.Current.Request.Cookies["TSC_Lang"]?.Value ?? "en";
             }
+            //if (HttpContext.Current.Session == null)
+            //{
+                
+            //    var result = ProductAccountingHelper.GetAsync("/api/v1/AccountType/GetAllMappedProduct").GetAwaiter().GetResult();
 
+            //    HttpContext.Current.Session["HasUnConfiguredAccount"] = CheckIfUnConfigureAccountExist(result);
+            //}
+      
             var ci = new CultureInfo(lang);
             Thread.CurrentThread.CurrentCulture = ci;
             Thread.CurrentThread.CurrentUICulture = ci;
         }
 
+        private bool CheckIfUnConfigureAccountExist(List<AccountingBook> result)
+        {
+            // Handle null or empty list
+            if (result == null || !result.Any())
+            {
+                return false;
+            }
 
-        //protected void Application_AcquireRequestState(object sender, EventArgs e)
-        //{
-        //    var context = HttpContext.Current;
-        //    if (context == null || context.Session == null)
-        //        return;
+            foreach (var mappedProduct in result)
+            {
+                // Handle null accountingBookDetails
+                if (mappedProduct.accountingBookDetails == null)
+                {
+                    return true; // No details means unconfigured
+                }
 
-        //    // If user is authenticated, and the session unlock flag is not yet set
-        //    if (context.User?.Identity?.IsAuthenticated == true && context.Session["SessionUnlocked"] == null)
-        //    {
-        //        context.Session["SessionUnlocked"] = true; // ✅ unlock session
-        //    }
+                // Check if there are any details with null entryRuleCodification
+                // This is what you probably intended to check
+                bool hasUnconfiguredDetails = mappedProduct.accountingBookDetails
+                    .Any(x => x.entryRuleCodification == null);
 
-        //    // Your session lock check to prevent page access (except for allowed routes)
-        //    var path = context.Request.Path.ToLower();
+                if (hasUnconfiguredDetails)
+                {
+                    return true;
+                }
 
-        //    bool isAllowed = path.StartsWith("/session/locked") ||
-        //                     path.StartsWith("/session/validaterecoverycode") ||
-        //                     path.StartsWith("/authentication") ||
-        //                     path.StartsWith("/account") ||
-        //                     path.StartsWith("/content") ||
-        //                     path.StartsWith("/scripts") ||
-        //                     path.StartsWith("/favicon") ||
-        //                     path.Contains(".axd");
+             
+            }
 
-        //    if (!isAllowed)
-        //    {
-        //        bool unlocked = context.Session["SessionUnlocked"] as bool? ?? false;
+            return false; // No unconfigured accounts found
+        }
 
-        //        if (!unlocked)
-        //        {
-        //            context.Response.Redirect("~/Session/Locked", true);
-        //        }
-        //    }
-        //}
+
+
 
         protected void Application_EndRequest()
         {

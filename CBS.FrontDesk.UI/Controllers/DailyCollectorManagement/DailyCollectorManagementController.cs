@@ -34,6 +34,7 @@ namespace CBS.FrontDesk.UI.Controllers
         private UserManagementServices _userServices;
         private AgentAccountServices _agentAccountServices;
         private DailyCollectionMigrationServices _dailyCollectionMigrationServices;
+        private DailyCollectionEndOfDayServices _dailyCollectionEndOfDayServices;
         public DailyAgentManagementController()
         {
             _branchService = new BranchServices();
@@ -42,7 +43,7 @@ namespace CBS.FrontDesk.UI.Controllers
             _agentAccountServices = new AgentAccountServices();
             _dailyCollectionMigrationServices = new DailyCollectionMigrationServices();
 
-
+            _dailyCollectionEndOfDayServices = new DailyCollectionEndOfDayServices();
         }
         public async Task<ActionResult> Index()
         {
@@ -117,11 +118,17 @@ namespace CBS.FrontDesk.UI.Controllers
 
             }
         }
+        //
         public async Task<ActionResult> UploadDailyCollectorOperation()
         {
             ViewBag.Branches = BuildMenuISViewBag((await _branchService.GetBranches()).ToList());
             ViewBag.BankName = _branchService.GetBankName();
             return View(new UploadDailyCollectorData { });
+        }
+        public async Task<ActionResult> ListOfUploadedFiles()
+        {
+          
+            return View(new FileUploadCollectorDto { });
         }
 
         public async Task<ActionResult> UploadDailySavers()
@@ -212,9 +219,10 @@ namespace CBS.FrontDesk.UI.Controllers
                 }
 
                 // Step 4: (Optional) Save the file to a temp location or process directly from stream
-                string fileName = Path.GetFileName(model.ExcelFile.FileName);
-             var data=   await _dailyCollectionMigrationServices.UploadFile(model);
-                return Json(new { data = data, success = true, message = "File uploaded and validated successfully." }, JsonRequestBehavior.AllowGet);
+                //   string fileName = Path.GetFileName(model.ExcelFile.FileName);
+                 var data=   await _dailyCollectionMigrationServices.UploadFile(model);
+             
+                return Json(new { data = data.Data, success = true, message = "File uploaded and validated successfully." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -504,7 +512,7 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             catch (Exception ex)
             {
-
+                //
                 return Json(new
                 {
                     success = false,
@@ -536,7 +544,54 @@ namespace CBS.FrontDesk.UI.Controllers
             return selectListItems;
 
         }
-        
+        [HttpGet]
+        public async Task<JsonResult> GetListOfUploadedFiles()
+        {
+            try
+            {
+                var dataw = await _dailyCollectionEndOfDayServices.GetUploadedFiles();
+
+
+                return Json(new
+                {
+                    success = true,
+                    data = dataw
+
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new
+                {
+                    success = false,
+                    message = "An error occurred while processing your request."
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetFileUploadApproval(string Id)
+        {
+            try
+            {
+               
+                    var dataw = _dailyCollectionEndOfDayServices.GetUploadedFile(Id);
+
+
+                    return View(dataw);
+                 
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new
+                {
+                    success = false,
+                    message = "An error occurred while processing your request."
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         [HttpGet]
         public async Task<JsonResult> RetrieveFinancialActivitiesStatics(string Month, string BranchId, string CollectorId)

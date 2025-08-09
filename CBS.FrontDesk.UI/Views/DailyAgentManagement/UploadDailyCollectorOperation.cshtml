@@ -58,14 +58,18 @@
         </div>
         <div id="datalistingview_UploadDailyCollectorOperations">
 
-
+            @Html.Partial("_UploadedDailyOperationData")
         </div>
 
     </div>
 </div>
+@section Styles {
+    <link href="~/CBSTemp/ui/assets/css/DailySavingOperations.css" rel="stylesheet" />
  
+}
+
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
- 
+
 <script src="~/Scripts/Js/main.js/DailySaverOperations.js"></script>
 }
 

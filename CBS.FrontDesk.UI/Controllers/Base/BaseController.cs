@@ -23,6 +23,7 @@ using ClosedXML.Excel;
 using CBS.BusinessService.Session;
 using CBS.FrontDesk.Data.UserManagement;
 using System.Globalization;
+using CBS.BusinessService.Accounting;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -33,6 +34,7 @@ namespace CBS.FrontDesk.UI.Controllers
         private string domain = ConfigurationManager.AppSettings["domain"];
         private string timetoExpire = ConfigurationManager.AppSettings["timetoExpire"];
         private readonly LocalSession _userManagementServices;
+        private   AccountingServices _accountingServices = new AccountingServices();
         //protected override void OnActionExecutingxxxx(ActionExecutingContext filterContext)
         //{
         //    try
@@ -475,6 +477,7 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             "LION", "TREE", "MOON", "STAR", "WOLF", "FIRE", "ROCK", "SKY", "BIRD", "CLOUD", "TSC"
         };
+        private readonly ApiCallerHelper _accountingHelper =new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
 
         public bool IsSessionCodeStructurallyValid(string sessionCode)
         {
@@ -591,7 +594,8 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
 
-        public void CreateToken(UserDto reqDto, string cookieName = "TSC", int minutes_to_live = 240)
+
+        public async Task CreateTokenAsync(UserDto reqDto, string cookieName = "TSC", int minutes_to_live = 240)
         {
             if (reqDto == null || string.IsNullOrWhiteSpace(reqDto.userName))
                 throw new ArgumentException("Invalid user data");
@@ -647,6 +651,9 @@ namespace CBS.FrontDesk.UI.Controllers
 
             // ✅ Hydrate session
             BuildLocalSession(reqDto);
+            //var couApiResponse = await _accountingHelper.GetAsync<ResponseObject<List<AccountingBook>>>(APICallHelper.GetAllProductAccountingRules);
+            //Session["ProductAccountingBook"] =  couApiResponse.ApiResponseData.Data;
+           
         }
 
 

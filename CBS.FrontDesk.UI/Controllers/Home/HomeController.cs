@@ -1,4 +1,5 @@
-﻿using CBS.FrontDesk.UI.Filter;
+﻿using CBS.BusinessService.Accounting;
+using CBS.FrontDesk.UI.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,11 @@ namespace CBS.FrontDesk.UI.Controllers
     //[SessionLockCheck]
     public class HomeController : BaseController
     {
+        AccountingServices _accountingServices = new AccountingServices();
+        public HomeController()
+        {
+                _accountingServices = new  AccountingServices();
+        }
         public ActionResult Index()
         {
             

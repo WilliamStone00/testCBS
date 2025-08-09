@@ -1,6 +1,6 @@
 ﻿let isHarmonizationActivated = false;
 $(document).ready(function () {
-
+    $("#HideDataResult").hide();
     $(document).on('change', '#AgentBranchId', function () {
         var selectedValue = $(this).val();
         loadBranchAccounts(selectedValue);
@@ -10,7 +10,7 @@ $(document).ready(function () {
     $('#downloadExcelOPButton').click(function () {
         // Define the file name and path relative to your domain
         const fileName = 'CorrectedCollectorEntryFile.xlsx';
-        const filePath = `/AppFiles/${fileName}`;
+        const filePath = `/AppFiles/SampleDocument/${fileName}`;
 
         // Create a temporary anchor element
         const $link = $('<a>')
@@ -227,13 +227,13 @@ function ReadExcelFile() {
                         updateProgressBar(100);
                         if (response.success) {
                            
-                            $("#datalistingview_UploadDailyCollectorOperations").load("/DailyAgentManagement/UploadDailyCollectorOperation #datalistingview_UploadDailyCollectorOperations");
+                            $("#HideDataResult").show();
                             var uploadSummary = {
-                                TotalAmount: response.data.totalAmount,
-                                TotalMembers: response.data.totalMembers,
-                                BranchName: response.data.branchName,
-                                UploadedBy: response.data.uploadedBy,
-                                manualEntryDailyCollectorUploadListDtos: response.data.uploadList
+                                TotalAmount: response.data.TotalAmount,
+                                TotalMembers: response.data.TotalMembers,
+                                BranchName: response.data.BranchName,
+                                UploadedBy: response.data.UploadedBy,
+                                manualEntryDailyCollectorUploadListDtos: response.data.manualEntryDailyCollectorUploadListDtos
                             };
                           
                             // Display results if needed
@@ -295,11 +295,12 @@ function ReadExcelFile() {
 
 
 function SummaryPresentation(summary) {
+    console.log(summary);
     // Populate summary values
-    $('#totalAmount').text(`XAF ${summary.totalAmount.toLocaleString()}`);
-    $('#totalMembers').text(summary.totalMembers);
-    $('#branchName').text(summary.branchName);
-    $('#uploadedBy').text(summary.uploadedBy);
+    $('#totalAmount').text(`XAF ${summary.TotalAmount}`);
+    $('#totalMembers').text(summary.TotalMembers);
+    $('#branchName').text(summary.BranchName);
+    $('#uploadedBy').text(summary.UploadedBy);
 
     // Set current date
     const currentDate = new Date().toLocaleString();
@@ -313,12 +314,12 @@ function SummaryPresentation(summary) {
         summary.manualEntryDailyCollectorUploadListDtos.forEach(item => {
             const row = `
                     <tr>
-                        <td>${item.memberReference}</td>
-                        <td>${item.memberName}</td>
-                        <td>XAF ${item.amount.toLocaleString()}</td>
-                        <td>${item.dailyCollectorName}</td>
-                        <td>${item.memberBranchCode}</td>
-                        <td>${item.memberBranchName}</td>
+                        <td>${item.MemberReference}</td>
+                        <td>${item.MemberName}</td>
+                        <td>XAF ${item.Amount}</td>
+                        <td>${item.DailyCollectorName}</td>
+                        <td>${item.MemberBranchCode}</td>
+                        <td>${item.MemberBranchName}</td>
                     </tr>
                 `;
             tableBody.append(row);

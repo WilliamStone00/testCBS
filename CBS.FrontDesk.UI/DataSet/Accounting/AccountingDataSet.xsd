@@ -157,11 +157,12 @@
               <xs:element name="Auxilary" msprop:Generator_ColumnPropNameInTable="AuxilaryColumn" msprop:Generator_ColumnPropNameInRow="Auxilary" msprop:Generator_UserColumnName="Auxilary" msprop:Generator_ColumnVarNameInTable="columnAuxilary" type="xs:string" minOccurs="0" />
               <xs:element name="SumDebit" msprop:Generator_ColumnPropNameInTable="SumDebitColumn" msprop:Generator_ColumnPropNameInRow="SumDebit" msprop:Generator_UserColumnName="SumDebit" msprop:Generator_ColumnVarNameInTable="columnSumDebit" type="xs:decimal" minOccurs="0" />
               <xs:element name="SumCredit" msprop:Generator_ColumnPropNameInTable="SumCreditColumn" msprop:Generator_ColumnPropNameInRow="SumCredit" msprop:Generator_UserColumnName="SumCredit" msprop:Generator_ColumnVarNameInTable="columnSumCredit" type="xs:int" minOccurs="0" />
-              <xs:element name="NumberDebit" msprop:Generator_ColumnPropNameInTable="NumberDebitColumn" msprop:Generator_ColumnPropNameInRow="NumberDebit" msprop:Generator_UserColumnName="NumberDebit" msprop:Generator_ColumnVarNameInTable="columnNumberDebit" type="xs:string" minOccurs="0" />
+              <xs:element name="NumberDebit" msprop:Generator_ColumnPropNameInTable="NumberDebitColumn" msprop:Generator_ColumnPropNameInRow="NumberDebit" msprop:Generator_UserColumnName="NumberDebit" msprop:Generator_ColumnVarNameInTable="columnNumberDebit" type="xs:int" minOccurs="0" />
               <xs:element name="NumberCredit" msprop:Generator_ColumnPropNameInTable="NumberCreditColumn" msprop:Generator_ColumnPropNameInRow="NumberCredit" msprop:Generator_UserColumnName="NumberCredit" msprop:Generator_ColumnVarNameInTable="columnNumberCredit" type="xs:int" minOccurs="0" />
-              <xs:element name="NumberEntries" msprop:Generator_ColumnPropNameInTable="NumberEntriesColumn" msprop:Generator_ColumnPropNameInRow="NumberEntries" msprop:Generator_UserColumnName="NumberEntries" msprop:Generator_ColumnVarNameInTable="columnNumberEntries" type="xs:string" minOccurs="0" />
+              <xs:element name="NumberEntries" msprop:Generator_ColumnPropNameInTable="NumberEntriesColumn" msprop:Generator_ColumnPropNameInRow="NumberEntries" msprop:Generator_UserColumnName="NumberEntries" msprop:Generator_ColumnVarNameInTable="columnNumberEntries" type="xs:int" minOccurs="0" />
               <xs:element name="ValueDate" msprop:Generator_ColumnPropNameInTable="ValueDateColumn" msprop:Generator_ColumnPropNameInRow="ValueDate" msprop:Generator_UserColumnName="ValueDate" msprop:Generator_ColumnVarNameInTable="columnValueDate" type="xs:dateTime" minOccurs="0" />
               <xs:element name="BookingDirection" msprop:Generator_ColumnPropNameInTable="BookingDirectionColumn" msprop:Generator_ColumnPropNameInRow="BookingDirection" msprop:Generator_UserColumnName="BookingDirection" msprop:Generator_ColumnVarNameInTable="columnBookingDirection" type="xs:string" minOccurs="0" />
+              <xs:element name="TempData" msprop:Generator_ColumnPropNameInRow="TempData" msprop:Generator_ColumnPropNameInTable="TempDataColumn" msprop:Generator_ColumnVarNameInTable="columnTempData" msprop:Generator_UserColumnName="TempData" type="xs:long" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -223,7 +224,7 @@
               <xs:element name="LNet" msprop:Generator_ColumnPropNameInTable="LNetColumn" msprop:Generator_ColumnPropNameInRow="LNet" msprop:Generator_UserColumnName="LNet" msprop:Generator_ColumnVarNameInTable="columnLNet" type="xs:decimal" minOccurs="0" />
               <xs:element name="LNet_1" msprop:Generator_ColumnPropNameInTable="LNet_1Column" msprop:Generator_ColumnPropNameInRow="LNet_1" msprop:Generator_UserColumnName="LNet_1" msprop:Generator_ColumnVarNameInTable="columnLNet_1" type="xs:decimal" minOccurs="0" />
               <xs:element name="LCode" msprop:Generator_ColumnPropNameInTable="LCodeColumn" msprop:Generator_ColumnPropNameInRow="LCode" msprop:Generator_UserColumnName="LCode" msprop:Generator_ColumnVarNameInTable="columnLCode" type="xs:string" minOccurs="0" />
-              <xs:element name="DataEx" msprop:Generator_UserColumnName="DataEx" msprop:Generator_ColumnPropNameInTable="DataExColumn" msprop:Generator_ColumnPropNameInRow="DataEx" msprop:Generator_ColumnVarNameInTable="columnDataEx" type="xs:string" minOccurs="0" />
+              <xs:element name="DataEx" msprop:Generator_ColumnPropNameInTable="DataExColumn" msprop:Generator_ColumnPropNameInRow="DataEx" msprop:Generator_UserColumnName="DataEx" msprop:Generator_ColumnVarNameInTable="columnDataEx" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

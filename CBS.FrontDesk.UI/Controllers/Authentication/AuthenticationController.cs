@@ -91,7 +91,7 @@ namespace CBS.FrontDesk.UI.Controllers
                         Session[FailedAttemptsKey] = 0;
                         TempData["ResetClientAttempts"] = true;
 
-                        CreateToken(userDto, "TSC", userDto.expirationTime);
+                       await CreateTokenAsync(userDto, "TSC", userDto.expirationTime);
 
                         if (userDto.ChangePasswordOnFirstLogin)
                         {

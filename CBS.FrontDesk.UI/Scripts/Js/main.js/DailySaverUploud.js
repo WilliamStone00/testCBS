@@ -10,7 +10,7 @@ $(document).ready(function () {
     $('#downloadExcelButton').click(function () {
         // Define the file name and path relative to your domain
         const fileName = 'SampleDailySaverToBeUploaded.xlsx';
-        const filePath = `/AppFiles/${fileName}`;
+        const filePath = `/AppFiles/SampleDocument/${fileName}`;
 
         // Create a temporary anchor element
         const $link = $('<a>')

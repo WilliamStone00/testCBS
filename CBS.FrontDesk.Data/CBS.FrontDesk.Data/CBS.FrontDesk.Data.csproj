@@ -107,6 +107,7 @@
     <Compile Include="Accounting\ProductAccountingBook.cs" />
     <Compile Include="Entity\Accounting\Acknowledge.cs" />
     <Compile Include="Entity\Accounting\BlacklistAccount.cs" />
+    <Compile Include="Entity\Accounting\Class1.cs" />
     <Compile Include="Entity\Accounting\DailyTrendDataDto.cs" />
     <Compile Include="Entity\Accounting\FinancialDocumentReference.cs" />
     <Compile Include="Entity\Accounting\Enumeration.cs" />
@@ -114,10 +115,16 @@
     <Compile Include="Entity\AccountOpeningRulePerBranchP\AccountOpeningRulePerBranch.cs" />
     <Compile Include="Entity\AndriodApp\AndriodVersionConfiguration.cs" />
     <Compile Include="Entity\AuditTralP\AuditTrailDto.cs" />
+    <Compile Include="Entity\BulkOperation\BulkCashOperationFileDetails.cs" />
+    <Compile Include="Entity\BulkOperation\BulkCashOperationFileDetailsData.cs" />
+    <Compile Include="Entity\BulkOperation\BulkCashOperationFileSummary.cs" />
     <Compile Include="Entity\BulkOperation\ConfirmBulkOperationCommand.cs" />
     <Compile Include="Entity\BulkOperation\CreateBulkOperationSimulation.cs" />
     <Compile Include="Entity\BulkOperation\BulkOperationData.cs" />
     <Compile Include="Entity\BulkOperation\BulkOperationDataDetails.cs" />
+    <Compile Include="Entity\BulkOperation\SimulateBulkCreditOrDebitOperationCommand.cs" />
+    <Compile Include="Entity\BulkOperation\SimulateBulkOperationDetailCommandDto.cs" />
+    <Compile Include="Entity\BulkOperation\SimulateCashOutOrCashInBulkOperation.cs" />
     <Compile Include="Entity\BulkOperation\SimulateBulkOperation.cs" />
     <Compile Include="Entity\BulkOperation\BulkOperationAccountTopupSimulationCommand.cs" />
     <Compile Include="Entity\BulkOperation\BulkOperationContributionSimulationCommand.cs" />
@@ -138,6 +145,7 @@
     <Compile Include="Entity\DailyCollectionEntities\DailySaverUploadResult.cs" />
     <Compile Include="Entity\DailyCollectionEntities\CollectorSalarySummaryDto.cs" />
     <Compile Include="Entity\DailyCollectionEntities\FileApproval.cs" />
+    <Compile Include="Entity\DailyCollectionEntities\FileUploadCollectorDto.cs" />
     <Compile Include="Entity\DailyCollectionEntities\FinancialReportData.cs" />
     <Compile Include="Entity\DailyCollectionEntities\DailyDashBoardData.cs" />
     <Compile Include="Entity\DailyCollectionEntities\ManualEntryDailyCollectorDetailsDto.cs" />

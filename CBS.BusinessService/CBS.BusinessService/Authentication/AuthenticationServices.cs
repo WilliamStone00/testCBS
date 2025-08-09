@@ -1,15 +1,17 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using BusinessServices;
 using CBS.API.Helper;
-using CBS.FrontDesk.Helper;
-using System.Configuration;
-using BusinessServices;
-using CBS.FrontDesk.Data.Message;
-using System.Web;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.UserManagement;
+using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.EMMA;
 using Irony.Parsing;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Security;
 
 namespace CBS.FrontDesk.Service
@@ -25,10 +27,13 @@ namespace CBS.FrontDesk.Service
 
         private readonly ApiCallerHelper _identityServer;
         private readonly ApiCallerHelper _BankServer;
+        private readonly ApiCallerHelper _accountingHelper;
+
         public AuthenticationServices()
         {
             _identityServer = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
             _BankServer = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
+            _accountingHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
         }
         private string GetClientIPAddress()
         {
@@ -55,7 +60,7 @@ namespace CBS.FrontDesk.Service
                 return "Unknown";
             }
         }
-
+     
 
         public async Task<ExecutionMessages> AuthenticateUser(AuthRequest request)
         {
@@ -68,9 +73,6 @@ namespace CBS.FrontDesk.Service
                 {
 
                     var userAuth = response.ApiResponseData.Data;
-
-
-
 
                     response.ApiResponseData.Data.Branch = userAuth.Branch;
                     userAuth.password = request.Password;

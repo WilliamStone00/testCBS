@@ -8,6 +8,7 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectionEntities
 {
     public class ManualEntryDailyCollectorUploadSummaryDto
     {
+        public string FileUploadId { get; set; }
         public decimal TotalAmount { get; set; }
         public int TotalMembers { get; set; }
         public string BranchName { get; set; }
