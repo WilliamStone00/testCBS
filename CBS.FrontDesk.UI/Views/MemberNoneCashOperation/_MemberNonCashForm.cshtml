@@ -1,34 +1,79 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @using Resources
+<style>
+    .booking-direction-box {
+        background-color: #e9e9ee;
+        border: 1px solid #6c63ff; /* Optional blue border */
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .booking-option {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.95rem;
+        font-weight: 500;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 0.35rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+        .booking-option input[type="radio"] {
+            margin: 0;
+        }
+</style>
 <fieldset class="fieldset-custom">
-    <div class="change-group">
-        <!-- Member's Name Section -->
-        <div class="row mb-4">
+    <!--<div class="change-group">-->
+    <!-- Member's Name Section -->
+    <!--<div class="row mb-4">
             <div class="col-md-12">
                 <div class="form-floating">
                     <span class="formatted-amount shadow-sm d-block py-3 px-4 bg-light rounded border border-secondary.@GlobalMemberNoneCashOperation.MembersName: <strong>@Model.Customer.name</strong></span>
                 </div>
             </div>
         </div>
+    </div>-->
+    <div class="change-group">
+        <div class="row mb-3 align-items-center">
+            <!-- Member's Name, Branch Name, and Branch Code Section -->
+            <div class="col-md-12">
+                <div class="form-floating">
+                    <span class="formatted-amount shadow-sm d-block py-3 px-4 bg-light rounded border border-secondary">
+                        <strong>@GlobalLoanRepaymentBackOffice.MembersName:</strong> @Model.Customer.name &nbsp; | &nbsp;
+                        <strong>@GlobalLoanRepaymentBackOffice.BranchName:</strong> @Model.Branch.Name &nbsp; | &nbsp;
+                        <strong>@GlobalLoanRepaymentBackOffice.BranchCode:</strong> @Model.Branch.BranchCode
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="rounded p-2 border-primary border mb-3">
-        <h6 class="mb-0 fw-bold text-dark">@GlobalMemberNoneCashOperation.BookingDirection</h6>
 
-        <!-- Debit and Credit Options -->
-        <div class="d-flex justify-content-start gap-4 mb-2">
-            <div class="form-check border p-3 rounded">
-                @Html.RadioButtonFor(m => m.AddMembersNoneCashOperationCommand.BookingDirection, "Debit", new { @class = "form-check-input", id = "Debit" })
-                <label class="form-check-label" for="Debit" style="font-size: 1.1rem;">@GlobalMemberNoneCashOperation.DebitMembersAccount</label>
-            </div>
-            <div class="form-check border p-3 rounded">
-                @Html.RadioButtonFor(m => m.AddMembersNoneCashOperationCommand.BookingDirection, "Credit", new { @class = "form-check-input", id = "Credit" })
-                <label class="form-check-label" for="Credit" style="font-size: 1.1rem;">@GlobalMemberNoneCashOperation.CreditMembersAccount</label>
+    <div class="change-group">
+        <div class="row mb-3 align-items-center">
+            <div class="col-md-12">
+                <div class="booking-direction-box">
+                    <label class="fw-semibold text-dark mb-2">@GlobalMemberNoneCashOperation.BookingDirection:</label>
+                    <div class="d-flex flex-wrap gap-3">
+                        <label class="booking-option">
+                            @Html.RadioButtonFor(m => m.AddMembersNoneCashOperationCommand.BookingDirection, "Debit", new { @id = "Debit" })
+                            @GlobalMemberNoneCashOperation.DebitMembersAccount
+                        </label>
+
+                        <label class="booking-option">
+                            @Html.RadioButtonFor(m => m.AddMembersNoneCashOperationCommand.BookingDirection, "Credit", new { @id = "Credit" })
+                            @GlobalMemberNoneCashOperation.CreditMembersAccount
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
         <input type="hidden" id="memberName" value="@Model.AddMembersNoneCashOperationCommand.MemberName" />
-
     </div>
+
+
     <div class="rounded p-2 border-primary border mb-3">
         <h6 class="mb-0 fw-bold text-dark">@GlobalMemberNoneCashOperation.MembersAccounts</h6>
         <!-- Table Section -->

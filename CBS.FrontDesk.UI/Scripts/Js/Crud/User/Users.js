@@ -1,6 +1,5 @@
 ﻿$(document).ready(function () {
     initFilterToggles();
-    loadBulkOperationDataTable();
     bindFilterActions();
 });
 

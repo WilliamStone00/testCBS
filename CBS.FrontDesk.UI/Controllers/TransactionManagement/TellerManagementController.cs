@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using ZXing;
 
 namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 {
@@ -21,13 +22,16 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         private readonly TellerServices _tellerServices;
         private readonly ChartOfAccountServicesAnnex _accountingServices;
         private readonly BranchServices _branchServices;
+        private readonly AccountServices _accountServices;
+        
         private readonly IUserManagementServices _userManagementServices;
-        public TellerManagementController(ChartOfAccountServicesAnnex accountingServices, TellerServices tellerServices, BranchServices branchServices = null, IUserManagementServices userManagementServices = null)
+        public TellerManagementController(ChartOfAccountServicesAnnex accountingServices, TellerServices tellerServices, BranchServices branchServices = null, IUserManagementServices userManagementServices = null, AccountServices accountServices = null)
         {
             _accountingServices = accountingServices;
             _tellerServices = tellerServices;
             _branchServices = branchServices;
             _userManagementServices = userManagementServices;
+            _accountServices=accountServices;
         }
 
         public async Task<ActionResult> Index()
@@ -76,6 +80,65 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 {
                     success = false,
                     message = $"❌ An unexpected error occurred while toggling remote close: {ex.Message}"
+                });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> LinkCollectorTransit(LinkCollectorTransitCommand request)
+        {
+            if (string.IsNullOrWhiteSpace(request.TellerId))
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "❌ Teller ID is required."
+                });
+            }
+
+            try
+            {
+
+                // 🔁 Call update method with toggle mode
+                var result = await _tellerServices.Update(request);
+
+                return Json(new
+                {
+                    success = result.Result,
+                    status = result.MessageStatus,
+                    message = Messaging.MessageResult(result)
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = $"❌ An unexpected error occurred while toggling remote close: {ex.Message}"
+                });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> InitializeAccount(InitializeAccountCommand command)
+        {
+            try
+            {
+              var  result= await _accountServices.InitialiseBalances(command);
+
+                return Json(new
+                {
+                    success = result.Result,
+                    status = result.MessageStatus,
+                    message = Messaging.MessageResult(result)
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = $"❌ An unexpected error occurred while initialising balance in operation: {ex.Message}"
                 });
             }
         }

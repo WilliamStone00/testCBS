@@ -59,7 +59,7 @@
                                     </td>
                                     <td class="status-indicator"></td> <!-- New column for ❌ (Error Indicator) -->
                                     <td>
-                                        <input type="checkbox" class="form-check-input" disabled>
+                                        <input type="checkbox" class="form-check-input">
                                     </td> <!-- Selection Checkbox -->
                                 </tr>
                             }
@@ -131,9 +131,11 @@
                                         <input type="number" class="form-control penalty-input" id="penalty-@d.Id" value="0" oninput="updateTotals()">
                                     </td>
                                     <td><span class="total-span" id="total-@d.Id">0</span></td>
+                          
                                     <td>
-                                        <input type="checkbox" class="form-check-input" disabled>
+                                        <input type="checkbox" class="form-check-input loan-confirmation-checkbox" />
                                     </td>
+
                                 </tr>
                             }
                         </tbody>

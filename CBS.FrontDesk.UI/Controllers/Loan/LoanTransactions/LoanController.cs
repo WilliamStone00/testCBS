@@ -21,6 +21,7 @@ using CBS.FrontDesk.Data.ReportDataSetDto.LoanPortFolioDataSet;
 using CBS.FrontDesk.UI.Helper;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
+using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -31,10 +32,12 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
+using Branch = CBS.FrontDesk.Data.Entity.Config.Branch;
 
 namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
 {
-    [CheckSessionTimeOutAttribute]
+    //[CheckSessionTimeOutAttribute]
 
     public class LoanController : BaseController
     {
@@ -44,19 +47,24 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
         private readonly LoanCommiteeMemberServices _loanCommiteeMember;
         private readonly UserManagementServices _userManagementServices;
         private readonly BranchServices _branchServices;
-        public LoanController(LoanServices LoanServices, LoanCommiteeMemberServices loanCommiteeMember, UserManagementServices userManagementServices, BranchServices branchServices = null)
+        private readonly LoanDeliquencyConfigurationServices _LoanDeliquencyConfigurationServices;
+
+        public LoanController(LoanServices LoanServices, LoanCommiteeMemberServices loanCommiteeMember, UserManagementServices userManagementServices, BranchServices branchServices = null, LoanDeliquencyConfigurationServices loanDeliquencyConfigurationServices = null)
         {
             _LoanServices = LoanServices;
             _loanCommiteeMember = loanCommiteeMember;
             _userManagementServices = userManagementServices;
             _branchServices = branchServices;
+            _LoanDeliquencyConfigurationServices=loanDeliquencyConfigurationServices;
         }
 
         public async Task<ActionResult> Index()
         {
             var Branches = await _branchServices.GetBranches();
+            var ParIds = await _LoanDeliquencyConfigurationServices.GetLoanDeliquencyConfigurations();
             ViewBag.Branches = Branches;
-            return View(new Loan { InitiateLoanDownloadCommand=new InitiateLoanDownloadCommand() });
+            ViewBag.ParIds = ParIds;
+            return View();
         }
         public async Task<ActionResult> Configuration()
         {
@@ -192,7 +200,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                 getLoansDataTableQuery.DataTableOptions.start = 0;
 
                 // Fetch the data
-                var dataTable = await _LoanServices.GetDataTableAsync(getLoansDataTableQuery, searchCriteria);
+                var dataTable = await _LoanServices.GetDataTableAsync(getLoansDataTableQuery);
 
                 // Convert dataTable.data to List<Loan>
                 var loans1 = JsonConvert.DeserializeObject<List<Loan>>(
@@ -246,41 +254,86 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
         }
 
 
-        [HttpPost]
-        public async Task<ActionResult> LoadLoanData(string searchCriteria = "all", string dateFrom = null, string dateTo = null, string status = "Open", string deliquentstatus = "Current", string branchid = null)
+        public async Task<ActionResult> DownloadLoanData(GetLoansDataTableQuery tableQuery)
         {
             try
             {
+
+                
+
                 DateTime? startDate = null;
                 DateTime? endDate = null;
+                var branch = new Branch();
 
-                if (!string.IsNullOrWhiteSpace(dateFrom))
-                {
-                    startDate = DateTime.ParseExact(dateFrom, "dd/MM/yyyy", null);
-                }
+                // 🔎 Parse date filters
+                if (!string.IsNullOrWhiteSpace(tableQuery.StartDate?.ToString()))
+                    startDate = DateTime.ParseExact(tableQuery.StartDate.Value.ToString("dd/MM/yyyy"), "dd/MM/yyyy", null);
 
-                if (!string.IsNullOrWhiteSpace(dateTo))
-                {
-                    endDate = DateTime.ParseExact(dateTo, "dd/MM/yyyy", null).AddDays(1).AddTicks(-1);
-                }
+                if (!string.IsNullOrWhiteSpace(tableQuery.EndDate?.ToString()))
+                    endDate = DateTime.ParseExact(tableQuery.EndDate.Value.ToString("dd/MM/yyyy"), "dd/MM/yyyy", null).AddDays(1).AddTicks(-1);
 
-                var query = new GetLoansDataTableQuery
+                // 🌍 Branch context
+                if (!string.IsNullOrWhiteSpace(tableQuery.BranchId))
+                    branch = await _branchServices.GetBranch(tableQuery.BranchId);
+
+                if (!_branchServices.IsHeadOffice())
+                    branch = await _branchServices.GetBranch(_branchServices.GetBranchID());
+               
+                // 🚀 Set large page size for export
+                tableQuery.DataTableOptions=new DataTableOptions
                 {
-                    DataTableOptions = PostDataTableOptions(),
-                    StartDate = startDate ?? DateTime.MinValue,
-                    EndDate = endDate ?? DateTime.MinValue,
-                    BranchId = branchid,
-                    DeliquentStatus = deliquentstatus,
-                    Status = status,
-                    MemberId="n/a",
+                    pageSize = 30000,  // Export large number of records
+                    start = 0,
                 };
 
-                var dataTable = await _LoanServices.GetDataTableAsync(query, searchCriteria);
+                // 📊 Get data
+                var dataTable = await _LoanServices.GetDataTableAsync(tableQuery);
+                var loanList = JsonConvert.DeserializeObject<List<Loan>>(JsonConvert.SerializeObject(dataTable.data));
+
+                // 📤 Generate and return Excel
+                string exportedBy = Session["FullName"]?.ToString() ?? "Unknown";
+                var branches = await _branchServices.GetBranches();
+                var loans = _LoanServices.MapLoansWithBranchDetails(branches.ToList(), loanList);
+                string reportType = tableQuery.Status;
+                // Null-safe string conversions
+                string startDateStr = startDate?.ToString("dd/MM/yyyy") ?? "N/A";
+                string endDateStr = endDate?.ToString("dd/MM/yyyy") ?? "N/A";
+                string exportedByStr = !string.IsNullOrWhiteSpace(exportedBy) ? exportedBy : "Unknown User";
+                string reportTypeStr = !string.IsNullOrWhiteSpace(reportType) ? reportType : "Loan Report";
+
+                // Defensive fallback for null list
+                var safeLoans = loanList ?? new List<Loan>();
+
+      
+                var exportFile = LoanExcelGenerator.GenerateLoanExcel(
+                    safeLoans,
+                    branch,
+                    exportedByStr,
+                    reportTypeStr,
+                    startDateStr,
+                    endDateStr
+                );
+
+                return File(exportFile.Content, exportFile.ContentType, exportFile.FileName);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error exporting data.");
+            }
+        }
+        [HttpPost]
+        public async Task<ActionResult> LoadLoanData (GetLoansDataTableQuery tableQuery)
+        {
+            try
+            {
+
+
+                var dataTable = await _LoanServices.GetDataTableAsync(tableQuery);
                 var loanList = JsonConvert.DeserializeObject<List<Loan>>(JsonConvert.SerializeObject(dataTable.data));
 
                 return Json(new
                 {
-                    draw = query.DataTableOptions.draw,
+                    draw = dataTable.DataTableOptions.draw,
                     recordsTotal = dataTable.recordsTotal,
                     recordsFiltered = dataTable.recordsFiltered,
                     data = loanList
@@ -291,7 +344,7 @@ namespace CBS.FrontDesk.UI.Controllers.LoanTransactions
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading loan data.");
             }
         }
-
+        
         //
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
 

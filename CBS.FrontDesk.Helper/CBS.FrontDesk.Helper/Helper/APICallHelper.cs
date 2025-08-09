@@ -432,6 +432,7 @@ namespace CBS.FrontDesk.Helper
         public static string MobileMoneyTellerConfiguration = "/api/v1/Teller/MobileMoney/Configuration/{0}";
         public static string GetAllTeller = "/api/v1/Teller";
         public static string CreateTeller = "/api/v1/Teller";
+        public static string InitializeAccount = "/api/v1/Account/InitializeAccount";
         //DailyTeller
         public static string Get_Update_Delete_DailyTeller = "/api/v1/DailyTeller/{0}";
         public static string GetDailyTellerUser = "/api/v1/DailyTeller/User";
@@ -553,7 +554,8 @@ namespace CBS.FrontDesk.Helper
         public static string CreateBank = "/api/v1/Bank";
 
 
-        //Loan
+        //Loan         
+        public static string GetAllProductAccountingRules = "/api/v1/AccountType/GetAllMappedProduct";
         public static string Get_Update_Delete_Document = "/api/v1/Document/{0}";
         public static string GetAllDocument = "/api/v1/Documents";
         public static string CreateDocument = "/api/v1/Document";
@@ -628,6 +630,16 @@ namespace CBS.FrontDesk.Helper
         public static string DownloadFileByIdQuery = "/api/v1/FileDownloadInfos/download/{0}";
 
         public static string LoaDataTablePaggination = "/api/v1/Loan/Paggination-DataTable";
+
+
+        public static string SubmitLoanAdjustmentRequest = "/api/v1/LoanAdjustmentRequest/submit";
+        public static string ApproveLoanAdjustmentRequest = "/api/v1/LoanAdjustmentRequest/approve";
+        public static string RejectLoanAdjustmentRequest = "/api/v1/LoanAdjustmentRequest/reject";
+        public static string GetLoanAdjustmentRequestDetails = "/api/v1/LoanAdjustmentRequest/get-details/{0}";
+        public static string LoanAdjustmentRequestDataTable = "/api/v1/LoanAdjustmentRequest/datatable";
+
+
+
 
 
         public static string LoaDataTablePagginationFroCmoney = "/api/v1/cmoney/members/activations/datatable";

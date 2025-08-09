@@ -12,7 +12,7 @@ using System.Web.UI.WebControls;
 
 namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 {
-    //[CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
     public class PISalaryExecutionController : BaseController
     {
         // GET: SalaryExecutionServices
@@ -29,7 +29,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         public async Task<ActionResult> Index()
         {
             var fileUploads = await _salaryUploadServices.GetValues(
-                       new GetAllFileUploadSalaryFileActivatedQuery { Both = false, Status = true }
+                       new GetAllFileUploadSalaryFileActivatedQuery { Both = false, Status = true },"ps_salary"
                    );
             ViewBag.Files=fileUploads.ToList();
             return View(new ExecuteSalaryCarrier());

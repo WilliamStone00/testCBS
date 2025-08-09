@@ -178,9 +178,11 @@ function collectDeposits() {
 
     console.clear();
 
-    // ✅ Step 1: Collect Accounts
+    // ✅ Step 1: Collect checked accounts
     $('#memberAccountsTable tr').each(function () {
         let checkbox = $(this).find('.form-check-input');
+        if (!checkbox.is(':checked')) return;
+
         let amountInput = $(this).find('.amount-input');
         let statusIndicator = $(this).find('.status-indicator');
         let amount = parseFloat(amountInput.val()) || 0;
@@ -189,64 +191,64 @@ function collectDeposits() {
         let accountType = $(this).find('td:eq(2)').text().trim();
         let productId = $(this).find('td:eq(0)').text().trim();
 
-        if (amount > 0) {
-            if (amount > balance) {
-                statusIndicator.html("❌").css("color", "red");
-                hasInvalidAccounts = true;
-            } else {
-                statusIndicator.html("✅").css("color", "green");
-                checkbox.prop('checked', true);
-            }
-
-            accountsToBeDebited.push({
-                AccountNumber: accountNumber,
-                Amount: amount,
-                ProductId: productId,
-                AccountType: accountType
-            });
-
-            totalDebited += amount;
-            selectedAccounts++;
+        if (amount <= 0) {
+            statusIndicator.html("❌").css("color", "red");
+            hasInvalidAccounts = true;
+            return;
         }
+
+        if (amount > balance) {
+            statusIndicator.html("❌").css("color", "red");
+            hasInvalidAccounts = true;
+        } else {
+            statusIndicator.html("✅").css("color", "green");
+        }
+
+        accountsToBeDebited.push({
+            AccountNumber: accountNumber,
+            Amount: amount,
+            ProductId: productId,
+            AccountType: accountType
+        });
+
+        totalDebited += amount;
+        selectedAccounts++;
     });
 
     if (selectedAccounts === 0) {
-        appalert("❌ Please enter an amount and select at least one account from the account table.", 3, 1);
+        appalert("❌ Please select at least one account and enter a valid amount.", 3, 1);
         return null;
     }
 
     if (hasInvalidAccounts) {
-        appalert("❌ Some accounts have invalid debit amounts (greater than balance). Please correct them.", 3, 1);
+        appalert("❌ Some selected accounts have invalid debit amounts. Please correct them.", 3, 1);
         return null;
     }
 
     let transactionNote = getValidatedNote();
     if (!transactionNote) return null;
 
-    // ✅ Step 2: Collect Loans
+    // ✅ Step 2: Collect checked loans
     $('#loanRepaymentTable tr').each(function () {
-        let checkbox = $(this).find('.form-check-input');
-        let loanId = $(this).find('td:eq(0)').text().trim();
+        let checkbox = $(this).find('.loan-confirmation-checkbox');
+        if (!checkbox.is(':checked')) return;
 
-        // ✅ Read values directly from table inputs
+        let loanId = $(this).find('td:eq(0)').text().trim();
         let capital = parseFloat($(this).find('.capital-input').val()) || 0;
         let interest = parseFloat($(this).find('.interest-input').val()) || 0;
         let vat = parseFloat($(this).find('.vat-input').val().replace(/,/g, '')) || 0;
         let penalty = parseFloat($(this).find('.penalty-input').val()) || 0;
-
-        // ✅ Use values as-is, do not recalculate VAT or interest
         let totalAmount = capital + interest + vat + penalty;
 
-        // ✅ Show total in the row
-        $(this).find('.total-span').html(totalAmount.toLocaleString('en-US', {
-            minimumFractionDigits: 0
-        })).css("color", "");
+        $(this).find('.total-span').html(
+            totalAmount > 0
+                ? totalAmount.toLocaleString('en-US', { minimumFractionDigits: 0 })
+                : "⚠️ Missing Values"
+        ).css("color", totalAmount > 0 ? "" : "orange");
 
-        if (totalAmount > 0) {
-            checkbox.prop('checked', true);
-        } else {
-            $(this).find('.total-span').html("⚠️ Missing Values").css("color", "orange");
+        if (totalAmount <= 0) {
             hasInvalidLoans = true;
+            return;
         }
 
         loansToBeRefunded.push({
@@ -268,7 +270,7 @@ function collectDeposits() {
     $('#totalRepaymentAmount').text(totalRepayment.toLocaleString('en-US', { minimumFractionDigits: 0 }));
 
     if (selectedLoans === 0) {
-        appalert("❌ Please enter an amount and select at least one loan to process repayment.", 3, 1);
+        appalert("❌ Please select and enter values for at least one loan to process repayment.", 3, 1);
         return null;
     }
 
@@ -278,18 +280,15 @@ function collectDeposits() {
     }
 
     if (hasInvalidLoans) {
-        appalert("❌ Some loans have missing values. Please enter valid amounts before proceeding.", 3, 1);
+        appalert("❌ Some selected loans have missing or invalid values. Please check before proceeding.", 3, 1);
         return null;
     }
 
-    //if (Math.round(totalDebited) !== Math.round(totalRepayment)) {
-    //    appalert(`❌ The sum of Capital, Interest, and Penalty (including VAT) (${formatCurrency(totalRepayment)}) must be equal to the total amount to be debited (${formatCurrency(totalDebited)}).`, 3, 1);
-    //    return null;
-    //}
-
     console.log("✅ FINAL VALIDATION PASSED. Ready to Submit!");
-    return [{ AccountToBeDebiteds: accountsToBeDebited, LoanToBeRefundeds: loansToBeRefunded }];
-
+    return [{
+        AccountToBeDebiteds: accountsToBeDebited,
+        LoanToBeRefundeds: loansToBeRefunded
+    }];
 }
 
 

@@ -1,215 +1,219 @@
-﻿
-// Function to export loan data
-function exportLoanData() {
-    alert("Export functionality to be implemented.");
-    // Replace the alert with your actual export logic.
-}
+﻿$(document).ready(function () {
+    $('#branchFilterSection, #dateRangeSection, #extraFiltersSection, #parFilterSection').hide();
 
-function initializeBulkOperationDataTable() {
+    $('#byBranch').change(function () {
+        $('#branchFilterSection').slideToggle(this.checked);
+    });
+
+    $('#byDate').change(function () {
+        $('#dateRangeSection').slideToggle(this.checked);
+    });
+
+    $('#moreOptions').change(function () {
+        $('#extraFiltersSection').slideToggle(this.checked);
+    });
+
+    $('#byPar').change(function () {
+        $('#parFilterSection').slideToggle(this.checked);
+    });
+
+    $('#applyFilterBtn').click(function () {
+        loadLoanData();
+    });
+
+    $('#resetFilterBtn').click(function () {
+        resetLoanFilters();
+    });
+
+    $('#exportBtn').click(function () {
+        exportLoanData();
+    });
+});
+
+
+function loadLoanData() {
     $('#myDataTable').DataTable({
-        destroy: true,
         serverSide: true,
+        destroy: true,
+        searching: false,
         order: [[0, 'desc']],
         ajax: {
             url: '/Loan/LoadLoanData',
             type: 'POST',
-            data: getSearchParameters,
-            dataSrc: function (json) {
-                if (json.data.length > 0) {
-                    $('#loanDataCard').fadeIn();
-                } else {
-                    $('#loanDataCard').fadeOut();
-                }
-                return json.data;
+            contentType: 'application/json',
+            data: function (d) {
+                const filters = collectLoanFilters();
+                filters.dataTableOptions.draw = d.draw;
+                filters.dataTableOptions.start = d.start;
+                filters.dataTableOptions.length = d.length;
+                filters.dataTableOptions.skip = d.start;
+                filters.dataTableOptions.pageSize = d.length;
+                filters.dataTableOptions.sortColumnName = d.columns[d.order[0]?.column]?.data || "CreatedDate";
+                filters.dataTableOptions.sortColumnDirection = d.order[0]?.dir || "desc";
+                return JSON.stringify(filters);
             }
         },
         columns: [
             {
                 data: 'LoanDate',
-                title: 'Date',
-                render: (data) => moment(data).format('DD/MM/YYYY HH:mm:ss')
+                render: function (data) {
+                    return data ? moment(data).format('DD/MM/YYYY HH:mm') : '';
+                }
             },
-            {
-                data: 'CustomerName',
-                title: 'Name'
-            },
-            {
-                data: 'CustomerId',
-                title: 'M.REF'
-            },
+            { data: 'CustomerName' },
+            { data: 'CustomerId' },
             {
                 data: 'LoanAmount',
-                title: 'Amount',
-                render: (data) => formatCurrency(data)
-            },
-            {
-                data: 'InterestRate',
-                title: 'Rate',
-                render: (data) => `${data.toFixed(2)}%`
-            },
-            {
-                data: 'AccrualInterest',
-                title: 'int',
-                render: (data) => formatCurrency(data)
-            },
-            {
-                data: 'Balance',
-                title: 'Bal',
-                render: (data) => formatCurrency(data)
-            },
-            {
-                data: 'DeliquentDays',
-                title: 'D.Days'
-            },
-            {
-                data: 'DeliquentAmount',
-                title: 'D.AMT',
-                render: (data) => formatCurrency(data)
-            },
-            {
-                data: 'DeliquentInterest',
-                title: 'D.INT',
-                render: (data) => formatCurrency(data)
-            },
-            {
-                data: null,
-                title: 'Due AMT',
-                render: function (data, type, row) {
-                    const totalDue = (row.DeliquentAmount || 0) + (row.DeliquentInterest || 0);
-                    return formatCurrency(totalDue);
+                render: function (data) {
+                    return `<div class="text-end">${data != null ? parseFloat(data).toLocaleString(undefined, { minimumFractionDigits: 1 }) : '0.0'}</div>`;
                 }
             },
             {
-                data: 'Id',
-                title: 'Action',
+                data: 'InterestRate',
+                render: function (data) {
+                    return `<div class="text-end">${data != null ? parseFloat(data).toFixed(1) : '0.0'}%</div>`;
+                }
+            },
+            {
+                data: 'AccrualInterest',
+                render: function (data) {
+                    return `<div class="text-end">${data != null ? parseFloat(data).toLocaleString(undefined, { minimumFractionDigits: 1 }) : '0.0'}</div>`;
+                }
+            },
+            {
+                data: 'Balance',
+                render: function (data) {
+                    return `<div class="text-end">${data != null ? parseFloat(data).toLocaleString(undefined, { minimumFractionDigits: 1 }) : '0.0'}</div>`;
+                }
+            },
+            {
+                data: 'LoanStatus',
+                render: function (data) {
+                    let badgeClass = 'secondary';
+                    switch ((data || '').toLowerCase()) {
+                        case 'open': badgeClass = 'primary'; break;
+                        case 'closed': badgeClass = 'dark'; break;
+                        case 'refinanced': badgeClass = 'warning'; break;
+                        case 'restructured': badgeClass = 'info'; break;
+                        case 'rescheduled': badgeClass = 'success'; break;
+                    }
+
+                    return `
+            <div class="text-center">
+                <span class="badge bg-${badgeClass} text-uppercase">${data || 'UNKNOWN'}</span>
+            </div>`;
+                }
+            },
+            {
+                data: null,
                 orderable: false,
-                render: (data) => `
-                    <button class="btn btn-info btn-sm" onclick="viewLoanDetails('${data}')">
-                        <i class="mdi mdi-eye"></i> Detail
-                    </button>
-                `
+                render: function (data, type, row) {
+                    return `
+            <div class="text-center dropdown">
+                <button class="btn btn-sm btn-info dropdown-toggle" type="button" id="actionDropdown${row.Id}" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="mdi mdi-eye"></i> Action
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="actionDropdown${row.Id}">
+                   
+                    <li>
+                        <a class="dropdown-item" href="/Loan/Details?KEY=${row.Id}" target="_blank">
+                            <i class="mdi mdi-file-document-outline text-info me-1"></i> Detail
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        `;
+                }
             }
+
         ],
-        language: {
-            emptyTable: "No loans available for the selected criteria."
-        },
-        dom: 'rtip'
-    });
-}
-
-
-//function initializeLoanDataTable() {
-//    $('#myDataTable').DataTable({
-//        destroy: true,
-//        serverSide: true,
-//        order: [[0, 'desc']],  // Default sorting by LoanDate in descending order
-//        ajax: {
-//            url: '/Loan/LoadLoanData',
-//            type: 'POST',
-//            data: getSearchParameters,
-//            dataSrc: function (json) {
-//                if (json.data.length > 0) {
-//                    $('#loanDataCard').fadeIn();
-//                } else {
-//                    $('#loanDataCard').fadeOut();
-//                }
-//                return json.data;
-//            }
-//        },
-//        columns: [
-//            { data: 'LoanDate', title: 'Date', render: (data) => moment(data).format('DD/MM/YYYY HH:mm:ss') },
-//            { data: 'CustomerName', title: 'Name' },
-//            { data: 'CustomerId', title: 'Reference' },
-//            { data: 'LoanAmount', title: 'Amount', render: (data) => formatCurrency(data) },
-//            { data: 'InterestRate', title: 'I.Rate', render: (data) => `${data.toFixed(2)}%` },
-//            { data: 'AccrualInterest', title: 'A.Int', render: (data) => formatCurrency(data) },
-//            { data: 'Balance', title: 'Balance', render: (data) => formatCurrency(data) },
-//            { data: 'DueAmount', title: 'D.Amount', render: (data) => formatCurrency(data) },
-//            {
-//                data: 'Id',
-//                render: (data) => `
-//                        <button class="btn btn-info btn-sm" onclick="viewLoanDetails('${data}')">
-//                            <i class="mdi mdi-eye"></i> Detail
-//                        </button>
-//                    `
-//            }
-//        ],
-//        language: {
-//            emptyTable: "No loans available for the selected criteria."
-//        },
-//        dom: 'rtip'  // Hide the default search input
-//    });
-//}
-
-// Function to pass parameters to server-side endpoint
-function getSearchParameters(d) {
-    d.searchCriteria = $('#searchCriteria').val();
-    d.dateFrom = $('#dateFrom').val();
-    d.dateTo = $('#dateTo').val();
-    d.status = $('#status').val();
-    d.deliquentstatus = $('#deliquentStatus').val();
-    d.branchid = $('#branchInput').val();
-}
-
-$(document).ready(function () {
-    // Initialize date pickers
-    $('#dateFrom, #dateTo').datepicker({
-        format: 'dd/mm/yyyy',
-        autoclose: true,
-        todayHighlight: true
-    });
-
-    // Initialize DataTable
-    //initializeLoanDataTable();
-
-    // Reinitialize DataTable on search button click
-    $('#searchButton').on('click', function () {
-        initializeBulkOperationDataTable();
-    });
-
-    // Initially hide the filter section
-    $('#filterContent').hide();
-
-    // Toggle the visibility of the filter section
-    $('#toggleFilterButton').on('click', function () {
-        $('#filterContent').slideToggle(300, function () {
-            if ($(this).is(':visible')) {
-                $('#toggleFilterButton').html('<i class="mdi mdi-chevron-up"></i> Hide Filters');
+        drawCallback: function (settings) {
+            const dataCount = settings.json?.data?.length || 0;
+            if (dataCount > 0) {
+                $('#loanDataCard').slideDown(); // show with animation
             } else {
-                $('#toggleFilterButton').html('<i class="mdi mdi-chevron-down"></i> Show Filters');
+                $('#loanDataCard').slideUp(); // hide when no data
             }
-        });
-    });
-});
+        }
 
+    });
+}
+function collectLoanFilters() {
+    return {
+        startDate: $('#byDate').is(':checked') ? formatDateTime($('#startDate').val(), 'start') : null,
+        endDate: $('#byDate').is(':checked') ? formatDateTime($('#endDate').val(), 'end') : null,
+        byDate: $('#byDate').is(':checked'),
+        byBranch: $('#byBranch').is(':checked'),
+        byPar: $('#byPar').is(':checked'),
+        moreOptions: $('#moreOptions').is(':checked'),
+
+        branchId: $('#branchInput').val(),
+        loanId: $('#loanId').val(),
+        memberId: $('#memberId').val(),
+        status: $('#status').val(),
+        disburmentStatus: $('#disburmentStatus').val(),
+        deliquentStatus: $('#deliquentStatus').val(),
+
+        // 🔽 Extra filters
+        loanCategory: $('#loanCategory').val(),
+        loanTypes: $('#loanTypes').val(),
+        isMigratedLoan: $('#isMigratedLoan').val(),
+        loanTarget: $('#loanTarget').val(),
+        loanTypeCategory: $('#loanTypeCategory').val(),
+        delinquentDays: $('#delinquentDays').val(),
+        parId: $('#parId').val(),
+
+        // DataTable default options (will be filled in server side)
+        dataTableOptions: { searchValue: "" }
+    };
+}
+
+
+function resetLoanFilters() {
+    $('#startDate, #endDate, #loanId, #memberId, #loanTarget, #loanTypeCategory, #delinquentDays').val('');
+    $('#status, #disburmentStatus, #deliquentStatus, #branchInput, #isMigratedLoan, #loanTypes, #loanCategory, #parId').val('');
+    $('.select2').val('').trigger('change');
+    $('#byBranch, #byDate, #moreOptions, #byPar').prop('checked', false);
+    $('#branchFilterSection, #dateRangeSection, #extraFiltersSection, #parFilterSection').slideUp();
+    loadLoanData();
+}
 
 function exportLoanData() {
-    // Collect filter criteria
-    let searchCriteria = $('#searchCriteria').val() || "all";
-    let dateFrom = $('#dateFrom').val();
-    let dateTo = $('#dateTo').val();
-    let status = $('#status').val();
-    let deliquentStatus = $('#deliquentStatus').val();
-    let branchId = $('#branchInput').val() === "---Select All---" ? "" : $('#branchInput').val();
+    const filters = collectLoanFilters();
+    const params = new URLSearchParams();
 
-    // Construct the download URL with query parameters
-    let url = `/Loan/Download?searchCriteria=${encodeURIComponent(searchCriteria)}&dateFrom=${encodeURIComponent(dateFrom)}&dateTo=${encodeURIComponent(dateTo)}&status=${encodeURIComponent(status)}&deliquentstatus=${encodeURIComponent(deliquentStatus)}&branchid=${encodeURIComponent(branchId)}`;
+    if (filters.byDate) {
+        params.append("startDate", filters.startDate);
+        params.append("endDate", filters.endDate);
+    }
 
-    // Trigger download
-    window.location.href = url;
+    if (filters.byBranch) {
+        params.append("branchId", filters.branchId);
+    }
+
+    if (filters.loanId) params.append("loanId", filters.loanId);
+    if (filters.memberId) params.append("memberId", filters.memberId);
+    if (filters.status) params.append("status", filters.status);
+    if (filters.disburmentStatus) params.append("disburmentStatus", filters.disburmentStatus);
+    if (filters.deliquentStatus) params.append("deliquentStatus", filters.deliquentStatus);
+    if (filters.isMigratedLoan) params.append("isMigratedLoan", filters.isMigratedLoan);
+    if (filters.loanTypes) params.append("loanTypes", filters.loanTypes);
+    if (filters.loanCategory) params.append("loanCategory", filters.loanCategory);
+    if (filters.loanTarget) params.append("loanTarget", filters.loanTarget);
+    if (filters.loanTypeCategory) params.append("loanTypeCategory", filters.loanTypeCategory);
+    if (filters.delinquentDays) params.append("delinquentDays", filters.delinquentDays);
+    if (filters.parId) params.append("parId", filters.parId);
+
+    window.location.href = `/Loan/DownloadLoanData?${params.toString()}`;
 }
 
-
-// Function to format currency in NGN
-function formatCurrency(amount) {
-    return new Intl.NumberFormat('en-NG', {
-        minimumFractionDigits: 1,
-        maximumFractionDigits: 1
-    }).format(amount);
-}
-
-
-// Placeholder function for loan details view
-function viewLoanDetails(loanId) {
-    alert(`View loan details for Loan ID: ${loanId}`);
+function formatDateTime(dateString, type) {
+    if (!dateString) return null;
+    const date = new Date(dateString);
+    if (type === 'start') {
+        date.setHours(0, 0, 0, 0);
+    } else if (type === 'end') {
+        date.setHours(23, 59, 59, 999);
+    }
+    return date.toISOString(); // C# API will parse this correctly
 }

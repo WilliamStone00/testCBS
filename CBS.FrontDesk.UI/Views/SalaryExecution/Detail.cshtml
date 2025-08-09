@@ -198,8 +198,10 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(document).ready(function () {
-            LoadDT("myDataTable", 0)
+            LoadDT("myDataTable", 0);
+
             $("#executeSalaryBtn").on("click", function () {
+                var $btn = $(this); // Reference to the button
                 var memberReferenceNumber = $("#memberReferenceNumber").val();
                 var fileUploadId = $("#fileUploadId").val();
                 var executeReason = $("#executeReason").val();
@@ -211,7 +213,6 @@
                     return;
                 }
 
-                // Prepare confirmation message
                 var confirmMessage = `
             <div style="text-align: left;">
                 <p><strong>File Name:</strong> ${fileName}</p>
@@ -223,7 +224,11 @@
 
                 alertify.confirm("Confirm Salary Execution", confirmMessage,
                     function () {
-                        // User confirmed, proceed with AJAX request
+                        // Block the button and show loading
+                        $btn.prop("disabled", true);
+                        var originalText = $btn.html();
+                        $btn.html(`<span class="spinner-border spinner-border-sm me-2"></span> Processing...`);
+
                         var data = {
                             MemberReferenceNumber: memberReferenceNumber,
                             FileUploadId: fileUploadId
@@ -232,8 +237,8 @@
                         $.ajax({
                             type: "POST",
                             url: "/SalaryExecution/ExecuteAnalysis",
-                            contentType: "application/json; charset=utf-8", // Ensure JSON is sent correctly
-                            data: JSON.stringify(data), // Convert object to JSON
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify(data),
                             dataType: "json",
                             success: function (response) {
                                 if (response.success) {
@@ -242,10 +247,12 @@
                                     location.reload();
                                 } else {
                                     appalert("Failed to execute salary. " + response.message, 2, 1);
+                                    $btn.prop("disabled", false).html(originalText); // Reset
                                 }
                             },
                             error: function (xhr, status, error) {
                                 appalert("Error: " + error, 2, 1);
+                                $btn.prop("disabled", false).html(originalText); // Reset
                             }
                         });
                     },

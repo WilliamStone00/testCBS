@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accounting Date.
+        /// </summary>
+        internal static string AccountingDate {
+            get {
+                return ResourceManager.GetString("AccountingDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Accounts used as guarantees are blocked until the loan is fully settled..
         /// </summary>
         internal static string AccountsUsedAsGuarantees {

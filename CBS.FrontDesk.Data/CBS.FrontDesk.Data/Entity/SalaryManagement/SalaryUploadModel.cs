@@ -57,7 +57,7 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         public AddSalaryUploadModelCommand AddSalaryUploadModelCommand { get; set; }
         public SalaryUploadModelSummaryDto SalaryUploadModelSummaryDto { get; set; }
         public SalaryAnalysisResultSummary SalaryAnalysisResultSummary { get; set; }
-        public List<SalaryAnalysisResultDetail> SalaryAnalysisResultDetails { get; set; }
+        public List<SalaryAnalysisResultDetailNew> SalaryAnalysisResultDetails { get; set; }
         public SalaryAnalysisCommand SalaryAnalysisCommand { get; set; }
         public ActivateSalaryFileCommand ActivateSalaryFileCommand { get; set; }
         public List<BranchPayrollSummary> BranchPayrollSummaries { get; set; }
@@ -71,7 +71,7 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
             SalaryUploadModels=new List<SalaryUploadModel>();
             SalaryUploadModel=new SalaryUploadModel();
             SalaryAnalysisResultSummary=new SalaryAnalysisResultSummary();
-            SalaryAnalysisResultDetails=new List<SalaryAnalysisResultDetail>();
+            SalaryAnalysisResultDetails=new List<SalaryAnalysisResultDetailNew>();
             ActivateSalaryFileCommand=new ActivateSalaryFileCommand();
             BranchPayrollSummaries=new List<BranchPayrollSummary>();
         }

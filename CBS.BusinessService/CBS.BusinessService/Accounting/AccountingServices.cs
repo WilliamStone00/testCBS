@@ -25,8 +25,10 @@ namespace CBS.BusinessService.Accounting
 {
     public class AccountingServices : BaseService
     {
-        private readonly ApiCallerHelper _accountingApiCallerHelper;
+
         public BranchServices _branchService { get; }
+
+        private ApiCallerHelper _accountingApiCallerHelper;
 
         public AccountCategoryServices accountCartegorieService { get; }
 
@@ -58,7 +60,23 @@ namespace CBS.BusinessService.Accounting
                 throw;
             }
         }
-
+        public   async Task<List<AccountingBook>> GetAllAccountingBook()
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<AccountingBook>>>(APICallHelper.GetAllProductAccountingRules);
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new List<AccountingBook>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
         public async Task<FileReportInfoDto> GetFileDownloadedByFileId(string fileId)
         {
             try
@@ -981,5 +999,7 @@ namespace CBS.BusinessService.Accounting
             return item.BookingDirection.ToUpper() == OperationTypes.CREDIT.ToString() ? OperationTypes.CREDIT : OperationTypes.DEBIT;
         }
     }
-}
+
+  
+    }
 

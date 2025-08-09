@@ -90,7 +90,7 @@
                     }
                 </span>
 
-                @if (Session["BranchCode"]!= null)
+                @if (Session["BranchCode"] != null)
                 {
                     <!-- Roles -->
                     if (Session["Roles"] is string[] rolesArrayDropdown)
@@ -115,9 +115,7 @@
                 <span class="text-muted ms-2">]</span>
             </div>
 
-
-
-
+            <!-- Configuration Banner -->
             <!-- /Search -->
 
             <ul class="navbar-nav flex-row align-items-center ms-auto">
@@ -353,6 +351,26 @@
 
     </nav>
 
+ 
+
+    <div id="configurationBanner" class="configuration-banner container-xxl  navbar-expand-xl">
+        <div class="container-xxl">
+            <div class="banner-content">
+                <div class="banner-message" id="bannerMessage">
+                    <i class="mdi mdi-alert-circle-outline me-2"></i>
+                    <span>Some products have not been configured. Some accounting entries might not impact your trial balance.</span>
+                </div>
+                <div class="banner-actions">
+                    <a href="#" class="banner-link" id="showUnconfiguredProducts">
+                        View Details
+                    </a>
+                    <button type="button" class="banner-close" id="closeBanner" aria-label="Close">
+                        <i class="mdi mdi-close"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 else
 {
@@ -382,3 +400,53 @@ else
 
 }
 
+<!-- Unconfigured Products Modal -->
+<div class="modal fade unconfigured-modal  justify-content-md-start" id="unconfiguredModal" tabindex="-1" role="dialog" aria-labelledby="unconfiguredModalLabel">
+    <div class="modal-dialog modal-fullscreen" role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-md-start bg-primary">
+                <button type="button" class="close" id="closeBanner1" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title  text-white" id="unconfiguredModalLabel">Unconfigured Products</h4>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent">
+                    <div class="loading-spinner">
+                        <i class="glyphicon glyphicon-refresh glyphicon-spin"></i>
+                        Loading unconfigured products...
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" id="closeBanner" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Product Details Modal -->
+<div class="modal fade  justify-content-md-start" id="productDetailsModal" tabindex="-1" role="dialog" aria-labelledby="productDetailsModalLabel">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-md-start bg-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" id="closeBanner2">&times;</span>
+                </button>
+                <h4 class="modal-title text-white" id="productDetailsModalLabel">Product Configuration Details</h4>
+            </div>
+            <div class="modal-body" id="productDetailsContent">
+                <!-- Content will be loaded dynamically -->
+                <input type="hidden" id="productIdConfig" value="" />
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info"  onclick="GoToProductConfiguration()">
+                    Map To ChartOfAccount
+                </button>
+                <button type="button" class="btn btn-default" id="closeBanner3" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

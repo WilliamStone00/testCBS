@@ -107,6 +107,7 @@
     <Compile Include="Accounting\ProductAccountingBook.cs" />
     <Compile Include="Entity\Accounting\Acknowledge.cs" />
     <Compile Include="Entity\Accounting\BlacklistAccount.cs" />
+    <Compile Include="Entity\Accounting\Class1.cs" />
     <Compile Include="Entity\Accounting\DailyTrendDataDto.cs" />
     <Compile Include="Entity\Accounting\FinancialDocumentReference.cs" />
     <Compile Include="Entity\Accounting\Enumeration.cs" />
@@ -163,6 +164,7 @@
     <Compile Include="Entity\DataSetLoanPortfolio\LoanPortfolioDto.cs" />
     <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportRPT.cs" />
     <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportDtoMapper.cs" />
+    <Compile Include="Entity\LoanAdjustmentP\LoanAdjustment.cs" />
     <Compile Include="Entity\MemberNoneCashOperationsP\MemberNoneCashOperation.cs" />
     <Compile Include="Entity\MenuTranslationP\MenuTranslation.cs" />
     <Compile Include="Entity\Overdraft\OverdraftFacilityConfig.cs" />

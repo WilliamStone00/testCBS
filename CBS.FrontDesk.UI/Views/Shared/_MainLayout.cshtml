@@ -18,7 +18,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&ampdisplay=swap"  rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&ampdisplay=swap" rel="stylesheet" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
     <!-- Icons -->
@@ -33,7 +33,17 @@
     <link href="~/CBSTemp/ui/assets/vendor/css/rtl/theme-default.css" rel="stylesheet" type="text/css" />
     <link href="~/CBSTemp/ui/assets/css/demo.css" rel="stylesheet" type="text/css" />
     <link href="~/CBSTemp/ui/assets/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+   
     <style>
+        /* Reusable accounting date field tweaks */
+        .accounting-date {
+            padding-right: 2.25rem; /* space for native calendar icon */
+        }
+            /* Optional: tighter look */
+            .accounting-date::-webkit-datetime-edit,
+            .accounting-date::-webkit-date-and-time-value {
+                line-height: 1.25rem;
+            }
         /* Trial Balance Styles */
         #trialBalance .used-cell {
             text-decoration: line-through !important;
@@ -846,9 +856,270 @@
         i.mdi {
             font-size: 1.2rem;
         }
+        /* Banner style */
+        #configBanner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f8d7da;
+            color: #721c24;
+            text-align: center;
+            padding: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            border-top: 2px solid #f5c6cb;
+            z-index: 1000;
+        }
+
+            #configBanner:hover {
+                background-color: #f5c6cb;
+            }
     </style>
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" />
 
+    <style>
+        /* Configuration Banner Styles */
+        .configuration-banner {
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: none; /* Initially hidden */
+            animation: slideDown 0.3s ease-out;
+            /* Positioning and layout */
+            position: relative;
+            z-index: 1030;
+            /* Custom dimensions */
+            width: 1000.22px;
+            height: 50px;
+            max-width: 100%;
+            margin: 0 auto;
+            /* Override navbar defaults for banner styling */
+            padding: 8px 16px !important;
+            margin-top: 0.5rem !important;
+            min-height: auto !important;
+            border-radius: 0 !important;
+            /* Typography */
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+
+/* Banner content styling */
+.configuration-banner .banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 4px 0;
+}
+
+.configuration-banner .banner-message {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    font-weight: 400;
+}
+
+.configuration-banner .banner-message i {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+.configuration-banner .banner-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.configuration-banner .banner-link {
+    color: white;
+    text-decoration: underline;
+    font-weight: 500;
+    font-size: 13px;
+    transition: opacity 0.2s ease;
+    white-space: nowrap;
+}
+
+.configuration-banner .banner-link:hover {
+    color: white;
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+.configuration-banner .banner-close {
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+    flex-shrink: 0;
+}
+
+.configuration-banner .banner-close:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.configuration-banner .banner-close i {
+    font-size: 16px;
+}
+
+
+ 
+
+
+        .configuration-banner.show {
+            display: block;
+        }
+
+        @*@keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }*@
+
+        .configuration-banner .banner-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .configuration-banner .banner-message {
+            font-weight: 500;
+            margin: 0 10px;
+            display: inline-block;
+        }
+
+        .configuration-banner .banner-link {
+            color: white;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .configuration-banner .banner-link:hover {
+            color: #f0f0f0;
+            text-decoration: none;
+        }
+
+        .configuration-banner .banner-close {
+            float: right;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 15px;
+        }
+
+        .configuration-banner .banner-close:hover {
+            opacity: 0.7;
+        }
+
+        /* Modal Styles */
+        .unconfigured-modal .modal-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .unconfigured-modal .modal-title {
+            color: #495057;
+            font-weight: 600;
+        }
+
+        .product-item {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background: white;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .product-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .product-header {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+        }
+
+        .product-name {
+            font-weight: 600;
+            margin: 0;
+            color: #495057;
+        }
+
+        .account-count {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .account-list {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .account-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f1f3f4;
+        }
+
+        .account-item:last-child {
+            border-bottom: none;
+        }
+
+        .account-name {
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 4px;
+        }
+
+        .account-type {
+            display: inline-block;
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-bottom: 4px;
+        }
+
+        .account-config {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .error-message {
+            color: #dc3545;
+            padding: 15px;
+            background-color: #f8d7da;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+    </style>
     <link href="~/Content/TSC/TscStyles.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
@@ -1097,7 +1368,7 @@
     <script src="~/CBSTemp/ui/assets/vendor/libs/dropzone/dropzone.js"></script>
     <!-- Main JS -->
     <script src="~/CBSTemp/ui/assets/js/main.js"></script>
-
+    <script src="~/Scripts/Js/main.js/AccountingBookingAlert.js"></script>
     @*<script src="~/CBSTemp/ui/assets/js/form-validation.js"></script>*@
     <script src="~/CBSTemp/ui/assets/js/form-layouts.js"></script>
     <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
@@ -1123,35 +1394,62 @@
 
     @*<script src="~/Scripts/Js/main.js/clientDataAfterLogin.js"></script>*@
     <script src="~/Scripts/Js/main.js/ConnectionMonitor.js"></script>
-    @*<script>
-            function checkInternetConnection() {
-                if (!navigator.onLine) {
-                    redirectToNoInternet();
-                } else {
-                    // Double-check connectivity by making a lightweight request
-                    fetch("/Home/Ping")
-                        .then(response => {
-                            if (!response.ok) {
-                                redirectToNoInternet();
-                            }
-                        })
-                        .catch(() => {
-                            redirectToNoInternet();
-                        });
+    <script>
+        (function () {
+            function isoToday() {
+                const t = new Date();
+                return [
+                    t.getFullYear(),
+                    String(t.getMonth() + 1).padStart(2, '0'),
+                    String(t.getDate()).padStart(2, '0')
+                ].join('-');
+            }
+
+            function normalizeAccountingDate(input) {
+                if (!input) return;
+                const raw = (input.value || '').trim();
+
+                // Detect MinValue / empty
+                const looksMin =
+                    !raw || raw.startsWith('0001-01-01') ||
+                    raw === '01/01/0001' || raw === '0001/01/01';
+
+                // Behavior flags
+                const wantsDefaultToday = (input.dataset.dateDefault || '').toLowerCase() === 'today';
+                const wantsMaxToday = (input.dataset.dateMax || '').toLowerCase() === 'today';
+                const wantsMinToday = (input.dataset.dateMin || '').toLowerCase() === 'today';
+
+                if (looksMin && wantsDefaultToday) input.value = isoToday();
+                if (wantsMaxToday && !input.max) input.max = isoToday();
+                if (wantsMinToday && !input.min) input.min = isoToday();
+
+                // Adjust if value outside allowed range
+                if (input.max && input.value && input.value > input.max) input.value = input.max;
+                if (input.min && input.value && input.value < input.min) input.value = input.min;
+            }
+
+            function initAccountingDates(root) {
+                const scope = root || document;
+                scope.querySelectorAll('input[type="date"].accounting-date').forEach(normalizeAccountingDate);
+            }
+
+            document.addEventListener('DOMContentLoaded', () => initAccountingDates());
+
+            // For partial views loaded later
+            const mo = new MutationObserver(muts => {
+                for (const m of muts) {
+                    for (const n of m.addedNodes) {
+                        if (n.nodeType === 1) initAccountingDates(n);
+                    }
                 }
-            }
+            });
+            mo.observe(document.body, { childList: true, subtree: true });
 
-            function redirectToNoInternet() {
-                window.location.href = "/Home/NoInternet";
-            }
+            // Optional: expose for manual calls
+            window.initAccountingDates = initAccountingDates;
+        })();
+    </script>
 
-            // Initial check on page load
-            checkInternetConnection();
-
-            // Listen for connectivity changes
-            window.addEventListener('offline', redirectToNoInternet);
-            window.addEventListener('online', checkInternetConnection);
-        </script>*@
 
 
     @RenderSection("scripts", required: false)

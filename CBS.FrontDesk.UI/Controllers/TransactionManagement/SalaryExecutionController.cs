@@ -29,14 +29,14 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         public async Task<ActionResult> Index()
         {
             var fileUploads = await _salaryUploadServices.GetValues(
-                       new GetAllFileUploadSalaryFileActivatedQuery { Both = false, Status = true }
+                       new GetAllFileUploadSalaryFileActivatedQuery { Both = false, Status = true },"cs_salary"
                    );
             ViewBag.Files=fileUploads.ToList();
             return View(new ExecuteSalaryCarrier());
         }
         public async Task<ActionResult> PISalary()
         {
-            var fileUploads = await _salaryUploadServices.GetValues(new GetAllFileUploadSalaryFileActivatedQuery { Both = false, Status = true });
+            var fileUploads = await _salaryUploadServices.GetValues(new GetAllFileUploadSalaryFileActivatedQuery { Both = false, Status = true },"ps_salary");
             ViewBag.Files=fileUploads.ToList();
             return View(new ExecuteSalaryCarrier());
         }

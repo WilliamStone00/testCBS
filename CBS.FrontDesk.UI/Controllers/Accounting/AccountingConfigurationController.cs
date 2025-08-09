@@ -1,42 +1,44 @@
-﻿using CBS.BusinessService.Accounting;
+﻿using CBS.API.Helper;
 using CBS.BusinessService;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
+using CBS.BusinessService.Config;
+using CBS.BusinessService.UserManagement;
+using CBS.FrontDesk.Data;
+using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
-using System.Threading.Tasks;
-using System.Net.Http.Headers;
-using CBS.FrontDesk.Data.Entity.Accounting;
-using System.Web.Services.Description;
-using CBS.FrontDesk.Data;
-using System.Reflection;
-using System.Web.WebPages.Html;
-using Microsoft.Ajax.Utilities;
-using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.UI.Models;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Drawing;
+using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using DocumentFormat.OpenXml.Office2010.Word;
+using Microsoft.Ajax.Utilities;
+using OfficeOpenXml;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using CBS.FrontDesk.UI.Models;
-using System.Web.UI.WebControls;
-using OfficeOpenXml;
-using DocumentFormat.OpenXml.EMMA;
-using DocumentFormat.OpenXml.Office2010.ExcelAc;
-using CBS.BusinessService.Config;
-using System.Xml.Linq;
-using CBS.FrontDesk.Data.Entity.Config;
-using DocumentFormat.OpenXml.Office2010.Excel;
 using System.IO.Packaging;
-using ClosedXML.Excel;
-using CBS.API.Helper;
-using CBS.BusinessService.UserManagement;
+using System.Linq;
+using System.Net.Http.Headers;
+using System.Reflection;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Services.Description;
+using System.Web.UI.WebControls;
+using System.Web.WebPages.Html;
+using System.Xml.Linq;
+using Path = System.IO.Path;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting
 {
-    [CheckSessionTimeOutAttribute] 
+   [CheckSessionTimeOutAttribute] 
     public class AccountingConfigurationController : BaseController
     {
         private readonly AccountingEntryRuleService _Service;
@@ -102,9 +104,90 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         }
 
 
+       
+        [HttpGet]
+        public async Task<ActionResult> GetAllProductChartOfAccounting()
+        {
+            var listOfAccounts = await _AccountServices.GetAllAccountingBook();
+            var data = listOfAccounts;
+            return View(new ProductConfigurationViewModel
+            {
+                ProductConfigurations=data
+            });
+        }
+        private UnconfiguredProductsResponse CheckIfUnConfigureAccountExist(List<AccountingBook> result)
+        {
+            int Count = 0;
+            UnconfiguredProductsResponse unconfiguredProductsResponse = new UnconfiguredProductsResponse();
+            unconfiguredProductsResponse.unconfiguredProducts = result;
+            // Handle null or empty list
+            if (result == null || !result.Any())
+            {
+                unconfiguredProductsResponse.success= false;
+               
+            }
 
-      
+            foreach (var mappedProduct in result)
+            {
+                unconfiguredProductsResponse.success = true;
+                // Handle null accountingBookDetails
+                if (mappedProduct.accountingBookDetails == null)
+                {
+                    Count =Count+ 1;
+                    unconfiguredProductsResponse.hasUnconfiguredProducts= true; // No details means unconfigured
+                }
 
+                // Check if there are any details with null entryRuleCodification
+                // This is what you probably intended to check
+                bool hasUnconfiguredDetails = mappedProduct.accountingBookDetails
+                    .Any(x => x.entryRuleCodification == null);
+           
+                if (hasUnconfiguredDetails)
+                {
+                    unconfiguredProductsResponse.hasUnconfiguredProducts = true;
+                    Count =Count+ 1;
+                }
+
+              
+
+            }
+            unconfiguredProductsResponse.unconfiguredCount = Count;
+          unconfiguredProductsResponse.hasUnconfiguredProducts = Count>0; // No unconfigured accounts found
+            return unconfiguredProductsResponse;
+        }
+        [HttpGet]
+        public async Task<JsonResult> CheckAccountConfigurationStatus()
+        {
+            var listOfAccounts = await _AccountServices.GetAllAccountingBook();
+            var data = CheckIfUnConfigureAccountExist(listOfAccounts);
+            this.HttpContext.Session["UnConfiguredProduct"] = data;
+
+            return Json( data, JsonRequestBehavior.AllowGet);
+        }
+        //
+        [HttpGet]
+        public async Task<JsonResult> GetUnconfiguredProducts()
+        {
+            var data = (UnconfiguredProductsResponse)this.HttpContext.Session["UnConfiguredProduct"];
+            var response = new { success = this.HttpContext.Session["UnConfiguredProduct"] != null, products = data.unconfiguredProducts };
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public async Task<JsonResult> GetProductUnconfiguredAccounts(string productId)
+        {
+            var data = (UnconfiguredProductsResponse)this.HttpContext.Session["UnConfiguredProduct"];
+            var response = data.unconfiguredProducts.Find(x=>x.productAccountBookId== productId);
+            var vdata = new
+            {
+                success = true,
+                productType = response.productType,
+                productCode= response.productCode,
+                productName = response.productName,
+                productAccountBookId = response.productAccountBookId,
+                accountingBookDetails = response.accountingBookDetails
+            };
+            return Json(vdata, JsonRequestBehavior.AllowGet);
+        }
         private async Task<List<ChartofAccountManagementPosition>> BuildClass4AccountCartegory(List<ChartofAccountManagementPosition> chartofAccountManagementPositions)
         {
 

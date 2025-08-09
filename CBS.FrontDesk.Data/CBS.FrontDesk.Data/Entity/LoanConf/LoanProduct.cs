@@ -514,6 +514,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         [Required]
         public string Comment { get; set; }
         public bool IsAlreadyManage { get; set; }
+        public DateTime AccountingDate { get; set; }
 
     }
     public class LoanProductMaturityPeriodExtension

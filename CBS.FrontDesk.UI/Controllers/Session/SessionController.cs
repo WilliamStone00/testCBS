@@ -16,7 +16,7 @@ namespace CBS.FrontDesk.UI.Controllers.Session
     {
         private readonly LocalSession _localSession;
         private static int _cachedTimeout = 5; // Default in case DB call fails
-
+     
         public SessionController()
         {
             _localSession = new LocalSession();

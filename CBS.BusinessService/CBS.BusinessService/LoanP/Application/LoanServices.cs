@@ -130,10 +130,9 @@ namespace CBS.BusinessService
 
         }
 
-        public async Task<CustomDataTable> GetDataTableAsync(GetLoansDataTableQuery loansDataTableQuery, string searchCriterial)
+        public async Task<CustomDataTable> GetDataTableAsync(GetLoansDataTableQuery loansDataTableQuery)
         {
-            loansDataTableQuery.DataTableOptions.searchValue = searchCriterial;
-            loansDataTableQuery.DataTableOptions.search = searchCriterial;
+           
             loansDataTableQuery.DataTableOptions.sortColumnName = "LoanDate";
             if (!IsHeadOffice())
             {
@@ -549,9 +548,56 @@ namespace CBS.BusinessService
         }
         public LoanData MapLoan(Loan loan)
         {
-            LoanData loanData = new LoanData { AccrualInterest=loan.AccrualInterest, DueAmount=loan.DueAmount, Id=loan.Id, Penalty=loan.Penalty, Principal=loan.Principal, Tax=loan.Tax, VatRate=loan.VatRate };
+            if (loan == null)
+                return null;
+
+            var loanData = new LoanData
+            {
+                // 🔢 Core financials
+                Id = loan.Id,
+                Principal = loan.Balance,
+                AccrualInterest = loan.AccrualInterest,
+                Tax = loan.Tax,
+                Penalty = loan.Penalty,
+                DueAmount = loan.DueAmount,
+                VatRate = loan.VatRate,
+                InterestRate = loan.InterestRate,
+
+                // 📌 Identifiers
+                LoanProductId = loan.LoanApplication?.LoanProductId,
+                LoanProductName = loan.LoanApplication?.LoanProduct?.ProductName,
+
+                // 👤 Member
+                MemberId = loan.CustomerId,
+                MemberName = loan.CustomerName,
+
+                // 🏦 Loan config
+                LoanType = loan.LoanType,
+                LoanTermName = loan.LoanApplication?.LoanProduct?.LoanTerm?.Name,
+                LoanTarget = loan.LoanTarget,
+                LoanPurpose = loan.LoanApplication?.LoanPurpose?.purposeName,
+                RepaymentPeriod = loan.LoanApplication?.RepaymentCircle,
+                NumberOfInstallments = loan.NumberOfInstallments,
+                RepaymentFrequency = loan.RepaymentCycle,
+
+                // 📅 Dates
+                DisbursementDate = loan.DisbursementDate,
+                MaturityDate = loan.MaturityDate,
+                LastRepaymentDate = loan.LastRefundDate,
+
+                // 📊 Status
+                LoanStatus = loan.LoanStatus?.ToString(),
+                LoanCategory = loan.LoanCategory?.ToString(),
+                DisbursementChannel = loan.DisbursmentStatus,
+                InterestCalculationMethod = loan.LoanApplication.InterestMethod,
+
+                ProductCategoryId = loan.LoanApplication.LoanProduct.LoanProductCategoryId,
+                ProductCategoryName = loan.LoanApplication.LoanProduct.LoanProductCategory.Name,
+            };
+
             return loanData;
         }
+
         public async Task<Loan> GetLoanWithCustomerAndBranch(string customerId)
         {
             try
