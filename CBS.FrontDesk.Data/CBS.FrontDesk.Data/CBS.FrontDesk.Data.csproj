@@ -107,6 +107,7 @@
     <Compile Include="Accounting\ProductAccountingBook.cs" />
     <Compile Include="Entity\Accounting\Acknowledge.cs" />
     <Compile Include="Entity\Accounting\BlacklistAccount.cs" />
+    <Compile Include="Entity\Accounting\Class1.cs" />
     <Compile Include="Entity\Accounting\DailyTrendDataDto.cs" />
     <Compile Include="Entity\Accounting\FinancialDocumentReference.cs" />
     <Compile Include="Entity\Accounting\Enumeration.cs" />

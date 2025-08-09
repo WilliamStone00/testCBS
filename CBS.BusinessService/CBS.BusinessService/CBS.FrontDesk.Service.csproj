@@ -250,6 +250,7 @@
     <Compile Include="Accounting\CashMovementTrackingConfigurationServices.cs" />
     <Compile Include="Accounting\ChartOfAccountManagementPositionService.cs" />
     <Compile Include="Accounting\BlacklistAccountServices.cs" />
+    <Compile Include="Accounting\ProductAccountingHelper.cs" />
     <Compile Include="DailyCollectionServices\DailyCollectionEndOfDayServices.cs" />
     <Compile Include="Accounting\DocumentTypeServices.cs" />
     <Compile Include="Accounting\DocumentReportServices.cs" />

@@ -553,7 +553,8 @@ namespace CBS.FrontDesk.Helper
         public static string CreateBank = "/api/v1/Bank";
 
 
-        //Loan
+        //Loan         
+        public static string GetAllProductAccountingRules = "/api/v1/AccountType/GetAllMappedProduct";
         public static string Get_Update_Delete_Document = "/api/v1/Document/{0}";
         public static string GetAllDocument = "/api/v1/Documents";
         public static string CreateDocument = "/api/v1/Document";
