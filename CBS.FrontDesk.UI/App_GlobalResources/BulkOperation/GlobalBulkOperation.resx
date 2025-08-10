@@ -531,4 +531,7 @@
   <data name="BulkCashSimulationMethod" xml:space="preserve">
     <value>Bulk Cash Simulation Method</value>
   </data>
+  <data name="SelectAccountingDate" xml:space="preserve">
+    <value>Select An Accounting Date</value>
+  </data>
 </root>

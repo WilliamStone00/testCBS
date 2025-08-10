@@ -457,7 +457,7 @@
 
 
                     const accountIIs = [];
-                    const table = $('#myDataTable1').DataTable();
+                    const table = $('#myDataTable2').DataTable();
                     table.rows().every(function () {
                         const rowData = this.data();
                         accountIIs.push({
@@ -537,12 +537,12 @@
         // Display file content in DataTable
         function displayFileContent(data) {
 
-            if ($.fn.DataTable.isDataTable('#myDataTable1')) {
-                $('#myDataTable1').DataTable().destroy();
+            if ($.fn.DataTable.isDataTable('#myDataTable2')) {
+                $('#myDataTable2').DataTable().destroy();
             }
 
             $('#fileContentCard').show();
-            const $table = $('#myDataTable1');
+            const $table = $('#myDataTable2');
             console.log('Table : ' + $table)
 
             $table.DataTable({
@@ -601,7 +601,7 @@
         // Enhanced display function to handle both file content and simulation results
         function displayFileContent2(data) {
             $('#fileContentCard').show();
-            const $table = $('#myDataTable1');
+            const $table = $('#myDataTable2');
 
             // Clear existing DataTable if it exists
             if ($.fn.DataTable.isDataTable($table)) {

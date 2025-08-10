@@ -531,4 +531,7 @@
   <data name="BulkCashSimulationMethod" xml:space="preserve">
     <value>Méthode de simulation de trésorerie en vrac</value>
   </data>
+  <data name="SelectAccountingDate" xml:space="preserve">
+    <value>Sélectionnez une date comptable</value>
+  </data>
 </root>

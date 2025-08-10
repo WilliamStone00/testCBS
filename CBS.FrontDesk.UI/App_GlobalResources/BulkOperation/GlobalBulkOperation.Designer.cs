@@ -862,6 +862,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select An Accounting Date.
+        /// </summary>
+        internal static string SelectAccountingDate {
+            get {
+                return ResourceManager.GetString("SelectAccountingDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select branch.
         /// </summary>
         internal static string SelectBranch {

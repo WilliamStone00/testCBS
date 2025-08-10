@@ -42,27 +42,29 @@
                     </div>
 
                     <div class="col-md-6">
-                        <div class="form-floating form-floating-outline position-relative">
-                            @Html.TextBoxFor(
-                              m => m.AccountDate2,
-                              Model.AccountDate2 == default(DateTime)
-                                ? DateTime.Today.ToString("yyyy-MM-dd")
-                                : "{0:yyyy-MM-dd}",
-                              new
-                                  {
-                                @class = "form-control accounting-date",
-                                type = "date",
-                                data_date_default = "today",   // auto-fill today if empty/MinValue
-                                data_date_max = "today"        // prevent future dates (remove if not needed)
-                                // data_date_min = "today"     // uncomment to only allow today & after
-                              })
-                            @Html.ValidationMessageFor(m => m.AccountDate2, "", new { @class = "text-danger" })
-                            <label>@(Member_Global_LoanApplication.AccountingDate ?? "Accounting Date")</label>
-                        </div>
-                        <small class="text-muted">
-                            This date will be used as the accounting date for posting and audit.
-                            Choose a past date to backdate (if permitted).
-                        </small>
+                        @*<div class="form-floating form-floating-outline position-relative">*@
+                        @Html.LabelFor(m => m.AccountDate2, @GlobalBulkOperation.SelectAccountingDate, new { @class = "form-label" })
+                        @Html.TextBoxFor(
+                          m => m.AccountDate2,
+                          Model.AccountDate2 == default(DateTime)
+                            ? DateTime.Today.ToString("yyyy-MM-dd")
+                            : "{0:yyyy-MM-dd}",
+                          new
+                              {
+                            @class = "form-control accounting-date",
+                            type = "date",
+                            data_date_default = "today",   // auto-fill today if empty/MinValue
+                            data_date_max = "today"        // prevent future dates (remove if not needed)
+                            // data_date_min = "today"     // uncomment to only allow today & after
+                          })
+                        <div class="invalid-feedback">Please select a valid accounting date</div>
+                        @* @Html.ValidationMessageFor(m => m.AccountDate2, "", new { @class = "text-danger" })*@
+                        @*  <label>@(Member_Global_LoanApplication.AccountingDate ?? "Accounting Date")</label>*@
+                        @*  </div>*@
+                        @*  <small class="text-muted">
+            This date will be used as the accounting date for posting and audit.
+            Choose a past date to backdate (if permitted).
+        </small>*@
                     </div>
 
                     <!-- Title Field -->
