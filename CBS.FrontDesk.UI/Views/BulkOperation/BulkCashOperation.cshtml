@@ -231,7 +231,7 @@
                 `);
 
                 // Add row to table
-                $('#accountsTable tbody').append(newRow);
+                $('#myDataTable tbody').append(newRow);
 
                 // Initialize select2 if needed
                 if ($.fn.select2) {
@@ -256,10 +256,10 @@
                 newRow.find('.remove-account').click(function () {
                     $(this).closest('tr').remove();
                     // Disable submit button if no accounts left
-                    if ($('#accountsTable tbody tr').not('.empty-row').length === 0) {
+                    if ($('#myDataTable tbody tr').not('.empty-row').length === 0) {
                         $('#submitBtn').prop('disabled', true);
                         // Add empty row back if needed
-                        $('#accountsTable tbody').append('<tr class="empty-row"><td colspan="5" class="text-center text-muted py-3">No accounts added yet</td></tr>');
+                        $('#myDataTable tbody').append('<tr class="empty-row"><td colspan="5" class="text-center text-muted py-3">No accounts added yet</td></tr>');
                     }
                 });
             }
@@ -269,8 +269,8 @@
                 $(this).closest('tr').remove();
 
                 // Show empty message if no accounts left
-                if ($('#accountsTable tbody tr').length === 0) {
-                    $('#accountsTable tbody').append(`
+                if ($('#myDataTable tbody tr').length === 0) {
+                    $('#myDataTable tbody').append(`
                     <tr class="empty-row">
                         <td colspan="5" class="text-center text-muted py-4">
                             <i class="mdi mdi-database-remove fs-3 d-block mb-2"></i>
@@ -284,9 +284,9 @@
 
             // Reset form (moved outside the function)
             $('#resetAccountsBtn').on('click', function () {
-                //$('#accountsTable')[0].reset();
-                //$('#accountsTable').removeClass('was-validated');
-                $('#accountsTable tbody').empty().append(`
+                //$('#myDataTable')[0].reset();
+                //$('#myDataTable').removeClass('was-validated');
+                $('#myDataTable tbody').empty().append(`
                     <tr class="empty-row">
                         <td colspan="5" class="text-center text-muted py-4">
                             <i class="mdi mdi-database-remove fs-3 d-block mb-2"></i>
@@ -313,7 +313,7 @@
                     function () {
                         // Collect all account data
                         const accounts = [];
-                        $('#accountsTable tbody tr').not('.empty-row').each(function () {
+                        $('#myDataTable tbody tr').not('.empty-row').each(function () {
                             const row = $(this);
                             accounts.push({
                                 BranchName: row.find('.branch-name').val(),
@@ -356,11 +356,14 @@
                             success: function (response) {
                                 if (response.success) {
                                     alertify.success(response.message || 'Operation completed successfully');
-                                    appalert(response.message || 'Operation completed successfully', 1, 1);
+                                    appalert(response.message || 'Operation completed successfully', 2, 1);
+                                    // Reset the form after successful operation
+                                    form.reset();
                                 } else {
                                     //alertify.error(response.message || 'Error during operation');
                                     appalert(response.message || 'Error during operation', 2, 1);
                                 }
+                         
                             },
                             error: function (err) {
                                 console.error("Error:", err);
@@ -408,8 +411,10 @@
                                 if (response.success) {
                                     showUploadStatus(response.message || 'File uploaded successfully', 'success');
                                     displayFileContent(response.data);
+                                    // Reset the form after successful operation
+                                    form.reset();
                                 } else {
-
+                                    showUploadStatus(response.message || 'File uploaded Failed', 'danger');
                                 }
                             },
                             error: function (err) {
@@ -452,7 +457,7 @@
 
 
                     const accountIIs = [];
-                    const table = $('#fileContentTable').DataTable();
+                    const table = $('#myDataTable1').DataTable();
                     table.rows().every(function () {
                         const rowData = this.data();
                         accountIIs.push({
@@ -493,6 +498,8 @@
                             if (response.success) {
                                // alertify.success(response.message || 'Operation completed successfully');
                                 appalert(response.message || 'Operation completed successfully', 2, 1);
+                                // Reset the form after successful operation
+                                form.reset();
                             } else {
                                // alertify.error(response.message || 'Error during operation');
                                 appalert(response.message || 'Error during operation', 2, 1);
@@ -530,12 +537,12 @@
         // Display file content in DataTable
         function displayFileContent(data) {
 
-            if ($.fn.DataTable.isDataTable('#fileContentTable')) {
-                $('#fileContentTable').DataTable().destroy();
+            if ($.fn.DataTable.isDataTable('#myDataTable1')) {
+                $('#myDataTable1').DataTable().destroy();
             }
 
             $('#fileContentCard').show();
-            const $table = $('#fileContentTable');
+            const $table = $('#myDataTable1');
             console.log('Table : ' + $table)
 
             $table.DataTable({
@@ -594,7 +601,7 @@
         // Enhanced display function to handle both file content and simulation results
         function displayFileContent2(data) {
             $('#fileContentCard').show();
-            const $table = $('#fileContentTable');
+            const $table = $('#myDataTable1');
 
             // Clear existing DataTable if it exists
             if ($.fn.DataTable.isDataTable($table)) {

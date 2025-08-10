@@ -145,13 +145,13 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 // Process the file
                 var result = await _bulkOperationService.ProcessBulkCashOperationFileAsync(file);
 
-                if (result == null || !result.Success)
+                if (result == null  || !result.IsSuccess  || result.ApiResponseData==null)
                 {
                     return Json(new
                     {
                         success = false,
                         message = result == null ? "Failed to process file" : result.Message ?? "Failed to process file",
-                        error = result == null ? null : result.Errors // Include any additional error details
+                        error = (result == null || result.ApiResponseData==null) ? null : result.ApiResponseData.Errors // Include any additional error details
                     });
                 }
 
@@ -160,9 +160,9 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 return Json(new
                 {
                     draw = Request.Form["draw"] ?? "1",
-                    recordsTotal = result.Data?.BulkCashOperationFileDetails?.Count ?? 0,
-                    recordsFiltered = result.Data?.BulkCashOperationFileDetails?.Count ?? 0,
-                    data = result.Data?.BulkCashOperationFileDetails ?? new List<BulkCashOperationFileDetails>(),
+                    recordsTotal = result.ApiResponseData.Data?.BulkCashOperationFileDetails?.Count ?? 0,
+                    recordsFiltered = result.ApiResponseData.Data?.BulkCashOperationFileDetails?.Count ?? 0,
+                    data = result.ApiResponseData.Data?.BulkCashOperationFileDetails ?? new List<BulkCashOperationFileDetails>(),
                     success = true,
                     message = "File processed successfully"
                 }, JsonRequestBehavior.AllowGet);

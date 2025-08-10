@@ -69,20 +69,11 @@ namespace CBS.BusinessService.BulkOperations
             );
         }
 
-        public async Task<ServiceResponse<BulkCashOperationFileSummary>> ProcessBulkCashOperationFileAsync(HttpPostedFileBase file)
+        public async Task<ApiResponse< ServiceResponse<BulkCashOperationFileSummary>>> ProcessBulkCashOperationFileAsync(HttpPostedFileBase file)
         {
 
-            var response = await _transactionConfigApiHelper.UploadBulkCashPaymentFileAsync<ServiceResponse<BulkCashOperationFileSummary>>(file,APICallHelper.UploadBulkCashOperations);
-            if (response.IsSuccess)
-            {
-
-                return response.ApiResponseData;
-            }
-            else
-            {
-               
-                return null;
-            }
+            return await _transactionConfigApiHelper.UploadBulkCashPaymentFileAsync<ServiceResponse<BulkCashOperationFileSummary>>(file,APICallHelper.UploadBulkCashOperations);
+         
         }
 
         public async Task<List<SavingProduct>> GetSavingProducts()
