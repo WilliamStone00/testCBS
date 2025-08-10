@@ -23,7 +23,14 @@
                             new { @class = "form-select select2", required = "required" })
                         <div class="invalid-feedback">Please select a branch</div>
                     </div>
-
+                    <div class="col-md-12">
+                        @Html.LabelFor(m => m.AccountCartId, @GlobalBulkOperation.BulkOperationCashOutOrCashInAccount, new { @class = "form-label" })
+                        @Html.DropDownListFor(m => m.AccountCartId,
+                            new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                            @GlobalBulkOperation.SelectAccount,
+                            new { @class = "form-select select2", required = "required" })
+                        <div class="invalid-feedback">Please select a destination account</div>
+                    </div>
                     <div class="col-md-6">
                         @Html.LabelFor(m => m.TransferType, @GlobalBulkOperation.SelectOperationType, new { @class = "form-label" })
                         @Html.DropDownListFor(m => m.TransferType,
@@ -32,28 +39,29 @@
                             new { @class = "form-select select2", required = "required" })
                         <div class="invalid-feedback">Please select an operation type</div>
                     </div>
-                    <div class="col-md-6">
-                        @Html.LabelFor(m => m.AccountCartId, @GlobalBulkOperation.BulkOperationCashOutOrCashInAccount, new { @class = "form-label" })
-                        @Html.DropDownListFor(m => m.AccountCartId,
-                            new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
-                            @GlobalBulkOperation.SelectAccount,
-                            new { @class = "form-select select2", required = "required" })
-                        <div class="invalid-feedback">Please select a destination account</div>
-                    </div>
 
                     <div class="col-md-6">
-                        @Html.LabelFor(m => m.AccountDate, "Account Date", new { @class = "form-label" })
-                        @Html.TextBoxFor(m => m.AccountDate,
-                            Model.AccountDate.ToString("yyyy-MM-dd"),  /*< !--Format the date-- >*/
-                            new
-                            {
-                                @class = "form-control datepicker",
-                                required = "required",
-                                @type = "date",
-                                max = DateTime.Now.AddDays(30).ToString("yyyy-MM-dd"),
-                                min = DateTime.Now.ToString("yyyy-MM-dd")
-                            })
-                        <div class="invalid-feedback">Please select a valid account date (within 30 days)</div>
+                        <div class="form-floating form-floating-outline position-relative">
+                            @Html.TextBoxFor(
+                              m => m.AccountDate,
+                              Model.AccountDate == default(DateTime)
+                                ? DateTime.Today.ToString("yyyy-MM-dd")
+                                : "{0:yyyy-MM-dd}",
+                              new
+                                  {
+                                @class = "form-control accounting-date",
+                                type = "date",
+                                data_date_default = "today",   // auto-fill today if empty/MinValue
+                                data_date_max = "today"        // prevent future dates (remove if not needed)
+                                // data_date_min = "today"     // uncomment to only allow today & after
+                              })
+                            @Html.ValidationMessageFor(m => m.AccountDate, "", new { @class = "text-danger" })
+                            <label>@(Member_Global_LoanApplication.AccountingDate ?? "Accounting Date")</label>
+                        </div>
+                        <small class="text-muted">
+                            This date will be used as the accounting date for posting and audit.
+                            Choose a past date to backdate (if permitted).
+                        </small>
                     </div>
 
                     <!-- Title Field -->
@@ -70,7 +78,7 @@
                     </div>
 
                     <!-- Simulation Description -->
-                    <div class="col-12">
+                    <div class="col-6">
                         @Html.LabelFor(m => m.SimulationDescription, "Simulation Description", new { @class = "form-label" })
                         @Html.TextAreaFor(m => m.SimulationDescription,
                             new

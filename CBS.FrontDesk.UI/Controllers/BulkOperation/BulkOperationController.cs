@@ -488,7 +488,7 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             var Branches = await _branchServices.GetBranches();
             var savingProduct = await _bulkOperationService.GetSavingProducts();
 
-            var currentEvent = eventNames.FirstOrDefault(x => x.Text == simulateCashOutOrCashIn.AccountCartId);
+            var currentEvent = chartOfAccounts.FirstOrDefault(x => x.Value == simulateCashOutOrCashIn.AccountCartId);
        
 
             List<SimulateBulkOperationDetailCommandDto> simulateBulkOperationDetails = new List<SimulateBulkOperationDetailCommandDto>();
@@ -564,7 +564,7 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             var Branches = await _branchServices.GetBranches();
             var savingProduct = await _bulkOperationService.GetSavingProducts();
 
-            var currentEvent = eventNames.FirstOrDefault(x => x.Text == simulateCashOutOrCashIn.AccountCartId);
+            var currentEvent = chartOfAccounts.FirstOrDefault(x => x.Value == simulateCashOutOrCashIn.AccountCartId);
 
             List<SimulateBulkOperationDetailCommandDto> simulateBulkOperationDetails = new List<SimulateBulkOperationDetailCommandDto>();
 

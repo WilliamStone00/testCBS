@@ -356,8 +356,10 @@
                             success: function (response) {
                                 if (response.success) {
                                     alertify.success(response.message || 'Operation completed successfully');
+                                    appalert(response.message || 'Operation completed successfully', 1, 1);
                                 } else {
-                                    alertify.error(response.message || 'Error during operation');
+                                    //alertify.error(response.message || 'Error during operation');
+                                    appalert(response.message || 'Error during operation', 2, 1);
                                 }
                             },
                             error: function (err) {
@@ -365,13 +367,15 @@
                                 if (err.status === 401) {
                                     window.location.href = '/Authentication/Login';
                                 } else {
-                                    alertify.error(err.responseJSON?.message || err.statusText || 'An error occurred');
+                                   // alertify.error(err.responseJSON?.message || err.statusText || 'An error occurred');
+                                    appalert(err.responseJSON?.message || err.statusText || 'An error occurred', 3, 1);
                                 }
                             }
                         });
                     },
                     function () {
-                        alertify.message('Operation cancelled');
+                        //alertify.message('Operation cancelled');
+                        appalert('Operation cancelled', 3, 1);
                     }
                 );
             }
@@ -487,9 +491,11 @@
                         contentType: 'application/json',
                         success: function (response) {
                             if (response.success) {
-                                alertify.success(response.message || 'Operation completed successfully');
+                               // alertify.success(response.message || 'Operation completed successfully');
+                                appalert(response.message || 'Operation completed successfully', 2, 1);
                             } else {
-                                alertify.error(response.message || 'Error during operation');
+                               // alertify.error(response.message || 'Error during operation');
+                                appalert(response.message || 'Error during operation', 2, 1);
                             }
                         },
                         error: function (err) {
@@ -497,13 +503,15 @@
                             if (err.status === 401) {
                                 window.location.href = '/Authentication/Login';
                             } else {
-                                alertify.error(err.responseJSON?.message || err.statusText || 'An error occurred');
+                                //alertify.error(err.responseJSON?.message || err.statusText || 'An error occurred');
+                                appalert(err.responseJSON?.message || err.statusText || 'An error occurred', 3, 1);
                             }
                         }
                     });
                 },
                     function () {
-                        alertify.message('Operation cancelled');
+                        //alertify.message('Operation cancelled');
+                        appalert('Operation cancelled', 3, 1);
                     }
                 );
             }
