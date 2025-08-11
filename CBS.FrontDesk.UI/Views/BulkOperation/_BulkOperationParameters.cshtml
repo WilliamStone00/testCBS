@@ -21,7 +21,7 @@
                         @Html.DropDownListFor(m => m.TransferType,
                             new SelectList(ViewBag.transferType, "Text", "Value"),
                             @GlobalBulkOperation.SelectOperationType,
-                            new { @class = "form-select select2", required = "required", id = "TransferTypeDropdown" })
+                            new { @class = "form-select select2", required = "required" })
                         <div class="invalid-feedback">Please select an operation type</div>
                     </div>
 

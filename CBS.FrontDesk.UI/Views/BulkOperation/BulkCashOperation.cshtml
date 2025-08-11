@@ -135,7 +135,7 @@
                   });
               }*/
 
-            $('#TransferTypeDropdown').change(function() {
+            $('#TransferType').change(function() {
                 var selectedType = $(this).val();
                 var labelText = '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccount' + ' (';
                 if (selectedType === 'CashIn') {
@@ -149,7 +149,7 @@
                 $('#AccountCartLabel').text(labelText);
             });
 
-            $('#TransferTypeDropdown2').change(function () {
+            $('#TransferType2').change(function () {
                 var selectedType = $(this).val();
                 var labelText = '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccount' + ' (';
                 if (selectedType === 'CashIn') {
