@@ -138,7 +138,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
         }
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string serviceOption = null, string path = null)
-        {
+         {
             ViewBag.KEY = KEY;
             var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
             ViewBag.LoanApplicationStatus = productEnumAgregates.LoanStatuses;
@@ -478,14 +478,8 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                 {
                     var loan = await _loanservices.GetLoan(model.AddLoanApplicationCommand.LoanId);
                     model.AddLoanApplicationCommand.AmortizationType = loan.LoanApplication.AmortizationType;
-                    model.AddLoanApplicationCommand.LoanCategory = loan.LoanApplication.LoanCategory;
-                    model.AddLoanApplicationCommand.EconomicActivityId = loan.LoanApplication.EconomicActivityId;
-                    model.AddLoanApplicationCommand.LoanProductId = loan.LoanApplication.LoanProductId;
                     model.AddLoanApplicationCommand.LoanTarget = loan.LoanApplication.LoanTarget;
-                    model.AddLoanApplicationCommand.LoanProductCategoryId = loan.LoanApplication.LoanProduct.LoanProductCategoryId;
-                    model.AddLoanApplicationCommand.LoanTermId = loan.LoanApplication.LoanProduct.LoanTermId;
                     model.AddLoanApplicationCommand.LoanType = loan.LoanApplication.LoanType;
-                    model.AddLoanApplicationCommand.LoanPurposeId =model.AddLoanApplicationCommand.LoanPurposeId=="0"? loan.LoanApplication.LoanType: model.AddLoanApplicationCommand.LoanPurposeId;
                     model.AddLoanApplicationCommand.OldLoanPayment=new OldLoanPayment
                     {
                         LoanId=loan.Id,

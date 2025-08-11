@@ -9358,7 +9358,7 @@
     <Content Include="Views\AccountToAccountTransfer\_ReceiversForm.cshtml" />
     <Content Include="Views\AccountToAccountTransfer\_Tips.cshtml" />
     <Content Include="Views\AccountToAccountTransfer\Transfters.cshtml" />
-    <Content Include="Views\AccountToAccountTransfer\_TransferTable.cshtml" />
+    <Content Include="Views\AccountToAccountTransfer\_TransferData.cshtml" />
     <Content Include="Views\AccountToAccountTransfer\_TransferEdit.cshtml" />
     <Content Include="Views\AccountToAccountTransfer\_TransferApprove.cshtml" />
     <Content Include="Views\AccountToAccountTransfer\_TransferDetails.cshtml" />

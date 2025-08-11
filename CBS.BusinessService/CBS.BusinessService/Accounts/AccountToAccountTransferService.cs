@@ -21,6 +21,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -260,8 +262,35 @@ namespace CBS.BusinessService.Accounts
             }
         }
 
-      
+        public async Task<CustomDataTable> GetDataTableAsync(GetTransfersDataTableQuery loansDataTableQuery)
+        {
 
+            loansDataTableQuery.DataTableOptions.sortColumnName = "CreatedDate";
+            if (!IsHeadOffice())
+            {
+                loansDataTableQuery.BranchId=GetBranchID();
+            }
+            // Make API call to fetch the DataTable result
+            var couApiResponse = await _transactionApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                APICallHelper.TransfersDataTable,
+                loansDataTableQuery
+            );
+
+            // Return response if successful
+            if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+            {
+                return couApiResponse.ApiResponseData.Data;
+            }
+
+            // Return an empty DataTable if the request fails
+            return new CustomDataTable(
+                draw: Convert.ToInt32(loansDataTableQuery.DataTableOptions.draw),
+                recordsTotal: 0,
+                recordsFiltered: 0,
+                data: new List<object>(), // No data
+                dataTableOptions: loansDataTableQuery.DataTableOptions
+            );
+        }
     }
 
 }

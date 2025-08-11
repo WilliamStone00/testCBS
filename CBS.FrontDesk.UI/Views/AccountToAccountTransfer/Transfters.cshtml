@@ -5,90 +5,184 @@
 }
 
 <link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet" />
+<style>
+    /* Optional polish */
+    #transfersTable.dataTable tbody td {
+        vertical-align: middle;
+    }
+
+    .dt-center {
+        text-align: center;
+    }
+
+    .dt-right {
+        text-align: right;
+    }
+
+    .btn[disabled] {
+        pointer-events: none;
+        opacity: .65;
+    }
+</style>
 
 <input type="hidden" id="accountantName" value="@Session["FullName"].ToString()" />
 <input type="hidden" id="branchName" value="@Session["BranchName"].ToString()" />
 <input type="hidden" id="branchName" value="@Session["BankName"].ToString()" />
-<div class="container mt-3">
+@{
+    ViewBag.Title = "Transfer Management Overview";
+}
 
-    <!-- ✅ Page Header -->
-    <div class="row mb-3">
-        <div class="col-12">
-            <div class="card bg-light shadow-sm">
-                <div class="card-body text-center">
-                    <h1 class="card-title text-primary">
-                        <i class="mdi mdi-bank-transfer me-2"></i> Account to Account Transfers
-                    </h1>
-                    <p class="card-text text-secondary fs-6">
-                        This interface provides a clear overview of all <strong>account-to-account transfer requests</strong> submitted by operators.
-                        Each request must be validated before impacting member balances. Only validated requests become final.
-                    </p>
-                    <p class="text-muted small">
-                        You can review pending transfers below. For each item, you may view, edit, approve, or delete if required.
-                    </p>
-                    <hr style="border: 2px solid rgba(0, 128, 128, 0.2);" />
-                </div>
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold mb-2">
+                    <i class="mdi mdi-swap-horizontal me-2"></i> Transfer Management Console
+                </h1>
+                <p class="card-text text-muted mb-1">
+                    Search, filter, and manage account-to-account and inter-branch transfers.
+                </p>
+                <p class="card-text text-warning fw-semibold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i>
+                    Use advanced filters to narrow down transfers by accounts, dates, initiator, status, and more.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
     </div>
-
-    <!-- ✅ Transfer Guidelines -->
-    <div class="row mb-2">
-        <div class="col-12">
-            <div class="card border-info shadow-sm">
-                <h6 class="card-header bg-light d-flex justify-content-between align-items-center text-tsc">
-                    <span><i class="mdi mdi-information-outline me-2"></i> Transfer Validation Guidelines</span>
-                    <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#transferGuidelines">
-                        <i class="mdi mdi-chevron-down"></i>
-                    </button>
-                </h6>
-                <div id="transferGuidelines" class="collapse">
-                    <div class="card-body">
-                        <ul class="mb-3 list-unstyled">
-                            <li class="mb-2"><i class="mdi mdi-timer-sand text-warning me-1"></i> All listed transfers are <strong>pending validation</strong>.</li>
-                            <li class="mb-2"><i class="mdi mdi-bank-transfer-in text-primary me-1"></i> Only an authorized user can <strong>approve</strong> a request.</li>
-                            <li class="mb-2"><i class="mdi mdi-pencil-outline text-success me-1"></i> You may <strong>edit transfer details</strong> before approval if incorrect.</li>
-                            <li class="mb-2"><i class="mdi mdi-delete-outline text-danger me-1"></i> Use <strong>Delete</strong> to discard transfers initiated by mistake.</li>
-                            <li class="mb-2"><i class="mdi mdi-account-eye text-secondary me-1"></i> Approved transfers are final and can no longer be modified or removed.</li>
-                        </ul>
-                        <p class="text-muted mb-0"><i class="mdi mdi-alert-circle-outline me-1"></i> Contact system control team if inconsistencies are noticed before validation.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card shadow-sm mb-2">
-        <div class="card-header bg-light text-dark fw-bold d-flex justify-content-between align-items-center">
-            <div><i class="mdi mdi-swap-horizontal me-2"></i> TRANSFER REQUESTS</div>
-            <div class="d-flex gap-2">
-                <button type="button"
-                        class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2"
-                        onclick="LoadDataGen('AccountToAccountTransfer','myDataTable','_TransferTable',0,'datalistingview',null,null,'all_transfer_request')">
-                    <span class="spinner-border spinner-border-sm d-none" role="status" id="transferLoadSpinner"></span>
-                    <i class="mdi mdi-view-list mdi-18px"></i>
-                    <span>Reload List</span>
-                </button>
-
-                <a href="/AccountToAccountTransfer"
-                   class="btn btn-outline-primary btn-sm d-flex align-items-center gap-2">
-                    <i class="mdi mdi-plus-circle-outline"></i>
-                    <span>New Transfer</span>
-                </a>
-                <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
-                    <i class="fas fa-print me-1"></i> Re-Print
-                </button>
-            </div>
-        </div>
-
-        <div id="datalistingview" class="p-2">
-            <!-- Partial will be loaded here -->
-        </div>
-    </div>
-
-
-
 </div>
+
+<!-- Tips Section -->
+<div class="card mb-2 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Using Transfer Filters</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTransferTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTransferTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-map-marker-outline text-success me-2"></i><strong>Branch:</strong> Filter by a specific branch to scope operations.</li>
+                <li><i class="mdi mdi-calendar-month-outline text-primary me-2"></i><strong>Dates:</strong> Use accounting date range to isolate specific periods.</li>
+                <li><i class="mdi mdi-swap-horizontal text-dark me-2"></i><strong>Accounts:</strong> Filter by source/destination account numbers or transaction ref.</li>
+                <li><i class="mdi mdi-account-outline text-info me-2"></i><strong>Initiator:</strong> Find transfers initiated by a specific staff user.</li>
+                <li><i class="mdi mdi-bank-transfer text-danger me-2"></i><strong>Inter-Branch:</strong> Toggle to view inter-branch operations only.</li>
+                <li><i class="mdi mdi-account-card-details-outline text-secondary me-2"></i><strong>Member/Customer:</strong> Use sending/receiving references to pinpoint parties.</li>
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i><strong>Export:</strong> Export the current filtered list to Excel.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Filters Section -->
+<div class="card shadow p-3 mb-2">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Advanced Filters</h5>
+
+    <div class="card p-3 mb-3 bg-light">
+        <!-- Toggle Controls -->
+        <div class="row mb-3">
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="byBranch" />
+                <label class="form-check-label fw-bold" for="byBranch">Filter by Branch</label>
+            </div>
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="byDate" />
+                <label class="form-check-label fw-bold" for="byDate">Filter by Date</label>
+            </div>
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="moreOptions" />
+                <label class="form-check-label fw-bold" for="moreOptions">More Filters</label>
+            </div>
+        </div>
+
+        <!-- Branch Filter -->
+        <div id="branchFilterSection" class="row mb-3" style="display:none;">
+            <div class="col-md-12">
+                <label class="form-label fw-bold">Select Branch</label>
+                @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"),
+                    "--- Select Branch ---",
+                    new { @class = "form-control shadow-sm select2", @id = "branchInput" })
+            </div>
+        </div>
+
+        <!-- Date Range Filter -->
+        <div id="dateRangeSection" class="row mb-3" style="display:none;">
+            <div class="col-md-6"><input type="date" id="startDate" class="form-control" placeholder="Start Date" /></div>
+            <div class="col-md-6"><input type="date" id="endDate" class="form-control" placeholder="End Date" /></div>
+        </div>
+
+        <!-- Base Filters -->
+        <div class="row">
+            <div class="col-md-4 mb-2"><input type="text" id="sourceAccountNumber" class="form-control" placeholder="Source Account Number" /></div>
+            <div class="col-md-4 mb-2"><input type="text" id="destinationAccountNumber" class="form-control" placeholder="Destination Account Number" /></div>
+            <div class="col-md-4 mb-2"><input type="text" id="transactionRef" class="form-control" placeholder="Transaction Ref" /></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-2">
+                <select id="transactionType" class="form-select shadow-sm">
+                    <option value="">All Transaction Types</option>
+                    <option value="Transfer">Transfer</option>
+                    <option value="CashIn">Cash In</option>
+                    <option value="CashOut">Cash Out</option>
+                    <option value="AccountToAccount">Account To Account</option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-2">
+                <select id="status" class="form-select shadow-sm">
+                    <option value="">All Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Failed">Failed</option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-2 d-flex align-items-center">
+                <div class="form-check mt-2">
+                    <input class="form-check-input" type="checkbox" id="isInterBranch" />
+                    <label class="form-check-label fw-bold" for="isInterBranch">Inter-Branch Only</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Extra Filters -->
+        <div id="extraFiltersSection" style="display:none;">
+            <hr />
+            <div class="row">
+                <div class="col-md-4 mb-2"><input type="text" id="sourceCustomerId" class="form-control" placeholder="Sending Customer ID" /></div>
+                <div class="col-md-4 mb-2"><input type="text" id="destinationCustomerId" class="form-control" placeholder="Receiving Customer ID" /></div>
+                <div class="col-md-4 mb-2"><input type="text" id="initiator" class="form-control" placeholder="Initiator (username)" /></div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-2"><input type="text" id="sendingMemberReference" class="form-control" placeholder="Sending Member Reference" /></div>
+                <div class="col-md-6 mb-2"><input type="text" id="receivingCustomerReference" class="form-control" placeholder="Receiving Customer Reference" /></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row mt-2">
+        <div class="col-md-12 d-flex">
+            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
+            <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+            @*<button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-excel"></i> Export</button>*@
+        </div>
+    </div>
+</div>
+<div id="transferDataCard" class="card p-3 shadow mb-4" style="display: none;">
+    <h5 class="text-primary mb-1"><i class="mdi mdi-table"></i> Transfer Results</h5>
+    <div class="table-responsive">
+        <div class="card-body" id="datalistingview">
+            @Html.Partial("_TransferData")
+        </div>
+    </div>
+</div>
+
+
+
+
 <div class="modal fade" id="transferModal" tabindex="-1" aria-labelledby="transferModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content position-relative">
@@ -133,6 +227,7 @@
         </div>
     </div>
 </div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

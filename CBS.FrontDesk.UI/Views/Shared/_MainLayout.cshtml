@@ -33,7 +33,7 @@
     <link href="~/CBSTemp/ui/assets/vendor/css/rtl/theme-default.css" rel="stylesheet" type="text/css" />
     <link href="~/CBSTemp/ui/assets/css/demo.css" rel="stylesheet" type="text/css" />
     <link href="~/CBSTemp/ui/assets/alertifyjs/css/alertify.min.css" rel="stylesheet" />
-   
+
     <style>
         /* Reusable accounting date field tweaks */
         .accounting-date {
@@ -290,6 +290,433 @@
     </style>
 
     <style>
+        /* Sidebar menu */
+        .sidebar {
+            background-color: #333; /* Dark gray background color */
+            color: #fff; /* White text color */
+        }
+
+            .sidebar .nav-link {
+                color: #fff; /* White text color for links */
+            }
+
+                .sidebar .nav-link:hover {
+                    background-color: #555; /* Darker gray background color on hover */
+                }
+
+
+
+        /* Overall layout improvements */
+        body {
+            background-color: #f2f2f2; /* Light gray background color for the body */
+            color: #333; /* Dark text color */
+        }
+
+        .card {
+            background-color: #fff; /* White background color for cards */
+            color: #333; /* Dark text color */
+        }
+
+        .status-label {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .running {
+            color: green;
+            background-color: lightgreen;
+        }
+
+        .closed {
+            color: red;
+            background-color: pink;
+        }
+        /* Add any other styling improvements as needed */
+    </style>
+
+
+    <style>
+        /* Add this CSS to your stylesheet */
+
+        .card {
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+        }
+
+        .nav-tabs .nav-link {
+            border-radius: 0.375rem 0.375rem 0 0;
+            font-size: 1rem;
+        }
+
+            .nav-tabs .nav-link.active {
+                color: #495057;
+                background-color: #f8f9fa;
+                border-color: #dee2e6 #dee2e6 transparent;
+            }
+
+        .tab-content {
+            border-top: 1px solid #dee2e6;
+        }
+
+        .accordion-button {
+            font-size: 1rem;
+            background-color: #f8f9fa;
+            color: #495057;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+        }
+
+            .accordion-button:not(.collapsed) {
+                color: #0056b3;
+                background-color: #e9ecef;
+                border-color: #dee2e6 #dee2e6 transparent;
+            }
+
+        .accordion-item {
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+        }
+
+        .accordion-header {
+            margin-bottom: 0;
+        }
+
+        .accordion-body {
+            padding: 1rem;
+        }
+
+        .accordion-item.shadow-sm {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        h5.fw-bold {
+            font-weight: 700;
+        }
+
+        i.mdi {
+            font-size: 1.2rem;
+        }
+        /* Banner style */
+        #configBanner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f8d7da;
+            color: #721c24;
+            text-align: center;
+            padding: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            border-top: 2px solid #f5c6cb;
+            z-index: 1000;
+        }
+
+            #configBanner:hover {
+                background-color: #f5c6cb;
+            }
+    </style>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        /* Configuration Banner Styles */
+        .configuration-banner {
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: none; /* Initially hidden */
+            animation: slideDown 0.3s ease-out;
+            /* Positioning and layout */
+            position: relative;
+            z-index: 1030;
+            /* Custom dimensions */
+            width: 1000.22px;
+            height: 50px;
+            max-width: 100%;
+            margin: 0 auto;
+            /* Override navbar defaults for banner styling */
+            padding: 8px 16px !important;
+            margin-top: 0.5rem !important;
+            min-height: auto !important;
+            border-radius: 0 !important;
+            /* Typography */
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+
+/* Banner content styling */
+.configuration-banner .banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 4px 0;
+}
+
+.configuration-banner .banner-message {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    font-weight: 400;
+}
+
+.configuration-banner .banner-message i {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+.configuration-banner .banner-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.configuration-banner .banner-link {
+    color: white;
+    text-decoration: underline;
+    font-weight: 500;
+    font-size: 13px;
+    transition: opacity 0.2s ease;
+    white-space: nowrap;
+}
+
+.configuration-banner .banner-link:hover {
+    color: white;
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+.configuration-banner .banner-close {
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+    flex-shrink: 0;
+}
+
+.configuration-banner .banner-close:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.configuration-banner .banner-close i {
+    font-size: 16px;
+}
+
+
+
+
+
+        .configuration-banner.show {
+            display: block;
+        }
+
+        @*@keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }*@
+
+        .configuration-banner .banner-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .configuration-banner .banner-message {
+            font-weight: 500;
+            margin: 0 10px;
+            display: inline-block;
+        }
+
+        .configuration-banner .banner-link {
+            color: white;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .configuration-banner .banner-link:hover {
+            color: #f0f0f0;
+            text-decoration: none;
+        }
+
+        .configuration-banner .banner-close {
+            float: right;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 15px;
+        }
+
+        .configuration-banner .banner-close:hover {
+            opacity: 0.7;
+        }
+
+        /* Modal Styles */
+        .unconfigured-modal .modal-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .unconfigured-modal .modal-title {
+            color: #495057;
+            font-weight: 600;
+        }
+
+        .product-item {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background: white;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .product-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .product-header {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+        }
+
+        .product-name {
+            font-weight: 600;
+            margin: 0;
+            color: #495057;
+        }
+
+        .account-count {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .account-list {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .account-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f1f3f4;
+        }
+
+        .account-item:last-child {
+            border-bottom: none;
+        }
+
+        .account-name {
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 4px;
+        }
+
+        .account-type {
+            display: inline-block;
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-bottom: 4px;
+        }
+
+        .account-config {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .error-message {
+            color: #dc3545;
+            padding: 15px;
+            background-color: #f8d7da;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+    </style>
+    <link href="~/Content/TSC/TscStyles.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/typeahead-js/typeahead.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css" />
+
+
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/select2/select2.css" />
+
+
+
+    <!-- Vendors CSS -->
+    <link href="~/CBSTemp/ui/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" type="text/css" />
+    <link href="~/CBSTemp/ui/assets/vendor/libs/typeahead-js/typeahead.css" rel="stylesheet" type="text/css" />
+    <link href="~/CBSTemp/ui/assets/vendor/libs/apex-charts/apex-charts.css" rel="stylesheet" type="text/css" />
+    <link href="~/CBSTemp/ui/assets/vendor/libs/swiper/swiper.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/toastr/toastr.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/animate-css/animate.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/flatpickr/flatpickr.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/pickr/pickr-themes.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/bootstrap-select/bootstrap-select.css" />
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/jstree/jstree.css" />
+
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/tagify/tagify.css" />
+    <link href="~/CBSTemp/ui/assets/vendor/libs/dropzone/dropzone.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <!-- Page CSS -->
+
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/css/pages/cards-statistics.css" type="text/css">
+    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/css/pages/cards-analytics.css" type="text/css">
+    <link href="~/Loaders/CSSJS/Spin.css" rel="stylesheet" />
+    <!-- Helpers -->
+    <script src="~/CBSTemp/ui/assets/vendor/js/helpers.js"></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+    <script src="~/CBSTemp/ui/assets/vendor/js/template-customizer.js"></script>
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="~/CBSTemp/ui/assets/js/config.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Add these in your layout or top of the view -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+    <!-- ✅ Include Chart.js first -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- ✅ Include ChartDataLabels plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <style>
         tfoot {
             background-color: #f3f4f6; /* Background color */
             font-weight: bold; /* Bold text */
@@ -364,17 +791,25 @@
         }
 
         .fieldset-custom {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 20px;
+            border: 1px solid #dee2e6; /* border */
+            border-radius: 0.5rem; /* rounded-3 */
+            padding: 1rem; /* p-3 */
+            margin-bottom: 1rem; /* mb-3 */
         }
 
+            /* Legend styling (float-none, w-auto, px-2, text-primary, fw-bold) */
             .fieldset-custom legend {
-                font-size: 1.2em;
-                font-weight: bold;
-                margin-bottom: 10px;
+                float: none;
+                width: auto;
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+                color: #0d6efd; /* Bootstrap primary */
+                font-weight: 700; /* fw-bold */
+                font-size: 1rem;
+                margin-bottom: 0; /* remove default gap */
             }
+
+
 
         .underline-text {
             text-decoration: underline;
@@ -748,433 +1183,6 @@
             text-decoration: none;
         }
     </style>
-    <style>
-        /* Sidebar menu */
-        .sidebar {
-            background-color: #333; /* Dark gray background color */
-            color: #fff; /* White text color */
-        }
-
-            .sidebar .nav-link {
-                color: #fff; /* White text color for links */
-            }
-
-                .sidebar .nav-link:hover {
-                    background-color: #555; /* Darker gray background color on hover */
-                }
-
-
-
-        /* Overall layout improvements */
-        body {
-            background-color: #f2f2f2; /* Light gray background color for the body */
-            color: #333; /* Dark text color */
-        }
-
-        .card {
-            background-color: #fff; /* White background color for cards */
-            color: #333; /* Dark text color */
-        }
-
-        .status-label {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-
-        .running {
-            color: green;
-            background-color: lightgreen;
-        }
-
-        .closed {
-            color: red;
-            background-color: pink;
-        }
-        /* Add any other styling improvements as needed */
-    </style>
-
-
-    <style>
-        /* Add this CSS to your stylesheet */
-
-        .card {
-            border: 1px solid #dee2e6;
-            border-radius: 0.375rem;
-        }
-
-        .nav-tabs .nav-link {
-            border-radius: 0.375rem 0.375rem 0 0;
-            font-size: 1rem;
-        }
-
-            .nav-tabs .nav-link.active {
-                color: #495057;
-                background-color: #f8f9fa;
-                border-color: #dee2e6 #dee2e6 transparent;
-            }
-
-        .tab-content {
-            border-top: 1px solid #dee2e6;
-        }
-
-        .accordion-button {
-            font-size: 1rem;
-            background-color: #f8f9fa;
-            color: #495057;
-            border: 1px solid #dee2e6;
-            border-radius: 0.375rem;
-        }
-
-            .accordion-button:not(.collapsed) {
-                color: #0056b3;
-                background-color: #e9ecef;
-                border-color: #dee2e6 #dee2e6 transparent;
-            }
-
-        .accordion-item {
-            border: 1px solid #dee2e6;
-            border-radius: 0.375rem;
-        }
-
-        .accordion-header {
-            margin-bottom: 0;
-        }
-
-        .accordion-body {
-            padding: 1rem;
-        }
-
-        .accordion-item.shadow-sm {
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-        }
-
-        h5.fw-bold {
-            font-weight: 700;
-        }
-
-        i.mdi {
-            font-size: 1.2rem;
-        }
-        /* Banner style */
-        #configBanner {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #f8d7da;
-            color: #721c24;
-            text-align: center;
-            padding: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            border-top: 2px solid #f5c6cb;
-            z-index: 1000;
-        }
-
-            #configBanner:hover {
-                background-color: #f5c6cb;
-            }
-    </style>
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" />
-
-    <style>
-        /* Configuration Banner Styles */
-        .configuration-banner {
-            background: linear-gradient(135deg, #ff6b6b, #ffa500);
-            color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: none; /* Initially hidden */
-            animation: slideDown 0.3s ease-out;
-            /* Positioning and layout */
-            position: relative;
-            z-index: 1030;
-            /* Custom dimensions */
-            width: 1000.22px;
-            height: 50px;
-            max-width: 100%;
-            margin: 0 auto;
-            /* Override navbar defaults for banner styling */
-            padding: 8px 16px !important;
-            margin-top: 0.5rem !important;
-            min-height: auto !important;
-            border-radius: 0 !important;
-            /* Typography */
-            font-size: 14px;
-            line-height: 1.4;
-        }
-
-
-/* Banner content styling */
-.configuration-banner .banner-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 4px 0;
-}
-
-.configuration-banner .banner-message {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    font-weight: 400;
-}
-
-.configuration-banner .banner-message i {
-    font-size: 16px;
-    opacity: 0.9;
-}
-
-.configuration-banner .banner-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-shrink: 0;
-}
-
-.configuration-banner .banner-link {
-    color: white;
-    text-decoration: underline;
-    font-weight: 500;
-    font-size: 13px;
-    transition: opacity 0.2s ease;
-    white-space: nowrap;
-}
-
-.configuration-banner .banner-link:hover {
-    color: white;
-    opacity: 0.8;
-    text-decoration: underline;
-}
-
-.configuration-banner .banner-close {
-    background: rgba(255, 255, 255, 0.15);
-    border: none;
-    color: white;
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 4px;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s ease;
-    flex-shrink: 0;
-}
-
-.configuration-banner .banner-close:hover {
-    background-color: rgba(255, 255, 255, 0.25);
-}
-
-.configuration-banner .banner-close i {
-    font-size: 16px;
-}
-
-
- 
-
-
-        .configuration-banner.show {
-            display: block;
-        }
-
-        @*@keyframes slideDown {
-            from { transform: translateY(-100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }*@
-
-        .configuration-banner .banner-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-
-        .configuration-banner .banner-message {
-            font-weight: 500;
-            margin: 0 10px;
-            display: inline-block;
-        }
-
-        .configuration-banner .banner-link {
-            color: white;
-            text-decoration: underline;
-            cursor: pointer;
-            font-weight: bold;
-            margin-left: 10px;
-        }
-
-        .configuration-banner .banner-link:hover {
-            color: #f0f0f0;
-            text-decoration: none;
-        }
-
-        .configuration-banner .banner-close {
-            float: right;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 0;
-            margin-left: 15px;
-        }
-
-        .configuration-banner .banner-close:hover {
-            opacity: 0.7;
-        }
-
-        /* Modal Styles */
-        .unconfigured-modal .modal-header {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .unconfigured-modal .modal-title {
-            color: #495057;
-            font-weight: 600;
-        }
-
-        .product-item {
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            background: white;
-            transition: box-shadow 0.2s ease;
-        }
-
-        .product-item:hover {
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .product-header {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-bottom: 1px solid #e9ecef;
-            border-radius: 8px 8px 0 0;
-            cursor: pointer;
-        }
-
-        .product-name {
-            font-weight: 600;
-            margin: 0;
-            color: #495057;
-        }
-
-        .account-count {
-            color: #6c757d;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-
-        .account-list {
-            padding: 0;
-            margin: 0;
-            list-style: none;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .account-item {
-            padding: 12px 15px;
-            border-bottom: 1px solid #f1f3f4;
-        }
-
-        .account-item:last-child {
-            border-bottom: none;
-        }
-
-        .account-name {
-            font-weight: 500;
-            color: #495057;
-            margin-bottom: 4px;
-        }
-
-        .account-type {
-            display: inline-block;
-            background-color: #e9ecef;
-            color: #495057;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            margin-bottom: 4px;
-        }
-
-        .account-config {
-            color: #6c757d;
-            font-size: 0.9em;
-        }
-
-        .loading-spinner {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .error-message {
-            color: #dc3545;
-            padding: 15px;
-            background-color: #f8d7da;
-            border-radius: 4px;
-            margin: 15px 0;
-        }
-    </style>
-    <link href="~/Content/TSC/TscStyles.css" rel="stylesheet" />
-
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/typeahead-js/typeahead.css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css" />
-
-
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/select2/select2.css" />
-
-
-
-    <!-- Vendors CSS -->
-    <link href="~/CBSTemp/ui/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" type="text/css" />
-    <link href="~/CBSTemp/ui/assets/vendor/libs/typeahead-js/typeahead.css" rel="stylesheet" type="text/css" />
-    <link href="~/CBSTemp/ui/assets/vendor/libs/apex-charts/apex-charts.css" rel="stylesheet" type="text/css" />
-    <link href="~/CBSTemp/ui/assets/vendor/libs/swiper/swiper.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/toastr/toastr.css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/animate-css/animate.css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/flatpickr/flatpickr.css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/pickr/pickr-themes.css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/bootstrap-select/bootstrap-select.css" />
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/jstree/jstree.css" />
-
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/libs/tagify/tagify.css" />
-    <link href="~/CBSTemp/ui/assets/vendor/libs/dropzone/dropzone.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
-    <!-- Page CSS -->
-
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/css/pages/cards-statistics.css" type="text/css">
-    <link rel="stylesheet" href="~/CBSTemp/ui/assets/vendor/css/pages/cards-analytics.css" type="text/css">
-    <link href="~/Loaders/CSSJS/Spin.css" rel="stylesheet" />
-    <!-- Helpers -->
-    <script src="~/CBSTemp/ui/assets/vendor/js/helpers.js"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-    <script src="~/CBSTemp/ui/assets/vendor/js/template-customizer.js"></script>
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="~/CBSTemp/ui/assets/js/config.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- Add these in your layout or top of the view -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
-    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
-    <!-- ✅ Include Chart.js first -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- ✅ Include ChartDataLabels plugin -->
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
 </head>
 <body style="position: relative;">

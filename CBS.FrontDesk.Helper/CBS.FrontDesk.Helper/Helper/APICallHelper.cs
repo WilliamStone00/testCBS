@@ -389,6 +389,7 @@ namespace CBS.FrontDesk.Helper
 
         public static string GetTransactionsByQueryParameters = "/api/v1/Transaction/GetTransactionsByQueryParameters";
         public static string GetTransaction = "/api/v1/Transaction/{0}";
+        public static string TransfersDataTable = "/api/v1/Transfers/DataTable";
         //Teller
         public static string PrimaryTellerProvisioning = "/api/v1/Teller/Dinomination/Provisioning/PrimaryTeller";
         public static string SubTellerProvisioning = "/api/v1/Teller/Provision/SubTeller";

@@ -51,7 +51,7 @@ $(document).ready(function () {
 function LoanProductsProperties(KEY, path, affectedID) {
     GetLoanApplication(KEY);
     var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path;
-    FillDropDownAjaxCallParam(url, affectedID, "---Select Option---");
+    FillDropDownAjaxCallParam(url, 'RepaymentCircle', "---Select Option---");
 
     //GetLoanPurposes()
 }
@@ -356,11 +356,11 @@ function toggleInputFields() {
 
     // ✅ Additional logic for Refinancing: hide product selection-related fields
     var refinancingFields = [
-        "LoanCategorySelect",       // dropdown for Loan Product Category
-        "LoanTermSelect",           // dropdown for Loan Term
+        //"LoanCategorySelect",       // dropdown for Loan Product Category
+        //"LoanTermSelect",           // dropdown for Loan Term
         "LoanCategoryDive",     // radio buttons
-        "TargetPopulationDiv",  // dropdown for target
-        "loanProductDiv",       // dropdown for loan product
+        //"TargetPopulationDiv",  // dropdown for target
+        //"loanProductDiv",       // dropdown for loan product
         "loanTypeDiv"           // dropdown for loan type
     ];
 
@@ -519,9 +519,9 @@ function loadRefinancingLoan(loanId) {
             $('#loanDetailsCard').collapse('show');
 
             // ✅ Only call this after successful response
-            GetLoanPurposes(response.ProductCategoryId);
-            GetLoanApplication(response.LoanProductId)
-            LoanProductsPropertiesRefinancing(response.LoanProductId, 'loanrepayment_cycles', 'RepaymentCircle')
+        //    GetLoanPurposes(response.ProductCategoryId);
+        //    GetLoanApplication(response.LoanProductId)
+        //    LoanProductsPropertiesRefinancing(response.LoanProductId, 'loanrepayment_cycles', 'RepaymentCircle')
         } else {
             appalert("No loan data found.", 2, 1);
         }

@@ -1062,7 +1062,7 @@ namespace CBS.BusinessService.Accounts
                 var firstAccount = accounts.First();
                 var branch = await _branchServices.GetBranch(firstAccount.branchId);
 
-                customer.name = firstAccount.customerName;
+                customer.name = customer.FirstName+" "+customer.LastName;
                 customer.CustomerId = customerId;
 
                 // Containers

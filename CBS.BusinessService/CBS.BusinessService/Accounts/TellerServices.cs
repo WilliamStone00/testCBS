@@ -377,6 +377,9 @@ namespace CBS.BusinessService.Accounts
                 target.MaximumDepositAmount = source.MaximumDepositAmount;
                 target.MinimumDepositAmount = source.MinimumDepositAmount;
                 target.isPrimary = source.isPrimary;
+                target.AccountNumber = source.AccountNumber==null?"n/a": source.AccountNumber;
+                target.LikedMemberReference = source.LikedMemberReference==null ? "n/a" : source.LikedMemberReference;
+                target.isPrimary = source.isPrimary;
                 target.activeStatus = source.activeStatus;
                 target.inUseStatus = source.inUseStatus;
                 target.PerformTransfer = source.PerformTransfer;
@@ -389,7 +392,6 @@ namespace CBS.BusinessService.Accounts
                 target.Comment = source.Comment;
                 target.ShowbalancesOnCloseOfDay = source.ShowbalancesOnCloseOfDay;
                 target.ShowbalancesOnOpenOfDay = source.ShowbalancesOnOpenOfDay;
-                target.Blockedby = GetUserFullName();
             }
 
         }
