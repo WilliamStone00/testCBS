@@ -56,16 +56,26 @@ function loadAccountingDayDetails(accountingDayId) {
         url: '/AccountingDay/GetAccountingDayDetails',
         type: 'GET',
         data: { id: accountingDayId },
-        success: function (result) {
-            $('#modalContent').html(result);
-            $('#accountingDayModal').modal('show');
+        dataType: 'html',        // <-- make it explicit
+        cache: false,            // <-- avoid stale/empty caches
+        success: function (html) {
+            const content = (html || '').trim();
+            $('#modalContent').html(content || "<div class='text-danger'>No details returned.</div>");
+            setTimeout(() => {
+                const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('accountingDayModal'));
+                modal.show();
+            }, 0);
         },
-        error: function (xhr, status, error) {
-            $('#modalContent').html('<p class="text-danger">An error occurred while loading the details. Please try again later.</p>');
-            $('#accountingDayModal').modal('show');
+
+        error: function () {
+            $('#modalContent').html("<div class='text-danger'>Failed to load details.</div>");
+            const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('accountingDayModal'));
+            modal.show();
         }
+
     });
 }
+
 
 function toggleBranchDiv(enable) {
     var branchDiv = document.getElementById("branchDiv");
@@ -88,11 +98,10 @@ window.onload = function () {
 
 
 function viewInDataTable() {
-    // Perform client-side validation
-    var isValid = true;
-    var errors = [];
+    // Validation
+    let isValid = true;
+    let errors = [];
 
-    // Example validation checks
     if (!$('input[name="QueryParameter"]:checked').val()) {
         isValid = false;
         errors.push('Query Parameter is required.');
@@ -107,21 +116,21 @@ function viewInDataTable() {
     }
 
     if (!isValid) {
-        // Display validation errors
         appalert(errors.join('\n'), 2, 1);
         return;
     }
 
-    var queryParameter = $('input[name="QueryParameter"]:checked').val();
-    var branchId = $('#branchInput').val();
-    var dateFrom = $('#dateFromInput').val();
-    var dateTo = $('#dateToInput').val();
+    let queryParameter = $('input[name="QueryParameter"]:checked').val();
+    let branchId = $('#branchInput').val();
+    let dateFrom = $('#dateFromInput').val();
+    let dateTo = $('#dateToInput').val();
 
-    // Update fieldset legend with query information
-    var legendText = `Accounting Days Histories : Query Parameter: ${queryParameter}, Date Between: ${dateFrom} & ${dateTo}`;
-    $('#select_base').text(legendText);
+    // Update legend
+    $('#select_base').text(
+        `Accounting Days Histories : Query Parameter: ${queryParameter}, Date Between: ${dateFrom} & ${dateTo}`
+    );
 
-    var formData = {
+    let formData = {
         QueryParameter: queryParameter,
         BranchId: branchId,
         DateFrom: dateFrom,
@@ -134,50 +143,70 @@ function viewInDataTable() {
         data: formData,
         success: function (response) {
             if (response.success === false && response.status === 'ValidationError') {
-                // Display validation errors
                 appalert("Validation Errors: " + response.message, 2, 1);
                 $('#dataTableContainer').hide();
                 $('#dataNotFound').show();
                 $('#queryFieldset').show();
-            } else if (response.data && response.data.length > 0) {
-                // Data is available, initialize DataTable
+                return;
+            }
+
+            if (response.data && response.data.length > 0) {
+
                 $('#myDataTable').DataTable({
                     data: response.data,
                     destroy: true,
-                    autoWidth: false,  // Disable auto width to respect the specified widths
+                    autoWidth: false,
                     columns: [
-                        { data: 'BranchName', title: 'Branch Name', width: '46%' }, 
-                        { data: 'StrDate', title: 'Open Day', width: '15%' },       
-                        { data: 'StrOpenedAt', title: 'Time', width: '23%' },     
+                        { data: 'BranchName', title: 'Branch Name', width: '42%' },
+                        { data: 'StrDate', title: 'Open Day', width: '15%' },
+                        { data: 'StrOpenedAt', title: 'Time', width: '23%' },
                         {
                             data: 'IsClosed',
                             title: 'Status',
-                            width: '8%',                                          
-                            render: function (data) {
-                                return data ? '<span class="badge bg-orange">Closed</span>' : '<span class="badge bg-green">Open</span>';
+                            width: '8%',
+                            render: function (val) {
+                                return val
+                                    ? '<span class="badge bg-orange">Closed</span>'
+                                    : '<span class="badge bg-green">Open</span>';
                             }
                         },
                         {
-                            data: 'Id',
+                            data: null,
                             title: 'Action',
-                            width: '8%',                                          
-                            render: function (data) {
-                                return `<a href="#" onclick="loadAccountingDayDetails('${data}')" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="View details">Details</a>`;
+                            width: '12%',
+                            orderable: false,
+                            render: function (data, type, row) {
+                                const detailsBtn =
+                                    `<button type="button" class="btn btn-info btn-sm me-1"
+                   title="View details"
+                   onclick="loadAccountingDayDetails('${row.Id}')">
+             Details
+           </button>`;
+
+                                // Show CLOSE only when the day is OPEN
+                                const maybeCloseBtn = row.IsClosed
+                                    ? '' // closed => no close button
+                                    : `<button type="button" class="btn btn-warning btn-sm"
+                     title="Close accounting day"
+                     onclick="closeAccountingDay('${row.Id}')">
+               Close
+             </button>`;
+
+                                return detailsBtn + maybeCloseBtn;
                             }
                         }
                     ]
                 });
 
-                // Show DataTable and hide "data not found" message
+
                 $('#dataTableContainer').show();
                 $('#dataNotFound').hide();
-                $('#queryFieldset').show();
             } else {
-                // No data found, hide DataTable and show "data not found" message
                 $('#dataTableContainer').hide();
                 $('#dataNotFound').show();
-                $('#queryFieldset').show();
             }
+
+            $('#queryFieldset').show();
         },
         error: function (xhr, status, error) {
             appalert("An error occurred: " + error, 2, 1);
@@ -195,9 +224,9 @@ function closeAccountingDay(id) {
                 data: { id: id },
                 success: function (result) {
                     appalert(result.message, 1, 1);
-                    $('#accountingDayModal').modal('hide');
+                    //$('#accountingDayModal').modal('hide');
                     loadAccountingDayDetails(id);
-                    viewInDataTable()
+                    //viewInDataTable()
                 },
                 error: function (xhr, status, error) {
                     alert("An error occurred: " + error);

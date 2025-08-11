@@ -1,34 +1,44 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
 @using Resources
-@if (Model != null && Model.LoanApplication.LoanCommiteeValidations.Any())
-{
-    <div class="table-responsive mb-3">
-        <table class="table table-hover" id="myDataTable_commitee_group">
-            <thead class="table-light">
-                <tr>
-                    <th>@Global_LoanCommiteeValidationData.Comment</th>
-                    <th>@Global_LoanCommiteeValidationData.User</th>
-                    <th>@Global_LoanCommiteeValidationData.CommiteeMember</th>
-                    <th>@Global_LoanCommiteeValidationData.Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var d in Model.LoanApplication.LoanCommiteeValidations)
-                {
-                    <tr>
-                        <td style="width:55%">@d.Comment</td>
-                        <td style="width:15%">@d.UserId</td>
-                        <td style="width:10%">@d.Status</td>
-                        <td style="width:20%">@d.CreatedDate.ToLongDateString()</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+
+
+<fieldset class="fieldset-custom border rounded-3 p-3 mb-3">
+    <legend class="float-none w-auto px-2 fw-bold text-info">
+        <i class="mdi mdi-clipboard-check-outline me-1"></i> Loan Committee Validation
+    </legend>
+    <div class="row g-4">
+        @if (Model != null && Model.LoanApplication.LoanCommiteeValidations.Any())
+        {
+            <div class="table-responsive mb-3">
+                <table class="table table-hover" id="myDataTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>@Global_LoanCommiteeValidationData.Comment</th>
+                            <th>@Global_LoanCommiteeValidationData.User</th>
+                            <th>@Global_LoanCommiteeValidationData.CommiteeMember</th>
+                            <th>@Global_LoanCommiteeValidationData.Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var d in Model.LoanApplication.LoanCommiteeValidations)
+                        {
+                            <tr>
+                                <td style="width:55%">@d.Comment</td>
+                                <td style="width:15%">@d.UserId</td>
+                                <td style="width:10%">@d.Status</td>
+                                <td style="width:20%">@d.CreatedDate.ToLongDateString()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info" role="alert">
+                @Global_LoanCommiteeValidationData.NoCommiteeGroupsValidationIsAvailableAtTheMoment
+            </div>
+        }
+
     </div>
-}
-else
-{
-    <div class="alert alert-info" role="alert">
-        @Global_LoanCommiteeValidationData.NoCommiteeGroupsValidationIsAvailableAtTheMoment
-    </div>
-}
+</fieldset>

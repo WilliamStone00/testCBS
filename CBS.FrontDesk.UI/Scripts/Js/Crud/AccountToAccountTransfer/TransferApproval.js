@@ -1,21 +1,4 @@
-﻿function approveOrRejectTransfer(status) {
-    const transferId = $("#approveTransferId").val();
-    const userNote = $("#ValidatorComment").val()?.trim();
-
-    if (!transferId) return appalert("❌ Transfer ID is missing.", 2, 1);
-    if (!userNote || userNote.length < 5)
-        return appalert(`❌ Please enter a valid ${status.toLowerCase()} note (min 5 characters).`, 2, 1);
-
-    const payload = buildTransferApprovalPayload(transferId, status, userNote);
-    const confirmationHtml = buildTransferConfirmationDialog(payload);
-
-    alertify.confirm(
-        `🚦 Confirm Transfer ${status}`,
-        confirmationHtml,
-        () => submitTransferApproval(payload),
-        () => appalert("🚫 Operation cancelled by user.", 2, 1)
-    ).set('labels', { ok: 'Yes, Confirm', cancel: 'Cancel' });
-}
+﻿
 function buildTransferConfirmationDialog(data) {
     return `
                         <div class="text-start">
@@ -155,7 +138,24 @@ function openTransferModal(action, id, title, path, partialView) {
         $("#transferLoader").addClass("d-none");
     });
 }
+function approveOrRejectTransfer(status) {
+    const transferId = $("#approveTransferId").val();
+    const userNote = $("#ValidatorComment").val()?.trim();
 
+    if (!transferId) return appalert("❌ Transfer ID is missing.", 2, 1);
+    if (!userNote || userNote.length < 5)
+        return appalert(`❌ Please enter a valid ${status.toLowerCase()} note (min 5 characters).`, 2, 1);
+
+    const payload = buildTransferApprovalPayload(transferId, status, userNote);
+    const confirmationHtml = buildTransferConfirmationDialog(payload);
+
+    alertify.confirm(
+        `🚦 Confirm Transfer ${status}`,
+        confirmationHtml,
+        () => submitTransferApproval(payload),
+        () => appalert("🚫 Operation cancelled by user.", 2, 1)
+    ).set('labels', { ok: 'Yes, Confirm', cancel: 'Cancel' });
+}
 function printTransferSummary() {
     const printContents = document.getElementById("printableTransferSummary").innerHTML;
 
@@ -292,3 +292,171 @@ function printTransferSummary() {
     win.document.write(html);
     win.document.close();
 }
+
+
+
+// =====================
+// Transfers DataTable
+// =====================
+var transfersDt;
+
+// -------- Filters --------
+function collectTransferFilters() {
+    return {
+        DataTableOptions: {
+            draw: "1",
+            start: 0,
+            length: 10,
+            searchValue: "",
+            sortColumnName: "DateOfInitiation",
+            sortColumnDirection: "desc",
+            skip: 0
+        },
+        BranchId: $('#branchInput').val() || null,
+        SourceAccountNumber: $('#sourceAccountNumber').val() || null,
+        DestinationAccountNumber: $('#destinationAccountNumber').val() || null,
+        TransactionRef: $('#transactionRef').val() || null,
+        TransactionType: $('#transactionType').val() || null,
+        Status: $('#status').val() || null,
+        StartDate: $('#startDate').val() ? new Date($('#startDate').val()).toISOString() : null,
+        EndDate: $('#endDate').val() ? new Date($('#endDate').val()).toISOString() : null,
+        IsInterBranchOperation: $('#isInterBranch').is(':checked') ? true : null,
+        SourceCustomerId: $('#sourceCustomerId').val() || null,
+        DestinationCustomerId: $('#destinationCustomerId').val() || null,
+        SendingMemberReference: $('#sendingMemberReference').val() || null,
+        ReceivingCustomerReference: $('#receivingCustomerReference').val() || null,
+        Initiator: $('#initiator').val() || null
+    };
+}
+
+
+// -------- Actions (btn-group exactly like your Razor) --------
+function renderTransferActions(row) {
+    const id = row.Id;
+    const s = (row.Status || '').toLowerCase();
+
+    // Details always
+    let html = `
+    <div class="btn-group" role="group">
+      <button class="btn btn-sm btn-outline-info" title="Details"
+        onclick="openTransferModal('InitializeData','${id}','Details','details','_TransferDetails')">
+        <i class="mdi mdi-eye-outline"></i>
+      </button>
+  `;
+
+    if (s === 'pending') {
+        // Approve + Reject (open same approve partial; modal buttons will call approveOrRejectTransfer)
+        html += `
+      <button class="btn btn-sm btn-outline-success" title="Approve"
+        onclick="openTransferModal('InitializeData','${id}','Approve or Reject Request','details','_TransferApprove')">
+        <i class="mdi mdi-check-bold"></i>
+      </button>
+    `;
+    }
+    else if (s === 'approved' || s === 'completed') {
+        // Reverse
+        html += `
+      <button class="btn btn-sm btn-outline-dark" title="Reverse"
+        onclick="openTransferModal('InitializeData','${id}','Reverse Transfer','details','_TransferReverse')">
+        <i class="mdi mdi-undo"></i>
+      </button>
+    `;
+    }
+
+    html += `</div>`;
+    return html;
+}
+
+// -------- Table --------
+function loadTransfersTable(reset) {
+    if (transfersDt && reset) {
+        transfersDt.destroy();
+        $('#myDataTable tbody').empty(); // <- make sure your table has id="myDataTable"
+    }
+
+    transfersDt = $('#myDataTable').DataTable({
+        serverSide: true,
+        processing: false,           // per your request
+        destroy: true,
+        searching: false,
+        order: [[0, 'desc']],        // Date
+        pageLength: 10,
+        ajax: {
+            url: '/AccountToAccountTransfer/LoadTransferData',
+            type: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: function (d) {
+                const filters = collectTransferFilters();
+
+                filters.DataTableOptions.draw = d.draw?.toString() || '1';
+                filters.DataTableOptions.start = d.start || 0;
+                filters.DataTableOptions.length = d.length || 10;
+                filters.DataTableOptions.skip = d.start || 0;
+
+                const colIndex = d.order?.[0]?.column ?? 0;
+                const dir = d.order?.[0]?.dir ?? 'desc';
+                const colName = d.columns?.[colIndex]?.data || 'DateOfInitiation';
+                filters.DataTableOptions.sortColumnName = colName;
+                filters.DataTableOptions.sortColumnDirection = dir;
+
+                filters.DataTableOptions.searchValue = d.search?.value || '';
+                return JSON.stringify(filters);
+            },
+            dataSrc: function (json) {
+                $('#transferDataCard').show(); // show results card after first response
+                return json?.data || [];
+            },
+            error: function (xhr) {
+                console.error('LoadTransferData failed:', xhr.status, xhr.responseText);
+            }
+        },
+        columns: [
+            { data: 'DateOfInitiation', render: v => (v ? moment(v).format('DD/MM/YYYY HH:mm') : '') },
+            { data: 'SenderName' },
+            { data: 'RecieverName' },  // keep your DTO spelling
+            { data: 'Amount', render: $.fn.dataTable.render.number(',', '.', 0) },
+            {
+                data: 'Status',
+                render: function (v) {
+                    const s = (v || '').toLowerCase();
+                    let cls = 'bg-secondary';
+
+                    if (s === 'approved' || s === 'completed') {
+                        cls = 'bg-success';
+                    } else if (s === 'pending') {
+                        cls = 'bg-warning text-dark'; // exactly like your Razor: "bg-warning text-dark"
+                    } else if (s === 'rejected' || s === 'failed') {
+                        cls = 'bg-danger';
+                    }
+
+                    return `<span class="badge ${cls}">${v || ''}</span>`;
+                }
+            },
+            { data: null, orderable: false, render: (_d, _t, row) => renderTransferActions(row) }
+        ]
+    });
+}
+
+// -------- Wire up basic UI --------
+$(document).ready(function () {
+    if ($.fn.select2) { $('#branchInput').select2({ width: '100%' }); }
+
+    // toggles for extra filters (optional)
+    $('#byBranch').on('change', function () { $('#branchFilterSection').toggle(this.checked); });
+    $('#byDate').on('change', function () { $('#dateRangeSection').toggle(this.checked); });
+    $('#moreOptions').on('change', function () { $('#extraFiltersSection').toggle(this.checked); });
+
+    // actions
+    $('#applyFilterBtn').on('click', function (e) { e.preventDefault(); loadTransfersTable(true); });
+    $('#resetFilterBtn').on('click', function (e) {
+        e.preventDefault();
+        $('#branchInput, #startDate, #endDate, #sourceAccountNumber, #destinationAccountNumber, #transactionRef, #transactionType, #status, #sourceCustomerId, #destinationCustomerId, #sendingMemberReference, #receivingCustomerReference, #initiator').val('');
+        $('#isInterBranch, #byBranch, #byDate, #moreOptions').prop('checked', false).trigger('change');
+        loadTransfersTable(true);
+    });
+    $('#exportBtn').on('click', function (e) { e.preventDefault(); /* hook custom export if needed */ });
+
+});
+
+

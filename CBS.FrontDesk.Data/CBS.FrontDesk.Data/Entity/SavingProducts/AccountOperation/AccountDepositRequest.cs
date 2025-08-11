@@ -1,5 +1,6 @@
 ﻿using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
@@ -341,6 +342,28 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         }
     }
 
+    public class GetTransfersDataTableQuery
+    {
+        public DataTableOptions DataTableOptions { get; set; }
+
+        // Existing
+        public string BranchId { get; set; }
+        public string SourceAccountNumber { get; set; }
+        public string DestinationAccountNumber { get; set; }
+        public string TransactionRef { get; set; }
+        public string TransactionType { get; set; }
+        public string Status { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public bool? IsInterBranchOperation { get; set; }
+        public string SourceCustomerId { get; set; }          // SendingCustomerId
+        public string DestinationCustomerId { get; set; }     // ReceivingCustomerId
+
+        // NEW
+        public string SendingMemberReference { get; set; }    // e.g., external/member ref of sender
+        public string ReceivingCustomerReference { get; set; }// e.g., external/member ref of receiver
+        public string Initiator { get; set; }                 // maps to InitiatedByUSerName
+    }
 
     public class TransferRequest
     {
