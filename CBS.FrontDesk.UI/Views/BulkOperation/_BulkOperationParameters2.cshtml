@@ -4,6 +4,7 @@
     ViewBag.Title = @GlobalBulkOperation.SimulateBulkOperation;
 }
 
+
 <div class="accordion mb-4" id="operationParamsAccordion">
     <div class="accordion-item">
         <h2 class="accordion-header" id="headingOperationParams">
@@ -23,21 +24,15 @@
                             new { @class = "form-select select2", required = "required" })
                         <div class="invalid-feedback">Please select a branch</div>
                     </div>
-                    <div class="col-md-12">
-                        @Html.LabelFor(m => m.AccountCartId2, @GlobalBulkOperation.BulkOperationCashOutOrCashInAccount, new { @class = "form-label" })
-                        @Html.DropDownListFor(m => m.AccountCartId2,
-                            new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
-                            @GlobalBulkOperation.SelectAccount,
-                            new { @class = "form-select select2", required = "required" })
-                        <div class="invalid-feedback">Please select a destination account</div>
-                    </div>
+
+
 
                     <div class="col-md-6">
                         @Html.LabelFor(m => m.TransferType2, @GlobalBulkOperation.SelectOperationType, new { @class = "form-label" })
                         @Html.DropDownListFor(m => m.TransferType2,
                             new SelectList(ViewBag.transferType, "Text", "Value"),
                             @GlobalBulkOperation.SelectOperationType,
-                            new { @class = "form-select select2", required = "required" })
+                            new { @class = "form-select select2", required = "required" , id = "TransferTypeDropdown2" })
                         <div class="invalid-feedback">Please select an operation type</div>
                     </div>
 
@@ -62,13 +57,13 @@
                         @*  <label>@(Member_Global_LoanApplication.AccountingDate ?? "Accounting Date")</label>*@
                         @*  </div>*@
                         @*  <small class="text-muted">
-            This date will be used as the accounting date for posting and audit.
-            Choose a past date to backdate (if permitted).
-        </small>*@
+                                This date will be used as the accounting date for posting and audit.
+                                Choose a past date to backdate (if permitted).
+                            </small>*@
                     </div>
 
                     <!-- Title Field -->
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         @Html.LabelFor(m => m.OperationTitle2, "Operation Title", new { @class = "form-label" })
                         @Html.TextBoxFor(m => m.OperationTitle2,
                             new
@@ -90,6 +85,18 @@
                                   rows = "3",
                                   placeholder = "Enter simulation details or notes"
                                  })
+                    </div>
+
+                    <div class="col-md-12">
+                        @Html.LabelFor(m => m.AccountCartId2,
+                            @GlobalBulkOperation.BulkOperationCashOutOrCashInAccount +
+                            $" ({(Model.TransferType2 == "CashIn" ? @GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashIn : @GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashOut)})",
+                        new { @class = "form-label", id = "AccountCartLabel2" })
+                        @Html.DropDownListFor(m => m.AccountCartId2,
+                            new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                            @GlobalBulkOperation.SelectAccount,
+                            new { @class = "form-select select2", required = "required" })
+                        <div class="invalid-feedback">Please select a destination account</div>
                     </div>
                 </div>
             </div>

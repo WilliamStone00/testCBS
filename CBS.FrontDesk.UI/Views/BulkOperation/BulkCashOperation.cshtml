@@ -111,7 +111,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+<script>
         $(document).ready(function () {
             // Toggle between manual and file input
             $('input[name="InputMethod"]').change(function () {
@@ -135,8 +135,36 @@
                   });
               }*/
 
+            $('#TransferTypeDropdown').change(function() {
+                var selectedType = $(this).val();
+                var labelText = '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccount' + ' (';
+                if (selectedType === 'CashIn') {
+                    labelText += '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashIn';
+                } else {
+                    labelText += '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashOut';
+                }
+                labelText += ')';
+
+                // Update the label text
+                $('#AccountCartLabel').text(labelText);
+            });
+
+            $('#TransferTypeDropdown2').change(function () {
+                var selectedType = $(this).val();
+                var labelText = '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccount' + ' (';
+                if (selectedType === 'CashIn') {
+                    labelText += '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashIn';
+                } else {
+                    labelText += '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashOut';
+                }
+                labelText += ')';
+
+                // Update the label text
+                $('#AccountCartLabel2').text(labelText);
+            });
+
         });
-    </script>
+</script>
     @*Manual Bulk Batch Operation*@
 <script>
 
