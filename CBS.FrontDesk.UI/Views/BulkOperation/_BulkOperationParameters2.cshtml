@@ -23,16 +23,7 @@
                             new { @class = "form-select select2", required = "required" })
                         <div class="invalid-feedback">Please select a branch</div>
                     </div>
-
-                    <div class="col-md-6">
-                        @Html.LabelFor(m => m.TransferType2, @GlobalBulkOperation.SelectOperationType, new { @class = "form-label" })
-                        @Html.DropDownListFor(m => m.TransferType2,
-                            new SelectList(ViewBag.transferType, "Text", "Value"),
-                            @GlobalBulkOperation.SelectOperationType,
-                            new { @class = "form-select select2", required = "required" })
-                        <div class="invalid-feedback">Please select an operation type</div>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         @Html.LabelFor(m => m.AccountCartId2, @GlobalBulkOperation.BulkOperationCashOutOrCashInAccount, new { @class = "form-label" })
                         @Html.DropDownListFor(m => m.AccountCartId2,
                             new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
@@ -42,18 +33,38 @@
                     </div>
 
                     <div class="col-md-6">
-                        @Html.LabelFor(m => m.AccountDate2, "Account Date", new { @class = "form-label" })
-                        @Html.TextBoxFor(m => m.AccountDate2,
-                            Model.AccountDate.ToString("yyyy-MM-dd"),  /*< !--Format the date-- >*/
-                            new
-                            {
-                                @class = "form-control datepicker",
-                                required = "required",
-                                @type = "date",
-                                max = DateTime.Now.AddDays(30).ToString("yyyy-MM-dd"),
-                                min = DateTime.Now.ToString("yyyy-MM-dd")
-                            })
-                        <div class="invalid-feedback">Please select a valid account date (within 30 days)</div>
+                        @Html.LabelFor(m => m.TransferType2, @GlobalBulkOperation.SelectOperationType, new { @class = "form-label" })
+                        @Html.DropDownListFor(m => m.TransferType2,
+                            new SelectList(ViewBag.transferType, "Text", "Value"),
+                            @GlobalBulkOperation.SelectOperationType,
+                            new { @class = "form-select select2", required = "required" })
+                        <div class="invalid-feedback">Please select an operation type</div>
+                    </div>
+
+                    <div class="col-md-6">
+                        @*<div class="form-floating form-floating-outline position-relative">*@
+                        @Html.LabelFor(m => m.AccountDate2, @GlobalBulkOperation.SelectAccountingDate, new { @class = "form-label" })
+                        @Html.TextBoxFor(
+                          m => m.AccountDate2,
+                          Model.AccountDate2 == default(DateTime)
+                            ? DateTime.Today.ToString("yyyy-MM-dd")
+                            : "{0:yyyy-MM-dd}",
+                          new
+                              {
+                            @class = "form-control accounting-date",
+                            type = "date",
+                            data_date_default = "today",   // auto-fill today if empty/MinValue
+                            data_date_max = "today"        // prevent future dates (remove if not needed)
+                            // data_date_min = "today"     // uncomment to only allow today & after
+                          })
+                        <div class="invalid-feedback">Please select a valid accounting date</div>
+                        @* @Html.ValidationMessageFor(m => m.AccountDate2, "", new { @class = "text-danger" })*@
+                        @*  <label>@(Member_Global_LoanApplication.AccountingDate ?? "Accounting Date")</label>*@
+                        @*  </div>*@
+                        @*  <small class="text-muted">
+            This date will be used as the accounting date for posting and audit.
+            Choose a past date to backdate (if permitted).
+        </small>*@
                     </div>
 
                     <!-- Title Field -->
