@@ -514,10 +514,10 @@
     <value>Contribution Amount</value>
   </data>
   <data name="SelectOperationType" xml:space="preserve">
-    <value>Select Operation Type</value>
+    <value>Select Operation Scope</value>
   </data>
   <data name="BulkOperationCashOutOrCashInAccount" xml:space="preserve">
-    <value>Contribution Account For Bulk CashIn/Cashout</value>
+    <value>GL</value>
   </data>
   <data name="BulkCashOperationSimulation" xml:space="preserve">
     <value>Bulk Cash Operation Simulation</value>
@@ -526,12 +526,18 @@
     <value>Configure Destination Operation Parameters</value>
   </data>
   <data name="BulkCashAccountList" xml:space="preserve">
-    <value>Configure Accounts For Bulk Operation</value>
+    <value>Add Member Account For Bulk Operation</value>
   </data>
   <data name="BulkCashSimulationMethod" xml:space="preserve">
     <value>Bulk Cash Simulation Method</value>
   </data>
   <data name="SelectAccountingDate" xml:space="preserve">
     <value>Select An Accounting Date</value>
+  </data>
+  <data name="BulkOperationCashOutOrCashInAccountTransferCashIn" xml:space="preserve">
+    <value>Credit</value>
+  </data>
+  <data name="BulkOperationCashOutOrCashInAccountTransferCashOut" xml:space="preserve">
+    <value>Debit</value>
   </data>
 </root>

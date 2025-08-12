@@ -512,6 +512,8 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 simulateBulkOperationDetails.Add(simulateBulkOperationDetail);
             }
 
+
+            var mainBranch = Branches.Where(x => x.Id == simulateCashOutOrCashIn.BranchId).FirstOrDefault();
             string accountingDate = simulateCashOutOrCashIn.AccountDate.ToString("yyyy-MM-dd");
 
             var request = new SimulateBulkCreditOrDebitOperationCommand()
@@ -522,7 +524,10 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 Description = simulateCashOutOrCashIn.SimulationDescription,
                 OperationType = simulateCashOutOrCashIn.TransferType,
                 SimulationType = simulateCashOutOrCashIn.OperationTitle,
-                SimulateBulkOperationDetails = simulateBulkOperationDetails
+                SimulateBulkOperationDetails = simulateBulkOperationDetails,
+                MainBranchCode= mainBranch.BranchCode,
+                MainBranchId= mainBranch.Id,
+                MainBranchName= mainBranch.Name
 
             };
 
@@ -584,6 +589,8 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
 
                 simulateBulkOperationDetails.Add(simulateBulkOperationDetail);
             }
+
+            var mainBranch = Branches.Where(x => x.Id == simulateCashOutOrCashIn.BranchId).FirstOrDefault();
             string accountingDate = simulateCashOutOrCashIn.AccountDate.ToString("yyyy-MM-dd");
             var request = new SimulateBulkCreditOrDebitOperationCommand()
             {
@@ -593,7 +600,10 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
                 Description = simulateCashOutOrCashIn.SimulationDescription,
                 OperationType = simulateCashOutOrCashIn.TransferType,
                 SimulationType = simulateCashOutOrCashIn.OperationTitle,
-                SimulateBulkOperationDetails = simulateBulkOperationDetails
+                SimulateBulkOperationDetails = simulateBulkOperationDetails,
+                MainBranchCode = mainBranch.BranchCode,
+                MainBranchId = mainBranch.Id,
+                MainBranchName = mainBranch.Name
 
             };
 

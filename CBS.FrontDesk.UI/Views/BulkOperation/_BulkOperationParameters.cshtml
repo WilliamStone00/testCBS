@@ -2,6 +2,7 @@
 @model CBS.FrontDesk.Data.Entity.BulkOperation.SimulateCashOutOrCashInBulkOperation
 @{
     ViewBag.Title = @GlobalBulkOperation.SimulateBulkOperation;
+
 }
 
 <div class="accordion mb-4" id="operationParamsAccordion">
@@ -14,23 +15,7 @@
         <div id="collapseOperationParams" class="accordion-collapse collapse show" aria-labelledby="headingOperationParams">
             <div class="accordion-body">
                 <div class="row g-3">
-                    <!-- Branch Dropdown -->
-                    <div class="col-md-12">
-                        @Html.LabelFor(m => m.BranchId, @GlobalBulkOperation.SelectBranch, new { @class = "form-label" })
-                        @Html.DropDownListFor(m => m.BranchId,
-                            new SelectList(ViewBag.branches, "Id", "Name"),
-                            @GlobalBulkOperation.Branch,
-                            new { @class = "form-select select2", required = "required" })
-                        <div class="invalid-feedback">Please select a branch</div>
-                    </div>
-                    <div class="col-md-12">
-                        @Html.LabelFor(m => m.AccountCartId, @GlobalBulkOperation.BulkOperationCashOutOrCashInAccount, new { @class = "form-label" })
-                        @Html.DropDownListFor(m => m.AccountCartId,
-                            new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
-                            @GlobalBulkOperation.SelectAccount,
-                            new { @class = "form-select select2", required = "required" })
-                        <div class="invalid-feedback">Please select a destination account</div>
-                    </div>
+                  
                     <div class="col-md-6">
                         @Html.LabelFor(m => m.TransferType, @GlobalBulkOperation.SelectOperationType, new { @class = "form-label" })
                         @Html.DropDownListFor(m => m.TransferType,
@@ -61,13 +46,13 @@
                         @*   <label>@(Member_Global_LoanApplication.AccountingDate ?? "Accounting Date")</label>*@
                         @* </div>*@
                         @* <small class="text-muted">
-            This date will be used as the accounting date for posting and audit.
-            Choose a past date to backdate (if permitted).
-        </small>*@
+                                This date will be used as the accounting date for posting and audit.
+                                Choose a past date to backdate (if permitted).
+                            </small>*@
                     </div>
 
                     <!-- Title Field -->
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         @Html.LabelFor(m => m.OperationTitle, "Operation Title", new { @class = "form-label" })
                         @Html.TextBoxFor(m => m.OperationTitle,
                             new
@@ -80,7 +65,7 @@
                     </div>
 
                     <!-- Simulation Description -->
-                    <div class="col-6">
+                    <div class="col-12">
                         @Html.LabelFor(m => m.SimulationDescription, "Simulation Description", new { @class = "form-label" })
                         @Html.TextAreaFor(m => m.SimulationDescription,
                             new
@@ -89,6 +74,18 @@
                                   rows = "3",
                                   placeholder = "Enter simulation details or notes"
                                  })
+                    </div>
+
+                    <div class="col-md-12">
+                        @Html.LabelFor(m => m.AccountCartId,
+                            @GlobalBulkOperation.BulkOperationCashOutOrCashInAccount +
+                            $" ({(Model.TransferType == "CashIn" ? @GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashIn : @GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashOut)})",
+                        new { @class = "form-label" , id = "AccountCartLabel" })
+                        @Html.DropDownListFor(m => m.AccountCartId,
+                            new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                            @GlobalBulkOperation.SelectAccount,
+                            new { @class = "form-select select2", required = "required" })
+                        <div class="invalid-feedback">Please select a destination account</div>
                     </div>
                 </div>
             </div>
