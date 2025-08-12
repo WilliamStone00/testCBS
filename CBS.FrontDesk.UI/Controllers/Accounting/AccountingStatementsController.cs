@@ -621,7 +621,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         case "PANDL":
                             {
                                 
-                                    string fileTitle = $"InComeStatement{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
+                                    string fileTitle = $"InComeStatement{model.SystemQuery.FromDate.ToString("ddMMyyyyhhmmss")}";
                                     var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "PROFITANDLOSS").First();
                                     var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate, FromDate = model.SystemQuery.FromDate, DocumentId = DocModel.id, FileType = "pdf" };
                                     var account = await _acountServices.GenerateIncomeStatement(modelx);

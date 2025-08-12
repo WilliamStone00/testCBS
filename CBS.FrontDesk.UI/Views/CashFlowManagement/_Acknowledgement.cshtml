@@ -2,122 +2,126 @@
 
 
  
-
-@if (Model.AcknowledgementType == "BankCashOut")
-{
-   @using (Html.BeginForm("AddOrUpdate", "CashFlowManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostConfirmation(this);" }))
+<div class="container">
+    <br />
+    <hr />
+    @if (Model.AcknowledgementType == "BankCashOut")
     {
-        <input type="hidden" name="ServiceOption" value="acknowledgement" id="ServiceOption" />
-        <div class="card shadow-lg p-4 mb-4 bg-white rounded border border-info">
-            <div class="card-header bg-info text-white">
-                <h5 class="mb-0">🏦 Bank Cash Out Approved</h5>
-            </div>
-            <div class="card-body">
-                <p>
-                    Great news! 🎉 Your Bank Cash Out request for
-                    <strong>@Model.CashReplenimentRequest.AmountRequested FCFA</strong> has been approved by
-                    <strong>@Model.CashReplenimentRequest.TempId2</strong>.
-                </p>
-                <p>
-                    You're authorized to withdraw <strong>@Model.CashReplenimentRequest.AmountRequested FCFA</strong>
-                    from account <strong>@Model.CashReplenimentRequest.TempId1</strong>.
-                </p>
+        using (Html.BeginForm("AddOrUpdate", "CashFlowManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostConfirmation(this);" }))
+        {
+            <input type="hidden" name="ServiceOption" value="acknowledgement" id="ServiceOption" />
+            <div class="card shadow-lg p-4 mb-4 bg-white rounded border border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">🏦 Bank Cash Out Approved</h5>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Great news! 🎉 Your Bank Cash Out request for
+                        <strong>@Model.CashReplenimentRequest.AmountRequested FCFA</strong> has been approved by
+                        <strong>@Model.CashReplenimentRequest.TempId2</strong>.
+                    </p>
+                    <p>
+                        You're authorized to withdraw <strong>@Model.CashReplenimentRequest.AmountRequested FCFA</strong>
+                        from account <strong>@Model.CashReplenimentRequest.TempId1</strong>.
+                    </p>
 
-                <div class="form-group mt-4">
-                    <label for="approvalReference2">
-                        Reference Code:
-                        <strong><span id="referenceDisplay2" class="text-primary">@Model.CashReplenimentRequest.ReferenceId</span></strong>
-                    </label>
-                    <label for="approvalReference2" class="d-block mt-2">Please enter the reference code above to acknowledge:</label>
-                    @Html.TextBox("enteredReference", null, new { @class = "form-control", @id = "enteredReference", placeholder = "Enter reference code here", required = "required" })
+                    <div class="form-group mt-4">
+                        <label for="approvalReference2">
+                            Reference Code:
+                            <strong><span id="referenceDisplay2" class="text-primary">@Model.CashReplenimentRequest.ReferenceId</span></strong>
+                        </label>
+                        <label for="approvalReference2" class="d-block mt-2">Please enter the reference code above to acknowledge:</label>
+                        @Html.TextBox("enteredReference", null, new { @class = "form-control", @id = "enteredReference", placeholder = "Enter reference code here", required = "required" })
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <button type="submit" class="btn btn-primary me-2">Confirm</button>
+                    <input type="hidden" name="Action" value="insert" id="Action" />
                 </div>
             </div>
-            <div class="card-footer text-end">
-                <button type="submit" class="btn btn-primary me-2">Confirm</button>
-                <input type="hidden" name="Action" value="insert" id="Action" />
-            </div>
-        </div>
+        }
+
+
     }
-
-
-}
-else if (Model.AcknowledgementType == "InterBranch")
-{
-    using (Html.BeginForm("AddOrUpdate", "CashFlowManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostConfirmation(this);" }))
+    else if (Model.AcknowledgementType == "InterBranch")
     {
-        <input type="hidden" name="ServiceOption" value="acknowledgement" id="ServiceOption" />
-        <div class="card shadow-lg p-4 mb-4 bg-white rounded border border-info">
-            <div class="card-header bg-info text-white">
-                <h5 class="mb-0">🏦 Inter Branch Transfer</h5>
-            </div>
-            <p>Your cash out request has been redirected to <strong>{sourceBranch}</strong> for bank cash out processing.</p>
-            <p class="text-muted">Don't worry — this is part of our secure process to ensure you receive your funds safely.</p>
+        using (Html.BeginForm("AddOrUpdate", "CashFlowManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostConfirmation(this);" }))
+        {
+            <input type="hidden" name="ServiceOption" value="acknowledgement" id="ServiceOption" />
+            <div class="card shadow-lg p-4 mb-4 bg-white rounded border border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">🏦 Inter Branch Transfer</h5>
+                </div>
+                <p>Your cash out request has been redirected to <strong>{sourceBranch}</strong> for bank cash out processing.</p>
+                <p class="text-muted">Don't worry — this is part of our secure process to ensure you receive your funds safely.</p>
 
-            <hr>
-            <p>
-                🏦 <strong>What's happening:</strong><br>
-                Your request for <strong>{amountRequested}</strong> FCFA has been authorized for withdrawal in <strong>{BANK Account}</strong> for faster processing.
-            </p>
-            <div class="card-body">
+                <hr>
                 <p>
                     🏦 <strong>What's happening:</strong><br>
                     Your request for <strong>{amountRequested}</strong> FCFA has been authorized for withdrawal in <strong>{BANK Account}</strong> for faster processing.
                 </p>
+                <div class="card-body">
+                    <p>
+                        🏦 <strong>What's happening:</strong><br>
+                        Your request for <strong>{amountRequested}</strong> FCFA has been authorized for withdrawal in <strong>{BANK Account}</strong> for faster processing.
+                    </p>
 
-                <p>📋 <strong>Your reference number:</strong> <strong><span id="referenceDisplay2" class="text-primary">@Model.CashReplenimentRequest.ReferenceId</span></strong></p>
-                <div class="form-group mt-4">
-                    <label for="approvalReference2">
-                        Reference Code:
+                    <p>📋 <strong>Your reference number:</strong> <strong><span id="referenceDisplay2" class="text-primary">@Model.CashReplenimentRequest.ReferenceId</span></strong></p>
+                    <div class="form-group mt-4">
+                        <label for="approvalReference2">
+                            Reference Code:
 
-                    </label>
-                    <label for="approvalReference2" class="d-block mt-2">Please enter the reference code above to acknowledge the Inter Branch Transfer:</label>
-                    @Html.TextBox("enteredReference", null, new { @class = "form-control", @id = "enteredReference", placeholder = "Enter reference code here", required = "required" })
+                        </label>
+                        <label for="approvalReference2" class="d-block mt-2">Please enter the reference code above to acknowledge the Inter Branch Transfer:</label>
+                        @Html.TextBox("enteredReference", null, new { @class = "form-control", @id = "enteredReference", placeholder = "Enter reference code here", required = "required" })
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <button type="submit" class="btn btn-primary me-2">Confirm</button>
+                    <input type="hidden" name="Action" value="insert" id="Action" />
                 </div>
             </div>
-            <div class="card-footer text-end">
-                <button type="submit" class="btn btn-primary me-2">Confirm</button>
-                <input type="hidden" name="Action" value="insert" id="Action" />
-            </div>
-        </div>
+        }
     }
-}
-else if (Model.AcknowledgementType == "RedirectedBankCashOut")
-{
-    using (Html.BeginForm("AddOrUpdate", "CashFlowManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostConfirmation(this);" }))
+    else if (Model.AcknowledgementType == "RedirectedBankCashOut")
     {
-        <input type="hidden" name="ServiceOption" value="acknowledgement" id="ServiceOption" />
-        <div class="card shadow-lg p-4 mb-4 bg-white rounded border border-info">
-            <div class="card-header bg-info text-white">
-                <h5 class="mb-0">🏦 Bank Cash Out Request Redirected And Approved</h5>
-            </div>
-            <div class="card-body">
-                <p>
-                    Great news! 🎉 Your Bank Cash Out request for
-                    <strong>@Model.CashReplenimentRequest.AmountRequested FCFA</strong> has been approved by
-                    <strong>@Model.CashReplenimentRequest.TempId2</strong>.
-                </p>
-                <p>
-                    You're authorized to withdraw <strong>@Model.CashReplenimentRequest.AmountRequested FCFA</strong>
-                    from account <strong>@Model.CashReplenimentRequest.TempId1</strong>.
-                </p>
+        using (Html.BeginForm("AddOrUpdate", "CashFlowManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostConfirmation(this);" }))
+        {
+            <input type="hidden" name="ServiceOption" value="acknowledgement" id="ServiceOption" />
+            <div class="card shadow-lg p-4 mb-4 bg-white rounded border border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">🏦 Bank Cash Out Request Redirected And Approved</h5>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Great news! 🎉 Your Bank Cash Out request for
+                        <strong>@Model.CashReplenimentRequest.AmountRequested FCFA</strong> has been approved by
+                        <strong>@Model.CashReplenimentRequest.TempId2</strong>.
+                    </p>
+                    <p>
+                        You're authorized to withdraw <strong>@Model.CashReplenimentRequest.AmountRequested FCFA</strong>
+                        from account <strong>@Model.CashReplenimentRequest.TempId1</strong>.
+                    </p>
 
-                <div class="form-group mt-4">
-                    <label for="approvalReference2">
-                        Reference Code:
-                        <strong><span id="referenceDisplay2" class="text-primary">@Model.CashReplenimentRequest.ReferenceId</span></strong>
-                    </label>
-                    <label for="approvalReference2" class="d-block mt-2">Please enter the reference code above to acknowledge:</label>
-                    @Html.TextBox("enteredReference", null, new { @class = "form-control", @id = "enteredReference", placeholder = "Enter reference code here", required = "required" })
+                    <div class="form-group mt-4">
+                        <label for="approvalReference2">
+                            Reference Code:
+                            <strong><span id="referenceDisplay2" class="text-primary">@Model.CashReplenimentRequest.ReferenceId</span></strong>
+                        </label>
+                        <label for="approvalReference2" class="d-block mt-2">Please enter the reference code above to acknowledge:</label>
+                        @Html.TextBox("enteredReference", null, new { @class = "form-control", @id = "enteredReference", placeholder = "Enter reference code here", required = "required" })
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <button type="submit" class="btn btn-primary me-2">Confirm</button>
+                    <input type="hidden" name="Action" value="insert" id="Action" />
                 </div>
             </div>
-            <div class="card-footer text-end">
-                <button type="submit" class="btn btn-primary me-2">Confirm</button>
-                <input type="hidden" name="Action" value="insert" id="Action" />
-            </div>
-        </div>
-    }
+        }
 
-}
+    }
+</div>
+
 
 
 

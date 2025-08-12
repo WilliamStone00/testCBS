@@ -176,7 +176,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                     model.Description = entry.Description;
                     model.Reference = entry.ReferenceID;
                     model.Representative = entry.Representative;
-                    model.EntryDate = entry.EntryDate.ToString("yyyy-MM-dd");
+                    model.EntryDate = entry.ValueDate.ToString("yyyy-MM-dd");
                   
                     list.Add(model);
                 }
