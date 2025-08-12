@@ -392,7 +392,8 @@ function applyPayment() {
 
 function collectDeposits() {
     var deposits = [];
-
+    // Get the accounting date value once
+    var accountingDate = $('#BulkDeposit_AccountingDate').val();
     $('#myDataTableT tbody tr').each(function () {
         if ($(this).find('.form-check-input').prop('checked')) {
             var deposit = {};
@@ -414,6 +415,8 @@ function collectDeposits() {
             deposit.SourceType = $("input[name='AddOtherTransactionMobileMoneyCommand.SourceType']:checked").val();
             deposit.LoanApplicationId = $(this).find('.loan-application-id').val();
             deposit.Period = $(this).find('.period').val();
+            // ✅ Add accounting date
+            deposit.AccountingDate = accountingDate;
             deposits.push(deposit);
         }
     });

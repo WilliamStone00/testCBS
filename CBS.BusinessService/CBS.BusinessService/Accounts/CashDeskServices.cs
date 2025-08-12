@@ -543,7 +543,7 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "CashInMomocashCollection")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = false, OperationType = "Deposit", DepositType = "CashInMomocashCollection" };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = false, OperationType = "Deposit", DepositType = "CashInMomocashCollection", AccountingDate=bulkDeposits.FirstOrDefault().AccountingDate };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
@@ -586,7 +586,7 @@ namespace CBS.BusinessService.Accounts
                 // 650207592 Courage.
                 else if (bulkDeposits.FirstOrDefault().OperationType == "LoanRepaymentMomocashCollection")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepaymentMomocashCollection", IsCashOperation = false, OperationType = "Deposit" };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepaymentMomocashCollection", IsCashOperation = false, OperationType = "Deposit", AccountingDate=bulkDeposits.FirstOrDefault().AccountingDate };
 
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
@@ -621,7 +621,8 @@ namespace CBS.BusinessService.Accounts
                         LoanToBeRefundeds= bulkDeposits.FirstOrDefault().LoanToBeRefundeds,
                         AccountToBeDebiteds=bulkDeposits.FirstOrDefault().AccountToBeDebiteds
 
-
+                        ,
+                        AccountingDate=bulkDeposits.FirstOrDefault().AccountingDate
                     };
 
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
@@ -657,7 +658,8 @@ namespace CBS.BusinessService.Accounts
                         LoanToBeRefundeds= bulkDeposits.FirstOrDefault().LoanToBeRefundeds,
                         AccountToBeDebiteds=bulkDeposits.FirstOrDefault().AccountToBeDebiteds
 
-
+                        ,
+                        AccountingDate=bulkDeposits.FirstOrDefault().AccountingDate
                     };
 
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
