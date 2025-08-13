@@ -1413,6 +1413,16 @@
                 ].join('-');
             }
 
+            function isoOneMonthAgo() {
+                const t = new Date();
+                t.setMonth(t.getMonth() - 1);
+                return [
+                    t.getFullYear(),
+                    String(t.getMonth() + 1).padStart(2, '0'),
+                    String(t.getDate()).padStart(2, '0')
+                ].join('-');
+            }
+
             function normalizeAccountingDate(input) {
                 if (!input) return;
                 const raw = (input.value || '').trim();
@@ -1427,9 +1437,13 @@
                 const wantsMaxToday = (input.dataset.dateMax || '').toLowerCase() === 'today';
                 const wantsMinToday = (input.dataset.dateMin || '').toLowerCase() === 'today';
 
+                // Set default date if empty/min
                 if (looksMin && wantsDefaultToday) input.value = isoToday();
                 if (wantsMaxToday && !input.max) input.max = isoToday();
                 if (wantsMinToday && !input.min) input.min = isoToday();
+
+                // ⏳ Constrain back date to only 1 month ago if no min is already set
+                if (!input.min) input.min = isoOneMonthAgo();
 
                 // Adjust if value outside allowed range
                 if (input.max && input.value && input.value > input.max) input.value = input.max;

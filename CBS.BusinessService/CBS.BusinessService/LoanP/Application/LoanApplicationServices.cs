@@ -36,7 +36,7 @@ namespace CBS.BusinessService.Application
                 {
 
                     GetExecutionMessages(inResponse, true, $"Loan application", MessagesResults.Success,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
                 }
@@ -163,7 +163,7 @@ namespace CBS.BusinessService.Application
                 {
                     // Successful creation
                     GetExecutionMessages(response, true, $"Loan application", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
@@ -197,7 +197,7 @@ namespace CBS.BusinessService.Application
                 {
                     // Successful creation
                     GetExecutionMessages(response, true, $"Loan application", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
@@ -258,7 +258,7 @@ namespace CBS.BusinessService.Application
                     if (response.IsSuccess)
                     {
                         GetExecutionMessages(response, true, $"Loan application", MessagesResults.Success,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                         return ExecutionMessage;
                     }
                     else
