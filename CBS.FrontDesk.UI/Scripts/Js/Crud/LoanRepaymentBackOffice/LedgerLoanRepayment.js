@@ -212,7 +212,8 @@ function collectDeposits() {
     let loansToBeRefunded = [];
     let totalDebited = 0;
     let totalRepayment = 0;
-
+    // 📅 Accounting Date
+    let accountingDate = $('#BulkDeposit_AccountingDate').val(); // <-- Capture here
     console.clear();
 
     // 📌 Member and branch info
@@ -271,7 +272,8 @@ function collectDeposits() {
             BranchName: branchName,
             BranchCode: branchCode,
             AccountantName: accountantName,
-            Note: transactionNote
+            Note: transactionNote,
+            AccountingDate: accountingDate, // <-- Add here
         });
 
         totalRepayment += totalAmount;
@@ -460,7 +462,8 @@ function confirmTransaction(title, message, ajaxUrl, data, operationType, ledger
                     accountToBeDebiteds: data[0].AccountsToBeDebited,
                     loanToBeRefundeds: data[0].LoansToBeRefunded,
                     operationType: "LoanRepaymentGLAccountNoneCash",
-                    ledgerChartOfAccountId: ledgerAccountId
+                    ledgerChartOfAccountId: ledgerAccountId,
+                    accountingDate: data[0].AccountingDate  // ✅ send it
                 }),
                 success: function (response) {
                     console.log("✅ Response received:", response);

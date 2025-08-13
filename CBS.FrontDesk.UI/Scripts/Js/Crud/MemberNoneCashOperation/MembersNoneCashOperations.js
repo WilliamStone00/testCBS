@@ -227,7 +227,8 @@ function applyPayment() {
 
 function collectDeposits() {
     var deposits = [];
-
+    // 📅 Accounting Date
+    let accountingDate = $('#BulkDeposit_AccountingDate').val(); // <-- Capture here
     $('#myDataTableT tbody tr').each(function () {
         if ($(this).find('.form-check-input').prop('checked')) {
             var deposit = {};
@@ -251,7 +252,8 @@ function collectDeposits() {
             deposit.BookingDirection = $("input[name='AddMembersNoneCashOperationCommand.BookingDirection']:checked").val();
             deposit.ChartOfAccountId = $('#account_number').val();
             deposit.Note = $('#Note').val();
-
+            // ✅ Add accounting date
+            deposit.AccountingDate = accountingDate;
             deposits.push(deposit);
         }
     });

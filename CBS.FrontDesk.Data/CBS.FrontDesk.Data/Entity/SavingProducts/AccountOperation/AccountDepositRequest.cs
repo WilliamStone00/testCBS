@@ -104,6 +104,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public List<BulkDeposit> BulkOperations { get; set; } = new List<BulkDeposit>();
         public List<AccountToBeDebited> AccountToBeDebiteds { get; set; } = new List<AccountToBeDebited>();
         public List<LoanToBeRefunded> LoanToBeRefundeds { get; set; } = new List<LoanToBeRefunded>();
+        public DateTime? AccountingDate { get; set; }
         public string DepositType { get; set; }
         public string Period { get; set; }
         public string OperationType { get; set; }
@@ -150,12 +151,13 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string MemberRefence { get; set; }
         public decimal Vat { get; set; }
         public string Note { get; set; }
+        public DateTime? AccountingDate { get; set; }
     }
     public class BulkDeposit
     {
         public List<AccountToBeDebited> AccountToBeDebiteds { get; set; } = new List<AccountToBeDebited>();
         public List<LoanToBeRefunded> LoanToBeRefundeds { get; set; } = new List<LoanToBeRefunded>();
-
+        public DateTime? AccountingDate { get; set; }
         public string AccountNumber { get; set; }
         public decimal Fee { get; set; }
         public string CustomerId { get; set; }
