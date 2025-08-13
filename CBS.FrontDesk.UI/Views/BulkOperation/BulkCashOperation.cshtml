@@ -386,7 +386,7 @@
                                     alertify.success(response.message || 'Operation completed successfully');
                                     appalert(response.message || 'Operation completed successfully', 2, 1);
                                     // Reset the form after successful operation
-                                    form.reset();
+                                    window.location.href = '/BulkOperation/Listing'
                                 } else {
                                     //alertify.error(response.message || 'Error during operation');
                                     appalert(response.message || 'Error during operation', 2, 1);
@@ -527,7 +527,7 @@
                                // alertify.success(response.message || 'Operation completed successfully');
                                 appalert(response.message || 'Operation completed successfully', 2, 1);
                                 // Reset the form after successful operation
-                                form.reset();
+                                window.location.href = '/BulkOperation/Listing'
                             } else {
                                // alertify.error(response.message || 'Error during operation');
                                 appalert(response.message || 'Error during operation', 2, 1);

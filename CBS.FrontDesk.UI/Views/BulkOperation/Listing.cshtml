@@ -203,13 +203,20 @@
         </div>*@
 
     <!-- Action Button -->
-    <div class="row mb-3">
-        <div class="col-12 text-end">
-            <a href="/BulkOperation" class="btn btn-primary shadow-sm px-4">
-                <i class="mdi mdi-account-plus-outline me-1"></i> @GlobalBulkOperation.SimulateABulkOperation
-            </a>
-        </div>
+<div class="row mb-3">
+    <div class="col-3 text-end">
+        <a href="/BulkOperation" class="btn btn-primary shadow-sm px-4">
+            <i class="mdi mdi-account-plus-outline me-1"></i> @GlobalBulkOperation.SimulateARangeBulkOperation
+        </a>
     </div>
+
+    <div class="col-3 text-end">
+        <a href="/BulkOperation/BulkCashOperation" class="btn btn-primary shadow-sm px-4">
+            <i class="mdi mdi-account-plus-outline me-1"></i> @GlobalBulkOperation.SimulateBulkCashOperation
+        </a>
+    </div>
+</div> 
+    
     @*<div class="row mb-3">
             <div class="col-12 text-end">
                 <a href="/BulkOperation" class="btn btn-primary shadow-sm">
@@ -223,11 +230,11 @@
 <div class="card shadow-sm mb-4">
     <div class="card-header bg-light d-flex justify-content-between align-items-center">
         <h6 class="mb-0"><i class="mdi mdi-filter-outline text-primary me-1"></i> @GlobalBulkOperation.AdvancedUserFilters</h6>
-        <button class="btn btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+        <button class="btn btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTip1s" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </div>
-    <div id="collapseTips" class="collapse show">
+    <div id="collapseTip1s" class="collapse show">
         <div class="card-body">
             <div class="row mb-3">
                 <div class="col-md-12">
@@ -251,9 +258,19 @@
             <!-- Dynamic Filter Sections -->
             <div id="branchFilterSection" class="filter-section mb-3">
                 <label class="form-label fw-bold">@GlobalBulkOperation.SelectBranch</label>
-                @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"),
-                    "---" + @GlobalBulkOperation.SelectBranch + "---",
-                    new { @class = "form-select select2", id = "branchInput" })
+                @if (ViewBag.Branches != null && ((IEnumerable<dynamic>)ViewBag.Branches).Any())
+                {
+                    var firstBranch = ((IEnumerable<dynamic>)ViewBag.Branches).First();
+                    @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name", firstBranch.Id),
+                        "---" + @GlobalBulkOperation.SelectBranch + "---",
+                        new { @class = "form-select select2", id = "branchInput" })
+                }
+                else
+                {
+                    @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"),
+                        "---" + @GlobalBulkOperation.SelectBranch + "---",
+                        new { @class = "form-select select2", id = "branchInput" })
+                }
             </div>
 
             <div id="statusFilterSection" class="filter-section mb-3" style="display:none;">
@@ -305,11 +322,11 @@
 <div class="card shadow-sm">
     <div class="card-header bg-light d-flex justify-content-between align-items-center">
         <h6 class="mb-0"><i class="mdi mdi-table text-primary me-1"></i>Filtered Results</h6>
-        <button class="btn btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+        <button class="btn btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTip2s" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </div>
-    <div id="collapseTips" class="collapse show">
+    <div id="collapseTip2s" class="collapse show">
         <div class="card-body">
             @Html.Partial("_model")
             <div id="userTableView">
