@@ -22,6 +22,14 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string TellerId { get; set; }
         public bool Enable { get; set; }
     }
+    public class LinkCollectorTransitCommand
+    {
+        public string TellerId { get; set; }
+
+        public string LikedMemberReference { get; set; }
+
+        public bool IsLinkedToCollectorTransit { get; set; }
+    }
 
     public class SavingConfiguration
     {
@@ -40,6 +48,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public SavingProduct SavingProduct { get; set; } = new SavingProduct();
         public WithdrawalLimit WithdrawalLimit { get; set; } = new WithdrawalLimit();
         public Teller Teller { get; set; } = new Teller();
+        public InitializeAccountCommand InitializeAccountCommand { get; set; } = new InitializeAccountCommand();
         public SystemConfigForSaving SystemConfigForSaving { get; set; } = new SystemConfigForSaving();
         public List<DepositLimit> DepositLimits { get; set; } = new List<DepositLimit>();
         public List<TransferLimit> TransferLimits { get; set; } = new List<TransferLimit>();
@@ -591,9 +600,13 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [StringLength(50, ErrorMessage = "TellerType cannot exceed 50 characters.")]
         public string TellerType { get; set; } // VirtualTeller, PhysicalTeller, DailyCollectorTeller, NoneCashTeller
         public bool AllowRemoteTellerClose { get; set; }
+        public string LikedMemberReference { get; set; }
+        public bool IsLinkedToCollectorTransit { get; set; }
+
 
         public bool PerformCashIn { get; set; }
         public bool ShowbalancesOnCloseOfDay { get; set; }
+        public decimal BalanceInitialization { get; set; }
         public bool ShowbalancesOnOpenOfDay { get; set; }
 
         public bool PerformCashOut { get; set; }
@@ -679,7 +692,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public DateTime DateOfBlocked { get; set; }
         public string Blockedby { get; set; }
         public string Comment { get; set; }
-
+        public InitializeAccountCommand InitializeAccountCommand { get; set; } = new InitializeAccountCommand();
         public List<TransactionHistory> Transactions { get; set; }
         public string MapMobileMoneyToNoneMemberMobileMoneyReference { get; set; }
 
@@ -697,6 +710,15 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
             MobileMoneyMinimumBalanceAlertLevel = 0m;
             MobileMoneyMaximumBalanceAlertLevel = 0m;
         }
+    }
+    public class InitializeAccountCommand
+    {
+        public string TellerId { get; set; }
+        public decimal Amount { get; set; }
+        public decimal GLBalance { get; set; }
+        public decimal OperationBalance { get; set; }
+        public bool Confirmed { get; set; }
+        public string Note { get; set; }
     }
 
     public class MobileMoneyTellerConfigurationCommand

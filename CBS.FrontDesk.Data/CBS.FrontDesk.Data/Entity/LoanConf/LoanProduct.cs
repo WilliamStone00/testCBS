@@ -264,6 +264,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal MinimumInterestWaiver { get; set; }
         public decimal MaximumInterestWaiver { get; set; }
         public bool StopInterestCalculationAtLoanMaturityDate { get; set; }
+        public bool BlockSalaryAccount { get; set; }
 
         public int NumberOfDaysToStopInterestCalculation { get; set; }
         public decimal MinimumPercentageRefundBeforeRefinancing { get; set; }
@@ -297,11 +298,9 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool IsRequresRegisteredPublicAuthority { get; set; }
         public bool IsRequredIrrivocableSalaryTransfer { get; set; }
         public bool IsRequiredCollateral { get; set; }
-        public bool BlockedSavingAccount { get; set; }
-        public bool BlockedGuarantorAccount { get; set; }
+        public bool BlockGurantorAccount { get; set; }
         public bool InterestMustBePaidUpFront { get; set; }
 
-        public bool BlockedSalaryAccount { get; set; }
         public decimal MinimumSavingAccountBalanceRateForTheRequestAmount { get; set; }
         public decimal MinimumSalaryAccountBalanceRateForTheRequestAmount { get; set; }
         public decimal MinimumShareAccountBalanceForTheRequestAmount { get; set; }
@@ -418,7 +417,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string LoanProductCategoryId { get; set; }
         public bool BlockShareAccount { get; set; }
         public bool BlockSavingAccount { get; set; }
-
+        public bool BlockGurantorAccount { get; set; }
         public decimal MaximumInterestRate { get; set; }
         public string LoanDurationPeriod { get; set; }//Days, Weeks, Months, Years
         public int MinimumDurationPeriod { get; set; }
@@ -458,9 +457,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool IsRequresRegisteredPublicAuthority { get; set; }
         public bool IsRequredIrrivocableSalaryTransfer { get; set; }
         public bool IsRequiredCollateral { get; set; }
-        public bool BlockedSavingAccount { get; set; }
-        public bool BlockedGuarantorAccount { get; set; }
-        public bool BlockedSalaryAccount { get; set; }
+        public bool BlockSalaryAccount { get; set; }
         public decimal MinimumSavingAccountBalanceRateForTheRequestAmount { get; set; }
         public decimal MinimumSalaryAccountBalanceRateForTheRequestAmount { get; set; }
         public decimal MinimumShareAccountBalanceForTheRequestAmount { get; set; }
@@ -514,6 +511,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         [Required]
         public string Comment { get; set; }
         public bool IsAlreadyManage { get; set; }
+        public DateTime AccountingDate { get; set; }
 
     }
     public class LoanProductMaturityPeriodExtension

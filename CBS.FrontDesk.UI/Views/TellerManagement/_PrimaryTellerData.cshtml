@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
-    @using Resources
+@using Resources
 <fieldset class="fieldset-custom">
     <legend>Teller Data</legend>
     @if (Model.Tellers.Any())
@@ -47,46 +47,62 @@
                         </td>
                         <td>@d.Branch.Name</td>
                         <td>
-                            <div class="d-inline me-2">
-                                <a href="#" onclick="AddORUpdateGen('@d.id','datalistingview','_PrimaryTeller','get','TellerManagement',null)"
-                                   data-bs-toggle="tooltip" data-bs-placement="top" title="@GlobalShared.Select @d.name @GlobalShared.ToEdit">
-                                    <i class="mdi mdi-pencil text-primary"></i> @GlobalShared.Edit
-                                </a>
-                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="mdi mdi-tools"></i> Actions
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-sm small">
+                                    <!-- Edit Teller -->
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="AddORUpdateGen('@d.id','datalistingview','_PrimaryTeller','get','TellerManagement',null)">
+                                            <i class="mdi mdi-pencil-outline me-1 text-primary"></i> @GlobalShared.Edit
+                                        </a>
+                                    </li>
 
-                            @if (d.TellerType == "MobileMoneyMTN" || d.TellerType == "MomocashCollectionMTN" || d.TellerType == "MomocashCollectionOrange" || d.TellerType == "MobileMoneyORANGE")
-                            {
-                                <div class="d-inline me-2">
-                                    <a href="/TellerManagement/MMConfiguration?key=@d.id" target="_parent"
-                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Configure @d.TellerType">
-                                        <i class="mdi mdi-cog-outline text-warning"></i> @GlobalTellerManagement.MMConfig
-                                    </a>
-                                </div>
-                            }
+                                    <!-- Mobile Money Config -->
+                                    @if (d.TellerType == "MobileMoneyMTN" || d.TellerType == "MomocashCollectionMTN" || d.TellerType == "MomocashCollectionOrange" || d.TellerType == "MobileMoneyORANGE")
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" href="/TellerManagement/MMConfiguration?key=@d.id" target="_parent">
+                                                <i class="mdi mdi-cog-outline me-1 text-warning"></i> @GlobalTellerManagement.MMConfig
+                                            </a>
+                                        </li>
+                                    }
 
-                            @*<div class="d-inline me-2">
-                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="@GlobalShared.Delete @d.name"
-                                   onclick="DeleteRecordDataTable('TellerManagement','@d.id','myDataTable','_PrimaryTellerData',0,'datalistingview')">
-                                    <i class="mdi mdi-delete-outline text-danger"></i> @GlobalShared.Delete
-                                </a>
-                            </div>*@
+                                    <!-- Initialize Balance -->
+                                    @if (d.TellerType == "MobileMoneyMTN" || d.TellerType == "MomocashCollectionMTN" || d.TellerType == "MomocashCollectionOrange" || d.TellerType == "MobileMoneyORANGE" || d.TellerType == "DailyCollector" || d.TellerType.StartsWith("Momocash"))
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" href="#" onclick="openInitializeModal('@d.id', '@d.code', '@d.name')" data-bs-toggle="modal" data-bs-target="#initializeAccountModal">
+                                                <i class="mdi mdi-bank-transfer-in me-1 text-info"></i> Init Balance
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#"
+                                               onclick="openLinkCollectorTransitModal('@d.id', '@d.code', '@d.name', '@d.LikedMemberReference')">
+                                                <i class="mdi mdi-link-variant me-1 text-info"></i> Link Transit
+                                            </a>
 
-                            <div class="d-inline">
-                                @if (d.AllowRemoteTellerClose)
-                                {
-                                    <a href="#" class="badge bg-success fs-tiny" title="Click to disable remote close"
-                                       onclick="ToggleRemoteClose('@d.id', false)">
-                                        🔓 Enabled
-                                    </a>
-                                }
-                                else
-                                {
-                            <a href="#" class="badge bg-secondary fs-tiny" title="Click to enable remote close"
-                               onclick="ToggleRemoteClose('@d.id', true)">
-                                🔒 Disabled
 
-                            </a>
-                                }
+                                        </li>
+                                    }
+
+                                    <!-- Remote Close Toggle -->
+                                    <li>
+                                        @if (d.AllowRemoteTellerClose)
+                                        {
+                                            <a class="dropdown-item" href="#" onclick="ToggleRemoteClose('@d.id', false)">
+                                                <i class="mdi mdi-lock-open-outline me-1 text-success"></i> Disable Remote Close
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a class="dropdown-item" href="#" onclick="ToggleRemoteClose('@d.id', true)">
+                                                <i class="mdi mdi-lock-outline me-1 text-muted"></i> Enable Remote Close
+                                            </a>
+                                        }
+                                    </li>
+                                </ul>
                             </div>
                         </td>
 
@@ -105,3 +121,564 @@
         </div>
     }
 </fieldset>
+<div class="modal fade" id="initializeAccountModal" tabindex="-1" aria-labelledby="initializeAccountModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content position-relative">
+
+            <!-- Loader Overlay -->
+            <div id="initializeLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                    <div class="spinner-border text-tsc mb-3" role="status"></div>
+                    <p class="fw-semibold text-tsc">Initializing account... Please wait.</p>
+                </div>
+            </div>
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="w-100">
+                    <div class="card bg-light mb-2">
+                        <div class="card-body text-center">
+                            <h1 class="card-title text-primary">
+                                <i class="mdi mdi-bank-outline me-2"></i> Initialize Teller Account
+                            </h1>
+                            <p class="card-text text-muted">
+                                This action sets the teller's starting balance. Ensure accuracy as this will override the current operational balance.
+                            </p>
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TIPS COLLAPSIBLE SECTION -->
+            <div class="px-4">
+                <div class="card mb-2 shadow-sm">
+                    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                        <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInitializeTips" aria-expanded="false" aria-controls="collapseInitializeTips">
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h6>
+                    <div id="collapseInitializeTips" class="collapse">
+                        <div class="card-body small text-muted">
+                            <ul class="mb-0 ps-3">
+                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> The <strong>initial amount</strong> must match the cash physically present.</li>
+                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure the value reflects the <strong>GL balance shown in the Trial Balance</strong>.</li>
+                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> The current <strong>operational balance must be verified</strong> before override.</li>
+                                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> <strong>This action cannot be rolled back</strong>. Once completed, it is final and logged.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Form Body -->
+            <div class="px-4 pb-2 overflow-auto" style="max-height: 60vh;">
+                <form id="initializeAccountForm">
+                    <input type="hidden" id="tellerId" name="TellerId" />
+
+                    <div class="row gy-3 mt-3">
+                        <!-- Teller Name -->
+                        <div class="col-md-9">
+                            <label for="tellerName" class="form-label fw-semibold">Teller Name</label>
+                            <input type="text" id="tellerName" class="form-control fw-bold text-dark bg-light" readonly />
+                        </div>
+
+                        <!-- Teller Code -->
+                        <div class="col-md-3">
+                            <label for="accountNumber" class="form-label fw-semibold">Teller Code</label>
+                            <input type="text" class="form-control" id="accountNumber" name="AccountNumber" readonly />
+                        </div>
+
+                        <!-- Initialization Amount -->
+                        <div class="col-md-4">
+                            <label for="amount" class="form-label fw-semibold d-flex justify-content-between align-items-center">
+                                <span>Initialization Amount</span>
+                                <i class="mdi mdi-help-circle-outline text-primary fs-5 ms-2" tabindex="0"
+                                   data-bs-toggle="popover"
+                                   data-bs-trigger="focus"
+                                   title="Balance Orientation"
+                                   data-bs-html="true"
+                                   data-bs-content="
+                           <ul class='mb-0 ps-3'>
+                               <li>Will <strong>overwrite</strong> the current teller balance.</li>
+                               <li>Must match the <strong>physical cash</strong> available.</li>
+                               <li>Must match the <strong>GL balance</strong> in Trial Balance.</li>
+                               <li><strong>Cannot be rolled back</strong> after confirmation.</li>
+                           </ul>
+                           <div class='text-danger mt-2 fst-italic'>Ensure operational balance is verified.</div>
+                       "></i>
+                            </label>
+                            <input type="number" class="form-control" id="amount" name="Amount" required step="0.01" min="0" />
+                        </div>
+
+                        <!-- Current Operational Balance -->
+                        <div class="col-md-4">
+                            <label for="operationBalance" class="form-label fw-semibold">Current Operational Balance</label>
+                            <input type="number" id="operationBalance" class="form-control" value="0" step="0.01" min="0" />
+                        </div>
+
+                        <!-- GL Balance -->
+                        <div class="col-md-4">
+                            <label for="glBalance" class="form-label fw-semibold">GL Balance (Trial Balance)</label>
+                            <input type="number" id="glBalance" class="form-control text-success fw-bold" />
+                        </div>
+
+                        <!-- Total -->
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">Expected Total Balance (Init + Operational)</label>
+                            <input type="text" id="totalBalance" class="form-control fw-bold bg-light text-dark" readonly />
+                        </div>
+                        <!-- Note / User Comment -->
+                        <div class="col-md-12">
+                            <label for="note" class="form-label fw-semibold">Comment / Note (optional)</label>
+                            <textarea class="form-control" id="note" name="Note" rows="2" placeholder="E.g., Verified by branch controller, matched to GL..."></textarea>
+                        </div>
+
+                        <!-- Confirmation checkbox -->
+                        <div class="col-md-12">
+                            <div class="form-check mt-3">
+                                <input type="checkbox" class="form-check-input" id="confirmCheckbox" />
+                                <label class="form-check-label fw-semibold text-danger" for="confirmCheckbox">
+                                    ✅ I confirm that the balance has been verified and matches the GL and physical cash.
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 text-end">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="mdi mdi-check-circle-outline me-1"></i> Initialize
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="mdi mdi-close"></i> Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="linkCollectorTransitModal" tabindex="-1" aria-labelledby="linkCollectorTransitModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content position-relative">
+
+            <!-- Loader Overlay -->
+            <div id="linkCollectorTransitLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                    <div class="spinner-border text-tsc mb-3" role="status"></div>
+                    <p class="fw-semibold text-tsc">Linking to Collector Transit... Please wait.</p>
+                </div>
+            </div>
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="w-100">
+                    <div class="card bg-light mb-2">
+                        <div class="card-body text-center">
+                            <h1 class="card-title text-primary" id="linkCollectorTransitModalTitle">
+                                <i class="mdi mdi-link-variant me-2"></i> Link Teller to Daily Collector Transit Account
+                            </h1>
+                            <p class="card-text text-muted">
+                                This action will associate the teller's till with a Daily Collector's transit account.<br />
+                                Once linked, all operations will reference the specified collector account for accountability and reconciliation.
+                            </p>
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TIPS COLLAPSIBLE SECTION -->
+            <div class="px-4">
+                <div class="card mb-2 shadow-sm">
+                    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                        <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTransitTips" aria-expanded="false" aria-controls="collapseTransitTips">
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h6>
+                    <div id="collapseTransitTips" class="collapse">
+                        <div class="card-body small text-muted">
+                            <ul class="mb-0 ps-3">
+                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Linking helps track collections against a central Daily Collector Transit account.</li>
+                                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> All transactions performed by this teller will be recorded against the specified member reference.</li>
+                                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> <strong>This cannot be undone once confirmed</strong>. Ensure you link the correct member reference.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Form Body -->
+            <div class="px-4 pb-2 overflow-auto" style="max-height: 60vh;">
+                <form id="linkCollectorTransitForm">
+                    <!-- Hidden Teller ID -->
+                    <input type="hidden" id="tellerId" name="TellerId" required />
+                    <!-- Link Flag -->
+                    <input type="hidden" name="IsLinkedToCollectorTransit" value="true" />
+
+                    <div class="row gy-3 mt-3">
+                        <!-- Teller Name -->
+                        <div class="col-md-12">
+                            <label for="tellerName" class="form-label fw-semibold">Teller Name</label>
+                            <input type="text" id="tellerName" class="form-control fw-bold text-dark bg-light" readonly />
+                        </div>
+
+                        <!-- Currently Linked Account -->
+                        <div class="col-md-12" id="linkedAccountGroup" style="display: none;">
+                            <label for="linkedAccount" class="form-label fw-semibold">Currently Linked Account</label>
+                            <input type="text" id="linkedAccount" class="form-control bg-light text-dark" readonly title="This is the collector currently linked to the teller" />
+                        </div>
+
+                        <!-- Unlink Option -->
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="unlinkCheckbox" />
+                            <label class="form-check-label" id="unlinkLabel" for="unlinkCheckbox">
+                                <i class="mdi mdi-close-circle-outline text-danger me-1"></i>
+                                <span class="text-danger">❌ Unlink this teller from the current collector account</span>
+                            </label>
+                        </div>
+
+                        <!-- Collector Member Reference -->
+                        <div class="col-md-12">
+                            <label for="likedMemberReference" class="form-label fw-semibold">
+                                Collector Member Reference <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="likedMemberReference" name="LikedMemberReference" placeholder="E.g., 0010003215" required />
+                        </div>
+                    </div>
+
+                    <div class="mt-4 text-end">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="mdi mdi-link me-1"></i> Link Account
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="mdi mdi-close"></i> Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#unlinkCheckbox').on('change', function () {
+        const isChecked = $(this).is(':checked');
+        const $label = $('#unlinkLabel');
+
+        if (isChecked) {
+            $label.html(`<i class="mdi mdi-link-off text-success me-1"></i>
+            <span class="text-success">✅ This teller will be unlinked from any existing collector account</span>`);
+        } else {
+            $label.html(`<i class="mdi mdi-close-circle-outline text-danger me-1"></i>
+            <span class="text-danger">❌ Unlink this teller from the current collector account</span>`);
+        }
+    });
+
+
+    function updateUnlinkUI(isChecked) {
+        const $label = $('#unlinkLabel');
+        const $referenceInput = $('#likedMemberReference');
+        const $submitBtn = $('#linkCollectorTransitForm button[type="submit"]');
+
+        if (isChecked) {
+            $label.html(`
+            <i class="mdi mdi-link-variant text-success me-1"></i>
+            <span class="text-success">✅ Link this teller to a collector transit account</span>
+        `);
+            $referenceInput.prop('disabled', false);
+            $submitBtn.html('<i class="mdi mdi-link me-1"></i> Link Account');
+        } else {
+            $label.html(`
+            <i class="mdi mdi-close-circle-outline text-danger me-1"></i>
+            <span class="text-danger">❌ Unlink this teller from the current collector account</span>
+        `);
+            $referenceInput.prop('disabled', true);
+            $submitBtn.html('<i class="mdi mdi-link-off me-1"></i> Unlink Account');
+        }
+    }
+
+    $('#unlinkCheckbox').on('change', function () {
+        updateUnlinkUI(this.checked);
+    });
+
+    function openLinkCollectorTransitModal(tellerId, tellerCode, tellerName, likedMemberReference = '') {
+        // Set hidden fields
+        $('#linkCollectorTransitModal #tellerId').val(tellerId);
+        $('#linkCollectorTransitModal #tellerName').val(tellerName);
+        $('#linkCollectorTransitModal #likedMemberReference').val(likedMemberReference);
+        $('#linkCollectorTransitModal #linkedAccount').val(likedMemberReference);
+
+        const isLinked = likedMemberReference && likedMemberReference.trim() !== '';
+
+        const $submitBtn = $('#linkCollectorTransitForm button[type="submit"]');
+        const $memberInput = $('#linkCollectorTransitModal #likedMemberReference');
+        const $unlinkCheckbox = $('#unlinkCheckbox');
+        const $unlinkLabel = $('#unlinkLabel');
+
+        if (isLinked) {
+            $('#linkedAccountGroup').show();
+            $unlinkCheckbox.prop('checked', false); // default unchecked
+            $unlinkLabel.html(`
+            <i class="mdi mdi-close-circle-outline text-danger me-1"></i>
+            <span class="text-danger">❌ Unlink this teller from the current collector account</span>
+        `);
+            $memberInput.prop('readonly', true);
+            $submitBtn.prop('disabled', true);
+        } else {
+            $('#linkedAccountGroup').hide();
+            $unlinkCheckbox.prop('checked', false);
+            $unlinkLabel.html(`
+            <i class="mdi mdi-close-circle-outline text-danger me-1"></i>
+            <span class="text-danger">❌ Unlink this teller from the current collector account</span>
+        `);
+            $memberInput.prop('readonly', false);
+            $submitBtn.prop('disabled', false);
+        }
+
+        // Checkbox toggle: ✅ Allow modification only when checked
+        $unlinkCheckbox.off('change').on('change', function () {
+            const checked = $(this).is(':checked');
+
+            if (checked) {
+                // Allow editing to change reference and enable submit
+                $memberInput.prop('readonly', false);
+                $submitBtn.prop('disabled', false);
+                $unlinkLabel.html(`
+                <i class="mdi mdi-check-circle-outline text-success me-1"></i>
+                <span class="text-success">✅ You can now change the linked collector account</span>
+            `);
+            } else {
+                // Lock again
+                $memberInput.prop('readonly', true);
+                $submitBtn.prop('disabled', true);
+                $unlinkLabel.html(`
+                <i class="mdi mdi-close-circle-outline text-danger me-1"></i>
+                <span class="text-danger">❌ Unlink this teller from the current collector account</span>
+            `);
+            }
+        });
+
+        $('#linkCollectorTransitModal').modal('show');
+    }
+
+
+
+
+    $('#linkCollectorTransitForm').submit(function (e) {
+        e.preventDefault();
+
+        const $form = $(this);
+        const $submitBtn = $form.find('button[type="submit"]');
+        const $unlinkCheckbox = $('#unlinkCheckbox');
+
+        // Disable button and show spinner
+        $submitBtn.html('<i class="mdi mdi-loading mdi-spin me-1"></i> Processing...').prop('disabled', true);
+
+        // Extract values
+        const tellerId = $('#linkCollectorTransitModal #tellerId').val();
+        const likedMemberReference = $('#linkCollectorTransitModal #likedMemberReference').val();
+        const isUnlinking = $unlinkCheckbox.is(':checked');
+
+        if (!tellerId) {
+            appalert("⚠️ Teller ID is missing.", 3, 1);
+            resetLinkButton();
+            return;
+        }
+
+        if (!isUnlinking && (!likedMemberReference || likedMemberReference.trim().length < 6)) {
+            appalert("⚠️ Please enter a valid Collector Member Reference.", 3, 1);
+            resetLinkButton();
+            return;
+        }
+
+        const actionLabel = isUnlinking ? "unlink this teller from the current collector account" : `link this teller to collector <strong>${likedMemberReference}</strong>`;
+        const confirmText = isUnlinking ? "Unlink Collector Transit Account" : "Link to Collector Transit Account";
+
+        alertify.confirm(
+            confirmText,
+            `Are you sure you want to ${actionLabel}?`,
+            function () {
+                const isLinkingOrModifying = $('#unlinkCheckbox').is(':checked');
+                const formData = {
+                    TellerId: tellerId,
+                    LikedMemberReference: likedMemberReference,
+                    IsLinkedToCollectorTransit: isLinkingOrModifying
+                };
+
+
+
+                $.ajax({
+                    url: '/TellerManagement/LinkCollectorTransit',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (res) {
+                        if (res.success) {
+                            appalert(res.message || "✅ Operation successful.", 1, 1);
+                            $('#linkCollectorTransitModal').modal('hide');
+                        } else {
+                            appalert(res.message || "❌ Operation failed.", 3, 1);
+                            resetLinkButton();
+                        }
+                    },
+                    error: function () {
+                        appalert("❌ Failed to complete the operation. Please try again.", 3, 1);
+                        resetLinkButton();
+                    }
+                });
+            },
+            function () {
+                appalert("⛔ Operation cancelled.", 2, 1);
+                resetLinkButton();
+            }
+        ).set('labels', { ok: '✅ Confirm', cancel: '❌ Cancel' });
+
+        function resetLinkButton() {
+            $submitBtn.html('<i class="mdi mdi-link me-1"></i> Link Account').prop('disabled', false);
+        }
+    });
+
+    function enablePopover() {
+        const el = document.querySelector('[data-bs-toggle="popover"]');
+        if (el) new bootstrap.Popover(el);
+    }
+    function updateTotalBalance() {
+        const init = parseFloat($('#amount').val()) || 0;
+        const op = parseFloat($('#operationBalance').val()) || 0;
+        const total = init + op;
+        $('#totalBalance').val(total.toLocaleString());
+    }
+
+    $('#amount, #operationBalance').on('input', updateTotalBalance);
+    document.addEventListener('DOMContentLoaded', function () {
+        const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+        popoverTriggerList.forEach(function (el) {
+            new bootstrap.Popover(el);
+        });
+    });
+    function openInitializeModal(tellerId, tellerCode, tellerName, glBalance = 0) {
+        // 🔁 Reset form fields
+        $('#tellerId').val(tellerId);
+        $('#accountNumber').val(tellerCode);
+        $('#tellerName').val(tellerName);
+        $('#amount').val('0');
+        $('#operationBalance').val('0');
+        $('#glBalance').val(glBalance.toFixed(2)); // Keep as number for accurate validation
+        $('#totalBalance').val('0');
+        $('#note').val(''); // 🧾 Clear note/comment
+        $('#confirmCheckbox').prop('checked', false); // ❌ Uncheck confirmation box
+
+        // 🧼 Re-enable submit button in case it's still disabled
+        const $submitBtn = $('#initializeAccountForm button[type="submit"]');
+        $submitBtn.html('<i class="mdi mdi-check-circle-outline me-1"></i> Initialize').prop('disabled', false);
+
+        // 🔍 Re-bind popover
+        enablePopover();
+    }
+
+
+
+
+    // 🧠 Updated form submission check
+    $('#initializeAccountForm').submit(function (e) {
+        e.preventDefault();
+
+        const $form = $(this);
+        const $submitBtn = $form.find('button[type="submit"]');
+
+        // Disable submit immediately to prevent double-clicks
+        $submitBtn.html('<i class="mdi mdi-loading mdi-spin me-1"></i> Initializing...').prop('disabled', true);
+
+        const tellerId = $('#tellerId').val();
+        const accountNumber = $('#accountNumber').val();
+        const amount = parseFloat($('#amount').val());
+        const glBalance = parseFloat($('#glBalance').val());
+        const operational = parseFloat($('#operationBalance').val()) || 0;
+        const total = amount + operational;
+        const confirmed = $('#confirmCheckbox').is(':checked');
+        const note = $('#note').val(); // ✅ User's comment
+
+        // ⛔ Inline validation (releases button if blocked)
+        if (!accountNumber || isNaN(amount) || amount <= 0) {
+            appalert("⚠️ Please enter a valid initialization amount.", 3, 1);
+            resetButton();
+            return;
+        }
+
+        if (isNaN(glBalance) || glBalance <= 0) {
+            appalert("⚠️ GL Balance is invalid.", 3, 1);
+            resetButton();
+            return;
+        }
+
+        if (operational <= 0 && Math.abs(amount - glBalance) > 0.01) {
+            appalert("❌ The Initialization Amount must match the GL Balance when there is no current operational value.", 3, 1);
+            resetButton();
+            return;
+        }
+
+        if (operational > 0 && Math.abs(total - glBalance) > 0.01) {
+            appalert("❌ The sum of Initialization and Operational Balance must match the GL Balance.", 3, 1);
+            resetButton();
+            return;
+        }
+
+        if (!confirmed) {
+            appalert("⚠️ Please confirm that the balance has been verified.", 3, 1);
+            resetButton();
+            return;
+        }
+
+        // 🧾 Confirm modal
+        alertify.confirm(
+            "Initialize Balance",
+            `Are you sure you want to initialize <strong>${accountNumber}</strong> with amount <strong>${amount.toLocaleString()}</strong>?`,
+            function () {
+                const formData = {
+                    TellerId: tellerId,
+                    Amount: amount,
+                    GLBalance: glBalance,
+                    CurrentOperationalBalance: operational,
+                    Confirmed: confirmed,
+                    Note: note
+                };
+
+                $.ajax({
+                    url: '/TellerManagement/InitializeAccount',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (res) {
+                        if (res.success) {
+                            appalert(res.message || "✅ Account initialized successfully.", 1, 1);
+                            $('#initializeAccountModal').modal('hide');
+                        } else {
+                            appalert(res.message || "❌ Initialization failed.", 3, 1);
+                            resetButton();
+                        }
+                    },
+                    error: function () {
+                        appalert("❌ Failed to initialize account. Please try again.", 3, 1);
+                        resetButton();
+                    }
+                });
+            },
+            function () {
+                appalert("⛔ Initialization cancelled.", 2, 1);
+                resetButton();
+            }
+        ).set('labels', { ok: '✅ Proceed', cancel: '❌ Cancel' });
+
+        // 🔁 Reset function to clean button
+        function resetButton() {
+            $submitBtn.html('<i class="mdi mdi-check-circle-outline me-1"></i> Initialize').prop('disabled', false);
+        }
+    });
+
+</script>
+

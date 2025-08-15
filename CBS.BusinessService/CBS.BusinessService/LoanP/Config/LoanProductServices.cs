@@ -499,8 +499,6 @@ namespace CBS.BusinessService.Config
                     LoanInterestPeriod = product.LoanInterestPeriod,
                     MinimumInterestRate = product.MinimumInterestRate,
                     MaximumInterestRate = product.MaximumInterestRate,
-                    BlockShareAccount = product.BlockShareAccount,
-                    BlockSavingAccount = product.BlockSavingAccount,
                    
 
         PenaltyId=product.PenaltyId,
@@ -533,9 +531,10 @@ namespace CBS.BusinessService.Config
                     IsRequresRegisteredPublicAuthority = product.IsRequresRegisteredPublicAuthority,
                     IsRequredIrrivocableSalaryTransfer = product.IsRequredIrrivocableSalaryTransfer,
                     IsRequiredCollateral = product.IsRequiredCollateral,
-                    BlockedSavingAccount = product.BlockedSavingAccount,
-                    BlockedGuarantorAccount = product.BlockedGuarantorAccount,
-                    BlockedSalaryAccount = product.BlockedSalaryAccount,
+                    BlockSalaryAccount = product.BlockSalaryAccount,
+                    BlockShareAccount = product.BlockShareAccount,
+                    BlockSavingAccount = product.BlockSavingAccount,
+                    BlockGurantorAccount=product.BlockGurantorAccount,
                     MinimumSavingAccountBalanceRateForTheRequestAmount = product.MinimumSavingAccountBalanceRateForTheRequestAmount,
                     MinimumSalaryAccountBalanceRateForTheRequestAmount = product.MinimumSalaryAccountBalanceRateForTheRequestAmount,
                     MinimumShareAccountBalanceForTheRequestAmount = product.MinimumShareAccountBalanceForTheRequestAmount,
@@ -631,8 +630,10 @@ namespace CBS.BusinessService.Config
                         LoanProduct.IsRequresRegisteredPublicAuthority = model.IsRequresRegisteredPublicAuthority;
                         LoanProduct.MinimumShareAccountBalanceForTheRequestAmount = model.MinimumShareAccountBalanceForTheRequestAmount;
                         LoanProduct.MinimumSalaryAccountBalanceRateForTheRequestAmount = model.MinimumSalaryAccountBalanceRateForTheRequestAmount;
-                        LoanProduct.BlockedGuarantorAccount = model.BlockedGuarantorAccount;
-                        LoanProduct.BlockedSalaryAccount = model.BlockedSalaryAccount;
+                        LoanProduct.BlockGurantorAccount = model.BlockGurantorAccount;
+                        LoanProduct.BlockSalaryAccount = model.BlockSalaryAccount;
+                        LoanProduct.BlockSavingAccount = model.BlockSavingAccount;
+                        LoanProduct.BlockShareAccount = model.BlockShareAccount;
                         LoanProduct.MinimumSavingAccountBalanceRateForTheRequestAmount =
                             model.MinimumSavingAccountBalanceRateForTheRequestAmount;
                         LoanProduct.Co_obligorMustHaveFundToGuranteeLoan=model.Co_obligorMustHaveFundToGuranteeLoan;

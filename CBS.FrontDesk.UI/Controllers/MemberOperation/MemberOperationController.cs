@@ -138,7 +138,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
         }
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string serviceOption = null, string path = null)
-        {
+         {
             ViewBag.KEY = KEY;
             var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
             ViewBag.LoanApplicationStatus = productEnumAgregates.LoanStatuses;
@@ -244,8 +244,8 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         var customer = await InitializeCustomerData(loanApplication.CustomerId);
                         var collateral = new LoanApplicationCollateral { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.CustomerId };
                         ViewBag.LoanProductCollaterals = await _loanProductCollateralServices.GetLoanProductCollaterals(loanApplication.LoanProduct.Id);
-                  
-                        return PartialView(partialView, new MemberOperationPanel {  LoanCollatera = collateral, LoanGuarantor = guarantor, Customer = customer.CustomerList, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id } });
+
+                        return PartialView(partialView, new MemberOperationPanel { LoanCollatera = collateral, LoanGuarantor = guarantor, Customer = customer.CustomerList, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = new UpdateLoanApplicationStatusCommand { Id = loanApplication.Id } });
                     }
                     else if (path == "application_detail")
                     {
@@ -255,7 +255,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                         var guarantor = new LoanGuarantor { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.CustomerId };
                         var collateral = new LoanApplicationCollateral { LoanApplicationId = loanApplication.Id, CustomerId = customer.CustomerList.CustomerId };
                         ViewBag.LoanProductCollaterals = await _loanProductCollateralServices.GetLoanProductCollaterals(loanApplication.Id);
-                        var updateLoanApplication = new UpdateLoanApplicationStatusCommand { Id=loanApplication.Id};
+                        var updateLoanApplication = new UpdateLoanApplicationStatusCommand { Id=loanApplication.Id };
 
                         return PartialView(partialView, new MemberOperationPanel { LoanCollatera = collateral, LoanGuarantor = guarantor, Customer = customer.CustomerList, AddOTPNotificationCommand = new AddOTPNotificationCommand { CustomerId = loanApplication.CustomerId, LoanApplicationId = loanApplication.Id }, LoanApplication = loanApplication, UpdateLoanApplicationStatus = updateLoanApplication });
                     }
@@ -474,6 +474,24 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                     var data = await _loanApplicationServices.Create(model.AddLoanApplicationCommand);
                     return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
                 }
+                else if (model.AddLoanApplicationCommand.LoanApplicationType == "Refinancing")
+                {
+                    var loan = await _loanservices.GetLoan(model.AddLoanApplicationCommand.LoanId);
+                    model.AddLoanApplicationCommand.AmortizationType = loan.LoanApplication.AmortizationType;
+                    model.AddLoanApplicationCommand.LoanTarget = loan.LoanApplication.LoanTarget;
+                    model.AddLoanApplicationCommand.LoanType = loan.LoanApplication.LoanType;
+                    model.AddLoanApplicationCommand.OldLoanPayment=new OldLoanPayment
+                    {
+                        LoanId=loan.Id,
+                        Amount=loan.LoanAmount,
+                        Capital=loan.Balance,
+                        Interest=loan.AccrualInterest,
+                        Penalty=loan.Penalty,
+                        VAT=loan.Tax
+                    };
+                    var data = await _loanApplicationServices.Create(model.AddLoanApplicationCommand);
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                }
                 else
                 {
                     if (!ModelState.IsValid)
@@ -489,7 +507,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                     if (model.AddLoanApplicationCommand.LoanApplicationType == "Restructure")
                     {
                         model.AddLoanApplicationCommand.Amount = model.AddLoanApplicationCommand.OldLoanPayment.Capital + model.AddLoanApplicationCommand.OldLoanPayment.Interest + model.AddLoanApplicationCommand.OldLoanPayment.Penalty + model.AddLoanApplicationCommand.OldLoanPayment.VAT;
-                  
+
                     }
                     // Proceed with processing the valid command
                     var data = await _loanApplicationServices.Create(model.AddLoanApplicationCommand);

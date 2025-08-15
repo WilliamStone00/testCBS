@@ -192,10 +192,19 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
         public async Task<ActionResult> GetAccountingDayDetails(string id)
         {
-            var accountingDay = await _services.GetAccountingDay(id); // Fetch the accounting day by ID
-            var accountingDayQuery = new GetAccountingDayQuery { AccountingDay = accountingDay };
-            return PartialView("_AccountingDayDetails", accountingDayQuery);
+            if (string.IsNullOrWhiteSpace(id))
+                return Content("<div class='text-danger p-2'>Missing accounting day id.</div>");
+
+            var accountingDay = await _services.GetAccountingDay(id);
+            if (accountingDay == null)
+                return Content("<div class='text-warning p-2'>No accounting day found for the given id.</div>");
+
+            var model = new GetAccountingDayQuery { AccountingDay = accountingDay };
+
+            // Point explicitly to where the partial lives
+            return PartialView("~/Views/AccountingDay/_AccountingDayDetails.cshtml", model);
         }
+
 
         [HttpPost]
         public async Task<JsonResult> GetAccountingDays(string queryParameter, string branchId, string status, DateTime? dateFrom, DateTime? dateTo)

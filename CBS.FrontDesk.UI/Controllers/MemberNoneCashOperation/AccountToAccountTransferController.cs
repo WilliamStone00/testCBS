@@ -1,4 +1,5 @@
-﻿using CBS.BusinessService.Accounting;
+﻿using CBS.BusinessService;
+using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data;
@@ -10,10 +11,12 @@ using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.UI.Helper;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Services.Description;
@@ -27,21 +30,24 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
     {
         private readonly AccountToAccountTransferService _transferService;
         private readonly MemberNoneCashOperationServices _memberNoneCashOperationServices;
-
+        private readonly BranchServices _branchServices;
         private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
 
-        public AccountToAccountTransferController(AccountToAccountTransferService cashDeskService = null, ChartOfAccountServicesAnnex chartOfAccountServices = null, MemberNoneCashOperationServices memberNoneCashOperationServices = null)
+        public AccountToAccountTransferController(AccountToAccountTransferService cashDeskService = null, ChartOfAccountServicesAnnex chartOfAccountServices = null, MemberNoneCashOperationServices memberNoneCashOperationServices = null, BranchServices branchServices = null)
         {
             _transferService = cashDeskService;
             this.chartOfAccountServices=chartOfAccountServices;
             _memberNoneCashOperationServices=memberNoneCashOperationServices;
+            _branchServices=branchServices;
         }
         public ActionResult Index()
         {
             return View();
         }
-        public ActionResult Transfters()
+        public async Task<ActionResult> Transfters()
         {
+            var Branches = await _branchServices.GetBranches();
+            ViewBag.Branches = Branches;
             return View();
         }
 
@@ -122,6 +128,32 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 
                 TempData["ErrorMessage"] = ex.Message; // Store error message
                 return RedirectToAction("Index", "Error"); // Redirect to error page
+            }
+        }
+        [HttpPost]
+        public async Task<ActionResult> LoadTransferData(GetTransfersDataTableQuery tableQuery)
+        {
+            try
+            {
+                var dataTable = await _transferService.GetDataTableAsync(tableQuery);
+
+                // Convert object data to strongly typed TransferDto list
+                var transferList = JsonConvert.DeserializeObject<List<Transfer>>(
+                    JsonConvert.SerializeObject(dataTable.data)
+                );
+
+                return Json(new
+                {
+                    draw = dataTable.DataTableOptions.draw,
+                    recordsTotal = dataTable.recordsTotal,
+                    recordsFiltered = dataTable.recordsFiltered,
+                    data = transferList
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // Optional: log ex here
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading transfer data.");
             }
         }
 

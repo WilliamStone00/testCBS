@@ -237,6 +237,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
             }
         }
+
         public string PrepareReport(string mainReportType)
         {
             // STEP 1: Report title & path mapping

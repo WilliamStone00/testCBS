@@ -153,22 +153,27 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public async Task<ActionResult> PostRequestCash(List<AccountToBeDebited> accountToBeDebiteds, List<LoanToBeRefunded> loanToBeRefundeds, string operationType = "LoanRepaymentByLocalAccountNoneCash", string ledgerChartOfAccountId = null)
+        public async Task<ActionResult> PostRequestCash(
+            List<AccountToBeDebited> accountToBeDebiteds,
+            List<LoanToBeRefunded> loanToBeRefundeds,
+            string operationType = "LoanRepaymentByLocalAccountNoneCash",
+            string ledgerChartOfAccountId = null,
+            DateTime? accountingDate = null) // ✅ make nullable
         {
             try
             {
                 if (loanToBeRefundeds == null || !loanToBeRefundeds.Any())
                     return Json(new { success = false, status = false, message = "No loan repayment data was submitted." });
 
-                var loan = loanToBeRefundeds.FirstOrDefault();
-                if (loan == null)
-                    return Json(new { success = false, status = false, message = "Invalid loan data submitted." });
+                var loan = loanToBeRefundeds.First(); // safe, we checked Any()
 
-                // Accounts are optional for other operations but required for local account repayments
                 if (operationType == "LoanRepaymentByLocalAccountNoneCash" && (accountToBeDebiteds == null || !accountToBeDebiteds.Any()))
-                return Json(new { success = false, status = false, message = "No accounts to debit were provided." });
+                    return Json(new { success = false, status = false, message = "No accounts to debit were provided." });
 
-                
+                // ✅ pick controller param date, else the loan date, else today
+                var postAccountingDate = accountingDate
+                                         ?? loan.AccountingDate
+                                         ?? DateTime.Today;
 
                 var deposits = new List<BulkDeposit>
         {
@@ -180,9 +185,10 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 OperationType = operationType,
                 AccountNumber = loan.LoanId,
                 CustomerId = loan.MemberRefence,
-                Principal = loan.Capital, 
-                ChartOfAccountId=ledgerChartOfAccountId,
+                Principal = loan.Capital,
+                ChartOfAccountId = ledgerChartOfAccountId,
                 Interest = loan.Interest,
+                AccountingDate = postAccountingDate,   // ✅ use resolved date
                 Penalty = loan.Penalty,
                 Tax = Math.Abs(loan.Vat),
                 VAT = Math.Abs(loan.Vat),

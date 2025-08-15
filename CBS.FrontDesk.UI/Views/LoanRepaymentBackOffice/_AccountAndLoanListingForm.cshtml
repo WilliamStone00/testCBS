@@ -28,7 +28,7 @@
     <fieldset class="fieldset-custom">
         <div class="container">
             <!-- Accounts Table -->
-            <div class="row">
+            <div class="row mb-3">
                 <div class="table-responsive">
                     <table class="table table-hover" id="myDataTableT">
                         <thead class="table-light">
@@ -59,7 +59,7 @@
                                     </td>
                                     <td class="status-indicator"></td> <!-- New column for ❌ (Error Indicator) -->
                                     <td>
-                                        <input type="checkbox" class="form-check-input" disabled>
+                                        <input type="checkbox" class="form-check-input">
                                     </td> <!-- Selection Checkbox -->
                                 </tr>
                             }
@@ -72,6 +72,27 @@
                             </tr>
                         </tfoot>
                     </table>
+                </div>
+            </div>
+            <!-- Accounting Date - Top Right -->
+            <div class="row mb-3">
+                <div class="col text-end">
+                    <label class="form-label fw-semibold me-2">Accounting Date</label>
+                    @Html.TextBoxFor(
+                        m => m.BulkDeposit.AccountingDate,
+                        Model.BulkDeposit.AccountingDate.HasValue
+                            ? Model.BulkDeposit.AccountingDate.Value.ToString("yyyy-MM-dd")
+                            : DateTime.Today.ToString("yyyy-MM-dd"),
+                        new
+                        {
+                            @class = "form-control accounting-date d-inline-block",
+                            style = "width: 200px; display:inline-block;",
+                            type = "date",
+                            data_date_default = "today",
+                            data_date_max = "today"
+                        }
+                    )
+                    @Html.ValidationMessageFor(m => m.BulkDeposit.AccountingDate, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -131,9 +152,11 @@
                                         <input type="number" class="form-control penalty-input" id="penalty-@d.Id" value="0" oninput="updateTotals()">
                                     </td>
                                     <td><span class="total-span" id="total-@d.Id">0</span></td>
+
                                     <td>
-                                        <input type="checkbox" class="form-check-input" disabled>
+                                        <input type="checkbox" class="form-check-input loan-confirmation-checkbox" />
                                     </td>
+
                                 </tr>
                             }
                         </tbody>
@@ -164,6 +187,7 @@
 
             <!-- Note Section -->
             <div class="row">
+              
                 <div class="col-md-12 mt-2">
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.BulkDeposit.Note,

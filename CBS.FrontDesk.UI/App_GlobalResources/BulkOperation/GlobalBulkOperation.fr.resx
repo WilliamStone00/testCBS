@@ -375,8 +375,8 @@
   <data name="ShowsTheMostCurrentTransferStatus" xml:space="preserve">
     <value>Affiche le statut le plus actuel du transfert</value>
   </data>
-  <data name="SimulateABulkOperation" xml:space="preserve">
-    <value>Simuler une opération en masse</value>
+  <data name="SimulateARangeBulkOperation" xml:space="preserve">
+    <value>Simuler une opération groupée sur une plage</value>
   </data>
   <data name="SimulateBulkOperation" xml:space="preserve">
     <value>Simuler l'opération en masse</value>
@@ -514,10 +514,10 @@
     <value>Montant de la contribution</value>
   </data>
   <data name="SelectOperationType" xml:space="preserve">
-    <value>Sélectionnez le type d'opération</value>
+    <value>Sélectionner la portée de l'opération</value>
   </data>
   <data name="BulkOperationCashOutOrCashInAccount" xml:space="preserve">
-    <value>Compte de contribution pour les dépôts/retraits d'espèces en gros</value>
+    <value>GL</value>
   </data>
   <data name="BulkCashOperationSimulation" xml:space="preserve">
     <value>Simulation d'opération de traitement de fonds en vrac</value>
@@ -526,9 +526,21 @@
     <value>Configurer les paramètres de fonctionnement de la destination</value>
   </data>
   <data name="BulkCashAccountList" xml:space="preserve">
-    <value>Configurer les comptes pour les opérations groupées</value>
+    <value>Ajouter un compte membre pour une opération groupée</value>
   </data>
   <data name="BulkCashSimulationMethod" xml:space="preserve">
     <value>Méthode de simulation de trésorerie en vrac</value>
+  </data>
+  <data name="SelectAccountingDate" xml:space="preserve">
+    <value>Sélectionnez une date comptable</value>
+  </data>
+  <data name="BulkOperationCashOutOrCashInAccountTransferCashIn" xml:space="preserve">
+    <value>Crédit</value>
+  </data>
+  <data name="BulkOperationCashOutOrCashInAccountTransferCashOut" xml:space="preserve">
+    <value>Débit</value>
+  </data>
+  <data name="SimulateBulkCashOperation" xml:space="preserve">
+    <value>Simuler une opération de paiement en espèces en vrac</value>
   </data>
 </root>

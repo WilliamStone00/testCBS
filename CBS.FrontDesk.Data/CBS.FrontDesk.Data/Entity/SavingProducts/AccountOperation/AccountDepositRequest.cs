@@ -1,5 +1,6 @@
 ﻿using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
@@ -103,6 +104,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public List<BulkDeposit> BulkOperations { get; set; } = new List<BulkDeposit>();
         public List<AccountToBeDebited> AccountToBeDebiteds { get; set; } = new List<AccountToBeDebited>();
         public List<LoanToBeRefunded> LoanToBeRefundeds { get; set; } = new List<LoanToBeRefunded>();
+        public DateTime? AccountingDate { get; set; }
         public string DepositType { get; set; }
         public string Period { get; set; }
         public string OperationType { get; set; }
@@ -149,12 +151,13 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string MemberRefence { get; set; }
         public decimal Vat { get; set; }
         public string Note { get; set; }
+        public DateTime? AccountingDate { get; set; }
     }
     public class BulkDeposit
     {
         public List<AccountToBeDebited> AccountToBeDebiteds { get; set; } = new List<AccountToBeDebited>();
         public List<LoanToBeRefunded> LoanToBeRefundeds { get; set; } = new List<LoanToBeRefunded>();
-
+        public DateTime? AccountingDate { get; set; }
         public string AccountNumber { get; set; }
         public decimal Fee { get; set; }
         public string CustomerId { get; set; }
@@ -341,6 +344,28 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         }
     }
 
+    public class GetTransfersDataTableQuery
+    {
+        public DataTableOptions DataTableOptions { get; set; }
+
+        // Existing
+        public string BranchId { get; set; }
+        public string SourceAccountNumber { get; set; }
+        public string DestinationAccountNumber { get; set; }
+        public string TransactionRef { get; set; }
+        public string TransactionType { get; set; }
+        public string Status { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public bool? IsInterBranchOperation { get; set; }
+        public string SourceCustomerId { get; set; }          // SendingCustomerId
+        public string DestinationCustomerId { get; set; }     // ReceivingCustomerId
+
+        // NEW
+        public string SendingMemberReference { get; set; }    // e.g., external/member ref of sender
+        public string ReceivingCustomerReference { get; set; }// e.g., external/member ref of receiver
+        public string Initiator { get; set; }                 // maps to InitiatedByUSerName
+    }
 
     public class TransferRequest
     {

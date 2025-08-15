@@ -32,6 +32,26 @@
                         </div>
                     </div>
                     <hr style="border: 1px solid green;" />
+                    <div class="row mb-3">
+                        <div class="col text-end">
+                            <label class="form-label fw-semibold me-2">Accounting Date</label>
+                            @Html.TextBoxFor(
+                                m => m.BulkDeposit.AccountingDate,
+                                Model.BulkDeposit.AccountingDate.HasValue
+                                    ? Model.BulkDeposit.AccountingDate.Value.ToString("yyyy-MM-dd")
+                                    : DateTime.Today.ToString("yyyy-MM-dd"),
+                                new
+                                {
+                                    @class = "form-control accounting-date d-inline-block",
+                                    style = "width: 200px; display:inline-block;",
+                                    type = "date",
+                                    data_date_default = "today",
+                                    data_date_max = "today"
+                                }
+                            )
+                            @Html.ValidationMessageFor(m => m.BulkDeposit.AccountingDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="table-responsive" style="width: 100%;">
                             <table class="table table-hover" id="myDataTableT">
@@ -137,7 +157,26 @@ else if (ViewBag.Operation == "repayment")
                         </div>
                     </div>
                     <hr style="border: 1px solid green;" />
-
+                    <div class="row mb-3">
+                        <div class="col text-end">
+                            <label class="form-label fw-semibold me-2">Accounting Date</label>
+                            @Html.TextBoxFor(
+                                m => m.BulkDeposit.AccountingDate,
+                                Model.BulkDeposit.AccountingDate.HasValue
+                                    ? Model.BulkDeposit.AccountingDate.Value.ToString("yyyy-MM-dd")
+                                    : DateTime.Today.ToString("yyyy-MM-dd"),
+                                new
+                                {
+                                    @class = "form-control accounting-date d-inline-block",
+                                    style = "width: 200px; display:inline-block;",
+                                    type = "date",
+                                    data_date_default = "today",
+                                    data_date_max = "today"
+                                }
+                            )
+                            @Html.ValidationMessageFor(m => m.BulkDeposit.AccountingDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                     <div class="row">
 
 

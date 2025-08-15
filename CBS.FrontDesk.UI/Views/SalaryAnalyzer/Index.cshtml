@@ -62,7 +62,7 @@
                                 <div class="change-group">
                                     <div class="card mb-3">
                                         <div class="card-body d-flex justify-content-end align-items-center">
-                                            <a type="button" onclick="LoadDataGen('SalaryAnalyzer','myDataTable','_FileUploadData',0,'datalistingview')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="View List">
+                                            <a type="button" onclick="LoadDataGen('SalaryAnalyzer','myDataTable','_FileUploadData',0,'datalistingview',null,null,'cs_salary')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="View List">
                                                 <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
                                             </a>
                                         </div>
@@ -85,7 +85,7 @@
     <script>
         $(document).ready(function () {
 
-            LoadDataGen('SalaryAnalyzer', 'myDataTable', '_FileUploadData', 0, 'datalistingview')
+            LoadDataGen('SalaryAnalyzer', 'myDataTable', '_FileUploadData', 0, 'datalistingview',null,'list','cs_salary')
 
         });
     </script>

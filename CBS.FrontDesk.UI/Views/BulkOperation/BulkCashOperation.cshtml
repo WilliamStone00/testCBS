@@ -1,4 +1,5 @@
 ﻿@using Resources
+@using Newtonsoft;
 @model CBS.FrontDesk.Data.Entity.BulkOperation.SimulateCashOutOrCashInBulkOperation
 @{
     ViewBag.Title = @GlobalBulkOperation.SimulateBulkOperation;
@@ -59,6 +60,8 @@
                             </div>
                         </div>
 
+
+
                         <!-- Manual Input Section -->
                         <div id="manualInputSection" class="mt-3">
                             @using (Html.BeginForm("SimulateCashOutOrCashInBulkOperation", "BulkOperation", FormMethod.Post, new { id = "manualForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateManualEntryingBulkCashOperation(this);" }))
@@ -76,13 +79,18 @@
                             }
                         </div>
 
+
                         <!-- File Input Section -->
                         <div id="fileInputSection" class="mt-3" style="display: none;">
-                            @using (Html.BeginForm("SimulateCashOutOrCashInBulkFileOperation", "BulkOperation", FormMethod.Post, new { id = "fileForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateBulkCashOperation(this);" }))
+                            @using (Html.BeginForm("UploadBulkCashOperationFile", "BulkOperation", FormMethod.Post, new { id = "fileForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostBulkCashFileUploadOperation(this);" }))
                             {
                                 @Html.AntiForgeryToken()
                                 @Html.Partial("_FileBulkOperationConfigurationPartial")
-
+                            }
+                            @using (Html.BeginForm("SimulateCashOutOrCashInBulkFileOperation", "BulkOperation", FormMethod.Post, new { id = "filePosting", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateBulkCashOperation(this);" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Partial("_BulkOperationParameters2", Model)
                                 <div class="row mt-2">
                                     <div class="col-md-12 text-end">
                                         <button type="submit" class="btn btn-primary">
@@ -92,6 +100,7 @@
                                 </div>
                             }
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -102,7 +111,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+<script>
         $(document).ready(function () {
             // Toggle between manual and file input
             $('input[name="InputMethod"]').change(function () {
@@ -118,18 +127,47 @@
             // Initialize tooltips
             $('[data-bs-toggle="tooltip"]').tooltip();
 
-            if (!Modernizr.inputtypes.date) {
-                $('.datepicker').datepicker({
-                    dateFormat: 'yy-mm-dd',
-                    minDate: 0,
-                    maxDate: 30
-                });
-            }
+            /*  if (!Modernizr.inputtypes.date) {
+                  $('.datepicker').datepicker({
+                      dateFormat: 'yy-mm-dd',
+                      minDate: 0,
+                      maxDate: 30
+                  });
+              }*/
+
+            $('#TransferType').change(function() {
+                var selectedType = $(this).val();
+                var labelText = '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccount' + ' (';
+                if (selectedType === 'CashIn') {
+                    labelText += '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashIn';
+                } else {
+                    labelText += '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashOut';
+                }
+                labelText += ')';
+
+                // Update the label text
+                $('#AccountCartLabel').text(labelText);
+            });
+
+            $('#TransferType2').change(function () {
+                var selectedType = $(this).val();
+                var labelText = '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccount' + ' (';
+                if (selectedType === 'CashIn') {
+                    labelText += '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashIn';
+                } else {
+                    labelText += '@GlobalBulkOperation.BulkOperationCashOutOrCashInAccountTransferCashOut';
+                }
+                labelText += ')';
+
+                // Update the label text
+                $('#AccountCartLabel2').text(labelText);
+            });
 
         });
-    </script>
+</script>
     @*Manual Bulk Batch Operation*@
 <script>
+
         $(document).ready(function () {
             let accountCounter = 0;
 
@@ -143,61 +181,75 @@
 
 
             // Function to add a new account row
-            function addAccountRow() {
-
+          function addAccountRow() {
                 accountCounter++;
-       
 
                 // Remove empty row if it exists
                 $('.empty-row').remove();
-             // Create new row
+
+                // Get the current branch ID (in case it changed)
+              const currentBranchId = $('#BranchId').val();
+              const operationScope = $('#OperationScope').val();
+              console.log('operationScope :', operationScope);
+             /* var operationScope = currentOperationScope==null ? "Internal" :currentOperationScope;
+              console.log('operationScope :', operationScope);*/
+              const isInterbranch = operationScope === "Internal";
+
+                // Create branch options HTML
+                let branchOptions = '';
+                if (isInterbranch) {
+                    // For interbranch, use only the selected branch
+                    const branchId = $('#BranchId').val();
+                    const branchName = $('#BranchId option:selected').text();
+                    branchOptions = `<option value="${branchId}">${branchName}</option>`;
+                } else {
+                    // For non-interbranch, show all branches
+                    @foreach (var item in Model.Branches) {
+                        @:branchOptions += `<option value="@item.Id">@item.Name</option>`;
+                    }
+                }
+
+                // Create saving product options HTML
+                let savingProductOptions = '';
+                @foreach (var item in ViewBag.SavingProducts) {
+                    @:savingProductOptions += `<option value="@item.Id">@item.Name</option>`;
+                }
+
+                // Create new row
                 const newRow = $(`
                     <tr data-account-id="${accountCounter}">
-                       <td>
-                           <select class="form-control form-control-sm form-select select3 branch-name"
-                            name="Accounts[${accountCounter}].BranchName" required>
-                            
-                            @if (Model.OperationScope == "Interbranch")
-                            {
-                                foreach (var item in Model.Branches)
-                                {
-                                    <option value="@item.Id">@item.Name</option>
-                                }
-                            }
-                            else
-                            {
-                                <option value="@Model.BranchId">@(Model.Branches.FirstOrDefault(x => x.Id == Model.BranchId)?.Name)</option>
-                            }
-                        </select>
-                        <div class="invalid-feedback">Branch Name required</div>
+                        <td>
+                            <select class="form-control form-control-sm form-select select3 branch-name"
+                                    name="Accounts[${accountCounter}].BranchName" required>
+                                ${branchOptions}
+                            </select>
+                            <div class="invalid-feedback">Branch Name required</div>
                         </td>
 
                         <td>
                             <input type="text" class="form-control form-control-sm member-reference"
-                                   name="Accounts[${accountCounter}].MemberReference"
-                                   placeholder="0000012345" required>
+                                    name="Accounts[${accountCounter}].MemberReference"
+                                    placeholder="e.g. 5467" required>
                             <div class="invalid-feedback">Member reference required</div>
                         </td>
 
-                         <td>
-                             <select class="form-control form-control-sm form-select select2 account-type"
-                                     name="Accounts[${accountCounter}].AccountType" required>
-                                 @foreach (var item in Model.SavingProducts)
-                                 {
-                                     <option value="@item.Id">@item.Name</option>
-                                 }
-                             </select>
-                             <div class="invalid-feedback">Account Type required</div>
-                         </td>
+                        <td>
+                            <select class="form-control form-control-sm form-select select2 account-type"
+                                    name="Accounts[${accountCounter}].AccountType" required>
+                                ${savingProductOptions}
+                            </select>
+                            <div class="invalid-feedback">Account Type required</div>
+                        </td>
 
                         <td>
                             <div class="input-group input-group-sm">
                                 <input type="number" class="form-control amount"
-                                       name="Accounts[${accountCounter}].Amount"
-                                       placeholder="0" step="1" min="0" required>
+                                        name="Accounts[${accountCounter}].Amount"
+                                        placeholder="0" step="0.01" min="0" required>
                                 <div class="invalid-feedback">Valid amount required</div>
                             </div>
                         </td>
+
                         <td class="text-end">
                             <button type="button" class="btn btn-sm btn-outline-danger remove-account">
                                 <i class="mdi mdi-delete-outline"></i>
@@ -207,38 +259,62 @@
                 `);
 
                 // Add row to table
-                $('#accountsTable tbody').append(newRow);
+                $('#myDataTable tbody').append(newRow);
+
+                // Initialize select2 if needed
+                if ($.fn.select2) {
+                    newRow.find('.select2').select2({
+                        width: '100%',
+                        dropdownParent: newRow
+                    });
+
+                    newRow.find('.select3').select2({
+                        width: '100%',
+                        dropdownParent: newRow
+                    });
+                }
 
                 // Enable submit button if we have at least one account
                 $('#submitBtn').prop('disabled', false);
 
                 // Focus on the first input of the new row
                 newRow.find('.member-reference').focus();
+
+                // Add click handler for remove button
+                newRow.find('.remove-account').click(function () {
+                    $(this).closest('tr').remove();
+                    // Disable submit button if no accounts left
+                    if ($('#myDataTable tbody tr').not('.empty-row').length === 0) {
+                        $('#submitBtn').prop('disabled', true);
+                        // Add empty row back if needed
+                        $('#myDataTable tbody').append('<tr class="empty-row"><td colspan="5" class="text-center text-muted py-3">No accounts added yet</td></tr>');
+                    }
+                });
             }
 
-            // Remove account row
+            // Remove account row (moved outside the function)
             $(document).on('click', '.remove-account', function () {
                 $(this).closest('tr').remove();
 
                 // Show empty message if no accounts left
-                if ($('#accountsTable tbody tr').length === 0) {
-                    $('#accountsTable tbody').append(`
-                        <tr class="empty-row">
-                            <td colspan="5" class="text-center text-muted py-4">
-                                <i class="mdi mdi-database-remove fs-3 d-block mb-2"></i>
-                                No accounts added yet. Click "Add Account" to begin.
-                            </td>
-                        </tr>
+                if ($('#myDataTable tbody tr').length === 0) {
+                    $('#myDataTable tbody').append(`
+                    <tr class="empty-row">
+                        <td colspan="5" class="text-center text-muted py-4">
+                            <i class="mdi mdi-database-remove fs-3 d-block mb-2"></i>
+                            No accounts added yet. Click "Add Account" to begin.
+                        </td>
+                    </tr>
                     `);
                     $('#submitBtn').prop('disabled', true);
                 }
             });
 
-            // Reset form
-            $('#resetForm').on('click', function () {
-                $('#bulkCashOperationForm')[0].reset();
-                $('#bulkCashOperationForm').removeClass('was-validated');
-                $('#accountsTable tbody').empty().append(`
+            // Reset form (moved outside the function)
+            $('#resetAccountsBtn').on('click', function () {
+                //$('#myDataTable')[0].reset();
+                //$('#myDataTable').removeClass('was-validated');
+                $('#myDataTable tbody').empty().append(`
                     <tr class="empty-row">
                         <td colspan="5" class="text-center text-muted py-4">
                             <i class="mdi mdi-database-remove fs-3 d-block mb-2"></i>
@@ -251,56 +327,210 @@
                 $('.alert').alert('close');
             });
 
-            // Preview button click handler
+            // Preview button click handler (moved outside the function)
             $('#previewBtn').on('click', function () {
                 $('#bulkCashOperationForm').trigger('submit');
             });
-
-           
         });
 
-    function AjaxPostAndUpdateManualEntryingBulkCashOperation(form) {
-        $.validator.unobtrusive.parse(form);
-        if ($(form).valid()) {
-            alertify.confirm("Confirmation", "Are you sure you want to perform this action?",
-                function () {
-                    // Collect all account data
-                    const accounts = [];
-                    $('#accountsTable tbody tr').not('.empty-row').each(function () {
-                        const row = $(this);
-                        accounts.push({
-                            BranchName: row.find('.branch-name').val(),
-                            MemberReference: row.find('.member-reference').val(),
-                            AccountType: row.find('.account-type').val(),
-                            Amount: row.find('.amount').val()
+
+        function AjaxPostAndUpdateManualEntryingBulkCashOperation(form) {
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                alertify.confirm("Confirmation", "Are you sure you want to perform this action?",
+                    function () {
+                        // Collect all account data
+                        const accounts = [];
+                        $('#myDataTable tbody tr').not('.empty-row').each(function () {
+                            const row = $(this);
+                            accounts.push({
+                                BranchName: row.find('.branch-name').val(),
+                                MemberReference: row.find('.member-reference').val(),
+                                AccountType: row.find('.account-type').val(),
+                                Amount: parseFloat(row.find('.amount').val()) || 0
+                            });
+                        });
+
+                        // Get Branches data from hidden field
+                       // const branches = JSON.parse($('#branchObject').val() || '[]');
+
+                        // Get SavingProducts data (assuming they're in a similar hidden field)
+                       // const savingProducts = JSON.parse($('#savingProductsObject').val() || '[]');
+
+                        // Prepare complete request data
+                        const requestData = {
+                            // Form fields
+                            BranchId: $('#BranchId').val(),
+                            TransferType: $('#TransferType').val(),
+                            AccountCartId: $('#AccountCartId').val(),
+                            AccountDate: $('#AccountDate').val(),
+                            OperationTitle: $('#OperationTitle').val(),
+                            SimulationDescription: $('#SimulationDescription').val(),
+                            TargetAmount: parseFloat($('#TargetAmount').val()) || 0,
+                            BulkCashStrategy:'ManualEntrying',
+                            // Collections
+                            //Branches: branches,
+                            //SavingProducts: savingProducts,
+                            Accounts: accounts
+                        };
+
+                        console.log("Submitting data:", requestData);
+
+                        $.ajax({
+                            type: 'POST',
+                            url: form.action,
+                            data: JSON.stringify(requestData),
+                            contentType: 'application/json',
+                            success: function (response) {
+                                if (response.success) {
+                                    alertify.success(response.message || 'Operation completed successfully');
+                                    appalert(response.message || 'Operation completed successfully', 2, 1);
+                                    // Reset the form after successful operation
+                                    window.location.href = '/BulkOperation/Listing'
+                                } else {
+                                    //alertify.error(response.message || 'Error during operation');
+                                    appalert(response.message || 'Error during operation', 2, 1);
+                                }
+                         
+                            },
+                            error: function (err) {
+                                console.error("Error:", err);
+                                if (err.status === 401) {
+                                    window.location.href = '/Authentication/Login';
+                                } else {
+                                   // alertify.error(err.responseJSON?.message || err.statusText || 'An error occurred');
+                                    appalert(err.responseJSON?.message || err.statusText || 'An error occurred', 3, 1);
+                                }
+                            }
+                        });
+                    },
+                    function () {
+                        //alertify.message('Operation cancelled');
+                        appalert('Operation cancelled', 3, 1);
+                    }
+                );
+            }
+            return false;
+        }
+</script>
+
+    @*File Submitting*@
+    <script>
+
+        function AjaxPostBulkCashFileUploadOperation(form) {
+            console.log("Form Action:", form.action);
+            console.log("Form Method:", form.method);
+
+            /*var formData = new FormData(form);
+            for (var pair of formData.entries()) {
+                console.log(pair[0] + ', ' + pair[1]);
+            }*/
+
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                alertify.confirm("Confirmation", "Are you sure you want to perform this action? ",
+                    function () {
+                        var ajaxConfig = {
+                            type: 'POST',
+                            url: form.action,
+                            data: new FormData(form),
+                            success: function (response) {
+                                console.log("Response:", response);
+                                if (response.success) {
+                                    showUploadStatus(response.message || 'File uploaded successfully', 'success');
+                                    displayFileContent(response.data);
+                                    // Reset the form after successful operation
+                                    form.reset();
+                                } else {
+                                    showUploadStatus(response.message || 'File uploaded Failed', 'danger');
+                                }
+                            },
+                            error: function (err) {
+                                console.log("Error:", err);
+
+                                if (err.status === 401) { // Unauthorized
+                                    // Session has expired, redirect to the login page
+                                    window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+                                } else {
+                                    appalert(err.statusText, 0, 1);
+                                }
+                            }
+                        };
+
+                        if ($(form).attr('enctype') === "multipart/form-data") {
+                            ajaxConfig.contentType = false;
+                            ajaxConfig.processData = false;
+                        }
+
+                        console.log("AJAX Config:", ajaxConfig);
+                        $.ajax(ajaxConfig);
+                    },
+                    function () {
+                        appalert('Transaction cancelled', 3, 1);
+                    }
+                );
+            }
+            return false;
+        }
+
+
+
+        function AjaxPostAndUpdateBulkCashOperation(form) {
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                alertify.confirm("Confirmation", "Are you sure you want to perform this action?", function () {
+                    console.log("Form Action:", form.action);
+                    console.log("Form Method:", form.method);
+
+
+
+                    const accountIIs = [];
+                    const table = $('#myDataTable2').DataTable();
+                    table.rows().every(function () {
+                        const rowData = this.data();
+                        accountIIs.push({
+                            BranchCode: rowData.BranchCode,
+                            MemberReference: rowData.MemberReference,
+                            AccountType: rowData.AccountType,
+                            Amount: parseFloat(rowData.Amount) || 0
                         });
                     });
+                    console.log("Request Table Data : ", JSON.stringify(accountIIs));
 
-                    // Get other form data
-                    const formData = {
-                        OperationType: $(form).find('#OperationType').val(),
-                        OperationScope: $(form).find('#OperationScope').val(),
-                        TransactionDate: $(form).find('#TransactionDate').val(),
-                        Description: $(form).find('#Description').val(),
-                        Accounts: accounts
+                    const requestData = {
+                        // Form fields
+                        BranchId: $('#BranchId2').val(),
+                        TransferType: $('#TransferType2').val(),
+                        AccountCartId: $('#AccountCartId2').val(),
+                        AccountDate: $('#AccountDate2').val(),
+                        OperationTitle: $('#OperationTitle2').val(),
+                        SimulationDescription: $('#SimulationDescription2').val(),
+                        BulkCashStrategy: 'FileUpload',
+                        // Collections
+                        //Branches: branches,
+                        //SavingProducts: savingProducts,
+                        AccountIIs: accountIIs
                     };
 
-                    console.log("Form data to submit:", formData);
+                    console.log("Request Data : ", JSON.stringify(requestData));
+                    console.log("Form Action : ", form.action);
+
+                    console.log("Submitting data:", requestData);
 
                     $.ajax({
                         type: 'POST',
                         url: form.action,
-                        data: JSON.stringify(formData),
+                        data: JSON.stringify(requestData),
                         contentType: 'application/json',
                         success: function (response) {
                             if (response.success) {
-                                // Handle successful response
-                                alertify.success(response.message || 'Simulation completed successfully');
-                                // You might want to display the results somewhere
-                                //displaySimulationResult1s(response.data);
+                               // alertify.success(response.message || 'Operation completed successfully');
+                                appalert(response.message || 'Operation completed successfully', 2, 1);
+                                // Reset the form after successful operation
+                                window.location.href = '/BulkOperation/Listing'
                             } else {
-                                // Handle error response
-                                alertify.error(response.message || 'Error during simulation');
+                               // alertify.error(response.message || 'Error during operation');
+                                appalert(response.message || 'Error during operation', 2, 1);
                             }
                         },
                         error: function (err) {
@@ -308,423 +538,263 @@
                             if (err.status === 401) {
                                 window.location.href = '/Authentication/Login';
                             } else {
-                                alertify.error(err.statusText || 'An error occurred');
+                                //alertify.error(err.responseJSON?.message || err.statusText || 'An error occurred');
+                                appalert(err.responseJSON?.message || err.statusText || 'An error occurred', 3, 1);
                             }
                         }
                     });
                 },
-                function () {
-                    alertify.message('Operation cancelled');
-                }
-            );
-        }
-        return false;
-    }
-
-    //function displaySimulationResults1(data) {
-    //    // Implement this function to display the simulation results
-    //    // For example, you might show a modal or update a results table
-    //    console.log("Simulation results:", data);
-
-    //    // Example of showing results in a modal
-    //    const modal = $('#simulationResultsModal');
-    //    const modalBody = modal.find('.modal-body');
-
-    //    // Clear previous content
-    //    modalBody.empty();
-
-    //    if (data && data.length > 0) {
-    //        // Create a table to display results
-    //        const table = $('<table class="table table-striped"></table>');
-    //        const thead = $('<thead><tr><th>Account</th><th>Current Balance</th><th>New Balance</th><th>Status</th></tr></thead>');
-    //        const tbody = $('<tbody></tbody>');
-
-    //        data.forEach(item => {
-    //            const row = $('<tr></tr>');
-    //            row.append($('<td></td>').text(item.accountNumber));
-    //            row.append($('<td></td>').text(item.currentBalance));
-    //            row.append($('<td></td>').text(item.newBalance));
-    //            row.append($('<td></td>').text(item.status));
-    //            tbody.append(row);
-    //        });
-
-    //        table.append(thead).append(tbody);
-    //        modalBody.append(table);
-    //    } else {
-    //        modalBody.append('<p>No simulation results available.</p>');
-    //    }
-
-    //    modal.modal('show');
-    //}
-</script>
-}
-
-@*File Submitting*@
-<script>
-    function AjaxPostBulkCashFileUploadOperation(form) {
-        console.log("Form Action:", form.action);
-        console.log("Form Method:", form.method);
-
-        var formData = new FormData(form);
-        for (var pair of formData.entries()) {
-            console.log(pair[0] + ', ' + pair[1]);
-        }
-
-        $.validator.unobtrusive.parse(form);
-        if ($(form).valid()) {
-            alertify.confirm("Confirmation", "Are you sure you want to perform this action? ",
-                function () {
-                    var ajaxConfig = {
-                        type: 'POST',
-                        url: form.action,
-                        data: new FormData(form),
-                        success: function (response) {
-                            console.log("Response:", response);
-                            if (response.success) {
-                                showUploadStatus(response.message || 'File uploaded successfully', 'success');
-                                displayFileContent(response.data);
-                            } else {
-
-                            }
-                        },
-                        error: function (err) {
-                            console.log("Error:", err);
-
-                            if (err.status === 401) { // Unauthorized
-                                // Session has expired, redirect to the login page
-                                window.location.href = '/Authentication/Login'; // Adjust the URL as needed
-                            } else {
-                                appalert(err.statusText, 0, 1);
-                            }
-                        }
-                    };
-
-                    if ($(form).attr('enctype') === "multipart/form-data") {
-                        ajaxConfig.contentType = false;
-                        ajaxConfig.processData = false;
+                    function () {
+                        //alertify.message('Operation cancelled');
+                        appalert('Operation cancelled', 3, 1);
                     }
-
-                    console.log("AJAX Config:", ajaxConfig);
-                    $.ajax(ajaxConfig);
-                },
-                function () {
-                    appalert('Transaction cancelled', 3, 1);
-                }
-            );
-        }
-        return false;
-    }
-
-    const $bulkUploadForm = $('#bulkUploadForm');
-    const $fileInput = $('#bulkOperationFile');
-    const $uploadButton = $('#uploadButton');
-    const $uploadStatus = $('#uploadStatus');
-    const $progressBar = $('.progress-bar');
-    const maxFileSize = parseInt($fileInput.data('max-size')) || 10 * 1024 * 1024; // Default 10MB
-
-    // Display file content in DataTable
-    function displayFileContent(data) {
-
-        $('#fileContentCard').show();
-        const $table = $('#fileContentTable');
-        console.log('Table : ' + $table)
-        // Destroy existing DataTable if it exists
-        /*  if ($.fn.DataTable.isDataTable($table)) {
-              $table.DataTable().destroy();
-          }*/
-
-        // Initialize DataTable
-        $table.DataTable({
-            data: data || [],
-            columns: [
-                {
-                    data: "BranchCode",
-                    title: "Branch Code",
-                    render: $.fn.dataTable.render.text() // Sanitize output
-                },
-                {
-                    data: "MemberReference",
-                    title: "Member Reference",
-                    render: $.fn.dataTable.render.text() // Sanitize output
-                },
-                {
-                    data: "AccountType",
-                    title: "Account Type",
-                    render: $.fn.dataTable.render.text()
-                },
-                {
-                    data: "MemberName",
-                    title: "Member Name",
-                    render: $.fn.dataTable.render.text()
-                },
-                {
-                    data: "Amount",
-                    title: "Amount",
-                    className: "text-end",
-                    render: function (data) {
-                        return data ? formatCurrency(data) : '0';
-                    }
-                }
-            ],
-            language: {
-                emptyTable: "No data available in table",
-                info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                infoEmpty: "Showing 0 to 0 of 0 entries",
-                infoFiltered: "(filtered from _MAX_ total entries)",
-                lengthMenu: "Show _MENU_ entries",
-                search: "Search:",
-                zeroRecords: "No matching records found"
-            },
-            responsive: true,
-            lengthMenu: [[5, 10, 25, 50, 100, 500, 1000], [5, 10, 25, 50, 100, 500, 1000]],
-            pageLength: 5,
-            order: [[0, 'desc']], // Disable initial sorting
-            /* dom: '<"top"f>rt<"bottom"lip><"clear">',*/
-            initComplete: function () {
-                $table.removeClass('d-none');
+                );
             }
-        });
-    }
-
-    function AjaxPostAndUpdateBulkCashOperation(form) {
-        console.log("Form Action:", form.action);
-        console.log("Form Method:", form.method);
-
-        // Create FormData and collect additional form fields
-        var formData = new FormData(form);
-
-        // Add other form fields that might not be included in the file upload
-        formData.append("OperationType", $(form).find('#OperationType').val());
-        formData.append("OperationScope", $(form).find('#OperationScope').val());
-        formData.append("TransactionDate", $(form).find('#TransactionDate').val());
-        formData.append("Description", $(form).find('#Description').val());
-        formData.append("SourceAccountType", $(form).find('#SourceAccountType').val());
-        formData.append("StartAccount", $(form).find('#StartAccount').val());
-        formData.append("EndAccount", $(form).find('#EndAccount').val());
-        formData.append("DestinationAccountType", $(form).find('#DestinationAccountType').val());
-        formData.append("TargetAmount", $(form).find('#TargetAmount').val() || '0');
-        // Add other fields as needed...
-
-        // Log form data for debugging
-        for (var pair of formData.entries()) {
-            console.log(pair[0] + ', ' + pair[1]);
+            return false;
         }
 
-        $.validator.unobtrusive.parse(form);
-        if ($(form).valid()) {
-            alertify.confirm("Confirmation", "Are you sure you want to perform this action? ",
-                function () {
-                    var ajaxConfig = {
-                        type: 'POST',
-                        url: form.action,
-                        data: formData,
-                        processData: false,  // Required for file upload
-                        contentType: false, // Required for file upload
-                        success: function (response) {
-                            console.log("Response:", response);
-                            if (response.success) {
-                                showUploadStatus(response.message || 'File uploaded successfully', 'success');
 
-                                // If the response contains parsed account data, display it
-                                if (response.accounts && response.accounts.length > 0) {
-                                    displayFileContent2(response.accounts);
-                                }
 
-                                // If you need to show simulation results
-                                if (response.simulationResults) {
-                                    displaySimulationResult2(response.simulationResults);
-                                }
-                            } else {
-                                showUploadStatus(response.message || 'Error processing file', 'danger');
-                            }
-                        },
-                        error: function (err) {
-                            console.log("Error:", err);
-                            if (err.status === 401) {
-                                window.location.href = '/Authentication/Login';
-                            } else {
-                                showUploadStatus(err.responseText || 'An error occurred', 'danger');
-                            }
-                        }
-                    };
+        const $bulkUploadForm = $('#bulkUploadForm');
+        const $fileInput = $('#bulkOperationFile');
+        const $uploadButton = $('#uploadButton');
+        const $uploadStatus = $('#uploadStatus');
+        const $progressBar = $('.progress-bar');
+        const maxFileSize = parseInt($fileInput.data('max-size')) || 10 * 1024 * 1024; // Default 10MB
 
-                    console.log("AJAX Config:", ajaxConfig);
-                    $.ajax(ajaxConfig);
-                },
-                function () {
-                    appalert('Transaction cancelled', 3, 1);
-                }
-            );
-        }
-        return false;
-    }
+        // Display file content in DataTable
+        function displayFileContent(data) {
 
-    // Enhanced display function to handle both file content and simulation results
-    function displayFileContent2(data) {
-        $('#fileContentCard').show();
-        const $table = $('#fileContentTable');
-
-        // Clear existing DataTable if it exists
-        if ($.fn.DataTable.isDataTable($table)) {
-            $table.DataTable().destroy();
-            $table.empty();
-        }
-
-        // Create table structure
-        const tableHtml = `
-        <thead>
-            <tr>
-                <th>Branch Code</th>
-                <th>Member Reference</th>
-                <th>Account Type</th>
-                <th>Member Name</th>
-                <th class="text-end">Amount</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    `;
-        $table.html(tableHtml);
-
-        // Initialize DataTable with enhanced options
-        const dataTable = $table.DataTable({
-            data: data,
-            columns: [
-                { data: "BranchCode", render: $.fn.dataTable.render.text() },
-                { data: "MemberReference", render: $.fn.dataTable.render.text() },
-                { data: "AccountType", render: $.fn.dataTable.render.text() },
-                { data: "MemberName", render: $.fn.dataTable.render.text() },
-                {
-                    data: "Amount",
-                    className: "text-end",
-                    render: function (data) {
-                        return data ? formatCurrency(data) : '0';
-                    }
-                },
-                {
-                    data: "Status",
-                    render: function (data, type, row) {
-                        if (!data) return '';
-                        const statusClass = data === 'Valid' ? 'badge bg-success' : 'badge bg-danger';
-                        return `<span class="${statusClass}">${data}</span>`;
-                    }
-                }
-            ],
-            language: {
-                emptyTable: "No data available in table",
-                info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                infoEmpty: "Showing 0 to 0 of 0 entries",
-                infoFiltered: "(filtered from _MAX_ total entries)",
-                lengthMenu: "Show _MENU_ entries",
-                search: "Search:",
-                zeroRecords: "No matching records found"
-            },
-            responsive: true,
-            lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"]],
-            pageLength: 10,
-            order: [[0, 'asc']],
-            dom: '<"top"lf>rt<"bottom"ip><"clear">',
-            initComplete: function () {
-                $table.removeClass('d-none');
+            if ($.fn.DataTable.isDataTable('#myDataTable2')) {
+                $('#myDataTable2').DataTable().destroy();
             }
-        });
 
-        // Add export buttons if needed
-        new $.fn.dataTable.Buttons(dataTable, {
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
-        });
-        dataTable.buttons().container().appendTo($('#exportButtons'));
-    }
+            $('#fileContentCard').show();
+            const $table = $('#myDataTable2');
+            console.log('Table : ' + $table)
 
-    // Display simulation results (similar to previous example)
-    function displaySimulationResult2(data) {
-        const modal = $('#simulationResultsModal');
-        const modalBody = modal.find('.modal-body');
+            $table.DataTable({
+                data: data || [],
+                columns: [
+                    {
+                        data: "BranchCode",
+                        title: "Branch Code",
+                        render: $.fn.dataTable.render.text() // Sanitize output
+                    },
+                    {
+                        data: "MemberReference",
+                        title: "Member Reference",
+                        render: $.fn.dataTable.render.text() // Sanitize output
+                    },
+                    {
+                        data: "AccountType",
+                        title: "Account Type",
+                        render: $.fn.dataTable.render.text()
+                    },
+                    {
+                        data: "MemberName",
+                        title: "Member Name",
+                        render: $.fn.dataTable.render.text()
+                    },
+                    {
+                        data: "Amount",
+                        title: "Amount",
+                        className: "text-end",
+                        render: function (data) {
+                            return data ? formatCurrency(data) : '0';
+                        }
+                    }
+                ],
+                language: {
+                    emptyTable: "No data available in table",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "Showing 0 to 0 of 0 entries",
+                    infoFiltered: "(filtered from _MAX_ total entries)",
+                    lengthMenu: "Show _MENU_ entries",
+                    search: "Search:",
+                    zeroRecords: "No matching records found"
+                },
+                responsive: true,
+                lengthMenu: [[5, 10, 25, 50, 100, 500, 1000], [5, 10, 25, 50, 100, 500, 1000]],
+                pageLength: 5,
+                order: [[0, 'desc']], // Disable initial sorting
+                /* dom: '<"top"f>rt<"bottom"lip><"clear">',*/
+                initComplete: function () {
+                    $table.removeClass('d-none');
+                }
+            });
+        }
 
-        modalBody.empty();
 
-        if (data && data.length > 0) {
-            const table = $('<table class="table table-striped"></table>');
-            const thead = $('<thead><tr><th>Account</th><th>Current Balance</th><th>New Balance</th><th>Status</th></tr></thead>');
-            const tbody = $('<tbody></tbody>');
+        // Enhanced display function to handle both file content and simulation results
+        function displayFileContent2(data) {
+            $('#fileContentCard').show();
+            const $table = $('#myDataTable2');
 
-            data.forEach(item => {
-                const row = $('<tr></tr>');
-                row.append($('<td></td>').text(item.accountNumber));
-                row.append($('<td class="text-end"></td>').text(formatCurrency(item.currentBalance)));
-                row.append($('<td class="text-end"></td>').text(formatCurrency(item.newBalance)));
+            // Clear existing DataTable if it exists
+            if ($.fn.DataTable.isDataTable($table)) {
+                $table.DataTable().destroy();
+                $table.empty();
+            }
 
-                const statusCell = $('<td></td>');
-                const statusClass = item.status === 'Success' ? 'badge bg-success' : 'badge bg-danger';
-                statusCell.append($(`<span class="${statusClass}">${item.status}</span>`));
-                row.append(statusCell);
+            // Create table structure
+            const tableHtml = `
+                                        <thead>
+                                            <tr>
+                                                <th>Branch Code</th>
+                                                <th>Member Reference</th>
+                                                <th>Account Type</th>
+                                                <th>Member Name</th>
+                                                <th class="text-end">Amount</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    `;
+            $table.html(tableHtml);
 
-                tbody.append(row);
+            // Initialize DataTable with enhanced options
+            const dataTable = $table.DataTable({
+                data: data,
+                columns: [
+                    { data: "BranchCode", render: $.fn.dataTable.render.text() },
+                    { data: "MemberReference", render: $.fn.dataTable.render.text() },
+                    { data: "AccountType", render: $.fn.dataTable.render.text() },
+                    { data: "MemberName", render: $.fn.dataTable.render.text() },
+                    {
+                        data: "Amount",
+                        className: "text-end",
+                        render: function (data) {
+                            return data ? formatCurrency(data) : '0';
+                        }
+                    },
+                    {
+                        data: "Status",
+                        render: function (data, type, row) {
+                            if (!data) return '';
+                            const statusClass = data === 'Valid' ? 'badge bg-success' : 'badge bg-danger';
+                            return `<span class="${statusClass}">${data}</span>`;
+                        }
+                    }
+                ],
+                language: {
+                    emptyTable: "No data available in table",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "Showing 0 to 0 of 0 entries",
+                    infoFiltered: "(filtered from _MAX_ total entries)",
+                    lengthMenu: "Show _MENU_ entries",
+                    search: "Search:",
+                    zeroRecords: "No matching records found"
+                },
+                responsive: true,
+                lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"]],
+                pageLength: 10,
+                order: [[0, 'asc']],
+                dom: '<"top"lf>rt<"bottom"ip><"clear">',
+                initComplete: function () {
+                    $table.removeClass('d-none');
+                }
             });
 
-            table.append(thead).append(tbody);
-            modalBody.append(table);
-        } else {
-            modalBody.append('<p>No simulation results available.</p>');
+            // Add export buttons if needed
+            new $.fn.dataTable.Buttons(dataTable, {
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+            dataTable.buttons().container().appendTo($('#exportButtons'));
         }
 
-        modal.modal('show');
-    }
+        // Display simulation results (similar to previous example)
+        function displaySimulationResult2(data) {
+            const modal = $('#simulationResultsModal');
+            const modalBody = modal.find('.modal-body');
 
-    // Helper function to show status messages
-    function showUploadStatus(message, type) {
-        const $uploadStatus = $('#uploadStatus');
-        $uploadStatus.removeClass('d-none alert-danger alert-success alert-info')
-            .addClass(`alert-${type}`)
-            .html(`<i class="mdi mdi-${type === 'success' ? 'check' : 'alert'}-circle-outline me-2"></i>${message}`);
-    }
+            modalBody.empty();
 
-    function formatCurrency(amount) {
-        return new Intl.NumberFormat('en-NG', {
-            minimumFractionDigits: 1,
-            maximumFractionDigits: 1
-        }).format(amount);
-    }
+            if (data && data.length > 0) {
+                const table = $('<table class="table table-striped"></table>');
+                const thead = $('<thead><tr><th>Account</th><th>Current Balance</th><th>New Balance</th><th>Status</th></tr></thead>');
+                const tbody = $('<tbody></tbody>');
 
-    function formatBytes(bytes, decimals = 2) {
-        if (bytes === 0) return '0 Bytes';
-        const k = 1024;
-        const dm = decimals < 0 ? 0 : decimals;
-        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm) + ' ' + sizes[i]);
-    }
+                data.forEach(item => {
+                    const row = $('<tr></tr>');
+                    row.append($('<td></td>').text(item.accountNumber));
+                    row.append($('<td class="text-end"></td>').text(formatCurrency(item.currentBalance)));
+                    row.append($('<td class="text-end"></td>').text(formatCurrency(item.newBalance)));
 
-    function setUploadState(isUploading) {
-        $uploadButton.prop('disabled', isUploading);
-        $uploadButton.find('.upload-text').text(isUploading ? 'Uploading...' : 'Upload File');
-        $uploadButton.find('.spinner-border').toggleClass('d-none', !isUploading);
-        $('#uploadProgress').toggle(isUploading);
-    }
+                    const statusCell = $('<td></td>');
+                    const statusClass = item.status === 'Success' ? 'badge bg-success' : 'badge bg-danger';
+                    statusCell.append($(`<span class="${statusClass}">${item.status}</span>`));
+                    row.append(statusCell);
 
-    function updateProgressBar(loaded, total) {
-        const percent = Math.round((loaded / total) * 100);
-        $progressBar.css('width', percent + '%')
-            .attr('aria-valuenow', percent)
-            .text(percent + '%');
-    }
+                    tbody.append(row);
+                });
 
-    function resetProgressBar() {
-        $progressBar.css('width', '0%')
-            .attr('aria-valuenow', 0)
-            .text('0%')
-            .removeClass('bg-success bg-danger')
-            .addClass('bg-primary progress-bar-animated');
-    }
+                table.append(thead).append(tbody);
+                modalBody.append(table);
+            } else {
+                modalBody.append('<p>No simulation results available.</p>');
+            }
 
-    function resetUploadUI() {
-        $uploadStatus.addClass('d-none');
-        $bulkUploadForm.removeClass('was-validated');
-        resetProgressBar();
-    }
+            modal.modal('show');
+        }
 
-</script>
+        // Helper function to show status messages
+        function showUploadStatus(message, type) {
+            const $uploadStatus = $('#uploadStatus');
+            $uploadStatus.removeClass('d-none alert-danger alert-success alert-info')
+                .addClass(`alert-${type}`)
+                .html(`<i class="mdi mdi-${type === 'success' ? 'check' : 'alert'}-circle-outline me-2"></i>${message}`);
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-NG', {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1
+            }).format(amount);
+        }
+
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm) + ' ' + sizes[i]);
+        }
+
+        function setUploadState(isUploading) {
+            $uploadButton.prop('disabled', isUploading);
+            $uploadButton.find('.upload-text').text(isUploading ? 'Uploading...' : 'Upload File');
+            $uploadButton.find('.spinner-border').toggleClass('d-none', !isUploading);
+            $('#uploadProgress').toggle(isUploading);
+        }
+
+        function updateProgressBar(loaded, total) {
+            const percent = Math.round((loaded / total) * 100);
+            $progressBar.css('width', percent + '%')
+                .attr('aria-valuenow', percent)
+                .text(percent + '%');
+        }
+
+        function resetProgressBar() {
+            $progressBar.css('width', '0%')
+                .attr('aria-valuenow', 0)
+                .text('0%')
+                .removeClass('bg-success bg-danger')
+                .addClass('bg-primary progress-bar-animated');
+        }
+
+        function resetUploadUI() {
+            $uploadStatus.addClass('d-none');
+            $bulkUploadForm.removeClass('was-validated');
+            resetProgressBar();
+        }
+
+    </script>
+}
+
+
 
 

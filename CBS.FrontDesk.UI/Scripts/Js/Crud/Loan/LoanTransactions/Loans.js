@@ -1,8 +1,4 @@
 ﻿
-$(document).ready(function () {
-
-    LoadLoans("All");
-});
 
 function DownloadLoans(path) {
     var datefrom = $("#mdatefromexport").val();

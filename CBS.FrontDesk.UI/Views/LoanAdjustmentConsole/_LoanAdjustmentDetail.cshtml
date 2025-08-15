@@ -1,0 +1,166 @@
+﻿@model CBS.FrontDesk.Data.LoanAdjustmentP.LoanAdjustmentRequestDetailsDto
+<style>
+    .table-primary td {
+        background-color: #f0f6ff !important;
+    }
+
+    .fw-semibold {
+        font-weight: 600;
+    }
+</style>
+
+
+@functions {
+    public class AdjustmentDisplayItem
+    {
+        public string Label { get; set; }
+        public decimal OldValue { get; set; }
+        public decimal? NewValue { get; set; }
+    }
+}
+
+@{
+    var request = Model.Request;
+    var history = Model.History;
+
+    var adjustments = new List<AdjustmentDisplayItem>
+{
+        new AdjustmentDisplayItem { Label = "Loan Amount", OldValue = request.OldLoanAmount, NewValue = request.NewLoanAmount },
+        new AdjustmentDisplayItem { Label = "Balance", OldValue = request.OldBalance, NewValue = request.NewBalance },
+        new AdjustmentDisplayItem { Label = "Interest", OldValue = request.OldInterest, NewValue = request.NewInterest },
+        new AdjustmentDisplayItem { Label = "VAT", OldValue = request.OldVat, NewValue = request.NewVat },
+        new AdjustmentDisplayItem { Label = "Penalty", OldValue = request.OldPenalty, NewValue = request.NewPenalty },
+        new AdjustmentDisplayItem { Label = "VAT Rate (%)", OldValue = request.OldVatRate, NewValue = request.NewVatRate },
+        new AdjustmentDisplayItem { Label = "Interest Rate (%)", OldValue = request.OldIntRate, NewValue = request.NewIntRate },
+        new AdjustmentDisplayItem { Label = "Due Amount", OldValue = request.OldDueAmount, NewValue = request.NewDueAmount },
+    };
+}
+
+<div class="card-body">
+    <table class="table table-bordered table-striped">
+        <tbody>
+            <!-- 📋 General Information -->
+            <tr class="table-primary">
+                <td colspan="2" class="text-center fw-bold">📋 Loan Adjustment Request Overview</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">📌 Member Account Number:</td>
+                <td>@request.CustomerId</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">👤 Customer Name:</td>
+                <td>@request.CustomerName</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">🏦 Branch:</td>
+                <td>@request.BranchName (@request.BranchCode)</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">📅 Requested Date:</td>
+                <td>@request.RequestedDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">🔧 Requested By:</td>
+                <td>@request.RequestedBy</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">📝 Reason for Adjustment:</td>
+                <td>@request.Reason</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">📈 Status:</td>
+                <td>
+                    <span class="badge bg-@(request.Status == "Approved" ? "success" : request.Status == "Rejected" ? "danger" : "warning")">
+                        @request.Status
+                    </span>
+                </td>
+            </tr>
+
+            @if (!string.IsNullOrEmpty(request.ApprovedBy))
+            {
+                <tr>
+                    <td class="fw-semibold">✅ Approved By:</td>
+                    <td>@request.ApprovedBy on @request.ApprovedDate?.ToString("dd/MM/yyyy hh:mm:ss")</td>
+                </tr>
+            }
+
+            @if (!string.IsNullOrEmpty(request.RejectionReason))
+            {
+                <tr>
+                    <td class="fw-semibold text-danger">❌ Rejection Reason:</td>
+                    <td class="text-danger">@request.RejectionReason</td>
+                </tr>
+            }
+
+            <!-- 💰 Adjustment Details -->
+            <tr class="table-primary">
+                <td colspan="2" class="text-center fw-bold">💼 Adjustment Details</td>
+            </tr>
+
+            @foreach (var item in adjustments)
+            {
+                <tr>
+                    <td class="fw-semibold">@item.Label:</td>
+                    <td>
+                        Old: <strong>@item.OldValue.ToString("#,##0.00")</strong>
+                        @if (item.NewValue.HasValue)
+                        {
+                            <span class="ms-3">New: <strong>@item.NewValue.Value.ToString("#,##0.00")</strong></span>
+                        }
+                    </td>
+                </tr>
+            }
+
+            <!-- 📚 Adjustment History -->
+            @if (history?.Any() == true)
+            {
+                <tr class="table-primary">
+                    <td colspan="2" class="text-center fw-bold">📚 Adjustment History</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <table class="table table-sm table-bordered table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Field</th>
+                                    <th>Old Value</th>
+                                    <th>New Value</th>
+                                    <th>Status</th>
+                                    <th>Changed By</th>
+                                    <th>Approved By</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var h in history.OrderByDescending(x => x.ChangedDate))
+                                {
+                                    <tr>
+                                        <td>@h.ChangedDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
+                                        <td>@h.FieldAdjusted</td>
+                                        <td>@h.OldValue.ToString("#,##0.00")</td>
+                                        <td>@h.NewValue.ToString("#,##0.00")</td>
+                                        <td>
+                                            <span class="badge bg-@(h.ApprovalStatus == "Approved" ? "success" : h.ApprovalStatus == "Rejected" ? "danger" : "warning")">
+                                                @h.ApprovalStatus
+                                            </span>
+                                        </td>
+                                        <td>@h.ChangedBy</td>
+                                        <td>@h.ApprovedBy</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td colspan="2" class="text-center text-muted">No history recorded for this adjustment.</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+

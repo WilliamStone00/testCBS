@@ -277,7 +277,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configure Accounts For Bulk Operation.
+        ///   Looks up a localized string similar to Add Member Account For Bulk Operation.
         /// </summary>
         internal static string BulkCashAccountList {
             get {
@@ -313,11 +313,29 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contribution Account For Bulk CashIn/Cashout.
+        ///   Looks up a localized string similar to GL.
         /// </summary>
         internal static string BulkOperationCashOutOrCashInAccount {
             get {
                 return ResourceManager.GetString("BulkOperationCashOutOrCashInAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credit.
+        /// </summary>
+        internal static string BulkOperationCashOutOrCashInAccountTransferCashIn {
+            get {
+                return ResourceManager.GetString("BulkOperationCashOutOrCashInAccountTransferCashIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Debit.
+        /// </summary>
+        internal static string BulkOperationCashOutOrCashInAccountTransferCashOut {
+            get {
+                return ResourceManager.GetString("BulkOperationCashOutOrCashInAccountTransferCashOut", resourceCulture);
             }
         }
         
@@ -862,6 +880,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select An Accounting Date.
+        /// </summary>
+        internal static string SelectAccountingDate {
+            get {
+                return ResourceManager.GetString("SelectAccountingDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select branch.
         /// </summary>
         internal static string SelectBranch {
@@ -871,7 +898,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Operation Type.
+        ///   Looks up a localized string similar to Select Operation Scope.
         /// </summary>
         internal static string SelectOperationType {
             get {
@@ -925,11 +952,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Simulate A Bulk Operation.
+        ///   Looks up a localized string similar to Simulate A Range Bulk Operation.
         /// </summary>
-        internal static string SimulateABulkOperation {
+        internal static string SimulateARangeBulkOperation {
             get {
-                return ResourceManager.GetString("SimulateABulkOperation", resourceCulture);
+                return ResourceManager.GetString("SimulateARangeBulkOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simulate A Bulk Cash Operation.
+        /// </summary>
+        internal static string SimulateBulkCashOperation {
+            get {
+                return ResourceManager.GetString("SimulateBulkCashOperation", resourceCulture);
             }
         }
         

@@ -23,7 +23,7 @@
 
     <fieldset class="fieldset-custom">
         <div class="container">
-            <div class="row">
+            <div class="row mb-3">
                 <h6 class="mb-0 fw-bold text-dark">@GlobalLoanRepaymentBackOffice.SourceAccounts</h6>
                 <div class="col-md-12 mb-2">
                     <div class="form-floating">
@@ -33,7 +33,27 @@
                     </div>
                 </div>
             </div>
-
+            <!-- Accounting Date - Top Right -->
+            <div class="row mb-3">
+                <div class="col text-end">
+                    <label class="form-label fw-semibold me-2">Accounting Date</label>
+                    @Html.TextBoxFor(
+                        m => m.BulkDeposit.AccountingDate,
+                        Model.BulkDeposit.AccountingDate.HasValue
+                            ? Model.BulkDeposit.AccountingDate.Value.ToString("yyyy-MM-dd")
+                            : DateTime.Today.ToString("yyyy-MM-dd"),
+                        new
+                        {
+                            @class = "form-control accounting-date d-inline-block",
+                            style = "width: 200px; display:inline-block;",
+                            type = "date",
+                            data_date_default = "today",
+                            data_date_max = "today"
+                        }
+                    )
+                    @Html.ValidationMessageFor(m => m.BulkDeposit.AccountingDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
             <div class="row">
                 <div class="table-responsive">
                     <table class="table table-hover" id="myDataTableT">
@@ -106,8 +126,9 @@
                                     </td>
 
                                     <td>
-                                        <input type="checkbox" class="form-check-input" disabled />
+                                        <input type="checkbox" class="form-check-input loan-confirmation-checkbox" />
                                     </td>
+
                                     <td>
                                         <input type="checkbox"
                                                class="form-check-input vat-exclusive-check"
@@ -128,6 +149,8 @@
             </div>
 
             <div class="row">
+
+
                 <div class="col-md-12 mt-2">
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control shadow-input-boxes", @id = "Note", rows = "3", placeholder = @GlobalLoanRepaymentBackOffice.EnterReasonForTransaction, style = "height: 90px;" })
@@ -144,7 +167,7 @@
                 <button class="btn btn-secondary" onclick="Reprint()">
                     <i class="mdi mdi-printer me-1"></i> @GlobalLoanRepaymentBackOffice.ReprintReceipt
                 </button>
-             
+
             </div>
         </div>
     </fieldset>

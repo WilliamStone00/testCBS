@@ -166,7 +166,7 @@ namespace CBS.FrontDesk.UI.Filter
             {
                 using (var client = new WebClient())
                 {
-                    using (client.OpenRead("http://www.google.com"))
+                    using (client.OpenRead("https://www.youtube.com/"))
                     {
                         return true;
                     }

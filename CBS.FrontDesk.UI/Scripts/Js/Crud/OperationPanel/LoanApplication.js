@@ -10,6 +10,11 @@
 
 
 $(document).ready(function () {
+    $('#loan_identification, #loan_configuration, #loan_financials, #loan_dates')
+        .addClass('show')
+        .prev('.accordion-header')
+        .find('.accordion-button')
+        .removeClass('collapsed');
 
     // Trigger the download on button click
     $("#btnData").click(function () {
@@ -45,6 +50,12 @@ $(document).ready(function () {
 
 function LoanProductsProperties(KEY, path, affectedID) {
     GetLoanApplication(KEY);
+    var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path;
+    FillDropDownAjaxCallParam(url, 'RepaymentCircle', "---Select Option---");
+
+    //GetLoanPurposes()
+}
+function LoanProductsPropertiesRefinancing(KEY, path, affectedID) {
     var url = "/MemberOperation/Ajaxloader?Key=" + KEY + "&path=" + path;
     FillDropDownAjaxCallParam(url, affectedID, "---Select Option---");
 
@@ -110,6 +121,138 @@ function GetLoanPurposes() {
     var url = "/MemberOperation/Ajaxloader?Key=" + loanCategoryid + "&path=" + path;
     FillDropDownAjaxCallParam(url, "purposeId", "---Select Option---");
 }
+function handleLoanSelection(loanId) {
+    if (!loanId || loanId.trim() === "") {
+        $('#viewLoanDetailsBtn').prop('disabled', true);
+        $('#loanDetailsCard').collapse('hide');
+        return;
+    }
+
+    $('#viewLoanDetailsBtn').prop('disabled', false);
+}
+
+function toggleLoanDetailsCard() {
+    $('#loanDetailsCard').collapse('toggle');
+}
+
+
+
+
+function populateLoanModal(data) {
+    // 🧩 Identification
+    $('#rl_productId').text(data.LoanProductId || '');
+    $('#rl_productName').text(data.LoanProductName || '');
+    $('#rl_loanType').text(data.LoanType || '');
+    $('#rl_loanStatus').text(data.LoanStatus || '');
+    $('#rl_loanCategory').text(data.LoanCategory || '');
+
+    // ⚙️ Configuration
+    $('#rl_loanTerm').text(data.LoanTermName || '');
+    $('#rl_targetPopulation').text(data.LoanTarget || '');
+    $('#rl_loanPurpose').text(data.LoanPurpose || '');
+    $('#rl_repaymentPeriod').text(data.RepaymentPeriod || '');
+    $('#rl_repaymentMode').text(data.RepaymentMode || '');
+    $('#rl_installments').text(data.NumberOfInstallments || '');
+    $('#rl_interestCalculationMethod').text(data.InterestCalculationMethod || '');
+
+    // 💰 Financials
+    $('#rl_interestRate').text((data.InterestRate || 0).toFixed(2) + '%');
+    $('#rl_vatRate').text((data.VatRate || 0).toFixed(2) + '%');
+    $('#rl_principal').text(formatXAF(data.Principal));
+    $('#rl_interest').text(formatXAF(data.AccrualInterest));
+    $('#rl_vat').text(formatXAF(data.Tax));
+    $('#rl_penalty').text(formatXAF(data.Penalty));
+    $('#rl_dueAmount').text(formatXAF(data.DueAmount));
+
+    // 📅 Dates
+    $('#rl_disbursementDate').text(formatDate(data.DisbursementDate));
+    $('#rl_maturityDate').text(formatDate(data.MaturityDate));
+    $('#rl_lastRepaymentDate').text(formatDate(data.LastRepaymentDate));
+    $('#rl_disbursementChannel').text(data.DisbursementChannel || '');
+
+    $('#rl_productCategoryId').text(data.ProductCategoryId || '');
+    $('#rl_productCategoryName').text(data.ProductCategoryName || '');
+
+    $('#oldLoanAmount').val(data.DueAmount);
+    $('#oldLoanCapital').val(data.Principal);
+    $('#oldLoanInterest').val(data.AccrualInterest);
+    $('#oldLoanVAT').val(data.Tax);
+    $('#oldLoanPenalty').val(data.Penalty);
+    $('#oldLoanLoanId').val(data.Id);
+    $('#oldLoanvatRate').val(data.VatRate);
+
+    // 🎨 Dynamic Styling Based on Loan Status
+    const wrapper = $('#loanDetailsCardWrapper');
+    const header = $('#loanDetailsHeader');
+    const label = $('#loanStatusLabel');
+
+    wrapper.removeClass('border-success border-danger border-warning');
+    header.removeClass('bg-success-subtle bg-danger-subtle bg-warning-subtle text-success text-danger text-warning');
+
+    if (!data.LoanStatus) return;
+
+    const status = data.LoanStatus.toLowerCase();
+    if (status.includes('delinquent') || status.includes('default')) {
+        wrapper.addClass('border-danger');
+        header.addClass('bg-danger-subtle text-danger');
+        label.text("🚨 Delinquent Loan Summary");
+    } else if (status.includes('pending')) {
+        wrapper.addClass('border-warning');
+        header.addClass('bg-warning-subtle text-warning');
+        label.text("⚠️ Pending Loan Summary");
+    } else {
+        wrapper.addClass('border-success');
+        header.addClass('bg-success-subtle text-success');
+        label.text("✅ Active Loan Summary");
+    }
+}
+function styleLoanStatus(status) {
+    const $badge = $('#rl_loanStatus');
+    $badge.text(status).removeClass().addClass('badge px-3 py-1');
+
+    switch ((status || '').toLowerCase()) {
+        case 'approved':
+            $badge.addClass('bg-success');
+            break;
+        case 'pending':
+            $badge.addClass('bg-warning text-dark');
+            break;
+        case 'rejected':
+        case 'delinquent':
+            $badge.addClass('bg-danger');
+            break;
+        case 'open':
+            $badge.addClass('bg-primary text-white'); // 💡 Or use a custom class like 'bg-open-green'
+            break;
+        default:
+            $badge.addClass('bg-secondary');
+    }
+}
+
+
+
+function formatXAF(amount) {
+    return (amount || 0).toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'XAF',
+        minimumFractionDigits: 0
+    });
+}
+
+function formatDate(dateValue) {
+    if (!dateValue) return '';
+
+    const date = new Date(dateValue);
+    if (isNaN(date)) return '';
+
+    return date.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+}
+
+
 
 function GetLoanPurposes(key) {
     path = "get_puposes";
@@ -140,15 +283,13 @@ function LoadRefinancing(KEY, path, affectedID) {
     // Call function to toggle input fields and divs based on application type
     toggleInputFields();
 }
-
 function toggleInputFields() {
     var loanApplicationType = document.getElementById('LoanApplicationType').value;
     var isReschedule = loanApplicationType === "Reschedule";
+    var isRefinancing = loanApplicationType === "Refinancing";
 
-    // List of input fields to toggle
-    var inputFields = ["NewBalance", /*"NewInterest", "NewVAT", "NewPenalty"*/];
-
-    // Toggle readonly attribute based on loan application type
+    // Toggle readonly on specific inputs for Reschedule only
+    var inputFields = ["NewBalance"];
     inputFields.forEach(function (fieldId) {
         var field = document.getElementById(fieldId);
         if (isReschedule) {
@@ -158,24 +299,24 @@ function toggleInputFields() {
         }
     });
 
-    // Update the panel title and convert to uppercase
+    // Update panel title
     var panelTitle = document.getElementById('panelTitle');
     switch (loanApplicationType) {
         case "Reschedule":
-            panelTitle.innerHTML = "RESCHEDULELING LOAN APPLICATION FORM".toUpperCase();
+            panelTitle.innerHTML = "RESCHEDULELING LOAN APPLICATION FORM";
             break;
         case "Refinancing":
-            panelTitle.innerHTML = "REFINANCING LOAN APPLICATION FORM".toUpperCase();
+            panelTitle.innerHTML = "REFINANCING LOAN APPLICATION FORM";
             break;
         case "Restructure":
-            panelTitle.innerHTML = "RESTRUCTURING LOAN APPLICATION FORM".toUpperCase();
+            panelTitle.innerHTML = "RESTRUCTURING LOAN APPLICATION FORM";
             break;
         default:
-            panelTitle.innerHTML = "NEW LOAN APPLICATION FORM".toUpperCase();
+            panelTitle.innerHTML = "NEW LOAN APPLICATION FORM";
             break;
     }
 
-    // Update the icon based on the loan application type
+    // Update icon
     var iconElement = document.querySelector('#accordionPopoutIconThree i');
     switch (loanApplicationType) {
         case "Reschedule":
@@ -187,37 +328,127 @@ function toggleInputFields() {
         case "Restructure":
             iconElement.className = "mdi mdi-account-cog me-2";
             break;
-        default: // New Loan Application
-            iconElement.className = "mdi mdi-file me-2"; // Update this line with the new icon class
+        default:
+            iconElement.className = "mdi mdi-file me-2";
             break;
     }
 
-    // List of div IDs to hide/show based on "Reschedule"
+    // Common divs to toggle (already present)
     var divsToToggle = [
         "RiskMitigationDiv",
         "RAmountDiv",
         "loanTypeDiv",
         "loanProductDiv",
-    /*    "WaiverDiv",*/
         "TargetPopulationDiv",
         "LoanCategoryDive",
         "RepaymentDiv",
-        //"ApplyInterestWaiverDiv",
         "purposeAndActivitiesDiv"
     ];
 
-    // Hide or show divs based on "Reschedule" status
     divsToToggle.forEach(function (divId) {
         var divElement = document.getElementById(divId);
-        console.log(divId);
-        console.log(divElement);
         if (isReschedule) {
             divElement.style.display = "none";
         } else {
             divElement.style.display = "block";
         }
     });
+
+    // ✅ Additional logic for Refinancing: hide product selection-related fields
+    var refinancingFields = [
+        //"LoanCategorySelect",       // dropdown for Loan Product Category
+        //"LoanTermSelect",           // dropdown for Loan Term
+        "LoanCategoryDive",     // radio buttons
+        //"TargetPopulationDiv",  // dropdown for target
+        //"loanProductDiv",       // dropdown for loan product
+        "loanTypeDiv"           // dropdown for loan type
+    ];
+
+    refinancingFields.forEach(function (id) {
+        var element = document.getElementById(id);
+        if (element) {
+            element.style.display = isRefinancing ? "none" : "block";
+        }
+    });
 }
+
+//function toggleInputFields() {
+//    var loanApplicationType = document.getElementById('LoanApplicationType').value;
+//    var isReschedule = loanApplicationType === "Reschedule";
+
+//    // List of input fields to toggle
+//    var inputFields = ["NewBalance", /*"NewInterest", "NewVAT", "NewPenalty"*/];
+
+//    // Toggle readonly attribute based on loan application type
+//    inputFields.forEach(function (fieldId) {
+//        var field = document.getElementById(fieldId);
+//        if (isReschedule) {
+//            field.setAttribute('readonly', 'readonly');
+//        } else {
+//            field.removeAttribute('readonly');
+//        }
+//    });
+
+//    // Update the panel title and convert to uppercase
+//    var panelTitle = document.getElementById('panelTitle');
+//    switch (loanApplicationType) {
+//        case "Reschedule":
+//            panelTitle.innerHTML = "RESCHEDULELING LOAN APPLICATION FORM".toUpperCase();
+//            break;
+//        case "Refinancing":
+//            panelTitle.innerHTML = "REFINANCING LOAN APPLICATION FORM".toUpperCase();
+//            break;
+//        case "Restructure":
+//            panelTitle.innerHTML = "RESTRUCTURING LOAN APPLICATION FORM".toUpperCase();
+//            break;
+//        default:
+//            panelTitle.innerHTML = "NEW LOAN APPLICATION FORM".toUpperCase();
+//            break;
+//    }
+
+//    // Update the icon based on the loan application type
+//    var iconElement = document.querySelector('#accordionPopoutIconThree i');
+//    switch (loanApplicationType) {
+//        case "Reschedule":
+//            iconElement.className = "mdi mdi-calendar-refresh me-2";
+//            break;
+//        case "Refinancing":
+//            iconElement.className = "mdi mdi-cash-refund me-2";
+//            break;
+//        case "Restructure":
+//            iconElement.className = "mdi mdi-account-cog me-2";
+//            break;
+//        default: // New Loan Application
+//            iconElement.className = "mdi mdi-file me-2"; // Update this line with the new icon class
+//            break;
+//    }
+
+//    // List of div IDs to hide/show based on "Reschedule"
+//    var divsToToggle = [
+//        "RiskMitigationDiv",
+//        "RAmountDiv",
+//        "loanTypeDiv",
+//        "loanProductDiv",
+//    /*    "WaiverDiv",*/
+//        "TargetPopulationDiv",
+//        "LoanCategoryDive",
+//        "RepaymentDiv",
+//        //"ApplyInterestWaiverDiv",
+//        "purposeAndActivitiesDiv"
+//    ];
+
+//    // Hide or show divs based on "Reschedule" status
+//    divsToToggle.forEach(function (divId) {
+//        var divElement = document.getElementById(divId);
+//        console.log(divId);
+//        console.log(divElement);
+//        if (isReschedule) {
+//            divElement.style.display = "none";
+//        } else {
+//            divElement.style.display = "block";
+//        }
+//    });
+//}
 
 
 function LoadProductDetails(KEY) {
@@ -281,41 +512,58 @@ function GetLoanApplication(KEY) {
     });
 }
 
+function loadRefinancingLoan(loanId) {
+    $.get(`/MemberOperation/GetLoanForRefinancing?Key=${loanId}`, function (response) {
+        if (response) {
+            populateLoanModal(response);
+            $('#loanDetailsCard').collapse('show');
 
-function GetLoan(loanid) {
-    if (!loanid) {
-        console.error("Loan ID is required.");
-        return;
-    }
-
-    $.ajax({
-        type: "GET",
-        url: `/MemberOperation/GetLoanForRefinancing?Key=${loanid}`,
-        success: function (response) {
-            // Adjust to match the actual response format
-            if (response.success === false) {
-                console.error(response.message);
-                alert(response.message);
-                return;
-            }
-
-            const data = response.data || response; // Use raw data if no 'data' property exists
-
-            // Populate form fields with the loan data
-            $('#oldLoanAmount').val(data.DueAmount);
-            $('#oldLoanCapital').val(data.Principal);
-            $('#oldLoanInterest').val(data.AccrualInterest);
-            $('#oldLoanVAT').val(data.Tax);
-            $('#oldLoanPenalty').val(data.Penalty);
-            $('#oldLoanLoanId').val(data.Id);
-            $('#oldLoanvatRate').val(data.VatRate);
-        },
-        error: function (xhr, status, error) {
-            console.error("Error fetching loan data:", error, "Response:", xhr.responseText);
-            appalert("An error occurred while fetching loan details. Please try again." + xhr.responseText + " Error: " + error + ". Status: " + status , 0, 1);
+            // ✅ Only call this after successful response
+        //    GetLoanPurposes(response.ProductCategoryId);
+        //    GetLoanApplication(response.LoanProductId)
+        //    LoanProductsPropertiesRefinancing(response.LoanProductId, 'loanrepayment_cycles', 'RepaymentCircle')
+        } else {
+            appalert("No loan data found.", 2, 1);
         }
+    }).fail(function (xhr) {
+        appalert("Failed to load loan data: " + xhr.statusText, 0, 1);
     });
 }
+
+//function GetLoan(loanid) {
+//    if (!loanid) {
+//        console.error("Loan ID is required.");
+//        return;
+//    }
+
+//    $.ajax({
+//        type: "GET",
+//        url: `/MemberOperation/GetLoanForRefinancing?Key=${loanid}`,
+//        success: function (response) {
+//            // Adjust to match the actual response format
+//            if (response.success === false) {
+//                console.error(response.message);
+//                alert(response.message);
+//                return;
+//            }
+
+//            const data = response.data || response; // Use raw data if no 'data' property exists
+
+//            // Populate form fields with the loan data
+//            $('#oldLoanAmount').val(data.DueAmount);
+//            $('#oldLoanCapital').val(data.Principal);
+//            $('#oldLoanInterest').val(data.AccrualInterest);
+//            $('#oldLoanVAT').val(data.Tax);
+//            $('#oldLoanPenalty').val(data.Penalty);
+//            $('#oldLoanLoanId').val(data.Id);
+//            $('#oldLoanvatRate').val(data.VatRate);
+//        },
+//        error: function (xhr, status, error) {
+//            console.error("Error fetching loan data:", error, "Response:", xhr.responseText);
+//            appalert("An error occurred while fetching loan details. Please try again." + xhr.responseText + " Error: " + error + ". Status: " + status , 0, 1);
+//        }
+//    });
+//}
 
 function calculateVATAndTotal() {
     // Get the values from the input fields

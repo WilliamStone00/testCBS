@@ -34,7 +34,7 @@ namespace CBS.BusinessService.LoanCommitee
                 {
 
                     GetExecutionMessages(inResponse, true, $"Validation", MessagesResults.Success,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
                     return ExecutionMessage;
 
                 }
@@ -98,7 +98,7 @@ namespace CBS.BusinessService.LoanCommitee
                 {
                     // Successful creation
                     GetExecutionMessages(response, true, $"Validation", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else
@@ -131,7 +131,7 @@ namespace CBS.BusinessService.LoanCommitee
                     {
                         // Successful creation
                         GetExecutionMessages(response, true, $"Validation", MessagesResults.Success,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, null);
                         return ExecutionMessage;
                     }
                     else

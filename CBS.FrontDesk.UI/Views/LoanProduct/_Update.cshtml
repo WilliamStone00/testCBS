@@ -606,6 +606,12 @@ Model.UpdateLoanProductCommand.LoanMinimumAmount > Model.UpdateLoanProductComman
                                                 <label>@GlobalLoanProduct.MinimumShareAccountBalanceRequired</label>
                                             </div>
                                         </div>
+                                        <div class="col-12">
+                                            <div class="form-check">
+                                                @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.BlockShareAccount, new { @class = "form-check-input" })
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.BlockedShareAccountForStandingOrders. </label>
+                                            </div>
+                                        </div>
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.UpdateLoanProductCommand.MinimumSavingAccountBalanceRateForTheRequestAmount, new { @class = "form-control" })
@@ -615,7 +621,7 @@ Model.UpdateLoanProductCommand.LoanMinimumAmount > Model.UpdateLoanProductComman
                                         </div>
                                         <div class="col-12">
                                             <div class="form-check">
-                                                @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.BlockedSavingAccount, new { @class = "form-check-input" })
+                                                @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.BlockSavingAccount, new { @class = "form-check-input" })
                                                 <label class="form-check-label" for="isActive">@GlobalLoanProduct.BlockedDownPaymentsForSavingAccount. </label>
                                             </div>
                                         </div>
@@ -628,13 +634,13 @@ Model.UpdateLoanProductCommand.LoanMinimumAmount > Model.UpdateLoanProductComman
                                         </div>
                                         <div class="col-12">
                                             <div class="form-check">
-                                                @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.BlockedSalaryAccount, new { @class = "form-check-input" })
+                                                @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.BlockSalaryAccount, new { @class = "form-check-input" })
                                                 <label class="form-check-label" for="isActive">@GlobalLoanProduct.BlockedSalaryAccountForStandingOrders. </label>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-check">
-                                                @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.BlockedGuarantorAccount, new { @class = "form-check-input" })
+                                                @Html.CheckBoxFor(m => m.UpdateLoanProductCommand.BlockGurantorAccount, new { @class = "form-check-input" })
                                                 <label class="form-check-label" for="isActive">@GlobalLoanProduct.BlockedCoGuarantorsAccount. </label>
                                             </div>
                                         </div>

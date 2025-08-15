@@ -1,123 +1,199 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
-    @using Resources
-@{
-    ViewBag.Title = @GlobalLoan.LoanQueryOverview;
+﻿@{
+    ViewBag.Title = "Loan Management Overview";
 }
 
-
-<!-- Page Header -->
-<div class="card bg-light mb-2 shadow-sm">
-    <div class="card-body text-center">
-        <h1 class="card-title text-primary">
-            <i class="mdi mdi-finance me-2"></i> @GlobalLoan.LOANQUERYLOGS
-        </h1>
-        <p class="card-text">
-            @GlobalLoan.MonitorAndAnalyzeLoanApplicationsRepaymentsAndDelinquencies.
-        </p>
-        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold mb-2">
+                    <i class="mdi mdi-bank-outline me-2"></i> Loan Management Console
+                </h1>
+                <p class="card-text text-muted mb-1">Easily track, filter, and manage loans across all branches.</p>
+                <p class="card-text text-warning fw-semibold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use advanced filters to customize your loan search.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="card mb-3 shadow-sm">
-    <div class="card-header bg-light text-dark fw-bold d-flex justify-content-between align-items-center">
-        <span>
-            <i class="mdi mdi-filter-outline me-2"></i> @GlobalLoan.LoanSearchAndFilters
-        </span>
-        <button id="toggleFilterButton" class="btn btn-sm btn-light">
-            <i class="mdi mdi-chevron-down"></i> @GlobalLoan.ShowFilters
+<!-- Tips Section -->
+<div class="card mb-2 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Using Filters Effectively</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanTips">
+            <i class="mdi mdi-chevron-down"></i>
         </button>
-    </div>
-    <div class="card-body collapse" id="filterContent">
-        <!-- Row 1: Date Filters and Status Filters -->
-        <div class="row">
-            <!-- Date Filters -->
-            <div class="col-md-3">
-                <label for="dateFrom" class="form-label fw-bold">@GlobalLoan.DateFrom:</label>
-                <input type="text" id="dateFrom" class="form-control shadow-sm" placeholder="dd/MM/yyyy" />
-            </div>
-            <div class="col-md-3">
-                <label for="dateTo" class="form-label fw-bold">@GlobalLoan.DateTo:</label>
-                <input type="text" id="dateTo" class="form-control shadow-sm" placeholder="dd/MM/yyyy" />
-            </div>
-
-            <!-- Loan Status and Delinquency Filters -->
-            <div class="col-md-3">
-                <label for="status" class="form-label fw-bold">@GlobalLoan.LoanStatus:</label>
-                <select id="status" class="form-select shadow-sm">
-                    <option value="all">@GlobalLoan.All</option>
-                    <option value="Open">@GlobalLoan.Open</option>
-                    <option value="Closed">@GlobalLoan.Closed</option>
-                    <option value="Refinanced">@GlobalLoan.Refinanced</option>
-                    <option value="Restructured">@GlobalLoan.Restructured</option>
-                    <option value="Rescheduled">@GlobalLoan.Rescheduled</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label for="deliquentStatus" class="form-label fw-bold">@GlobalLoan.DelinquencyStatus:</label>
-                <select id="deliquentStatus" class="form-select shadow-sm">
-                    <option value="all">@GlobalLoan.All</option>
-                    <option value="Current">@GlobalLoan.Current</option>
-                    <option value="Delinquent">@GlobalLoan.Delinquent</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="row mt-3">
-            <div class="col-md-4">
-                <label for="searchCriteria" class="form-label fw-bold">@GlobalLoan.SearchCriteria:</label>
-                <input type="text" id="searchCriteria" class="form-control shadow-sm" placeholder="@GlobalLoan.EnterCustomerBranchOrReference..." />
-            </div>
-            <div class="col-md-4">
-                <label for="branchInput" class="form-label fw-bold">@GlobalLoan.Branch:</label>
-                @Html.DropDownListFor(
-                    m => m.InitiateLoanDownloadCommand.BranchId,
-                    new SelectList(ViewBag.Branches, "Id", "Name"),
-                    "---"+ @GlobalLoan.SelectAll+"---",
-                    new { @class = "form-control shadow-sm select2", @id = "branchInput" }
-                )
-            </div>
-            <div class="col-md-4">
-                <label for="exportReportType" class="form-label fw-bold">@GlobalLoan.ExportReportType:</label>
-                <select id="exportReportType" class="form-select shadow-sm">
-                    <option value="Loan_Query">@GlobalLoan.ListOfLoans</option>
-                    <option value="Approved_Loans">@GlobalLoan.ListOfApprovedLoans</option>
-                    <option value="Paid_Loans">@GlobalLoan.ListOfPaidLoans</option>
-                    <option value="Delinquent_Loans">@GlobalLoan.ListOfDelinquentLoans</option>
-                    <option value="Current_Loans">@GlobalLoan.ListOfCurrentLoans</option>
-                    <option value="All_Loans">@GlobalLoan.AllLoans</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- Search & Export Buttons -->
-        <div class="row mt-3">
-            <div class="col-md-12 d-flex justify-content-end">
-                <button id="searchButton" class="btn btn-primary me-2">
-                    <i class="mdi mdi-magnify me-1"></i> @GlobalShared.Search
-                </button>
-                <button id="exportButton" class="btn btn-success" onclick="exportLoanData()">
-                    <i class="mdi mdi-file-excel me-1"></i> @GlobalShared.Export
-                </button>
-            </div>
+    </h6>
+    <div id="collapseLoanTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-map-marker-outline text-success me-2"></i> <strong>Branch Filter:</strong> Enable and select a branch to view location-specific loans.</li>
+                <li><i class="mdi mdi-calendar-month-outline text-primary me-2"></i> <strong>Date Filter:</strong> Limit loans based on their creation date.</li>
+                <li><i class="mdi mdi-account-card-details-outline text-dark me-2"></i> <strong>Loan/Member:</strong> Search by specific Loan ID or Member ID for quick lookup.</li>
+                <li><i class="mdi mdi-tag-multiple-outline text-info me-2"></i> <strong>Status Filters:</strong> View by loan status (Open, Closed, etc.) or disbursement phase.</li>
+                <li><i class="mdi mdi-shield-alert-outline text-danger me-2"></i> <strong>Delinquency:</strong> Highlight delinquent vs current loan records.</li>
+                <li><i class="mdi mdi-cog-outline text-secondary me-2"></i> <strong>Advanced Options:</strong> Use loan category, type, target, and migration status for deeper filtering.</li>
+                <li><i class="mdi mdi-alert-decagram-outline text-warning me-2"></i> <strong>PAR ID:</strong> Toggle and use PAR ID filters to refine risk-specific analysis.</li>
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>Export:</strong> Use the export button to download your current filtered view to Excel.</li>
+            </ul>
         </div>
     </div>
 </div>
 
-<!-- Data Display Section -->
-<div class="card shadow-sm" id="loanDataCard" style="display: none;">
-    <div class="card-header bg-light text-dark fw-bold">
-        <i class="mdi mdi-table me-2"></i> @GlobalLoan.LoanDataTable
+
+
+<!-- Filters Section -->
+<div class="card shadow p-3 mb-2">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Advanced Filters</h5>
+
+    <div class="card p-3 mb-3 bg-light">
+        <!-- Toggle Controls -->
+        <div class="row mb-3">
+            <div class="col-md-3 form-check">
+                <input type="checkbox" class="form-check-input" id="byBranch" />
+                <label class="form-check-label fw-bold" for="byBranch">Filter by Branch</label>
+            </div>
+            <div class="col-md-3 form-check">
+                <input type="checkbox" class="form-check-input" id="byDate" />
+                <label class="form-check-label fw-bold" for="byDate">Filter by Date</label>
+            </div>
+            <div class="col-md-3 form-check">
+                <input type="checkbox" class="form-check-input" id="moreOptions" />
+                <label class="form-check-label fw-bold" for="moreOptions">More Filters</label>
+            </div>
+            <div class="col-md-3 form-check">
+                <input type="checkbox" class="form-check-input" id="byPar" />
+                <label class="form-check-label fw-bold" for="byPar">Filter by PAR ID</label>
+            </div>
+        </div>
+
+        <!-- Branch Filter -->
+        <div id="branchFilterSection" class="row mb-3" style="display:none;">
+            <div class="col-md-12">
+                <label class="form-label fw-bold">Select Branch</label>
+                @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control shadow-sm select2", @id = "branchInput" })
+            </div>
+        </div>
+
+        <!-- Date Range Filter -->
+        <div id="dateRangeSection" class="row mb-3" style="display:none;">
+            <div class="col-md-6"><input type="date" id="startDate" class="form-control" placeholder="Start Date" /></div>
+            <div class="col-md-6"><input type="date" id="endDate" class="form-control" placeholder="End Date" /></div>
+        </div>
+
+        <!-- PAR Filter -->
+        <div id="parFilterSection" class="row mb-3" style="display:none;">
+            <div class="col-md-12">
+                <label class="form-label fw-bold">Select PAR ID</label>
+                @Html.DropDownList("parId", new SelectList(ViewBag.ParIds, "Id", "Name"), "--- Select PAR ID ---", new { @class = "form-control shadow-sm select2", @id = "parId" })
+            </div>
+        </div>
+
+        <!-- Base Filters -->
+        <div class="row">
+            <div class="col-md-4 mb-2"><input type="text" id="loanId" class="form-control" placeholder="Loan ID" /></div>
+            <div class="col-md-4 mb-2"><input type="text" id="memberId" class="form-control" placeholder="Member ID" /></div>
+            <div class="col-md-4 mb-2">
+                <select id="status" class="form-select shadow-sm">
+                    <option value="">All Status</option>
+                    <option value="Open">Open</option>
+                    <option value="Closed">Closed</option>
+                    <option value="Restructured">Restructured</option>
+                    <option value="Rescheduled">Rescheduled</option>
+                    <option value="Refinanced">Refinanced</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-2">
+                <select id="disburmentStatus" class="form-select shadow-sm">
+                    <option value="">Disbursement Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-2">
+                <select id="deliquentStatus" class="form-select shadow-sm">
+                    <option value="">All Delinquency</option>
+                    <option value="Current">Current</option>
+                    <option value="Delinquent">Delinquent</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Extra Filters -->
+        <div id="extraFiltersSection" style="display:none;">
+            <hr />
+            <div class="row">
+                <div class="col-md-4 mb-2">
+                    <label class="form-label fw-bold">Loan Category</label>
+                    <select id="loanCategory" class="form-select shadow-sm">
+                        <option value="">--- Select Category ---</option>
+                        <option value="Main_Loan">Main Loan</option>
+                        <option value="Special_Saving_Facility_Loan">Special Saving Facility Loan</option>
+                        <option value="Overdraft">Overdraft</option>
+                        <option value="Line_of_Credit">Line of Credit</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <label class="form-label fw-bold">Loan Type</label>
+                    <select id="loanTypes" class="form-select shadow-sm">
+                        <option value="">--- Select Loan Type ---</option>
+                        <option value="Special_Loans_Or_Advance_Salaries">Special Loans / Advance Salaries</option>
+                        <option value="Micro_Loans">Micro Loans</option>
+                        <option value="Project_Loans">Project Loans</option>
+                        <option value="Exceptional_Loan">Exceptional Loan</option>
+                        <option value="Staff_Or_Elected_Official_Loan">Staff / Elected Official Loan</option>
+                        <option value="Special_Savings_Facility">Special Savings Facility</option>
+                        <option value="Staff_Car_Loans">Staff Car Loans</option>
+                        <option value="Main_Loan">Main Loan</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <label class="form-label fw-bold">Migrated?</label>
+                    <select id="isMigratedLoan" class="form-select shadow-sm">
+                        <option value="">All</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-2"><input type="text" id="loanTarget" class="form-control" placeholder="Loan Target" /></div>
+                <div class="col-md-4 mb-2"><input type="text" id="loanTypeCategory" class="form-control" placeholder="Loan Type Category" /></div>
+                <div class="col-md-4 mb-2"><input type="number" min="0" id="delinquentDays" class="form-control" placeholder="Delinquent Days ≥" /></div>
+            </div>
+        </div>
     </div>
-    <div class="card-body">
-        <div id="loanDataTableContainer">
+
+    <!-- Action Buttons -->
+    <div class="row mt-2">
+        <div class="col-md-12 d-flex">
+            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
+            <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+            <button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-excel"></i> Export</button>
+        </div>
+    </div>
+</div>
+
+<div id="loanDataCard" class="card p-3 shadow mb-4" style="display: none;">
+    <h5 class="text-primary mb-1"><i class="mdi mdi-table"></i> Loan Results</h5>
+    <div class="table-responsive">
+        <div class="card-body" id="datalistingview">
             @Html.Partial("_LoanData")
         </div>
     </div>
 </div>
 
+<!-- Correct Bootstrap / MDB CSS links (example) -->
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/Js/Crud/Loan/LoanTransactions/LoanQuery.js"></script>
-
 }

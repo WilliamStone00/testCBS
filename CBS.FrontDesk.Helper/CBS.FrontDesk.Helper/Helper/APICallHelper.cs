@@ -389,6 +389,7 @@ namespace CBS.FrontDesk.Helper
 
         public static string GetTransactionsByQueryParameters = "/api/v1/Transaction/GetTransactionsByQueryParameters";
         public static string GetTransaction = "/api/v1/Transaction/{0}";
+        public static string TransfersDataTable = "/api/v1/Transfers/DataTable";
         //Teller
         public static string PrimaryTellerProvisioning = "/api/v1/Teller/Dinomination/Provisioning/PrimaryTeller";
         public static string SubTellerProvisioning = "/api/v1/Teller/Provision/SubTeller";
@@ -432,6 +433,7 @@ namespace CBS.FrontDesk.Helper
         public static string MobileMoneyTellerConfiguration = "/api/v1/Teller/MobileMoney/Configuration/{0}";
         public static string GetAllTeller = "/api/v1/Teller";
         public static string CreateTeller = "/api/v1/Teller";
+        public static string InitializeAccount = "/api/v1/Account/InitializeAccount";
         //DailyTeller
         public static string Get_Update_Delete_DailyTeller = "/api/v1/DailyTeller/{0}";
         public static string GetDailyTellerUser = "/api/v1/DailyTeller/User";
@@ -629,6 +631,16 @@ namespace CBS.FrontDesk.Helper
         public static string DownloadFileByIdQuery = "/api/v1/FileDownloadInfos/download/{0}";
 
         public static string LoaDataTablePaggination = "/api/v1/Loan/Paggination-DataTable";
+
+
+        public static string SubmitLoanAdjustmentRequest = "/api/v1/LoanAdjustmentRequest/submit";
+        public static string ApproveLoanAdjustmentRequest = "/api/v1/LoanAdjustmentRequest/approve";
+        public static string RejectLoanAdjustmentRequest = "/api/v1/LoanAdjustmentRequest/reject";
+        public static string GetLoanAdjustmentRequestDetails = "/api/v1/LoanAdjustmentRequest/get-details/{0}";
+        public static string LoanAdjustmentRequestDataTable = "/api/v1/LoanAdjustmentRequest/datatable";
+
+
+
 
 
         public static string LoaDataTablePagginationFroCmoney = "/api/v1/cmoney/members/activations/datatable";
@@ -1127,6 +1139,7 @@ namespace CBS.FrontDesk.Helper
         public static string SimulateBulkAccountTopup= "/api/v1/BulkOperations/top-up/simulation";
         public static string SimulateBulkAccountCashInOrCashOut= "/api/v1/BulkOperations/cash/simulation";
         public static string ConfirmBulkOperation= "/api/v1/BulkOperations/validation";
+        public static string SimulateBulkCreditOrDebitOperation= "/api/v1/BulkOperations/cash/simulation";
         public static string SimulateBulkAccountContribution = "/api/v1/BulkOperations/contribution/simulation";
         public static string GetAllBulkOperations = "/api/v1/BulkOperations";
         public static string BulkOperationDataDetails = "/api/v1/BulkOperations/simulation/details/";
