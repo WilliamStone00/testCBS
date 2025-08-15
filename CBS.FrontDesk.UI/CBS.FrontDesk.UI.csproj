@@ -519,6 +519,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppFiles\Reporting\Accounting\General_Journal_Entries.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>General_Journal_Entries.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Accounting\General_Ledger.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>General_Ledger.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\PandLReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2246,12 +2258,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GeneralLedger.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="AppFiles\Reporting\Accounting\JournalEntries.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>JournalEntries.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\LiaisonLedger.cs">
@@ -7474,6 +7480,14 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanTerm.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\General_Journal_Entries.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>General_Journal_Entries.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\General_Ledger.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>General_Ledger.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\PandLReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>PandLReport.cs</LastGenOutput>
@@ -9491,10 +9505,6 @@
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\GeneralLedger.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>GeneralLedger.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Reporting\Accounting\JournalEntries.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>JournalEntries.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\LiaisonLedger.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

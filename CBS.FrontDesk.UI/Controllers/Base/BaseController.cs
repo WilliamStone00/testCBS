@@ -445,7 +445,7 @@ namespace CBS.FrontDesk.UI.Controllers
             {
                 using (var client = new WebClient())
                 {
-                    using (client.OpenRead("http://www.google.com"))
+                    using (client.OpenRead("https://www.youtube.com/"))
                     {
                         return true;
                     }

@@ -1201,7 +1201,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
     
                 var account = await _AccountServices.GetAccount(OperationEventAttribute.TempData);
                 cashDemandDataEntity.CashReplenimentRequest.TempId1 = account.AccountNumberCU + "-" + account.AccountName;
-
+                cashDemandDataEntity.AcknowledgementType = cashDemandDataEntity.CashReplenimentRequest.CorrespondingBranchId=="xxx"?"BankCashOut":GetAcknowlegdgementType(cashDemandDataEntity.CashReplenimentRequest) ;
                 return PartialView(partialView, cashDemandDataEntity);
 
 
@@ -1434,6 +1434,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             {
                 return PartialView(partialView);
             }
+        }
+
+        private string GetAcknowlegdgementType(CashReplenimentRequest cashReplenimentRequest)
+        {
+            throw new NotImplementedException();
         }
 
         private string RetieveStatusOption(string status)
