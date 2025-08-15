@@ -456,7 +456,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                                     this.HttpContext.Session["rptSource"] = account;
                                  
-;                                    string ReportName = $"JournalEntries.rpt";
+;                                    string ReportName = $"General_Journal_Entries.rpt";
                                     if (account.AccountingEntries == null)
                                     {
                                         this.HttpContext.Session["rptSource"] = "empty";

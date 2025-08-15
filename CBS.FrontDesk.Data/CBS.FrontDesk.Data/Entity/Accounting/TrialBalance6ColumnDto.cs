@@ -176,8 +176,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                     model.Description = entry.Description;
                     model.Reference = entry.ReferenceID;
                     model.Representative = entry.Representative;
-                    model.EntryDate = entry.ValueDate.ToString("yyyy-MM-dd");
-                  
+                    model.EntryDate = entry.EntryDate;
+                    model.ValueDate = entry.ValueDate;
                     list.Add(model);
                 }
            
@@ -216,7 +216,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public decimal Debit { get; set; }
         public decimal Credit { get; set; }
         public decimal Balance { get; set; }
-        public string EntryDate { get; set; }
+        public DateTime EntryDate { get; set; }
+        public DateTime ValueDate { get; set; }
         public decimal TotalDebit { get; set; }
         public decimal TotalCredit { get; set; }
         public double NumberCredit { get; set; }
