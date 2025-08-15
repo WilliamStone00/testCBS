@@ -48,6 +48,7 @@ namespace CBS.FrontDesk.UI.WAF.Middleware.Core
         /// </summary>
         public void Init(HttpApplication context)
         {
+            System.Diagnostics.Trace.TraceInformation("TSCWAF Init attached.");
             // Hook into authentication-complete event for security processing
             context.PostAuthenticateRequest += OnPostAuthenticateRequest;
 
@@ -63,6 +64,36 @@ namespace CBS.FrontDesk.UI.WAF.Middleware.Core
                 }
             };
         }
+        //private void OnBeginRequest(object sender, EventArgs e)
+        //{
+        //    var app = (HttpApplication)sender;
+        //    var req = app.Context.Request;
+
+        //    // normalize
+        //    var path = req.Path.ToLowerInvariant();
+
+        //    // skip static
+        //    if (StaticPathHelper.IsStatic(path)) return;
+
+        //    // quick auth endpoint skip (only for heavy checks; we still can rate-limit if you want)
+        //    if (path == "/authentication/login" || path == "/authentication/logout") return;
+
+        //    // build minimal context
+        //    var config = RateLimitConfigHolder.Get();
+        //    EnsureInitialized(config);
+
+        //    // client IP
+        //    var ip = GetClientIp(req);
+
+        //    // quick rate-limit gate (no body, no geo)
+        //    if (_analyzer.QuickRateLimit(ip, path, out var reason)) // implement a thin wrapper around your RateLimiterService
+        //    {
+        //        var wafCtx = new WAFContext { Ip = ip, Path = path, CorrelationId = Guid.NewGuid().ToString("N") };
+        //        var resp = app.Context.Response;
+        //        resp.AddHeader("X-Correlation-ID", wafCtx.CorrelationId);
+        //        RenderBlockPage(resp, wafCtx, reason);
+        //    }
+        //}
 
         /// <summary>
         /// Entry point after authentication. Executes WAF analysis and blocks malicious requests.
@@ -114,9 +145,30 @@ namespace CBS.FrontDesk.UI.WAF.Middleware.Core
             }
 
             // ✅ Skip WAF checks for login/auth endpoints
+            // ✅ Normalize path
             string requestPath = request.Path.ToLowerInvariant();
-            if (requestPath.Contains("/authentication/login"))
+
+            // ✅ Skip static resources
+            if (StaticPathHelper.IsStatic(requestPath))
+            {
+                System.Diagnostics.Debug.WriteLine($"🟢 Skipped static path: {requestPath}");
                 return;
+            }
+
+            // ✅ Auth endpoint exclusions
+            string[] authExclusions = {
+                "/authentication/login",
+                "/authentication/logout",
+                "/authentication/mfa",
+                "/authentication/tokenrefresh"
+            };
+
+            if (authExclusions.Any(ex => requestPath.Equals(ex, StringComparison.OrdinalIgnoreCase)))
+            {
+                System.Diagnostics.Debug.WriteLine($"🟢 Skipped auth endpoint: {requestPath}");
+                return;
+            }
+
 
             // ✅ Skip WAF for whitelisted developer/tester IPs
             if (WAFBypassHelper.ShouldBypass(wafContext.Ip))

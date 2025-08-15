@@ -2181,6 +2181,7 @@
     <Compile Include="Helper\FileUploadHelper.cs" />
     <Compile Include="Helper\SalarySheetExcelExporter.cs" />
     <Compile Include="Models\Class1.cs" />
+    <Compile Include="WAF\Middleware\Core\StaticPathHelper.cs" />
     <Compile Include="WAF\Middleware\Correlation\CorrelationIdMiddleware.cs" />
     <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureFilter.cs" />
     <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureMiddleware.cs" />

@@ -36,20 +36,27 @@ namespace CBS.FrontDesk.UI.WAF.Services.DDoS
                 // ⏱️ Only refresh if config is null or older than the threshold
                 if (_config == null || DateTime.UtcNow - _lastFetched > RefreshInterval)
                 {
-                    if (_lastFetched.Equals(DateTime.MinValue))
-                    {
+                    // ⚠️ Blocking Task.Run used to synchronously get the result
+                    _config = Task.Run(() => new RateLimitConfigService().GetAllAsync()).Result?.FirstOrDefault();
+                    // 🕓 Track the refresh time
+                    _lastFetched = DateTime.UtcNow;
 
-                    }
-                    else
-                    {
-                        // ⚠️ Blocking Task.Run used to synchronously get the result
-                        _config = Task.Run(() => new RateLimitConfigService().GetAllAsync()).Result?.FirstOrDefault();
-                        // 🕓 Track the refresh time
-                        _lastFetched = DateTime.UtcNow;
+                    System.Diagnostics.Debug.WriteLine($"🔁 WAF config auto-refreshed at {_lastFetched:HH:mm:ss}");
 
-                        System.Diagnostics.Debug.WriteLine($"🔁 WAF config auto-refreshed at {_lastFetched:HH:mm:ss}");
+                    //if (_lastFetched.Equals(DateTime.MinValue))
+                    //{
 
-                    }
+                    //}
+                    //else
+                    //{
+                    //    // ⚠️ Blocking Task.Run used to synchronously get the result
+                    //    _config = Task.Run(() => new RateLimitConfigService().GetAllAsync()).Result?.FirstOrDefault();
+                    //    // 🕓 Track the refresh time
+                    //    _lastFetched = DateTime.UtcNow;
+
+                    //    System.Diagnostics.Debug.WriteLine($"🔁 WAF config auto-refreshed at {_lastFetched:HH:mm:ss}");
+
+                    //}
 
                 }
 
