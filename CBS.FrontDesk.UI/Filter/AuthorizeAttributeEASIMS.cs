@@ -14,184 +14,55 @@ using System.Web.Routing;
 using System.Web.Script.Serialization;
 using System.Web.Security;
 
-namespace CBS.FrontDesk.UI { 
+namespace CBS.FrontDesk.UI {
 
 
-   [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-    //public class CheckSessionTimeOutAttribute : AuthorizeAttribute
-    //{
-    //    LocalSession local = new LocalSession();
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Script.Serialization;
+    using System.Net.Http; // only if you switch to HttpClient later
+    using System.Threading; // if you later add async
+    using System.Globalization;
 
-    //    public override void OnAuthorization(AuthorizationContext filterContext)
-    //    {
-        
-
-    //        // ✅ Handle unauthenticated users immediately
-    //        if (filterContext.HttpContext.User == null || !filterContext.HttpContext.User.Identity.IsAuthenticated)
-    //        {
-    //            HandleUnauthorizedRequest(filterContext);
-    //            return;
-    //        }
-      
-    //        base.OnAuthorization(filterContext);
-
-    //        string controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
-    //        string actionName = filterContext.ActionDescriptor.ActionName;
-    //        string url = $"/{controllerName}/{actionName}";
-    //        // 🌐 Check Internet Connectivity
-    //        if (!IsInternetAvailable())
-    //        {
-    //            // Handle offline scenario
-    //            filterContext.Result = new RedirectResult("~/Home/NoInternet"); // Redirect to a "No Internet" page or handle it appropriately
-    //            return;
-    //        }
-    //        // ✅ Skip access check for specific pages
-    //        if (
-    //               actionName.Equals("ChangePassword", StringComparison.OrdinalIgnoreCase) ||
-    //               actionName.Equals("FLoginChangePassword", StringComparison.OrdinalIgnoreCase) ||
-    //               actionName.Equals("GetLiveSessionDashboard", StringComparison.OrdinalIgnoreCase) ||
-    //               actionName.Equals("MFACodeVerification", StringComparison.OrdinalIgnoreCase) ||
-    //               actionName.Equals("MyProfile", StringComparison.OrdinalIgnoreCase) ||
-    //               actionName.ToLower().Contains("download") ||
-    //               (controllerName.Equals("Home", StringComparison.OrdinalIgnoreCase) &&
-    //                actionName.Equals("Index", StringComparison.OrdinalIgnoreCase))
-    //           )
-    //        {
-    //            return;
-    //        }
-
-
-
-    //        // ✅ Extract user identity (CustomPrincipal)
-    //        var identity = filterContext.HttpContext.User as CustomPrincipal;
-    //        if (identity == null || string.IsNullOrWhiteSpace(identity.SessionCode) || string.IsNullOrWhiteSpace(identity.UserName))
-    //        {
-    //            HandleUnauthorizedRequest(filterContext);
-    //            return;
-    //        }
-    //        if (IsAjax(filterContext))
-    //        {
-    //            //filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-    //            //filterContext.HttpContext.Response.SuppressFormsAuthenticationRedirect = true;
-    //            //filterContext.HttpContext.Response.End();
-    //        }
-    //        // ✅ Get session info
-    //        var user = local.GetCurrentUserSession(identity.SessionCode, identity.UserName);
-    //        if (user == null)
-    //        {
-    //            HandleUnauthorizedRequest(filterContext);
-    //            return;
-    //        }
-
-    //        // ✅ Permission check
-    //        if (!HasPermission(user, controllerName, actionName))
-    //        {
-    //            if (IsAjax(filterContext))
-    //            {
-    //                //filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-    //                //filterContext.HttpContext.Response.SuppressFormsAuthenticationRedirect = true;
-    //                //filterContext.HttpContext.Response.End();
-    //            }
-    //            else
-    //            {
-    //                filterContext.Result = new RedirectResult("~/Error/Unauthorized");
-    //            }
-    //            return;
-    //        }
-    //    }
-
-    //    private bool HasPermission(dynamic user, string controller, string action)
-    //    {
-    //        if (user?.UserAuthDto?.Permissions == null)
-    //            return false;
-
-    //        foreach (var permission in user.UserAuthDto.Permissions)
-    //        {
-    //            if (permission.ControllerName?.Equals(controller, StringComparison.OrdinalIgnoreCase) == true &&
-    //                permission.ActionName?.Equals(action, StringComparison.OrdinalIgnoreCase) == true &&
-    //                permission.Read)
-    //            {
-    //                return true;
-    //            }
-    //        }
-
-    //        return false;
-    //    }
-
-    //    protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
-    //    {
-    //        var httpContext = filterContext.HttpContext;
-    //        var request = httpContext.Request;
-    //        var response = httpContext.Response;
-    //        var user = httpContext.User;
-
-    //        bool isAjax = request.IsAjaxRequest();
-    //        bool isAuthenticated = user?.Identity?.IsAuthenticated == true;
-
-    //        if (isAjax)
-    //        {
-    //            response.Clear();
-    //            response.ContentType = "application/json";
-    //            response.StatusCode = isAuthenticated ? (int)HttpStatusCode.Forbidden : (int)HttpStatusCode.Unauthorized;
-    //            response.SuppressFormsAuthenticationRedirect = true;
-
-    //            var json = new
-    //            {
-    //                success = false,
-    //                message = isAuthenticated
-    //                    ? "You do not have permission to access this resource."
-    //                    : "Your session has expired. Please log in again.",
-    //                redirectUrl = isAuthenticated ? null : "/Authentication/Login"
-    //            };
-
-    //            response.Write(new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(json));
-    //            // ✅ Instead of End() use:
-    //            response.Flush();
-    //            httpContext.ApplicationInstance.CompleteRequest(); // gracefully complete the request
-    //        }
-    //        else
-    //        {
-    //            filterContext.Result = isAuthenticated
-    //                ? new RedirectResult("~/Error/Unauthorized")
-    //                : new RedirectResult("~/Authentication/Login");
-    //        }
-    //    }
-
-    //    private bool IsInternetAvailable()
-    //    {
-    //        try
-    //        {
-    //            using (var client = new WebClient())
-    //            {
-    //                using (client.OpenRead("http://www.google.com"))
-    //                {
-    //                    return true;
-    //                }
-    //            }
-    //        }
-    //        catch
-    //        {
-    //            return false;
-    //        }
-    //    }
-
-    //    private bool IsAjax(AuthorizationContext filterContext)
-    //    {
-    //        return filterContext.HttpContext.Request.IsAjaxRequest();
-    //    }
-    //}
-
- 
-
-
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public class CheckSessionTimeOutAttribute : AuthorizeAttribute
     {
-        LocalSession local = new LocalSession();
+        private readonly LocalSession _local = new LocalSession();
+
+        // Configure explicit controller/action pairs here (no empty controller unless treated as wildcard below)
+        private static readonly HashSet<(string Controller, string Action)> BypassEndpoints =
+            new HashSet<(string, string)>(new TupleComparer())
+            {
+            ("Home", "Index"),
+            ("", "ChangePassword"),
+            ("", "FLoginChangePassword"),
+            ("", "GetLiveSessionDashboard"),
+            ("", "MFACodeVerification"),
+            ("", "MyProfile")
+            };
+
+        // Optional: treat any action name containing "download" as bypass
+        private const string DownloadKeyword = "download";
+
+        // Internet reachability cache (simple, thread-safe enough for this use)
+        private static DateTime _netCheckExpires = DateTime.MinValue;
+        private static bool _netIsUpCached = true;
+        private static readonly object _netLock = new object();
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
-            // Unauthenticated User Handling
-            if (filterContext.HttpContext.User == null || !filterContext.HttpContext.User.Identity.IsAuthenticated)
+            var ctx = filterContext.HttpContext;
+
+            // ✅ NEW: honor [AllowAnonymous]
+            if (IsAnonymousAllowed(filterContext))
+                return;
+
+            // 1) Must be authenticated
+            if (!(ctx.User?.Identity?.IsAuthenticated ?? false))
             {
                 HandleUnauthorizedRequest(filterContext);
                 return;
@@ -199,69 +70,90 @@ namespace CBS.FrontDesk.UI {
 
             base.OnAuthorization(filterContext);
 
-            string controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
-            string actionName = filterContext.ActionDescriptor.ActionName;
+            var controller = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+            var action = filterContext.ActionDescriptor.ActionName;
 
-            // Internet Connectivity Check
-            if (!IsInternetAvailable())
+            // 2) Bypass endpoints
+            if (IsBypassEndpoint(controller, action))
+                return;
+
+            // ❌ REMOVE this:
+            // if (ctx.Request.IsAjaxRequest()) return;
+
+            // 3) Optional internet check (cached)
+            if (!IsInternetAvailableCached())
             {
                 filterContext.Result = new RedirectResult("~/Home/NoInternet");
                 return;
             }
 
-            // Bypass Access Check for Specific Pages
-            if (
-                actionName.Equals("ChangePassword", StringComparison.OrdinalIgnoreCase) ||
-                actionName.Equals("FLoginChangePassword", StringComparison.OrdinalIgnoreCase) ||
-                actionName.Equals("GetLiveSessionDashboard", StringComparison.OrdinalIgnoreCase) ||
-                actionName.Equals("MFACodeVerification", StringComparison.OrdinalIgnoreCase) ||
-                actionName.Equals("MyProfile", StringComparison.OrdinalIgnoreCase) ||
-                actionName.ToLower().Contains("download") ||
-                (controllerName.Equals("Home", StringComparison.OrdinalIgnoreCase) && actionName.Equals("Index", StringComparison.OrdinalIgnoreCase))
-            )
-            {
-                return;
-            }
-
-            // If AJAX request, authorize immediately
-            if (IsAjax(filterContext))
-            {
-                return;
-            }
-
-            // Extract User Identity
-            var identity = filterContext.HttpContext.User as CustomPrincipal;
+            // 4) Validate identity/session
+            var identity = ctx.User as CustomPrincipal;
             if (identity == null || string.IsNullOrWhiteSpace(identity.SessionCode) || string.IsNullOrWhiteSpace(identity.UserName))
             {
                 HandleUnauthorizedRequest(filterContext);
                 return;
             }
 
-            // Get User Session
-            var user = local.GetCurrentUserSession(identity.SessionCode, identity.UserName);
+            var user = _local.GetCurrentUserSession(identity.SessionCode, identity.UserName);
             if (user == null)
             {
                 HandleUnauthorizedRequest(filterContext);
                 return;
             }
 
-            // Permission Check
-            if (!HasPermission(user, controllerName, actionName))
+            // 5) Permission check
+            if (!HasPermission(user, controller, action))
             {
                 HandleUnauthorizedRequest(filterContext);
-                return;
             }
         }
-        private bool HasPermission(dynamic user, string controller, string action)
-        {
-            if (user?.UserAuthDto?.Permissions == null)
-                return false;
 
-            foreach (var permission in user.UserAuthDto.Permissions)
+        private static bool IsAnonymousAllowed(AuthorizationContext context)
+        {
+            // Action level
+            if (context.ActionDescriptor
+                     .IsDefined(typeof(AllowAnonymousAttribute), inherit: true))
+                return true;
+
+            // Controller level
+            if (context.ActionDescriptor.ControllerDescriptor
+                     .IsDefined(typeof(AllowAnonymousAttribute), inherit: true))
+                return true;
+
+            return false;
+        }
+
+        private static bool IsBypassEndpoint(string controller, string action)
+        {
+            // Exact controller+action
+            if (BypassEndpoints.Contains((controller, action)))
+                return true;
+
+            // Wildcard by action name keyword (e.g., downloads)
+            if (action?.IndexOf(DownloadKeyword, StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+
+            return false;
+        }
+
+        private static bool HasPermission(dynamic user, string controller, string action)
+        {
+            var raw = user?.UserAuthDto?.Permissions as System.Collections.IEnumerable;
+            if (raw == null) return false;
+
+            foreach (var o in raw)
             {
-                if (permission.ControllerName?.Equals(controller, StringComparison.OrdinalIgnoreCase) == true &&
-                    permission.ActionName?.Equals(action, StringComparison.OrdinalIgnoreCase) == true &&
-                    permission.Read)
+                dynamic p = o; // late-bound
+                string c = p?.ControllerName as string;
+                string a = p?.ActionName as string;
+
+                bool read = false;
+                try { read = (bool)(p?.Read ?? false); } catch { read = false; }
+
+                if (read &&
+                    string.Equals(c, controller, StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(a, action, StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }
@@ -269,168 +161,84 @@ namespace CBS.FrontDesk.UI {
 
             return false;
         }
-       
+
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            var isAjax = filterContext.HttpContext.Request.IsAjaxRequest();
-            var isAuthenticated = filterContext.HttpContext.User?.Identity?.IsAuthenticated == true;
+            var ctx = filterContext.HttpContext;
+            bool isAjax = ctx.Request.IsAjaxRequest();
+            bool isAuthenticated = ctx.User?.Identity?.IsAuthenticated ?? false;
 
             if (isAjax)
             {
                 var jsonResponse = new
                 {
                     success = false,
-                    message = isAuthenticated ? "You do not have permission to access this resource." : "Your session has expired. Please log in again.",
+                    message = isAuthenticated
+                        ? "You do not have permission to access this resource."
+                        : "Your session has expired. Please log in again.",
                     redirectUrl = isAuthenticated ? null : "/Authentication/Login"
                 };
 
-                filterContext.HttpContext.Response.ContentType = "application/json";
-                filterContext.HttpContext.Response.StatusCode = isAuthenticated ? (int)HttpStatusCode.Forbidden : (int)HttpStatusCode.Unauthorized;
-                filterContext.HttpContext.Response.Write(new JavaScriptSerializer().Serialize(jsonResponse));
-                filterContext.HttpContext.Response.Flush();
-                filterContext.HttpContext.ApplicationInstance.CompleteRequest();
+                ctx.Response.ContentType = "application/json";
+                ctx.Response.StatusCode = isAuthenticated
+                    ? (int)HttpStatusCode.Forbidden
+                    : (int)HttpStatusCode.Unauthorized;
+
+                ctx.Response.Write(new JavaScriptSerializer().Serialize(jsonResponse));
+                ctx.Response.Flush();
+                ctx.ApplicationInstance.CompleteRequest();
             }
             else
             {
-                filterContext.Result = isAuthenticated ? new RedirectResult("~/Error/Unauthorized") : new RedirectResult("~/Authentication/Login");
+                filterContext.Result = new RedirectResult(
+                    isAuthenticated ? "~/Error/Unauthorized" : "~/Authentication/Login");
             }
         }
 
-        private bool IsInternetAvailable()
+        // Cached internet check to avoid per-request external calls
+        private static bool IsInternetAvailableCached()
         {
-            try
+            var now = DateTime.UtcNow;
+            if (now < _netCheckExpires) return _netIsUpCached;
+
+            lock (_netLock)
             {
-                using (var client = new WebClient())
+                if (now < _netCheckExpires) return _netIsUpCached;
+
+                bool ok;
+                try
                 {
-                    using (client.OpenRead("https://www.youtube.com/"))
+                    using (var client = new WebClient())
+                    using (client.OpenRead("https://www.google.com/"))
                     {
-                        return true;
+                        ok = true;
                     }
                 }
-            }
-            catch
-            {
-                return false;
+                catch
+                {
+                    ok = false;
+                }
+
+                _netIsUpCached = ok;
+                _netCheckExpires = now.AddMinutes(2); // cache window
+                return ok;
             }
         }
 
-        private bool IsAjax(AuthorizationContext filterContext)
+        // Case-insensitive tuple comparer for bypass set
+        private sealed class TupleComparer : IEqualityComparer<(string Controller, string Action)>
         {
-            return filterContext.HttpContext.Request.IsAjaxRequest();
+            public bool Equals((string Controller, string Action) x, (string Controller, string Action) y) =>
+                string.Equals(x.Controller, y.Controller, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(x.Action, y.Action, StringComparison.OrdinalIgnoreCase);
+
+            public int GetHashCode((string Controller, string Action) obj) =>
+                (obj.Controller?.ToLowerInvariant() + "|" + obj.Action?.ToLowerInvariant()).GetHashCode();
         }
     }
 
 
-    //[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-
-
-
-
-    //public class CheckSessionTimeOutAttribute : AuthorizeAttribute
-    //{
-    //    public override void OnAuthorization(AuthorizationContext filterContext)
-    //    {
-    //        base.OnAuthorization(filterContext); // Call the base method to perform the default authorization checks.
-
-    //        // Check if the user is not authenticated, handle unauthorized request, and return.
-    //        if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
-    //        {
-    //            HandleUnauthorizedRequest(filterContext);
-    //            return;
-    //        }
-
-    //        // Retrieve controller and action names from the action descriptor.
-    //        string controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
-    //        string actionName = filterContext.ActionDescriptor.ActionName;
-    //        string url = $"{controllerName}/{actionName}";
-
-    //        // If action Name is "Index", set the URL to only contain the controller Name.
-    //        if (actionName.Equals("Index", StringComparison.OrdinalIgnoreCase))
-    //        {
-    //            url = $"{controllerName}";
-    //        }
-
-    //        // If action Name is "FLoginChangePassword", return without further checks.
-    //        if (actionName.Equals("FLoginChangePassword", StringComparison.OrdinalIgnoreCase))
-    //        {
-    //            return;
-    //        }
-
-    //        // Retrieve menus from session.
-    //        var menus = GetMenus();
-
-    //        // If menus are not available, or the URL is not in the menu URLs, proceed with further checks.
-    //        if (menus == null || !IsUrlInMenu(url, menus))
-    //        {
-    //            // Check if the request is made with jQuery or AJAX.
-    //            if (IsAjaxOrJQuery(filterContext))
-    //            {
-    //                // If it's jQuery or AJAX, authorize the request.
-    //                return;
-    //            }
-    //            else
-    //            {
-    //                // If it's not AJAX or jQuery, handle unauthorized request and return the URL.
-    //                //HandleUnauthorizedRequest(filterContext, url);
-    //                //return;
-    //            }
-    //        }
-
-    //        // If the URL is in the user's menu, no further checks are required.
-    //    }
-
-    //    // Override to handle unauthorized requests.
-    //    // Override to handle unauthorized requests.
-    //    protected virtual void HandleUnauthorizedRequest(AuthorizationContext filterContext, string url)
-    //    {
-    //        var httpContext = filterContext.HttpContext;
-    //        var response = httpContext.Response;
-
-    //        // If the request is AJAX or made with jQuery, return unauthorized status code along with the URL.
-    //        if (IsAjaxOrJQuery(filterContext))
-    //        {
-    //            response.StatusCode = (int)HttpStatusCode.Unauthorized;
-    //            response.SuppressFormsAuthenticationRedirect = true;
-    //            response.Write(url); // Return the URL in the response
-    //            response.End();
-    //        }
-    //        // For non-AJAX or non-jQuery requests, redirect to unauthorized page.
-    //        else
-    //        {
-    //            response.Redirect("~/Error/Unauthorized");
-    //        }
-    //    }
-
-    //    // Check if the request is AJAX or made with jQuery.
-    //    private bool IsAjaxOrJQuery(AuthorizationContext filterContext)
-    //    {
-    //        var httpRequest = filterContext.HttpContext.Request;
-    //        return httpRequest.IsAjaxRequest() || httpRequest.Headers["X-Requested-With"] == "XMLHttpRequest";
-    //    }
-
-    //    // Check if the URL is in the user's menu.
-    //    private bool IsUrlInMenu(string url, List<DatabaseMenus> menus)
-    //    {
-    //        foreach (var item in menus)
-    //        {
-
-    //            string urlx = $"{item.ControllerName}/{item.ActionName}";
-    //            if (urlx.Contains(url))
-    //            {
-    //                return true;
-    //            }
-    //        }
-    //        return false;
-    //    }
-
-    //    // GetAllowAnonymous menus from session.
-    //    public List<DatabaseMenus> GetMenus()
-    //    {
-    //        var menus = HttpContext.Current.Session?["menu"] as List<DatabaseMenus>;
-    //        return menus ?? new List<DatabaseMenus>();
-    //    }
-    //}
 
 
 }
