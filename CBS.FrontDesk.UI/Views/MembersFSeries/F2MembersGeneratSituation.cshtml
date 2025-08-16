@@ -199,6 +199,42 @@
                 </div>
             </div>
         </div>
+        <!-- Member Loan Refunds -->
+        <div class="card shadow-sm mb-3">
+            <div class="card-header bg-white fw-bold text-black">
+                <i class="mdi mdi-cash-refund me-1 text-success"></i> LOAN REPAYMENTS / REFUNDS BY MEMBER
+            </div>
+
+            <div class="card-body">
+                <!-- Filters -->
+                <div class="row g-2 align-items-end">
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">From</label>
+                        <input type="text" id="refundDateFrom" class="form-control date-picker" placeholder="Start date" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">To</label>
+                        <input type="text" id="refundDateTo" class="form-control date-picker" placeholder="End date" />
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <button class="btn btn-primary mt-3 mt-md-0"
+                                onclick="loadMemberRefunds('@Model.Customer.CustomerId')">
+                            <i class="mdi mdi-filter me-1"></i> Filter
+                        </button>
+                        <button class="btn btn-outline-secondary mt-3 mt-md-0"
+                                onclick="clearRefundFilters(); loadMemberRefunds('@Model.Customer.CustomerId')">
+                            <i class="mdi mdi-broom me-1"></i> Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table container -->
+                <div id="refundsTableContainer" class="pt-3">
+                    <div class="text-muted small">📌 Select a date range and click <strong>Filter</strong> to view refunds.</div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </div>
@@ -309,6 +345,26 @@
                     Member: <span class="fw-bold text-dark" id="loanCustomerName">N/A</span> |
                     Loan #: <span class="fw-bold text-dark" id="loanIdDisplay">N/A</span>
                 </span>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="refundDetailsModal" tabindex="-1" aria-labelledby="refundDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="refundDetailsModalLabel">
+                    <i class="mdi mdi-cash-refund me-1"></i> Refund Details
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="refundDetailsModalBody">
+                <!-- loaded dynamically -->
+            </div>
+            <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                     <i class="mdi mdi-close"></i> Close
                 </button>

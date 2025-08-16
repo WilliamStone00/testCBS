@@ -210,14 +210,35 @@ namespace CBS.FrontDesk.UI
             public override void OnActionExecuting(ActionExecutingContext filterContext)
             {
                 var httpContext = filterContext.HttpContext;
-                var correlationId = httpContext.Items["CorrelationId"]?.ToString() ??
-                                    httpContext.Request.Headers[CorrelationConstants.HeaderKey] ??
-                                    Guid.NewGuid().ToString();
+                var correlationId =
+                    httpContext.Items["CorrelationId"] as string ??
+                    httpContext.Request.Headers[CorrelationConstants.HeaderKey] ??
+                    Guid.NewGuid().ToString("N");
 
+                // keep it in Items for downstream code
                 httpContext.Items["CorrelationId"] = correlationId;
-                httpContext.Response.Headers[CorrelationConstants.HeaderKey] = correlationId;
+
+                // ❌ DO NOT write headers here – can throw if response already started
+                // httpContext.Response.Headers[CorrelationConstants.HeaderKey] = correlationId;
+                // httpContext.Response.AddHeader(...);  // <-- remove
             }
         }
+        protected void Application_PreSendRequestHeaders()
+        {
+            var ctx = HttpContext.Current;
+            if (ctx == null) return;
+
+            var id = ctx.Items["CorrelationId"] as string;
+            if (string.IsNullOrWhiteSpace(id)) return;
+
+            // If already set (e.g., by WAF), do nothing
+            if (!ctx.Response.Headers.AllKeys.Contains(CorrelationConstants.HeaderKey))
+            {
+                // This runs before headers are sent, so it’s safe
+                ctx.Response.AppendHeader(CorrelationConstants.HeaderKey, id);
+            }
+        }
+
 
         protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
         {

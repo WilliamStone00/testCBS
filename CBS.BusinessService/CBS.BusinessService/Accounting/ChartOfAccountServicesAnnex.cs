@@ -76,7 +76,7 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<ChartOfAccountStateDto>>>(APICallHelper.GetAllChartOfAccountManagementPositionByChart);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<ChartOfAccountStateDto>>>(string.Format(APICallHelper.GetAllChartOfAccountManagementPositionByBranch, GetBranchID()));
                 return ProcessApiResponseForChartOfAccount(couApiResponse.ApiResponseData);
             }
             catch (Exception ex)
@@ -123,7 +123,7 @@ namespace CBS.BusinessService.Accounting
                     return couApiResponse.Data.Select(a => new StringValues
                     {
                         Text = $"{a.GeneralRepresentation}",
-                        Value = a.Id 
+                        Value = a.Id
                     });
                 }
             }
@@ -147,7 +147,7 @@ namespace CBS.BusinessService.Accounting
                     return new SelectList(charOfAccount.ToList(), "Value", "Text", defaultSelectedValue);
                 }
             }
-           
+
 
             // Return an empty SelectList if the response is not successful or the data is null
             return new SelectList(new List<StringValues>(), "Value", "Text");

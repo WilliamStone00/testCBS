@@ -16,6 +16,8 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.BusinessService.Repayment;
 
 namespace CBS.FrontDesk.UI.Controllers.Series
 {
@@ -27,16 +29,18 @@ namespace CBS.FrontDesk.UI.Controllers.Series
         private readonly CashDeskServices _cashDeskService;
         private readonly AccountServices _accountServices;
         private readonly LoanServices _loanServices;
-
+        private readonly RefundServices _refundServices;
+        
         private readonly IndividualProfileServices _individualProfileServices;
         private readonly BranchServices _branchServices;
-        public MembersFSeriesController(CashDeskServices cashDeskService, AccountServices accountServices = null, IndividualProfileServices individualProfileServices = null, BranchServices branchServices = null, LoanServices loanServices = null)
+        public MembersFSeriesController(CashDeskServices cashDeskService, AccountServices accountServices = null, IndividualProfileServices individualProfileServices = null, BranchServices branchServices = null, LoanServices loanServices = null, RefundServices refundServices = null)
         {
             _cashDeskService = cashDeskService;
             _accountServices = accountServices;
             _individualProfileServices = individualProfileServices;
             _branchServices = branchServices;
             _loanServices=loanServices;
+            _refundServices=refundServices;
         }
         public async Task<ActionResult> Index()
         {
@@ -299,6 +303,40 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                 return PartialView("_LoanNotFound");
             ViewBag.SelectedLoan = loan;
             return PartialView("_LoanDetailsModalPartial", cashDesk);
+        }
+        // e.g., MembersController (or LoanController) 
+        [HttpGet]
+        public async Task<ActionResult> MemberRefundsPartial(string customerId, DateTime? dateFrom, DateTime? dateTo)
+        {
+            if (string.IsNullOrWhiteSpace(customerId))
+                return PartialView("_MemberLoanRefunds", Enumerable.Empty<Refund>());
+            var refunds =await _refundServices
+                .GetRefundsByCustomerId(customerId, true, null, dateFrom, dateTo);
+            var cashDesk = new CashDesk { CustomerId=customerId, Refunds=refunds };
+            return PartialView("_MemberLoanRefunds", cashDesk);
+        }
+        [HttpGet]
+        public async Task<ActionResult> RefundDetailsPartial(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return PartialView("_RefundDetails", null);
+
+            var refund = await _refundServices.GetRefundById(id);
+            if (refund == null)
+                return PartialView("_RefundDetails", null);
+
+            // If your _RefundDetails.cshtml expects CashDesk, populate what it needs:
+            var cashDesk = new CashDesk
+            {
+                CustomerId = refund.CustomerId,
+                Refund     = refund,
+                LoanId     = refund.LoanId,             // <- if the view reads Model.LoanId
+                Loan       = refund.Loan,                // optional, if you loaded it
+                                                        // If you have these, attach them so the view can render more:
+                                                        // Refund.LoanProduct and Refund.LoanAmortizations can already be on refund
+            };
+
+            return PartialView("_RefundDetails", cashDesk);
         }
 
 

@@ -483,7 +483,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                     model.AddLoanApplicationCommand.OldLoanPayment=new OldLoanPayment
                     {
                         LoanId=loan.Id,
-                        Amount=loan.LoanAmount,
+                        Amount=loan.DueAmount,
                         Capital=loan.Balance,
                         Interest=loan.AccrualInterest,
                         Penalty=loan.Penalty,

@@ -1006,7 +1006,7 @@ function DeleteRecordThenReloadPage(controller, KEY) {
 
     alertify.confirm("DELETE WARNING!!!", "Are you sure, you want to delete this file?\nYou won't be able to revert this! ",
         function () {
-            var url = "/" + controller + "/Delete?id=" + KEY;
+            var url = "/" + controller + "/Delete?KEY=" + KEY;
             $.ajax({
                 type: "Get",
                 url: url,

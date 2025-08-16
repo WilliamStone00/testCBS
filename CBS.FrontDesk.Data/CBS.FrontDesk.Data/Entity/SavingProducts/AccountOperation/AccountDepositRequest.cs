@@ -75,6 +75,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public List<Account> MemberAccounts { get; set; } = new List<Account>();
         public List<Loan> Loans { get; set; } = new List<Loan>();
         public Loan Loan { get; set; } = new Loan();
+        public Refund Refund { get; set; } = new Refund();
 
         public List<Refund> Refunds { get; set; } = new List<Refund>();
         public List<IndividualProfile> Customers { get; set; } = new List<IndividualProfile>();

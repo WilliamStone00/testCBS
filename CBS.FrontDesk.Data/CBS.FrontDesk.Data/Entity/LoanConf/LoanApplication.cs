@@ -829,10 +829,21 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
     }
 
 
+    public class GetRefundsByCustomerIdQuery 
+    {
+        /// <summary>Customer ID whose refunds you want to fetch (required).</summary>
+        public string CustomerId { get; set; }
+
+        /// <summary>Include RefundDetails for each refund (optional).</summary>
+        public bool IncludeDetails { get; set; } = false;
+
+        /// <summary>Optionally limit the number of results; null = all.</summary>
+        public int? Take { get; set; }
+    }
 
     public class Refund
     {
-
+        public string Id { get; set; }
         public string LoanId { get; set; }
         public decimal Amount { get; set; }
         public decimal Principal { get; set; }
@@ -842,18 +853,22 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string Comment { get; set; }
         public string PaymentMethod { get; set; }
         public string PaymentChannel { get; set; }
-        public string Id { get; set; }
         public string CustomerId { get; set; }
         public string PaymentMode { get; set; }
         public string RepaymentType { get; set; }
         public decimal Paid { get; set; }
         public string BranchId { get; set; }
         public decimal Balance { get; set; }
-
         public string BankId { get; set; }
         public DateTime DateOfPayment { get; set; }
-        public Loan Loan { get; set; }
+        public bool IsCompleted { get; set; }
+        public bool IsReversal { get; set; }
+        public string ReversesRefundId { get; set; } = "n/a";
+        public virtual Loan Loan { get; set; }
+        public bool IsComplete { get; set; }
         public List<RefundDetail> RefundDetails { get; set; }
+        public virtual LoanProduct LoanProduct { get; set; }
+        public List<LoanAmortization> LoanAmortizations { get; set; }
 
     }
     public class RefundDetail
