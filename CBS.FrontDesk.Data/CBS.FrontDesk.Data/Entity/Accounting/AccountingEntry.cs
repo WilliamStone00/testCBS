@@ -46,7 +46,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             {
  
                 JournalEntryDto dto = new JournalEntryDto();
-                dto.AccountNumber = account.AccountNumberReference;
+                dto.AccountNumber = account.AccountNumber;
                 dto.Description = account.Naration;
                 dto.ValueDate = account.ValueDate.ToString("dd-MM-yyyy");
                 dto.Reference = account.ReferenceID.ToString();

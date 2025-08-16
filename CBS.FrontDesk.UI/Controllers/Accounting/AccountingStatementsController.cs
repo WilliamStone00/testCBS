@@ -475,7 +475,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             {
                                 
                                     string fileTitle = $"GeneralLedger_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
-                                    string ReportName = $"GeneralLedger.rpt";
+                                    string ReportName = $"General_Ledger.rpt";
                                     var account = await _acountServices.GenerateAccountingLedgerForAnumber(model.SystemQuery);//new SystemQuery { BranchId = model.SystemQuery.BranchId, FileType = model.SystemQuery.FileType, AccountIds = model.SystemQuery.AccountIds, FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate });
 
                                     if (model.SystemQuery.FileType == "PDF")
