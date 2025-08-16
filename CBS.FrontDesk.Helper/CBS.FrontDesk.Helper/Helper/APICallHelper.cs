@@ -767,6 +767,9 @@ namespace CBS.FrontDesk.Helper
         public static string OverdraftServiceActivationGetById = "/api/v1/OverdraftActivation/{id}";
         public static string OverdraftServiceActivationDT = "/api/v1/OverdraftActivation/datatable";
 
+        //Refund
+        public static string RefundByCustomerId = "/api/v1/Refund/by-customer/{0}";
+        public static string RefundById = "/api/v1/Refund/{0}";
 
         //Fee
         public static string Get_Update_Delete_Fee = "/api/v1/Fee/{0}";
@@ -944,6 +947,7 @@ namespace CBS.FrontDesk.Helper
         //GetAllowAnonymous All ChartOfAccount
         public static string GetAllChartOfAccount = "/api/v1/ChartOfAccounts"; ///
         public static string GetAllChartOfAccountManagementPositionByChart = "api/v1/ChartOfAccountManagementPosition/GetAllChartOfAccounts";
+        public static string GetAllChartOfAccountManagementPositionByBranch = "api/v1/Account/GetAllBranchAccountForSelection/{0}";
         public static string Get_ChartOfAccount_By_AccountNumber = "/api/v1/ChartOfAccount/GetChartOfAccountByAccountNumber/{0}";
         //GetAllowAnonymous All ChartOfAccount
 
