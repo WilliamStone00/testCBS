@@ -25,7 +25,28 @@
 });
 
 // 🧠 Load DataTable
+function renderLoanStatusBadge(status) {
+    if (!status) return `<span class="badge bg-secondary text-uppercase">UNKNOWN</span>`;
+
+    const normalized = status.toLowerCase();
+    const badgeMap = {
+        open: 'success',
+        closed: 'secondary',
+        refinanced: 'primary',
+        pending: 'warning',
+        restructured: 'info',
+        rescheduled: 'dark'
+    };
+
+    const color = badgeMap[normalized] || 'secondary';
+    const label = status.toUpperCase();
+
+    return `<span class="badge rounded-pill bg-${color} px-3 py-2 text-uppercase">${label}</span>`;
+}
+
 function loadLoanData() {
+    let isFirstDraw = true;
+
     $('#myDataTable').DataTable({
         serverSide: true,
         destroy: true,
@@ -74,63 +95,65 @@ function loadLoanData() {
             },
             {
                 data: 'LoanStatus',
-                render: data => {
-                    const status = (data || '').toLowerCase();
-                    const badgeMap = {
-                        open: 'primary',
-                        closed: 'dark',
-                        refinanced: 'warning',
-                        restructured: 'info',
-                        rescheduled: 'success'
-                    };
-                    return `<div class="text-center"><span class="badge bg-${badgeMap[status] || 'secondary'} text-uppercase">${data || 'UNKNOWN'}</span></div>`;
-                }
+                render: data => renderLoanStatusBadge(data)
             },
             {
                 data: null,
                 orderable: false,
                 render: function (_, __, row) {
                     return `
-                    <div class="text-center dropdown">
-                        <button class="btn btn-sm btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            <i class="mdi mdi-eye"></i> Action
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item" href="/Loan/Details?KEY=${row.Id}" target="_blank">
-                                    <i class="mdi mdi-file-document-outline text-info me-1"></i> Details
-                                </a>
-                            </li>
-                            <li>
-                               <a class="dropdown-item text-warning" href="#"
-                                  onclick="openLoanAdjustmentModal('request', {
-                                   LoanId: '${row.Id}',
-                                   CustomerId: '${row.CustomerId}',
-                                   BranchId: '${row.BranchId}',
-                                   CustomerName: '${row.CustomerName}', 
-                                   LoanAmount: ${row.LoanAmount},
-                                   Balance: ${row.Balance},
-                                   AccrualInterest: ${row.AccrualInterest},
-                                   Tax: ${row.Vat},
-                                   Penalty: ${row.Penalty},
-                                   DueAmount: ${row.DueAmount},
-                                   VatRate: ${row.VatRate},
-                                   InterestRate: ${row.InterestRate}
-                               })">
-                                   <i class="mdi mdi-pencil-outline me-1"></i> Initiate Loan Adjustment
-                                </a>
-
-
-                            </li>
-                        </ul>
-                    </div>`;
+    <div class="text-center dropdown">
+        <button class="btn btn-sm btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <i class="mdi mdi-eye"></i> Action
+        </button>
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item" href="/Loan/Details?KEY=${row.Id}" target="_blank">
+                    <i class="mdi mdi-file-document-outline text-info me-1"></i> Details
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item text-warning" href="#"
+                   onclick="openLoanAdjustmentModal('request', {
+                       LoanId: '${row.Id}',
+                       CustomerId: '${row.CustomerId}',
+                       BranchId: '${row.BranchId}',
+                       CustomerName: '${row.CustomerName}', 
+                       LoanAmount: ${row.LoanAmount},
+                       Balance: ${row.Balance},
+                       AccrualInterest: ${row.AccrualInterest},
+                       Tax: ${row.Vat},
+                       Penalty: ${row.Penalty},
+                       DueAmount: ${row.DueAmount},
+                       VatRate: ${row.VatRate},
+                       InterestRate: ${row.InterestRate},
+                       LoanDate: '${row.LoanDate}',
+                       DisbursementDate: '${row.DisbursementDate}',
+                       LoanStatus: '${row.LoanStatus}',
+                       NextInstallmentDate: '${row.NextInstallmentDate}',
+                       Paid: ${row.Paid ?? 0}
+                   })">
+                   <i class="mdi mdi-pencil-outline me-1"></i> Initiate Loan Adjustment
+                </a>
+            </li>
+        </ul>
+    </div>`;
                 }
             }
         ],
+
         drawCallback: function (settings) {
             const hasData = settings.json?.data?.length > 0;
-            $('#loanDataCard').slideToggle(hasData);
+
+            if (isFirstDraw) {
+                $('#loanDataCard').toggle(hasData); // No animation
+                isFirstDraw = false;
+            } else {
+                hasData ? $('#loanDataCard').slideDown() : $('#loanDataCard').slideUp();
+            }
         }
+
+
     });
 }
 
@@ -192,23 +215,25 @@ function calculateNewDueAmount() {
 
 $('#NewLoanAmount, #NewBalance, #NewInterest, #NewVat, #NewPenalty').on('input', calculateNewDueAmount);
 
+
+
+
 // 📦 Launch Shared Modal
 function openLoanAdjustmentModal(mode, model) {
-    // Reset form & errors
     $('#loanAdjustmentModal form')[0].reset();
     $('.text-danger').text('');
 
-    // 🧾 Hidden POST fields
+    // Hidden POST fields
     $('#LoanId').val(model.LoanId);
     $('#CustomerId').val(model.CustomerId);
     $('#BranchId').val(model.BranchId);
 
-    // 👤 Footer summary
+    // Footer
     $('#footerCustomerName').text(model.CustomerName || 'N/A');
     $('#footerCustomerId').text(model.CustomerId || 'N/A');
     $('#footerLoanId').text(model.LoanId || 'N/A');
 
-    // 💼 Old values – Display
+    // 🧾 Old Labels
     $('#oldLoanAmountLabel').val(formatCurrency(model.LoanAmount ?? 0));
     $('#oldBalanceLabel').val(formatCurrency(model.Balance ?? 0));
     $('#oldInterestLabel').val(formatCurrency(model.AccrualInterest ?? 0));
@@ -216,10 +241,14 @@ function openLoanAdjustmentModal(mode, model) {
     $('#oldPenaltyLabel').val(formatCurrency(model.Penalty ?? 0));
     $('#oldDueAmountLabel').val(formatCurrency(model.DueAmount ?? 0));
     $('#oldVatRateLabel').val(model.VatRate ?? 0);
-    $('#oldIntRateLabel').val(model.InterestRate ?? 0); // ✅ Fix ID name
+    $('#oldIntRateLabel').val(model.InterestRate ?? 0);
+    $('#oldLoanDateLabel').val(formatDate(model.LoanDate));
+    $('#oldDisbursementDateLabel').val(formatDate(model.DisbursementDate));
+    $('#oldLoanStatusLabel').val(model.LoanStatus || "N/A");
+    $('#oldNextInstallmentLabel').val(formatDate(model.NextInstallmentDate));
+    $('#oldPaidLabel').val(formatCurrency(model.Paid ?? 0));
 
-
-    // 🆕 Pre-fill new fields
+    // ✏️ New Fields
     $('#NewLoanAmount').val(model.LoanAmount ?? 0);
     $('#NewBalance').val(model.Balance ?? 0);
     $('#NewInterest').val(model.AccrualInterest ?? 0);
@@ -228,14 +257,68 @@ function openLoanAdjustmentModal(mode, model) {
     $('#newDueAmount').val(model.DueAmount ?? 0);
     $('#NewVatRate').val(model.VatRate ?? 0);
     $('#NewIntRate').val(model.InterestRate ?? 0);
+    $('#NewLoanDate').val(model.LoanDate ? model.LoanDate.split('T')[0] : '');
+    $('#NewDisbursementDate').val(model.DisbursementDate ? model.DisbursementDate.split('T')[0] : '');
+    $('#NewLoanStatus').val(model.LoanStatus || "Open");
+    $('#NewNextInstallmentDate').val(model.NextInstallmentDate ? model.NextInstallmentDate.split('T')[0] : '');
+    $('#NewPaid').val(model.Paid ?? 0);
 
-    // 🎯 Control buttons
+    // Buttons
     $('#submitRequestBtn').toggleClass('d-none', mode !== 'request');
     $('#approveRequestBtn, #rejectRequestBtn').toggleClass('d-none', mode !== 'validation');
 
-    // 🪟 Show modal
     $('#loanAdjustmentModal').modal('show');
 }
+
+//function openLoanAdjustmentModal(mode, model) {
+//    // Reset form & errors
+//    $('#loanAdjustmentModal form')[0].reset();
+//    $('.text-danger').text('');
+
+//    // 🧾 Hidden POST fields
+//    $('#LoanId').val(model.LoanId);
+//    $('#CustomerId').val(model.CustomerId);
+//    $('#BranchId').val(model.BranchId);
+
+//    // 👤 Footer summary
+//    $('#footerCustomerName').text(model.CustomerName || 'N/A');
+//    $('#footerCustomerId').text(model.CustomerId || 'N/A');
+//    $('#footerLoanId').text(model.LoanId || 'N/A');
+
+//    // 💼 Old values – Display
+//    $('#oldLoanAmountLabel').val(formatCurrency(model.LoanAmount ?? 0));
+//    $('#oldBalanceLabel').val(formatCurrency(model.Balance ?? 0));
+//    $('#oldInterestLabel').val(formatCurrency(model.AccrualInterest ?? 0));
+//    $('#oldVatLabel').val(formatCurrency(model.Tax ?? 0));
+//    $('#oldPenaltyLabel').val(formatCurrency(model.Penalty ?? 0));
+//    $('#oldDueAmountLabel').val(formatCurrency(model.DueAmount ?? 0));
+//    $('#oldVatRateLabel').val(model.VatRate ?? 0);
+//    $('#oldIntRateLabel').val(model.InterestRate ?? 0); // ✅ Fix ID name
+//    // 🆕 NEW FIELDS - OLD VALUES
+//    $('#oldLoanDateLabel').val(formatDate(mode.LoanDate));
+//    $('#oldDisbursementDateLabel').val(formatDate(mode.DisbursementDate));
+//    $('#oldLoanStatusLabel').val(mode.LoanStatus || "N/A");
+//    $('#oldNextInstallmentLabel').val(formatDate(mode.NextInstallmentDate));
+//    $('#oldPaidLabel').val(formatCurrency(mode.Paid));
+
+
+//    // 🆕 Pre-fill new fields
+//    $('#NewLoanAmount').val(model.LoanAmount ?? 0);
+//    $('#NewBalance').val(model.Balance ?? 0);
+//    $('#NewInterest').val(model.AccrualInterest ?? 0);
+//    $('#NewVat').val(model.Tax ?? 0);
+//    $('#NewPenalty').val(model.Penalty ?? 0);
+//    $('#newDueAmount').val(model.DueAmount ?? 0);
+//    $('#NewVatRate').val(model.VatRate ?? 0);
+//    $('#NewIntRate').val(model.InterestRate ?? 0);
+
+//    // 🎯 Control buttons
+//    $('#submitRequestBtn').toggleClass('d-none', mode !== 'request');
+//    $('#approveRequestBtn, #rejectRequestBtn').toggleClass('d-none', mode !== 'validation');
+
+//    // 🪟 Show modal
+//    $('#loanAdjustmentModal').modal('show');
+//}
 
 
 

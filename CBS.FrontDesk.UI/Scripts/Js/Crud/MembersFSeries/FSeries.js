@@ -28,6 +28,145 @@ $(document).ready(function () {
     });
 
 });
+function parseDateOrNull(v) {
+    if (!v) return null;
+    // if you use a date-picker plugin, get its formatted value; here we trust yyyy-mm-dd or dd/mm/yyyy
+    const parts = v.includes('/') ? v.split('/') : v.split('-');
+    // try DD/MM/YYYY first
+    let d;
+    if (parts.length === 3 && v.includes('/')) {
+        d = new Date(parts[2], parts[1] - 1, parts[0]);
+    } else {
+        d = new Date(v);
+    }
+    return isNaN(d) ? null : d.toISOString();
+}
+
+
+
+function clearRefundFilters() {
+    $('#refundDateFrom').val('');
+    $('#refundDateTo').val('');
+}
+function loadRefundDetails(refundId) {
+    const modalEl = document.getElementById("refundDetailsModal");
+    const $body = $("#refundDetailsModalBody");
+
+    const showModal = () => {
+        if (window.bootstrap?.Modal) bootstrap.Modal.getOrCreateInstance(modalEl).show();
+        else if ($.fn.modal) $("#refundDetailsModal").modal("show");
+    };
+
+    const renderSpinner = () => {
+        $body.html(`
+            <div class="text-center py-4">
+                <div class="spinner-border" role="status"></div>
+                <div class="small mt-2 text-muted">Loading refund details…</div>
+            </div>
+        `);
+    };
+
+    const renderError = (heading, detail) => {
+        $body.html(`
+            <div class="alert alert-danger">
+                <div class="fw-bold mb-1">${heading}</div>
+                <div class="small">${detail || "An unexpected error occurred."}</div>
+            </div>
+        `);
+    };
+
+    // Always open the modal and show spinner immediately
+    showModal();
+    renderSpinner();
+
+    // Guard: missing id
+    if (!refundId) {
+        renderError("Missing refund id.", "No refund identifier was provided.");
+        return;
+    }
+
+    $.ajax({
+        url: "/MembersFSeries/RefundDetailsPartial",
+        type: "GET",
+        cache: false,
+        timeout: 15000, // 15s
+        data: { id: refundId },
+        success: function (html, _status, xhr) {
+            // If server redirected to login or returned a full page, show a friendly message
+            const text = (html || "").toString();
+            const looksLikeFullPage = /<\s*html[\s>]/i.test(text);
+            const looksLikeLogin = /login|sign\s*in|account/i.test(text) && looksLikeFullPage;
+
+            if (!text.trim()) {
+                renderError("Empty response.", "The server returned no content.");
+                return;
+            }
+            if (looksLikeLogin || xhr.responseURL?.toLowerCase().includes("login")) {
+                renderError("Session expired.", "Please sign in again and retry.");
+                return;
+            }
+
+            // Render the partial as-is
+            $body.html(text);
+        },
+        error: function (xhr, _status, err) {
+            if (xhr.status === 0) {
+                renderError("Network error.", "Check your internet connection.");
+                return;
+            }
+
+            // Specific friendly messages
+            const map = {
+                401: "Unauthorized. Please sign in again.",
+                403: "Forbidden. You don’t have access to this refund.",
+                404: "Refund not found.",
+                408: "Request timed out.",
+                409: "Conflict while loading refund.",
+                500: "Server error while loading refund."
+            };
+            const heading = map[xhr.status] || `Error ${xhr.status || ""}`.trim();
+
+            // Include server payload (stack/HTML) collapsed
+            const payload = xhr.responseText ? `
+                <details class="mt-2"><summary>Details</summary>
+                    <pre class="mt-2" style="white-space:pre-wrap;">${xhr.responseText}</pre>
+                </details>` : "";
+
+            $body.html(`
+                <div class="alert alert-danger">
+                    <div class="fw-bold mb-1">${heading}</div>
+                    <div class="small">${err || xhr.statusText || "Request failed."}</div>
+                    ${payload}
+                </div>
+            `);
+        }
+    });
+}
+
+function loadMemberRefunds(customerId) {
+    const df = $('#refundDateFrom').val() || '';
+    const dt = $('#refundDateTo').val() || '';
+
+    $.ajax({
+        url: '/MembersFSeries/MemberRefundsPartial',
+        type: 'GET',
+        data: { customerId: customerId, dateFrom: df, dateTo: dt },
+        //beforeSend: function () {
+        //    $("#refundsTableContainer").html(`<div class="text-center py-3">
+        //        <div class="spinner-border" role="status"></div>
+        //        <div class="small mt-2 text-muted">Loading refunds…</div>
+        //    </div>`);
+        //},
+        success: function (html) {
+            $("#refundsTableContainer").html(html);
+        },
+        error: function (xhr) {
+            $("#refundsTableContainer").html(`<div class="alert alert-danger">
+                Error: ${xhr.status} ${xhr.statusText}
+            </div>`);
+        }
+    });
+}
 
 function loadLoanDetails(loanId) {
     const modalEl = document.getElementById('loanDetailsModal');

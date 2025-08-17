@@ -13,31 +13,62 @@ namespace CBS.FrontDesk.Data.LoanAdjustmentP
         public string LoanId { get; set; }
         public string BranchId { get; set; }
         public string CustomerId { get; set; }
-        public decimal OldVatRate { get; set; }
-        public decimal OldIntRate { get; set; }
-        public decimal NewVatRate { get; set; }
-        public decimal NewIntRate { get; set; }
+
+        // === New Values to Apply ===
         public decimal? NewLoanAmount { get; set; }
         public decimal? NewBalance { get; set; }
         public decimal? NewInterest { get; set; }
         public decimal? NewVat { get; set; }
         public decimal? NewPenalty { get; set; }
+
+        public decimal? NewVatRate { get; set; }
+        public decimal? NewIntRate { get; set; }
+
+        public DateTime? NewLoanDate { get; set; }
+        public DateTime? NewDisbursementDate { get; set; }
+        public string NewLoanStatus { get; set; }
+        public DateTime? NewNextInstallmentDate { get; set; }
+        public decimal NewPaid { get; set; }
+
+        // === Old Values for Audit/Comparison ===
+        public decimal OldLoanAmount { get; set; }
+        public decimal OldBalance { get; set; }
+        public decimal OldInterest { get; set; }
+        public decimal OldVat { get; set; }
+        public decimal OldPenalty { get; set; }
+
+        public decimal OldVatRate { get; set; }
+        public decimal OldIntRate { get; set; }
+
+        public DateTime OldLoanDate { get; set; }
+        public DateTime OldDisbursementDate { get; set; }
+        public string OldLoanStatus { get; set; }
+        public DateTime OldNextInstallmentDate { get; set; }
+        public decimal OldPaid { get; set; }
+
+        // === Justification ===
         public string Reason { get; set; }
         public string RequestedBy { get; set; }
+
+        public DateTime? RequestDate { get; set; }
     }
     public class LoanAdjustmentHistoryDto
     {
         public string Id { get; set; }
         public string LoanId { get; set; }
         public string FieldAdjusted { get; set; } // e.g., "Penalty"
-        public decimal OldValue { get; set; }
-        public decimal NewValue { get; set; }
+
+        public string OldValue { get; set; } // ✅ Changed from decimal to string
+        public string NewValue { get; set; } // ✅ Changed from decimal to string
+
         public string Reason { get; set; }
         public string ChangedBy { get; set; }
         public DateTime ChangedDate { get; set; }
+
         public string ApprovalStatus { get; set; } // Approved, Rejected
         public string ApprovedBy { get; set; }
         public DateTime? ApprovedDate { get; set; }
+
         public string AdjustmentRequestId { get; set; }
     }
     public class GetLoanAdjustmentRequestsDataTableQuery
@@ -85,6 +116,7 @@ namespace CBS.FrontDesk.Data.LoanAdjustmentP
 
     public class LoanAdjustmentRequestDto
     {
+        [Required]
         public string Id { get; set; }
 
         [Required]
@@ -93,7 +125,7 @@ namespace CBS.FrontDesk.Data.LoanAdjustmentP
         [Required]
         public string CustomerId { get; set; }
 
-        [Display(Name = "Member Name")]
+        [Display(Name = "Customer Name")]
         public string CustomerName { get; set; }
 
         [Required]
@@ -105,48 +137,50 @@ namespace CBS.FrontDesk.Data.LoanAdjustmentP
         [Display(Name = "Branch Code")]
         public string BranchCode { get; set; }
 
-        // === Proposed New Values ===
-        [Required]
-        [Range(0, double.MaxValue, ErrorMessage = "Loan amount must be a non-negative number.")]
+        // 🔹 Proposed New Values
         [Display(Name = "New Loan Amount")]
         public decimal NewLoanAmount { get; set; }
 
-        [Required]
-        [Range(0, double.MaxValue, ErrorMessage = "Balance must be a non-negative number.")]
         [Display(Name = "New Balance")]
         public decimal NewBalance { get; set; }
 
-        [Required]
-        [Range(0, double.MaxValue, ErrorMessage = "Interest must be a non-negative number.")]
         [Display(Name = "New Interest")]
         public decimal NewInterest { get; set; }
 
-        [Required]
-        [Range(0, double.MaxValue, ErrorMessage = "VAT must be a non-negative number.")]
         [Display(Name = "New VAT")]
         public decimal NewVat { get; set; }
 
-        [Required]
-        [Range(0, double.MaxValue, ErrorMessage = "Penalty must be a non-negative number.")]
         [Display(Name = "New Penalty")]
         public decimal NewPenalty { get; set; }
 
-        [Required]
-        [Range(0, 100, ErrorMessage = "VAT Rate must be between 0 and 100.")]
         [Display(Name = "New VAT Rate (%)")]
         public decimal NewVatRate { get; set; }
 
-        [Required]
-        [Range(0, 100, ErrorMessage = "Interest Rate must be between 0 and 100.")]
         [Display(Name = "New Interest Rate (%)")]
         public decimal NewIntRate { get; set; }
 
-        [Required]
-        [Range(0, double.MaxValue, ErrorMessage = "Due amount must be a non-negative number.")]
         [Display(Name = "New Due Amount")]
         public decimal NewDueAmount { get; set; }
 
-        // === Original Snapshot (for display) ===
+        [Display(Name = "New Loan Date")]
+        [DataType(DataType.Date)]
+        public DateTime? NewLoanDate { get; set; }
+
+        [Display(Name = "New Disbursement Date")]
+        [DataType(DataType.Date)]
+        public DateTime? NewDisbursementDate { get; set; }
+
+        [Display(Name = "New Loan Status")]
+        public string NewLoanStatus { get; set; }
+
+        [Display(Name = "New Next Installment Date")]
+        [DataType(DataType.Date)]
+        public DateTime? NewNextInstallmentDate { get; set; }
+
+        [Display(Name = "New Total Paid")]
+        public decimal NewPaid { get; set; }
+
+        // 🔸 Original Snapshot (for audit/log)
         [Display(Name = "Old Loan Amount")]
         public decimal OldLoanAmount { get; set; }
 
@@ -171,21 +205,46 @@ namespace CBS.FrontDesk.Data.LoanAdjustmentP
         [Display(Name = "Old Due Amount")]
         public decimal OldDueAmount { get; set; }
 
+        [Display(Name = "Old Loan Date")]
+        [DataType(DataType.Date)]
+        public DateTime? OldLoanDate { get; set; }
+
+        [Display(Name = "Old Disbursement Date")]
+        [DataType(DataType.Date)]
+        public DateTime? OldDisbursementDate { get; set; }
+
+        [Display(Name = "Old Loan Status")]
+        public string OldLoanStatus { get; set; }
+
+        [Display(Name = "Old Next Installment Date")]
+        [DataType(DataType.Date)]
+        public DateTime? OldNextInstallmentDate { get; set; }
+
+        [Display(Name = "Old Total Paid")]
+        public decimal? OldPaid { get; set; }
+
+        // 🔐 Request Info
+        [Required]
+        [MinLength(10, ErrorMessage = "Reason must be at least 10 characters.")]
         public string Reason { get; set; }
 
         [Required]
+        [Display(Name = "Requested By")]
         public string RequestedBy { get; set; }
 
         [Display(Name = "Requested Date")]
+        [DataType(DataType.DateTime)]
         public DateTime RequestedDate { get; set; }
 
-        [Display(Name = "Status")]
+        // 📝 Approval Info
+        [Display(Name = "Request Status")]
         public string Status { get; set; } // Pending, Approved, Rejected
 
         [Display(Name = "Approved By")]
         public string ApprovedBy { get; set; }
 
-        [Display(Name = "Approved Date")]
+        [Display(Name = "Approval Date")]
+        [DataType(DataType.DateTime)]
         public DateTime? ApprovedDate { get; set; }
 
         [Display(Name = "Rejection Reason")]

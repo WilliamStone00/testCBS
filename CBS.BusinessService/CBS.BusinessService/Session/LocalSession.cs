@@ -54,6 +54,7 @@ namespace CBS.BusinessService.Session
         }
 
         public UserSessionDto GetUserCurrentsession(string sessionCode, string username)
+        
         {
             try
             {
