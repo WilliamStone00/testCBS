@@ -13,6 +13,7 @@ using CBS.FrontDesk.Data.Entity.CorrespondingBankManaagement;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanCommitee;
 using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole;
 using CBS.FrontDesk.Data.Entity.MemberOperation;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.LoanAdjustmentP;

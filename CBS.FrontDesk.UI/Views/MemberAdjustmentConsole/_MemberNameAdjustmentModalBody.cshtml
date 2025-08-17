@@ -1,0 +1,88 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole.MemberUpdateRequest
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <!-- Current Information Card -->
+            <div class="card mb-4">
+                <div class="card-header bg-light-primary">
+                    <h5 class="card-title mb-0">
+                        <i class="mdi mdi-account-circle-outline me-2"></i>Current Member Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Current First Name</label>
+                                <input type="text" class="form-control" value="@Model.OldFirstName" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Current Last Name</label>
+                                <input type="text" class="form-control" value="@Model.OldLastName" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Information Card -->
+            <div class="card mb-4">
+                <div class="card-header bg-light-warning">
+                    <h5 class="card-title mb-0">
+                        <i class="mdi mdi-pencil-outline me-2"></i>New Member Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form id="memberNameAdjustmentForm">
+                        @Html.HiddenFor(m => m.MemberId)
+                        @Html.HiddenFor(m => m.OldFirstName)
+                        @Html.HiddenFor(m => m.OldLastName)
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="NewFirstName" class="form-label">New First Name</label>
+                                    <input asp-for="NewFirstName" class="form-control" placeholder="Enter new first name">
+                                    <span asp-validation-for="NewFirstName" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="NewLastName" class="form-label">New Last Name</label>
+                                    <input asp-for="NewLastName" class="form-control" placeholder="Enter new last name">
+                                    <span asp-validation-for="NewLastName" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label asp-for="Reason" class="form-label">Reason for Change</label>
+                                    <textarea asp-for="Reason" class="form-control" rows="3" placeholder="Please provide a reason for this name change"></textarea>
+                                    <span asp-validation-for="Reason" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        <i class="mdi mdi-close me-1"></i>Cancel
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="mdi mdi-content-save-check me-1"></i>Submit Name Change
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

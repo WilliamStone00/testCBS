@@ -165,6 +165,7 @@
     <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportRPT.cs" />
     <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportDtoMapper.cs" />
     <Compile Include="Entity\LoanAdjustmentP\LoanAdjustment.cs" />
+    <Compile Include="Entity\MemberAdjustmentConsole\MemberUpdateRequest.cs" />
     <Compile Include="Entity\MemberNoneCashOperationsP\MemberNoneCashOperation.cs" />
     <Compile Include="Entity\MenuTranslationP\MenuTranslation.cs" />
     <Compile Include="Entity\Overdraft\OverdraftFacilityConfig.cs" />
