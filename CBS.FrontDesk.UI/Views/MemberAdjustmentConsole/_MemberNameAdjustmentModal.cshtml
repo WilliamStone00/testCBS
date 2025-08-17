@@ -1,0 +1,67 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole.MemberUpdateRequest
+
+<div class="modal fade" id="memberNameAdjustmentModal" tabindex="-1" aria-labelledby="memberNameAdjustmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content position-relative">
+
+            <!-- Loader Overlay -->
+            <div id="memberAdjustmentLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                    <div class="spinner-border text-primary mb-3" role="status"></div>
+                    <p class="fw-semibold text-primary">Processing, please wait...</p>
+                </div>
+            </div>
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="w-100">
+                    <div class="card bg-light mb-2">
+                        <div class="card-body text-center">
+                            <h1 class="card-title text-primary" id="memberNameAdjustmentModalTitle">
+                                <i class="mdi mdi-file-document-edit-outline me-2"></i> Loan Adjustment Details
+                            </h1>
+                            <p class="card-text" id="memberNameAdjustmentModalDescription">
+                                View original and new loan values, and approval history.
+                            </p>
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Collapsible Tips -->
+            <div class="card mx-3">
+                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                    <span><i class="mdi mdi-information-outline me-2"></i> When to Use This</span>
+                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdjustmentTips">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                </h6>
+                <div id="collapseAdjustmentTips" class="collapse">
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li><i class="mdi mdi-pencil-box-outline text-success me-2"></i><strong>Corrections:</strong> Use for fixing calculation or data errors.</li>
+                            <li><i class="mdi mdi-close-box-outline text-danger me-2"></i><strong>Exclusions:</strong> Not for rescheduling or refinancing.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body px-0" style="max-height: 70vh; overflow-y: auto;">
+                <div class="px-3" id="memberNameAdjustmentsContainer">
+
+                </div>
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer justify-content-between">
+                <div>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="mdi mdi-close"></i> Close
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
