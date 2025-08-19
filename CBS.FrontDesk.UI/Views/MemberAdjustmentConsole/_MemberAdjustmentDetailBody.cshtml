@@ -1,0 +1,92 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole.MemberAdjustmentRequestDetailsDto
+
+@functions {
+    public class AdjustmentDisplayItem
+    {
+        public string Label { get; set; }
+        public string OldValue { get; set; }
+        public string NewValue { get; set; }
+    }
+}
+
+@{
+    var request = Model;
+
+    var profileAdjustments = new List<AdjustmentDisplayItem>
+{
+        new AdjustmentDisplayItem { Label = "First Name", OldValue = request.OldFirstName, NewValue = request.NewFirstName },
+        new AdjustmentDisplayItem { Label = "Last Name", OldValue = request.OldLastName, NewValue = request.NewLastName },
+        new AdjustmentDisplayItem { Label = "Customer ID", OldValue = request.OldCustomerId, NewValue = request.NewCustomerId },
+        new AdjustmentDisplayItem { Label = "Member Status", OldValue = request.OldMemberStatus, NewValue = request.NewMemberStatus },
+        new AdjustmentDisplayItem { Label = "Membership Status", OldValue = request.OldMemberShipStatus, NewValue = request.NewMemberShipStatus },
+        new AdjustmentDisplayItem { Label = "Member Category", OldValue = request.OldMemberCategory, NewValue = request.NewMemberCategory }
+    };
+
+    var accountAdjustments = new List<AdjustmentDisplayItem>
+{
+        new AdjustmentDisplayItem { Label = "Balance", OldValue = request.OldBalance.ToString("N2"), NewValue = request.NewBalance.ToString("N2") },
+        new AdjustmentDisplayItem { Label = "Account Status", OldValue = request.OldAccountStatus.ToString("N2"), NewValue = request.NewAccountStatus.ToString("N2") },
+        new AdjustmentDisplayItem { Label = "Status Flag", OldValue = request.OldStatus.ToString(), NewValue = request.NewStatus.ToString() }
+    };
+}
+
+<div class="card-body">
+    <table class="table table-bordered table-striped">
+        <tbody>
+
+            <!-- 🧾 Request Overview -->
+            <tr class="table-primary">
+                <td colspan="2" class="text-center fw-bold">📋 Member Adjustment Request Overview</td>
+            </tr>
+            <tr><td class="fw-bold">Customer ID</td><td>@request.CustomerId</td></tr>
+            <tr><td class="fw-bold">Customer Name</td><td>@request.CustomerName</td></tr>
+            <tr><td class="fw-bold">Branch</td><td>@request.BranchName (@request.BranchCode)</td></tr>
+            <tr><td class="fw-bold">Requested Date</td><td>@request.RequestedDate.ToString("dd/MM/yyyy HH:mm:ss")</td></tr>
+            <tr><td class="fw-bold">Requested By</td><td>@request.RequestedBy</td></tr>
+            <tr><td class="fw-bold">Reason</td><td>@request.Reason</td></tr>
+            <tr>
+                <td class="fw-bold">Status</td>
+                <td>
+                    <span class="badge bg-@(request.Status == "Approved" ? "success" : request.Status == "Rejected" ? "danger" : "warning")">
+                        @request.Status
+                    </span>
+                </td>
+            </tr>
+            @if (!string.IsNullOrWhiteSpace(request.ApprovedBy))
+            {
+                <tr><td class="fw-bold">Approved By</td><td>@request.ApprovedBy (@request.ApprovedDate?.ToString("dd/MM/yyyy HH:mm:ss"))</td></tr>
+            }
+            @if (!string.IsNullOrWhiteSpace(request.RejectionReason))
+            {
+                <tr><td class="fw-bold text-danger">Rejection Reason</td><td class="text-danger">@request.RejectionReason</td></tr>
+            }
+
+            <!-- 👤 Profile Adjustments -->
+            <tr class="table-primary"><td colspan="2" class="text-center fw-bold">👤 Profile Fields</td></tr>
+            @foreach (var item in profileAdjustments)
+            {
+                <tr>
+                    <td class="fw-semibold">@item.Label</td>
+                    <td>
+                        Old: <span class="text-muted">@item.OldValue</span>
+                        <span class="ms-3">New: <strong>@item.NewValue</strong></span>
+                    </td>
+                </tr>
+            }
+
+            <!-- 💰 Account Adjustments -->
+            <tr class="table-primary"><td colspan="2" class="text-center fw-bold">💰 Account Fields</td></tr>
+            @foreach (var item in accountAdjustments)
+            {
+                <tr>
+                    <td class="fw-semibold">@item.Label</td>
+                    <td>
+                        Old: <span class="text-muted">@item.OldValue</span>
+                        <span class="ms-3">New: <strong>@item.NewValue</strong></span>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>

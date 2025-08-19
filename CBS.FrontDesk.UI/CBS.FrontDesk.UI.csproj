@@ -2073,6 +2073,7 @@
     <Compile Include="Controllers\ChangeCustomerNumber\ChangeNumberController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectionDashboardController.cs" />
     <Compile Include="Controllers\Loan\LoanAdjustmentP\LoanAdjustmentConsoleController.cs" />
+    <Compile Include="Controllers\MemberAdjustmentConsole\MemberAdjustmentConsoleController.cs" />
     <Compile Include="Controllers\MemberReceiptsP\MemberReceiptController.cs" />
     <Compile Include="Controllers\CMoney\CMoneyMembershipController.cs" />
     <Compile Include="Controllers\Commitee\LoanCommiteeController.cs" />
@@ -2193,6 +2194,7 @@
     <Compile Include="Helper\FileUploadHelper.cs" />
     <Compile Include="Helper\SalarySheetExcelExporter.cs" />
     <Compile Include="Models\Class1.cs" />
+    <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MemberAdjustmentConsole.js" />
     <Compile Include="WAF\Middleware\Core\StaticPathHelper.cs" />
     <Compile Include="WAF\Middleware\Correlation\CorrelationIdMiddleware.cs" />
     <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureFilter.cs" />
@@ -8238,6 +8240,8 @@
     <Content Include="Scripts\Js\CashMovementTracker\CashMovementTracker.js" />
     <Content Include="Scripts\Js\CommissionManagement\CommissionPayment.js" />
     <Content Include="Scripts\Js\CommissionManagement\DailyCollectionManagement.js" />
+    <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MemberAcccountBalanceAdjustment.js" />
+    <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MyAdjustmentCustomers.js" />
     <Content Include="Scripts\Js\Crud\LoanAdjustmentConsole\LoanAdjustmentConsole.js" />
     <Content Include="Scripts\Js\Crud\LoanAdjustmentConsole\LoanAdjustmentLoader.js" />
     <Content Include="Scripts\Js\CommissionManagement\DSFileUploaded.js" />
@@ -9458,8 +9462,19 @@
     <Content Include="Views\BulkOperation\_ManualBulkOperationConfigurationPartial.cshtml" />
     <Content Include="Views\BulkOperation\_BulkOperationFileUploadParameters.cshtml" />
     <Content Include="Views\BulkOperation\_BulkOperationParameters2.cshtml" />
-    <Content Include="Views\MembersFSeries\_MemberLoanRefunds.cshtml" />
-    <Content Include="Views\MembersFSeries\_RefundDetails.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\MemberAdjustment.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_IndividualData.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MainMemberNameAdjustmentModal.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberNameAdjustmentModalBody.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberStatusAdjustmentModalBody.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberMembershipStatusAdjustmentModalBody.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberActiveStatusAdjustmentModalBody.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberReferenceAdjustmentModalBody.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberCategoryAdjustmentModalBody.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberAccountBalanceAdjustmentModalBody.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\Index.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberAdjustmentDetailBody.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberAdjustmentData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
