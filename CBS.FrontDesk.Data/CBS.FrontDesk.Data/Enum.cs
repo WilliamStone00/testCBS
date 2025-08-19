@@ -23,4 +23,18 @@ namespace CBS.FrontDesk.Data
         Approved,
         Rejected
     }
+
+    public enum AdjustmentType
+    {
+        NameAdjustment,
+        MemberReferenceAdjustment,
+        MemberActiveStatusAdjustment,
+        MemberActivationAdjustment,
+        MemberMembershipStatusAdjustment,
+        MemberCategoryAdjustment,
+        AccountBalanceAdjustment,
+        AccountStatusAdjustment,
+    }
+
+
 }
