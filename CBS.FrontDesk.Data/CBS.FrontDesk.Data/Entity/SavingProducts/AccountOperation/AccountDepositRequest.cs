@@ -60,6 +60,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
 
     public class CashDesk
     {
+        public RefundDetailsVM RefundVM { get; set; }
         public string CustomerId { get; set; }
         public string LoanId { get; set; }
         public MemberOnboardingDetailDto MemberOnboardingDetailDto { get; set; } = new MemberOnboardingDetailDto();

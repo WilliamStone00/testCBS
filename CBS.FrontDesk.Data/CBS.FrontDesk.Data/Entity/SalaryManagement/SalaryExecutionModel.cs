@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.DataTable;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Web.UI.WebControls;
 
 namespace CBS.FrontDesk.Data.Entity.SalaryManagement
 {
+   
     public class GetAllSalaryExtractQuery
     {
         public string FileUploadId { get; set; }

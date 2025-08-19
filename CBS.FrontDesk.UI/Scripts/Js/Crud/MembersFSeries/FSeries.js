@@ -50,73 +50,61 @@ function clearRefundFilters() {
 }
 function loadRefundDetails(refundId) {
     const modalEl = document.getElementById("refundDetailsModal");
+    const $modal = $("#refundDetailsModal");
     const $body = $("#refundDetailsModalBody");
+    const endpoint = $modal.data("refund-url") || "/MembersFSeries/RefundDetailsPartial";
 
-    const showModal = () => {
+    const openModal = () => {
         if (window.bootstrap?.Modal) bootstrap.Modal.getOrCreateInstance(modalEl).show();
-        else if ($.fn.modal) $("#refundDetailsModal").modal("show");
+        else if ($.fn.modal) $modal.modal("show");
     };
 
-    const renderSpinner = () => {
-        $body.html(`
-            <div class="text-center py-4">
-                <div class="spinner-border" role="status"></div>
-                <div class="small mt-2 text-muted">Loading refund details…</div>
-            </div>
-        `);
-    };
-
-    const renderError = (heading, detail) => {
+    const renderError = (heading, detail, payloadHtml = "") => {
         $body.html(`
             <div class="alert alert-danger">
                 <div class="fw-bold mb-1">${heading}</div>
                 <div class="small">${detail || "An unexpected error occurred."}</div>
+                ${payloadHtml}
             </div>
         `);
+        openModal(); // open only after the error content is ready
     };
 
-    // Always open the modal and show spinner immediately
-    showModal();
-    renderSpinner();
-
-    // Guard: missing id
     if (!refundId) {
         renderError("Missing refund id.", "No refund identifier was provided.");
         return;
     }
 
     $.ajax({
-        url: "/MembersFSeries/RefundDetailsPartial",
+        url: endpoint,
         type: "GET",
         cache: false,
-        timeout: 15000, // 15s
+        timeout: 45000,
+        dataType: "html",
+        headers: { "X-Requested-With": "XMLHttpRequest" },
         data: { id: refundId },
+
         success: function (html, _status, xhr) {
-            // If server redirected to login or returned a full page, show a friendly message
             const text = (html || "").toString();
             const looksLikeFullPage = /<\s*html[\s>]/i.test(text);
-            const looksLikeLogin = /login|sign\s*in|account/i.test(text) && looksLikeFullPage;
+            const looksLikeLogin = looksLikeFullPage && /login|sign\s*in|account/i.test(text);
 
             if (!text.trim()) {
                 renderError("Empty response.", "The server returned no content.");
                 return;
             }
-            if (looksLikeLogin || xhr.responseURL?.toLowerCase().includes("login")) {
+            if (looksLikeLogin || (xhr.responseURL && xhr.responseURL.toLowerCase().includes("login"))) {
                 renderError("Session expired.", "Please sign in again and retry.");
                 return;
             }
 
-            // Render the partial as-is
-            $body.html(text);
+            $body.html(text);  // content ready
+            openModal();       // show AFTER content is inserted
         },
-        error: function (xhr, _status, err) {
-            if (xhr.status === 0) {
-                renderError("Network error.", "Check your internet connection.");
-                return;
-            }
 
-            // Specific friendly messages
+        error: function (xhr, _status, err) {
             const map = {
+                0: "Network error. The request was blocked/aborted.",
                 401: "Unauthorized. Please sign in again.",
                 403: "Forbidden. You don’t have access to this refund.",
                 404: "Refund not found.",
@@ -125,20 +113,13 @@ function loadRefundDetails(refundId) {
                 500: "Server error while loading refund."
             };
             const heading = map[xhr.status] || `Error ${xhr.status || ""}`.trim();
+            const payload = xhr.responseText
+                ? `<details class="mt-2"><summary>Details</summary>
+                       <pre class="mt-2" style="white-space:pre-wrap;">${xhr.responseText}</pre>
+                   </details>`
+                : "";
 
-            // Include server payload (stack/HTML) collapsed
-            const payload = xhr.responseText ? `
-                <details class="mt-2"><summary>Details</summary>
-                    <pre class="mt-2" style="white-space:pre-wrap;">${xhr.responseText}</pre>
-                </details>` : "";
-
-            $body.html(`
-                <div class="alert alert-danger">
-                    <div class="fw-bold mb-1">${heading}</div>
-                    <div class="small">${err || xhr.statusText || "Request failed."}</div>
-                    ${payload}
-                </div>
-            `);
+            renderError(heading, err || xhr.statusText || "Request failed.", payload);
         }
     });
 }

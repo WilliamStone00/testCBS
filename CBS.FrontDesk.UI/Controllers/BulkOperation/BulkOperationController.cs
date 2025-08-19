@@ -47,7 +47,7 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             operationType = "INCOME";
             _accountingServices = accountingEntryServices;
         }
-
+        
         public async Task<ActionResult> Index()
         {
             var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();

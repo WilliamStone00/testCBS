@@ -191,7 +191,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             try
             {
                 SalaryUploadModelCarrier carrier = new SalaryUploadModelCarrier();
-                var fileUploads = await _salaryUploadServices.GetUploadDtosAsyncByStatus(new GetAllFileUploadSalaryFileActivatedQuery { Both = false, Status = true }, path);
+                var fileUploads = await _salaryUploadServices.GetUploadForAnalysis(new GetAllFileUploadSalaryFileActivatedQuery { Both = false, Status = true }, path);
                 carrier.FileUploads = fileUploads.ToList();
                 return PartialView(partialView, carrier);
             }
