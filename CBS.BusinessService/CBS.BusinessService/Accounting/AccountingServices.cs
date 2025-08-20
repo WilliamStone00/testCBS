@@ -360,7 +360,7 @@ namespace CBS.BusinessService.Accounting
                 {
                     if (couApiResponse.ApiResponseData != null)
                     {
-                        return couApiResponse.ApiResponseData.Data;
+                        return couApiResponse.ApiResponseData.Data.OrderBy(x => x.AccountNumberCU).ToList();
                     }
 
                 }
@@ -383,7 +383,7 @@ namespace CBS.BusinessService.Accounting
                 {
                     if (couApiResponse.ApiResponseData != null)
                     {
-                        return couApiResponse.ApiResponseData.Data;
+                        return couApiResponse.ApiResponseData.Data.OrderBy(x => x.AccountNumberCU).ToList();
                     }
 
                 }
@@ -405,7 +405,7 @@ namespace CBS.BusinessService.Accounting
                 {
                     if (couApiResponse.ApiResponseData != null)
                     {
-                        return couApiResponse.ApiResponseData.Data;
+                        return couApiResponse.ApiResponseData.Data.OrderBy(x => x.AccountNumberCU).ToList();
                     }
 
                 }
@@ -427,7 +427,7 @@ namespace CBS.BusinessService.Accounting
                 {
                     if (couApiResponse.ApiResponseData != null)
                     {
-                        return couApiResponse.ApiResponseData.Data;
+                        return couApiResponse.ApiResponseData.Data.OrderBy(x => x.AccountNumberCU).ToList();
                     }
 
                 }
@@ -451,7 +451,7 @@ namespace CBS.BusinessService.Accounting
                     if (couApiResponse.ApiResponseData != null)
                     {
                         
-                            return couApiResponse.ApiResponseData.Data;
+                            return couApiResponse.ApiResponseData.Data.OrderBy(x=>x.AccountNumberCU).ToList();
                        
                         
                     }
@@ -474,7 +474,7 @@ namespace CBS.BusinessService.Accounting
                 {
                     if (couApiResponse.ApiResponseData != null)
                     {
-                        return couApiResponse.ApiResponseData.Data;
+                        return couApiResponse.ApiResponseData.Data.OrderBy(x => x.AccountNumberCU).ToList();
                     }
 
                 }
@@ -496,7 +496,7 @@ namespace CBS.BusinessService.Accounting
                 {
                     if (couApiResponse.ApiResponseData != null)
                     {
-                        return couApiResponse.ApiResponseData.Data;
+                        return couApiResponse.ApiResponseData.Data.OrderBy(x=>x.AccountNumberCU).ToList();
                     }
 
                 }
