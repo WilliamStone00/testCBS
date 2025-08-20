@@ -13,6 +13,7 @@ else
         <thead class="table-light">
             <tr>
                 <th>Date</th>
+                <th>L.Type</th>
                 <th>L.Repayment</th>
                 <th>L.Amount</th>
                 <th>I.Rate</th>
@@ -55,9 +56,10 @@ else
                 }
 
                 <tr>
-                    <td>@loan.LoanDate.ToString("dd/MM/yyyy")</td>
+                    <td>@loan.LoanDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
+                    <td>@loan.LoanType</td>
                     <td class="text-end">
-                        @(loan.LastRefundDate != DateTime.MinValue ? loan.LastRefundDate.ToString("dd/MM/yyyy") : "-")
+                        @(loan.LastRefundDate != DateTime.MinValue ? loan.LastRefundDate.ToString("dd/MM/yyyy hh:mm:ss") : "-")
                     </td>
                     <td class="text-end">@loan.LoanAmount.ToString("N0")</td>
                     <td class="text-end">@loan.InterestRate.ToString("0.0")%</td>
@@ -81,6 +83,7 @@ else
             <tr>
                 <td class="text-end">Totals:</td>
                 <td></td> <!-- Last Repayment -->
+                <td></td> <!-- Last Repayment -->
                 <td class="text-end">@Model.Loans.Sum(x => x.LoanAmount).ToString("N0")</td>
                 <td></td> <!-- I.Rate -->
                 <td class="text-end">@Model.Loans.Sum(x => x.AccrualInterest).ToString("N0")</td>
@@ -98,6 +101,7 @@ else
         </h6>
         <ul class="small mb-0">
             <li><strong>Date</strong>: The date the loan was disbursed or recorded.</li>
+            <li><strong>L.Type</strong>: The type of loan contracted by the member.</li>
             <li><strong>L.Repayment</strong>: The date of the last loan repayment made by the member.</li>
             <li><strong>L.Amount</strong>: Total loan amount disbursed to the member.</li>
             <li><strong>I.Rate</strong>: Interest rate applied on the loan (annualized).</li>

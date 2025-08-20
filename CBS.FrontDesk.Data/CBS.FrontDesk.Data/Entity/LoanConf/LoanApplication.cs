@@ -840,6 +840,57 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         /// <summary>Optionally limit the number of results; null = all.</summary>
         public int? Take { get; set; }
     }
+    public sealed class RefundDetailsVM
+    {
+        // Core entities (read-only in view)
+        public Refund Refund { get; set; }
+        public Loan Loan { get; set; }
+
+        // Display helpers
+        public string ProductName { get; set; }
+        public string LoanId { get; set; }
+        public string LoanStatus { get; set; }
+        public string RefundStatusBadgeClass { get; set; }
+        public string LoanStatusBadgeClass { get; set; }
+
+        // Loan summary
+        public decimal LoanAmount { get; set; }
+        public decimal LoanPaid { get; set; }
+        public decimal LoanBalance { get; set; }
+        public decimal LoanDueAmount { get; set; }
+        public decimal LoanRate { get; set; }
+        public DateTime? LoanDate { get; set; }
+        public DateTime? LastRefundDate { get; set; }
+
+        // Lists (already coalesced to empty, never null)
+        public IReadOnlyList<RefundDetail> RefundDetails { get; set; }
+        public IReadOnlyList<LoanAmortization> Amortizations { get; set; }
+
+        // Header allocation (from Refund)
+        public decimal AllocPrincipal { get; set; }
+        public decimal AllocInterest { get; set; }
+        public decimal AllocTax { get; set; }
+        public decimal AllocPenalty { get; set; }
+        public decimal AllocTotal { get; set; }
+        public bool AllocationsConsistent { get; set; }
+
+        // Detail totals (from RefundDetails)
+        public decimal DetailCollected { get; set; }
+        public decimal DetailPrincipal { get; set; }
+        public decimal DetailInterest { get; set; }
+        public decimal DetailTax { get; set; }
+        public decimal DetailPenalty { get; set; }
+        public decimal DetailBalance { get; set; }
+
+        // Amortization summary
+        public int TotalInstallments { get; set; }
+        public int CompletedInstallments { get; set; }
+        public int OverdueInstallments { get; set; }
+        public decimal AmortDueSum { get; set; }
+        public decimal AmortPaidSum { get; set; }
+        public decimal AmortBalanceSum { get; set; }
+        public DateTime? NextDueDate { get; set; }
+    }
 
     public class Refund
     {

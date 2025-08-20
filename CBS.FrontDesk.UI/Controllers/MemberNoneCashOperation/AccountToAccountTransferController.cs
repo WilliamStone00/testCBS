@@ -340,7 +340,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         }
         public async Task<bool> GetChartOfAccounts()
         {
-            var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
+            var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts(true);
             ViewBag.chartOfAccounts = chartOfAccounts.ToList();
             return true;
         }

@@ -2194,6 +2194,7 @@
     <Compile Include="Helper\FileUploadHelper.cs" />
     <Compile Include="Helper\SalarySheetExcelExporter.cs" />
     <Compile Include="Models\Class1.cs" />
+    <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MemberAdjustmentConsole.js" />
     <Compile Include="WAF\Middleware\Core\StaticPathHelper.cs" />
     <Compile Include="WAF\Middleware\Correlation\CorrelationIdMiddleware.cs" />
     <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureFilter.cs" />
@@ -8239,6 +8240,7 @@
     <Content Include="Scripts\Js\CashMovementTracker\CashMovementTracker.js" />
     <Content Include="Scripts\Js\CommissionManagement\CommissionPayment.js" />
     <Content Include="Scripts\Js\CommissionManagement\DailyCollectionManagement.js" />
+    <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MemberAcccountBalanceAdjustment.js" />
     <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MyAdjustmentCustomers.js" />
     <Content Include="Scripts\Js\Crud\LoanAdjustmentConsole\LoanAdjustmentConsole.js" />
     <Content Include="Scripts\Js\Crud\LoanAdjustmentConsole\LoanAdjustmentLoader.js" />
@@ -9460,10 +9462,19 @@
     <Content Include="Views\BulkOperation\_ManualBulkOperationConfigurationPartial.cshtml" />
     <Content Include="Views\BulkOperation\_BulkOperationFileUploadParameters.cshtml" />
     <Content Include="Views\BulkOperation\_BulkOperationParameters2.cshtml" />
-    <Content Include="Views\MemberAdjustmentConsole\Index.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\MemberAdjustment.cshtml" />
     <Content Include="Views\MemberAdjustmentConsole\_IndividualData.cshtml" />
-    <Content Include="Views\MemberAdjustmentConsole\_MemberNameAdjustmentModal.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MainMemberNameAdjustmentModal.cshtml" />
     <Content Include="Views\MemberAdjustmentConsole\_MemberNameAdjustmentModalBody.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberStatusAdjustmentModalBody.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberMembershipStatusAdjustmentModalBody.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberActiveStatusAdjustmentModalBody.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberReferenceAdjustmentModalBody.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberCategoryAdjustmentModalBody.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberAccountBalanceAdjustmentModalBody.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\Index.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberAdjustmentDetailBody.cshtml" />
+    <Content Include="Views\MemberAdjustmentConsole\_MemberAdjustmentData.cshtml" />
     <Content Include="Views\AccountingConfiguration\_UpdateAccountGL.cshtml" />
   </ItemGroup>
   <ItemGroup>

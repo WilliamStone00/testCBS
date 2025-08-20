@@ -72,12 +72,20 @@ namespace CBS.BusinessService.Accounting
             }
         }
 
-        public async Task<IEnumerable<StringValues>> GetChartOfAccounts()
+        public async Task<IEnumerable<StringValues>> GetChartOfAccounts(bool byBranch=false)
         {
             try
             {
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<ChartOfAccountStateDto>>>(string.Format(APICallHelper.GetAllChartOfAccountManagementPositionByBranch, GetBranchID()));
-                return ProcessApiResponseForChartOfAccount(couApiResponse.ApiResponseData);
+                if (byBranch)
+                {
+                    var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<ChartOfAccountStateDto>>>(string.Format(APICallHelper.GetAllChartOfAccountManagementPositionByBranch, GetBranchID()));
+                    return ProcessApiResponseForChartOfAccount(couApiResponse.ApiResponseData);
+                }
+                else
+                {
+                    var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<ChartOfAccountStateDto>>>(APICallHelper.GetAllChartOfAccountManagementPositionByChart);
+                    return ProcessApiResponseForChartOfAccount(couApiResponse.ApiResponseData);
+                }
             }
             catch (Exception ex)
             {

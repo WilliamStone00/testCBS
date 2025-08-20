@@ -1199,5 +1199,11 @@ namespace CBS.FrontDesk.Helper
         public static string ManualEntryCollectorUploadFileExecution = "api/v1/ManualEntryCollectorUpload?collectorId={0}";
         public static string GetAllDailyOperationFileUploadsByProcessingStatus = "/api/v1/GetAllFileUploadsByProcessingStatus/{0}";
         public static string ViewFileByFileUploadId = "/api/v1/ViewFileByFileUploadId/{0}}";
+
+        public static string SubmitMemberAdjustmentRequest = "/api/v1/MemberAdjustmentRequest/submit";
+        public static string ApproveMemberAdjustmentRequest = "/api/v1/MemberAdjustmentRequest/approve";
+        public static string RejectMemberAdjustmentRequest = "/api/v1/MemberAdjustmentRequest/reject";
+        public static string GetMemberAdjustmentRequestDetails = "/api/v1/MemberAdjustmentRequest/get-details";
+        public static string MemberAdjustmentRequestDataTable = "/api/v1/MemberAdjustmentRequest/datatable";
     }
 }

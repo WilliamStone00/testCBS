@@ -21,6 +21,10 @@ using System.Web.Mvc;
 using CBS.BusinessService.LoanP.LoanAdjustmentP;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole;
+using CBS.FrontDesk.Data.LoanAdjustmentP;
+using CBS.BusinessService.MemberP.MemberAdjustment;
+using DocumentFormat.OpenXml.EMMA;
+using CBS.FrontDesk.Data;
 
 namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
 {
@@ -33,7 +37,8 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
         private readonly BranchServices _branchServices;
         private readonly CountryServices _countryServices;
         private readonly LocationAggregateService _locationService;
-        public MemberAdjustmentConsoleController(IndividualProfileServices individualProfileServices, MemberAccountActivationServices memberAccountActivationServices = null, BranchServices branchServices = null, AccountServices accountServices = null, CountryServices countryServices = null, LocationAggregateService locationService = null)
+        private readonly MemberAdjustmentService _memberAdjustmentService;
+        public MemberAdjustmentConsoleController(IndividualProfileServices individualProfileServices, MemberAccountActivationServices memberAccountActivationServices = null, BranchServices branchServices = null, AccountServices accountServices = null, CountryServices countryServices = null, LocationAggregateService locationService = null, MemberAdjustmentService memberAdjustmentService = null)
         {
             _individualProfileServices = individualProfileServices;
             _memberAccountActivationServices = memberAccountActivationServices;
@@ -41,8 +46,18 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
             _accountServices = accountServices;
             _countryServices = countryServices;
             _locationService = locationService;
+            _memberAdjustmentService = memberAdjustmentService;
         }
         public async Task<ActionResult> Index()
+        {
+
+            ViewBag.Branches = await _branchServices.GetBranches();
+            return View();
+
+
+        } 
+        
+        public async Task<ActionResult> MemberAdjustment()
         {
 
             ViewBag.Branches = await _branchServices.GetBranches();
@@ -84,12 +99,227 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
         public async Task<ActionResult> GetMemberNamesDetailPartial(string id)
         {
             var model =  await InitializeCustomerData(id);
-            var request = new MemberUpdateRequest()
+            var request = new MemberAdjustmentModel()
             {
+                MemberId = model.CustomerList.CustomerId,
                 OldFirstName = model.CustomerList.FirstName,
                 OldLastName = model.CustomerList.LastName,
+                IsMemberProfileModified = true,
+                BranchId=model.CustomerList.BranchId,
+                AdjustmentType= AdjustmentType.NameAdjustment.ToString(),
             };
             return PartialView("_MemberNameAdjustmentModalBody", request);
+        }  
+        
+        [HttpGet]
+        public async Task<ActionResult> GetMemberActiveStatusDetailPartial(string id)
+        {
+            var model =  await InitializeCustomerData(id);
+            var request = new MemberAdjustmentModel()
+            {
+                MemberId= model.CustomerList.CustomerId,
+                OldStatus = model.CustomerList.Active,
+                OldMemberStatus = model.CustomerList.ActiveStatus,
+                OldMemberShipStatus = model.CustomerList.MembershipApprovalStatus,
+                IsMemberProfileModified = true,
+                BranchId = model.CustomerList.BranchId,
+                AdjustmentType = AdjustmentType.MemberActiveStatusAdjustment.ToString(),
+            };
+            return PartialView("_MemberActiveStatusAdjustmentModalBody", request);
+        } 
+        
+        [HttpGet]
+        public async Task<ActionResult> GetMemberMembershipStatusDetailPartial(string id)
+        {
+            var model =  await InitializeCustomerData(id);
+            var request = new MemberAdjustmentModel()
+            {
+                MemberId= model.CustomerList.CustomerId,
+                OldStatus = model.CustomerList.Active,
+                OldMemberStatus = model.CustomerList.ActiveStatus,
+                OldMemberShipStatus = model.CustomerList.MembershipApprovalStatus,
+                IsMemberProfileModified = true,
+                BranchId = model.CustomerList.BranchId,
+                AdjustmentType = AdjustmentType.MemberActiveStatusAdjustment.ToString(),
+            };
+            return PartialView("_MemberMembershipStatusAdjustmentModalBody", request);
+        } 
+        
+        [HttpGet]
+        public async Task<ActionResult> GetMemberStatusDetailPartial(string id)
+        {
+            var model =  await InitializeCustomerData(id);
+            var request = new MemberAdjustmentModel()
+            {
+                MemberId= model.CustomerList.CustomerId,
+                OldStatus = model.CustomerList.Active,
+                OldMemberStatus = model.CustomerList.ActiveStatus,
+                OldMemberShipStatus = model.CustomerList.MembershipApprovalStatus,
+                IsMemberProfileModified = true,
+                BranchId = model.CustomerList.BranchId,
+                AdjustmentType = AdjustmentType.MemberActivationAdjustment.ToString(),
+            };
+            return PartialView("_MemberStatusAdjustmentModalBody", request);
+        }
+        
+        [HttpGet]
+        public async Task<ActionResult> GetMemberReferenceDetailPartial(string id)
+        {
+            var model =  await InitializeCustomerData(id);
+            var request = new MemberAdjustmentModel()
+            {
+                MemberId= model.CustomerList.CustomerId,
+                IsMemberProfileModified = true,
+                BranchId = model.CustomerList.BranchId,
+                AdjustmentType = AdjustmentType.MemberReferenceAdjustment.ToString(),
+            };
+            return PartialView("_MemberReferenceAdjustmentModalBody", request);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetMemberCategoryDetailPartial(string id)
+        {
+            var model =  await InitializeCustomerData(id);
+            var request = new MemberAdjustmentModel()
+            {
+                MemberId= model.CustomerList.CustomerId,
+                OldMemberCategory = model.CustomerList.CustomerType,
+                IsMemberProfileModified = true,
+                BranchId = model.CustomerList.BranchId,
+                AdjustmentType = AdjustmentType.MemberCategoryAdjustment.ToString(),
+            };
+            return PartialView("_MemberCategoryAdjustmentModalBody", request);
+        } 
+        
+        
+        [HttpGet]
+        public async Task<ActionResult> GetMemberAccountBalanceDetailPartial(string id)
+        {
+            var model =  await InitializeCustomerData(id);
+            var request = new MemberAdjustmentModel()
+            {
+                MemberId= model.CustomerList.CustomerId,
+                CustomerAccounts=model.CustomerAccounts,
+                IsMemberAccountModified = true,
+                BranchId = model.CustomerList.BranchId,
+                AdjustmentType = AdjustmentType.AccountBalanceAdjustment.ToString(),
+            };
+            return PartialView("_MemberAccountBalanceAdjustmentModalBody", request);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> MemberAdjustmentRequest(MemberAdjustmentModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Invalid request data." });
+            }
+
+
+
+            model.RequestedBy = Session["UserId"]?.ToString();
+
+            var command= ConvertMemberAjustmentModel(model);
+            var result = await _memberAdjustmentService.SubmitMemberAdjustmentRequestAsync(command);
+            return Json(new
+            {
+                success = result.Result,
+                status = result.MessageStatus,
+                message = Messaging.MessageResult(result)
+            });
+        }
+
+        public SubmitMemberAdjustmentRequestCommand ConvertMemberAjustmentModel(MemberAdjustmentModel model)
+        {
+            return new SubmitMemberAdjustmentRequestCommand
+            {
+                // --- Core Identifiers ---
+                MemberId = model.MemberId,
+                BranchId = model.BranchId,
+                AccountId = model.AccountId,
+                NewMemberId = model.NewMemberId,
+                AdjustmentType= model.AdjustmentType,
+                // --- Name Change Properties ---
+                NewFirstName = model.NewFirstName,
+                OldFirstName = model.OldFirstName,
+                NewLastName = model.NewLastName,
+                OldLastName = model.OldLastName,
+
+                // --- Balance Properties ---
+                NewBalance = model.NewBalance,
+                OldBalance = model.OldBalance,
+
+                // --- Member Status Properties (string-based) ---
+                NewMemberStatus = model.NewMemberStatus,
+                OldMemberStatus = model.OldMemberStatus,
+                NewMemberShipStatus = model.NewMemberShipStatus,
+                OldMemberShipStatus = model.OldMemberShipStatus,
+
+                // --- Status Properties (boolean-based) ---
+                NewStatus = model.NewStatus,
+                OldStatus = model.OldStatus,
+                NewAccountStatus = model.NewAccountStatus,
+                AccountStatus = model.AccountStatus,
+
+                // --- Category Properties ---
+                NewMemberCategory = model.NewMemberCategory,
+                OldMemberCategory = model.OldMemberCategory,
+
+                // --- Audit and Justification ---
+                Reason = model.Reason,
+                RequestedBy = model.RequestedBy,
+
+                // --- Modification Flags ---
+                IsMemberProfileModified = model.IsMemberProfileModified,
+                IsMemberAccountModified = model.IsMemberAccountModified
+            };
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> LoadAdjustmentRequestDataTable(GetMemberAdjustmentRequestsDataTableQuery query)
+        {
+            var dataTable = await _memberAdjustmentService.GetDataTableAsync(query);
+            var requestList = JsonConvert.DeserializeObject<List<MemberAdjustmentRequestDetailsDto>>(JsonConvert.SerializeObject(dataTable.data));
+
+            return Json(new
+            {
+                draw = query.Options.draw,
+                recordsTotal = dataTable.recordsTotal,
+                recordsFiltered = dataTable.recordsFiltered,
+                data = requestList
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetRequestDetailPartial(string id)
+        {
+            var model = await _memberAdjustmentService.GetMemberAdjustmentRequestAsync(id);
+            return PartialView("_MemberAdjustmentDetailBody", model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ApproveRequest(ApproveMemberAdjustmentRequestCommand command)
+        {
+            var result = await _memberAdjustmentService.ApproveMemberAdjustmentRequestAsync(command);
+            return Json(new
+            {
+                success = result.Result,
+                status = result.MessageStatus,
+                message = Messaging.MessageResult(result)
+            });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> RejectRequest(RejectMemberAdjustmentRequestCommand command)
+        {
+            command.RejectedBy = Session["UserId"]?.ToString();
+            var result = await _memberAdjustmentService.RejectMemberAdjustmentRequestAsync(command);
+            return Json(new
+            {
+                success = result.Result,
+                status = result.MessageStatus,
+                message = Messaging.MessageResult(result)
+            });
         }
 
         public async Task<ActionResult> CustomerProfile(string KEY = null, string ReadOptions = null, string path = null, string group = null)
@@ -251,29 +481,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
             await PopulateAggregatesInViewBag();
             return View(customer);
         }
-        [HttpPost]
-        public async Task<ActionResult> Create(IndividualProfile model)
-        {
-            if (ModelState.IsValid)
-            {
-                var data = await _individualProfileServices.Create(model);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-            }
-            else
-            {
-                var errorMessages = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Where(e => e.ErrorMessage != null)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
 
-                // Convert the list of error messages to a single string with each message on a new line
-                string errorMessage = string.Join("\n", errorMessages);
-
-                // Pass the error message as the message
-                return Json(new { success = false, status = false, message = errorMessage });
-            }
-        }
 
         private async Task<IndividualCustomerProfile> InitializeCustomerData(string KEY)
         {

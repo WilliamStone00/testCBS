@@ -125,10 +125,21 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
     public class AddSalaryUploadModelCommand
     {
         [Required(ErrorMessage = "File is required.")]
+        [DataType(DataType.Upload)]
         public HttpPostedFileBase File { get; set; }
 
-        [Required(ErrorMessage = "Salary Type is required.")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Salary Type is required.")]
+        [StringLength(50, ErrorMessage = "Salary Type must be 50 characters or fewer.")]
         public string SalaryType { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Branch Id is required.")]
+        [StringLength(64, ErrorMessage = "Branch Id must be 64 characters or fewer.")]
+        public string BranchId { get; set; }
+
+        [StringLength(64, ErrorMessage = "Standing Order Source Account Id must be 64 characters or fewer.")]
+        public string StandingOrderSourceChartOfAccountId { get; set; }
+
+        public bool PrivateView { get; set; }
     }
 
     public class FileUploadDto
@@ -147,10 +158,11 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         public bool IsAvalaibleForExecution { get; set; }
         public string FileCode { get; set; }
         public string FileType { get; set; }
+        public string StandingOrderSourceChartOfAccountId { get; set; }
+        public bool PrivateView { get; set; }
         public int TotalBranchesThatHaveExecutedPayrol { get; set; }
         public int TotalBranchesInvolvedInPayrolProcessing { get; set; }
         public List<SalaryUploadModel> SalaryUploadModels { get; set; }
-
-
+       
     }
 }

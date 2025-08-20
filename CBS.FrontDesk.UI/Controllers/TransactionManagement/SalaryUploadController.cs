@@ -1,4 +1,6 @@
-﻿using CBS.BusinessService.Accounts;
+﻿using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounts;
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Message;
 using System;
@@ -13,21 +15,34 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
     {
         // GET: SalaryUpload
         private readonly SalaryUploadServices _salaryUploadServices;
+        private readonly BranchServices _branchServices;
         private readonly SalaryAnalysisResultServices _salaryAnalysisResultServices;
-        public SalaryUploadController(SalaryUploadServices salaryUploadServices, SalaryAnalysisResultServices salaryAnalysisResultServices)
+        private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
+        public SalaryUploadController(SalaryUploadServices salaryUploadServices, SalaryAnalysisResultServices salaryAnalysisResultServices, BranchServices branchServices, ChartOfAccountServicesAnnex chartOfAccountServices)
         {
             _salaryUploadServices = salaryUploadServices;
             _salaryAnalysisResultServices=salaryAnalysisResultServices;
+            _branchServices=branchServices;
+            this.chartOfAccountServices=chartOfAccountServices;
         }
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             ViewBag.HeadOffice="No";
             if (_salaryAnalysisResultServices.IsHeadOffice())
             {
                 ViewBag.HeadOffice="Yes";
             }
+            await LoadDroupdowns();
             return View(new SalaryUploadModelCarrier());
+        }
+        public async Task<bool> LoadDroupdowns()
+        {
+            var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts(false);
+            ViewBag.StandingOrderSourceAccountOptions = chartOfAccounts.ToList();
+            var Branches = await _branchServices.GetBranches();
+            ViewBag.Branches = Branches;
+            return true;
         }
         public ActionResult UploadedSalaryFiles()
         {

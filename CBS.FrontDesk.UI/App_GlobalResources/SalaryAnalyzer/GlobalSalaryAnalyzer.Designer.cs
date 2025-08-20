@@ -655,7 +655,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gross Salary.
+        ///   Looks up a localized string similar to Gross Amount.
         /// </summary>
         internal static string TotalNetSalary {
             get {
@@ -673,7 +673,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Net Salary.
+        ///   Looks up a localized string similar to Net Amount.
         /// </summary>
         internal static string TotalSalary {
             get {
