@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    
+  
     $('#LiaisonAccountOwnerToHide').hide();
     $('#DeterminationManagementAccountId').hide();
     $('#HasManagementAccount').change(function () {
@@ -163,10 +163,6 @@
 /*    LoadDataForEventRule();*/
 });
 
-
-function updateclass4() {
- 
-}
 
 
 function splitStringByHyphen(inputString) {
@@ -519,7 +515,7 @@ function loadAccountCategoryByChartNumber(number) {
                 $('#LiaisonAccountOwnerToHide').show();
                 accNumber = padNumberDigits(data.AccountNumber, 6) + "[BCD]" + "[DBCD]"
             } else {
-                accNumber = padNumberDigits(data.AccountNumber, 6) + "[BCD]" + "000"
+                accNumber = padNumberDigits(data.AccountNumber, 6) + "[BCD]"
                 $('#LiaisonAccountOwnerToHide').hide();
             }
             
@@ -534,6 +530,7 @@ function loadAccountCategoryByChartNumber(number) {
         }
     });
 }
+
 function extractNumericCode(selectedValue) {
 
     console.log('extractNumericCode' + selectedValue);

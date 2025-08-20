@@ -12,22 +12,26 @@
                  <div class="row mt-2 gy-4">
                      @Html.HiddenFor(m => m.Account.BranchCode, new { @id = "BranchCode" })
                      <div class="col-md-12">
+                         <span class="mdi mdi-help-circle-outline  waves-effect waves-light mdi-24px" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="This account numbers are loaded from BapCCUL Accounting Chart"></span>
                          <div class="form-floating form-floating-outline">
-                             @Html.DropDownListFor(m => m.Account.ChartOfAccountManagementPositionId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), ""+ GlobalAccount.SelectMFIChartOfAccount, new { @class = "form-control select2", @search = "true", @id = "Account_ChartOfAccountManagementPositionId" })
+                             @Html.DropDownListFor(m => m.Account.ChartOfAccountManagementPositionId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), "" + GlobalAccount.SelectMFIChartOfAccount, new { @class = "form-control select2", @search = "true", @id = "Account_ChartOfAccountManagementPositionId" })
                              @Html.ValidationMessageFor(m => m.Account.ChartOfAccountManagementPositionId, "", new { @class = "text-danger" })
                              <label> @GlobalAccount.SelectMFIChartOfAccount</label>
                          </div>
+
                      </div>
-                     <div class="col-md-12">
+                     @*<div class="col-md-12">
                          <div class="form-floating form-floating-outline">
                              @Html.DropDownListFor(m => m.Account.AccountCategoryId, new SelectList(ViewBag.AccountCategories == null ? "" : ViewBag.AccountCategories, "Text", "Value"), ""+ @GlobalAccount.SelectAccountCategory, new { @class = "form-control select2", @search = "true", @id = "Account_AccountCategoryId" })
                              @Html.ValidationMessageFor(m => m.Account.AccountCategoryId, "", new { @class = "text-danger" })
                              <label>@GlobalAccount.AccountCategory</label>
                          </div>
-                     </div>
+                     </div>*@
                      <div class="col-md-12">
+                         <span class="mdi mdi-help-circle-outline  waves-effect waves-light mdi-24px" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="The account will be found in the selected branch general ledgers. "></span>
+
                          <div class="form-floating form-floating-outline">
-                             @Html.DropDownListFor(m => m.Account.AccountOwnerId, new SelectList(ViewBag.BranchCode == null ? "" : ViewBag.BranchCode, "Text", "Value"), ""+ @GlobalAccount.SelectAccountOwner , new { @class = "form-control select2", @search = "true", @id = "AccountOwnerId" })
+                             @Html.DropDownListFor(m => m.Account.AccountOwnerId, new SelectList(ViewBag.BranchCode == null ? "" : ViewBag.BranchCode, "Text", "Value"), "" + @GlobalAccount.SelectAccountOwner, new { @class = "form-control select2", @search = "true", @id = "AccountOwnerId" })
                              @Html.ValidationMessageFor(m => m.Account.AccountOwnerId, "", new { @class = "text-danger" })
                              <label>@GlobalAccount.AccountOwner</label>
                          </div>
@@ -50,10 +54,12 @@
                          </div>
                      </div>
                      <div class="col-md-12">
+                         <span class="mdi mdi-help-circle-outline  waves-effect waves-light mdi-24px" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="The account number representation is as follows 1.)The PCEMF chartofaccount number the 1st 6.         2.)The management position.      3.) The BranchCode where the account is been used [(BapCCUL Accounting chart number)(branchCode)] [(PCEMF)(managementPosition)(branchCode)] "></span>
+
                          <div class="form-floating form-floating-outline">
                              @Html.TextBoxFor(m => m.Account.AccountNumberCU, new { @class = "form-control", @id = "AccountNumberCU" })
                              @Html.ValidationMessageFor(m => m.Account.AccountNumberCU, "", new { @class = "text-danger" })
-                             <label>@GlobalAccount.AccountNumber [(chart of account)(branchCode)(management position)] [(000000)(000)(000)]</label>
+                             <label>@GlobalAccount.AccountNumber [(PCEMF)(managementPosition)(branchCode)]</label>
 
                          </div>
                      </div>
@@ -68,14 +74,14 @@
 
 
                  </div>
-                    <div class="mt-4 bg-primary justify-content-end">
+                    <div class="mt-4 justify-content-end">
                         @if (Model.Account.Id == null)
                         {
-                            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                            <button type="submit" class="btn btn-success me-2">@GlobalShared.Save</button>
                             <input type="hidden" name="Action" value="insert" id="Action" />
                         }
                         else
-                        { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
+                        { <button type="submit" class="btn btn-success me-2">@GlobalShared.Update</button>
                             @Html.HiddenFor(m => m.Account.Id)
                             <input type="hidden" name="Action" value="update" id="Action" />
                         }

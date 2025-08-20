@@ -9475,6 +9475,7 @@
     <Content Include="Views\MemberAdjustmentConsole\Index.cshtml" />
     <Content Include="Views\MemberAdjustmentConsole\_MemberAdjustmentDetailBody.cshtml" />
     <Content Include="Views\MemberAdjustmentConsole\_MemberAdjustmentData.cshtml" />
+    <Content Include="Views\AccountingConfiguration\_UpdateAccountGL.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

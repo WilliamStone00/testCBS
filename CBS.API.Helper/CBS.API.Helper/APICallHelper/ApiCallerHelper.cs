@@ -1096,13 +1096,21 @@ namespace CBS.API.Helper
         }
         public async Task<List<TrialBalance6ColumnDto>> PostTrialBalance6ColumnAsyncAsync(string apiUrl, object data)
         {
-            apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
-            string jsonData = JsonConvert.SerializeObject(data);
-            StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            AddAuthorizationHeader(_httpClient);
-            HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
-            var Model = await HandleTrialBalance6ColumnResponse(response);
-            return Model.data;
+            try
+            {
+                apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
+                string jsonData = JsonConvert.SerializeObject(data);
+                StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                AddAuthorizationHeader(_httpClient);
+                HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
+                var Model = await HandleTrialBalance6ColumnResponse(response);
+                return Model.data;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
         public async Task<List<TrialBalance4ColumnDto>> PostTrialBalance4ColumnAsyncAsync(string apiUrl, object data)
         {

@@ -89,9 +89,9 @@ namespace CBS.BusinessService.Accounting
                     var couApiResponse = await _ConfigApiHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Entity.Accounting.ChartOfAccount>>>(APICallHelper.GetAllChartOfAccount);
                     if (couApiResponse.IsSuccess)
                     {
-                      
-                    //    couApiResponse.ApiResponseData.Data.RemoveAll(x => x.LabelEn.Contains(x.AccountNumber));
-                        return couApiResponse.ApiResponseData.Data;
+
+                        //    couApiResponse.ApiResponseData.Data.RemoveAll(x => x.LabelEn.Contains(x.AccountNumber));
+                        return couApiResponse.ApiResponseData.Data.OrderBy(x => x.AccountNumber).ToList();
                     }
                     return new List<ChartOfAccount>();
                 }
