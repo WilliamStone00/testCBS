@@ -16,149 +16,27 @@
 
 
 
-function updateTotals() {
-    let totalDebited = 0;
-
-    // 🔹 Validate account entries
-    document.querySelectorAll("#memberAccountsTable tr").forEach(row => {
-        let balanceElement = row.cells[3];
-        let amountInput = row.querySelector(".amount-input");
-        let statusIndicator = row.querySelector(".status-indicator");
-
-        if (balanceElement && amountInput && statusIndicator) {
-            let balance = parseFloat(balanceElement.innerText.replace(/[^\d.-]/g, '')) || 0;
-            let amount = parseFloat(amountInput.value) || 0;
-
-            if (amount > balance) {
-                statusIndicator.innerHTML = " ❌";
-                statusIndicator.style.color = "red";
-            } else if (amount > 0) {
-                statusIndicator.innerHTML = " ✅";
-                statusIndicator.style.color = "green";
-            } else {
-                statusIndicator.innerHTML = "";
-            }
-
-            totalDebited += amount;
-        }
-    });
-
-    document.getElementById("totalDebitedAmount").innerText = formatCurrency(totalDebited);
-
-    let totalRepayment = 0;
-    let totalVAT = 0;
-
-    // 🔹 Loop through each loan and just READ values (no recalculation!)
-    document.querySelectorAll("#loanRepaymentTable tr").forEach(row => {
-        let loanId = row.id.replace("row-", "");
-
-        let capital = parseFloat(document.getElementById("capital-" + loanId)?.value?.replace(/,/g, '') || 0);
-        let interest = parseFloat(document.getElementById("interest-" + loanId)?.value?.replace(/,/g, '') || 0);
-        let penalty = parseFloat(document.getElementById("penalty-" + loanId)?.value?.replace(/,/g, '') || 0);
-        let vat = parseFloat(document.getElementById("vat-" + loanId)?.value?.replace(/,/g, '') || 0);
-
-        // ✅ Do NOT recalculate anything. Just use values as-is
-        let rowTotal = capital + interest + penalty + vat;
-
-        const totalField = document.getElementById("total-" + loanId);
-        if (totalField) {
-            totalField.innerText = formatCurrencyNoName(rowTotal);
-        }
-
-        totalRepayment += rowTotal;
-        totalVAT += vat;
-    });
-
-    // 🔹 Update footer totals
-    document.getElementById("totalRepaymentAmount").innerText = formatCurrencyNoName(totalRepayment);
-    document.getElementById("calculatedVat").innerText = formatCurrencyNoName(totalVAT);
-
-    let remainingBalance = totalDebited - totalRepayment;
-    document.getElementById("remainingBalance").innerText = formatCurrency(remainingBalance);
-
-    let balanceIndicator = document.getElementById("balanceIndicator");
-    if (balanceIndicator) {
-        if (remainingBalance === 0) {
-            balanceIndicator.innerHTML = " ✅";
-            balanceIndicator.style.color = "green";
-        } else {
-            balanceIndicator.innerHTML = " ❌";
-            balanceIndicator.style.color = "red";
-        }
-    }
-}
-
-function bindInterestFieldEvents() {
-    document.querySelectorAll(".interest-input").forEach(input => {
-        input.replaceWith(input.cloneNode(true)); // Remove old events
-    });
-
-    document.querySelectorAll(".interest-input").forEach(input => {
-        const loanId = input.id.replace("interest-", "");
-        const vatRate = parseFloat(input.dataset.vatrate || "0");
-        const loanAmount = parseFloat(input.dataset.loanamount || "0");
-
-        // 🔹 On INPUT: show calculated VAT only
-        input.addEventListener("input", function () {
-            const rawInterest = parseFloat(this.value) || 0;
-            let vat = 0;
-            if (loanAmount >= 2000000) {
-                vat = Math.round(rawInterest * (vatRate / 100));
-            }
-
-            const vatInput = document.getElementById("vat-" + loanId);
-            if (vatInput) {
-                vatInput.value = formatCurrencyNoName(vat);
-            }
-
-            updateTotals();
-        });
-
-        // 🔹 On BLUR: apply VAT adjustment to interest field
-        input.addEventListener("blur", function () {
-            const rawInterest = parseFloat(this.value) || 0;
-            let vat = 0;
-            if (loanAmount >= 2000000) {
-                vat = Math.round(rawInterest * (vatRate / 100));
-            }
-
-            const netInterest = Math.max(rawInterest - vat, 0);
-            this.value = netInterest.toFixed(0);
-
-            const vatInput = document.getElementById("vat-" + loanId);
-            if (vatInput) {
-                vatInput.value = formatCurrencyNoName(vat);
-            }
-
-            updateTotals();
-        });
-    });
-}
 
 
-// 🔹 Bind interest field events once DOM is fully loaded
-document.addEventListener("DOMContentLoaded", function () {
-    bindInterestFieldEvents(); // Initial bind for static content
-});
 
-// 🔹 Rebind only once for dynamically loaded content
-const datalist = document.getElementById("datalistingview");
-if (datalist) {
-    let isBound = false;
+//// 🔹 Rebind only once for dynamically loaded content
+//const datalist = document.getElementById("datalistingview");
+//if (datalist) {
+//    let isBound = false;
 
-    const observer = new MutationObserver((mutationsList, observerInstance) => {
-        if (!isBound) {
-            bindInterestFieldEvents();
-            isBound = true;
+//    const observer = new MutationObserver((mutationsList, observerInstance) => {
+//        if (!isBound) {
+//            bindInterestFieldEvents();
+//            isBound = true;
 
-            // Disconnect after first successful dynamic binding
-            observerInstance.disconnect();
-            console.log("✅ Dynamic content observed and bound. Observer disconnected.");
-        }
-    });
+//            // Disconnect after first successful dynamic binding
+//            observerInstance.disconnect();
+//            console.log("✅ Dynamic content observed and bound. Observer disconnected.");
+//        }
+//    });
 
-    observer.observe(datalist, { childList: true, subtree: true });
-}
+//    observer.observe(datalist, { childList: true, subtree: true });
+//}
 
 
 
@@ -556,101 +434,3 @@ function GetMemberData(Key, partialView, divToloadPV, path) {
 }
 
 
-
-
-
-
-function calculateVatOnly(loanId) {
-    const interestInput = document.getElementById("interest-" + loanId);
-    const vatInput = document.getElementById("vat-" + loanId);
-
-    const rawInterest = parseFloat((interestInput.value || "0").replace(/,/g, '')) || 0;
-    const vatRate = parseFloat(interestInput.dataset.vatrate || "0");
-    const loanAmount = parseFloat(interestInput.dataset.loanamount || "0");
-
-    let vat = 0;
-    if (loanAmount >= 2000000) {
-        vat = Math.round(rawInterest * (vatRate / 100));
-    }
-
-    vatInput.value = vat.toLocaleString('en-US');
-
-    // 🔐 Store the original value
-    interestInput.dataset.original = rawInterest.toFixed(0);
-
-    updateGrandTotals();
-}
-
-
-
-function calculateVatAndAdjustInterest(loanId) {
-    const interestInput = document.getElementById("interest-" + loanId);
-    const vatInput = document.getElementById("vat-" + loanId);
-    const capitalInput = document.getElementById("capital-" + loanId);
-    const penaltyInput = document.getElementById("penalty-" + loanId);
-    const totalField = document.getElementById("total-" + loanId);
-
-    const originalInterest = parseFloat(interestInput.dataset.original || "0") || 0;
-    const vat = parseFloat((vatInput?.value || "0").replace(/,/g, '')) || 0;
-    const capital = parseFloat(capitalInput?.value || "0") || 0;
-    const penalty = parseFloat(penaltyInput?.value || "0") || 0;
-
-    const netInterest = Math.max(originalInterest - vat, 0);
-
-    interestInput.value = netInterest.toFixed(0);
-
-    // ✅ Update row total cell
-    const rowTotal = capital + netInterest + vat + penalty;
-    if (totalField) {
-        totalField.innerText = formatCurrencyNoName(rowTotal);
-    }
-
-    updateGrandTotals(); // Recalculate footer totals
-}
-
-
-
-function updateGrandTotals() {
-    let totalRepayment = 0;
-    let totalVat = 0;
-    let totalDebited = 0;
-
-    // 🔹 Sum account entries
-    document.querySelectorAll(".amount-input").forEach(input => {
-        const val = parseFloat(input.value) || 0;
-        totalDebited += val;
-    });
-
-    // 🔹 Sum loan repayments
-    document.querySelectorAll("#loanRepaymentTable tr").forEach(row => {
-        const loanId = row.id.replace("row-", "");
-
-        const interest = parseFloat(document.getElementById("interest-" + loanId)?.value || 0); // already net!
-        const vat = parseFloat(document.getElementById("vat-" + loanId)?.value.replace(/,/g, '') || 0);
-        const capital = parseFloat(document.getElementById("capital-" + loanId)?.value || 0);
-        const penalty = parseFloat(document.getElementById("penalty-" + loanId)?.value || 0);
-
-        const rowTotal = capital + interest + vat + penalty; // ✅ no double VAT deduction
-        totalRepayment += rowTotal;
-        totalVat += vat;
-    });
-
-    // 🔹 Update UI
-    document.getElementById("totalRepaymentAmount").innerText = formatCurrencyNoName(totalRepayment);
-    document.getElementById("calculatedVat").innerText = formatCurrencyNoName(totalVat);
-    document.getElementById("totalDebitedAmount").innerText = formatCurrency(totalDebited);
-
-    const balance = totalDebited - totalRepayment;
-    document.getElementById("remainingBalance").innerText = formatCurrency(balance);
-
-    const balanceIndicator = document.getElementById("balanceIndicator");
-    if (balanceIndicator) {
-        if (balance === 0) {
-            balanceIndicator.innerHTML = " ✅";
-            balanceIndicator.style.color = "green";
-        } else {
-            balanceIndicator.innerHTML = " ❌";
-            balanceIndicator.style.color = "red";
-        }
-    }
-}

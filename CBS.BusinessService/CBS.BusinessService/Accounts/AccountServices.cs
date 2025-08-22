@@ -743,6 +743,7 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<List<TransactionHistory>>>(string.Format(APICallHelper.GetTransactionHistoryByAccountNumber, accountNumber));
+
                 return cusResponseObject.ApiResponseData.Data;
             }
             catch (Exception ex)

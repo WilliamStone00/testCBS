@@ -8242,9 +8242,11 @@
     <Content Include="Scripts\Js\CommissionManagement\DailyCollectionManagement.js" />
     <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MemberAcccountBalanceAdjustment.js" />
     <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MyAdjustmentCustomers.js" />
+    <Content Include="Scripts\Js\Crud\FileUpload\FileUploadQuery.js" />
     <Content Include="Scripts\Js\Crud\LoanAdjustmentConsole\LoanAdjustmentConsole.js" />
     <Content Include="Scripts\Js\Crud\LoanAdjustmentConsole\LoanAdjustmentLoader.js" />
     <Content Include="Scripts\Js\CommissionManagement\DSFileUploaded.js" />
+    <Content Include="Scripts\Js\Crud\LoanRepaymentBackOffice\VAT.js" />
     <Content Include="Scripts\Js\Dashboard\DailyCollection\DailyCollectionDashboard.js" />
     <Content Include="Scripts\Js\main.js\AccountBalanceInitialization.js" />
     <Content Include="Scripts\Js\main.js\AccountingBookingAlert.js" />
@@ -9476,6 +9478,7 @@
     <Content Include="Views\MemberAdjustmentConsole\_MemberAdjustmentDetailBody.cshtml" />
     <Content Include="Views\MemberAdjustmentConsole\_MemberAdjustmentData.cshtml" />
     <Content Include="Views\AccountingConfiguration\_UpdateAccountGL.cshtml" />
+    <Content Include="Views\SalaryUpload\UploadedSalaryFiles - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

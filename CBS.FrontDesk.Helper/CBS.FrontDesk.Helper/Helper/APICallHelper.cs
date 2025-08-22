@@ -134,6 +134,13 @@ namespace CBS.FrontDesk.Helper
         public static string CreateStandingOrder = "/api/v1/StandingOrder/create";
         public static string Get_StandingOrderByMemberId = "/api/v1/StandingOrder/member/{0}";
 
+        //FileUpload
+        public static string SetPrivatePublicStatus = "/api/v1/FileUpload/set-private";
+        public static string FileUploadsDatatable = "/api/v1/FileUploads/datatable";
+        public static string FileUploadGet_Or_Delete = "/api/v1/FileUpload/{0}";
+
+
+
         //SalaryUpload
         public static string Delete_SalaryUpload = "/api/v1/SalaryUpload/{0}";
         public static string GetAllSalaryUploadByFileCategory = "/api/v1/SalaryUpload/all/{0}";

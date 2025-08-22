@@ -1,95 +1,277 @@
-﻿@using Resources
-@{
-    ViewBag.Title = "Salary files";
+﻿@{
+    ViewBag.Title = "File Upload Management";
 }
+<style>
+    .status-pip {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        vertical-align: middle
+    }
+
+        .status-pip.online {
+            background: #28a745;
+            box-shadow: 0 0 0 2px rgba(40,167,69,.15)
+        }
+
+        .status-pip.offline {
+            background: #6c757d;
+            box-shadow: 0 0 0 2px rgba(108,117,125,.15)
+        }
+
+    .truncate {
+        max-width: 320px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis
+    }
+
+    .truncate-branch {
+        max-width: 120px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis
+    }
+
+    .truncate-user {
+        max-width: 120px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis
+    }
+
+    #myDataTable thead th {
+        white-space: nowrap
+    }
+
+    /* Optional: squeeze a bit more on smaller screens */
+    @@media (max-width: 1400px) {
+        .truncate-branch {
+            max-width: 100px
+        }
+
+        .truncate-user {
+            max-width: 100px
+        }
+    }
+
+    .mode-card {
+        background: #fff;
+        border: 2px solid #e6e9ef;
+        cursor: pointer;
+        transition: .15s
+    }
+
+        .mode-card .title {
+            font-weight: 600
+        }
+
+        .mode-card .desc {
+            font-size: .9rem;
+            color: #6c757d
+        }
+
+        .mode-card:hover {
+            border-color: #b9cdfc;
+            box-shadow: 0 0 0 .15rem rgba(59,130,246,.12)
+        }
+
+        .mode-card.active {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 .25rem rgba(59,130,246,.2)
+        }
+
+</style>
+
 <div class="row">
-    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
-        <div class="card">
-            <!-- Page Header -->
-            <div class="card-header text-center bg-light">
-                <h1 class="card-title text-primary">
-                    <i class="mdi mdi-upload-multiple me-2"></i> @GlobalSalaryUpload.UploadedFiles
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold mb-2">
+                    <i class="mdi mdi-file-upload-outline me-2"></i> File Upload Console
                 </h1>
-                <p class="card-text text-muted">
-                    @GlobalSalaryUpload.UploadAndManageEmployeeSalaryFilesEasilyAndEfficiently.
+                <p class="card-text text-muted mb-1">Search, filter, and manage uploaded files across all branches.</p>
+                <p class="card-text text-warning fw-semibold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use the filters to narrow by date, type, category, privacy, and more.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
+        </div>
+    </div>
+</div>
 
-            <!-- Tips Section -->
-            <div class="card">
-                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-information-outline me-2"></i> @GlobalSalaryUpload.TIPS</span>
-                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSalaryUploadTips" aria-expanded="false" aria-controls="collapseSalaryUploadTips">
-                        <i class="mdi mdi-chevron-down"></i>
-                    </button>
-                </h6>
-                <div id="collapseSalaryUploadTips" class="collapse">
-                    <div class="card-body">
-                        <ul class="mb-0">
-                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalSalaryUpload.DownloadSalaryFiles:</strong> @GlobalSalaryUpload.UseThe <span class="text-primary"><i class="fas fa-download"></i> @GlobalShared.Download</span> @GlobalSalaryUpload.buttonToRetrieveAcopyOfTheUploadedFileForOfflineReviewOrBackup.</li>
-                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalSalaryUpload.DownloadSalaryFiles:</strong> @GlobalSalaryUpload.ClickOnThe <span class="text-info"><i class="fas fa-info-circle"></i> @GlobalShared.Details</span> @GlobalSalaryUpload.buttonToViewDetailedAnalysis.</li>
-                            <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> <strong>@GlobalSalaryUpload.DeleteFiles:</strong> @GlobalSalaryUpload.UseThe <span class="text-danger"><i class="fas fa-trash-alt"></i> @GlobalShared.Delete</span> @GlobalSalaryUpload.buttonToRemoveFilesThatAreIncorrect.</li>
-                            <li><i class="mdi mdi-information-outline text-primary me-2"></i> <strong>@GlobalSalaryUpload.FileNaming:</strong> @GlobalSalaryUpload.MakeSureUploadedFilesHaveMeaningfulNames.</li>
-                            <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>@GlobalSalaryUpload.RegularReviews:</strong> @GlobalSalaryUpload.RegularlyReviewUploadedFilesToVerifyTheirAccuracy.</li>
-                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> <strong>@GlobalSalaryUpload.EditableFields:</strong> @GlobalSalaryUpload.ForMinorCorrectionsEditSalaryRelated.</li>
-                            <li><i class="mdi mdi-account-outline text-primary me-2"></i> <strong>@GlobalSalaryUpload.TrackStatus:</strong> @GlobalSalaryUpload.MonitorTheProcessingStatusOfSalaryFilesThroughTheFileDetailsPage.</li>
-                        </ul>
-                    </div>
+<!-- Tips Section -->
+<div class="card mb-2 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Using Filters Effectively</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUploadTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseUploadTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-map-marker-outline text-success me-2"></i> <strong>Branch:</strong> Focus on files uploaded in a specific branch.</li>
+                <li><i class="mdi mdi-calendar-month-outline text-primary me-2"></i> <strong>Date:</strong> Filter by upload date range.</li>
+                <li><i class="mdi mdi-tag-multiple-outline text-info me-2"></i> <strong>Type & Category:</strong> Quickly drill into file types (PDF/CSV/XLSX) and categories (Salary, Standing Orders, etc.).</li>
+                <li><i class="mdi mdi-shield-outline text-dark me-2"></i> <strong>Privacy:</strong> Toggle private/public uploads.</li>
+                <li><i class="mdi mdi-account-outline text-secondary me-2"></i> <strong>Uploader:</strong> See files by a specific user.</li>
+                <li><i class="mdi mdi-file-search-outline text-warning me-2"></i> <strong>Quick Search:</strong> Use the table search to find by file name, code, status, etc.</li>
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>Export:</strong> Export your filtered result to Excel.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<!-- Filters Section -->
+<div class="card shadow p-3 mb-2">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Advanced Filters</h5>
+
+    <div class="card p-3 mb-2 bg-light">
+        <!-- Toggle Controls -->
+        <div class="row mb-3">
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="byBranch" />
+                <label class="form-check-label fw-bold" for="byBranch">Filter by Branch</label>
+            </div>
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="byDate" />
+                <label class="form-check-label fw-bold" for="byDate">Filter by Date</label>
+            </div>
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="moreOptions" />
+                <label class="form-check-label fw-bold" for="moreOptions">More Filters</label>
+            </div>
+        </div>
+
+        <!-- Branch Filter -->
+        <div id="branchFilterSection" class="row mb-2" style="display:none;">
+            <div class="col-md-12">
+                <label class="form-label fw-bold">Select Branch</label>
+                @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control shadow-sm select2", @id = "branchInput" })
+            </div>
+        </div>
+
+        <!-- Date Range Filter -->
+        <div id="dateRangeSection" class="row mb-2" style="display:none;">
+            <div class="col-md-6"><input type="date" id="startDate" class="form-control" placeholder="Start Date" /></div>
+            <div class="col-md-6"><input type="date" id="endDate" class="form-control" placeholder="End Date" /></div>
+        </div>
+        <!-- Base Filters -->
+        <div class="row">
+            <div class="col-md-4 mb-1"><input type="text" id="fileUploadId" class="form-control" placeholder="File Upload Ref (FileUploadId)" /></div>
+            <div class="col-md-4 mb-1"><input type="text" id="fileCode" class="form-control" placeholder="File Code" /></div>
+            <div class="col-md-4 mb-1"><input type="text" id="uploadedBy" class="form-control" placeholder="Uploaded By (User)" /></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 mb-1">
+                <label class="form-label fw-bold">File Type</label>
+                @Html.DropDownList("fileType", new SelectList(ViewBag.FileTypes, "Value", "Text"), "--- Select Type ---", new { @class = "form-select shadow-sm", @id = "fileType" })
+            </div>
+        </div>
+
+        <!-- More Filters -->
+        <div id="extraFiltersSection" style="display:none;">
+            <div class="row">
+                <div class="col-md-4 mb-2">
+                    <label class="form-label fw-bold">Available for Execution?</label>
+                    <select id="isAvailableForExecution" class="form-select shadow-sm">
+                        <option value="">All</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <label class="form-label fw-bold">Standing Order Source (COA Id)</label>
+                    <input type="text" id="standingOrderSourceChartOfAccountId" class="form-control" placeholder="COA Id" />
+                </div>
+                <div class="col-md-4 mb-2">
+                    <label class="form-label fw-bold">File Name</label>
+                    <input type="text" id="fileName" class="form-control" placeholder="Contains..." />
                 </div>
             </div>
-
-
-            <!-- Main Section -->
-            <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
-                <div class="accordion-item active">
-                    <h2 class="accordion-header text-body d-flex justify-content-between"
-                        id="accordionPopoutIconThree">
-                        <button type="button"
-                                class="accordion-button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#accordionPopoutIcon-3"
-                                aria-expanded="true"
-                                aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-file-upload me-1"></i> @GlobalSalaryUpload.UploadedFiles
-                        </button>
-                    </h2>
-                    <div id="accordionPopoutIcon-3"
-                         class="accordion-collapse collapse show"
-                         data-bs-parent="#accordionPopoutIcon">
-                        <div class="accordion-body">
-                            <div id="mainviewChange">
-                                <div class="change-group">
-                                    <div class="card mb-3">
-                                        <div class="card-body d-flex justify-content-end align-items-center">
-                                            <a type="button" onclick="LoadDataGen('SalaryUpload','myDataTable','_FileUploadData',0,'datalistingview')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
-                                                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
-                                            </a>
-                                            <a type="button" href="/SalaryUpload" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="Add New SalaryUpload">
-                                                <i class="mdi mdi-plus mdi-18px"></i> @GlobalSalaryUpload.UploadNewSalaryFile
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div id="datalistingview">
-
-                                    </div>
-                                </div>
+        </div>
+    </div>
+    <!-- Put this near your filters -->
+    <div class="card shadow-sm mb-2">
+        <div class="card-header d-flex align-items-center">
+            <i class="mdi mdi-hand-pointing-right text-primary me-2"></i>
+            <span class="fw-bold text-primary">Action Mode <span class="text-danger">*</span></span>
+        </div>
+        <div class="card-body">
+            <div class="row g-3" id="actionModeCards">
+                <div class="col-md-4">
+                    <button type="button" class="mode-card w-100 p-3 text-start rounded-3" data-mode="fileupload_main" aria-pressed="false">
+                        <div class="d-flex align-items-start">
+                            <i class="mdi mdi-clipboard-text-outline fs-3 me-2 text-primary"></i>
+                            <div>
+                                <div class="title">Main</div>
+                                <div class="desc">Download • Details • Delete</div>
                             </div>
                         </div>
-                    </div>
+                    </button>
+                </div>
+                <div class="col-md-4">
+                    <button type="button" class="mode-card w-100 p-3 text-start rounded-3" data-mode="analyser" aria-pressed="false">
+                        <div class="d-flex align-items-start">
+                            <i class="mdi mdi-chart-line fs-3 me-2 text-info"></i>
+                            <div>
+                                <div class="title">Analyser</div>
+                                <div class="desc">Open analysis view</div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="col-md-4">
+                    <button type="button" class="mode-card w-100 p-3 text-start rounded-3" data-mode="executer" aria-pressed="false">
+                        <div class="d-flex align-items-start">
+                            <i class="mdi mdi-play-circle-outline fs-3 me-2 text-success"></i>
+                            <div>
+                                <div class="title">Executer</div>
+                                <div class="desc">Download • Execute • Delete</div>
+                            </div>
+                        </div>
+                    </button>
                 </div>
             </div>
+
+            <!-- REQUIRED value sent with filters -->
+            <input type="hidden" id="actionParam" name="ActionParam" value="" />
+            <div id="actionModeHelp" class="form-text text-danger d-none">Please select an Action Mode.</div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row mt-2">
+        <div class="col-md-12 d-flex">
+            <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
+            <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+            <button id="exportBtn" type="button" class="btn btn-success w-100"><i class="mdi mdi-file-excel"></i> Export</button>
+
+        </div>
+    </div>
+</div>
+
+<div id="fileUploadDataCard" class="card p-3 shadow mb-1" style="display:none">
+    <h5 class="text-primary mb-1"><i class="mdi mdi-table"></i> File Upload Results</h5>
+    <div class="table-responsive">
+        <div class="card-body" id="datalistingview">
+            @Html.Partial("_FileUploadData")
         </div>
     </div>
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/FileUpload/FileUploadQuery.js"></script>
     <script>
-        $(document).ready(function () {
-
-            LoadDataGen('SalaryUpload', 'myDataTable', '_FileUploadData', 0, 'datalistingview')
-
-        });
+        // Simple toggles
+        $("#moreOptions").on("change", function () { $("#extraFiltersSection").toggle(this.checked); });
+        $("#byBranch").on("change", function () { $("#branchFilterSection").toggle(this.checked); });
+        $("#byDate").on("change", function () { $("#dateRangeSection").toggle(this.checked); });
+        /*$("#byPrivacy").on("change", function () { $("#privacyFilterSection").toggle(this.checked); });*/
     </script>
 }

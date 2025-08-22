@@ -4,6 +4,7 @@ using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.AccountingDayObject;
 using CBS.FrontDesk.Data.Entity.CashCeilingManagement;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
@@ -75,6 +76,7 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
+
         public async Task<ExecutionMessages> UpdateFileStatus(ActivateSalaryFileCommand model)
         {
             try
@@ -140,6 +142,7 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
+       
         public async Task<IEnumerable<SalaryUploadModel>> GetSalaryUploads(string FileUploadId)
         {
             try
@@ -293,7 +296,60 @@ namespace CBS.BusinessService.Accounts
             }
         }
 
+        public List<FileUploadDto> GetUploadForAnalysis(List<FileUploadDto> fileUploads)
+        {
+            try
+            {
+                // Build URL and call API
+               
 
+                // If you're at Head Office, show EVERYTHING
+                var isHeadOffice = IsHeadOffice();
+                if (isHeadOffice)
+                    return fileUploads;
+
+                // Otherwise, apply branch/private/activation visibility rules
+                var myBranchId = GetBranchID() ?? string.Empty;
+
+                var visible = fileUploads.Where(f =>
+                {
+                    // Always allow own-branch uploads (private or public, activated or not)
+                    var isOwnBranch = !string.IsNullOrWhiteSpace(f.BranchId) && f.BranchId.Equals(myBranchId, StringComparison.OrdinalIgnoreCase);
+
+                    if (isOwnBranch)
+                        return true;
+
+                    // For other branches: must be public (not private) AND activated
+                    var isPublicAndActivated = !f.PrivateView && f.IsAvalaibleForExecution;
+
+                    return isPublicAndActivated;
+                });
+
+                return visible.ToList();
+            }
+            catch
+            {
+                // You can log here if needed
+                throw;
+            }
+        }
+        public List<FileUploadDto> GetFileUploads(List<FileUploadDto> fileUploads)
+        {
+            try
+            {
+                var data = fileUploads.Where(x=>x.FileCategory=="SalaryAnalysisExtract").ToList();
+                if (!IsHeadOffice())
+                {
+                    return data.Where(x=>x.BranchId==GetBranchID()).ToList();
+                }
+                return data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
         public async Task<FileUploadDto> GetFileUpload(string fileId)
         {
             try
