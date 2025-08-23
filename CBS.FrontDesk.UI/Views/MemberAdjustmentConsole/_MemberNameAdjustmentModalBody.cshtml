@@ -35,8 +35,10 @@
                     <div class="card-body">
                         <form id="memberNameAdjustmentForm">
                             @Html.HiddenFor(m => m.MemberId)
+                            @Html.HiddenFor(m => m.BranchId)
                             @Html.HiddenFor(m => m.OldFirstName)
                             @Html.HiddenFor(m => m.OldLastName)
+                            @Html.HiddenFor(m => m.AdjustmentType)
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">

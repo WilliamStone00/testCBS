@@ -47,6 +47,7 @@
                         <form id="memberBalanceAdjustmentForm">
                             @Html.HiddenFor(m => m.MemberId)
                             @Html.HiddenFor(m => m.BranchId)
+                            @Html.HiddenFor(m => m.AdjustmentType)
                             @Html.HiddenFor(m => m.AccountId, new { id = "accountId" })
 
                             <div class="row">

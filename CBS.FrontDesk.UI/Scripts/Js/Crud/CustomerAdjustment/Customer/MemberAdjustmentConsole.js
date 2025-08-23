@@ -18,119 +18,6 @@
 });
 
 // 🔄 Load Adjustment Requests
-//function loadMemberAdjustmentRequests() {
-//    var dataTable = document.getElementById('myDataTable');
-//    console.log(dataTable);
-//    $(dataTable).DataTable({
-//        serverSide: true,
-//        destroy: true,
-//        searching: false,
-//        order: [[0, 'desc']],
-//        ajax: {
-//            url: '/MemberAdjustmentConsole/LoadAdjustmentRequestDataTable',
-//            type: 'POST',
-//            contentType: 'application/json',
-//            data: function (d) {
-//                const filters = collectMemberAdjustmentFilters(); // keep if same
-
-//                filters.options = {
-//                    draw: d.draw,
-//                    start: d.start,
-//                    length: d.length,
-//                    skip: d.start,
-//                    pageSize: d.length,
-//                    searchValue: '',
-//                    sortColumnName: d.columns[d.order[0].column].data,
-//                    sortColumnDirection: d.order[0].dir
-//                };
-//                console.log(JSON.stringify(filters));
-//                return JSON.stringify(filters);
-//            }
-//        },
-//        columns: [
-//            {
-//                data: 'RequestedDate',
-//                render: function (data) {
-//                    return data ? moment(data).format('DD/MM/YYYY HH:mm') : '';
-//                }
-//            },
-//            { data: 'CustomerName' },
-//            { data: 'CustomerId' },
-//            { data: 'BranchName' },
-//            {
-//                data: 'OldBalance',
-//                render: formatCurrency1
-//            },
-//            {
-//                data: 'NewBalance',
-//                render: formatCurrency1
-//            },
-//            { data: 'RequestedBy' },
-//            {
-//                data: 'Status',
-//                render: function (data) {
-//                    const badge = {
-//                        'pending': 'warning',
-//                        'approved': 'success',
-//                        'rejected': 'danger'
-//                    }[(data || '').toLowerCase()] || 'secondary';
-//                    return `<div class="text-center"><span class="badge bg-${badge}">${data || 'N/A'}</span></div>`;
-//                }
-//            },
-//            {
-//                data: null, 
-//                orderable: false,
-//                render: function (data, type, row) {
-//                    const status = (row.Status || '').toLowerCase();
-
-//                    return `
-//                       <div class="btn-group" role="group">
-//                        <button type="button"
-//                            class="btn btn-sm btn-outline-primary"
-//                            title="View Details"
-//                            onclick="loadMemberAdjustmentDetailModal('${row.Id}')">
-//                            <i class="mdi mdi-eye-outline"></i>
-//                        </button>
-
-//                        ${status !== 'approved' ? `
-//                            <button type="button"
-//                                class="btn btn-sm btn-outline-success"
-//                                title="Approve Request"
-//                                data-id="${row.Id}"
-//                                data-customer-id="${row.CustomerId}"
-//                                data-customer-name="${row.CustomerName}"
-//                                data-branch-id="${row.BranchId}"
-//                                data-account-id="${row.AccountId}"
-//                                data-branch-name="${row.BranchName}"
-//                                data-old-firstname="${row.OldFirstName}"
-//                                data-new-firstname="${row.NewFirstName}"
-//                                data-old-lastname="${row.OldLastName}"
-//                                data-new-lastname="${row.NewLastName}"
-//                                data-old-balance="${row.OldBalance}"
-//                                data-new-balance="${row.NewBalance}"
-//                                data-old-memberstatus="${row.OldMemberStatus}"
-//                                data-new-memberstatus="${row.NewMemberStatus}"
-//                                data-old-membershipstatus="${row.OldMemberShipStatus}"
-//                                data-new-membershipstatus="${row.NewMemberShipStatus}"
-//                                data-old-category="${row.OldMemberCategory}"
-//                                data-new-category="${row.NewMemberCategory}"
-//                                data-reason="${row.Reason}"
-//                                onclick="approveMemberRequest(this)">
-//                                <i class="mdi mdi-check-circle-outline"></i>
-//                            </button>` : ''}
-
-//                        <button type="button"
-//                            class="btn btn-sm btn-outline-danger"
-//                            title="Reject Request"
-//                            onclick="rejectMemberRequest('${row.Id}')">
-//                            <i class="mdi mdi-close-circle-outline"></i>
-//                        </button>
-//                    </div>`;
-//                }
-//            }
-//        ]
-//    });
-//}
 function loadMemberAdjustmentRequests() {
     $('#myDataTable').DataTable({
         serverSide: true,
@@ -164,7 +51,7 @@ function loadMemberAdjustmentRequests() {
             // 2) Member Name
             { data: 'CustomerName' },
             // 3) M. AccNo  (map to AccountId; switch to 'CustomerId' if that's what you display)
-            { data: 'AccountId' },
+            { data: 'MemberId' },
             // 4) Branch Name
             { data: 'BranchName' },
             // 5) Old Balance
@@ -191,7 +78,7 @@ function loadMemberAdjustmentRequests() {
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-sm btn-outline-primary"
                                     title="View Details"
-                                    onclick="loadAdjustmentDetailModal('${row.Id}')">
+                                    onclick="loadMemberAdjustmentDetailModal('${row.Id}')">
                                 <i class="mdi mdi-eye-outline"></i>
                             </button>
                             ${status !== 'approved' ? `
@@ -206,12 +93,12 @@ function loadMemberAdjustmentRequests() {
                                     data-new-balance="${row.NewBalance ?? ''}"
                                     data-old-memberstatus="${row.OldMemberStatus || ''}"
                                     data-new-memberstatus="${row.NewMemberStatus || ''}"
-                                    onclick="approveRequest(this)">
+                                    onclick="approveMemberRequest(this)">
                                 <i class="mdi mdi-check-circle-outline"></i>
                             </button>` : ''}
                             <button type="button" class="btn btn-sm btn-outline-danger"
                                     title="Reject Request"
-                                    onclick="rejectRequest('${row.Id}')">
+                                    onclick="rejectMemberRequest('${row.Id}')">
                                 <i class="mdi mdi-close-circle-outline"></i>
                             </button>
                         </div>`;

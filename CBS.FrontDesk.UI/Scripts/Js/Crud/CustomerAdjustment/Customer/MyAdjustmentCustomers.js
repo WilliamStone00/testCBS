@@ -6,7 +6,7 @@
             searching: false,
             order: [[0, 'desc']],
             ajax: {
-                url: '/Individual/LoadMembersData',
+                url: '/MemberAdjustmentConsole/LoadMembersData',
                 type: 'POST',
                 contentType: 'application/json',
                 data: function (d) {
@@ -312,7 +312,7 @@ function postMemberAdjustmentRequest(form) {
                             alertify.success(response.message || 'Operation completed successfully');
                             appalert(response.message || 'Operation completed successfully', 1, 1);
                             // Reset the form after successful operation
-                            //window.location.href = '/BulkOperation/Listing'
+                            window.location.href = '/MemberAdjustmentConsole'
                         } else {
                             //alertify.error(response.message || 'Error during operation');
                             appalert(response.message || 'Error during operation', 2, 1);
