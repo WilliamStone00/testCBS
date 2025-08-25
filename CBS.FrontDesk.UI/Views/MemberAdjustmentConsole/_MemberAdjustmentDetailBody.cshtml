@@ -42,7 +42,10 @@
             <tr><td class="fw-bold">Customer ID</td><td>@request.MemberId</td></tr>
             <tr><td class="fw-bold">Customer Name</td><td>@request.CustomerName</td></tr>
             <tr><td class="fw-bold">Branch</td><td>@request.BranchName (@request.BranchCode)</td></tr>
-            <tr><td class="fw-bold">Requested Date</td><td>@request.RequestedDate.ToString("dd/MM/yyyy HH:mm:ss")</td></tr>
+            <tr>
+                <td class="fw-bold">Requested Date</td>
+                <td>@request.RequestedDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+            </tr>
             <tr><td class="fw-bold">Requested By</td><td>@request.RequestedBy</td></tr>
             <tr><td class="fw-bold">Reason</td><td>@request.Reason</td></tr>
             <tr>
@@ -55,7 +58,13 @@
             </tr>
             @if (!string.IsNullOrWhiteSpace(request.ApprovedBy))
             {
-                <tr><td class="fw-bold">Approved By</td><td>@request.ApprovedBy (@request.ApprovedDate?.ToString("dd/MM/yyyy HH:mm:ss"))</td></tr>
+                <tr>
+                    <td class="fw-bold">Approved By</td>
+                    <td>
+                        @request.ApprovedBy
+                        (@(request.ApprovedDate?.ToString("dd/MM/yyyy HH:mm:ss")))
+                    </td>
+                </tr>
             }
             @if (!string.IsNullOrWhiteSpace(request.RejectionReason))
             {

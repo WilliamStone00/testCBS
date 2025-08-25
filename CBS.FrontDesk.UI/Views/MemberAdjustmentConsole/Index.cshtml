@@ -187,7 +187,19 @@
             </div>
             <!-- Modal Footer -->
             <div class="modal-footer justify-content-between">
-
+                <div class="d-flex flex-column">
+                    <span class="text-muted fw-semibold">
+                        Adjustment Reference: <span class="text-dark" id="memberAdjustmentReference">N/A</span>
+                    </span>
+                </div>
+                <div class="d-flex flex-row gap-4">
+                    <span class="text-muted fw-semibold">
+                        Member Reference: <span class="text-dark" id="memberReference">N/A</span>
+                    </span>
+                    <span class="text-muted fw-semibold">
+                        Member Name: <span class="text-dark" id="memberName">N/A</span>
+                    </span>
+                </div>
                 <div>
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         <i class="mdi mdi-close"></i> Close
@@ -203,7 +215,8 @@
 
 
 @section Scripts {
-   @* <script src="~/Scripts/Js/Crud/CustomerAdjustment/Customer/MemberAdjustmentConsole.js"></script>*@
+    @Scripts.Render("~/bundles/jqueryval")
+      @* <script src="~/Scripts/Js/Crud/CustomerAdjustment/Customer/MemberAdjustmentConsole.js"></script>*@
     <script>
         $(document).ready(function () {
             $('#applyFilterBtn').click(function () {
@@ -261,13 +274,56 @@
                     { data: 'MemberId' },
                     // 4) Branch Name
                     { data: 'BranchName' },
-                    // 5) Old Balance
-                    { data: 'OldBalance', render: formatCurrency },
-                    // 6) New Balance
-                    { data: 'NewBalance', render: formatCurrency },
-                    // 7) Requested By
+                    // 5) Adjustment Type
+                    {
+                        data: 'AdjustmentType', render: function (data) {
+                            if (!data) return '';
+
+                            const type = data.toLowerCase();
+                            let badge = 'secondary';
+                            let text = data; // fallback to raw enum
+
+                            switch (type) {
+                                case 'nameadjustment':
+                                    badge = 'primary';
+                                    text = 'Name Change';
+                                    break;
+                                case 'memberreferenceadjustment':
+                                    badge = 'info';
+                                    text = 'Member Reference Update';
+                                    break;
+                                case 'memberactivestatusadjustment':
+                                    badge = 'success';
+                                    text = 'Active Status Change';
+                                    break;
+                                case 'memberactivationadjustment':
+                                    badge = 'success'; // custom CSS
+                                    text = 'Activation Update';
+                                    break;
+                                case 'membermembershipstatusadjustment':
+                                    badge = 'warning';
+                                    text = 'Membership Status Change';
+                                    break;
+                                case 'membercategoryadjustment':
+                                    badge = 'dark';
+                                    text = 'Category Change';
+                                    break;
+                                case 'accountbalanceadjustment':
+                                    badge = 'info'; // custom CSS
+                                    text = 'Balance Adjustment';
+                                    break;
+                                case 'accountstatusadjustment':
+                                    badge = 'danger';
+                                    text = 'Account Status Change';
+                                    break;
+                            }
+
+                            return `<span class="badge bg-${badge}">${text}</span>`;
+                        }
+                    },
+                    // 6) Requested By
                     { data: 'RequestedBy' },
-                    // 8) Status (badge)
+                    // 7) Status (badge)
                     {
                         data: 'Status',
                         render: function (data) {
@@ -282,33 +338,54 @@
                         render: function (row) {
                             const status = (row.Status || '').toLowerCase();
                             return `
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-sm btn-outline-primary"
-                                    title="View Details"
-                                    onclick="loadMemberAdjustmentDetailModal('${row.Id}')">
-                                <i class="mdi mdi-eye-outline"></i>
-                            </button>
-                            ${status !== 'approved' ? `
-                            <button type="button" class="btn btn-sm btn-outline-success"
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                                title="View Details"
+                                                onclick="loadMemberAdjustmentDetailModal('${row.Id}','${row.Id}','${row.MemberId}','${row.CustomerName}','${row.BranchName}')">
+                                            <i class="mdi mdi-eye-outline"></i>
+                                        </button>
+                                        ${status !== 'approved' ? `
+                                       <button type="button" class="btn btn-sm btn-outline-success"
                                     title="Approve Request"
                                     data-id="${row.Id}"
+
                                     data-old-firstname="${row.OldFirstName || ''}"
                                     data-new-firstname="${row.NewFirstName || ''}"
+
                                     data-old-lastname="${row.OldLastName || ''}"
                                     data-new-lastname="${row.NewLastName || ''}"
+
                                     data-old-balance="${row.OldBalance ?? ''}"
                                     data-new-balance="${row.NewBalance ?? ''}"
+
+                                    data-old-memberid="${row.OldMemberId || ''}"
+                                    data-new-memberid="${row.NewMemberId || ''}"
+
                                     data-old-memberstatus="${row.OldMemberStatus || ''}"
                                     data-new-memberstatus="${row.NewMemberStatus || ''}"
+
+                                    data-old-membershipstatus="${row.OldMemberShipStatus || ''}"
+                                    data-new-membershipstatus="${row.NewMemberShipStatus || ''}"
+
+                                    data-old-membercategory="${row.OldMemberCategory || ''}"
+                                    data-new-membercategory="${row.NewMemberCategory || ''}"
+
+                                    data-old-status="${row.OldStatus}"
+                                    data-new-status="${row.NewStatus}"
+
+                                    data-old-accountstatus="${row.OldAccountStatus}"
+                                    data-new-accountstatus="${row.NewAccountStatus}"
+
                                     onclick="approveMemberRequest(this)">
                                 <i class="mdi mdi-check-circle-outline"></i>
-                            </button>` : ''}
-                            <button type="button" class="btn btn-sm btn-outline-danger"
-                                    title="Reject Request"
-                                    onclick="rejectMemberRequest('${row.Id}')">
-                                <i class="mdi mdi-close-circle-outline"></i>
-                            </button>
-                        </div>`;
+                               </button>
+                              ` : ''}
+                                <button type="button" class="btn btn-sm btn-outline-danger"
+                                        title="Reject Request"
+                                        onclick="rejectMemberRequest('${row.Id}')">
+                                    <i class="mdi mdi-close-circle-outline"></i>
+                                </button>
+                            </div>`;
                         }
                     }
                 ]
@@ -317,7 +394,7 @@
 
         // Currency format helper (unchanged)
 
-        function loadMemberAdjustmentDetailModal(id) {
+        function loadMemberAdjustmentDetailModal(id, memberAdjustmentReference, memberRef, memberName, branchName) {
             // Show loader
             $('#memberAdjustmentLoader').removeClass('d-none');
 
@@ -325,6 +402,10 @@
                 // Inject the response HTML into the modal container
                 $('#memberAdjustmentDetailsContainer').html(html);
 
+                document.getElementById("memberAdjustmentReference").textContent = memberAdjustmentReference || "N/A";
+                document.getElementById("memberReference").textContent = memberRef || "N/A";
+                document.getElementById("memberName").textContent = memberName || "N/A";
+                document.getElementById("branchName").textContent = branchName || "N/A";
                 // Show the modal
                 $('#memberAdjustmentModal').modal('show');
             })
@@ -379,12 +460,15 @@
             const fields = [
                 { label: "First Name", old: $btn.data("old-firstname"), new: $btn.data("new-firstname") },
                 { label: "Last Name", old: $btn.data("old-lastname"), new: $btn.data("new-lastname") },
-                { label: "Balance", old: $btn.data("old-balance"), new: $btn.data("new-balance") },
+                { label: "Account Balance", old: $btn.data("old-balance"), new: $btn.data("new-balance") },
                 { label: "Member Status", old: $btn.data("old-memberstatus"), new: $btn.data("new-memberstatus") },
                 { label: "Membership Status", old: $btn.data("old-membershipstatus"), new: $btn.data("new-membershipstatus") },
-                { label: "Member Category", old: $btn.data("old-category"), new: $btn.data("new-category") }
+                { label: "Member Category", old: $btn.data("old-membercategory"), new: $btn.data("new-membercategory") },
+                { label: "Member Activation Status", old: $btn.data("old-status"), new: $btn.data("new-status") },
+                { label: "Account Status", old: $btn.data("old-accountstatus"), new: $btn.data("new-accountstatus") },
+                { label: "Member Reference", old: $btn.data("old-memberid"), new: $btn.data("new-memberid") }
             ];
-
+            console.log(fields)
             // Detect changed fields
             const changedFields = fields.filter(f =>
                 f.old !== undefined && f.new !== undefined &&
@@ -392,45 +476,45 @@
             );
 
             if (changedFields.length === 0) {
-                appAlertInfo("No changes detected between original and proposed values.");
+                appalert("No changes detected between original and proposed values.", 3, 1);
                 return;
             }
 
             // Build summary table
             const tableRows = changedFields.map(f => `
-        <tr>
-            <td>${f.label}</td>
-            <td class="text-danger">${f.old || ''}</td>
-            <td class="text-success fw-bold">${f.new || ''}</td>
-        </tr>
-    `).join('');
+            <tr>
+                <td>${f.label}</td>
+                <td class="text-danger">${f.old || ''}</td>
+                <td class="text-success fw-bold">${f.new || ''}</td>
+            </tr>
+        `).join('');
 
             const summaryTable = `
-        <div class="table-responsive">
-            <table class="table table-bordered table-sm table-striped mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th>Field</th>
-                        <th>Old Value</th>
-                        <th>New Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${tableRows}
-                </tbody>
-            </table>
-        </div>
-    `;
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm table-striped mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Field</th>
+                            <th>Old Value</th>
+                            <th>New Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+            </div>
+        `;
 
             alertify.confirm(
                 'Approve Member Adjustment Request',
                 `
-        <p>Are you sure you want to <strong>approve</strong> this member adjustment request?</p>
-        <p><strong>Detected Changes:</strong></p>
-        ${summaryTable}
-        `,
+            <p>Are you sure you want to <strong>approve</strong> this member adjustment request?</p>
+            <p><strong>Detected Changes:</strong></p>
+            ${summaryTable}
+            `,
                 function () {
-                    $.post('/MemberAdjustmentConsole/approveMemberRequest', { requestId: id }, function (response) {
+                    $.post('/MemberAdjustmentConsole/ApproveRequest', { requestId: id }, function (response) {
                         if (response.success) {
                             toastr.success(response.message);
                             loadMemberAdjustmentRequests();
@@ -457,16 +541,16 @@
             alertify.confirm(
                 'Reject Loan Adjustment Request',
                 `
-        <div class="text-start">
-            <p>Please enter a reason for <strong class="text-danger">rejecting</strong> this adjustment request:</p>
-            <textarea id="rejectReasonTextarea" class="form-control" rows="4" placeholder="Enter clear rejection reason (at least 20 characters)..."></textarea>
-            <small class="text-muted mt-1 d-block">Minimum 20 characters required.</small>
-        </div>
-        `,
+            <div class="text-start">
+                <p>Please enter a reason for <strong class="text-danger">rejecting</strong> this adjustment request:</p>
+                <textarea id="rejectReasonTextarea" class="form-control" rows="4" placeholder="Enter clear rejection reason (at least 20 characters)..."></textarea>
+                <small class="text-muted mt-1 d-block">Minimum 20 characters required.</small>
+            </div>
+            `,
                 function () {
                     const reason = $('#rejectReasonTextarea').val().trim();
                     if (reason.length >= 20) {
-                        $.post('/MemberAdjustmentConsole/rejectMemberRequest', { requestId: id, reason: reason }, function (response) {
+                        $.post('/MemberAdjustmentConsole/RejectRequest', { requestId: id, reason: reason }, function (response) {
                             if (response.success) {
                                 appalert(response.message, 1, 1);
                                 loadMemberAdjustmentRequests();
@@ -507,6 +591,5 @@
         function formatCurrency1(data) {
             return `<div class="text-end">${data != null ? parseFloat(data).toLocaleString(undefined, { minimumFractionDigits: 1 }) : '0.0'}</div>`;
         }
-
     </script>
 }

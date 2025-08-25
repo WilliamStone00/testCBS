@@ -161,7 +161,7 @@ namespace CBS.BusinessService.MemberP.MemberAdjustment
         {
             try
             {
-                command.RequestedBy=GetUserFullName();
+                command.RequestedBy= GetUserFullName();
                 var response = await _MemberApiCaller.PostAsync<ServiceResponse<bool>>(APICallHelper.SubmitMemberAdjustmentRequest, command);
 
                 if (response.IsSuccess)
@@ -189,7 +189,7 @@ namespace CBS.BusinessService.MemberP.MemberAdjustment
         {
             try
             {
-                command.ApprovedBy=GetUserFullName();
+                command.ApprovedBy= GetUserFullName();
                 var response = await _MemberApiCaller.PostAsync<ServiceResponse<bool>>(APICallHelper.ApproveMemberAdjustmentRequest, command);
 
                 if (response.IsSuccess)
@@ -217,7 +217,7 @@ namespace CBS.BusinessService.MemberP.MemberAdjustment
         {
             try
             {
-                command.RejectedBy=GetUserFullName();
+                command.RejectedBy= GetUserFullName();
                 var response = await _MemberApiCaller.PostAsync<ServiceResponse<bool>>(APICallHelper.RejectMemberAdjustmentRequest, command);
 
                 if (response.IsSuccess)

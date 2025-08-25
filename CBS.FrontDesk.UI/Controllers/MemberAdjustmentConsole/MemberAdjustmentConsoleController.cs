@@ -162,7 +162,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
 
 
 
-            model.RequestedBy = Session["UserId"]?.ToString();
+            model.RequestedBy = Session["FullName"]?.ToString();
 
             var command= _memberAdjustmentService.ConvertMemberAjustmentModel(model);
             var result = await _memberAdjustmentService.SubmitMemberAdjustmentRequestAsync(command);

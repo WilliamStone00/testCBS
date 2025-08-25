@@ -11,8 +11,8 @@ namespace CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole
         public string Id { get; set; }
         public string LoanId { get; set; }
         public string FieldAdjusted { get; set; } // e.g., "Penalty"
-        public decimal OldValue { get; set; }
-        public decimal NewValue { get; set; }
+        public string OldValue { get; set; }
+        public string NewValue { get; set; }
         public string Reason { get; set; }
         public string ChangedBy { get; set; }
         public DateTime ChangedDate { get; set; }

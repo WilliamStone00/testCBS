@@ -33,6 +33,8 @@
                         <form id="memberReferenceAdjustmentForm">
                             @Html.HiddenFor(m => m.BranchId)
                             @Html.HiddenFor(m => m.AccountId)
+                            @Html.HiddenFor(m => m.IsMemberProfileModified)
+                            @Html.HiddenFor(m => m.IsMemberAccountModified)
                             @Html.HiddenFor(m => m.AdjustmentType)
 
                             <div class="row">
