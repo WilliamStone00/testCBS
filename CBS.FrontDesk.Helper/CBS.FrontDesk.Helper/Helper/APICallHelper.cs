@@ -303,6 +303,7 @@ namespace CBS.FrontDesk.Helper
         public static string SearchByAnyCriterialQuery = "/api/v1/Customers/SearchByAnyCriterialQuery";
         public static string GetAllByParameters = "/api/v1/Customer/GetAllByParameters";
         public static string MembersDatatableQuery = "/api/v1/customers/datatable";
+        public static string MembersDownloadDatatableQuery = "/api/v1/customer-download/customers";
 
 
         public static string AllCustomers = "/api/v1/Customers";

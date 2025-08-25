@@ -43,41 +43,55 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             await LoadDroupdowns();
             return View(new SalaryUploadModelCarrier());
         }
-       
+
+        // In your controller (fields assumed already injected):
+        // private readonly IBranchServices _branchServices;
+        // private readonly IChartOfAccountServices chartOfAccountServices;
+
+        // Reuse one immutable list for File Types (no per-request allocation)
+        private static readonly IReadOnlyList<SelectListItem> FileTypeOptions =
+            new List<SelectListItem>
+            {
+        new SelectListItem { Value = "CivilServants",       Text = "Civil Servant Files" },
+        new SelectListItem { Value = "PrivateInstitutions", Text = "Private Institution Files" },
+        new SelectListItem { Value = "StandingOrder",       Text = "Standing Order Files" },
+        new SelectListItem { Value = "Analysis",            Text = "Analysed Files" },
+        new SelectListItem { Value = "Others",              Text = "Other Files" }
+            }.AsReadOnly();
+
+        // One helper to populate common dropdowns; optionally include Chart of Accounts
+        private async Task PopulateDropdownsAsync(bool includeChartOfAccounts)
+        {
+            var branchesTask = _branchServices.GetBranches();
+            Task<IEnumerable<object>> coaTask = Task.FromResult(Enumerable.Empty<object>());
+
+            if (includeChartOfAccounts)
+                coaTask = chartOfAccountServices.GetChartOfAccounts(false).ContinueWith(t => t.Result.Cast<object>());
+
+            // Run in parallel when both are needed
+            await Task.WhenAll(includeChartOfAccounts ? new Task[] { branchesTask, coaTask } : new Task[] { branchesTask });
+
+            ViewBag.Branches = (await branchesTask);                 // original behavior
+            ViewBag.FileTypes = FileTypeOptions;                     // reused list
+
+            if (includeChartOfAccounts)
+                ViewBag.StandingOrderSourceAccountOptions = (await coaTask).ToList(); // original ToList()
+        }
+
+        // Actions
         public async Task<ActionResult> UploadedSalaryFiles()
         {
-            var branches = await _branchServices.GetBranches();
-            ViewBag.Branches = branches;
-
-            // NEW: File Types
-            ViewBag.FileTypes = new List<SelectListItem>
-            {
-                new SelectListItem { Value = "CivilServants",       Text = "Civil Servants" },
-                new SelectListItem { Value = "PrivateInstitutions", Text = "Private Institutions" },
-                new SelectListItem { Value = "StandingOrder",       Text = "Standing Order" },
-                new SelectListItem { Value = "Analysed",            Text = "Analysed" }
-            };
+            await PopulateDropdownsAsync(includeChartOfAccounts: false);
             return View(new SalaryUploadModelCarrier());
         }
+
+        // Keep signature/route the same; just delegate to the helper
         public async Task<bool> LoadDroupdowns()
         {
-            var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts(false);
-            ViewBag.StandingOrderSourceAccountOptions = chartOfAccounts.ToList();
-
-            var branches = await _branchServices.GetBranches();
-            ViewBag.Branches = branches;
-
-            // NEW: File Types
-            ViewBag.FileTypes = new List<SelectListItem>
-            {
-                new SelectListItem { Value = "CivilServants",       Text = "Civil Servants" },
-                new SelectListItem { Value = "PrivateInstitutions", Text = "Private Institutions" },
-                new SelectListItem { Value = "StandingOrder",       Text = "Standing Order" },
-                new SelectListItem { Value = "Analysed",            Text = "Analysed" }
-            };
-
+            await PopulateDropdownsAsync(includeChartOfAccounts: true);
             return true;
         }
+
 
         [HttpPost]
         public async Task<ActionResult> SetPrivate(SetFileUploadPrivateViewCommand model)

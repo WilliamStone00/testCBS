@@ -139,7 +139,6 @@
                                 <li><i class="mdi mdi-account-cash text-primary me-2"></i><strong>@GlobalSalaryExecution.SalaryProcessing:</strong> @GlobalSalaryExecution.DebitsTheTotalSalaryAmountFromTheSelectedSourceAccount.</li>
                                 <li><i class="mdi mdi-account-multiple text-primary me-2"></i><strong>@GlobalSalaryExecution.StandingOrders:</strong> @GlobalSalaryExecution.ProcessesAutomaticTransfersForMembersWithLinkedStandingOrders.</li>
                                 <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i><strong>@GlobalSalaryExecution.Warning:</strong> @GlobalSalaryExecution.ThisActionCannotBeUndone.</li>
-                                <li><i class="mdi mdi-cash text-success me-2"></i><strong>@GlobalSalaryExecution.AccountImpact:</strong> @GlobalSalaryExecution.TheSelectedSourceAccountWillBeDebited.</li>
                                 <li><i class="mdi mdi-alert-decagram-outline text-danger me-2"></i><strong>@GlobalSalaryExecution.Risks:</strong> @GlobalSalaryExecution.EnsureSufficientFundsAreAvailable.</li>
                             </ul>
                         </div>
@@ -148,19 +147,6 @@
 
                 <!-- Form for Salary Execution -->
                 <form id="executeSalaryForm">
-                    <!-- Source Account Dropdown -->
-                    <div class="mb-3">
-                        <label for="memberReferenceNumber" class="form-label">@GlobalSalaryExecution.SelectSourceAccount</label>
-                        <select class="form-select" id="memberReferenceNumber" name="MemberReferenceNumber" required>
-                            <option value="">-- @GlobalSalaryExecution.SelectAnAccount --</option>
-                       
-                            @foreach (var account in Model.StringValues)
-                            {
-                                <option value="@account.Value">@account.Text</option>
-                            }
-                        </select>
-                    </div>
-
                     <!-- File Upload Details -->
                     <div class="mb-3">
                         <label for="fileUploadId" class="form-label">@GlobalSalaryExecution.FileUploadReference</label>
@@ -178,9 +164,14 @@
                     </div>
 
                     <!-- Execution Reason -->
-                    <div class="mb-3">
+                    @*<div class="mb-3">
                         <label for="executeReason" class="form-label">@GlobalSalaryExecution.ExecutionReason</label>
                         <textarea class="form-control" id="executeReason" rows="3" required></textarea>
+                    </div>*@
+                    <textarea id="executeReason" class="form-control" rows="3" required minlength="10"
+                              placeholder="Briefly explain why you’re executing this salary run..."></textarea>
+                    <div class="invalid-feedback" id="executeReasonFeedback">
+                        Execution reason is required (min 10 characters).
                     </div>
 
                     <!-- Action Button -->
@@ -200,67 +191,161 @@
         $(document).ready(function () {
             LoadDT("myDataTable", 0);
 
-            $("#executeSalaryBtn").on("click", function () {
-                var $btn = $(this); // Reference to the button
-                var memberReferenceNumber = $("#memberReferenceNumber").val();
-                var fileUploadId = $("#fileUploadId").val();
-                var executeReason = $("#executeReason").val();
-                var fileName = $("#fileUploadFileName").val();
-                var fileCategory = $("#fileUploadCategory").val();
 
-                if (!memberReferenceNumber || !executeReason) {
-                    appalert("Please select an account for execution and provide a reason.", 2, 1);
+            $("#executeSalaryBtn").off("click").on("click", function () {
+                const $btn = $(this);
+                const $modal = $("#executeSalaryModal");
+                const fileUploadId = $("#fileUploadId").val();
+                const executeReason = ($("#executeReason").val() || "").trim();
+                const fileName = $("#fileUploadFileName").val();
+                const fileCategory = $("#fileUploadCategory").val();
+
+                if (executeReason.length < 10) {
+                    $("#executeReason").addClass("is-invalid").focus();
+                    $("#executeReasonFeedback").text("Execution reason is required (min 10 characters).");
                     return;
                 }
 
-                var confirmMessage = `
-            <div style="text-align: left;">
-                <p><strong>File Name:</strong> ${fileName}</p>
-                <p><strong>File Category:</strong> ${fileCategory}</p>
-                <p><strong>Account:</strong> ${memberReferenceNumber}</p>
-                <p><strong>Execution Reason:</strong> ${executeReason}</p>
-                <p><strong>Are you sure you want to execute this operation?</strong></p>
-            </div>`;
+                $modal.modal('hide'); // avoid Bootstrap focus trap
 
-                alertify.confirm("Confirm Salary Execution", confirmMessage,
-                    function () {
-                        // Block the button and show loading
-                        $btn.prop("disabled", true);
-                        var originalText = $btn.html();
-                        $btn.html(`<span class="spinner-border spinner-border-sm me-2"></span> Processing...`);
+                const confirmHtml = `
+                <div style="text-align:left;">
+                  <div style="border-left:4px solid #d9534f; background:#fff3f3; padding:10px 12px; margin-bottom:10px;">
+                    <strong style="color:#b52b27;">This action is IRREVERSIBLE.</strong><br/>
+                    Executing salary will post payments and process standing orders. It <u>cannot</u> be rolled back automatically.
+                  </div>
+                  <p><strong>File Name:</strong> ${fileName}</p>
+                  <p><strong>File Category:</strong> ${fileCategory}</p>
+                  <p><strong>File Upload Reference:</strong> ${fileUploadId}</p>
+                  <p><strong>Execution Reason:</strong> ${executeReason}</p>
+                  <hr/>
+                  <div id="ackIrrevocableWrapper" class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="ackIrrevocable">
+                    <label class="form-check-label" for="ackIrrevocable">I understand this operation is irreversible.</label>
+                    <div id="ackIrrevocableError" class="text-danger small d-none">Please acknowledge that this action is irreversible.</div>
+                  </div>
+                  <div id="ackFileWrapper" class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="ackFile">
+                    <label class="form-check-label" for="ackFile">
+                      I confirm this is the analysis file I just uploaded (<strong>${fileName}</strong>).
+                    </label>
+                    <div id="ackFileError" class="text-danger small d-none">Please confirm the uploaded file.</div>
+                  </div>
+                  <div class="mb-1">
+                    <label for="confirmPhrase" class="form-label">Type <strong>EXECUTE</strong> to confirm:</label>
+                    <input id="confirmPhrase" class="form-control form-control-sm" autocomplete="off" placeholder="EXECUTE" />
+                    <small class="text-muted">All confirmations are required to proceed.</small>
+                  </div>
+                </div>`;
 
-                        var data = {
-                            MemberReferenceNumber: memberReferenceNumber,
-                            FileUploadId: fileUploadId
-                        };
+                const dlg = alertify
+                    .confirm("Final Confirmation – Salary/Standing Order Execution", confirmHtml, null, null)
+                    .set({ labels: { ok: 'Execute', cancel: 'Back' }, transition: 'zoom', closable: false });
 
-                        $.ajax({
-                            type: "POST",
-                            url: "/SalaryExecution/ExecuteAnalysis",
-                            contentType: "application/json; charset=utf-8",
-                            data: JSON.stringify(data),
-                            dataType: "json",
-                            success: function (response) {
-                                if (response.success) {
-                                    appalert(response.message, 1, 1);
-                                    $('#executeSalaryModal').modal('hide');
-                                    location.reload();
-                                } else {
-                                    appalert("Failed to execute salary. " + response.message, 2, 1);
-                                    $btn.prop("disabled", false).html(originalText); // Reset
-                                }
-                            },
-                            error: function (xhr, status, error) {
-                                appalert("Error: " + error, 2, 1);
-                                $btn.prop("disabled", false).html(originalText); // Reset
-                            }
-                        });
-                    },
-                    function () {
-                        appalert("Salary execution canceled.", 3, 1);
+                // OK handler (correct API)
+                dlg.set('onok', function (ev) {
+                    const ack1 = $('#ackIrrevocable').is(':checked');
+                    const ack2 = $('#ackFile').is(':checked');
+                    const phrase = ($('#confirmPhrase').val() || '').trim().toUpperCase();
+
+                    // Keep dialog open until valid
+                    if (!(ack1 && ack2 && phrase === 'EXECUTE')) {
+                        ev.cancel = true;
+
+                        $('#ackIrrevocableError').toggleClass('d-none', ack1);
+                        $('#ackFileError').toggleClass('d-none', ack2);
+                        $('#ackIrrevocableWrapper').toggleClass('border border-danger rounded-2 p-2', !ack1);
+                        $('#ackFileWrapper').toggleClass('border border-danger rounded-2 p-2', !ack2);
+
+                        if (!ack1) { $('#ackIrrevocable').trigger('focus'); return; }
+                        if (!ack2) { $('#ackFile').trigger('focus'); return; }
+                        $('#confirmPhrase').trigger('focus').select();
+                        return;
                     }
-                ).set({ labels: { ok: 'Execute', cancel: 'Cancel' }, transition: 'zoom' });
+
+                    // Keep dialog open while processing
+                    ev.cancel = true;
+
+                    // ---- SAFE button handling (works across Alertify builds) ----
+                    const $root = $('.ajs-modal:visible').last();              // the top-most dialog
+                    const $ok = $root.find('.ajs-footer .ajs-buttons .ajs-ok');
+                    const $cancel = $root.find('.ajs-footer .ajs-buttons .ajs-cancel');
+
+                    // prevent double submits
+                    if ($root.data('processing')) return;
+                    $root.data('processing', true);
+
+                    const okHtml = $ok.html();
+                    if ($ok.length) $ok.prop('disabled', true)
+                        .html('<span class="spinner-border spinner-border-sm me-2"></span> Processing...');
+                    if ($cancel.length) $cancel.prop('disabled', true);
+
+                    const payload = {
+                        FileUploadId: $('#fileUploadId').val(),
+                        ExecutionReason: ($('#executeReason').val() || '').trim(),
+                        AckIrreversible: true,
+                        AckFileConfirmed: true,
+                        ConfirmPhrase: phrase
+                    };
+
+                    // Anti-forgery header if you use [ValidateAntiForgeryToken]
+                    const token = $('input[name="__RequestVerificationToken"]').val();
+                    const headers = token ? { 'RequestVerificationToken': token } : {};
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/SalaryExecution/ExecuteAnalysis",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(payload),
+                        dataType: "json",
+                        headers: headers,
+                        success: function (response) {
+                            if (response && response.success) {
+                                alertify.closeAll(); // close the confirm
+                                appalert(response.message || "Salary execution queued.", 1, 1);
+                                location.reload();
+                            } else {
+                                appalert("Failed to execute salary. " + ((response && response.message) || ""), 2, 1);
+                                // re-enable buttons and keep dialog open, focus the phrase so user can retry
+                                if ($ok.length) $ok.prop('disabled', false).html(okHtml);
+                                if ($cancel.length) $cancel.prop('disabled', false);
+                                $root.removeData('processing');
+                                $('#confirmPhrase').trigger('focus').select();
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            appalert("Error: " + (error || "Request failed"), 2, 1);
+                            if ($ok.length) $ok.prop('disabled', false).html(okHtml);
+                            if ($cancel.length) $cancel.prop('disabled', false);
+                            $root.removeData('processing');
+                            $('#confirmPhrase').trigger('focus').select();
+                        }
+                    });
+                });
+
+                // Live validation + focus setup
+                dlg.set('onshow', function () {
+                    function liveGate() {
+                        const ack1 = $('#ackIrrevocable').is(':checked');
+                        const ack2 = $('#ackFile').is(':checked');
+                        $('#ackIrrevocableError').toggleClass('d-none', ack1);
+                        $('#ackFileError').toggleClass('d-none', ack2);
+                        $('#ackIrrevocableWrapper').toggleClass('border border-danger rounded-2 p-2', !ack1);
+                        $('#ackFileWrapper').toggleClass('border border-danger rounded-2 p-2', !ack2);
+                    }
+                    $(dlg.elements.content).on('change input', '#ackIrrevocable, #ackFile, #confirmPhrase', liveGate);
+                    setTimeout(() => $('#confirmPhrase').prop('disabled', false).trigger('focus').select(), 0);
+                    liveGate();
+                });
+
+                dlg.set('oncancel', function () {
+                    setTimeout(() => $modal.modal('show'), 150);
+                });
             });
+
+
         });
+        // Enable/disable the Execute button based on reason validity
+
     </script>
 }

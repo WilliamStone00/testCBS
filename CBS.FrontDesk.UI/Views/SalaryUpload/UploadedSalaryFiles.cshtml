@@ -81,7 +81,6 @@
             border-color: #3b82f6;
             box-shadow: 0 0 0 .25rem rgba(59,130,246,.2)
         }
-
 </style>
 
 <div class="row">
@@ -89,7 +88,7 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold mb-2">
-                    <i class="mdi mdi-file-upload-outline me-2"></i> File Upload Console
+                    <i class="mdi mdi-file-upload-outline me-2"></i> File Management Console
                 </h1>
                 <p class="card-text text-muted mb-1">Search, filter, and manage uploaded files across all branches.</p>
                 <p class="card-text text-warning fw-semibold">
@@ -124,136 +123,175 @@
     </div>
 </div>
 
-
-<!-- Filters Section -->
-<div class="card shadow p-3 mb-2">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Advanced Filters</h5>
-
-    <div class="card p-3 mb-2 bg-light">
-        <!-- Toggle Controls -->
-        <div class="row mb-3">
-            <div class="col-md-4 form-check">
-                <input type="checkbox" class="form-check-input" id="byBranch" />
-                <label class="form-check-label fw-bold" for="byBranch">Filter by Branch</label>
-            </div>
-            <div class="col-md-4 form-check">
-                <input type="checkbox" class="form-check-input" id="byDate" />
-                <label class="form-check-label fw-bold" for="byDate">Filter by Date</label>
-            </div>
-            <div class="col-md-4 form-check">
-                <input type="checkbox" class="form-check-input" id="moreOptions" />
-                <label class="form-check-label fw-bold" for="moreOptions">More Filters</label>
+<!-- Upload Actions Section -->
+<div class="card shadow-sm p-3 mb-3">
+    <h5 class="text-primary mb-3">
+        <i class="mdi mdi-upload-outline me-1"></i> Upload Files
+    </h5>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <button type="button" class="btn btn-outline-primary w-100" id="btnUploadMainFile">
+                <i class="mdi mdi-cloud-upload-outline me-2"></i>
+                Upload New File
+            </button>
+            <div class="form-text text-muted">
+                For <strong>Private Institutions</strong>, <strong>Civil Servant Salary</strong>, or <strong>Standing Orders</strong>.
             </div>
         </div>
-
-        <!-- Branch Filter -->
-        <div id="branchFilterSection" class="row mb-2" style="display:none;">
-            <div class="col-md-12">
-                <label class="form-label fw-bold">Select Branch</label>
-                @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control shadow-sm select2", @id = "branchInput" })
-            </div>
-        </div>
-
-        <!-- Date Range Filter -->
-        <div id="dateRangeSection" class="row mb-2" style="display:none;">
-            <div class="col-md-6"><input type="date" id="startDate" class="form-control" placeholder="Start Date" /></div>
-            <div class="col-md-6"><input type="date" id="endDate" class="form-control" placeholder="End Date" /></div>
-        </div>
-        <!-- Base Filters -->
-        <div class="row">
-            <div class="col-md-4 mb-1"><input type="text" id="fileUploadId" class="form-control" placeholder="File Upload Ref (FileUploadId)" /></div>
-            <div class="col-md-4 mb-1"><input type="text" id="fileCode" class="form-control" placeholder="File Code" /></div>
-            <div class="col-md-4 mb-1"><input type="text" id="uploadedBy" class="form-control" placeholder="Uploaded By (User)" /></div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12 mb-1">
-                <label class="form-label fw-bold">File Type</label>
-                @Html.DropDownList("fileType", new SelectList(ViewBag.FileTypes, "Value", "Text"), "--- Select Type ---", new { @class = "form-select shadow-sm", @id = "fileType" })
-            </div>
-        </div>
-
-        <!-- More Filters -->
-        <div id="extraFiltersSection" style="display:none;">
-            <div class="row">
-                <div class="col-md-4 mb-2">
-                    <label class="form-label fw-bold">Available for Execution?</label>
-                    <select id="isAvailableForExecution" class="form-select shadow-sm">
-                        <option value="">All</option>
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
-                    </select>
-                </div>
-                <div class="col-md-4 mb-2">
-                    <label class="form-label fw-bold">Standing Order Source (COA Id)</label>
-                    <input type="text" id="standingOrderSourceChartOfAccountId" class="form-control" placeholder="COA Id" />
-                </div>
-                <div class="col-md-4 mb-2">
-                    <label class="form-label fw-bold">File Name</label>
-                    <input type="text" id="fileName" class="form-control" placeholder="Contains..." />
-                </div>
+        <div class="col-md-6">
+            <button type="button" class="btn btn-outline-info w-100" id="btnUploadAnalysisFile">
+                <i class="mdi mdi-file-chart-outline me-2"></i>
+                Upload Analysis File
+            </button>
+            <div class="form-text text-muted">
+                Only <strong>Analysis files</strong> can be uploaded here.
             </div>
         </div>
     </div>
-    <!-- Put this near your filters -->
-    <div class="card shadow-sm mb-2">
-        <div class="card-header d-flex align-items-center">
-            <i class="mdi mdi-hand-pointing-right text-primary me-2"></i>
-            <span class="fw-bold text-primary">Action Mode <span class="text-danger">*</span></span>
-        </div>
+</div>
+<!-- Filters Section (minimizable) -->
+<div class="card mb-2 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
+        <span><i class="mdi mdi-filter-outline me-2"></i> Advanced Filters</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdvancedFilters" aria-expanded="true" aria-controls="collapseAdvancedFilters">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseAdvancedFilters" class="collapse show">
         <div class="card-body">
-            <div class="row g-3" id="actionModeCards">
-                <div class="col-md-4">
-                    <button type="button" class="mode-card w-100 p-3 text-start rounded-3" data-mode="fileupload_main" aria-pressed="false">
-                        <div class="d-flex align-items-start">
-                            <i class="mdi mdi-clipboard-text-outline fs-3 me-2 text-primary"></i>
-                            <div>
-                                <div class="title">Main</div>
-                                <div class="desc">Download • Details • Delete</div>
-                            </div>
-                        </div>
-                    </button>
+            <!-- Action Mode -->
+            <div class="card shadow-sm mb-2">
+                <div class="card-header d-flex align-items-center">
+                    <i class="mdi mdi-hand-pointing-right text-primary me-2"></i>
+                    <span class="fw-bold text-primary">Action Mode <span class="text-danger">*</span></span>
                 </div>
-                <div class="col-md-4">
-                    <button type="button" class="mode-card w-100 p-3 text-start rounded-3" data-mode="analyser" aria-pressed="false">
-                        <div class="d-flex align-items-start">
-                            <i class="mdi mdi-chart-line fs-3 me-2 text-info"></i>
-                            <div>
-                                <div class="title">Analyser</div>
-                                <div class="desc">Open analysis view</div>
-                            </div>
+                <div class="card-body">
+                    <div class="row g-3" id="actionModeCards">
+                        <div class="col-md-4">
+                            <button type="button" class="mode-card w-100 p-3 text-start rounded-3" data-mode="fileupload_main" aria-pressed="false">
+                                <div class="d-flex align-items-start">
+                                    <i class="mdi mdi-clipboard-text-outline fs-3 me-2 text-primary"></i>
+                                    <div>
+                                        <div class="title">Main Files (All)</div>
+                                        <div class="desc">View all uploaded files</div>
+                                    </div>
+                                </div>
+                            </button>
                         </div>
-                    </button>
-                </div>
-                <div class="col-md-4">
-                    <button type="button" class="mode-card w-100 p-3 text-start rounded-3" data-mode="executer" aria-pressed="false">
-                        <div class="d-flex align-items-start">
-                            <i class="mdi mdi-play-circle-outline fs-3 me-2 text-success"></i>
-                            <div>
-                                <div class="title">Executer</div>
-                                <div class="desc">Download • Execute • Delete</div>
-                            </div>
+                        <div class="col-md-4">
+                            <button type="button" class="mode-card w-100 p-3 text-start rounded-3" data-mode="analyser" aria-pressed="false">
+                                <div class="d-flex align-items-start">
+                                    <i class="mdi mdi-chart-line fs-3 me-2 text-info"></i>
+                                    <div>
+                                        <div class="title">Analysis Phase</div>
+                                        <div class="desc">Load files that are ready for analysis</div>
+                                    </div>
+                                </div>
+                            </button>
                         </div>
-                    </button>
+                        <div class="col-md-4">
+                            <button type="button" class="mode-card w-100 p-3 text-start rounded-3" data-mode="executer" aria-pressed="false">
+                                <div class="d-flex align-items-start">
+                                    <i class="mdi mdi-play-circle-outline fs-3 me-2 text-success"></i>
+                                    <div>
+                                        <div class="title">Execution Phase</div>
+                                        <div class="desc">View analysed files that are ready for execution</div>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- REQUIRED value sent with filters -->
+                    <input type="hidden" id="actionParam" name="ActionParam" value="" />
+                    <div id="actionModeHelp" class="form-text text-danger d-none">Please select an Action Mode.</div>
                 </div>
             </div>
 
-            <!-- REQUIRED value sent with filters -->
-            <input type="hidden" id="actionParam" name="ActionParam" value="" />
-            <div id="actionModeHelp" class="form-text text-danger d-none">Please select an Action Mode.</div>
-        </div>
-    </div>
+            <div class="card p-3 mb-2 bg-light">
+                <!-- Toggle Controls -->
+                <div class="row mb-3">
+                    <div class="col-md-4 form-check">
+                        <input type="checkbox" class="form-check-input" id="byBranch" />
+                        <label class="form-check-label fw-bold" for="byBranch">Filter by Branch</label>
+                    </div>
+                    <div class="col-md-4 form-check">
+                        <input type="checkbox" class="form-check-input" id="byDate" />
+                        <label class="form-check-label fw-bold" for="byDate">Filter by Date</label>
+                    </div>
+                    <div class="col-md-4 form-check">
+                        <input type="checkbox" class="form-check-input" id="moreOptions" />
+                        <label class="form-check-label fw-bold" for="moreOptions">More Filters</label>
+                    </div>
+                </div>
 
-    <!-- Action Buttons -->
-    <div class="row mt-2">
-        <div class="col-md-12 d-flex">
-            <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
-            <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
-            <button id="exportBtn" type="button" class="btn btn-success w-100"><i class="mdi mdi-file-excel"></i> Export</button>
+                <!-- Branch Filter -->
+                <div id="branchFilterSection" class="row mb-2" style="display:none;">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Select Branch</label>
+                        @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control shadow-sm select2", @id = "branchInput" })
+                    </div>
+                </div>
+
+                <!-- Date Range Filter -->
+                <div id="dateRangeSection" class="row mb-2" style="display:none;">
+                    <div class="col-md-6"><input type="date" id="startDate" class="form-control" placeholder="Start Date" /></div>
+                    <div class="col-md-6"><input type="date" id="endDate" class="form-control" placeholder="End Date" /></div>
+                </div>
+
+                <!-- Base Filters -->
+                <div class="row">
+                    <div class="col-md-4 mb-1"><input type="text" id="fileUploadId" class="form-control" placeholder="File Upload Ref (FileUploadId)" /></div>
+                    <div class="col-md-4 mb-1"><input type="text" id="fileCode" class="form-control" placeholder="File Code" /></div>
+                    <div class="col-md-4 mb-1"><input type="text" id="uploadedBy" class="form-control" placeholder="Uploaded By (User)" /></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-1">
+                        <label class="form-label fw-bold">File Type</label>
+                        @Html.DropDownList("fileType", new SelectList(ViewBag.FileTypes, "Value", "Text"), "--- Select Type ---", new { @class = "form-select shadow-sm", @id = "fileType" })
+                    </div>
+                </div>
+
+                <!-- More Filters -->
+                <div id="extraFiltersSection" style="display:none;">
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label fw-bold">Available for Execution?</label>
+                            <select id="isAvailableForExecution" class="form-select shadow-sm">
+                                <option value="">All</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label fw-bold">Standing Order Source (COA Id)</label>
+                            <input type="text" id="standingOrderSourceChartOfAccountId" class="form-control" placeholder="COA Id" />
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label fw-bold">File Name</label>
+                            <input type="text" id="fileName" class="form-control" placeholder="Contains..." />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Action Buttons -->
+            <div class="row mt-2">
+                <div class="col-md-12 d-flex">
+                    <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
+                    <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+                    @*<button id="exportBtn" type="button" class="btn btn-success w-100"><i class="mdi mdi-file-excel"></i> Export</button>*@
+                </div>
+            </div>
 
         </div>
     </div>
 </div>
+
+<!-- Filters Section -->
 
 <div id="fileUploadDataCard" class="card p-3 shadow mb-1" style="display:none">
     <h5 class="text-primary mb-1"><i class="mdi mdi-table"></i> File Upload Results</h5>
@@ -272,6 +310,16 @@
         $("#moreOptions").on("change", function () { $("#extraFiltersSection").toggle(this.checked); });
         $("#byBranch").on("change", function () { $("#branchFilterSection").toggle(this.checked); });
         $("#byDate").on("change", function () { $("#dateRangeSection").toggle(this.checked); });
+        $("#btnUploadMainFile").on("click", function () {
+            // open modal or navigate to upload form for Salary/Standing Orders
+            window.location.href = "/SalaryUpload";
+        });
+
+        $("#btnUploadAnalysisFile").on("click", function () {
+            // open modal or navigate to Analysis upload form
+            window.location.href = "/SalaryExecution";
+        });
+
         /*$("#byPrivacy").on("change", function () { $("#privacyFilterSection").toggle(this.checked); });*/
     </script>
 }

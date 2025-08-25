@@ -1,0 +1,245 @@
+﻿@{
+    ViewBag.Title = "Members Reporting & Exportation";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-account-group-outline me-2"></i> Members Overview
+                </h1>
+                <p class="card-text">
+                    View and manage registered members across all branches.
+                </p>
+                <p class="card-text fw-bold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use the filters below (branch, demographics, approval/legal, dates) to narrow results.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Tips for effective filtering</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><strong>Filter by Branch:</strong> Segment members by operational branch.</li>
+                <li><strong>Registration Dates:</strong> Use Created dates and Date of Birth ranges for targeting.</li>
+                <li><strong>Gender & Marital Status:</strong> Analyze breakdown across key attributes.</li>
+                <li><strong>Approval & Legal:</strong> Combine membership approval with legal form and profile.</li>
+                <li><strong>Export:</strong> Export the current filtered results to Excel.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Advanced Filters -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Member Filters</h5>
+    <form id="memberFilterForm">
+        <div class="card p-3 mb-3 bg-light">
+            <!-- Toggle switches -->
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleBranch" onclick="document.getElementById('branchFilter').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleBranch">Show Branch Filter</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDemographics" onclick="document.getElementById('demographicFilters').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleDemographics">Show Demographic Filters</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleApproval" onclick="document.getElementById('approvalFilters').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleApproval">Show Approval & Legal Filters</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDates" onclick="document.getElementById('dateFilters').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleDates">Show Date Filters</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Free text search -->
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label class="form-label fw-bold">Free Text Search</label>
+                    <input type="text" id="searchTerm" name="SearchTerm" class="form-control" placeholder="Type to search..." />
+                </div>
+            </div>
+
+            <!-- Default Filters -->
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Member Account Number</label>
+                    <input type="text" id="customerId" name="CustomerId" class="form-control" placeholder="Enter Member Account Number" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">First Name</label>
+                    <input type="text" id="firstName" name="FirstName" class="form-control" placeholder="Enter First Name" />
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label fw-bold">Last Name</label>
+                    <input type="text" id="lastName" name="LastName" class="form-control" placeholder="Enter Last Name" />
+                </div>
+            </div>
+
+            <!-- Branch Filter -->
+            <div id="branchFilter" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Branch</label>
+                        @Html.DropDownList("BranchId",
+                            new SelectList(ViewBag.Branches, "Id", "Name"),
+                            "--- Select Branch ---",
+                            new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demographic Filters -->
+            <div id="demographicFilters" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Gender or Groups</label>
+                        <select id="gender" name="Gender" class="form-select">
+                            <option value="">All</option>
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Groups">Groups</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Marital Status</label>
+                        <select id="maritalStatus" name="MaritalStatus" class="form-select">
+                            <option value="">All</option>
+                            <option value="Divorced">Divorced</option>
+                            <option value="Married">Married</option>
+                            <option value="Single">Single</option>
+                            <option value="Widowed">Widowed</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Working Status</label>
+                        <select id="workingStatus" name="WorkingStatus" class="form-select">
+                            <option value="">All</option>
+                            <option value="Unemployed">Unemployed</option>
+                            <option value="Working">Working</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Approval & Legal Filters -->
+            <div id="approvalFilters" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Membership Approval</label>
+                        <select id="membershipApprovalStatus" name="MembershipApprovalStatus" class="form-select">
+                            <option value="">All</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Legal Form</label>
+                        <select id="legalForm" name="LegalForm" class="form-select">
+                            <option value="">All</option>
+                            <option value="Moral_Person">Moral Person</option>
+                            <option value="Physical_Person">Physical Person</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Member Profile</label>
+                        <select id="customerType" name="CustomerType" class="form-select">
+                            <option value="">All</option>
+                            <option value="AffiliateMemberSalaryAccount">Affiliate Member Salary (TMAA)</option>
+                            <option value="CivilServantsSalaryCollection">Civil Servants Salary (CSCA)</option>
+                            <option value="DailyCollection">Daily Collection (DCA)</option>
+                            <option value="DailySaver">Daily Saver (DSA)</option>
+                            <option value="MemberAccount">Members Account (Serial Number)</option>
+                            <option value="MobileMoneyMTN">Mobile Money MTN (MTCA)</option>
+                            <option value="MobileMoneyOrange">Mobile Money Orange (OMCA)</option>
+                            <option value="PreRegistredMember">Pre-Registered Members (PRM)</option>
+                            <option value="PrivateInstitutionSalaryCollection">Private Institution Salary (PICA)</option>
+                            <option value="Remittance">Remittance (RMCA)</option>
+                            <option value="TemporalAccount">Temporal Account (TEMP)</option>
+                            <option value="UnknownSalaryMemberAccount">Temporal Salary For Member (TMSA)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Age Category</label>
+                        <select id="ageCategoryStatus" name="AgeCategoryStatus" class="form-select">
+                            <option value="">All</option>
+                            <option value="Major">Major</option>
+                            <option value="Minor">Minor</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Date Filters -->
+            <div id="dateFilters" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Date of Birth From</label>
+                        <input type="date" id="dobFrom" name="DateOfBirthFrom" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Date of Birth To</label>
+                        <input type="date" id="dobTo" name="DateOfBirthTo" class="form-control" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Created From</label>
+                        <input type="date" id="createdFrom" name="CreatedFrom" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Created To</label>
+                        <input type="date" id="createdTo" name="CreatedTo" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> Apply Filter
+                </button>
+                <button id="resetFilterBtn" type="reset" class="btn btn-secondary me-2 w-100">
+                    <i class="mdi mdi-refresh"></i> Reset
+                </button>
+                <button id="exportBtn" type="button" class="btn btn-success w-100">
+                    <i class="mdi mdi-file-excel"></i> Export to Excel
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    @Html.Partial("_IndividualExportData")
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/Js/Crud/CustomerManagement/Customers/CustomerExport.js"></script>
+}
