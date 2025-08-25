@@ -1827,6 +1827,12 @@ namespace BusinessServices
         {
             var data = HttpContext.Current?.Session?["FullName"]?.ToString();
             return string.IsNullOrWhiteSpace(data) ? "No Name" : data;
+        }  
+        
+        public string GetUserId()
+        {
+            var data = HttpContext.Current?.Session["UserId"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? "No Name" : data;
         }
 
         public string GetUserName()

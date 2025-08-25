@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole.MemberAdjustmentRequestDetailsDto
+﻿@model CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole.MemberAdjustmentRequestDetailsWithHistoryDto
 
 @functions {
     public class AdjustmentDisplayItem
@@ -10,13 +10,14 @@
 }
 
 @{
-    var request = Model;
+    var request = Model.Request;
+    var history = Model.History;
 
     var profileAdjustments = new List<AdjustmentDisplayItem>
 {
         new AdjustmentDisplayItem { Label = "First Name", OldValue = request.OldFirstName, NewValue = request.NewFirstName },
         new AdjustmentDisplayItem { Label = "Last Name", OldValue = request.OldLastName, NewValue = request.NewLastName },
-        new AdjustmentDisplayItem { Label = "Customer ID", OldValue = request.OldCustomerId, NewValue = request.NewCustomerId },
+        new AdjustmentDisplayItem { Label = "Customer ID", OldValue = request.OldMemberId, NewValue = request.NewMemberId },
         new AdjustmentDisplayItem { Label = "Member Status", OldValue = request.OldMemberStatus, NewValue = request.NewMemberStatus },
         new AdjustmentDisplayItem { Label = "Membership Status", OldValue = request.OldMemberShipStatus, NewValue = request.NewMemberShipStatus },
         new AdjustmentDisplayItem { Label = "Member Category", OldValue = request.OldMemberCategory, NewValue = request.NewMemberCategory }
@@ -25,7 +26,7 @@
     var accountAdjustments = new List<AdjustmentDisplayItem>
 {
         new AdjustmentDisplayItem { Label = "Balance", OldValue = request.OldBalance.ToString("N2"), NewValue = request.NewBalance.ToString("N2") },
-        new AdjustmentDisplayItem { Label = "Account Status", OldValue = request.OldAccountStatus.ToString("N2"), NewValue = request.NewAccountStatus.ToString("N2") },
+        new AdjustmentDisplayItem { Label = "Account Status", OldValue = request.OldAccountStatus.ToString(), NewValue = request.NewAccountStatus.ToString() },
         new AdjustmentDisplayItem { Label = "Status Flag", OldValue = request.OldStatus.ToString(), NewValue = request.NewStatus.ToString() }
     };
 }
@@ -38,10 +39,13 @@
             <tr class="table-primary">
                 <td colspan="2" class="text-center fw-bold">📋 Member Adjustment Request Overview</td>
             </tr>
-            <tr><td class="fw-bold">Customer ID</td><td>@request.CustomerId</td></tr>
+            <tr><td class="fw-bold">Customer ID</td><td>@request.MemberId</td></tr>
             <tr><td class="fw-bold">Customer Name</td><td>@request.CustomerName</td></tr>
             <tr><td class="fw-bold">Branch</td><td>@request.BranchName (@request.BranchCode)</td></tr>
-            <tr><td class="fw-bold">Requested Date</td><td>@request.RequestedDate.ToString("dd/MM/yyyy HH:mm:ss")</td></tr>
+            <tr>
+                <td class="fw-bold">Requested Date</td>
+                <td>@request.RequestedDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+            </tr>
             <tr><td class="fw-bold">Requested By</td><td>@request.RequestedBy</td></tr>
             <tr><td class="fw-bold">Reason</td><td>@request.Reason</td></tr>
             <tr>
@@ -54,7 +58,13 @@
             </tr>
             @if (!string.IsNullOrWhiteSpace(request.ApprovedBy))
             {
-                <tr><td class="fw-bold">Approved By</td><td>@request.ApprovedBy (@request.ApprovedDate?.ToString("dd/MM/yyyy HH:mm:ss"))</td></tr>
+                <tr>
+                    <td class="fw-bold">Approved By</td>
+                    <td>
+                        @request.ApprovedBy
+                        (@(request.ApprovedDate?.ToString("dd/MM/yyyy HH:mm:ss")))
+                    </td>
+                </tr>
             }
             @if (!string.IsNullOrWhiteSpace(request.RejectionReason))
             {
@@ -83,6 +93,49 @@
                     <td>
                         Old: <span class="text-muted">@item.OldValue</span>
                         <span class="ms-3">New: <strong>@item.NewValue</strong></span>
+                    </td>
+                </tr>
+            }
+
+            <!-- 📚 Adjustment History -->
+            @if (history?.Any() == true)
+            {
+                <tr class="table-primary">
+                    <td colspan="2" class="text-center fw-bold">📚 Adjustment History</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <table class="table table-sm table-bordered table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Field</th>
+                                    <th>Old</th>
+                                    <th>New</th>
+                                    <th>Status</th>
+                                    <th>Changed By</th>
+                                    <th>Approved By</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var h in history.OrderByDescending(x => x.ChangedDate))
+                                {
+                                    <tr>
+                                        <td>@h.ChangedDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                        <td>@h.FieldAdjusted</td>
+                                        <td>@h.OldValue</td>
+                                        <td>@h.NewValue</td>
+                                        <td>
+                                            <span class="badge bg-@(h.ApprovalStatus == "Approved" ? "success" : h.ApprovalStatus == "Rejected" ? "danger" : "secondary")">
+                                                @h.ApprovalStatus
+                                            </span>
+                                        </td>
+                                        <td>@h.ChangedBy</td>
+                                        <td>@h.ApprovedBy</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     </td>
                 </tr>
             }

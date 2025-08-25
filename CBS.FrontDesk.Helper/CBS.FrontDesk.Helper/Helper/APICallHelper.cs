@@ -1211,7 +1211,7 @@ namespace CBS.FrontDesk.Helper
         public static string SubmitMemberAdjustmentRequest = "/api/v1/MemberAdjustmentRequest/submit";
         public static string ApproveMemberAdjustmentRequest = "/api/v1/MemberAdjustmentRequest/approve";
         public static string RejectMemberAdjustmentRequest = "/api/v1/MemberAdjustmentRequest/reject";
-        public static string GetMemberAdjustmentRequestDetails = "/api/v1/MemberAdjustmentRequest/get-details";
+        public static string GetMemberAdjustmentRequestDetails = "/api/v1/MemberAdjustmentRequest/get-details/";
         public static string MemberAdjustmentRequestDataTable = "/api/v1/MemberAdjustmentRequest/datatable";
     }
 }
