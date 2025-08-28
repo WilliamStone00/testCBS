@@ -301,8 +301,8 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 // Build URL and call API
-               
 
+                 fileUploads = fileUploads.Where(x => x.FileType!="Analysis").ToList();
                 // If you're at Head Office, show EVERYTHING
                 var isHeadOffice = IsHeadOffice();
                 if (isHeadOffice)

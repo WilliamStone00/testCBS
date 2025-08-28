@@ -26,6 +26,7 @@
             UseBranch: useBranch,
             UseDate: useDate,
             UseMore: useMore
+           
         };
 
         // ---- attach filters only when enabled & non-empty ----
@@ -52,10 +53,11 @@
         const uploadedBy = ($("#uploadedBy").val() || "").trim();
         const fileUploadId = ($("#fileUploadRef").val() || "").trim();
         const fileCode = ($("#fileCode").val() || "").trim();
-
+        const fileType = ($("#fileType").val() || "").trim();
         if (uploadedBy) payload.UploadedBy = uploadedBy;
         if (fileUploadId) payload.FileUploadId = fileUploadId;
         if (fileCode) payload.FileCode = fileCode;
+        if (fileType) payload.fileType = fileType;
 
         return payload;
     }
@@ -69,7 +71,18 @@
         });
     });
 
+    $(function () {
+        $('#actionModeCards').on('click', '.mode-card', function () {
+            $('#actionModeCards .mode-card').removeClass('active').attr('aria-pressed', 'false');
+            $(this).addClass('active').attr('aria-pressed', 'true');
+            $('#actionParam').val($(this).data('mode'));   // sets required value
+            $('#actionModeHelp').addClass('d-none');
 
+            // NEW: load the datatable when an action mode is clicked
+            $card.hide();
+            table.ajax.reload(); // (keeps current page; use reload(null, true) to reset to page 1)
+        });
+    });
     // --- value → badge/icon maps (MUST be defined before columns use them) ---
     const statusMap = {
         Viewed: { cls: 'bg-secondary', icon: 'mdi-eye-outline', text: 'Viewed' },
@@ -171,7 +184,7 @@
                             </a>
                           </li>
                           <li>
-                            <a class="dropdown-item" href="/SalaryUpload/Detail?fileUploadid=${row.Id}">
+                            <a class="dropdown-item" target="_blank" href="/SalaryUpload/Detail?fileUploadid=${row.Id}">
                               <i class="mdi mdi-information-outline me-2"></i>Details
                             </a>
                           </li>
@@ -201,7 +214,7 @@
                             </a>
                           </li>
                           <li>
-                            <a class="dropdown-item" href="/SalaryExecution/Detail?fileUploadid=${row.Id}&mode=execute">
+                            <a class="dropdown-item" target="_blank" href="/SalaryExecution/Detail?fileUploadid=${row.Id}&mode=execute">
                               <i class="mdi mdi-play-circle-outline me-2"></i>Execute
                             </a>
                           </li>
@@ -392,6 +405,7 @@ function togglePrivate(id, toPrivate) {
         )
         .set({ labels: { ok: toPrivate ? "Yes, make Private" : "Yes, make Public", cancel: "Cancel" } });
 }
+
 
 
 function toggleExecutable(id, toStatus) {

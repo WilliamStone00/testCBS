@@ -283,6 +283,61 @@ namespace CBS.BusinessService.CustomerManagement
                 dataTableOptions: customersForDataTableQuery.Options
             );
         }
+        public async Task<FileDownloadDto> DownloadCustomers(ExportCustomersQueryFilter customersForDataTableQuery)
+        {
+            if (!IsHeadOffice())
+            {
+                customersForDataTableQuery.BranchId=GetBranchID();
+            }
+        
+            customersForDataTableQuery.Download=true;
+            // Make API call to fetch the DataTable result
+            var couApiResponse = await _customerApiHelper.PostAsync<ResponseObject<FileDownloadDto>>(
+                APICallHelper.MembersDownloadDatatableQuery,
+                customersForDataTableQuery
+            );
+
+            // Return response if successful
+            if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+            {
+                return couApiResponse.ApiResponseData.Data;
+            }
+            return new FileDownloadDto();
+          
+        }
+        public async Task<CustomDataTable> GetDataTableAsyncTwo(ExportCustomersQueryFilter customersForDataTableQuery)
+        {
+            if (!IsHeadOffice())
+            {
+                customersForDataTableQuery.BranchId=GetBranchID();
+            }
+            else
+            {
+                customersForDataTableQuery.BranchId=null;
+            }
+
+
+            // Make API call to fetch the DataTable result
+            var couApiResponse = await _customerApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                APICallHelper.MembersDownloadDatatableQuery,
+                customersForDataTableQuery
+            );
+
+            // Return response if successful
+            if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+            {
+                return couApiResponse.ApiResponseData.Data;
+            }
+
+            // Return an empty DataTable if the request fails
+            return new CustomDataTable(
+                draw: Convert.ToInt32(customersForDataTableQuery.Options.draw),
+                recordsTotal: 0,
+                recordsFiltered: 0,
+                data: new List<object>(), // No data
+                dataTableOptions: customersForDataTableQuery.Options
+            );
+        }
 
         public async Task<IEnumerable<IndividualProfile>> GetMembers(PagginationResource resource)
         {
