@@ -190,6 +190,19 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
         public async Task<ActionResult> GetRequestDetailPartial(string id)
         {
             var model = await _memberAdjustmentService.GetMemberAdjustmentRequestAsync(id);
+            if (model != null && model.Request!= null && model.Request.OldBalance!=0)
+            {
+                bool isCredit = model.Request.BalanceSenseDifference == "CREDIT";
+                if (isCredit)
+                {
+                    model.Request.NewBalance = model.Request.OldBalance + model.Request.NewBalance;
+                }
+                else
+                {
+                    model.Request.NewBalance = model.Request.OldBalance - model.Request.NewBalance;
+                }
+
+            }
             return PartialView("_MemberAdjustmentDetailBody", model);
         }
 

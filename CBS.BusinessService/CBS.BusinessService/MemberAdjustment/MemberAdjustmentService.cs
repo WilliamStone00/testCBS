@@ -126,7 +126,7 @@ namespace CBS.BusinessService.MemberP.MemberAdjustment
                 OldFirstName = model.OldFirstName,
                 NewLastName = model.NewLastName,
                 OldLastName = model.OldLastName,
-
+                BalanceSenseDifference=model.BalanceSenseDifference,
                 // --- Balance Properties ---
                 NewBalance = model.NewBalance,
                 OldBalance = model.OldBalance,
