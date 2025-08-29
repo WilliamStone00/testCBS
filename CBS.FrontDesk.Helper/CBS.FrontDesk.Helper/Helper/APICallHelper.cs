@@ -154,6 +154,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetSalaryModelForBranchByFileId = "/api/v1/SalaryAnalysis/get-salary-model-for-branch-by-fileid/{0}";
 
         public static string GetMemberByCustomerType = "/api/v1/Customer/MembersByType/{0}";
+        public static string GetMemberByCustomerTypeAndBranchId = "/api/v1/Customers/get-customers-by-category";
 
 
         //SalaryExecution

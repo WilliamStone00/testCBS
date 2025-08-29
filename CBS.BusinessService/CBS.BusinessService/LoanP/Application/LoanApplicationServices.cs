@@ -188,7 +188,7 @@ namespace CBS.BusinessService.Application
             {
 
                 // Make an API call to create an individual profile
-                model.BranchId = GetBranchID();
+                //model.BranchId = GetBranchID();
 
                 //model.LoanApplicationType = "Normal";
                 //model.AmortizationType = "Constant_Amortization";

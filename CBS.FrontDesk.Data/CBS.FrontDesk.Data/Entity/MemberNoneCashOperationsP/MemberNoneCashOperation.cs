@@ -33,7 +33,9 @@ namespace CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP
         public string AccountId { get; set; }
         public string TransactionReference { get; set; }
         public SavingProducts.Account Account { get; set; }
-
+        public bool IsMobileMoneyOperation { get; set; }
+        public string NoneMemberMobileReference { get; set; }
+        public string MobileMoneyPath { get; set; }
     }
     public class MemberNoneCashOperationCarrier
     {
@@ -57,6 +59,12 @@ namespace CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP
         public string BookingDirection { get; set; }
         public string MemberName { get; set; }
         public string ChartOfAccountName { get; set; }
+        public string BranchId { get; set; }
+        public bool IsMobileMoneyOperation { get; set; }
+        public string NoneMemberMobileReference { get; set; }
+        public DateTime? AccountingDate { get; set; }
+        public string MobileMoneyPath { get; set; }
+
     }
     public class ValidateMemberNoneCashOperationCommand
     {

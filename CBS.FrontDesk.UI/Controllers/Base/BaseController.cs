@@ -444,20 +444,21 @@ namespace CBS.FrontDesk.UI.Controllers
 
         private bool IsInternetAvailable()
         {
-            try
-            {
-                using (var client = new WebClient())
-                {
-                    using (client.OpenRead("https://www.youtube.com/"))
-                    {
-                        return true;
-                    }
-                }
-            }
-            catch
-            {
-                return false;
-            }
+            return true;
+            //try
+            //{
+            //    using (var client = new WebClient())
+            //    {
+            //        using (client.OpenRead("https://www.youtube.com/"))
+            //        {
+            //            return true;
+            //        }
+            //    }
+            //}
+            //catch
+            //{
+            //    return false;
+            //}
         }
 
         protected CultureInfo GetUserCultureInfo()

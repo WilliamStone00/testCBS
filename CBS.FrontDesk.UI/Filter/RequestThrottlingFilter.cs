@@ -126,17 +126,17 @@ namespace CBS.FrontDesk.UI.Filter
                 }
 
                 // ✅ IP ADDRESS CHECK
-                var userIp = ipAddress;
-                if (filterContext.HttpContext.Session["UserIP"] != null && filterContext.HttpContext.Session["UserIP"].ToString() != userIp)
-                {
-                    filterContext.HttpContext.Session.Abandon();
-                    filterContext.Result = new RedirectResult("~/Authentication/Logout");
-                    return;
-                }
-                else
-                {
-                    filterContext.HttpContext.Session["UserIP"] = userIp;
-                }
+                //var userIp = ipAddress;
+                //if (filterContext.HttpContext.Session["UserIP"] != null && filterContext.HttpContext.Session["UserIP"].ToString() != userIp)
+                //{
+                //    filterContext.HttpContext.Session.Abandon();
+                //    filterContext.Result = new RedirectResult("~/Authentication/Logout");
+                //    return;
+                //}
+                //else
+                //{
+                //    filterContext.HttpContext.Session["UserIP"] = userIp;
+                //}
 
                 // ✅ PREVENT ACCESS TO LOGIN PAGE FOR AUTHENTICATED USERS
                 if (isAuthenticated && controllerName.Equals("authentication") && actionName.Equals("login"))
@@ -162,20 +162,21 @@ namespace CBS.FrontDesk.UI.Filter
 
         private bool IsInternetAvailable()
         {
-            try
-            {
-                using (var client = new WebClient())
-                {
-                    using (client.OpenRead("https://www.youtube.com/"))
-                    {
-                        return true;
-                    }
-                }
-            }
-            catch
-            {
-                return false;
-            }
+            return true;
+            //try
+            //{
+            //    using (var client = new WebClient())
+            //    {
+            //        using (client.OpenRead("https://www.youtube.com/"))
+            //        {
+            //            return true;
+            //        }
+            //    }
+            //}
+            //catch
+            //{
+            //    return false;
+            //}
         }
         public void GetUserSession(ActionExecutingContext filterContext)
         {
