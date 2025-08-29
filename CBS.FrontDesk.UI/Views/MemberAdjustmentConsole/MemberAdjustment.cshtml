@@ -374,73 +374,73 @@
                     orderable: false,
                     render: function (_, __, row) {
                         return `
-                                    <div class="text-center dropdown">
-                                        <button class="btn btn-sm btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                            <i class="mdi mdi-eye"></i> Action
+                            <div class="text-center dropdown">
+                                <button class="btn btn-sm btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    <i class="mdi mdi-eye"></i> Action
+                                </button>
+                                <ul class="dropdown-menu">
+
+                                    <li>
+                                        <button class="dropdown-item text-dark"
+                                                onclick="window.open('/Individual/CustomerProfile?KEY=${row.CustomerId}', '_blank')">
+                                            <i class="mdi mdi-account-circle-outline me-2 text-primary"></i> Profile
                                         </button>
-                                        <ul class="dropdown-menu">
+                                    </li>
 
-                                            <li>
-                                                <button class="dropdown-item text-dark"
-                                                        onclick="window.open('/Individual/CustomerProfile?KEY=${row.CustomerId}', '_blank')">
-                                                    <i class="mdi mdi-account-circle"></i> Profile
-                                                </button>
-                                            </li>
+                                    <li>
+                                        <button class="dropdown-item text-dark"
+                                                onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberNamesDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                            <i class="mdi mdi-rename-box me-2 text-warning"></i> Initiate Member Name Adjustment
+                                        </button>
+                                    </li>
 
-                                            <li>
-                                                <button class="dropdown-item text-dark"
-                                                        onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberNamesDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
-                                                    <i class="mdi mdi-pencil-outline me-1"></i> Initiate Member Name Adjustment
-                                                </button>
-                                            </li>
+                                    <li>
+                                        <button class="dropdown-item text-dark"
+                                                onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberStatusDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                            <i class="mdi mdi-toggle-switch me-2 text-danger"></i> Activate Or Deactivate Member Adjustment
+                                        </button>
+                                    </li>
 
-                                            <li>
-                                                <button class="dropdown-item text-dark"
-                                                        onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberStatusDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
-                                                    <i class="mdi mdi-pencil-outline me-1"></i>Activate Or Deactivate Member Adjustment
-                                                </button>
-                                            </li>
+                                    <li>
+                                        <button class="dropdown-item text-dark"
+                                                onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberActiveStatusDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                            <i class="mdi mdi-account-check-outline me-2 text-success"></i> Initiate Member Active Status Adjustment
+                                        </button>
+                                    </li>
 
-                                              <li>
-                                                <button class="dropdown-item text-dark"
-                                                        onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberActiveStatusDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
-                                                    <i class="mdi mdi-pencil-outline me-1"></i> Initiate Member Active Status Adjustment
-                                                </button>
-                                            </li>
+                                    <li>
+                                        <button class="dropdown-item text-dark"
+                                                onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberMembershipStatusDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                            <i class="mdi mdi-card-account-details-outline me-2 text-info"></i> Initiate Membership Status Adjustment
+                                        </button>
+                                    </li>
 
-                                            <li>
-                                                <button class="dropdown-item text-dark"
-                                                        onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberMembershipStatusDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
-                                                    <i class="mdi mdi-pencil-outline me-1"></i> Initiate Membership Status Adjustment
-                                                </button>
-                                            </li>
+                                    <li>
+                                        <button class="dropdown-item text-dark"
+                                                onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberReferenceDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                            <i class="mdi mdi-identifier me-2 text-secondary"></i> Member Reference Adjustment
+                                        </button>
+                                    </li>
 
-                                             <li>
-                                                <button class="dropdown-item text-dark"
-                                                        onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberReferenceDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
-                                                    <i class="mdi mdi-pencil-outline me-1"></i> Member Reference Adjustment
-                                                </button>
-                                            </li>
+                                    <li>
+                                        <button class="dropdown-item text-dark"
+                                                onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberCategoryDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                            <i class="mdi mdi-account-group-outline me-2 text-primary"></i> Member Category Adjustment
+                                        </button>
+                                    </li>
 
-                                             <li>
-                                                <button class="dropdown-item text-dark"
-                                                        onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberCategoryDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
-                                                    <i class="mdi mdi-pencil-outline me-1"></i> Member Category Adjustment
-                                                </button>
-                                            </li>
+                                    <li>
+                                        <button class="dropdown-item text-dark"
+                                                onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberAccountBalanceDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                            <i class="mdi mdi-cash-multiple me-2 text-success"></i> Member Account Balance Adjustment
+                                        </button>
+                                    </li>
 
-                                            <li>
-                                                <button class="dropdown-item text-dark"
-                                                        onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberAccountBalanceDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
-                                                    <i class="mdi mdi-pencil-outline me-1"></i> Member Account Balance Adjustment
-                                                </button>
-                                            </li>
-
-                                        </ul>
-                                    </div>`;
+                                </ul>
+                            </div>`;
                     }
-
                 }
+
             ]
         });
     }

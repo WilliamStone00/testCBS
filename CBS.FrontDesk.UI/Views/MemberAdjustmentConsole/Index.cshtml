@@ -358,6 +358,8 @@
                                     data-old-balance="${row.OldBalance ?? ''}"
                                     data-new-balance="${row.NewBalance ?? ''}"
 
+                                    data-balancemovementsense="${row.BalanceSenseDifference ?? ''}"
+
                                     data-old-memberid="${row.OldMemberId || ''}"
                                     data-new-memberid="${row.NewMemberId || ''}"
 
@@ -460,8 +462,28 @@
             const fields = [
                 { label: "First Name", old: $btn.data("old-firstname"), new: $btn.data("new-firstname") },
                 { label: "Last Name", old: $btn.data("old-lastname"), new: $btn.data("new-lastname") },
-                { label: "Account Balance", old: $btn.data("old-balance"), new: $btn.data("new-balance") },
-                { label: "Member Status", old: $btn.data("old-memberstatus"), new: $btn.data("new-memberstatus") },
+                { label: "Amount Balance", old: $btn.data("old-balance"), new: $btn.data("new-balance") },
+                // Special case for Balance Difference
+                (function () {
+                    const oldBalance = parseFloat($btn.data("old-balance")) || 0;
+                    const newBalance = parseFloat($btn.data("new-balance")) || 0;
+                    const movementSense = $btn.data("balancemovementsense");
+
+                    let computedNewBalance = newBalance;
+                    if (movementSense) {
+                        if (movementSense.toString().toUpperCase() === "CREDIT") {
+                            computedNewBalance = oldBalance + newBalance;
+                        } else {
+                            computedNewBalance = oldBalance - newBalance;
+                        }
+                    }
+
+                    return {
+                        label: "Amount Of Balance Difference To Be Adjusted",
+                        old: oldBalance,
+                        new: computedNewBalance
+                    };
+                })(),
                 { label: "Membership Status", old: $btn.data("old-membershipstatus"), new: $btn.data("new-membershipstatus") },
                 { label: "Member Category", old: $btn.data("old-membercategory"), new: $btn.data("new-membercategory") },
                 { label: "Member Activation Status", old: $btn.data("old-status"), new: $btn.data("new-status") },

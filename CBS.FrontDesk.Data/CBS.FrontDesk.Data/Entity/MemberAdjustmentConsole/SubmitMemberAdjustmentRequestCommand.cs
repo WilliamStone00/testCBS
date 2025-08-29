@@ -16,6 +16,7 @@ namespace CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole
         public string NewLastName { get; set; }
         public string OldLastName { get; set; }
         public decimal NewBalance { get; set; }
+        public string BalanceSenseDifference { get; set; }
         public string NewMemberId { get; set; }
         public string NewMemberStatus { get; set; }
         public string OldMemberStatus { get; set; }
