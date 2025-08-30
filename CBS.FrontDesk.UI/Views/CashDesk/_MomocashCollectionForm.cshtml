@@ -1,125 +1,248 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
-    @using Resources
+@using Resources
+<style>
+    /* tighter vertical rhythm */
+    .fieldset-custom .section {
+        border: 1px solid var(--bs-primary);
+        border-radius: .5rem;
+        padding: .75rem;
+        margin-bottom: .75rem;
+    }
+
+        .fieldset-custom .section h6 {
+            margin: 0 0 .25rem 0;
+            font-weight: 700;
+        }
+
+    .fieldset-custom .form-floating {
+        padding: .5rem;
+    }
+
+    .fieldset-custom .form-check.form-switch {
+        padding: .5rem .75rem;
+    }
+
+    .fieldset-custom .form-control,
+    .fieldset-custom .select2-selection--single {
+        min-height: 36px;
+    }
+
+    .fieldset-custom .table {
+        margin: .5rem 0 0 0;
+    }
+
+        .fieldset-custom .table tfoot td {
+            padding-top: .25rem;
+        }
+
+    #momoPathContainer .form-check-label strong {
+        display: inline-block;
+    }
+
+    #momoPathContainer .form-check {
+        padding-left: 0.25rem;
+    }
+</style>
+
 @if (ViewBag.Operation == "cashin")
 {
-    <div class="form-wrapper">
-        <fieldset class="fieldset-custom">
-            <legend style="color: green">@CashDesk_MomocashCollectionForm.CashinMomocashCollections</legend>
+    <fieldset class="fieldset-custom">
+        <legend style="color: green">@CashDesk_MomocashCollectionForm.CashinMomocashCollections</legend>
 
-            <div class="change-group">
-                <div class="row mt-2 gy-4">
-                    <hr style="border: 2px solid green;" />
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-floating form-floating-outline">
-                                <span class="formatted-amount shadow-box float-start">Member's name: @Model.Customer.name</span>
-                            </div>
-                        </div>
-                    </div>
-                    <hr style="border: 1px solid green;" />
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-check">
-                                @Html.RadioButtonFor(m => m.AddOtherTransactionMobileMoneyCommand.SourceType, "MomocashCollectionMTN", new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyMTN" })
-                                <label class="form-check-label shadow-input-boxes" for="MomocashCollectionMTN" style="background-color: yellow; color: black;">@CashDesk_MomocashCollectionForm.MomoCashCollectionMobileMoneyMTN</label>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-check">
-                                @Html.RadioButtonFor(m => m.AddOtherTransactionMobileMoneyCommand.SourceType, "MomocashCollectionOrange", new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyORANGE" })
-                                <label class="form-check-label shadow-input-boxes" for="MomocashCollectionOrange" style="background-color: orange; color: white;">@CashDesk_MomocashCollectionForm.MomoCashCollectionMobileMoneyOrange</label>
-                            </div>
-                        </div>
-                    </div>
-                    <hr style="border: 1px solid green;" />
-                    <div class="row mb-3">
-                        <div class="col text-end">
-                            <label class="form-label fw-semibold me-2">Accounting Date</label>
-                            @Html.TextBoxFor(
-                                m => m.BulkDeposit.AccountingDate,
-                                Model.BulkDeposit.AccountingDate.HasValue
-                                    ? Model.BulkDeposit.AccountingDate.Value.ToString("yyyy-MM-dd")
-                                    : DateTime.Today.ToString("yyyy-MM-dd"),
-                                new
-                                {
-                                    @class = "form-control accounting-date d-inline-block",
-                                    style = "width: 200px; display:inline-block;",
-                                    type = "date",
-                                    data_date_default = "today",
-                                    data_date_max = "today"
-                                }
-                            )
-                            @Html.ValidationMessageFor(m => m.BulkDeposit.AccountingDate, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="table-responsive" style="width: 100%;">
-                            <table class="table table-hover" id="myDataTableT">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th style="display:none;">@CashDesk_MomocashCollectionForm.ProductID</th>
-                                        <th>@CashDesk_MomocashCollectionForm.Accounts</th>
-                                        <th>@CashDesk_MomocashCollectionForm.Balance</th>
-                                        <th>@CashDesk_MomocashCollectionForm.Amount</th>
-                                        <th>@CashDesk_MomocashCollectionForm.Fee</th>
-                                        <th>@CashDesk_MomocashCollectionForm.Total</th>
-                                        <th>@CashDesk_MomocashCollectionForm.Confirm</th>
-                                        <th>@CashDesk_MomocashCollectionForm.Inc</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var d in Model.BulkDeposits.Where(x => !x.AccountType.ToLower().Contains("loan")).OrderBy(t => t.AccountType))
-                                    {
-                                        <tr>
-                                            <td style="display:none;">@d.AccountNumber</td>
-                                            <td>@d.AccountType</td>
-                                            <td>@d.Balance.ToString("#,##0.0")</td>
-                                            <td>
-                                                <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
-                                            </td>
-                                            <td>
-                                                <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee">
-                                            </td>
-                                            <td>
-                                                <span class="total-span">@d.Total</span>
-                                            </td>
-                                            <td>
-                                                <input type="checkbox" class="form-check-input">
-                                            </td>
-                                            <td>
-                                                <input type="checkbox" class="form-check-input check-inclussive" disabled>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="3" style="text-align: right;"><strong>@CashDesk_MomocashCollectionForm.Total:</strong></td>
-                                        <td id="tableTotal">0</td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
 
-                </div>
-                <div class="header-buttons mt-4 float-end">
-                    <input type="hidden" name="OperationType" value="CashInMomocashCollection" id="OperationType" />
-                    <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
-                    <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostCashIn()">
-                        <i class="fas fa-money-bill-wave me-1"></i> @CashDesk_MomocashCollectionForm.CashIn
-                    </button>
-                    <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
-                        <i class="fas fa-print me-1"></i> @CashDesk_MomocashCollectionForm.RePrint
-                    </button>
-                    <button type="reset" class="btn btn-outline-secondary">
-                        <i class="fas fa-sync-alt me-1"></i> @CashDesk_MomocashCollectionForm.Reset
-                    </button>
+        <div class="row g-3">
+
+            <div class="row g-2 align-items-center mb-2">
+                <div class="col-12">
+                    <span class="formatted-amount shadow-sm d-block py-2 px-3 bg-light rounded border border-secondary">
+                        <strong>@GlobalLoanRepaymentBackOffice.MembersName:</strong> @Model.Customer.name &nbsp; | &nbsp;
+                        <strong>@GlobalLoanRepaymentBackOffice.BranchName:</strong> @Model.Branch.Name &nbsp; | &nbsp;
+                        <strong>@GlobalLoanRepaymentBackOffice.BranchCode:</strong> @Model.Branch.BranchCode
+                    </span>
                 </div>
             </div>
-            <hr style="border: 2px solid green;" />
-        </fieldset>
-    </div>
+            <div class="row g-3 align-items-center">
+                <div class="col-md-8">
+                    <label class="fw-semibold text-dark mb-1">Source Type:</label>
+                    <div class="d-flex flex-wrap gap-3">
+                        <label class="booking-option">
+                            @Html.RadioButtonFor(m => m.AddOtherTransactionMobileMoneyCommand.SourceType, "MomocashCollectionMTN", new { id = "MobileMoneyMTN" })
+                            @CashDesk_MomocashCollectionForm.MomoCashCollectionMobileMoneyMTN
+                        </label>
+                        <label class="booking-option">
+                            @Html.RadioButtonFor(m => m.AddOtherTransactionMobileMoneyCommand.SourceType, "MomocashCollectionOrange", new { id = "MobileMoneyORANGE" })
+                            @CashDesk_MomocashCollectionForm.MomoCashCollectionMobileMoneyOrange
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-4 text-md-end">
+                    <label class="form-label fw-semibold me-2 mb-0">Accounting Date</label>
+                    @Html.TextBoxFor(
+                        m => m.BulkDeposit.AccountingDate,
+                        Model.BulkDeposit.AccountingDate.HasValue
+                            ? Model.BulkDeposit.AccountingDate.Value.ToString("yyyy-MM-dd")
+                            : DateTime.Today.ToString("yyyy-MM-dd"),
+                        new
+                             {
+                            @class = "form-control form-control-sm d-inline-block accounting-date",
+                            style = "width: 180px",
+                            type = "date",
+                            data_date_default = "today",
+                            data_date_max = "today"
+                        })
+                    @Html.ValidationMessageFor(m => m.BulkDeposit.AccountingDate, "", new { @class = "text-danger" })
+                </div>
+                <!-- Toggle Representative/Depositor section -->
+
+
+                <input type="hidden" id="memberName" value="@Model.AddMembersNoneCashOperationCommand.MemberName" />
+            </div>    <!-- Members Accounts (compact table) -->
+            <!-- Collapsible Representative/Depositor section -->
+            <!-- Flex row to push button to the right -->
+            <div class="d-flex justify-content-end mb-2">
+                <button class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
+                        type="button" data-bs-toggle="collapse" data-bs-target="#repSection"
+                        aria-expanded="false" aria-controls="repSection">
+                    <i class="bi bi-person-vcard me-1"></i>
+                    Add representative
+                    <span id="repMiniSummary" class="ms-2 text-muted small d-none">–</span>
+                </button>
+            </div>
+
+            <!-- Collapsible content -->
+            <div class="col-12">
+                <div id="repSection" class="collapse">
+                    <div class="border rounded-3 p-3 bg-light-subtle">
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" id="DepositorName" class="form-control form-control-sm"
+                                           placeholder="@CashDesk_DepositerForm.FullName">
+                                    <label for="DepositorName" class="small">@CashDesk_DepositerForm.Name</label>
+                                    <div class="invalid-feedback">@CashDesk_DepositerForm.PleaseEnterName.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="tel" id="DepositorTelephone" class="form-control form-control-sm"
+                                           placeholder="@CashDesk_DepositerForm.PhoneNumber">
+                                    <label for="DepositorTelephone" class="small">@CashDesk_DepositerForm.PhoneNumber</label>
+                                    <div class="invalid-feedback">@CashDesk_DepositerForm.PhoneNumberIsRequired.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" id="DepositorIDNumber" class="form-control form-control-sm"
+                                           placeholder="@CashDesk_DepositerForm.IDNumber">
+                                    <label for="DepositorIDNumber" class="small">@CashDesk_DepositerForm.CNIIDNumber</label>
+                                    <div class="invalid-feedback">@CashDesk_DepositerForm.EnterAValidIDNumber.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <input type="date" id="DepositorIDIssueDate" class="form-control form-control-sm">
+                                    <label for="DepositorIDIssueDate" class="small">@CashDesk_DepositerForm.IssueDate</label>
+                                    <div class="invalid-feedback">@CashDesk_DepositerForm.IssueDateRequired.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <input type="date" id="DepositorIDExpiryDate" class="form-control form-control-sm">
+                                    <label for="DepositorIDExpiryDate" class="small">@CashDesk_DepositerForm.ExpiryDate</label>
+                                    <div class="invalid-feedback">@CashDesk_DepositerForm.ExpiryDateIsRequired.</div>
+                                    <div class="invalid-feedback">@CashDesk_DepositerForm.PleaseEnterValidDate.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" id="DepositorIDNumberPlaceOfIssue" class="form-control form-control-sm"
+                                           placeholder="@CashDesk_DepositerForm.PlaceOfIssue">
+                                    <label for="DepositorIDNumberPlaceOfIssue" class="small">@CashDesk_DepositerForm.PlaceOfIssue</label>
+                                    <div class="invalid-feedback">@CashDesk_DepositerForm.PlaceOfIssue.</div>
+                                    <div class="invalid-feedback">@CashDesk_DepositerForm.PleaseEnterValidPlace.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <textarea id="DepositorNote" class="form-control form-control-sm"
+                                              placeholder="Optional note..." style="height:70px;"></textarea>
+                                    <label for="DepositorNote" class="small">@CashDesk_DepositerForm.Note</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="table-responsive" style="width: 100%;">
+                <table class="table table-hover" id="myDataTableT">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="display:none;">@CashDesk_MomocashCollectionForm.ProductID</th>
+                            <th>@CashDesk_MomocashCollectionForm.Accounts</th>
+                            <th>@CashDesk_MomocashCollectionForm.Balance</th>
+                            <th>@CashDesk_MomocashCollectionForm.Amount</th>
+                            <th>@CashDesk_MomocashCollectionForm.Fee</th>
+                            <th>@CashDesk_MomocashCollectionForm.Total</th>
+                            <th>@CashDesk_MomocashCollectionForm.Confirm</th>
+                            <th>@CashDesk_MomocashCollectionForm.Inc</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var d in Model.BulkDeposits.Where(x => !x.AccountType.ToLower().Contains("loan")).OrderBy(t => t.AccountType))
+                        {
+                            <tr>
+                                <td style="display:none;">@d.AccountNumber</td>
+                                <td>@d.AccountType</td>
+                                <td>@d.Balance.ToString("#,##0.0")</td>
+                                <td>
+                                    <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee">
+                                </td>
+                                <td>
+                                    <span class="total-span">@d.Total</span>
+                                </td>
+                                <td>
+                                    <input type="checkbox" class="form-check-input">
+                                </td>
+                                <td>
+                                    <input type="checkbox" class="form-check-input check-inclussive" disabled>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" style="text-align: right;"><strong>@CashDesk_MomocashCollectionForm.Total:</strong></td>
+                            <td id="tableTotal">0</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="header-buttons mt-4 float-end">
+            <input type="hidden" name="OperationType" value="CashInMomocashCollection" id="OperationType" />
+            <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
+            <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostCashIn()">
+                <i class="fas fa-money-bill-wave me-1"></i> @CashDesk_MomocashCollectionForm.CashIn
+            </button>
+            <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
+                <i class="fas fa-print me-1"></i> @CashDesk_MomocashCollectionForm.RePrint
+            </button>
+            <button type="reset" class="btn btn-outline-secondary">
+                <i class="fas fa-sync-alt me-1"></i> @CashDesk_MomocashCollectionForm.Reset
+            </button>
+        </div>
+
+    </fieldset>
+
 }
 
 
@@ -524,3 +647,26 @@ else if (ViewBag.Operation == "repayment")
     </div>
 
 }
+<script>
+    // Show a tiny summary in the toggle button once name/phone typed
+    (function () {
+        const nameEl = document.getElementById('DepositorName');
+        const phoneEl = document.getElementById('DepositorTelephone');
+        const mini = document.getElementById('repMiniSummary');
+        const update = () => {
+            const n = (nameEl?.value || '').trim();
+            const p = (phoneEl?.value || '').trim();
+            if (!mini) return;
+            if (n || p) {
+                mini.classList.remove('d-none');
+                mini.textContent = `(${n || '—'} / ${p || '—'})`;
+            } else {
+                mini.classList.add('d-none');
+                mini.textContent = '–';
+            }
+        };
+        nameEl?.addEventListener('input', update);
+        phoneEl?.addEventListener('input', update);
+        update();
+    })();
+</script>

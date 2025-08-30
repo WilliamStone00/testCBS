@@ -252,59 +252,6 @@ function calculateTotalVat() {
     }
 }
 
-//function calculateTableTotal() {
-//    var total = 0;
-//    $('.total-span').each(function () {
-//        total += parseFloat($(this).text()) || 0;
-//    });
-
-//    // Calculate balance
-//    var totalNotes = parseFloat($("#totalNoteAmount").val()) || 0;
-//    var balance = totalNotes - total;
-
-//    // Update balance in the table footer with separators (no currency)
-//    var formattedBalance = balance.toLocaleString('en-US'); // No currency, just thousand separators
-//    $('#tableBalance').text(formattedBalance);
-
-//    // Change color of balance text if negative
-//    if (balance < 0) {
-//        $('#tableBalance').addClass('text-danger');
-//    } else {
-//        $('#tableBalance').removeClass('text-danger');
-//    }
-
-//    // Remove any existing icon
-//    $('#tableTotal .total-icon').remove();
-
-//    // Compare total with totalNotes and update the icon accordingly
-//    var iconClass, iconColor;
-//    if (total === totalNotes) {
-//        // Equal to totalNotes, show a green checkmark
-//        iconClass = 'fas fa-check-circle';
-//        iconColor = 'text-success';
-//    } else if (total < totalNotes) {
-//        // Less than totalNotes, show a warning exclamation mark
-//        iconClass = 'fas fa-exclamation-circle';
-//        iconColor = 'text-warning';
-//    } else {
-//        // Greater than totalNotes, show a red X
-//        iconClass = 'fas fa-times-circle';
-//        iconColor = 'text-danger';
-//    }
-
-//    // Append the total value to the tableTotal cell with separators (no currency)
-//    var formattedTotal = total.toLocaleString('en-US'); // No currency, just thousand separators
-//    $('#tableTotal').html(`<span>${formattedTotal}</span>`);
-//    // Append the icon after the total value
-//    $('#tableTotal').append(` <i class="${iconClass} total-icon ${iconColor}"></i>`);
-
-//    // Enable or disable the button based on the comparison
-//    if (total === totalNotes) {
-//        $('#submit').prop('disabled', false); // Enable the button
-//    } else {
-//        $('#submit').prop('disabled', true); // Disable the button
-//    }
-//}
 
 
 
@@ -389,41 +336,110 @@ function applyPayment() {
     var paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
     paymentModal.hide();
 }
-
 function collectDeposits() {
-    var deposits = [];
-    // Get the accounting date value once
-    var accountingDate = $('#BulkDeposit_AccountingDate').val();
-    $('#myDataTableT tbody tr').each(function () {
-        if ($(this).find('.form-check-input').prop('checked')) {
-            var deposit = {};
-            deposit.AccountNumber = $(this).find('td:eq(0)').text();
-            deposit.Amount = parseFloat($(this).find('.amount-input').val());
-            deposit.Fee = parseFloat($(this).find('.fee-input').val());
-            deposit.Penalty = parseFloat($(this).find('.penalty-input').val());
-            deposit.Interest = parseFloat($(this).find('.interest-input').val());
-            deposit.Total = parseFloat($(this).find('.total-span').text());
-            deposit.AccountType = $(this).find('td:eq(1)').text();
-            deposit.Note = $('#Note').val();
-            deposit.isDepositDoneByAccountOwner = $(this).find('.form-check-input').prop('checked');
-            deposit.IsChargesInclussive = $(this).find('.check-inclussive').prop('checked');
-            deposit.OperationType = $('#OperationType').val();
-            deposit.CheckName = $('#CheckName').val();
-            deposit.CheckNumber = $('#CheckNumber').val();
-            deposit.IsSWS = true;
-            deposit.CustomerId = $('#customerId').val();
-            deposit.SourceType = $("input[name='AddOtherTransactionMobileMoneyCommand.SourceType']:checked").val();
-            deposit.LoanApplicationId = $(this).find('.loan-application-id').val();
-            deposit.Period = $(this).find('.period').val();
-            // ✅ Add accounting date
-            deposit.AccountingDate = accountingDate;
-            deposits.push(deposit);
-        }
-    });
+    const deposits = [];
 
+    // helpers
+    const n = v => {
+        const x = parseFloat(v);
+        return Number.isFinite(x) ? x : 0;
+    };
+    const tv = sel => {
+        const $el = $(sel);
+        if (!$el.length) return null;
+        const v = $el.val();
+        return (v === undefined || v === null) ? null : String(v).trim();
+    };
+
+    // one-time values
+    const accountingDate = $('#BulkDeposit_AccountingDate').val();
+
+    // read depositor fields with fallback for old IDs (typos)
+    const depositorName = tv('#DepositorName');
+    const depositorPhoneNumber = tv('#DepositorTelephone, #DepositerTelephone'); // fallback
+    const depositorIDNumber = tv('#DepositorIDNumber');
+    const depositorIssueDate = tv('#DepositorIDIssueDate');
+    const depositorExpiryDate = tv('#DepositorIDExpiryDate');
+    const depositorNumberPlaceOfIssue = tv('#DepositorIDNumberPlaceOfIssue');
+    const depositorNote = tv('#DepositorNote, #DepositerNote'); // fallback
+
+    $('#myDataTableT tbody tr').each(function () {
+        const $row = $(this);
+        const rowChecked = $row.find('.form-check-input').first().prop('checked');
+        if (!rowChecked) return;
+
+        const deposit = {
+            // table/operation data
+            AccountNumber: $row.find('td:eq(0)').text().trim(),
+            Amount: n($row.find('.amount-input').val()),
+            Fee: n($row.find('.fee-input').val()),
+            Penalty: n($row.find('.penalty-input').val()),
+            Interest: n($row.find('.interest-input').val()),
+            Total: n($row.find('.total-span').text()),
+            AccountType: $row.find('td:eq(1)').text().trim(),
+            isDepositDoneByAccountOwner: rowChecked,
+            IsChargesInclussive: $row.find('.check-inclussive').prop('checked') === true,
+            OperationType: $('#OperationType').val(),
+            CheckName: tv('#CheckName'),
+            CheckNumber: tv('#CheckNumber'),
+            IsSWS: true,
+            CustomerId: $('#customerId').val(),
+            SourceType: $("input[name='AddOtherTransactionMobileMoneyCommand.SourceType']:checked").val(),
+            LoanApplicationId: $row.find('.loan-application-id').val(),
+            Period: $row.find('.period').val(),
+            AccountingDate: accountingDate,
+
+            // depositor fields — use EXACT C# property names
+            DepositorName: depositorName,
+            DepositorPhoneNumber: depositorPhoneNumber,
+            DepositorIDNumber: depositorIDNumber,
+            DepositorIssueDate: depositorIssueDate,
+            DepositorExpiryDate: depositorExpiryDate,
+            DepositorNumberPlaceOfIssue: depositorNumberPlaceOfIssue,
+            DepositorNote: depositorNote
+        };
+
+        deposits.push(deposit);
+    });
 
     return deposits;
 }
+
+
+//function collectDeposits() {
+//    var deposits = [];
+//    // Get the accounting date value once
+//    var accountingDate = $('#BulkDeposit_AccountingDate').val();
+//    $('#myDataTableT tbody tr').each(function () {
+//        if ($(this).find('.form-check-input').prop('checked')) {
+//            var deposit = {};
+//            deposit.AccountNumber = $(this).find('td:eq(0)').text();
+//            deposit.Amount = parseFloat($(this).find('.amount-input').val());
+//            deposit.Fee = parseFloat($(this).find('.fee-input').val());
+//            deposit.Penalty = parseFloat($(this).find('.penalty-input').val());
+//            deposit.Interest = parseFloat($(this).find('.interest-input').val());
+//            deposit.Total = parseFloat($(this).find('.total-span').text());
+//            deposit.AccountType = $(this).find('td:eq(1)').text();
+//            deposit.Note = $('#Note').val();
+//            deposit.isDepositDoneByAccountOwner = $(this).find('.form-check-input').prop('checked');
+//            deposit.IsChargesInclussive = $(this).find('.check-inclussive').prop('checked');
+//            deposit.OperationType = $('#OperationType').val();
+//            deposit.CheckName = $('#CheckName').val();
+//            deposit.CheckNumber = $('#CheckNumber').val();
+//            deposit.IsSWS = true;
+//            deposit.CustomerId = $('#customerId').val();
+//            deposit.SourceType = $("input[name='AddOtherTransactionMobileMoneyCommand.SourceType']:checked").val();
+//            deposit.LoanApplicationId = $(this).find('.loan-application-id').val();
+//            deposit.Period = $(this).find('.period').val();
+//            // ✅ Add accounting date
+//            deposit.AccountingDate = accountingDate;
+//            deposits.push(deposit);
+//        }
+//    });
+
+
+//    return deposits;
+//}
 
 function collectDepositorInfo() {
     return {
