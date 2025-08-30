@@ -121,14 +121,25 @@
                     <div class="accordion-body">
                         <fieldset class="fieldset-custom">
                             <div class="row g-4">
+                                <!-- ✅ Branch Selection -->
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(
+                                            m => m.AddLoanApplicationCommand.BranchId,
+                                            new SelectList(ViewBag.Branches, "Id", "Name"),
+                                            "---" + @GlobalLoanApplication.SelectAll + "---",
+                                            new { @class = "form-control shadow-sm select2"})
+                                        @Html.ValidationMessageFor(m => m.AddLoanApplicationCommand.BranchId, "", new { @class = "text-danger" })
+                                        <label for="LoanBranchId">@GlobalLoanRepaymentBackOffice.BranchName</label>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanApplicationType, new SelectList(ViewBag.LoanApplicationTypes, "Value", "Text"), @Member_Global_LoanApplication.SelectLoanApplicationTypes, new { @class = "form-control select2", @search = "true", @id = "LoanApplicationType", @onchange = "LoadRefinancing(this.value,'loanapplicationtype','loanid')" })
                                         <label>@Member_Global_LoanApplication.ApplicationType</label>
                                     </div>
                                 </div>
-
-
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline position-relative">
                                         @Html.TextBoxFor(
@@ -168,17 +179,17 @@
                                     </div>
                                 </div>
                                 @*<div class="col-md-12">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductCategoryId, new SelectList(ViewBag.Categories, "Id", "Name"), @Member_Global_LoanApplication.SelectLoanProductCategory, new { @class = "form-control select2", @search = "true", @id = "LoanCategoryId", @onchange = "GetLoanPurposes(this.value,'purposeId')" })
-                                    <label>@Member_Global_LoanApplication.SelectLoanProductCategory</label>
-                                </div>
-                            </div>*@
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductCategoryId, new SelectList(ViewBag.Categories, "Id", "Name"), @Member_Global_LoanApplication.SelectLoanProductCategory, new { @class = "form-control select2", @search = "true", @id = "LoanCategoryId", @onchange = "GetLoanPurposes(this.value,'purposeId')" })
+                <label>@Member_Global_LoanApplication.SelectLoanProductCategory</label>
+            </div>
+        </div>*@
                                 @*<div class="col-md-12">
-                                <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanTermId, new SelectList(ViewBag.LoanTerms, "Id", "Name"), "---" + @Member_Global_LoanApplication.SelectLoanTerm + "---", new { @class = "form-control select2", @search = "true", @id = "LoanTermId", @onchange = "GetConfiuredTargets(this.value,'TargetId')" })
-                                    <label>@Member_Global_LoanApplication.SelectLoanTerm</label>
-                                </div>
-                            </div>*@
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanTermId, new SelectList(ViewBag.LoanTerms, "Id", "Name"), "---" + @Member_Global_LoanApplication.SelectLoanTerm + "---", new { @class = "form-control select2", @search = "true", @id = "LoanTermId", @onchange = "GetConfiuredTargets(this.value,'TargetId')" })
+                <label>@Member_Global_LoanApplication.SelectLoanTerm</label>
+            </div>
+        </div>*@
                                 <!-- ✅ Loan Term -->
                                 <div class="col-md-12" id="LoanTermSelect">
                                     <div class="form-floating form-floating-outline">
@@ -519,7 +530,7 @@
                                         </label>
                                     </div>
                                 </div>
-                        </fieldset>
+</fieldset>
                     </div>
                 </div>
             </div>

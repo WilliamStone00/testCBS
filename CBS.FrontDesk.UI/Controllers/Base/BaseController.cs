@@ -24,6 +24,9 @@ using CBS.BusinessService.Session;
 using CBS.FrontDesk.Data.UserManagement;
 using System.Globalization;
 using CBS.BusinessService.Accounting;
+using System.IO;
+using CBS.FrontDesk.Data.Entity.DownLoadDTO;
+using System.IO.Compression;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -441,20 +444,21 @@ namespace CBS.FrontDesk.UI.Controllers
 
         private bool IsInternetAvailable()
         {
-            try
-            {
-                using (var client = new WebClient())
-                {
-                    using (client.OpenRead("https://www.youtube.com/"))
-                    {
-                        return true;
-                    }
-                }
-            }
-            catch
-            {
-                return false;
-            }
+            return true;
+            //try
+            //{
+            //    using (var client = new WebClient())
+            //    {
+            //        using (client.OpenRead("https://www.youtube.com/"))
+            //        {
+            //            return true;
+            //        }
+            //    }
+            //}
+            //catch
+            //{
+            //    return false;
+            //}
         }
 
         protected CultureInfo GetUserCultureInfo()
@@ -472,7 +476,36 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
 
+        public static byte[] BuildZip(IEnumerable<FileDownloadDto> files)
+        {
+            using (var mem = new MemoryStream())
+            {
+                using (var archive = new ZipArchive(mem, ZipArchiveMode.Create, true))
+                {
+                    foreach (var f in files)
+                    {
+                        var entryName = string.IsNullOrWhiteSpace(f.FileName) ? Guid.NewGuid() + ".xlsx" : f.FileName;
+                        var entry = archive.CreateEntry(entryName, CompressionLevel.Optimal);
+                        using (var entryStream = entry.Open())
+                        {
+                            var payload = f.FileData ?? Array.Empty<byte>();
+                            entryStream.Write(payload, 0, payload.Length);
+                        }
+                    }
+                }
+                return mem.ToArray();
+            }
+        }
 
+        public static string BuildZipName(IEnumerable<FileDownloadDto> files)
+        {
+            // Try to infer a friendly name from first item, else generic
+            var first = files.FirstOrDefault();
+            var hint = first?.SavedRelativePath ?? first?.SavedFullPath ?? "MembersExport";
+            hint = Path.GetFileNameWithoutExtension(hint)?.Trim();
+            if (string.IsNullOrWhiteSpace(hint)) hint = "MembersExport";
+            return $"{hint}_{DateTime.Now:yyyyMMddHHmmss}.zip";
+        }
         private static readonly HashSet<string> WordList = new HashSet<string>
         {
             "LION", "TREE", "MOON", "STAR", "WOLF", "FIRE", "ROCK", "SKY", "BIRD", "CLOUD", "TSC"

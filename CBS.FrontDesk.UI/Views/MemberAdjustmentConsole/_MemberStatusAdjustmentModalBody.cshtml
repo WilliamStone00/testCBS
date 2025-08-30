@@ -40,6 +40,9 @@
                         <form id="memberStatusAdjustmentForm">
                             @Html.HiddenFor(m => m.MemberId)
                             @Html.HiddenFor(m => m.BranchId)
+                            @Html.HiddenFor(m => m.IsMemberProfileModified)
+                            @Html.HiddenFor(m => m.IsMemberAccountModified)
+                            @Html.HiddenFor(m => m.AdjustmentType)
                             @Html.HiddenFor(m => m.AccountId)
                             @Html.HiddenFor(m => m.OldStatus)
 

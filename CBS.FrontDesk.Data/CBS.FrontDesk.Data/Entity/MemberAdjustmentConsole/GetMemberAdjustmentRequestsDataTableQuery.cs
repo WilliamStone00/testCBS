@@ -24,26 +24,5 @@ namespace CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 
-       /* public GetMemberAdjustmentRequestsDataTableQuery(
-            DataTableOptions options,
-            string branchId = null,
-            string status = null,
-            string memberId = null,
-            string accountId = null,
-            string requestedBy = null,
-            string approvedBy = null,
-            DateTime? startDate = null,
-            DateTime? endDate = null)
-        {
-            Options = options;
-            BranchId = branchId;
-            Status = status;
-            MemberId = memberId;
-            AccountId = accountId;
-            RequestedBy = requestedBy;
-            ApprovedBy = approvedBy;
-            StartDate = startDate;
-            EndDate = endDate;
-        }*/
     }
 }

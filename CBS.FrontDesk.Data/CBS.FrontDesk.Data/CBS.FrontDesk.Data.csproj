@@ -163,6 +163,7 @@
     <Compile Include="Entity\DataSetLoanPortfolio\DelinquencyCellData.cs" />
     <Compile Include="Entity\DataSetLoanPortfolio\LoanDelinquencyReportResult.cs" />
     <Compile Include="Entity\DataSetLoanPortfolio\LoanPortfolioDto.cs" />
+    <Compile Include="Entity\DownLoadDTO\FileDownloadDto.cs" />
     <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportRPT.cs" />
     <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportDtoMapper.cs" />
     <Compile Include="Entity\LoanAdjustmentP\LoanAdjustment.cs" />
@@ -170,6 +171,7 @@
     <Compile Include="Entity\MemberAdjustmentConsole\GetMemberAdjustmentRequestsDataTableQuery.cs" />
     <Compile Include="Entity\MemberAdjustmentConsole\MemberAdjustmentModel.cs" />
     <Compile Include="Entity\MemberAdjustmentConsole\MemberAdjustmentRequestDetailsDto.cs" />
+    <Compile Include="Entity\MemberAdjustmentConsole\MemberAdjustmentRequestDetailsWithHistoryDto.cs" />
     <Compile Include="Entity\MemberAdjustmentConsole\RejectMemberAdjustmentRequestCommand.cs" />
     <Compile Include="Entity\MemberAdjustmentConsole\SubmitMemberAdjustmentRequestCommand.cs" />
     <Compile Include="Entity\MemberNoneCashOperationsP\MemberNoneCashOperation.cs" />

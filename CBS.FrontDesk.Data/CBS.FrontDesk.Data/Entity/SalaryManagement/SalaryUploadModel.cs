@@ -1,4 +1,5 @@
 ﻿using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -114,6 +115,18 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
 
     }
 
+    public class SetFileUploadPrivateViewCommand
+    {
+        /// <summary>
+        /// The FileUpload ID whose private view status will be updated.
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
+        /// The new value of the PrivateView property (true = private, false = public).
+        /// </summary>
+        public bool PrivateView { get; set; }
+    }
 
     public class ActivateSalaryFileCommand
     {
@@ -141,7 +154,20 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
 
         public bool PrivateView { get; set; }
     }
+    public class GetFileUploadsDataTableQuery
+    {
+        public DataTableOptions DataTableOptions { get; set; }
 
+        // ✅ Filters
+        public string BranchId { get; set; }
+        public string UploadedBy { get; set; }
+        public string FileType { get; set; }
+        public string FileCategory { get; set; }
+        public bool PrivateView { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string ActionParam { get; set; }
+    }
     public class FileUploadDto
     {
         public string Id { get; set; } // Unique Identifier for the file

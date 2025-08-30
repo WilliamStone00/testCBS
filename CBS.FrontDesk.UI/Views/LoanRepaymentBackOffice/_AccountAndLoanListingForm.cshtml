@@ -55,7 +55,7 @@
                                     <td>@d.AccountType</td>
                                     <td class="balance-span">@d.Balance.ToString("#,##0.0")</td> <!-- Balance -->
                                     <td>
-                                        <input type="number" class="form-control amount-input" value="0" oninput="updateTotals()">
+                                        <input type="number" class="form-control amount-input" value="0" oninput="applyVatModeToAllRows()">
                                     </td>
                                     <td class="status-indicator"></td> <!-- New column for ❌ (Error Indicator) -->
                                     <td>
@@ -74,27 +74,50 @@
                     </table>
                 </div>
             </div>
-            <!-- Accounting Date - Top Right -->
-            <div class="row mb-3">
-                <div class="col text-end">
-                    <label class="form-label fw-semibold me-2">Accounting Date</label>
-                    @Html.TextBoxFor(
-                        m => m.BulkDeposit.AccountingDate,
-                        Model.BulkDeposit.AccountingDate.HasValue
-                            ? Model.BulkDeposit.AccountingDate.Value.ToString("yyyy-MM-dd")
-                            : DateTime.Today.ToString("yyyy-MM-dd"),
-                        new
-                        {
-                            @class = "form-control accounting-date d-inline-block",
-                            style = "width: 200px; display:inline-block;",
-                            type = "date",
-                            data_date_default = "today",
-                            data_date_max = "today"
-                        }
-                    )
+            <!-- Accounting Date + VAT mode on one line (6 / 6) -->
+            <div class="row align-items-center mb-3 g-2">
+                <!-- Left: Accounting Date (col-6) -->
+                <div class="col-12 col-md-6">
+                    <div class="d-flex align-items-center gap-2">
+                        <label class="form-label fw-semibold mb-0">Accounting Date</label>
+                        @Html.TextBoxFor(
+                            m => m.BulkDeposit.AccountingDate,
+                            Model.BulkDeposit.AccountingDate.HasValue
+                                ? Model.BulkDeposit.AccountingDate.Value.ToString("yyyy-MM-dd")
+                                : DateTime.Today.ToString("yyyy-MM-dd"),
+                            new
+                                 {
+                                @class = "form-control",
+                                type = "date",
+                                style = "max-width: 220px;",
+                                data_date_default = "today",
+                                data_date_max = "today"
+                            }
+                        )
+                    </div>
                     @Html.ValidationMessageFor(m => m.BulkDeposit.AccountingDate, "", new { @class = "text-danger" })
                 </div>
+
+                <!-- Right: VAT Mode (col-6) -->
+                <div class="col-12 col-md-6 text-md-end">
+                    <div class="btn-group" role="group" aria-label="VAT Mode">
+                        <input class="btn-check" type="radio" name="vatMode" id="vatModeExclusive"
+                               value="exclusive"
+                               onchange="applyVatModeToAllRows()" onclick="applyVatModeToAllRows()">
+                        <label class="btn btn-outline-primary" for="vatModeExclusive">
+                            VAT Exclusive (19.25%)
+                        </label>
+
+                        <input class="btn-check" type="radio" name="vatMode" id="vatModeInclusive"
+                               value="inclusive" checked
+                               onchange="applyVatModeToAllRows()" onclick="applyVatModeToAllRows()">
+                        <label class="btn btn-outline-primary" for="vatModeInclusive">
+                            VAT Inclusive (16.1425%)
+                        </label>
+                    </div>
+                </div>
             </div>
+
 
             <!-- Loan Repayment Table -->
             <div class="row">
@@ -130,7 +153,7 @@
                                     <td>@d.Balance.ToString("#,##0.0")</td>
 
                                     <td>
-                                        <input type="number" class="form-control capital-input" id="capital-@d.Id" value="0" oninput="updateTotals()">
+                                        <input type="number" class="form-control capital-input" id="capital-@d.Id" value="0" oninput="applyVatModeToAllRows()">
                                     </td>
                                     <td>
                                         <input type="number"
@@ -138,18 +161,13 @@
                                                id="interest-@d.Id"
                                                value="0"
                                                data-vatrate="@d.VatRate"
-                                               data-loanamount="@d.LoanAmount"
-                                               oninput="calculateVatOnly('@d.Id')"
-                                               onblur="calculateVatAndAdjustInterest('@d.Id')" />
-
-
-
+                                               data-loanamount="@d.LoanAmount" />
                                     </td>
                                     <td>
                                         <input type="text" class="form-control vat-input" id="vat-@d.Id" value="0" readonly> <!-- ✅ NEW VAT FIELD -->
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control penalty-input" id="penalty-@d.Id" value="0" oninput="updateTotals()">
+                                        <input type="number" class="form-control penalty-input" id="penalty-@d.Id" value="0" oninput="applyVatModeToAllRows()">
                                     </td>
                                     <td><span class="total-span" id="total-@d.Id">0</span></td>
 
@@ -187,7 +205,7 @@
 
             <!-- Note Section -->
             <div class="row">
-              
+
                 <div class="col-md-12 mt-2">
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.BulkDeposit.Note,

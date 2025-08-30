@@ -1,103 +1,236 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @using Resources
 <style>
-    .booking-direction-box {
-        background-color: #e9e9ee;
-        border: 1px solid #6c63ff; /* Optional blue border */
-        border-radius: 0.5rem;
-        padding: 0.75rem 1rem;
+    /* tighter vertical rhythm */
+    .fieldset-custom .section {
+        border: 1px solid var(--bs-primary);
+        border-radius: .5rem;
+        padding: .75rem;
+        margin-bottom: .75rem;
     }
 
-    .booking-option {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.95rem;
-        font-weight: 500;
-        background-color: white;
-        border: 1px solid #ccc;
-        border-radius: 0.35rem;
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
+        .fieldset-custom .section h6 {
+            margin: 0 0 .25rem 0;
+            font-weight: 700;
+        }
+
+    .fieldset-custom .form-floating {
+        padding: .5rem;
     }
 
-        .booking-option input[type="radio"] {
-            margin: 0;
+    .fieldset-custom .form-check.form-switch {
+        padding: .5rem .75rem;
+    }
+
+    .fieldset-custom .form-control,
+    .fieldset-custom .select2-selection--single {
+        min-height: 36px;
+    }
+
+    .fieldset-custom .table {
+        margin: .5rem 0 0 0;
+    }
+
+        .fieldset-custom .table tfoot td {
+            padding-top: .25rem;
         }
 </style>
+
 <fieldset class="fieldset-custom">
-    <!--<div class="change-group">-->
-    <!-- Member's Name Section -->
-    <!--<div class="row mb-4">
-            <div class="col-md-12">
-                <div class="form-floating">
-                    <span class="formatted-amount shadow-sm d-block py-3 px-4 bg-light rounded border border-secondary.@GlobalMemberNoneCashOperation.MembersName: <strong>@Model.Customer.name</strong></span>
-                </div>
-            </div>
-        </div>
-    </div>-->
-    <div class="change-group">
-        <div class="row mb-3 align-items-center">
-            <!-- Member's Name, Branch Name, and Branch Code Section -->
-            <div class="col-md-12">
-                <div class="form-floating">
-                    <span class="formatted-amount shadow-sm d-block py-3 px-4 bg-light rounded border border-secondary">
-                        <strong>@GlobalLoanRepaymentBackOffice.MembersName:</strong> @Model.Customer.name &nbsp; | &nbsp;
-                        <strong>@GlobalLoanRepaymentBackOffice.BranchName:</strong> @Model.Branch.Name &nbsp; | &nbsp;
-                        <strong>@GlobalLoanRepaymentBackOffice.BranchCode:</strong> @Model.Branch.BranchCode
-                    </span>
-                </div>
+
+    <!-- Member summary -->
+    <div class="section">
+        <div class="row g-2 align-items-center">
+            <div class="col-12">
+                <span class="formatted-amount shadow-sm d-block py-2 px-3 bg-light rounded border border-secondary">
+                    <strong>@GlobalLoanRepaymentBackOffice.MembersName:</strong> @Model.Customer.name &nbsp; | &nbsp;
+                    <strong>@GlobalLoanRepaymentBackOffice.BranchName:</strong> @Model.Branch.Name &nbsp; | &nbsp;
+                    <strong>@GlobalLoanRepaymentBackOffice.BranchCode:</strong> @Model.Branch.BranchCode
+                </span>
             </div>
         </div>
     </div>
 
 
-    <div class="change-group">
-        <div class="row mb-3 align-items-center">
+    <!-- Branch (standalone section) -->
+    <div class="section">
+        <h6 class="text-dark">@GlobalLoanRepaymentBackOffice.BranchName</h6>
+        <div class="row g-3 mb-2">
             <div class="col-md-12">
-                <div class="booking-direction-box">
-                    <label class="fw-semibold text-dark mb-2">@GlobalMemberNoneCashOperation.BookingDirection:</label>
-                    <div class="d-flex flex-wrap gap-3">
-                        <label class="booking-option">
-                            @Html.RadioButtonFor(m => m.AddMembersNoneCashOperationCommand.BookingDirection, "Debit", new { @id = "Debit" })
-                            @GlobalMemberNoneCashOperation.DebitMembersAccount
-                        </label>
+                <div class="form-floating border rounded">
+                    @Html.DropDownListFor(
+                        m => m.AddMembersNoneCashOperationCommand.BranchId,
+                        new SelectList(ViewBag.Branches, "Id", "Name"),
+                        "---" + @GlobalLoanApplication.SelectAll + "---",
+                        new { @class = "form-control shadow-sm select2", id = "branchInput" })
+                    @Html.ValidationMessageFor(m => m.AddMembersNoneCashOperationCommand.BranchId, "", new { @class = "text-danger" })
+                    <label for="branchInput">@GlobalLoanRepaymentBackOffice.BranchName</label>
+                </div>
+            </div>
+        </div>
 
-                        <label class="booking-option">
-                            @Html.RadioButtonFor(m => m.AddMembersNoneCashOperationCommand.BookingDirection, "Credit", new { @id = "Credit" })
-                            @GlobalMemberNoneCashOperation.CreditMembersAccount
+        <h6 class="fw-bold text-dark mb-2">Mobile Money</h6>
+
+        <div class="row g-3">
+            <!-- Left side: Checkbox + categories under it -->
+            <div class="col-md-12">
+                <div class="form-check mb-2">
+                    @Html.CheckBoxFor(
+                        m => m.AddMembersNoneCashOperationCommand.IsMobileMoneyOperation,
+                        new { @class = "form-check-input", id = "isMobileMoneyOperationChk" })
+                    <label class="form-check-label fw-semibold ms-1" for="isMobileMoneyOperationChk">
+                        Is Mobile Money operation
+                    </label>
+                </div>
+
+                <!-- ✅ Categories directly under checkbox -->
+                <div id="momoCategoryContainer" class="d-none mt-2 border rounded p-2">
+                    <label class="fw-semibold d-block mb-2">Service type/Category</label>
+
+                    <div class="form-check">
+                        <input type="radio" id="orangeMoneyRadio"
+                               name="momoCategory"
+                               value="Orange Money Cameroon"
+                               data-category="MobileMoneyOrange"
+                               class="form-check-input" />
+                        <label class="form-check-label" for="orangeMoneyRadio">
+                            Orange Money Cameroon
+                        </label>
+                    </div>
+
+                    <div class="form-check mt-2">
+                        <input type="radio" id="mtnMoneyRadio"
+                               name="momoCategory"
+                               value="MTN Cameroon"
+                               data-category="MobileMoneyMTN"
+                               class="form-check-input" />
+                        <label class="form-check-label" for="mtnMoneyRadio">
+                            MTN Cameroon
                         </label>
                     </div>
                 </div>
+                <!-- ✅ Mobile Money Path (hidden until checkbox checked) -->
+                <div id="momoPathContainer" class="d-none mt-2 border rounded p-3">
+                    <label class="fw-bold text-dark d-block mb-2">MM/OM Operation Flow</label>
+                    <small class="text-muted d-block mb-3">
+                        Select how the MM/OM transaction should affect the <strong>Member’s Account</strong>
+                        and the <strong>MM/OM Float</strong>.
+                    </small>
+
+                    <!-- Option 1 -->
+                    <div class="form-check mb-2">
+                        <input type="radio"
+                               id="path_member_to_float"
+                               name="momoPath"
+                               value="FloatFromMembersAccountToMomoAccount"
+                               class="form-check-input" />
+                        <label class="form-check-label" for="path_member_to_float">
+                            <strong>Member account → MM/OM Float</strong>
+                            <br />
+                            <span class="text-muted small">
+                                Member account is <u>debited</u>, MM/OM Float is <u>increased</u>.
+                                (Use this when branch sends money from the member’s account to the MM/OM operator.)
+                            </span>
+                        </label>
+                    </div>
+
+                    <!-- Option 2 -->
+                    <div class="form-check mb-2">
+                        <input type="radio"
+                               id="path_member_to_float_to_phone"
+                               name="momoPath"
+                               value="FromMembersAccountToMobilemoneyAndToMembersPhone"
+                               class="form-check-input" />
+                        <label class="form-check-label" for="path_member_to_float_to_phone">
+                            <strong>Member account → MM/OM Float → Member’s phone (wallet payout)</strong>
+                            <br />
+                            <span class="text-muted small">
+                                Member account is <u>debited</u>, MM/OM Float is <u>decreased</u>,
+                                and funds are pushed to the member’s MM/OM wallet.
+                                (Use this for <em>cash-out</em> where branch pays to member’s phone.)
+                            </span>
+                        </label>
+                    </div>
+
+                    <!-- Option 3 -->
+                    <div class="form-check">
+                        <input type="radio"
+                               id="path_phone_to_member"
+                               name="momoPath"
+                               value="FloatFromMobileMoneyToMembersAccount"
+                               class="form-check-input" />
+                        <label class="form-check-label" for="path_phone_to_member">
+                            <strong>Member’s phone → MM/OM Float → Member account</strong>
+                            <br />
+                            <span class="text-muted small">
+                                Member’s MM/OM wallet sends funds, MM/OM Float is <u>decreased</u>,
+                                and Member account is <u>credited</u>.
+                                (Use this for deposits coming from member’s wallet to their bank account.)
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right side: Reference -->
+            <div class="col-md-12 d-none" id="momoReferenceContainer">
+                <div class="form-floating border rounded">
+                    @Html.DropDownListFor(
+                        m => m.AddMembersNoneCashOperationCommand.NoneMemberMobileReference,
+                        new SelectList(ViewBag.MobileMoneyRefs ?? new List<SelectListItem>(), "Value", "Text"),
+                        "--- MoMo reference ---",
+                        new { @class = "form-control shadow-sm select2", id = "noneMemberMobileReference" })
+                    @Html.ValidationMessageFor(m => m.AddMembersNoneCashOperationCommand.NoneMemberMobileReference, "", new { @class = "text-danger" })
+                    <label for="noneMemberMobileReference">Select MM/OM operation collection account</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- Booking dir + Accounting date on one line -->
+    <div class="section">
+        <div class="row g-3 align-items-center">
+            <div class="col-md-8">
+                <label class="fw-semibold text-dark mb-1">@GlobalMemberNoneCashOperation.BookingDirection:</label>
+                <div class="d-flex flex-wrap gap-3">
+                    <label class="booking-option">
+                        @Html.RadioButtonFor(m => m.AddMembersNoneCashOperationCommand.BookingDirection, "Debit", new { id = "Debit" })
+                        @GlobalMemberNoneCashOperation.DebitMembersAccount
+                    </label>
+                    <label class="booking-option">
+                        @Html.RadioButtonFor(m => m.AddMembersNoneCashOperationCommand.BookingDirection, "Credit", new { id = "Credit" })
+                        @GlobalMemberNoneCashOperation.CreditMembersAccount
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-md-4 text-md-end">
+                <label class="form-label fw-semibold me-2 mb-0">Accounting Date</label>
+                @Html.TextBoxFor(
+                    m => m.BulkDeposit.AccountingDate,
+                    Model.BulkDeposit.AccountingDate.HasValue
+                        ? Model.BulkDeposit.AccountingDate.Value.ToString("yyyy-MM-dd")
+                        : DateTime.Today.ToString("yyyy-MM-dd"),
+                    new
+                         {
+                        @class = "form-control form-control-sm d-inline-block accounting-date",
+                        style = "width: 180px",
+                        type = "date",
+                        data_date_default = "today",
+                        data_date_max = "today"
+                    })
+                @Html.ValidationMessageFor(m => m.BulkDeposit.AccountingDate, "", new { @class = "text-danger" })
             </div>
         </div>
         <input type="hidden" id="memberName" value="@Model.AddMembersNoneCashOperationCommand.MemberName" />
-    </div>
-
-    <div class="row mb-3">
-        <div class="col text-end">
-            <label class="form-label fw-semibold me-2">Accounting Date</label>
-            @Html.TextBoxFor(
-                m => m.BulkDeposit.AccountingDate,
-                Model.BulkDeposit.AccountingDate.HasValue
-                    ? Model.BulkDeposit.AccountingDate.Value.ToString("yyyy-MM-dd")
-                    : DateTime.Today.ToString("yyyy-MM-dd"),
-                new
-                {
-                    @class = "form-control accounting-date d-inline-block",
-                    style = "width: 200px; display:inline-block;",
-                    type = "date",
-                    data_date_default = "today",
-                    data_date_max = "today"
-                }
-            )
-            @Html.ValidationMessageFor(m => m.BulkDeposit.AccountingDate, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="rounded p-2 border-primary border mb-3">
-        <h6 class="mb-0 fw-bold text-dark">@GlobalMemberNoneCashOperation.MembersAccounts</h6>
-        <!-- Table Section -->
-        <div class="table-responsive mt-4 mb-2">
-            <table class="table table-hover" id="myDataTableT">
+    </div>    <!-- Members Accounts (compact table) -->
+    <div class="section">
+        <h6 class="text-dark mb-1">@GlobalMemberNoneCashOperation.MembersAccounts</h6>
+        <div class="table-responsive">
+            <table class="table table-sm table-hover align-middle" id="myDataTableT">
                 <thead class="table-light">
                     <tr>
                         <th style="display:none;">@GlobalMemberNoneCashOperation.ProductID</th>
@@ -117,66 +250,62 @@
                             <td style="display:none;">@d.AccountNumber</td>
                             <td>@d.AccountType</td>
                             <td>@d.Balance.ToString("#,##0.0")</td>
-                            <td>
-                                <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
-                            </td>
-                            <td style="display:none">
-                                <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee" readonly>
-                            </td>
-                            <td>
-                                <span class="total-span">@d.Total</span>
-                            </td>
-                            <td>
-                                <input type="checkbox" class="form-check-input">
-                            </td>
-                            <td style="display:none">
-                                <input type="checkbox" class="form-check-input check-inclussive" disabled>
-                            </td>
+                            <td><input type="number" class="form-control form-control-sm amount-input shadow-input-boxes" value="@d.Amount"></td>
+                            <td style="display:none"><input type="number" class="form-control form-control-sm fee-input shadow-input-boxes" value="@d.Fee" readonly></td>
+                            <td><span class="total-span">@d.Total</span></td>
+                            <td><input type="checkbox" class="form-check-input row-select"></td>
+                            <td style="display:none"><input type="checkbox" class="form-check-input check-inclussive" disabled></td>
                         </tr>
                     }
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="3" style="text-align: right;"><strong>@GlobalMemberNoneCashOperation.Total:</strong></td>
+                        <td colspan="3" class="text-end"><strong>@GlobalMemberNoneCashOperation.Total:</strong></td>
                         <td id="tableTotal">0</td>
                     </tr>
                 </tfoot>
             </table>
         </div>
     </div>
-    <div class="rounded p-2 border-primary border mb-3">
-        <h6 class="mb-0 fw-bold text-dark">@GlobalMemberNoneCashOperation.CorrespondingAccounts</h6>
-        <!-- Correspondent Account Selection -->
-        <div class="col-md-12 mb-2">
-            <div class="form-floating border rounded p-3">
-                @Html.DropDownListFor(m => m.AddMembersNoneCashOperationCommand.ChartOfAccountId, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---"+@GlobalMemberNoneCashOperation.SelectGL+"---", new { @class = "form-control select2", id = "account_number", @search = "true" })
-                @Html.ValidationMessageFor(m => m.AddMembersNoneCashOperationCommand.ChartOfAccountId, "", new { @class = "text-danger" })
-                <label id="accountNumberLabel" for="account_number" style="font-size: 1.1rem;">@GlobalMemberNoneCashOperation.SelectCorrespondentAccount</label>
-            </div>
-        </div>
 
-        <!-- Reasons for Operation -->
-        <div class="col-md-12 mb-2">
-            <div class="form-floating border rounded p-3">
-                @Html.TextAreaFor(m => m.AddMembersNoneCashOperationCommand.Note, new { @class = "form-control", id = "Note", style = "height: 90px;" })
-                @Html.ValidationMessageFor(m => m.AddMembersNoneCashOperationCommand.Note, "", new { @class = "text-danger" })
-                <label for="Note" style="font-size: 1.1rem;">@GlobalMemberNoneCashOperation.EnterReasonsForTheOperation</label>
+
+    <!-- Corresponding accounts + Note on one line on md+ -->
+    <div class="section">
+        <h6 class="text-dark mb-1">@GlobalMemberNoneCashOperation.CorrespondingAccounts</h6>
+        <div class="row g-3">
+            <div class="col-md-12" id="glContainer">
+                <div class="form-floating border rounded">
+                    @Html.DropDownListFor(
+                        m => m.AddMembersNoneCashOperationCommand.ChartOfAccountId,
+                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                        "---GL Account---",
+                        new { @class = "form-control select2", id = "account_number", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.AddMembersNoneCashOperationCommand.ChartOfAccountId, "", new { @class = "text-danger" })
+                    <label id="accountNumberLabel" for="account_number">@GlobalMemberNoneCashOperation.SelectCorrespondentAccount</label>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-floating border rounded">
+                    @Html.TextAreaFor(m => m.AddMembersNoneCashOperationCommand.Note, new { @class = "form-control", id = "Note", style = "height: 60px;" })
+                    @Html.ValidationMessageFor(m => m.AddMembersNoneCashOperationCommand.Note, "", new { @class = "text-danger" })
+                    <label for="Note">@GlobalMemberNoneCashOperation.EnterReasonsForTheOperation</label>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Action Buttons -->
-    <div class="d-flex justify-content-end mt-4">
+    <!-- Actions -->
+    <div class="d-flex justify-content-end mt-3">
         <input type="hidden" name="OperationType" value="MemberNoneCash" id="OperationType" />
         <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
 
-        <button type="submit" class="btn btn-primary btn-lg me-3" onclick="PostOperation()">
-            <i class="fas fa-money-bill-wave me-2"></i> @GlobalMemberNoneCashOperation.CreateRequest
+        <button type="submit" class="btn btn-primary btn-sm px-3" onclick="PostOperation()">
+            <i class="fas fa-money-bill-wave me-2"></i>@GlobalMemberNoneCashOperation.CreateRequest
         </button>
     </div>
 
-
-    <hr style="border: 2px solid green;" />
+    <hr class="mt-2" style="border: 2px solid green;" />
 </fieldset>
 
 <script>
@@ -198,116 +327,139 @@
         $("input[name='AddMembersNoneCashOperationCommand.BookingDirection']").on('change', function () {
             updateLabelText();
         });
+
+
+
+
+
     });
+
+// ===== MoMo UI + data loader (robust to label text changes) ==================
+(function ($) {
+  const $chk     = $('#isMobileMoneyOperationChk');
+  const $branch  = $('#branchInput');
+  const $catBox  = $('#momoCategoryContainer');
+  const $pathBox = $('#momoPathContainer');
+  const $refBox  = $('#momoReferenceContainer');
+  const $refSel  = $('#noneMemberMobileReference');
+
+  // NEW: GL container + select
+  const $glBox   = $('#glContainer');
+  const $glSel   = $('#account_number');
+
+  const momoUrl  = ($('#momoConfig').data('url')) || '@Url.Action("LoadMomoAccountsProfiles","MemberNoneCashOperation")';
+
+  function clearRefOptions() {
+    $refSel.empty().append($('<option/>', { value: '', text: '--- MoMo reference ---' }));
+    if ($refSel.hasClass('select2')) $refSel.val('').trigger('change');
+  }
+
+  function resetPath() {
+    $("input[name='momoPath']").prop('checked', false);
+  }
+
+  // NEW: reset GL select
+  function resetGL() {
+    if ($glSel.hasClass('select2')) {
+      $glSel.val(null).trigger('change');          // clears select2 safely
+    } else {
+      $glSel.prop('selectedIndex', 0);             // fallback for plain select
+    }
+  }
+
+  // NEW: show/hide GL based on MoMo
+  function setGLVisibility() {
+    const momoOn = $chk.is(':checked');
+    $glBox.toggleClass('d-none', momoOn);          // hide when MoMo ON
+    if (momoOn) resetGL();                         // and reset selection
+  }
+
+  function setMomoUI(on) {
+    $catBox.toggleClass('d-none', !on);
+    $pathBox.toggleClass('d-none', !on);
+    $refBox.toggleClass('d-none', !on);
+    $refSel.prop('disabled', !on);
+    if (!on) {
+      $("input[name='momoCategory']").prop('checked', false);
+      resetPath();
+      clearRefOptions();
+    }
+    setGLVisibility();                              // keep GL in sync
+  }
+
+  function getCanonicalCategory() {
+    const $r = $("input[name='momoCategory']:checked");
+    const cat = $r.data('category') || ($r.val() || '');
+    if (!cat) return '';
+    const s = String(cat).toLowerCase();
+    if (s.includes('mtn'))    return 'MobileMoneyMTN';
+    if (s.includes('orange')) return 'MobileMoneyOrange';
+    return cat;
+  }
+
+  async function loadMomoRefs() {
+    clearRefOptions();
+    const branchId = ($branch.val() || '').trim();
+    const category = getCanonicalCategory();
+    if (!branchId || !category) return;
+
+    try {
+      const res = await $.getJSON(momoUrl, { branchid: branchId, category: category });
+      (res || []).forEach(item => {
+        const val = item.Value ?? item.value ?? '';
+        const txt = item.Text  ?? item.text  ?? item.name ?? String(val);
+        $refSel.append(new Option(txt, val));
+      });
+      if ($refSel.hasClass('select2')) $refSel.trigger('change');
+    } catch (e) {
+      console.error('Failed to load MoMo references:', e);
+      if (window.appalert) appalert('Failed to load MoMo references. Please try again.', 0, 1);
+    }
+  }
+
+  // Init
+  $(function () {
+    setMomoUI($chk.is(':checked'));   // also sets GL visibility
+
+    $chk.on('change', function () {
+      setMomoUI(this.checked);        // includes setGLVisibility + resets GL when hiding
+      if (this.checked && $("input[name='momoCategory']:checked").length) loadMomoRefs();
+    });
+
+    $(document).on('change', "input[name='momoCategory']", function () {
+      if (!$chk.is(':checked')) { $chk.prop('checked', true).trigger('change'); }
+      loadMomoRefs();
+    });
+
+    $branch.on('change', function () {
+      if ($chk.is(':checked') && $("input[name='momoCategory']:checked").length) loadMomoRefs();
+      else clearRefOptions();
+    });
+  });
+
+  // optionally expose path getter
+  window.getSelectedMomoPath = function() {
+    return $("input[name='momoPath']:checked").val() || '';
+  };
+
+})(jQuery);
+
+// ===== Minimal changes in your existing functions ===========================
+// In collectDeposits():
+// deposit.IsMobileMoneyOperation = $('#isMobileMoneyOperationChk').is(':checked');
+// deposit.NoneMemberMobileReference = $('#noneMemberMobileReference').val();
+// (optional) deposit.MobileMoneyCategory = window.getCanonicalMomoCategory() || '';
+
+// In PostOperation():
+// var isMomo       = $('#isMobileMoneyOperationChk').is(':checked');
+// var momoCategory = window.getCanonicalMomoCategory() || '';
+
+
 
 </script>
 
 
 
 
-<!--<fieldset class="fieldset-custom">
-    <div class="change-group">-->
-<!-- Member's Name Section -->
-<!--<div class="row mb-4">
-    <div class="col-md-12">
-        <div class="form-floating">
-            <span class="formatted-amount shadow-sm d-block py-3 px-4 bg-light rounded border border-secondary">Member's Name: <strong>@Model.Customer.name</strong></span>
-        </div>
-    </div>
-</div>
 
-<hr style="border: 1px solid green;" />
 
-<div class="row gy-4">-->
-<!-- Debit and Credit Options -->
-<!--<div class="col-md-6">
-    <div class="form-check border p-3 rounded">
-        @Html.RadioButtonFor(m => m.AddMembersNoneCashOperationCommand.BookingDirection, "Debit", new { @class = "form-check-input", id = "Debit" })
-        <label class="form-check-label" for="Debit" style="font-size: 1.1rem;">Debit Member's Account</label>
-    </div>
-</div>
-
-<div class="col-md-6">
-    <div class="form-check border p-3 rounded">
-        @Html.RadioButtonFor(m => m.AddMembersNoneCashOperationCommand.BookingDirection, "Credit", new { @class = "form-check-input", id = "Credit" })
-        <label class="form-check-label" for="Credit" style="font-size: 1.1rem;">Credit Member's Account</label>
-    </div>
-</div>-->
-<!-- Correspondent Account Selection -->
-<!--<div class="col-md-12">
-    <div class="form-floating border rounded p-3">
-        @Html.DropDownListFor(m => m.AddMembersNoneCashOperationCommand.ChartOfAccountId, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---Select GL---", new { @class = "form-control select2", id = "account_number", @search = "true" })
-        @Html.ValidationMessageFor(m => m.AddMembersNoneCashOperationCommand.ChartOfAccountId, "", new { @class = "text-danger" })
-        <label for="account_number" style="font-size: 1.1rem;">Select Correspondent Account</label>
-    </div>
-</div>-->
-<!-- Reasons for Operation -->
-<!--<div class="col-md-12">
-        <div class="form-floating border rounded p-3">
-            @Html.TextAreaFor(m => m.AddMembersNoneCashOperationCommand.Note, new { @class = "form-control", id = "Note", style = "height: 150px;" })
-            @Html.ValidationMessageFor(m => m.AddMembersNoneCashOperationCommand.Note, "", new { @class = "text-danger" })
-            <label for="Note" style="font-size: 1.1rem;">Enter reasons for the Operation</label>
-        </div>
-    </div>
-</div>-->
-<!-- Table Section -->
-<!--<div class="table-responsive rounded mt-4">
-    <table class="table table-hover" id="myDataTableT">
-        <thead class="table-light">
-            <tr>
-                <th style="display:none;">ProductID</th>
-                <th>Accounts</th>
-                <th>Balance</th>
-                <th>Amount</th>
-                <th style="display:none">Fee</th>
-                <th>Total</th>
-                <th>confirm</th>
-                <th style="display:none">Inc</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var d in Model.BulkDeposits.Where(x => !x.AccountType.ToLower().Contains("loan")).OrderBy(t => t.AccountType))
-            {
-                <tr>
-                    <td style="display:none;">@d.AccountNumber</td>
-                    <td>@d.AccountType</td>
-                    <td>@d.Balance.ToString("#,##0.0")</td>
-                    <td>
-                        <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
-                    </td>
-                    <td  style="display:none">
-                        <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee" readonly>
-                    </td>
-                    <td>
-                        <span class="total-span">@d.Total</span>
-                    </td>
-                    <td>
-                        <input type="checkbox" class="form-check-input">
-                    </td>
-                    <td style="display:none">
-                        <input type="checkbox" class="form-check-input check-inclussive" disabled>
-                    </td>
-                </tr>
-            }
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
-                <td id="tableTotal">0</td>
-            </tr>
-        </tfoot>
-    </table>
-</div>-->
-<!-- Action Buttons -->
-<!--<div class="d-flex justify-content-end mt-4">
-            <input type="hidden" name="OperationType" value="MemberNoneCash" id="OperationType" />
-            <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
-
-            <button type="submit" class="btn btn-primary btn-lg me-3" onclick="PostCashIn()">
-                <i class="fas fa-money-bill-wave me-2"></i> CREATE
-            </button>
-        </div>
-    </div>
-
-    <hr style="border: 2px solid green;" />
-</fieldset>-->

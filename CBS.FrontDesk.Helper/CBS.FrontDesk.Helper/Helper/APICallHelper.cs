@@ -134,6 +134,13 @@ namespace CBS.FrontDesk.Helper
         public static string CreateStandingOrder = "/api/v1/StandingOrder/create";
         public static string Get_StandingOrderByMemberId = "/api/v1/StandingOrder/member/{0}";
 
+        //FileUpload
+        public static string SetPrivatePublicStatus = "/api/v1/FileUpload/set-private";
+        public static string FileUploadsDatatable = "/api/v1/FileUploads/datatable";
+        public static string FileUploadGet_Or_Delete = "/api/v1/FileUpload/{0}";
+
+
+
         //SalaryUpload
         public static string Delete_SalaryUpload = "/api/v1/SalaryUpload/{0}";
         public static string GetAllSalaryUploadByFileCategory = "/api/v1/SalaryUpload/all/{0}";
@@ -147,6 +154,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetSalaryModelForBranchByFileId = "/api/v1/SalaryAnalysis/get-salary-model-for-branch-by-fileid/{0}";
 
         public static string GetMemberByCustomerType = "/api/v1/Customer/MembersByType/{0}";
+        public static string GetMemberByCustomerTypeAndBranchId = "/api/v1/Customers/get-customers-by-category";
 
 
         //SalaryExecution
@@ -296,6 +304,7 @@ namespace CBS.FrontDesk.Helper
         public static string SearchByAnyCriterialQuery = "/api/v1/Customers/SearchByAnyCriterialQuery";
         public static string GetAllByParameters = "/api/v1/Customer/GetAllByParameters";
         public static string MembersDatatableQuery = "/api/v1/customers/datatable";
+        public static string MembersDownloadDatatableQuery = "/api/v1/customer-download/customers";
 
 
         public static string AllCustomers = "/api/v1/Customers";
@@ -1207,7 +1216,7 @@ namespace CBS.FrontDesk.Helper
         public static string SubmitMemberAdjustmentRequest = "/api/v1/MemberAdjustmentRequest/submit";
         public static string ApproveMemberAdjustmentRequest = "/api/v1/MemberAdjustmentRequest/approve";
         public static string RejectMemberAdjustmentRequest = "/api/v1/MemberAdjustmentRequest/reject";
-        public static string GetMemberAdjustmentRequestDetails = "/api/v1/MemberAdjustmentRequest/get-details";
+        public static string GetMemberAdjustmentRequestDetails = "/api/v1/MemberAdjustmentRequest/get-details/";
         public static string MemberAdjustmentRequestDataTable = "/api/v1/MemberAdjustmentRequest/datatable";
         //public static string RetrieveAllUnProcessedTransactionTracker = "/api/v1/AccountingEntries/RetrieveAllUnProcessedTransactionTracker";
         //public static string ReExecutedFailedEntry = "/api/v1/AccountingEntries/ReExecutedFailedEntry";

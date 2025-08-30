@@ -26,6 +26,7 @@ using CBS.BusinessService.Session;
 using CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping;
 using DocumentFormat.OpenXml.Bibliography;
 using Microsoft.AspNet.SignalR.Hosting;
+using System.Threading;
 
 namespace CBS.BusinessService.CustomerManagement
 {
@@ -244,8 +245,52 @@ namespace CBS.BusinessService.CustomerManagement
                 })
                 .ToList();
         }
+        public async Task<IEnumerable<StringValues>> GetMemberByCustomerTypeAsync(
+            string branchId,
+            string customerCategory)
+        {
+            // Defensive defaults
+            if (string.IsNullOrWhiteSpace(branchId) || string.IsNullOrWhiteSpace(customerCategory))
+                return Enumerable.Empty<StringValues>();
 
+            try
+            {
+                var query = new GetCustomerBtCategoryAndBranchQUery
+                {
+                    BranchId = branchId,
+                    CustomerCategory = customerCategory
+                };
 
+                // Build full URL with query string
+                var qs = ToQueryString(query); // e.g., "BranchId=...&CustomerCategory=..."
+                var fullUrl = $"{APICallHelper.GetMemberByCustomerTypeAndBranchId}?{qs}";
+
+                // Call API
+                var apiResp = await _customerApiHelper.GetAsync<ResponseObject<List<CustomerLightDto>>>(fullUrl);
+
+                // Extract data safely
+                var members = apiResp?.IsSuccess == true
+                    ? apiResp.ApiResponseData?.Data ?? new List<CustomerLightDto>()
+                    : new List<CustomerLightDto>();
+
+                // Map to StringValues (adjust property names if different)
+                // Text: display name; Value: id
+                var results = members.Select(m => new StringValues(
+                        text: ($"[M.AccNo: {m?.CustomerId}] Name: [{m?.LastName} {m?.LastName}] Phone: [{m.Phone}]".Trim()).Trim(),
+                        value: (m?.CustomerId).Trim()
+                    ))
+                    // Filter out empties just in case
+                    .Where(sv => !string.IsNullOrWhiteSpace(sv.Text) && !string.IsNullOrWhiteSpace(sv.Value))
+                    .ToList();
+
+                return results;
+            }
+            catch (Exception)
+            {
+                // TODO: add your logger here (e.g., LogError(ex, "..."))
+                return Enumerable.Empty<StringValues>();
+            }
+        }
         public async Task<CustomDataTable> GetDataTableAsync(GetCustomersForDataTableQuery customersForDataTableQuery, string source)
         {
             if (source=="MemberSituation")
@@ -265,6 +310,61 @@ namespace CBS.BusinessService.CustomerManagement
             // Make API call to fetch the DataTable result
             var couApiResponse = await _customerApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
                 APICallHelper.MembersDatatableQuery,
+                customersForDataTableQuery
+            );
+
+            // Return response if successful
+            if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+            {
+                return couApiResponse.ApiResponseData.Data;
+            }
+
+            // Return an empty DataTable if the request fails
+            return new CustomDataTable(
+                draw: Convert.ToInt32(customersForDataTableQuery.Options.draw),
+                recordsTotal: 0,
+                recordsFiltered: 0,
+                data: new List<object>(), // No data
+                dataTableOptions: customersForDataTableQuery.Options
+            );
+        }
+        public async Task<FileDownloadDto> DownloadCustomers(ExportCustomersQueryFilter customersForDataTableQuery)
+        {
+            if (!IsHeadOffice())
+            {
+                customersForDataTableQuery.BranchId=GetBranchID();
+            }
+        
+            customersForDataTableQuery.Download=true;
+            // Make API call to fetch the DataTable result
+            var couApiResponse = await _customerApiHelper.PostAsync<ResponseObject<FileDownloadDto>>(
+                APICallHelper.MembersDownloadDatatableQuery,
+                customersForDataTableQuery
+            );
+
+            // Return response if successful
+            if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData != null)
+            {
+                return couApiResponse.ApiResponseData.Data;
+            }
+            return new FileDownloadDto();
+          
+        }
+        public async Task<CustomDataTable> GetDataTableAsyncTwo(ExportCustomersQueryFilter customersForDataTableQuery)
+        {
+            if (!IsHeadOffice())
+            {
+                customersForDataTableQuery.BranchId=GetBranchID();
+            }
+            else
+            {
+                customersForDataTableQuery.BranchId=null;
+            }
+
+
+            // Make API call to fetch the DataTable result
+            var couApiResponse = await _customerApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                APICallHelper.MembersDownloadDatatableQuery,
                 customersForDataTableQuery
             );
 

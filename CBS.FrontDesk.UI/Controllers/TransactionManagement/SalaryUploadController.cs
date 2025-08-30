@@ -1,10 +1,15 @@
-﻿using CBS.BusinessService.Accounting;
+﻿using CBS.BusinessService;
+using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Message;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -18,12 +23,14 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         private readonly BranchServices _branchServices;
         private readonly SalaryAnalysisResultServices _salaryAnalysisResultServices;
         private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
-        public SalaryUploadController(SalaryUploadServices salaryUploadServices, SalaryAnalysisResultServices salaryAnalysisResultServices, BranchServices branchServices, ChartOfAccountServicesAnnex chartOfAccountServices)
+        private readonly FileUploadServices _fileUploadServices;
+        public SalaryUploadController(SalaryUploadServices salaryUploadServices, SalaryAnalysisResultServices salaryAnalysisResultServices, BranchServices branchServices, ChartOfAccountServicesAnnex chartOfAccountServices, FileUploadServices fileUploadServices)
         {
             _salaryUploadServices = salaryUploadServices;
             _salaryAnalysisResultServices=salaryAnalysisResultServices;
             _branchServices=branchServices;
             this.chartOfAccountServices=chartOfAccountServices;
+            _fileUploadServices=fileUploadServices;
         }
 
         public async Task<ActionResult> Index()
@@ -36,18 +43,70 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             await LoadDroupdowns();
             return View(new SalaryUploadModelCarrier());
         }
-        public async Task<bool> LoadDroupdowns()
+
+        // In your controller (fields assumed already injected):
+        // private readonly IBranchServices _branchServices;
+        // private readonly IChartOfAccountServices chartOfAccountServices;
+
+        // Reuse one immutable list for File Types (no per-request allocation)
+        private static readonly IReadOnlyList<SelectListItem> FileTypeOptions =
+            new List<SelectListItem>
+            {
+        new SelectListItem { Value = "CivilServants",       Text = "Civil Servant Files" },
+        new SelectListItem { Value = "PrivateInstitutions", Text = "Private Institution Files" },
+        new SelectListItem { Value = "StandingOrder",       Text = "Standing Order Files" },
+        new SelectListItem { Value = "Analysis",            Text = "Analysed Files" },
+        new SelectListItem { Value = "Others",              Text = "Other Files" }
+            }.AsReadOnly();
+
+        // One helper to populate common dropdowns; optionally include Chart of Accounts
+        private async Task PopulateDropdownsAsync(bool includeChartOfAccounts)
         {
-            var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts(false);
-            ViewBag.StandingOrderSourceAccountOptions = chartOfAccounts.ToList();
-            var Branches = await _branchServices.GetBranches();
-            ViewBag.Branches = Branches;
-            return true;
+            var branchesTask = _branchServices.GetBranches();
+            Task<IEnumerable<object>> coaTask = Task.FromResult(Enumerable.Empty<object>());
+
+            if (includeChartOfAccounts)
+                coaTask = chartOfAccountServices.GetChartOfAccounts(false).ContinueWith(t => t.Result.Cast<object>());
+
+            // Run in parallel when both are needed
+            await Task.WhenAll(includeChartOfAccounts ? new Task[] { branchesTask, coaTask } : new Task[] { branchesTask });
+
+            ViewBag.Branches = (await branchesTask);                 // original behavior
+            ViewBag.FileTypes = FileTypeOptions;                     // reused list
+
+            if (includeChartOfAccounts)
+                ViewBag.StandingOrderSourceAccountOptions = (await coaTask).ToList(); // original ToList()
         }
-        public ActionResult UploadedSalaryFiles()
+
+        // Actions
+        public async Task<ActionResult> UploadedSalaryFiles()
         {
+            await PopulateDropdownsAsync(includeChartOfAccounts: false);
             return View(new SalaryUploadModelCarrier());
         }
+
+        // Keep signature/route the same; just delegate to the helper
+        public async Task<bool> LoadDroupdowns()
+        {
+            await PopulateDropdownsAsync(includeChartOfAccounts: true);
+            return true;
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> SetPrivate(SetFileUploadPrivateViewCommand model)
+        {
+            try
+            {
+                var result = await _fileUploadServices.SetPrivatePublicStatus(model);
+                return Json(new { success = result.Result, status = result.MessageStatus, message = Messaging.MessageResult(result) });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Failed to update privacy." });
+            }
+        }
+
         public async Task<ActionResult> Detail(string fileUploadid)
         {
             var salaryUploadModelWithBranchStatistics = await _salaryUploadServices.GetSalaryUploadModelWithBranchStatistics(fileUploadid);
@@ -63,6 +122,34 @@ TotalMembers=salaryUploadModels.Count(), TotalNetSalary=salaryUploadModels.Sum(x
             var salaryUploadModels = await _salaryUploadServices.GetSalaryUploads(fileUploadid);
             var salaryUploadModelSummary = new SalaryUploadModelSummaryDto { FileUploadId=fileUploadid, TotalMembers=salaryUploadModels.Count(), TotalNetSalary=salaryUploadModels.Sum(x => x.NetSalary) };
             return View(new SalaryUploadModelCarrier { SalaryUploadModels=salaryUploadModels.ToList(), SalaryUploadModelSummaryDto=salaryUploadModelSummary });
+        }
+        [HttpPost]
+        public async Task<ActionResult> LoadLoanData(GetFileUploadsDataTableQuery tableQuery)
+        {
+            try
+            {
+                var dataTable = await _fileUploadServices.GetDataTableAsync(tableQuery);
+                var loanList = JsonConvert.DeserializeObject<List<FileUploadDto>>(JsonConvert.SerializeObject(dataTable.data));
+                if (tableQuery.ActionParam=="analyser")
+                {
+                    loanList = _salaryUploadServices.GetUploadForAnalysis(loanList);
+                }
+                else if (tableQuery.ActionParam=="executer")
+                {
+                    loanList = _salaryUploadServices.GetFileUploads(loanList);
+                }
+                return Json(new
+                {
+                    draw = dataTable.DataTableOptions.draw,
+                    recordsTotal = dataTable.recordsTotal,
+                    recordsFiltered = dataTable.recordsFiltered,
+                    data = loanList
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading loan data.");
+            }
         }
         public async Task<ActionResult> DownloadFile(string fileId = null)
         {
@@ -231,6 +318,12 @@ TotalMembers=salaryUploadModels.Count(), TotalNetSalary=salaryUploadModels.Sum(x
             var data = await _salaryUploadServices.Delete(KEY);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
+        public async Task<ActionResult> DeletFile(string KEY)
+        {
+            var data = await _fileUploadServices.Delete(KEY);
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+        }
+      
     }
 
 }

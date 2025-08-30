@@ -49,18 +49,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var salaryExtractDtos = await _salaryExecutionServices.GetAExecutedSalaryFileByFileUploadId(fileUploadid);
             var fileUpload = await _salaryExecutionServices.GetFileUpload(fileUploadid);
             var dashboardViewModel= _salaryExecutionServices.GetDashboardSummary(salaryExtractDtos.ToList());
-            if (fileUpload.FileCategory=="")
-            {
-                var stringValues = await _individualProfileServices.GetMemberByCustomerTypeDropDown()
-; return View(new ExecuteSalaryCarrier { SalaryExtractes=salaryExtractDtos.ToList(), FileUpload=fileUpload, DashboardViewModel=dashboardViewModel, StringValues=stringValues.ToList() });
-
-            }
-            else
-            {
-                var stringValues = await _individualProfileServices.GetMemberByCustomerTypeDropDown("all")
-; return View(new ExecuteSalaryCarrier { SalaryExtractes=salaryExtractDtos.ToList(), FileUpload=fileUpload, DashboardViewModel=dashboardViewModel, StringValues=stringValues.ToList() });
-
-            }
+            return View(new ExecuteSalaryCarrier { SalaryExtractes=salaryExtractDtos.ToList(), FileUpload=fileUpload, DashboardViewModel=dashboardViewModel});
         }
 
         public async Task<ActionResult> PISalaryDetail(string fileUploadid)
@@ -117,11 +106,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         {
             try
             {
-                // ✅ Ensure command is valid
-                if (command == null || string.IsNullOrEmpty(command.FileUploadId) || string.IsNullOrEmpty(command.MemberReferenceNumber))
-                {
-                    return Json(new { success = false, message = "Invalid request data." });
-                }
+               
 
                 // 🚀 Process salary execution
                 var data = await _salaryExecutionServices.ExecuteSalary(command);

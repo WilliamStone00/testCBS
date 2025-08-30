@@ -356,6 +356,7 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.FileSystem.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.FileSystem.AccessControl.5.0.0\lib\net461\System.IO.FileSystem.AccessControl.dll</HintPath>
     </Reference>
@@ -2127,7 +2128,7 @@
     <Compile Include="Controllers\MemberNoneCashOperation\LoanRepaymentBackOfficeController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\MemberNoneCashOperationController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\MobileMoneyBackOfficeController.cs" />
-    <Compile Include="Controllers\MemberOperation\MemberOperationController.cs" />
+    <Compile Include="Controllers\LoanApplicationManagement\MemberOperationController.cs" />
     <Compile Include="Controllers\MembersFSerie\MembersFSeriesController.cs" />
     <Compile Include="Controllers\Overdraft\OverdraftActivationController.cs" />
     <Compile Include="Controllers\Overdraft\OverdraftFacilityConfigController.cs" />
@@ -8244,9 +8245,12 @@
     <Content Include="Scripts\Js\CommissionManagement\DailyCollectionManagement.js" />
     <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MemberAcccountBalanceAdjustment.js" />
     <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MyAdjustmentCustomers.js" />
+    <Content Include="Scripts\Js\Crud\CustomerManagement\Customers\CustomerExport.js" />
+    <Content Include="Scripts\Js\Crud\FileUpload\FileUploadQuery.js" />
     <Content Include="Scripts\Js\Crud\LoanAdjustmentConsole\LoanAdjustmentConsole.js" />
     <Content Include="Scripts\Js\Crud\LoanAdjustmentConsole\LoanAdjustmentLoader.js" />
     <Content Include="Scripts\Js\CommissionManagement\DSFileUploaded.js" />
+    <Content Include="Scripts\Js\Crud\LoanRepaymentBackOffice\VAT.js" />
     <Content Include="Scripts\Js\Dashboard\DailyCollection\DailyCollectionDashboard.js" />
     <Content Include="Scripts\Js\main.js\AccountBalanceInitialization.js" />
     <Content Include="Scripts\Js\main.js\AccountingBookingAlert.js" />
@@ -9479,6 +9483,8 @@
     <Content Include="Views\MemberAdjustmentConsole\_MemberAdjustmentDetailBody.cshtml" />
     <Content Include="Views\MemberAdjustmentConsole\_MemberAdjustmentData.cshtml" />
     <Content Include="Views\AccountingConfiguration\_UpdateAccountGL.cshtml" />
+    <Content Include="Views\Individual\Reporting.cshtml" />
+    <Content Include="Views\Individual\_IndividualExportData.cshtml" />
     <Content Include="Views\AccountingReconciliation\Index.cshtml" />
     <Content Include="Views\AccountingReconciliation\_SearchOption.cshtml" />
     <Content Include="Views\AccountingReconciliation\_ReconciliationData.cshtml" />

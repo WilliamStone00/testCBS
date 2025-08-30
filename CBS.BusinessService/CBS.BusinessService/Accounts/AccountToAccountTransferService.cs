@@ -94,11 +94,11 @@ namespace CBS.BusinessService.Accounts
 
             // 3. Accounts (exclude loans)
             var rawAccounts = await _accountServices.GetAllCustomerAccountsByCustomerId(customer.CustomerId);
-            var accounts = rawAccounts
-                .Where(a => !a.AccountType.ToLower().Contains("loan"))
-                .ToList();
+            //var accounts = rawAccounts
+            //    .Where(a => !a.AccountType.ToLower().Contains("loan"))
+            //    .ToList();
 
-            if (!accounts.Any())
+            if (!rawAccounts.Any())
                 return null;
 
             // 4. Format name for display
@@ -108,7 +108,7 @@ namespace CBS.BusinessService.Accounts
             {
                 Customer = customer,
                 Branch = branch,
-                Accounts = accounts
+                Accounts = rawAccounts
             };
         }
         public async Task<ExecutionMessages> SubmitTransferRequest(TransferRequest transferRequest)

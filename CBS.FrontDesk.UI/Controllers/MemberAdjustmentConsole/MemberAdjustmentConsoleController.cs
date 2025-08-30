@@ -99,15 +99,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
         public async Task<ActionResult> GetMemberNamesDetailPartial(string id)
         {
             var model =  await InitializeCustomerData(id);
-            var request = new MemberAdjustmentModel()
-            {
-                MemberId = model.CustomerList.CustomerId,
-                OldFirstName = model.CustomerList.FirstName,
-                OldLastName = model.CustomerList.LastName,
-                IsMemberProfileModified = true,
-                BranchId=model.CustomerList.BranchId,
-                AdjustmentType= AdjustmentType.NameAdjustment.ToString(),
-            };
+            var request = _memberAdjustmentService.initialiseMemberAdjustmentModel(AdjustmentType.NameAdjustment, model);
             return PartialView("_MemberNameAdjustmentModalBody", request);
         }  
         
@@ -115,16 +107,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
         public async Task<ActionResult> GetMemberActiveStatusDetailPartial(string id)
         {
             var model =  await InitializeCustomerData(id);
-            var request = new MemberAdjustmentModel()
-            {
-                MemberId= model.CustomerList.CustomerId,
-                OldStatus = model.CustomerList.Active,
-                OldMemberStatus = model.CustomerList.ActiveStatus,
-                OldMemberShipStatus = model.CustomerList.MembershipApprovalStatus,
-                IsMemberProfileModified = true,
-                BranchId = model.CustomerList.BranchId,
-                AdjustmentType = AdjustmentType.MemberActiveStatusAdjustment.ToString(),
-            };
+            var request = _memberAdjustmentService.initialiseMemberAdjustmentModel(AdjustmentType.MemberActiveStatusAdjustment, model);
             return PartialView("_MemberActiveStatusAdjustmentModalBody", request);
         } 
         
@@ -132,16 +115,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
         public async Task<ActionResult> GetMemberMembershipStatusDetailPartial(string id)
         {
             var model =  await InitializeCustomerData(id);
-            var request = new MemberAdjustmentModel()
-            {
-                MemberId= model.CustomerList.CustomerId,
-                OldStatus = model.CustomerList.Active,
-                OldMemberStatus = model.CustomerList.ActiveStatus,
-                OldMemberShipStatus = model.CustomerList.MembershipApprovalStatus,
-                IsMemberProfileModified = true,
-                BranchId = model.CustomerList.BranchId,
-                AdjustmentType = AdjustmentType.MemberActiveStatusAdjustment.ToString(),
-            };
+            var request = _memberAdjustmentService.initialiseMemberAdjustmentModel(AdjustmentType.MemberMembershipStatusAdjustment, model);
             return PartialView("_MemberMembershipStatusAdjustmentModalBody", request);
         } 
         
@@ -149,16 +123,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
         public async Task<ActionResult> GetMemberStatusDetailPartial(string id)
         {
             var model =  await InitializeCustomerData(id);
-            var request = new MemberAdjustmentModel()
-            {
-                MemberId= model.CustomerList.CustomerId,
-                OldStatus = model.CustomerList.Active,
-                OldMemberStatus = model.CustomerList.ActiveStatus,
-                OldMemberShipStatus = model.CustomerList.MembershipApprovalStatus,
-                IsMemberProfileModified = true,
-                BranchId = model.CustomerList.BranchId,
-                AdjustmentType = AdjustmentType.MemberActivationAdjustment.ToString(),
-            };
+            var request = _memberAdjustmentService.initialiseMemberAdjustmentModel(AdjustmentType.MemberActivationAdjustment, model);
             return PartialView("_MemberStatusAdjustmentModalBody", request);
         }
         
@@ -166,13 +131,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
         public async Task<ActionResult> GetMemberReferenceDetailPartial(string id)
         {
             var model =  await InitializeCustomerData(id);
-            var request = new MemberAdjustmentModel()
-            {
-                MemberId= model.CustomerList.CustomerId,
-                IsMemberProfileModified = true,
-                BranchId = model.CustomerList.BranchId,
-                AdjustmentType = AdjustmentType.MemberReferenceAdjustment.ToString(),
-            };
+            var request = _memberAdjustmentService.initialiseMemberAdjustmentModel(AdjustmentType.MemberReferenceAdjustment, model);
             return PartialView("_MemberReferenceAdjustmentModalBody", request);
         }
 
@@ -180,14 +139,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
         public async Task<ActionResult> GetMemberCategoryDetailPartial(string id)
         {
             var model =  await InitializeCustomerData(id);
-            var request = new MemberAdjustmentModel()
-            {
-                MemberId= model.CustomerList.CustomerId,
-                OldMemberCategory = model.CustomerList.CustomerType,
-                IsMemberProfileModified = true,
-                BranchId = model.CustomerList.BranchId,
-                AdjustmentType = AdjustmentType.MemberCategoryAdjustment.ToString(),
-            };
+            var request = _memberAdjustmentService.initialiseMemberAdjustmentModel(AdjustmentType.MemberCategoryAdjustment, model);
             return PartialView("_MemberCategoryAdjustmentModalBody", request);
         } 
         
@@ -196,14 +148,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
         public async Task<ActionResult> GetMemberAccountBalanceDetailPartial(string id)
         {
             var model =  await InitializeCustomerData(id);
-            var request = new MemberAdjustmentModel()
-            {
-                MemberId= model.CustomerList.CustomerId,
-                CustomerAccounts=model.CustomerAccounts,
-                IsMemberAccountModified = true,
-                BranchId = model.CustomerList.BranchId,
-                AdjustmentType = AdjustmentType.AccountBalanceAdjustment.ToString(),
-            };
+            var request = _memberAdjustmentService.initialiseMemberAdjustmentModel(AdjustmentType.AccountBalanceAdjustment, model);
             return PartialView("_MemberAccountBalanceAdjustmentModalBody", request);
         }
 
@@ -217,63 +162,14 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
 
 
 
-            model.RequestedBy = Session["UserId"]?.ToString();
+            model.RequestedBy = Session["FullName"]?.ToString();
 
-            var command= ConvertMemberAjustmentModel(model);
+            var command= _memberAdjustmentService.ConvertMemberAjustmentModel(model);
             var result = await _memberAdjustmentService.SubmitMemberAdjustmentRequestAsync(command);
-            return Json(new
-            {
-                success = result.Result,
-                status = result.MessageStatus,
-                message = Messaging.MessageResult(result)
-            });
+            return Json(new { success = result.Result, status = result.MessageStatus, message = Messaging.MessageResult(result) });
         }
 
-        public SubmitMemberAdjustmentRequestCommand ConvertMemberAjustmentModel(MemberAdjustmentModel model)
-        {
-            return new SubmitMemberAdjustmentRequestCommand
-            {
-                // --- Core Identifiers ---
-                MemberId = model.MemberId,
-                BranchId = model.BranchId,
-                AccountId = model.AccountId,
-                NewMemberId = model.NewMemberId,
-                AdjustmentType= model.AdjustmentType,
-                // --- Name Change Properties ---
-                NewFirstName = model.NewFirstName,
-                OldFirstName = model.OldFirstName,
-                NewLastName = model.NewLastName,
-                OldLastName = model.OldLastName,
-
-                // --- Balance Properties ---
-                NewBalance = model.NewBalance,
-                OldBalance = model.OldBalance,
-
-                // --- Member Status Properties (string-based) ---
-                NewMemberStatus = model.NewMemberStatus,
-                OldMemberStatus = model.OldMemberStatus,
-                NewMemberShipStatus = model.NewMemberShipStatus,
-                OldMemberShipStatus = model.OldMemberShipStatus,
-
-                // --- Status Properties (boolean-based) ---
-                NewStatus = model.NewStatus,
-                OldStatus = model.OldStatus,
-                NewAccountStatus = model.NewAccountStatus,
-                AccountStatus = model.AccountStatus,
-
-                // --- Category Properties ---
-                NewMemberCategory = model.NewMemberCategory,
-                OldMemberCategory = model.OldMemberCategory,
-
-                // --- Audit and Justification ---
-                Reason = model.Reason,
-                RequestedBy = model.RequestedBy,
-
-                // --- Modification Flags ---
-                IsMemberProfileModified = model.IsMemberProfileModified,
-                IsMemberAccountModified = model.IsMemberAccountModified
-            };
-        }
+        
 
         [HttpPost]
         public async Task<ActionResult> LoadAdjustmentRequestDataTable(GetMemberAdjustmentRequestsDataTableQuery query)
@@ -294,6 +190,19 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
         public async Task<ActionResult> GetRequestDetailPartial(string id)
         {
             var model = await _memberAdjustmentService.GetMemberAdjustmentRequestAsync(id);
+            if (model != null && model.Request!= null && model.Request.OldBalance!=0)
+            {
+                bool isCredit = model.Request.BalanceSenseDifference == "CREDIT";
+                if (isCredit)
+                {
+                    model.Request.NewBalance = model.Request.OldBalance + model.Request.NewBalance;
+                }
+                else
+                {
+                    model.Request.NewBalance = model.Request.OldBalance - model.Request.NewBalance;
+                }
+
+            }
             return PartialView("_MemberAdjustmentDetailBody", model);
         }
 
