@@ -60,6 +60,24 @@ namespace CBS.BusinessService.Accounting
                 throw;
             }
         }
+
+        public async Task<List<AccountingBook>> GetAllAccountingEventBook()
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<AccountingBook>>>(APICallHelper.GetAllProductAccountingRules);
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new List<AccountingBook>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
         public   async Task<List<AccountingBook>> GetAllAccountingBook()
         {
             try

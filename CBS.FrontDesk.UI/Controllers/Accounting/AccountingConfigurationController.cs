@@ -156,6 +156,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return unconfiguredProductsResponse;
         }
         [HttpGet]
+        public async Task<JsonResult> CheckFeeOrIncomeStatus()
+        {
+            var listOfAccounts = await _AccountServices.GetAllAccountingEventBook();
+            var data = CheckIfUnConfigureAccountExist(listOfAccounts);
+            this.HttpContext.Session["UnConfiguredProduct"] = data;
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
         public async Task<JsonResult> CheckAccountConfigurationStatus()
         {
             var listOfAccounts = await _AccountServices.GetAllAccountingBook();

@@ -126,11 +126,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Reference { get; set; }
         public string EntryDate { get; set; }
         public string ValueDate { get; set; }
-        public string SumDebit { get; set; }
-        public string SumCredit { get; set; }
-        public string NumberEntries { get; set; }
-        public string NumberDebit { get; set; }
-        public string NumberCredit { get; set; }
+        public decimal SumDebit { get; set; }
+        public decimal SumCredit { get; set; }
+        public decimal NumberEntries { get; set; }
+        public decimal NumberDebit { get; set; }
+        public decimal NumberCredit { get; set; }
         public string PrintersName { get;   set; }
         public string Auxilary { get;   set; }
         public string BranchCode { get;   set; }
