@@ -854,7 +854,7 @@ loadAccountByIdWithCallBack(123, (error, account) => {
      
         const item = {
             reference: $('#EntryTempData_Reference').val().trim(),
-            BranchId: $('#EntryTempData_BranchId').val().trim(),
+            BranchId: $('#EntryTempData_BranchId').val(),
             accountBalance: $('#EntryTempData_AccountBalance').val(),
             accountId: $('#EntryTempData_AccountId').val(),
             accountName: $('#EntryTempData_AccountName').val(),

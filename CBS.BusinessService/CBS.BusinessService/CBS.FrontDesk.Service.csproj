@@ -243,6 +243,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountingDayObject\AccountingDayServices.cs" />
+    <Compile Include="Accounting\AccountingReconciliationServices.cs" />
     <Compile Include="Accounting\AccountPolicyServices.cs" />
     <Compile Include="Accounting\AccountUploadServices.cs" />
     <Compile Include="Accounting\AccountBookingDirectionServices.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="Accounting\ChartOfAccountManagementPositionService.cs" />
     <Compile Include="Accounting\BlacklistAccountServices.cs" />
     <Compile Include="Accounting\ProductAccountingHelper.cs" />
+    <Compile Include="Accounting\TransactionTracker.cs" />
     <Compile Include="Accounts\FileUploadServices.cs" />
     <Compile Include="DailyCollectionServices\DailyCollectionEndOfDayServices.cs" />
     <Compile Include="Accounting\DocumentTypeServices.cs" />

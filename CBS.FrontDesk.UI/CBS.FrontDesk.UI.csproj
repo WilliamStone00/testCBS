@@ -2041,6 +2041,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalWithdrawalNotification.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
     <Compile Include="Controllers\Accounting\AccountBalanceInitializationController.cs" />
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
@@ -2195,6 +2196,7 @@
     <Compile Include="Helper\FileUploadHelper.cs" />
     <Compile Include="Helper\SalarySheetExcelExporter.cs" />
     <Compile Include="Models\Class1.cs" />
+    <Content Include="Scripts\Js\AccountingReconciliation\AccountReconciliation.js" />
     <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MemberAdjustmentConsole.js" />
     <Compile Include="WAF\Middleware\Core\StaticPathHelper.cs" />
     <Compile Include="WAF\Middleware\Correlation\CorrelationIdMiddleware.cs" />
@@ -8254,6 +8256,7 @@
     <Content Include="Scripts\Js\main.js\AccountingBookingAlert.js" />
     <Content Include="Scripts\Js\main.js\DailySaverOperations.js" />
     <Content Include="Scripts\Js\main.js\DailySaverUploud.js" />
+    <Content Include="Scripts\Js\main.js\TransactionTracker.js" />
     <Content Include="Scripts\Js\MemberReceiptsP\MemberReceipt.js" />
     <Content Include="Scripts\Js\CMoney\cmoney.js" />
     <Content Include="Scripts\Js\CMoney\cmMembers.js" />
@@ -9482,6 +9485,10 @@
     <Content Include="Views\AccountingConfiguration\_UpdateAccountGL.cshtml" />
     <Content Include="Views\Individual\Reporting.cshtml" />
     <Content Include="Views\Individual\_IndividualExportData.cshtml" />
+    <Content Include="Views\AccountingReconciliation\Index.cshtml" />
+    <Content Include="Views\AccountingReconciliation\_SearchOption.cshtml" />
+    <Content Include="Views\AccountingReconciliation\_ReconciliationData.cshtml" />
+    <Content Include="Views\AccountingReconciliation\GetReconciliationData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

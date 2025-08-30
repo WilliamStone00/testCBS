@@ -1015,6 +1015,10 @@ namespace CBS.FrontDesk.Helper
         public static string AccountingEntry_Get_reference_Id = "/api/v1/AccountingEntry/GetAccountingEntryByReferenceIdQuery/{0}";
         public static string AccountingEntry_ReverseEntry = "/api/v1/AccountingEntry/ReverseAccountingEntry";
         public static string PostAutomatedEventEntryCommand_url = "/api/v1/AccountingEntries/PostAutomatedEventEntryCommand";
+        public static string RetrieveAllUnProcessedTransactionTracker = "/api/v1/AccountingEntries/RetrieveAllUnProcessedTransactionTracker";
+        public static string ReExecutedFailedEntry = "/api/v1/AccountingEntries/ReExecutedFailedEntry";
+
+        public static string GetTransactionTrackerPaginated = "/api/v1/AccountingEntries/TransactionTrackers/SearchByAnyCriterialQuery";
         //Post_AccountingEntry_Entries 
         public static string AccountingEntry_Entries_branchId_accountId = "/api/v1/AccountingEntries/{0}/{1}";
         public static string AccountingEntry_BankingOperationRedirectedForBankCashOut = "/api/v1/BankingOperation/RedirectedForBankCashOut";
@@ -1214,5 +1218,9 @@ namespace CBS.FrontDesk.Helper
         public static string RejectMemberAdjustmentRequest = "/api/v1/MemberAdjustmentRequest/reject";
         public static string GetMemberAdjustmentRequestDetails = "/api/v1/MemberAdjustmentRequest/get-details/";
         public static string MemberAdjustmentRequestDataTable = "/api/v1/MemberAdjustmentRequest/datatable";
+        //public static string RetrieveAllUnProcessedTransactionTracker = "/api/v1/AccountingEntries/RetrieveAllUnProcessedTransactionTracker";
+        //public static string ReExecutedFailedEntry = "/api/v1/AccountingEntries/ReExecutedFailedEntry";
+
+        //public static string GetTransactionTrackerPaginated = "/api/v1/AccountingEntries/TransactionTrackers/SearchByAnyCriterialQuery";
     }
 }

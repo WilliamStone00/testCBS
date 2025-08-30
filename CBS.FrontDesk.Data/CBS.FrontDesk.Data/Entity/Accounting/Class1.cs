@@ -29,7 +29,15 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string productType { get; set; }
     }
 
+    public class AccountingEventBook
+    {
+        public string FeeName { get; set; }
+        public string EventCode { get; set; }
  
+        public string ChartOfAccountId { get; set; }
+        public string ServiceType { get; set; }
+    }
+
 
 
     public class ProductConfigurationViewModel

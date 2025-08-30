@@ -48,9 +48,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 JournalEntryDto dto = new JournalEntryDto();
                 dto.AccountNumber = account.AccountNumber;
                 dto.Description = account.Naration;
-                dto.ValueDate = account.ValueDate.ToString("dd-MM-yyyy");
+                dto.ValueDate = account.ValueDate.ToString("dd-MM-yyyy HH:mm:ss");
                 dto.Reference = account.ReferenceID.ToString();
-                dto.EntryDate = account.EntryDate.ToString();
+                dto.EntryDate = account.EntryDate.ToString("dd-MM-yyyy HH:mm:ss");
                 dto.Address = this.Address;
                 dto.BranchLocation = this.Location;
                 dto.Location = this.Location;
@@ -63,15 +63,15 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                 dto.PrintersName = username;
                 dto.BranchCode = this.BranchCode;
                 dto.BranchName = this.BranchName;
-                dto.FromDate = this.FromDate.ToString("yyyy-MM-dd");
-                dto.ToDate = this.ToDate.ToString("yyyy-MM-dd");
+                dto.FromDate = this.FromDate.ToString("dd-MM-yyyy");
+                dto.ToDate = this.ToDate.ToString("dd-MM-yyyy");
                 dto.Debit = account.DrAmount;
                 dto.Credit = account.CrAmount;
-                dto.SumCredit = ConvertToLong((Entries.AccountingEntries.Where(x=>x.CrAmount>0).Sum(x=>x.CrAmount))).ToString("N");
-                dto.SumDebit = ConvertToLong(Entries.AccountingEntries.Where(x => x.DrAmount > 0).Sum(x => x.DrAmount)).ToString("N");
-                dto.NumberCredit = ConvertToLong(Entries.AccountingEntries.Where(x => x.CrAmount > 0).Count()).ToString("N");
-                dto.NumberDebit = ConvertToLong(Entries.AccountingEntries.Where(x => x.CrAmount > 0).Count()).ToString("N");
-                dto.NumberEntries = ConvertToLong(Entries.AccountingEntries.Count()).ToString("N");
+                dto.SumCredit = ConvertToLong((Entries.AccountingEntries.Where(x=>x.CrAmount>0).Sum(x=>x.CrAmount)));
+                dto.SumDebit = ConvertToLong(Entries.AccountingEntries.Where(x => x.DrAmount > 0).Sum(x => x.DrAmount));
+                dto.NumberCredit = ConvertToLong(Entries.AccountingEntries.Where(x => x.CrAmount > 0).Count());
+                dto.NumberDebit = ConvertToLong(Entries.AccountingEntries.Where(x => x.CrAmount > 0).Count());
+                dto.NumberEntries = ConvertToLong(Entries.AccountingEntries.Count());
                 listDto.Add(dto);
             }
             return listDto;
