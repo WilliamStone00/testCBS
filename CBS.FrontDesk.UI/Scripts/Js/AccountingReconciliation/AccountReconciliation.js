@@ -83,10 +83,11 @@ $(document).ready(function () {
 
         let innerObj;
         try {
-            // Parse what’s in the editor just to validate it’s valid JSON
+            // Parse what's in the editor to validate if it's valid JSON
             innerObj = JSON.parse($editor.val() || '{}');
-        } catch {
-            alert('Invalid commandJsonObject');
+        } catch (error) {
+            alert('Invalid JSON input');
+            console.error('Invalid JSON input:', error); // Log error for debugging
             return;
         }
 
@@ -109,12 +110,12 @@ $(document).ready(function () {
         const started = performance.now();
 
         try {
-            // Call your MVC action with the JSON string as body
+            // Send POST request
             const xhr = await $.ajax({
-                url,
+                url: url,
                 method: 'POST',
-                data: JSON.stringify({ objectAsString: jsonString }), // <-- matches your controller param
-                headers,
+                data: JSON.stringify({ objectAsString: jsonString }), // <-- matches controller parameter
+                headers: headers,
                 contentType: "application/json",
                 timeout: 30000
             });
@@ -134,8 +135,69 @@ $(document).ready(function () {
                     responseText: jqXHR.responseText
                 })
             );
+
+            console.error('AJAX Request failed:', jqXHR); // Log AJAX error for debugging
         }
     });
+
+    //$("#btn-send").on("click", async function () {
+    //    const url = '/AccountingReconciliation/RepostingData'; // <-- direct action URL
+
+    //    let innerObj;
+    //    try {
+    //        // Parse what’s in the editor just to validate it’s valid JSON
+    //        innerObj = JSON.parse($editor.val() || '{}');
+    //    } catch {
+    //        alert('Invalid commandJsonObject');
+    //        return;
+    //    }
+
+    //    // Convert the validated JSON object back into a string
+    //    const jsonString = JSON.stringify(innerObj);
+
+    //    // Prepare headers (optional if your action expects form data instead of JSON)
+    //    const headers = { "Content-Type": "application/json" };
+
+    //    // Log request for debugging
+    //    $('#requestLog').text(
+    //        safeStringify({
+    //            method: 'POST',
+    //            url,
+    //            headers,
+    //            body: jsonString
+    //        })
+    //    );
+
+    //    const started = performance.now();
+
+    //    try {
+    //        // Call your MVC action with the JSON string as body
+    //        const xhr = await $.ajax({
+    //            url,
+    //            method: 'POST',
+    //            data: JSON.stringify({ objectAsString: jsonString }), // <-- matches your controller param
+    //            headers,
+    //            contentType: "application/json",
+    //            timeout: 30000
+    //        });
+
+    //        // Handle success
+    //        $('#respStatus').removeClass().addClass('badge bg-success').text('SUCCESS');
+    //        $('#respTime').text(`${Math.round(performance.now() - started)} ms`);
+    //        $('#responseBody').val(safeStringify(xhr));
+    //    } catch (jqXHR) {
+    //        // Handle error
+    //        $('#respStatus').removeClass().addClass('badge bg-danger').text(`ERROR ${jqXHR.status || ''}`);
+    //        $('#respTime').text(`${Math.round(performance.now() - started)} ms`);
+    //        $('#responseBody').val(
+    //            safeStringify({
+    //                status: jqXHR.status,
+    //                statusText: jqXHR.statusText,
+    //                responseText: jqXHR.responseText
+    //            })
+    //        );
+    //    }
+    //});
 
     /*$("#btn-send").on("click", async function () {
         //const url = $('#destinationUrl').val().trim();

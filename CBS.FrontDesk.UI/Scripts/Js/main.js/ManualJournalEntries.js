@@ -506,7 +506,7 @@ function loadPostedEntryByReference(reference) {
                 let amount = parseFloat(item.Amount);
                 var row = $('<tr>');
                 row.append($('<td>').text(item.AccountName));
-                row.append($('<td>').text(item.AccountNumber));
+                row.append($('<td>').text(item.TempData));
 
                 if (item.BookingDirection.toLowerCase() === 'debit') {
                     row.append($('<td>').text(amount.toFixed(2)));
@@ -739,7 +739,7 @@ function GetCurrentPostedEntryTransactions(title, message, ajaxUrl, Id) {
         console.log(fullObject);
         // Create a new object with specified properties
         const accountDetails = {
-            AccountNumberCU: fullObject.Account.AccountNumberCU || null,
+            TempData: fullObject.Account.TempData || null,
             Id: fullObject.Account.Id || null,
             CurrentBalance: fullObject.Account.CurrentBalance || null,
             AccountName: fullObject.Account.AccountName || null,
@@ -762,7 +762,7 @@ function GetCurrentPostedEntryTransactions(title, message, ajaxUrl, Id) {
                 // Update input fields with returned account details 
                 $('#EntryTempData_AccountBalance').val(model.CurrentBalance);
                 $('#EntryTempData_AccountName').val(model.AccountName);
-                $('#EntryTempData_AccountNumber').val(model.AccountNumberCU);
+                $('#EntryTempData_AccountNumber').val(model.TempData);
                 $('#EntryTempData_AccountId').val(model.Id);
                 $('#EntryTempData_AccountCategoryId').val(model.AccountCategoryId);
             },
@@ -782,7 +782,7 @@ function GetCurrentPostedEntryTransactions(title, message, ajaxUrl, Id) {
         return {
             AccountBalance: model.CurrentBalance,
             AccountName: model.AccountName,
-            AccountNumber: model.AccountNumberCU,
+            AccountNumber: model.TempData,
             AccountId: model.Id,
             AccountCategoryId: model.AccountCategoryId
         };
@@ -799,7 +799,7 @@ function loadAccountByIdWithCallBack(AccountId, callback) {
             const result = {
                 AccountBalance: model.CurrentBalance,
                 AccountName: model.AccountName,
-                AccountNumber: model.AccountNumberCU,
+                AccountNumber: model.TempData,
                 AccountId: model.Id,
                 AccountCategoryId: model.AccountCategoryId
             };
@@ -849,9 +849,6 @@ loadAccountByIdWithCallBack(123, (error, account) => {
     console.log("Account loaded:", account);
 });
      function addToBasket() {
-        // Get form values
-       
-     
         const item = {
             reference: $('#EntryTempData_Reference').val().trim(),
             BranchId: $('#EntryTempData_BranchId').val(),

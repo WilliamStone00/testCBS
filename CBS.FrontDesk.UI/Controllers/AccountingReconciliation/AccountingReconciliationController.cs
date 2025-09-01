@@ -197,8 +197,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingReconciliation
         }
 
         [HttpPost]
-        public  async Task<ActionResult> RepostingDataAsync(string objectAsString)
-        {
+        public  async Task<ActionResult> RepostingData(string objectAsString)
+         {
             try
             {
                 var sessionKey = "TransactionTrackerData:" + _accountingReconciliationServices.GetUserID();
@@ -276,6 +276,10 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingReconciliation
         {
             var sessionKey = "TransactionTracker:" + _accountingReconciliationServices.GetUserID();
              var dataList=(List<TransactionTracker>) HttpContext.Session[sessionKey];
+            if (dataList==null)
+            {
+
+            }
             var model = dataList.Find(x=> x.Id == id);  
             return View( new TransactionTrackerConfiguration
             {

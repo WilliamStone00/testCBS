@@ -199,7 +199,7 @@ namespace CBS.BusinessService.Accounting
         public async Task<CustomDataTable> GenerateDataTable(DataTableOptions dataTableOptions, Func<Task<List<TransactionTracker>>> getDataFunc)
         {
             List<TransactionTracker> data = (await getDataFunc()).ToList();
-            var paginationMetadata = data?.FirstOrDefault()?.PaginationMetadata ?? new PaginationMetadata
+            var paginationMetadata =/* data?.FirstOrDefault()?.PaginationMetadata ??*/ new PaginationMetadata
             {
                 TotalCount = 0
             };
