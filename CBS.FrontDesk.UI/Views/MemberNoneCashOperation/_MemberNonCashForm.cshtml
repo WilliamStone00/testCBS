@@ -34,6 +34,13 @@
         .fieldset-custom .table tfoot td {
             padding-top: .25rem;
         }
+    #momoPathContainer .form-check-label strong {
+        display: inline-block;
+    }
+
+    #momoPathContainer .form-check {
+        padding-left: 0.25rem;
+    }
 </style>
 
 <fieldset class="fieldset-custom">
@@ -109,46 +116,44 @@
                         </label>
                     </div>
                 </div>
-                <!-- ✅ Mobile Money Path (hidden until checkbox checked) -->
+                <!-- ✅ Mobile Money Path (shown only when checkbox is checked) -->
                 <div id="momoPathContainer" class="d-none mt-2 border rounded p-3">
-                    <label class="fw-bold text-dark d-block mb-2">MM/OM Operation Flow</label>
+                    <label class="fw-bold text-dark d-block mb-2">MoMo / Orange Money – How should the funds move?</label>
                     <small class="text-muted d-block mb-3">
-                        Select how the MM/OM transaction should affect the <strong>Member’s Account</strong>
-                        and the <strong>MM/OM Float</strong>.
+                        Choose the flow. We’ll auto-set the Booking Direction (Debit/Credit) and you’ll see which side increases or decreases.
                     </small>
 
                     <!-- Option 1 -->
-                    <div class="form-check mb-2">
+                    <div class="form-check mb-3">
                         <input type="radio"
                                id="path_member_to_float"
                                name="momoPath"
                                value="FloatFromMembersAccountToMomoAccount"
-                               class="form-check-input" />
+                               class="form-check-input"
+                               disabled />
                         <label class="form-check-label" for="path_member_to_float">
-                            <strong>Member account → MM/OM Float</strong>
-                            <br />
-                            <span class="text-muted small">
-                                Member account is <u>debited</u>, MM/OM Float is <u>increased</u>.
-                                (Use this when branch sends money from the member’s account to the MM/OM operator.)
-                            </span>
+                            <strong>Member Account → MoMo Float</strong>
+                            <div class="text-muted small mt-1">
+                                <span class="d-block">Effect: <b>Member Account = Debited (↓)</b>, <b>MoMo Float = Credited (↑)</b></span>
+                                <span class="d-block">Use when the branch transfers money from the member’s account to the MoMo/OM float.</span>
+                            </div>
                         </label>
                     </div>
 
+
                     <!-- Option 2 -->
-                    <div class="form-check mb-2">
+                    <div class="form-check mb-3">
                         <input type="radio"
                                id="path_member_to_float_to_phone"
                                name="momoPath"
                                value="FromMembersAccountToMobilemoneyAndToMembersPhone"
                                class="form-check-input" />
                         <label class="form-check-label" for="path_member_to_float_to_phone">
-                            <strong>Member account → MM/OM Float → Member’s phone (wallet payout)</strong>
-                            <br />
-                            <span class="text-muted small">
-                                Member account is <u>debited</u>, MM/OM Float is <u>decreased</u>,
-                                and funds are pushed to the member’s MM/OM wallet.
-                                (Use this for <em>cash-out</em> where branch pays to member’s phone.)
-                            </span>
+                            <strong>Member Account → MoMo Float → Member’s Phone (wallet payout)</strong>
+                            <div class="text-muted small mt-1">
+                                <span class="d-block">Effect: <b>Member Account = Debited (↓)</b>, <b>MoMo Float = Credited (↓)</b> (float decreases when cash leaves to wallet)</span>
+                                <span class="d-block">Use when the member requests a payout to their MTN/Orange wallet.</span>
+                            </div>
                         </label>
                     </div>
 
@@ -160,15 +165,14 @@
                                value="FloatFromMobileMoneyToMembersAccount"
                                class="form-check-input" />
                         <label class="form-check-label" for="path_phone_to_member">
-                            <strong>Member’s phone → MM/OM Float → Member account</strong>
-                            <br />
-                            <span class="text-muted small">
-                                Member’s MM/OM wallet sends funds, MM/OM Float is <u>decreased</u>,
-                                and Member account is <u>credited</u>.
-                                (Use this for deposits coming from member’s wallet to their bank account.)
-                            </span>
+                            <strong>Member’s Phone (wallet) → MoMo Float → Member Account</strong>
+                            <div class="text-muted small mt-1">
+                                <span class="d-block">Effect: <b>Member Account = Credited (↑)</b>, <b>MoMo Float = Debited (↑)</b></span>
+                                <span class="d-block">The member sends funds from their MoMo wallet; branch float increases in debit, and the member’s local account is credited.</span>
+                            </div>
                         </label>
                     </div>
+
                 </div>
 
             </div>
@@ -335,45 +339,39 @@
     });
 
 // ===== MoMo UI + data loader (robust to label text changes) ==================
+
 (function ($) {
-  const $chk     = $('#isMobileMoneyOperationChk');
+  // ---- elements ------------------------------------------------------------
+  const $chk     = $('#isMobileMoneyOperationChk');      // SINGLE source of truth
   const $branch  = $('#branchInput');
   const $catBox  = $('#momoCategoryContainer');
   const $pathBox = $('#momoPathContainer');
   const $refBox  = $('#momoReferenceContainer');
   const $refSel  = $('#noneMemberMobileReference');
 
-  // NEW: GL container + select
   const $glBox   = $('#glContainer');
   const $glSel   = $('#account_number');
 
-  const momoUrl  = ($('#momoConfig').data('url')) || '@Url.Action("LoadMomoAccountsProfiles","MemberNoneCashOperation")';
+  const $rbDebit  = $('#Debit');
+  const $rbCredit = $('#Credit');
 
+  const momoUrl = ($('#momoConfig').data('url')) || '@Url.Action("LoadMomoAccountsProfiles","MemberNoneCashOperation")';
+
+  // ---- helpers -------------------------------------------------------------
   function clearRefOptions() {
     $refSel.empty().append($('<option/>', { value: '', text: '--- MoMo reference ---' }));
     if ($refSel.hasClass('select2')) $refSel.val('').trigger('change');
   }
-
-  function resetPath() {
-    $("input[name='momoPath']").prop('checked', false);
-  }
-
-  // NEW: reset GL select
+  function resetPath() { $("input[name='momoPath']").prop('checked', false); }
   function resetGL() {
-    if ($glSel.hasClass('select2')) {
-      $glSel.val(null).trigger('change');          // clears select2 safely
-    } else {
-      $glSel.prop('selectedIndex', 0);             // fallback for plain select
-    }
+    if ($glSel.hasClass('select2')) $glSel.val(null).trigger('change');
+    else $glSel.prop('selectedIndex', 0);
   }
-
-  // NEW: show/hide GL based on MoMo
   function setGLVisibility() {
     const momoOn = $chk.is(':checked');
-    $glBox.toggleClass('d-none', momoOn);          // hide when MoMo ON
-    if (momoOn) resetGL();                         // and reset selection
+    $glBox.toggleClass('d-none', momoOn);
+    if (momoOn) resetGL();
   }
-
   function setMomoUI(on) {
     $catBox.toggleClass('d-none', !on);
     $pathBox.toggleClass('d-none', !on);
@@ -384,9 +382,8 @@
       resetPath();
       clearRefOptions();
     }
-    setGLVisibility();                              // keep GL in sync
+    setGLVisibility();
   }
-
   function getCanonicalCategory() {
     const $r = $("input[name='momoCategory']:checked");
     const cat = $r.data('category') || ($r.val() || '');
@@ -396,13 +393,11 @@
     if (s.includes('orange')) return 'MobileMoneyOrange';
     return cat;
   }
-
   async function loadMomoRefs() {
     clearRefOptions();
     const branchId = ($branch.val() || '').trim();
     const category = getCanonicalCategory();
     if (!branchId || !category) return;
-
     try {
       const res = await $.getJSON(momoUrl, { branchid: branchId, category: category });
       (res || []).forEach(item => {
@@ -417,32 +412,78 @@
     }
   }
 
-  // Init
-  $(function () {
-    setMomoUI($chk.is(':checked'));   // also sets GL visibility
+  // ---- debit/credit locking -----------------------------------------------
+  function setDirection(debitOn, creditOn, lock) {
+    if (debitOn === true)  $rbDebit.prop('checked', true);
+    if (creditOn === true) $rbCredit.prop('checked', true);
+    $rbDebit.prop('disabled', false);
+    $rbCredit.prop('disabled', false);
+    if (lock === 'debit')  $rbDebit.prop('disabled', true);
+    if (lock === 'credit') $rbCredit.prop('disabled', true);
+  }
+  function applyDirectionForMomoPath() {
+    if (!$chk.is(':checked')) { setDirection(null, null, null); return; }
+    const path = $("input[name='momoPath']:checked").val() || '';
+    switch (path) {
+      case 'FloatFromMembersAccountToMomoAccount':                 // Option 1
+      case 'FromMembersAccountToMobilemoneyAndToMembersPhone':      // Option 2
+        setDirection(true, false, 'credit');  // force Debit, lock Credit
+        break;
+      case 'FloatFromMobileMoneyToMembersAccount':                  // Option 3
+        setDirection(false, true, 'debit');  // force Credit, lock Debit
+        break;
+      default:
+        setDirection(null, null, null);
+        break;
+    }
+  }
 
+  // ---- events --------------------------------------------------------------
+  $(function () {
+    // initial state
+    setMomoUI($chk.is(':checked'));
+    applyDirectionForMomoPath();
+
+    // MoMo checkbox
     $chk.on('change', function () {
-      setMomoUI(this.checked);        // includes setGLVisibility + resets GL when hiding
-      if (this.checked && $("input[name='momoCategory']:checked").length) loadMomoRefs();
+      setMomoUI(this.checked);
+      if (!this.checked) {
+        // full reset when turning OFF
+        $("input[name='momoCategory']").prop('checked', false);
+        resetPath();
+        clearRefOptions();
+        setDirection(null, null, null); // unlock
+      } else {
+        if ($("input[name='momoCategory']:checked").length) loadMomoRefs();
+        applyDirectionForMomoPath();
+      }
     });
 
+    // Category change
     $(document).on('change', "input[name='momoCategory']", function () {
       if (!$chk.is(':checked')) { $chk.prop('checked', true).trigger('change'); }
       loadMomoRefs();
     });
 
+    // Path change
+    $(document).on('change', "input[name='momoPath']", function () {
+      if (!$chk.is(':checked')) $chk.prop('checked', true).trigger('change');
+      applyDirectionForMomoPath();
+    });
+
+    // Branch change
     $branch.on('change', function () {
       if ($chk.is(':checked') && $("input[name='momoCategory']:checked").length) loadMomoRefs();
       else clearRefOptions();
     });
   });
 
-  // optionally expose path getter
-  window.getSelectedMomoPath = function() {
+  // optional getter
+  window.getSelectedMomoPath = function () {
     return $("input[name='momoPath']:checked").val() || '';
   };
-
 })(jQuery);
+
 
 // ===== Minimal changes in your existing functions ===========================
 // In collectDeposits():
