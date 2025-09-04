@@ -6,7 +6,7 @@ using ClosedXML.Excel;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
 using DocumentFormat.OpenXml.EMMA;
-using Microsoft.Identity.Client;
+//using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

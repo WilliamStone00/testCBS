@@ -251,6 +251,11 @@
     <Compile Include="Accounting\ChartOfAccountManagementPositionService.cs" />
     <Compile Include="Accounting\BlacklistAccountServices.cs" />
     <Compile Include="Accounting\ProductAccountingHelper.cs" />
+    <Compile Include="CheckManagementSystem\Configurations\Category\CategoryConfigService.cs" />
+    <Compile Include="CheckManagementSystem\Configurations\ChequeNumber\NumConfigService.cs" />
+    <Compile Include="CheckManagementSystem\Configurations\FeeConfiguration\FeeConfigService.cs" />
+    <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationConfigmockService.cs" />
+    <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationConfigService.cs" />
     <Compile Include="DailyCollectionServices\DailyCollectionEndOfDayServices.cs" />
     <Compile Include="Accounting\DocumentTypeServices.cs" />
     <Compile Include="Accounting\DocumentReportServices.cs" />
@@ -334,6 +339,9 @@
     <Compile Include="DailyCollectionServices\AgentDailyCashLimitServices.cs" />
     <Compile Include="DailyCollectionServices\AgentServices.cs" />
     <Compile Include="DailyCollectionServices\AgentAccountServices.cs" />
+    <Compile Include="DailyCollectionServices\ManualDailyCollection Service\IManualDailyCollectionService.cs" />
+    <Compile Include="DailyCollectionServices\ManualDailyCollection Service\ManualDailyCollectionMockService.cs" />
+    <Compile Include="DailyCollectionServices\ManualDailyCollection Service\ManualDailyCollectionService.cs" />
     <Compile Include="DailyCollectionServices\ZoneServices.cs" />
     <Compile Include="LoanP\Config\LoanProductCategoryServices.cs" />
     <Compile Include="LoanP\LoanAdjustmentP\LoanAdjustmentService.cs" />

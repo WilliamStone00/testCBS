@@ -1,0 +1,49 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.ManualDailycollection.FileUploadResponse>
+@using Resources
+
+<fieldset class="fieldset-custom">
+    <div class="card-header bg-white border-0">
+        <legend class="legend-custom">@ChequeManagements.PreviouslyUploadedFiles</legend>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover" id="filesDataTable">
+            <thead class="table-light">
+                <tr>
+                    <th>@ChequeManagements.FileD</th>
+                    <th>@ChequeManagements.CollectorId</th>
+                    <th>@ChequeManagements.BranchId</th>
+                    <th>@ChequeManagements.UPBY</th>
+                    <th>@ChequeManagements.TM</th>
+                    <th>@ChequeManagements.TA</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var file in Model)
+                {
+                    <tr>
+                        <td>@file.FileUploadId</td>
+                        <td>@file.CollectorId</td>
+                        <td>@file.BranchId</td>
+                        <td>@file.UploadedBy</td>
+                        <td>@file.TotalMembers</td>
+                        <td>@string.Format("{0:N2}", file.TotalAmount)</td>
+                        <td class="text-center">
+                            <!-- These call your generic JS functions to load the details or delete -->
+                            <a href="#" onclick="AddORUpdateGen('@file.FileUploadId', 'mainWorkspace', '_FileDetails', 'details', 'ManualDailyCollection')" class="mr-2">Details</a>
+                            <a href="#" onclick="DeleteRecordDataTable('ManualDailyCollection', '@file.FileUploadId', 'filesDataTable', '_FileList', 0, 'mainWorkspace', null, 'list')" class="mr-2 text-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</fieldset>
+
+<script>
+    // This small script runs immediately after this partial view is loaded.
+    // It turns the static HTML table into an interactive jQuery DataTable.
+    $(document).ready(function () {
+        $('#filesDataTable').DataTable();
+    });
+</script>

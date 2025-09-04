@@ -8,9 +8,9 @@
             $("#mainview2").show(); // Show Contribution view
         } else {
             $("#isContribution").val("false"); // Set to false if "Top Up" is selected
-            $("#mainview1").show(); // Show Top Up view
-            $("#mainview2").hide(); // Hide Contribution view
-        }
+          inview2").hide(); // Hide Contribution view
+        }  $("#mainview1").show(); // Show Top Up view
+            $("#ma
     });
 
     // Initialize on page load

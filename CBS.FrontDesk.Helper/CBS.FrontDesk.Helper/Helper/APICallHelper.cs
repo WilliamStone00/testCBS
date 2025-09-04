@@ -1,5 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.Math;
 using DocumentFormat.OpenXml.VariantTypes;
+using System.CodeDom;
 
 namespace CBS.FrontDesk.Helper
 {
@@ -350,7 +352,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetSavingProducts = "/api/v1/SavingProduct";
         public static string GetCustomerBalance = "/api/v1/Account/Balance/Customer/{0}";
         public static string UpdateIndividualProfile = "/api/v1/Customer/{0}";
-       
+
         public static string ActivateOrDiactivateCustomer = "/api/v1/Customer/ActivateOrDis-activate";
         public static string GetAccountBalanceByAccountNumber = "/api/v1/Account/AccountNumber/{0}";
 
@@ -971,7 +973,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAlAccounts = "/api/v1/Accounts";
         public static string GetAllLiaisonAccount = "/api/v1/Accounts/LiaisonAccount";
         public static string GetAllAccountByBranch = "/api/v1/Accounts/{0}";
-  
+
         public static string GetAllBankAccountChartUsedToCreditCashFlow = "/api/v1/ChartOfAccountManagementPosition/{0}/{1}";
 
         public static string GetAllBranchAccountUsedToCreditCashFlow = "/api/v1/Account/GetAccountByMFIBankAccountNumberQuery/{0}";
@@ -1136,10 +1138,10 @@ namespace CBS.FrontDesk.Helper
         public static string Create_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation";
 
         //Bulk Operation
-        public static string SimulateBulkAccountTopup= "/api/v1/BulkOperations/top-up/simulation";
-        public static string SimulateBulkAccountCashInOrCashOut= "/api/v1/BulkOperations/cash/simulation";
-        public static string ConfirmBulkOperation= "/api/v1/BulkOperations/validation";
-        public static string SimulateBulkCreditOrDebitOperation= "/api/v1/BulkOperations/cash/simulation";
+        public static string SimulateBulkAccountTopup = "/api/v1/BulkOperations/top-up/simulation";
+        public static string SimulateBulkAccountCashInOrCashOut = "/api/v1/BulkOperations/cash/simulation";
+        public static string ConfirmBulkOperation = "/api/v1/BulkOperations/validation";
+        public static string SimulateBulkCreditOrDebitOperation = "/api/v1/BulkOperations/cash/simulation";
         public static string SimulateBulkAccountContribution = "/api/v1/BulkOperations/contribution/simulation";
         public static string GetAllBulkOperations = "/api/v1/BulkOperations";
         public static string BulkOperationDataDetails = "/api/v1/BulkOperations/simulation/details/";
@@ -1177,6 +1179,7 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_DailyCustomer = "/api/v1/DailyCustomer/{0}";
         public static string CreateDailyCustomer = "/api/v1/DailyCustomer";
         public static string GetAllDailyCustomer = "/api/v1/DailyCustomers";
+        public static string GetAllDailyCollectorBasicInfos = "api/v1/customers/basic-info";
         //CommissionSetting
         public static string Get_Update_Delete_CommissionSetting = "/api/v1/CommissionSetting/{0}";
         public static string CreateCommissionSetting = "/api/v1/CommissionSetting";
@@ -1195,5 +1198,50 @@ namespace CBS.FrontDesk.Helper
         public static string ManualEntryCollectorUploadFileExecution = "api/v1/ManualEntryCollectorUpload?collectorId={0}";
         public static string GetAllDailyOperationFileUploadsByProcessingStatus = "/api/v1/GetAllFileUploadsByProcessingStatus/{0}";
         public static string ViewFileByFileUploadId = "/api/v1/ViewFileByFileUploadId/{0}}";
+
+        // manual dailly collection
+        public const string ManualEntryUpload = "/api/v1/ManualEntryCollectorUpload?collectorId={0}&branchId={1}";
+        public static string GetFileById = "/api/v1/ManualEntryCollector/ViewFileByFileUploadId/{FileUploadId}";
+        public static string GetFilesByStatus = "/api/v1/GetAllFileManualEntryingUploadsByProcessingStatus";
+        public static string GetAllFiles = "/api/v1/ManualEntryCollector/GetAllFileUploads/All";
+        public static string DeleteManualEntryFile = "/api/v1/ManualEntryCollector/RemoveManualEntryCollectorPayment/{fileId}"; // adjust if your API path differs
+        public static string ValidateFile = "/api/v1/ManualEntryCollector/InitiateManualEntryCollectorPayment";
+
+        // ================= cheque management system =========================
+        //category config
+        public const string GetAllChequeBookCategories = "api/Chequecategory";
+        public const string GetChequeBookCategoryById = "api/Chequecategory/{0}"; // Takes an ID
+        public const string CreateChequeBookCategory = "api/Chequecategory";
+        public const string UpdateChequeBookCategory = "api/Chequecategory/{0}"; // Takes an ID
+        public const string DeactivateChequeBookCategory = "api/Chequecategory/{0}"; // Takes an ID
+
+        // cheque number config
+        public const string GetAll = "/getAll";
+        public const string GetById = "/getById"; // + "/{id}"
+        public const string Create = "/create";
+        public const string Update = "/update";   // + "/{id}"
+        public const string Delete = "/delete";   // + "/{id}
+
+        //fee configuration
+        // Metadata
+        public const string GetFeeTypes = "/feetypes";                 // GET
+        public const string GetApplicationTypes = "/applicationtypes"; // GET
+
+        // Config CRUD
+        public const string GetFeeConfigs = "/configs";                // GET (query : feeType, branchId, centralized)
+        public const string GetFeeConfigById = "/configs/{0}";         // GET {id}
+        public const string CreateFeeConfig = "/configs";              // POST
+        public const string UpdateFeeConfig = "/configs/{0}";         // PUT {id}
+        public const string DeleteFeeConfig = "/configs/{0}";         // DELETE {id}
+        public const string GetAllFeeConfigs = "/config/enum";
+
+        // notification config
+        public const string GetAllnot = "/getAll";
+        public const string GetnotById = "/getById"; // + "/{id}"
+        public const string Createnot = "/create";
+        public const string Updatenot = "/update";   // + "/{id}"
+        public const string Deletenot = "/delete";   // + "/{id}
+        public const string GetNotificationTypes = "/gettype";
+
     }
 }

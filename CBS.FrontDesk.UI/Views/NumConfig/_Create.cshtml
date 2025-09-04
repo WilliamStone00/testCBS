@@ -1,0 +1,137 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.ChequeNumber.NumConfig
+@using Resources
+
+
+<div class="modal-body">
+    @using (Html.BeginForm("CreateOrUpdate", "NumConfig", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        @Html.HiddenFor(m => m.Id)
+
+    <div class="container mt-3">
+        <h2 class="mb-3 text-primary">Create Cheque Number Configuration</h2>
+
+        <!-- Form fields -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = ChequeManagements.configName })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    <label>@ChequeManagements.configName</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.DropDownListFor(m => m.BranchId,new SelectList(ViewBag.Branches, "Id", "Name"),"---" + @GlobalUserManagement.SelectBranch + "---",new { @class = "form-control select2" }
+                    )
+                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                    <label>Branch</label>
+                </div>
+            </div>
+        </div>
+
+        <p></p>
+        <!-- Drag and Drop Zone -->
+        <h5 class="mb-2">Arrange Cheque Number Components</h5>
+        <div id="dragZone" class="drag-zone">
+            <div class="draggable" draggable="true" data-variable="BankCode">🏦 Bank Code</div>
+            <div class="draggable" draggable="true" data-variable="BranchCode">🏢 Branch Code</div>
+            <div class="draggable" draggable="true" data-variable="Year">📅 Year</div>
+            <div class="draggable" draggable="true" data-variable="SerialNumber">#️⃣ Serial Number</div>
+        </div>
+
+        <!-- Save Button -->
+        <div class="col-12 text-end mt-3">
+            @if (Model.Id == null)
+            {
+                <button type="submit" class="btn btn-primary shadow-sm px-4">
+                    <i class="fas fa-save me-1"></i> @ChequeManagements.Save
+                </button>
+                <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">
+                    @GlobalShared.Reset
+                </button>
+            }
+            else
+            { <button type="submit" class="btn btn-primary me-2">@GlobalBank.Update</button>
+
+        }
+        </div>
+    </div>
+    }
+    </div>
+        <style>
+            .drag-zone {
+                display: flex;
+                gap: 12px;
+                padding: 15px;
+                border: 2px dashed #007bff;
+                border-radius: 8px;
+                background-color: #f8f9fa;
+                min-height: 80px;
+            }
+
+            .draggable {
+                padding: 10px 15px;
+                background-color: #e9ecef;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                cursor: grab;
+                user-select: none;
+                transition: background-color 0.2s;
+            }
+
+                .draggable:active {
+                    cursor: grabbing;
+                    background-color: #d6e4ff;
+                }
+
+            .drag-over {
+                border: 2px dashed #28a745;
+                background-color: #f1fff1;
+            }
+        </style>
+
+        <script>
+            const dragZone = document.getElementById("dragZone");
+            let draggedItem = null;
+
+            // Drag start
+            document.querySelectorAll(".draggable").forEach(item => {
+                item.addEventListener("dragstart", e => {
+                    draggedItem = item;
+                    setTimeout(() => item.style.display = "none", 0);
+                });
+
+                item.addEventListener("dragend", e => {
+                    draggedItem.style.display = "block";
+                    draggedItem = null;
+                });
+            });
+
+            // Drag over
+            dragZone.addEventListener("dragover", e => {
+                e.preventDefault();
+                const afterElement = getDragAfterElement(dragZone, e.clientX);
+                if (afterElement == null) {
+                    dragZone.appendChild(draggedItem);
+                } else {
+                    dragZone.insertBefore(draggedItem, afterElement);
+                }
+            });
+
+            function getDragAfterElement(container, x) {
+                const draggableElements = [...container.querySelectorAll(".draggable:not([style*='display: none'])")];
+                return draggableElements.reduce((closest, child) => {
+                    const box = child.getBoundingClientRect();
+                    const offset = x - box.left - box.width / 2;
+                    if (offset < 0 && offset > closest.offset) {
+                        return { offset: offset, element: child };
+                    } else {
+                        return closest;
+                    }
+                }, { offset: Number.NEGATIVE_INFINITY }).element;
+            }
+
+
+            
+        </script>

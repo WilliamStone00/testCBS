@@ -11,7 +11,7 @@ using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
+//using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.SqlServer.Server;
 using Newtonsoft.Json;

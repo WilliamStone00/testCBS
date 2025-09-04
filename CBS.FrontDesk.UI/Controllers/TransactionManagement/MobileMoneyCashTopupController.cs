@@ -12,7 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using static Azure.Core.HttpHeader;
+//using static Azure.Core.HttpHeader;
 
 namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 {

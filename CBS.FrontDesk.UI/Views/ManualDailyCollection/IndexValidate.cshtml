@@ -1,0 +1,277 @@
+﻿@* Location: ~/Views/FileValidation/Index.cshtml *@
+
+@{
+    ViewBag.Title = "File Validation";
+}
+
+<!-- The AntiForgeryToken is crucial for the secure form submission later -->
+@Html.AntiForgeryToken()
+
+<!-- Page Header -->
+<div class="card bg-light mb-3">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary"><i class="mdi mdi-file-check-outline me-2"></i> File Validation Queue</h1>
+        <p class="card-text">Review and validate uploaded files pending approval.</p>
+    </div>
+</div>
+
+<!-- Filter Section -->
+<div class="card shadow p-3 mb-4">
+    <div class="row align-items-end">
+        <div class="col-md-4">
+            <label for="statusFilter" class="form-label fw-bold">Filter by Status</label>
+            <!-- This dropdown is populated from the ViewBag in the controller -->
+            @Html.DropDownList("StatusFilter", (SelectList)ViewBag.Statuses, new { @class = "form-control select2", id = "statusFilter" })
+        </div>
+        <div class="col-md-2">
+            <!-- This button will trigger the DataTable reload -->
+            <button id="applyFilterBtn" class="btn btn-primary w-100">Filter</button>
+        </div>
+    </div>
+</div>
+
+<!-- DataTable Container -->
+<div class="card shadow p-3">
+    <div class="table-responsive">
+        <table id="filesTable" class="table table-hover" style="width:100%">
+            <thead class="table-light">
+                <tr>
+                    <th>File Name</th>
+                    <th>Branch</th>
+                    <th>Uploaded By</th>
+                    <th>Uploaded On</th>
+                    <th>Status</th>
+                    <th style="width: 10%;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- The DataTable will populate this area via AJAX -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal Placeholder for the validation form -->
+<div class="modal fade" id="validationModal" tabindex="-1" aria-labelledby="validationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="validationModalLabel">Validate File</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="validationModalBody">
+                <!-- The _ValidationForm.cshtml partial will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- This MUST point to your final, correct JavaScript file -->
+    <script>
+
+       // Location: ~/Scripts/Js/YourPath/FileValidation.js
+
+$(document).ready(function() {
+
+    // Initialize the DataTable and store its instance.
+    var dataTable = initializeFilesDataTable();
+
+    // Attach a click event to the filter button to reload the table.
+    $('#applyFilterBtn').on('click', function() {
+        // .ajax.reload() tells the DataTable to make a new AJAX call to the server.
+        dataTable.ajax.reload();
+    });
+
+    // --- Event Handler for the "Validate" button ---
+    // Use event delegation on the table body for dynamically created buttons.
+    $('#filesTable tbody').on('click', '.js-validate', function() {
+        var fileId = $(this).data('fileid');
+        var approvedBy = $(this).data('approvedby');
+
+        // Construct the URL to fetch the partial view form.
+        var url = `/FileValidation/GetValidationForm?fileUploadId=${fileId}&approvedBy=${approvedBy}`;
+
+        // Load the HTML form from the server into the modal's body.
+        $('#validationModalBody').load(url, function() {
+            // Once the content is loaded, show the modal.
+            $('#validationModal').modal('show');
+            // This is important for MVC client-side validation to work on dynamic content.
+            $.validator.unobtrusive.parse('#validationForm');
+        });
+    });
+
+    // --- Event Handler for submitting the form INSIDE the modal ---
+    // Use event delegation on a static parent (document) for the dynamic form.
+    $(document).on('submit', '#validationForm', function(e) {
+        e.preventDefault(); // Stop the default browser form submission.
+
+        var form = $(this);
+
+        // Check if the form is valid according to MVC's client-side validation rules.
+        if (!form.valid()) {
+            return;
+        }
+
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(), // Gathers all form inputs into a string for submission.
+            success: function(response) {
+                if (response.success) {
+                    appalert(response.message, 1, 1);
+                    $('#validationModal').modal('hide'); // Hide the modal on success.
+                    dataTable.ajax.reload(); // Refresh the DataTable to show the updated status.
+                } else {
+                    appalert(response.message, 2, 1);
+                }
+            },
+            error: function() {
+                appalert('An error occurred while submitting the validation.', 0, 1);
+            }
+        });
+    });
+});
+
+
+function initializeFilesDataTable() {
+    return $('#filesTable').DataTable({
+        processing: false,  // Shows the "Processing..." message during loads.
+        serverSide: true,  // Enables server-side processing mode.
+        searching: false,  // We are using our own custom filter, so disable the default search box.
+        ajax: {
+            url: '/FileValidation/LoadFiles',
+            type: 'POST',
+            contentType: 'application/json', // We are sending a JSON object.
+            data: function(d) {
+                // This function builds the JSON payload to send to the server.
+                var payload = {
+                    // This object MUST match the 'FileValidationRequestDto' in C#.
+                    DataTableOptions: {
+                        Draw: d.draw,
+                        Start: d.start,
+                        Length: d.length
+                    },
+                    StatusFilter: $('#statusFilter').val()
+                };
+
+                // Convert the payload object to a JSON string.
+                return JSON.stringify(payload);
+            }
+        },
+        columns: [
+            // These 'data' properties MUST match the property names returned by the controller.
+            { data: 'fileName' },
+            { data: 'branchName' },
+            { data: 'uploadedBy' },
+            { data: 'uploadedOn' },
+            { data: 'status' },
+            { data: 'actions', orderable: false }
+        ]
+    });
+        }
+
+        $(document).ready(function () {
+            var dataTable = initializeFilesDataTable();
+
+            // filter button reloads
+            $('#applyFilterBtn').on('click', function () { dataTable.ajax.reload(); });
+
+            // Delegated events for dropdown menu items
+            $('#filesTable tbody').on('click', '.js-validate', function (e) {
+                e.preventDefault();
+                var fileId = $(this).data('fileid');
+                var approvedBy = $(this).data('approvedby') || '';
+                openValidationModal(fileId, approvedBy, 'validate');
+            });
+
+            $('#filesTable tbody').on('click', '.js-review', function (e) {
+                e.preventDefault();
+                var fileId = $(this).data('fileid');
+                var approvedBy = $(this).data('approvedby') || '';
+                openValidationModal(fileId, approvedBy, 'review');
+            });
+
+            $('#filesTable tbody').on('click', '.js-delete', function (e) {
+                e.preventDefault();
+                var fileId = $(this).data('fileid');
+                if (!fileId) return;
+                alertify.confirm('Confirm delete', 'Are you sure you want to delete this file?',
+                    function () {
+                        // include anti-forgery token
+                        var token = $('input[name="__RequestVerificationToken"]').first().val();
+                        $.ajax({
+                            url: '/FileValidation/DeleteFile',
+                            type: 'POST',
+                            data: JSON.stringify({ fileUploadId: fileId }),
+                            contentType: 'application/json',
+                            headers: { 'RequestVerificationToken': token }, // some setups prefer this header
+                            success: function (resp) {
+                                if (resp.success) {
+                                    appalert(resp.message || 'Deleted', 1, 1);
+                                    dataTable.ajax.reload();
+                                } else {
+                                    appalert(resp.message || 'Delete failed', 2, 1);
+                                }
+                            },
+                            error: function () {
+                                appalert('Error deleting file', 0, 1);
+                            }
+                        });
+                    },
+                    function () { /* cancelled */ }
+                );
+            });
+
+            // Generic function to load and show the partial form in modal
+            function openValidationModal(fileId, approvedBy, mode) {
+                var url = `/FileValidation/GetValidationForm?fileUploadId=${encodeURIComponent(fileId)}&approvedBy=${encodeURIComponent(approvedBy)}&mode=${encodeURIComponent(mode)}`;
+                $('#validationModalBody').html('<div class="text-center p-3"><span class="spinner-border spinner-border-sm"></span> Loading...</div>');
+                $('#validationModal').modal('show');
+
+                $('#validationModalBody').load(url, function (response, status, xhr) {
+                    if (status === 'error') {
+                        $('#validationModalBody').html('<div class="alert alert-danger">Could not load form.</div>');
+                        return;
+                    }
+                    // parse unobtrusive validation on the newly loaded form
+                    $.validator.unobtrusive.parse('#validationForm');
+
+                    // Bind submit handler (delegated, but ensure only one binding)
+                    $(document).off('submit', '#validationForm').on('submit', '#validationForm', function (e) {
+                        e.preventDefault();
+                        var form = $(this);
+                        if (!form.valid()) return;
+
+                        var actionUrl = form.attr('action');
+                        var token = form.find('input[name="__RequestVerificationToken"]').val();
+
+                        // Serialize form properly (will include antiforgery token)
+                        var formData = form.serialize();
+
+                        $.ajax({
+                            url: actionUrl,
+                            type: 'POST',
+                            data: formData,
+                            success: function (resp) {
+                                if (resp.success) {
+                                    appalert(resp.message || 'Operation successful', 1, 1);
+                                    $('#validationModal').modal('hide');
+                                    dataTable.ajax.reload();
+                                } else {
+                                    appalert(resp.message || 'Operation failed', 2, 1);
+                                }
+                            },
+                            error: function () {
+                                appalert('An error occurred during submission', 0, 1);
+                            }
+                        });
+                    });
+                });
+            }
+        });
+
+
+    </script>
+
+}

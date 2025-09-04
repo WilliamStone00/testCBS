@@ -69,6 +69,7 @@ namespace CBS.FrontDesk.Service
             {
                 request.GeoLocationResponse.Ip=GetClientIPAddress();
                 var response = await _identityServer.PostAsync<ResponseObject<UserDto>>(APICallHelper.Authentication, request);
+                
                 if (response.IsSuccess)
                 {
 

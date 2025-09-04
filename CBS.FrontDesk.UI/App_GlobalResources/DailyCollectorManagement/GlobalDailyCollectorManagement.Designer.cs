@@ -196,11 +196,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Important .
+        /// </summary>
+        internal static string Important {
+            get {
+                return ResourceManager.GetString("Important", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All uploaded files will first be validated to preview contents before final processing.
+        /// </summary>
+        internal static string ImportantText {
+            get {
+                return ResourceManager.GetString("ImportantText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MANUAL DAILY COLLECTION.
+        /// </summary>
+        internal static string MAD {
+            get {
+                return ResourceManager.GetString("MAD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manage Daily Agent profiles efficiently by updating personal details, security information, and account settings. Follow the tips provided below for a seamless experience.
         /// </summary>
         internal static string ManageDailyAgentprofilesefficiently {
             get {
                 return ResourceManager.GetString("ManageDailyAgentprofilesefficiently", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual Daily Collections.
+        /// </summary>
+        internal static string ManualDailyCollections {
+            get {
+                return ResourceManager.GetString("ManualDailyCollections", resourceCulture);
             }
         }
         

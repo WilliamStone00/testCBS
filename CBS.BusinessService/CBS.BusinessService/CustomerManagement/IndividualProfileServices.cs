@@ -418,6 +418,7 @@ namespace CBS.BusinessService.CustomerManagement
                 throw;
             }
         }
+
         public async Task<IEnumerable<IndividualProfile>> GetIndividualProfileByBranch()
         {
             try
