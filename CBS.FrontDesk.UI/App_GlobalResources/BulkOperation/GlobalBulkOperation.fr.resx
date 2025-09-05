@@ -543,4 +543,25 @@
   <data name="SimulateBulkCashOperation" xml:space="preserve">
     <value>Simuler une opération de paiement en espèces en vrac</value>
   </data>
+  <data name="ApprovedFilter" xml:space="preserve">
+    <value>Approuvé</value>
+  </data>
+  <data name="PendingFilter" xml:space="preserve">
+    <value>En attente</value>
+  </data>
+  <data name="ReviewedFilter" xml:space="preserve">
+    <value>Révisé</value>
+  </data>
+  <data name="FailedFilter" xml:space="preserve">
+    <value>Échec</value>
+  </data>
+  <data name="RejectedFilter" xml:space="preserve">
+    <value>Rejeté</value>
+  </data>
+  <data name="CompletedFilter" xml:space="preserve">
+    <value>Terminé</value>
+  </data>
+  <data name="ProcessingApprovalFilter" xml:space="preserve">
+    <value>Approbation du traitement</value>
+  </data>
 </root>

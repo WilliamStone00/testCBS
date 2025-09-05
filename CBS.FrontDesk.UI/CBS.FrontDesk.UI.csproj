@@ -7798,6 +7798,7 @@
     <Content Include="App_GlobalResources\BulkOperation\GlobalBulkOperation.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalBulkOperation.fr.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\CashCeilingRequest\CashCeilingRequest_Create.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
