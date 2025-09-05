@@ -319,4 +319,13 @@ Sélectionnez un nombre de pages pour chaque catégorie (25, 50, 100, etc.)</val
   <data name="Branch" xml:space="preserve">
     <value>Nom de la succursale</value>
   </data>
+  <data name="head" xml:space="preserve">
+    <value>TETE</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>string</value>
+  </data>
+  <data name="thisisatest" xml:space="preserve">
+    <value />
+  </data>
 </root>

@@ -1114,6 +1114,7 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_CorrespondingBankBranche = "/api/v1/CorrespondingBankBranch/{0}";
         public static string GetAllCorrespondingBankBranche = "/api/v1/ThirdPartyBranches";
         public static string CreateCorrespondingBankBranche = "/api/v1/ThirdPartyBranche";
+
         //ThirdPartyBranche
         //public static string Get_Update_Delete_CorrespondingBank = "/api/v1/ThirdPartyBranche/{0}";
         //public static string GetAllThirdPartyInstitution = "/api/v1/ThirdPartyBranches";
@@ -1122,6 +1123,7 @@ namespace CBS.FrontDesk.Helper
         //public static string Get_Update_Delete_CorrespondingBankBranche = "/api/v1/CorrespondingBankBranche/{0}";
         //public static string GetAllCorrespondingBankBranche = "/api/v1/CorrespondingBankBranches";
         //public static string CreateCorrespondingBankBranche = "/api/v1/CorrespondingBankBranche";/api/v1//{id}
+
         ////CorrespondingBankBranche
         public static string Get_Update_Delete_CorrespondingBank = "/api/v1/ThirdPartyInstitution/{0}";
         public static string GetAllCorrespondingBank = "/api/v1/ThirdPartyInstitutions";
@@ -1137,8 +1139,6 @@ namespace CBS.FrontDesk.Helper
         public static string Get_BankZoneBranch_by_ZoneID = "/api/v1/BankZoneBranch/{0}";
         public static string GetAllBankZoneBranch = "/api/v1/BankZoneBranchs";
         public static string CreateBankZoneBranch = "/api/v1/BankZoneBranch";
-
-
 
         //AuditTrail//
         public static string Get_AuditTrail = "/api/v1/AuditTrail/{0}";

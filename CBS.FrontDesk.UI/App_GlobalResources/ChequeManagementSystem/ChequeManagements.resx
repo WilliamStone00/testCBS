@@ -321,4 +321,13 @@
   <data name="Branch" xml:space="preserve">
     <value>Branch Name</value>
   </data>
+  <data name="head" xml:space="preserve">
+    <value>HEAD</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>string</value>
+  </data>
+  <data name="thisisatest" xml:space="preserve">
+    <value>thisisatest</value>
+  </data>
 </root>
