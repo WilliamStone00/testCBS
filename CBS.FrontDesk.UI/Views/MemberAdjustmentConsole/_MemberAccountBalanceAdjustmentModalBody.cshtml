@@ -1,0 +1,122 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole.MemberAdjustmentModel
+@using (Html.BeginForm("MemberAdjustmentRequest", "MemberAdjustmentConsole", FormMethod.Post, new { id = "memberAccountBalanceAdjustmentForm", onsubmit = "return postMemberAdjustmentRequest(this);" }))
+{
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <!-- Account Selection -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light-primary">
+                        <h5 class="card-title mb-0">
+                            <i class="mdi mdi-bank me-2"></i>Select Account
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="accountDropdown" class="form-label">Choose Account</label>
+                                <select id="accountDropdown" class="form-select" required>
+                                    <option value="" data-balance="0">-- Select Account --</option>
+                                    @if (Model.CustomerAccounts != null && Model.CustomerAccounts.Any())
+                                    {
+                                        foreach (var acc in Model.CustomerAccounts)
+                                        {
+                                            <option value="@acc.id" data-status="@acc.status" data-balance="@acc.balance">
+                                                @acc.accountType (@acc.status.ToString())
+                                            </option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                @Html.LabelFor(m => m.OldBalance, "Old Balance", new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.OldBalance, new { @class = "form-control", @readonly = "readonly", id = "oldBalance" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Balance Adjustment -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light-warning">
+                        <h5 class="card-title mb-0">
+                            <i class="mdi mdi-pencil-outline me-2"></i>Balance Adjustment
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="memberBalanceAdjustmentForm">
+                            @Html.HiddenFor(m => m.MemberId)
+                            @Html.HiddenFor(m => m.BranchId)
+                            @Html.HiddenFor(m => m.AdjustmentType)
+                            @Html.HiddenFor(m => m.IsMemberProfileModified)
+                            @Html.HiddenFor(m => m.IsMemberAccountModified)
+                            @Html.HiddenFor(m => m.AccountId, new { id = "accountId" })
+
+                            <!-- Instruction Note -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-info small" role="alert">
+                                        <i class="mdi mdi-information-outline me-1"></i>
+                                        Please select whether the adjustment is a <strong>Debit</strong> (reduces balance) or a
+                                        <strong>Credit</strong> (increases balance). Then, specify the amount of balance difference to be adjusted.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    @Html.LabelFor(m => m.BalanceSenseDifference, "Adjustment Type", new { @class = "form-label d-block" })
+                                    <div class="form-check form-check-inline">
+                                        @Html.RadioButtonFor(m => m.BalanceSenseDifference, "DEBIT", new { @class = "form-check-input", id = "balanceDebit", required = "required" })
+                                        <label class="form-check-label" for="balanceDebit">Debit</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        @Html.RadioButtonFor(m => m.BalanceSenseDifference, "CREDIT", new { @class = "form-check-input", id = "balanceCredit", required = "required" })
+                                        <label class="form-check-label" for="balanceCredit">Credit</label>
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.BalanceSenseDifference, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    @Html.LabelFor(m => m.NewBalance, "Amount Of Balance Differences To Be Adjusted", new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.NewBalance,
+new { @class = "form-control", type = "number", step = "0.01", required = "required", placeholder = "Enter new balance" })
+                                    <div class="invalid-feedback">Please enter a valid new balance</div>
+                                    @Html.ValidationMessageFor(m => m.NewBalance, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <!-- Reason -->
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    @Html.LabelFor(m => m.Reason, "Reason for Adjustment", new { @class = "form-label" })
+                                    @Html.TextAreaFor(m => m.Reason,
+new { @class = "form-control", rows = "3", required = "required", placeholder = "Please provide a reason for this adjustment" })
+                                    <div class="invalid-feedback">Please provide a reason</div>
+                                    @Html.ValidationMessageFor(m => m.Reason, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            <i class="mdi mdi-close me-1"></i>Cancel
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="mdi mdi-content-save-check me-1"></i>Submit Adjustment
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

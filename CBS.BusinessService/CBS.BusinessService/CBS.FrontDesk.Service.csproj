@@ -243,6 +243,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountingDayObject\AccountingDayServices.cs" />
+    <Compile Include="Accounting\AccountingReconciliationServices.cs" />
     <Compile Include="Accounting\AccountPolicyServices.cs" />
     <Compile Include="Accounting\AccountUploadServices.cs" />
     <Compile Include="Accounting\AccountBookingDirectionServices.cs" />
@@ -251,11 +252,8 @@
     <Compile Include="Accounting\ChartOfAccountManagementPositionService.cs" />
     <Compile Include="Accounting\BlacklistAccountServices.cs" />
     <Compile Include="Accounting\ProductAccountingHelper.cs" />
-    <Compile Include="CheckManagementSystem\Configurations\Category\CategoryConfigService.cs" />
-    <Compile Include="CheckManagementSystem\Configurations\ChequeNumber\NumConfigService.cs" />
-    <Compile Include="CheckManagementSystem\Configurations\FeeConfiguration\FeeConfigService.cs" />
-    <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationConfigmockService.cs" />
-    <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationConfigService.cs" />
+    <Compile Include="Accounting\TransactionTracker.cs" />
+    <Compile Include="Accounts\FileUploadServices.cs" />
     <Compile Include="DailyCollectionServices\DailyCollectionEndOfDayServices.cs" />
     <Compile Include="Accounting\DocumentTypeServices.cs" />
     <Compile Include="Accounting\DocumentReportServices.cs" />
@@ -348,7 +346,9 @@
     <Compile Include="LoanP\LoanportFolioFlattener\LoanDelinquencyFlattener.cs" />
     <Compile Include="LoanP\Overdraft\OverdraftActivationServices.cs" />
     <Compile Include="LoanP\Overdraft\OverdraftFacilityConfigServices.cs" />
+    <Compile Include="LoanP\Repayment\RefundServices.cs" />
     <Compile Include="LocalizationService\LocalizationService.cs" />
+    <Compile Include="MemberAdjustment\MemberAdjustmentService.cs" />
     <Compile Include="Migration\AccountMigrationServices.cs" />
     <Compile Include="PaymentReceiptMapping.cs" />
     <Compile Include="Config\EconomicActivityServices.cs" />

@@ -44,9 +44,10 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
         private readonly AttachedDocumentServices _attachedDocumentServices;
         private readonly DocumentServices _documentServices;
         private readonly LoanTermServices _loanTermServices;
+        private readonly BranchServices _branchServices;
+        private readonly EconomicActivityServices _economicActivityServices;
 
-
-        public MemberOperationController(IndividualProfileServices individualProfileServices, LoanProductServices loanProductServices = null, LoanPurposeServices loanPurposeServices = null, LoanApplicationServices loanApplicationServices = null, LoanServices loanServices = null, LoanAmortizationServices loanAmortizationServices = null, LoanCommiteeValidationHistoryServices loanCommiteeValidationHistoryServices = null, LoanApplicationCollateralServices loanApplicationCollateralServices = null, LoanGuarantorServices loanGuarantorServices = null, LoanProductCollateralServices loanProductCollateralServices = null, AttachedDocumentServices services = null, DocumentServices documentServices = null, LoanTermServices loanTermServices = null)
+        public MemberOperationController(IndividualProfileServices individualProfileServices, LoanProductServices loanProductServices = null, LoanPurposeServices loanPurposeServices = null, LoanApplicationServices loanApplicationServices = null, LoanServices loanServices = null, LoanAmortizationServices loanAmortizationServices = null, LoanCommiteeValidationHistoryServices loanCommiteeValidationHistoryServices = null, LoanApplicationCollateralServices loanApplicationCollateralServices = null, LoanGuarantorServices loanGuarantorServices = null, LoanProductCollateralServices loanProductCollateralServices = null, AttachedDocumentServices services = null, DocumentServices documentServices = null, LoanTermServices loanTermServices = null, BranchServices branchServices = null, EconomicActivityServices economicActivityServices = null)
         {
             _individualProfileServices = individualProfileServices;
             _loanProductServices = loanProductServices;
@@ -61,6 +62,8 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             _attachedDocumentServices = services;
             _documentServices = documentServices;
             _loanTermServices = loanTermServices;
+            _branchServices=branchServices;
+            _economicActivityServices=economicActivityServices;
         }
         public async Task<ActionResult> Members()
         {
@@ -83,8 +86,9 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
             //var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
             //ViewBag.LoanApplicationStatus = productEnumAgregates.LoanStatuses;
             var customer = await InitializeCustomerData(KEY);
-            ViewBag.LoanProducts = await _loanProductServices.GetLoanProductsDropDown();
+            ViewBag.LoanProducts = new List<StringValues>(); /*await _loanProductServices.GetLoanProductsDropDown()*/;
             ViewBag.LoanFees = await _loanProductServices.GetFees();
+            ViewBag.Branches = await _branchServices.GetBranches();
             ViewBag.MembersLoan = ViewBag.LoanFees;
             ViewBag.KEY = KEY;
             await PopulateAggregatesInViewBag();
@@ -483,7 +487,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                     model.AddLoanApplicationCommand.OldLoanPayment=new OldLoanPayment
                     {
                         LoanId=loan.Id,
-                        Amount=loan.LoanAmount,
+                        Amount=loan.DueAmount,
                         Capital=loan.Balance,
                         Interest=loan.AccrualInterest,
                         Penalty=loan.Penalty,
@@ -528,17 +532,17 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
 
         private async Task PopulateAggregatesInViewBag(Aggregrate agrAggregates = null)
         {
-            if (agrAggregates == null)
-            {
-                agrAggregates = await _individualProfileServices.GetAggregates();
-            }
+            //if (agrAggregates == null)
+            //{
+            //    agrAggregates = await _individualProfileServices.GetAggregates();
+            //}
             var loanpurpose = await _loanPurposeServices.GetAllLoanPurpose();
             var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
             var loanTerms = await _loanProductServices.GetProductTermOrDurationFromConfiguredProduct();
             var categories = await _loanProductServices.GetProductCategoryFromConfiguredProduct();
             ViewBag.LoanTypes = productEnumAgregates.LoanTypes;
 
-            ViewBag.EconomicActivities = agrAggregates.EconomicActivities;
+            ViewBag.EconomicActivities = await _economicActivityServices.GetEconomicActivities();
             ViewBag.CalculateInterestOn = productEnumAgregates.CalculateInterestOn;
             ViewBag.RepaymentCycles = productEnumAgregates.RepaymentCycles;
             ViewBag.LoanInterestMethods = productEnumAgregates.LoanInterestMethods;

@@ -1,5 +1,12 @@
 ﻿$(document).ready(function () {
-  
+    // Function to set the date to January 1st of current year
+    function setDateToJanuaryFirst() {
+        var currentYear = new Date().getFullYear();
+        var januaryFirst = currentYear + '-01-01T00:00';
+        $('#fromDate').val(januaryFirst);
+    }
+
+   
     // Cache elements
     const $auditCheckbox = $('#ActivateAuditId');
     const $branchList = $('#ListOfBranchToHide');
@@ -56,13 +63,22 @@
         if (selectedValue === 'GL') {
             // Show the element
             $('#AccountToHide').show();
+            $('#fromDate').val('');
             var selectedId = $("#selectedBranchID").val();
             loadBranchAccounts(selectedId);
+        } else if (selectedValue === 'PANDL') {
+            $('#lunchBalanceSheetBuilder').show();
+            setDateToJanuaryFirst();
         } else if (selectedValue === 'BS') {
             $('#lunchBalanceSheetBuilder').show();
+            setDateToJanuaryFirst();
+        } else if (selectedValue === 'TB6' || selectedValue === 'TB4') {
+            // Call the function when document is ready
+            setDateToJanuaryFirst();
+
         } else {
 
-    
+            $('#fromDate').val('');
             $('#AccountToHide').hide();
         }
 

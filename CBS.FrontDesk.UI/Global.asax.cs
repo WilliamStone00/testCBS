@@ -69,8 +69,8 @@ namespace CBS.FrontDesk.UI
             .Where(origin => !string.IsNullOrWhiteSpace(origin))
             .Distinct()
             .ToList();
- 
-   
+
+
         protected void Application_Start()
         {
 
@@ -91,79 +91,309 @@ namespace CBS.FrontDesk.UI
             // Start IP Unblock Service
             //new UnblockIpService();
         }
+        //protected void Application_BeginRequest()
+        //{
+        //    // ✅ Use the correct key and handle TestBed too
+        //    var env = ConfigurationManager.AppSettings["URLConf_Environment"]?.Trim() ?? "Production";
+        //    bool isProdOrTb = env.Equals("Production", StringComparison.OrdinalIgnoreCase)
+        //                   || env.Equals("TestBed", StringComparison.OrdinalIgnoreCase);
+
+        //    var ctx = HttpContext.Current;
+        //    var req = ctx?.Request;
+        //    var resp = ctx?.Response;
+
+        //    if (req == null || resp == null) return;
+
+        //    var host = req.Url?.Host?.ToLowerInvariant() ?? string.Empty;
+
+        //    // ✅ Block localhost only in Production/TestBed, without Response.End()
+        //    if (isProdOrTb && host.Contains("localhost"))
+        //    {
+        //        resp.StatusCode = 403;
+        //        resp.StatusDescription = "Localhost access is blocked in Production/TestBed";
+        //        resp.Write("Forbidden");
+        //        resp.Flush();
+        //        ctx.ApplicationInstance.CompleteRequest();
+        //        return;
+        //    }
+
+
+
+        //    // ✅ Culture: Session may be null in BeginRequest; prefer cookie first, then session if available
+        //    string lang = req.Cookies["TSC_Lang"]?.Value;
+
+        //    if (string.IsNullOrWhiteSpace(lang) && ctx.Session != null)
+        //        lang = ctx.Session["SelectedLanguage"] as string;
+
+        //    if (string.IsNullOrWhiteSpace(lang))
+        //        lang = "en";
+
+        //    try
+        //    {
+        //        var ci = CultureInfo.GetCultureInfo(lang);
+        //        Thread.CurrentThread.CurrentCulture = ci;
+        //        Thread.CurrentThread.CurrentUICulture = ci;
+        //    }
+        //    catch
+        //    {
+        //        var ci = CultureInfo.GetCultureInfo("en");
+        //        Thread.CurrentThread.CurrentCulture = ci;
+        //        Thread.CurrentThread.CurrentUICulture = ci;
+        //    }
+        //}
+
         protected void Application_BeginRequest()
         {
-            var isProduction = ConfigurationManager.AppSettings["Environment"] == "Production";
-            var host = HttpContext.Current.Request.Url.Host.ToLowerInvariant();
+            // ✅ Read environment and decide blocking
+            var env = ConfigurationManager.AppSettings["URLConf_Environment"]?.Trim() ?? "Production";
+            bool isProdOrTb = env.Equals("Production", StringComparison.OrdinalIgnoreCase)
+                           || env.Equals("TestBed", StringComparison.OrdinalIgnoreCase);
 
-            if (isProduction && host.Contains("localhost"))
-            {
-                HttpContext.Current.Response.StatusCode = 403;
-                HttpContext.Current.Response.StatusDescription = "Localhost access is blocked in production/TB";
-                HttpContext.Current.Response.End();
-            }
-            if (!Context.Request.IsSecureConnection)
-            {
-                Response.Redirect(Context.Request.Url.ToString().Replace("http:", "https:"));
-            }
-            string lang = null;
+            var ctx = HttpContext.Current;
+            var req = ctx?.Request;
+            var resp = ctx?.Response;
 
-            if (HttpContext.Current.Session != null)
+            if (req == null || resp == null) return;
+
+            // Always set to avoid IIS custom 403 page taking over
+            resp.TrySkipIisCustomErrors = true;
+
+            var host = req.Url?.Host?.ToLowerInvariant() ?? string.Empty;
+
+            // ✅ Block localhost only in Production/TestBed, render branded page
+            if (isProdOrTb && host.Contains("localhost"))
             {
-                lang = HttpContext.Current.Session["SelectedLanguage"]?.ToString();
+                // Correlation ID (re-use existing if present via header; else create one)
+                string correlationId = req.Headers["X-Correlation-Id"] ?? Guid.NewGuid().ToString("N");
+                // Client IP (best effort)
+                string clientIp = req.ServerVariables["HTTP_X_FORWARDED_FOR"];
+                if (string.IsNullOrWhiteSpace(clientIp))
+                    clientIp = req.UserHostAddress ?? "";
+
+                // Prevent FormsAuth 302
+                try { resp.SuppressFormsAuthenticationRedirect = true; } catch { }
+
+                // Render branded page with reason
+                RenderForbiddenPage(resp,
+                    correlationId,
+                    clientIp,
+                    reason: "Localhost access is blocked in Production/TestBed");
+
+                // Finish request cleanly
+                ctx.ApplicationInstance.CompleteRequest();
+                return;
             }
 
-            if (string.IsNullOrEmpty(lang))
-            {
-                lang = HttpContext.Current.Request.Cookies["TSC_Lang"]?.Value ?? "en";
-            }
-            //if (HttpContext.Current.Session == null)
-            //{
-                
-            //    var result = ProductAccountingHelper.GetAsync("/api/v1/AccountType/GetAllMappedProduct").GetAwaiter().GetResult();
+            // ✅ Culture selection (cookie -> session -> default)
+            string lang = req.Cookies["TSC_Lang"]?.Value;
+            if (string.IsNullOrWhiteSpace(lang) && ctx?.Session != null)
+                lang = ctx.Session["SelectedLanguage"] as string;
+            if (string.IsNullOrWhiteSpace(lang))
+                lang = "en";
 
-            //    HttpContext.Current.Session["HasUnConfiguredAccount"] = CheckIfUnConfigureAccountExist(result);
-            //}
-      
-            var ci = new CultureInfo(lang);
-            Thread.CurrentThread.CurrentCulture = ci;
-            Thread.CurrentThread.CurrentUICulture = ci;
+            try
+            {
+                var ci = CultureInfo.GetCultureInfo(lang);
+                Thread.CurrentThread.CurrentCulture = ci;
+                Thread.CurrentThread.CurrentUICulture = ci;
+            }
+            catch
+            {
+                var ci = CultureInfo.GetCultureInfo("en");
+                Thread.CurrentThread.CurrentCulture = ci;
+                Thread.CurrentThread.CurrentUICulture = ci;
+            }
         }
 
-        private bool CheckIfUnConfigureAccountExist(List<AccountingBook> result)
+        // ===== 2) Branded 403 renderer (keeps your colors/branding) =====================
+
+        private static void RenderForbiddenPage(HttpResponse response, string correlationId, string clientIp, string reason)
         {
-            // Handle null or empty list
-            if (result == null || !result.Any())
+            // ✅ Standard 403 setup + no cache + headers
+            try
             {
-                return false;
-            }
-
-            foreach (var mappedProduct in result)
-            {
-                // Handle null accountingBookDetails
-                if (mappedProduct.accountingBookDetails == null)
+                if (!string.IsNullOrWhiteSpace(correlationId) &&
+                    response.Headers["X-Correlation-Id"] == null)
                 {
-                    return true; // No details means unconfigured
+                    response.AppendHeader("X-Correlation-Id", correlationId);
                 }
-
-                // Check if there are any details with null entryRuleCodification
-                // This is what you probably intended to check
-                bool hasUnconfiguredDetails = mappedProduct.accountingBookDetails
-                    .Any(x => x.entryRuleCodification == null);
-
-                if (hasUnconfiguredDetails)
-                {
-                    return true;
-                }
-
-             
             }
+            catch { /* ignore if headers sent */ }
 
-            return false; // No unconfigured accounts found
+            response.Clear();
+            response.StatusCode = 403;
+            response.StatusDescription = "Forbidden";
+            response.ContentType = "text/html";
+            response.TrySkipIisCustomErrors = true;
+            try { response.SuppressFormsAuthenticationRedirect = true; } catch { }
+
+            response.Cache.SetCacheability(HttpCacheability.NoCache);
+            response.Cache.SetNoStore();
+            response.Cache.SetRevalidation(HttpCacheRevalidation.AllCaches);
+            response.Cache.SetExpires(DateTime.UtcNow.AddMinutes(-1));
+
+            // ✅ Safe encodes
+            string corrId = System.Web.HttpUtility.HtmlEncode(correlationId ?? "");
+            string ip = System.Web.HttpUtility.HtmlEncode(clientIp ?? "");
+            string safeReason = System.Web.HttpUtility.HtmlEncode(reason ?? "");
+
+            // 🎨 Brand colors preserved: #326183 (brand), #d9534f (danger)
+            // Small UX: logo slot, “Copy Ref” button, keyboard focus on Home.
+            response.Write($@"
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1' />
+  <title>TRUSTSOFTCREDIT — Access Denied</title>
+  <link rel='icon' href='/favicon.ico' />
+  <style>
+    :root {{
+      --brand:#326183;
+      --danger:#d9534f;
+      --bg:#f5f7fa;
+      --text:#444;
+      --muted:#666;
+      --card:#fff;
+      --border:#e6e8eb;
+    }}
+    * {{ box-sizing: border-box; }}
+    body {{
+      font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      margin: 0;
+      color: var(--text);
+    }}
+    .top-bar {{
+      background: var(--brand);
+      padding: 16px;
+      color: #fff;
+      font-size: 20px;
+      text-align: center;
+      letter-spacing: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }}
+    .top-bar img.logo {{
+      height: 28px;
+      width: auto;
+      vertical-align: middle;
+    }}
+    .container {{
+      margin: 64px auto;
+      max-width: 680px;
+      padding: 32px;
+      border: 2px solid var(--danger);
+      border-radius: 10px;
+      background: var(--card);
+      text-align: center;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.04);
+    }}
+    h1 {{ color: var(--danger); margin: 0 0 8px 0; font-size: 28px; }}
+    .subtitle {{ color: var(--muted); margin-bottom: 18px; }}
+    .message {{ font-size: 16px; margin: 12px 0 18px; color: var(--text); }}
+    .meta {{
+      font-size: 12px; color: var(--muted); margin-top: 14px;
+      display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap;
+    }}
+    .meta code {{
+      background:#fafafa; border:1px solid #eee; padding:4px 6px; border-radius:6px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+    }}
+    .buttons {{ margin-top: 22px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }}
+    .btn {{
+      background: var(--brand); color:#fff; padding: 10px 20px; font-size: 15px;
+      border: none; border-radius: 8px; cursor: pointer; text-decoration:none; display:inline-block;
+      transition: transform .04s ease-in-out;
+    }}
+    .btn:active {{ transform: translateY(1px); }}
+    .btn.secondary {{ background:#6c757d; }}
+    .reason {{
+      text-align:left; white-space:pre-wrap; word-break:break-word;
+      background:#fbfbfc; border:1px dashed var(--border); padding:10px; border-radius:8px; margin-top:16px; display:none;
+    }}
+    .toggle-reason {{ font-size: 12px; color: var(--brand); cursor:pointer; margin-top: 8px; text-decoration: underline; }}
+    .footer {{
+      background: var(--brand); color:#fff; font-size: 13px; text-align:center; padding: 12px;
+      position: fixed; bottom: 0; width: 100%;
+    }}
+    .icon {{
+      width:84px; height:84px; margin-bottom:16px; display:block; margin-left:auto; margin-right:auto;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));
+    }}
+  </style>
+</head>
+<body>
+  <div class='top-bar'>
+    <!-- Optional brand mark -->
+    <!-- <img class='logo' src='/content/branding/tsc-logo.svg' alt='TSC Logo' /> -->
+    T R U S T S O F T C R E D I T — A C C E S S &nbsp; D E N I E D
+  </div>
+
+  <main class='container' role='main' aria-labelledby='title'>
+    <img class='icon' src='https://cdn-icons-png.flaticon.com/512/1828/1828843.png' alt='Access Denied' />
+    <h1 id='title'>ACCESS DENIED</h1>
+    <div class='subtitle'>403 — Forbidden</div>
+    <p class='message'>
+      You are not authorized to access this page from this host.<br/>
+      Please return to the home page or contact your administrator.
+    </p>
+
+    <div class='meta'>
+      <span>Ref:</span> <code id='ref'>{corrId}</code>
+      <button class='btn secondary' id='copyRef' aria-label='Copy reference'>Copy Ref</button>
+      <span>IP:</span> <code>{ip}</code>
+    </div>
+
+    <div class='toggle-reason' id='toggleReason' aria-controls='reason' aria-expanded='false'>Show details for support</div>
+    <pre id='reason' class='reason'>{safeReason}</pre>
+
+    <div class='buttons'>
+      <a href='/' class='btn' id='homeBtn'>Return to Home</a>
+    </div>
+  </main>
+
+  <div class='footer'>
+    Copyright © {DateTime.UtcNow:yyyy} by <b>F L U X SARL Cameroon</b>
+  </div>
+
+  <script>
+    (function() {{
+      var btn = document.getElementById('copyRef');
+      var ref = document.getElementById('ref');
+      if (btn && ref) {{
+        btn.addEventListener('click', function() {{
+          try {{
+            var text = ref.textContent || ref.innerText || '';
+            navigator.clipboard.writeText(text).then(function(){{
+              btn.textContent = 'Copied';
+              setTimeout(function(){{ btn.textContent = 'Copy Ref'; }}, 1200);
+            }});
+          }} catch(e) {{}}
+        }});
+      }}
+      var t = document.getElementById('toggleReason');
+      var pre = document.getElementById('reason');
+      if (t && pre) {{
+        t.addEventListener('click', function(){{
+          var isOpen = pre.style.display === 'block';
+          pre.style.display = isOpen ? 'none' : 'block';
+          t.setAttribute('aria-expanded', String(!isOpen));
+          t.textContent = isOpen ? 'Show details for support' : 'Hide details';
+        }});
+      }}
+      var home = document.getElementById('homeBtn');
+      if (home) home.focus();
+    }})();
+  </script>
+</body>
+</html>");
+
+            response.Flush();
+            // CompleteRequest is already called by the caller in our flow when needed.
         }
-
-
-
 
         protected void Application_EndRequest()
         {
@@ -183,142 +413,6 @@ namespace CBS.FrontDesk.UI
             AdvancedMiddlewareLogger.Shutdown();
         }
 
-        //protected void Application_EndRequest()
-        //{
-        //    var response = HttpContext.Current.Response;
-        //    var request = HttpContext.Current.Request;
-
-        //    // Handle 401 Unauthorized
-        //    if (response.StatusCode == 401)
-        //    {
-        //        response.Clear();
-        //        if (!request.Url.AbsolutePath.EndsWith("/Authentication/Logout", StringComparison.OrdinalIgnoreCase))
-        //        {
-        //            response.Redirect("~/Authentication/Logout");
-        //        }
-        //    }
-        //    // Log 500 Internal Server Errors
-        //    else if (response.StatusCode == 500)
-        //    {
-        //        var exception = Server.GetLastError(); // Get the last thrown exception
-        //        if (exception != null)
-        //        {
-        //            string errorDetails = $"500 Error at {request.Url}\n" +
-        //                                $"Exception: {exception.Message}\n" +
-        //                                $"Stack Trace: {exception.StackTrace}\n" +
-        //                                $"Inner Exception: {exception.InnerException?.Message}";
-
-
-        //            // Optionally: Log to a file (ensure permissions)
-        //            // File.AppendAllText(Server.MapPath("~/App_Data/ErrorLog.txt"), $"{DateTime.Now}: {errorDetails}\n\n");
-        //        }
-        //    }
-        //    // Log other 4xx/5xx errors (optional)
-        //    else if (response.StatusCode >= 400)
-        //    {
-        //        System.Diagnostics.Trace.TraceWarning($"HTTP {response.StatusCode} at {request.Url}");
-        //    }
-        //}
-
-        //protected void Application_PreSendRequestHeaders()
-        //{
-        //    // 🔐 1️⃣ Remove default server-identifying headers
-        //    Response.Headers.Remove("Server");
-        //    Response.Headers.Remove("X-AspNet-Version");
-        //    Response.Headers.Remove("X-Powered-By");
-
-        //    // 🛡️ 2️⃣ Apply custom branding (optional but obfuscates real tech stack)
-        //    Response.Headers.Add("Server", "SERVER FLUX TSC");
-        //    Response.Headers.Add("X-Powered-By", "FLUXSAL CAMEROON");
-
-        //    // 🔒 3️⃣ Enforce strict HTTPS with HSTS for 1 year and preload
-        //    Response.Headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains; preload";
-
-        //    // 🌐 4️⃣ Dynamically set allowed connect-src domains for CSP
-        //    var connectSrcValues = string.Join(" ", AllowedOriginDomains.Prepend("'self'"));
-
-        //    // 📜 5️⃣ Add Content-Security-Policy (CSP) for XSS protection
-        //    string contentSecurityPolicy = string.Join(" ",
-        //        "default-src 'self';",
-        //        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://unpkg.com;",
-        //        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;",
-        //        "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;",
-        //        $"connect-src {connectSrcValues};",
-        //        "img-src 'self' data:;",
-        //        "frame-src 'none';",
-        //        "object-src 'none';",
-        //        "base-uri 'self';",
-        //        "form-action 'self';"
-        //    );
-
-        //    if (!Response.Headers.AllKeys.Contains("Content-Security-Policy"))
-        //        Response.Headers.Add("Content-Security-Policy", contentSecurityPolicy);
-
-        //    // 🔎 6️⃣ Privacy headers
-        //    if (!Response.Headers.AllKeys.Contains("Referrer-Policy"))
-        //        Response.Headers.Add("Referrer-Policy", "no-referrer");
-
-        //    // 🎛️ 7️⃣ Permissions control
-        //    if (!Response.Headers.AllKeys.Contains("Permissions-Policy"))
-        //        Response.Headers.Add("Permissions-Policy", "geolocation=(), microphone=(), camera=(), payment=()");
-
-        //    // 🛡️ 8️⃣ Anti-clickjacking
-        //    if (!Response.Headers.AllKeys.Contains("X-Frame-Options"))
-        //        Response.Headers.Add("X-Frame-Options", "DENY");
-
-        //    // 🧪 9️⃣ Prevent MIME-type sniffing
-        //    if (!Response.Headers.AllKeys.Contains("X-Content-Type-Options"))
-        //        Response.Headers.Add("X-Content-Type-Options", "nosniff");
-
-        //    // 🧰 🔒 10️⃣ Legacy XSS filter (for older browsers)
-        //    if (!Response.Headers.AllKeys.Contains("X-XSS-Protection"))
-        //        Response.Headers.Add("X-XSS-Protection", "1; mode=block");
-
-        //    // 🍪 11️⃣ Secure all response cookies
-        //    foreach (var cookieKey in Response.Cookies.AllKeys)
-        //    {
-        //        var cookie = Response.Cookies[cookieKey];
-        //        if (cookie == null) continue;
-
-        //        cookie.Secure = true; // Only send via HTTPS
-        //        cookie.HttpOnly = true; // JS cannot access
-        //        cookie.SameSite = SameSiteMode.Strict; // Prevent cross-origin usage
-        //    }
-        //}
-        //protected void Application_PreSendRequestHeaders()
-        //{
-        //    // 🔄 Remove existing headers not removed by <remove> in web.config
-        //    Response.Headers.Remove("Server");
-        //    Response.Headers.Remove("X-AspNet-Version");
-        //    Response.Headers.Add("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
-        //    // 🛡️ Add branding (not security-sensitive)
-        //    Response.Headers.Add("Server", "SERVER FLUX TSC");
-        //    Response.Headers.Add("X-Powered-By", "FLUXSAL CAMEROON"); // Only if you're OK showing brand
-
-        //    // ✅ These are already defined in web.config, so DO NOT add them again:
-        //    // • Strict-Transport-Security
-        //    // • X-Frame-Options
-        //    // • X-Content-Type-Options
-        //    // • X-XSS-Protection
-
-        //    // 🔒 Additional secure headers (not present in web.config)
-        //    if (!Response.Headers.AllKeys.Contains("Referrer-Policy"))
-        //        Response.Headers.Add("Referrer-Policy", "no-referrer");
-
-        //    if (!Response.Headers.AllKeys.Contains("Permissions-Policy"))
-        //        Response.Headers.Add("Permissions-Policy", "geolocation=(), microphone=(), camera=(), payment=()");
-
-        //    // 🍪 Secure cookies with best practices
-        //    foreach (var cookieKey in Response.Cookies.AllKeys)
-        //    {
-        //        var cookie = Response.Cookies[cookieKey];
-        //        if (cookie == null) continue;
-
-        //        cookie.Secure = true; // HTTPS only
-        //        cookie.HttpOnly = true; // No access from JS
-        //        cookie.SameSite = SameSiteMode.Strict; // CSRF protection
-        //    }
-        //}
 
         protected void Application_AuthenticateRequest(Object sender, EventArgs e)
         {
@@ -335,150 +429,53 @@ namespace CBS.FrontDesk.UI
         }
         protected void Application_Error(object sender, EventArgs e)
         {
-            Exception ex = Server.GetLastError();
+            var ex = Server.GetLastError();
             if (ex is HttpException httpEx && httpEx.GetHttpCode() == 429)
             {
                 Response.Clear();
                 Response.StatusCode = 429;
                 Response.Write("Too Many Requests. Please try again later.");
-                Response.End();
+                Response.Flush();
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
             }
         }
-        //protected void Application_Error(object sender, EventArgs e)
-        //{
-        //    var exception = Server.GetLastError();
-        //    Response.Clear();
-        //    Server.ClearError();
-
-        //    var httpException = exception as HttpException;
-        //    int statusCode = httpException != null ? httpException.GetHttpCode() : 500;
-
-        //    // Handle Missing Resources Separately
-        //    if (statusCode == 404 && HttpContext.Current.Request.Url.ToString().Contains("/Scripts/"))
-        //    {
-        //        Response.StatusCode = 404;
-        //        Response.End();
-        //        return;
-        //    }
-
-        //    var routeData = new System.Web.Routing.RouteData();
-        //    routeData.Values["controller"] = "Error";
-        //    routeData.Values["action"] = "Index";
-        //    routeData.Values["statusCode"] = statusCode;
-        //    routeData.Values["message"] = exception.Message;
-        //    routeData.Values["stackTrace"] = exception.StackTrace;
-
-        //    // Set the response status code
-        //    Response.StatusCode = statusCode;
-
-        //    // Pass error details to the Error View
-        //    IController errorController = new ErrorController();
-        //    var rc = new RequestContext(new HttpContextWrapper(Context), routeData);
-        //    errorController.Execute(rc);
-        //}
 
 
-        //protected void Application_Error(object sender, EventArgs e)
-        //{
-        //    var context = HttpContext.Current;
-        //    var exception = Server.GetLastError();
-        //    var httpException = exception as HttpException;
 
-        //    // ✅ Skip JSON/AJAX calls to avoid disrupting front-end flow
-        //    if (context?.Request?.Headers["X-Requested-With"] == "XMLHttpRequest")
-        //    {
-        //        Response.Clear();
-        //        Response.StatusCode = 500;
-        //        Response.ContentType = "application/json";
-        //        Response.Write("{ \"success\": false, \"message\": \"An unexpected error occurred.\" }");
-        //        Response.End();
-        //        return;
-        //    }
-
-        //    Response.Flush();
-        //    Server.ClearError();
-
-        //    if (httpException != null)
-        //    {
-        //        var code = httpException.GetHttpCode();
-        //        string message = HttpUtility.UrlEncode(httpException.Message);
-
-        //        switch (code)
-        //        {
-        //            case 400: Response.Redirect("~/Error/BadRequest?message=" + message); break;
-        //            case 401: Response.Redirect("~/Error/Unauthorized?message=" + message); break;
-        //            case 403: Response.Redirect("~/Error/Forbidden?message=" + message); break;
-        //            case 404: Response.Redirect("~/Error/NotFound?message=" + message); break;
-        //            case 500: Response.Redirect("~/Error/InternalServer?message=" + message); break;
-        //            case 503: Response.Redirect("~/Error/ServiceUnavailable?message=" + message); break;
-        //            default: Response.Redirect("~/Error?message=" + message); break;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        string message = HttpUtility.UrlEncode(exception?.Message ?? "Unexpected error");
-        //        Response.Redirect("~/Error?message=" + message);
-        //    }
-        //}
-
-
-        protected void Application_AcquireRequestState(object sender, EventArgs e)
-        {
-            //var identity = HttpContext.Current?.User as CustomPrincipal;
-            //if (HttpContext.Current?.Session != null && identity != null && identity.Identity != null && identity.Identity.IsAuthenticated)
-            //{
-            //    // 1️⃣ Get Session values
-            //    string sessionIP = HttpContext.Current.Session["SessionIP"] as string;
-            //    string sessionUserAgent = HttpContext.Current.Session["SessionUserAgent"] as string;
-
-            //    // 2️⃣ Get Current Connection values (from CustomPrincipal)
-            //    string currentIP = identity.SessionIP;
-            //    string currentUserAgent = identity.SessionUserAgent;
-
-            //    // 3️⃣ Compare IP and User Agent
-            //    if (!string.Equals(sessionIP, currentIP) || !string.Equals(sessionUserAgent, currentUserAgent))
-            //    {
-            //        // ⚡ Session Hijack Detected: Kill Session
-            //        HttpContext.Current.Session.Clear();
-            //        HttpContext.Current.Session.Abandon();
-            //        FormsAuthentication.SignOut();
-            //        //HttpContext.Current.Response.Redirect("~/Authentication/Login?reason=sessionhijack");
-            //    }
-
-            //    // 4️⃣ Absolute Timeout check
-            //    DateTime? sessionStartTime = HttpContext.Current.Session["SessionStartTime"] as DateTime?;
-            //    int? maxLifetimeMinutes = HttpContext.Current.Session["SessionMaxLifetimeMinutes"] as int?;
-
-            //    if (sessionStartTime.HasValue && maxLifetimeMinutes.HasValue)
-            //    {
-            //        var now = DateTime.UtcNow;
-            //        var elapsedMinutes = (now - sessionStartTime.Value).TotalMinutes;
-
-            //        if (elapsedMinutes > maxLifetimeMinutes.Value)
-            //        {
-            //            // ⛔ Absolute Session Expired
-            //            HttpContext.Current.Session.Clear();
-            //            HttpContext.Current.Session.Abandon();
-            //            FormsAuthentication.SignOut();
-            //            //HttpContext.Current.Response.Redirect("~/Authentication/Logout?reason=sessionexpired");
-            //            //return;
-            //        }
-            //    }
-            //}
-        }
         public class CorrelationIdActionFilter : ActionFilterAttribute
         {
             public override void OnActionExecuting(ActionExecutingContext filterContext)
             {
                 var httpContext = filterContext.HttpContext;
-                var correlationId = httpContext.Items["CorrelationId"]?.ToString() ??
-                                    httpContext.Request.Headers[CorrelationConstants.HeaderKey] ??
-                                    Guid.NewGuid().ToString();
+                var correlationId =
+                    httpContext.Items["CorrelationId"] as string ??
+                    httpContext.Request.Headers[CorrelationConstants.HeaderKey] ??
+                    Guid.NewGuid().ToString("N");
 
+                // keep it in Items for downstream code
                 httpContext.Items["CorrelationId"] = correlationId;
-                httpContext.Response.Headers[CorrelationConstants.HeaderKey] = correlationId;
+
+                // ❌ DO NOT write headers here – can throw if response already started
+                // httpContext.Response.Headers[CorrelationConstants.HeaderKey] = correlationId;
+                // httpContext.Response.AddHeader(...);  // <-- remove
             }
         }
+        protected void Application_PreSendRequestHeaders()
+        {
+            var ctx = HttpContext.Current;
+            if (ctx == null) return;
+
+            var id = ctx.Items["CorrelationId"] as string;
+            if (string.IsNullOrWhiteSpace(id)) return;
+
+            // If already set (e.g., by WAF), do nothing
+            if (!ctx.Response.Headers.AllKeys.Contains(CorrelationConstants.HeaderKey))
+            {
+                // This runs before headers are sent, so it’s safe
+                ctx.Response.AppendHeader(CorrelationConstants.HeaderKey, id);
+            }
+        }
+
 
         protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
         {
@@ -528,51 +525,6 @@ namespace CBS.FrontDesk.UI
         }
 
 
-        //protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
-        //{
-        //    HttpCookie authCookie = Request.Cookies["TSC"];
-
-        //    if (authCookie != null)
-        //    {
-        //        FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-
-        //        if (!authTicket.Expired)
-        //        {
-        //            var user = JsonConvert.DeserializeObject<CustomSerializeModel>(authTicket.UserData);
-
-        //            CustomPrincipal principal = new CustomPrincipal(authTicket.Name)
-        //            {
-        //                UserId = user.Id,
-        //                FullName = user.FullName,
-        //                UserName = user.UserName,
-        //                Roles = user.RoleName,
-        //                SessionIP = user.SessionIP,
-        //                SessionUserAgent = user.SessionUserAgent,
-        //                SessionID = user.SessionID,
-        //                Email = user.Email,
-        //                SessionCode = user.SessionCode,
-        //                Phonenumber = user.Phonenumber,
-        //                IsAuthenticated = true
-        //            };
-
-        //            HttpContext.Current.User = principal;
-        //            System.Threading.Thread.CurrentPrincipal = principal;
-
-        //            // ✅ Rehydrate session if missing
-        //            if (HttpContext.Current == null || HttpContext.Current.Session == null)
-        //            {
-        //                System.Diagnostics.Debug.WriteLine("HttpContext or Session is null. Skipping session rehydration.");
-        //                return;
-        //            }
-
-        //            if (HttpContext.Current.Session["UserID"] == null)
-        //            {
-        //                RehydrateSession(user);
-        //            }
-
-        //        }
-        //    }
-        //}
 
 
         private void RehydrateSession(CustomSerializeModel user)

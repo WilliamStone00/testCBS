@@ -13,6 +13,7 @@ else
         <thead class="table-light">
             <tr>
                 <th>Date</th>
+                <th>L.Type</th>
                 <th>L.Repayment</th>
                 <th>L.Amount</th>
                 <th>I.Rate</th>
@@ -55,9 +56,10 @@ else
                 }
 
                 <tr>
-                    <td>@loan.LoanDate.ToString("dd/MM/yyyy")</td>
+                    <td>@loan.LoanDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
+                    <td>@loan.LoanType</td>
                     <td class="text-end">
-                        @(loan.LastRefundDate != DateTime.MinValue ? loan.LastRefundDate.ToString("dd/MM/yyyy") : "-")
+                        @(loan.LastRefundDate != DateTime.MinValue ? loan.LastRefundDate.ToString("dd/MM/yyyy hh:mm:ss") : "-")
                     </td>
                     <td class="text-end">@loan.LoanAmount.ToString("N0")</td>
                     <td class="text-end">@loan.InterestRate.ToString("0.0")%</td>
@@ -81,6 +83,7 @@ else
             <tr>
                 <td class="text-end">Totals:</td>
                 <td></td> <!-- Last Repayment -->
+                <td></td> <!-- Last Repayment -->
                 <td class="text-end">@Model.Loans.Sum(x => x.LoanAmount).ToString("N0")</td>
                 <td></td> <!-- I.Rate -->
                 <td class="text-end">@Model.Loans.Sum(x => x.AccrualInterest).ToString("N0")</td>
@@ -98,6 +101,7 @@ else
         </h6>
         <ul class="small mb-0">
             <li><strong>Date</strong>: The date the loan was disbursed or recorded.</li>
+            <li><strong>L.Type</strong>: The type of loan contracted by the member.</li>
             <li><strong>L.Repayment</strong>: The date of the last loan repayment made by the member.</li>
             <li><strong>L.Amount</strong>: Total loan amount disbursed to the member.</li>
             <li><strong>I.Rate</strong>: Interest rate applied on the loan (annualized).</li>
@@ -114,30 +118,4 @@ else
 
 </div>
 
-    <!-- ✅ Totals Summary Section -->
-    @*<div class="card mt-3 shadow-sm">
-            <div class="card-header bg-light text-dark fw-bold">Account & Loan Totals</div>
-            <div class="card-body p-3">
-                <div class="row mb-2">
-                    <div class="col-md-4 fw-bold">Total Loans Paid:</div>
-                    <div class="col-md-8 text-end text-success">@totalPaid.ToString("N0") FCFA</div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-md-4 fw-bold">Total Outstanding Loan Balance:</div>
-                    <div class="col-md-8 text-end text-danger">@totalBalanceLoan.ToString("N0") FCFA</div>
-                </div>
-                <div class="row mb-2 border-top pt-2">
-                    <div class="col-md-4 fw-bold">Account Balance:</div>
-                    <div class="col-md-8 text-end">@totalBalance.ToString("N0") FCFA</div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-md-4 fw-bold">Blocked Amount:</div>
-                    <div class="col-md-8 text-end text-warning">@totalBlocked.ToString("N0") FCFA</div>
-                </div>
-                <div class="row border-top pt-2">
-                    <div class="col-md-4 fw-bold">Available Actual Balance:</div>
-                    <div class="col-md-8 text-end text-primary fw-bold">@totalActual.ToString("N0") FCFA</div>
-                </div>
-            </div>
-        </div>*@
 }

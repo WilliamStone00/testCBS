@@ -952,11 +952,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Simulate A Bulk Operation.
+        ///   Looks up a localized string similar to Simulate A Range Bulk Operation.
         /// </summary>
-        internal static string SimulateABulkOperation {
+        internal static string SimulateARangeBulkOperation {
             get {
-                return ResourceManager.GetString("SimulateABulkOperation", resourceCulture);
+                return ResourceManager.GetString("SimulateARangeBulkOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simulate A Bulk Cash Operation.
+        /// </summary>
+        internal static string SimulateBulkCashOperation {
+            get {
+                return ResourceManager.GetString("SimulateBulkCashOperation", resourceCulture);
             }
         }
         

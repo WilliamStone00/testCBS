@@ -156,6 +156,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return unconfiguredProductsResponse;
         }
         [HttpGet]
+        public async Task<JsonResult> CheckFeeOrIncomeStatus()
+        {
+            var listOfAccounts = await _AccountServices.GetAllAccountingEventBook();
+            var data = CheckIfUnConfigureAccountExist(listOfAccounts);
+            this.HttpContext.Session["UnConfiguredProduct"] = data;
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
         public async Task<JsonResult> CheckAccountConfigurationStatus()
         {
             var listOfAccounts = await _AccountServices.GetAllAccountingBook();
@@ -320,11 +329,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
         private async Task GetList()
         {
-            ViewBag.AccountTypes = await GetAccountTypesAsync();
+            //ViewBag.AccountTypes = await GetAccountTypesAsync();
          
-            var DebitAccounts = await _AccountServices.GetAllAccounting();
-            var CreditAccounts = BuildMenuViewBag(DebitAccounts);
-            ViewBag.Accounts = CreditAccounts;
+            //var DebitAccounts = await _AccountServices.GetAllAccounting();
+            //var CreditAccounts = BuildMenuViewBag(DebitAccounts);
+            //ViewBag.Accounts = CreditAccounts;
             var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
             ViewBag.OperationEvent = await _OperationEventService.GetOperationEvents();
             ViewBag.ChartOfAccountManagementPositions = BuildMenuAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList(), listAccounts.ToList());
@@ -500,7 +509,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                                    PositionNumber = item.PositionNumber.PadRight(3, '0'),
                                  
                                    Description = item.Description,
-                                   GeneralRepresentation = element.AccountNumber.PadRight(6, '0') + code + item.PositionNumber.PadRight(3, '0')
+                                   GeneralRepresentation = element.AccountNumber.PadRight(6, '0')  + item.PositionNumber.PadRight(3, '0')+ code
 
                                }).ToList();
             foreach (var item in listOfItems)
@@ -512,7 +521,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
                 else
                 {
-                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.Description} - {item.AccountNumber}[BCD]{item.PositionNumber}" });
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.Description} - {item.AccountNumber}{item.PositionNumber}[BCD]" });
 
                 }
             }
@@ -732,7 +741,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 var datas0 = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPosition(Id);
                 var data = await _chartOfAccountServices.GetChartOfAccountById(datas0.ChartOfAccountId);
                 var dataList = new List<StringValues>();
-                if (data.LabelEn == "BALANCING_ACCOUNT" || data.LabelEn.ToUpper() == "ENGLISH")
+                if (data.LabelEn == "ROOT_ACCOUNT" || data.LabelEn.ToUpper() == "ENGLISH")
                 {
                     var dataModel = (await _AccountCategoryServices.GetAccountCategory()).FirstOrDefault();
                     dataList.Add(new StringValues { Text = dataModel.Name, Value = dataModel.Id });
@@ -756,7 +765,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                     }
 
                 }
-                return Json(new { accountCategoryList=dataList ,  description = datas0.Description, AccountNumber = data.AccountNumber }, JsonRequestBehavior.AllowGet);
+                return Json(new { accountCategoryList=dataList ,  description = datas0.Description, AccountNumber = data.AccountNumber.PadRight(6,'0')+ datas0.PositionNumber }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -898,7 +907,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 }
                 else if (model.ChartOfAccount.IsForUpdate == false)
                 {
-                    serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
+                    if (model.Action=="update")
+                    {
+                        serviceAction = await GetUpdateServiceActionAsync(model.ServiceOption, model);
+
+                    }
+                    else
+                    {
+                        serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
+                    }
+                
                 }
 
 
@@ -1264,7 +1282,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 {
                     var dataChart = await _chartOfAccountServices.GetAllChartOfAccountTreeNodes();
                     var data = await _AccountServices.GetAllAccounting();
-                    var sysData = new AccountingConfiguration { Accounts = data.ToList(), AccountTreeNodes = dataChart.ToList() };
+                    var sysData = new AccountingConfiguration { Accounts = ConvertForDataDisplay(  data.ToList(),await new BranchServices().GetBranches()), AccountTreeNodes = dataChart.ToList() };
                     return PartialView(partialView, sysData);
 
                 }
@@ -1783,6 +1801,37 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             return null;
         }
 
+ 
+        private List<Data.Account> ConvertForDataDisplay(List<Data.Account> accounts, IEnumerable<Branch> branches)
+        {
+            if (accounts == null)
+                return new List<Data.Account>();
+
+            var branchLookup = branches.ToDictionary(b => b.Id, b => b) ?? new Dictionary<string, Branch>();
+
+            var displayAccounts = new List<Data.Account>();
+
+            foreach (var account in accounts)
+            {
+                // Create a copy of the account for display purposes
+                var displayAccount = account;
+
+                // Enrich with branch information if available
+                if ( branchLookup.TryGetValue(account.AccountOwnerId, out var branch))
+                {
+                    // Assuming there's a way to set branch display information
+                    // This could be through additional properties or formatting
+                    displayAccount.BranchCode =  branch.Name;
+            
+                }
+
+                // Add the enriched account to the display list
+
+                displayAccounts.Add(displayAccount);
+            }
+
+            return displayAccounts.OrderBy(c=>c.AccountNumber).ToList();
+        }
         private async Task<DocumentReferenceCode> BuildDocumentReferenceCodeObjAsync(DocumentReferenceCodeDto data, List<CorrespondingMappingDto> datast, List<CorrespondingMappingExceptionDto> datastEx)
         {
            var listAccounts =( await _chartOfAccountServices.GetAllChartOfAccounts()).ToList();

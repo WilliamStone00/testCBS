@@ -1,4 +1,5 @@
 ﻿using CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,11 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public decimal TotalSubcriptionAmount { get; set; }
         public string EventName { get; set; }
     }
+    public class GetCustomerBtCategoryAndBranchQUery
+    {
+        public string CustomerCategory { get; set; }
+        public string BranchId { get; set; }
+    }
     public class CustomerLightDto
     {
         public string CustomerId { get; set; }
@@ -49,8 +55,8 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string LastName { get; set; }
         public string FullName { get; set; }
         public string Matricule { get; set; }
-        public string CustomerType { get; set; }
         public string MobileLoginId { get; set; }
+        public string CustomerType { get; set; }
         public string LegalForm { get; set; }
         public string MembershipApprovalStatus { get; set; }
         public string Gender { get; set; }
@@ -61,12 +67,44 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string BankId { get; set; }
         public string Language { get; set; }
         public bool Active { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime? CreateDate { get; set; }
         public string AccountConfirmationNumber { get; set; }
-
-
-
+        public string CustomerTypeName { get; set; }
+        public string AgeGroup { get; set; }
+        public string UsingMobileApp { get; set; }
+        public string Address { get; set; }
+        public string CNI { get; set; }
+        public string IssueDate { get; set; }
+        public string ExpireDate { get; set; }
+        public string PlaceOfBirth { get; set; }
     }
+    public class ExportCustomersQueryFilter
+    {
+        public bool Download { get; set; } = false;
+        // null/empty => Head Office (ALL branches)
+        public string BranchId { get; set; }
+
+        // Filters (all optional)
+        public string MembershipApprovalStatus { get; set; }
+        public string Gender { get; set; }
+        public string MaritalStatus { get; set; }
+        public string WorkingStatus { get; set; }
+        public string CustomerType { get; set; }
+        public string AgeCategoryStatus { get; set; }
+        public string LegalForm { get; set; }
+        public string CustomerId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime DateOfBirthFrom { get; set; }
+        public DateTime DateOfBirthTo { get; set; }
+        public DateTime CreatedFrom { get; set; }
+        public DateTime CreatedTo { get; set; }
+        public string SearchTerm { get; set; }
+
+        // DataTable options (sorting, paging, searching, etc.)
+        public DataTableOptions Options { get; set; } = new DataTableOptions();
+    }
+
 
     public class CustomerBasicInfosDto
     {

@@ -56,7 +56,7 @@
                                             <!-- Delete Button -->
                                             <button type="button"
                                                     class="btn btn-sm btn-outline-danger d-flex align-items-center"
-                                                    onclick="DeleteFileRecord('SalaryUpload','@file.Id','myDataTable','_FileUploadData',0,'datalistingview')"
+                                                    onclick="DeleteRecordThenReloadPage('SalaryUpload','@file.Id')"
                                                     data-bs-toggle="tooltip"
                                                     data-bs-placement="top"
                                                     title="@GlobalShared.Delete @file.FileName">
@@ -71,7 +71,6 @@
                 }
                 else
                 {
-
                     <div class="text-center my-3">
                         <p>@GlobalSalaryExecution.NoSalaryUploadsFound.</p>
                     </div>

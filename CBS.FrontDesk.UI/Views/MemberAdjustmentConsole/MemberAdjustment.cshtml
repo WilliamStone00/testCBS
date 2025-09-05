@@ -1,0 +1,674 @@
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalIndividual.MemberOverview;
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-account-group-outline me-2"></i> @GlobalIndividual.MEMBERSOVERVIEW
+                </h1>
+                <p class="card-text">
+                    @GlobalIndividual.ViewAndManageRegisteredMembersAcrossAllBranches.
+                </p>
+                <p class="card-text fw-bold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalIndividual.LeverageTheFiltersBelowToNarrowResultsByGender.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalIndividual.TIPS_FOR_FILTERING_MEMBERS_EFFECTIVELY</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalIndividual.FilterByBranch:</strong> @GlobalIndividual.EasilySegmentMembersByOperationalBranch.</li>
+                <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>@GlobalIndividual.RegistrationDates:</strong> @GlobalIndividual.FilterByCreationDateOrBirthDateToTargetSpecificDemographics.</li>
+                <li><i class="mdi mdi-gender-male-female text-secondary me-2"></i> <strong>@GlobalIndividual.GenderMaritalStatus:</strong> @GlobalIndividual.AnalyzeMemberBreakdownAcrossKeyAttributes.</li>
+                <li><i class="mdi mdi-account-check-outline text-info me-2"></i> <strong>@GlobalIndividual.ApprovalLegalStatus:</strong> @GlobalIndividual.FilterApprovedMembersByLegalFormOrType.</li>
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>@GlobalIndividual.Export:</strong> @GlobalIndividual.ExportSearchResultsToExcelForReportingOrRecordkeeping.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Advanced Filters -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalIndividual.MemberFilters</h5>
+    <form id="memberFilterForm">
+        <div class="card p-3 mb-3 bg-light">
+            <!-- Toggle switches for additional filters -->
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleBranch" onclick="document.getElementById('branchFilter').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleBranch">@GlobalIndividual.ShowBranchFilter</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDemographics" onclick="document.getElementById('demographicFilters').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleDemographics">@GlobalIndividual.ShowDemographicFilters</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleApproval" onclick="document.getElementById('approvalFilters').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleApproval">@GlobalIndividual.ShowApprovalLegalFilters</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDates" onclick="document.getElementById('dateFilters').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleDates">@GlobalIndividual.ShowDateFilters</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Default Filters -->
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">@GlobalIndividual.MemberAccountNumber</label>
+                    <input type="text" id="customerId" name="CustomerId" class="form-control" placeholder="@GlobalIndividual.MemberAccountTemporalNumber" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">@GlobalIndividual.FirstName</label>
+                    <input type="text" id="firstName" name="FirstName" class="form-control" placeholder="@GlobalIndividual.FirstName" />
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label fw-bold">@GlobalIndividual.LastName</label>
+                    <input type="text" id="lastName" name="LastName" class="form-control" placeholder="@GlobalIndividual.LastName" />
+                </div>
+            </div>
+            <!-- Branch Filter -->
+            <div id="branchFilter" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">@GlobalIndividual.Branch</label>
+                        @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "---" + @GlobalIndividual.SelectBranch + "---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demographic Filters -->
+            <div id="demographicFilters" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">@GlobalIndividual.Gender Or Groups</label>
+                        <select id="gender" name="Gender" class="form-select">
+                            <option value="">@GlobalIndividual.All</option>
+                            <option value="Female">@GlobalIndividual.Female</option>
+                            <option value="Male">@GlobalIndividual.Male</option>
+                            <option value="Male">@GlobalIndividual.Groups</option>
+                        </select>
+
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">@GlobalIndividual.MaritalStatus</label>
+                        <select id="maritalStatus" name="MaritalStatus" class="form-select">
+                            <option value="">@GlobalIndividual.All</option>
+                            <option value="Divorced">@GlobalIndividual.Divorced</option>
+                            <option value="Married">@GlobalIndividual.Married</option>
+                            <option value="Single">@GlobalIndividual.Single</option>
+                            <option value="Widowed">@GlobalIndividual.Widowed</option>
+                        </select>
+
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">@GlobalIndividual.WorkingStatus</label>
+                        <select id="workingStatus" name="WorkingStatus" class="form-select">
+                            <option value="">@GlobalIndividual.All</option>
+                            <option value="Unemployed">@GlobalIndividual.Unemployed</option>
+                            <option value="Working">@GlobalIndividual.Working</option>
+                        </select>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Approval & Legal Filters -->
+            <div id="approvalFilters" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">@GlobalIndividual.MembershipApproval</label>
+                        <select id="membershipApprovalStatus" name="MembershipApprovalStatus" class="form-select">
+                            <option value="">All</option>
+                            <option value="Approved">@GlobalIndividual.Approved</option>
+                            <option value="Pending">@GlobalIndividual.Awaits_Validation</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">@GlobalIndividual.LegalForm</label>
+                        <select id="legalForm" name="LegalForm" class="form-select">
+                            <option value="">All</option>
+                            <option value="Moral_Person">@GlobalIndividual.MoralPerson</option>
+                            <option value="Physical_Person">@GlobalIndividual.PhysicalPerson</option>
+                        </select>
+
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">@GlobalIndividual.MembersProfile</label>
+                        <select id="customerType" name="CustomerType" class="form-select">
+                            <option value="">@GlobalIndividual.All</option>
+                            <option value="AffiliateMemberSalaryAccount">@GlobalIndividual.AffiliateMemberSalary (TMAA)</option>
+                            <option value="CivilServantsSalaryCollection">@GlobalIndividual.CivilServantsSalary (CSCA)</option>
+                            <option value="DailyCollection">@GlobalIndividual.DailyCollection (DCA)</option>
+                            <option value="DailySaver">@GlobalIndividual.DailySaver (DSA)</option>
+                            <option value="MemberAccount">@GlobalIndividual.MembersAccount (Serial number)</option>
+                            <option value="MobileMoneyMTN">@GlobalIndividual.MobileMoneyMTN (MTCA)</option>
+                            <option value="MobileMoneyOrange">@GlobalIndividual.MobileMoneyOrange (OMCA)</option>
+                            <option value="PreRegistredMember">@GlobalIndividual.PreRegisteredMembers (PRM)</option>
+                            <option value="PrivateInstitutionSalaryCollection">@GlobalIndividual.PrivateInstitutionSalary (PICA)</option>
+                            <option value="Remittance">@GlobalIndividual.Remittance (RMCA)</option>
+                            <option value="TemporalAccount">@GlobalIndividual.TemporalAccount (TEMP)</option>
+                            <option value="UnknownSalaryMemberAccount">@GlobalIndividual.TemporalSalaryForMember (TMSA)</option>
+                        </select>
+
+
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">@GlobalIndividual.AgeCategory</label>
+                        <select id="ageCategoryStatus" name="AgeCategoryStatus" class="form-select">
+                            <option value="">@GlobalIndividual.All</option>
+                            <option value="Major">@GlobalIndividual.Major</option>
+                            <option value="Minor">@GlobalIndividual.Minor</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Date Filters -->
+            <div id="dateFilters" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">@GlobalIndividual.DateOfBirthFrom</label>
+                        <input type="date" id="dobFrom" name="DateOfBirthFrom" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">@GlobalIndividual.DateOfBirthTo</label>
+                        <input type="date" id="dobTo" name="DateOfBirthTo" class="form-control" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">@GlobalIndividual.CreatedFrom</label>
+                        <input type="date" id="createdFrom" name="CreatedFrom" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">@GlobalIndividual.CreatedTo</label>
+                        <input type="date" id="createdTo" name="CreatedTo" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalIndividual.ApplyFilter</button>
+                <button id="resetFilterBtn" type="reset" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset</button>
+                @*<button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-excel"></i> Export</button>*@
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    @Html.Partial("_IndividualData")
+</div>
+
+<!-- Member Name / Profile Adjustment Modal -->
+<div class="modal fade" id="memberAdjustmentModal" tabindex="-1" aria-labelledby="memberAdjustmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content position-relative">
+
+            <!-- Loader Overlay -->
+            <div id="memberAdjustmentLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                    <div class="spinner-border text-primary mb-3" role="status"></div>
+                    <p class="fw-semibold text-primary">Applying adjustments, please wait...</p>
+                </div>
+            </div>
+
+            <!-- Modal Header -->
+            <div class="modal-header border-0">
+                <div class="w-100">
+                    <div class="card bg-light mb-2">
+                        <div class="card-body text-center">
+                            <h1 class="card-title text-primary" id="memberAdjustmentModalTitle">
+                                <i class="mdi mdi-account-edit-outline me-2"></i> Member Profile Adjustment
+                            </h1>
+                            <p class="card-text lead" id="memberAdjustmentModalDescription">
+                                Review and confirm changes to member details, account status, and category updates.
+                            </p>
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tips Section -->
+            <div class="card m-3">
+                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                    <span><i class="mdi mdi-information-outline me-2"></i> When to Use This</span>
+                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdjustmentTips">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                </h6>
+                <div id="collapseAdjustmentTips" class="collapse">
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li><i class="mdi mdi-pencil-box-outline text-success me-2"></i><strong>Profile Updates:</strong> Use for correcting member names, IDs, or categories.</li>
+                            <li><i class="mdi mdi-cash-check text-primary me-2"></i><strong>Account Adjustments:</strong> Update balance, membership status, or account activity.</li>
+                            <li><i class="mdi mdi-close-box-outline text-danger me-2"></i><strong>Exclusions:</strong> Not intended for loan modifications or financial rescheduling.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <div id="memberNameAdjustmentsContainer" class="details-grid">
+                    <!-- Content will be dynamically injected -->
+                    <div class="loading-container text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Loading member adjustment details...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer border-0 justify-content-between">
+                <div class="d-flex flex-row gap-4">
+                    <span class="text-muted fw-semibold">
+                        Member Reference: <span class="text-dark" id="memberReference">N/A</span>
+                    </span>
+                    <span class="text-muted fw-semibold">
+                        Member Name: <span class="text-dark" id="memberName">N/A</span>
+                    </span>
+                </div>
+                <div class="text-center w-100">
+                    <small class="text-muted">Powered by FLX-CBS</small>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="mdi mdi-close"></i> Close
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    // Load Members into DataTable
+    function loadMemberData() {
+        $('#myDataTable').DataTable({
+            serverSide: true,
+            destroy: true,
+            searching: false,
+            order: [[0, 'desc']],
+            ajax: {
+                url: '/MemberAdjustmentConsole/LoadMembersData',
+                type: 'POST',
+                contentType: 'application/json',
+                data: function (d) {
+                    const filters = collectMemberExportParams();
+
+                    filters.options = {
+                        draw: d.draw,
+                        start: d.start,
+                        length: d.length,
+                        skip: d.start,
+                        pageSize: d.length,
+                        searchValue: '',
+                        sortColumnName: d.columns[d.order[0].column].data,
+                        sortColumnDirection: d.order[0].dir
+                    };
+
+                    return JSON.stringify(filters);
+                }
+            },
+            columns: [
+                {
+                    data: 'CreateDate',
+                    name: 'CreateDate',
+                    render: function (data) {
+                        return moment(data).format('DD/MM/YYYY HH:mm:ss');
+                    }
+                },
+                { data: 'FullName', name: 'FullName' },
+                { data: 'CustomerId', name: 'CustomerId' },
+                { data: 'Phone', name: 'Phone' },
+                {
+                    data: 'CustomerType',
+                    name: 'CustomerType',
+                    render: function (data, type, row) {
+                        const label = data || '';
+                        const isApproved = row.MembershipApprovalStatus === 'Approved';
+                        const badgeClass = isApproved ? 'bg-primary' : 'bg-warning text-dark';
+                        return `<span class="badge ${badgeClass}">${label}</span>`;
+                    }
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    render: function (_, __, row) {
+                        return `
+                            <div class="text-center dropdown">
+                                <button class="btn btn-sm btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    <i class="mdi mdi-eye"></i> Action
+                                </button>
+                                <ul class="dropdown-menu">
+
+                                    <li>
+                                        <button class="dropdown-item text-dark"
+                                                onclick="window.open('/Individual/CustomerProfile?KEY=${row.CustomerId}', '_blank')">
+                                            <i class="mdi mdi-account-circle-outline me-2 text-primary"></i> Profile
+                                        </button>
+                                    </li>
+
+                                    <li>
+                                        <button class="dropdown-item text-dark"
+                                                onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberNamesDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                            <i class="mdi mdi-rename-box me-2 text-warning"></i> Initiate Member Name Adjustment
+                                        </button>
+                                    </li>
+
+                                    <li>
+                                        <button class="dropdown-item text-dark"
+                                                onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberStatusDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                            <i class="mdi mdi-toggle-switch me-2 text-danger"></i> Activate Or Deactivate Member Adjustment
+                                        </button>
+                                    </li>
+
+                                    <li>
+                                        <button class="dropdown-item text-dark"
+                                                onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberActiveStatusDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                            <i class="mdi mdi-account-check-outline me-2 text-success"></i> Initiate Member Active Status Adjustment
+                                        </button>
+                                    </li>
+
+                                    <li>
+                                        <button class="dropdown-item text-dark"
+                                                onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberMembershipStatusDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                            <i class="mdi mdi-card-account-details-outline me-2 text-info"></i> Initiate Membership Status Adjustment
+                                        </button>
+                                    </li>
+
+                                    <li>
+                                        <button class="dropdown-item text-dark"
+                                                onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberReferenceDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                            <i class="mdi mdi-identifier me-2 text-secondary"></i> Member Reference Adjustment
+                                        </button>
+                                    </li>
+
+                                    <li>
+                                        <button class="dropdown-item text-dark"
+                                                onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberCategoryDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                            <i class="mdi mdi-account-group-outline me-2 text-primary"></i> Member Category Adjustment
+                                        </button>
+                                    </li>
+
+                                    <li>
+                                        <button class="dropdown-item text-dark"
+                                                onclick="openMemberAdjustmentModal('/MemberAdjustmentConsole/GetMemberAccountBalanceDetailPartial?id=${row.CustomerId}','N/A','${row.CustomerId}','${row.FullName}','${row.BranchName}')">
+                                            <i class="mdi mdi-cash-multiple me-2 text-success"></i> Member Account Balance Adjustment
+                                        </button>
+                                    </li>
+
+                                </ul>
+                            </div>`;
+                    }
+                }
+
+            ]
+        });
+    }
+
+    function collectMemberExportParams() {
+        return {
+            CustomerId: $('#customerId').val(),
+            FirstName: $('#firstName').val(),
+            LastName: $('#lastName').val(),
+            BranchId: $('#branchId').val(),
+            Gender: $('#gender').val(),
+            MaritalStatus: $('#maritalStatus').val(),
+            WorkingStatus: $('#workingStatus').val(),
+            MembershipApprovalStatus: $('#membershipApprovalStatus').val(),
+            LegalForm: $('#legalForm').val(),
+            CustomerType: $('#customerType').val(),
+            AgeCategoryStatus: $('#ageCategoryStatus').val(),
+            DateOfBirthFrom: $('#dobFrom').val(),
+            DateOfBirthTo: $('#dobTo').val(),
+            CreatedFrom: $('#createdFrom').val(),
+            CreatedTo: $('#createdTo').val(),
+            ShowAll: false,
+            options: {}
+        };
+    }
+
+
+    // ==============================
+    // Generic Modal Loader
+    // ==============================
+    function openMemberAdjustmentModal(url, memberAdjustmentReference, memberRef, memberName, branchName) {
+        $('#memberAdjustmentLoader').removeClass('d-none');
+        $.get(url)
+            .done(function (html) {
+                var modalEl = document.getElementById('memberAdjustmentModal');
+                var modal = new bootstrap.Modal(modalEl);
+                var contentDiv = document.getElementById('memberNameAdjustmentsContainer');
+                //document.getElementById("memberAdjustmentReference").textContent = memberAdjustmentReference || "N/A";
+                document.getElementById("memberReference").textContent = memberRef || "N/A";
+                document.getElementById("memberName").textContent = memberName || "N/A";
+                document.getElementById("branchName").textContent = branchName || "N/A";
+
+                // Show loading indicator
+                showLoading(modal, contentDiv, html, `Loading Member Adjustment...`);
+            })
+            .fail(function (_, __, error) {
+                console.error('Error loading partial:', error);
+                appAlertError("Failed to load member details. Please try again.");
+            })
+            .always(function () {
+                $('#memberAdjustmentLoader').addClass('d-none');
+            });
+    }
+
+
+    function showLoading(modal, contentDiv, html, message) {
+        // Show loading state
+        contentDiv.innerHTML = html;
+        modal.show();
+    }
+    // ==============================
+    // Form Handling inside Modal
+    // ==============================
+    function bindModalFormHandler() {
+        const $form = $('#memberAdjustmentModal form');
+
+        if ($form.length === 0) return;
+
+        // prevent duplicate binding
+        $form.off('submit').on('submit', function (e) {
+            e.preventDefault();
+
+            // simple validation example
+            let isValid = true;
+            $form.find('input[required], select[required]').each(function () {
+                if (!$(this).val()) {
+                    $(this).addClass('is-invalid');
+                    isValid = false;
+                } else {
+                    $(this).removeClass('is-invalid');
+                }
+            });
+
+            if (!isValid) {
+                appAlertError("Please fill in all required fields.");
+                return;
+            }
+
+            // disable submit to avoid double clicks
+            const $btn = $form.find('button[type="submit"]');
+            $btn.prop('disabled', true).text('Processing...');
+
+            // send AJAX
+            $.post($form.attr('action'), $form.serialize())
+                .done(function (response) {
+                    if (response.success) {
+                        appAlertSuccess(response.message || "Adjustment saved successfully.");
+                        $('#memberAdjustmentModal').modal('hide');
+                        $('#myDataTable').DataTable().ajax.reload();
+                    } else {
+                        appAlertError(response.message || "Something went wrong.");
+                    }
+                })
+                .fail(function () {
+                    appAlertError("Server error. Please try again.");
+                })
+                .always(function () {
+                    $btn.prop('disabled', false).text('Submit');
+                });
+        });
+    }
+
+    // ==============================
+    // Export
+    // ==============================
+    function exportMemberData() {
+        const filters = collectMemberExportParams();
+        const params = new URLSearchParams();
+
+        for (const key in filters) {
+            if (typeof filters[key] === 'object') {
+                for (const subKey in filters[key]) {
+                    params.append(`${key}.${subKey}`, filters[key][subKey]);
+                }
+            } else {
+                params.append(key, filters[key] ?? '');
+            }
+        }
+
+        window.location.href = `/Individual/DownloadMembers?${params.toString()}`;
+    }
+
+    // ==============================
+    // Reset
+    //==============================
+    function resetMemberFilters() {
+        $('#memberFilterForm').trigger('reset');
+        $('.select2').val('').trigger('change');
+        $('#demographicFilters, #approvalFilters, #dateFilters').addClass('d-none');
+        loadMemberData();
+    }
+
+    // ==============================
+    // Init
+    // ==============================
+    $(document).ready(function () {
+        // loadMemberData(); // enable if you want auto-load
+
+        $('#applyFilterBtn').on('click', function (e) {
+            e.preventDefault();
+            loadMemberData();
+        });
+
+        $('#resetFilterBtn').on('click', function (e) {
+            e.preventDefault();
+            resetMemberFilters();
+        });
+
+        $('#exportBtn').on('click', function (e) {
+            e.preventDefault();
+            exportMemberData();
+        });
+
+    });
+
+
+    function postMemberAdjustmentRequest(form) {
+        $.validator.unobtrusive.parse(form);
+        if (!$(form).valid()) {
+            return false;
+        }
+
+        console.log("Closing Modal....")
+       
+
+        // ✅ Confirmation message
+        var confirmMessage = `
+            <div class="text-start">
+                <p>📝 This adjustment request will be <strong>logged</strong> and submitted for approval.</p>
+                <p><strong>Do you want to proceed?</strong></p>
+            </div>
+        `;
+
+        alertify.confirm("Confirm Adjustment Request", confirmMessage,
+            function () {
+
+                // ✅ Close the modal first
+                var modalEl = document.getElementById('memberAdjustmentModal');
+                var modal = bootstrap.Modal.getInstance(modalEl);
+                if (modal) {
+                    modal.hide();
+                }
+                // ✅ Proceed with AJAX POST
+                $.ajax({
+                    type: 'POST',
+                    url: form.action,
+                    data: new FormData(form),
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            alertify.success(response.message || 'Operation completed successfully');
+                            appalert(response.message || 'Operation completed successfully', 1, 1);
+                            // Redirect after success
+                            window.location.href = '/MemberAdjustmentConsole';
+                        } else {
+                            appalert(response.message || 'Error during operation', 2, 1);
+                        }
+                    },
+                    error: function (err) {
+                        console.error("Error:", err);
+                        if (err.status === 401) {
+                            window.location.href = '/Authentication/Login';
+                        } else {
+                            appalert(err.responseJSON?.message || err.statusText || 'An error occurred', 3, 1);
+                        }
+                    }
+                });
+            },
+            function () {
+                // ✅ Cancelled
+                appalert('Operation cancelled', 3, 1);
+            }
+        ).set('labels', { ok: 'Yes, Proceed', cancel: 'No, Cancel' }); // Better buttons
+
+        return false;
+    }
+    </script>
+    @*<script src="~/Scripts/Js/Crud/CustomerAdjustment/Customer/MyAdjustmentCustomers.js"></script>*@
+    <script src="~/Scripts/Js/Crud/CustomerAdjustment/Customer/MemberAcccountBalanceAdjustment.js"></script>
+}

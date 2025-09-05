@@ -64,7 +64,7 @@
                                 <div class="change-group">
                                     <div class="card mb-3">
                                         <div class="card-body d-flex justify-content-end align-items-center">
-                                            <a type="button" href="/SalaryAnalyzer" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+                                            <a type="button" href="/SalaryUpload" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
                                                 <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
                                             </a>
                                             <!-- Run Salary Analysis -->
@@ -73,7 +73,6 @@
                                                onclick="runAnalysis('@Model.SalaryUploadModelSummaryDto.FileUploadId')">
                                                 <i class="mdi mdi-play-box-outline mdi-18px"></i> @GlobalSalaryAnalyzer.RunAnalysis
                                             </a>
-
                                             <!-- View Analyzed Results -->
                                             <a type="button" href="/SalaryAnalyzer/SalaryAnalysisResultSummary?fileUploadid=@Model.SalaryUploadModelSummaryDto.FileUploadId" target="_blank" class="btn btn-label-primary btn-sm" data-bs-toggle="tooltip" title="@GlobalSalaryAnalyzer.ViewAnalyzedResults">
                                                 <i class="mdi mdi-file-eye-outline mdi-18px"></i> @GlobalSalaryAnalyzer.ViewResults
@@ -95,7 +94,7 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+<script>
         $(document).ready(function () {
 
             LoadDT("myDataTable", 0)
@@ -103,79 +102,45 @@
 
         });
         function runAnalysis(fileUploadId) {
+        alertify.confirm(
+          "RUN SALARY ANALYSIS WARNING!!!",
+          "Are you sure you want to run the salary analysis?\nThis action cannot be reverted!",
+          function () {
+            const url = "/SalaryAnalyzer/ExecuteAnalysis";
+            const payload = { FileUploadId: fileUploadId };
 
+            $.ajax({
+              type: "POST",
+              url: url,
+              contentType: "application/json",
+              data: JSON.stringify(payload),
+              success: function (response) {
+                if (response && response.success) {
+                  // Build the redirect URL safely using Razor to respect app base path/areas
+                  const resultUrl = '@Url.Action("SalaryAnalysisResultSummary","SalaryAnalyzer")'
+                                    + "?fileUploadid=" + encodeURIComponent(fileUploadId);
 
-            alertify.confirm("RUN SALARY ANALYSIS WARNING!!!", "Are you sure you want to run the salary analysis?\nThis action cannot be reverted!",
-                function () {
-                    var url = "/SalaryAnalyzer/ExecuteAnalysis";
-                    console.log("Executing analysis at URL: " + url);
+                  // Optional toast before redirect
+                  appalert(response.message || "Analysis complete.", 1, 1);
 
-                    // Prepare data for the request
-                    var data = {
-                        FileUploadId: fileUploadId
-                    };
+                  // Redirect to the results page
+                  window.location.assign(resultUrl); // or window.location.replace(resultUrl);
+                } else {
+                  appalert((response && response.message) || "Analysis failed.", 3, 1);
+                }
+              },
+              error: function (err) {
+                appalert(err.statusText || "Request failed.", 3, 1);
+              }
+            });
+          },
+          function () {
+            appalert("Analysis cancelled", 3, 1);
+          }
+    );
+  }
 
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        contentType: "application/json",
-                        data: JSON.stringify(data),
-                        success: function (response) {
-                            if (response.success) {
-                                appalert(response.message, 1, 1);
-                                // Optionally reload or update the page
-                                location.reload();
-                            } else {
-                                appalert(response.message, 3, 1);
-                            }
-                        },
-                        error: function (err) {
-                            appalert(err.statusText, 3, 1);
-                        }
-                    });
-                },
-                function () {
-                    appalert('Analysis cancelled', 3, 1);
-                });
-        }
-        //function ChangeFileStatus(fileUploadId, status) {
-        //    if (!fileUploadId) {
-        //        alert("Invalid File Upload ID.");
-        //        return;
-        //    }
-
-        //    // Confirm the action before proceeding
-        //    if (!confirm("Are you sure you want to change the file status?")) {
-        //        return;
-        //    }
-
-        //    // Prepare the data payload
-        //    const model = {
-        //        Id: fileUploadId,
-        //        Status: status // Change this to the desired status if dynamic
-        //    };
-
-        //    $.ajax({
-        //        url: "/SalaryAnalyzer/ChangeFileStaus", // Ensure this matches your controller action route
-        //        type: "POST",
-        //        data: model,
-        //        success: function (response) {
-        //            if (response.success) {
-        //                appalert(response.message, 1, 1);
-        //                // Optionally refresh the page or reload a section of the page
-        //                location.reload();
-        //            } else {
-        //                appalert(response.message, 3, 1);
-        //            }
-        //        },
-        //        error: function (xhr, status, error) {
-        //            console.error(`Error: ${error}`);
-        //            appalert(err.statusText, 3, 1);
-        //        }
-        //    });
-        //}
-
-    </script>
+</script>
 }
 
 

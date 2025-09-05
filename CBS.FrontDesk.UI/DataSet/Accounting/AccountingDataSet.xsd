@@ -121,11 +121,12 @@
               <xs:element name="Debit" msprop:Generator_ColumnPropNameInTable="DebitColumn" msprop:Generator_ColumnPropNameInRow="Debit" msprop:Generator_UserColumnName="Debit" msprop:Generator_ColumnVarNameInTable="columnDebit" type="xs:double" minOccurs="0" />
               <xs:element name="Credit" msprop:Generator_ColumnPropNameInTable="CreditColumn" msprop:Generator_ColumnPropNameInRow="Credit" msprop:Generator_UserColumnName="Credit" msprop:Generator_ColumnVarNameInTable="columnCredit" type="xs:double" minOccurs="0" />
               <xs:element name="Balance" msprop:Generator_ColumnPropNameInTable="BalanceColumn" msprop:Generator_ColumnPropNameInRow="Balance" msprop:Generator_UserColumnName="Balance" msprop:Generator_ColumnVarNameInTable="columnBalance" type="xs:double" minOccurs="0" />
-              <xs:element name="EntryDate" msprop:Generator_ColumnPropNameInTable="EntryDateColumn" msprop:Generator_ColumnPropNameInRow="EntryDate" msprop:Generator_UserColumnName="EntryDate" msprop:Generator_ColumnVarNameInTable="columnEntryDate" type="xs:string" minOccurs="0" />
+              <xs:element name="EntryDate" msprop:Generator_ColumnPropNameInTable="EntryDateColumn" msprop:Generator_ColumnPropNameInRow="EntryDate" msprop:Generator_UserColumnName="EntryDate" msprop:Generator_ColumnVarNameInTable="columnEntryDate" type="xs:dateTime" minOccurs="0" />
               <xs:element name="TotalDebit" msprop:Generator_ColumnPropNameInTable="TotalDebitColumn" msprop:Generator_ColumnPropNameInRow="TotalDebit" msprop:Generator_UserColumnName="TotalDebit" msprop:Generator_ColumnVarNameInTable="columnTotalDebit" type="xs:double" minOccurs="0" />
               <xs:element name="TotalCredit" msprop:Generator_ColumnPropNameInTable="TotalCreditColumn" msprop:Generator_ColumnPropNameInRow="TotalCredit" msprop:Generator_UserColumnName="TotalCredit" msprop:Generator_ColumnVarNameInTable="columnTotalCredit" type="xs:double" minOccurs="0" />
               <xs:element name="NumberDebit" msprop:Generator_ColumnPropNameInTable="NumberDebitColumn" msprop:Generator_ColumnPropNameInRow="NumberDebit" msprop:Generator_UserColumnName="NumberDebit" msprop:Generator_ColumnVarNameInTable="columnNumberDebit" type="xs:double" minOccurs="0" />
               <xs:element name="NumberCredit" msprop:Generator_ColumnPropNameInTable="NumberCreditColumn" msprop:Generator_ColumnPropNameInRow="NumberCredit" msprop:Generator_UserColumnName="NumberCredit" msprop:Generator_ColumnVarNameInTable="columnNumberCredit" type="xs:double" minOccurs="0" />
+              <xs:element name="ValueDate" msprop:Generator_ColumnPropNameInRow="ValueDate" msprop:Generator_ColumnPropNameInTable="ValueDateColumn" msprop:Generator_ColumnVarNameInTable="columnValueDate" msprop:Generator_UserColumnName="ValueDate" type="xs:dateTime" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -162,7 +163,8 @@
               <xs:element name="NumberEntries" msprop:Generator_ColumnPropNameInTable="NumberEntriesColumn" msprop:Generator_ColumnPropNameInRow="NumberEntries" msprop:Generator_UserColumnName="NumberEntries" msprop:Generator_ColumnVarNameInTable="columnNumberEntries" type="xs:int" minOccurs="0" />
               <xs:element name="ValueDate" msprop:Generator_ColumnPropNameInTable="ValueDateColumn" msprop:Generator_ColumnPropNameInRow="ValueDate" msprop:Generator_UserColumnName="ValueDate" msprop:Generator_ColumnVarNameInTable="columnValueDate" type="xs:dateTime" minOccurs="0" />
               <xs:element name="BookingDirection" msprop:Generator_ColumnPropNameInTable="BookingDirectionColumn" msprop:Generator_ColumnPropNameInRow="BookingDirection" msprop:Generator_UserColumnName="BookingDirection" msprop:Generator_ColumnVarNameInTable="columnBookingDirection" type="xs:string" minOccurs="0" />
-              <xs:element name="TempData" msprop:Generator_ColumnPropNameInRow="TempData" msprop:Generator_ColumnPropNameInTable="TempDataColumn" msprop:Generator_ColumnVarNameInTable="columnTempData" msprop:Generator_UserColumnName="TempData" type="xs:long" minOccurs="0" />
+              <xs:element name="TempData" msprop:Generator_ColumnPropNameInTable="TempDataColumn" msprop:Generator_ColumnPropNameInRow="TempData" msprop:Generator_UserColumnName="TempData" msprop:Generator_ColumnVarNameInTable="columnTempData" type="xs:long" minOccurs="0" />
+              <xs:element name="UsersInvolve" msprop:Generator_UserColumnName="UsersInvolve" msprop:Generator_ColumnPropNameInTable="UsersInvolveColumn" msprop:Generator_ColumnPropNameInRow="UsersInvolve" msprop:Generator_ColumnVarNameInTable="columnUsersInvolve" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

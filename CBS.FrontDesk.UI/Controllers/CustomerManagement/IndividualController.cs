@@ -12,8 +12,6 @@ using CBS.FrontDesk.Data.Entity.CustomerManagement;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity;
 using CBS.BusinessService.Accounting;
-
-using MvcSiteMapProvider.Reflection;
 using System.Data.Entity.Core.Metadata.Edm;
 using CBS.BusinessService.Config;
 using System.Linq.Expressions;
@@ -26,6 +24,7 @@ using System.Net;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.BusinessService.Config.Localization;
 using CBS.BusinessService.Session;
+using CBS.FrontDesk.Data.Entity.DownLoadDTO;
 
 namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
 {
@@ -57,6 +56,14 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
 
 
         }
+        public async Task<ActionResult> Reporting()
+        {
+
+            ViewBag.Branches=await _branchServices.GetBranches();
+            return View();
+
+
+        }
 
         public async Task<ActionResult> CustomerProfile(string KEY = null, string ReadOptions = null, string path = null, string group = null)
         {
@@ -67,7 +74,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         }
         public async Task<ActionResult> MyMembers()
         {
-  
+
             return View();
         }
         public async Task<ActionResult> Account(string KEY = null, string ReadOptions = null, string path = null, string group = null)
@@ -119,7 +126,7 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
                 string error = string.Join("<br/>", errors);
                 return Json(new { success = false, message = error });
             }
-            string ParamTitle =$"{request.LegalFormStatus} Members With {request.MembersStatusType}";
+            string ParamTitle = $"{request.LegalFormStatus} Members With {request.MembersStatusType}";
             if (request.DateFrom == null)
             {
                 request.DateFrom = DateTime.Now.ToString();
@@ -155,8 +162,8 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
                 ParamTitle = $"All Members both Moral and Physical persons";
 
             }
-        
-       
+
+
 
             // Call your service to get the data
             var response = await _individualProfileServices.GetAllMembersByParameters(request);
@@ -456,8 +463,8 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         {
             try
             {
-                
-                var dataTable = await _individualProfileServices.GetDataTableAsync(query,"MyMembers");
+
+                var dataTable = await _individualProfileServices.GetDataTableAsync(query, "MyMembers");
 
                 var customerList = JsonConvert.DeserializeObject<List<CustomerLightDto>>(
                     JsonConvert.SerializeObject(dataTable.data)
@@ -478,47 +485,56 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading member data.");
             }
         }
-
-        [HttpGet]
-        public async Task<ActionResult> DownloadMembersData(GetCustomersForDataTableQuery query)
+        [HttpPost]
+        public async Task<ActionResult> LoadMembers(ExportCustomersQueryFilter query)
         {
-            try
-            {
-                // Ensure we fetch all relevant records
-                query.Options = new DataTableOptions
-                {
-                    pageSize = 10000,
-                    start = 0,
-                    skip = 0
-                };
-
-                var dataTable = await _individualProfileServices.GetDataTableAsync(query,"MyMembers");
-
-                var customerList = JsonConvert.DeserializeObject<List<CustomerLightDto>>(
+            // filter.Options.start, filter.Options.length, filter.Options.sortColumnName, etc.
+            var dataTable = await _individualProfileServices.GetDataTableAsyncTwo(query);
+            var customerList = JsonConvert.DeserializeObject<List<CustomerLightDto>>(
                     JsonConvert.SerializeObject(dataTable.data)
                 );
 
-                var branches = await _branchServices.GetBranches();
 
-                var customers = _individualProfileServices.MapToDtoOrdered(customerList, branches.ToList());
-
-                string exportedBy = Session["FullName"]?.ToString() ?? "System Export";
-
-                //var exportFile = ExportUtilityCustomer.GenerateCustomerExcel(
-                //    customers,
-                //    exportedBy,
-                //    query.CreatedFrom?.ToString("dd/MM/yyyy"),
-                //    query.CreatedTo?.ToString("dd/MM/yyyy")
-                //);
-
-                //return File(exportFile.Content, exportFile.ContentType, exportFile.FileName);
-                return null;
-            }
-            catch (Exception ex)
+            return Json(new
             {
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error exporting member data.");
+                draw = query.Options?.draw ?? "1",
+                recordsTotal = dataTable.recordsTotal,
+                recordsFiltered = dataTable.recordsFiltered,
+                data = customerList
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> DownloadMembersData(ExportCustomersQueryFilter query)
+        {
+            try
+            {
+                var fileDownload = await _individualProfileServices.DownloadCustomers(query);
+
+                // Handle null or empty payloads
+                if (fileDownload == null || fileDownload.FileData == null || fileDownload.FileData.Length == 0)
+                {
+                    // 204 avoids a broken file download; caller can decide how to message this
+                    return new HttpStatusCodeResult((int)HttpStatusCode.NoContent, "No data to export.");
+                }
+
+                // Safe defaults
+                var contentType = string.IsNullOrWhiteSpace(fileDownload.ContentType)
+                    ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    : fileDownload.ContentType;
+
+                var fileName = string.IsNullOrWhiteSpace(fileDownload.FileName)
+                    ? $"MembersExport_{DateTime.UtcNow:yyyyMMdd_HHmm}.xlsx"
+                    : fileDownload.FileName;
+
+                return File(fileDownload.FileData, contentType, fileName);
+            }
+            catch (Exception)
+            {
+                return new HttpStatusCodeResult((int)HttpStatusCode.InternalServerError, "Error exporting member data.");
             }
         }
+
 
         [HttpGet]
         public JsonResult GetRegionsByCountry(string countryId)

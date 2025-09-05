@@ -25,7 +25,28 @@
 });
 
 // 🧠 Load DataTable
+function renderLoanStatusBadge(status) {
+    if (!status) return `<span class="badge bg-secondary text-uppercase">UNKNOWN</span>`;
+
+    const normalized = status.toLowerCase();
+    const badgeMap = {
+        open: 'success',
+        closed: 'secondary',
+        refinanced: 'primary',
+        pending: 'warning',
+        restructured: 'info',
+        rescheduled: 'dark'
+    };
+
+    const color = badgeMap[normalized] || 'secondary';
+    const label = status.toUpperCase();
+
+    return `<span class="badge rounded-pill bg-${color} px-3 py-2 text-uppercase">${label}</span>`;
+}
+
 function loadLoanData() {
+    let isFirstDraw = true;
+
     $('#myDataTable').DataTable({
         serverSide: true,
         destroy: true,
@@ -74,63 +95,65 @@ function loadLoanData() {
             },
             {
                 data: 'LoanStatus',
-                render: data => {
-                    const status = (data || '').toLowerCase();
-                    const badgeMap = {
-                        open: 'primary',
-                        closed: 'dark',
-                        refinanced: 'warning',
-                        restructured: 'info',
-                        rescheduled: 'success'
-                    };
-                    return `<div class="text-center"><span class="badge bg-${badgeMap[status] || 'secondary'} text-uppercase">${data || 'UNKNOWN'}</span></div>`;
-                }
+                render: data => renderLoanStatusBadge(data)
             },
             {
                 data: null,
                 orderable: false,
                 render: function (_, __, row) {
                     return `
-                    <div class="text-center dropdown">
-                        <button class="btn btn-sm btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            <i class="mdi mdi-eye"></i> Action
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item" href="/Loan/Details?KEY=${row.Id}" target="_blank">
-                                    <i class="mdi mdi-file-document-outline text-info me-1"></i> Details
-                                </a>
-                            </li>
-                            <li>
-                               <a class="dropdown-item text-warning" href="#"
-                                  onclick="openLoanAdjustmentModal('request', {
-                                   LoanId: '${row.Id}',
-                                   CustomerId: '${row.CustomerId}',
-                                   BranchId: '${row.BranchId}',
-                                   CustomerName: '${row.CustomerName}', 
-                                   LoanAmount: ${row.LoanAmount},
-                                   Balance: ${row.Balance},
-                                   AccrualInterest: ${row.AccrualInterest},
-                                   Tax: ${row.Vat},
-                                   Penalty: ${row.Penalty},
-                                   DueAmount: ${row.DueAmount},
-                                   VatRate: ${row.VatRate},
-                                   InterestRate: ${row.InterestRate}
-                               })">
-                                   <i class="mdi mdi-pencil-outline me-1"></i> Initiate Loan Adjustment
-                                </a>
-
-
-                            </li>
-                        </ul>
-                    </div>`;
+    <div class="text-center dropdown">
+        <button class="btn btn-sm btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <i class="mdi mdi-eye"></i> Action
+        </button>
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item" href="/Loan/Details?KEY=${row.Id}" target="_blank">
+                    <i class="mdi mdi-file-document-outline text-info me-1"></i> Details
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item text-warning" href="#"
+                   onclick="openLoanAdjustmentModal('request', {
+                       LoanId: '${row.Id}',
+                       CustomerId: '${row.CustomerId}',
+                       BranchId: '${row.BranchId}',
+                       CustomerName: '${row.CustomerName}', 
+                       LoanAmount: ${row.LoanAmount},
+                       Balance: ${row.Balance},
+                       AccrualInterest: ${row.AccrualInterest},
+                       Tax: ${row.Vat},
+                       Penalty: ${row.Penalty},
+                       DueAmount: ${row.DueAmount},
+                       VatRate: ${row.VatRate},
+                       InterestRate: ${row.InterestRate},
+                       LoanDate: '${row.LoanDate}',
+                       DisbursementDate: '${row.DisbursementDate}',
+                       LoanStatus: '${row.LoanStatus}',
+                       NextInstallmentDate: '${row.NextInstallmentDate}',
+                       Paid: ${row.Paid ?? 0}
+                   })">
+                   <i class="mdi mdi-pencil-outline me-1"></i> Initiate Loan Adjustment
+                </a>
+            </li>
+        </ul>
+    </div>`;
                 }
             }
         ],
+
         drawCallback: function (settings) {
             const hasData = settings.json?.data?.length > 0;
-            $('#loanDataCard').slideToggle(hasData);
+
+            if (isFirstDraw) {
+                $('#loanDataCard').toggle(hasData); // No animation
+                isFirstDraw = false;
+            } else {
+                hasData ? $('#loanDataCard').slideDown() : $('#loanDataCard').slideUp();
+            }
         }
+
+
     });
 }
 
@@ -192,50 +215,131 @@ function calculateNewDueAmount() {
 
 $('#NewLoanAmount, #NewBalance, #NewInterest, #NewVat, #NewPenalty').on('input', calculateNewDueAmount);
 
+
+
+
 // 📦 Launch Shared Modal
 function openLoanAdjustmentModal(mode, model) {
-    // Reset form & errors
     $('#loanAdjustmentModal form')[0].reset();
     $('.text-danger').text('');
 
-    // 🧾 Hidden POST fields
+    // Hidden POST fields
     $('#LoanId').val(model.LoanId);
     $('#CustomerId').val(model.CustomerId);
     $('#BranchId').val(model.BranchId);
 
-    // 👤 Footer summary
+    // Footer Info
     $('#footerCustomerName').text(model.CustomerName || 'N/A');
     $('#footerCustomerId').text(model.CustomerId || 'N/A');
     $('#footerLoanId').text(model.LoanId || 'N/A');
 
-    // 💼 Old values – Display
-    $('#oldLoanAmountLabel').val(formatCurrency(model.LoanAmount ?? 0));
-    $('#oldBalanceLabel').val(formatCurrency(model.Balance ?? 0));
-    $('#oldInterestLabel').val(formatCurrency(model.AccrualInterest ?? 0));
-    $('#oldVatLabel').val(formatCurrency(model.Tax ?? 0));
-    $('#oldPenaltyLabel').val(formatCurrency(model.Penalty ?? 0));
-    $('#oldDueAmountLabel').val(formatCurrency(model.DueAmount ?? 0));
-    $('#oldVatRateLabel').val(model.VatRate ?? 0);
-    $('#oldIntRateLabel').val(model.InterestRate ?? 0); // ✅ Fix ID name
+    // 🧾 OLD Labels
+    const oldLoanAmount = model.LoanAmount ?? 0;
+    const oldBalance = model.Balance ?? 0;
+    const oldInterest = model.AccrualInterest ?? 0;
+    const oldVat = model.Tax ?? 0;
+    const oldPenalty = model.Penalty ?? 0;
+    const oldDue = model.DueAmount ?? 0;
+    const oldVatRate = model.VatRate ?? 0;
+    const oldIntRate = model.InterestRate ?? 0;
+    const oldLoanDate = formatDate(model.LoanDate);
+    const oldDisbursement = formatDate(model.DisbursementDate);
+    const oldNextInstallment = formatDate(model.NextInstallmentDate);
+    const oldPaid = model.Paid ?? 0;
 
+    $('#oldLoanAmountLabel').val(formatCurrency(oldLoanAmount));
+    $('#oldBalanceLabel').val(formatCurrency(oldBalance));
+    $('#oldInterestLabel').val(formatCurrency(oldInterest));
+    $('#oldVatLabel').val(formatCurrency(oldVat));
+    $('#oldPenaltyLabel').val(formatCurrency(oldPenalty));
+    $('#oldDueAmountLabel').val(formatCurrency(oldDue));
+    $('#oldVatRateLabel').val(oldVatRate);
+    $('#oldIntRateLabel').val(oldIntRate);
+    $('#oldLoanDateLabel').val(oldLoanDate);
+    $('#oldDisbursementDateLabel').val(oldDisbursement);
+    $('#oldLoanStatusLabel').val(model.LoanStatus || "N/A");
+    $('#oldNextInstallmentLabel').val(oldNextInstallment);
+    $('#oldPaidLabel').val(formatCurrency(oldPaid));
 
-    // 🆕 Pre-fill new fields
-    $('#NewLoanAmount').val(model.LoanAmount ?? 0);
-    $('#NewBalance').val(model.Balance ?? 0);
-    $('#NewInterest').val(model.AccrualInterest ?? 0);
-    $('#NewVat').val(model.Tax ?? 0);
-    $('#NewPenalty').val(model.Penalty ?? 0);
-    $('#newDueAmount').val(model.DueAmount ?? 0);
-    $('#NewVatRate').val(model.VatRate ?? 0);
-    $('#NewIntRate').val(model.InterestRate ?? 0);
+    // ✏️ NEW Fields (auto-filled from old values)
+    $('#NewLoanAmount').val(oldLoanAmount);
+    $('#NewBalance').val(oldBalance);
+    $('#NewInterest').val(oldInterest);
+    $('#NewVat').val(oldVat);
+    $('#NewPenalty').val(oldPenalty);
+    $('#newDueAmount').val(oldDue);
+    $('#NewVatRate').val(oldVatRate);
+    $('#NewIntRate').val(oldIntRate);
+    $('#NewLoanDate').val(formatDate2(model.LoanDate));
+    $('#NewDisbursementDate').val(formatDate2(model.DisbursementDate));
+    $('#NewNextInstallmentDate').val(formatDate2(model.NextInstallmentDate));
+    $('#NewLoanStatus').val(model.LoanStatus || "Open");
+    $('#NewPaid').val(oldPaid);
 
-    // 🎯 Control buttons
+    // Button Visibility
     $('#submitRequestBtn').toggleClass('d-none', mode !== 'request');
     $('#approveRequestBtn, #rejectRequestBtn').toggleClass('d-none', mode !== 'validation');
 
-    // 🪟 Show modal
+    // Show modal
     $('#loanAdjustmentModal').modal('show');
 }
+function formatDate2(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+//function openLoanAdjustmentModal(mode, model) {
+//    // Reset form & errors
+//    $('#loanAdjustmentModal form')[0].reset();
+//    $('.text-danger').text('');
+
+//    // 🧾 Hidden POST fields
+//    $('#LoanId').val(model.LoanId);
+//    $('#CustomerId').val(model.CustomerId);
+//    $('#BranchId').val(model.BranchId);
+
+//    // 👤 Footer summary
+//    $('#footerCustomerName').text(model.CustomerName || 'N/A');
+//    $('#footerCustomerId').text(model.CustomerId || 'N/A');
+//    $('#footerLoanId').text(model.LoanId || 'N/A');
+
+//    // 💼 Old values – Display
+//    $('#oldLoanAmountLabel').val(formatCurrency(model.LoanAmount ?? 0));
+//    $('#oldBalanceLabel').val(formatCurrency(model.Balance ?? 0));
+//    $('#oldInterestLabel').val(formatCurrency(model.AccrualInterest ?? 0));
+//    $('#oldVatLabel').val(formatCurrency(model.Tax ?? 0));
+//    $('#oldPenaltyLabel').val(formatCurrency(model.Penalty ?? 0));
+//    $('#oldDueAmountLabel').val(formatCurrency(model.DueAmount ?? 0));
+//    $('#oldVatRateLabel').val(model.VatRate ?? 0);
+//    $('#oldIntRateLabel').val(model.InterestRate ?? 0); // ✅ Fix ID name
+//    // 🆕 NEW FIELDS - OLD VALUES
+//    $('#oldLoanDateLabel').val(formatDate(mode.LoanDate));
+//    $('#oldDisbursementDateLabel').val(formatDate(mode.DisbursementDate));
+//    $('#oldLoanStatusLabel').val(mode.LoanStatus || "N/A");
+//    $('#oldNextInstallmentLabel').val(formatDate(mode.NextInstallmentDate));
+//    $('#oldPaidLabel').val(formatCurrency(mode.Paid));
+
+
+//    // 🆕 Pre-fill new fields
+//    $('#NewLoanAmount').val(model.LoanAmount ?? 0);
+//    $('#NewBalance').val(model.Balance ?? 0);
+//    $('#NewInterest').val(model.AccrualInterest ?? 0);
+//    $('#NewVat').val(model.Tax ?? 0);
+//    $('#NewPenalty').val(model.Penalty ?? 0);
+//    $('#newDueAmount').val(model.DueAmount ?? 0);
+//    $('#NewVatRate').val(model.VatRate ?? 0);
+//    $('#NewIntRate').val(model.InterestRate ?? 0);
+
+//    // 🎯 Control buttons
+//    $('#submitRequestBtn').toggleClass('d-none', mode !== 'request');
+//    $('#approveRequestBtn, #rejectRequestBtn').toggleClass('d-none', mode !== 'validation');
+
+//    // 🪟 Show modal
+//    $('#loanAdjustmentModal').modal('show');
+//}
 
 
 
@@ -285,14 +389,12 @@ function checkForLoanAdjustmentsChange() {
     const hasChange = changes.some(pair => normalize(pair.old) !== normalize(pair.new));
     $('#submitRequestBtn').prop('disabled', !hasChange);
 }
-
-
 function AjaxPostAndUpdateResetLoanValue(form) {
     console.log("Form Action:", form.action);
     console.log("Form Method:", form.method);
 
-    var formData = new FormData(form);
-    for (var pair of formData.entries()) {
+    const formData = new FormData(form);
+    for (let pair of formData.entries()) {
         console.log(pair[0] + ', ' + pair[1]);
     }
 
@@ -300,7 +402,8 @@ function AjaxPostAndUpdateResetLoanValue(form) {
     if (!$(form).valid()) return false;
 
     function normalize(value) {
-        return parseFloat((value || "0").replace(/,/g, '').trim());
+        if (!value) return 0;
+        return isNaN(value) ? parseFloat(value.replace(/,/g, '').trim()) || 0 : parseFloat(value);
     }
 
     function formatCurrency(val) {
@@ -309,132 +412,85 @@ function AjaxPostAndUpdateResetLoanValue(form) {
     }
 
     const values = [
-        {
-            field: "Loan Amount",
-            old: $('#oldLoanAmountLabel').val(),
-            new: $('#NewLoanAmount').val(),
-            isChanged: () => normalize($('#oldLoanAmountLabel').val()) !== normalize($('#NewLoanAmount').val())
-        },
-        {
-            field: "Balance",
-            old: $('#oldBalanceLabel').val(),
-            new: $('#NewBalance').val(),
-            isChanged: () => normalize($('#oldBalanceLabel').val()) !== normalize($('#NewBalance').val())
-        },
-        {
-            field: "Interest",
-            old: $('#oldInterestLabel').val(),
-            new: $('#NewInterest').val(),
-            isChanged: () => normalize($('#oldInterestLabel').val()) !== normalize($('#NewInterest').val())
-        },
-        {
-            field: "VAT",
-            old: $('#oldVatLabel').val(),
-            new: $('#NewVat').val(),
-            isChanged: () => normalize($('#oldVatLabel').val()) !== normalize($('#NewVat').val())
-        },
-        {
-            field: "Penalty",
-            old: $('#oldPenaltyLabel').val(),
-            new: $('#NewPenalty').val(),
-            isChanged: () => normalize($('#oldPenaltyLabel').val()) !== normalize($('#NewPenalty').val())
-        },
-        {
-            field: "Due Amount",
-            old: $('#oldDueAmountLabel').val(),
-            new: $('#newDueAmount').val(),
-            isChanged: () => normalize($('#oldDueAmountLabel').val()) !== normalize($('#newDueAmount').val())
-        },
-        {
-            field: "Interest Rate",
-            old: $('#oldIntRateLabel').val(),
-            new: $('#NewIntRate').val(),
-            isChanged: () => normalize($('#oldIntRateLabel').val()) !== normalize($('#NewIntRate').val())
-        },
-        {
-            field: "VAT Rate",
-            old: $('#oldVatRateLabel').val(),
-            new: $('#NewVatRate').val(),
-            isChanged: () => normalize($('#oldVatRateLabel').val()) !== normalize($('#NewVatRate').val())
-        }
+        { field: "Loan Amount", old: $('#oldLoanAmountLabel').val(), new: $('#NewLoanAmount').val(), isChanged: () => normalize($('#oldLoanAmountLabel').val()) !== normalize($('#NewLoanAmount').val()) },
+        { field: "Balance", old: $('#oldBalanceLabel').val(), new: $('#NewBalance').val(), isChanged: () => normalize($('#oldBalanceLabel').val()) !== normalize($('#NewBalance').val()) },
+        { field: "Interest", old: $('#oldInterestLabel').val(), new: $('#NewInterest').val(), isChanged: () => normalize($('#oldInterestLabel').val()) !== normalize($('#NewInterest').val()) },
+        { field: "VAT", old: $('#oldVatLabel').val(), new: $('#NewVat').val(), isChanged: () => normalize($('#oldVatLabel').val()) !== normalize($('#NewVat').val()) },
+        { field: "Penalty", old: $('#oldPenaltyLabel').val(), new: $('#NewPenalty').val(), isChanged: () => normalize($('#oldPenaltyLabel').val()) !== normalize($('#NewPenalty').val()) },
+        { field: "Due Amount", old: $('#oldDueAmountLabel').val(), new: $('#newDueAmount').val(), isChanged: () => normalize($('#oldDueAmountLabel').val()) !== normalize($('#newDueAmount').val()) },
+        { field: "Interest Rate", old: $('#oldIntRateLabel').val(), new: $('#NewIntRate').val(), isChanged: () => normalize($('#oldIntRateLabel').val()) !== normalize($('#NewIntRate').val()) },
+        { field: "VAT Rate", old: $('#oldVatRateLabel').val(), new: $('#NewVatRate').val(), isChanged: () => normalize($('#oldVatRateLabel').val()) !== normalize($('#NewVatRate').val()) },
+        { field: "Loan Date", old: $('#OldLoanDate').val(), new: $('#NewLoanDate').val(), isChanged: () => $('#OldLoanDate').val() !== $('#NewLoanDate').val() },
+        { field: "Disbursement Date", old: $('#OldDisbursementDate').val(), new: $('#NewDisbursementDate').val(), isChanged: () => $('#OldDisbursementDate').val() !== $('#NewDisbursementDate').val() },
+        { field: "Next Installment Date", old: $('#OldNextInstallmentDate').val(), new: $('#NewNextInstallmentDate').val(), isChanged: () => $('#OldNextInstallmentDate').val() !== $('#NewNextInstallmentDate').val() }
     ];
 
-    // === Validate constraints ===
-    const loanAmount = normalize($('#NewLoanAmount').val());
-    const balance = normalize($('#NewBalance').val());
-    const interest = normalize($('#NewInterest').val());
-
-    if (balance > loanAmount) {
+    // === Constraint Checks ===
+    if (normalize($('#NewBalance').val()) > normalize($('#NewLoanAmount').val())) {
         appalert("❌ Balance must not be greater than Loan Amount.", 2, 1);
         $('#NewBalance').focus();
         return false;
     }
 
-    if (interest > loanAmount) {
+    if (normalize($('#NewInterest').val()) > normalize($('#NewLoanAmount').val())) {
         appalert("❌ Interest must not be greater than Loan Amount.", 2, 1);
         $('#NewInterest').focus();
         return false;
     }
 
-    // === Reason validation continues ===
+    // === Reason Validation ===
     const reasonInput = $('#Reason');
     let reason = reasonInput.val()?.trim() || '';
     const wordCount = reason.split(/\s+/).filter(w => w.length > 0).length;
 
     if (wordCount < 10) {
         const changedFields = values.filter(v => v.isChanged());
-
-        const changedFieldsSummary = changedFields.length > 0
+        const changesSummary = changedFields.length > 0
             ? changedFields.map(v => `${v.field}: ${formatCurrency(v.old)} → ${formatCurrency(v.new)}`).join(', ')
-            : "No significant change detected but manual override requested";
+            : "No significant change detected.";
 
-        const defaultReason = `Requesting manual override for the following changes: ${changedFieldsSummary}. Kindly review and approve accordingly.`;
+        const defaultReason = `Requesting manual override due to the following changes: ${changesSummary}. Kindly approve.`;
 
         alertify.confirm("Incomplete Reason",
             `<p>⚠️ Your reason must contain at least <strong>10 words</strong>.</p>
-         <p>💡 Suggested reason based on detected changes:</p>
-         <div class="border rounded bg-light p-2 mb-2 text-muted">${defaultReason}</div>
-         <p>Would you like to use this reason?</p>`,
+             <p>💡 Suggested reason based on changes:</p>
+             <div class="border bg-light rounded p-2">${defaultReason}</div>
+             <p>Would you like to use this reason?</p>`,
             function () {
                 reasonInput.val(defaultReason);
-                AjaxPostAndUpdateResetLoanValue(form); // Retry
+                AjaxPostAndUpdateResetLoanValue(form); // Retry with updated reason
             },
             function () {
                 appalert('Please enter a more complete reason before continuing.', 2, 1);
             }
-        ).set('labels', { ok: 'Use Suggested Reason', cancel: 'Let Me Edit' });
+        ).set('labels', { ok: 'Use Suggested Reason', cancel: 'Edit It' });
 
         return false;
     }
 
-
+    // === Confirmation Dialog with Summary ===
     let confirmMessage = `
-        ⚠️ <strong>You are about to waive existing loan values and apply manual overrides.</strong><br/><br/>
-        <u>Review the values that will be changed:</u><br/><br/>
+        ⚠️ <strong>You are about to override loan values manually.</strong><br/><br/>
+        <u>Summary of changes:</u><br/><br/>
         <table class="table table-bordered table-sm w-100">
-            <thead><tr><th>Field</th><th>Old</th><th>New</th><th>Changed</th></tr></thead>
-            <tbody>`;
+            <thead><tr><th>Field</th><th>Old</th><th>New</th><th>Changed</th></tr></thead><tbody>`;
 
     for (let v of values) {
         const changed = v.isChanged();
         const icon = changed ? '🔁' : '✅';
         const statusClass = changed ? 'text-warning fw-bold' : 'text-success';
         const newValClass = changed ? 'text-warning fw-bold' : '';
-
-        confirmMessage += `
-            <tr>
-                <td>${v.field}</td>
-                <td>${formatCurrency(v.old)}</td>
-                <td class="${newValClass}">${formatCurrency(v.new)}</td>
-                <td class="${statusClass}">${icon} ${changed ? 'Yes' : 'No'}</td>
-            </tr>`;
+        confirmMessage += `<tr>
+            <td>${v.field}</td>
+            <td>${formatCurrency(v.old)}</td>
+            <td class="${newValClass}">${formatCurrency(v.new)}</td>
+            <td class="${statusClass}">${icon} ${changed ? 'Yes' : 'No'}</td>
+        </tr>`;
     }
 
-    confirmMessage += `
-            </tbody>
-        </table><br/>
-        📝 Ensure all entries are accurate. This action will be <strong>logged</strong> and submitted for approval.<br/><br/>
-        <strong>Do you wish to proceed with the adjustment?</strong>`;
+    confirmMessage += `</tbody></table><br/>
+        📝 Ensure all entries are accurate. This action will be <strong>logged</strong>.<br/><br/>
+        <strong>Do you want to proceed?</strong>`;
 
     alertify.confirm("Confirm Loan Adjustment", confirmMessage,
         function () {
@@ -447,9 +503,7 @@ function AjaxPostAndUpdateResetLoanValue(form) {
                 url: form.action,
                 data: new FormData(form),
                 success: function (response) {
-                    console.log("Response:", response);
                     $btn.prop('disabled', false).html(originalText);
-
                     if (response.success) {
                         appalert(response.message, 1, 1);
                         $('#loanAdjustmentModal').modal('hide');
@@ -458,7 +512,6 @@ function AjaxPostAndUpdateResetLoanValue(form) {
                     }
                 },
                 error: function (err) {
-                    console.log("Error:", err);
                     $btn.prop('disabled', false).html(originalText);
                     if (err.status === 401) {
                         window.location.href = '/Authentication/Login';
@@ -478,9 +531,226 @@ function AjaxPostAndUpdateResetLoanValue(form) {
             $.ajax(ajaxConfig);
         },
         function () {
-            appalert('Transaction cancelled', 3, 1);
+            appalert('Transaction cancelled.', 3, 1);
         }
-    ).set('labels', { ok: 'Yes, Proceed', cancel: 'Cancel' });
+    ).set('labels', { ok: 'Yes, Submit', cancel: 'Cancel' });
 
     return false;
 }
+
+
+//function AjaxPostAndUpdateResetLoanValue(form) {
+//    console.log("Form Action:", form.action);
+//    console.log("Form Method:", form.method);
+
+//    var formData = new FormData(form);
+//    for (var pair of formData.entries()) {
+//        console.log(pair[0] + ', ' + pair[1]);
+//    }
+
+//    $.validator.unobtrusive.parse(form);
+//    if (!$(form).valid()) return false;
+
+//    function normalize(value) {
+//        return parseFloat((value || "0").replace(/,/g, '').trim());
+//    }
+
+//    function formatCurrency(val) {
+//        const num = normalize(val);
+//        return isNaN(num) ? val : num.toLocaleString(undefined, { minimumFractionDigits: 0 });
+//    }
+
+//    const values = [
+//        {
+//            field: "Loan Amount",
+//            old: $('#oldLoanAmountLabel').val(),
+//            new: $('#NewLoanAmount').val(),
+//            isChanged: () => normalize($('#oldLoanAmountLabel').val()) !== normalize($('#NewLoanAmount').val())
+//        },
+//        {
+//            field: "Balance",
+//            old: $('#oldBalanceLabel').val(),
+//            new: $('#NewBalance').val(),
+//            isChanged: () => normalize($('#oldBalanceLabel').val()) !== normalize($('#NewBalance').val())
+//        },
+//        {
+//            field: "Interest",
+//            old: $('#oldInterestLabel').val(),
+//            new: $('#NewInterest').val(),
+//            isChanged: () => normalize($('#oldInterestLabel').val()) !== normalize($('#NewInterest').val())
+//        },
+//        {
+//            field: "VAT",
+//            old: $('#oldVatLabel').val(),
+//            new: $('#NewVat').val(),
+//            isChanged: () => normalize($('#oldVatLabel').val()) !== normalize($('#NewVat').val())
+//        },
+//        {
+//            field: "Penalty",
+//            old: $('#oldPenaltyLabel').val(),
+//            new: $('#NewPenalty').val(),
+//            isChanged: () => normalize($('#oldPenaltyLabel').val()) !== normalize($('#NewPenalty').val())
+//        },
+//        {
+//            field: "Due Amount",
+//            old: $('#oldDueAmountLabel').val(),
+//            new: $('#newDueAmount').val(),
+//            isChanged: () => normalize($('#oldDueAmountLabel').val()) !== normalize($('#newDueAmount').val())
+//        },
+//        {
+//            field: "Interest Rate",
+//            old: $('#oldIntRateLabel').val(),
+//            new: $('#NewIntRate').val(),
+//            isChanged: () => normalize($('#oldIntRateLabel').val()) !== normalize($('#NewIntRate').val())
+//        },
+//        {
+//            field: "VAT Rate",
+//            old: $('#oldVatRateLabel').val(),
+//            new: $('#NewVatRate').val(),
+//            isChanged: () => normalize($('#oldVatRateLabel').val()) !== normalize($('#NewVatRate').val())
+//        },
+//        {
+//            field: "Loan Date",
+//            old: $('#OldLoanDate').val(),
+//            new: $('#NewLoanDate').val(),
+//            isChanged: () => normalize($('#OldLoanDate').val()) !== normalize($('#NewLoanDate').val())
+//        },
+//        {
+//            field: "Disbursement Date",
+//            old: $('#OldDisbursementDate').val(),
+//            new: $('#NewDisbursementDate').val(),
+//            isChanged: () => normalize($('#OldDisbursementDate').val()) !== normalize($('#NewDisbursementDate').val())
+//        },
+//        {
+//            field: "Next Installment Date",
+//            old: $('#OldNextInstallmentDate').val(),
+//            new: $('#NewNextInstallmentDate').val(),
+//            isChanged: () => normalize($('#OldNextInstallmentDate').val()) !== normalize($('#NewNextInstallmentDate').val())
+//        }
+//    ];
+
+//    // === Validate constraints ===
+//    const loanAmount = normalize($('#NewLoanAmount').val());
+//    const balance = normalize($('#NewBalance').val());
+//    const interest = normalize($('#NewInterest').val());
+
+//    if (balance > loanAmount) {
+//        appalert("❌ Balance must not be greater than Loan Amount.", 2, 1);
+//        $('#NewBalance').focus();
+//        return false;
+//    }
+
+//    if (interest > loanAmount) {
+//        appalert("❌ Interest must not be greater than Loan Amount.", 2, 1);
+//        $('#NewInterest').focus();
+//        return false;
+//    }
+
+//    // === Reason validation continues ===
+//    const reasonInput = $('#Reason');
+//    let reason = reasonInput.val()?.trim() || '';
+//    const wordCount = reason.split(/\s+/).filter(w => w.length > 0).length;
+
+//    if (wordCount < 10) {
+//        const changedFields = values.filter(v => v.isChanged());
+
+//        const changedFieldsSummary = changedFields.length > 0
+//            ? changedFields.map(v => `${v.field}: ${formatCurrency(v.old)} → ${formatCurrency(v.new)}`).join(', ')
+//            : "No significant change detected but manual override requested";
+
+//        const defaultReason = `Requesting manual override for the following changes: ${changedFieldsSummary}. Kindly review and approve accordingly.`;
+
+//        alertify.confirm("Incomplete Reason",
+//            `<p>⚠️ Your reason must contain at least <strong>10 words</strong>.</p>
+//         <p>💡 Suggested reason based on detected changes:</p>
+//         <div class="border rounded bg-light p-2 mb-2 text-muted">${defaultReason}</div>
+//         <p>Would you like to use this reason?</p>`,
+//            function () {
+//                reasonInput.val(defaultReason);
+//                AjaxPostAndUpdateResetLoanValue(form); // Retry
+//            },
+//            function () {
+//                appalert('Please enter a more complete reason before continuing.', 2, 1);
+//            }
+//        ).set('labels', { ok: 'Use Suggested Reason', cancel: 'Let Me Edit' });
+
+//        return false;
+//    }
+
+
+//    let confirmMessage = `
+//        ⚠️ <strong>You are about to waive existing loan values and apply manual overrides.</strong><br/><br/>
+//        <u>Review the values that will be changed:</u><br/><br/>
+//        <table class="table table-bordered table-sm w-100">
+//            <thead><tr><th>Field</th><th>Old</th><th>New</th><th>Changed</th></tr></thead>
+//            <tbody>`;
+
+//    for (let v of values) {
+//        const changed = v.isChanged();
+//        const icon = changed ? '🔁' : '✅';
+//        const statusClass = changed ? 'text-warning fw-bold' : 'text-success';
+//        const newValClass = changed ? 'text-warning fw-bold' : '';
+
+//        confirmMessage += `
+//            <tr>
+//                <td>${v.field}</td>
+//                <td>${formatCurrency(v.old)}</td>
+//                <td class="${newValClass}">${formatCurrency(v.new)}</td>
+//                <td class="${statusClass}">${icon} ${changed ? 'Yes' : 'No'}</td>
+//            </tr>`;
+//    }
+
+//    confirmMessage += `
+//            </tbody>
+//        </table><br/>
+//        📝 Ensure all entries are accurate. This action will be <strong>logged</strong> and submitted for approval.<br/><br/>
+//        <strong>Do you wish to proceed with the adjustment?</strong>`;
+
+//    alertify.confirm("Confirm Loan Adjustment", confirmMessage,
+//        function () {
+//            const $btn = $('#submitRequestBtn');
+//            const originalText = $btn.html();
+//            $btn.prop('disabled', true).html(`<span class="spinner-border spinner-border-sm me-1"></span> Processing...`);
+
+//            const ajaxConfig = {
+//                type: 'POST',
+//                url: form.action,
+//                data: new FormData(form),
+//                success: function (response) {
+//                    console.log("Response:", response);
+//                    $btn.prop('disabled', false).html(originalText);
+
+//                    if (response.success) {
+//                        appalert(response.message, 1, 1);
+//                        $('#loanAdjustmentModal').modal('hide');
+//                    } else {
+//                        appalert(response.message, 2, 1);
+//                    }
+//                },
+//                error: function (err) {
+//                    console.log("Error:", err);
+//                    $btn.prop('disabled', false).html(originalText);
+//                    if (err.status === 401) {
+//                        window.location.href = '/Authentication/Login';
+//                    } else {
+//                        appalert(err.statusText, 0, 1);
+//                    }
+//                },
+//                contentType: false,
+//                processData: false
+//            };
+
+//            if ($(form).attr('enctype') !== "multipart/form-data") {
+//                delete ajaxConfig.contentType;
+//                delete ajaxConfig.processData;
+//            }
+
+//            $.ajax(ajaxConfig);
+//        },
+//        function () {
+//            appalert('Transaction cancelled', 3, 1);
+//        }
+//    ).set('labels', { ok: 'Yes, Proceed', cancel: 'Cancel' });
+
+//    return false;
+//}

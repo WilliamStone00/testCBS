@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.DataTable;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Web.UI.WebControls;
 
 namespace CBS.FrontDesk.Data.Entity.SalaryManagement
 {
+
     public class GetAllSalaryExtractQuery
     {
         public string FileUploadId { get; set; }
@@ -42,13 +44,35 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         public HttpPostedFileBase File { get; set; }
         public string UploadFileId { get; set; }
     }
-    public class ExecuteSalaryCommand
+
+    public sealed class ExecuteSalaryCommand
     {
         [Required(ErrorMessage = "FileUploadId is required.")]
-        public string FileUploadId { get; set; }//Normal, LoanFeePayment, Disbursment, LoanRepayment
-        [Required(ErrorMessage = "Member Reference Number is required.")]
-        public string MemberReferenceNumber { get; set; }
+        public string FileUploadId { get; set; }
+
+        [Required(ErrorMessage = "Execution reason is required.")]
+        [MinLength(10, ErrorMessage = "Execution reason must be at least 10 characters.")]
+        [MaxLength(1000, ErrorMessage = "Execution reason is too long.")]
+        public string ExecutionReason { get; set; }
+
+        [RequiredTrue(ErrorMessage = "You must acknowledge that this operation is irreversible.")]
+        public bool AckIrreversible { get; set; }
+
+        [RequiredTrue(ErrorMessage = "You must confirm this is the exact file you just analysed.")]
+        public bool AckFileConfirmed { get; set; }
+
+        [Required(ErrorMessage = "You must type EXECUTE to confirm.")]
+        [RegularExpression(@"^EXECUTE$", ErrorMessage = "Type EXECUTE to confirm.")]
+        public string ConfirmPhrase { get; set; }
     }
+
+    [System.AttributeUsage(System.AttributeTargets.Property, AllowMultiple = false)]
+    public sealed class RequiredTrueAttribute : ValidationAttribute
+    {
+        public RequiredTrueAttribute() : base("The {0} field must be accepted.") { }
+        public override bool IsValid(object value) => value is bool b && b;
+    }
+
     public class SalaryExtractDto
     {
         public string Id { get; set; }

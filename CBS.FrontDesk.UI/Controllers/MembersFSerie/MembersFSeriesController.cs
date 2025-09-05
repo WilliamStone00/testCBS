@@ -16,10 +16,12 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.BusinessService.Repayment;
 
 namespace CBS.FrontDesk.UI.Controllers.Series
 {
-    [CheckSessionTimeOutAttribute]
+    //[CheckSessionTimeOutAttribute]
 
     public class MembersFSeriesController : BaseController
     {
@@ -27,16 +29,18 @@ namespace CBS.FrontDesk.UI.Controllers.Series
         private readonly CashDeskServices _cashDeskService;
         private readonly AccountServices _accountServices;
         private readonly LoanServices _loanServices;
+        private readonly RefundServices _refundServices;
 
         private readonly IndividualProfileServices _individualProfileServices;
         private readonly BranchServices _branchServices;
-        public MembersFSeriesController(CashDeskServices cashDeskService, AccountServices accountServices = null, IndividualProfileServices individualProfileServices = null, BranchServices branchServices = null, LoanServices loanServices = null)
+        public MembersFSeriesController(CashDeskServices cashDeskService, AccountServices accountServices = null, IndividualProfileServices individualProfileServices = null, BranchServices branchServices = null, LoanServices loanServices = null, RefundServices refundServices = null)
         {
             _cashDeskService = cashDeskService;
             _accountServices = accountServices;
             _individualProfileServices = individualProfileServices;
             _branchServices = branchServices;
             _loanServices=loanServices;
+            _refundServices=refundServices;
         }
         public async Task<ActionResult> Index()
         {
@@ -130,7 +134,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                     }
                     return PartialView(partialView, cashDesk);
 
-                    
+
                 }
                 else if (path == "print_by_date")
                 {
@@ -144,7 +148,7 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                         ViewBag.message = "Empty data was submited. Please enter search criterial";
                         return PartialView("_DataNotFound", new CashDesk());
                     }
-                    var cashDesk = await _cashDeskService.GetAccountByAccountNumberSearch(KEY,"F5");
+                    var cashDesk = await _cashDeskService.GetAccountByAccountNumberSearch(KEY, "F5");
                     if (cashDesk == null)
                     {
 
@@ -184,8 +188,8 @@ namespace CBS.FrontDesk.UI.Controllers.Series
                 return PartialView("_NoRecordFound", new CashDesk());
             }
         }
-     
-            [HttpPost]
+
+        [HttpPost]
         public async Task<ActionResult> GetReport(string rptType = null, string ReportName = null, string serviceoption = null, string reportpath = null, string fileTitle = null, string ReadOptions = null, string KEY = null, string path = null, string yearID = null, string datefrom = null, string dateto = null)
         {
             try
@@ -294,11 +298,159 @@ namespace CBS.FrontDesk.UI.Controllers.Series
         public async Task<ActionResult> LoanDetailsPartial(string loanId)
         {
             var loan = await _loanServices.GetLoan(loanId); // Include all accounts + loans
-            var cashDesk = new CashDesk { CustomerId=loan.CustomerId, Loan=loan,Refunds=loan.Refunds };
+            var cashDesk = new CashDesk { CustomerId=loan.CustomerId, Loan=loan, Refunds=loan.Refunds };
             if (loan == null)
                 return PartialView("_LoanNotFound");
             ViewBag.SelectedLoan = loan;
             return PartialView("_LoanDetailsModalPartial", cashDesk);
+        }
+        // e.g., MembersController (or LoanController) 
+        [HttpGet]
+        public async Task<ActionResult> MemberRefundsPartial(string customerId, DateTime? dateFrom, DateTime? dateTo)
+        {
+            if (string.IsNullOrWhiteSpace(customerId))
+                return PartialView("_MemberLoanRefunds", Enumerable.Empty<Refund>());
+            var refunds = await _refundServices
+                .GetRefundsByCustomerId(customerId, true, null, dateFrom, dateTo);
+            var cashDesk = new CashDesk { CustomerId=customerId, Refunds=refunds };
+            return PartialView("_MemberLoanRefunds", cashDesk);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> RefundDetailsPartial(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return new HttpStatusCodeResult(400, "Missing refund id.");
+
+            var refund = await _refundServices.GetRefundById(id);
+            if (refund == null) return HttpNotFound("Refund not found.");
+
+            // Ensure navigations exist (adjust if your service already eager-loads)
+            refund.RefundDetails     = refund.RefundDetails     ?? new List<RefundDetail>();
+            refund.LoanAmortizations = refund.LoanAmortizations ?? new List<LoanAmortization>();
+            var loan = refund.Loan;
+
+            // Prefer refund’s lists, fall back to loan’s
+            var amortList = (refund.LoanAmortizations?.Any() == true ? refund.LoanAmortizations
+                             : loan?.LoanAmortizations) ?? new List<LoanAmortization>();
+            var details = refund.RefundDetails ?? new List<RefundDetail>();
+
+            // Header allocation
+            var allocPrincipal = refund.Principal;
+            var allocInterest = refund.Interest;
+            var allocTax = refund.Tax;
+            var allocPenalty = refund.Penalty;
+            var allocTotal = allocPrincipal + allocInterest + allocTax + allocPenalty;
+
+            // Detail totals
+            var detCollected = details.Sum(d => d.CollectedAmount);
+            var detPrin = details.Sum(d => d.PrincipalAmount);
+            var detInt = details.Sum(d => d.Interest);
+            var detTax = details.Sum(d => d.TaxAmount);
+            var detPen = details.Sum(d => d.PenaltyAmount);
+            var detBal = details.Sum(d => d.Balance);
+
+            // Loan summary (guards)
+            string loanStatus = loan?.LoanStatus ?? "N/A";
+            string loanId = loan?.Id ?? refund.LoanId ?? "N/A";
+            decimal loanAmount = loan?.LoanAmount ?? 0m;
+            decimal loanPaid = loan?.Paid ?? 0m;
+            decimal loanBalance = loan?.Balance ?? refund.Balance;
+            decimal loanDue = loan?.DueAmount ?? 0m;
+            decimal loanRate = loan?.InterestRate ?? 0m;
+            DateTime? loanDate = loan?.LoanDate;
+            DateTime? lastRefDt = loan?.LastRefundDate;
+
+            // Amort summary
+            int totalInst = amortList.Count;
+            int completedInst = amortList.Count(a => a.IsCompleted);
+            int overdueInst = amortList.Count(a => a.PreviousInstallmentDue ||
+                                          string.Equals(a.Status, "Overdue", StringComparison.OrdinalIgnoreCase));
+            decimal dueSum = amortList.Sum(a => a.Due);
+            decimal paidSum = amortList.Sum(a => a.Paid);
+            decimal balSum = amortList.Sum(a => a.Balance);
+            DateTime? nextDue = amortList
+                .Where(a => a.Due > 0 && !a.IsCompleted)
+                .OrderBy(a => a.NextPaymentDate == default ? DateTime.MaxValue : a.NextPaymentDate)
+                .Select(a => a.NextPaymentDate == default ? (DateTime?)null : a.NextPaymentDate)
+                .FirstOrDefault();
+
+            string RefundBadge() =>
+                refund.IsReversal ? "badge bg-danger"
+              : (refund.IsCompleted || refund.IsComplete) ? "badge bg-success"
+              : "badge bg-warning text-dark";
+
+            string LoanBadge(string s)
+            {
+                s = (s ?? string.Empty).ToLowerInvariant();
+                switch (s)
+                {
+                    case "pending": return "badge bg-warning text-dark";
+                    case "open":
+                    case "disbursed": return "badge bg-primary";
+                    case "rejected": return "badge bg-danger";
+                    case "refinanced": return "badge bg-info text-dark";
+                    case "rescheduled": return "badge bg-dark";
+                    case "restructured": return "badge bg-secondary text-white";
+                    default: return "badge bg-secondary";
+                }
+            }
+
+            var vm = new RefundDetailsVM
+            {
+                Refund = refund,
+                Loan   = loan,
+
+                ProductName = refund.LoanProduct?.ProductName ?? refund.LoanProduct?.ProductName,
+                LoanId      = loanId,
+                LoanStatus  = loanStatus,
+                RefundStatusBadgeClass = RefundBadge(),
+                LoanStatusBadgeClass   = LoanBadge(loanStatus),
+
+                LoanAmount   = loanAmount,
+                LoanPaid     = loanPaid,
+                LoanBalance  = loanBalance,
+                LoanDueAmount= loanDue,
+                LoanRate     = loanRate,
+                LoanDate     = loanDate,
+                LastRefundDate = lastRefDt,
+
+                RefundDetails = details,
+                Amortizations = amortList,
+
+                AllocPrincipal = allocPrincipal,
+                AllocInterest  = allocInterest,
+                AllocTax       = allocTax,
+                AllocPenalty   = allocPenalty,
+                AllocTotal     = allocTotal,
+                AllocationsConsistent = (refund.Amount == refund.Paid) && Math.Abs(refund.Amount - allocTotal) <= 0.5m,
+
+                DetailCollected = detCollected,
+                DetailPrincipal = detPrin,
+                DetailInterest  = detInt,
+                DetailTax       = detTax,
+                DetailPenalty   = detPen,
+                DetailBalance   = detBal,
+
+                TotalInstallments     = totalInst,
+                CompletedInstallments = completedInst,
+                OverdueInstallments   = overdueInst,
+                AmortDueSum           = dueSum,
+                AmortPaidSum          = paidSum,
+                AmortBalanceSum       = balSum,
+                NextDueDate           = nextDue
+            };
+
+            // Attach VM to CashDesk
+            var cashDesk = new CashDesk
+            {
+                CustomerId = refund.CustomerId,
+                Refund     = refund,
+                Loan       = loan,
+                RefundVM   = vm
+            };
+
+            return PartialView("_RefundDetails", cashDesk);
         }
 
 

@@ -83,30 +83,44 @@ function loadAdjustmentRequests() {
                 <i class="mdi mdi-eye-outline"></i>
             </button>
 
-            ${status !== 'approved' ? `
-                <button type="button"
-                    class="btn btn-sm btn-outline-success"
-                    title="Approve Request"
-                    data-id="${row.Id}"
-                    data-old-loan="${row.OldLoanAmount}"
-                    data-new-loan="${row.NewLoanAmount}"
-                    data-old-balance="${row.OldBalance}"
-                    data-new-balance="${row.NewBalance}"
-                    data-old-interest="${row.OldInterest}"
-                    data-new-interest="${row.NewInterest}"
-                    data-old-vat="${row.OldVat}"
-                    data-new-vat="${row.NewVat}"
-                    data-old-penalty="${row.OldPenalty}"
-                    data-new-penalty="${row.NewPenalty}"
-                    data-old-int-rate="${row.OldIntRate}"
-                    data-new-int-rate="${row.NewIntRate}"
-                    data-old-vat-rate="${row.OldVatRate}"
-                    data-new-vat-rate="${row.NewVatRate}"
-                    data-old-due="${row.OldDueAmount}"
-                    data-new-due="${row.NewDueAmount}"
-                    onclick="approveRequest(this)">
-                    <i class="mdi mdi-check-circle-outline"></i>
-                </button>` : ''}
+${status !== 'approved' ? `
+    <button type="button"
+        class="btn btn-sm btn-outline-success"
+        title="Approve Request"
+        data-id="${row.Id}"
+        data-old-loan="${row.OldLoanAmount}"
+        data-new-loan="${row.NewLoanAmount}"
+        data-old-balance="${row.OldBalance}"
+        data-new-balance="${row.NewBalance}"
+        data-old-interest="${row.OldInterest}"
+        data-new-interest="${row.NewInterest}"
+        data-old-vat="${row.OldVat}"
+        data-new-vat="${row.NewVat}"
+        data-old-penalty="${row.OldPenalty}"
+        data-new-penalty="${row.NewPenalty}"
+        data-old-int-rate="${row.OldIntRate}"
+        data-new-int-rate="${row.NewIntRate}"
+        data-old-vat-rate="${row.OldVatRate}"
+        data-new-vat-rate="${row.NewVatRate}"
+        data-old-due="${row.OldDueAmount}"
+        data-new-due="${row.NewDueAmount}"
+
+        data-old-paid="${row.OldTotalPrincipalPaid}"
+        data-new-paid="${row.NewTotalPrincipalPaid}"
+
+        data-old-loan-date="${row.OldLoanDate || ''}"
+        data-new-loan-date="${row.NewLoanDate || ''}"
+        data-old-disbursement-date="${row.OldDisbursementDate || ''}"
+        data-new-disbursement-date="${row.NewDisbursementDate || ''}"
+        data-old-next-installment-date="${row.OldNextInstallmentDate || ''}"
+        data-new-next-installment-date="${row.NewNextInstallmentDate || ''}"
+
+        data-old-loan-status="${row.OldLoanStatus || ''}"
+        data-new-loan-status="${row.NewLoanStatus || ''}"
+
+        onclick="approveRequest(this)">
+        <i class="mdi mdi-check-circle-outline"></i>
+    </button>` : ''}
 
             <button type="button"
                 class="btn btn-sm btn-outline-danger"
@@ -184,6 +198,12 @@ function approveRequest(button) {
     const $btn = $(button);
     const id = $btn.data("id");
 
+    const isDateMeaningful = (val) => {
+        if (!val || val.trim() === '') return false;
+        const dt = val.trim();
+        return dt !== "/Date(-62135596800000)/" && dt !== "0001-01-01T00:00:00"; // for ISO fallback
+    };
+
     const fields = [
         { label: "Loan Amount", old: $btn.data("old-loan"), new: $btn.data("new-loan") },
         { label: "Balance", old: $btn.data("old-balance"), new: $btn.data("new-balance") },
@@ -192,25 +212,62 @@ function approveRequest(button) {
         { label: "Penalty", old: $btn.data("old-penalty"), new: $btn.data("new-penalty") },
         { label: "Interest Rate (%)", old: $btn.data("old-int-rate"), new: $btn.data("new-int-rate") },
         { label: "VAT Rate (%)", old: $btn.data("old-vat-rate"), new: $btn.data("new-vat-rate") },
-        { label: "Due Amount", old: $btn.data("old-due"), new: $btn.data("new-due") }
+        { label: "Due Amount", old: $btn.data("old-due"), new: $btn.data("new-due") },
+        { label: "Total Principal Paid", old: $btn.data("old-paid"), new: $btn.data("new-paid") },
+
+        // 🟡 Date fields – only compare if NEW value is meaningful
+        {
+            label: "Loan Date",
+            old: $btn.data("old-loan-date"),
+            new: $btn.data("new-loan-date"),
+            isChanged: function () {
+                return isDateMeaningful(this.new) && this.old !== this.new;
+            }
+        },
+        {
+            label: "Disbursement Date",
+            old: $btn.data("old-disbursement-date"),
+            new: $btn.data("new-disbursement-date"),
+            isChanged: function () {
+                return isDateMeaningful(this.new) && this.old !== this.new;
+            }
+        },
+        {
+            label: "Next Installment Date",
+            old: $btn.data("old-next-installment-date"),
+            new: $btn.data("new-next-installment-date"),
+            isChanged: function () {
+                return isDateMeaningful(this.new) && this.old !== this.new;
+            }
+        },
+
+        // Loan Status
+        {
+            label: "Loan Status",
+            old: $btn.data("old-loan-status"),
+            new: $btn.data("new-loan-status")
+        }
     ];
 
-    const changedFields = fields.filter(f =>
-        f.old !== undefined && f.new !== undefined &&
-        parseFloat(f.old) !== parseFloat(f.new)
-    );
+    const changedFields = fields.filter(f => {
+        const oldVal = f.old?.toString().trim();
+        const newVal = f.new?.toString().trim();
+        if (typeof f.isChanged === 'function') {
+            return f.isChanged();
+        }
+        return oldVal !== undefined && newVal !== undefined && oldVal !== newVal;
+    });
 
     if (changedFields.length === 0) {
         appAlertInfo("No changes detected between original and proposed values.");
         return;
     }
 
-    // Build summary table
     const tableRows = changedFields.map(f => `
         <tr>
             <td>${f.label}</td>
-            <td class="text-danger">${parseFloat(f.old).toLocaleString()}</td>
-            <td class="text-success fw-bold">${parseFloat(f.new).toLocaleString()}</td>
+            <td class="text-danger">${f.old || '-'}</td>
+            <td class="text-success fw-bold">${f.new || '-'}</td>
         </tr>
     `).join('');
 
@@ -310,6 +367,7 @@ function formatDate(dateStr, isStart) {
     }
     return date.toISOString();
 }
+
 
 // 💰 Format Number
 function formatCurrency(data) {

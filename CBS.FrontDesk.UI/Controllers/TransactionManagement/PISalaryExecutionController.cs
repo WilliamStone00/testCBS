@@ -12,7 +12,7 @@ using System.Web.UI.WebControls;
 
 namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 {
-    [CheckSessionTimeOutAttribute]
+    //[CheckSessionTimeOutAttribute]
     public class PISalaryExecutionController : BaseController
     {
         // GET: SalaryExecutionServices
@@ -92,11 +92,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         {
             try
             {
-                // ✅ Ensure command is valid
-                if (command == null || string.IsNullOrEmpty(command.FileUploadId) || string.IsNullOrEmpty(command.MemberReferenceNumber))
-                {
-                    return Json(new { success = false, message = "Invalid request data." });
-                }
+                
 
                 // 🚀 Process salary execution
                 var data = await _salaryExecutionServices.ExecuteSalary(command);

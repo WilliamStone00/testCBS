@@ -743,6 +743,7 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<List<TransactionHistory>>>(string.Format(APICallHelper.GetTransactionHistoryByAccountNumber, accountNumber));
+
                 return cusResponseObject.ApiResponseData.Data;
             }
             catch (Exception ex)
@@ -932,26 +933,19 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
+                // Ensure transactions are ordered oldest → newest
+                transactions = transactions.OrderBy(t => t.CreatedDate).ToList();
+
+                decimal openingBalance = transactions.FirstOrDefault()?.PreviousBalance ?? 0;
                 List<TransactionReportDS> reports = new List<TransactionReportDS>();
-                List<TransactionReportDS> results = new List<TransactionReportDS>();
-                decimal openingBalance = transactions.OrderBy(t => t.CreatedDate).ToList().FirstOrDefault()?.PreviousBalance ?? 0;
-                //decimal closingBalance = openingBalance;
 
                 foreach (TransactionHistory t in transactions)
                 {
-                    if (t.currencyNotes == null)
-                    {
-                        t.currencyNote = new CurrencyNotes();
-                    }
-                    else
-                    {
-                        t.currencyNote = CurrencyMapper.MapToCurrencyNotesRequest(t.currencyNotes);
-                    }
+                    t.currencyNote = t.currencyNotes == null
+                        ? new CurrencyNotes()
+                        : CurrencyMapper.MapToCurrencyNotesRequest(t.currencyNotes);
 
-
-                    //closingBalance += t.Credit - t.Debit;
-
-                    TransactionReportDS rpt = new TransactionReportDS
+                    var rpt = new TransactionReportDS
                     {
                         AccountNumber = t.AccountNumber,
                         AccountType = t.Account.AccountType,
@@ -969,7 +963,6 @@ namespace CBS.BusinessService.Accounts
                         Coin200 = t.currencyNote.coin200,
                         Coin250 = t.currencyNote.coin250,
                         Coin350 = t.currencyNote.coin350,
-
                         OriginalDepositAmount = t.OriginalDepositAmount,
                         HeadOfficeAddress = b.Bank.Address,
                         HeadOfficeInitial = b.Bank.BankInitial,
@@ -989,7 +982,7 @@ namespace CBS.BusinessService.Accounts
                         Charges = t.Fee,
                         Debit = t.Debit,
                         Balance = t.Balance,
-                        CustomerName = c.FirstName + " " + c.LastName,
+                        CustomerName = $"{c.FirstName} {c.LastName}",
                         Fee = t.Fee,
                         Note = t.Note,
                         OperationType = t.OperationType,
@@ -1023,17 +1016,17 @@ namespace CBS.BusinessService.Accounts
                         SourceType = t.SourceType,
                         Status = t.Status,
                         OpeningBalance = openingBalance,
-                        ClosingBalance = t.Account.Balance,
+                        ClosingBalance = t.Account.Balance
                     };
 
                     reports.Add(rpt);
                 }
-                results = reports.OrderBy(t => t.TransactionDate).ToList();
-                return results;
+
+                return reports; // already in order
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw; // don’t rethrow ex; use just `throw` to preserve stack trace
             }
         }
 

@@ -4,6 +4,7 @@ using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.AccountingDayObject;
 using CBS.FrontDesk.Data.Entity.CashCeilingManagement;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
@@ -75,6 +76,7 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
+
         public async Task<ExecutionMessages> UpdateFileStatus(ActivateSalaryFileCommand model)
         {
             try
@@ -140,6 +142,7 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
+       
         public async Task<IEnumerable<SalaryUploadModel>> GetSalaryUploads(string FileUploadId)
         {
             try
@@ -193,12 +196,12 @@ namespace CBS.BusinessService.Accounts
             {
                 List<StringValues> stringValues;
 
-                var fileUploads = await GetUploadDtosAsyncByStatus(allFileUploadSalaryFileActivatedQuery, path);
+                var fileUploads = await GetUploadForAnalysis(allFileUploadSalaryFileActivatedQuery, path);
                     stringValues = (from a in fileUploads
                                     
                                     select new StringValues
                                     {
-                                        Text = $"[Salary Code: {a.FileCode}] [Execution State: {a.FileCategory}] [Name: {a.FileName}]",
+                                        Text = $"[Code: {a.FileUploadId}] [Name: {a.FileName}] [Type: {a.FileType}] [Date: {a.UploadedOn.ToString("MMM/yyy")}]",
                                         Value = $"{a.Id}",
                                     }).ToList();
                 return stringValues;
@@ -210,7 +213,9 @@ namespace CBS.BusinessService.Accounts
             }
         }
 
-        public async Task<IEnumerable<FileUploadDto>> GetUploadDtosAsyncByStatus(GetAllFileUploadSalaryFileActivatedQuery query, string path)
+        public async Task<IEnumerable<FileUploadDto>> GetUploadDtosAsyncByStatus(
+            GetAllFileUploadSalaryFileActivatedQuery query,
+            string path)
         {
             try
             {
@@ -222,43 +227,129 @@ namespace CBS.BusinessService.Accounts
                     return Enumerable.Empty<FileUploadDto>();
 
                 var data = response.ApiResponseData.Data;
+                var isHeadOffice = IsHeadOffice();
 
-                // Normalize path
-                path = path?.ToLowerInvariant();
+                // Head Office: see all files
+                if (isHeadOffice) return data;
 
-                // Filter by file type
-                if (path == "cs_salary")
-                {
-                    data = data.Where(x => x.FileType?.ToLower().Contains("civil") == true).ToList();
+                // Branch users: see only files uploaded by *their* branch
+                var myBranchId = GetBranchID();
+                if (string.IsNullOrWhiteSpace(myBranchId))
+                    return Enumerable.Empty<FileUploadDto>();
 
-                    // ❌ No branch filtering for cs_salary
-                    return data;
-                }
-                else if (path == "ps_salary" || path == "pi_salary")
-                {
-                    data = data.Where(x => x.FileType?.ToLower().Contains("private") == true).ToList();
-
-                    // ✅ Filter by branch if not head office
-                    if (!IsHeadOffice())
-                    {
-                        var branchId = GetBranchID();
-                        data = data.Where(x => x.BranchId == branchId).ToList();
-                    }
-
-                    return data;
-                }
-               // BranchCode, Acc Number, Names, GSalary
-                // Fallback case — no filtering
-                return data;
+                return data.Where(f =>
+                    !string.IsNullOrWhiteSpace(f.BranchId) &&
+                    f.BranchId.Equals(myBranchId, StringComparison.OrdinalIgnoreCase));
             }
-            catch (Exception ex)
+            catch
             {
-                // Optionally log the exception
                 throw;
             }
         }
 
+        public async Task<IEnumerable<FileUploadDto>> GetUploadForAnalysis(
+    GetAllFileUploadSalaryFileActivatedQuery query,
+    string path)
+        {
+            try
+            {
+                // Build URL and call API
+                var queryString = ToQueryString(query);
+                var fullUrl = $"{APICallHelper.GetAllSalaryUploadByFileBaseOnStatus}?{queryString}";
+                var response = await _transactionApiHelper.GetAsync<ResponseObject<List<FileUploadDto>>>(fullUrl);
 
+                // Nothing returned from API
+                if (response?.ApiResponseData?.Data == null)
+                    return Enumerable.Empty<FileUploadDto>();
+
+                var data = response.ApiResponseData.Data;
+
+                // If you're at Head Office, show EVERYTHING
+                var isHeadOffice = IsHeadOffice();
+                if (isHeadOffice)
+                    return data;
+
+                // Otherwise, apply branch/private/activation visibility rules
+                var myBranchId = GetBranchID() ?? string.Empty;
+
+                var visible = data.Where(f =>
+                {
+                    // Always allow own-branch uploads (private or public, activated or not)
+                    var isOwnBranch = !string.IsNullOrWhiteSpace(f.BranchId) &&
+                                      f.BranchId.Equals(myBranchId, StringComparison.OrdinalIgnoreCase);
+
+                    if (isOwnBranch)
+                        return true;
+
+                    // For other branches: must be public (not private) AND activated
+                    var isPublicAndActivated = !f.PrivateView && f.IsAvalaibleForExecution;
+
+                    return isPublicAndActivated;
+                });
+
+                return visible;
+            }
+            catch
+            {
+                // You can log here if needed
+                throw;
+            }
+        }
+
+        public List<FileUploadDto> GetUploadForAnalysis(List<FileUploadDto> fileUploads)
+        {
+            try
+            {
+                // Build URL and call API
+
+                 fileUploads = fileUploads.Where(x => x.FileType!="Analysis").ToList();
+                // If you're at Head Office, show EVERYTHING
+                var isHeadOffice = IsHeadOffice();
+                if (isHeadOffice)
+                    return fileUploads;
+
+                // Otherwise, apply branch/private/activation visibility rules
+                var myBranchId = GetBranchID() ?? string.Empty;
+
+                var visible = fileUploads.Where(f =>
+                {
+                    // Always allow own-branch uploads (private or public, activated or not)
+                    var isOwnBranch = !string.IsNullOrWhiteSpace(f.BranchId) && f.BranchId.Equals(myBranchId, StringComparison.OrdinalIgnoreCase);
+
+                    if (isOwnBranch)
+                        return true;
+
+                    // For other branches: must be public (not private) AND activated
+                    var isPublicAndActivated = !f.PrivateView && f.IsAvalaibleForExecution;
+
+                    return isPublicAndActivated;
+                });
+
+                return visible.ToList();
+            }
+            catch
+            {
+                // You can log here if needed
+                throw;
+            }
+        }
+        public List<FileUploadDto> GetFileUploads(List<FileUploadDto> fileUploads)
+        {
+            try
+            {
+                var data = fileUploads.Where(x=>x.FileCategory=="SalaryAnalysisExtract").ToList();
+                if (!IsHeadOffice())
+                {
+                    return data.Where(x=>x.BranchId==GetBranchID()).ToList();
+                }
+                return data;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
         public async Task<FileUploadDto> GetFileUpload(string fileId)
         {
             try
@@ -277,38 +368,74 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-
         public async Task<ExecutionMessages> UploadFile(AddSalaryUploadModelCommand model)
         {
             try
             {
-               
-                var response = await _transactionApiHelper.UploadSalaryFileAsync<ServiceResponse<SalaryUploadModelSummaryDto>>(model.File, model.SalaryType, APICallHelper.CreateSalaryUpload);
+                var fields = new Dictionary<string, string>
+                {
+                    ["SalaryType"] = model.SalaryType,
+                    ["BranchId"] = model.BranchId,
+                    ["StandingOrderSourceChartOfAccountId"] = model.StandingOrderSourceChartOfAccountId ?? string.Empty,
+                    ["PrivateView"] = model.PrivateView.ToString() // "True"/"False"
+                };
+
+                var response = await _transactionApiHelper
+                    .UploadFileAsync<ServiceResponse<SalaryUploadModelSummaryDto>>(
+                        file: model.File,
+                        apiUrl: APICallHelper.CreateSalaryUpload,
+                        fields: fields
+                    );
+
                 if (response.IsSuccess)
                 {
-                    // Successful creation
                     GetExecutionMessages(response, true, null, MessagesResults.Success,
                         ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
-                else
-                {
-                    // Failed creation
-                    GetExecutionMessages(model, false, null, MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
-                }
+
+                GetExecutionMessages(model, false, null, MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
             }
             catch (Exception ex)
             {
-                // Log and handle exception
                 GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
                     SystemMessageStatus.Failed.ToString(), ex);
             }
             return ExecutionMessage;
         }
-        
-       
-       
+
+        //public async Task<ExecutionMessages> UploadFile(AddSalaryUploadModelCommand model)
+        //{
+        //    try
+        //    {
+
+        //        var response = await _transactionApiHelper.UploadSalaryFileAsync<ServiceResponse<SalaryUploadModelSummaryDto>>(model.File, model.SalaryType, APICallHelper.CreateSalaryUpload);
+        //        if (response.IsSuccess)
+        //        {
+        //            // Successful creation
+        //            GetExecutionMessages(response, true, null, MessagesResults.Success,
+        //                ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+        //            return ExecutionMessage;
+        //        }
+        //        else
+        //        {
+        //            // Failed creation
+        //            GetExecutionMessages(model, false, null, MessagesResults.Failed,
+        //                ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log and handle exception
+        //        GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+        //            SystemMessageStatus.Failed.ToString(), ex);
+        //    }
+        //    return ExecutionMessage;
+        //}
+
+
+
     }
 
 }

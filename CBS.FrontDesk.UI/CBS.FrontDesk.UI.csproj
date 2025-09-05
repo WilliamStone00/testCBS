@@ -455,6 +455,7 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.FileSystem.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.FileSystem.AccessControl.5.0.0\lib\net461\System.IO.FileSystem.AccessControl.dll</HintPath>
     </Reference>
@@ -655,6 +656,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppFiles\Reporting\Accounting\General_Journal_Entries.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>General_Journal_Entries.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Accounting\General_Ledger.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>General_Ledger.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\PandLReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2174,7 +2187,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalWithdrawalNotification.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
     <Compile Include="Controllers\Accounting\AccountBalanceInitializationController.cs" />
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
@@ -2213,6 +2226,7 @@
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectionDashboardController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\ManualDailyCollectionController.cs" />
     <Compile Include="Controllers\Loan\LoanAdjustmentP\LoanAdjustmentConsoleController.cs" />
+    <Compile Include="Controllers\MemberAdjustmentConsole\MemberAdjustmentConsoleController.cs" />
     <Compile Include="Controllers\MemberReceiptsP\MemberReceiptController.cs" />
     <Compile Include="Controllers\CMoney\CMoneyMembershipController.cs" />
     <Compile Include="Controllers\Commitee\LoanCommiteeController.cs" />
@@ -2265,7 +2279,7 @@
     <Compile Include="Controllers\MemberNoneCashOperation\LoanRepaymentBackOfficeController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\MemberNoneCashOperationController.cs" />
     <Compile Include="Controllers\MemberNoneCashOperation\MobileMoneyBackOfficeController.cs" />
-    <Compile Include="Controllers\MemberOperation\MemberOperationController.cs" />
+    <Compile Include="Controllers\LoanApplicationManagement\MemberOperationController.cs" />
     <Compile Include="Controllers\MembersFSerie\MembersFSeriesController.cs" />
     <Compile Include="Controllers\Overdraft\OverdraftActivationController.cs" />
     <Compile Include="Controllers\Overdraft\OverdraftFacilityConfigController.cs" />
@@ -2333,6 +2347,9 @@
     <Compile Include="Helper\FileUploadHelper.cs" />
     <Compile Include="Helper\SalarySheetExcelExporter.cs" />
     <Compile Include="Models\Class1.cs" />
+    <Content Include="Scripts\Js\AccountingReconciliation\AccountReconciliation.js" />
+    <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MemberAdjustmentConsole.js" />
+    <Compile Include="WAF\Middleware\Core\StaticPathHelper.cs" />
     <Compile Include="WAF\Middleware\Correlation\CorrelationIdMiddleware.cs" />
     <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureFilter.cs" />
     <Compile Include="WAF\Middleware\ResponsCapture\ResponseCaptureMiddleware.cs" />
@@ -2397,12 +2414,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GeneralLedger.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="AppFiles\Reporting\Accounting\JournalEntries.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>JournalEntries.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\LiaisonLedger.cs">
@@ -7626,6 +7637,14 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanTerm.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\General_Journal_Entries.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>General_Journal_Entries.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Accounting\General_Ledger.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>General_Ledger.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\PandLReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>PandLReport.cs</LastGenOutput>
@@ -8397,18 +8416,16 @@
     <Content Include="Scripts\Js\CashMovementTracker\CashMovementTracker.js" />
     <Content Include="Scripts\Js\CommissionManagement\CommissionPayment.js" />
     <Content Include="Scripts\Js\CommissionManagement\DailyCollectionManagement.js" />
-    <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\Category.js" />
-    <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\FeeConfig.js" />
-    <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\Notification\NotificationConfig.js" />
-    <Content Include="Scripts\Js\Crud\DailyCollection\ManualDailyCollection\ManualDailyCollection.js" />
     <Content Include="Scripts\Js\Crud\LoanAdjustmentConsole\LoanAdjustmentConsole.js" />
     <Content Include="Scripts\Js\Crud\LoanAdjustmentConsole\LoanAdjustmentLoader.js" />
     <Content Include="Scripts\Js\CommissionManagement\DSFileUploaded.js" />
+    <Content Include="Scripts\Js\Crud\LoanRepaymentBackOffice\VAT.js" />
     <Content Include="Scripts\Js\Dashboard\DailyCollection\DailyCollectionDashboard.js" />
     <Content Include="Scripts\Js\main.js\AccountBalanceInitialization.js" />
     <Content Include="Scripts\Js\main.js\AccountingBookingAlert.js" />
     <Content Include="Scripts\Js\main.js\DailySaverOperations.js" />
     <Content Include="Scripts\Js\main.js\DailySaverUploud.js" />
+    <Content Include="Scripts\Js\main.js\TransactionTracker.js" />
     <Content Include="Scripts\Js\MemberReceiptsP\MemberReceipt.js" />
     <Content Include="Scripts\Js\CMoney\cmoney.js" />
     <Content Include="Scripts\Js\CMoney\cmMembers.js" />
@@ -9607,31 +9624,6 @@
     <Content Include="Views\BulkOperation\_ManualBulkOperationConfigurationPartial.cshtml" />
     <Content Include="Views\BulkOperation\_BulkOperationFileUploadParameters.cshtml" />
     <Content Include="Views\BulkOperation\_BulkOperationParameters2.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\SiteMapTitleHelperModel.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\SiteMapPathHelperModel.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\SiteMapNodeModelList.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\SiteMapNodeModel.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\SiteMapHelperModel.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\MetaRobotsHelperModel.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\MenuHelperModel.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\CanonicalHelperModel.cshtml" />
-    <Content Include="Views\ManualDailyCollection\Index.cshtml" />
-    <Content Include="Views\ManualDailyCollection\_FileDetails.cshtml" />
-    <Content Include="Views\Categoryconfic\_Categories.cshtml" />
-    <Content Include="Views\Categoryconfic\Index.cshtml" />
-    <Content Include="Views\Categoryconfic\_CategoryDataTable.cshtml" />
-    <Content Include="Views\NumConfig\Index.cshtml" />
-    <Content Include="Views\NumConfig\_Create.cshtml" />
-    <Content Include="Views\NumConfig\_DataTable.cshtml" />
-    <Content Include="Views\FeeConfig\Index.cshtml" />
-    <Content Include="Views\FeeConfig\_Create.cshtml" />
-    <Content Include="Views\FeeConfig\_DataTable.cshtml" />
-    <Content Include="Views\NotificationConfig\Index.cshtml" />
-    <Content Include="Views\NotificationConfig\_ConfigForm.cshtml" />
-    <Content Include="Views\ManualDailyCollection\_FileList.cshtml" />
-    <Content Include="Views\ManualDailyCollection\_UploadForm.cshtml" />
-    <Content Include="Views\ManualDailyCollection\IndexValidate.cshtml" />
-    <Content Include="Views\ManualDailyCollection\_ValidationForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -9680,10 +9672,6 @@
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\GeneralLedger.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>GeneralLedger.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Reporting\Accounting\JournalEntries.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>JournalEntries.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\LiaisonLedger.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

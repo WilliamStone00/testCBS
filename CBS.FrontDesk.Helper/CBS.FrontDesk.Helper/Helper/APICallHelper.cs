@@ -136,6 +136,13 @@ namespace CBS.FrontDesk.Helper
         public static string CreateStandingOrder = "/api/v1/StandingOrder/create";
         public static string Get_StandingOrderByMemberId = "/api/v1/StandingOrder/member/{0}";
 
+        //FileUpload
+        public static string SetPrivatePublicStatus = "/api/v1/FileUpload/set-private";
+        public static string FileUploadsDatatable = "/api/v1/FileUploads/datatable";
+        public static string FileUploadGet_Or_Delete = "/api/v1/FileUpload/{0}";
+
+
+
         //SalaryUpload
         public static string Delete_SalaryUpload = "/api/v1/SalaryUpload/{0}";
         public static string GetAllSalaryUploadByFileCategory = "/api/v1/SalaryUpload/all/{0}";
@@ -149,6 +156,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetSalaryModelForBranchByFileId = "/api/v1/SalaryAnalysis/get-salary-model-for-branch-by-fileid/{0}";
 
         public static string GetMemberByCustomerType = "/api/v1/Customer/MembersByType/{0}";
+        public static string GetMemberByCustomerTypeAndBranchId = "/api/v1/Customers/get-customers-by-category";
 
 
         //SalaryExecution
@@ -298,6 +306,7 @@ namespace CBS.FrontDesk.Helper
         public static string SearchByAnyCriterialQuery = "/api/v1/Customers/SearchByAnyCriterialQuery";
         public static string GetAllByParameters = "/api/v1/Customer/GetAllByParameters";
         public static string MembersDatatableQuery = "/api/v1/customers/datatable";
+        public static string MembersDownloadDatatableQuery = "/api/v1/customer-download/customers";
 
 
         public static string AllCustomers = "/api/v1/Customers";
@@ -769,6 +778,9 @@ namespace CBS.FrontDesk.Helper
         public static string OverdraftServiceActivationGetById = "/api/v1/OverdraftActivation/{id}";
         public static string OverdraftServiceActivationDT = "/api/v1/OverdraftActivation/datatable";
 
+        //Refund
+        public static string RefundByCustomerId = "/api/v1/Refund/by-customer/{0}";
+        public static string RefundById = "/api/v1/Refund/{0}";
 
         //Fee
         public static string Get_Update_Delete_Fee = "/api/v1/Fee/{0}";
@@ -946,6 +958,7 @@ namespace CBS.FrontDesk.Helper
         //GetAllowAnonymous All ChartOfAccount
         public static string GetAllChartOfAccount = "/api/v1/ChartOfAccounts"; ///
         public static string GetAllChartOfAccountManagementPositionByChart = "api/v1/ChartOfAccountManagementPosition/GetAllChartOfAccounts";
+        public static string GetAllChartOfAccountManagementPositionByBranch = "api/v1/Account/GetAllBranchAccountForSelection/{0}";
         public static string Get_ChartOfAccount_By_AccountNumber = "/api/v1/ChartOfAccount/GetChartOfAccountByAccountNumber/{0}";
         //GetAllowAnonymous All ChartOfAccount
 
@@ -1004,6 +1017,10 @@ namespace CBS.FrontDesk.Helper
         public static string AccountingEntry_Get_reference_Id = "/api/v1/AccountingEntry/GetAccountingEntryByReferenceIdQuery/{0}";
         public static string AccountingEntry_ReverseEntry = "/api/v1/AccountingEntry/ReverseAccountingEntry";
         public static string PostAutomatedEventEntryCommand_url = "/api/v1/AccountingEntries/PostAutomatedEventEntryCommand";
+        public static string RetrieveAllUnProcessedTransactionTracker = "/api/v1/AccountingEntries/RetrieveAllUnProcessedTransactionTracker";
+        public static string ReExecutedFailedEntry = "/api/v1/AccountingEntries/ReExecutedFailedEntry";
+
+        public static string GetTransactionTrackerPaginated = "/api/v1/AccountingEntries/TransactionTrackers/SearchByAnyCriterialQuery";
         //Post_AccountingEntry_Entries 
         public static string AccountingEntry_Entries_branchId_accountId = "/api/v1/AccountingEntries/{0}/{1}";
         public static string AccountingEntry_BankingOperationRedirectedForBankCashOut = "/api/v1/BankingOperation/RedirectedForBankCashOut";
@@ -1199,49 +1216,14 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllDailyOperationFileUploadsByProcessingStatus = "/api/v1/GetAllFileUploadsByProcessingStatus/{0}";
         public static string ViewFileByFileUploadId = "/api/v1/ViewFileByFileUploadId/{0}}";
 
-        // manual dailly collection
-        public const string ManualEntryUpload = "/api/v1/ManualEntryCollectorUpload?collectorId={0}&branchId={1}";
-        public static string GetFileById = "/api/v1/ManualEntryCollector/ViewFileByFileUploadId/{FileUploadId}";
-        public static string GetFilesByStatus = "/api/v1/GetAllFileManualEntryingUploadsByProcessingStatus";
-        public static string GetAllFiles = "/api/v1/ManualEntryCollector/GetAllFileUploads/All";
-        public static string DeleteManualEntryFile = "/api/v1/ManualEntryCollector/RemoveManualEntryCollectorPayment/{fileId}"; // adjust if your API path differs
-        public static string ValidateFile = "/api/v1/ManualEntryCollector/InitiateManualEntryCollectorPayment";
+        public static string SubmitMemberAdjustmentRequest = "/api/v1/MemberAdjustmentRequest/submit";
+        public static string ApproveMemberAdjustmentRequest = "/api/v1/MemberAdjustmentRequest/approve";
+        public static string RejectMemberAdjustmentRequest = "/api/v1/MemberAdjustmentRequest/reject";
+        public static string GetMemberAdjustmentRequestDetails = "/api/v1/MemberAdjustmentRequest/get-details/";
+        public static string MemberAdjustmentRequestDataTable = "/api/v1/MemberAdjustmentRequest/datatable";
+        //public static string RetrieveAllUnProcessedTransactionTracker = "/api/v1/AccountingEntries/RetrieveAllUnProcessedTransactionTracker";
+        //public static string ReExecutedFailedEntry = "/api/v1/AccountingEntries/ReExecutedFailedEntry";
 
-        // ================= cheque management system =========================
-        //category config
-        public const string GetAllChequeBookCategories = "api/Chequecategory";
-        public const string GetChequeBookCategoryById = "api/Chequecategory/{0}"; // Takes an ID
-        public const string CreateChequeBookCategory = "api/Chequecategory";
-        public const string UpdateChequeBookCategory = "api/Chequecategory/{0}"; // Takes an ID
-        public const string DeactivateChequeBookCategory = "api/Chequecategory/{0}"; // Takes an ID
-
-        // cheque number config
-        public const string GetAll = "/getAll";
-        public const string GetById = "/getById"; // + "/{id}"
-        public const string Create = "/create";
-        public const string Update = "/update";   // + "/{id}"
-        public const string Delete = "/delete";   // + "/{id}
-
-        //fee configuration
-        // Metadata
-        public const string GetFeeTypes = "/feetypes";                 // GET
-        public const string GetApplicationTypes = "/applicationtypes"; // GET
-
-        // Config CRUD
-        public const string GetFeeConfigs = "/configs";                // GET (query : feeType, branchId, centralized)
-        public const string GetFeeConfigById = "/configs/{0}";         // GET {id}
-        public const string CreateFeeConfig = "/configs";              // POST
-        public const string UpdateFeeConfig = "/configs/{0}";         // PUT {id}
-        public const string DeleteFeeConfig = "/configs/{0}";         // DELETE {id}
-        public const string GetAllFeeConfigs = "/config/enum";
-
-        // notification config
-        public const string GetAllnot = "/getAll";
-        public const string GetnotById = "/getById"; // + "/{id}"
-        public const string Createnot = "/create";
-        public const string Updatenot = "/update";   // + "/{id}"
-        public const string Deletenot = "/delete";   // + "/{id}
-        public const string GetNotificationTypes = "/gettype";
-
+        //public static string GetTransactionTrackerPaginated = "/api/v1/AccountingEntries/TransactionTrackers/SearchByAnyCriterialQuery";
     }
 }

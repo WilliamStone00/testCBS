@@ -1,4 +1,5 @@
 ﻿using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -114,6 +115,18 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
 
     }
 
+    public class SetFileUploadPrivateViewCommand
+    {
+        /// <summary>
+        /// The FileUpload ID whose private view status will be updated.
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
+        /// The new value of the PrivateView property (true = private, false = public).
+        /// </summary>
+        public bool PrivateView { get; set; }
+    }
 
     public class ActivateSalaryFileCommand
     {
@@ -125,12 +138,36 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
     public class AddSalaryUploadModelCommand
     {
         [Required(ErrorMessage = "File is required.")]
+        [DataType(DataType.Upload)]
         public HttpPostedFileBase File { get; set; }
 
-        [Required(ErrorMessage = "Salary Type is required.")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Salary Type is required.")]
+        [StringLength(50, ErrorMessage = "Salary Type must be 50 characters or fewer.")]
         public string SalaryType { get; set; }
-    }
 
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Branch Id is required.")]
+        [StringLength(64, ErrorMessage = "Branch Id must be 64 characters or fewer.")]
+        public string BranchId { get; set; }
+
+        [StringLength(64, ErrorMessage = "Standing Order Source Account Id must be 64 characters or fewer.")]
+        public string StandingOrderSourceChartOfAccountId { get; set; }
+
+        public bool PrivateView { get; set; }
+    }
+    public class GetFileUploadsDataTableQuery
+    {
+        public DataTableOptions DataTableOptions { get; set; }
+
+        // ✅ Filters
+        public string BranchId { get; set; }
+        public string UploadedBy { get; set; }
+        public string FileType { get; set; }
+        public string FileCategory { get; set; }
+        public bool PrivateView { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string ActionParam { get; set; }
+    }
     public class FileUploadDto
     {
         public string Id { get; set; } // Unique Identifier for the file
@@ -147,10 +184,11 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         public bool IsAvalaibleForExecution { get; set; }
         public string FileCode { get; set; }
         public string FileType { get; set; }
+        public string StandingOrderSourceChartOfAccountId { get; set; }
+        public bool PrivateView { get; set; }
         public int TotalBranchesThatHaveExecutedPayrol { get; set; }
         public int TotalBranchesInvolvedInPayrolProcessing { get; set; }
         public List<SalaryUploadModel> SalaryUploadModels { get; set; }
-
-
+       
     }
 }

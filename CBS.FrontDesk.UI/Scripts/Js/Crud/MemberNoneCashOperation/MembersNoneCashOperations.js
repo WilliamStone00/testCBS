@@ -62,7 +62,7 @@ function calculateTableTotal() {
         var interest = parseFloat($(this).find('.interest-input').val()) || 0;
         var penalty = parseFloat($(this).find('.penalty-input').val()) || 0;
         var fee = parseFloat($(this).find('.fee-input').val()) || 0;
-         //Calculate VAT (interest × vatRate)
+        //Calculate VAT (interest × vatRate)
         //var vatRate = parseFloat($(this).find('.interest-input').data('vat-rate')) || 0; // Get VAT rate from data attribute
         //var vat = interest * (vatRate / 100);
 
@@ -225,35 +225,50 @@ function applyPayment() {
     paymentModal.hide();
 }
 
+function getAccountingDateISO() {
+    // try id, then name, then any date input with the known name
+    const $el = $('#BulkDeposit_AccountingDate').length
+        ? $('#BulkDeposit_AccountingDate')
+        : $("[name='BulkDeposit.AccountingDate']");
+    return ($el.val() || '').trim(); // already yyyy-MM-dd from <input type="date">
+}
+
 function collectDeposits() {
     var deposits = [];
-    // 📅 Accounting Date
-    let accountingDate = $('#BulkDeposit_AccountingDate').val(); // <-- Capture here
+    const accountingDate = getAccountingDateISO(); // <-- robust read
+
     $('#myDataTableT tbody tr').each(function () {
-        if ($(this).find('.form-check-input').prop('checked')) {
-            var deposit = {};
-            deposit.AccountNumber = $(this).find('td:eq(0)').text();
-            deposit.Amount = parseFloat($(this).find('.amount-input').val());
-            deposit.Fee = parseFloat($(this).find('.fee-input').val());
-            deposit.Penalty = parseFloat($(this).find('.penalty-input').val());
-            deposit.Interest = parseFloat($(this).find('.interest-input').val());
-            deposit.Total = parseFloat($(this).find('.total-span').text());
-            deposit.AccountType = $(this).find('td:eq(1)').text();
-            deposit.isDepositDoneByAccountOwner = $(this).find('.form-check-input').prop('checked');
-            deposit.IsChargesInclussive = $(this).find('.check-inclussive').prop('checked');
+        const $tr = $(this);
+        if ($tr.find('.row-select').prop('checked')) {
+            const deposit = {};
+            deposit.AccountNumber = $tr.find('td:eq(0)').text().trim();
+            deposit.AccountType = $tr.find('td:eq(1)').text().trim();
+            deposit.Amount = parseFloat($tr.find('.amount-input').val()) || 0;
+            deposit.Fee = parseFloat($tr.find('.fee-input').val()) || 0;
+            deposit.Penalty = parseFloat($tr.find('.penalty-input').val()) || 0;
+            deposit.Interest = parseFloat($tr.find('.interest-input').val()) || 0;
+            deposit.Total = parseFloat($tr.find('.total-span').text()) || 0;
+            deposit.isDepositDoneByAccountOwner = $tr.find('.row-select').prop('checked') === true;
+            deposit.IsChargesInclussive = $tr.find('.check-inclussive').prop('checked') === true;
             deposit.OperationType = $('#OperationType').val();
             deposit.IsSWS = false;
             deposit.CustomerId = $('#customerId').val();
             deposit.MemberName = $('#memberName').val();
-            deposit.LoanApplicationId = $(this).find('.loan-application-id').val();
-            deposit.Period = $(this).find('.period').val();
-            deposit.ChartOfAccountName = $('#account_number option:selected').text().trim();
-            // New captured values
-            deposit.BookingDirection = $("input[name='AddMembersNoneCashOperationCommand.BookingDirection']:checked").val();
+            deposit.LoanApplicationId = $tr.find('.loan-application-id').val();
+            deposit.Period = $tr.find('.period').val();
             deposit.ChartOfAccountId = $('#account_number').val();
+            deposit.ChartOfAccountName = $('#account_number option:selected').text().trim();
+            deposit.BookingDirection = $("input[name='AddMembersNoneCashOperationCommand.BookingDirection']:checked").val();
             deposit.Note = $('#Note').val();
-            // ✅ Add accounting date
-            deposit.AccountingDate = accountingDate;
+
+            // 📅 Date & Branch
+            deposit.AccountingDate = accountingDate;        // yyyy-MM-dd
+            deposit.BranchId = $('#branchInput').val();
+
+            // MoMo
+            deposit.IsMobileMoneyOperation = $('#isMobileMoneyOperationChk').is(':checked');
+            deposit.NoneMemberMobileReference = $('#noneMemberMobileReference').val();
+            deposit.MobileMoneyPath = $("input[name='momoPath']:checked").val() || '';   // <-- NEW
             deposits.push(deposit);
         }
     });
@@ -304,34 +319,37 @@ function Reprint() {
     ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLess");
 
 }
-function confirmTransaction(title, message, ajaxUrl, data, operationType) {
-    alertify.confirm(title, message,
-        function () {
-            $.ajax({
-                url: ajaxUrl,
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(data),
-                success: function (response) {
-                    if (response && response.success) {
-                        successCallback(response, operationType);
-                    } else {
-                        if (!response) {
-                            alert("Your session is expired.");
-                        } else {
-                            failureCallback(response);
-                        }
-                    }
-                },
-                error: function (xhr, status, error) {
-                    appalert("Your session is expired Or An error occurred while processing the transaction. Please try again later.", 0, 1);
+// Example: adjust your confirmTransaction to support HTML bodies
+function confirmTransaction(title, message, ajaxUrl, data, operationType, isHtml = false, okText = 'OK', cancelText = 'Cancel') {
+    var dlg = alertify.confirm('', function () { // empty here…
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (response) {
+                if (response && response.success) {
+                    successCallback(response, operationType);
+                } else {
+                    if (!response) alert("Your session is expired.");
+                    else failureCallback(response);
                 }
-            });
-        },
-        function () {
-            appalert('Transaction cancelled', 3, 1);
-        }
-    );
+            },
+            error: function () {
+                appalert("Your session is expired Or An error occurred while processing the transaction. Please try again later.", 0, 1);
+            }
+        });
+    }, function () {
+        appalert('Transaction cancelled', 3, 1);
+    });
+
+    // ✅ ensure custom title & HTML body
+    dlg.set('title', title);
+    if (isHtml) dlg.setContent(message); else dlg.setContent($('<div>').text(message).html());
+
+    // ✅ custom buttons
+    dlg.set('labels', { ok: okText, cancel: cancelText });
+    dlg.set('closable', false);
 }
 
 function successCallback(response, operationType) {
@@ -354,100 +372,310 @@ function failureCallback(response) {
 }
 
 function PostOperation() {
+    // Build from checked rows only
     var deposits = collectDeposits();
-    if (deposits.length === 0) {
+
+    // 1) Must have a selected row
+    if (!deposits || deposits.length === 0) {
         appalert("Please select at least one account to perform operation.", 3, 1);
         return;
     }
-
-    // Ensure only one record is selected
-    var selectedRecords = $('#myDataTableT tbody .form-check-input:checked').length;
-    if (selectedRecords !== 1) {
+    if (deposits.length !== 1) {
         appalert("Please select exactly one account to perform the operation.", 3, 1);
         return;
     }
 
-    // Calculate total amount from user inputs in the table
-    var totalInfo = calculateTotalAmount();
-
-    // Collect the selected amounts from the input fields (Amount + Fee)
-    var selectedTotalAmount = 0;
-    $('#myDataTableT tbody tr').each(function () {
-        var amount = parseFloat($(this).find('.amount-input').val()) || 0;
-        var fee = parseFloat($(this).find('.fee-input').val()) || 0;
-        selectedTotalAmount += (amount + fee);
-    });
-
-    // Compare calculated total with the user input
-    if (totalInfo.total !== selectedTotalAmount) {
+    // 2) Totals (from selected row only)
+    var selectedTotalAmount = deposits.reduce((sum, d) => sum + Number(d.Amount || 0) + Number(d.Fee || 0), 0);
+    var totalInfo = calculateTotalAmount(); // { total: ... }
+    if (Math.abs(Number(totalInfo.total || 0) - selectedTotalAmount) > 0.009) {
         appalert("The total amount does not match the sum of the selected account amounts and fees.", 3, 1);
         return;
     }
 
-    // Check if one of the radio buttons is selected
+    // 3) Booking direction
     var bookingDirection = $("input[name='AddMembersNoneCashOperationCommand.BookingDirection']:checked").val();
     if (!bookingDirection) {
-        appalert("Please select booking direction. Either Debit or Credit", 3, 1);
+        appalert("Please select booking direction. Either Debit or Credit.", 3, 1);
         return;
     }
 
-    // Check if a Chart of Account is selected
-    var correspondingAccountId = $('#account_number').val();
-    if (!correspondingAccountId || correspondingAccountId === "---Select GL---") {
-        appalert("Please select a valid Corresponding Account (GL).", 3, 1);
+    // 4) Branch validation
+    var branchId = $('#branchInput').val();
+    var branchText = $('#branchInput option:selected').text().trim();
+    if (!branchId || branchText.startsWith('---')) {
+        appalert("Please select a valid Branch.", 3, 1);
+        if ($('#branchInput').hasClass('select2')) $('#branchInput').select2('open'); else $('#branchInput').focus();
         return;
     }
+
+    // 5) Accounting date validation (required, not in the future)
+    var accountingDateRaw = $('#BulkDeposit_AccountingDate').val(); // yyyy-MM-dd
+    if (!accountingDateRaw) {
+        appalert("Please choose an Accounting Date.", 3, 1);
+        $('#BulkDeposit_AccountingDate').focus();
+        return;
+    }
+    var m = accountingDateRaw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!m) {
+        appalert("Invalid Accounting Date format.", 3, 1);
+        $('#BulkDeposit_AccountingDate').focus();
+        return;
+    }
+    var acctDate = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    if (acctDate > today) {
+        appalert("Accounting Date cannot be in the future.", 3, 1);
+        $('#BulkDeposit_AccountingDate').focus();
+        return;
+    }
+
+    // 6) MoMo controls (checkbox-based)
+    var isMomo = $('#isMobileMoneyOperationChk').is(':checked');
+    var momoCategory = $("input[name='momoCategory']:checked").val() || '';
+    var momoPath = $("input[name='momoPath']:checked").val() || '';                 // <-- NEW
+    var momoRefVal = $('#noneMemberMobileReference').val();
+    var momoRefText = $('#noneMemberMobileReference option:selected').text().trim();
+
+    if (isMomo) {
+        if (!momoCategory) {
+            appalert('Please select a MM/OM Service type/Category (MTN or Orange).', 3, 1);
+            return;
+        }
+        if (!momoPath) {
+            appalert('Please select a MM/OM operation flow.', 3, 1);                        // <-- NEW
+            return;
+        }
+        if (!momoRefVal) {
+            appalert('Please select the MM/OM Collection transit account corresponding to the chosen reference.', 3, 1);
+            $('#noneMemberMobileReference').focus();
+            return;
+        }
+    }
+
+    // 7) Corresponding GL — ONLY validate when MoMo is OFF
+    var correspondingAccountId = '';
+    var correspondingAccountName = '';
+    if (!isMomo) {
+        correspondingAccountId = $('#account_number').val();
+        correspondingAccountName = $('#account_number option:selected').text().trim();
+        if (!correspondingAccountId || correspondingAccountId === '---Select GL---') {
+            appalert("Please select a valid Corresponding Account (GL).", 3, 1);
+            $('#account_number').focus();
+            return;
+        }
+    }
+    // If MoMo is ON, we leave GL empty; UI already hides/disables it.
+
+    // 8) Note required
     var note = $('#Note').val().trim();
     if (!note) {
         appalert("Please enter a reason for the operation in the Note field.", 3, 1);
+        $('#Note').focus();
         return;
     }
 
-    // Retrieve the corresponding account name from the dropdown
-    var correspondingAccountName = $('#account_number option:selected').text().trim();
+    // 9) Build confirmation with the SAME selected data
+    var memberAccountNames = deposits.map(d => (d.AccountType || '').toString().trim()).filter(Boolean).join(', ');
+    var memberAccounts = deposits.map(d => (d.AccountNumber || '').toString().trim()).filter(Boolean).join(', ');
 
-    // Construct the confirmation message based on the booking direction
-    var message = "";
-    if (bookingDirection === "Debit") {
-        message += "You are about to debit the selected member account in favor of the corresponding account:\n";
-        message += "Corresponding Account: " + correspondingAccountName + "\n";
+    var htmlMsg = buildConfirmHtml({
+        bookingDirection: bookingDirection.toUpperCase(),
+        branchName: branchText,
+        accountingDate: accountingDateRaw,
+        correspondingAccountName: correspondingAccountName,
+        correspondingAccountId: correspondingAccountId,
+        isMomo: isMomo,
+        momoCategory: momoCategory,
+        momoRefText: momoRefText || '',
+        momoPath: momoPath,                                 // <-- NEW
+        memberAccountNames: memberAccountNames,
+        memberAccounts: memberAccounts,
+        total: selectedTotalAmount
+    });
+
+
+    // 10) Confirm
+    confirmTransaction(
+        'Member–GL Confirmation',
+        htmlMsg,
+        '/MemberNoneCashOperation/PostRequestCash',
+        deposits,
+        'CashInMomocashCollection',
+        true,               // HTML body
+        'Yes, Proceed',     // OK
+        'Cancel'            // Cancel
+    );
+}
+function getAccountingDateValue() {
+    // Try common Razor/MVC id + name + class fallbacks
+    const $byId = $('#BulkDeposit_AccountingDate');
+    const $byName = $("input[name='BulkDeposit.AccountingDate']");
+    const $byCls = $('input.accounting-date[type="date"]');
+
+    let raw = ($byId.val() || $byName.val() || $byCls.val() || '').trim();
+    return raw || ''; // '' if not found
+}
+
+function getSelectedAccountNames() {
+    var names = [];
+    $('#myDataTableT tbody tr').each(function () {
+        if ($(this).find('.form-check-input').prop('checked')) {
+            // column 1 is the Account/Product name in your table
+            names.push($(this).find('td:eq(1)').text().trim());
+        }
+    });
+    return names.join(', ');
+}
+
+function buildConfirmHtml(opts) {
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+    const fmtNum = n => (Number(n || 0)).toLocaleString();
+
+    function fmtDate(input) {
+        if (!input) return '';
+        let d;
+        if (input instanceof Date) d = input;
+        else if (typeof input === 'string') {
+            const m = input.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+            if (m) return `${m[3]}/${m[2]}/${m[1]}`;
+            d = new Date(input);
+            if (isNaN(d)) return esc(input);
+        } else return esc(String(input));
+        return String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear();
+    }
+    function pathLabel(path) {                              // <-- NEW
+        switch (path) {
+            case 'FloatFromMembersAccountToMomoAccount':
+                return 'Member account → MoMo Float (increase float)';
+            case 'FromMembersAccountToMobilemoneyAndToMembersPhone':
+                return 'Member account → MoMo Float → Member’s phone (wallet payout)';
+            case 'FloatFromMobileMoneyToMembersAccount':
+                return 'Member’s phone → MoMo Float → Member account (wallet to branch)';
+            default:
+                return path || '';
+        }
+    }
+    // friendlier MoMo category label if canonical key is passed
+    const niceMomoCategory = (() => {
+        const v = String(opts.momoCategory || '').toLowerCase();
+        if (!v) return '';
+        if (v.includes('mtn')) return 'MTN Cameroon';
+        if (v.includes('orange')) return 'Orange Money Cameroon';
+        return opts.momoCategory; // already a friendly label
+    })();
+
+    const rows = [];
+
+    rows.push(`
+      <tr>
+        <th style="width:200px;padding:6px 10px;text-align:left;">Operation</th>
+        <td style="padding:6px 10px;"><strong>${esc(opts.bookingDirection)} member’s account</strong></td>
+      </tr>
+    `);
+
+    rows.push(`
+      <tr>
+        <th style="padding:6px 10px;text-align:left;">Branch</th>
+        <td style="padding:6px 10px;">${esc(opts.branchName || '')}</td>
+      </tr>
+    `);
+
+    rows.push(`
+      <tr>
+        <th style="padding:6px 10px;text-align:left;">Accounting Date</th>
+        <td style="padding:6px 10px;">${fmtDate(opts.accountingDate) || 'N/A'}</td>
+      </tr>
+    `);
+
+    // Corresponding GL row: hide details when MoMo is selected
+    if (opts.isMomo) {
+        rows.push(`
+          <tr>
+            <th style="padding:6px 10px;text-align:left;">Corresponding Account (GL)</th>
+            <td style="padding:6px 10px;"><em>Tills linked MM/OM Configurations</em></td>
+          </tr>
+        `);
     } else {
-        message += "You are about to credit the selected member account from the corresponding account:\n";
-        message += "Source Account (GL): " + correspondingAccountName + "\n";
+        rows.push(`
+          <tr>
+            <th style="padding:6px 10px;text-align:left;">Corresponding Account</th>
+            <td style="padding:6px 10px;">
+              <div><strong>${esc(opts.correspondingAccountName || 'N/A')}</strong></div>
+              <div style="opacity:.8">GL Number: ${esc(opts.correspondingAccountId || 'N/A')}</div>
+            </td>
+          </tr>
+        `);
     }
-    message += "Total Amount: " + totalInfo.total + "\n";
-    message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
 
-    // Confirm transaction
-    confirmTransaction('Confirm ' + bookingDirection + ' Operation', message, '/MemberNoneCashOperation/PostRequestCash', deposits, 'CashInMomocashCollection');
+    // Mobile Money rows
+    rows.push(`
+      <tr>
+        <th style="padding:6px 10px;text-align:left;">Mobile Money</th>
+        <td style="padding:6px 10px;">${opts.isMomo ? 'Yes' : 'No'}</td>
+      </tr>
+    `);
+
+    if (opts.isMomo) {
+        rows.push(`
+          <tr>
+            <th style="padding:6px 10px;text-align:left;">MoMo Category</th>
+            <td style="padding:6px 10px;">${esc(niceMomoCategory)}</td>
+          </tr>
+        `);
+        if (opts.momoPath) {
+            rows.push(`
+              <tr>
+                <th style="padding:6px 10px;text-align:left;">MM/OM Operation flow</th>
+                <td style="padding:6px 10px;">${esc(pathLabel(opts.momoPath))}</td>
+              </tr>
+            `);
+        }
+        if (opts.momoRefText) {
+            rows.push(`
+              <tr>
+                <th style="padding:6px 10px;text-align:left;">Mobile Money Reference</th>
+                <td style="padding:6px 10px;">${esc(opts.momoRefText)}</td>
+              </tr>
+            `);
+        }
+    }
+
+    rows.push(`
+      <tr>
+        <th style="padding:6px 10px;text-align:left;">Selected Member Account Name(s)</th>
+        <td style="padding:6px 10px;">${esc(opts.memberAccountNames || '')}</td>
+      </tr>
+    `);
+
+    rows.push(`
+      <tr>
+        <th style="padding:6px 10px;text-align:left;">Selected Member Account(s)</th>
+        <td style="padding:6px 10px;">${esc(opts.memberAccounts || '')}</td>
+      </tr>
+    `);
+
+    rows.push(`
+      <tr>
+        <th style="padding:6px 10px;text-align:left;">Total Amount</th>
+        <td style="padding:6px 10px;"><strong>${fmtNum(opts.total)}</strong></td>
+      </tr>
+    `);
+
+    return `
+      <div style="font-size:13px;line-height:1.35;">
+        <table style="width:100%;border-collapse:collapse;">
+          ${rows.join('')}
+        </table>
+        <div style="margin-top:10px;padding:8px 10px;border-left:3px solid #f0ad4e;background:#fff7e6;">
+          <strong>Note:</strong> This operation will remain <em>PENDING</em> until it is validated by an authorized user.
+          The selected accounts will be impacted only after validation.
+        </div>
+        <div style="margin-top:10px;"><strong>Are you ready to proceed with this operation?</strong></div>
+      </div>
+    `;
 }
 
-function PostLoanRepayment() {
-    //if (!checkTotalNotes()) return false;
-
-    //var totalNotes = parseFloat($("#totalNoteAmount").val());
-    var totalInfo = calculateTotalAmount();
-
-    //if (!validateTotalAmount(totalInfo, totalNotes)) return;
-
-    var deposits = collectDeposits();
-    if (deposits.length !== 1) {
-        appalert("Only one loan can be paid at an instant. Please deselect other accounts.", 3, 1);
-        return;
-    }
-    // Check if one of the radio buttons is selected
-    var sourceType = $("input[name='AddOtherTransactionMobileMoneyCommand.SourceType']:checked").val();
-    if (!sourceType) {
-        appalert("Please select operator type, Either Mobile Money MTN OR Mobile Money Orange", 3, 1);
-        return;
-    }
-    deposits[0].currencyNotes = collectCurrencyNotes();
-    deposits[0].Depositer = collectDepositorInfo();
-
-    var message = "";
-    message += "Are you sure you want to perform loan repayment of " + totalInfo.total + "?";
-    confirmTransaction('Confirm Loan Repayment Operation', message, '/CashDesk/PostRequestCash', deposits, 'LoanRepaymentMomocashCollection');
-}
 
 
 
@@ -505,7 +733,7 @@ function GetMemberData(Key, partialView, divToloadPV, path) {
     spanElement.style.textDecorationThickness = "2px";
 
     spanElement.innerText = "MEMBER'S OTHER NONE-CASH OPERATION";
-    
+
     AddORUpdateGen(Key, divToloadPV, partialView, path, "MemberNoneCashOperation");
     //calculateBalance();
 }
@@ -533,7 +761,6 @@ function GetLoan(KEY) {
         }
     });
 }
-
 
 
 
@@ -613,3 +840,4 @@ function AjaxPostAndUpdate(form) {
 
 
 }
+

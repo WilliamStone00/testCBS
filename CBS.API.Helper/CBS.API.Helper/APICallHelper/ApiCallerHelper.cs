@@ -665,41 +665,101 @@ namespace CBS.API.Helper
 
             }
         }
-        public async Task<ApiResponse<T>> UploadSalaryFileAsync<T>(HttpPostedFileBase file, string salaryType, string apiUrl)
+        /// <summary>
+        /// Uploads a file (and arbitrary additional form fields) to the given API endpoint
+        /// using multipart/form-data, then deserializes the response into <typeparamref name="T" />.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The expected response payload type (e.g., <c>ServiceResponse&lt;SalaryUploadModelSummaryDto&gt;</c>).
+        /// </typeparam>
+        /// <param name="file">The file to upload (optional). If null, only fields are sent.</param>
+        /// <param name="apiUrl">Relative API path (will be combined with the configured base URL).</param>
+        /// <param name="fields">
+        /// Additional form fields to include in the request. Keys should match the API’s parameter names
+        /// (e.g., <c>SalaryType</c>, <c>BranchId</c>, <c>StandingOrderSourceChartOfAccountId</c>, <c>PrivateView</c>).
+        /// Null values are skipped.
+        /// </param>
+        /// <param name="fileFieldName">
+        /// The multipart field name for the file part (default: <c>"File"</c>), must match server binder.
+        /// </param>
+        /// <param name="explicitFileName">
+        /// Optional file name to use in the multipart content; if omitted, <see cref="HttpPostedFileBase.FileName"/> is used.
+        /// </param>
+        /// <param name="explicitContentType">
+        /// Optional content type for the file part; if omitted, uses <see cref="HttpPostedFileBase.ContentType"/> or
+        /// falls back to <c>application/octet-stream</c>.
+        /// </param>
+        /// <param name="ct">Cancellation token to cancel the HTTP request.</param>
+        /// <returns>An <see cref="ApiResponse{T}"/> wrapping the deserialized response.</returns>
+        /// <exception cref="OperationCanceledException">Thrown when the operation is canceled via <paramref name="ct"/>.</exception>
+        /// <exception cref="Exception">
+        /// Rethrows any unexpected exception after logging (e.g., network failure, serialization issues).
+        /// </exception>
+        public async Task<ApiResponse<T>> UploadFileAsync<T>(
+            HttpPostedFileBase file,
+            string apiUrl,
+            IDictionary<string, string> fields,
+            string fileFieldName = "File",
+            string explicitFileName = null,
+            string explicitContentType = null,
+            CancellationToken ct = default)
         {
             try
             {
-                // Ensure URL is clean and valid
+                // Build the absolute URL and remove accidental double slashes.
                 apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
 
+                // Prepare multipart/form-data body.
                 var formData = new MultipartFormDataContent();
 
-                // Add file content
-                var streamContent = new StreamContent(file.InputStream);
-                streamContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
-                formData.Add(streamContent, "File", file.FileName);
+                // Optionally add the file part.
+                if (file != null)
+                {
+                    // Ensure the stream is at the beginning so the whole file is read.
+                    if (file.InputStream.CanSeek) file.InputStream.Position = 0;
 
-                // Add SalaryType as a string content
-                var salaryTypeContent = new StringContent(salaryType);
-                formData.Add(salaryTypeContent, "SalaryType");
+                    // Create the stream content for the uploaded file.
+                    var streamContent = new StreamContent(file.InputStream);
 
-                // Add authorization headers
+                    // Resolve content type: explicit > provided by HttpPostedFileBase > safe fallback.
+                    var contentType = explicitContentType
+                                      ?? (!string.IsNullOrWhiteSpace(file.ContentType) ? file.ContentType : "application/octet-stream");
+                    streamContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+
+                    // Add file content to the multipart with the server-expected field name and filename.
+                    formData.Add(streamContent, fileFieldName, explicitFileName ?? file.FileName);
+                }
+
+                // Add additional form fields (skip null values).
+                if (fields != null)
+                {
+                    foreach (var kv in fields.Where(kv => kv.Value != null))
+                    {
+                        formData.Add(new StringContent(kv.Value), kv.Key);
+                    }
+                }
+
+                // Attach authorization (e.g., Bearer token) to the HttpClient.
                 AddAuthorizationHeader(_httpClient);
 
-                // Send the request
-                HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, formData);
+                // Execute POST request with cancellation support.
+                HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, formData, ct);
 
-                // Handle the response
+                // Uniformly handle and deserialize the API response.
                 return await HandleResponse<T>(response);
+            }
+            catch (OperationCanceledException)
+            {
+                // Surface cancellations to the caller (do not wrap).
+                throw;
             }
             catch (Exception ex)
             {
-                // Log and rethrow the exception
+                // Best-effort log; upstream handler may log more context.
                 Console.WriteLine($"An error occurred: {ex.Message}");
                 throw;
             }
-        }   
-        
+        }
         public async Task<ApiResponse<T>> UploadBulkCashPaymentFileAsync<T>(HttpPostedFileBase file, string apiUrl)
         {
             try
@@ -1036,13 +1096,21 @@ namespace CBS.API.Helper
         }
         public async Task<List<TrialBalance6ColumnDto>> PostTrialBalance6ColumnAsyncAsync(string apiUrl, object data)
         {
-            apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
-            string jsonData = JsonConvert.SerializeObject(data);
-            StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            AddAuthorizationHeader(_httpClient);
-            HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
-            var Model = await HandleTrialBalance6ColumnResponse(response);
-            return Model.data;
+            try
+            {
+                apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
+                string jsonData = JsonConvert.SerializeObject(data);
+                StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                AddAuthorizationHeader(_httpClient);
+                HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
+                var Model = await HandleTrialBalance6ColumnResponse(response);
+                return Model.data;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
         public async Task<List<TrialBalance4ColumnDto>> PostTrialBalance4ColumnAsyncAsync(string apiUrl, object data)
         {

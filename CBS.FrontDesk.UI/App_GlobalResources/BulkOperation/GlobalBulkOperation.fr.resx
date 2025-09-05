@@ -375,8 +375,8 @@
   <data name="ShowsTheMostCurrentTransferStatus" xml:space="preserve">
     <value>Affiche le statut le plus actuel du transfert</value>
   </data>
-  <data name="SimulateABulkOperation" xml:space="preserve">
-    <value>Simuler une opération en masse</value>
+  <data name="SimulateARangeBulkOperation" xml:space="preserve">
+    <value>Simuler une opération groupée sur une plage</value>
   </data>
   <data name="SimulateBulkOperation" xml:space="preserve">
     <value>Simuler l'opération en masse</value>
@@ -539,5 +539,8 @@
   </data>
   <data name="BulkOperationCashOutOrCashInAccountTransferCashOut" xml:space="preserve">
     <value>Débit</value>
+  </data>
+  <data name="SimulateBulkCashOperation" xml:space="preserve">
+    <value>Simuler une opération de paiement en espèces en vrac</value>
   </data>
 </root>

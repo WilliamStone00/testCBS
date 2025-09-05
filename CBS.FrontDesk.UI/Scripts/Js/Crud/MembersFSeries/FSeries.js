@@ -28,6 +28,126 @@ $(document).ready(function () {
     });
 
 });
+function parseDateOrNull(v) {
+    if (!v) return null;
+    // if you use a date-picker plugin, get its formatted value; here we trust yyyy-mm-dd or dd/mm/yyyy
+    const parts = v.includes('/') ? v.split('/') : v.split('-');
+    // try DD/MM/YYYY first
+    let d;
+    if (parts.length === 3 && v.includes('/')) {
+        d = new Date(parts[2], parts[1] - 1, parts[0]);
+    } else {
+        d = new Date(v);
+    }
+    return isNaN(d) ? null : d.toISOString();
+}
+
+
+
+function clearRefundFilters() {
+    $('#refundDateFrom').val('');
+    $('#refundDateTo').val('');
+}
+function loadRefundDetails(refundId) {
+    const modalEl = document.getElementById("refundDetailsModal");
+    const $modal = $("#refundDetailsModal");
+    const $body = $("#refundDetailsModalBody");
+    const endpoint = $modal.data("refund-url") || "/MembersFSeries/RefundDetailsPartial";
+
+    const openModal = () => {
+        if (window.bootstrap?.Modal) bootstrap.Modal.getOrCreateInstance(modalEl).show();
+        else if ($.fn.modal) $modal.modal("show");
+    };
+
+    const renderError = (heading, detail, payloadHtml = "") => {
+        $body.html(`
+            <div class="alert alert-danger">
+                <div class="fw-bold mb-1">${heading}</div>
+                <div class="small">${detail || "An unexpected error occurred."}</div>
+                ${payloadHtml}
+            </div>
+        `);
+        openModal(); // open only after the error content is ready
+    };
+
+    if (!refundId) {
+        renderError("Missing refund id.", "No refund identifier was provided.");
+        return;
+    }
+
+    $.ajax({
+        url: endpoint,
+        type: "GET",
+        cache: false,
+        timeout: 45000,
+        dataType: "html",
+        headers: { "X-Requested-With": "XMLHttpRequest" },
+        data: { id: refundId },
+
+        success: function (html, _status, xhr) {
+            const text = (html || "").toString();
+            const looksLikeFullPage = /<\s*html[\s>]/i.test(text);
+            const looksLikeLogin = looksLikeFullPage && /login|sign\s*in|account/i.test(text);
+
+            if (!text.trim()) {
+                renderError("Empty response.", "The server returned no content.");
+                return;
+            }
+            if (looksLikeLogin || (xhr.responseURL && xhr.responseURL.toLowerCase().includes("login"))) {
+                renderError("Session expired.", "Please sign in again and retry.");
+                return;
+            }
+
+            $body.html(text);  // content ready
+            openModal();       // show AFTER content is inserted
+        },
+
+        error: function (xhr, _status, err) {
+            const map = {
+                0: "Network error. The request was blocked/aborted.",
+                401: "Unauthorized. Please sign in again.",
+                403: "Forbidden. You don’t have access to this refund.",
+                404: "Refund not found.",
+                408: "Request timed out.",
+                409: "Conflict while loading refund.",
+                500: "Server error while loading refund."
+            };
+            const heading = map[xhr.status] || `Error ${xhr.status || ""}`.trim();
+            const payload = xhr.responseText
+                ? `<details class="mt-2"><summary>Details</summary>
+                       <pre class="mt-2" style="white-space:pre-wrap;">${xhr.responseText}</pre>
+                   </details>`
+                : "";
+
+            renderError(heading, err || xhr.statusText || "Request failed.", payload);
+        }
+    });
+}
+
+function loadMemberRefunds(customerId) {
+    const df = $('#refundDateFrom').val() || '';
+    const dt = $('#refundDateTo').val() || '';
+
+    $.ajax({
+        url: '/MembersFSeries/MemberRefundsPartial',
+        type: 'GET',
+        data: { customerId: customerId, dateFrom: df, dateTo: dt },
+        //beforeSend: function () {
+        //    $("#refundsTableContainer").html(`<div class="text-center py-3">
+        //        <div class="spinner-border" role="status"></div>
+        //        <div class="small mt-2 text-muted">Loading refunds…</div>
+        //    </div>`);
+        //},
+        success: function (html) {
+            $("#refundsTableContainer").html(html);
+        },
+        error: function (xhr) {
+            $("#refundsTableContainer").html(`<div class="alert alert-danger">
+                Error: ${xhr.status} ${xhr.statusText}
+            </div>`);
+        }
+    });
+}
 
 function loadLoanDetails(loanId) {
     const modalEl = document.getElementById('loanDetailsModal');

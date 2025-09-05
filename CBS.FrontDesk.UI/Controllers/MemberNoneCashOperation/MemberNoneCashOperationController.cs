@@ -1,6 +1,7 @@
 ﻿using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
+using CBS.BusinessService.CustomerManagement;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP;
@@ -25,17 +26,20 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
     public class MemberNoneCashOperationController : BaseController
     {
         private readonly CashDeskServices _cashDeskService;
+        private readonly BranchServices _branchServices;
+        private readonly IndividualProfileServices _individualProfileServices;
         private readonly AccountingServices _accountingServices;
         private readonly MemberNoneCashOperationServices _memberNoneCashOperationServices;
-        
         private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
 
-        public MemberNoneCashOperationController(CashDeskServices cashDeskService = null, AccountingServices accountingServices = null, ChartOfAccountServicesAnnex chartOfAccountServices = null, MemberNoneCashOperationServices memberNoneCashOperationServices = null)
+        public MemberNoneCashOperationController(CashDeskServices cashDeskService = null, AccountingServices accountingServices = null, ChartOfAccountServicesAnnex chartOfAccountServices = null, MemberNoneCashOperationServices memberNoneCashOperationServices = null, BranchServices branchServices = null, IndividualProfileServices individualProfileServices = null)
         {
             _cashDeskService = cashDeskService;
             _accountingServices = accountingServices;
             this.chartOfAccountServices=chartOfAccountServices;
             _memberNoneCashOperationServices=memberNoneCashOperationServices;
+            _branchServices=branchServices;
+            _individualProfileServices=individualProfileServices;
         }
         // GET: MemberNoneCashOperation
         public ActionResult Index()
@@ -66,8 +70,12 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         }
         public async Task<bool> GetChartOfAccounts()
         {
-            var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts();
+            var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts(true);
             ViewBag.chartOfAccounts = chartOfAccounts.ToList();
+            var Branches = await _branchServices.GetBranches();
+            ViewBag.chartOfAccounts = chartOfAccounts.ToList();
+            ViewBag.Branches = Branches.ToList();
+
             return true;
         }
         public async Task<ActionResult> Ajaxloader(string Key,string path)
@@ -85,6 +93,15 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 
             }
         }
+
+        public async Task<ActionResult> LoadMomoAccountsProfiles(string branchid, string category)
+        {
+            var listing = await _individualProfileServices.GetMemberByCustomerTypeAsync(branchid, category);
+            return Json(listing, JsonRequestBehavior.AllowGet);
+        }
+
+    
+
         public async Task<ActionResult> DownloadFile(string fileId,string path)
         {
 

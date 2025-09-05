@@ -1,758 +1,143 @@
-﻿$(document).ready(function () {
-    // Event delegation for handling button clicks
-    $(document).on("click", ".btn", function () {
-        // Remove underline and blue color from all buttons
-        $(".btn").removeClass("clicked");
-        // Add underline and blue color to the clicked button
-        $(this).addClass("clicked");
-    });
-
-    // Handle checkbox state changes
-    // Format date mask
-
-
-
-});
-
-function AddNote() {
-    EditResetModal(null, 'modal', 'modalContent', 'CashDesk', 'InitializeData', '_Note', 'new_depositor', 'NOTE', 'modalLabel')
-}
-function AddDepositor() {
-    EditResetModal(null, 'modal', 'modalContent', 'CashDesk', 'InitializeData', '_DepositerForm', 'new_depositor', 'Depositor information', 'modalLabel')
-    $('#DepositorIDIssueDate, #DepositorIDExpiryDate').on('input', function () {
-        var value = $(this).val();
-        if (value.length === 4 || value.length === 7) {
-            $(this).val(value + '/');
-        }
-    });
-
-    // Format telephone mask
-    $('#DepositorTelephone').on('input', function () {
-        var value = $(this).val().replace(/\D/g, '');
-        if (value.length > 3) {
-            value = value.replace(/(\d{3})(\d)/, '$1-$2');
-        }
-        if (value.length > 6) {
-            value = value.replace(/(\d{3})(\d{2})(\d)/, '$1-$2-$3');
-        }
-        $(this).val(value);
-    });
-}
-
-$(document).on('input', '.amount-input, .fee-input, .interest-input, .penalty-input, .loan-amount-input', function () {
-    var $row = $(this).closest('tr');
-    var amount = parseFloat($row.find('.amount-input').val()) || 0;
-    var fee = parseFloat($row.find('.fee-input').val()) || 0;
-    var interest = parseFloat($row.find('.interest-input').val()) || 0;
-    var penalty = parseFloat($row.find('.penalty-input').val()) || 0;
-    var loan_amount_input = parseFloat($row.find('.loan-amount-input').val()) || 0;
-    var total = amount + fee + penalty + interest + loan_amount_input;
-    $row.find('.total-span').text(total.toFixed(2));
-    calculateTableTotal();
-});
-function calculateTableTotal() {
-    var total = 0;
-    $('.total-span').each(function () {
-        total += parseFloat($(this).text()) || 0;
-    });
-
-    // Calculate balance
-    var totalNotes = parseFloat($("#totalNoteAmount").val()) || 0;
-    var balance = totalNotes - total;
-
-    // Update balance in the table footer with separators (no currency)
-    var formattedBalance = balance.toLocaleString('en-US'); // No currency, just thousand separators
-    $('#tableBalance').text(formattedBalance);
-
-    // Change color of balance text if negative
-    if (balance < 0) {
-        $('#tableBalance').addClass('text-danger');
-    } else {
-        $('#tableBalance').removeClass('text-danger');
-    }
-
-    // Remove any existing icon
-    $('#tableTotal .total-icon').remove();
-
-    // Compare total with totalNotes and update the icon accordingly
-    var iconClass, iconColor;
-    if (total === totalNotes) {
-        // Equal to totalNotes, show a green checkmark
-        iconClass = 'fas fa-check-circle';
-        iconColor = 'text-success';
-    } else if (total < totalNotes) {
-        // Less than totalNotes, show a warning exclamation mark
-        iconClass = 'fas fa-exclamation-circle';
-        iconColor = 'text-warning';
-    } else {
-        // Greater than totalNotes, show a red X
-        iconClass = 'fas fa-times-circle';
-        iconColor = 'text-danger';
-    }
-
-    // Append the total value to the tableTotal cell with separators (no currency)
-    var formattedTotal = total.toLocaleString('en-US'); // No currency, just thousand separators
-    $('#tableTotal').html(`<span>${formattedTotal}</span>`);
-    // Append the icon after the total value
-    $('#tableTotal').append(` <i class="${iconClass} total-icon ${iconColor}"></i>`);
-
-    // Enable or disable the button based on the comparison
-    if (total === totalNotes) {
-        $('#submit').prop('disabled', false); // Enable the button
-    } else {
-        $('#submit').prop('disabled', true); // Disable the button
-    }
-}
-
-function calculateVat(interestInput, vatRate) {
-    // Get the entered interest amount from the input
-    var interestAmount = parseFloat(interestInput.value) || 0;
-
-    // Calculate the VAT based on the interest amount and the vatRate from the specific row
-    var calculatedVat = interestAmount * (vatRate / 100);
-
-    // Format the calculated VAT with thousand separators (no currency symbol)
-    var formattedVat = calculatedVat.toLocaleString('en-US');
-
-    // Display the formatted VAT in the "calculatedVat" footer cell
-    document.getElementById("calculatedVat").innerText = formattedVat;
-}
-
-
-function checkTotalNotes() {
-    var totalNotes = parseFloat($("#totalNoteAmount").val());
-
-    if (totalNotes === 0) {
-        appalert("Please enter cash in the denomination box.", 3, 1);
-        return false;
-    }
-
-    return true;
-}
-
-function calculateTotalAmount() {
-    var total = 0;
-    var anyRowsSelected = false;
-
-    $('#myDataTableT tbody tr').each(function () {
-        if ($(this).find('.form-check-input').prop('checked')) {
-            anyRowsSelected = true;
-            total += parseFloat($(this).find('.total-span').text());
-        }
-    });
-
-    return { total: total, anyRowsSelected: anyRowsSelected };
-}
-
-
-function validateTotalAmount(total, totalNotes) {
-    if (!total.anyRowsSelected) {
-        appalert("Please select at least one account to perform operation.", 3, 1);
-        return false;
-    }
-
-    if (total.total === 0) {
-        appalert("Please enter an amount.", 3, 1);
-        return false;
-    }
-
-    if (total.total !== totalNotes) {
-        appalert("Amount entered must equal the total of notes entered. Make sure you have checked/unchecked corresponding accounts. Please reevaluate and enter again.", 3, 1);
-        return false;
-    }
-
-    return true;
-}
-
-function collectDeposits() {
-    var deposits = [];
-
-    $('#myDataTableT tbody tr').each(function () {
-        if ($(this).find('.form-check-input').prop('checked')) {
-            var deposit = {};
-            deposit.AccountNumber = $(this).find('td:eq(0)').text();
-            deposit.Amount = parseFloat($(this).find('.amount-input').val());
-            deposit.Fee = parseFloat($(this).find('.fee-input').val());
-            deposit.Penalty = parseFloat($(this).find('.penalty-input').val());
-            deposit.Interest = parseFloat($(this).find('.interest-input').val());
-            deposit.Total = parseFloat($(this).find('.total-span').text());
-            deposit.AccountType = $(this).find('td:eq(1)').text();
-            deposit.Note = $('#Note').val();
-            deposit.isDepositDoneByAccountOwner = $(this).find('.form-check-input').prop('checked');
-            deposit.IsChargesInclussive = $(this).find('.check-inclussive').prop('checked');
-            deposit.OperationType = $('#OperationType').val();
-            deposit.CheckName = $('#CheckName').val();
-            deposit.CheckNumber = $('#CheckNumber').val();
-            deposit.IsSWS = true;
-            deposit.CustomerId = $('#customerId').val();
-            deposit.LoanApplicationId = $(this).find('.loan-application-id').val();
-            deposit.Period = $(this).find('.period').val();
-            deposits.push(deposit);
-            deposits.PaymentMethod = 'Cash';
-            deposits.PaymentChannel = 'Web_Portal';
-
-
-        }
-    });
-
-
-    return deposits;
-}
-
-
-
-function collectDepositorInfo() {
-    return {
-        DepositorName: $('#DepositorName').val(),
-        DepositerTelephone: $('#DepositerTelephone').val(),
-        DepositorIDNumber: $('#DepositorIDNumber').val(),
-        DepositorIDIssueDate: $('#DepositorIDIssueDate').val(),
-        DepositorIDExpiryDate: $('#DepositorIDExpiryDate').val(),
-        DepositorIDNumberPlaceOfIssue: $('#DepositorIDNumberPlaceOfIssue').val(),
-        DepositerNote: $('#DepositerNote').val()
-    };
-}
-function resetDepositorForm() {
-    $('#DepositorName').val('');
-    $('#DepositerTelephone').val('');
-    $('#DepositorIDNumber').val('');
-    $('#DepositorIDIssueDate').val('');
-    $('#DepositorIDExpiryDate').val('');
-    $('#DepositorIDNumberPlaceOfIssue').val('');
-    $('#DepositerNote').val('');
-    $('#Note').val('')
-}
-function Reprint() {
-    ReportView("CashDesk", null, "GetReport", null, null, "receipts", "ReportParameterLessWithSubReports");
-
-}
-function ReprintLoan() {
-    ReportView("CashDesk", null, "GetReport", null, null, "loan", "ReportParameterLessWithSubReports");
-
-}
-function confirmTransaction(title, message, ajaxUrl, data, operationType) {
-    alertify.confirm(title, message,
-        function () {
-            $.ajax({
-                url: ajaxUrl,
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(data),
-                success: function (response) {
-                    if (response && response.success) {
-                        successCallback(response, operationType);
-                    } else {
-                        if (!response) {
-                            alert("Your session is expired.");
-                        } else {
-                            failureCallback(response);
-                        }
-                    }
-                },
-                error: function (xhr, status, error) {
-                    appalert("Your session is expired Or An error occurred while processing the transaction. Please try again later.", 0, 1);
-                }
-            });
-        },
-        function () {
-            appalert('Transaction cancelled', 3, 1);
-        }
-    );
-}
-
-function successCallback(response, operationType) {
-    appalert(response.message, 1, 1);
-    resetDepositorForm();
-    switch (operationType) {
-        case 'CashIn':
-            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashin');
-            break;
-        case 'Withdrawal':
-            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashout');
-            break;
-        case 'WithdrawalSWS':
-            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'cashoutsws');
-            break;
-        case 'SavingWithdrawalFormFee':
-            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'withdrawalnotification');
-            break;
-        case 'LoanRepayment':
-            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'repayment');
-            break;
-        case 'LoanFee':
-            GetMemberData($("#customerId").val(), '_OperationDesk', 'datalistingview', 'loanapplicationfeepayment');
-            break;
-        default:
-            break;
-    }
-}
-
-function failureCallback(response) {
-    appalert(response.message || "Your session is expired Or An error occurred while processing the transaction", 3, 1);
-}
-
-function PostCashIn() {
-    if (!checkTotalNotes()) return false;
-
-    var totalNotes = parseFloat($("#totalNoteAmount").val());
-    var totalInfo = calculateTotalAmount();
-
-    if (!validateTotalAmount(totalInfo, totalNotes)) return;
-
-    var deposits = collectDeposits();
-    if (deposits.length === 0) {
-        appalert("Please select at least one account to perform the cash-in.", 3, 1);
-        return;
-    }
-
-    deposits[0].currencyNotes = collectCurrencyNotes();
-    deposits[0].Depositer = collectDepositorInfo();
-
-    var message = "";
-    message += "Are you sure you want to perform a cash-in of " + totalInfo.total + " to the selected account numbers?\n";
-    message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
-    confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCash', deposits, 'CashIn');
-}
-
-function PostFEE() {
-    if (!checkTotalNotes()) return false;
-
-    var totalNotes = parseFloat($("#totalNoteAmount").val());
-    var totalInfo = calculateTotalAmount();
-
-    if (!validateTotalAmount(totalInfo, totalNotes)) return;
-
-    var deposits = collectDeposits();
-    if (deposits.length === 0) {
-        appalert("Please select at least one fee label to perform the payment", 3, 1);
-        return;
-    }
-
-    deposits[0].currencyNotes = collectCurrencyNotes();
-    deposits[0].Depositer = collectDepositorInfo();
-
-    var message = "";
-    message += "Are you sure you want to pay loan fee of " + totalInfo.total + "?\n";
-    confirmTransaction('Loan Fee Operation', message, '/CashDesk/PostRequestCash', deposits, 'LoanFee');
-}
-
-function PostWithdrawalFromFee() {
-    if (!checkTotalNotes()) return false;
-
-    var totalNotes = parseFloat($("#totalNoteAmount").val());
-    var totalInfo = calculateTotalAmount();
-
-    if (!validateTotalAmount(totalInfo, totalNotes)) return;
-
-    var deposits = collectDeposits();
-    if (deposits.length === 0) {
-        appalert("Please select at least one account to perform the cash-in.", 3, 1);
-        return;
-    }
-
-    deposits[0].currencyNotes = collectCurrencyNotes();
-    deposits[0].Depositer = collectDepositorInfo();
-
-    var message = "";
-    message += "Are you sure you want to confirm the payment of " + totalInfo.total + " as withdrawal form fee?\n";
-    confirmTransaction('Payment of S.W.F', message, '/CashDesk/PostRequestCash', deposits, 'SavingWithdrawalFormFee');
-}
-
-// Similarly update PostCashOut() and PostLoanRepayment() functions
-
-
-function PostCashOut() {
-    if (!checkTotalNotes()) return false;
-
-    var totalNotes = parseFloat($("#totalNoteAmount").val());
-    var totalInfo = calculateTotalAmount();
-
-    if (!validateTotalAmount(totalInfo, totalNotes)) return;
-
-    var deposits = collectDeposits();
-    //if (deposits.length !== 1) {
-    //    appalert("Cash-out can only be done from one account only. Please deselect other accounts.", 3, 1);
-    //    return;
-    //}
-
-    deposits[0].currencyNotes = collectCurrencyNotes();
-    deposits[0].Depositer = collectDepositorInfo();
-
-    var message = "";
-    message += "Are you sure you want to perform a cash-out of " + totalInfo.total + " from the selected account numbers?\n";
-    message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
-    confirmTransaction('Confirm Cash-Out Operation', message, '/CashDesk/PostRequestCash', deposits, 'Withdrawal');
-}
-function PostCashOutSWS() {
-    // Validate CheckName and CheckNumber
-    var checkName = $('#CheckName').val();
-    var checkNumber = $('#CheckNumber').val();
-
-    if (!checkName || !checkNumber) {
-        appalert("Check Name and Check Number are required.", 3, 1);
-        return false;
-    }
-
-    if (!checkTotalNotes()) return false;
-
-    var totalNotes = parseFloat($("#totalNoteAmount").val());
-    var totalInfo = calculateTotalAmount();
-
-    if (!validateTotalAmount(totalInfo, totalNotes)) return;
-
-    var deposits = collectDeposits();
-    if (deposits.length !== 1) {
-        appalert("Cash-out can only be done from one account only. Please deselect other accounts.", 3, 1);
-        return;
-    }
-
-    deposits[0].currencyNotes = collectCurrencyNotes();
-    deposits[0].Depositer = collectDepositorInfo();
-
-    var message = "";
-    message += "Are you sure you want to perform a SWS cash-out of " + totalInfo.total + " from the selected account numbers?\n";
-    message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
-    confirmTransaction('Confirm SWS Cash-Out Operation', message, '/CashDesk/PostRequestCash', deposits, 'WithdrawalSWS');
-}
-
-
-function PostLoanRepayment() {
-    if (!checkTotalNotes()) return false;
-
-    var totalNotes = parseFloat($("#totalNoteAmount").val());
-    var totalInfo = calculateTotalAmount();
-
-    if (!validateTotalAmount(totalInfo, totalNotes)) return;
-
-    var deposits = collectDeposits();
-    if (deposits.length !== 1) {
-        appalert("Only one loan can be paid at an instant. Please deselect other accounts.", 3, 1);
-        return;
-    }
-
-    deposits[0].currencyNotes = collectCurrencyNotes();
-    deposits[0].Depositer = collectDepositorInfo();
-
-    var message = "";
-    message += "Are you sure you want to perform loan repayment of " + totalInfo.total + "?";
-    confirmTransaction('Confirm Loan Repayment Operation', message, '/CashDesk/PostRequestCash', deposits, 'LoanRepayment');
-}
-
-
-
-
-
-function getSelectedAccountNumbers() {
-    var selectedAccountNumbers = [];
-    $('#myDataTableT tbody tr').each(function () {
-        // Check if the checkbox in this row is selected
-        if ($(this).find('.form-check-input').prop('checked')) {
-            // Get the account number from the current row
-            var accountNumber = $(this).find('td:eq(0)').text();
-            // Add the account number to the array
-            selectedAccountNumbers.push(accountNumber);
-        }
-    });
-    // Join the array elements into a comma-separated string
-    return selectedAccountNumbers.join(', ');
-}
-
-
-
-function GetTransactionHistory(KEY, divToLoadData, partialView, path, myDataTable, order) {
-    LoadDataTableNew("Operation", myDataTable, "InitializeData", KEY, partialView, order, path, divToLoadData);
-
-}
-
-function GetObject(KEY, divToLoadData, partialView, path) {
-    if (KEY.trim() === "") {
-        alert("KEY is empty. Please provide a valid KEY.");
-        return; // Exit the function
-    }
-    AddORUpdateGen(KEY, divToLoadData, partialView, path, "CashDesk");
-
-
-}
-function SearchByCustomerNumber(partialView, divToloadPV) {
-
-    AddORUpdateGen($('#manualSearchInput').val(), divToloadPV, partialView, 'search', "CashDesk");
-    //calculateBalance();
-}
-function GetMember() {
+﻿
+function GetMemberDataLoanSimulation() {
     var operation = $("#currentselectedOperation").val();
     var memberId = $('#manualSearchInput').val();
-    GetMemberData(memberId, '_LoanRepaymentSimulationForm', 'datalistingview', operation);
+    AddORUpdateGen(memberId, 'datalistingview', '_LoanRepaymentSimulationForm', 'repayment', "CashDesk");
 }
 
-function GetMemberData(Key, partialView, divToloadPV, path) {
-    $("#currentselectedOperation").val(path);
-    var spanElement = document.getElementById('cashDeskOperations');
 
-    // Default style
-    //spanElement.style.fontWeight = "bold";
-    //spanElement.style.textDecoration = "underline";
-    //spanElement.style.textDecorationThickness = "2px";
 
-    //spanElement.innerText = "LOAN REPAYMENT SIMULATION";
-    //spanElement.style.color = "blue"; // Default color for other paths
-    
-    AddORUpdateGen(Key, divToloadPV, partialView, path, "CashDesk");
-    //calculateBalance();
-}
+(() => {
+  // --- VAT constants ---
+  const THRESHOLD = 2000000;      // VAT applies only when LoanAmount >= 2,000,000
+    const RATE_EXC  = 19.25;        // Exclusive: VAT = interest * 19.25%
+    const RATE_INC  = 16.1425;      // Inclusive: VAT portion inside gross interest
 
-function GetLoan(KEY) {
-    $.ajax({
-        type: "GET",
-        url: '/Operation/GetLoan?KEY=' + KEY,
-        success: function (data) {
-            var balance = parseFloat(data.Balance).toFixed(1); // Format Balance with 1 decimal place
-            var paid = parseFloat(data.Paid).toFixed(1); // Format Paid with 1 decimal place
+  const toNum = v => (v == null ? 0 : (parseFloat(String(v).replace(/,/g, '')) || 0));
+  const getMode = () => {
+    const r = document.querySelector('input[name="vatMode"]:checked');
+    return r ? r.value : null;
+  };
 
-            // Format numbers with commas as thousands separators
-            balance = parseFloat(balance).toLocaleString('en-US');
-            paid = parseFloat(paid).toLocaleString('en-US');
+  // When user types interest: store gross, and if a mode is selected, recompute VAT immediately for this row
+  window.handleInterestInput = (id) => {
+    const iEl = document.getElementById(`interest-${id}`);
+    if (!iEl) return;
+    iEl.dataset.gross = String(toNum(iEl.value));        // remember what user typed as baseline
+    const mode = getMode();
 
-            // Assuming #balance and #paid are HTML input elements
-            $('#balance').val(balance);
-            $('#paid').val(paid);
-            $('#loanid').val(data.Id);
-            //$('#balance').val(data.Balance);
-            //$('#paid').val(data.Paid);
-        }, error: function (err) {
-            appalert(err.statusText, 3, 0);
-        }
+    if (mode) {
+        applyVatForRow(id, mode);                          // recompute VAT now (no shrinking bug)
+    } else {
+      const vEl = document.getElementById(`vat-${id}`);
+    if (vEl) vEl.innerText = "0";
+    updateRow(id);
+    updateSummaryCards();
+    }
+  };
+
+  // Capital/Penalty changes: just re-total
+  window.onCapitalPenaltyChanged = (id) => {
+        updateRow(id);
+    updateSummaryCards();
+  };
+
+    // Core: compute VAT for a single row given a mode
+    function applyVatForRow(id, mode) {
+    const iEl = document.getElementById(`interest-${id}`);
+    const vEl = document.getElementById(`vat-${id}`);
+    if (!iEl || !vEl) return;
+
+    const loanAmt = toNum(iEl.dataset.loanamount);
+    let gross = toNum(iEl.dataset.gross);
+    if (!gross) {                       // fallback if user never typed yet
+        gross = toNum(iEl.value);
+    iEl.dataset.gross = String(gross);
+    }
+
+    let vat = 0;
+
+    if (loanAmt >= THRESHOLD) {
+      if (mode === 'inclusive') {
+        // VAT portion inside gross; reduce interest to net
+        vat = Math.round(gross * (RATE_INC / 100));
+    iEl.value = Math.max(0, Math.round(gross - vat));
+      } else {
+        // Exclusive: interest remains gross
+        iEl.value = Math.round(gross);
+    vat = Math.round(gross * (RATE_EXC / 100));
+      }
+    } else {
+        // Below threshold: no VAT, show interest as typed
+        iEl.value = Math.round(gross);
+    vat = 0;
+    }
+
+    vEl.innerText = vat.toLocaleString('en-US');
+    updateRow(id);
+  }
+
+  // Apply VAT to all rows
+  window.applyVatModeToAllRows = () => {
+    const mode = getMode();
+    document.querySelectorAll('#loanRepaymentTable tr').forEach(row => {
+      const id = row.id.replace('row-', '');
+    applyVatForRow(id, mode);
     });
-}
+    updateSummaryCards();
+  };
 
+    // Per-row total (capital + interest + vat + penalty)
+    function updateRow(id) {
+    const interest = toNum(document.getElementById(`interest-${id}`)?.value);
+    const vat      = toNum(document.getElementById(`vat-${id}`)?.innerText);
+    const capital  = toNum(document.getElementById(`capital-${id}`)?.value);
+    const penalty  = toNum(document.getElementById(`penalty-${id}`)?.value);
 
+    const total = capital + interest + vat + penalty;
+    const span  = document.getElementById(`total-${id}`);
+    if (span) span.innerText = total.toLocaleString('en-US');
+  }
 
+    // Optional: update the cards (summaryCapital, summaryInterest, summaryPenalty, summaryVat, summaryTotal)
+    function updateSummaryCards() {
+        let sumCap=0, sumInt=0, sumVat=0, sumPen=0, sumTotal=0;
 
+    document.querySelectorAll('#loanRepaymentTable tr').forEach(row => {
+      const id   = row.id.replace('row-', '');
+    const cap  = toNum(document.getElementById(`capital-${id}`)?.value);
+    const intr = toNum(document.getElementById(`interest-${id}`)?.value);
+    const vat  = toNum(document.getElementById(`vat-${id}`)?.innerText);
+    const pen  = toNum(document.getElementById(`penalty-${id}`)?.value);
+    const tot  = toNum(document.getElementById(`total-${id}`)?.innerText);
 
+    sumCap += cap; sumInt += intr; sumVat += vat; sumPen += pen; sumTotal += tot;
+    });
 
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = `${val.toLocaleString('en-US')} XAF`; };
+    set('summaryCapital',  sumCap);
+    set('summaryInterest', sumInt);
+    set('summaryPenalty',  sumPen);
+    set('summaryVat',      sumVat);
 
-function AjaxPostAndUpdate(form) {
+    const totalEl = document.getElementById('summaryTotal');
+    if (totalEl) totalEl.textContent = `${sumTotal.toLocaleString('en-US')} XAF`;
+  }
 
+  // Init (ensure Inclusive selected and applied once)
+  document.addEventListener('DOMContentLoaded', () => {
+        // Wire VAT radios (re-apply even on same click)
+        document.querySelectorAll('input[name="vatMode"]').forEach(r => {
+            r.addEventListener('change', applyVatModeToAllRows);
+            r.addEventListener('click', applyVatModeToAllRows);
+        });
 
-    $.validator.unobtrusive.parse(form);
-    if ($(form).valid()) {
+    // First pass: if inclusive radio exists, ensure it's checked and applied
+    const inc = document.getElementById('vatModeInclusive');
+    if (inc) inc.checked = true;
 
+    // If rows already have values, apply the mode now
+    applyVatModeToAllRows();
+  });
+})();
 
-        alertify.confirm("WARNING!!!", "Are you sure you want to perform this action! ",
-            function () {
-
-
-                var ajaxConfig = {
-                    type: 'POST',
-                    url: form.action,
-                    data: new FormData(form),
-                    success: function (response) {
-
-                        if (response.success) {
-                            if (response.status === "Exist") {
-                                appalert(response.message, 3, 1);
-                            }
-                            else if (response.status === "Failed") {
-                                appalert(response.message, 2, 1);
-                            }
-                            else {
-                                appalert(response.message, 1, 1);
-
-                            }
-                            if (response.option === 'Update' && response.reloadDataView === "Yes") {
-                                LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
-                            }
-                            else if (response.optype === 'Insert' && response.reloadDataView === "Yes") {
-                                EditResetMain("KEY", response.option, response.divLoaderCreator, response.controllerName, response.reinitializedActionName, response.groupID);
-                            }
-                            else if (response.reloadDataView === "Yes") {
-                                LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
-                            }
-                        }
-                        else {
-                            if (response.Status === "Exist") {
-                                appalert(response.message, 3, 1);
-                            }
-                            else {
-                                appalert(response.message, 2, 1);
-                            }
-
-                        }
-
-                    }
-                    , error: function (err) {
-                        console.log(err.statusText);
-                        appalert(err.statusText, 0, 1);
-                    }
-                };
-
-                if ($(form).attr('enctype') === "multipart/form-data") {
-                    ajaxConfig["contentType"] = false;
-                    ajaxConfig["processData"] = false;
-                }
-                console.log(ajaxConfig);
-                $.ajax(ajaxConfig);
-            },
-            function () {
-                appalert('Transaction cancelled', 3, 1);
-
-            }
-
-        );
-    }
-    return false;
-
-
-}
-
-var selectedLoanId;
-var selectedVatRate;
-
-// Function to open modal and store selected row's LoanId and VatRate
-
-//function updateTotal() {
-//    // Get the raw input values without formatting
-//    var amount = parseFloat(document.getElementById('modalAmount').value.replace(/,/g, '')) || 0;
-//    var interest = parseFloat(document.getElementById('modalInterest').value.replace(/,/g, '')) || 0;
-//    var penalty = parseFloat(document.getElementById('modalPenalty').value.replace(/,/g, '')) || 0;
-
-//    // Calculate the total
-//    var total = amount + interest + penalty;
-
-//    // Display the formatted total (using XAF currency format)
-//    document.getElementById('modalTotalAmount').value = `XAF ${total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-//}
-
-// Apply formatting only when leaving the input field (onblur event)
-function formatAmount(input) {
-    var value = parseFloat(input.value.replace(/,/g, '')) || 0;
-    input.value = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
-
-
-// Function to open the payment modal and set the initial values
-function openPaymentModal(loanId, accrualInterest, balance) {
-    // Set the values in the modal
-    console.log(loanId);
-    document.getElementById('modalLoanId').value = loanId;
-    document.getElementById('modalAccrualInterest').value = accrualInterest;
-    document.getElementById('modalBalance').value = balance;
-
-    // Clear previous values
-    document.getElementById('modalAmount').value = '0';
-    document.getElementById('modalInterest').value = '0';
-    document.getElementById('modalPenalty').value = '0';
-    document.getElementById('modalTotalAmount').value = '0';
-
-    // Show the modal
-    var paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
-    paymentModal.show();
-}
-
-// Function to apply modal values to the table row
-// Function to update the total amount in the modal
-function updateTotal() {
-    var amount = parseFloat(document.getElementById('modalAmount').value) || 0;
-    var interest = parseFloat(document.getElementById('modalInterest').value) || 0;
-    var penalty = parseFloat(document.getElementById('modalPenalty').value) || 0;
-
-    // Calculate total (capital + interest + penalty)
-    var total = amount + interest + penalty;
-
-    // Format the total amount for display
-    document.getElementById('modalTotalAmount').value = 'XAF ' + total.toLocaleString('en-US', { minimumFractionDigits: 2 });
-}
-
-// Function to apply the payment values from the modal to the table row
-function applyPayment() {
-    var loanId = document.getElementById('modalLoanId').value;
-    var amount = parseFloat(document.getElementById('modalAmount').value) || 0;
-    var interest = parseFloat(document.getElementById('modalInterest').value) || 0;
-    var penalty = parseFloat(document.getElementById('modalPenalty').value) || 0;
-
-    // Update the row with the values entered from the modal
-    var capitalInput = document.getElementById('capital-' + loanId);
-    var interestInput = document.getElementById('interest-' + loanId);
-    var penaltyInput = document.getElementById('penalty-' + loanId);
-    var totalSpan = document.getElementById('total-' + loanId);
-
-    // Check if elements are found
-    if (!capitalInput || !interestInput || !penaltyInput || !totalSpan) {
-        console.error("One or more elements not found. Check your IDs and ensure they match.");
-        return;
-    }
-
-    // Update the row with entered values
-    capitalInput.value = amount;
-    interestInput.value = interest;
-    penaltyInput.value = penalty;
-
-    // Calculate total (capital + interest + penalty)
-    var total = amount + interest + penalty;
-    totalSpan.innerText = total;
-    calculateTableTotal();
-    // Calculate VAT based on the entered interest
-    calculateVat(interestInput, selectedVatRate);
-
-    // Close the modal
-    var paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
-    paymentModal.hide();
-}
-
-
-// VAT calculation function
-function calculateVat(interestInput, vatRate) {
-    // Parse the interest value from the input
-    var interest = parseFloat(interestInput.value) || 0;
-
-    // Calculate VAT based on the vatRate
-    var vat = interest * vatRate / 100;
-
-    // Format VAT with thousands separators and two decimal places
-    var formattedVat = vat.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-
-    // Display the formatted VAT amount
-    document.getElementById('calculatedVat').innerText = `${formattedVat}`;
-}
-
-// Function to open the loan details modal and populate it with data
-
-
-function showLoanDetails(loan) {
-    // Format amounts with thousands separators
-    const formatCurrency = (amount) => {
-        return `XAF ${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    };
-
-    // Format percentage
-    const formatPercentage = (value) => {
-        const numberValue = parseFloat(value);
-        if (isNaN(numberValue)) return 'N/A';
-        return `${numberValue.toFixed(1)}%`;
-    };
-
-    // Populate modal fields with loan details
-    document.getElementById('detailLoanDate').innerText = moment(loan.LoanDate).format('DD/MM/YYYY HH:mm:ss');
-    document.getElementById('detailLoanAmount').innerText = formatCurrency(loan.LoanAmount);
-    document.getElementById('detailBalance').innerText = formatCurrency(loan.Balance);
-    document.getElementById('detailInterest').innerText = formatCurrency(loan.AccrualInterest);
-    document.getElementById('detailDueAmount').innerText = formatCurrency(loan.DueAmount);
-    document.getElementById('detailPenalty').innerText = formatCurrency(loan.Penalty);
-
-    // Format and populate percentage fields
-    document.getElementById('interestRate').innerText = formatPercentage(loan.InterestRate);
-    document.getElementById('vatRate').innerText = formatPercentage(loan.VatRate);
-
-    console.log(loan.VatRate)
-
-    // Show the modal
-    var loanDetailsModal = new bootstrap.Modal(document.getElementById('loanDetailsModal'));
-    loanDetailsModal.show();
-}
-
-//function formatPercentage(value) {
-//    // Ensure value is a number
-//    const numberValue = parseFloat(value);
-//    if (isNaN(numberValue)) return 'N/A';
-//    return `${numberValue.toFixed(2)}%`;
-//}

@@ -456,7 +456,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
                                     this.HttpContext.Session["rptSource"] = account;
                                  
-;                                    string ReportName = $"JournalEntries.rpt";
+;                                    string ReportName = $"General_Journal_Entries.rpt";
                                     if (account.AccountingEntries == null)
                                     {
                                         this.HttpContext.Session["rptSource"] = "empty";
@@ -475,7 +475,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                             {
                                 
                                     string fileTitle = $"GeneralLedger_{DateTime.UtcNow.ToString("yyyyMMddhhmmss")}";
-                                    string ReportName = $"GeneralLedger.rpt";
+                                    string ReportName = $"General_Ledger.rpt";
                                     var account = await _acountServices.GenerateAccountingLedgerForAnumber(model.SystemQuery);//new SystemQuery { BranchId = model.SystemQuery.BranchId, FileType = model.SystemQuery.FileType, AccountIds = model.SystemQuery.AccountIds, FromDate = model.SystemQuery.FromDate, ToDate = model.SystemQuery.ToDate });
 
                                     if (model.SystemQuery.FileType == "PDF")
@@ -621,7 +621,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         case "PANDL":
                             {
                                 
-                                    string fileTitle = $"InComeStatement{model.SystemQuery.FromDate}_{model.SystemQuery.ToDate}";
+                                    string fileTitle = $"InComeStatement{model.SystemQuery.FromDate.ToString("ddMMyyyyhhmmss")}";
                                     var DocModel = (await _accountingEntryServices.GetAllFSDocument()).Where(x => x.name.ToUpper() == "PROFITANDLOSS").First();
                                     var modelx = new BSQuery { BranchId = model.SystemQuery.BranchId, ToDate = model.SystemQuery.ToDate, FromDate = model.SystemQuery.FromDate, DocumentId = DocModel.id, FileType = "pdf" };
                                     var account = await _acountServices.GenerateIncomeStatement(modelx);

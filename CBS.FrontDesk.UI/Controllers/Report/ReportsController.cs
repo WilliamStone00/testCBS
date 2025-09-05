@@ -1293,7 +1293,7 @@ namespace CBS.FrontDesk.UI.Controllers
                         rd.Load(strRptPath);
                         rd.SetDataSource(assetsModel);
         
-                        string SavedFileName = string.Format($"{strtitle}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
+                        string SavedFileName = string.Format($"{strtitle}");
                         //Export the report to a byte array
                         Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
                         byte[] bytes = new byte[stream.Length];

@@ -2,23 +2,19 @@
     initFilterToggles();
     bindFilterActions();
 });
-
-// 📊 Initialize DataTable
 function loadBulkOperationDataTable() {
-    $('#myDataTable').DataTable({
+    return $('#myDataTable').DataTable({
         serverSide: true,
         destroy: true,
         searching: false,
         responsive: true,
-        order: [[5, 'desc']], // Sort by LastLoginDate (adjust index if needed)
+        order: [[5, 'desc']],
         ajax: {
             url: '/UserManagement/LoadUsers',
             type: 'POST',
             contentType: 'application/json',
             data: function (d) {
                 const filters = collectFilterData();
-
-                // ✅ Initialize DataTableOptions properly
                 filters.DataTableOptions = {
                     draw: d.draw,
                     start: d.start,
@@ -28,7 +24,6 @@ function loadBulkOperationDataTable() {
                     sortColumnName: d.columns[d.order[0].column].data,
                     sortColumnDirection: d.order[0].dir
                 };
-
                 return JSON.stringify(filters);
             }
         },
@@ -53,16 +48,78 @@ function loadBulkOperationDataTable() {
                 searchable: false,
                 render: function (id) {
                     return `
-            <div class="text-center">
-                <a href="/UserManagement/UserProfile?KEY=${id}" class="btn btn-sm btn-outline-primary" title="Manage User">
-                    <i class="fas fa-user-cog me-1"></i> Profile
-                </a>
-            </div>`;
+    <div class="text-center">
+        <a href="/UserManagement/UserProfile?KEY=${id}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" title="Manage User">
+            <i class="fas fa-user-cog me-1"></i> Profile
+        </a>
+    </div>`;
+
                 }
             }
         ]
     });
 }
+
+// 📊 Initialize DataTable
+//function loadBulkOperationDataTable() {
+//    $('#myDataTable').DataTable({
+//        serverSide: true,
+//        destroy: true,
+//        searching: false,
+//        responsive: true,
+//        order: [[5, 'desc']], // Sort by LastLoginDate (adjust index if needed)
+//        ajax: {
+//            url: '/UserManagement/LoadUsers',
+//            type: 'POST',
+//            contentType: 'application/json',
+//            data: function (d) {
+//                const filters = collectFilterData();
+
+//                // ✅ Initialize DataTableOptions properly
+//                filters.DataTableOptions = {
+//                    draw: d.draw,
+//                    start: d.start,
+//                    length: d.length,
+//                    skip: d.start,
+//                    pageSize: d.length,
+//                    sortColumnName: d.columns[d.order[0].column].data,
+//                    sortColumnDirection: d.order[0].dir
+//                };
+
+//                return JSON.stringify(filters);
+//            }
+//        },
+//        columns: [
+//            { data: 'FullName' },
+//            { data: 'UserName' },
+//            { data: 'RoleName' },
+//            {
+//                data: 'IsActive',
+//                render: d => d
+//                    ? '<span class="badge bg-success">Active</span>'
+//                    : '<span class="badge bg-danger">Inactive</span>'
+//            },
+//            { data: 'PhoneNumber' },
+//            {
+//                data: 'LastLoginDate',
+//                render: d => d ? moment(d).format('DD/MM/YYYY HH:mm') : '—'
+//            },
+//            {
+//                data: 'Id',
+//                orderable: false,
+//                searchable: false,
+//                render: function (id) {
+//                    return `
+//            <div class="text-center">
+//                <a href="/UserManagement/UserProfile?KEY=${id}" class="btn btn-sm btn-outline-primary" title="Manage User">
+//                    <i class="fas fa-user-cog me-1"></i> Profile
+//                </a>
+//            </div>`;
+//                }
+//            }
+//        ]
+//    });
+//}
 // ✅ Validate date range
 function isDateRangeValid() {
     const startDate = $('#createdFrom').val();
@@ -149,17 +206,26 @@ function initFilterToggles() {
 }
 
 // 🎯 Bind button actions
-function bindFilterActions() {
-    const table = $('#myDataTable').DataTable();
+let userTable = null;
 
+function bindFilterActions() {
     $('#applyFilterBtn').click(() => {
         if (!isDateRangeValid()) return;
-        table.ajax.reload();
+
+        if (!userTable) {
+            // First time — initialize table
+            userTable = loadBulkOperationDataTable();
+        } else {
+            // Already initialized — reload with new filters
+            userTable.ajax.reload();
+        }
     });
 
     $('#resetFilterBtn').click(() => {
         resetFilterForm();
-        table.ajax.reload();
+        if (userTable) {
+            userTable.ajax.reload();
+        }
     });
 
     $('#exportBtn').click(() => {
@@ -168,6 +234,7 @@ function bindFilterActions() {
         window.location.href = `/UserManagement/DownloadUsers?${query}`;
     });
 }
+
 function UserDetail(id) {
     EditResetModal(id, 'modal', 'modalContent', 'UserManagement', 'InitializeData', '_UserDetails', 'userdetail', 'USER DETAIL', 'modalLabel')
 }

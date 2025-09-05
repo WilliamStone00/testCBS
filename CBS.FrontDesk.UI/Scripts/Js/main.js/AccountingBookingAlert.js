@@ -7,6 +7,7 @@
 
         init: function () {
             this.checkConfiguration();
+            this.checkFeeOrInComeConfiguration();
             this.startPeriodicCheck();
             this.bindEvents();
         },
@@ -23,6 +24,27 @@
 
             $.ajax({
                 url: '/AccountingConfiguration/CheckAccountConfigurationStatus',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                    if (response.success && response.hasUnconfiguredProducts) {
+                        self.showBanner(response.unconfiguredCount);
+                    } else {
+                        self.hideBanner();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.warn('Configuration check failed:', error);
+                }
+            });
+        },
+
+        checkFeeOrInComeConfiguration: function () {
+            var self = this;
+
+            $.ajax({
+                url: '/AccountingConfiguration/CheckFeeOrIncomeStatus',
                 type: 'GET',
                 dataType: 'json',
                 success: function (response) {
