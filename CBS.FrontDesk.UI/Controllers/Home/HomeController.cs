@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers
 {
-    //[CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
     //[SessionLockCheck]
     public class HomeController : BaseController
     {

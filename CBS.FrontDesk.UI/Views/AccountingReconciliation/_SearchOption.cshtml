@@ -1,0 +1,117 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.TransactionTrackerConfiguration
+ 
+ 
+    @*<fieldset class="fieldset">*@
+    <div class="card-body bg-light">
+        @using (Html.BeginForm("", ""))
+        {
+            <input type="hidden" name="ServiceOption" value="SearchAndFilter" id="ServiceOption" />
+            <input type="hidden" name="Action" value="insert" id="Action" />
+            <div class="row justify-content-center mt-2 gy-4">
+                @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
+                {
+                    <!-- Branch Dropdown -->
+                    <div class="col-md-4 mb-3">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(
+                                model => model.QueryModel.BranchId,
+                                new SelectList(ViewBag.Branches ?? "", "Text", "Value"),
+                                new { @class = "form-control select2", @search = "true" }
+                            )
+                            @Html.ValidationMessageFor(model => model.QueryModel.BranchId, "", new { @class = "text-danger" })
+                            <label> Select Branch Office</label>
+                        </div>
+                    </div>
+              
+                    <div class="col-md-4 mb-sm-4">
+                        <div class="form-floating form-floating-outline mb-4">
+                            @Html.TextBoxFor(model => model.QueryModel.FromDate, new
+                            {
+                                @class = "form-control",
+                                type = "datetime-local",
+                                id = "fromDate"
+                            })
+                            <label for="fromDate">FromDate</label>
+                            @Html.ValidationMessageFor(model => model.QueryModel.FromDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <!-- To Date -->
+                    <div class="col-md-4 mb-sm-4">
+                        <div class="form-floating form-floating-outline mb-4">
+                            @Html.TextBoxFor(model => model.QueryModel.ToDate, new
+                            {
+                                @class = "form-control",
+                                type = "datetime-local",
+                                id = "toDate"
+                            })
+                            <label for="toDate">ToDate</label>
+                            @Html.ValidationMessageFor(model => model.QueryModel.ToDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                }
+                else
+                {
+             
+                    <!-- From Date -->
+                    <div class="col-md-6 mb-sm-6">
+                        <div class="form-floating form-floating-outline mb-4">
+                            @Html.TextBoxFor(model => model.QueryModel.FromDate, new
+                            {
+                                @class = "form-control",
+                                type = "datetime-local",
+                                id = "fromDate"
+                            })
+                            <label for="fromDate">FromDate</label>
+                            @Html.ValidationMessageFor(model => model.QueryModel.FromDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <!-- To Date -->
+                    <div class="col-md-6 mb-sm-6">
+                        <div class="form-floating form-floating-outline mb-4">
+                            @Html.TextBoxFor(model => model.QueryModel.ToDate, new
+                            {
+                                @class = "form-control",
+                                type = "datetime-local",
+                                id = "toDate"
+                            })
+                            <label for="toDate">ToDate</label>
+                            @Html.ValidationMessageFor(model => model.QueryModel.ToDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+
+                <!-- Hidden Input -->
+                <input type="hidden" id="selectedBranchID" value="" />
+
+                <!-- Submit Button   onclick="Search('ManuallyJournalEntry','myDataTable','_PendingEntries','datalistingview_pendingEntries','FilteringOption')"-->
+                <div class="col-md-12 text-end mt-3">
+                    <a href="javascript:void(0);"
+                       class="btn btn-primary d-inline-flex align-items-center gap-2"
+                       id="print_btn"
+                       onclick="Search('AccountingReconciliation','myDataTable','_ReconciliationData','datalistingview_reconciliation','FilteringBankDepositOption')">
+                        <i class="mdi mdi-magnify"></i>
+                        Search Incompleted Transactions
+                    </a>
+                </div>
+
+            </div>
+
+
+        }
+
+    </div>
+    @*</fieldset>*@
+
+ 
+
+
+
+
+
+
+
+
+

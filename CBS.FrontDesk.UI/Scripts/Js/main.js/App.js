@@ -1797,7 +1797,7 @@ function LoadDataTableNewVersion(controller, tableID, action, KEY, partialView, 
         success: function (data) {
             $('#' + diveToloadtheData).html(data);
             console.log($('#' + tableID).length);
-            LoadDGVT(tableID);
+            LoadDT(tableID);
         },
         error: function (err) {
             appalert(err.statusText, 1, 3);

@@ -67,7 +67,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal InterestRate { get; set; }
         public decimal VatRate { get; set; }
         public string LoanId { get; set; }
-
+        public string ApprovedBy { get; set; }
+        public string RejectedBy { get; set; }
         public int NumberOfRepayment { get; set; }
         public string RepaymentCircle { get; set; }
         public string LoanType { get; set; }

@@ -43,6 +43,11 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public decimal TotalSubcriptionAmount { get; set; }
         public string EventName { get; set; }
     }
+    public class GetCustomerBtCategoryAndBranchQUery
+    {
+        public string CustomerCategory { get; set; }
+        public string BranchId { get; set; }
+    }
     public class CustomerLightDto
     {
         public string CustomerId { get; set; }
@@ -62,7 +67,7 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string BankId { get; set; }
         public string Language { get; set; }
         public bool Active { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime? CreateDate { get; set; }
         public string AccountConfirmationNumber { get; set; }
         public string CustomerTypeName { get; set; }
         public string AgeGroup { get; set; }

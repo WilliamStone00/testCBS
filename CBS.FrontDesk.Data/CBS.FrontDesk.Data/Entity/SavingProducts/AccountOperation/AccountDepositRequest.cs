@@ -161,6 +161,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public List<LoanToBeRefunded> LoanToBeRefundeds { get; set; } = new List<LoanToBeRefunded>();
         public DateTime? AccountingDate { get; set; }
         public string AccountNumber { get; set; }
+        public string MobileMoneyPath { get; set; }
         public decimal Fee { get; set; }
         public string CustomerId { get; set; }
         public string ProductId { get; set; }
@@ -213,6 +214,9 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string ReceiverAddress { get; set; }
         public decimal RemittanceAmount { get; set; }
         public DateTime? RemittanceDate { get; set; }
+        public string BranchId { get; set; }
+        public bool IsMobileMoneyOperation { get; set; }
+        public string NoneMemberMobileReference { get; set; }
 
         public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
         public Depositer Depositer { get; set; } = new Depositer();
