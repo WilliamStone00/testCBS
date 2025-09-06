@@ -1088,29 +1088,9 @@
       <DependentUpon>GlobalAlertProfile.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Create.Designer.cs" />
-    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Create1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AndriodAppVersioning_Create.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Data.Designer.cs" />
-    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Data1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AndriodAppVersioning_Data.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Index.Designer.cs" />
-    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Index1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AndriodAppVersioning_Index.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\AndriodAppVersioning\AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.Designer.cs" />
-    <Compile Include="App_GlobalResources\AndriodAppVersioning\AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\BankingOperations\GlobalBankingOperations.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2211,6 +2191,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalWithdrawalNotification.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
     <Compile Include="Controllers\Accounting\AccountBalanceInitializationController.cs" />
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />

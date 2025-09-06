@@ -8,8 +8,7 @@
 }
 
 <form id="notificationConfigForm" onsubmit="return false;">
-
-     Hidden fields to store and send back key identifiers 
+   
     @Html.HiddenFor(m => m.Id)
     @Html.HiddenFor(m => m.IsCentralized)
     @Html.HiddenFor(m => m.BranchId)
@@ -24,7 +23,7 @@
             </div>
         </div>
 
-         Display the placeholder information 
+
         @if (typeDefinition != null)
         {
             <div class="alert alert-info">
@@ -42,25 +41,22 @@
             </div>
         }
 
-         Description Textbox 
-        <div class="form-floating mb-3">
-            @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Description" })
-            <label>Template Description</label>
-        </div>
-
-         Template Body Text Area 
         <div class="form-floating">
             @Html.TextAreaFor(m => m.TemplateBody, new { @class = "form-control", placeholder = "Template Body", style = "height: 200px;" })
             @Html.ValidationMessageFor(m => m.TemplateBody, "", new { @class = "text-danger" })
             <label>Template Body</label>
         </div>
 
+        <div class="form-floating mb-3">
+            @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Description" })
+            <label>Template Description</label>
+        </div>
+
+
         <hr />
         <div class="d-flex justify-content-end align-items-center">
-             Reset button to revert unsaved changes 
             <button type="button" id="resetConfigBtn" class="btn btn-outline-secondary me-2">Reset</button>
 
-             Only show the delete button if the configuration already exists (has an ID) 
             @if (!string.IsNullOrWhiteSpace(Model.Id))
             {
                 <button type="button" id="deleteConfigBtn" class="btn btn-danger me-2">Delete Template</button>

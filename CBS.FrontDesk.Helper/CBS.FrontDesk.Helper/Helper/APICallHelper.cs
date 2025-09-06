@@ -1225,5 +1225,43 @@ namespace CBS.FrontDesk.Helper
         //public static string ReExecutedFailedEntry = "/api/v1/AccountingEntries/ReExecutedFailedEntry";
 
         //public static string GetTransactionTrackerPaginated = "/api/v1/AccountingEntries/TransactionTrackers/SearchByAnyCriterialQuery";
+
+        // ---------------- CHEQUE BOOK CATEGORY ----------------
+        public static string GetAllChequeBookCategories = "/api/v1/ChequeBookCategory";
+        public static string GetChequeBookCategoryById = "/api/v1/ChequeBookCategory/{id}";
+        public static string CreateChequeBookCategory = "/api/v1/ChequeBookCategory";
+        public static string UpdateChequeBookCategory = "/api/v1/ChequeBookCategory/{id}";
+        public static string DeactivateChequeBookCategory = "/api/v1/ChequeBookCategory/{id}/deactivate";
+
+        // ---------------- GENERIC CRUD ----------------
+        public static string GetAll = "/api/v1/{entity}";
+        public static string GetById = "/api/v1/{entity}/{id}";
+        public static string Create = "/api/v1/{entity}";
+        public static string Update = "/api/v1/{entity}/{id}";
+        public static string Delete = "/api/v1/{entity}/{id}";
+
+        // ---------------- FEE CONFIG ----------------
+        public static string GetAllFeeConfigs = "/api/v1/FeeConfig";
+        public static string GetFeeTypes = "/api/v1/FeeConfig/types";
+        public static string GetFeeConfigById = "/api/v1/FeeConfig/{id}";
+        public static string CreateFeeConfig = "/api/v1/FeeConfig";
+        public static string UpdateFeeConfig = "/api/v1/FeeConfig/{id}";
+        public static string DeleteFeeConfig = "/api/v1/FeeConfig/{id}";
+
+        // ---------------- NOTIFICATIONS ----------------
+        public static string GetAllnot = "/api/v1/Notification/types";
+        public static string GetNotificationTypes = "/api/v1/Notification";
+        public static string Createnot = "/api/v1/Notification";
+        public static string Updatenot = "/api/v1/Notification/{id}";
+        public static string Deletenot = "/api/v1/Notification/{id}";
+
+        // ---------------- MANUAL ENTRY & FILES ----------------
+        public static string ManualEntryUpload = "/api/v1/ManualEntry/upload";
+        public static string GetFileById = "/api/v1/ManualEntry/file/{id}";
+        public static string GetAllFiles = "/api/v1/ManualEntry/files";
+        public static string DeleteManualEntryFile = "/api/v1/ManualEntry/file/{id}";
+        public static string GetFilesByStatus = "/api/v1/ManualEntry/files/status/{status}";
+        public static string ValidateFile = "/api/v1/ManualEntry/validate/{id}";
+
     }
 }
