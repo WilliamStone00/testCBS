@@ -1226,6 +1226,8 @@ namespace CBS.FrontDesk.Helper
 
         //public static string GetTransactionTrackerPaginated = "/api/v1/AccountingEntries/TransactionTrackers/SearchByAnyCriterialQuery";
 
+        //*************************** CHEQUE BOOK ******************************
+
         // ---------------- CHEQUE BOOK CATEGORY ----------------
         public static string GetAllChequeBookCategories = "/api/v1/ChequeBookCategory";
         public static string GetChequeBookCategoryById = "/api/v1/ChequeBookCategory/{id}";
@@ -1255,13 +1257,26 @@ namespace CBS.FrontDesk.Helper
         public static string Updatenot = "/api/v1/Notification/{id}";
         public static string Deletenot = "/api/v1/Notification/{id}";
 
-        // ---------------- MANUAL ENTRY & FILES ----------------
-        public static string ManualEntryUpload = "/api/v1/ManualEntry/upload";
-        public static string GetFileById = "/api/v1/ManualEntry/file/{id}";
-        public static string GetAllFiles = "/api/v1/ManualEntry/files";
-        public static string DeleteManualEntryFile = "/api/v1/ManualEntry/file/{id}";
-        public static string GetFilesByStatus = "/api/v1/ManualEntry/files/status/{status}";
-        public static string ValidateFile = "/api/v1/ManualEntry/validate/{id}";
+        //************************** END CHEQUE BOOK *******************************
 
+        //*************************** MANUAL DAILLY COLLECTIONS ************************ 
+
+        // ---------------- MANUAL ENTRY & FILES ----------------
+        //uploadfile
+        public static string ManualEntryUpload = "/api/v1/ManualEntryCollectorUpload";
+        //getfile
+        public static string GetFileById = "/api/v1/ManualEntryCollector/ViewFileByFileUploadId/{FileUploadId}";
+        //getallfiles
+        public static string GetAllFiles = "/api/v1/ManualEntryCollector/GetAllFileUploads/All";
+        public static string DeleteManualEntryFile = "/api/v1/ManualEntryCollector/DeleteUploadedFile/{fileId}";
+        public static string GetFilesByStatus = "/api/v1/ManualEntryCollector/GetAllFileUploadsByProcessingStatus/{ProcessingStatus}";
+        public static string ValidateFile = "/api/v1/ManualEntryCollector/ApproveUploadedFile";
+        public static string ExtractUploadedFile = "/api/v1/ManualEntryCollector/ExtractUploadedFile";
+        public static string ApproveUploadedFile = "/api/v1/ManualEntryCollector/ApproveUploadedFile";
+        public static string ReviewUploadedFile = "/api/v1/ManualEntryCollector/ReviewUploadedFile";
+        public static string DenyUploadedFile = "/api/v1/ManualEntryCollector/RejectUploadedFile";
+        public static string GetFileUploadsForDataTable = "/api/v1/ManualEntryCollector/FileUpload/data-table";
+
+        //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
     }
 }

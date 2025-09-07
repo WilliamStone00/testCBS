@@ -2229,6 +2229,7 @@
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\FeeConfiguration\FeeConfigController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\NotificationConfiguration\NotificationConfigController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectionDashboardController.cs" />
+    <Compile Include="Controllers\DailyCollectorManagement\FileValidationController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\ManualDailyCollectionController.cs" />
     <Compile Include="Controllers\Loan\LoanAdjustmentP\LoanAdjustmentConsoleController.cs" />
     <Compile Include="Controllers\MemberAdjustmentConsole\MemberAdjustmentConsoleController.cs" />
@@ -10818,6 +10819,8 @@
     <Content Include="Views\AccountingReconciliation\Index.cshtml" />
     <Content Include="Views\AccountingReconciliation\_ReconciliationData.cshtml" />
     <Content Include="Views\AccountingReconciliation\_SearchOption.cshtml" />
+    <Content Include="Views\FileValidation\Index.cshtml" />
+    <Content Include="Views\FileValidation\_ActionForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

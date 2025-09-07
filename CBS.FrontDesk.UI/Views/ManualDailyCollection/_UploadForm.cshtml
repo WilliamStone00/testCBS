@@ -35,16 +35,22 @@
                 </div>
                
             </div>
-            <div class="row g-3 mb-3">                
-                   
+            <div class="row g-3 mb-3">
+
                 <div class="col-md-12">
 
                     <label for="collector">👤 @ChequeManagements.sellectdailyCollector</label>
-                    @Html.DropDownListFor(m => m.CollectorId,new SelectList((IEnumerable<SelectListItem>)ViewBag.collectors ?? new List<SelectListItem>(), "Value", "Text"),"--- Select Daily Collector ---",     new { @class = "form-control select2", @id = "CollectorxCollectorId" } )
+                    @Html.DropDownListFor(m => m.CollectorId, new SelectList((IEnumerable<SelectListItem>)ViewBag.collectors ?? new List<SelectListItem>(), "Value", "Text"), "--- Select Daily Collector ---", new { @class = "form-control select2", @id = "CollectorxCollectorId" })
 
                     @Html.ValidationMessageFor(m => m.CollectorId, "", new { @class = "text-danger" })
 
-                </div>               
+                </div>
+
+                @*<div class="col-md-6">
+                    <label class="form-label">Collector (User)</label>
+                    @Html.DropDownListFor(m => m.CollectorId, (IEnumerable<SelectListItem>)ViewBag.Collectors, "--- Select Collector ---", new { @class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.CollectorId, "", new { @class = "text-danger" })
+                </div>*@
             </div>
 
             <!-- File upload input -->

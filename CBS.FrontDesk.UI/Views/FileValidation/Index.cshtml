@@ -1,0 +1,113 @@
+﻿@* Location: ~/Views/FileValidation/Index.cshtml *@
+@{ ViewBag.Title = "File Validation Queue"; }
+
+@Html.AntiForgeryToken()
+
+<!-- ... (Page Header and Filter Section as designed before) ... -->
+<div class="card shadow p-3 mb-4">
+    <div class="row align-items-end">
+        <div class="col-md-4">
+            <label for="statusFilter" class="form-label fw-bold">Filter by Status</label>
+            @Html.DropDownList("StatusFilter", (SelectList)ViewBag.Statuses, "Pending", new { @class = "form-control", id = "statusFilter" })
+        </div>
+        <!-- ... (Date filters can be added here) ... -->
+        <div class="col-md-2">
+            <button id="applyFilterBtn" class="btn btn-primary w-100">Filter</button>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow p-3">
+    <table id="filesTable" class="table table-hover" style="width:100%">
+        <thead>
+            <tr><th>File Name</th><th>Branch</th><th>Uploaded By</th><th>Uploaded On</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+    </table>
+</div>
+
+<!-- Modal for forms -->
+<div class="modal fade" id="actionModal" ...>...</div>
+
+@section Scripts {
+  <script>
+      // Location: ~/Scripts/Js/YourPath/FileValidation.js
+
+      $(document).ready(function () {
+          var dataTable = initializeFilesDataTable();
+
+          $('#applyFilterBtn').on('click', function () {
+              dataTable.ajax.reload();
+          });
+
+          // Delegated handler for the form inside the modal
+          $(document).on('submit', '#actionForm', function (e) {
+              e.preventDefault();
+              var form = $(this);
+              if (!form.valid()) return;
+
+              $.ajax({
+                  url: form.attr('action'),
+                  type: 'POST',
+                  data: form.serialize(),
+                  success: function (response) {
+                      if (response.success) {
+                          appalert(response.message, 1, 1);
+                          $('#actionModal').modal('hide');
+                          dataTable.ajax.reload();
+                      } else {
+                          appalert(response.message, 2, 1);
+                      }
+                  },
+                  error: function () { appalert('An error occurred.', 0, 1); }
+              });
+          });
+      });
+
+      function initializeFilesDataTable() {
+          return $('#filesTable').DataTable({
+              processing: false,
+              serverSide: true,
+              ajax: {
+                  url: '/FileValidation/LoadFiles', // Calls the new controller
+                  type: 'POST',
+                  data: function (d) {
+                      // This is where you would build the DTO to send to the server
+                      // For now, let's keep it simple
+                      d.StatusFilter = $('#statusFilter').val();
+                  }
+              },
+              columns: [
+                  { data: 'fileName' },
+                  { data: 'branchName' },
+                  { data: 'uploadedBy' },
+                  { data: 'uploadedOn' },
+                  { data: 'status' },
+                  { data: 'actions', orderable: false }
+              ]
+          });
+      }
+
+      // Global function called by the onchange event in the rendered HTML
+      function handleAction(selectElement) {
+          var selectedOption = $(selectElement).find('option:selected');
+          var action = selectedOption.val();
+          var fileId = selectedOption.data('fileid');
+
+          $(selectElement).prop('selectedIndex', 0); // Reset dropdown
+          if (!action) return;
+
+          if (action === 'details') {
+              window.location.href = '/ManualDailyCollection/Details/' + fileId;
+          } else if (action === 'delete') {
+              // ... your delete confirmation logic ...
+          } else {
+              // Load the form for 'validate', 'review', or 'deny'
+              var url = `/FileValidation/GetActionForm?fileUploadId=${fileId}&mode=${action}`;
+              $('#actionModalBody').load(url, function () {
+                  $('#actionModal').modal('show');
+                  $.validator.unobtrusive.parse('#actionForm');
+              });
+          }
+      }
+    </script>
+}

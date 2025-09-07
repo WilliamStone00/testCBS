@@ -2,111 +2,112 @@
 @using Resources
 
 <fieldset class="fieldset-custom">
-    <div class="card-header bg-white border-0">-->
+    <div class="card-header bg-white border-0">
+        -->
         <legend class="legend-custom">@ChequeManagements.FileD: @Model.FileUploadId</legend>-->
     </div>
+    <div class="row g-2">
 
-    
-    <div class="row p-2">
-         File Upload ID 
-        <div class="col-sm-6 col-lg-3 mb-3">
-            <div class="card card-border-shadow-primary h-100" style="padding: 0.5rem;">
-                <div class="card-body p-2">
-                    <div class="d-flex align-items-center mb-1 pb-1">
-                        <div class="avatar me-1">
-                            <span class="avatar-initial rounded bg-label-primary">
-                                <i class="mdi mdi-file mdi-16px"></i>
-                            </span>
+        @*<div class="row p-2">
+             File Upload ID
+            <div class="col-sm-6 col-lg-3 mb-3">
+                <div class="card card-border-shadow-primary h-100" style="padding: 0.5rem;">
+                    <div class="card-body p-2">
+                        <div class="d-flex align-items-center mb-1 pb-1">
+                            <div class="avatar me-1">
+                                <span class="avatar-initial rounded bg-label-primary">
+                                    <i class="mdi mdi-file mdi-16px"></i>
+                                </span>
+                            </div>
+                            <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">
+                                @Model.FileUploadId
+                            </h5>
                         </div>
-                        <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">
-                            @Model.FileUploadId
-                        </h5>
+                        <p class="mb-0 text-heading" style="font-size: 0.85rem;">@ChequeManagements.FileD</p>
                     </div>
-                    <p class="mb-0 text-heading" style="font-size: 0.85rem;">@ChequeManagements.FileD</p>
                 </div>
-            </div>
-        </div>
+            </div>*@
 
-         
-        <div class="col-sm-6 col-lg-3 mb-3">
-            <div class="card card-border-shadow-warning h-100" style="padding: 0.5rem;">
-                <div class="card-body p-2">
-                    <div class="d-flex align-items-center mb-1 pb-1">
+
+
+        <!-- g-2 = reduced spacing -->
+        <div class="col-6 col-md-3">
+            <div class="card card-border-shadow-warning h-100 p-2">
+                <div class="card-body p-2 text-center">
+                    <div class="d-flex align-items-center mb-1 pb-1 justify-content-center">
                         <div class="avatar me-1">
                             <span class="avatar-initial rounded bg-label-warning">
-                                <i class="mdi mdi-upload mdi-16px"></i>
+                                <i class="mdi mdi-upload mdi-14px"></i>
                             </span>
                         </div>
-                        <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">
+                        <h6 class="ms-1 mb-0" style="font-size: 0.95rem;">
                             @Model.UploadedBy
-                        </h5>
+                        </h6>
                     </div>
-                    <p class="mb-0 text-heading" style="font-size: 0.85rem;">@ChequeManagement.UPBY</p>
+                    <p class="mb-0 text-muted" style="font-size: 0.75rem;">@ChequeManagements.UPBY</p>
                 </div>
             </div>
         </div>
 
-         
-        <div class="col-sm-6 col-lg-3 mb-3">
-            <div class="card card-border-shadow-info h-100" style="padding: 0.5rem;">
-                <div class="card-body p-2">
-                    <div class="d-flex align-items-center mb-1 pb-1">
+        <div class="col-6 col-md-3">
+            <div class="card card-border-shadow-info h-100 p-2">
+                <div class="card-body p-2 text-center">
+                    <div class="d-flex align-items-center mb-1 pb-1 justify-content-center">
                         <div class="avatar me-1">
                             <span class="avatar-initial rounded bg-label-info">
-                                <i class="mdi mdi-office-building mdi-16px"></i>
+                                <i class="mdi mdi-office-building mdi-14px"></i>
                             </span>
                         </div>
-                        <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">
+                        <h6 class="ms-1 mb-0" style="font-size: 0.95rem;">
                             @Model.BranchName
-                        </h5>
+                        </h6>
                     </div>
-                    <p class="mb-0 text-heading" style="font-size: 0.85rem;">@ChequeManagements.Branch</p>
+                    <p class="mb-0 text-muted" style="font-size: 0.75rem;">@ChequeManagements.Branch</p>
                 </div>
             </div>
         </div>
 
-   
-        <div class="col-sm-6 col-lg-3 mb-3">
-            <div class="card card-border-shadow-success h-100" style="padding: 0.5rem;">
-                <div class="card-body p-2">
-                    <div class="d-flex align-items-center mb-1 pb-1">
+        <div class="col-6 col-md-3">
+            <div class="card card-border-shadow-success h-100 p-2">
+                <div class="card-body p-2 text-center">
+                    <div class="d-flex align-items-center mb-1 pb-1 justify-content-center">
                         <div class="avatar me-1">
                             <span class="avatar-initial rounded bg-label-success">
-                                <i class="mdi mdi-account-group mdi-16px"></i>
+                                <i class="mdi mdi-account-group mdi-14px"></i>
                             </span>
                         </div>
-                        <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">
+                        <h6 class="ms-1 mb-0" style="font-size: 0.95rem;">
                             @Model.TotalMembers
-                        </h5>
+                        </h6>
                     </div>
-                    <p class="mb-0 text-heading" style="font-size: 0.85rem;">@ChequeManagements.TM</p>
+                    <p class="mb-0 text-muted" style="font-size: 0.75rem;">@ChequeManagements.TM</p>
                 </div>
             </div>
         </div>
 
-       
-        <div class="col-sm-6 col-lg-3 mb-3">
-            <div class="card card-border-shadow-danger h-100" style="padding: 0.5rem;">
-                <div class="card-body p-2">
-                    <div class="d-flex align-items-center mb-1 pb-1">
+        <div class="col-6 col-md-3">
+            <div class="card card-border-shadow-danger h-100 p-2">
+                <div class="card-body p-2 text-center">
+                    <div class="d-flex align-items-center mb-1 pb-1 justify-content-center">
                         <div class="avatar me-1">
                             <span class="avatar-initial rounded bg-label-danger">
-                                <i class="mdi mdi-cash mdi-16px"></i>
+                                <i class="mdi mdi-cash mdi-14px"></i>
                             </span>
                         </div>
-                        <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">
+                        <h6 class="ms-1 mb-0" style="font-size: 0.95rem;">
                             @string.Format("{0:N2}", Model.TotalAmount)
-                        </h5>
+                        </h6>
                     </div>
-                    <p class="mb-0 text-heading" style="font-size: 0.85rem;">@ChequeManagements.TA</p>
+                    <p class="mb-0 text-muted" style="font-size: 0.75rem;">@ChequeManagements.TA</p>
                 </div>
             </div>
         </div>
     </div>
+
 
     <p></p>
 
-   
+
     <div class="table-responsive">
         <table class="table table-striped table-bordered" style="width:100%">
             <thead>
@@ -142,11 +143,11 @@
 
     <div class="d-flex justify-content-end mt-3">
         @*<a href="#"
-           onclick="DeleteRecordDataTable('ManualDailyCollection', '@Model.FileUploadId', 'myDataTable', '_FileList', 0, 'mainWorkspace', null, 'list')"
-           class="btn btn-danger border-4 border-white text-white fw-bold px-3 py-1"
-           data-toggle="tooltip"
-           title="Delete Range">
-            @ChequeManagements.delete
-        </a>*@
+               onclick="DeleteRecordDataTable('ManualDailyCollection', '@Model.FileUploadId', 'myDataTable', '_FileList', 0, 'mainWorkspace', null, 'list')"
+               class="btn btn-danger border-4 border-white text-white fw-bold px-3 py-1"
+               data-toggle="tooltip"
+               title="Delete Range">
+                @ChequeManagements.delete
+            </a>*@
     </div>
 </fieldset>

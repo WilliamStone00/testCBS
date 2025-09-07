@@ -94,7 +94,7 @@
     @* This line includes jQuery validation scripts, which is good practice *@
     @Scripts.Render("~/bundles/jqueryval")
 
-    <script>
+    @*<script>
 
         // ===================================================================
         //
@@ -371,7 +371,161 @@
 
         }(jQuery));
 
-    </script>
+    </script>*@
 
+    <script>
+
+        // Location: ~/Scripts/Js/YourPath/ManualDailyCollection.js
+
+        (function ($) {
+            let currentFileUploadId = null; // Store the ID of the last successful upload
+
+            function initialize() {
+                $('#mainWorkspace').on('submit', '#manualUploadForm', handleUploadSubmit);
+
+                // Delegated event handlers for the dynamic buttons in the preview
+                $('#uploadResultContainer').on('click', '#resetPreviewBtn', resetPreview);
+                $('#uploadResultContainer').on('click', '#extractFileBtn', extractFile);
+            }
+
+            function handleUploadSubmit(e) {
+                e.preventDefault();
+                const form = this;
+                const $form = $(form);
+                const actionUrl = $form.attr('action');
+                const formData = new FormData(form);
+                const $submitButton = $form.find('button[type="submit"]');
+                const $resultContainer = $('#uploadResultContainer');
+
+                if (!$form.valid()) return false;
+
+                alertify.confirm("Confirmation", "Are you sure you want to upload this file?", function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: actionUrl,
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        beforeSend: function () {
+                            $submitButton.prop('disabled', true).html('Uploading...');
+                            $resultContainer.slideUp().html('');
+                        },
+                        success: function (response) {
+                            if (response.success && response.data) {
+                                appalert(response.message || "File processed successfully!", 1, 1);
+
+                                // Store the ID for the Extract button
+                                currentFileUploadId = response.data.FileUploadId;
+
+                                const previewHtml = buildPreviewHtml(response.data);
+                                $resultContainer.html(previewHtml).slideDown();
+
+                                // Initialize a client-side DataTable
+                                $('#previewDetailsTable').DataTable({
+                                    data: response.data.Details || [],
+                                    columns: [
+                                        { data: "MemberReference", title: "Member Ref." },
+                                        { data: "MemberName", title: "Member Name" },
+                                        { data: "DailyCollectorName", title: "Collector Name" },
+                                        { data: "MemberBranchName", title: "Member Branch" },
+                                        { data: "Amount", title: "Amount", className: "text-end", render: $.fn.dataTable.render.number(',', '.', 2) }
+                                    ],
+                                    responsive: true,
+                                    pageLength: 5,
+                                    lengthMenu: [5, 10, 25, 50]
+                                });
+
+                                form.reset();
+                                $form.find('.select2').val(null).trigger('change');
+                            } else {
+                                appalert(response.message || "Upload Failed.", 4, 1);
+                            }
+                        },
+                        error: function (err) { appalert(err.statusText || "An error occurred.", 4, 1); },
+                        complete: function () {
+                            $submitButton.prop('disabled', false).html('<i class="mdi mdi-cloud-upload-outline me-1"></i> Upload');
+                        }
+                    });
+                }, function () { appalert('Upload cancelled.', 3, 1); });
+            }
+
+            function buildPreviewHtml(data) {
+                const formatCurrency = (num) => (num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                return `
+            <fieldset class="fieldset-custom">
+                <legend class="legend-custom">File Preview: ${data.FileUploadId || 'N/A'}</legend>
+                <div class="row p-2">
+                    <div class="col-md-3"><div class="card p-2">Uploaded By: <strong>${data.UploadedBy || ''}</strong></div></div>
+                    <div class="col-md-3"><div class="card p-2">Branch: <strong>${data.BranchName || ''}</strong></div></div>
+                    <div class="col-md-3"><div class="card p-2">Total Members: <strong>${data.TotalMembers || 0}</strong></div></div>
+                    <div class="col-md-3"><div class="card p-2">Total Amount: <strong>${formatCurrency(data.TotalAmount)}</strong></div></div>
+                </div>
+                <div class="table-responsive mt-3">
+                    <table id="previewDetailsTable" class="table table-striped table-bordered" style="width:100%"></table>
+                </div>
+                <div id="previewActionsContainer" class="d-flex justify-content-end mt-3">
+                    <button type="button" id="resetPreviewBtn" class="btn btn-outline-secondary me-2">Reset</button>
+                    <button type="button" id="extractFileBtn" class="btn btn-success">Extract File</button>
+                </div>
+            </fieldset>`;
+            }
+
+            function resetPreview() {
+                const $resultContainer = $('#uploadResultContainer');
+                const fileIdToDelete = currentFileUploadId;
+
+                if (!fileIdToDelete) {
+                    $resultContainer.slideUp().html('');
+                    return;
+                }
+
+                alertify.confirm("Confirm Reset", "This will delete the uploaded file from the server. Are you sure?", function () {
+                    var token = $('input[name="__RequestVerificationToken"]').val();
+                    $.ajax({
+                        url: '/ManualDailyCollection/DeleteFile',
+                        type: 'POST',
+                        data: { fileUploadId: fileIdToDelete, __RequestVerificationToken: token },
+                        success: function (response) {
+                            if (response.success) {
+                                appalert("Preview cleared and file deleted.", 1, 1);
+                                $resultContainer.slideUp().html('');
+                                currentFileUploadId = null;
+                            } else {
+                                appalert(response.message || 'Could not delete file.', 4, 1);
+                            }
+                        },
+                        error: function () { appalert('Error deleting file.', 4, 1); }
+                    });
+                }, function () { /* cancelled */ });
+            }
+
+            function extractFile() {
+                if (!currentFileUploadId) {
+                    appalert('No file to extract.', 3, 1);
+                    return;
+                }
+                var token = $('input[name="__RequestVerificationToken"]').val();
+                $.ajax({
+                    url: '/ManualDailyCollection/ExtractFile',
+                    type: 'POST',
+                    data: { fileUploadId: currentFileUploadId, __RequestVerificationToken: token },
+                    success: function (response) {
+                        if (response.success) {
+                            appalert(response.message || "File extracted successfully!", 1, 1);
+                            // Clear the preview after successful extraction
+                            $('#uploadResultContainer').slideUp().html('');
+                            currentFileUploadId = null;
+                        } else {
+                            appalert(response.message || "Extraction failed.", 4, 1);
+                        }
+                    },
+                    error: function () { appalert('Error during extraction.', 4, 1); }
+                });
+            }
+
+            $(document).ready(initialize);
+        }(jQuery));
+
+    </script>
 
 }
