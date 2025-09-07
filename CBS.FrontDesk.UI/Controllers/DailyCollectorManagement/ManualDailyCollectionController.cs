@@ -319,7 +319,6 @@
 //    }
 
 //}
-// Location: ~/Controllers/DailyCollectorManagement/ManualDailyCollectionController.cs
 
 using CBS.BusinessService.Config;
 using CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Service;
@@ -381,7 +380,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                 // This handles the "Upload New File" button click.
                 await Loader();
                 // It returns the _UploadForm.cshtml partial.
-                return PartialView(partialView, new ManualCollectionUploadViewModel());
+                return PartialView(partialView, new FileUploadResponse());
             }
             else // This defaults to the "details" path
             {

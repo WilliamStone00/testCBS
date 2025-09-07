@@ -29,9 +29,12 @@
                         <td>@file.TotalMembers</td>
                         <td>@string.Format("{0:N2}", file.TotalAmount)</td>
                         <td class="text-center">
-                            <!-- These call your generic JS functions to load the details or delete -->
-                            <a href="#" onclick="AddORUpdateGen('@file.FileUploadId', 'mainWorkspace', '_FileDetails', 'details', 'ManualDailyCollection')" class="mr-2">Details</a>
-                            <a href="#" onclick="DeleteRecordDataTable('ManualDailyCollection', '@file.FileUploadId', 'filesDataTable', '_FileList', 0, 'mainWorkspace', null, 'list')" class="mr-2 text-danger">Delete</a>
+                            <a href="#"
+                               onclick="AddORUpdateGen('@file.FileUploadId', 'mainWorkspace', '_FileDetails', 'details', 'ManualDailyCollection')"
+                               class="text-success" style="margin-right:6px;">Details</a>
+                            <a href="#"
+                               onclick="DeleteRecordDataTable('ManualDailyCollection', '@file.FileUploadId', 'filesDataTable', '_FileList', 0, 'mainWorkspace', null, 'list')"
+                               class="text-danger">Delete</a>
                         </td>
                     </tr>
                 }
@@ -40,10 +43,32 @@
     </div>
 </fieldset>
 
+<style>
+    /* Force compact Actions column */
+    #filesDataTable th:last-child,
+    #filesDataTable td:last-child {
+        width: 100px !important;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    /* Optional: make whole table more compact */
+    #filesDataTable td,
+    #filesDataTable th {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+</style>
+
 <script>
-    // This small script runs immediately after this partial view is loaded.
-    // It turns the static HTML table into an interactive jQuery DataTable.
     $(document).ready(function () {
-        $('#filesDataTable').DataTable();
+        $('#filesDataTable').DataTable({
+            autoWidth: false,
+            scrollX: false,
+            columnDefs: [
+                { width: "100px", targets: -1 }, // last column (Actions)
+                { className: "text-center", targets: -1 }
+            ]
+        });
     });
 </script>

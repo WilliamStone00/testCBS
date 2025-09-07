@@ -9,22 +9,20 @@ namespace CBS.FrontDesk.Data.Entity.ManualDailycollection
 {
     public class CollectorDto
     {
-        [JsonProperty("collectorId")]
-        public string CollectorId { get; set; }
+        [JsonProperty("customerId")]
+        public string CustomerId { get; set; }
 
-        [JsonProperty("collectorName")]
-        public string CollectorName { get; set; }
+        [JsonProperty("fullName")]
+        public string FullName { get; set; }
 
-        [JsonProperty("user")]
-        public UserDto User { get; set; }
+        [JsonProperty("userId")]
+        public string UserId { get; set; }
+
+        // Optional
+        [JsonProperty("branchId")]
+        public string BranchId { get; set; }
     }
 
-    public class UserDto
-    {
-        [JsonProperty("id")]
-        public string Id { get; set; }
 
-        [JsonProperty("userName")]
-        public string UserName { get; set; }
-    }
+
 }

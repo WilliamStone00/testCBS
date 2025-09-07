@@ -10792,11 +10792,9 @@
     <Content Include="Views\FeeConfig\_Create.cshtml" />
     <Content Include="Views\FeeConfig\_DataTable.cshtml" />
     <Content Include="Views\ManualDailyCollection\Index.cshtml" />
-    <Content Include="Views\ManualDailyCollection\IndexValidate.cshtml" />
     <Content Include="Views\ManualDailyCollection\_FileDetails.cshtml" />
     <Content Include="Views\ManualDailyCollection\_FileList.cshtml" />
     <Content Include="Views\ManualDailyCollection\_UploadForm.cshtml" />
-    <Content Include="Views\ManualDailyCollection\_ValidationForm.cshtml" />
     <Content Include="Views\NotificationConfig\Index.cshtml" />
     <Content Include="Views\NotificationConfig\_ConfigForm.cshtml" />
     <Content Include="Views\NumConfig\Index.cshtml" />

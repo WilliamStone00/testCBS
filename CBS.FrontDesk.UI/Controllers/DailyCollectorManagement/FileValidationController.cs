@@ -1,16 +1,19 @@
-﻿// Location: ~/Controllers/FileValidationController.cs
-
+﻿
+using CBS.BusinessService.Config;
 using CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Service;
-using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.ManualDailycollection;
 using CBS.FrontDesk.Data.Message;
+using DocumentFormat.OpenXml.Math;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Numerics;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
+using ZXing.QrCode.Internal;
 
 namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
 {
@@ -18,33 +21,40 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
     public class FileValidationController : BaseController
     {
         private readonly ManualDailyCollectionService _manualService;
+        private readonly BranchServices _branchServices;
 
-        public FileValidationController(ManualDailyCollectionService manualService)
+        public FileValidationController(ManualDailyCollectionService manualService, BranchServices branchServices)
         {
             _manualService = manualService;
+            _branchServices = branchServices;
         }
 
-        // ACTION 1: Loads the main container page for the list
-        public ActionResult Index()
+       
+        // ACTION 1: Loads the main page with filter controls
+        public async Task<ActionResult> Index()
         {
-            // Prepare data for the status filter dropdown
-            ViewBag.Statuses = new SelectList(new[] { "Pending", "Approved", "Extracted", "Rejected" });
+            // Populate the Status dropdown for the view
+            ViewBag.Statuses = new SelectList(new[] { "Pending", "Approved", "Extracted", "Rejected","Treated","Completed","F"});
+            ViewBag.Branches = await _branchServices.GetBranches();
             return View();
         }
 
+        // In FileValidationController.cs
+
+        [System.Web.Mvc.HttpPost]
         public async Task<ActionResult> LoadFiles(GetFilesForDataTableQuery query)
         {
             try
             {
-                // 1. Fetch the raw data from the service.
+                // 1. Fetch the data from the service. The service passes the query directly to the API.
                 var dataTable = await _manualService.GetFilesForDataTableAsync(query);
 
-                // 2. Deserialize the generic 'data' property into a strongly-typed list.
+                // 2. Deserialize the generic data into a strongly-typed list.
                 var fileList = JsonConvert.DeserializeObject<List<FileUploadSummary>>(
                     JsonConvert.SerializeObject(dataTable.data)
                 );
 
-                // 3. Process the list to generate the final UI data, including action buttons.
+                // 3. Process the list to generate the final UI data.
                 var resultData = fileList.Select(f => new
                 {
                     fileName = f.FileName,
@@ -52,7 +62,8 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                     uploadedBy = f.UploadedBy,
                     uploadedOn = f.UploadedOn.ToString("yyyy-MM-dd HH:mm"),
                     status = f.SalaryProcessingStatus,
-                    actions = GenerateActionButtons(f, query.StatusFilter)
+                    // The 'actions' property now gets the UNIVERSAL dropdown menu.
+                    actions = GenerateActionButtons(f) // We no longer need to pass the status context.
                 }).ToList();
 
                 // 4. Return the final JSON payload.
@@ -66,78 +77,66 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             }
             catch (Exception ex)
             {
-                // Log ex
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading file data.");
             }
         }
 
-        // The helper method remains unchanged
-        private string GenerateActionButtons(FileUploadSummary file, string statusContext)
+
+        /// <summary>
+        /// Helper method to generate the UNIVERSAL action dropdown for every row.
+        /// </summary>
+        private string GenerateActionButtons(FileUploadSummary file)
         {
             var fileId = file.FileUploadId;
-            if (!string.IsNullOrEmpty(statusContext) && statusContext.Equals("Pending", StringComparison.OrdinalIgnoreCase))
-            {
-                return $@"
-                    <select class='form-select form-select-sm js-action-menu' onchange='handleAction(this)'>
-                        <option selected>Select Action...</option>
-                        <option value='approve' data-fileid='{fileId}'>Approve</option>
-                        <option value='review' data-fileid='{fileId}'>Review</option>
-                        <option value='reject' data-fileid='{fileId}'>Reject</option>
-                        <option value='details' data-fileid='{fileId}'>View Details</option>
-                    </select>";
-            }
-            else
-            {
-                return $@"
-                    <a href='/ManualDailyCollection/Details/{fileId}' class='btn btn-sm btn-outline-info'>Details</a>
-                    <button type='button' class='btn btn-sm btn-outline-danger ms-1 js-delete-btn' data-fileid='{fileId}'>Delete</button>";
-            }
+
+            // This HTML is now generated for every single file, regardless of its status.
+            return $@"
+        <select class='form-select form-select-sm js-action-menu' onchange='handleAction(this)'>
+            <option selected value=''>Select Action...</option>
+            <option value='approve' data-fileid='{fileId}'>Approve</option>
+            <option value='review' data-fileid='{fileId}'>Review</option>
+            <option value='reject' data-fileid='{fileId}'>Reject</option>
+        </select>";
         }
-        // ACTION 3: Gets the partial view for the validation/review/deny modal
+
+        // ACTION 3: Gets the partial view for the validation/review/approve modal
         [HttpGet]
         public ActionResult GetActionForm(string fileUploadId, string mode)
         {
-            var model = new ValidationDto // A simple DTO for the form
+            var model = new ValidationDto
             {
                 FileUploadId = fileUploadId,
-                ApprovedBy = Session["FullName"]?.ToString(), // Get current user
-                Mode = mode // "validate", "review", or "deny"
+                ApprovedBy = Session["FullName"]?.ToString(),
+                Mode = mode // "approve", "review", or "reject"
             };
             return PartialView("_ActionForm", model);
         }
 
-        // ACTION 4: Handles the submission of the validation/review/deny form
+        // ACTION 4: Handles the submission from the modal form
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> SubmitAction(ValidationDto model)
         {
             if (!ModelState.IsValid)
             {
                 return Json(new { success = false, message = "Statement is required." });
             }
-            // The service method will handle which API to call based on the mode
             var result = await _manualService.SubmitFileActionAsync(model);
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
-        // Helper to build the action buttons
-        private string GenerateActionButtons(FileUploadSummary file)
+      
+        [HttpPost]
+          public async Task<ActionResult> RejectFile(string KEY)
         {
-            var fileId = file.FileUploadId;
-            // Only show the validation dropdown for "Pending" files
-            if (file.SalaryProcessingStatus?.Equals("Pending", StringComparison.OrdinalIgnoreCase) == true)
+            if (string.IsNullOrWhiteSpace(KEY))
             {
-                return $@"
-                    <select class='form-select form-select-sm js-action-menu' onchange='handleAction(this)'>
-                        <option selected>Select Action...</option>
-                        <option value='validate' data-fileid='{fileId}'>Approve</option>
-                        <option value='review' data-fileid='{fileId}'>Review</option>
-                        <option value='deny' data-fileid='{fileId}'>Reject</option>
-                        <option value='details' data-fileid='{fileId}'>View Details</option>
-                    </select>";
+                return Json(new { success = false, message = "Invalid ID provided for rejection." });
             }
-            // For all other statuses, just show a Details button
-            return $"<a href='/ManualDailyCollection/Details/{fileId}' class='btn btn-sm btn-outline-info'>Details</a>";
+
+            // You will need a 'RejectFileAsync' method in your service.
+            var result = await _manualService.RejectFileAsync(KEY);
+            return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
+
     }
 }

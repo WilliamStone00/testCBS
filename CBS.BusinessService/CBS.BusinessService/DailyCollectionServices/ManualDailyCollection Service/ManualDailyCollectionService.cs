@@ -496,24 +496,92 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
 
         #region Helpers for Dropdowns
 
-        /// <summary>
-        /// Gets a list of collectors formatted for a dropdown.
-        /// </summary>
-        public async Task<IEnumerable<SelectListItem>> GetCollectorsAsSelectListAsync()
+
+        public async Task<IEnumerable<SelectListItem>> GetCollectorsAsSelectListAsync(string branchId = null)
         {
-            // Assumes APICallHelper.GetCollectors exists
-            var response = await _apiHelper.GetAsync<ResponseObject<List<CollectorDto>>>(APICallHelper.GetAllDailyCollectorBasicInfos);
+            string endpoint = APICallHelper.GetDaillycollectors;
+            if (!string.IsNullOrWhiteSpace(branchId))
+            {
+                endpoint += $"?branchid={branchId}";
+            }
+
+            var response = await _apiHelper.GetAsync<ResponseObject<List<CollectorDto>>>(endpoint);
 
             if (response.IsSuccess && response.ApiResponseData?.Data != null)
             {
                 return response.ApiResponseData.Data.Select(c => new SelectListItem
                 {
-                    Value = $"{c.CollectorId}|{c.User.Id}",
-                    Text = $"{c.CollectorName} ({c.CollectorId})"
+                    Value = $"{c.CustomerId}|{c.UserId}",
+                    Text = c.FullName
                 }).ToList();
             }
+
             return new List<SelectListItem>();
         }
+
+
+        // In ManualDailyCollectionService.cs
+
+        #region File Validation Actions (Approve, Review, Reject)
+
+        // ... (your existing SubmitFileActionAsync method) ...
+
+
+        /// <summary>
+        /// Rejects a file by calling a dedicated backend API endpoint.
+        /// This is a direct action that does not require a statement.
+        /// </summary>
+        /// <param name="fileUploadId">The ID of the file to reject.</param>
+        public async Task<ExecutionMessages> RejectFileAsync(string fileUploadId)
+        {
+            try
+            {
+                // Step 1: Validate the input
+                if (string.IsNullOrWhiteSpace(fileUploadId))
+                {
+                    GetExecutionMessages(null, false, "Reject File", MessagesResults.Failed,
+                        ExecutionProcessOption.ValidationError, SystemMessageStatus.Failed.ToString(), null, "File ID cannot be null or empty.");
+                    return ExecutionMessage;
+                }
+
+                // Step 2: Define the URL and the payload for the API call
+                // You will need to add this constant to your APICallHelper.cs
+                // e.g., public static string RejectUploadedFile = "/api/v1/ManualEntryCollector/RejectUploadedFile";
+                var url = APICallHelper.DenyUploadedFile;
+
+                // The backend API might expect the ID in the body of the POST request
+                var payload = new { FileUploadId = fileUploadId };
+
+                // Step 3: Make the API call
+                var response = await _apiHelper.PostAsync<ServiceResponse<bool>>(url, payload);
+
+                // Step 4: Handle the response from the API
+                if (response.IsSuccess && response.ApiResponseData.Data)
+                {
+                    // Handle success
+                    GetExecutionMessages(null, true, fileUploadId, MessagesResults.Success,
+                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null,
+                        response.ApiResponseData.Message ?? "File rejected successfully.");
+                }
+                else
+                {
+                    // Handle failure
+                    GetExecutionMessages(null, false, fileUploadId, MessagesResults.Failed,
+                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null,
+                        response.ApiResponseData?.Message ?? response.Message ?? "Failed to reject the file.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions during the process
+                GetExecutionMessages(null, false, "Reject File", MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+            }
+
+            return ExecutionMessage;
+        }
+
+        #endregion
 
         #endregion
     }

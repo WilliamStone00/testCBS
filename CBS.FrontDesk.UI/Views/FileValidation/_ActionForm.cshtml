@@ -1,4 +1,4 @@
-﻿ Location: ~/Views/FileValidation/_ActionForm.cshtml 
+﻿@* Location: ~/Views/FileValidation/_ActionForm.cshtml *@
 @model CBS.FrontDesk.Data.Entity.ManualDailycollection.ValidationDto
 
 @using (Html.BeginForm("SubmitAction", "FileValidation", FormMethod.Post, new { id = "actionForm" }))
@@ -14,7 +14,7 @@
 
     <div class="form-floating mb-3">
         @Html.TextAreaFor(m => m.Statement, new { @class = "form-control", placeholder = "Statement", required = "required", style = "height: 120px" })
-        <label>@Model.Mode Statement</label>
+        <label>@(Model.Mode.ToUpper()) Statement</label>
         @Html.ValidationMessageFor(m => m.Statement, "", new { @class = "text-danger" })
     </div>
 

@@ -1276,6 +1276,7 @@ namespace CBS.FrontDesk.Helper
         public static string ReviewUploadedFile = "/api/v1/ManualEntryCollector/ReviewUploadedFile";
         public static string DenyUploadedFile = "/api/v1/ManualEntryCollector/RejectUploadedFile";
         public static string GetFileUploadsForDataTable = "/api/v1/ManualEntryCollector/FileUpload/data-table";
+        public static string GetDaillycollectors = "api/v1/customers/basic-info-collectors";
 
         //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
     }
