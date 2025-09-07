@@ -7805,7 +7805,6 @@
     <Content Include="Content\bootstrap-grid.rtl.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
-    <Content Include="AppFiles\ManualDailyCollection\DailyCollectorFieldReport_Template.xlsx" />
     <Content Include="App_GlobalResources\AndriodAppVersioning\AndriodAppVersioning_Create.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>AndriodAppVersioning_Create1.designer.cs</LastGenOutput>
@@ -7823,6 +7822,7 @@
       <LastGenOutput>AndroidAppVersioning_AndriodVersionConfigurationDetailsPartial1.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\AccountingConfiguration.zip" />
+    <Content Include="AppFiles\ManualDailyCollection\Manualdaillycollectiontemplete.xlsx" />
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>

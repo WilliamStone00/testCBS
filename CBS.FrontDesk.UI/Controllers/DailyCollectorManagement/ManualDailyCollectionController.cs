@@ -439,8 +439,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
         [System.Web.Mvc.HttpGet]
         public ActionResult DownloadTemplate()
         {
-            // ... (Your existing download logic is correct) ...
-            string physicalPath = Server.MapPath("~/AppFiles/ManualDailyCollection/DailyCollectorFieldReport_Template.xlsx");
+            string physicalPath = Server.MapPath("~/AppFiles/ManualDailyCollection/Manualdaillycollectiontemplete.xlsx");
             if (!System.IO.File.Exists(physicalPath)) return HttpNotFound("Template file not found.");
             byte[] fileBytes = System.IO.File.ReadAllBytes(physicalPath);
             return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DailyCollectorFieldReport_Template.xlsx");
