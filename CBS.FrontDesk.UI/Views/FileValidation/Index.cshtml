@@ -94,13 +94,13 @@
                 <input type="text" id="fileName" class="form-control" placeholder="Enter file name..." />
             </div>
             <div class="row g-3 mb-3" id="branchNameFilterSection" style="display:none;">
-                   <div class="col-md-6">
-                        <label for="branch">🏢 @ChequeManagements.BranchId</label>
-                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2" }
-                        )
-                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                <div class="col-md-6">
+                    <label for="branch">🏢 @ChequeManagements.BranchId</label>
+                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2" }
+                    )
+                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
 
-                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -152,166 +152,185 @@
 
 @section Scripts {
     <script>
-        $(document).ready(function () {
-            // Initialize the DataTable
-            var dataTable = initializeFilesDataTable();
+ 
 
-            // --- FILTER EVENT HANDLERS ---
-            $('#applyFilterBtn').on('click', function () {
-                dataTable.ajax.reload();
+// Use a self-executing anonymous function to keep your code clean and avoid polluting the global scope.
+(function ($) {
+
+    // --- GLOBAL FUNCTIONS ---
+    // These need to be global so the onchange attribute in the server-rendered HTML can find them.
+    window.handleAction = function (selectElement) {
+        var selectedOption = $(selectElement).find('option:selected');
+        var action = selectedOption.val();
+        var fileId = selectedOption.data('fileid');
+
+        // Reset dropdown after selection so it can be clicked again
+        $(selectElement).prop('selectedIndex', 0);
+
+        if (!action || !fileId) return;
+
+        if (action === 'reject') {
+            confirmAndReject(fileId);
+        } else {
+            // This handles both 'approve' and 'review'
+            var url = `/FileValidation/GetActionForm?fileUploadId=${fileId}&mode=${action}`;
+            $('#actionModalBody').load(url, function (response, status, xhr) {
+                if (status === "error") {
+                    appalert('Failed to load form: ' + xhr.statusText, 2, 1);
+                    return;
+                }
+                $('#actionModalLabel').text(action.charAt(0).toUpperCase() + action.slice(1) + ' File');
+                $('#actionModal').modal('show');
+                // Re-parse the new form for client-side validation
+                $.validator.unobtrusive.parse('#actionForm');
             });
+        }
+    };
 
-            $('#resetFilterBtn').on('click', function () {
-                // Reset all filter fields to their default state
-                $('#statusFilter').val('Pending').trigger('change');
-                $('#startDate').val('');
-                $('#endDate').val('');
-                $('#fileName').val('');
-                $('#BranchId').val(''); // Fixed ID
-                $('#byFileNameToggle, #byBranchNameToggle').prop('checked', false).trigger('change');
-                dataTable.ajax.reload();
-            });
-
-            // Show/hide text input boxes when toggles are checked
-            $('#byFileNameToggle').on('change', function () {
-                $('#fileNameFilterSection').toggle(this.checked);
-            });
-            $('#byBranchNameToggle').on('change', function () {
-                $('#branchNameFilterSection').toggle(this.checked);
-            });
-
-            // --- MODAL FORM SUBMISSION HANDLER ---
-            $(document).on('submit', '#actionForm', function (e) {
-                e.preventDefault();
-                var form = $(this);
-                if (!form.valid()) return;
-
+    function confirmAndReject(fileId) {
+        alertify.confirm('Confirm Rejection', 'Are you sure you want to permanently reject this file?',
+            function () { // onOk callback
+                var token = $('input[name="__RequestVerificationToken"]').first().val();
                 $.ajax({
-                    url: form.attr('action'),
+                    url: '/FileValidation/RejectFile',
                     type: 'POST',
-                    data: form.serialize(),
+                    data: {
+                        KEY: fileId,
+                        __RequestVerificationToken: token
+                    },
                     success: function (response) {
                         if (response.success) {
-                            appalert(response.message, 1, 1);
-                            $('#actionModal').modal('hide');
-                            dataTable.ajax.reload(); // Refresh the list
+                            appalert(response.message || 'File rejected successfully.', 1, 1);
+                            $('#myDataTable').DataTable().ajax.reload(null, false); // Reload without resetting paging
                         } else {
-                            appalert(response.message, 2, 1);
+                            appalert(response.message || 'Failed to reject the file.', 2, 1);
                         }
                     },
-                    error: function () { appalert('An error occurred during submission.', 0, 1); }
+                    error: function () {
+                        appalert('An error occurred while communicating with the server.', 0, 1);
+                    }
                 });
-            });
+            },
+            function () { // onCancel callback
+                appalert('Rejection cancelled.', 3, 1);
+            }
+        );
+    }
+
+
+    // --- MAIN SCRIPT EXECUTION ---
+    // This runs once the page is fully loaded.
+    $(document).ready(function () {
+
+        // 1. Initialize the DataTable and store its instance.
+        var dataTable = initializeFilesDataTable();
+
+        // 2. Set up event handlers for the filter controls.
+        $('#applyFilterBtn').on('click', function () {
+            dataTable.ajax.reload();
         });
 
-        function initializeFilesDataTable() {
-            return $('#myDataTable').DataTable({
-                processing: false,
-                serverSide: true,
-                searching: false, // We use our own custom filters
-                ajax: {
-                    url: '/FileValidation/LoadFiles',
-                    type: 'POST',
-                    data: function (d) {
-                        // Extract sorting information
-                        var order = d.order && d.order.length > 0 ? d.order[0] : null;
-                        var sortColumn = order ? d.columns[order.column].data : null;
-                        var sortDirection = order ? order.dir : null;
+        $('#resetFilterBtn').on('click', function () {
+            // Reset all filter fields to their default state
+            $('#statusFilter').val('Pending').trigger('change');
+            $('#startDate').val('');
+            $('#endDate').val('');
+            $('#fileName').val('');
+            $('#BranchId').val('').trigger('change'); // Correctly reset the branch dropdown
+            $('#byFileNameToggle, #byBranchNameToggle').prop('checked', false).trigger('change');
+            dataTable.ajax.reload();
+        });
 
-                        return {
-                            query: {
-                                Options: {
-                                    Draw: d.draw,
-                                    Start: d.start,
-                                    Length: d.length,
-                                    SortColumn: sortColumn,
-                                    SortDirection: sortDirection,
-                                    Columns: d.columns
-                                },
-                                // Add all custom filter values
-                                StatusFilter: $('#statusFilter').val(),
-                                StartDate: $('#startDate').val() || null,
-                                EndDate: $('#endDate').val() || null,
-                                FileName: $('#fileName').val() || null,
-                                BranchId: $('#BranchId').val() || null // Fixed ID
-                            }
-                        };
+        // Show/hide text input boxes when toggles are checked
+        $('#byFileNameToggle').on('change', function () {
+            $('#fileNameFilterSection').toggle(this.checked);
+        });
+        $('#byBranchNameToggle').on('change', function () {
+            $('#branchNameFilterSection').toggle(this.checked);
+        });
+
+        // 3. Set up the single, delegated handler for the modal form submission.
+        // This prevents the "freezing" issue.
+        $(document).on('submit', '#actionForm', function (e) {
+            e.preventDefault();
+            var form = $(this);
+            if (!form.valid()) return;
+
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: form.serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+                        $('#actionModal').modal('hide');
+                        dataTable.ajax.reload(null, false);
+                    } else {
+                        appalert(response.message, 2, 1);
                     }
                 },
-                columns: [
-                    { data: 'fileName', name: 'FileName' },
-                    { data: 'branchName', name: 'BranchName' },
-                    { data: 'uploadedBy', name: 'UploadedBy' },
-                    { data: 'uploadedOn', name: 'UploadedOn' },
-                    { data: 'status', name: 'Status' },
-                    { data: 'actions', orderable: false, className: 'text-center', render: function (data) { return data; } }
-                ],
-                columnDefs: [
-                    { targets: '_all', defaultContent: '-' }
-                ]
+                error: function () { appalert('An error occurred during submission.', 0, 1); }
             });
-        }
+        });
+    });
 
-        function handleAction(selectElement) {
-            var selectedOption = $(selectElement).find('option:selected');
-            var action = selectedOption.val();
-            var fileId = selectedOption.data('fileid');
 
-            $(selectElement).prop('selectedIndex', 0);
+     function initializeFilesDataTable() {
+    return $('#myDataTable').DataTable({ // Using your existing table ID 'myDataTable'
+    processing: false,
+    serverSide: true,
+    searching: false, // Using our own custom filters
+    ajax: {
+    url: '/FileValidation/LoadFiles',
+    type: 'POST',
+    // This function builds the complex query object to send to the server
+    data: function (d) {
+    // Extract sorting information
+    var order = d.order && d.order.length > 0 ? d.order[0] : null;
+    var sortColumn = order ? d.columns[order.column].name : null; // Use 'name' for server-side
+    var sortDirection = order ? order.dir : 'asc';
 
-            if (!action || !fileId) return;
+    return {
+    // This object must map to the C# 'GetFilesForDataTableQuery query' parameter
+    query: {
+    Options: {
+    Draw: d.draw,
+    Start: d.start,
+    Length: d.length,
+    SortColumn: sortColumn,
+    SortDirection: sortDirection
+    },
+    StatusFilter: $('#statusFilter').val(),
+    StartDate: $('#startDate').val() || null,
+    EndDate: $('#endDate').val() || null,
+    FileName: $('#fileName').val() || null,
+    BranchName: $('#branchName').val() || null, // Corrected from BranchId
+    BranchId: $('#BranchId').val() || null
+    }
+    };
+    }
+    },
+    columns: [
+    // The 'name' property must match a property in your C# DTO for sorting to work
+    { data: 'fileName', name: 'FileName' },
+    { data: 'branchName', name: 'BranchName' },
+    { data: 'uploadedBy', name: 'UploadedBy' },
+    { data: 'uploadedOn', name: 'UploadedOn' },
+    { data: 'status', name: 'Status', orderable: false }, // Status is often not sortable
+    { data: 'actions', orderable: false, className: 'text-center' }
+    ],
+    // This is how you control the column widths
+    columnDefs: [
+    { "width": "25%", "targets": 0 }, // FileName
+    { "width": "20%", "targets": 1 }, // Branch
+    { "width": "15%", "targets": 2 }, // Uploaded By
+    { "width": "15%", "targets": 3 }, // Uploaded On
+    { "width": "10%", "targets": 4 }, // Status
+    { "width": "15%", "targets": 5 }  // Actions
+    ]
+    });
+    }
 
-            switch (action) {
-                case 'approve':
-                case 'review':
-                    var url = `/FileValidation/GetActionForm?fileUploadId=${fileId}&mode=${action}`;
-
-                    $('#actionModalBody').load(url, function (response, status, xhr) {
-                        if (status == "error") {
-                            appalert('Failed to load form.', 2, 1);
-                            return;
-                        }
-                        $('#actionModalLabel').text(action.charAt(0).toUpperCase() + action.slice(1) + ' File');
-                        $('#actionModal').modal('show');
-                        $.validator.unobtrusive.parse('#actionForm');
-                    });
-                    break;
-
-                case 'reject':
-                    confirmAndReject(fileId);
-                    break;
-            }
-        }
-
-        function confirmAndReject(fileId) {
-            alertify.confirm('Confirm Rejection', 'Are you sure you want to permanently reject this file?',
-                function () {
-                    var token = $('input[name="__RequestVerificationToken"]').first().val();
-
-                    $.ajax({
-                        url: '/FileValidation/RejectFile',
-                        type: 'POST',
-                        data: {
-                            KEY: fileId,
-                            __RequestVerificationToken: token
-                        },
-                        success: function (response) {
-                            if (response.success) {
-                                appalert(response.message || 'File rejected successfully.', 1, 1);
-                                $('#myDataTable').DataTable().ajax.reload(); // Fixed table ID
-                            } else {
-                                appalert(response.message || 'Failed to reject the file.', 2, 1);
-                            }
-                        },
-                        error: function () {
-                            appalert('An error occurred while communicating with the server.', 0, 1);
-                        }
-                    });
-                },
-                function () {
-                    appalert('Rejection cancelled.', 3, 1);
-                }
-            );
-        }
+    }(jQuery));
     </script>
 }

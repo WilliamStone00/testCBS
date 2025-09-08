@@ -8,18 +8,10 @@ using System.Threading.Tasks;
 namespace CBS.FrontDesk.Data.Entity.ManualDailycollection
 {
     public class CollectorDto
-    {
-        [JsonProperty("customerId")]
-        public string CustomerId { get; set; }
-
-        [JsonProperty("fullName")]
-        public string FullName { get; set; }
-
-        [JsonProperty("userId")]
+    {       
+        public string CustomerId { get; set; }       
+        public string FullName { get; set; }     
         public string UserId { get; set; }
-
-        // Optional
-        [JsonProperty("branchId")]
         public string BranchId { get; set; }
     }
 

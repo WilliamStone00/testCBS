@@ -39,6 +39,7 @@ namespace CBS.FrontDesk.Data.Entity.ManualDailycollection
         public string FileCategory { get; set; }
         public bool ShowAll { get; set; } = false;
 
+        public string FileName { get; set; }
 
         public GetFilesForDataTableQuery()
         {

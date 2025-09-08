@@ -14,7 +14,7 @@ namespace CBS.FrontDesk.Data.Entity.ManualDailycollection
         public string Id { get; set; }
         public string BranchId { get; set; }
         public string BranchName { get; set; }
-        public string CollectorId { get; set; }
+        public string CollectorAndUser { get; set; }
         public string FileUploadId { get; set; }
         public decimal TotalAmount { get; set; }
         public int TotalMembers { get; set; }

@@ -265,6 +265,7 @@
 
 using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.ManualDailycollection;
 using CBS.FrontDesk.Data.Message;
@@ -282,11 +283,16 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
     public class ManualDailyCollectionService : BaseService
     {
         private readonly ApiCallerHelper _apiHelper;
+        private readonly ApiCallerHelper _customerApiHelper;
+
 
         public ManualDailyCollectionService()
         {
             var baseUrl = ConfigurationManager.AppSettings["TransactionBaseUrl"];
             _apiHelper = new ApiCallerHelper(baseUrl);
+
+            var cusbaseurl = ConfigurationManager.AppSettings["CustomerBaseUrl"];
+            _customerApiHelper = new ApiCallerHelper(cusbaseurl);
         }
 
         #region File Upload and Initial Actions
@@ -294,18 +300,56 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         /// <summary>
         /// Handles the multipart form data upload to the backend API.
         /// </summary>
-        public async Task<ApiResponse<ServiceResponse<FileUploadResponse>>> UploadFileAsync(HttpPostedFileBase file, string branchId, string collectorId, string userId)
+        //public async Task<ApiResponse<ServiceResponse<FileUploadResponse>>> UploadFileAsync(HttpPostedFileBase file, string branchId, string collectorId, string userId)
+        //{
+        //    var additionalFields = new Dictionary<string, string>
+        //    {
+        //        { "BranchId", branchId },
+        //        { "CollectorId", collectorId },
+        //        { "UserId", userId }
+        //    };
+        //    return await _apiHelper.UploadFileToApiAsync<ServiceResponse<FileUploadResponse>>(
+        //        file, "File", APICallHelper.ManualEntryUpload, additionalFields
+        //    );
+        //}
+
+        public async Task<ApiResponse<ServiceResponse<FileUploadResponse>>> UploadManualEntryFileAsync(
+        HttpPostedFileBase file,
+        string branch,
+        string collectorId,
+        string userId)
         {
-            var additionalFields = new Dictionary<string, string>
+            try
             {
-                { "BranchId", branchId },
-                { "CollectorId", collectorId },
-                { "UserId", userId }
-            };
-            return await _apiHelper.UploadFileToApiAsync<ServiceResponse<FileUploadResponse>>(
-                file, "File", APICallHelper.ManualEntryUpload, additionalFields
-            );
+                if (file == null)
+                {
+                    return new ApiResponse<ServiceResponse<FileUploadResponse>>
+                    {
+                        IsSuccess = false,
+                        ApiResponseData = null,
+                        Message = "❌ No file provided."
+                    };
+                }
+
+               
+                var endpoint = $"{APICallHelper.ManualEntryUpload}?collectorId={collectorId}&branchId={branch}&userId={userId}";
+                var result = await _apiHelper.UploadBulkCashPaymentFileAsync<ServiceResponse<FileUploadResponse>>( file, endpoint);
+
+             
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<ServiceResponse<FileUploadResponse>>
+                {
+                    IsSuccess = false,
+                    ApiResponseData = null,
+                    Message = $"❌ Error while uploading file: {ex.Message}"
+                };
+            }
         }
+
+
 
         /// <summary>
         /// Calls the endpoint to process/extract a recently uploaded file.
@@ -374,11 +418,42 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
                 return null;
             }
         }
-
+                
         /// <summary>
         /// Gets data specifically for the server-side validation DataTable.
         /// </summary>
         public async Task<CustomDataTable> GetFilesForDataTableAsync(GetFilesForDataTableQuery query)
+        {
+            try
+            {
+                var url = APICallHelper.GetFileUploadsForDataTable;
+                var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(url, query);
+
+                if (response.IsSuccess && response.ApiResponseData != null)
+                {
+                    return response.ApiResponseData.Data;
+                }
+                return new CustomDataTable(
+                    draw: Convert.ToInt32(query.Options.draw),
+                    recordsTotal: 0,
+                    recordsFiltered: 0,
+                    data: new List<object>(),
+                    dataTableOptions: query.Options
+                );
+            }
+            catch (Exception ex)
+            {
+                return new CustomDataTable(
+                    draw: Convert.ToInt32(query.Options.draw),
+                    recordsTotal: 0,
+                    recordsFiltered: 0,
+                    data: new List<object>(),
+                    dataTableOptions: query.Options
+                );
+            }
+        }
+
+        public async Task<CustomDataTable> GetextractedFilesForDataTableAsync(GetFilesForDataTableQuery query)
         {
             try
             {
@@ -505,7 +580,7 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
                 endpoint += $"?branchid={branchId}";
             }
 
-            var response = await _apiHelper.GetAsync<ResponseObject<List<CollectorDto>>>(endpoint);
+            var response = await _customerApiHelper.GetAsync<ResponseObject<List<CollectorDto>>>(endpoint);
 
             if (response.IsSuccess && response.ApiResponseData?.Data != null)
             {

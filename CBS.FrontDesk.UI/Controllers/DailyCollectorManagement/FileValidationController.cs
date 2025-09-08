@@ -61,7 +61,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                     branchName = f.BranchName,
                     uploadedBy = f.UploadedBy,
                     uploadedOn = f.UploadedOn.ToString("yyyy-MM-dd HH:mm"),
-                    status = f.SalaryProcessingStatus,
+                    status = GetStatusBadge(f.SalaryProcessingStatus),
                     // The 'actions' property now gets the UNIVERSAL dropdown menu.
                     actions = GenerateActionButtons(f) // We no longer need to pass the status context.
                 }).ToList();
@@ -81,6 +81,33 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             }
         }
 
+        // In FileValidationController.cs
+
+        private string GetStatusBadge(string status)
+        {
+            if (string.IsNullOrEmpty(status)) return "";
+
+            string badgeClass = "bg-secondary"; // Default color
+            switch (status.ToLowerInvariant())
+            {
+                case "pending":
+                    badgeClass = "bg-warning text-dark"; // Yellow badge for pending
+                    break;
+                case "approved":
+                case "extracted":
+                case "completed":
+                case "treated":
+                    badgeClass = "bg-success"; // Green for success states
+                    break;
+                case "rejected":
+                case "failed": // Assuming 'F' might mean failed
+                    badgeClass = "bg-danger"; // Red for failure states
+                    break;
+            }
+
+            // Return the HTML for the badge
+            return $"<span class='badge {badgeClass}'>{status}</span>";
+        }
 
         /// <summary>
         /// Helper method to generate the UNIVERSAL action dropdown for every row.
@@ -92,10 +119,17 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             // This HTML is now generated for every single file, regardless of its status.
             return $@"
         <select class='form-select form-select-sm js-action-menu' onchange='handleAction(this)'>
-            <option selected value=''>Select Action...</option>
-            <option value='approve' data-fileid='{fileId}'>Approve</option>
-            <option value='review' data-fileid='{fileId}'>Review</option>
-            <option value='reject' data-fileid='{fileId}'>Reject</option>
+            <option selected value=""""> Select Action...
+            </option>
+            <option value=""approve"" data-fileid=""{{fileId}}"">
+                ✅ Approve
+            </option>
+            <option value=""review"" data-fileid=""{{fileId}}"">
+                🔍 Review
+            </option>
+            <option value=""reject"" data-fileid=""{{fileId}}"">
+                ❌ Reject
+            </option>
         </select>";
         }
 

@@ -324,10 +324,15 @@ using CBS.BusinessService.Config;
 using CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Service;
 using CBS.FrontDesk.Data.Entity.ManualDailycollection;
 using CBS.FrontDesk.Data.Message;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Linq;
+
 
 namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
 {
@@ -370,25 +375,90 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
         {
             if (path == "list")
             {
-                // This handles the "View All Files" button click.
-                var data = await _manualService.GetAllFilesAsync();
-                // It returns the _FileList.cshtml partial, which expects a List<FileUploadResponse>.
-                return PartialView(partialView, data);
+                // Just return the DataTable wrapper partial, no dataset here.
+                return PartialView(partialView);
             }
             else if (path == "new")
             {
-                // This handles the "Upload New File" button click.
                 await Loader();
-                // It returns the _UploadForm.cshtml partial.
                 return PartialView(partialView, new FileUploadResponse());
             }
-            else // This defaults to the "details" path
+            else
             {
-                // This handles the "Details" button click from the list view.
                 var data = await _manualService.GetFileDetailsByIdAsync(KEY);
-                // It returns the _FileDetails.cshtml partial, which expects a single FileUploadResponse.
                 return PartialView(partialView, data);
             }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> LoadFileslist(GetFilesForDataTableQuery query)
+        {
+            try
+            {
+                var dataTable = await _manualService.GetFilesForDataTableAsync(query);
+
+                var fileList = JsonConvert.DeserializeObject<List<FileUploadSummary>>(
+                    JsonConvert.SerializeObject(dataTable.data)
+                );
+
+                var resultData = fileList.Select(f => new
+                {
+                    fileName = f.FileName,
+                    branchName = f.BranchName,
+                    uploadedBy = f.UploadedBy,
+                    uploadedOn = f.UploadedOn.ToString("yyyy-MM-dd HH:mm"),
+                    status = GetStatusBadge(f.SalaryProcessingStatus),
+                    actions = GenerateActionButtons(f)
+                }).ToList();
+
+                return Json(new
+                {
+                    draw = query.Options?.draw ?? "1",
+                    recordsTotal = dataTable.recordsTotal,
+                    recordsFiltered = dataTable.recordsFiltered,
+                    data = resultData
+                });
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading file data.");
+            }
+        }
+
+        private string GenerateActionButtons(FileUploadSummary file)
+        {
+            return $@"
+        <div class='btn-group' role='group'>
+            <button type='button' class='btn btn-sm btn-info me-1' 
+                    onclick=""handleExtractFile('{file.FileUploadId}')"">
+                📂 Extract File
+            </button>
+            <button type='button' class='btn btn-sm btn-secondary' 
+                    onclick=""handleViewDetails('{file.FileUploadId}')"">
+                🔍 Details
+            </button>
+        </div>
+    ";
+        }
+
+
+        private string GetStatusBadge(string status)
+        {
+            if (string.IsNullOrEmpty(status)) return "";
+
+            string badgeClass = "bg-secondary";
+            switch (status.ToLowerInvariant())
+            {
+                case "pending": badgeClass = "bg-warning text-dark"; break;
+                case "approved":
+                case "extracted":
+                case "completed":
+                case "treated": badgeClass = "bg-success"; break;
+                case "rejected":
+                case "failed": badgeClass = "bg-danger"; break;
+            }
+
+            return $"<span class='badge {badgeClass}'>{status}</span>";
         }
 
         /// <summary>
@@ -412,7 +482,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                 var collectorId = collectorAndUserParts[0];
                 var userId = collectorAndUserParts[1];
 
-                var response = await _manualService.UploadFileAsync(UploadedFile, BranchId, collectorId, userId);
+                var response = await _manualService.UploadManualEntryFileAsync(UploadedFile, BranchId, collectorId, userId);
 
                 if (response.IsSuccess && response.ApiResponseData.Success)
                 {
@@ -442,6 +512,17 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             if (!System.IO.File.Exists(physicalPath)) return HttpNotFound("Template file not found.");
             byte[] fileBytes = System.IO.File.ReadAllBytes(physicalPath);
             return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DailyCollectorFieldReport_Template.xlsx");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> extract(string KEY)
+        {
+            if (string.IsNullOrEmpty(KEY))
+            {
+                return Json(new { success = false, status = "Bad Request", message = "File ID cannot be null." }, JsonRequestBehavior.AllowGet);
+            }
+            var result = await _manualService.ExtractFileAsync(KEY);
+            return Json(new { success = result.Result, status = result.MessageStatus, message = Messaging.MessageResult(result) }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>

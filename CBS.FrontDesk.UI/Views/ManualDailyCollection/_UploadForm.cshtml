@@ -40,9 +40,12 @@
                 <div class="col-md-12">
 
                     <label for="collector">👤 @ChequeManagements.sellectdailyCollector</label>
-                    @Html.DropDownListFor(m => m.CollectorId, new SelectList((IEnumerable<SelectListItem>)ViewBag.collectors ?? new List<SelectListItem>(), "Value", "Text"), "--- Select Daily Collector ---", new { @class = "form-control select2", @id = "CollectorxCollectorId" })
+                    @Html.DropDownListFor(m => m.CollectorAndUser,
+                        new SelectList(ViewBag.Collectors, "Value", "Text"),
+                        "--- Select Daily Collector ---",
+                        new { @class = "form-control select2", @id = "CollectorxCollectorId" })
 
-                    @Html.ValidationMessageFor(m => m.CollectorId, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(m => m.CollectorAndUser, "", new { @class = "text-danger" })
 
                 </div>
 
