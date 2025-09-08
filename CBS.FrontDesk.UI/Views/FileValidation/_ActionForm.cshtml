@@ -1,18 +1,18 @@
-﻿@* Location: ~/Views/FileValidation/_ActionForm.cshtml *@
-@model CBS.FrontDesk.Data.Entity.ManualDailycollection.ValidationDto
+﻿@model CBS.FrontDesk.Data.Entity.ManualDailycollection.ValidationDto
 
 @using (Html.BeginForm("SubmitAction", "FileValidation", FormMethod.Post, new { id = "actionForm" }))
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.FileUploadId)
+    @Html.HiddenFor(m => m.ManualEntryDailyCollectorId)
     @Html.HiddenFor(m => m.ApprovedBy)
     @Html.HiddenFor(m => m.Mode)
 
     <div class="mb-3">
-        <strong>File ID:</strong> @Model.FileUploadId
+        <strong>File ID:</strong> @Model.ManualEntryDailyCollectorId
     </div>
 
     <div class="form-floating mb-3">
+        @* CORRECTED: Bind to the 'Statement' property *@
         @Html.TextAreaFor(m => m.Statement, new { @class = "form-control", placeholder = "Statement", required = "required", style = "height: 120px" })
         <label>@(Model.Mode.ToUpper()) Statement</label>
         @Html.ValidationMessageFor(m => m.Statement, "", new { @class = "text-danger" })

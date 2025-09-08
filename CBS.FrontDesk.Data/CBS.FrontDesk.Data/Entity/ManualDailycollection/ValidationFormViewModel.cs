@@ -7,36 +7,36 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.ManualDailycollection
 {
-    public class ValidationFormViewModel
-    {
-        public string FileUploadId { get; set; }
-        public string ApprovedBy { get; set; } // user who approves
-        public string Mode { get; set; } // "validate" or "review"
-    }
-
+    // This is the GENERIC object sent from the Controller to the Service. It is CORRECT.
     public class ValidationDto
     {
         [Required]
-        public string FileUploadId { get; set; }
-
-        // This property holds the name of the user performing the action
+        public string ManualEntryDailyCollectorId { get; set; }
         public string ApprovedBy { get; set; }
-
-        // This holds the text from the textarea (for Approve, Review, or Deny)
         [Required(ErrorMessage = "A statement is required.")]
-        public string Statement { get; set; }
-
-        // This property tells the service which action to perform
-        public string Mode { get; set; } // "validate", "review", or "deny"
+        public string Statement { get; set; } // Renamed for clarity
+        public string Mode { get; set; }
     }
 
-    public class ReviewDto
+    // These are the SMALL, SPECIFIC objects the backend API expects.
+    // We will create these inside our service method.
+
+    public class ApprovePayload
     {
-        [Required]
-        public string FileUploadId { get; set; }
-        [Required]
-        public string ApprovedBy { get; set; }
-        public string ReviewerStatement { get; set; }
+        public string ManualEntryDailyCollectorId { get; set; }
+        public string approvalStatement { get; set; }
+    }
+
+    public class ReviewPayload
+    {
+        public string ManualEntryDailyCollectorId { get; set; }
+        public string reviewerStatement { get; set; }
+    }
+
+    public class RejectPayload
+    {
+        public string ManualEntryDailyCollectorId { get; set; }
+        public string rejectionStatement { get; set; }
     }
 
 }

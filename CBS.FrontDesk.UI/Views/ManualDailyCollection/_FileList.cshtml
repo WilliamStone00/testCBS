@@ -1,156 +1,81 @@
-﻿@*@model List<CBS.FrontDesk.Data.Entity.ManualDailycollection.FileUploadResponse>
-    @using Resources
-
-    <fieldset class="fieldset-custom">
-        <div class="card-header bg-white border-0">
-            <legend class="legend-custom">@ChequeManagements.PreviouslyUploadedFiles</legend>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-hover" id="filesDataTable">
-                <thead class="table-light">
-                    <tr>
-                        <th>@ChequeManagements.FileD</th>
-                        <th>@ChequeManagements.CollectorId</th>
-                        <th>@ChequeManagements.BranchId</th>
-                        <th>@ChequeManagements.UPBY</th>
-                        <th>@ChequeManagements.TM</th>
-                        <th>@ChequeManagements.TA</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var file in Model)
-                    {
-                        <tr>
-                            <td>@file.FileUploadId</td>
-                            <td>@file.CollectorId</td>
-                            <td>@file.BranchId</td>
-                            <td>@file.UploadedBy</td>
-                            <td>@file.TotalMembers</td>
-                            <td>@string.Format("{0:N2}", file.TotalAmount)</td>
-                            <td class="text-center">
-                                <a href="#"
-                                   onclick="AddORUpdateGen('@file.FileUploadId', 'mainWorkspace', '_FileDetails', 'details', 'ManualDailyCollection')"
-                                   class="text-success" style="margin-right:6px;">Details</a>
-                                <a href="#"
-                                   onclick="DeleteRecordDataTable('ManualDailyCollection', '@file.FileUploadId', 'filesDataTable', '_FileList', 0, 'mainWorkspace', null, 'list')"
-                                   class="text-danger">Delete</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </fieldset>
-
-    <style>
-        /* Force compact Actions column */
-        #filesDataTable th:last-child,
-        #filesDataTable td:last-child {
-            width: 100px !important;
-            white-space: nowrap;
-            text-align: center;
-        }
-
-        /* Optional: make whole table more compact */
-        #filesDataTable td,
-        #filesDataTable th {
-            padding: 6px 10px;
-            font-size: 0.9rem;
-        }
-    </style>
-
-    <script>
-        $(document).ready(function () {
-            $('#filesDataTable').DataTable({
-                autoWidth: false,
-                scrollX: false,
-                columnDefs: [
-                    { width: "100px", targets: -1 }, // last column (Actions)
-                    { className: "text-center", targets: -1 }
-                ]
-            });
-        });
-    </script>*@
-
-<div class="card shadow p-3">
+﻿<fieldset class="fieldset-custom">
+    <legend class="legend-custom">Previously Uploaded Files</legend>
     <div class="table-responsive">
-        <table id="myDataTable" class="table table-hover" style="width:100%; table-layout: fixed;">
+        <table class="table table-hover" id="filesDataTable" style="width:100%;">
             <thead class="table-light">
                 <tr>
-                    <th style="width: 25%;">File Name</th>
-                    <th style="width: 20%;">Branch</th>
-                    <th style="width: 15%;">Uploaded By</th>
-                    <th style="width: 15%;">Uploaded On</th>
-                    <th style="width: 10%;">Status</th>
-                    <th style="width: 15%;">Actions</th>
+                    <th>File ID</th>
+                    <th>Collector ID</th>
+                    <th>Branch</th>
+                    <th>Uploaded By</th>
+                    <th>Total Members</th>
+                    <th>Total Amount</th>
+                    <th class="text-center">Actions</th>
                 </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+                <!-- DataTable will populate this via an AJAX call -->
+            </tbody>
         </table>
     </div>
-</div>
+</fieldset>
 
 <script>
+    // This script block runs ONLY when this partial view is loaded.
     $(document).ready(function () {
-        $('#myDataTable').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: '@Url.Action("LoadFileslist", "ManualDailyCollection")',
-                type: 'POST'
+
+        // Helper function to generate the action links
+        function generateActionButtons(fileId) {
+            const detailsLink = `<a href="#" onclick="AddORUpdateGen('${fileId}', 'mainWorkspace', '_FileDetails', 'details', 'ManualDailyCollection')" class="ms-2">Details</a>`;
+            const deleteLink = `<a href="#" onclick="DeleteRecordDataTable('ManualDailyCollection', '${fileId}', 'filesDataTable', '_FileList', 0, 'mainWorkspace', null, 'list')" class="ms-2 text-danger">Delete</a>`;
+            return detailsLink + deleteLink;
+        }
+
+        // Initialize the DataTable in server-side processing mode
+        $('#filesDataTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "searching": false, // Using custom filters
+            "ajax": {
+                "url": "@Url.Action("LoadFilesForDataTable", "ManualDailyCollection")",
+                "type": "POST",
+                "data": function (d) {
+                    // This function constructs the 'query' object for the controller
+                    const order = d.order[0] || {};
+                    const query = {
+                        Options: {
+                            draw: d.draw,
+                            start: d.start,
+                            pageSize: d.length,
+                            sortColumn: d.columns[order.column]?.name,
+                            sortDirection: order.dir
+                        }
+                        // You can add your custom filter values here if needed
+                    };
+                    return { query: query };
+                }
             },
-            columns: [
-                { data: "fileName" },
-                { data: "branchName" },
-                { data: "uploadedBy" },
-                { data: "uploadedOn" },
-                { data: "status" },
-                { data: "actions", orderable: false, searchable: false }
+            "columns": [
+                // The 'data' property MUST match the C# property names from FileUploadSummary
+                { "data": "FileUploadId", "name": "FileUploadId" },
+                { "data": "CollectorId", "name": "CollectorId" },
+                { "data": "BranchName", "name": "BranchName" },
+                { "data": "UploadedBy", "name": "UploadedBy" },
+                { "data": "TotalMembers", "name": "TotalMembers" },
+                {
+                    "data": "TotalAmount",
+                    "name": "TotalAmount",
+                    "render": $.fn.dataTable.render.number(',', '.', 2, '') // Format as currency
+                },
+                {
+                    "data": "FileUploadId",
+                    "orderable": false,
+                    "render": function(data, type, row) {
+                        // Use our helper to build the action links
+                        return generateActionButtons(data);
+                    }
+                }
             ]
         });
     });
-
-    function handleExtractFile(fileId) {
-        $.ajax({
-            url: '/ManualDailyCollection/extract', // <-- your extract endpoint
-            type: 'POST',
-            data: { id: fileId },
-            success: function (response) {
-                appAlert('success', 'File extracted successfully!');
-                // maybe reload DataTable here
-            },
-            error: function () {
-                appAlert('danger', 'Failed to extract file.');
-            }
-        });
-    }
-
-    function handleViewDetails(fileId) {
-        $.ajax({
-            url: '/Manual/Details', // <-- your details endpoint
-            type: 'GET',
-            data: { id: fileId },
-            success: function (partialView) {
-                $('#rightPanel').html(partialView); // render details in your panel
-            },
-            error: function () {
-                appAlert('danger', 'Failed to load details.');
-            }
-        });
-    }
-
-
-    function handleApprove(btn) {
-        let id = $(btn).data("fileid");
-        alert("Approve file " + id);
-    }
-    function handleReview(btn) {
-        let id = $(btn).data("fileid");
-        alert("Review file " + id);
-    }
-    function handleReject(btn) {
-        let id = $(btn).data("fileid");
-        alert("Reject file " + id);
-    }
 </script>

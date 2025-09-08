@@ -509,7 +509,7 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         }
 
 
-        public async Task<FileDetailsResponse> GetFileDetailsAsync(string id)
+        public async Task<FileDetailsResponse> GetextractedFileDetailsAsync(string id)
         {
             try
             {
@@ -546,40 +546,50 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
             try
             {
                 string url;
-                // Determine the correct API endpoint based on the action mode
+                object payload;
+
                 switch (model.Mode?.ToLower())
                 {
                     case "approve":
                         url = APICallHelper.ApproveUploadedFile;
+                        payload = new { manualEntryDailyCollectorId = model.ManualEntryDailyCollectorId, approvalStatement = model.Statement };
                         break;
                     case "review":
                         url = APICallHelper.ReviewUploadedFile;
+                        payload = new { manualEntryDailyCollectorId = model.ManualEntryDailyCollectorId, reviewerStatement = model.Statement };
                         break;
                     case "reject":
-                        // You will need to add this constant to your APICallHelper.cs
-                        // e.g., public static string RejectUploadedFile = "/api/v1/ManualEntryCollector/RejectUploadedFile";
                         url = APICallHelper.DenyUploadedFile;
+                        payload = new { manualEntryDailyCollectorId = model.ManualEntryDailyCollectorId, rejectionStatement = model.Statement };
                         break;
                     default:
                         throw new ArgumentException("Invalid action mode specified.");
                 }
 
-                var response = await _apiHelper.PostAsync<ServiceResponse<bool>>(url, model);
-                if (response.IsSuccess && response.ApiResponseData.Data)
+                // CRITICAL CHANGE: We now expect a FileDetailsResponse back, not a boolean.
+                var response = await _apiHelper.PostAsync<ServiceResponse<FileDetailsResponse>>(url, payload);
+
+                // We check for a successful response that contains data.
+                if (response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
-                    GetExecutionMessages(model, true, "File Action", MessagesResults.Success, ExecutionProcessOption.UpdateUpject, "Success", null, "Action completed successfully.");
+                    // We pass the ENTIRE returned object in the 'Data' property of ExecutionMessages.
+                    GetExecutionMessages(response.ApiResponseData.Data, true, "File Action", MessagesResults.Success,
+                        ExecutionProcessOption.UpdateUpject, "Success", null, "Action completed successfully.");
                 }
                 else
                 {
-                    GetExecutionMessages(model, false, "File Action", MessagesResults.Failed, ExecutionProcessOption.UpdateUpject, "Failed", null, response.ApiResponseData?.Message ?? response.Message);
+                    GetExecutionMessages(model, false, "File Action", MessagesResults.Failed,
+                        ExecutionProcessOption.UpdateUpject, "Failed", null, response.ApiResponseData?.Message ?? response.Message);
                 }
             }
             catch (Exception ex)
             {
-                GetExecutionMessages(model, false, "File Action", MessagesResults.Error, ExecutionProcessOption.TryCatch, "Error", ex, ex.Message);
+                GetExecutionMessages(model, false, "File Action", MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, "Error", ex, ex.Message);
             }
             return ExecutionMessage;
         }
+
 
         #endregion
 
@@ -620,24 +630,21 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         #endregion
 
         #region Helpers for Dropdowns
-
-
+ 
         public async Task<IEnumerable<SelectListItem>> GetCollectorsAsSelectListAsync(string branchId = null)
         {
-            string endpoint = APICallHelper.GetDaillycollectors;
-            if (!string.IsNullOrWhiteSpace(branchId))
+            if (branchId==null)
             {
-                endpoint += $"?branchid={branchId}";
+                branchId = "n/a";
             }
-
-            var response = await _customerApiHelper.GetAsync<ResponseObject<List<CollectorDto>>>(endpoint);
+            var response = await _customerApiHelper.GetAsync<ResponseObject<List<CollectorDto>>>(string.Format(APICallHelper.GetDaillycollectors, branchId));
 
             if (response.IsSuccess && response.ApiResponseData?.Data != null)
             {
                 return response.ApiResponseData.Data.Select(c => new SelectListItem
                 {
                     Value = $"{c.CustomerId}|{c.UserId}",
-                    Text = c.FullName
+                    Text = $"{c.CustomerId}|{c.FullName}",
                 }).ToList();
             }
 

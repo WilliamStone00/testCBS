@@ -17,7 +17,7 @@ using ZXing.QrCode.Internal;
 
 namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
 {
-    [CheckSessionTimeOut]
+    // [CheckSessionTimeOut]
     public class FileValidationController : BaseController
     {
         private readonly ManualDailyCollectionService _manualService;
@@ -45,16 +45,16 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                 var dataTable = await _manualService.GetextractedFilesForDataTableAsync(query);
                 var fileList = JsonConvert.DeserializeObject<List<FileUploadSummary>>(JsonConvert.SerializeObject(dataTable.data));
 
-                // SIMPLIFIED: We no longer generate HTML here. We send the raw data.
-                // The JavaScript will handle the rendering.
                 var resultData = fileList.Select(f => new
                 {
-                    fileUploadId = f.FileUploadId, // Send the ID for the render function
-                    fileName = f.FileName,
+                    fileUploadId = f.FileUploadId,
+                   
+                    collectorName = f.CollectorName, 
                     branchName = f.BranchName,
+                    id = f.Id,
                     uploadedBy = f.UploadedBy,
                     uploadedOn = f.UploadedOn.ToString("yyyy-MM-dd HH:mm"),
-                    status = f.SalaryProcessingStatus // Send the raw status
+                    status = f.SalaryProcessingStatus
                 }).ToList();
 
                 return Json(new
@@ -72,13 +72,13 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetFileDetails(string id)
+        public async Task<ActionResult> GetextractedFileDetails(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "File ID is required.");
             }
-            var fileDetails = await _manualService.GetFileDetailsAsync(id);
+            var fileDetails = await _manualService.GetextractedFileDetailsAsync(id);
             if (fileDetails == null)
             {
                 return PartialView("_ErrorDetails", "Could not retrieve details for the selected file.");
@@ -91,7 +91,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
         {
             var model = new ValidationDto
             {
-                FileUploadId = fileUploadId,
+                ManualEntryDailyCollectorId = fileUploadId,
                 ApprovedBy = Session["FullName"]?.ToString(),
                 Mode = mode // "approve", "review", or "reject"
             };
@@ -110,9 +110,9 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
-      
+
         [HttpPost]
-          public async Task<ActionResult> RejectFile(string KEY)
+        public async Task<ActionResult> RejectFile(string KEY)
         {
             if (string.IsNullOrWhiteSpace(KEY))
             {

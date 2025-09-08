@@ -322,16 +322,20 @@
 
 using CBS.BusinessService.Config;
 using CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Service;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.ManualDailycollection;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Helper;
+using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using System.Linq;
+using StringValues = CBS.FrontDesk.Data.Entity.StringValues;
 
 
 namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
@@ -354,28 +358,30 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
         public async Task<ActionResult> Index()
         {
             await Loader();
-            // Pass the ViewModel required by the _UploadForm partial view
             return View(new FileUploadResponse());
         }
+        [HttpGet]
+        public async Task<ActionResult> GetCollectorsByBranch(string branchId)
+        {
+            var collectors = await _manualService.GetCollectorsAsSelectListAsync(branchId);
+            return Json(collectors,JsonRequestBehavior.AllowGet);
+        }
 
-        /// <summary>
-        /// Helper to load data for dropdowns into the ViewBag.
-        /// </summary>
+
+        // Helper to load ViewBag data
         private async Task Loader()
         {
             ViewBag.Branches = await _branchServices.GetBranches();
-            ViewBag.Collectors = await _manualService.GetCollectorsAsSelectListAsync();
+            ViewBag.Collectors = new List<StringValues>();
         }
 
-        /// <summary>
-        /// ACTION 2: This is the central router action that works with your generic JS helpers.
-        /// It loads partial views for the 'list' of all files, a 'new' upload form, or the 'details' of a file.
-        /// </summary>
+        // ACTION 2: The central router for loading partial views.
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
             if (path == "list")
             {
-                // Just return the DataTable wrapper partial, no dataset here.
+                // IMPORTANT: For a server-side DataTable, we just return the EMPTY partial view.
+                // The table will make its own AJAX call to get the data.
                 return PartialView(partialView);
             }
             else if (path == "new")
@@ -383,84 +389,39 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                 await Loader();
                 return PartialView(partialView, new FileUploadResponse());
             }
-            else
+            else // "details" view
             {
                 var data = await _manualService.GetFileDetailsByIdAsync(KEY);
                 return PartialView(partialView, data);
             }
         }
 
+        // ACTION 3: The dedicated endpoint for the server-side DataTable.
         [HttpPost]
-        public async Task<ActionResult> LoadFileslist(GetFilesForDataTableQuery query)
+        public async Task<ActionResult> LoadFilesForDataTable(GetFilesForDataTableQuery query)
         {
             try
             {
                 var dataTable = await _manualService.GetFilesForDataTableAsync(query);
 
+                // Deserialize the data into a type that has the properties we need
                 var fileList = JsonConvert.DeserializeObject<List<FileUploadSummary>>(
                     JsonConvert.SerializeObject(dataTable.data)
                 );
-
-                var resultData = fileList.Select(f => new
-                {
-                    fileName = f.FileName,
-                    branchName = f.BranchName,
-                    uploadedBy = f.UploadedBy,
-                    uploadedOn = f.UploadedOn.ToString("yyyy-MM-dd HH:mm"),
-                    status = GetStatusBadge(f.SalaryProcessingStatus),
-                    actions = GenerateActionButtons(f)
-                }).ToList();
 
                 return Json(new
                 {
                     draw = query.Options?.draw ?? "1",
                     recordsTotal = dataTable.recordsTotal,
                     recordsFiltered = dataTable.recordsFiltered,
-                    data = resultData
+                    data = fileList // Send the raw data; JavaScript will render it
                 });
             }
-            catch
+            catch (Exception ex)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading file data.");
             }
         }
-
-        private string GenerateActionButtons(FileUploadSummary file)
-        {
-            return $@"
-        <div class='btn-group' role='group'>
-            <button type='button' class='btn btn-sm btn-info me-1' 
-                    onclick=""handleExtractFile('{file.FileUploadId}')"">
-                📂 Extract File
-            </button>
-            <button type='button' class='btn btn-sm btn-secondary' 
-                    onclick=""handleViewDetails('{file.FileUploadId}')"">
-                🔍 Details
-            </button>
-        </div>
-    ";
-        }
-
-
-        private string GetStatusBadge(string status)
-        {
-            if (string.IsNullOrEmpty(status)) return "";
-
-            string badgeClass = "bg-secondary";
-            switch (status.ToLowerInvariant())
-            {
-                case "pending": badgeClass = "bg-warning text-dark"; break;
-                case "approved":
-                case "extracted":
-                case "completed":
-                case "treated": badgeClass = "bg-success"; break;
-                case "rejected":
-                case "failed": badgeClass = "bg-danger"; break;
-            }
-
-            return $"<span class='badge {badgeClass}'>{status}</span>";
-        }
-
         /// <summary>
         /// ACTION 3: Handles the AJAX file upload from the _UploadForm.
         /// </summary>

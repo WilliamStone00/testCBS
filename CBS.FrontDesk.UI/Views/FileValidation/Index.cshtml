@@ -1,12 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.ManualDailycollection.FileUploadResponse
-@{ ViewBag.Title = "File Processing System"; }
-@using Resources
 
+@{
+    ViewBag.Title = "File Processing System";
+}
+@using Resources
 @Html.AntiForgeryToken()
 
-<!-- =================================================
-     HEADER & TIPS SECTIONS
-================================================== -->
+<!-- ================================================= HEADER & TIPS SECTIONS ================================================== -->
 <div class="card bg-light mb-3">
     <div class="card-body text-center">
         <h1 class="card-title text-primary"><i class="mdi mdi-file-check-outline me-2"></i> File Processing System</h1>
@@ -35,9 +35,7 @@
     </div>
 </div>
 
-<!-- =================================================
-     FILTERING SECTION
-================================================== -->
+<!-- ================================================= FILTERING SECTION ================================================== -->
 <div class="card shadow p-3 mb-4">
     <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Advanced File Filters</h5>
     <div class="card p-3 mb-3 bg-light">
@@ -87,15 +85,13 @@
     </div>
 </div>
 
-<!-- =================================================
-     DATATABLE CONTAINER
-================================================== -->
+<!-- ================================================= DATATABLE CONTAINER ================================================== -->
 <div class="card shadow p-3">
     <div class="table-responsive">
         <table id="myDataTable" class="table table-hover" style="width:100%;">
             <thead class="table-light">
                 <tr>
-                    <th>File Name</th>
+                    <th>Collector Name</th>
                     <th>Branch</th>
                     <th>Uploaded By</th>
                     <th>Uploaded On</th>
@@ -108,9 +104,7 @@
     </div>
 </div>
 
-<!-- =================================================
-     DETAILS PANEL & MODAL PLACEHOLDERS
-================================================== -->
+<!-- ================================================= DETAILS PANEL & MODAL PLACEHOLDERS ================================================== -->
 <div id="detailsContainer" class="card shadow p-3 mt-4" style="display:none;">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 id="detailsHeader" class="mb-0">File Details</h5>
@@ -131,211 +125,175 @@
     </div>
 </div>
 
-
 @section Scripts {
     <script>
-    // Self-executing anonymous function to create a private scope and avoid conflicts.
-    (function ($) {
-
-        // ===================================================================
-        //
-        //  CLIENT-SIDE HELPER FUNCTIONS
-        //
-        // ===================================================================
-
-        function getStatusBadge(status) {
-            if (!status) return "";
-            let badgeClass = "bg-secondary";
-            switch (status.toLowerCase()) {
-                case "pending": badgeClass = "bg-warning text-dark"; break;
-                case "approved": case "extracted": case "completed": case "treated":
-                    badgeClass = "bg-success"; break;
-                case "rejected": case "failed":
-                    badgeClass = "bg-danger"; break;
-            }
-            return `<span class='badge ${badgeClass}'>${status}</span>`;
+(function ($) {
+    // --- CLIENT-SIDE HELPER FUNCTIONS ---
+    function getStatusBadge(status) {
+        if (!status) return "<span class='badge bg-secondary'>Unknown</span>";
+        let badgeClass = "bg-secondary";
+        switch (status.toLowerCase()) {
+            case "pending": badgeClass = "bg-warning text-dark"; break;
+            case "approved":
+            case "extracted":
+            case "completed":
+            case "treated": badgeClass = "bg-success"; break;
+            case "rejected":
+            case "failed": badgeClass = "bg-danger"; break;
         }
+        return `<span class='badge ${badgeClass}'>${status}</span>`;
+    }
 
-        function generateActionButtons(fileId) {
-            return `
-                <select class='form-select form-select-sm' onchange='handleAction(this)'>
-                    <option selected value="">Select Action...</option>
-                    <option value="details" data-fileid="${fileId}">📄 View Details</option>
-                    <option value="approve" data-fileid="${fileId}">✅ Approve</option>
-                    <option value="review" data-fileid="${fileId}">🔍 Review</option>
-                    <option value="reject" data-fileid="${fileId}">❌ Reject</option>
-                </select>`;
-        }
+    function generateActionButtons(id) {
+        return `
+        <div class="btn-group btn-group-sm" role="group">
+            <a href="#" class="btn btn-outline-primary action-btn" data-action="details" data-id="${id}" title="View Details"><i class="mdi mdi-eye-outline"></i></a>
+            <a href="#" class="btn btn-outline-success action-btn" data-action="approve" data-id="${id}" title="Approve"><i class="mdi mdi-check"></i></a>
+            <a href="#" class="btn btn-outline-warning action-btn" data-action="review" data-id="${id}" title="Review"><i class="mdi mdi-magnify"></i></a>
+            <a href="#" class="btn btn-outline-danger action-btn" data-action="reject" data-id="${id}" title="Reject"><i class="mdi mdi-close"></i></a>
+        </div>`;
+    }
 
-        // ===================================================================
-        //
-        //  GLOBAL ACTION HANDLER & WORKFLOW FUNCTIONS
-        //
-        // ===================================================================
 
-        window.handleAction = function (selectElement) {
-            const selectedOption = $(selectElement).find('option:selected');
-            const action = selectedOption.val();
-            const fileId = selectedOption.data('fileid');
+    // --- WORKFLOW FUNCTIONS ---
+    function viewDetails(fileId) {
+        const detailsContainer = $('#detailsContainer');
+        const detailsBody = $('#detailsBody');
+        const detailsHeader = $('#detailsHeader');
+        detailsHeader.text(`File Details: ${fileId}`);
+        detailsBody.html('<div class="text-center p-4"><div class="spinner-border text-primary"></div></div>');
+        detailsContainer.slideDown();
 
-            $(selectElement).prop('selectedIndex', 0);
-            if (!action || !fileId) return;
-
-            switch (action) {
-                case 'details': viewDetails(fileId); break;
-                case 'reject': confirmAndReject(fileId); break;
-                case 'approve': case 'review': loadActionForm(fileId, action); break;
-                default: console.warn('Unknown action selected:', action); break;
-            }
-        };
-
-        function viewDetails(fileId) {
-            const detailsContainer = $('#detailsContainer');
-            const detailsBody = $('#detailsBody');
-            const detailsHeader = $('#detailsHeader');
-
-            detailsHeader.text(`File Details: ${fileId}`);
-            detailsBody.html('<div class="text-center p-4"><div class="spinner-border text-primary"></div></div>');
-            detailsContainer.slideDown();
-
-            const url = `@Url.Action("GetFileDetails", "FileValidation")?id=${fileId}`;
-            detailsBody.load(url, function (response, status, xhr) {
-                if (status === "error") {
-                    detailsBody.html('<div class="alert alert-danger">Error loading details.</div>');
-                }
+        const url = `@Url.Action("GetextractedFileDetails", "FileValidation")?id=${fileId}`;
+        $.get(url)
+            .done(function (response) {
+                detailsBody.html(response);
+            })
+            .fail(function (xhr) {
+                detailsBody.html(`<div class="alert alert-danger">Error loading details. Status: ${xhr.statusText}</div>`);
             });
-            document.getElementById('detailsContainer').scrollIntoView({ behavior: 'smooth' });
-        }
 
-        function confirmAndReject(fileId) {
-            alertify.confirm('Confirm Rejection', 'Are you sure you want to permanently reject this file? This action cannot be undone.',
-                function () { // onOk
-                    const token = $('input[name="__RequestVerificationToken"]').first().val();
-                    $.ajax({
-                        url: '@Url.Action("RejectFile", "FileValidation")',
-                        type: 'POST',
-                        data: { KEY: fileId, __RequestVerificationToken: token },
-                        success: function (response) {
-                            if (response.success) {
-                                appalert(response.message || 'File rejected successfully.', 1, 1);
-                                $('#myDataTable').DataTable().ajax.reload(null, false);
-                            } else {
-                                appalert(response.message || 'Failed to reject the file.', 4, 1);
-                            }
-                        },
-                        error: function () { appalert('An error occurred while communicating with the server.', 4, 1); }
-                    });
+        document.getElementById('detailsContainer').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function confirmAndReject(fileId) {
+        if (!confirm("Are you sure you want to reject this file?")) return;
+        $.post('@Url.Action("RejectFile", "FileValidation")', { id: fileId })
+            .done(() => $('#myDataTable').DataTable().ajax.reload())
+            .fail(() => alert("Failed to reject the file."));
+    }
+
+// --- Load the form into modal ---
+   function loadActionForm(id, mode) {
+       const url = `@Url.Action("GetActionForm", "FileValidation")?fileUploadId=${id}&mode=${mode}`;
+
+    $('#actionModalBody').html(`
+        <div class="text-center p-4">
+            <div class="spinner-border text-primary"></div>
+        </div>
+    `);
+    $('#actionModal').modal('show');
+
+    $.ajax({
+        url: url,
+        type: "GET",
+        cache: false,
+        success: function (response) {
+            $('#actionModalBody').html(response);
+        },
+        error: function (xhr) {
+            $('#actionModalBody').html(`
+                <div class="alert alert-danger">
+                    Could not load form. [${xhr.status}] ${xhr.statusText}
+                </div>
+            `);
+        }
+    });
+}
+
+
+
+
+    // --- DATATABLE INITIALIZATION ---
+    function initializeFilesDataTable() {
+        return $('#myDataTable').DataTable({
+            processing: false,
+            serverSide: true,
+            searching: false,
+            autoWidth: false,
+            ajax: {
+                url: '@Url.Action("LoadFiles", "FileValidation")',
+                type: 'POST',
+                data: function (d) {
+                    d.branch = $('#branchFilter').val();
+                    d.status = $('#statusFilter').val();
+                    d.dateFrom = $('#dateFrom').val();
+                    d.dateTo = $('#dateTo').val();
+                }
+            },
+            columns: [
+                { data: "collectorName", name: "CollectorName" },
+                { data: "branchName", name: "BranchName" },
+                { data: "uploadedBy", name: "UploadedBy" },
+                { data: "uploadedOn", name: "UploadedOn" },
+                {
+                    data: "status", name: "SalaryProcessingStatus", orderable: false,
+                    render: function (data) { return getStatusBadge(data); }
                 },
-                function () { appalert('Rejection cancelled.', 3, 1); } // onCancel
-            );
-        }
-
-        function loadActionForm(fileId, mode) {
-            const url = `@Url.Action("GetActionForm", "FileValidation")?fileUploadId=${fileId}&mode=${mode}`;
-            $('#actionModalBody').load(url, function (response, status, xhr) {
-                if (status === "error") {
-                    appalert('Failed to load form: ' + xhr.statusText, 4, 1);
-                    return;
+                {
+                    data: "id", name: "Actions", orderable: false,
+                    render: function (data) { return generateActionButtons(data); }
                 }
-                $('#actionModalLabel').text(mode.charAt(0).toUpperCase() + mode.slice(1) + ' File');
-                $('#actionModal').modal('show');
-                $.validator.unobtrusive.parse('#actionForm');
-            });
-        }
+            ],
+            columnDefs: [
+                { width: "30%", targets: 0 },
+                { width: "20%", targets: 1 },
+                { width: "15%", targets: 2 },
+                { width: "15%", targets: 3 },
+                { width: "10%", targets: 4, className: "text-center" },
+                { width: "10%", targets: 5, className: "text-center" }
+            ]
+        });
+    }
 
-        // ===================================================================
-        //
-        //  MAIN SCRIPT EXECUTION
-        //
-        // ===================================================================
-        $(document).ready(function () {
-            const dataTable = initializeFilesDataTable();
+    // --- MAIN SCRIPT EXECUTION ---
+    $(document).ready(function () {
+        const dataTable = initializeFilesDataTable();
 
-            $('#applyFilterBtn').on('click', () => dataTable.ajax.reload());
-            $('#resetFilterBtn').on('click', function () {
-                $('#statusFilter').val('Pending').trigger('change');
-                $('#startDate, #endDate, #fileName, #BranchId').val('').trigger('change');
-                $('#byFileNameToggle, #byBranchNameToggle').prop('checked', false).trigger('change');
-                dataTable.ajax.reload();
-            });
+        // Filter reload
+        $('#applyFilterBtn').on('click', () => dataTable.ajax.reload());
 
-            $('#byFileNameToggle').on('change', function () { $('#fileNameFilterSection').toggle(this.checked); });
-            $('#byBranchNameToggle').on('change', function () { $('#branchNameFilterSection').toggle(this.checked); });
-            $('#closeDetailsBtn').on('click', function() { $('#detailsContainer').slideUp(); });
+        // Close details
+        $('#closeDetailsBtn').on('click', function () { $('#detailsContainer').slideUp(); });
 
-            $(document).on('submit', '#actionForm', function (e) {
-                e.preventDefault();
-                const form = $(this);
-                if (!form.valid()) return;
-
-                $.ajax({
-                    url: form.attr('action'),
-                    type: 'POST',
-                    data: form.serialize(),
-                    success: function (response) {
-                        if (response.success) {
-                            appalert(response.message, 1, 1);
-                            $('#actionModal').modal('hide');
-                            dataTable.ajax.reload(null, false);
-                        } else {
-                            appalert(response.message, 4, 1);
-                        }
-                    },
-                    error: function () { appalert('An error occurred during submission.', 4, 1); }
-                });
-            });
+        $('#myDataTable tbody').on('click', '.action-btn', function (e) {
+            e.preventDefault();
+            const action = $(this).data('action');
+            const id = $(this).data('id'); // <-- use "id"
+            if (!action || !id) return;
+            switch (action) {
+                case 'details': viewDetails(id); break;
+                case 'reject': confirmAndReject(id); break;
+                case 'approve':
+                case 'review': loadActionForm(id, action); break;
+            }
         });
 
-        // ===================================================================
-        //
-        //  DATATABLE INITIALIZATION
-        //
-        // ===================================================================
-        function initializeFilesDataTable() {
-            return $('#myDataTable').DataTable({
-                processing: true,
-                serverSide: true,
-                searching: false,
-                autoWidth: false,
-                ajax: {
-                    url: '@Url.Action("LoadFiles", "FileValidation")',
-                    type: 'POST',
-                    data: function (d) {
-                        const order = d.order[0] || {};
-                        const query = {
-                            Options: {
-                                draw: d.draw,
-                                start: d.start,
-                                pageSize: d.length,
-                                sortColumn: d.columns[order.column]?.name,
-                                sortDirection: order.dir
-                            },
-                            StatusFilter: $('#statusFilter').val(),
-                            StartDate: $('#startDate').val() || null,
-                            EndDate: $('#endDate').val() || null,
-                            FileName: $('#byFileNameToggle').is(':checked') ? $('#fileName').val() : null,
-                            BranchId: $('#byBranchNameToggle').is(':checked') ? $('#BranchId').val() : null
-                        };
-                        return { query: query };
-                    }
-                },
-                columns: [
-                    { "data": "fileName", "name": "FileName" },
-                    { "data": "branchName", "name": "BranchName" },
-                    { "data": "uploadedBy", "name": "UploadedBy" },
-                    { "data": "uploadedOn", "name": "UploadedOn" },
-                    { "data": "status", "name": "Status", "orderable": false, "render": getStatusBadge },
-                    { "data": "fileUploadId", "name": "Actions", "orderable": false, "render": generateActionButtons }
-                ],
-                columnDefs: [
-                    { "width": "20%", "targets": 0 }, { "width": "20%", "targets": 1 },
-                    { "width": "15%", "targets": 2 }, { "width": "15%", "targets": 3 },
-                    { "width": "20%", "targets": 4, "className": "text-center" },
-                    { "width": "10%", "targets": 5, "className": "text-center" }
-                ]
-            });
-        }
 
-    }(jQuery));
+        // Submit handler for action forms loaded into modal
+        $(document).on('submit', '#actionForm', function (e) {
+            e.preventDefault();
+            const form = $(this);
+            $.post(form.attr('action'), form.serialize())
+                .done(() => {
+                    $('#actionModal').modal('hide');
+                    dataTable.ajax.reload();
+                })
+                .fail(() => {
+                    alert("An error occurred while submitting the form.");
+                });
+        });
+    });
+}(jQuery));
     </script>
 }

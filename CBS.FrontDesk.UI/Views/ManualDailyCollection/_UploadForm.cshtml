@@ -2,7 +2,7 @@
 @using Resources
 
 @*
-   
+
 *@
 @using (Html.BeginForm("UploadFile", "ManualDailyCollection", FormMethod.Post,
     new { enctype = "multipart/form-data", id = "manualUploadForm" }))
@@ -13,7 +13,7 @@
         <div class="card-header bg-white border-0">
             <h6 class="mb-0 text-primary">
                 <i class="mdi mdi-cloud-upload-outline me-2"></i> @ChequeManagements.ManualDailyCollectionFileUpload
-            <span class="badge bg-success ms-2">@ChequeManagements.Required</span>
+                <span class="badge bg-success ms-2">@ChequeManagements.Required</span>
             </h6>
         </div>
         <div class="card-body">
@@ -25,36 +25,25 @@
                 </div>
             </div>
 
-            <div class="row g-3 mb-3">
-                <div class="col-md-12">
-                    <label for="branch">🏢 @ChequeManagements.BranchId</label>
-                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2" }
-                    )
-                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-
-                </div>
-               
+            <div class="col-md-12">
+                <label for="branch">🏢 @ChequeManagements.BranchId</label>
+                @Html.DropDownListFor(m => m.BranchId,
+                    new SelectList(ViewBag.Branches, "Id", "Name"),
+                    "---" + @GlobalUserManagement.SelectBranch + "---",
+                    new { @class = "form-control select2", @id = "BranchId", @onchange = "loadCollectors(this.value)" })
+                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
             </div>
-            <div class="row g-3 mb-3">
 
-                <div class="col-md-12">
-
-                    <label for="collector">👤 @ChequeManagements.sellectdailyCollector</label>
-                    @Html.DropDownListFor(m => m.CollectorAndUser,
-                        new SelectList(ViewBag.Collectors, "Value", "Text"),
-                        "--- Select Daily Collector ---",
-                        new { @class = "form-control select2", @id = "CollectorxCollectorId" })
-
-                    @Html.ValidationMessageFor(m => m.CollectorAndUser, "", new { @class = "text-danger" })
-
-                </div>
-
-                @*<div class="col-md-6">
-                    <label class="form-label">Collector (User)</label>
-                    @Html.DropDownListFor(m => m.CollectorId, (IEnumerable<SelectListItem>)ViewBag.Collectors, "--- Select Collector ---", new { @class = "form-control select2" })
-                    @Html.ValidationMessageFor(m => m.CollectorId, "", new { @class = "text-danger" })
-                </div>*@
+            <div class="col-md-12">
+                <label for="collector">👤 @ChequeManagements.sellectdailyCollector</label>
+                @Html.DropDownListFor(m => m.CollectorAndUser,
+                    Enumerable.Empty<SelectListItem>(), // Empty until branch is chosen
+                    "--- Select Daily Collector ---",
+                    new { @class = "form-control select2", @id = "CollectorxCollectorId" })
+                @Html.ValidationMessageFor(m => m.CollectorAndUser, "", new { @class = "text-danger" })
             </div>
+
+
 
             <!-- File upload input -->
             <div class="mb-3">
@@ -84,3 +73,5 @@
 <div id="uploadResultContainer" class="mt-4" style="display:none;">
     <!-- The _FileDetails partial view will load here -->
 </div>
+
+

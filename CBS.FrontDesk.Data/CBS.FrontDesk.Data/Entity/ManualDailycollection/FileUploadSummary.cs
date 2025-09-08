@@ -27,6 +27,7 @@ namespace CBS.FrontDesk.Data.Entity.ManualDailycollection
         public string FileType { get; set; }
         public DateTime CreatedDate { get; set; }
         public string CreatedBy { get; set; }
+        public string CollectorName { get; set; }
     }
 
     public class FileValidationRequest
