@@ -374,28 +374,28 @@
     </script>*@
 
 <script>
-
     (function ($) {
         let currentFileUploadId = null; // Store the ID of the last successful upload
-        let $lastForm = null;
 
+        // --- INITIALIZATION ---
         function initialize() {
-            // store the form reference on submit so reset can use it
+            // Main form submission for the initial upload
             $('#mainWorkspace').on('submit', '#manualUploadForm', handleUploadSubmit);
 
-            // Delegated handlers for dynamic preview buttons
-            $('#uploadResultContainer')
-                .on('click', '#resetPreviewBtn', resetPreview)
-                .on('click', '#deleteUploadedFileBtn', deleteUploadedFile) // server delete
-                .on('click', '#extractFileBtn', extractFile); // server extract
+            // Delegated handlers for buttons inside the dynamic preview containers
+            $('#mainWorkspace')
+               // .on('click', '#resetPreviewBtn', resetInitialPreview) // Resets the FIRST preview
+                .on('click', '#deleteUploadedFileBtn', deleteUploadedFile)
+                .on('click', '#extractFileBtn', extractFile)
+                .on('click', '#closeExtractedPreviewBtn', resetInitialPreview); // The new "Close" button will also reset everything
         }
 
-        async function handleUploadSubmit(e) {
+
+        // --- FUNCTION 1: Handles the initial file UPLOAD ---
+        function handleUploadSubmit(e) {
             e.preventDefault();
             const form = this;
-            $lastForm = $(form);
-
-            const $form = $lastForm;
+            const $form = $(form);
             const actionUrl = $form.attr('action');
             const formData = new FormData(form);
             const $submitButton = $form.find('button[type="submit"]');
@@ -415,20 +415,19 @@
                         $resultContainer.slideUp().html('');
                     },
                     success: function (response) {
-                        // Check if response is successful
                         if ((response.success === true || response.isSuccess === true) && response.data) {
                             appalert(response.message || "File processed successfully!", 1, 1);
 
-                            // Store the ID for later actions
+                            // Store the ID for later actions (delete, extract)
                             currentFileUploadId = response.data.FileUploadId;
 
-                            const previewHtml = buildPreviewHtml(response.data);
+                            // Build and display the FIRST preview (upload summary)
+                            const previewHtml = buildInitialPreviewHtml(response.data);
                             $resultContainer.html(previewHtml).slideDown();
 
-                            // Use the correct property name: manualEntryDailyCollectorUploadListDtos
                             const tableData = response.data.manualEntryDailyCollectorUploadListDtos || [];
 
-                            // Initialize or reinitialize DataTable
+                            // Initialize the FIRST DataTable
                             $('#previewDetailsTable').DataTable({
                                 destroy: true,
                                 data: tableData,
@@ -449,7 +448,6 @@
                                 lengthMenu: [5, 10, 25, 50]
                             });
 
-                            // Clear the form (so file input and selects reset)
                             form.reset();
                             $form.find('.select2').val(null).trigger('change');
                         } else {
@@ -468,132 +466,150 @@
             });
         }
 
-        // Build preview HTML (fixed & styled)
-        function buildPreviewHtml(data) {
+
+        // --- FUNCTION 2: Builds the HTML for the INITIAL UPLOAD PREVIEW ---
+        function buildInitialPreviewHtml(data) {
             const formatCurrency = (num) => (num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
             return `
-    <fieldset class="fieldset-custom">
-        <legend class="legend-custom">File Preview: ${data.FileUploadId || 'N/A'}</legend>
-
-        <div class="row g-2">
-
-            <!-- Uploaded By -->
-            <div class="col-6 col-md-3">
-                <div class="card card-border-shadow-warning h-100 p-2">
-                    <div class="card-body p-2 text-center">
-                        <div class="d-flex align-items-center mb-1 pb-1 justify-content-center">
-                            <div class="avatar me-1">
-                                <span class="avatar-initial rounded bg-label-warning">
-                                    <i class="mdi mdi-upload mdi-14px"></i>
-                                </span>
-                            </div>
-                            <h6 class="ms-1 mb-0" style="font-size: 0.95rem;">
-                                ${data.UploadedBy || ''}
-                            </h6>
-                        </div>
-                        <p class="mb-0 text-muted" style="font-size: 0.75rem;">Uploaded By</p>
-                    </div>
-                </div>
+        <fieldset class="fieldset-custom">
+            <legend class="legend-custom">File Preview: ${data.FileUploadId || 'N/A'}</legend>
+            <div class="row g-2">
+                <!-- Uploaded By -->
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-warning h-100 p-2"><div class="card-body p-2 text-center"><div class="d-flex align-items-center mb-1 pb-1 justify-content-center"><div class="avatar me-1"><span class="avatar-initial rounded bg-label-warning"><i class="mdi mdi-upload mdi-14px"></i></span></div><h6 class="ms-1 mb-0" style="font-size: 0.95rem;">${data.UploadedBy || ''}</h6></div><p class="mb-0 text-muted" style="font-size: 0.75rem;">Uploaded By</p></div></div></div>
+                <!-- Branch -->
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-info h-100 p-2"><div class="card-body p-2 text-center"><div class="d-flex align-items-center mb-1 pb-1 justify-content-center"><div class="avatar me-1"><span class="avatar-initial rounded bg-label-info"><i class="mdi mdi-office-building mdi-14px"></i></span></div><h6 class="ms-1 mb-0" style="font-size: 0.95rem;">${data.BranchName || ''}</h6></div><p class="mb-0 text-muted" style="font-size: 0.75rem;">Branch</p></div></div></div>
+                <!-- Total Members -->
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-success h-100 p-2"><div class="card-body p-2 text-center"><div class="d-flex align-items-center mb-1 pb-1 justify-content-center"><div class="avatar me-1"><span class="avatar-initial rounded bg-label-success"><i class="mdi mdi-account-group mdi-14px"></i></span></div><h6 class="ms-1 mb-0" style="font-size: 0.95rem;">${data.TotalMembers || 0}</h6></div><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Members</p></div></div></div>
+                <!-- Total Amount -->
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-danger h-100 p-2"><div class="card-body p-2 text-center"><div class="d-flex align-items-center mb-1 pb-1 justify-content-center"><div class="avatar me-1"><span class="avatar-initial rounded bg-label-danger"><i class="mdi mdi-cash mdi-14px"></i></span></div><h6 class="ms-1 mb-0" style="font-size: 0.95rem;">${formatCurrency(data.TotalAmount)}</h6></div><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Amount</p></div></div></div>
             </div>
-
-            <!-- Branch -->
-            <div class="col-6 col-md-3">
-                <div class="card card-border-shadow-info h-100 p-2">
-                    <div class="card-body p-2 text-center">
-                        <div class="d-flex align-items-center mb-1 pb-1 justify-content-center">
-                            <div class="avatar me-1">
-                                <span class="avatar-initial rounded bg-label-info">
-                                    <i class="mdi mdi-office-building mdi-14px"></i>
-                                </span>
-                            </div>
-                            <h6 class="ms-1 mb-0" style="font-size: 0.95rem;">
-                                ${data.BranchName || ''}
-                            </h6>
-                        </div>
-                        <p class="mb-0 text-muted" style="font-size: 0.75rem;">Branch</p>
-                    </div>
-                </div>
+            <div class="table-responsive mt-3">
+                <table id="previewDetailsTable" class="table table-striped table-bordered" style="width:100%"></table>
             </div>
-
-            <!-- Total Members -->
-            <div class="col-6 col-md-3">
-                <div class="card card-border-shadow-success h-100 p-2">
-                    <div class="card-body p-2 text-center">
-                        <div class="d-flex align-items-center mb-1 pb-1 justify-content-center">
-                            <div class="avatar me-1">
-                                <span class="avatar-initial rounded bg-label-success">
-                                    <i class="mdi mdi-account-group mdi-14px"></i>
-                                </span>
-                            </div>
-                            <h6 class="ms-1 mb-0" style="font-size: 0.95rem;">
-                                ${data.TotalMembers || 0}
-                            </h6>
-                        </div>
-                        <p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Members</p>
-                    </div>
-                </div>
+            <div class="d-flex justify-content-end mt-3">
+                <button type="button" id="resetPreviewBtn" class="btn btn-outline-secondary me-2">Reset</button>
+                <button type="button" id="deleteUploadedFileBtn" class="btn btn-danger me-2">Delete</button>
+                <button type="button" id="extractFileBtn" class="btn btn-primary">Extract File</button>
             </div>
-
-            <!-- Total Amount -->
-            <div class="col-6 col-md-3">
-                <div class="card card-border-shadow-danger h-100 p-2">
-                    <div class="card-body p-2 text-center">
-                        <div class="d-flex align-items-center mb-1 pb-1 justify-content-center">
-                            <div class="avatar me-1">
-                                <span class="avatar-initial rounded bg-label-danger">
-                                    <i class="mdi mdi-cash mdi-14px"></i>
-                                </span>
-                            </div>
-                            <h6 class="ms-1 mb-0" style="font-size: 0.95rem;">
-                                ${formatCurrency(data.TotalAmount)}
-                            </h6>
-                        </div>
-                        <p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Amount</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="table-responsive mt-3">
-            <table id="previewDetailsTable" class="table table-striped table-bordered" style="width:100%"></table>
-        </div>
-
-        <div id="previewActionsContainer" class="d-flex justify-content-end mt-3">
-            <button type="button" id="resetPreviewBtn" class="btn btn-outline-secondary me-2">Reset</button>
-            <button type="button" id="deleteUploadedFileBtn" class="btn btn-danger me-2">Delete</button>
-            <button type="button" id="extractFileBtn" class="btn btn-primary">Extract File</button>
-        </div>
-    </fieldset>`;
+        </fieldset>`;
         }
 
-        // Reset (client-only): clears preview & datatable so user may upload again
-        function resetPreview() {
+
+        // --- FUNCTION 3: (NEW!) Builds the HTML for the EXTRACTED DATA PREVIEW ---
+        function buildExtractedPreviewHtml(data) {
+            const formatCurrency = (num) => (num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            return `
+        <fieldset class="fieldset-custom">
+            <legend class="legend-custom text-success">Extraction Successful: ${data.fileUploadId || 'N/A'}</legend>
+             <div class="row g-2">
+                <!-- Collector Name -->
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-warning h-100 p-2"><div class="card-body p-2 text-center"><div class="d-flex align-items-center mb-1 pb-1 justify-content-center"><div class="avatar me-1"><span class="avatar-initial rounded bg-label-warning"><i class="mdi mdi-account-tie mdi-14px"></i></span></div><h6 class="ms-1 mb-0" style="font-size: 0.95rem;">${data.collectorName || ''}</h6></div><p class="mb-0 text-muted" style="font-size: 0.75rem;">Collector Name</p></div></div></div>
+                <!-- Branch Name -->
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-info h-100 p-2"><div class="card-body p-2 text-center"><div class="d-flex align-items-center mb-1 pb-1 justify-content-center"><div class="avatar me-1"><span class="avatar-initial rounded bg-label-info"><i class="mdi mdi-office-building mdi-14px"></i></span></div><h6 class="ms-1 mb-0" style="font-size: 0.95rem;">${data.branchName || ''}</h6></div><p class="mb-0 text-muted" style="font-size: 0.75rem;">Branch</p></div></div></div>
+                <!-- Total Members -->
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-success h-100 p-2"><div class="card-body p-2 text-center"><div class="d-flex align-items-center mb-1 pb-1 justify-content-center"><div class="avatar me-1"><span class="avatar-initial rounded bg-label-success"><i class="mdi mdi-account-group mdi-14px"></i></span></div><h6 class="ms-1 mb-0" style="font-size: 0.95rem;">${data.totalMember || 0}</h6></div><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Members</p></div></div></div>
+                <!-- Total Amount -->
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-danger h-100 p-2"><div class="card-body p-2 text-center"><div class="d-flex align-items-center mb-1 pb-1 justify-content-center"><div class="avatar me-1"><span class="avatar-initial rounded bg-label-danger"><i class="mdi mdi-cash mdi-14px"></i></span></div><h6 class="ms-1 mb-0" style="font-size: 0.95rem;">${formatCurrency(data.totalAmount)}</h6></div><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Amount</p></div></div></div>
+            </div>
+            <div class="table-responsive mt-3">
+                <!-- Use a NEW, UNIQUE ID for the second DataTable -->
+                <table id="extractedDetailsTable" class="table table-striped table-bordered" style="width:100%"></table>
+            </div>
+            <div class="d-flex justify-content-end mt-3">
+                <button type="button" id="closeExtractedPreviewBtn" class="btn btn-secondary">Close</button>
+            </div>
+        </fieldset>`;
+        }
+
+
+        // --- FUNCTION 4: Handles the file EXTRACTION ---
+        function extractFile() {
+            if (!currentFileUploadId) {
+                appalert('No file to extract.', 3, 1);
+                return;
+            }
+
+            const token = $('input[name="__RequestVerificationToken"]').val();
+            const $resultContainer = $('#uploadResultContainer'); // The container we will update
+
+            $.ajax({
+                url: '/ManualDailyCollection/extract',
+                type: 'POST',
+                data: { KEY: currentFileUploadId },
+                headers: token ? { 'RequestVerificationToken': token } : {},
+                dataType: 'json', // IMPORTANT: Expect a JSON response, not HTML
+                beforeSend: function () {
+                    // You can add a loading indicator here if you want
+                    $resultContainer.html('<p class="text-center">Extracting data...</p>');
+                },
+                success: function (response) {
+                    // Check for a successful response with data
+                    if (response && response.status === "SUCCESS" && response.data) {
+                        appalert(response.statusDescription || 'File extracted successfully.', 1, 1);
+
+                        // THIS IS THE FIX:
+                        // 1. Build the NEW preview HTML using the extracted data
+                        const extractedHtml = buildExtractedPreviewHtml(response.data);
+
+                        // 2. Replace the old preview content with the new one
+                        $resultContainer.html(extractedHtml);
+
+                        // 3. Initialize the NEW DataTable with the extracted details
+                        $('#extractedDetailsTable').DataTable({
+                            destroy: true,
+                            data: response.data.details || [],
+                            columns: [
+                                { data: "memberReference", title: "Member Ref." },
+                                { data: "memberName", title: "Member Name" },
+                                { data: "accountNumber", title: "Account No." },
+                                { data: "memberBranchName", title: "Member Branch" },
+                                {
+                                    data: "amount",
+                                    title: "Amount",
+                                    className: "text-end",
+                                    render: $.fn.dataTable.render.number(',', '.', 2)
+                                }
+                            ],
+                            responsive: true,
+                            pageLength: 5,
+                            lengthMenu: [5, 10, 25, 50]
+                        });
+
+                    } else {
+                        // If extraction failed, show an error and restore the initial preview
+                        appalert((response && response.message) || 'Extraction failed.', 4, 1);
+                        // Optionally, you could reload the initial preview here if needed
+                    }
+                },
+                error: function () {
+                    appalert('An error occurred during extraction.', 4, 1);
+                }
+            });
+        }
+
+
+        // --- UTILITY FUNCTIONS ---
+
+        // Resets the entire UI to the initial state
+        function resetInitialPreview() {
             $('#uploadResultContainer').slideUp().html('');
-            // destroy the table if exists
             if ($.fn.DataTable.isDataTable('#previewDetailsTable')) {
-                $('#previewDetailsTable').DataTable().clear().destroy();
+                $('#previewDetailsTable').DataTable().destroy();
             }
-            // clear stored id
+            if ($.fn.DataTable.isDataTable('#extractedDetailsTable')) {
+                $('#extractedDetailsTable').DataTable().destroy();
+            }
             currentFileUploadId = null;
-            // restore last form state if we have it
-            if ($lastForm) {
-                $lastForm[0].reset();
-                $lastForm.find('.select2').val(null).trigger('change');
-                $lastForm.find('button[type="submit"]').prop('disabled', false).html('<i class="mdi mdi-cloud-upload-outline me-1"></i> Upload');
-            }
         }
 
-        // Delete (server): confirm -> call delete endpoint -> if success clear preview + details
+        // Deletes the file from the server
         function deleteUploadedFile() {
             if (!currentFileUploadId) {
                 appalert('No uploaded file to delete.', 3, 1);
                 return;
             }
-
             alertify.confirm('Confirm Delete', 'This will permanently delete the uploaded file. Continue?', function () {
-                const token = $('input[name="__RequestVerificationToken"]').val() || $('meta[name="csrf-token"]').attr('content');
-
+                const token = $('input[name="__RequestVerificationToken"]').val();
                 $.ajax({
                     url: '/ManualDailyCollection/DeleteFile',
                     type: 'POST',
@@ -602,7 +618,7 @@
                     success: function (response) {
                         if (response && response.success) {
                             appalert(response.message || 'File deleted.', 1, 1);
-                            resetPreview(); // clear UI
+                            resetInitialPreview(); // Clear UI after successful deletion
                         } else {
                             appalert((response && response.message) || 'Could not delete file.', 4, 1);
                         }
@@ -612,58 +628,13 @@
                     }
                 });
             }, function () {
-                // cancelled
+                // User cancelled
             });
         }
 
-        // Extract (server): call extract endpoint, expect HTML partial -> display it
-        function extractFile() {
-            if (!currentFileUploadId) {
-                appalert('No file to extract.', 3, 1);
-                return;
-            }
-
-            const token = $('input[name="__RequestVerificationToken"]').val() || $('meta[name="csrf-token"]').attr('content');
-
-            $.ajax({
-                url: '/ManualDailyCollection/extract',
-                type: 'POST',
-                data: { KEY: currentFileUploadId },
-                headers: token ? { 'RequestVerificationToken': token } : {},
-                dataType: 'html', // expecting partial view HTML
-                success: function (htmlOrJson) {
-                    // If server returns HTML partial, inject into main workspace
-                    if (typeof htmlOrJson === 'string' && htmlOrJson.trim().startsWith('<')) {
-                        $('#mainWorkspace').html(htmlOrJson);
-                        appalert('File extracted and displayed.', 1, 1);
-                        // clear preview
-                        resetPreview();
-                    } else {
-                        // if server returned JSON { success: true, message: '', data: ... }
-                        try {
-                            var resp = (typeof htmlOrJson === 'string') ? JSON.parse(htmlOrJson) : htmlOrJson;
-                            if (resp && resp.success) {
-                                appalert(resp.message || 'File extracted.', 1, 1);
-                                resetPreview();
-                                // Optionally navigate or display resp.data
-                            } else {
-                                appalert((resp && resp.message) || 'Extraction failed.', 4, 1);
-                            }
-                        } catch (err) {
-                            appalert('Unexpected server response.', 4, 1);
-                        }
-                    }
-                },
-                error: function () {
-                    appalert('Error during extraction.', 4, 1);
-                }
-            });
-        }
-
-        // Start
+        // --- Start the script ---
         $(document).ready(initialize);
+
     }(jQuery));
-
 </script>
-
 }

@@ -1,17 +1,18 @@
 ﻿@model CBS.FrontDesk.Data.Entity.ManualDailycollection.FileUploadResponse
-@{ ViewBag.Title = "File Validation Queue"; }
+@{ ViewBag.Title = "File Processing System"; }
 @using Resources
 
 @Html.AntiForgeryToken()
 
-
+<!-- =================================================
+     HEADER & TIPS SECTIONS
+================================================== -->
 <div class="card bg-light mb-3">
     <div class="card-body text-center">
         <h1 class="card-title text-primary"><i class="mdi mdi-file-check-outline me-2"></i> File Processing System</h1>
         <p class="card-text">Review, approve, or reject uploaded manual collection files that are awaiting processing.</p>
     </div>
 </div>
-
 
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
@@ -23,30 +24,12 @@
     <div id="collapseValidationTips" class="collapse show">
         <div class="card-body">
             <ul>
-                <li>
-                    <i class="mdi mdi-filter-variant text-primary me-2"></i>
-                    <strong>Default View:</strong> The table automatically shows all files with a 'Pending' status. Use the filters to find files by a different status or date range.
-                </li>
-                <li>
-                    <i class="mdi mdi-magnify text-info me-2"></i>
-                    <strong>Advanced Search:</strong> For a more specific search, check the 'Filter by File Name' or 'Filter by Branch' boxes to activate the text search fields.
-                </li>
-                <li>
-                    <i class="mdi mdi-cogs text-success me-2"></i>
-                    <strong>Taking Action:</strong> For 'Pending' files, use the 'Select Action' dropdown on each row to Approve, Review, or Reject the file. This will open a form for your comments.
-                </li>
-                <li>
-                    <i class="mdi mdi-check-circle-outline text-purple me-2"></i>
-                    <strong>Approve:</strong> Approving a file confirms its contents are correct and makes it ready for final processing (extraction).
-                </li>
-                <li>
-                    <i class="mdi mdi-comment-question-outline text-warning me-2"></i>
-                    <strong>Review:</strong> Marking a file for 'Review' flags it for further investigation without rejecting it. A statement is required.
-                </li>
-                <li>
-                    <i class="mdi mdi-close-circle-outline text-danger me-2"></i>
-                    <strong>Reject:</strong> Rejecting a file permanently marks it as invalid. It cannot be processed further. A reason for the rejection is required.
-                </li>
+                <li><i class="mdi mdi-filter-variant text-primary me-2"></i><strong>Default View:</strong> The table automatically shows all files with a 'Pending' status. Use the filters to find files by a different status or date range.</li>
+                <li><i class="mdi mdi-magnify text-info me-2"></i><strong>Advanced Search:</strong> For a more specific search, check the 'Filter by File Name' or 'Filter by Branch' boxes to activate the text search fields.</li>
+                <li><i class="mdi mdi-cogs text-success me-2"></i><strong>Taking Action:</strong> Use the 'Select Action' dropdown on each row. You can 'View Details', 'Approve', 'Review', or 'Reject' the file.</li>
+                <li><i class="mdi mdi-check-circle-outline text-purple me-2"></i><strong>Approve:</strong> Approving a file confirms its contents are correct and makes it ready for final processing (extraction).</li>
+                <li><i class="mdi mdi-comment-question-outline text-warning me-2"></i><strong>Review:</strong> Marking a file for 'Review' flags it for further investigation without rejecting it. A statement is required.</li>
+                <li><i class="mdi mdi-close-circle-outline text-danger me-2"></i><strong>Reject:</strong> Rejecting a file permanently marks it as invalid. It cannot be processed further. A reason for the rejection is required.</li>
             </ul>
         </div>
     </div>
@@ -58,7 +41,6 @@
 <div class="card shadow p-3 mb-4">
     <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Advanced File Filters</h5>
     <div class="card p-3 mb-3 bg-light">
-        <!-- Row 1: Main Filters -->
         <div class="row mb-3">
             <div class="col-md-4">
                 <label for="statusFilter" class="form-label fw-bold">Filter by Status</label>
@@ -73,7 +55,6 @@
                 <input type="date" id="endDate" class="form-control" />
             </div>
         </div>
-        <!-- Row 2: Toggles for Text Search -->
         <div class="row mb-2">
             <div class="col-md-4">
                 <div class="form-check">
@@ -84,23 +65,17 @@
             <div class="col-md-4">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="byBranchNameToggle">
-                    <label class="form-check-label" for="byBranchNameToggle">Filter by Branch Name</label>
+                    <label class="form-check-label" for="byBranchNameToggle">Filter by Branch</label>
                 </div>
             </div>
         </div>
-        <!-- Row 3: Hidden Text Search Inputs -->
         <div class="row">
             <div class="col-md-4" id="fileNameFilterSection" style="display:none;">
                 <input type="text" id="fileName" class="form-control" placeholder="Enter file name..." />
             </div>
-            <div class="row g-3 mb-3" id="branchNameFilterSection" style="display:none;">
-                <div class="col-md-6">
-                    <label for="branch">🏢 @ChequeManagements.BranchId</label>
-                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2" }
-                    )
-                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-
-                </div>
+            <div class="col-md-4" id="branchNameFilterSection" style="display:none;">
+                <label for="BranchId" class="form-label">Branch</label>
+                @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2" })
             </div>
         </div>
     </div>
@@ -117,15 +92,15 @@
 ================================================== -->
 <div class="card shadow p-3">
     <div class="table-responsive">
-        <table id="myDataTable" class="table table-hover" style="width:100%; table-layout: fixed;">
+        <table id="myDataTable" class="table table-hover" style="width:100%;">
             <thead class="table-light">
                 <tr>
-                    <th style="width: 25%;">File Name</th>
-                    <th style="width: 20%;">Branch</th>
-                    <th style="width: 15%;">Uploaded By</th>
-                    <th style="width: 15%;">Uploaded On</th>
-                    <th style="width: 10%;">Status</th>
-                    <th style="width: 15%;">Actions</th>
+                    <th>File Name</th>
+                    <th>Branch</th>
+                    <th>Uploaded By</th>
+                    <th>Uploaded On</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -134,8 +109,16 @@
 </div>
 
 <!-- =================================================
-     MODAL PLACEHOLDER
+     DETAILS PANEL & MODAL PLACEHOLDERS
 ================================================== -->
+<div id="detailsContainer" class="card shadow p-3 mt-4" style="display:none;">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 id="detailsHeader" class="mb-0">File Details</h5>
+        <button id="closeDetailsBtn" type="button" class="btn-close"></button>
+    </div>
+    <div class="card-body" id="detailsBody"></div>
+</div>
+
 <div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -143,193 +126,215 @@
                 <h5 class="modal-title" id="actionModalLabel">File Action</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="actionModalBody">
-                <!-- The _ActionForm.cshtml partial will be loaded here -->
-            </div>
+            <div class="modal-body" id="actionModalBody"></div>
         </div>
     </div>
 </div>
 
+
 @section Scripts {
     <script>
- 
+    // Self-executing anonymous function to create a private scope and avoid conflicts.
+    (function ($) {
 
-// Use a self-executing anonymous function to keep your code clean and avoid polluting the global scope.
-(function ($) {
+        // ===================================================================
+        //
+        //  CLIENT-SIDE HELPER FUNCTIONS
+        //
+        // ===================================================================
 
-    // --- GLOBAL FUNCTIONS ---
-    // These need to be global so the onchange attribute in the server-rendered HTML can find them.
-    window.handleAction = function (selectElement) {
-        var selectedOption = $(selectElement).find('option:selected');
-        var action = selectedOption.val();
-        var fileId = selectedOption.data('fileid');
+        function getStatusBadge(status) {
+            if (!status) return "";
+            let badgeClass = "bg-secondary";
+            switch (status.toLowerCase()) {
+                case "pending": badgeClass = "bg-warning text-dark"; break;
+                case "approved": case "extracted": case "completed": case "treated":
+                    badgeClass = "bg-success"; break;
+                case "rejected": case "failed":
+                    badgeClass = "bg-danger"; break;
+            }
+            return `<span class='badge ${badgeClass}'>${status}</span>`;
+        }
 
-        // Reset dropdown after selection so it can be clicked again
-        $(selectElement).prop('selectedIndex', 0);
+        function generateActionButtons(fileId) {
+            return `
+                <select class='form-select form-select-sm' onchange='handleAction(this)'>
+                    <option selected value="">Select Action...</option>
+                    <option value="details" data-fileid="${fileId}">📄 View Details</option>
+                    <option value="approve" data-fileid="${fileId}">✅ Approve</option>
+                    <option value="review" data-fileid="${fileId}">🔍 Review</option>
+                    <option value="reject" data-fileid="${fileId}">❌ Reject</option>
+                </select>`;
+        }
 
-        if (!action || !fileId) return;
+        // ===================================================================
+        //
+        //  GLOBAL ACTION HANDLER & WORKFLOW FUNCTIONS
+        //
+        // ===================================================================
 
-        if (action === 'reject') {
-            confirmAndReject(fileId);
-        } else {
-            // This handles both 'approve' and 'review'
-            var url = `/FileValidation/GetActionForm?fileUploadId=${fileId}&mode=${action}`;
+        window.handleAction = function (selectElement) {
+            const selectedOption = $(selectElement).find('option:selected');
+            const action = selectedOption.val();
+            const fileId = selectedOption.data('fileid');
+
+            $(selectElement).prop('selectedIndex', 0);
+            if (!action || !fileId) return;
+
+            switch (action) {
+                case 'details': viewDetails(fileId); break;
+                case 'reject': confirmAndReject(fileId); break;
+                case 'approve': case 'review': loadActionForm(fileId, action); break;
+                default: console.warn('Unknown action selected:', action); break;
+            }
+        };
+
+        function viewDetails(fileId) {
+            const detailsContainer = $('#detailsContainer');
+            const detailsBody = $('#detailsBody');
+            const detailsHeader = $('#detailsHeader');
+
+            detailsHeader.text(`File Details: ${fileId}`);
+            detailsBody.html('<div class="text-center p-4"><div class="spinner-border text-primary"></div></div>');
+            detailsContainer.slideDown();
+
+            const url = `@Url.Action("GetFileDetails", "FileValidation")?id=${fileId}`;
+            detailsBody.load(url, function (response, status, xhr) {
+                if (status === "error") {
+                    detailsBody.html('<div class="alert alert-danger">Error loading details.</div>');
+                }
+            });
+            document.getElementById('detailsContainer').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function confirmAndReject(fileId) {
+            alertify.confirm('Confirm Rejection', 'Are you sure you want to permanently reject this file? This action cannot be undone.',
+                function () { // onOk
+                    const token = $('input[name="__RequestVerificationToken"]').first().val();
+                    $.ajax({
+                        url: '@Url.Action("RejectFile", "FileValidation")',
+                        type: 'POST',
+                        data: { KEY: fileId, __RequestVerificationToken: token },
+                        success: function (response) {
+                            if (response.success) {
+                                appalert(response.message || 'File rejected successfully.', 1, 1);
+                                $('#myDataTable').DataTable().ajax.reload(null, false);
+                            } else {
+                                appalert(response.message || 'Failed to reject the file.', 4, 1);
+                            }
+                        },
+                        error: function () { appalert('An error occurred while communicating with the server.', 4, 1); }
+                    });
+                },
+                function () { appalert('Rejection cancelled.', 3, 1); } // onCancel
+            );
+        }
+
+        function loadActionForm(fileId, mode) {
+            const url = `@Url.Action("GetActionForm", "FileValidation")?fileUploadId=${fileId}&mode=${mode}`;
             $('#actionModalBody').load(url, function (response, status, xhr) {
                 if (status === "error") {
-                    appalert('Failed to load form: ' + xhr.statusText, 2, 1);
+                    appalert('Failed to load form: ' + xhr.statusText, 4, 1);
                     return;
                 }
-                $('#actionModalLabel').text(action.charAt(0).toUpperCase() + action.slice(1) + ' File');
+                $('#actionModalLabel').text(mode.charAt(0).toUpperCase() + mode.slice(1) + ' File');
                 $('#actionModal').modal('show');
-                // Re-parse the new form for client-side validation
                 $.validator.unobtrusive.parse('#actionForm');
             });
         }
-    };
 
-    function confirmAndReject(fileId) {
-        alertify.confirm('Confirm Rejection', 'Are you sure you want to permanently reject this file?',
-            function () { // onOk callback
-                var token = $('input[name="__RequestVerificationToken"]').first().val();
+        // ===================================================================
+        //
+        //  MAIN SCRIPT EXECUTION
+        //
+        // ===================================================================
+        $(document).ready(function () {
+            const dataTable = initializeFilesDataTable();
+
+            $('#applyFilterBtn').on('click', () => dataTable.ajax.reload());
+            $('#resetFilterBtn').on('click', function () {
+                $('#statusFilter').val('Pending').trigger('change');
+                $('#startDate, #endDate, #fileName, #BranchId').val('').trigger('change');
+                $('#byFileNameToggle, #byBranchNameToggle').prop('checked', false).trigger('change');
+                dataTable.ajax.reload();
+            });
+
+            $('#byFileNameToggle').on('change', function () { $('#fileNameFilterSection').toggle(this.checked); });
+            $('#byBranchNameToggle').on('change', function () { $('#branchNameFilterSection').toggle(this.checked); });
+            $('#closeDetailsBtn').on('click', function() { $('#detailsContainer').slideUp(); });
+
+            $(document).on('submit', '#actionForm', function (e) {
+                e.preventDefault();
+                const form = $(this);
+                if (!form.valid()) return;
+
                 $.ajax({
-                    url: '/FileValidation/RejectFile',
+                    url: form.attr('action'),
                     type: 'POST',
-                    data: {
-                        KEY: fileId,
-                        __RequestVerificationToken: token
-                    },
+                    data: form.serialize(),
                     success: function (response) {
                         if (response.success) {
-                            appalert(response.message || 'File rejected successfully.', 1, 1);
-                            $('#myDataTable').DataTable().ajax.reload(null, false); // Reload without resetting paging
+                            appalert(response.message, 1, 1);
+                            $('#actionModal').modal('hide');
+                            dataTable.ajax.reload(null, false);
                         } else {
-                            appalert(response.message || 'Failed to reject the file.', 2, 1);
+                            appalert(response.message, 4, 1);
                         }
                     },
-                    error: function () {
-                        appalert('An error occurred while communicating with the server.', 0, 1);
-                    }
+                    error: function () { appalert('An error occurred during submission.', 4, 1); }
                 });
-            },
-            function () { // onCancel callback
-                appalert('Rejection cancelled.', 3, 1);
-            }
-        );
-    }
-
-
-    // --- MAIN SCRIPT EXECUTION ---
-    // This runs once the page is fully loaded.
-    $(document).ready(function () {
-
-        // 1. Initialize the DataTable and store its instance.
-        var dataTable = initializeFilesDataTable();
-
-        // 2. Set up event handlers for the filter controls.
-        $('#applyFilterBtn').on('click', function () {
-            dataTable.ajax.reload();
-        });
-
-        $('#resetFilterBtn').on('click', function () {
-            // Reset all filter fields to their default state
-            $('#statusFilter').val('Pending').trigger('change');
-            $('#startDate').val('');
-            $('#endDate').val('');
-            $('#fileName').val('');
-            $('#BranchId').val('').trigger('change'); // Correctly reset the branch dropdown
-            $('#byFileNameToggle, #byBranchNameToggle').prop('checked', false).trigger('change');
-            dataTable.ajax.reload();
-        });
-
-        // Show/hide text input boxes when toggles are checked
-        $('#byFileNameToggle').on('change', function () {
-            $('#fileNameFilterSection').toggle(this.checked);
-        });
-        $('#byBranchNameToggle').on('change', function () {
-            $('#branchNameFilterSection').toggle(this.checked);
-        });
-
-        // 3. Set up the single, delegated handler for the modal form submission.
-        // This prevents the "freezing" issue.
-        $(document).on('submit', '#actionForm', function (e) {
-            e.preventDefault();
-            var form = $(this);
-            if (!form.valid()) return;
-
-            $.ajax({
-                url: form.attr('action'),
-                type: 'POST',
-                data: form.serialize(),
-                success: function (response) {
-                    if (response.success) {
-                        appalert(response.message, 1, 1);
-                        $('#actionModal').modal('hide');
-                        dataTable.ajax.reload(null, false);
-                    } else {
-                        appalert(response.message, 2, 1);
-                    }
-                },
-                error: function () { appalert('An error occurred during submission.', 0, 1); }
             });
         });
-    });
 
-
-     function initializeFilesDataTable() {
-    return $('#myDataTable').DataTable({ // Using your existing table ID 'myDataTable'
-    processing: false,
-    serverSide: true,
-    searching: false, // Using our own custom filters
-    ajax: {
-    url: '/FileValidation/LoadFiles',
-    type: 'POST',
-    // This function builds the complex query object to send to the server
-    data: function (d) {
-    // Extract sorting information
-    var order = d.order && d.order.length > 0 ? d.order[0] : null;
-    var sortColumn = order ? d.columns[order.column].name : null; // Use 'name' for server-side
-    var sortDirection = order ? order.dir : 'asc';
-
-    return {
-    // This object must map to the C# 'GetFilesForDataTableQuery query' parameter
-    query: {
-    Options: {
-    Draw: d.draw,
-    Start: d.start,
-    Length: d.length,
-    SortColumn: sortColumn,
-    SortDirection: sortDirection
-    },
-    StatusFilter: $('#statusFilter').val(),
-    StartDate: $('#startDate').val() || null,
-    EndDate: $('#endDate').val() || null,
-    FileName: $('#fileName').val() || null,
-    BranchName: $('#branchName').val() || null, // Corrected from BranchId
-    BranchId: $('#BranchId').val() || null
-    }
-    };
-    }
-    },
-    columns: [
-    // The 'name' property must match a property in your C# DTO for sorting to work
-    { data: 'fileName', name: 'FileName' },
-    { data: 'branchName', name: 'BranchName' },
-    { data: 'uploadedBy', name: 'UploadedBy' },
-    { data: 'uploadedOn', name: 'UploadedOn' },
-    { data: 'status', name: 'Status', orderable: false }, // Status is often not sortable
-    { data: 'actions', orderable: false, className: 'text-center' }
-    ],
-    // This is how you control the column widths
-    columnDefs: [
-    { "width": "25%", "targets": 0 }, // FileName
-    { "width": "20%", "targets": 1 }, // Branch
-    { "width": "15%", "targets": 2 }, // Uploaded By
-    { "width": "15%", "targets": 3 }, // Uploaded On
-    { "width": "10%", "targets": 4 }, // Status
-    { "width": "15%", "targets": 5 }  // Actions
-    ]
-    });
-    }
+        // ===================================================================
+        //
+        //  DATATABLE INITIALIZATION
+        //
+        // ===================================================================
+        function initializeFilesDataTable() {
+            return $('#myDataTable').DataTable({
+                processing: true,
+                serverSide: true,
+                searching: false,
+                autoWidth: false,
+                ajax: {
+                    url: '@Url.Action("LoadFiles", "FileValidation")',
+                    type: 'POST',
+                    data: function (d) {
+                        const order = d.order[0] || {};
+                        const query = {
+                            Options: {
+                                draw: d.draw,
+                                start: d.start,
+                                pageSize: d.length,
+                                sortColumn: d.columns[order.column]?.name,
+                                sortDirection: order.dir
+                            },
+                            StatusFilter: $('#statusFilter').val(),
+                            StartDate: $('#startDate').val() || null,
+                            EndDate: $('#endDate').val() || null,
+                            FileName: $('#byFileNameToggle').is(':checked') ? $('#fileName').val() : null,
+                            BranchId: $('#byBranchNameToggle').is(':checked') ? $('#BranchId').val() : null
+                        };
+                        return { query: query };
+                    }
+                },
+                columns: [
+                    { "data": "fileName", "name": "FileName" },
+                    { "data": "branchName", "name": "BranchName" },
+                    { "data": "uploadedBy", "name": "UploadedBy" },
+                    { "data": "uploadedOn", "name": "UploadedOn" },
+                    { "data": "status", "name": "Status", "orderable": false, "render": getStatusBadge },
+                    { "data": "fileUploadId", "name": "Actions", "orderable": false, "render": generateActionButtons }
+                ],
+                columnDefs: [
+                    { "width": "20%", "targets": 0 }, { "width": "20%", "targets": 1 },
+                    { "width": "15%", "targets": 2 }, { "width": "15%", "targets": 3 },
+                    { "width": "20%", "targets": 4, "className": "text-center" },
+                    { "width": "10%", "targets": 5, "className": "text-center" }
+                ]
+            });
+        }
 
     }(jQuery));
     </script>

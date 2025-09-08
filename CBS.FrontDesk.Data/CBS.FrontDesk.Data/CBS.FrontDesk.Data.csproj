@@ -174,6 +174,7 @@
     <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportDtoMapper.cs" />
     <Compile Include="Entity\LoanAdjustmentP\LoanAdjustment.cs" />
     <Compile Include="Entity\ManualDailycollection\CollectorDto.cs" />
+    <Compile Include="Entity\ManualDailycollection\FileDetailsResponse.cs" />
     <Compile Include="Entity\ManualDailycollection\FileUploadResponse.cs" />
     <Compile Include="Entity\ManualDailycollection\FileUploadSummary.cs" />
     <Compile Include="Entity\ManualDailycollection\ManualCollectionUploadViewModel.cs" />

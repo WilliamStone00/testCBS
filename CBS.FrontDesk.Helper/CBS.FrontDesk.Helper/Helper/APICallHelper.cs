@@ -1277,6 +1277,8 @@ namespace CBS.FrontDesk.Helper
         public static string DenyUploadedFile = "/api/v1/ManualEntryCollector/RejectUploadedFile";
         public static string GetFileUploadsForDataTable = "/api/v1/ManualEntryCollector/FileUpload/data-table";
         public static string GetDaillycollectors = "api/v1/customers/basic-info-collectors";
+        public static string GetextracyedFileDetailsEndpoint = "api/v1/ManualEntryCollector/Extracted/data-table";
+        public static string getextracteddetails = "/api/v1/ManualEntryCollector/Extracted/details";
 
         //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
     }

@@ -517,12 +517,58 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
         [HttpPost]
         public async Task<ActionResult> extract(string KEY)
         {
+            // 1. Validate the input key
             if (string.IsNullOrEmpty(KEY))
             {
-                return Json(new { success = false, status = "Bad Request", message = "File ID cannot be null." }, JsonRequestBehavior.AllowGet);
+                // Return a JSON error object in the expected format
+                return Json(new
+                {
+                    status = "ERROR",
+                    statusDescription = "Bad Request: File ID cannot be null.",
+                    data = (object)null
+                });
             }
-            var result = await _manualService.ExtractFileAsync(KEY);
-            return Json(new { success = result.Result, status = result.MessageStatus, message = Messaging.MessageResult(result) }, JsonRequestBehavior.AllowGet);
+
+            try
+            {
+                // 2. Call your service to get the extraction result
+                var result = await _manualService.ExtractFileAsync(KEY);
+
+                // 3. Check if the service call was successful AND returned data
+                //    IMPORTANT: You may need to change 'result.Data' to the correct property name
+                //    that holds your extracted file details (e.g., result.Payload, result.ExtractedData)
+                if (result != null && result.Result == true && result.Data != null)
+                {
+                    // 4. On SUCCESS, return the full data payload inside the 'data' property
+                    return Json(new
+                    {
+                        status = "SUCCESS",
+                        statusDescription = Messaging.MessageResult(result), // Use your existing message helper
+                        data = result.Data // THIS IS THE CRITICAL FIX
+                    });
+                }
+                else
+                {
+                    // 5. On FAILURE, return an error message.
+                    return Json(new
+                    {
+                        status = "ERROR",
+                        statusDescription = Messaging.MessageResult(result) ?? "Failed to extract file. No data returned.",
+                        data = (object)null
+                    });
+                }
+            }
+            catch (System.Exception ex)
+            {
+                // 6. If an unexpected exception occurs, log it and return a generic error.
+                // TODO: Log the full exception ex.ToString()
+                return Json(new
+                {
+                    status = "ERROR",
+                    statusDescription = "A critical server error occurred during the extraction process.",
+                    data = (object)null
+                });
+            }
         }
 
         /// <summary>

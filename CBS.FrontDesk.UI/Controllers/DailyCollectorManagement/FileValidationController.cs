@@ -29,44 +29,34 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             _branchServices = branchServices;
         }
 
-       
-        // ACTION 1: Loads the main page with filter controls
+
         public async Task<ActionResult> Index()
         {
-            // Populate the Status dropdown for the view
-            ViewBag.Statuses = new SelectList(new[] { "Pending", "Approved", "Extracted", "Rejected","Treated","Completed","F"});
+            ViewBag.Statuses = new SelectList(new[] { "Pending", "Approved", "Extracted", "Rejected", "Treated", "Completed", "Failed" });
             ViewBag.Branches = await _branchServices.GetBranches();
             return View();
         }
 
-        // In FileValidationController.cs
-
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
         public async Task<ActionResult> LoadFiles(GetFilesForDataTableQuery query)
         {
             try
             {
-                // 1. Fetch the data from the service. The service passes the query directly to the API.
-                var dataTable = await _manualService.GetFilesForDataTableAsync(query);
+                var dataTable = await _manualService.GetextractedFilesForDataTableAsync(query);
+                var fileList = JsonConvert.DeserializeObject<List<FileUploadSummary>>(JsonConvert.SerializeObject(dataTable.data));
 
-                // 2. Deserialize the generic data into a strongly-typed list.
-                var fileList = JsonConvert.DeserializeObject<List<FileUploadSummary>>(
-                    JsonConvert.SerializeObject(dataTable.data)
-                );
-
-                // 3. Process the list to generate the final UI data.
+                // SIMPLIFIED: We no longer generate HTML here. We send the raw data.
+                // The JavaScript will handle the rendering.
                 var resultData = fileList.Select(f => new
                 {
+                    fileUploadId = f.FileUploadId, // Send the ID for the render function
                     fileName = f.FileName,
                     branchName = f.BranchName,
                     uploadedBy = f.UploadedBy,
                     uploadedOn = f.UploadedOn.ToString("yyyy-MM-dd HH:mm"),
-                    status = GetStatusBadge(f.SalaryProcessingStatus),
-                    // The 'actions' property now gets the UNIVERSAL dropdown menu.
-                    actions = GenerateActionButtons(f) // We no longer need to pass the status context.
+                    status = f.SalaryProcessingStatus // Send the raw status
                 }).ToList();
 
-                // 4. Return the final JSON payload.
                 return Json(new
                 {
                     draw = query.Options?.draw ?? "1",
@@ -81,58 +71,20 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             }
         }
 
-        // In FileValidationController.cs
-
-        private string GetStatusBadge(string status)
+        [HttpGet]
+        public async Task<ActionResult> GetFileDetails(string id)
         {
-            if (string.IsNullOrEmpty(status)) return "";
-
-            string badgeClass = "bg-secondary"; // Default color
-            switch (status.ToLowerInvariant())
+            if (string.IsNullOrWhiteSpace(id))
             {
-                case "pending":
-                    badgeClass = "bg-warning text-dark"; // Yellow badge for pending
-                    break;
-                case "approved":
-                case "extracted":
-                case "completed":
-                case "treated":
-                    badgeClass = "bg-success"; // Green for success states
-                    break;
-                case "rejected":
-                case "failed": // Assuming 'F' might mean failed
-                    badgeClass = "bg-danger"; // Red for failure states
-                    break;
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "File ID is required.");
             }
-
-            // Return the HTML for the badge
-            return $"<span class='badge {badgeClass}'>{status}</span>";
+            var fileDetails = await _manualService.GetFileDetailsAsync(id);
+            if (fileDetails == null)
+            {
+                return PartialView("_ErrorDetails", "Could not retrieve details for the selected file.");
+            }
+            return PartialView("_FileDetails", fileDetails);
         }
-
-        /// <summary>
-        /// Helper method to generate the UNIVERSAL action dropdown for every row.
-        /// </summary>
-        private string GenerateActionButtons(FileUploadSummary file)
-        {
-            var fileId = file.FileUploadId;
-
-            // This HTML is now generated for every single file, regardless of its status.
-            return $@"
-        <select class='form-select form-select-sm js-action-menu' onchange='handleAction(this)'>
-            <option selected value=""""> Select Action...
-            </option>
-            <option value=""approve"" data-fileid=""{{fileId}}"">
-                ✅ Approve
-            </option>
-            <option value=""review"" data-fileid=""{{fileId}}"">
-                🔍 Review
-            </option>
-            <option value=""reject"" data-fileid=""{{fileId}}"">
-                ❌ Reject
-            </option>
-        </select>";
-        }
-
         // ACTION 3: Gets the partial view for the validation/review/approve modal
         [HttpGet]
         public ActionResult GetActionForm(string fileUploadId, string mode)

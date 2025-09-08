@@ -270,6 +270,7 @@ using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.ManualDailycollection;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -354,29 +355,52 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         /// <summary>
         /// Calls the endpoint to process/extract a recently uploaded file.
         /// </summary>
-        public async Task<ExecutionMessages> ExtractFileAsync(string fileUploadId)
-        {
-            try
-            {
-                var url = APICallHelper.ExtractUploadedFile;
-                var payload = new { FileUploadId = fileUploadId };
-                var response = await _apiHelper.PostAsync<ServiceResponse<bool>>(url, payload);
+    public async Task<ExecutionMessages> ExtractFileAsync(string fileUploadId){
+    try
+    {
+        var url = APICallHelper.ExtractUploadedFile;
+        var payload = new { fileUploadId = fileUploadId };
 
-                if (response.IsSuccess && response.ApiResponseData.Data)
-                {
-                    GetExecutionMessages(null, true, fileUploadId, MessagesResults.Success, ExecutionProcessOption.DefaultSuccessdMessages, "Success", null, "File extracted successfully.");
-                }
-                else
-                {
-                    GetExecutionMessages(null, false, fileUploadId, MessagesResults.Failed, ExecutionProcessOption.DefaultFailedMessages, "Failed", null, response.ApiResponseData?.Message ?? response.Message);
-                }
-            }
-            catch (Exception ex)
-            {
-                GetExecutionMessages(null, false, "Extract File", MessagesResults.Error, ExecutionProcessOption.TryCatch, "Error", ex, ex.Message);
-            }
-            return ExecutionMessage;
+         var response = await _apiHelper.PostAsync<ServiceResponse<FileDetailsResponse>>(url, payload);
+
+        if (response?.IsSuccess == true && response.ApiResponseData?.Data != null)
+        {
+            var data = response.ApiResponseData.Data;
+
+            // do whatever you need with 'data' (e.g. save, render, map to viewmodel)
+            GetExecutionMessages(
+                data,
+                true,
+                fileUploadId,
+                MessagesResults.Success,
+                ExecutionProcessOption.DefaultSuccessdMessages,
+                "Success",
+                null,
+                "File extracted successfully."
+            );
         }
+        else
+        {
+            GetExecutionMessages(
+                null,
+                false,
+                fileUploadId,
+                MessagesResults.Failed,
+                ExecutionProcessOption.DefaultFailedMessages,
+                "Failed",
+                null,
+                response?.ApiResponseData?.Message ?? response?.Message ?? "Extraction failed."
+            );
+        }
+    }
+    catch (Exception ex)
+    {
+        GetExecutionMessages(null, false, "Extract File", MessagesResults.Error, ExecutionProcessOption.TryCatch, "Error", ex, ex.Message);
+    }
+
+    return ExecutionMessage;
+}
+
 
         #endregion
 
@@ -457,7 +481,7 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         {
             try
             {
-                var url = APICallHelper.GetFileUploadsForDataTable;
+                var url = APICallHelper.GetextracyedFileDetailsEndpoint;
                 var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(url, query);
 
                 if (response.IsSuccess && response.ApiResponseData != null)
@@ -481,6 +505,32 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
                     data: new List<object>(),
                     dataTableOptions: query.Options
                 );
+            }
+        }
+
+
+        public async Task<FileDetailsResponse> GetFileDetailsAsync(string id)
+        {
+            try
+            {
+                // IMPORTANT: Replace this URL with your actual API endpoint for getting details.
+                // It should accept the fileUploadId as a parameter.
+                var url = $"{APICallHelper.getextracteddetails}/{id}";
+
+                var response = await _apiHelper.GetAsync<ResponseObject<FileDetailsResponse>>(url);
+
+                if (response.IsSuccess && response.ApiResponseData != null)
+                {
+                    return response.ApiResponseData.Data; // Return the strongly-typed data
+                }
+
+                // Log the error if you have a logging mechanism
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return null;
             }
         }
 

@@ -10819,6 +10819,7 @@
     <Content Include="Views\AccountingReconciliation\_SearchOption.cshtml" />
     <Content Include="Views\FileValidation\Index.cshtml" />
     <Content Include="Views\FileValidation\_ActionForm.cshtml" />
+    <Content Include="Views\FileValidation\_FileDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
