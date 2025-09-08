@@ -509,29 +509,48 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         }
 
 
-        public async Task<FileDetailsResponse> GetextractedFileDetailsAsync(string id)
+        public async Task<FileDetailsResponse> GetExtractedDetailsAsync(string fileUploadId)
         {
-            try
+            if (string.IsNullOrWhiteSpace(fileUploadId))
+                return null;
+
+            // Build URL safely
+            var safeId = Uri.EscapeDataString(fileUploadId);
+            var endpoint = $"{APICallHelper.getextracteddetails.TrimEnd('/')}/{safeId}";
+
+            // Expect an array under "data"
+            var resp = await _apiHelper.GetAsync<ResponseObject<List<TransactionDetail>>>(endpoint);
+
+            if (resp == null || !resp.IsSuccess || resp.ApiResponseData?.Data == null)
             {
-                // IMPORTANT: Replace this URL with your actual API endpoint for getting details.
-                // It should accept the fileUploadId as a parameter.
-                var url = $"{APICallHelper.getextracteddetails}/{id}";
-
-                var response = await _apiHelper.GetAsync<ResponseObject<FileDetailsResponse>>(url);
-
-                if (response.IsSuccess && response.ApiResponseData != null)
+                return new FileDetailsResponse
                 {
-                    return response.ApiResponseData.Data; // Return the strongly-typed data
-                }
+                    FileUploadId = fileUploadId,
+                    Details = new List<TransactionDetail>()
+                };
+            }
 
-                // Log the error if you have a logging mechanism
-                return null;
-            }
-            catch (Exception ex)
+            var details = resp.ApiResponseData.Data;
+
+            // Compute summary fields from details (best-effort)
+            var totalAmount = details.Sum(d => d.Amount);
+            var totalMember = details.Count;
+
+            var first = details.FirstOrDefault();
+            var collectorName = first?.DailyCollectorName ?? string.Empty;
+            var branchName = first?.MemberBranchName ?? string.Empty;
+
+            var model = new FileDetailsResponse
             {
-                // Log the exception
-                return null;
-            }
+                FileUploadId = fileUploadId,
+                CollectorName = collectorName,
+                BranchName = branchName,
+                TotalAmount = totalAmount,
+                TotalMember = totalMember,
+                Details = details
+            };
+
+            return model;
         }
 
         #endregion

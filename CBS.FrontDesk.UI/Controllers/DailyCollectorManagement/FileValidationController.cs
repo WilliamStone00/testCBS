@@ -74,17 +74,28 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
         [HttpGet]
         public async Task<ActionResult> GetextractedFileDetails(string id)
         {
-            if (string.IsNullOrWhiteSpace(id))
+
+            if (string.IsNullOrEmpty(id))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Missing id");
+
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "File ID is required.");
+                var model = await _manualService.GetExtractedDetailsAsync(id);
+
+                if (model == null)
+                    return Json(new { status = "ERROR", statusDescription = "No data returned", data = (object)null }, JsonRequestBehavior.AllowGet);
+
+                // Return the partial view that uses FileDetailsResponse as model
+                return PartialView("_FileDetails", model);
             }
-            var fileDetails = await _manualService.GetextractedFileDetailsAsync(id);
-            if (fileDetails == null)
+            catch (Exception ex)
             {
-                return PartialView("_ErrorDetails", "Could not retrieve details for the selected file.");
+                // log ex
+                return Json(new { status = "ERROR", statusDescription = "Server error", data = (object)null }, JsonRequestBehavior.AllowGet);
             }
-            return PartialView("_FileDetails", fileDetails);
         }
+
+       
         // ACTION 3: Gets the partial view for the validation/review/approve modal
         [HttpGet]
         public ActionResult GetActionForm(string fileUploadId, string mode)
