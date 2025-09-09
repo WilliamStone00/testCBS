@@ -198,7 +198,7 @@ namespace CBS.BusinessService.DailyCollectionServices
                 // Prepare additional parameters
                 var additionalParams = new Dictionary<string, string>{
                  { "formFile", model.ExcelFile.FileName }  };
-                var urlString = string.Format(APICallHelper.DailySavingMigrationFileExecution, model.BranchId, model.CollectorId,model.CollectorName);
+                var urlString = string.Format(APICallHelper.DailySavingMigrationFileExecution, model.BranchId, model.CollectorId,model.CollectorName, model.AccountId);
                var response = await _dailySavingApiHelper.UploadFileToApiAsync<DailySaverUploadResult>(model.ExcelFile, "formFile", urlString, additionalParams);
 
             
