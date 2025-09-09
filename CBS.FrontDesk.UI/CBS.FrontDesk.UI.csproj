@@ -616,6 +616,12 @@
       <DependentUpon>LoanSituationAlphaRPT.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Payment\MainReportOld.cs">
+      <DependentUpon>MainReportOld.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\AccountCategory\GlobalsAccountCategory.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2194,8 +2200,11 @@
     <Compile Include="Filter\MaliciousContentScannerService.cs" />
     <Compile Include="Helper\HtmlHelperExtensions.cs" />
     <Compile Include="Helper\FileUploadHelper.cs" />
+    <Compile Include="Helper\ReportLogoHelper.cs" />
     <Compile Include="Helper\SalarySheetExcelExporter.cs" />
     <Compile Include="Models\Class1.cs" />
+    <Content Include="AppFiles\Images\UpdatedLogo\WaterMark.png" />
+    <Content Include="AppFiles\Images\UpdatedLogo\Logo.png" />
     <Content Include="Scripts\Js\AccountingReconciliation\AccountReconciliation.js" />
     <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MemberAdjustmentConsole.js" />
     <Compile Include="WAF\Middleware\Core\StaticPathHelper.cs" />
@@ -8149,6 +8158,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>AccountingConfig_CreateFinancialReferenceCode.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Payment\MainReportOld.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>MainReportOld.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -9489,6 +9502,7 @@
     <Content Include="Views\AccountingReconciliation\_SearchOption.cshtml" />
     <Content Include="Views\AccountingReconciliation\_ReconciliationData.cshtml" />
     <Content Include="Views\AccountingReconciliation\GetReconciliationData.cshtml" />
+    <Content Include="Views\Bank\_WatermarkUploader.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -9583,7 +9597,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\Payment\MainReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>MainReport.cs</LastGenOutput>
+      <LastGenOutput>MainReport1.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\Payment\DenominationSubReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

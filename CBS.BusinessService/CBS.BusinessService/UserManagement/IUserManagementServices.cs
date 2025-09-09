@@ -13,6 +13,7 @@ namespace CBS.BusinessService.UserManagement
 {
     public interface IUserManagementServices
     {
+        Task<IEnumerable<StringValues>> GetUserDropDownList(string branchId = null);
         Task<ExecutionMessages> CreateUser(User user);
         Task<IEnumerable<Role>> GetRoles();
         List<UserSessionDataTable> MapUserSessionDtoToDataTable(List<UserSessionDto> sessionDtos);

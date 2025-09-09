@@ -82,7 +82,20 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
        
         public List<WithdrawalNotification> WithdrawalNotifications { get; set; }
     }
+    public class GetCurrentSubTellerProvisionByUserQuery
+    {
+        /// <summary>User whose daily teller assignment should be used when TellerId is not provided.</summary>
+        public string UserId { get; set; }
 
+        /// <summary>Branch to resolve accounting date when AccountingDate is null. May be null.</summary>
+        public string BranchId { get; set; }
+
+        /// <summary>Target accounting date. If null, it will be resolved using BranchId (or user branch).</summary>
+        public DateTime? AccountingDate { get; set; }
+
+        /// <summary>If provided, provisioning is queried directly by this teller.</summary>
+        public string TellerId { get; set; }
+    }
     public class BalanceOfLoanAndSaving
     {
         public decimal SavingAccountBalance { get; set; }

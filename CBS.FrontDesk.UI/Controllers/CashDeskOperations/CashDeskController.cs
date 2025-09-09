@@ -160,9 +160,9 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 // 💰 Handle operations like cashin, cashout, repayment, etc.
                 var validPaths = new[]
                 {
-            "cashin", "repayment", "cashout", "cashoutsws",
-            "withdrawalnotification", "loanapplicationfeepayment", "newsubcription"
-        };
+                    "cashin", "repayment", "cashout", "cashoutsws",
+                    "withdrawalnotification", "loanapplicationfeepayment", "newsubcription"
+                };
 
                 if (validPaths.Contains(path))
                 {
@@ -192,6 +192,8 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                         x.AccountNumber.Trim().ToUpper().StartsWith("MB"));
 
                     ViewBag.AllAccountsAreMB = allAccountsAreMB;
+                    ViewBag.AllAccountsAreMB = allAccountsAreMB;
+                    ViewBag.ApprovedManualEntries = cashDesk.SelectedItemsApprovedUploads;
 
                     return PartialView(partialView, cashDesk);
                 }
@@ -283,7 +285,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             {
                 // Report with no sub reports
             }
-
+            
             // STEP 3: Parameter binding
             var parameters = new Dictionary<string, object>
             {
@@ -297,6 +299,15 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             this.HttpContext.Session["ReportName"] = $"MainReport.rpt";
             this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Transactions/Payment/MainReport.rpt";
             this.HttpContext.Session["rpttitle"] = $"MemberReceipts";
+            // 4) Add LogoUrl and WaterMarkUrl (from Session first, fallback to DS)
+            string logoUrl = this.HttpContext.Session["LogoUrl"] as string ?? firstItem?.Logo;
+            string watermarkUrl = this.HttpContext.Session["WaterMarkUrl"] as string ?? firstItem?.HeadOfficeWaterMark;
+
+            if (!string.IsNullOrWhiteSpace(logoUrl))
+                parameters["LogoUrl"] = logoUrl;
+
+            if (!string.IsNullOrWhiteSpace(watermarkUrl))
+                parameters["WaterMarkUrl"] = watermarkUrl;
             // STEP 4: Final Session setup and return viewer URL
             Session["MainData"] = rptSource;
             Session["ReportParameters"] = parameters;
@@ -344,6 +355,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         [HttpPost]
         public async Task<ActionResult> GetReport(string path)
         {
+            
             if (path=="loan")
             {
                 this.HttpContext.Session["rptType"] = "ReportParameterLess";

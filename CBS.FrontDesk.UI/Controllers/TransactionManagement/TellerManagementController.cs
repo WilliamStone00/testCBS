@@ -85,23 +85,16 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         }
 
         [HttpPost]
-        public async Task<JsonResult> LinkCollectorTransit(LinkCollectorTransitCommand request)
+        public async Task<JsonResult> LinkCollectorTransit(LinkCollectorToTellerCommand request)
         {
             if (string.IsNullOrWhiteSpace(request.TellerId))
             {
-                return Json(new
-                {
-                    success = false,
-                    message = "❌ Teller ID is required."
-                });
+                return Json(new { success = false, message = "❌ Teller ID is required." });
             }
 
             try
             {
-
-                // 🔁 Call update method with toggle mode
                 var result = await _tellerServices.Update(request);
-
                 return Json(new
                 {
                     success = result.Result,
@@ -117,6 +110,19 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                     message = $"❌ An unexpected error occurred while toggling remote close: {ex.Message}"
                 });
             }
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetCollectorsByBranch(string branchId)
+        {
+            var items = await _userManagementServices.GetUserDropDownList(branchId);
+            var result = items.Select(x => new { id = x.Value, text = x.Text }).ToList();
+
+            // If you're on classic ASP.NET MVC:
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+            // If on ASP.NET Core, use:
+            // return new JsonResult(result);
         }
 
         [HttpPost]

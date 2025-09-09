@@ -22,14 +22,14 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string TellerId { get; set; }
         public bool Enable { get; set; }
     }
-    public class LinkCollectorTransitCommand
-    {
-        public string TellerId { get; set; }
+    //public class LinkCollectorTransitCommand
+    //{
+    //    public string TellerId { get; set; }
 
-        public string LikedMemberReference { get; set; }
+    //    public string LikedMemberReference { get; set; }
 
-        public bool IsLinkedToCollectorTransit { get; set; }
-    }
+    //    public bool IsLinkedToCollectorTransit { get; set; }
+    //}
 
     public class SavingConfiguration
     {
@@ -571,9 +571,30 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public SavingProduct Product { get; set; }
     }
 
+    public class LinkCollectorToTellerCommand
+    {
+        /// <summary>The Teller Id we are linking/unlinking.</summary>
+        public string TellerId { get; set; }
+
+        /// <summary>Member reference to link the teller with.</summary>
+        public string MemberReference { get; set; } 
+
+        /// <summary>User Id of the Daily Collector being linked.</summary>
+        public string DailyCollectorUserId { get; set; }
+
+        /// <summary>True = link; False = unlink.</summary>
+        public bool IsLinked { get; set; }
+
+        /// <summary>Optional comment to store when linking.</summary>
+        public string LinkedComment { get; set; }
+
+        /// <summary>Optional comment to store when unlinking.</summary>
+        public string UnlinkedComment { get; set; }
+    }
 
     public class Teller
     {
+
         [Required]
         public string id { get; set; }
 
@@ -696,7 +717,44 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public List<TransactionHistory> Transactions { get; set; }
         public string MapMobileMoneyToNoneMemberMobileMoneyReference { get; set; }
 
-        // Constructor
+
+
+        /// <summary>General free-form comment about the teller.</summary>
+
+        /// <summary>Comment provided when the teller was linked.</summary>
+        public string LinkedComment { get; set; }
+
+        /// <summary>Comment provided when the teller was unlinked.</summary>
+        public string UnlinkedComment { get; set; }
+
+        /// <summary>User who linked this teller.</summary>
+        public string LinkedBy { get; set; }
+
+        /// <summary>User who unlinked this teller.</summary>
+        public string UnlinkedBy { get; set; }
+
+        /// <summary>Date when this teller was linked (default = MinValue).</summary>
+        public DateTime LinkedDate { get; set; } = DateTime.MinValue;
+
+        /// <summary>Date when this teller was unlinked (default = MinValue).</summary>
+        public DateTime UnlinkedDate { get; set; } = DateTime.MinValue;
+
+
+
+        // --- Account & Status ---
+        public bool IsPrimary { get; set; }
+        public bool ActiveStatus { get; set; }
+
+  
+
+        // --- Navigation Properties ---
+        public virtual ICollection<OtherTransaction> OtherTransactions { get; set; }
+        public virtual ICollection<PrimaryTellerProvisioningHistory> PrimaryTellerProvisioningHistories { get; set; }
+        public virtual ICollection<CashReplenishmentPrimaryTeller> CashReplenishmentPrimaryTellers { get; set; }
+        public virtual ICollection<CashReplenishmentSubTeller> CashReplenishmentSubTellers { get; set; }
+
+
+        public bool InUseStatus { get; set; }
         public Teller()
         {
             MinimumAmountToManage = 0m;

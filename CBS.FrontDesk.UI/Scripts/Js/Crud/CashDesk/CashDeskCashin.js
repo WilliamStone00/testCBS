@@ -347,17 +347,35 @@ function failureCallback(response) {
     $("#confirmDepositorBtn").prop("disabled", false);
     $("#depositorLoader").addClass("d-none");
 }
-
 function PostCashIn() {
     const operation = $("#currentselectedOperation").val();
     const isNewSubscription = operation === "newsubcription";
 
+    // Daily Collector UI present?
+    const hasDcControls = $('input[name="DailyCollectorCollectApproach"]').length > 0;
+    const approach = hasDcControls ? $('input[name="DailyCollectorCollectApproach"]:checked').val() : null;
+    const isManualApproach = hasDcControls && approach === "Manual";
+    const isDeviceApproach = hasDcControls && approach === "Device";
+
+    // Still need to know if this screen is the DC context (dropdown exists in the DOM)
+    const isDailyCollectorContext = $("#ManualEntryDailyCollectorId").length > 0;
+
     if (!validateCustomerAlphaNumber()) return;
     if (!checkTotalNotes()) return;
 
+    // If DC + Manual => enforce approved batch selection
+    let dcBatchId = null, dcBatchText = "";
+    if (isDailyCollectorContext && isManualApproach) {
+        dcBatchId = $("#ManualEntryDailyCollectorId").val();
+        dcBatchText = $("#ManualEntryDailyCollectorId option:selected").text() || "";
+        if (!dcBatchId) {
+            appalert("⚠️ Please select an approved Daily Collector batch to clear before proceeding.", 3, 1);
+            return;
+        }
+    }
+
     const totalNotes = parseFloat($("#totalNoteAmount").val());
     const totalInfo = calculateTotalAmount();
-
     if (!validateTotalAmount(totalInfo, totalNotes)) return;
 
     autoCheckDeposits();
@@ -366,6 +384,18 @@ function PostCashIn() {
     if (deposits.length === 0) {
         appalert("⚠️ Please select at least one account with a valid amount.", 3, 1);
         return;
+    }
+
+    // Attach DC info to payload (only if DC context is present)
+    if (isDailyCollectorContext) {
+        deposits[0].IsDailyCollector = true;
+        deposits[0].CollectionType = isManualApproach ? "Manual" : "Device";
+        if (isManualApproach) {
+            deposits[0].ManualEntryDailyCollectorId = dcBatchId;
+        } else {
+            // Ensure we don't send a stale id if user switched from Manual -> Device
+            delete deposits[0].ManualEntryDailyCollectorId;
+        }
     }
 
     // 👤 Member Info
@@ -418,20 +448,44 @@ function PostCashIn() {
         </table>
     `;
 
-    // 📦 Confirmation Message
+    // 📦 Confirmation Title & Message
     const confirmationTitle = isNewSubscription
         ? "🧾 CONFIRM MEMBER ONBOARDING DEPOSIT"
-        : "💰 CONFIRM CASH-IN OPERATION";
+        : (isDailyCollectorContext
+            ? (isManualApproach
+                ? "🧾 CONFIRM DAILY COLLECTOR CASH CLEARANCE (EOD)"
+                : "🧾 CONFIRM DAILY COLLECTOR DEVICE COLLECTION")
+            : "💰 CONFIRM CASH-IN OPERATION");
+
+    const opLead = isNewSubscription
+        ? `You're about to complete a <strong>MEMBER ONBOARDING DEPOSIT</strong> of`
+        : (isDailyCollectorContext
+            ? (isManualApproach
+                ? `You're about to post a <strong>DAILY COLLECTOR CASH CLEARANCE</strong> totaling`
+                : `You're about to post a <strong>DAILY COLLECTOR DEVICE COLLECTION</strong> totaling`)
+            : `You're about to perform a <strong>CASH-IN</strong> of`);
+
+    // Extra context only for DC Manual (EOD clearance)
+    const dcContextHtml = (isDailyCollectorContext && isManualApproach)
+        ? `
+            <div class="mt-2 p-2 border rounded bg-light">
+                <p class="mb-1"><strong>Approved Batch:</strong> ${dcBatchText}</p>
+                <p class="mb-0">
+                  <strong>Note:</strong> This operation clears the Daily Collector’s cash for end-of-day.
+                  A paired <em>Credit → Debit</em> posting is expected so the collector’s transit closes to
+                  <strong>0</strong> and the till can be closed.
+                </p>
+            </div>
+          `
+        : "";
 
     const message = `
         <div class="text-start">
             <p><strong>Member:</strong> ${memberName}<br><strong>Member Account Number:</strong> ${customerId}</p>
             <p>
-                ${isNewSubscription
-            ? `You're about to complete a <strong>MEMBER ONBOARDING DEPOSIT</strong> of`
-            : `You're about to perform a <strong>CASH-IN</strong> of`}
-                <b>${totalInfo.total.toLocaleString('en-US')} FCFA</b>.
+                ${opLead} <b>${totalInfo.total.toLocaleString('en-US')} FCFA</b>.
             </p>
+            ${dcContextHtml}
             <p class="mt-3 fw-bold text-primary">Accounts Summary</p>
             ${accountSummaryHtml}
         </div>
@@ -446,12 +500,21 @@ function PostCashIn() {
             $("#depositorModalTitle").html(
                 isNewSubscription
                     ? `<i class="mdi mdi-account-plus-outline me-2"></i> MEMBER ONBOARDING DEPOSITOR`
-                    : `<i class="mdi mdi-account-card-details-outline me-2"></i> DEPOSITOR INFORMATION REQUIRED`
+                    : (isDailyCollectorContext
+                        ? (isManualApproach
+                            ? `<i class="mdi mdi-clipboard-check-outline me-2"></i> DAILY COLLECTOR CLEARANCE – DEPOSITOR`
+                            : `<i class="mdi mdi-nfc-tap-variant me-2"></i> DEVICE COLLECTION – DEPOSITOR`)
+                        : `<i class="mdi mdi-account-card-details-outline me-2"></i> DEPOSITOR INFORMATION REQUIRED`)
             );
+
             $("#depositorModalDescription").text(
                 isNewSubscription
                     ? `As part of the member onboarding process, please record the depositor’s full identity for compliance.`
-                    : `To complete this transaction, please enter the depositor's full information for regulatory and audit compliance.`
+                    : (isDailyCollectorContext
+                        ? (isManualApproach
+                            ? `Please record the depositor’s full information for audit. This clearance will reconcile Daily Collector cash and may close the collector till (Credit → Debit pair).`
+                            : `Please record the depositor’s information for device-based collection (C-Money/POS).`)
+                        : `To complete this transaction, please enter the depositor's full information for regulatory and audit compliance.`)
             );
 
             $("#depositorCustomerName").text(memberName);
@@ -472,14 +535,148 @@ function PostCashIn() {
                 deposits[0].Depositer = depositor;
                 deposits[0].currencyNotes = collectCurrencyNotes();
 
+                // Preserve existing endpoint & operation type
                 PostTransaction('/CashDesk/PostRequestCash', deposits, 'CashIn');
             });
         },
         function () {
-            appalert("🚫 Operation cancelled.",2,1);
+            appalert("🚫 Operation cancelled.", 2, 1);
         }
     ).set('labels', { ok: 'Yes, Continue', cancel: 'Cancel' });
 }
+
+//function PostCashIn() {
+//    const operation = $("#currentselectedOperation").val();
+//    const isNewSubscription = operation === "newsubcription";
+
+//    if (!validateCustomerAlphaNumber()) return;
+//    if (!checkTotalNotes()) return;
+
+//    const totalNotes = parseFloat($("#totalNoteAmount").val());
+//    const totalInfo = calculateTotalAmount();
+
+//    if (!validateTotalAmount(totalInfo, totalNotes)) return;
+
+//    autoCheckDeposits();
+
+//    const deposits = collectDeposits();
+//    if (deposits.length === 0) {
+//        appalert("⚠️ Please select at least one account with a valid amount.", 3, 1);
+//        return;
+//    }
+
+//    // 👤 Member Info
+//    const memberName = $("#customerName").length ? $("#customerName").text().trim() : "Unknown Member";
+//    const customerId = $("#customerId").val() || "N/A";
+
+//    // 🔍 Build table of account types with amounts and fees (non-zero only)
+//    let totalAmount = 0;
+//    let totalFee = 0;
+//    let accountSummaryHtml = `
+//        <table class="table table-sm table-bordered w-100 mt-2">
+//            <thead class="table-light">
+//                <tr>
+//                    <th>Account Type</th>
+//                    <th>Amount</th>
+//                    <th>Fee</th>
+//                </tr>
+//            </thead>
+//            <tbody>
+//    `;
+
+//    $('#myDataTableT tbody tr').each(function () {
+//        const accountType = $(this).find('td:eq(1)').text().trim();
+//        const amount = parseFloat($(this).find('.amount-input').val()) || 0;
+//        const fee = parseFloat($(this).find('.fee-input').val()) || 0;
+
+//        if (amount > 0 || fee > 0) {
+//            totalAmount += amount;
+//            totalFee += fee;
+
+//            accountSummaryHtml += `
+//                <tr>
+//                    <td>${accountType}</td>
+//                    <td>${amount.toLocaleString('en-US')} FCFA</td>
+//                    <td>${fee.toLocaleString('en-US')} FCFA</td>
+//                </tr>
+//            `;
+//        }
+//    });
+
+//    accountSummaryHtml += `
+//            </tbody>
+//            <tfoot>
+//                <tr class="fw-bold text-dark">
+//                    <td class="text-end">Total</td>
+//                    <td>${totalAmount.toLocaleString('en-US')} FCFA</td>
+//                    <td>${totalFee.toLocaleString('en-US')} FCFA</td>
+//                </tr>
+//            </tfoot>
+//        </table>
+//    `;
+
+//    // 📦 Confirmation Message
+//    const confirmationTitle = isNewSubscription
+//        ? "🧾 CONFIRM MEMBER ONBOARDING DEPOSIT"
+//        : "💰 CONFIRM CASH-IN OPERATION";
+
+//    const message = `
+//        <div class="text-start">
+//            <p><strong>Member:</strong> ${memberName}<br><strong>Member Account Number:</strong> ${customerId}</p>
+//            <p>
+//                ${isNewSubscription
+//            ? `You're about to complete a <strong>MEMBER ONBOARDING DEPOSIT</strong> of`
+//            : `You're about to perform a <strong>CASH-IN</strong> of`}
+//                <b>${totalInfo.total.toLocaleString('en-US')} FCFA</b>.
+//            </p>
+//            <p class="mt-3 fw-bold text-primary">Accounts Summary</p>
+//            ${accountSummaryHtml}
+//        </div>
+//    `;
+
+//    alertify.confirm(
+//        confirmationTitle,
+//        message,
+//        function () {
+//            $('#depositorForm input, #depositorForm textarea').val('').removeClass('is-invalid');
+
+//            $("#depositorModalTitle").html(
+//                isNewSubscription
+//                    ? `<i class="mdi mdi-account-plus-outline me-2"></i> MEMBER ONBOARDING DEPOSITOR`
+//                    : `<i class="mdi mdi-account-card-details-outline me-2"></i> DEPOSITOR INFORMATION REQUIRED`
+//            );
+//            $("#depositorModalDescription").text(
+//                isNewSubscription
+//                    ? `As part of the member onboarding process, please record the depositor’s full identity for compliance.`
+//                    : `To complete this transaction, please enter the depositor's full information for regulatory and audit compliance.`
+//            );
+
+//            $("#depositorCustomerName").text(memberName);
+//            $("#depositorCustomerId").text(customerId);
+
+//            setTimeout(() => $("#depositerModal").modal("show"), 100);
+
+//            $("#confirmDepositorBtn").off("click").on("click", function () {
+//                const depositor = collectDepositorInfo();
+//                if (!validateDepositor(depositor)) {
+//                    appalert("❗ All depositor fields are required to proceed.", 3, 1);
+//                    return;
+//                }
+
+//                $("#confirmDepositorBtn").prop("disabled", true);
+//                $("#depositorLoader").removeClass("d-none");
+
+//                deposits[0].Depositer = depositor;
+//                deposits[0].currencyNotes = collectCurrencyNotes();
+
+//                PostTransaction('/CashDesk/PostRequestCash', deposits, 'CashIn');
+//            });
+//        },
+//        function () {
+//            appalert("🚫 Operation cancelled.",2,1);
+//        }
+//    ).set('labels', { ok: 'Yes, Continue', cancel: 'Cancel' });
+//}
 
 
 
