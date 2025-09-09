@@ -54,7 +54,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                     id = f.Id,
                     uploadedBy = f.UploadedBy,
                     uploadedOn = f.UploadedOn.ToString("yyyy-MM-dd HH:mm"),
-                    status = f.SalaryProcessingStatus
+                    Status = f.status
                 }).ToList();
 
                 return Json(new
@@ -109,15 +109,27 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             return PartialView("_ActionForm", model);
         }
 
-        // ACTION 4: Handles the submission from the modal form
         [HttpPost]
         public async Task<ActionResult> SubmitAction(ValidationDto model)
         {
             if (!ModelState.IsValid)
             {
-                return Json(new { success = false, message = "Statement is required." });
+                // --- THIS IS THE CRITICAL CHANGE ---
+                // We need to return the ModelState errors in a format the client can parse.
+                var errors = new Dictionary<string, string[]>();
+                foreach (var key in ModelState.Keys)
+                {
+                    var state = ModelState[key];
+                    if (state.Errors.Any())
+                    {
+                        errors[key] = state.Errors.Select(e => e.ErrorMessage).ToArray();
+                    }
+                }
+                return Json(new { success = false, message = "Please correct the validation errors.", errors = errors });
             }
+
             var result = await _manualService.SubmitFileActionAsync(model);
+            // Ensure Messaging.MessageResult returns a string
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
@@ -130,8 +142,8 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                 return Json(new { success = false, message = "Invalid ID provided for rejection." });
             }
 
-            // You will need a 'RejectFileAsync' method in your service.
             var result = await _manualService.RejectFileAsync(KEY);
+            // Ensure Messaging.MessageResult returns a string
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 

@@ -21,7 +21,7 @@ namespace CBS.FrontDesk.Data.Entity.ManualDailycollection
         public DateTime UploadedOn { get; set; }
         public string FileUploadId { get; set; }
         public string FileCategory { get; set; }
-        public string SalaryProcessingStatus { get; set; }
+        public string status { get; set; }
         public bool IsAvalaibleForExecution { get; set; }
         public string FileCode { get; set; }
         public string FileType { get; set; }
