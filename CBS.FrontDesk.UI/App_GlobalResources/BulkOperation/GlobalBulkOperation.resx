@@ -543,4 +543,25 @@
   <data name="SimulateBulkCashOperation" xml:space="preserve">
     <value>Simulate A Bulk Cash Operation</value>
   </data>
+  <data name="ApprovedFilter" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="PendingFilter" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="ReviewedFilter" xml:space="preserve">
+    <value>Reviewed</value>
+  </data>
+  <data name="FailedFilter" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="RejectedFilter" xml:space="preserve">
+    <value>Rejected</value>
+  </data>
+  <data name="CompletedFilter" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="ProcessingApprovalFilter" xml:space="preserve">
+    <value>Processing Approval</value>
+  </data>
 </root>

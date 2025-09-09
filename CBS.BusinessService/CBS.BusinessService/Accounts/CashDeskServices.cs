@@ -29,6 +29,7 @@ using DocumentFormat.OpenXml.Bibliography;
 using CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP;
 using Microsoft.Owin.Logging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -92,7 +93,7 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-       
+
 
 
         private CustomerAccountDto MapCustomersToAccounts(IndividualProfile a, CustomerAccount caAccount, Branch b)
@@ -339,12 +340,44 @@ namespace CBS.BusinessService.Accounts
                 .ToList();
         }
 
+        // ---------------- Local helper keeps both branches identical on success/failure ----------------
+        ExecutionMessages HandlePaymentResponse(ServiceResponse<PaymentReceipt> response, string actionLabel)
+        {
+            if (response?.Data != null)
+            {
+                var transaction = response.Data;
+                Branch branch = RetrieveBranchFromSession();
+
+                var rptSource = PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
+                HttpContext.Current.Session["rptSource"] = rptSource;
+
+                GetExecutionMessages(
+                    response, true, null, MessagesResults.Success,
+                    ExecutionProcessOption.DefaultSuccessdMessages,
+                    SystemMessageStatus.Success.ToString(),
+                    null,
+                    response.Message ?? $"{actionLabel} successful.");
+
+                return ExecutionMessage;
+            }
+
+            // Failed or empty payload
+            var failMsg = response?.Message ?? $"{actionLabel} failed: empty response from server.";
+            GetExecutionMessages(
+                null, false, null, MessagesResults.Failed,
+                ExecutionProcessOption.DefaultFailedMessages,
+                SystemMessageStatus.Failed.ToString(),
+                null, failMsg);
+
+            return ExecutionMessage;
+        }
+
         public async Task<ExecutionMessages> BulkDeposi(List<BulkDeposit> bulkDeposits1)
-        { 
+        {
             try
             {
                 var bulkDeposits = FilterByAmountGreaterThanZero(bulkDeposits1);
-                var TotalAmount = bulkDeposits.Sum(x=>x.Total);
+                var TotalAmount = bulkDeposits.Sum(x => x.Total);
                 // Take only the first BulkDeposit object
                 var deposit = bulkDeposits.FirstOrDefault();
                 if (bulkDeposits.FirstOrDefault().OperationType == "Withdrawal")
@@ -439,40 +472,102 @@ namespace CBS.BusinessService.Accounts
                     }
                 }
                 //LoanRepayment
-                else if (bulkDeposits.FirstOrDefault().OperationType == "CashIn")
+                else if (bulkDeposits.FirstOrDefault()?.OperationType == "CashIn")
                 {
-                    var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
+                    // ---------- Normalize base input ----------
+                    var bulkOP = bulkDeposits.FirstOrDefault();
+                    if (bulkOP == null)
+                    {
+                        GetExecutionMessages(
+                            null, false, null, MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages,
+                            SystemMessageStatus.Failed.ToString(),
+                            null,
+                            "No deposit payload found for CashIn.");
+                        return ExecutionMessage;
+                    }
 
+                    // Validate denominations against total
+                    var (isValid, discrepancyMessage) = ValidateDenominations(bulkOP.currencyNotes, TotalAmount);
                     if (!isValid)
                     {
-                        string errorMessage = $"Transaction for Account: {deposit.AccountNumber} has a discrepancy. {discrepancyMessage}";
-                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
-                           ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
+                        string errorMessage = $"Transaction for Account: {bulkOP.AccountNumber} has a discrepancy. {discrepancyMessage}";
+                        GetExecutionMessages(
+                            null, false, null, MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages,
+                            SystemMessageStatus.Failed.ToString(),
+                            null, errorMessage);
                         return ExecutionMessage;
                     }
-                    var customerAlphaNumber = string.IsNullOrWhiteSpace(bulkDeposits.FirstOrDefault()?.CustomerAlphaNumber) ||
-                          bulkDeposits.FirstOrDefault()?.CustomerAlphaNumber == "0"
-                          ? "n/a"
-                          : bulkDeposits.FirstOrDefault().CustomerAlphaNumber;
 
+                    // Normalize customer alpha number
+                    var customerAlphaNumber = string.IsNullOrWhiteSpace(bulkOP.CustomerAlphaNumber) || bulkOP.CustomerAlphaNumber == "0"
+                        ? "n/a"
+                        : bulkOP.CustomerAlphaNumber;
 
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Deposit", CustomerAlphaNumber=customerAlphaNumber, HideBalance=bulkDeposits.FirstOrDefault().HideBalance };
-                    var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
-                    if (response.ApiResponseData != null)
+                    try
                     {
-                        var transaction = response.ApiResponseData.Data;
-                        Branch branch = RetrieveBranchFromSession();
-                        var rptSource = PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
-                        HttpContext.Current.Session["rptSource"] = rptSource;
-                        GetExecutionMessages(response, true, null, MessagesResults.Success,
-                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
-                        return ExecutionMessage;
+                        if (bulkOP.IsDailyCollector)
+                        {
+                            // If Manual approach, ensure a batch is selected
+                            if (string.Equals(bulkOP.CollectionType, "Manual", StringComparison.OrdinalIgnoreCase) &&
+                                string.IsNullOrWhiteSpace(bulkOP.ManualEntryDailyCollectorId))
+                            {
+                                GetExecutionMessages(
+                                    null, false, null, MessagesResults.Failed,
+                                    ExecutionProcessOption.DefaultFailedMessages,
+                                    SystemMessageStatus.Failed.ToString(),
+                                    null,
+                                    "Please select an approved Daily Collector batch before clearing.");
+                                return ExecutionMessage;
+                            }
+
+                            // --- Build command for Daily Collector Cash Clearing ---
+                            var cmd = new AddDailyCollectorCashDepositCommand
+                            {
+                                AccountNumber                 = bulkOP.AccountNumber,
+                                Amount                        = bulkOP.Amount,
+                                CollectionType                = bulkOP.CollectionType,          // "Manual" or "Device"
+                                CurrencyNotes                 = bulkOP.currencyNotes,
+                                CustomerId                    = bulkOP.CustomerId,
+                                Depositer                     = bulkOP.Depositer,
+                                ManualEntryDailyCollectorId   = bulkOP.ManualEntryDailyCollectorId,
+                                Note                          = bulkOP.Note==null ? "n/a" : bulkOP.Note,
+                                Total                         = bulkOP.Total
+                            };
+
+                            var response = await _transactionApiHelper
+                                .PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.DailyCollectorCashClearing, cmd);
+
+                            return HandlePaymentResponse(response.ApiResponseData, "Daily collector cash clearance");
+                        }
+                        else
+                        {
+                            // --- Standard bulk deposit (non DC) ---
+                            var request = new BulkOperation
+                            {
+                                BulkOperations     = bulkDeposits,
+                                IsCashOperation    = true,
+                                OperationType      = "Deposit",
+                                CustomerAlphaNumber= customerAlphaNumber,
+                                HideBalance        = bulkOP.HideBalance
+                            };
+
+                            var response = await _transactionApiHelper
+                                .PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, request);
+
+                            return HandlePaymentResponse(response.ApiResponseData, "Bulk cash-in");
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        // Failed creation
-                        GetExecutionMessages(null, false, null, MessagesResults.Failed,
-                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                        GetExecutionMessages(
+                            null, false, null, MessagesResults.Failed,
+                            ExecutionProcessOption.DefaultFailedMessages,
+                            SystemMessageStatus.Failed.ToString(),
+                            null,
+                            $"API call failed: {ex.Message}");
+                        return ExecutionMessage;
                     }
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "RemittanceIN")
@@ -767,10 +862,10 @@ namespace CBS.BusinessService.Accounts
                     var addOtherTransaction = new AddOtherTransactionCommand
                     {
                         AccountNumber = a.AccountNumber,
-                        Amount = a.Amount,  
+                        Amount = a.Amount,
                         ExternalBranchId=a.ExternalBranchId,
                         CurrencyNotesRequest = a.currencyNotes,
-                        CustomerId = (a.SourceType == "Member_Account" || (!string.IsNullOrEmpty(a.CustomerId) && a.SourceType != "Member_Account"))? a.CustomerId
+                        CustomerId = (a.SourceType == "Member_Account" || (!string.IsNullOrEmpty(a.CustomerId) && a.SourceType != "Member_Account")) ? a.CustomerId
                  : "N/A",
                         Direction = "",
                         Name = a.Period,
@@ -1022,8 +1117,8 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                
-            
+
+
 
                 bool isMoralPerson = string.Equals(legalForm, "Moral_Person", StringComparison.OrdinalIgnoreCase);
                 var branchId = GetBranchID();
@@ -1053,8 +1148,8 @@ namespace CBS.BusinessService.Accounts
                 var customer = await GetCustomer(customerId);
                 if (customer == null)
                     return null;
-                
-                
+
+
                 var accounts = await GetCustomerAccounts(customerId);
                 if (accounts == null || !accounts.Any())
                     return null;
@@ -1071,9 +1166,19 @@ namespace CBS.BusinessService.Accounts
                 var loans = new List<Loan>();
                 var withdrawalNotifications = new List<WithdrawalNotification>();
                 var loanApplicationFees = new List<LoanApplicationFee>();
+                var selectListItems = new List<SelectListItem>();
                 var amountRequested = 0m;
                 var onboardingDetail = new MemberOnboardingDetailDto();
                 var subscriptionFee = 0m;
+                // Safe Daily Collector check (handles nulls, case, and composite strings like "Member,DailyCollector")
+                bool isDailyCollector =
+                    !string.IsNullOrWhiteSpace(customer.CustomerType) &&
+                    customer.CustomerType.IndexOf("DailyCollection", StringComparison.OrdinalIgnoreCase) >= 0;
+
+                if (isDailyCollector)
+                {
+                    selectListItems=await GetCollectorApprovedUpload(customer.CustomerId);
+                }
 
                 switch (path?.ToLower())
                 {
@@ -1116,7 +1221,9 @@ namespace CBS.BusinessService.Accounts
                 return new CashDesk
                 {
                     Branch = branch,
+                    SelectedItemsApprovedUploads=selectListItems,
                     Accounts = accounts,
+                    IsDailyCollector=isDailyCollector,
                     BulkDeposit = new BulkDeposit
                     {
                         Amount = amountRequested > 0 ? amountRequested : subscriptionFee,
@@ -1282,6 +1389,33 @@ namespace CBS.BusinessService.Accounts
             }
         }
 
+        public async Task<List<SelectListItem>> GetCollectorApprovedUpload(string transitMemberReference)
+        {
+            try
+            {
+                var result = await _transactionApiHelper
+                    .GetAsync<ResponseObject<List<ManualEntryDailyCollectorDto>>>(
+                        string.Format(APICallHelper.GetDailyCollectorApprovedUpload, transitMemberReference));
+
+                // Support either ApiResponseData.Data or Data, depending on your ResponseObject
+                var rows = result?.ApiResponseData?.Data;
+
+                if (rows == null || rows.Count == 0)
+                    return new List<SelectListItem>();
+
+                // Build dropdown items
+                return rows.Select(a => new SelectListItem
+                {
+                    Text = $"[{a.DailyCollectorTransitMemberReference}] [{a.CollectorName}] [{a.BranchName}] [T.B: {a.TotalBranchesCollected} ,T.M: {a.TotalMember}, T.A: {a.TotalAmount}]",
+                    Value = a.Id
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw; // preserve stack trace
+            }
+        }
+
         //public async Task<List<MembersLoanDto>> GetMembersLoans(string customerId, string queryParameter)
         //{
         //    try
@@ -1327,25 +1461,38 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
+                var customer = await GetCustomer(customerId);
+                if (customer == null) return null;
 
-                var cusResponseObject = await GetCustomer(customerId);
-                if (cusResponseObject != null)
+                var branch = await _branchServices.GetBranch(customer.BranchId);
+
+                // Normalize the display name
+                customer.name = $"{customer.FirstName ?? ""} {customer.LastName ?? ""}".Trim();
+
+                // Safe Daily Collector check (handles nulls, case, and composite strings like "Member,DailyCollector")
+                bool isDailyCollector =
+                    !string.IsNullOrWhiteSpace(customer.CustomerType) &&
+                    customer.CustomerType.IndexOf("DailyCollector", StringComparison.OrdinalIgnoreCase) >= 0;
+
+                return new CashDesk
                 {
-                    var customer = cusResponseObject;
-                    var branch = await _branchServices.GetBranch(customer.BranchId);
-                    customer.name = $"{customer.FirstName} {customer.LastName}";
-                    var cashDesk = new CashDesk { Branch = branch, Accounts = null, BulkDeposit = new BulkDeposit(), BulkDeposits = new List<BulkDeposit>(), Customer = customer, LoanId = null, CustomerId = customerId };
-                    return cashDesk;
-                }
-
-                return null;
+                    Branch         = branch,
+                    Accounts       = null,
+                    BulkDeposit    = new BulkDeposit(),
+                    BulkDeposits   = new List<BulkDeposit>(),
+                    Customer       = customer,
+                    LoanId         = null,
+                    CustomerId     = customerId,
+                    IsDailyCollector = isDailyCollector
+                };
             }
-            catch (Exception ex)
+            catch
             {
-                // Log and handle exception
-                throw ex;
+                // Preserve original stack trace
+                throw;
             }
         }
+
 
         //public async Task<CashDesk> GetMembers()
         //{

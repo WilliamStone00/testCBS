@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    loadMemberReceipts();
+    //loadMemberReceipts();
 
     $('#applyFilterBtn').click(function () {
         loadMemberReceipts();
@@ -90,6 +90,7 @@ function viewReceipt(receiptId) {
         }
     });
 }
+
 
 function collectReceiptFilterParams() {
     return {

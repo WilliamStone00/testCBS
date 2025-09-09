@@ -345,7 +345,8 @@ namespace CBS.FrontDesk.Helper
         public static string CreateGroupType = "/api/v1/AddGroupType";
         public static string GetAllGroupTypes = "/api/v1/GroupTypes";
         public static string LoanApplicationFeesPending = "/api/v1/LoanApplicationFees/Pending/{0}";
-        //
+        public static string GetDailyCollectorApprovedUpload = "/api/v1/ManualEntryCollector/ApprovedBatches/{0}";
+        //ManualEntryDailyCollectorDto
 
         //Group
         public static string Get_Update_Delete_Group = "/api/v1/Group/{0}";
@@ -380,6 +381,7 @@ namespace CBS.FrontDesk.Helper
 
         public static string MakeDepoit = "/api/v1/Transaction/Deposit";
         public static string BulkDeposit = "/api/v1/Transaction/BulkDeposit";
+        public static string DailyCollectorCashClearing = "/api/v1/DailySavingsBackOffice/DailyCollectorCashClearing";
         public static string GetAllMembersPagginatedSummaryAccounts = "/api/v1/Account/Pagginated/MembersAccountSummary";
         public static string GetAllMembersSummaryAccounts = "/api/v1/Account/MembersAccountSummary";
         //
@@ -413,6 +415,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetTellerDailyOperations = "/api/v1/TellerOperations/DailyOperations";
         public static string TellerOpenningAndClossingQuery = "/api/v1/Teller/TellerOpenningAndClossingQuery";
         public static string GetTillCashStatus = "/api/v1/Teller/TillStatus";
+        public static string GetCurrentProvision = "/api/v1/Teller/SubTeller/CurrentProvision";
 
 
         //
@@ -441,6 +444,7 @@ namespace CBS.FrontDesk.Helper
 
         //Teller
         public static string Get_Update_Delete_Teller = "/api/v1/Teller/{0}";
+        public static string CollectorLinkState = "/api/v1/Teller/Collector/LinkState";
         public static string MobileMoneyTellerConfiguration = "/api/v1/Teller/MobileMoney/Configuration/{0}";
         public static string GetAllTeller = "/api/v1/Teller";
         public static string CreateTeller = "/api/v1/Teller";
@@ -586,6 +590,7 @@ namespace CBS.FrontDesk.Helper
         public static string AttachedDocuments = "/api/FIleManagement/Upload";
         public static string AttachedDocumentsRemotelyLoan = "/api/v1/DocumentAttachedToLoan/AddLoanAttachedDocumentCallBackCommand";
         public static string AttachedDocumentsRemotelyBank = "/api/v1/Bank/UpdateBankLogoCallBack";
+        public static string AttachedDocumentsRemotelyWaterMark = "/api/v1/Bank/UpdateBankWaterMarkCallBack";
 
         public static string Get_Update_Delete_LoanTerm = "/api/v1/LoanTerm/{0}";
         public static string GetAllLoanTerm = "/api/v1/LoanTerms";

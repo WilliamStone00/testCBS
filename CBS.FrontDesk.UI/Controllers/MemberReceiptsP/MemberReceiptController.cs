@@ -9,6 +9,7 @@ using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.UI.Helper;
 using Newtonsoft.Json;
 using System;
@@ -18,6 +19,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using ZXing.Common;
 using static CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation.PaymentReceipt;
 
 namespace CBS.FrontDesk.UI.Controllers.MemberReceiptsP
@@ -67,6 +69,67 @@ namespace CBS.FrontDesk.UI.Controllers.MemberReceiptsP
             {
                 return new HttpStatusCodeResult(500, $"Server error: {ex.Message}");
             }
+        }
+        [HttpPost]
+        public ActionResult GetReport()
+        {
+            // 1) Read what we set earlier
+            var path = (this.HttpContext.Session["path"] as string) ?? "cashin_cashout";
+
+            var rptSource = this.HttpContext.Session["rptSource"] as IEnumerable<PaymentReciptDS>;
+            if (rptSource == null || !rptSource.Any())
+            {
+                return Json(new
+                {
+                    success = false,
+                    status = false,
+                    message = "Report source not found in session. Please reload the receipt."
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+            var firstItem = rptSource.First();
+
+            // 2) Pull dates (prefer explicit session values; fallback to DS)
+            var accountingDayObj = this.HttpContext.Session["AccountingDate"];
+            var transactionDateObj = this.HttpContext.Session["TransactionDate"];
+
+            DateTime accountingDay = firstItem.AccountingDay;
+            DateTime transactionDate = firstItem.Date;
+
+            if (accountingDayObj is DateTime ad) accountingDay = ad;
+            if (transactionDateObj is DateTime td) transactionDate = td;
+
+            // 3) Build parameters (existing)
+            var parameters = new Dictionary<string, object>
+            {
+                { "AccountingDate", accountingDay.ToString("dd/MM/yyyy") },
+                { "TransactionDate", transactionDate.ToString("dd/MM/yyyy HH:mm") },
+                { "CurrentDate", DateTime.Now.ToString("dd/MM/yyyy HH:mm") },
+                { "CurrentYear", DateTime.Now.Year.ToString() },
+                { "PrintedBy", (this.HttpContext.Session["FullName"] as string) ?? "System" }
+            };
+
+            // 4) Add LogoUrl and WaterMarkUrl (from Session first, fallback to DS)
+            string logoUrl = this.HttpContext.Session["LogoUrl"] as string ?? firstItem?.Logo;
+            string watermarkUrl = this.HttpContext.Session["WaterMarkUrl"] as string ?? firstItem?.HeadOfficeWaterMark;
+
+            if (!string.IsNullOrWhiteSpace(logoUrl))
+                parameters["LogoUrl"] = logoUrl;
+
+            if (!string.IsNullOrWhiteSpace(watermarkUrl))
+                parameters["WaterMarkUrl"] = watermarkUrl;
+
+            // 5) Store the shared bits
+            this.HttpContext.Session["rptType"] = "ReportParameterLess";
+            this.HttpContext.Session["rptSource"] = rptSource;
+            this.HttpContext.Session["ReportParameters"] = parameters;
+
+            this.HttpContext.Session["ReportName"] = "MainReport.rpt";
+            this.HttpContext.Session["rptpath"]    = "~/AppFiles/Reporting/Transactions/Payment/MainReport.rpt";
+            this.HttpContext.Session["rpttitle"]   = "MemberReceipts";
+
+            // 6) Done
+            return Json(new { success = true, status = false, message = "Parameters OK." }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
