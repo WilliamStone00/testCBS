@@ -22,6 +22,7 @@ namespace CBS.FrontDesk.Data.Entity.ManualDailycollection
         public string UploadedBy { get; set; }    // Who uploaded the file
         public string salaryProcessingStatus { get; set; }
         public string fileName { get; set; }
+        public string uploadedOn { get; set; }
                                                   //  public DateTime UploadedAt { get; set; }           // Timestamp of upload
 
         // Navigation property

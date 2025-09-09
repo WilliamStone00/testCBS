@@ -5,11 +5,11 @@
             <thead class="table-light">
                 <tr>
                     <th>File ID</th>
-                    <th>Collector ID</th>
+                    <th>FileName</th>
                     <th>Branch</th>
                     <th>Uploaded By</th>
-                    <th>Total Members</th>
-                    <th>Total Amount</th>
+                    <th>Uploaded On</th>
+                    <th>Status</th>
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -57,10 +57,10 @@ $(document).ready(function () {
             { data: "fileName", name: "FileName" },
             { data: "BranchName", name: "BranchName" },
             { data: "UploadedBy", name: "UploadedBy" },
-            { data: "salaryProcessingStatus", name: "Status" },
+            { data: "uploadedOn", name: "UploadedOn" },
             {
-                data: "TotalAmount",
-                name: "TotalAmount",
+                data: "salaryProcessingStatus",
+                name: "Status",
                 render: $.fn.dataTable.render.number(',', '.', 2, '')
             },
             {
