@@ -1,0 +1,67 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.NotificationConfig.NotificationConfig
+@using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.NotificationConfig
+@using Resources
+
+@{
+    // Get the full definition for the current type, which was passed via the ViewBag
+    var typeDefinition = ViewBag.CurrentTypeDefinition as NotificationType;
+}
+
+<form id="notificationConfigForm" onsubmit="return false;">
+   
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.IsCentralized)
+    @Html.HiddenFor(m => m.BranchId)
+    @Html.HiddenFor(m => m.NotificationType)
+
+    <div class="card shadow p-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="text-primary mb-3">Edit Template for: <span class="text-dark">@typeDefinition?.Text</span></h5>
+            <div class="form-check form-switch">
+                @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
+                <label class="form-check-label" for="IsActive">Is Active</label>
+            </div>
+        </div>
+
+
+        @if (typeDefinition != null)
+        {
+            <div class="alert alert-info">
+                <p class="mb-1"><strong>Description:</strong> @typeDefinition.Description</p>
+                @if (typeDefinition.Placeholders != null && typeDefinition.Placeholders.Any())
+                {
+                    <p class="mb-0"><strong>Available Placeholders:</strong></p>
+                    <div class="d-flex flex-wrap">
+                        @foreach (var placeholder in typeDefinition.Placeholders)
+                        {
+                            <code class="me-2 mb-1 p-1 bg-light border rounded">@placeholder</code>
+                        }
+                    </div>
+                }
+            </div>
+        }
+
+        <div class="form-floating">
+            @Html.TextAreaFor(m => m.TemplateBody, new { @class = "form-control", placeholder = "Template Body", style = "height: 200px;" })
+            @Html.ValidationMessageFor(m => m.TemplateBody, "", new { @class = "text-danger" })
+            <label>Template Body</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Description" })
+            <label>Template Description</label>
+        </div>
+
+
+        <hr />
+        <div class="d-flex justify-content-end align-items-center">
+            <button type="button" id="resetConfigBtn" class="btn btn-outline-secondary me-2">Reset</button>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Id))
+            {
+                <button type="button" id="deleteConfigBtn" class="btn btn-danger me-2">Delete Template</button>
+            }
+            <button type="submit" id="saveConfigBtn" class="btn btn-primary">Save Changes</button>
+        </div>
+    </div>
+</form>

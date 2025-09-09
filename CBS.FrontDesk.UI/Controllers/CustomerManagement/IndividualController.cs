@@ -455,8 +455,9 @@ namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
         public async Task<ActionResult> AccountDetails(string accountid)
         {
             var customerAccount = await _accountServices.GetAccount(accountid);
-            return PartialView("_AccountDetails", new IndividualCustomerProfile { CustomerAccount=customerAccount });
+            return PartialView("_AccountDetails", new IndividualCustomerProfile { CustomerAccount = customerAccount });
         }
+
         [HttpPost]
         public async Task<ActionResult> LoadMembersData(GetCustomersForDataTableQuery query)
         {

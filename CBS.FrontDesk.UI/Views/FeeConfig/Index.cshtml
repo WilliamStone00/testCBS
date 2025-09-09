@@ -1,0 +1,302 @@
+﻿@* Location: ~/Views/FeeConfig/Index.cshtml *@
+
+@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration.FeeConfig
+@using Resources
+
+@{
+    ViewBag.Title = "Fee Configuration";
+}
+
+@*@using (Html.BeginForm("Index", "FeeConfig", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    //{*@
+<!-- This token is essential for the secure POST actions in the controller -->
+@Html.AntiForgeryToken()
+
+<!-- Page Header -->
+<div class="card bg-light mb-3">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary"><i class="mdi mdi-currency-usd-circle-outline me-2"></i> Fee Configuration</h1>
+        <p class="card-text">Configure centralized or branch-specific fees using percentage or range-based calculations.</p>
+        <div class="alert alert-info mt-3 py-2">
+            <i class="mdi mdi-information-outline me-1"></i>
+            @*@GlobalDailyCollectorManagement.ImportantText.*@
+            Always choose either to configure a centralized system or decentralized and always choose a Fee Type
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR FEE CONFIGURATION</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="true">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse show">
+        <div class="card-body">
+            <ul>
+                <li>
+                    <i class="mdi mdi-cogs text-primary me-2"></i>
+                    <strong>Configuration Scope:</strong> Start by choosing the scope. Use 'Is Centralized' for a global, system-wide rule. Uncheck it to select a specific 'Branch' for a local, branch-level rule.
+                </li>
+                <li>
+                    <i class="mdi mdi-magnify text-info me-2"></i>
+                    <strong>Load Configuration:</strong> After selecting a scope and a 'Fee Type', you must click the 'Load' button. This will either fetch the existing settings or prepare a new, empty form for you to create one.
+                </li>
+                <li>
+                    <i class="mdi mdi-toggle-switch-outline text-success me-2"></i>
+                    <strong>Fee Method Choice:</strong> Only one fee method can be active. Use the 'Enable' switches to choose between a single 'Percentage' fee or a tiered 'Range-Based' fee. Enabling one will automatically disable the other.
+                </li>
+                <li>
+                    <i class="mdi mdi-table-large text-purple me-2"></i>
+                    <strong>Fee Ranges:</strong> When using ranges, ensure the 'From Amount' and 'To Amount' values do not overlap with other rows to guarantee accurate fee calculations. Use the '+ Add Row' button to add more tiers.
+                </li>
+                <li>
+                    <i class="mdi mdi-content-save text-warning me-2"></i>
+                    <strong>Saving Changes:</strong> The 'Save' button will save the entire configuration for the selected scope, including the values for both the percentage and all range rows, regardless of which method is currently enabled.
+                </li>
+                <li>
+                    <i class="mdi mdi-alert-circle-outline text-danger me-2"></i>
+                    <strong>Deleting a Configuration:</strong> The 'Delete' button will permanently remove the entire configuration for the currently loaded scope (e.g., the Centralized rule for 'Checkbook Request Fee'). This action cannot be undone.
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Configuration Selection Area -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-cogs me-1"></i> Select Configuration Scope</h5>
+    <div class="row align-items-end">
+        <!-- Is Centralized Checkbox -->
+        <div class="col-md-3">
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="isCentralized" checked>
+                <label class="form-check-label fw-bold" for="isCentralized">Is Centralized?</label>
+            </div>
+        </div>
+
+        <!-- Branch Dropdown (Initially Hidden) -->
+        <div class="col-md-4" id="branch-selection-container" style="display: none;">
+            <label class="form-label fw-bold">Select Branch</label>
+            @Html.DropDownListFor(x => x.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", id = "branchId" })
+        </div>
+
+        <!-- Fee Type Dropdown -->
+        <div class="col-md-4">
+            <label class="form-label fw-bold">Select Fee Type</label>
+            @* Assumes ViewBag.FeeTypes is a list of objects with 'Value' and 'Text' properties from your service *@
+            @Html.DropDownListFor(x => x.FeeType, new SelectList(ViewBag.FeeTypes, "Value", "Text"), "--- Select Fee Type ---", new { @class = "form-control select2", id = "feeType" })
+        </div>
+
+        <!-- Load Button -->
+        <div class="col-md-1">
+            <button id="loadConfigBtn" class="btn btn-primary w-100">Load</button>
+        </div>
+    </div>
+</div>
+
+<!-- This is the container where our dynamic form will be injected by JavaScript -->
+<div id="config-form-container">
+</div>
+
+@section Scripts {
+    <script>
+        // Location: ~/Scripts/Js/Crud/ChequeManagement/CategoryConfig/FeeConfig.js
+
+        $(document).ready(function () {
+            setupFeeConfigToggles();
+            $('#loadConfigBtn').on('click', loadConfiguration);
+            setupDynamicFormHandlers();
+        });
+
+
+        function setupFeeConfigToggles() {
+            $('#isCentralized').on('change', function () {
+                if (this.checked) {
+                    $('#branch-selection-container').slideUp();
+                    $('#branchId').val('').trigger('change');
+                } else {
+                    $('#branch-selection-container').slideDown();
+                }
+            });
+        }
+
+
+        function loadConfiguration() {
+            var isCentralized = $('#isCentralized').is(':checked');
+            var branchId = isCentralized ? null : $('#branchId').val();
+            var feeType = $('#feeType').val();
+
+            if (!isCentralized && !branchId) {
+                appalert('Please select a branch for non-centralized configuration.', 2, 1);
+                return;
+            }
+            if (!feeType) {
+                appalert('Please select a fee type.', 2, 1);
+                return;
+            }
+
+            $('#config-form-container').load(
+                '/FeeConfig/InitializeData',
+                {
+                    partialView: '_Create',
+                    isCentralized: isCentralized,
+                    branchId: branchId,
+                    feeType: feeType
+                }
+            );
+        }
+
+
+        /**
+         * Sets up event handlers for elements that will exist inside the dynamically loaded form.
+         */
+        function setupDynamicFormHandlers() {
+            var container = $('#config-form-container');
+
+            // --- NEW EXCLUSIVE CHECKBOX LOGIC ---
+            // This ensures only one fee method can be active at a time.
+            container.on('change', '#AcceptPercentage', function () {
+                // When the "Enable Percentage" checkbox is changed...
+                if ($(this).is(':checked')) {
+                    // If it's now CHECKED, then UNCHECK the "Enable Range" box.
+                    $('#AcceptRange').prop('checked', false);
+                }
+            });
+
+            container.on('change', '#AcceptRange', function () {
+                // When the "Enable Range" checkbox is changed...
+                if ($(this).is(':checked')) {
+                    // If it's now CHECKED, then UNCHECK the "Enable Percentage" box.
+                    $('#AcceptPercentage').prop('checked', false);
+                }
+            });
+            // --- END OF NEW LOGIC ---
+
+            // Add a new row to the range table.
+            container.on('click', '#addRangeRowBtn', function () {
+                var newRowHtml = getRangeRowTemplate();
+                $('#range-table-body').append(newRowHtml);
+                reindexRangeRows();
+            });
+
+            // Remove a row from the range table.
+            container.on('click', '.remove-range-row', function () {
+                $(this).closest('tr').remove();
+                reindexRangeRows();
+            });
+
+            // Handle the form submission.
+            container.on('submit', '#feeConfigForm', function (e) {
+                e.preventDefault();
+                saveConfiguration(this);
+            });
+
+            // Handle the delete button click.
+            container.on('click', '#deleteConfigBtn', function () {
+                deleteConfiguration();
+            });
+        }
+
+
+        function getRangeRowTemplate() {
+            return `
+            <tr>
+                <td>
+                    <input type="hidden" name="FeeTypeRanges.Index" value="{INDEX}" />
+                    <input type="hidden" name="FeeTypeRanges[{INDEX}].Id" value="" />
+                    <input type="number" step="0.01" name="FeeTypeRanges[{INDEX}].FromAmount" value="" class="form-control" />
+                </td>
+                <td>
+                    <input type="number" step="0.01" name="FeeTypeRanges[{INDEX}].ToAmount" value="" class="form-control" />
+                </td>
+                <td>
+                    <input type="number" step="0.01" name="FeeTypeRanges[{INDEX}].Fee" value="" class="form-control" />
+                </td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-sm btn-outline-danger remove-range-row"><i class="mdi mdi-delete"></i></button>
+                </td>
+            </tr>
+        `;
+        }
+
+
+        function reindexRangeRows() {
+            $('#range-table-body tr').each(function (newIndex) {
+                $(this).find('input').each(function () {
+                    var oldName = $(this).attr('name');
+                    if (oldName) {
+                        var newName = oldName.replace(/\[\d*\]|{INDEX}/, '[' + newIndex + ']');
+                        $(this).attr('name', newName);
+                        if (oldName.includes('.Index')) {
+                            $(this).val(newIndex);
+                        }
+                    }
+                });
+            });
+        }
+
+
+        function saveConfiguration(form) {
+            // Before saving, ensure at least one option is checked
+            if (!$('#AcceptPercentage').is(':checked') && !$('#AcceptRange').is(':checked')) {
+                appalert('You must enable at least one fee method (Percentage or Range).', 2, 1);
+                return; // Stop the save
+            }
+
+            var formData = $(form).serialize();
+            var token = $('input[name="__RequestVerificationToken"]').val();
+
+            $.ajax({
+                url: '/FeeConfig/CreateOrUpdate',
+                type: 'POST',
+                data: formData + "&__RequestVerificationToken=" + token,
+                success: function (response) {
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+                        loadConfiguration();
+                    } else {
+                        appalert(response.message, 2, 1);
+                    }
+                },
+                error: function (err) {
+                    appalert('An error occurred while saving: ' + err.statusText, 0, 1);
+                }
+            });
+        }
+
+
+        //function deleteConfiguration() {
+        //    var configId = $('#Id').val();
+        //    if (!configId) {
+        //        appalert('Cannot delete a configuration that has not been saved yet.', 3, 1);
+        //        return;
+        //    }
+
+        //    if (confirm('Are you sure you want to delete this fee configuration?')) {
+        //        var token = $('input[name="__RequestVerificationToken"]').val();
+        //        $.ajax({
+        //            url: '/FeeConfig/Delete',
+        //            type: 'Get',
+        //            data: {
+        //                KEY: configId,
+        //                __RequestVerificationToken: token
+        //            },
+        //            success: function (response) {
+        //                if (response.success) {
+        //                    appalert(response.message, 1, 1);
+        //                    $('#config-form-container').empty();
+        //                } else {
+        //                    appalert(response.message, 2, 1);
+        //                }
+        //            },
+        //            error: function (err) {
+        //                appalert('An error occurred during deletion: ' + err.statusText, 0, 1);
+        //            }
+        //        });
+        //    }
+        //}
+
+    </script>
+}

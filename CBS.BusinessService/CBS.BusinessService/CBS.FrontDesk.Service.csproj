@@ -254,6 +254,11 @@
     <Compile Include="Accounting\ProductAccountingHelper.cs" />
     <Compile Include="Accounting\TransactionTracker.cs" />
     <Compile Include="Accounts\FileUploadServices.cs" />
+    <Compile Include="CheckManagementSystem\Configurations\Category\CategoryConfigService.cs" />
+    <Compile Include="CheckManagementSystem\Configurations\ChequeNumber\NumConfigService.cs" />
+    <Compile Include="CheckManagementSystem\Configurations\FeeConfiguration\FeeConfigService.cs" />
+    <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationConfigmockService.cs" />
+    <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationConfigService.cs" />
     <Compile Include="DailyCollectionServices\DailyCollectionEndOfDayServices.cs" />
     <Compile Include="Accounting\DocumentTypeServices.cs" />
     <Compile Include="Accounting\DocumentReportServices.cs" />
@@ -337,6 +342,9 @@
     <Compile Include="DailyCollectionServices\AgentDailyCashLimitServices.cs" />
     <Compile Include="DailyCollectionServices\AgentServices.cs" />
     <Compile Include="DailyCollectionServices\AgentAccountServices.cs" />
+    <Compile Include="DailyCollectionServices\ManualDailyCollection Service\IManualDailyCollectionService.cs" />
+    <Compile Include="DailyCollectionServices\ManualDailyCollection Service\ManualDailyCollectionMockService.cs" />
+    <Compile Include="DailyCollectionServices\ManualDailyCollection Service\ManualDailyCollectionService.cs" />
     <Compile Include="DailyCollectionServices\ZoneServices.cs" />
     <Compile Include="LoanP\Config\LoanProductCategoryServices.cs" />
     <Compile Include="LoanP\LoanAdjustmentP\LoanAdjustmentService.cs" />
@@ -455,10 +463,29 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="CheckManagementSystem\.vs\CheckManagementSystem\FileContentIndex\f3ed9bb7-081f-4b03-9074-fbb2960cb341.vsidx" />
+    <None Include="CheckManagementSystem\.vs\CheckManagementSystem\v17\DocumentLayout.json" />
+    <None Include="CheckManagementSystem\.vs\slnx.sqlite" />
+    <None Include="CheckManagementSystem\.vs\VSWorkspaceState.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BankZone\" />
+    <Folder Include="bin\Debug\ca\" />
+    <Folder Include="bin\Debug\de\" />
+    <Folder Include="bin\Debug\es\" />
+    <Folder Include="bin\Debug\fa\" />
+    <Folder Include="bin\Debug\fr\" />
+    <Folder Include="bin\Debug\nb\" />
+    <Folder Include="bin\Debug\nl\" />
+    <Folder Include="bin\Debug\pt-BR\" />
+    <Folder Include="bin\Debug\pt-PT\" />
+    <Folder Include="bin\Debug\pt\" />
+    <Folder Include="bin\Debug\sv\" />
+    <Folder Include="bin\Debug\tr-TR\" />
+    <Folder Include="bin\Debug\zh-TW\" />
+    <Folder Include="bin\Debug\zh\" />
+    <Folder Include="bin\Release\" />
     <Folder Include="BlacklistAccount\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

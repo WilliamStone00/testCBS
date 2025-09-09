@@ -1,73 +1,53 @@
-using CBS.API.Helper;
-using CBS.BusinessService;
-using CBS.BusinessService.Accounting;
-using CBS.BusinessService.Config;
-using CBS.BusinessService.Config.Localization;
-using CBS.BusinessService.RequestLoggerServicesP;
-using CBS.BusinessService.Session;
+using CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Service;
 using CBS.BusinessService.UserManagement;
-using CBS.FrontDesk.Helper;
 using CBS.FrontDesk.Service;
-
-using System.Configuration;
-using System.Web.Mvc;
+using System;
 using Unity;
-using Unity.AspNet.Mvc;
-using Unity.Injection;
-using Unity.Lifetime;
 
 namespace CBS.FrontDesk.UI
 {
+    /// <summary>
+    /// Specifies the Unity configuration for the main container.
+    /// </summary>
     public static class UnityConfig
     {
-        public static void RegisterComponents()
+        #region Unity Container
+        private static Lazy<IUnityContainer> container =
+          new Lazy<IUnityContainer>(() =>
+          {
+              var container = new UnityContainer();
+              RegisterTypes(container);
+              return container;
+          });
+
+        /// <summary>
+        /// Configured Unity Container.
+        /// </summary>
+        public static IUnityContainer Container => container.Value;
+        #endregion
+
+        /// <summary>
+        /// Registers the type mappings with the Unity container.
+        /// </summary>
+        /// <param name="container">The unity container to configure.</param>
+        /// <remarks>
+        /// There is no need to register concrete types such as controllers or
+        /// API controllers (unless you want to change the defaults), as Unity
+        /// allows resolving a concrete type even if it was not previously
+        /// registered.
+        /// </remarks>
+        public static void RegisterTypes(IUnityContainer container)
         {
-            var container = new UnityContainer();
-            // Register your hub class
-            container.RegisterType<NotificationHub>(new ContainerControlledLifetimeManager());
+            // NOTE: To load from web.config uncomment the line below.
+            // Make sure to add a Unity.Configuration to the using statements.
+            // container.LoadConfiguration();
 
-            // Register your dependencies here using container.RegisterType<>()
+            // TODO: Register your type's mappings here.
+            // container.RegisterType<IProductRepository, ProductRepository>();
+
             container.RegisterType<IAuthenticationServices, AuthenticationServices>();
+
             container.RegisterType<IUserManagementServices, UserManagementServices>();
-            container.RegisterType<RateLimitConfigService, RateLimitConfigService>();
-            
-            //container.RegisterType<IMemberAccountJob, MemberAccountJob>();
-            container.RegisterType<IBranchServices, BranchServices>();
-
-            container.RegisterType<CountryServices, CountryServices>();
-            container.RegisterType<RegionServices, RegionServices>();
-            container.RegisterType<AccountingServices, AccountingServices>();
-            //container.RegisterType<IAccountingEntryServices, AccountingEntryServices>();
-            container.RegisterType<RateLimiteTrackerLoggerServices, RateLimiteTrackerLoggerServices>();
-
-            container.RegisterType<SubDivisionServices, SubDivisionServices>();
-            container.RegisterType<IBranchServices, BranchServices>();
-            container.RegisterType<TownServices, TownServices>();
-            container.RegisterType<OrganizationServices, OrganizationServices>();
-            container.RegisterType<BankServices, BankServices>();
-            container.RegisterType<ApiCallerHelper, ApiCallerHelper>();
-            container.RegisterType<APICallHelper, APICallHelper>();
-            container.RegisterType<SessionHub, SessionHub>();
-            container.RegisterType<INotificationServices, NotificationServices>();
-            container.RegisterType<ApiCallerHelper>("TransactionApiCallerHelper",
-                new InjectionConstructor(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString()));
-            //CommunicationBaseUrl
-            // Register ApiCallerHelper for BankConfigurationBaseUrl
-            container.RegisterType<ApiCallerHelper>("BankConfigApiCallerHelper",
-                new InjectionConstructor(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString()));
-
-            container.RegisterType<ApiCallerHelper>(new InjectionConstructor(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString()));
-            container.RegisterType<ApiCallerHelper>(
-    new InjectionConstructor(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString()));
-
-            container.RegisterType<ApiCallerHelper>(new InjectionConstructor(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString()));
-
-            // If you're using Unity.MVC, you can register it with the PerRequestLifetimeManager:
-            // container.RegisterType<ApiCallerHelper>(
-            //     new PerRequestLifetimeManager(),
-            //     new InjectionConstructor(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString()));
-
-            DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
     }
 }
