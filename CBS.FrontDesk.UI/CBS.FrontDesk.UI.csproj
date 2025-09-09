@@ -276,10 +276,6 @@
       <HintPath>..\packages\Microsoft.AspNetCore.WebUtilities.2.3.0\lib\netstandard2.0\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -543,10 +539,6 @@
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Text.Encodings.Web, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encodings.Web.8.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Text.Json, Version=6.0.0.10, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Json.8.0.5\lib\net462\System.Text.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Text.RegularExpressions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -2360,7 +2352,6 @@
     <Compile Include="Helper\ReportLogoHelper.cs" />
     <Compile Include="Helper\SalarySheetExcelExporter.cs" />
     <Compile Include="Models\Class1.cs" />
-
     <Content Include="aspnet_client\system_web\4_0_30319\crystalreportviewers13\ActiveXControls\PrintControl.cab" />
     <Content Include="aspnet_client\system_web\4_0_30319\crystalreportviewers13\ActiveXControls\PrintControl.cab" />
     <Content Include="aspnet_client\system_web\4_0_30319\crystalreportviewers13\ActiveXControls\PrintControl_res_cs.cab" />
@@ -3498,10 +3489,8 @@
     <Content Include="bin\System.Security.Cryptography.X509Certificates.dll" />
     <Content Include="bin\System.Text.RegularExpressions.dll" />
     <Content Include="FIx\ManualJE.txt" />
-
     <Content Include="AppFiles\Images\UpdatedLogo\WaterMark.png" />
     <Content Include="AppFiles\Images\UpdatedLogo\Logo.png" />
-
     <Content Include="Scripts\Js\AccountingReconciliation\AccountReconciliation.js" />
     <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MemberAdjustmentConsole.js" />
     <Compile Include="WAF\Middleware\Core\StaticPathHelper.cs" />
@@ -9474,7 +9463,6 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>AccountingConfig_CreateFinancialReferenceCode.Designer.cs</LastGenOutput>
     </Content>
-
     <Content Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ChequeManagements.designer.cs</LastGenOutput>
@@ -9484,12 +9472,10 @@
       <LastGenOutput>ChequeManagements.fr.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\Payment\MainReportOld.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>MainReportOld.cs</LastGenOutput>
     </EmbeddedResource>
-
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -10836,15 +10822,12 @@
     <Content Include="Views\AccountingReconciliation\GetReconciliationData.cshtml" />
     <Content Include="Views\AccountingReconciliation\Index.cshtml" />
     <Content Include="Views\AccountingReconciliation\_ReconciliationData.cshtml" />
-
     <Content Include="Views\AccountingReconciliation\_SearchOption.cshtml" />
     <Content Include="Views\FileValidation\Index.cshtml" />
     <Content Include="Views\FileValidation\_ActionForm.cshtml" />
     <Content Include="Views\FileValidation\_FileDetails.cshtml" />
-
     <Content Include="Views\AccountingReconciliation\GetReconciliationData.cshtml" />
     <Content Include="Views\Bank\_WatermarkUploader.cshtml" />
-
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
