@@ -503,7 +503,7 @@ namespace CBS.FrontDesk.UI.Controllers
             foreach (var item in debitAccounts)
             {
 
-                list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.AccountNumberCU + "-" + item.AccountName });
+                list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.TempData.PadRight(12,'0') + "-" + item.AccountName });
 
             }
 
