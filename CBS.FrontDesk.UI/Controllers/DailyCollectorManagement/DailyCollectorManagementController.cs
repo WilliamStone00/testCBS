@@ -1,4 +1,5 @@
 ﻿using CBS.API.Helper;
+using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.DailyCollectionServices;
@@ -31,6 +32,7 @@ namespace CBS.FrontDesk.UI.Controllers
     {
         private BranchServices _branchService;
         private AgentServices _agentServices;
+        public AccountingServices _accountServices;
         private UserManagementServices _userServices;
         private AgentAccountServices _agentAccountServices;
         private DailyCollectionMigrationServices _dailyCollectionMigrationServices;
@@ -42,7 +44,7 @@ namespace CBS.FrontDesk.UI.Controllers
             _userServices = new UserManagementServices();
             _agentAccountServices = new AgentAccountServices();
             _dailyCollectionMigrationServices = new DailyCollectionMigrationServices();
-
+            _accountServices = new AccountingServices();
             _dailyCollectionEndOfDayServices = new DailyCollectionEndOfDayServices();
         }
         public async Task<ActionResult> Index()
@@ -174,7 +176,8 @@ namespace CBS.FrontDesk.UI.Controllers
                 {
                     return Json(new { success = false, message = "Invalid file format. Please upload a .xlsx or .xls file." }, JsonRequestBehavior.AllowGet);
                 }
-
+                var modek = (await _userServices.GetUsers()).Where(x => x.id.ToString() == model.CollectorId).FirstOrDefault();
+                model.CollectorName = $"{modek.firstName} {modek.lastName}";
                 // Step 4: (Optional) Save the file to a temp location or process directly from stream
                 string fileName = Path.GetFileName(model.ExcelFile.FileName);
                await _dailyCollectionMigrationServices.UploadFile(model);
@@ -266,6 +269,7 @@ namespace CBS.FrontDesk.UI.Controllers
             ViewBag.Branches = BuildBranch(BranList);
             ViewBag.OperationTypes = BuildOperationTypes();
             ViewBag.DailyCollectors =await BuildDailyCollectorAsync(GetSampleDailyCollectors());
+            ViewBag.Accounts = new List<Account>();
         }
         public List<DailyCollectorInfo> GetSampleDailyCollectors()
         {
@@ -291,6 +295,36 @@ namespace CBS.FrontDesk.UI.Controllers
             return selectListItems;
 
         }
+        private List<StringValues> BuildDropDown(List<Data.Account> ListOfData)
+        {
+            List<StringValues> list = new List<StringValues>();
+            foreach (var item in ListOfData)
+            {
+
+                list.Add(new StringValues { Text = $"{item.AccountNumberCU}-{item.AccountName}", Value = item.Id });
+
+            }
+
+            return list;
+        }
+
+        public async Task<ActionResult> GetBranchAccount(string BranchId)
+        {
+
+
+            try
+            {
+                var modelist = await _accountServices.GetAllAccountForABranch(BranchId);
+                modelist = modelist.Where(x=>x.AccountNumber=="3841").ToList();
+                return Json(BuildDropDown(modelist), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
         [HttpPost]
         public async Task<ActionResult> PayDailyCollectorCommission(CollectorDto collector)
         {
@@ -318,34 +352,7 @@ namespace CBS.FrontDesk.UI.Controllers
         {
             try
             {
-                // Validate input
-                //if (string.IsNullOrEmpty(Month) || BranchId.IsNullOrEmpty() || CollectorId.IsNullOrEmpty())
-                //{
-                //    return Json(new
-                //    {
-                //        success = false,
-                //        message = "Invalid parameters supplied."
-                //    }, JsonRequestBehavior.AllowGet);
-                //}
-
-                // Example: Fetch data from service/repository
-                //var activities = await _agentServices.GetAllActivitiesAsync((new DailyCollectionDashboardActivitiesQuery
-                //{
-                //    Month = Month,
-                //    BranchId = BranchId,
-                //    CollectorId = CollectorId,
-
-                //}).ConvertToDailyCollectionActivitiesQuery());
-
-                //if (activities == null)
-                //{
-                //    return Json(new
-                //    {
-                //        success = false,
-                //        message = "No activities found for the provided parameters."
-                //    }, JsonRequestBehavior.AllowGet);
-                //}
-
+         
 
                 return Json(new
                 {
@@ -493,9 +500,11 @@ namespace CBS.FrontDesk.UI.Controllers
             {
             
                 // Example: Fetch data from service/repository
-                var activities = await _agentServices.GetAgentAllAgentByBranchIdAsync(branchId);
+                var users = await _userServices.GetUSerRoles();
 
-                if (activities == null)
+                var activities =   users.Where(x=>x.branchId==branchId&&x.RoleName== "Daily_Collector_Agent");
+
+                if (!activities.Any())
                 {
                     return Json(new
                     {
@@ -507,7 +516,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 return Json(new
                 {
                     success = true,
-                    data = await BuildAgentByBranch(activities)
+                    data = await BuildAgentByBranch(activities.ToList())
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -520,25 +529,49 @@ namespace CBS.FrontDesk.UI.Controllers
                 }, JsonRequestBehavior.AllowGet);
             }
         }
+        private async Task<List<System.Web.WebPages.Html.SelectListItem>> BuildAgentByBranch(List<UserRoleDto> listOfCollector)
+        {
+
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+
+            //if (listOfCollector.Count()>1)
+            //{
+            foreach (var item in listOfCollector)
+            {
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.FirstName == null ? item.FirstName : item.LastName == null ? "Name Not Define" : item.LastName, Value = item.UserId.ToString() });
+
+            }
+            //}
+            //else
+            //{
+            //    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text ="Collector 1",Value = "Collector1" });
+            //    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "Collector 2", Value = "Collector2" });
+            //    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "Collector 3", Value = "Collector3" });
+            //}
+
+
+            return selectListItems;
+
+        }
         private async Task<List<System.Web.WebPages.Html.SelectListItem>> BuildAgentByBranch(List<AgentDto> listOfCollector)
         {
 
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
 
-            if (listOfCollector.Count()>1)
-            {
+            //if (listOfCollector.Count()>1)
+            //{
                 foreach (var item in listOfCollector)
                 {
                     selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.FirstName == null ? item.FirstName : item.LastName == null ? "Name Not Define" : item.LastName, Value = item.Id.ToString() });
 
                 }
-            }
-            else
-            {
-                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text ="Collector 1",Value = "Collector1" });
-                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "Collector 2", Value = "Collector2" });
-                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "Collector 3", Value = "Collector3" });
-            }
+            //}
+            //else
+            //{
+            //    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text ="Collector 1",Value = "Collector1" });
+            //    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "Collector 2", Value = "Collector2" });
+            //    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "Collector 3", Value = "Collector3" });
+            //}
 
 
             return selectListItems;

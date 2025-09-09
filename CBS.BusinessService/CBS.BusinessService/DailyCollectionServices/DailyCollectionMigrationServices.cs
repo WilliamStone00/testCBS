@@ -194,11 +194,11 @@ namespace CBS.BusinessService.DailyCollectionServices
                         ExecutionProcessOption.ValidationError, SystemMessageStatus.Failed.ToString(), null,
                         "Collector ID is required. Please provide a valid Collector ID.");
                 }
-
+              
                 // Prepare additional parameters
                 var additionalParams = new Dictionary<string, string>{
                  { "formFile", model.ExcelFile.FileName }  };
-                var urlString = string.Format(APICallHelper.DailySavingMigrationFileExecution, model.BranchId, model.CollectorId);
+                var urlString = string.Format(APICallHelper.DailySavingMigrationFileExecution, model.BranchId, model.CollectorId,model.CollectorName);
                var response = await _dailySavingApiHelper.UploadFileToApiAsync<DailySaverUploadResult>(model.ExcelFile, "formFile", urlString, additionalParams);
 
             

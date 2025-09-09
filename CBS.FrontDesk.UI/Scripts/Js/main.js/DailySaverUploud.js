@@ -3,8 +3,9 @@ $(document).ready(function () {
 
     $(document).on('change', '#AgentBranchId', function () {
         var selectedValue = $(this).val();
-        loadBranchAccounts(selectedValue);
-       
+        console.log(selectedValue);
+        loadDailyAgent(selectedValue);
+        loadBranchAccount(selectedValue);
 
     });
     $('#downloadExcelButton').click(function () {
@@ -30,10 +31,35 @@ $(document).ready(function () {
     });
 });
 
+function loadBranchAccount(branchId) {
+    console.log(branchId);
+    // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
+    $.ajax({
+        url: '/DailyAgentManagement/GetBranchAccount',
+        type: 'GET',
+        dataType: 'json',
+        data: { BranchId: branchId },
+        success: function (data) {
+            // Clear existing options in the OperationEventAttributeId combo
+            $('#DailyCollectorAccountId').empty();
+            // Add new options based on the fetched data
+            $.each(data, function (index, item) {
+                $('#DailyCollectorAccountId').append($('<option>').text(item.Text).attr('value', item.Value));
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+
+
+
 function DownloadFile(path) {
     window.open(path, "_blank");
 }
-function loadBranchAccounts(branchId) {
+function loadDailyAgent(branchId) {
     console.log(branchId);
     // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
     $.ajax({

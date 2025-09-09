@@ -352,7 +352,19 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                     <div id="bannerMessage" style="display: flex; align-items: center; font-size: 14px; font-weight: 500;">
                         <i class="mdi mdi-alert-circle-outline" style="margin-right: 8px; font-size: 18px;"></i>
-                        <span id="configurationBanner"></span>
+                        @*<span id="configurationBanner"></span>*@
+                        <div class="banner-message" id="bannerMessage">
+                            <i class="mdi mdi-alert-circle-outline me-2"></i>
+                            <span>Some products have not been configured. Some accounting entries might not impact your trial balance.</span>
+                        </div>
+                        <div class="banner-actions">
+                            <a href="#" class="banner-link" id="showUnconfiguredProducts">
+                                View Details
+                            </a>
+                            <button type="button" class="banner-close" id="closeBanner" aria-label="Close">
+                                <i class="mdi mdi-close"></i>
+                            </button>
+                        </div>
                     </div>
                     <div style="display: flex; align-items: center; gap: 15px;">
                         <a href="#" id="showUnconfiguredProducts" style="color: white; text-decoration: underline; font-weight: 500; font-size: 14px;">View Details</a>
