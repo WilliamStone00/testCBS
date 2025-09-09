@@ -21,61 +21,70 @@
 </fieldset>
 
 <script>
-    // This script block runs ONLY when this partial view is loaded.
-    $(document).ready(function () {
+$(document).ready(function () {
 
-        // Helper function to generate the action links
-        function generateActionButtons(fileId) {
-            const detailsLink = `<a href="#" onclick="AddORUpdateGen('${fileId}', 'mainWorkspace', '_FileDetails', 'details', 'ManualDailyCollection')" class="ms-2">Details</a>`;
-            const deleteLink = `<a href="#" onclick="DeleteRecordDataTable('ManualDailyCollection', '${fileId}', 'filesDataTable', '_FileList', 0, 'mainWorkspace', null, 'list')" class="ms-2 text-danger">Delete</a>`;
-            return detailsLink + deleteLink;
-        }
+    // Helper function to generate the action links
+    function generateActionButtons(fileId) {
+        const detailsLink = `<a href="#" onclick="AddORUpdateGen('${fileId}', 'mainWorkspace', '_FileDetails', 'details', 'ManualDailyCollection')" class="ms-2">Details</a>`;
+        const deleteLink = `<a href="#" onclick="DeleteRecordDataTable('ManualDailyCollection', '${fileId}', 'filesDataTable', '_FileList', 0, 'mainWorkspace', null, 'list')" class="ms-2 text-danger">Delete</a>`;
+        return detailsLink + deleteLink;
+    }
 
-        // Initialize the DataTable in server-side processing mode
-        $('#filesDataTable').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "searching": false, // Using custom filters
-            "ajax": {
-                "url": "@Url.Action("LoadFilesForDataTable", "ManualDailyCollection")",
-                "type": "POST",
-                "data": function (d) {
-                    // This function constructs the 'query' object for the controller
-                    const order = d.order[0] || {};
-                    const query = {
-                        Options: {
-                            draw: d.draw,
-                            start: d.start,
-                            pageSize: d.length,
-                            sortColumn: d.columns[order.column]?.name,
-                            sortDirection: order.dir
-                        }
-                        // You can add your custom filter values here if needed
-                    };
-                    return { query: query };
-                }
-            },
-            "columns": [
-                // The 'data' property MUST match the C# property names from FileUploadSummary
-                { "data": "FileUploadId", "name": "FileUploadId" },
-                { "data": "CollectorId", "name": "CollectorId" },
-                { "data": "BranchName", "name": "BranchName" },
-                { "data": "UploadedBy", "name": "UploadedBy" },
-                { "data": "TotalMembers", "name": "TotalMembers" },
-                {
-                    "data": "TotalAmount",
-                    "name": "TotalAmount",
-                    "render": $.fn.dataTable.render.number(',', '.', 2, '') // Format as currency
-                },
-                {
-                    "data": "FileUploadId",
-                    "orderable": false,
-                    "render": function(data, type, row) {
-                        // Use our helper to build the action links
-                        return generateActionButtons(data);
+    // Initialize the DataTable
+    var table = $('#filesDataTable').DataTable({
+        processing: false,
+        serverSide: true,
+        searching: true,
+        ajax: {
+            url: '@Url.Action("LoadFilesForDataTable", "ManualDailyCollection")',
+            type: "POST",
+            data: function (d) {
+                const order = d.order[0] || {};
+                const query = {
+                    Options: {
+                        draw: d.draw,
+                        start: d.start,
+                        pageSize: d.length,
+                        sortColumn: d.columns[order.column]?.name,
+                        sortDirection: order.dir
                     }
+                };
+                return { query: query };
+            }
+        },
+        columns: [
+            { data: "FileUploadId", name: "FileUploadId" },
+            { data: "fileName", name: "FileName" },
+            { data: "BranchName", name: "BranchName" },
+            { data: "UploadedBy", name: "UploadedBy" },
+            { data: "salaryProcessingStatus", name: "Status" },
+            {
+                data: "TotalAmount",
+                name: "TotalAmount",
+                render: $.fn.dataTable.render.number(',', '.', 2, '')
+            },
+            {
+                data: "FileUploadId",
+                orderable: false,
+                render: function(data) {
+                    return generateActionButtons(data);
                 }
-            ]
-        });
+            }
+        ],
+        columnDefs: [
+            { width: "30%", targets: 0 },
+            { width: "20%", targets: 1 },
+            { width: "15%", targets: 2 },
+            { width: "15%", targets: 3 },
+            { width: "10%", targets: 4, className: "text-center" },
+            { width: "10%", targets: 5, className: "text-center" },
+            { width: "10%", targets: 6, className: "text-center" } // Actions
+        ],
+        drawCallback: function() {
+            // Force DataTable to respect column widths after each draw
+            table.columns.adjust();
+        }
     });
+
+});
 </script>

@@ -94,7 +94,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-    <script>
+<script>
         // --- FIXED FUNCTION: Load Collectors Dropdown ---
 function loadCollectors(branchId) {
     let $collectorDropdown = $('#CollectorxCollectorId');
@@ -210,16 +210,46 @@ function loadCollectors(branchId) {
             });
         }
 
-        // --- FUNCTION 2: Builds INITIAL UPLOAD PREVIEW ---
         function buildInitialPreviewHtml(data) {
             const formatCurrency = (num) => (num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            return `...`; // unchanged for brevity
+            return `
+        <fieldset class="fieldset-custom">
+            <legend class="legend-custom">File Preview: ${data.FileUploadId || 'N/A'}</legend>
+            <div class="row g-2">
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-warning h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Uploaded By</p><h6 class="ms-1 mb-0">${data.UploadedBy || ''}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-info h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Branch</p><h6 class="ms-1 mb-0">${data.BranchName || ''}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-success h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Members</p><h6 class="ms-1 mb-0">${data.TotalMembers || 0}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-danger h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Amount</p><h6 class="ms-1 mb-0">${formatCurrency(data.TotalAmount)}</h6></div></div></div>
+            </div>
+            <div class="table-responsive mt-3">
+                <table id="previewDetailsTable" class="table table-striped table-bordered" style="width:100%"></table>
+            </div>
+            <div class="d-flex justify-content-end mt-3">
+                <button type="button" id="resetPreviewBtn" class="btn btn-outline-secondary me-2">Reset</button>
+                <button type="button" id="deleteUploadedFileBtn" class="btn btn-danger me-2">Delete</button>
+                <button type="button" id="extractFileBtn" class="btn btn-primary">Extract File</button>
+            </div>
+        </fieldset>`;
         }
 
-        // --- FUNCTION 3: Builds EXTRACTED PREVIEW ---
         function buildExtractedPreviewHtml(data) {
             const formatCurrency = (num) => (num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            return `...`; // unchanged for brevity
+            return `
+        <fieldset class="fieldset-custom">
+            <legend class="legend-custom text-success">Extraction Successful: ${data.FileUploadId || 'N/A'}</legend>
+            <div class="row g-2">
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-warning h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Collector Name</p><h6 class="ms-1 mb-0">${data.CollectorName || ''}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-info h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Branch</p><h6 class="ms-1 mb-0">${data.BranchName || ''}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-success h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Members</p><h6 class="ms-1 mb-0">${data.TotalMember || 0}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-danger h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Amount</p><h6 class="ms-1 mb-0">${formatCurrency(data.TotalAmount)}</h6></div></div></div>
+            </div>
+            <div class="table-responsive mt-3">
+                <table id="extractedDetailsTable" class="table table-striped table-bordered" style="width:100%"></table>
+            </div>
+            <div class="d-flex justify-content-end mt-3">
+                <button type="button" id="closeExtractedPreviewBtn" class="btn btn-secondary">Close</button>
+            </div>
+        </fieldset>`;
         }
 
         // --- FUNCTION 4: Handles FILE EXTRACTION ---
@@ -247,12 +277,12 @@ function loadCollectors(branchId) {
                         const extractedHtml = buildExtractedPreviewHtml(response.data);
                         $resultContainer.html(extractedHtml);
                         $('#extractedDetailsTable').DataTable({
-                            destroy: true,
+                            /*destroy: true,*/
                             data: response.data.details || [],
                             columns: [
                                 { data: "MemberReference", title: "Member Ref." },
                                 { data: "MemberName", title: "Member Name" },
-                                { data: "AccountNumber", title: "Account No." },
+                                { data: "FullAccountNumber", title: "Account No." },
                                 { data: "MemberBranchName", title: "Member Branch" },
                                 {
                                     data: "Amount",
@@ -318,5 +348,5 @@ function loadCollectors(branchId) {
         $(document).ready(initialize);
 
     }(jQuery));
-    </script>
+</script>
 }

@@ -14,11 +14,14 @@ namespace CBS.FrontDesk.Data.Entity.ManualDailycollection
         public string Id { get; set; }
         public string BranchId { get; set; }
         public string BranchName { get; set; }
+        public string CollectorId { get; set; } = null;
         public string CollectorAndUser { get; set; }
         public string FileUploadId { get; set; }
         public decimal TotalAmount { get; set; }
         public int TotalMembers { get; set; }
         public string UploadedBy { get; set; }    // Who uploaded the file
+        public string salaryProcessingStatus { get; set; }
+        public string fileName { get; set; }
                                                   //  public DateTime UploadedAt { get; set; }           // Timestamp of upload
 
         // Navigation property

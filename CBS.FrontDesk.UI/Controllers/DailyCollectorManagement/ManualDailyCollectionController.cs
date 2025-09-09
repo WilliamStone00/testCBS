@@ -405,7 +405,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                 var dataTable = await _manualService.GetFilesForDataTableAsync(query);
 
                 // Deserialize the data into a type that has the properties we need
-                var fileList = JsonConvert.DeserializeObject<List<FileUploadSummary>>(
+                var fileList = JsonConvert.DeserializeObject<List<FileUploadResponse>>(
                     JsonConvert.SerializeObject(dataTable.data)
                 );
 
