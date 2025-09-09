@@ -81,7 +81,7 @@ namespace CBS.FrontDesk.UI
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             GlobalHost.DependencyResolver.Register(typeof(ConnectionHub), () => new ConnectionHub());
             GlobalFilters.Filters.Add(new System.Web.Mvc.AuthorizeAttribute());
-            UnityConfig.RegisterComponents();
+           // UnityConfig.RegisterComponents();
             MvcHandler.DisableMvcResponseHeader = true;
             //GlobalFilters.Filters.Add(new UserAuditFilter()); // Register UserAuditFilter
             ValueProviderFactories.Factories.Add(new JsonValueProviderFactory());
