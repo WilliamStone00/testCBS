@@ -68,7 +68,11 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <br />
+                   
+                            <label for="DailyCollectorAccountId"> Select GL Account</label>
+                            @Html.DropDownListFor(m => m.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "--- Select GL account", new { @class = "form-control select2", @id = "DailyCollectorAccountId", @search = "true" })
+                            @Html.ValidationMessageFor(m => m.AccountId, "", new { @class = "text-danger" })
+                   
                         <button type="button" class="btn btn-secondary ms-2" id="downloadExcelButton">Download sample file structure to be uploaded</button>
                     </div>
                     <!-- CRITICAL: File input name MUST match C# property name exactly -->

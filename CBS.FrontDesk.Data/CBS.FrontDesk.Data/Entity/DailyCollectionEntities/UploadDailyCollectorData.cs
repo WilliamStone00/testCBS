@@ -10,6 +10,8 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectionEntities
         public HttpPostedFileBase ExcelFile { get; set; }
         public string BranchId { get; set; }
         public string CollectorId { get; set; }
+        public string AccountId { get; set; }
+        public string CollectorName { get; set; }
 
     }
 }

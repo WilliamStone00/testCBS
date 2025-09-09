@@ -2208,6 +2208,7 @@
     <Compile Include="Controllers\Accounting\CashMovementTrackerController.cs" />
     <Compile Include="Controllers\Accounting\DocumentConfigurationController.cs" />
     <Compile Include="Controllers\Accounting\ManagementSelectionOption.cs" />
+    <Compile Include="Controllers\Accounting\ManuallyJournalEntryController - Copy.cs" />
     <Compile Include="Controllers\Accounting\ManuallyJournalEntryController.cs" />
     <Compile Include="Controllers\Accounting\NotificationController.cs" />
     <Compile Include="Controllers\Accounting\OperationEventAttributeController.cs" />

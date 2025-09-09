@@ -27,7 +27,7 @@ namespace CBS.BusinessService.DailyCollectionServices
     {
         private readonly ApiCallerHelper _dailyCollectionApiHelper;
         private readonly ApiCallerHelper _savingConfigApiHelper;
-
+   
         public AgentServices( )
         {
             _dailyCollectionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["DailyCollectionBaseUrl"].ToString());
