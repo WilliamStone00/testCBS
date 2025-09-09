@@ -106,6 +106,26 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
     }
 
 
+    public class CustomerBasicInfosDto
+    {
+        public string CustomerId { get; set; }
+        public string LegalForm { get; set; }
+        public string Gender { get; set; }
+        public string PhoneNumber { get; set; }
+        public string FullName { get; set; }
+        public int Age { get; set; }
+        public string MemberProfileType { get; set; }
+        public bool Active { get; set; }
+        public string ApprovalStatus { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public DateTime RegistrationDate { get; set; }
+        public string BranchId { get; set; }
+        public string Matricule { get; set; }
+
+
+
+    }
+
     public class IndividualProfile
     {
         public string CustomerId { get; set; }

@@ -1,18 +1,21 @@
 ﻿using CBS.BusinessService.Accounting;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.UI.AppFiles.Reporting.Accounting;
 using ClosedXML.Excel;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
 using DocumentFormat.OpenXml.EMMA;
-using Microsoft.Identity.Client;
+//using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -46,7 +49,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     return;
                 }
 
-                
+
                 string strRptPath = Server.MapPath(rptpath);
                 rd.Load(strRptPath);
                 if (rptSource.GetType() != typeof(string))
@@ -176,7 +179,7 @@ namespace CBS.FrontDesk.UI.Controllers
                 string savedFileName = $"{rpttitle}-{DateTime.UtcNow:dd_MM_yyyy_HHmmss}";
                 rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, savedFileName);
 
-                
+
             }
             catch (Exception ex)
             {
@@ -192,8 +195,366 @@ namespace CBS.FrontDesk.UI.Controllers
 
 
 
+        // ====== ADJUST if your report uses different table/alias names ======
+        static class ReceiptSchema
+        {
+            public const string MainTable = "PaymentReciptDS";
+            public const string DetailTable = "PaymentDetailDs";
+            public const string DenominationTable = "DenominationDs";
+            public const string ParentIdColumn = "Id";                 // header PK
+            public const string ChildFkColumn = "PaymentReciptDSId";  // FK expected by subreport link
+        }
 
         public void ReportParameterLessWithSubReports()
+        {
+            var rd = new ReportDocument();
+
+            try
+            {
+                // ---- Read session inputs
+                string strReportName = HttpContext.Session["ReportName"]?.ToString();
+                var rptSource = HttpContext.Session["rptSource"];
+                string rptpath = HttpContext.Session["rptpath"]?.ToString();
+                string rpttitle = HttpContext.Session["rpttitle"]?.ToString();
+
+                if (string.IsNullOrEmpty(strReportName) || rptSource == null || string.IsNullOrEmpty(rptpath) || string.IsNullOrEmpty(rpttitle))
+                {
+                    HttpContext.Response.Write("<H2>No Report with such Name found</H2>");
+                    return;
+                }
+
+                // ---- Load report
+                string strRptPath = HttpContext.Server.MapPath(rptpath);
+                rd.Load(strRptPath);
+                // Safety: don't carry design-time data
+                rd.ReportOptions.EnableSaveDataWithReport = false;
+
+                // ---- Build DataSet & bind (PUSH model)
+                if (rptSource is List<PaymentReciptDS> reportData && reportData.Count > 0)
+                {
+                    var ds = BuildReceiptDataSet(reportData);
+
+                    // Main report
+                    rd.SetDataSource(ds);
+
+                    // EVERY subreport INSTANCE (handles duplicates in your two-copy layout)
+                    foreach (Section sec in rd.ReportDefinition.Sections)
+                    {
+                        foreach (ReportObject ro in sec.ReportObjects)
+                        {
+                            if (ro is SubreportObject sro)
+                            {
+                                var sub = rd.OpenSubreport(sro.SubreportName);
+                                BindSubreportTables(sub, ds);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    HttpContext.Response.Write("<H2>No data found in report source</H2>");
+                    return;
+                }
+
+                // ---- Parameters (your original logic)
+                string year = HttpContext.Session["Year"]?.ToString() ?? "Non";
+                string dates = HttpContext.Session["Dates"]?.ToString() ?? "Non";
+                string strFrom = HttpContext.Session["DateFrom"]?.ToString() ?? "Non";
+                string strTo = HttpContext.Session["DateTo"]?.ToString() ?? "Non";
+
+                if (HttpContext.Session["ReportParameters"] is Dictionary<string, object> parameters &&
+                    rd.DataDefinition.ParameterFields.Count > 0)
+                {
+                    var fields = rd.DataDefinition.ParameterFields.Cast<ParameterFieldDefinition>().Select(p => p.Name).ToHashSet(StringComparer.OrdinalIgnoreCase);
+                    foreach (var p in parameters)
+                        if (fields.Contains(p.Key))
+                            rd.SetParameterValue(p.Key, p.Value);
+                }
+
+                if (year != "Non")
+                    rd.SetParameterValue("param", $"Header summary: {year}");
+
+                if (dates != "Non" && !string.IsNullOrEmpty(strFrom) && !string.IsNullOrEmpty(strTo))
+                {
+                    rd.SetParameterValue("DateFrom", strFrom);
+                    rd.SetParameterValue("DateTo", strTo);
+                }
+
+                // ---- Export
+                string savedFileName = $"{rpttitle}-{DateTime.UtcNow:dd_MM_yyyy_HHmmss}";
+                rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat,
+                                        System.Web.HttpContext.Current.Response,
+                                        false, savedFileName);
+            }
+            catch
+            {
+                HttpContext.Response.Write("<H2>An error occurred while generating the report</H2>");
+            }
+            finally
+            {
+                CleanReport(rd); // keep your existing cleanup
+            }
+        }
+
+        /* ======================= Helpers ======================= */
+
+        // Build a DataSet whose table names match the report/subreports
+        private static System.Data.DataSet BuildReceiptDataSet(List<PaymentReciptDS> headers)
+        {
+            var ds = new System.Data.DataSet("ReceiptDS");
+
+            // Header table
+            ds.Tables.Add(ToDataTable(headers, ReceiptSchema.MainTable));
+
+            // Detail table with FK to header
+            ds.Tables.Add(ToChildTableWithFk(
+                parents: headers,
+                childSel: h => h.PaymentDetailDs ?? new List<PaymentDetailDS>(),
+                tableName: ReceiptSchema.DetailTable,
+                fkColumn: ReceiptSchema.ChildFkColumn,
+                parentId: ReceiptSchema.ParentIdColumn));
+
+            // Denomination table with FK to header
+            ds.Tables.Add(ToChildTableWithFk(
+                parents: headers,
+                childSel: h => h.DenominationDs ?? new List<DenominationDS>(),
+                tableName: ReceiptSchema.DenominationTable,
+                fkColumn: ReceiptSchema.ChildFkColumn,
+                parentId: ReceiptSchema.ParentIdColumn));
+
+            return ds;
+        }
+
+        // Generic: convert list to DataTable using readable scalar properties
+        private static DataTable ToDataTable<T>(IEnumerable<T> items, string tableName)
+        {
+            var dt = new DataTable(tableName);
+            var props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                 .Where(p => p.CanRead && IsScalar(p.PropertyType))
+                                 .ToArray();
+
+            foreach (var p in props)
+                dt.Columns.Add(p.Name, Nullable.GetUnderlyingType(p.PropertyType) ?? p.PropertyType);
+
+            foreach (var it in items)
+            {
+                var row = dt.NewRow();
+                foreach (var p in props)
+                    row[p.Name] = p.GetValue(it) ?? DBNull.Value;
+                dt.Rows.Add(row);
+            }
+            return dt;
+        }
+
+        // Build a child DataTable from nested lists and add FK back to parent
+        private static DataTable ToChildTableWithFk<TParent, TChild>(
+            IEnumerable<TParent> parents,
+            Func<TParent, IEnumerable<TChild>> childSel,
+            string tableName,
+            string fkColumn,
+            string parentId)
+        {
+            // Child scalar props
+            var childProps = typeof(TChild).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                           .Where(p => p.CanRead && IsScalar(p.PropertyType))
+                                           .ToArray();
+
+            var dt = new DataTable(tableName);
+            foreach (var p in childProps)
+                dt.Columns.Add(p.Name, Nullable.GetUnderlyingType(p.PropertyType) ?? p.PropertyType);
+            if (!dt.Columns.Contains(fkColumn))
+                dt.Columns.Add(fkColumn, typeof(object)); // keep it flexible (Id could be string/Guid/int)
+
+            // Parent Id getter
+            var parentIdProp = typeof(TParent).GetProperty(parentId, BindingFlags.Public | BindingFlags.Instance);
+            foreach (var parent in parents)
+            {
+                var pid = parentIdProp?.GetValue(parent);
+                var children = childSel(parent) ?? Enumerable.Empty<TChild>();
+
+                foreach (var ch in children)
+                {
+                    var row = dt.NewRow();
+                    foreach (var p in childProps)
+                        row[p.Name] = p.GetValue(ch) ?? DBNull.Value;
+                    row[fkColumn] = pid ?? DBNull.Value;
+                    dt.Rows.Add(row);
+                }
+            }
+            return dt;
+        }
+
+        // Bind subreport tables by name (case-insensitive), supports aliases
+        private static void BindSubreportTables(ReportDocument sub, System.Data.DataSet ds)
+        {
+            foreach (Table t in sub.Database.Tables)
+            {
+                var dt = FindTable(ds, t.Name);
+                if (dt != null)
+                {
+                    t.SetDataSource(dt);
+                }
+                else
+                {
+                    // Optional: try known names
+                    if (t.Name.Equals(ReceiptSchema.DetailTable, StringComparison.OrdinalIgnoreCase) && ds.Tables.Contains(ReceiptSchema.DetailTable))
+                        t.SetDataSource(ds.Tables[ReceiptSchema.DetailTable]);
+                    else if (t.Name.Equals(ReceiptSchema.DenominationTable, StringComparison.OrdinalIgnoreCase) && ds.Tables.Contains(ReceiptSchema.DenominationTable))
+                        t.SetDataSource(ds.Tables[ReceiptSchema.DenominationTable]);
+                    else if (t.Name.Equals(ReceiptSchema.MainTable, StringComparison.OrdinalIgnoreCase) && ds.Tables.Contains(ReceiptSchema.MainTable))
+                        t.SetDataSource(ds.Tables[ReceiptSchema.MainTable]);
+                }
+            }
+        }
+
+        // Case-insensitive lookup; also tolerates schema/alias prefixes
+        private static DataTable FindTable(System.Data.DataSet ds, string crystalTableName)
+        {
+            if (string.IsNullOrEmpty(crystalTableName)) return null;
+
+            // exact (case-insensitive)
+            foreach (DataTable dt in ds.Tables)
+                if (string.Equals(dt.TableName, crystalTableName, StringComparison.OrdinalIgnoreCase))
+                    return dt;
+
+            // last token after '.' (handles dbo.Table, Command aliases)
+            var last = crystalTableName.Split('.').Last();
+            foreach (DataTable dt in ds.Tables)
+                if (string.Equals(dt.TableName.Split('.').Last(), last, StringComparison.OrdinalIgnoreCase))
+                    return dt;
+
+            return null;
+        }
+
+        private static bool IsScalar(Type t)
+        {
+            t = Nullable.GetUnderlyingType(t) ?? t;
+            return t.IsPrimitive
+                || t.IsEnum
+                || t == typeof(string)
+                || t == typeof(decimal)
+                || t == typeof(DateTime)
+                || t == typeof(Guid)
+                || t == typeof(TimeSpan)
+                || t == typeof(double)
+                || t == typeof(float);
+        }
+
+
+
+        public void ReportParameterLessWithSubReportsxxxx()
+        {
+            ReportDocument rd = new ReportDocument();
+
+            try
+            {
+                // --- Read session inputs
+                string strReportName = HttpContext.Session["ReportName"]?.ToString();
+                var rptSource = HttpContext.Session["rptSource"];
+                string rptpath = HttpContext.Session["rptpath"]?.ToString();
+                string rpttitle = HttpContext.Session["rpttitle"]?.ToString();
+
+                if (string.IsNullOrEmpty(strReportName) || rptSource == null || rptpath == null || rpttitle == null)
+                {
+                    HttpContext.Response.Write("<H2>No Report with such Name found</H2>");
+                    return;
+                }
+
+                // --- Load report
+                string strRptPath = HttpContext.Server.MapPath(rptpath);
+                rd.Load(strRptPath);
+                // Optional hygiene: make sure design-time data isn't carried along
+                // rd.ReportOptions.EnableSaveDataWithReport = false;
+
+                // --- Bind main + subreports (PUSH model)
+                if (rptSource is List<PaymentReciptDS> reportData && reportData.Count > 0)
+                {
+                    rd.SetDataSource(reportData);
+
+                    // Prepare the collections you'll feed to subreports
+                    var denominations = reportData[0].DenominationDs ?? new List<DenominationDS>();
+                    var paymentDetails = reportData[0].PaymentDetailDs ?? new List<PaymentDetailDS>();
+                    var paymentDetailsL = reportData[0].PaymentDetailDs ?? new List<PaymentDetailDS>(); // if loan uses same list
+
+                    // IMPORTANT: bind EVERY subreport INSTANCE (handles duplicates)
+                    foreach (Section sec in rd.ReportDefinition.Sections)
+                    {
+                        foreach (ReportObject ro in sec.ReportObjects)
+                        {
+                            if (ro is SubreportObject sro)
+                            {
+                                ReportDocument sub = rd.OpenSubreport(sro.SubreportName);
+                                string name = (sub.Name ?? "").ToLowerInvariant();
+
+                                if (name == "denominationsubreport.rpt")
+                                {
+                                    sub.SetDataSource(denominations);
+                                }
+                                else if (name == "paymentdetailsubreport.rpt")
+                                {
+                                    sub.SetDataSource(paymentDetails);
+                                }
+                                else if (name == "paymentdetailsubreportloan.rpt")
+                                {
+                                    sub.SetDataSource(paymentDetailsL);
+                                }
+                                // add more else-if blocks if you add more subreports
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    HttpContext.Response.Write("<H2>No data found in report source</H2>");
+                    return;
+                }
+
+                // --- Parameters (your existing code)
+                string year = HttpContext.Session["Year"]?.ToString() ?? "Non";
+                string dates = HttpContext.Session["Dates"]?.ToString() ?? "Non";
+                string strFrom = HttpContext.Session["DateFrom"]?.ToString() ?? "Non";
+                string strTo = HttpContext.Session["DateTo"]?.ToString() ?? "Non";
+
+                if (Session["ReportParameters"] is Dictionary<string, object> parameters &&
+                    rd.DataDefinition.ParameterFields.Count > 0)
+                {
+                    foreach (var p in parameters)
+                    {
+                        if (rd.DataDefinition.ParameterFields.Cast<ParameterFieldDefinition>()
+                              .Any(f => f.Name.Equals(p.Key, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            rd.SetParameterValue(p.Key, p.Value);
+                        }
+                    }
+                }
+
+                if (year != "Non")
+                    rd.SetParameterValue("param", $"Header summary: {year}");
+
+                if (dates != "Non" && !string.IsNullOrEmpty(strFrom) && !string.IsNullOrEmpty(strTo))
+                {
+                    rd.SetParameterValue("DateFrom", strFrom);
+                    rd.SetParameterValue("DateTo", strTo);
+                }
+
+                // --- Export
+                string savedFileName = $"{rpttitle}-{DateTime.UtcNow:dd_MM_yyyy_HHmmss}";
+                rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat,
+                                        System.Web.HttpContext.Current.Response,
+                                        false, savedFileName);
+            }
+            catch
+            {
+                HttpContext.Response.Write("<H2>An error occurred while generating the report</H2>");
+            }
+            finally
+            {
+                CleanReport(rd);
+            }
+        }
+
+
+        public void ReportParameterLessWithSubReportsx()
         {                // Create a new ReportDocument
             ReportDocument rd = new ReportDocument();
 
@@ -284,7 +645,7 @@ namespace CBS.FrontDesk.UI.Controllers
                         }
                         catch (Exception ex)
                         {
-                       
+
                             return;
                         }
                     }
@@ -340,7 +701,7 @@ namespace CBS.FrontDesk.UI.Controllers
             var Message = (string)this.HttpContext.Session["errorMessage"];
             try
             {
-   
+
                 var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
                 //string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
                 string fileType = System.Web.HttpContext.Current.Session["fileType"].ToString();
@@ -771,7 +1132,7 @@ namespace CBS.FrontDesk.UI.Controllers
                     if (isValid)
                     {
                         // Load and configure the report document
-                       
+
                         string strRptPath = Server.MapPath(rptpath);
                         rd.Load(strRptPath);
 
@@ -1260,7 +1621,7 @@ namespace CBS.FrontDesk.UI.Controllers
                         var modeli = (BSQuery)dtoPasser;
                         var assetsModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.ToDate.ToString("dd-MM-yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
                         var LiabilityModel = model.ConvertToBalanceSheetInfo($"{user.firstName} {user.lastName}", modeli.ToDate.ToString("dd-MM-yyyy"), BSCartegory.Assets, BSCartegory.LIABILITIES);
-               
+
                         ReportDocument rd = new ReportDocument();
                         string strRptPath = Server.MapPath(rptpath.ToString());
                         rd.Load(strRptPath);
@@ -1292,7 +1653,7 @@ namespace CBS.FrontDesk.UI.Controllers
                         string strRptPath = Server.MapPath(rptpath.ToString());
                         rd.Load(strRptPath);
                         rd.SetDataSource(assetsModel);
-        
+
                         string SavedFileName = string.Format($"{strtitle}");
                         //Export the report to a byte array
                         Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
@@ -1403,7 +1764,8 @@ namespace CBS.FrontDesk.UI.Controllers
         //}
 
         public ActionResult DownloadExcelFileForTB4C()
-        {                    ReportDocument rd = new ReportDocument();
+        {
+            ReportDocument rd = new ReportDocument();
 
             var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
             string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();

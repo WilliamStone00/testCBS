@@ -1,0 +1,135 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration.FeeConfig
+@using Resources
+
+@*@using (Html.BeginForm("CreateOrUpdate", "FeeConfig", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{*@
+    <!-- This form tag is important. The onsubmit handler prevents a full page refresh. -->
+    <form id="feeConfigForm" onsubmit="return false;">
+
+        <!-- Hidden fields store key identifiers -->
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.IsCentralized)
+        @Html.HiddenFor(m => m.BranchId)
+        @Html.HiddenFor(m => m.FeeType)
+
+        <div class="card shadow p-3">
+
+            <div class="card mb-1">
+                <div class="card-body d-flex justify-content-end align-items-center">
+                    <a type="button" onclick=" LoadDataGen('FeeConfig', 'myDataTable', '_DataTable', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+                        <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+                    </a>
+                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Categories','new','FeeConfig')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
+                        <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
+                    </a>
+                </div>
+            </div>
+
+            <h5 class="text-primary mb-3"><i class="mdi mdi-pencil-box-outline me-2"></i> Manage Configuration for: <span class="text-dark">@Model.FeeType</span></h5>
+
+            @*<div class="d-flex justify-content-between align-items-center">
+            <div class="form-check form-switch">
+                @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
+                <label class="form-check-label" for="IsActive">Is Active</label>
+            </div>
+        </div>*@
+
+            <p></p>
+
+            <div class="form-floating mb-3">
+                @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Description" })
+                <label>Description</label>
+            </div>
+            <p></p>
+            <div class="modal-body bg-light">
+                <!-- --- PERCENTAGE CONFIGURATION SECTION (ALWAYS VISIBLE) --- -->
+                <div class="mb-3">
+                    <h5 class="text-primary mb-3"><i class="mdi mdi-pencil-box-outline me-2"></i> Percentage Config</h5>
+                    <div class="form-check form-switch mb-2">
+                        <!-- This checkbox controls whether the percentage is active -->
+                        @Html.CheckBoxFor(m => m.AcceptPercentage, new { @class = "form-check-input" })
+                        <label class="form-check-label fw-bold" for="AcceptPercentage">Enable Percentage Fee</label>
+                    </div>
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.PercentageApplied, new { @class = "form-control", type = "number", step = "0.01", placeholder = "Percentage (%)" })
+                        @Html.ValidationMessageFor(m => m.PercentageApplied, "", new { @class = "text-danger" })
+                        <label>Percentage (%)</label>
+                    </div>
+
+                </div>
+            </div>
+            <hr />
+            <div class="modal-body bg-light">
+                <!-- --- RANGE CONFIGURATION SECTION (ALWAYS VISIBLE) --- -->
+                <div class="mb-3">
+                    <h5 class="text-primary mb-3"><i class="mdi mdi-pencil-box-outline me-2"></i> Range Config</h5>
+                    <div class="form-check form-switch mb-2">
+                        <!-- This checkbox controls whether the range is active -->
+                        @Html.CheckBoxFor(m => m.AcceptRange, new { @class = "form-check-input" })
+                        <label class="form-check-label fw-bold" for="AcceptRange">Enable Range-Based Fee</label>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6>Fee Ranges</h6>
+                        <button type="button" id="addRangeRowBtn" class="btn btn-sm btn-outline-text-primary"><i class="mdi mdi-plus"></i> Add Row</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <!-- Define the widths ON THE HEADER (th) elements -->
+                                    <th style="width: 35%;">From Amount</th>
+                                    <th style="width: 35%;">To Amount</th>
+                                    <th style="width: 20%;">Fee</th>
+                                    <th style="width: 10%;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="range-table-body">
+                                <!-- Loop through existing ranges and render a row for each one -->
+                                @if (Model.FeeTypeRanges != null)
+                                {
+                                    for (int i = 0; i < Model.FeeTypeRanges.Count; i++)
+                                    {
+                                        // Pass the model and the index to the child partial view
+                                        @Html.Partial("_DataTable", Model.FeeTypeRanges[i], new ViewDataDictionary { { "index", i } })
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-end">
+                <!-- Only show the delete button if the configuration already exists (has an ID) -->
+
+                <div class="col-12 text-end mt-3">
+                    @if (Model.Id == null)
+                    {
+                        <button type="submit" class="btn btn-primary shadow-sm px-4">
+                            <i class="fas fa-save me-1"></i> @ChequeManagements.Save
+                        </button>
+                        <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">
+                            @GlobalShared.Reset
+                        </button>
+                    }
+                    else
+                    { <button type="submit" class="btn btn-primary me-2">@GlobalBank.Update</button>
+
+                    if (!string.IsNullOrWhiteSpace(Model.Id))
+                    {
+                        <a href="#"
+                           onclick="DeleteRecordDataTable('FeeConfig', '@Model.Id', 'myDataTable', '_DataTable', 0, 'datalistingview', null, 'list')"
+                           class="btn btn-danger border-4 border-white text-white fw-bold px-3 py-1"
+                           data-toggle="tooltip"
+                           title="Delete Range">
+                            Delete
+                        </a>
+
+                    }
+
+                }
+                </div>
+            </div>
+        </div>
+        
+    </form>

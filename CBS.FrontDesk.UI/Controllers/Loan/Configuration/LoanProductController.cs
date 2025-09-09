@@ -16,7 +16,6 @@ using CBS.FrontDesk.Data.Entity.SavingProducts;
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
     [CheckSessionTimeOutAttribute]
-
     public class LoanProductController : BaseController
     {
         // GET: LoanProduct

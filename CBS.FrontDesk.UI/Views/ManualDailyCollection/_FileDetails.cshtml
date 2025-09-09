@@ -1,0 +1,134 @@
+﻿@model CBS.FrontDesk.Data.Entity.ManualDailycollection.FileUploadResponse
+@using Resources
+
+<fieldset class="fieldset-custom">
+    <legend class="legend-custom">File Details: @(Model?.FileUploadId ?? "N/A")</legend>
+
+    <!-- =================================================
+         SUMMARY CARDS SECTION
+    ================================================== -->
+    <div class="row g-2">
+        <!-- Uploaded By -->
+        <div class="col-6 col-md-3">
+            <div class="card card-border-shadow-warning h-100 p-2">
+                <div class="card-body p-2 text-center">
+                    <div class="d-flex align-items-center mb-1 pb-1 justify-content-center">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-warning"><i class="mdi mdi-account-outline mdi-14px"></i></span>
+                        </div>
+                        <h6 class="ms-1 mb-0" style="font-size: 0.95rem;">
+                            @Model.UploadedBy
+                        </h6>
+                    </div>
+                    <p class="mb-0 text-muted" style="font-size: 0.75rem;">@ChequeManagements.UPBY</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Branch -->
+        <div class="col-6 col-md-3">
+            <div class="card card-border-shadow-info h-100 p-2">
+                <div class="card-body p-2 text-center">
+                    <div class="d-flex align-items-center mb-1 pb-1 justify-content-center">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-info"><i class="mdi mdi-office-building mdi-14px"></i></span>
+                        </div>
+                        <h6 class="ms-1 mb-0" style="font-size: 0.95rem;">
+                            @* CORRECTED: The Branch Name is not part of the FileUploadResponse entity. We'll display the Branch ID. *@
+                            @Model.BranchId
+                        </h6>
+                    </div>
+                    <p class="mb-0 text-muted" style="font-size: 0.75rem;">@ChequeManagements.Branch</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Members -->
+        <div class="col-6 col-md-3">
+            <div class="card card-border-shadow-success h-100 p-2">
+                <div class="card-body p-2 text-center">
+                    <div class="d-flex align-items-center mb-1 pb-1 justify-content-center">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-success"><i class="mdi mdi-account-group mdi-14px"></i></span>
+                        </div>
+                        <h6 class="ms-1 mb-0" style="font-size: 0.95rem;">
+                            @Model.TotalMembers
+                        </h6>
+                    </div>
+                    <p class="mb-0 text-muted" style="font-size: 0.75rem;">@ChequeManagements.TM</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Amount -->
+        <div class="col-6 col-md-3">
+            <div class="card card-border-shadow-danger h-100 p-2">
+                <div class="card-body p-2 text-center">
+                    <div class="d-flex align-items-center mb-1 pb-1 justify-content-center">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-danger"><i class="mdi mdi-cash mdi-14px"></i></span>
+                        </div>
+                        <h6 class="ms-1 mb-0" style="font-size: 0.95rem;">
+                            @string.Format("{0:N2}", Model.TotalAmount)
+                        </h6>
+                    </div>
+                    <p class="mb-0 text-muted" style="font-size: 0.75rem;">@ChequeManagements.TA</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p></p>
+
+    <!-- =================================================
+         DETAILS TABLE SECTION
+    ================================================== -->
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered" style="width:100%" id="fileDetailsDataTable">
+            <thead>
+                <tr>
+                    <th>@ChequeManagements.MEMREFE</th>
+                    <th>@ChequeManagements.MEMBERNAME</th>
+                    <th>Account Number</th> @* CORRECTED: Added header for clarity *@
+                    <th>@ChequeManagements.Branch</th>
+                    <th class="text-end">@ChequeManagements.AMOUNT</th>
+                </tr>
+            </thead>
+            <tbody>
+                @*
+                    CORRECTED: The C# property is `FileDetails` (PascalCase), not `manualEntryDailyCollectorUploadListDtos`.
+                    The properties inside the loop are also PascalCase (e.g., `MemberReference`).
+                *@
+                @if (Model != null && Model.manualEntryDailyCollectorUploadListDtos != null && Model.manualEntryDailyCollectorUploadListDtos.Any())
+                {
+                    foreach (var detail in Model.manualEntryDailyCollectorUploadListDtos)
+                    {
+                        <tr>
+                            <td>@detail.memberReference</td>
+                            <td>@detail.memberName</td>
+                            <td>@detail.memberBranchName</td>
+                            <td>@* BranchName is not in the detail DTO, we can omit or add it if available *@</td>
+                            <td class="text-end">@string.Format("{0:N2}", detail.amount)</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="5" class="text-center">No file details found.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</fieldset>
+
+<script>
+    // It's good practice to initialize any DataTables in a partial view
+    // right after the table's HTML.
+    $(document).ready(function () {
+        $('#fileDetailsDataTable').DataTable({
+            "pageLength": 5, // A smaller page size for previews
+            "lengthMenu": [5, 10, 25, 50]
+        });
+    });
+</script>

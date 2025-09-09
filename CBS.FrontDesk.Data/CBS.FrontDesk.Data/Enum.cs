@@ -36,5 +36,7 @@ namespace CBS.FrontDesk.Data
         AccountStatusAdjustment,
     }
 
+    public enum Status { Approved, Successful, Failed, Pending, Reviewed, Rejected, Completed, ProcessingApproval }
+
 
 }

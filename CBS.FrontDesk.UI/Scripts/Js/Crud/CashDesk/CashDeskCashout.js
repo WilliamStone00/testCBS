@@ -38,8 +38,7 @@ function AddDepositor() {
         $(this).val(value);
     });
 }
-
-$(document).on('input', '.amount-input, .fee-input, .interest-input, .penalty-input, .loan-amount-input', function () {
+$(document).on('input change', '.amount-input, .fee-input, .interest-input, .penalty-input, .loan-amount-input, .check-inclussive', function () {
     var $row = $(this).closest('tr');
 
     var amount = parseFloat($row.find('.amount-input').val()) || 0;
@@ -49,17 +48,49 @@ $(document).on('input', '.amount-input, .fee-input, .interest-input, .penalty-in
     var loanAmount = parseFloat($row.find('.loan-amount-input').val()) || 0;
     var vat = parseFloat($('#calculatedVat').text()) || 0;
 
-    // ✅ Add VAT only if checkbox is CHECKED
-    var isVatExclusive = $row.find('.vat-exclusive-check').prop('checked');
+    // ✅ Check if Inclusive is checked
+    var isInclusive = $row.find('.check-inclussive').prop('checked');
 
-    var total = amount + fee + interest + penalty + loanAmount;
+    // ✅ Calculate total
+    var total = amount + interest + penalty + loanAmount;
+    if (!isInclusive) {
+        total += fee; // Add fee only if not inclusive
+    }
+
+    // ✅ VAT logic
+    var isVatExclusive = $row.find('.vat-exclusive-check').prop('checked');
     if (isVatExclusive) {
         total += vat;
     }
 
+    // ✅ Update row total
     $row.find('.total-span').text(total.toFixed(2));
+
+    // ✅ Recalculate footer totals
     calculateTableTotal();
 });
+
+//$(document).on('input', '.amount-input, .fee-input, .interest-input, .penalty-input, .loan-amount-input', function () {
+//    var $row = $(this).closest('tr');
+
+//    var amount = parseFloat($row.find('.amount-input').val()) || 0;
+//    var fee = parseFloat($row.find('.fee-input').val()) || 0;
+//    var interest = parseFloat($row.find('.interest-input').val()) || 0;
+//    var penalty = parseFloat($row.find('.penalty-input').val()) || 0;
+//    var loanAmount = parseFloat($row.find('.loan-amount-input').val()) || 0;
+//    var vat = parseFloat($('#calculatedVat').text()) || 0;
+
+//    // ✅ Add VAT only if checkbox is CHECKED
+//    var isVatExclusive = $row.find('.vat-exclusive-check').prop('checked');
+
+//    var total = amount + fee + interest + penalty + loanAmount;
+//    if (isVatExclusive) {
+//        total += vat;
+//    }
+
+//    $row.find('.total-span').text(total.toFixed(2));
+//    calculateTableTotal();
+//});
 
 function calculateTableTotal() {
     var total = 0;

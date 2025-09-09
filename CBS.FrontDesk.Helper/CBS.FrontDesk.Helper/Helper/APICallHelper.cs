@@ -1,5 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.Math;
 using DocumentFormat.OpenXml.VariantTypes;
+using System.CodeDom;
 
 namespace CBS.FrontDesk.Helper
 {
@@ -343,7 +345,8 @@ namespace CBS.FrontDesk.Helper
         public static string CreateGroupType = "/api/v1/AddGroupType";
         public static string GetAllGroupTypes = "/api/v1/GroupTypes";
         public static string LoanApplicationFeesPending = "/api/v1/LoanApplicationFees/Pending/{0}";
-        //
+        public static string GetDailyCollectorApprovedUpload = "/api/v1/ManualEntryCollector/ApprovedBatches/{0}";
+        //ManualEntryDailyCollectorDto
 
         //Group
         public static string Get_Update_Delete_Group = "/api/v1/Group/{0}";
@@ -359,7 +362,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetSavingProducts = "/api/v1/SavingProduct";
         public static string GetCustomerBalance = "/api/v1/Account/Balance/Customer/{0}";
         public static string UpdateIndividualProfile = "/api/v1/Customer/{0}";
-       
+
         public static string ActivateOrDiactivateCustomer = "/api/v1/Customer/ActivateOrDis-activate";
         public static string GetAccountBalanceByAccountNumber = "/api/v1/Account/AccountNumber/{0}";
 
@@ -378,6 +381,7 @@ namespace CBS.FrontDesk.Helper
 
         public static string MakeDepoit = "/api/v1/Transaction/Deposit";
         public static string BulkDeposit = "/api/v1/Transaction/BulkDeposit";
+        public static string DailyCollectorCashClearing = "/api/v1/DailySavingsBackOffice/DailyCollectorCashClearing";
         public static string GetAllMembersPagginatedSummaryAccounts = "/api/v1/Account/Pagginated/MembersAccountSummary";
         public static string GetAllMembersSummaryAccounts = "/api/v1/Account/MembersAccountSummary";
         //
@@ -411,6 +415,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetTellerDailyOperations = "/api/v1/TellerOperations/DailyOperations";
         public static string TellerOpenningAndClossingQuery = "/api/v1/Teller/TellerOpenningAndClossingQuery";
         public static string GetTillCashStatus = "/api/v1/Teller/TillStatus";
+        public static string GetCurrentProvision = "/api/v1/Teller/SubTeller/CurrentProvision";
 
 
         //
@@ -439,6 +444,7 @@ namespace CBS.FrontDesk.Helper
 
         //Teller
         public static string Get_Update_Delete_Teller = "/api/v1/Teller/{0}";
+        public static string CollectorLinkState = "/api/v1/Teller/Collector/LinkState";
         public static string MobileMoneyTellerConfiguration = "/api/v1/Teller/MobileMoney/Configuration/{0}";
         public static string GetAllTeller = "/api/v1/Teller";
         public static string CreateTeller = "/api/v1/Teller";
@@ -584,6 +590,7 @@ namespace CBS.FrontDesk.Helper
         public static string AttachedDocuments = "/api/FIleManagement/Upload";
         public static string AttachedDocumentsRemotelyLoan = "/api/v1/DocumentAttachedToLoan/AddLoanAttachedDocumentCallBackCommand";
         public static string AttachedDocumentsRemotelyBank = "/api/v1/Bank/UpdateBankLogoCallBack";
+        public static string AttachedDocumentsRemotelyWaterMark = "/api/v1/Bank/UpdateBankWaterMarkCallBack";
 
         public static string Get_Update_Delete_LoanTerm = "/api/v1/LoanTerm/{0}";
         public static string GetAllLoanTerm = "/api/v1/LoanTerms";
@@ -984,7 +991,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAlAccounts = "/api/v1/Accounts";
         public static string GetAllLiaisonAccount = "/api/v1/Accounts/LiaisonAccount";
         public static string GetAllAccountByBranch = "/api/v1/Accounts/{0}";
-  
+
         public static string GetAllBankAccountChartUsedToCreditCashFlow = "/api/v1/ChartOfAccountManagementPosition/{0}/{1}";
 
         public static string GetAllBranchAccountUsedToCreditCashFlow = "/api/v1/Account/GetAccountByMFIBankAccountNumberQuery/{0}";
@@ -1112,6 +1119,7 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_CorrespondingBankBranche = "/api/v1/CorrespondingBankBranch/{0}";
         public static string GetAllCorrespondingBankBranche = "/api/v1/ThirdPartyBranches";
         public static string CreateCorrespondingBankBranche = "/api/v1/ThirdPartyBranche";
+
         //ThirdPartyBranche
         //public static string Get_Update_Delete_CorrespondingBank = "/api/v1/ThirdPartyBranche/{0}";
         //public static string GetAllThirdPartyInstitution = "/api/v1/ThirdPartyBranches";
@@ -1120,6 +1128,7 @@ namespace CBS.FrontDesk.Helper
         //public static string Get_Update_Delete_CorrespondingBankBranche = "/api/v1/CorrespondingBankBranche/{0}";
         //public static string GetAllCorrespondingBankBranche = "/api/v1/CorrespondingBankBranches";
         //public static string CreateCorrespondingBankBranche = "/api/v1/CorrespondingBankBranche";/api/v1//{id}
+
         ////CorrespondingBankBranche
         public static string Get_Update_Delete_CorrespondingBank = "/api/v1/ThirdPartyInstitution/{0}";
         public static string GetAllCorrespondingBank = "/api/v1/ThirdPartyInstitutions";
@@ -1136,8 +1145,6 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllBankZoneBranch = "/api/v1/BankZoneBranchs";
         public static string CreateBankZoneBranch = "/api/v1/BankZoneBranch";
 
-
-
         //AuditTrail//
         public static string Get_AuditTrail = "/api/v1/AuditTrail/{0}";
         public static string Get_AuditTrailByUserName = "/api/v1/AuditTrail/{0}";
@@ -1153,10 +1160,10 @@ namespace CBS.FrontDesk.Helper
         public static string Create_MemberNoneCashOperation = "/api/v1/MemberNoneCashOperation";
 
         //Bulk Operation
-        public static string SimulateBulkAccountTopup= "/api/v1/BulkOperations/top-up/simulation";
-        public static string SimulateBulkAccountCashInOrCashOut= "/api/v1/BulkOperations/cash/simulation";
-        public static string ConfirmBulkOperation= "/api/v1/BulkOperations/validation";
-        public static string SimulateBulkCreditOrDebitOperation= "/api/v1/BulkOperations/cash/simulation";
+        public static string SimulateBulkAccountTopup = "/api/v1/BulkOperations/top-up/simulation";
+        public static string SimulateBulkAccountCashInOrCashOut = "/api/v1/BulkOperations/cash/simulation";
+        public static string ConfirmBulkOperation = "/api/v1/BulkOperations/validation";
+        public static string SimulateBulkCreditOrDebitOperation = "/api/v1/BulkOperations/cash/simulation";
         public static string SimulateBulkAccountContribution = "/api/v1/BulkOperations/contribution/simulation";
         public static string GetAllBulkOperations = "/api/v1/BulkOperations";
         public static string BulkOperationDataDetails = "/api/v1/BulkOperations/simulation/details/";
@@ -1194,6 +1201,7 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_DailyCustomer = "/api/v1/DailyCustomer/{0}";
         public static string CreateDailyCustomer = "/api/v1/DailyCustomer";
         public static string GetAllDailyCustomer = "/api/v1/DailyCustomers";
+        public static string GetAllDailyCollectorBasicInfos = "api/v1/customers/basic-info";
         //CommissionSetting
         public static string Get_Update_Delete_CommissionSetting = "/api/v1/CommissionSetting/{0}";
         public static string CreateCommissionSetting = "/api/v1/CommissionSetting";
@@ -1222,5 +1230,61 @@ namespace CBS.FrontDesk.Helper
         //public static string ReExecutedFailedEntry = "/api/v1/AccountingEntries/ReExecutedFailedEntry";
 
         //public static string GetTransactionTrackerPaginated = "/api/v1/AccountingEntries/TransactionTrackers/SearchByAnyCriterialQuery";
+
+        //*************************** CHEQUE BOOK ******************************
+
+        // ---------------- CHEQUE BOOK CATEGORY ----------------
+        public static string GetAllChequeBookCategories = "/api/v1/ChequeBookCategory";
+        public static string GetChequeBookCategoryById = "/api/v1/ChequeBookCategory/{id}";
+        public static string CreateChequeBookCategory = "/api/v1/ChequeBookCategory";
+        public static string UpdateChequeBookCategory = "/api/v1/ChequeBookCategory/{id}";
+        public static string DeactivateChequeBookCategory = "/api/v1/ChequeBookCategory/{id}/deactivate";
+
+        // ---------------- GENERIC CRUD ----------------
+        public static string GetAll = "/api/v1/{entity}";
+        public static string GetById = "/api/v1/{entity}/{id}";
+        public static string Create = "/api/v1/{entity}";
+        public static string Update = "/api/v1/{entity}/{id}";
+        public static string Delete = "/api/v1/{entity}/{id}";
+
+        // ---------------- FEE CONFIG ----------------
+        public static string GetAllFeeConfigs = "/api/v1/FeeConfig";
+        public static string GetFeeTypes = "/api/v1/FeeConfig/types";
+        public static string GetFeeConfigById = "/api/v1/FeeConfig/{id}";
+        public static string CreateFeeConfig = "/api/v1/FeeConfig";
+        public static string UpdateFeeConfig = "/api/v1/FeeConfig/{id}";
+        public static string DeleteFeeConfig = "/api/v1/FeeConfig/{id}";
+
+        // ---------------- NOTIFICATIONS ----------------
+        public static string GetAllnot = "/api/v1/Notification/types";
+        public static string GetNotificationTypes = "/api/v1/Notification";
+        public static string Createnot = "/api/v1/Notification";
+        public static string Updatenot = "/api/v1/Notification/{id}";
+        public static string Deletenot = "/api/v1/Notification/{id}";
+
+        //************************** END CHEQUE BOOK *******************************
+
+        //*************************** MANUAL DAILLY COLLECTIONS ************************ 
+
+        // ---------------- MANUAL ENTRY & FILES ----------------
+        //uploadfile
+        public static string ManualEntryUpload = "/api/v1/ManualEntryCollectorUpload";
+        //getfile
+        public static string GetFileById = "/api/v1/ManualEntryCollector/ViewFileByFileUploadId/{FileUploadId}";
+        //getallfiles
+        public static string GetAllFiles = "/api/v1/ManualEntryCollector/GetAllFileUploads/All";
+        public static string DeleteManualEntryFile = "/api/v1/ManualEntryCollector/DeleteUploadedFile/{fileId}";
+        public static string GetFilesByStatus = "/api/v1/ManualEntryCollector/GetAllFileUploadsByProcessingStatus/{ProcessingStatus}";
+        public static string ValidateFile = "/api/v1/ManualEntryCollector/ApproveUploadedFile";
+        public static string ExtractUploadedFile = "/api/v1/ManualEntryCollector/ExtractUploadedFile";
+        public static string ApproveUploadedFile = "/api/v1/ManualEntryCollector/ApproveUploadedFile";
+        public static string ReviewUploadedFile = "/api/v1/ManualEntryCollector/ReviewUploadedFile";
+        public static string DenyUploadedFile = "/api/v1/ManualEntryCollector/RejectUploadedFile";
+        public static string GetFileUploadsForDataTable = "/api/v1/ManualEntryCollector/FileUpload/data-table";
+        public static string GetDaillycollectors = "api/v1/customers/basic-info-collectors";
+        public static string GetextracyedFileDetailsEndpoint = "api/v1/ManualEntryCollector/Extracted/data-table";
+        public static string getextracteddetails = "/api/v1/ManualEntryCollector/Extracted/details";
+
+        //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
     }
 }

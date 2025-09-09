@@ -1,8 +1,10 @@
 ﻿
 using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingDayObject;
 using CBS.FrontDesk.Data.Entity.CMoney;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
@@ -10,12 +12,14 @@ using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNet.SignalR.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using static CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation.PaymentReceipt;
 
 namespace CBS.BusinessService.Accounts.MemberReceiptsP
@@ -24,11 +28,11 @@ namespace CBS.BusinessService.Accounts.MemberReceiptsP
     public class MemberReceiptServices : BaseService
     {
         private readonly ApiCallerHelper _transactionApiHelper;
-
-        public MemberReceiptServices()
+        private readonly BranchServices _branchServices;
+        public MemberReceiptServices(BranchServices branchServices)
         {
             _transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
-
+            _branchServices=branchServices;
         }
 
 
@@ -76,21 +80,43 @@ namespace CBS.BusinessService.Accounts.MemberReceiptsP
         {
             try
             {
-                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<PaymentReceipt>>(string.Format(APICallHelper.GetPaymentReceiptById, id));
+                var cusResponseObject = await _transactionApiHelper
+                    .GetAsync<ResponseObject<PaymentReceipt>>(
+                        string.Format(APICallHelper.GetPaymentReceiptById, id));
+
                 if (cusResponseObject.IsSuccess)
                 {
-                    var data= cusResponseObject.ApiResponseData.Data;
-                   
+                    var data = cusResponseObject.ApiResponseData.Data;
+                    var transaction = cusResponseObject.ApiResponseData.Data;
+
+                    Branch branch = await _branchServices.GetBranch(data.BranchId);
+                    var rptSource = PaymentReceiptMapping.MapPaymentReceipt(transaction, branch);
+
+                    // ✅ Null-safe check for OperationTypeGrouping
+                    var grouping = transaction?.OperationTypeGrouping ?? string.Empty;
+                    if (grouping.IndexOf("loan", StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        HttpContext.Current.Session["path"] = "loan";
+                    }
+                    else
+                    {
+                        HttpContext.Current.Session["path"] = "cashin_cashout";
+                    }
+                    HttpContext.Current.Session["AccountingDate"] = data.AccountingDay;
+                    HttpContext.Current.Session["TransactionDate"] = data.Date;
+                    HttpContext.Current.Session["rptSource"] = rptSource;
                     return data;
                 }
+
                 return new PaymentReceipt();
             }
             catch (Exception ex)
             {
-                // Log and handle exception
-                throw ex;
+                // Always rethrow preserving stack trace
+                throw;
             }
         }
+
         public async Task<CustomDataTable> GetDataTableAsync(GetPaymentReceiptsDataTableQuery loansDataTableQuery)
         {
             loansDataTableQuery.Options.sortColumnName = "Date";

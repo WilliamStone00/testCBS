@@ -232,6 +232,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Approved.
+        /// </summary>
+        internal static string ApprovedFilter {
+            get {
+                return ResourceManager.GetString("ApprovedFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Available actions.
         /// </summary>
         internal static string AvailableActions {
@@ -412,6 +421,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Completed.
+        /// </summary>
+        internal static string CompletedFilter {
+            get {
+                return ResourceManager.GetString("CompletedFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Complete history.
         /// </summary>
         internal static string CompleteHistory {
@@ -588,6 +606,15 @@ namespace Resources {
         internal static string ExportData {
             get {
                 return ResourceManager.GetString("ExportData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed.
+        /// </summary>
+        internal static string FailedFilter {
+            get {
+                return ResourceManager.GetString("FailedFilter", resourceCulture);
             }
         }
         
@@ -799,6 +826,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pending.
+        /// </summary>
+        internal static string PendingFilter {
+            get {
+                return ResourceManager.GetString("PendingFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Perform actions.
         /// </summary>
         internal static string PerformActions {
@@ -822,6 +858,15 @@ namespace Resources {
         internal static string PoweredBy {
             get {
                 return ResourceManager.GetString("PoweredBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Processing Approval.
+        /// </summary>
+        internal static string ProcessingApprovalFilter {
+            get {
+                return ResourceManager.GetString("ProcessingApprovalFilter", resourceCulture);
             }
         }
         
@@ -853,11 +898,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rejected.
+        /// </summary>
+        internal static string RejectedFilter {
+            get {
+                return ResourceManager.GetString("RejectedFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reviewed.
         /// </summary>
         internal static string Reviewed {
             get {
                 return ResourceManager.GetString("Reviewed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reviewed.
+        /// </summary>
+        internal static string ReviewedFilter {
+            get {
+                return ResourceManager.GetString("ReviewedFilter", resourceCulture);
             }
         }
         

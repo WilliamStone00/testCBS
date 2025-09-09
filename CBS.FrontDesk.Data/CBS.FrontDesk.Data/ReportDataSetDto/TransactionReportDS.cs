@@ -362,5 +362,16 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto
         public string HeadOfficeWebSite { get; set; }
         public string HeadOfficeInitial { get; set; }
         public string HeadOfficeCode { get; set; }
+        public string HeadOfficeRegistrationNumber { get; set; }
+        public string HeadOfficeImmatriculationNumber { get; set; }
+        public string HeadOfficePBox { get; set; }
+        public string HeadOfficeBankInitial { get; set; }
+        public string HeadOfficeMotto { get; set; }
+        public string HeadOfficeCustomerServiceContact { get; set; }
+        public string HeadOfficeCategoryInformation { get; set; }
+        public string HeadOfficeShortHeaderInfo { get; set; }
+        public string HeadOfficeFax { get; set; }
+        public string HeadOfficeRegistrationInformation { get; set; }
+        public string HeadOfficeWaterMark { get; set; }
     }
 }

@@ -33,6 +33,19 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectionEntities
         public bool CashInStatus { get; set; }
         public string ManualEntryDailyCollectorId { get; set; }
 
-        public virtual ICollection<ManualEntryDailyCollectorDetailsDto> ManualEntryDailyCollectorDetailsDto { get; set; }
+        public List<ManualEntryDailyCollectorDetailsDto> ManualEntryDailyCollectorDetailsDto { get; set; }
+
+        public string DailyCollectorTransitMemberReference { get; set; }
+        public string CollectorName { get; set; }
+        public DateTime CashReceptionDate { get; set; }
+        public string CashierName { get; set; }
+        public string CashierBranchId { get; set; }
+        public string CashierBranchName { get; set; }
+        public string CashierBranchCode { get; set; }
+        public string CashierComment { get; set; }
+        public string TellerId { get; set; }
+        public string TellerName { get; set; }
+        public string FileUploadId { get; set; }
+        public string BatchExecutionStatus { get; set; }
     }
 }

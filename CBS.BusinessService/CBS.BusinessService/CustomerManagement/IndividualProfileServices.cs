@@ -273,7 +273,7 @@ namespace CBS.BusinessService.CustomerManagement
                     ? apiResp.ApiResponseData?.Data ?? new List<CustomerLightDto>()
                     : new List<CustomerLightDto>();
 
-                // Map to StringValues (adjust property names if different)
+                // Map to SelectedItemsApprovedUploads (adjust property names if different)
                 // Text: display name; Value: id
                 var results = members.Select(m => new StringValues(
                         text: ($"[M.AccNo: {m?.CustomerId}] Name: [{m?.LastName} {m?.LastName}] Phone: [{m.Phone}]".Trim()).Trim(),
@@ -518,6 +518,7 @@ namespace CBS.BusinessService.CustomerManagement
                 throw;
             }
         }
+
         public async Task<IEnumerable<IndividualProfile>> GetIndividualProfileByBranch()
         {
             try

@@ -111,7 +111,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-<script>
+    <script>
         $(document).ready(function () {
             // Toggle between manual and file input
             $('input[name="InputMethod"]').change(function () {
@@ -164,9 +164,9 @@
             });
 
         });
-</script>
+    </script>
     @*Manual Bulk Batch Operation*@
-<script>
+    <script>
 
         $(document).ready(function () {
             let accountCounter = 0;
@@ -391,7 +391,7 @@
                                     //alertify.error(response.message || 'Error during operation');
                                     appalert(response.message || 'Error during operation', 2, 1);
                                 }
-                         
+
                             },
                             error: function (err) {
                                 console.error("Error:", err);
@@ -412,7 +412,7 @@
             }
             return false;
         }
-</script>
+    </script>
 
     @*File Submitting*@
     <script>
@@ -524,12 +524,12 @@
                         contentType: 'application/json',
                         success: function (response) {
                             if (response.success) {
-                               // alertify.success(response.message || 'Operation completed successfully');
+                                // alertify.success(response.message || 'Operation completed successfully');
                                 appalert(response.message || 'Operation completed successfully', 1, 1);
                                 // Reset the form after successful operation
                                 window.location.href = '/BulkOperation/Listing'
                             } else {
-                               // alertify.error(response.message || 'Error during operation');
+                                // alertify.error(response.message || 'Error during operation');
                                 appalert(response.message || 'Error during operation', 2, 1);
                             }
                         },
@@ -639,18 +639,18 @@
 
             // Create table structure
             const tableHtml = `
-                                        <thead>
-                                            <tr>
-                                                <th>Branch Code</th>
-                                                <th>Member Reference</th>
-                                                <th>Account Type</th>
-                                                <th>Member Name</th>
-                                                <th class="text-end">Amount</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    `;
+                                            <thead>
+                                                <tr>
+                                                    <th>Branch Code</th>
+                                                    <th>Member Reference</th>
+                                                    <th>Account Type</th>
+                                                    <th>Member Name</th>
+                                                    <th class="text-end">Amount</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        `;
             $table.html(tableHtml);
 
             // Initialize DataTable with enhanced options

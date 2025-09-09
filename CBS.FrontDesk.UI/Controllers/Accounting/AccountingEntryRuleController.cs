@@ -59,7 +59,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 return Json(new { success = "", status = "notOk" });
             }
 
-            return Json(new { success = false, status = false, message = "Fill the required fields." });
         }
         [HttpPost]
         public async Task<ActionResult> Create(AccountingRuleEntry model)
