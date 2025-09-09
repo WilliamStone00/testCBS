@@ -4,13 +4,12 @@
         <table class="table table-hover" id="filesDataTable" style="width:100%;">
             <thead class="table-light">
                 <tr>
-                    <th>File ID</th>
-                    <th>FileName</th>
-                    <th>Branch</th>
-                    <th>Uploaded By</th>
-                    <th>Uploaded On</th>
-                    <th>Status</th>
-                    <th class="text-center">Actions</th>
+                    <th style="width:20%">File ID</th>
+                    <th style="width:20%">FileName</th>
+                    <th style="width:25%">Branch Name </th>
+                    <th style="width:10%">Uploaded On</th>
+                    <th style="width:15%">Status</th>
+                    <th class="text-center"style="width:10%">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,7 +25,7 @@ $(document).ready(function () {
     // Helper function to generate the action links
     function generateActionButtons(fileId) {
         const detailsLink = `<a href="#" onclick="AddORUpdateGen('${fileId}', 'mainWorkspace', '_FileDetails', 'details', 'ManualDailyCollection')" class="ms-2">Details</a>`;
-        const deleteLink = `<a href="#" onclick="DeleteRecordDataTable('ManualDailyCollection', '${fileId}', 'filesDataTable', '_FileList', 0, 'mainWorkspace', null, 'list')" class="ms-2 text-danger">Delete</a>`;
+        const extractLink = `<a href="#" onclick="extractFile('${fileId}')" class="ms-2 text-primary">Extract</a>`;
         return detailsLink + deleteLink;
     }
 
@@ -56,7 +55,6 @@ $(document).ready(function () {
             { data: "FileUploadId", name: "FileUploadId" },
             { data: "fileName", name: "FileName" },
             { data: "BranchName", name: "BranchName" },
-            { data: "UploadedBy", name: "UploadedBy" },
             { data: "uploadedOn", name: "UploadedOn" },
             {
                 data: "salaryProcessingStatus",
@@ -71,20 +69,92 @@ $(document).ready(function () {
                 }
             }
         ],
-        columnDefs: [
-            { width: "30%", targets: 0 },
-            { width: "20%", targets: 1 },
-            { width: "15%", targets: 2 },
-            { width: "15%", targets: 3 },
-            { width: "10%", targets: 4, className: "text-center" },
-            { width: "10%", targets: 5, className: "text-center" },
-            { width: "10%", targets: 6, className: "text-center" } // Actions
-        ],
+       
         drawCallback: function() {
             // Force DataTable to respect column widths after each draw
             table.columns.adjust();
         }
     });
+
+    function buildExtractedPreviewHtml(data) {
+        const formatCurrency = (num) => (num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        return `
+ <fieldset class="fieldset-custom">
+     <legend class="legend-custom text-success">Extraction Successful: ${data.FileUploadId || 'N/A'}</legend>
+     <div class="row g-2">
+         <div class="col-6 col-md-3"><div class="card card-border-shadow-warning h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Collector Name</p><h6 class="ms-1 mb-0">${data.CollectorName || ''}</h6></div></div></div>
+         <div class="col-6 col-md-3"><div class="card card-border-shadow-info h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Branch</p><h6 class="ms-1 mb-0">${data.BranchName || ''}</h6></div></div></div>
+         <div class="col-6 col-md-3"><div class="card card-border-shadow-success h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Members</p><h6 class="ms-1 mb-0">${data.TotalMember || 0}</h6></div></div></div>
+         <div class="col-6 col-md-3"><div class="card card-border-shadow-danger h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Amount</p><h6 class="ms-1 mb-0">${formatCurrency(data.TotalAmount)}</h6></div></div></div>
+     </div>
+     <div class="table-responsive mt-3">
+         <table id="extractedDetailsTable" class="table table-striped table-bordered" style="width:100%"></table>
+     </div>
+     <div class="d-flex justify-content-end mt-3">
+         <button type="button" id="closeExtractedPreviewBtn" class="btn btn-secondary">Close</button>
+     </div>
+ </fieldset>`;
+    }
+
+    function extractFile(fileId) {
+        if (!fileId) {
+            appalert('No file to extract.', 3, 1);
+            return;
+        }
+
+        const token = $('input[name="__RequestVerificationToken"]').val();
+        const $resultContainer = $('#uploadResultContainer');
+
+        $.ajax({
+            url: '/ManualDailyCollection/extract',
+            type: 'POST',
+            data: { KEY: fileId },
+            headers: token ? { 'RequestVerificationToken': token } : {},
+            dataType: 'json',
+            beforeSend: function () {
+                $resultContainer.html('<p class="text-center">Extracting data...</p>');
+            },
+            success: function (response) {
+                if (response && response.status === "SUCCESS" && response.data) {
+                    appalert(response.statusDescription || 'File extracted successfully.', 1, 1);
+                    const extractedHtml = buildExtractedPreviewHtml(response.data);
+                    $resultContainer.html(extractedHtml);
+
+                    // Initialize the extracted details table
+                    $('#extractedDetailsTable').DataTable({
+                        destroy: true,
+                        data: response.data.details || [],
+                        columns: [
+                            { data: "MemberReference", title: "Member Ref." },
+                            { data: "MemberName", title: "Member Name" },
+                            { data: "FullAccountNumber", title: "Account No." },
+                            { data: "MemberBranchName", title: "Member Branch" },
+                            {
+                                data: "Amount",
+                                title: "Amount",
+                                className: "text-end",
+                                render: $.fn.dataTable.render.number(',', '.', 2)
+                            }
+                        ],
+                        responsive: true,
+                        pageLength: 5,
+                        lengthMenu: [5, 10, 25, 50]
+                    });
+
+                    // Add close button behavior
+                    $('#closeExtractedPreviewBtn').on('click', function () {
+                        $resultContainer.empty();
+                    });
+
+                } else {
+                    appalert((response && response.message) || 'Extraction failed.', 4, 1);
+                }
+            },
+            error: function () {
+                appalert('An error occurred during extraction.', 4, 1);
+            }
+        });
+    }
 
 });
 </script>
