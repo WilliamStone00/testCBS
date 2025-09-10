@@ -166,7 +166,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         }
         [HttpGet]
         public async Task<JsonResult> CheckAccountConfigurationStatus()
-        {
+       {
             var listOfAccounts = await _AccountServices.GetAllAccountingBook();
             var data = CheckIfUnConfigureAccountExist(listOfAccounts);
             this.HttpContext.Session["UnConfiguredProduct"] = data;

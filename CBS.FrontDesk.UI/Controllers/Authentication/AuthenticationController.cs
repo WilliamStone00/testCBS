@@ -206,9 +206,6 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
 
-
-
-
         [AllowAnonymous]
         public ActionResult ResolveMultipleSessions(string username, string message, int count)
         {

@@ -49,9 +49,8 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -108,6 +107,7 @@
     <Compile Include="Entity\Accounting\Acknowledge.cs" />
     <Compile Include="Entity\Accounting\BlacklistAccount.cs" />
     <Compile Include="Entity\Accounting\Class1.cs" />
+    <Compile Include="Entity\Accounting\StockData.cs" />
     <Compile Include="Entity\Accounting\TransactionTracker.cs" />
     <Compile Include="Entity\Accounting\DailyTrendDataDto.cs" />
     <Compile Include="Entity\Accounting\FinancialDocumentReference.cs" />
@@ -132,6 +132,13 @@
     <Compile Include="Entity\CashCeilingManagement\CashCeilingRequest.cs" />
     <Compile Include="Entity\CashChangeManagement\CashChangeHistory.cs" />
     <Compile Include="Entity\ChangeNumber\PhoneNumberChangeHistory.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Configurations\Category\CategoryConfig.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Configurations\ChequeNumber\NumConfig.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Configurations\ChequeNumber\VariablePosition.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Configurations\FeeConfiguration\FeeConfig.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Configurations\FeeConfiguration\Range.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Configurations\NotificationConfig\NotificationConfig.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Configurations\NotificationConfig\NotificationType.cs" />
     <Compile Include="Entity\Class1.cs" />
     <Compile Include="Entity\CMoney\CMoneyMembersActivationAccount.cs" />
     <Compile Include="Entity\DailyCollectionData\AgentAccount\AgentAccount.cs" />
@@ -167,6 +174,13 @@
     <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportRPT.cs" />
     <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportDtoMapper.cs" />
     <Compile Include="Entity\LoanAdjustmentP\LoanAdjustment.cs" />
+    <Compile Include="Entity\ManualDailycollection\CollectorDto.cs" />
+    <Compile Include="Entity\ManualDailycollection\FileDetailsResponse.cs" />
+    <Compile Include="Entity\ManualDailycollection\FileUploadResponse.cs" />
+    <Compile Include="Entity\ManualDailycollection\FileUploadSummary.cs" />
+    <Compile Include="Entity\ManualDailycollection\ManualCollectionUploadViewModel.cs" />
+    <Compile Include="Entity\ManualDailycollection\ManualDailyCollectionFileDetail.cs" />
+    <Compile Include="Entity\ManualDailycollection\ValidationFormViewModel.cs" />
     <Compile Include="Entity\MemberAdjustmentConsole\ApproveMemberAdjustmentRequestCommand.cs" />
     <Compile Include="Entity\MemberAdjustmentConsole\GetMemberAdjustmentRequestsDataTableQuery.cs" />
     <Compile Include="Entity\MemberAdjustmentConsole\MemberAdjustmentModel.cs" />

@@ -49,6 +49,7 @@ namespace CBS.FrontDesk.Data.Entity
             CardSignatureSpecimen = cardSignatureSpecimen;
         }
     }
+
     public class GetCustomersForDataTableQuery
     {
         public DataTableOptions Options { get; set; }
