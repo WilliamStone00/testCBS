@@ -246,6 +246,7 @@ function extractFile(fileId) {
                                     pageLength: 5,
                                     lengthMenu: [5, 10, 25, 50]
                                 });
+                                handleExtractSuccess(fileId);
                             } catch (dtErr) {
                                 console.error('Error initializing extractedDetailsTable', dtErr);
                                 // show detailed message in the UI so you can see issue without silent failure
@@ -286,8 +287,36 @@ function extractFile(fileId) {
         function () {
             appalert("Extraction cancelled.", 3, 1);
         }
+
     );
-}
+    }
+
+    // ✅ Refresh main file listing table after successful extract
+    function handleExtractSuccess(fileId) {
+        try {
+            // Reload the main files listing DataTable
+            if (window.filesDataTable && window.filesDataTable.ajax && typeof window.filesDataTable.ajax.reload === 'function') {
+                window.filesDataTable.ajax.reload(null, false); // keep current page
+                console.log('filesDataTable: reloaded after successful extract for', fileId);
+            } else {
+                console.warn('filesDataTable not found; skipping reload.');
+            }
+
+            //// Optimistic UI update: remove/disable the Extract link for this file row
+            //$('#filesDataTable').find('a').filter(function () {
+            //    const onclickAttr = $(this).attr('onclick') || '';
+            //    return onclickAttr.includes(fileId) && $(this).text().trim().toLowerCase() === 'extract';
+            //}).each(function () {
+            //    $(this).remove(); // or disable if you prefer
+            //});
+
+        } catch (err) {
+            console.error('handleExtractSuccess error', err);
+        }
+    }
+
+
+
 </script>
 
 

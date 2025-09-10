@@ -429,8 +429,8 @@
             alertify.confirm('Confirm Delete', 'This will permanently delete the uploaded file. Continue?', function () {
                 const token = $('input[name="__RequestVerificationToken"]').val();
                 $.ajax({
-                    url: '/ManualDailyCollection/DeleteFile',
-                    type: 'POST',
+                    url: '/ManualDailyCollection/Delete',
+                    type: 'Get',
                     data: { fileUploadId: currentFileUploadId },
                     headers: token ? { 'RequestVerificationToken': token } : {},
                     success: function (response) {
