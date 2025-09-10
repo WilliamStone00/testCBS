@@ -425,7 +425,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
         /// <summary>
         /// ACTION 3: Handles the AJAX file upload from the _UploadForm.
         /// </summary>
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> UploadFile(string BranchId, string CollectorAndUser, HttpPostedFileBase UploadedFile)
         {
@@ -535,7 +535,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
         /// <summary>
         /// ACTION 5: Deletes an uploaded file by its ID. Works with your generic DeleteRecordDataTable helper.
         /// </summary>
-        [System.Web.Mvc.HttpGet] // Matching your existing pattern, but [HttpPost] is recommended for security.
+        [HttpGet] // Matching your existing pattern, but [HttpPost] is recommended for security.
         public async Task<ActionResult> Delete(string KEY)
         {
             if (string.IsNullOrEmpty(KEY))

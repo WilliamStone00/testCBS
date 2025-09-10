@@ -27,6 +27,8 @@
                 <li><i class="mdi mdi-filter-variant text-primary me-2"></i><strong>Default View:</strong> The table automatically shows all files with a 'Pending' status.</li>
                 <li><i class="mdi mdi-magnify text-info me-2"></i><strong>Advanced Search:</strong> Use filters for File Name or Branch.</li>
                 <li><i class="mdi mdi-cogs text-success me-2"></i><strong>Taking Action:</strong> Use the dropdown on each row for Approve / Review / Reject.</li>
+                <li><i class="mdi mdi-cogs text-success me-2"></i><strong>Taking Action:</strong> We must review a file before Approve it so if you see file review but nor approve review it firt.</li>
+
             </ul>
         </div>
     </div>
@@ -131,7 +133,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-<script>
+    <script>
         (function ($) {
             function getStatusBadge(status) {
                 if (!status) return "<span class='badge bg-secondary'>Unknown</span>";
@@ -158,7 +160,7 @@
                         </a>
 
                         <!-- Dropdown toggle -->
-                        <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" 
+                        <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </button>
@@ -181,34 +183,30 @@
                                     <i class="mdi mdi-close me-1"></i> Reject
                                 </a></li>
                             ` : ''}
-
-                            <!-- No extra buttons for Approved, only Details stays -->
                         </ul>
                     </div>
                 `;
-
             }
 
-           function viewDetails(fileId) {
-            const detailsContainer = $('#detailsContainer');
-            const detailsBody = $('#detailsBody');
-            const detailsHeader = $('#detailsHeader');
+            function viewDetails(fileId) {
+                const detailsContainer = $('#detailsContainer');
+                const detailsBody = $('#detailsBody');
+                const detailsHeader = $('#detailsHeader');
 
-            detailsHeader.text(`File Details: ${fileId}`);
-            detailsBody.html('<div class="text-center p-4"><div class="spinner-border text-primary"></div><p>Loading details...</p></div>');
-            detailsContainer.slideDown();
+                detailsHeader.text(`File Details: ${fileId}`);
+                detailsBody.html('<div class="text-center p-4"><div class="spinner-border text-primary"></div><p>Loading details...</p></div>');
+                detailsContainer.slideDown();
 
-            $.get(`@Url.Action("GetextractedFileDetails", "FileValidation")?id=${fileId}`)
-                .done(function (response) {
-                    detailsBody.html(response);
-                })
-                .fail(function () {
-                    detailsBody.html('<div class="alert alert-danger">Error loading details.</div>');
-                });
+                $.get(`@Url.Action("GetextractedFileDetails", "FileValidation")?id=${fileId}`)
+                    .done(function (response) {
+                        detailsBody.html(response);
+                    })
+                    .fail(function () {
+                        detailsBody.html('<div class="alert alert-danger">Error loading details.</div>');
+                    });
 
-            document.getElementById('detailsContainer').scrollIntoView({ behavior: 'smooth' });
-}
-
+                document.getElementById('detailsContainer').scrollIntoView({ behavior: 'smooth' });
+            }
 
             function loadActionForm(id, mode) {
                 const url = `@Url.Action("GetActionForm", "FileValidation")?fileUploadId=${id}&mode=${mode}`;
@@ -216,7 +214,29 @@
                 $('#actionModalLabel').text(`${mode.charAt(0).toUpperCase() + mode.slice(1)} File`);
                 $body.html(`<div class="text-center p-4"><div class="spinner-border text-primary"></div><p>Loading form...</p></div>`);
                 $('#actionModal').modal('show');
-                $.get(url).done(r => $body.html(r)).fail(() => $body.html(`<div class="alert alert-danger">Could not load form.</div>`));
+
+                $.get(url)
+                    .done(r => $body.html(r))
+                    .fail(() => $body.html(`<div class="alert alert-danger">Could not load form.</div>`));
+
+                // intercept form submission inside modal
+                $('#actionModal').off('submit', 'form').on('submit', 'form', function (e) {
+                    e.preventDefault();
+                    const form = $(this);
+                    $.post(form.attr('action'), form.serialize())
+                        .done(function (res) {
+                            if (res.success) {
+                                $('#actionModal').modal('hide');
+                                appalert.success(res.message || `${mode} successful`);
+                                $('#myDataTable').DataTable().ajax.reload();
+                            } else {
+                                appalert.error(res.message || `Failed to ${mode}`);
+                            }
+                        })
+                        .fail(function () {
+                            appalert.error(`An error occurred while trying to ${mode} the file.`);
+                        });
+                });
             }
 
             let dataTable = $('#myDataTable').DataTable({
@@ -255,17 +275,14 @@
                     {
                         data: "uploadedOn",
                         render: function (data, type, row) {
-                            // Accept whatever the server sends: a Date string, a formatted string, or null
                             const raw = data ?? row.uploadedOn ?? row.uploadedOnFormatted ?? '';
                             if (!raw) return '';
                             const d = new Date(raw);
                             if (!isNaN(d.getTime())) return d.toLocaleString();
-                            // If it's not a parseable date, return the raw string (already formatted)
                             return String(raw);
                         }
                     },
                     {
-                        // Show status badge. Uses row to tolerate both `status` and `Status`
                         data: "status",
                         render: function (data, type, row) {
                             const rawStatus = (data ?? row.status ?? row.Status ?? '') + '';
@@ -278,19 +295,15 @@
                         orderable: false,
                         searchable: false,
                         render: function (data, type, row) {
-                            // Resolve status robustly (accept `status` or `Status`) and normalize for button logic
                             const rawStatus = (row.status ?? row.Status ?? '') + '';
                             const statusTrim = rawStatus.trim();
-                            // Normalize to "Capitalized" form for existing button logic (e.g. 'Approved', 'Pending', 'Reviewed')
                             const statusForButtons = statusTrim
                                 ? statusTrim.charAt(0).toUpperCase() + statusTrim.slice(1).toLowerCase()
                                 : '';
-
                             return generateActionButtons(data, statusForButtons);
                         }
                     }
                 ]
-
             });
 
             // Filters
@@ -317,5 +330,5 @@
 
             $('.select2').select2();
         }(jQuery));
-</script>
+    </script>
 }
