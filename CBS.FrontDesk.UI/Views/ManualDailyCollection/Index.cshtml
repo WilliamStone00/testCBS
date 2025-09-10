@@ -94,32 +94,33 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-<script>
-        // --- FIXED FUNCTION: Load Collectors Dropdown ---
-function loadCollectors(branchId) {
-    let $collectorDropdown = $('#CollectorxCollectorId');
+    <script>
+    // --- FIXED FUNCTION: Load Collectors Dropdown ---
+    function loadCollectors(branchId) {
+        let $collectorDropdown = $('#CollectorxCollectorId');
 
-    // Reset dropdown
-    $collectorDropdown.empty().append('<option value="">--- Loading ---</option>');
+        // Reset dropdown
+        $collectorDropdown.empty().append('<option value="">--- Loading ---</option>');
 
-    if (branchId) {
-        $.getJSON('@Url.Action("GetCollectorsByBranch", "ManualDailyCollection")', { branchId: branchId })
-            .done(function (data) {
-                $collectorDropdown.empty().append('<option value="">--- Select Daily Collector ---</option>');
-                $.each(data, function (i, item) {
-                    $collectorDropdown.append($('<option>', {
-                        value: item.Value,   // Correct casing
-                        text: item.Text     // Correct casing
-                    }));
+        if (branchId) {
+            $.getJSON('@Url.Action("GetCollectorsByBranch", "ManualDailyCollection")', { branchId: branchId })
+                .done(function (data) {
+                    $collectorDropdown.empty().append('<option value="">--- Select Daily Collector ---</option>');
+                    $.each(data, function (i, item) {
+                        $collectorDropdown.append($('<option>', {
+                            value: item.Value,
+                            text: item.Text
+                        }));
+                    });
+                })
+                .fail(function () {
+                    $collectorDropdown.empty().append('<option value="">--- Error loading collectors ---</option>');
                 });
-            })
-            .fail(function () {
-                $collectorDropdown.empty().append('<option value="">--- Error loading collectors ---</option>');
-            });
-    } else {
-        $collectorDropdown.empty().append('<option value="">--- Select Daily Collector ---</option>');
+        } else {
+            $collectorDropdown.empty().append('<option value="">--- Select Daily Collector ---</option>');
+        }
     }
-}
+
     (function ($) {
         let currentFileUploadId = null; // Store the ID of the last successful upload
 
@@ -130,13 +131,10 @@ function loadCollectors(branchId) {
 
             // Delegated handlers for buttons inside the dynamic preview containers
             $('#mainWorkspace')
-                //.on('click', '#resetPreviewBtn', resetInitialPreview) // Resets the FIRST preview
                 .on('click', '#deleteUploadedFileBtn', deleteUploadedFile)
                 .on('click', '#extractFileBtn', extractFile)
-                .on('click', '#closeExtractedPreviewBtn', resetInitialPreview); // The new "Close" button will also reset everything
+                .on('click', '#closeExtractedPreviewBtn', resetInitialPreview); // The Close button will reset everything
         }
-
-
 
         // --- FUNCTION 1: Handles the initial file UPLOAD ---
         function handleUploadSubmit(e) {
@@ -148,7 +146,7 @@ function loadCollectors(branchId) {
             const $submitButton = $form.find('button[type="submit"]');
             const $resultContainer = $('#uploadResultContainer');
 
-            if (!$form.valid()) return false;
+            if ($form.length && typeof $form.valid === 'function' && !$form.valid()) return false;
 
             alertify.confirm("Confirmation", "Are you sure you want to upload this file?", function () {
                 $.ajax({
@@ -165,32 +163,41 @@ function loadCollectors(branchId) {
                         if ((response.success === true || response.isSuccess === true) && response.data) {
                             appalert(response.message || "File processed successfully!", 1, 1);
 
-                            currentFileUploadId = response.data.FileUploadId;
+                            currentFileUploadId = response.data.FileUploadId || response.data.fileUploadId || currentFileUploadId;
 
                             const previewHtml = buildInitialPreviewHtml(response.data);
                             $resultContainer.html(previewHtml).slideDown();
 
                             const tableData = response.data.manualEntryDailyCollectorUploadListDtos || [];
 
-                            $('#previewDetailsTable').DataTable({
-                                destroy: true,
-                                data: tableData,
-                                columns: [
-                                    { data: "memberReference", title: "Member Ref." },
-                                    { data: "memberName", title: "Member Name" },
-                                    { data: "dailyCollectorName", title: "Collector Name" },
-                                    { data: "memberBranchName", title: "Member Branch" },
-                                    {
-                                        data: "amount",
-                                        title: "Amount",
-                                        className: "text-end",
-                                        render: $.fn.dataTable.render.number(',', '.', 2)
-                                    }
-                                ],
-                                responsive: true,
-                                pageLength: 5,
-                                lengthMenu: [5, 10, 25, 50]
-                            });
+                            // initialize preview details table (destroy any prior instance)
+                            try {
+                                if ($.fn.DataTable.isDataTable('#previewDetailsTable')) {
+                                    $('#previewDetailsTable').DataTable().clear().destroy();
+                                    $('#previewDetailsTable').empty();
+                                }
+                                $('#previewDetailsTable').DataTable({
+                                    destroy: true,
+                                    data: tableData,
+                                    columns: [
+                                        { data: "memberReference", title: "Member Ref." },
+                                        { data: "memberName", title: "Member Name" },
+                                        { data: "dailyCollectorName", title: "Collector Name" },
+                                        { data: "memberBranchName", title: "Member Branch" },
+                                        {
+                                            data: "amount",
+                                            title: "Amount",
+                                            className: "text-end",
+                                            render: $.fn.dataTable.render.number(',', '.', 2)
+                                        }
+                                    ],
+                                    responsive: true,
+                                    pageLength: 5,
+                                    lengthMenu: [5, 10, 25, 50]
+                                });
+                            } catch (dtErr) {
+                                console.error('Error initializing previewDetailsTable', dtErr);
+                            }
 
                             form.reset();
                             $form.find('.select2').val(null).trigger('change');
@@ -210,16 +217,23 @@ function loadCollectors(branchId) {
             });
         }
 
+        // keep initial preview builder unmodified except minor tolerant access (not changing behavior)
         function buildInitialPreviewHtml(data) {
             const formatCurrency = (num) => (num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            // Minor tolerance for property names but behavior preserved
+            const uploadedBy = data.UploadedBy ?? data.uploadedBy ?? '';
+            const branchName = data.BranchName ?? data.branchName ?? '';
+            const totalMembers = data.TotalMembers ?? data.totalMember ?? 0;
+            const totalAmount = data.TotalAmount ?? data.totalAmount ?? 0;
+
             return `
-        <fieldset class="fieldset-custom">
-            <legend class="legend-custom">File Preview: ${data.FileUploadId || 'N/A'}</legend>
+        <fieldset class="fieldset-custom">            
             <div class="row g-2">
-                <div class="col-6 col-md-3"><div class="card card-border-shadow-warning h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Uploaded By</p><h6 class="ms-1 mb-0">${data.UploadedBy || ''}</h6></div></div></div>
-                <div class="col-6 col-md-3"><div class="card card-border-shadow-info h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Branch</p><h6 class="ms-1 mb-0">${data.BranchName || ''}</h6></div></div></div>
-                <div class="col-6 col-md-3"><div class="card card-border-shadow-success h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Members</p><h6 class="ms-1 mb-0">${data.TotalMembers || 0}</h6></div></div></div>
-                <div class="col-6 col-md-3"><div class="card card-border-shadow-danger h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Amount</p><h6 class="ms-1 mb-0">${formatCurrency(data.TotalAmount)}</h6></div></div></div>
+            <h4 class="legend-custom text-info">File Preview: ${data.FileUploadId || data.fileUploadId || 'N/A'}</h4>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-warning h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Uploaded By</p><h6 class="ms-1 mb-0">${uploadedBy}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-info h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Branch</p><h6 class="ms-1 mb-0">${branchName}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-success h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Members</p><h6 class="ms-1 mb-0">${totalMembers}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-danger h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Amount</p><h6 class="ms-1 mb-0">${formatCurrency(totalAmount)}</h6></div></div></div>
             </div>
             <div class="table-responsive mt-3">
                 <table id="previewDetailsTable" class="table table-striped table-bordered" style="width:100%"></table>
@@ -232,16 +246,24 @@ function loadCollectors(branchId) {
         </fieldset>`;
         }
 
+        // --- extraction preview builder: tolerant about property names (only used for extraction) ---
         function buildExtractedPreviewHtml(data) {
             const formatCurrency = (num) => (num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            const fileUploadId = data.FileUploadId ?? data.fileUploadId ?? data.FileUploadId ?? 'N/A';
+            const collectorName = data.CollectorName ?? data.collectorName ?? '';
+            const branchName = data.BranchName ?? data.branchName ?? '';
+            const totalMember = data.TotalMember ?? data.totalMember ?? 0;
+            const totalAmount = data.TotalAmount ?? data.totalAmount ?? 0;
+
             return `
         <fieldset class="fieldset-custom">
-            <legend class="legend-custom text-success">Extraction Successful: ${data.FileUploadId || 'N/A'}</legend>
+            <legend class="legend-custom text-success">Extraction Successful: ${fileUploadId}</legend>
             <div class="row g-2">
-                <div class="col-6 col-md-3"><div class="card card-border-shadow-warning h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Collector Name</p><h6 class="ms-1 mb-0">${data.CollectorName || ''}</h6></div></div></div>
-                <div class="col-6 col-md-3"><div class="card card-border-shadow-info h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Branch</p><h6 class="ms-1 mb-0">${data.BranchName || ''}</h6></div></div></div>
-                <div class="col-6 col-md-3"><div class="card card-border-shadow-success h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Members</p><h6 class="ms-1 mb-0">${data.TotalMember || 0}</h6></div></div></div>
-                <div class="col-6 col-md-3"><div class="card card-border-shadow-danger h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Amount</p><h6 class="ms-1 mb-0">${formatCurrency(data.TotalAmount)}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-warning h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Collector Name</p><h6 class="ms-1 mb-0">${collectorName}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-info h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Branch</p><h6 class="ms-1 mb-0">${branchName}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-success h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Members</p><h6 class="ms-1 mb-0">${totalMember}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-danger h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Amount</p><h6 class="ms-1 mb-0">${formatCurrency(totalAmount)}</h6></div></div></div>
             </div>
             <div class="table-responsive mt-3">
                 <table id="extractedDetailsTable" class="table table-striped table-bordered" style="width:100%"></table>
@@ -252,9 +274,22 @@ function loadCollectors(branchId) {
         </fieldset>`;
         }
 
-        // --- FUNCTION 4: Handles FILE EXTRACTION ---
+        // --- FUNCTION 4: Handles FILE EXTRACTION (robust) ---
         function extractFile() {
-            if (!currentFileUploadId) {
+            // if called as handler with event, prevent default
+            if (arguments.length && arguments[0] && arguments[0].preventDefault) {
+                arguments[0].preventDefault();
+            }
+
+            // allow passing explicit id via parameter when needed
+            let fileId = null;
+            if (arguments.length > 1 && typeof arguments[1] === 'string') {
+                fileId = arguments[1];
+            } else {
+                fileId = currentFileUploadId;
+            }
+
+            if (!fileId) {
                 appalert('No file to extract.', 3, 1);
                 return;
             }
@@ -265,54 +300,123 @@ function loadCollectors(branchId) {
             $.ajax({
                 url: '/ManualDailyCollection/extract',
                 type: 'POST',
-                data: { KEY: currentFileUploadId },
+                data: { KEY: fileId },
                 headers: token ? { 'RequestVerificationToken': token } : {},
                 dataType: 'json',
                 beforeSend: function () {
-                    $resultContainer.html('<p class="text-center">Extracting data...</p>');
+                    $resultContainer.stop(true, true).html('<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-2 text-primary">Extracting data...</p></div>').show();
                 },
                 success: function (response) {
-                    if (response && response.status === "SUCCESS" && response.data) {
-                        appalert(response.statusDescription || 'File extracted successfully.', 1, 1);
-                        const extractedHtml = buildExtractedPreviewHtml(response.data);
-                        $resultContainer.html(extractedHtml);
-                        $('#extractedDetailsTable').DataTable({
-                            /*destroy: true,*/
-                            data: response.data.details || [],
-                            columns: [
-                                { data: "MemberReference", title: "Member Ref." },
-                                { data: "MemberName", title: "Member Name" },
-                                { data: "FullAccountNumber", title: "Account No." },
-                                { data: "MemberBranchName", title: "Member Branch" },
-                                {
-                                    data: "amount",
-                                    title: "Amount",
-                                    className: "text-end",
-                                    render: $.fn.dataTable.render.number(',', '.', 2)
+                    try {
+                        // tolerate different success casing
+                        const status = (response && (response.status ?? response.Status ?? '')).toString();
+                        const data = response && (response.data ?? response.Data ?? null);
+
+                        if ((status && status.toLowerCase() === 'success') && data) {
+                            appalert(response.statusDescription || 'File extracted successfully.', 1, 1);
+
+                            // update currentFileUploadId from response if provided
+                            currentFileUploadId = data.FileUploadId ?? data.fileUploadId ?? currentFileUploadId;
+
+                            // build and inject extracted preview
+                            const extractedHtml = buildExtractedPreviewHtml(data);
+                            $resultContainer.hide().html(extractedHtml).fadeIn();
+
+                            // Initialize extracted details DataTable defensively
+                            try {
+                                // ensure prior table destroyed
+                                if ($.fn.DataTable.isDataTable('#extractedDetailsTable')) {
+                                    $('#extractedDetailsTable').DataTable().clear().destroy();
+                                    $('#extractedDetailsTable').empty();
                                 }
-                            ],
-                            responsive: true,
-                            pageLength: 5,
-                            lengthMenu: [5, 10, 25, 50]
-                        });
-                    } else {
-                        appalert((response && response.message) || 'Extraction failed.', 4, 1);
+
+                                // details array tolerance
+                                let detailsArray = data.details ?? data.Details ?? data.data?.details ?? [];
+                                if (!Array.isArray(detailsArray)) detailsArray = [];
+
+                                $('#extractedDetailsTable').DataTable({
+                                    destroy: true,
+                                    data: detailsArray,
+                                    columns: [
+                                        {
+                                            title: "Member Ref.",
+                                            data: function (row) {
+                                                return row.memberReference ?? row.MemberReference ?? row.MemberRef ?? '';
+                                            }
+                                        },
+                                        {
+                                            title: "Member Name",
+                                            data: function (row) {
+                                                return row.memberName ?? row.MemberName ?? row.Member ?? '';
+                                            }
+                                        },
+                                        {
+                                            title: "Account No.",
+                                            data: function (row) {
+                                                return row.accountNumber ?? row.AccountNumber ?? row.fullAccountNumber ?? row.FullAccountNumber ?? '';
+                                            }
+                                        },
+                                        {
+                                            title: "Member Branch",
+                                            data: function (row) {
+                                                return row.memberBranchName ?? row.MemberBranchName ?? row.memberBranch ?? '';
+                                            }
+                                        },
+                                        {
+                                            title: "Amount",
+                                            className: "text-end",
+                                            data: function (row) {
+                                                return row.amount ?? row.Amount ?? 0;
+                                            },
+                                            render: $.fn.dataTable.render.number(',', '.', 2)
+                                        }
+                                    ],
+                                    responsive: true,
+                                    pageLength: 5,
+                                    lengthMenu: [5, 10, 25, 50]
+                                });
+                            } catch (dtErr) {
+                                console.error('Error initializing extractedDetailsTable', dtErr);
+                                appalert('An error occurred displaying extracted details.', 4, 1);
+                            }
+
+                            // wire close button to reset preview (keeps single behavior)
+                            $('#closeExtractedPreviewBtn').off('click').on('click', function () {
+                                resetInitialPreview();
+                            });
+
+                        } else {
+                            const errMsg = (response && (response.message || response.statusDescription)) || 'Extraction failed.';
+                            appalert(errMsg, 4, 1);
+                            $resultContainer.html(`<div class="alert alert-warning">${errMsg}</div>`);
+                        }
+                    } catch (err) {
+                        console.error('extractFile: exception', err);
+                        appalert('An unexpected error occurred while processing extraction results.', 4, 1);
+                        $resultContainer.html('<div class="alert alert-danger">An unexpected error occurred while showing extracted data.</div>');
                     }
                 },
-                error: function () {
+                error: function (xhr, status, err) {
+                    console.error('extractFile: ajax error', status, err, xhr);
                     appalert('An error occurred during extraction.', 4, 1);
+                    $resultContainer.html('<div class="alert alert-danger">An error occurred during extraction. Please try again.</div>');
                 }
             });
         }
 
         // --- UTILITIES ---
         function resetInitialPreview() {
-            $('#uploadResultContainer').slideUp().html('');
+            $('#uploadResultContainer').slideUp(function () {
+                $(this).html('');
+            });
+
             if ($.fn.DataTable.isDataTable('#previewDetailsTable')) {
-                $('#previewDetailsTable').DataTable().destroy();
+                try { $('#previewDetailsTable').DataTable().destroy(); } catch(e) { console.warn(e); }
+                $('#previewDetailsTable').empty();
             }
             if ($.fn.DataTable.isDataTable('#extractedDetailsTable')) {
-                $('#extractedDetailsTable').DataTable().destroy();
+                try { $('#extractedDetailsTable').DataTable().destroy(); } catch(e) { console.warn(e); }
+                $('#extractedDetailsTable').empty();
             }
             currentFileUploadId = null;
         }
@@ -348,5 +452,6 @@ function loadCollectors(branchId) {
         $(document).ready(initialize);
 
     }(jQuery));
-</script>
+    </script>
+
 }

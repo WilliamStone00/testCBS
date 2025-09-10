@@ -3,6 +3,7 @@ using CBS.BusinessService.Config;
 using CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Service;
 using CBS.FrontDesk.Data.Entity.ManualDailycollection;
 using CBS.FrontDesk.Data.Message;
+using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Math;
 using Newtonsoft.Json;
 using System;
@@ -71,31 +72,48 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             }
         }
 
+        // Returns the partial view with file summary and DataTable placeholder
         [HttpGet]
         public async Task<ActionResult> GetextractedFileDetails(string id)
         {
-
             if (string.IsNullOrEmpty(id))
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Missing id");
 
-            try
-            {
-                var model = await _manualService.GetExtractedDetailsAsync(id);
+            var model = await _manualService.GetExtractedDetailsAsync(id);
 
-                if (model == null)
-                    return Json(new { status = "ERROR", statusDescription = "No data returned", data = (object)null }, JsonRequestBehavior.AllowGet);
+            if (model == null)
+                return HttpNotFound();
 
-                // Return the partial view that uses FileDetailsResponse as model
-                return PartialView("_FileDetails", model);
-            }
-            catch (Exception ex)
-            {
-                // log ex
-                return Json(new { status = "ERROR", statusDescription = "Server error", data = (object)null }, JsonRequestBehavior.AllowGet);
-            }
+            return PartialView("_FileDetails", model);
         }
 
-       
+        // Returns JSON for DataTable
+        [HttpGet]
+        public async Task<ActionResult> GetTransactionDetails(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Missing id");
+
+            var fileDetails = await _manualService.GetExtractedDetailsAsync(id);
+
+            if (fileDetails?.Details == null || !fileDetails.Details.Any())
+                return Json(new List<object>(), JsonRequestBehavior.AllowGet);
+
+            var jsonData = fileDetails.Details.Select(d => new
+            {
+                memberName = d.MemberName,
+                accountNumber = d.AccountNumber,
+                memberBranchName = d.MemberBranchName,
+                amount = d.Amount
+            });
+
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+
+
         // ACTION 3: Gets the partial view for the validation/review/approve modal
         [HttpGet]
         public ActionResult GetActionForm(string fileUploadId, string mode)

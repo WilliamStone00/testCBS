@@ -355,51 +355,51 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         /// <summary>
         /// Calls the endpoint to process/extract a recently uploaded file.
         /// </summary>
-    public async Task<ExecutionMessages> ExtractFileAsync(string fileUploadId){
-    try
-    {
-        var url = APICallHelper.ExtractUploadedFile;
-        var payload = new { fileUploadId = fileUploadId };
-
-         var response = await _apiHelper.PostAsync<ServiceResponse<FileDetailsResponse>>(url, payload);
-
-        if (response?.IsSuccess == true && response.ApiResponseData?.Data != null)
+        public async Task<ExecutionMessages> ExtractFileAsync(string fileUploadId){
+        try
         {
-            var data = response.ApiResponseData.Data;
+            var url = APICallHelper.ExtractUploadedFile;
+            var payload = new { fileUploadId = fileUploadId };
 
-            // do whatever you need with 'data' (e.g. save, render, map to viewmodel)
-            GetExecutionMessages(
-                data,
-                true,
-                fileUploadId,
-                MessagesResults.Success,
-                ExecutionProcessOption.DefaultSuccessdMessages,
-                "Success",
-                null,
-                "File extracted successfully."
-            );
+             var response = await _apiHelper.PostAsync<ServiceResponse<FileDetailsResponse>>(url, payload);
+
+            if (response?.IsSuccess == true && response.ApiResponseData?.Data != null)
+            {
+                var data = response.ApiResponseData.Data;
+
+                // do whatever you need with 'data' (e.g. save, render, map to viewmodel)
+                GetExecutionMessages(
+                    data,
+                    true,
+                    fileUploadId,
+                    MessagesResults.Success,
+                    ExecutionProcessOption.DefaultSuccessdMessages,
+                    "Success",
+                    null,
+                    "File extracted successfully."
+                );
+            }
+            else
+            {
+                GetExecutionMessages(
+                    null,
+                    false,
+                    fileUploadId,
+                    MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages,
+                    "Failed",
+                    null,
+                    response?.ApiResponseData?.Message ?? response?.Message ?? "Extraction failed."
+                );
+            }
         }
-        else
+        catch (Exception ex)
         {
-            GetExecutionMessages(
-                null,
-                false,
-                fileUploadId,
-                MessagesResults.Failed,
-                ExecutionProcessOption.DefaultFailedMessages,
-                "Failed",
-                null,
-                response?.ApiResponseData?.Message ?? response?.Message ?? "Extraction failed."
-            );
+            GetExecutionMessages(null, false, "Extract File", MessagesResults.Error, ExecutionProcessOption.TryCatch, "Error", ex, ex.Message);
         }
-    }
-    catch (Exception ex)
-    {
-        GetExecutionMessages(null, false, "Extract File", MessagesResults.Error, ExecutionProcessOption.TryCatch, "Error", ex, ex.Message);
-    }
 
-    return ExecutionMessage;
-}
+        return ExecutionMessage;
+    }
 
 
         #endregion
@@ -535,7 +535,7 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
             // Compute summary fields from details (best-effort)
             var totalAmount = details.Sum(d => d.Amount);
             var totalMember = details.Count;
-
+          
             var first = details.FirstOrDefault();
             var collectorName = first?.DailyCollectorName ?? string.Empty;
             var branchName = first?.MemberBranchName ?? string.Empty;
@@ -547,7 +547,8 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
                 BranchName = branchName,
                 TotalAmount = totalAmount,
                 TotalMember = totalMember,
-                Details = details
+                Details = details,
+                
             };
 
             return model;

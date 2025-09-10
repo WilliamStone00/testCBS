@@ -52,7 +52,7 @@ namespace CBS.FrontDesk.Data.Entity.ManualDailycollection
         public decimal TotalAmount { get; set; }
         public int TotalMember { get; set; }
         public int TotalBranchesCollected { get; set; } = 0;
-        public string Status { get; set; }
+        public string status { get; set; }
         public string UploadedBy { get; set; } = null;
         public DateTime? UploadDateTime { get; set; } = null;
         public string ReviewedBy { get; set; } = null;
