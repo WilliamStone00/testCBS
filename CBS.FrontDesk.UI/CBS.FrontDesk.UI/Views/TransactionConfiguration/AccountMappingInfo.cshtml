@@ -1,0 +1,993 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+@using Resources
+@{
+    ViewBag.Title = GlobalsAccountMappingInfo.AccouningEntryBooking;
+
+}
+<div class="container bg-icon-right">
+    <h6 class="text-center fw-semibold d-flex justify-content-center align-items-center mb-4">
+        <img src="~/AppFiles/Images/Icon.ico" alt="section title icon" class="me-2">
+
+        <span class="text-uppercase"></span>
+    </h6>
+    <h3 class="text-center mb-2">@GlobalsAccountMappingInfo.AccountingEntriesFor <span class="fw-bold"> @ViewBag.Name</span> service. </h3>
+    <div class="row gy-5">
+        <div class="col-lg-5">
+            <div class="text-center">
+
+                <img src="~/AppFiles/Images/BG2.png" class="faq-image" />
+            </div>
+        </div>
+        @if (ViewBag.ProductType == "Saving_Product")
+        {
+
+            if (ViewBag.ProductName == "Daily Savings")
+            {
+                <div class="col-lg-7">
+                    <div class="accordion" id="accordionFront">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="head-One">
+                                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="false" aria-controls="accordionOne">
+                                    @GlobalsAccountMappingInfo.CollOfSubsMemberDailySaving
+                                </button>
+                            </h2>
+
+                            <div id="accordionOne" class="accordion-collapse collapse" data-bs-parent="#accordionFront" aria-labelledby="accordionOne" style="">
+                                <div class="accordion-body">
+                                    <p>
+                                        @GlobalsAccountMappingInfo.TableAccountingEntriesDescription <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold">@GlobalsAccountMappingInfo.ForInstance</span>
+                                    </p>
+
+                                    <p>
+                                        @GlobalsAccountMappingInfo.AMemberWantToDeposit
+                                        A member wants to deposit 10000Frs in his daily savings account.
+                                    </p>
+
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-hover" id="myDataTable_AccountData">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+
+                                                    var MomoCollectionEntries = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "MOMOCASH_COLLECTION");
+
+                                                    foreach (var item in MomoCollectionEntries)
+                                                    {
+                                                        <tr>
+                                                            <td style="width:30%">@item.AccountNumber</td>
+                                                            <td style="width:30%">@item.AccountName</td>
+                                                            @if (item.BookingDirection == "DEBIT")
+                                                            {
+                                                                <td style="width:20%">@item.Amount</td>
+                                                                <td style="width:20%">0</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td style="width:20%">0</td>
+                                                                <td style="width:20%">@item.Amount </td>
+
+                                                            }
+
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            </tbody>
+                                            <thead class="table-light">
+                                                <tr>
+
+                                                    <th colspan="2">@GlobalsAccountMappingInfo.TotalDebit</th>
+                                                    @{
+
+                                                        var MomoCollectionEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "MOMOCASH_COLLECTION");
+                                                        var sumDebitMC = MomoCollectionEntri.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+                                                        var sumCreditMC = MomoCollectionEntri.Where(x => x.BookingDirection != "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+
+                                                        <th>@sumDebitMC</th>
+                                                        <th>@sumCreditMC</th>
+                                                    }
+                                                </tr>
+                                            </thead>
+
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="head-Two">
+                                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionTwo" aria-expanded="false" aria-controls="accordionTwo">
+                                    @GlobalsAccountMappingInfo.DepositOfDailyCollFieldOp
+                                </button>
+                            </h2>
+                            <div id="accordionTwo" class="accordion-collapse collapse" aria-labelledby="accordionTwo" data-bs-parent="#accordionFront" style="">
+                                <div class="accordion-body">
+                                    <p>
+                                        @GlobalsAccountMappingInfo.TableDepositOfDailyCollectorDesc
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold">@GlobalsAccountMappingInfo.ForInstance :</span>
+                                    </p>
+
+                                    <p>
+                                        @GlobalsAccountMappingInfo.ADailyCollectorWantToPerformDeposit
+                                        A daily collector wants to perform deposit the  1,000,000Frs collected from the daily savings members.
+                                    </p>
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-hover" id="myDataTable_AccountData">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+
+                                                    var CashCollectionEntries = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "MOMO_CASHCOLLECTION_DEPOSIT");
+
+                                                    foreach (var item in CashCollectionEntries)
+                                                    {
+                                                        <tr>
+                                                            <td style="width:30%">@item.AccountNumber</td>
+                                                            <td style="width:30%">@item.AccountName</td>
+                                                            @if (item.BookingDirection == "DEBIT")
+                                                            {
+                                                                <td style="width:20%">@item.Amount</td>
+                                                                <td style="width:20%">0</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td style="width:20%">0</td>
+                                                                <td style="width:20%">@item.Amount </td>
+
+                                                            }
+
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            </tbody>
+                                            <thead class="table-light">
+                                                <tr>
+
+                                                    <th colspan="2">@GlobalsAccountMappingInfo.Total  :</th>
+                                                    @{
+
+                                                        var CashCollectionEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "MOMO_CASHCOLLECTION_DEPOSIT");
+                                                        var sumDebitCOMD = CashCollectionEntri.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+                                                        var sumCreditCOMD = CashCollectionEntri.Where(x => x.BookingDirection == "CREDIT").Sum(x => Convert.ToDouble(x.Amount));
+
+                                                        <th>@sumDebitCOMD</th>
+                                                        <th>@sumCreditCOMD</th>
+                                                    }
+                                                </tr>
+                                            </thead>
+
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="head-Three">
+                                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionThree" aria-expanded="false" aria-controls="accordionTwo">
+                                    @GlobalsAccountMappingInfo.PaymentOfCommissionByMember
+                                </button>
+                            </h2>
+                            <div id="accordionThree" class="accordion-collapse collapse" aria-labelledby="accordionThree" data-bs-parent="#accordionFront" style="">
+                                <div class="accordion-body">
+                                    <p>
+                                        @GlobalsAccountMappingInfo.TableAccountingEntriesForMonthlyPaymentDesc
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold"> @GlobalsAccountMappingInfo.ForInstance :</span>
+                                    </p>
+
+                                    <p>
+                                        @GlobalsAccountMappingInfo.TotalComissionCollectedFromMemSuscToDailySaving
+                                    </p>
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-hover" id="myDataTable_AccountData">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+
+                                                    var PayCashCollectionEntries = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "MOMO_CASHCOLLECTION_PAYEMENT");
+
+                                                    foreach (var item in PayCashCollectionEntries)
+                                                    {
+                                                        <tr>
+                                                            <td style="width:30%">@item.AccountNumber</td>
+                                                            <td style="width:30%">@item.AccountName</td>
+                                                            @if (item.BookingDirection == "DEBIT")
+                                                            {
+                                                                <td style="width:20%">@item.Amount</td>
+                                                                <td style="width:20%">0</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td style="width:20%">0</td>
+                                                                <td style="width:20%">@item.Amount </td>
+
+                                                            }
+
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            </tbody>
+                                            <thead class="table-light">
+                                                <tr>
+
+                                                    <th colspan="2">@GlobalsAccountMappingInfo.Total  :</th>
+                                                    @{
+
+                                                        var PayCashCollectionEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "MOMO_CASHCOLLECTION_PAYEMENT");
+                                                        var sumDebitCOMP = PayCashCollectionEntri.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+                                                        var sumCreditCOMP = PayCashCollectionEntri.Where(x => x.BookingDirection == "CREDIT").Sum(x => Convert.ToDouble(x.Amount));
+
+                                                        <th>@sumDebitCOMP</th>
+                                                        <th>@sumCreditCOMP</th>
+                                                    }
+                                                </tr>
+                                            </thead>
+
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="head-Four">
+                                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFour" aria-expanded="false" aria-controls="accordionTwo">
+                                    @GlobalsAccountMappingInfo.PaymentOfCommissionToDailyColl
+                                </button>
+                            </h2>
+                            <div id="accordionFour" class="accordion-collapse collapse" aria-labelledby="accordionThree" data-bs-parent="#accordionFront" style="">
+                                <div class="accordion-body">
+                                    <p>
+                                        @GlobalsAccountMappingInfo.TableAccountingEntriesForMonthlyPaymentDesc
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold"> @GlobalsAccountMappingInfo.ForInstance:</span>
+                                    </p>
+
+                                    <p>
+                                        @GlobalsAccountMappingInfo.CommissionCollectedToDailySavingProduct
+                                    </p>
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-hover" id="myDataTable_AccountData">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+
+                                                    var PayCashCollectorEntries = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "MOMO_CASHCOLLECTION_COMMISSION");
+
+                                                    foreach (var item in PayCashCollectorEntries)
+                                                    {
+                                                        <tr>
+                                                            <td style="width:30%">@item.AccountNumber</td>
+                                                            <td style="width:30%">@item.AccountName</td>
+                                                            @if (item.BookingDirection == "DEBIT")
+                                                            {
+                                                                <td style="width:20%">@item.Amount</td>
+                                                                <td style="width:20%">0</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td style="width:20%">0</td>
+                                                                <td style="width:20%">@item.Amount </td>
+
+                                                            }
+
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            </tbody>
+                                            <thead class="table-light">
+                                                <tr>
+
+                                                    <th colspan="2">@GlobalsAccountMappingInfo.Total   :</th>
+                                                    @{
+
+                                                        var PayCashCollectorEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "MOMO_CASHCOLLECTION_COMMISSION");
+                                                        var sumDebitCOMPD = PayCashCollectorEntri.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+                                                        var sumCreditCOMPD = PayCashCollectorEntri.Where(x => x.BookingDirection == "CREDIT").Sum(x => Convert.ToDouble(x.Amount));
+
+                                                        <th>@sumDebitCOMPD</th>
+                                                        <th>@sumCreditCOMPD</th>
+                                                    }
+                                                </tr>
+                                            </thead>
+
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-lg-7">
+                    <div class="accordion" id="accordionFront">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="head-One">
+                                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="false" aria-controls="accordionOne">
+                                    @GlobalsAccountMappingInfo.LocalCashDepositOperation:
+                                </button>
+                            </h2>
+
+                            <div id="accordionOne" class="accordion-collapse collapse" data-bs-parent="#accordionFront" aria-labelledby="accordionOne" style="">
+                                <div class="accordion-body">
+
+                                    @if (Model.SavingDepositProductIsChargable)
+                                    {
+                                        <p>
+                                            @GlobalsAccountMappingInfo.TableAccountingEntriesForLocalBranchDepositOp <span class="fw-bold">@ViewBag.Name</span> account.
+                                        </p>
+                                        <p>
+                                            <span class="fw-bold">@GlobalsAccountMappingInfo.ForInstance:</span>
+                                        </p>
+
+                                        <p>
+                                            @GlobalsAccountMappingInfo.MemberWantDepositAndNeedToPayFee
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                <p>
+                                    @GlobalsAccountMappingInfo.TableAccountingEntriesForLocalBranchDepositOp <span class="fw-bold">@ViewBag.Name</span> account.
+                                </p>
+                                        <p>
+                                            <span class="fw-bold"> @GlobalsAccountMappingInfo.ForInstance:</span>
+                                        </p>
+
+                                        <p>
+                                            @GlobalsAccountMappingInfo.MemberWantDeposit
+                                        </p>
+                                    }
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-hover" id="myDataTable_AccountData">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+
+                                                    var localDepositEntries = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "DEPOSIT");
+
+                                                    foreach (var item in localDepositEntries)
+                                                    {
+                                                        <tr>
+                                                            <td style="width:30%">@item.AccountNumber</td>
+                                                            <td style="width:30%">@item.AccountName</td>
+                                                            @if (item.BookingDirection == "DEBIT")
+                                                            {
+                                                                <td style="width:20%">@item.Amount</td>
+                                                                <td style="width:20%">0</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td style="width:20%">0</td>
+                                                                <td style="width:20%">@item.Amount </td>
+
+                                                            }
+
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            </tbody>
+                                            <thead class="table-light">
+                                                <tr>
+
+                                                    <th colspan="2"><th> @GlobalsAccountMappingInfo.TotalDebit</th>
+                                                    @{
+
+                                                        var localDepositEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "DEPOSIT");
+                                                        var sumDebit = localDepositEntri.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+                                                        var sumCredit = localDepositEntri.Where(x => x.BookingDirection != "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+
+                                                        <th>@sumDebit</th>
+                                                        <th>@sumCredit</th>
+                                                    }
+                                                </tr>
+                                            </thead>
+
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="head-Two">
+                                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionTwo" aria-expanded="false" aria-controls="accordionTwo">
+                                    @GlobalsAccountMappingInfo.RemoteBranchCashDepositOperation:
+                                </button>
+                            </h2>
+                            <div id="accordionTwo" class="accordion-collapse collapse" aria-labelledby="accordionTwo" data-bs-parent="#accordionFront" style="">
+                                <div class="accordion-body">
+
+                                    @if (Model.SavingDepositProductIsChargable)
+                                    {
+                                        <p>
+                                            @GlobalsAccountMappingInfo.TableAccountingEntriesForLocalBranchDepositOp <span class="fw-bold">@ViewBag.Name</span> account.
+                                        </p>
+                                        <p>
+                                            <span class="fw-bold">@GlobalsAccountMappingInfo.ForInstance:</span>
+                                        </p>
+
+                                        <p>
+                                            @GlobalsAccountMappingInfo.MemberWantDepositAndNeedToPayFee
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <div class="text-center mb-2">
+                                            @GlobalsAccountMappingInfo.TableAccountingEntriesForLocalBranchDepositOp  <span class="fw-bold"> @ViewBag.Name</span> account.
+                                            <span class="fw-bold">
+                                                @GlobalsAccountMappingInfo.ForInstance:
+                                            </span><br>
+                                            @GlobalsAccountMappingInfo.MemberWantDeposit
+                                        </div>
+                                    }
+
+
+
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-hover" id="myDataTable_AccountData">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+
+                                                    var RemoteDepositEntries = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "DEPOSIT_REMOTE");
+
+                                                    foreach (var item in RemoteDepositEntries)
+                                                    {
+                                                        <tr>
+                                                            <td style="width:30%">@item.AccountNumber</td>
+                                                            <td style="width:30%">@item.AccountName</td>
+                                                            @if (item.BookingDirection == "DEBIT")
+                                                            {
+                                                                <td style="width:20%">@item.Amount</td>
+                                                                <td style="width:20%">0</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td style="width:20%">0</td>
+                                                                <td style="width:20%">@item.Amount </td>
+
+                                                            }
+
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            </tbody>
+                                            <thead class="table-light">
+                                                <tr>
+
+                                                    <th colspan="2">@GlobalsAccountMappingInfo.TotalDebit</th>
+                                                    @{
+
+                                                        var RemoteDepositEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "DEPOSIT_REMOTE");
+                                                        var sumDebitRd = RemoteDepositEntri.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+                                                        var sumCreditRd = RemoteDepositEntri.Where(x => x.BookingDirection == "CREDIT").Sum(x => Convert.ToDouble(x.Amount));
+
+                                                        <th>@sumDebitRd</th>
+                                                        <th>@sumCreditRd</th>
+                                                    }
+                                                </tr>
+                                            </thead>
+
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="head-Three">
+                                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionThree" aria-expanded="false" aria-controls="accordionThree">
+                                    @GlobalsAccountMappingInfo.LocalCashOutOp
+                                </button>
+                            </h2>
+                            <div id="accordionThree" class="accordion-collapse collapse" aria-labelledby="accordionThree" data-bs-parent="#accordionFront" style="">
+                                <div class="accordion-body">
+                                    @if (Model.SavingWithdrwalProductIsChargable)
+                                    {
+                                        <p>
+                                            @GlobalsAccountMappingInfo.TableAccountingEntriesForLocalBranchDepositOp <span class="fw-bold">@ViewBag.Name</span> account.
+                                        </p>
+                                        <p>
+                                            <span class="fw-bold"> @GlobalsAccountMappingInfo.ForInstance:</span>
+                                        </p>
+
+                                        <p>
+                                            @GlobalsAccountMappingInfo.MemberWithdrawAndNeedToPay
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p>
+                                            @GlobalsAccountMappingInfo.TableAccountingEntriesForLocalBranchDepositOp <span class="fw-bold">@ViewBag.Name</span> account.
+                                        </p>
+                                        <p>
+                                            <span class="fw-bold"> @GlobalsAccountMappingInfo.ForInstance:</span>
+                                        </p>
+
+                                        <p>
+                                            @GlobalsAccountMappingInfo.MemberWantWithdraw
+                                        </p>
+                                    }
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-hover" id="myDataTable_AccountData">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+
+                                                    var localCashOutEntries = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "CASHOUT");
+
+                                                    foreach (var item in localCashOutEntries)
+                                                    {
+                                                        <tr>
+                                                            <td style="width:30%">@item.AccountNumber</td>
+                                                            <td style="width:30%">@item.AccountName</td>
+                                                            @if (item.BookingDirection == "DEBIT")
+                                                            {
+                                                                <td style="width:20%">@item.Amount</td>
+                                                                <td style="width:20%">0</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td style="width:20%">0</td>
+                                                                <td style="width:20%">@item.Amount </td>
+
+                                                            }
+
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            </tbody>
+                                            <thead class="table-light">
+                                                <tr>
+
+                                                    <th colspan="2">@GlobalsAccountMappingInfo.TotalDebit</th>
+                                                    @{
+
+                                                        var localCashOutEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "CASHOUT");
+                                                        var sumDebitCO = localCashOutEntri.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+                                                        var sumCreditCO = localCashOutEntri.Where(x => x.BookingDirection != "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+
+                                                        <th>@sumDebitCO</th>
+                                                        <th>@sumCreditCO</th>
+                                                    }
+                                                </tr>
+                                            </thead>
+
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="head-Four">
+                                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFour" aria-expanded="false" aria-controls="accordionFour">
+                                    @GlobalsAccountMappingInfo.RemoteCashOutOperation:
+                                </button>
+                            </h2>
+                            <div id="accordionFour" class="accordion-collapse collapse" aria-labelledby="accordionFour" data-bs-parent="#accordionFront" style="">
+                                <div class="accordion-body">
+                                    @if (Model.SavingWithdrwalProductIsChargable)
+                                    {
+                                        <p>
+                                            @GlobalsAccountMappingInfo.TableAccountingEntriesForLocalBranchDepositOp <span class="fw-bold">@ViewBag.Name</span> account.
+                                        </p>
+                                        <p>
+                                            <span class="fw-bold"> @GlobalsAccountMappingInfo.ForInstance:</span>
+                                        </p>
+
+                                        <p>
+                                            @GlobalsAccountMappingInfo.MemberWithdrawAndNeedToPay
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p>
+                                            @GlobalsAccountMappingInfo.TableAccountingEntriesForLocalBranchDepositOp <span class="fw-bold">@ViewBag.Name</span> account.
+                                        </p>
+                                        <p>
+                                            <span class="fw-bold"> @GlobalsAccountMappingInfo.ForInstance:</span>
+                                        </p>
+
+                                        <p>
+                                            @GlobalsAccountMappingInfo.MemberWantWithdraw
+                                        </p>
+                                    }
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-hover" id="myDataTable_AccountData">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+
+                                                    var RemoteCashOutEntries = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "CASHOUT_REMOTE");
+
+                                                    foreach (var item in RemoteCashOutEntries)
+                                                    {
+                                                        <tr>
+                                                            <td style="width:30%">@item.AccountNumber</td>
+                                                            <td style="width:30%">@item.AccountName</td>
+                                                            @if (item.BookingDirection == "DEBIT")
+                                                            {
+                                                                <td style="width:20%">@item.Amount</td>
+                                                                <td style="width:20%">0</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td style="width:20%">0</td>
+                                                                <td style="width:20%">@item.Amount </td>
+
+                                                            }
+
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            </tbody>
+                                            <thead class="table-light">
+                                                <tr>
+
+                                                    <th colspan="2">@GlobalsAccountMappingInfo.TotalDebit</th>
+                                                    @{
+
+                                                        var RemoteCashOutEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "CASHOUT_REMOTE");
+                                                        var sumDebitRCO = RemoteCashOutEntri.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+                                                        var sumCreditRCO = RemoteCashOutEntri.Where(x => x.BookingDirection != "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+
+                                                        <th>@sumDebitRCO</th>
+                                                        <th>@sumCreditRCO</th>
+                                                    }
+                                                </tr>
+                                            </thead>
+
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="head-Five">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionFive" aria-expanded="false" aria-controls="accordionFive">
+                                    @GlobalsAccountMappingInfo.InterestExpenseToMembers
+                                </button>
+                            </h2>
+                            <div id="accordionFive" class="accordion-collapse collapse show" aria-labelledby="accordionFive" data-bs-parent="#accordionFront" style="">
+                                <div class="accordion-body">
+                                    @{
+                                        var modelch = Model.chartofAccountInfos.Where(x => x.OperationType == "INTEREST_EXPENSE").FirstOrDefault();
+                                    }
+                                    @GlobalsAccountMappingInfo.DeterminantAccountMessage.Replace("{0}",modelch.AccountNumber+" - "+ modelch.AccountName)
+                                    @*The determinant account @modelch.AccountNumber - @modelch.AccountName has been set but the default counterpart cannot be evaluated
+                                    due to missen configuration.*@
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="head-Six">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionSix" aria-expanded="true" aria-controls="accordionSix">
+                                    @GlobalsAccountMappingInfo.AccountingConfigurationsFor  @ViewBag.Name
+                                </button>
+                            </h2>
+                            <div id="accordionSix" class="accordion-collapse collapse show" aria-labelledby="accordionSix" data-bs-parent="#accordionFront" style="">
+                                <div class="accordion-body">
+
+                                    @GlobalsAccountMappingInfo.TableConfigForThe @ViewBag.Name
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-hover" id="myDataTable_AccountData">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+
+                                                    var AccountProducts = Model.AccountProducts;
+
+                                                    foreach (var item in AccountProducts)
+                                                    {
+                                                        <tr>
+                                                            <td style="width:25%">@item.OperationEvent</td>
+                                                            <td style="width:35%">@item.Description</td>
+
+                                                            <td style="width:20%">@item.AccountNumber</td>
+                                                            <td style="width:20%">@item.Status</td>
+
+
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            </tbody>
+
+
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+        }
+        else
+        {
+            if (ViewBag.ProductName == "Momo cash")
+            {
+
+            }
+            else
+            {
+                <div class="col-lg-7">
+                    <div class="accordion" id="accordionFront">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="head-One">
+                                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="false" aria-controls="accordionOne">
+                                    @GlobalsAccountMappingInfo.MoMoCashDepositOp:
+                                </button>
+                            </h2>
+
+                            <div id="accordionOne" class="accordion-collapse collapse" data-bs-parent="#accordionFront" aria-labelledby="accordionOne" style="">
+                                <div class="accordion-body">
+
+
+                                    <p>
+                                        @GlobalsAccountMappingInfo.TableEntriesForLocalBranchMoMoDepositOp <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold"> @GlobalsAccountMappingInfo.ForInstance:</span>
+                                    </p>
+
+                                    <p>
+                                        @GlobalsAccountMappingInfo.MemberWantDeposit
+                                    </p>
+
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-hover" id="myDataTable_AccountData">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+
+                                                    var MobileMoneyEntries = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "MOMODEPOSIT");
+
+                                                    foreach (var item in MobileMoneyEntries)
+                                                    {
+                                                        <tr>
+                                                            <td style="width:30%">@item.AccountNumber</td>
+                                                            <td style="width:30%">@item.AccountName</td>
+                                                            @if (item.BookingDirection == "DEBIT")
+                                                            {
+                                                                <td style="width:20%">@item.Amount</td>
+                                                                <td style="width:20%">0</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td style="width:20%">0</td>
+                                                                <td style="width:20%">@item.Amount </td>
+
+                                                            }
+
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            </tbody>
+                                            <thead class="table-light">
+                                                <tr>
+
+                                                    <th colspan="2">@GlobalsAccountMappingInfo.TotalDebit</th>
+                                                    @{
+
+                                                        var MobileMoneyEntri = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "MOMODEPOSIT");
+                                                        var sumDebitMM = MobileMoneyEntri.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+                                                        var sumCreditMM = MobileMoneyEntri.Where(x => x.BookingDirection != "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+
+                                                        <th>@sumDebitMM</th>
+                                                        <th>@sumCreditMM</th>
+                                                    }
+                                                </tr>
+                                            </thead>
+
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="head-Two">
+                                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionTwo" aria-expanded="false" aria-controls="accordionTwo">
+                                    @GlobalsAccountMappingInfo.MomoCashoutOp:
+                                </button>
+                            </h2>
+                            <div id="accordionTwo" class="accordion-collapse collapse" aria-labelledby="accordionTwo" data-bs-parent="#accordionFront" style="">
+                                <div class="accordion-body">
+
+
+                                    <p>
+                                        @GlobalsAccountMappingInfo.TableEntriesForLocalBranchMoMoCashOutOp <span class="fw-bold">@ViewBag.ProductName</span> account.
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold"> @GlobalsAccountMappingInfo.ForInstance:</span>
+                                    </p>
+
+                                    <p>
+                                        @GlobalsAccountMappingInfo.MemberOrNotPerformOp
+                                    </p>
+
+
+
+
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-hover" id="myDataTable_AccountData">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th> @GlobalsAccountMappingInfo.AccountNumber</th>
+                                                    <th> @GlobalsAccountMappingInfo.AccountLabel</th>
+                                                    <th>@GlobalsAccountMappingInfo.Debit</th>
+                                                    <th>@GlobalsAccountMappingInfo.Credit</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+
+                                                    var MobileMoneyEntriesmm = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "MOMOCASHOUT");
+
+                                                    foreach (var item in MobileMoneyEntriesmm)
+                                                    {
+                                                        <tr>
+                                                            <td style="width:30%">@item.AccountNumber</td>
+                                                            <td style="width:30%">@item.AccountName</td>
+                                                            @if (item.BookingDirection == "DEBIT")
+                                                            {
+                                                                <td style="width:20%">@item.Amount</td>
+                                                                <td style="width:20%">0</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td style="width:20%">0</td>
+                                                                <td style="width:20%">@item.Amount </td>
+
+                                                            }
+
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            </tbody>
+                                            <thead class="table-light">
+                                                <tr>
+
+                                                    <th colspan="2">Total   :</th>
+                                                    @{
+
+                                                        var MobileMoneyEntr = Model.chartofAccountInfos.Where(Id => Id.AccountNumber != "XXXXXXXX" && Id.OperationType == "MOMOCASHOUT");
+                                                        var sumDebitCOMM = MobileMoneyEntr.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDouble(x.Amount));
+                                                        var sumCreditCOMM = MobileMoneyEntr.Where(x => x.BookingDirection == "CREDIT").Sum(x => Convert.ToDouble(x.Amount));
+
+                                                        <th>@sumDebitCOMM</th>
+                                                        <th>@sumCreditCOMM</th>
+                                                    }
+                                                </tr>
+                                            </thead>
+
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            }
+
+
+
+
+        }
+
+    </div>
+
+
+</div>

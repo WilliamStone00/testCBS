@@ -1,0 +1,208 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<div class="col-12 mb-4">
+    <small class="text-light fw-medium">Vertical</small>
+    <div class="bs-stepper wizard-vertical vertical mt-2">
+        <div class="bs-stepper-header gap-lg-2">
+            <div class="step crossed" data-target="#account-details-1">
+                <button type="button" class="step-trigger" aria-selected="false">
+                    <span class="bs-stepper-circle"><i class="mdi mdi-check"></i></span>
+                    <span class="bs-stepper-label">
+                        <span class="bs-stepper-number">01</span>
+                        <span class="d-flex flex-column gap-1 ms-2">
+                            <span class="bs-stepper-title">Account Details</span>
+                            <span class="bs-stepper-subtitle">Setup Account Details</span>
+                        </span>
+                    </span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <div class="step crossed" data-target="#personal-info-1">
+                <button type="button" class="step-trigger" aria-selected="false">
+                    <span class="bs-stepper-circle"><i class="mdi mdi-check"></i></span>
+                    <span class="bs-stepper-label">
+                        <span class="bs-stepper-number">02</span>
+                        <span class="d-flex flex-column gap-1 ms-2">
+                            <span class="bs-stepper-title">Personal Info</span>
+                            <span class="bs-stepper-subtitle">Add personal info</span>
+                        </span>
+                    </span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <div class="step active" data-target="#social-links-1">
+                <button type="button" class="step-trigger" aria-selected="true">
+                    <span class="bs-stepper-circle"><i class="mdi mdi-check"></i></span>
+                    <span class="bs-stepper-label">
+                        <span class="bs-stepper-number">03</span>
+                        <span class="d-flex flex-column gap-1 ms-2">
+                            <span class="bs-stepper-title">Social Links</span>
+                            <span class="bs-stepper-subtitle">Add social links</span>
+                        </span>
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="bs-stepper-content">
+            <form onsubmit="return true">
+                <!-- Account Details -->
+                <div id="account-details-1" class="content dstepper-block">
+                    <div class="content-header mb-3">
+                        <h6 class="mb-0">Account Details</h6>
+                        <small>Enter Your Account Details.</small>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-sm-6">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="username-vertical" class="form-control" placeholder="johndoe">
+                                <label for="username-vertical">Username</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-floating form-floating-outline">
+                                <input type="email" id="email-vertical" class="form-control" placeholder="john.doe@email.com" aria-label="john.doe">
+                                <label for="email-vertical">Email</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-password-toggle">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input type="password" id="password-vertical" class="form-control" placeholder="············" aria-describedby="password2-vertical">
+                                    <label for="password-vertical">Password</label>
+                                </div>
+                                <span class="input-group-text cursor-pointer" id="password2-vertical"><i class="mdi mdi-eye-off-outline"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-password-toggle">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input type="password" id="confirm-password-vertical" class="form-control" placeholder="············" aria-describedby="confirm-password-vertical2">
+                                    <label for="confirm-password-vertical">Confirm Password</label>
+                                </div>
+                                <span class="input-group-text cursor-pointer" id="confirm-password-vertical2"><i class="mdi mdi-eye-off-outline"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex justify-content-between">
+                            <button class="btn btn-outline-secondary btn-prev waves-effect" disabled="">
+                                <i class="mdi mdi-arrow-left me-sm-1 me-0"></i>
+                                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                            </button>
+                            <button class="btn btn-primary btn-next waves-effect waves-light">
+                                <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span>
+                                <i class="mdi mdi-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Personal Info -->
+                <div id="personal-info-1" class="content dstepper-block">
+                    <div class="content-header mb-3">
+                        <h6 class="mb-0">Personal Info</h6>
+                        <small>Enter Your Personal Info.</small>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-sm-6">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="first-name-vertical" class="form-control" placeholder="John">
+                                <label for="first-name-vertical">First Name</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="last-name-vertical" class="form-control" placeholder="Doe">
+                                <label for="last-name-vertical">Last Name</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-floating form-floating-outline form-floating-select2">
+                                <div class="position-relative">
+                                    <div class="position-relative">
+                                        <select class="select2 select2-hidden-accessible" id="country-vertical" tabindex="-1" aria-hidden="true" data-select2-id="country-vertical">
+                                            <option label=" " data-select2-id="36"></option>
+                                            <option>UK</option>
+                                            <option>USA</option>
+                                            <option>Spain</option>
+                                            <option>France</option>
+                                            <option>Italy</option>
+                                            <option>Australia</option>
+                                        </select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="35" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-country-vertical-container"><span class="select2-selection__rendered" id="select2-country-vertical-container" role="textbox" aria-readonly="true"><span class="select2-selection__placeholder">Select value</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                    </div>
+                                </div>
+                                <label for="country-vertical">Country</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-floating form-floating-outline form-floating-bootstrap-select">
+                                <div class="dropdown bootstrap-select show-tick w-auto">
+                                    <select class="selectpicker w-auto" id="language-vertical" data-style="btn-transparent" data-icon-base="mdi" data-tick-icon="mdi-check text-white" multiple="">
+                                        <option>English</option>
+                                        <option>French</option>
+                                        <option>Spanish</option>
+                                    </select><button type="button" tabindex="-1" class="btn dropdown-toggle bs-placeholder btn-transparent" data-bs-toggle="dropdown" role="combobox" aria-owns="bs-select-3" aria-haspopup="listbox" aria-expanded="false" title="Nothing selected" data-id="language-vertical"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">Nothing selected</div></div> </div></button><div class="dropdown-menu "><div class="inner show" role="listbox" id="bs-select-3" tabindex="-1" aria-multiselectable="true"><ul class="dropdown-menu inner show" role="presentation"></ul></div></div>
+                                </div>
+                                <label for="language-vertical">Language</label>
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex justify-content-between">
+                            <button class="btn btn-outline-secondary btn-prev waves-effect">
+                                <i class="mdi mdi-arrow-left me-sm-1 me-0"></i>
+                                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                            </button>
+                            <button class="btn btn-primary btn-next waves-effect waves-light">
+                                <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span>
+                                <i class="mdi mdi-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Social Links -->
+                <div id="social-links-1" class="content active dstepper-block">
+                    <div class="content-header mb-3">
+                        <h6 class="mb-0">Social Links</h6>
+                        <small>Enter Your Social Links.</small>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-sm-6">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="twitter-vertical" class="form-control" placeholder="https://twitter.com/abc">
+                                <label for="twitter-vertical">Twitter</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="facebook-vertical" class="form-control" placeholder="https://facebook.com/abc">
+                                <label for="facebook-vertical">Facebook</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="google-vertical" class="form-control" placeholder="https://plus.google.com/abc">
+                                <label for="google-vertical">Google+</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="linkedin-vertical" class="form-control" placeholder="https://linkedin.com/abc">
+                                <label for="linkedin-vertical">LinkedIn</label>
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex justify-content-between">
+                            <button class="btn btn-outline-secondary btn-prev waves-effect">
+                                <i class="mdi mdi-arrow-left me-sm-1 me-0"></i>
+                                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                            </button>
+                            <button class="btn btn-primary btn-submit waves-effect waves-light">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script src="~/CBSTemp/ui/assets/js/form-validation.js"></script>
+    <script src="~/CBSTemp/ui/assets/js/form-wizard-validation.js"></script>
+<script src="~/CBSTemp/ui/assets/js/form-wizard-numbered.js"></script>
+}

@@ -1,0 +1,383 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.CashChangeManagement.CashChangeHistory
+@using Resources
+<fieldset class="fieldset-custom">
+    <div class="card-body">
+        @using (Html.BeginForm("Create", "CashChangeManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {
+            <fieldset class="fieldset-custom" id="denominationreceived">
+                <legend class="text-primary">
+                    @GlobalCashChangeManagement.AmountReceived
+                </legend>
+                <p class="text-muted">
+                    @GlobalCashChangeManagement.EnterTheDenominationsForTheTotalCashAmountReceived.
+                </p>
+                <div class="row mt-2 gy-4">
+                    <!-- Amount Received -->
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.CashReceived, new { @class = "form-control formatted-amount shadow-box", @id = "AmountReceived", @oninput = "updateGivenAndTotal()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.CashReceived, "", new { @class = "text-danger" })
+                            <label for="AmountReceived">@GlobalCashChangeManagement.AmountReceived</label>
+                        </div>
+                    </div>
+                    <!-- Dynamic Totals Display -->
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box float-start" id="balanceBroughtForward_Received">
+                                @GlobalCashChangeManagement.AmountReceived: 0 XAF
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="display:none">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount_Received">@GlobalCashChangeManagement.TotalAmount: 0.0</span>
+                            <input type="hidden" id="totalNoteAmount_Received" value="0">
+                            <input type="hidden" id="totalProvision_Received" value="0">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box" id="lblBalance_Received">
+                                @GlobalCashChangeManagement.ControlBalance: 0 XAF
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsReceived.note10000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note10000_Received", @oninput = "calculateBalanceAmountReceived()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsReceived.note10000, "", new { @class = "text-danger " })
+                            <label>N10,000</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsReceived.note5000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note5000_Received", @oninput = "calculateBalanceAmountReceived()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsReceived.note5000, "", new { @class = "text-danger " })
+                            <label>N5,000</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsReceived.note2000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note2000_Received", @oninput = "calculateBalanceAmountReceived()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsReceived.note2000, "", new { @class = "text-danger " })
+                            <label>N2,000</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsReceived.note1000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note1000_Received", @oninput = "calculateBalanceAmountReceived()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsReceived.note1000, "", new { @class = "text-danger " })
+                            <label>N1,000</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsReceived.note500, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note500_Received", @oninput = "calculateBalanceAmountReceived()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsReceived.note500, "", new { @class = "text-danger " })
+                            <label>N500</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsReceived.coin500, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin500_Received", @oninput = "calculateBalanceAmountReceived()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsReceived.coin500, "", new { @class = "text-danger " })
+                            <label>C500</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsReceived.coin350, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin350", @oninput = "calculateBalanceAmountReceived()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsReceived.coin350, "", new { @class = "text-danger " })
+                            <label>C350</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsReceived.coin250, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin250", @oninput = "calculateBalanceAmountReceived()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsReceived.coin250, "", new { @class = "text-danger " })
+                            <label>C250</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsReceived.coin200, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin200", @oninput = "calculateBalanceAmountReceived()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsReceived.coin200, "", new { @class = "text-danger " })
+                            <label>C200</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsReceived.coin150, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin150", @oninput = "calculateBalanceAmountReceived()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsReceived.coin150, "", new { @class = "text-danger " })
+                            <label>C150</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsReceived.coin100, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin100_Received", @oninput = "calculateBalanceAmountReceived()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsReceived.coin100, "", new { @class = "text-danger " })
+                            <label>C100</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsReceived.coin50, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin50_Received", @oninput = "calculateBalanceAmountReceived()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsReceived.coin50, "", new { @class = "text-danger " })
+                            <label>C50</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsReceived.coin25, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin25_Received", @oninput = "calculateBalanceAmountReceived()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsReceived.coin25, "", new { @class = "text-danger " })
+                            <label>C25</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsReceived.coin10, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin10_Received", @oninput = "calculateBalanceAmountReceived()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsReceived.coin10, "", new { @class = "text-danger " })
+                            <label>C10</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsReceived.coin5, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin5_Received", @oninput = "calculateBalanceAmountReceived()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsReceived.coin5, "", new { @class = "text-danger " })
+                            <label>C5</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsReceived.coin1, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin1_Received", @oninput = "calculateBalanceAmountReceived()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsReceived.coin1, "", new { @class = "text-danger " })
+                            <label>C1</label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <input type="hidden" name="Action" value="@ViewBag.Context" />
+            <fieldset class="fieldset-custom" id="denominationtobegiven">
+                <legend class="text-primary">
+                    @GlobalCashChangeManagement.ChangeToBeGiven
+                </legend>
+                <p class="text-muted">
+                    @GlobalCashChangeManagement.EnterTheDenominationsForTheTotalChangeAmount.
+                </p>
+                <div class="row mt-2 gy-4">
+                    <!-- Dynamic Totals Display -->
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box float-start" id="balanceBroughtForward">
+                                @GlobalCashChangeManagement.ChangeToBeGiven: FCFA 0
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="display:none">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalCashChangeManagement.TotalAmount: 0.0</span>
+                            <input type="hidden" id="totalNoteAmount" value="0">
+                            <input type="hidden" id="totalProvision" value="0">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box" id="lblBalance">
+                                @GlobalCashChangeManagement.ControlBalance: FCFA 0
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="display:none">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.CashEntered, new { @class = "form-control formatted-amount shadow-box", @id = "AmountGiven", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.CashEntered, "", new { @class = "text-danger" })
+                            <label for="AmountGiven">@GlobalCashChangeManagement.AmountGiven</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsGiven.note10000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note10000", @oninput = "calculateBalance()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsGiven.note10000, "", new { @class = "text-danger " })
+                            <label>N10,000</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsGiven.note5000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note5000", @oninput = "calculateBalance()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsGiven.note5000, "", new { @class = "text-danger " })
+                            <label>N5,000</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsGiven.note2000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note2000", @oninput = "calculateBalance()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsGiven.note2000, "", new { @class = "text-danger " })
+                            <label>N2,000</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsGiven.note1000, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note1000", @oninput = "calculateBalance()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsGiven.note1000, "", new { @class = "text-danger " })
+                            <label>N1,000</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsGiven.note500, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_note500", @oninput = "calculateBalance()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsGiven.note500, "", new { @class = "text-danger " })
+                            <label>N500</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsGiven.coin500, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin500", @oninput = "calculateBalance()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsGiven.coin500, "", new { @class = "text-danger " })
+                            <label>C500</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsGiven.coin350, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin350", @oninput = "calculateBalance()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsGiven.coin350, "", new { @class = "text-danger " })
+                            <label>C350</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsGiven.coin250, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin250", @oninput = "calculateBalance()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsGiven.coin250, "", new { @class = "text-danger " })
+                            <label>C250</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsGiven.coin200, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin200", @oninput = "calculateBalance()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsGiven.coin200, "", new { @class = "text-danger " })
+                            <label>C200</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsGiven.coin150, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin150", @oninput = "calculateBalance()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsGiven.coin150, "", new { @class = "text-danger " })
+                            <label>C150</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsGiven.coin100, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin100", @oninput = "calculateBalance()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsGiven.coin100, "", new { @class = "text-danger " })
+                            <label>C100</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsGiven.coin50, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin50", @oninput = "calculateBalance()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsGiven.coin50, "", new { @class = "text-danger " })
+                            <label>C50</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsGiven.coin25, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin25", @oninput = "calculateBalance()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsGiven.coin25, "", new { @class = "text-danger " })
+                            <label>C25</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsGiven.coin10, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin10", @oninput = "calculateBalance()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsGiven.coin10, "", new { @class = "text-danger " })
+                            <label>C10</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsGiven.coin5, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin5", @oninput = "calculateBalance()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsGiven.coin5, "", new { @class = "text-danger " })
+                            <label>C5</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.CashChangeCommand.DenominationsGiven.coin1, new { @class = "form-control formatted-amount shadow-box", @id = "Notes_coin1", @oninput = "calculateBalance()" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.DenominationsGiven.coin1, "", new { @class = "text-danger " })
+                            <label>C1</label>
+                        </div>
+                    </div>
+                    <!-- Reason for the cash change -->
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextAreaFor(m => m.CashChangeCommand.ChangeReason, new { @class = "form-control", @style = "height: 90px;" })
+                            @Html.ValidationMessageFor(m => m.CashChangeCommand.ChangeReason, "", new { @class = "text-danger " })
+                            <label for="formValidationDob">@GlobalCashChangeManagement.ReasonForTheCashChange</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <button type="submit" id="btnSave" class="btn btn-primary me-2">@GlobalShared.Submit</button>
+                </div>
+            </fieldset>
+        }
+    </div>
+</fieldset>
+
+
+
+
+<script>
+    // Function to update Amount Given and Total dynamically
+    function updateGivenAndTotal() {
+        const amountReceived = parseFloat(document.getElementById('AmountReceived').value) || 0;
+
+        // Update Amount Given
+        const amountGivenElement = document.getElementById('AmountGiven');
+        amountGivenElement.value = amountReceived.toFixed(2);
+
+        // Calculate total
+        const formattedAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'XAF' }).format(amountReceived);
+
+        // Update total display fields
+        document.getElementById('balanceBroughtForward').innerText = `Change To Be Given: ${formattedAmount}`;
+        document.getElementById('lblDepositRequest_amount').innerText = `Total amount: ${formattedAmount}`;
+        document.getElementById('lblBalance').innerText = `Control Balance: ${formattedAmount}`;
+        document.getElementById('totalNoteAmount').value = amountReceived.toFixed(2);
+        document.getElementById('totalProvision').value = amountReceived.toFixed(2);
+
+
+        // Update total display fields Amount Received
+        document.getElementById('balanceBroughtForward_Received').innerText = `Amount Received: ${formattedAmount}`;
+        document.getElementById('lblDepositRequest_amount_Received').innerText = `Total amount: ${formattedAmount}`;
+        document.getElementById('lblBalance_Received').innerText = `Control Balance: ${formattedAmount}`;
+        document.getElementById('totalNoteAmount_Received').value = amountReceived.toFixed(2);
+        document.getElementById('totalProvision_Received').value = amountReceived.toFixed(2);
+    }
+
+    // Validation to ensure amounts match
+    function validateAmounts() {
+        const amountReceived = parseFloat(document.getElementById('AmountReceived').value) || 0;
+        const amountGiven = parseFloat(document.getElementById('AmountGiven').value) || 0;
+
+        if (amountReceived !== amountGiven) {
+            alert('Amount Given must match Amount Received.');
+            return false;
+        }
+        return true;
+    }
+</script>
+
+
+
+
+
+

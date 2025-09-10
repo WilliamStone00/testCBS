@@ -1,0 +1,31 @@
+﻿@using Resources
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.StandingOrderCarrier
+
+
+<div class="row invoice-preview">
+    <div class="col-xl-3 col-md-4 col-12 invoice-actions">
+        @Html.Partial("_CustomerCard")
+    </div>
+    <div class="col-xl-9 col-md-8 col-12 mb-md-0 mb-4">
+        <fieldset class="fieldset-custom">
+            <div class="mb-3 border-2">
+                <div id="mainviewChange">
+                    <div class="card mb-1">
+                        <div class="card-body d-flex justify-content-end align-items-center">
+                            <a type="button" onclick="LoadDataGen('StandingOrder','myDataTable','_StandingOrderDataPerMember',0,'datalistingview','@Model.Customer.CustomerId',null,'my_orders')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalStandingOrder.View List">
+                                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalStandingOrder.View @Model.Customer.FirstName @GlobalStandingOrder.orders
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div id="datalistingview_inner">
+                    <!-- Standing Order Form -->
+                    @Html.Partial("_StandingOrderForm")
+
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+

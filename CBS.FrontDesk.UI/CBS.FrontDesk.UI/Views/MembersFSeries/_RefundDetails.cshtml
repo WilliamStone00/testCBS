@@ -1,0 +1,267 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@{ // C# only in here
+    var vm = Model.RefundVM;
+    var refund = vm.Refund;
+    var loan = vm.Loan;
+}
+@if (Model.Refund == null || Model.RefundVM == null)
+{
+    <div class="alert alert-warning">Refund not found.</div>
+}
+else
+{
+
+
+
+    <div class="mb-3">
+        <div class="d-flex flex-wrap gap-3 align-items-center">
+            <h5 class="mb-0 text-primary">
+                <i class="mdi mdi-cash-refund me-2"></i> Refund Summary
+            </h5>
+
+            <span class="@vm.RefundStatusBadgeClass">
+                @(refund.IsReversal ? "Reversal" :
+                  (refund.IsCompleted || refund.IsComplete) ? "Completed" : "Incomplete")
+            </span>
+
+            @if (!string.IsNullOrWhiteSpace(refund.ReversesRefundId) &&
+                 !refund.ReversesRefundId.Equals("n/a", StringComparison.OrdinalIgnoreCase))
+            {
+                <span class="badge bg-info text-dark">Reverses: @refund.ReversesRefundId</span>
+            }
+        </div>
+
+        <div class="small text-muted">
+            Refund ID: <strong>@refund.Id</strong> • Loan #: <strong>@vm.LoanId</strong>
+            @if (!string.IsNullOrWhiteSpace(vm.ProductName))
+            {
+                <text> • Product: <strong>@vm.ProductName</strong></text>
+            }
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="fw-semibold text-muted mb-2">Payment</div>
+                    <div class="d-flex justify-content-between"><span>Date</span><span>@refund.DateOfPayment.ToString("dd/MM/yyyy HH:mm")</span></div>
+                    <div class="d-flex justify-content-between"><span>Paid (Txn)</span><span class="fw-bold text-primary">@refund.Amount.ToString("N0")</span></div>
+                    <div class="d-flex justify-content-between"><span>Loan Balance (after)</span><span class="fw-bold text-danger">@refund.Balance.ToString("N0")</span></div>
+                    <div class="mt-2 small @(vm.AllocationsConsistent ? "text-success" : "text-danger")">
+                        <i class="mdi @(vm.AllocationsConsistent ? "mdi-check-circle" : "mdi-alert-circle") me-1"></i>
+                        @(vm.AllocationsConsistent ? "Allocation matches amount paid." : "Allocation does not match amount paid.")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="fw-semibold text-muted mb-2">Allocation (Header)</div>
+                    <div class="d-flex justify-content-between"><span>Principal</span><span>@vm.AllocPrincipal.ToString("N0")</span></div>
+                    <div class="d-flex justify-content-between"><span>Interest</span><span>@vm.AllocInterest.ToString("N0")</span></div>
+                    <div class="d-flex justify-content-between"><span>Tax</span><span>@vm.AllocTax.ToString("N0")</span></div>
+                    <div class="d-flex justify-content-between"><span>Penalty</span><span>@vm.AllocPenalty.ToString("N0")</span></div>
+                    <hr class="my-2" />
+                    <div class="d-flex justify-content-between"><span>Total Allocated</span><span class="fw-bold">@vm.AllocTotal.ToString("N0")</span></div>
+                    @if (vm.DetailCollected > 0)
+                    {
+                        <div class="mt-2 small text-muted">
+                            Details sum: <strong>@vm.DetailCollected.ToString("N0")</strong>
+                            (Prin @vm.DetailPrincipal.ToString("N0"), Int @vm.DetailInterest.ToString("N0"),
+                            Tax @vm.DetailTax.ToString("N0"), Pen @vm.DetailPenalty.ToString("N0"))
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="fw-semibold text-muted mb-2">Channel</div>
+                    <div class="d-flex justify-content-between"><span>Method</span><span>@(refund.PaymentMethod ?? "N/A")</span></div>
+                    <div class="d-flex justify-content-between"><span>Channel</span><span>@(refund.PaymentChannel ?? "N/A")</span></div>
+                    <div class="d-flex justify-content-between"><span>Mode</span><span>@(refund.PaymentMode ?? "N/A")</span></div>
+                    <div class="d-flex justify-content-between"><span>Branch</span><span>@(refund.BranchId ?? "N/A")</span></div>
+                    <div class="d-flex justify-content-between"><span>Bank</span><span>@(refund.BankId ?? "N/A")</span></div>
+                    <div class="small mt-2 text-muted">Comment: @(string.IsNullOrWhiteSpace(refund.Comment) ? "N/A" : refund.Comment)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <h6 class="fw-bold text-primary mb-2"><i class="mdi mdi-file-document-outline me-1"></i> Loan Snapshot</h6>
+        @if (loan == null)
+        {
+            <div class="alert alert-light border">Loan not attached to this refund.</div>
+        }
+        else
+        {
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="fw-semibold text-muted mb-2">Overview</div>
+                            <div class="d-flex justify-content-between"><span>Loan #</span><span class="fw-bold">@vm.LoanId</span></div>
+                            <div class="d-flex justify-content-between"><span>Status</span><span><span class="@vm.LoanStatusBadgeClass">@vm.LoanStatus</span></span></div>
+                            <div class="d-flex justify-content-between"><span>Loan type</span><span>@vm.Loan.LoanType</span></div>
+                            <div class="d-flex justify-content-between"><span>Rate</span><span>@vm.LoanRate.ToString("0.0")%</span></div>
+                            <div class="d-flex justify-content-between"><span>Disbursed</span><span>@(vm.LoanDate == null ? "N/A" : vm.LoanDate.Value.ToString("dd/MM/yyyy"))</span></div>
+                            <div class="d-flex justify-content-between"><span>Last Repayment</span><span>@((vm.LastRefundDate.HasValue && vm.LastRefundDate.Value != DateTime.MinValue) ? vm.LastRefundDate.Value.ToString("dd/MM/yyyy") : "-")</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="fw-semibold text-muted mb-2">Financials</div>
+                            <div class="d-flex justify-content-between"><span>Loan Amount</span><span>@vm.LoanAmount.ToString("N0")</span></div>
+                            <div class="d-flex justify-content-between"><span>Paid</span><span class="fw-bold text-primary">@vm.LoanPaid.ToString("N0")</span></div>
+                            <div class="d-flex justify-content-between"><span>Accrual Interest</span><span class="fw-bold text-danger">@vm.Loan.AccrualInterest.ToString("N0")</span></div>
+                            <div class="d-flex justify-content-between"><span>Outstanding Balance</span><span class="fw-bold text-danger">@vm.LoanBalance.ToString("N0")</span></div>
+                            <div class="d-flex justify-content-between"><span>Current Due</span><span class="text-warning">@vm.LoanDueAmount.ToString("N0")</span></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="mt-4">
+        <h6 class="fw-bold text-primary mb-2"><i class="mdi mdi-format-list-text me-1"></i> Allocation to Amortizations</h6>
+        @if (vm.RefundDetails == null || !vm.RefundDetails.Any())
+        {
+            <div class="alert alert-light border">No per-installment allocation found.</div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-sm table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Amortization ID</th>
+                            <th class="text-end">Collected</th>
+                            <th class="text-end">Principal</th>
+                            <th class="text-end">Interest</th>
+                            <th class="text-end">Tax</th>
+                            <th class="text-end">Penalty</th>
+                            <th class="text-end">Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var d in vm.RefundDetails.OrderByDescending(x => x.CollectedAmount))
+                        {
+                            <tr>
+                                <td>@d.LoanAmortizationId</td>
+                                <td class="text-end">@d.CollectedAmount.ToString("N0")</td>
+                                <td class="text-end">@d.PrincipalAmount.ToString("N0")</td>
+                                <td class="text-end">@d.Interest.ToString("N0")</td>
+                                <td class="text-end">@d.TaxAmount.ToString("N0")</td>
+                                <td class="text-end">@d.PenaltyAmount.ToString("N0")</td>
+                                <td class="text-end">@d.Balance.ToString("N0")</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot class="table-light fw-bold">
+                        <tr>
+                            <td class="text-end">Totals:</td>
+                            <td class="text-end">@vm.DetailCollected.ToString("N0")</td>
+                            <td class="text-end">@vm.DetailPrincipal.ToString("N0")</td>
+                            <td class="text-end">@vm.DetailInterest.ToString("N0")</td>
+                            <td class="text-end">@vm.DetailTax.ToString("N0")</td>
+                            <td class="text-end">@vm.DetailPenalty.ToString("N0")</td>
+                            <td class="text-end">@vm.DetailBalance.ToString("N0")</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        }
+    </div>
+
+    <div class="mt-4">
+        <h6 class="fw-bold text-primary mb-2"><i class="mdi mdi-calendar-text me-1"></i> Amortization Schedule</h6>
+        @if (vm.Amortizations == null || !vm.Amortizations.Any())
+        {
+            <div class="alert alert-light border">No amortization schedule found.</div>
+        }
+        else
+        {
+            <div class="row g-2 mb-2">
+                <div class="col-auto"><span class="badge bg-primary">Total: @vm.TotalInstallments</span></div>
+                <div class="col-auto"><span class="badge bg-success">Completed: @vm.CompletedInstallments</span></div>
+                <div class="col-auto"><span class="badge bg-danger">Overdue: @vm.OverdueInstallments</span></div>
+                @if (vm.NextDueDate.HasValue)
+                {<div class="col-auto"><span class="badge bg-info text-dark">Next Due: @vm.NextDueDate.Value.ToString("dd/MM/yyyy")</span></div>}
+                <div class="col-auto"><span class="badge bg-secondary">Due Σ: @vm.AmortDueSum.ToString("N0")</span></div>
+                <div class="col-auto"><span class="badge bg-secondary">Paid Σ: @vm.AmortPaidSum.ToString("N0")</span></div>
+                <div class="col-auto"><span class="badge bg-secondary">Balance Σ: @vm.AmortBalanceSum.ToString("N0")</span></div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-sm table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th class="text-end">Due</th>
+                            <th class="text-end">Paid</th>
+                            <th class="text-end">Balance</th>
+                            <th class="text-end">Principal</th>
+                            <th class="text-end">Interest</th>
+                            <th class="text-end">Tax</th>
+                            <th class="text-end">Penalty</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var a in vm.Amortizations.OrderBy(x => x.Sno))
+                        {
+                            var rowCls = (a.PreviousInstallmentDue ||
+                                          string.Equals(a.Status ?? "", "Overdue", StringComparison.OrdinalIgnoreCase))
+                                ? "table-danger"
+                                : (a.IsCompleted ? "table-success" : "");
+
+                            // compute status + badge class (use braces)
+                            var statusText = a.Status ?? (a.IsCompleted ? "Completed" : (a.PreviousInstallmentDue ? "Overdue" : "Open"));
+                            var st = (statusText ?? "").ToLowerInvariant();
+                            var badgeCls = "badge bg-secondary";
+                            if (st == "completed") { badgeCls = "badge bg-success"; }
+                            else if (st == "overdue") { badgeCls = "badge bg-danger"; }
+                            else if (st == "open") { badgeCls = "badge bg-primary"; }
+
+                            <tr class="@rowCls">
+                                <td>@a.Sno</td>
+                                <td>@(a.NextPaymentDate == default(DateTime) ? "-" : a.NextPaymentDate.ToString("dd/MM/yyyy"))</td>
+                                <td class="text-end">@a.Due.ToString("N0")</td>
+                                <td class="text-end">@a.Paid.ToString("N0")</td>
+                                <td class="text-end">@a.Balance.ToString("N0")</td>
+                                <td class="text-end">@a.Principal.ToString("N0")</td>
+                                <td class="text-end">@a.Interest.ToString("N0")</td>
+                                <td class="text-end">@a.Tax.ToString("N0")</td>
+                                <td class="text-end">@a.Penalty.ToString("N0")</td>
+                                <td><span class="@badgeCls">@statusText</span></td>
+                            </tr>
+                        }
+                    </tbody>
+
+
+                </table>
+            </div>
+        }
+    </div>
+
+    @*<div class="mt-3 d-flex gap-2 justify-content-end">
+        <button type="button" class="btn btn-outline-primary"
+                onclick="ExportIndividaulReport('@vm.LoanId','refund_receipt_by_id','@vm.Refund.Id')">
+            <i class="mdi mdi-printer me-1"></i> Print Refund Receipt
+        </button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+            <i class="mdi mdi-close"></i> Close
+        </button>
+    </div>*@
+}

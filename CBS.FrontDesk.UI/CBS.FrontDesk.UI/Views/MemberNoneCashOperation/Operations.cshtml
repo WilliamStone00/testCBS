@@ -1,0 +1,120 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP.MemberNoneCashOperationCarrier
+@using Resources
+@{
+    ViewBag.Title = "All Member None-Cash Operations";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="row mb-0">
+            <div class="col">
+                <div class="card bg-light">
+                    <div class="card-body text-center">
+                        <h1 class="card-title text-primary">
+                            <i class="mdi mdi-timer-sand me-2"></i> @GlobalMemberNoneCashOperation.ALLMemberNoneCashOperations
+                        </h1>
+                        <p class="card-text">
+                            @GlobalMemberNoneCashOperation.ViewValidateOrDeletePendingNoneCashOperationsForMemberAccounts.
+                        </p>
+                        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       
+
+        <!-- Tips Section -->
+        <div class="card mb-2">
+            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                <span><i class="mdi mdi-information-outline me-2"></i> @GlobalMemberNoneCashOperation.TIPS</span>
+                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOperationTips" aria-expanded="false" aria-controls="collapseOperationTips">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </h6>
+            <div id="collapseOperationTips" class="collapse">
+                <div class="card-body">
+                    <ul class="mb-0">
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.ViewDetails:</strong> @GlobalMemberNoneCashOperation.UseThe <span class="text-info"><i class="fas fa-info-circle"></i> @GlobalShared.Details</span> @GlobalMemberNoneCashOperation.buttonToSeeMoreInformationAboutTheOperation.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.Validate:</strong> Validate pending operations using the <span class="text-primary"><i class="fas fa-check-circle"></i> @GlobalShared.Validate</span> @GlobalMemberNoneCashOperation.buttonToMarkThemAsApproved.</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> <strong>@GlobalShared.Delete:</strong> @GlobalMemberNoneCashOperation.UseThe <span class="text-danger"><i class="fas fa-trash-alt"></i> @GlobalShared.Delete</span> @GlobalMemberNoneCashOperation.buttonToRemoveIncorrectOrUnnecessaryOperations.</li>
+                        <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>@GlobalMemberNoneCashOperation.KeepOperationsUpToDate:</strong> @GlobalMemberNoneCashOperation.RegularlyValidatePendingOperations.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="mainviewChange">
+            <div class="change-group">
+                <div class="card mb-3">
+                    <div class="card-body d-flex justify-content-end align-items-center">
+                        <a href="@Url.Action("DownloadFile", "MemberNoneCashOperation", new { fileId = "n/a", path = "all" })"
+                           class="btn btn-label-success btn-sm"
+                           data-bs-toggle="tooltip"
+                           title="Export to Excel">
+                            <i class="mdi mdi-file-excel-outline mdi-18px"></i> @GlobalShared.ExportToExcel
+                        </a>
+
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <div id="datalistingview">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div class="modal fade" id="operationDetailModal" tabindex="-1" aria-labelledby="operationDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="operationDetailModalLabel">@GlobalMemberNoneCashOperation.OperationDetails</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="operationDetailContainer">
+                <!-- The partial view will be loaded here -->
+                <div class="d-flex justify-content-center align-items-center p-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">@GlobalMemberNoneCashOperation.Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="validateOperationModal" tabindex="-1" aria-labelledby="validateOperationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="validateOperationContainer">
+                @GlobalMemberNoneCashOperation.PartialViewContentWillBeLoadedHere
+                <div class="d-flex justify-content-center align-items-center p-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">@GlobalMemberNoneCashOperation.Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/MemberNoneCashOperation/OperationListings.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            // Load pending operations on page load
+            LoadDataGen('MemberNoneCashOperation', 'myDataTable', '_OperationsData', 0, 'datalistingview', null, null, 'all_operations');
+        });
+    </script>
+}
+

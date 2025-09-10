@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="WasPreferenceShareAccountUsedAsCoverage" xml:space="preserve">
+    <value>Le compte d'actions privilégiées a-t-il été utilisé comme couverture ?</value>
+  </data>
+  <data name="WasDepositAccountUsedAsCoverage" xml:space="preserve">
+    <value>Le compte de dépôt a-t-il été utilisé comme couverture ?</value>
+  </data>
+  <data name="TotalAmountPaid" xml:space="preserve">
+    <value>Montant total payé</value>
+  </data>
+  <data name="TotalDownPaymentProvided" xml:space="preserve">
+    <value>Montant total de l'acompte fourni</value>
+  </data>
+  <data name="TotalFeeAmount" xml:space="preserve">
+    <value>Montant total des frais</value>
+  </data>
+  <data name="TotalLoanAmount" xml:space="preserve">
+    <value>Montant total du prêt</value>
+  </data>
+  <data name="UploadedDate" xml:space="preserve">
+    <value>Date de téléversement</value>
+  </data>
+  <data name="VatRate" xml:space="preserve">
+    <value>Taux de TVA</value>
+  </data>
+  <data name="AdditionalDetails" xml:space="preserve">
+    <value>Détails supplémentaires</value>
+  </data>
+  <data name="ApplicationDate" xml:space="preserve">
+    <value>Date de la demande</value>
+  </data>
+  <data name="ApplicationDetails" xml:space="preserve">
+    <value>Détails de la demande</value>
+  </data>
+  <data name="ApplicationManage" xml:space="preserve">
+    <value>Gestion des demandes</value>
+  </data>
+  <data name="ApprovalDate" xml:space="preserve">
+    <value>Date d'approbation</value>
+  </data>
+  <data name="ApprovalStatus" xml:space="preserve">
+    <value>Statut d'approbation</value>
+  </data>
+  <data name="Approved" xml:space="preserve">
+    <value>Approuvé</value>
+  </data>
+  <data name="AttachedDocuments" xml:space="preserve">
+    <value>Documents joints</value>
+  </data>
+  <data name="Collateral" xml:space="preserve">
+    <value>Garantie</value>
+  </data>
+  <data name="CollateralType" xml:space="preserve">
+    <value>Type de garantie</value>
+  </data>
+  <data name="CollateralValue" xml:space="preserve">
+    <value>Valeur de la garantie</value>
+  </data>
+  <data name="CoverageAmount" xml:space="preserve">
+    <value>Montant de couverture</value>
+  </data>
+  <data name="DaysAfterMaturityDate" xml:space="preserve">
+    <value>Jours après la date d'échéance</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Détails</value>
+  </data>
+  <data name="DisbursementDate" xml:space="preserve">
+    <value>Date de déboursement</value>
+  </data>
+  <data name="DocumentName" xml:space="preserve">
+    <value>Nom du document</value>
+  </data>
+  <data name="DownpaymentsAndCoverage" xml:space="preserve">
+    <value>Acomptes et couverture</value>
+  </data>
+  <data name="Fees" xml:space="preserve">
+    <value>Frais</value>
+  </data>
+  <data name="GeneralInformation" xml:space="preserve">
+    <value>Informations générales</value>
+  </data>
+  <data name="GracePeriodAfterLoanDueDate" xml:space="preserve">
+    <value>Période de grâce après la date d'échéance du prêt</value>
+  </data>
+  <data name="GracePeriodBeforeFirstInstallment" xml:space="preserve">
+    <value>Période de grâce avant la première échéance</value>
+  </data>
+  <data name="GuarantorName" xml:space="preserve">
+    <value>Nom du garant</value>
+  </data>
+  <data name="GuarantorRelationship" xml:space="preserve">
+    <value>Relation avec le garant</value>
+  </data>
+  <data name="Guarantors" xml:space="preserve">
+    <value>Garant</value>
+  </data>
+  <data name="HasTheLoanBeenApproved" xml:space="preserve">
+    <value>Le prêt a-t-il été approuvé ?</value>
+  </data>
+  <data name="InterestRate" xml:space="preserve">
+    <value>Taux d'intérêt</value>
+  </data>
+  <data name="LoanApplicationCode" xml:space="preserve">
+    <value>Code de la demande de prêt</value>
+  </data>
+  <data name="LoanApplicationType" xml:space="preserve">
+    <value>Type de demande de prêt</value>
+  </data>
+  <data name="LoanCategory" xml:space="preserve">
+    <value>Catégorie de prêt</value>
+  </data>
+  <data name="LoanDetails" xml:space="preserve">
+    <value>Détails du prêt</value>
+  </data>
+  <data name="LoanManager" xml:space="preserve">
+    <value>Gestionnaire de prêt</value>
+  </data>
+  <data name="LoanProductID" xml:space="preserve">
+    <value>ID du produit de prêt</value>
+  </data>
+  <data name="LoanType" xml:space="preserve">
+    <value>Type de prêt</value>
+  </data>
+  <data name="MembersCode" xml:space="preserve">
+    <value>Code du membre</value>
+  </data>
+  <data name="MigratedLoan" xml:space="preserve">
+    <value>Prêt migré</value>
+  </data>
+  <data name="MigrationStatus" xml:space="preserve">
+    <value>Statut de migration</value>
+  </data>
+  <data name="MonthsBeforeFirstInstallment" xml:space="preserve">
+    <value>Mois avant la première échéance</value>
+  </data>
+  <data name="NewLoan" xml:space="preserve">
+    <value>Nouveau prêt</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="NoCollateralProvided" xml:space="preserve">
+    <value>Aucune garantie fournie</value>
+  </data>
+  <data name="NoDocumentsAttached" xml:space="preserve">
+    <value>Aucun document joint</value>
+  </data>
+  <data name="NoFeeAdded" xml:space="preserve">
+    <value>Aucun frais ajouté</value>
+  </data>
+  <data name="NoGuarantorsProvided" xml:space="preserve">
+    <value>Aucun garant fourni</value>
+  </data>
+  <data name="OldLoanAmount" xml:space="preserve">
+    <value>Montant de l'ancien prêt</value>
+  </data>
+  <data name="OldLoanCapital" xml:space="preserve">
+    <value>Capital de l'ancien prêt</value>
+  </data>
+  <data name="OldLoanInformation" xml:space="preserve">
+    <value>Informations sur l'ancien prêt</value>
+  </data>
+  <data name="OldLoanInterest" xml:space="preserve">
+    <value>Intérêts de l'ancien prêt</value>
+  </data>
+  <data name="OldLoanPenalty" xml:space="preserve">
+    <value>Pénalité de l'ancien prêt</value>
+  </data>
+  <data name="OldLoanVAT" xml:space="preserve">
+    <value>TVA de l'ancien prêt</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Ouvert</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>En attente</value>
+  </data>
+  <data name="ProductCode" xml:space="preserve">
+    <value>Code du produit</value>
+  </data>
+  <data name="ProductInformation" xml:space="preserve">
+    <value>Informations sur le produit</value>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Nom du produit</value>
+  </data>
+  <data name="ProductTerm" xml:space="preserve">
+    <value>Durée du produit</value>
+  </data>
+  <data name="ReadContent" xml:space="preserve">
+    <value>Lire le contenu</value>
+  </data>
+  <data name="RefinancedAmount" xml:space="preserve">
+    <value>Montant refinancé</value>
+  </data>
+  <data name="RefinancingDetails" xml:space="preserve">
+    <value>Détails de refinancement</value>
+  </data>
+  <data name="RequestedAmount" xml:space="preserve">
+    <value>Montant demandé</value>
+  </data>
+  <data name="RestructuredBalance" xml:space="preserve">
+    <value>Solde restructuré</value>
+  </data>
+  <data name="SavingCoverageProvided" xml:space="preserve">
+    <value>Couverture d'épargne fournie</value>
+  </data>
+  <data name="ShareCoveredAmount" xml:space="preserve">
+    <value>Montant de la part couverte</value>
+  </data>
+  <data name="TargetedPopulation" xml:space="preserve">
+    <value>Population ciblée</value>
+  </data>
+  <data name="TSCLoan" xml:space="preserve">
+    <value>Prêt TSC</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+</root>

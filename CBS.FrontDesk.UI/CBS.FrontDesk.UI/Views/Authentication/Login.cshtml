@@ -1,0 +1,266 @@
+﻿@using Resources
+@model CBS.API.Helper.AuthRequest
+@{
+    Layout = "~/Views/Shared/_LoginMainCover.cshtml";
+    ViewBag.Title = GlobalLogin.Title;
+}
+
+<style>
+
+
+            body {
+    background-image: url('@Url.Content("~/AppFiles/Images/NBG_.jpeg")'); /* Resolves the relative path in MVC */
+    background-size: cover; /* Ensures the image covers the entire screen */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents tiling */
+    background-attachment: fixed; /* Keeps the background static while scrolling */
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Ensures it fills the full viewport height */
+    width: 100vw; /* Ensures it fills the full viewport width */
+    font-family: Arial, sans-serif; /* Optional: Set default font */
+}
+
+    /* Flexbox for centering the form container with margin at the top */
+    .authentication-inner {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding-top: 50px; /* Adjust padding as needed */
+    }
+
+    .authentication-bg {
+        background-color: rgba(255, 255, 255, 0.9); /* White background with some opacity */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 450px;
+    }
+
+    .form-container {
+        text-align: center;
+    }
+
+        .form-container img {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .form-container hr {
+            border-color: #ddd;
+        }
+
+    .trustbank-text {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    /* Button styling */
+    button[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+    /* Additional styling for error message */
+    .alert {
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    /* Styling for login policy section */
+   /* .login-policy {
+        margin-top: 20px;
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+        .login-policy label {
+            display: block;
+            margin-bottom: 5px;
+        }*/
+
+        .login-policy hr {
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+    .login-policy {
+        text-align: left; /* Ensures that text is left-aligned */
+    }
+
+        .login-policy label {
+            display: block; /* Makes each label element take its own line */
+            margin-bottom: 8px; /* Optional: Adjusts space between the lines */
+        }
+    .styled-hr {
+        border: 0; /* Remove default border */
+        height: 4px; /* Make the line thicker */
+        background: linear-gradient(to right, deepskyblue, limegreen); /* Gradient from DeepSkyBlue to LimeGreen */
+        margin: 20px 0; /* Add spacing around the HR */
+    }
+
+    /* Colors for T R U S T S O F T and C R E D I T */
+    .trust-soft {
+        color: deepskyblue;
+        font-weight: bold;
+    }
+    .g-recaptcha {
+        transform: scale(1);
+        transform-origin: 0 0;
+        width: 100% !important;
+    }
+    .credit {
+        color: limegreen;
+        font-weight: bold;
+    }
+    #loginMessages .alert {
+        font-size: 0.95rem;
+        padding: 8px 12px;
+        margin-bottom: 8px;
+    }
+</style>
+
+<div class="authentication-inner row">
+    <!-- Left Section (Image) -->
+    <div class="col-lg-8 d-none d-lg-block">
+        @*<img src="~/AppFiles/Images/NBG.JPEG" class="authentication-image img-fluid" alt="mask" />*@
+    </div>
+
+    <!-- Right Section (Login Form) -->
+    <div class="col-12 col-lg-4 col-xl-4 authentication-bg position-relative">
+        <div class="w-100 mx-auto p-3 pt-5 pt-lg-0 form-container">
+            <div class="image-container text-center mb-4">
+                <img src="~/AppFiles/Images/Logog2XI.png" class="img-fluid" alt="Logo" />
+            </div>
+            <hr class="styled-hr">
+            <h5 class="trustbank-text mb-1">
+                <span class="trust-soft">@GlobalHome.TrustSoft</span>
+                <span class="credit">@GlobalHome.Credit</span>
+            </h5>
+            <small class="d-block mt-0"><i>@GlobalHome.SatisfactionText</i></small>
+
+            <hr class="styled-hr">
+
+            <!-- 🛡️ Unified Messages Section -->
+            <div id="loginMessages" class="mb-3">
+                @if (ViewBag.Success == false)
+                {
+                    if (!string.IsNullOrWhiteSpace(ViewBag.Message as string))
+                    {
+                        var rawMessage = (ViewBag.Message as string)
+                            .Replace("\n", "<br>");
+                        <div class="alert alert-danger shadow-sm fs-6" style="line-height: 1.6; white-space: normal;">
+                            @Html.Raw(rawMessage)
+                        </div>
+                    }
+                }
+
+                @*<div id="loginAttemptsBanner" class="alert alert-warning text-center p-2 mb-0" style="display:none;">
+            <strong>⚠️ Warning:</strong> You have made <span id="failedAttemptsCount">0</span> unsuccessful attempt(s).
+        </div>*@
+            </div>
+
+
+            @using (Html.BeginForm("Login", "Authentication", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-label-left" }))
+            {
+                <!-- Username Input -->
+                <div class="form-floating form-floating-outline mb-3">
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Email or Username", autocomplete = "username" })
+                    @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                    <label for="username">@GlobalLogin.UserName</label>
+                </div>
+                <!-- 🛡️ Hidden field to store real Browser User-Agent -->
+                <input type="hidden" id="UserAgent" name="UserAgent" />
+                <!-- Password Input -->
+                <div class="mb-3 form-password-toggle">
+                    <div class="input-group input-group-merge">
+                        <div class="form-floating form-floating-outline">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", autocomplete = "current-password" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            <label for="password">@GlobalLogin.Password</label>
+                        </div>
+                        <span class="input-group-text cursor-pointer"><i class="mdi mdi-eye-off-outline"></i></span>
+                    </div>
+                </div>
+
+                <div id="captcha-container" class="form-floating form-floating-outline mb-3" style="display:none; visibility:hidden;">
+                    <div class="g-recaptcha w-100" data-sitekey="6Lev7iYrAAAAAL0VW5688nOUudLq4QSc4MtLnrDo"></div>
+                </div>
+
+
+                <!-- Login Button -->
+                <button type="submit" class="btn btn-primary d-grid w-100">@GlobalLogin.LoginButton</button>
+            }
+
+            <!-- Login Policy -->
+        <div class="login-policy mt-4">
+            <p class="text-muted mb-0 text-center mt-2"><b>@GlobalLogin.LOGINPOLICY_TITLE</b></p>
+            <hr class="styled-hr" />
+            <ol class="text-start ps-3">
+                <li>@GlobalLogin.LOGINPOLICY_1</li>
+                <li>@GlobalLogin.LOGIN_POLICY_2</li>
+                <li>@GlobalLogin.LOGIN_POLICY_3</li>
+            </ol>
+        </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var userAgentField = document.getElementById('UserAgent');
+            if (userAgentField) {
+                userAgentField.value = navigator.userAgent;
+            }
+
+            const captchaContainer = document.getElementById('captcha-container');
+            let failedLoginAttempts = parseInt(localStorage.getItem('failedLoginAttempts')) || 0;
+
+            // 🛡️ Show CAPTCHA only if failedLoginAttempts >= 1
+            if (failedLoginAttempts >= 1) {
+                if (captchaContainer) {
+                    captchaContainer.style.display = 'block';
+                    captchaContainer.style.visibility = 'visible';
+                }
+            } else {
+                if (captchaContainer) {
+                    captchaContainer.style.display = 'none';
+                    captchaContainer.style.visibility = 'hidden';
+                }
+            }
+        });
+    </script>
+
+    @if (TempData["ResetClientAttempts"] != null && (bool)TempData["ResetClientAttempts"] == true)
+    {
+        <script>
+            // 🛡️ Force-clear immediately before page loads
+            localStorage.removeItem('failedLoginAttempts');
+        </script>
+    }
+    else if (ViewBag.Success == false)
+    {
+        <script>
+            // 🛡️ Increment failed attempts if login failed
+            let failedAttempts = parseInt(localStorage.getItem('failedLoginAttempts')) || 0;
+            failedAttempts++;
+            localStorage.setItem('failedLoginAttempts', failedAttempts);
+        </script>
+    }
+}

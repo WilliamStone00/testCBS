@@ -1,0 +1,10 @@
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalError.GeneralError;
+    Layout = "~/Views/Shared/_ErrorLayout.cshtml";
+}
+
+
+<h2 class="mb-4">@GlobalError.GeneralError</h2>
+<p>@GlobalError.ERROR:<br />@ViewBag.ErrorMessage</p>
+<a href="/" class="btn">@GlobalShared.GoBackToHome</a>

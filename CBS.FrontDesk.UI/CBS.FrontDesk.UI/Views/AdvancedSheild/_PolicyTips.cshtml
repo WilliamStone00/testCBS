@@ -1,0 +1,182 @@
+﻿<div class="card mb-1">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TSC Advanced Security Shield Configuration Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+
+                <li>
+                    <strong>RequestLimit</strong>:
+                    Defines how many requests a single user or session is allowed to make during a short period.
+                    <span class="text-muted">This prevents users from overloading the server.</span><br />
+                    <em>Example:</em> Set to <code>100</code> to allow up to 100 requests per minute per user.
+                </li>
+
+                <li>
+                    <strong>TimeWindowSeconds</strong>:
+                    The time window (in seconds) in which the system counts the number of requests per user.
+                    <span class="text-muted">Combined with <code>RequestLimit</code> to detect rapid access.</span><br />
+                    <em>Example:</em> With a 60-second window, users who send over 100 requests in 1 minute are blocked.
+                </li>
+
+                <li>
+                    <strong>BlockDurationMinutes</strong>:
+                    The time (in minutes) that a user or IP will be denied access after hitting a limit.
+                    <span class="text-muted">Prevents abuse and gives time for cooling down.</span><br />
+                    <em>Example:</em> Set to <code>15</code> to block attackers for 15 minutes.
+                </li>
+
+                <li>
+                    <strong>IPRequestLimit</strong>:
+                    Number of requests allowed from the same IP address within the IP-specific window.
+                    <span class="text-muted">Protects against external bots and DDoS from a single source.</span><br />
+                    <em>Example:</em> Set to <code>300</code> to tolerate up to 300 requests from the same IP in a short time.
+                </li>
+
+                <li>
+                    <strong>IPTimeWindowSeconds</strong>:
+                    Time frame used to track IP-based request limits.
+                    <span class="text-muted">Smaller windows catch fast-flooding traffic.</span><br />
+                    <em>Example:</em> If set to <code>30</code>, then 300+ requests from one IP in 30s will trigger a block.
+                </li>
+
+                <li>
+                    <strong>WhitelistedHeaders</strong>:
+                    HTTP headers that, when present, tell the system to skip rate limiting.
+                    <span class="text-muted">Used for internal services, monitoring agents, or exempt systems.</span><br />
+                    <em>Example:</em> Add <code>X-Internal-Request</code> for requests made by trusted servers.
+                </li>
+
+                <li>
+                    <strong>WhiteListedCountriesCode</strong>:
+                    List of allowed countries using 2-letter ISO codes.
+                    <span class="text-muted">Enforces GeoIP-based access control.</span><br />
+                    <em>Example:</em> <code>CM</code> allows Cameroon; <code>FR</code> allows France.
+                </li>
+
+                <li>
+                    <strong>CameroonCidrs</strong>:
+                    CIDR-formatted IP ranges representing valid Cameroon network blocks.
+                    <span class="text-muted">Filters traffic to allow only Cameroon-based addresses.</span><br />
+                    <em>Example:</em> <code>102.244.128.0/18</code> (range), <code>105.112.5.45/32</code> (single IP).
+                </li>
+
+                <li>
+                    <strong>SuspiciousIndicators</strong>:
+                    Words or filenames that often appear in malicious requests.
+                    <span class="text-muted">Used to detect hacking attempts or scanning tools.</span><br />
+                    <em>Example:</em> <code>shell.php</code>, <code>.env</code>, <code>wp-login</code>.
+                </li>
+
+                <li>
+                    <strong>BadUserAgents</strong>:
+                    Identifiers from the User-Agent header used by known bots or exploit tools.
+                    <span class="text-muted">Requests with these agents are blocked immediately.</span><br />
+                    <em>Example:</em> <code>curl</code>, <code>sqlmap</code>, <code>python-requests</code>.
+                </li>
+
+                <li>
+                    <strong>AllowedOrigins</strong>:
+                    Valid websites or domains allowed to send cross-origin requests.
+                    <span class="text-muted">Protects against CSRF and CORS-based spoofing.</span><br />
+                    <em>Example:</em> <code>https://secure.tsccore.cm</code>, <code>https://camccul.org</code>.
+                </li>
+
+                <li>
+                    <strong>TelemetryHeaderPrefixes</strong>:
+                    Header name prefixes used by bot trackers, debuggers, or monitoring tools.
+                    <span class="text-muted">Used to block automated or non-human traffic.</span><br />
+                    <em>Example:</em> <code>x-openai-</code>, <code>x-datadog-</code>, <code>cf-ray</code>.
+                </li>
+
+                <li>
+                    <strong>HighRiskHeaderKeys</strong>:
+                    Custom headers often seen in penetration testing or exploit payloads.
+                    <span class="text-muted">Blocked to prevent injection attacks.</span><br />
+                    <em>Example:</em> <code>x-sql-injection</code>, <code>x-command-injection</code>.
+                </li>
+
+                <li>
+                    <strong>ProtectedPathRefererRequired</strong>:
+                    Routes that must include a valid <code>Referer</code> header.
+                    <span class="text-muted">Prevents direct access or deep-linking into sensitive pages.</span><br />
+                    <em>Example:</em> <code>/admin</code>, <code>/user/settings</code>.
+                </li>
+
+                <li>
+                    <strong>SensitiveHeaderMissingCheckPaths</strong>:
+                    Paths where both <code>Origin</code> and <code>Referer</code> headers are mandatory.
+                    <span class="text-muted">Used to secure login and token endpoints against CSRF.</span><br />
+                    <em>Example:</em> <code>/api/login</code>, <code>/token</code>.
+                </li>
+
+                <li>
+                    <strong>SpoofedForwardedForIndicators</strong>:
+                    IP values that are considered fake or internal.
+                    <span class="text-muted">Helps detect spoofed <code>X-Forwarded-For</code> headers.</span><br />
+                    <em>Example:</em> <code>127.0.0.1</code>, <code>::1</code>, <code>localhost</code>.
+                </li>
+
+                <li>
+                    <strong>ExcludedPaths</strong>:
+                    URLs that bypass all security filtering.
+                    <span class="text-muted">Use for static resources like images or JS.</span><br />
+                    <em>Example:</em> <code>/favicon.ico</code>, <code>/signalr/hubs</code>.
+                </li>
+
+                <li>
+                    <strong>ExcludedSubstrings</strong>:
+                    Any request path that contains these words will skip filtering.
+                    <span class="text-muted">Useful for allowing non-sensitive internal tools.</span><br />
+                    <em>Example:</em> <code>dashboard</code>, <code>keepalive</code>.
+                </li>
+
+                <li>
+                    <strong>ExcludedExtensions</strong>:
+                    File extensions that are skipped from inspection.
+                    <span class="text-muted">Improves performance for static asset delivery.</span><br />
+                    <em>Example:</em> <code>.css</code>, <code>.js</code>, <code>.png</code>.
+                </li>
+
+                <li>
+                    <strong>Reset Policy</strong>:
+                    Deleting the current configuration will restore the default secure policy.
+                    <span class="text-muted">⚠️ This cannot be undone. All custom rules will be erased.</span>
+                </li>
+
+            </ul>
+
+        </div>
+
+        <!-- Default Config Display -->
+        <div class="alert alert-secondary mt-3">
+            <strong>Sample Configuration Snapshot:</strong><br />
+            <code>
+                RequestLimit = 100<br />
+                TimeWindowSeconds = 60<br />
+                BlockDurationMinutes = 15<br />
+                IPRequestLimit = 300<br />
+                IPTimeWindowSeconds = 30<br />
+                WhitelistedHeaders = ["FLUXTSC-Internal-Request"]<br />
+                WhiteListedCountriesCode = ["CM", "FR"]<br />
+                CameroonCidrs = ["102.244.128.0/18", "105.112.5.45/32"]<br />
+                SuspiciousIndicators = [".env", "wp-login", "shell.php", "sqlmap"]<br />
+                BadUserAgents = ["curl", "sqlmap", "python-requests", "nmap"]<br />
+                AllowedOrigins = ["https://secure.tsc.cm", "https://fluxcm.org"]<br />
+                TelemetryHeaderPrefixes = ["x-openai-", "x-datadog-", "cf-ray"]<br />
+                HighRiskHeaderKeys = ["x-sql-injection", "x-command-injection"]<br />
+                ProtectedPathRefererRequired = ["/admin", "/settings"]<br />
+                SensitiveHeaderMissingCheckPaths = ["/api/login", "/token"]<br />
+                SpoofedForwardedForIndicators = ["127.0.0.1", "::1", "localhost"]<br />
+                ExcludedPaths = ["/favicon.ico", "/signalr/hubs", "/content/"]<br />
+                ExcludedSubstrings = ["dashboard", "keepalive"]<br />
+                ExcludedExtensions = [".css", ".js", ".png", ".woff2"]
+            </code>
+        </div>
+
+    </div>
+</div>

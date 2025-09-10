@@ -1,0 +1,72 @@
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalCashMovementTrackerConfiguration.AccountingConfigurations;
+
+}
+
+<div class="card mb-12 me-2">
+
+    <h2> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;@GlobalCashMovementTrackerConfiguration.CashMovementConfigurationPanel </h2>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="accordion mt-3" id="accordionExample">
+
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingsix">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionsix"
+                                aria-expanded="false"
+                                aria-controls="accordionsix">
+                            <i class="tf-icons mdi mdi-book-open-page-variant-outline me-1"></i>  &nbsp; &nbsp; &nbsp; &nbsp;   @GlobalCashMovementTrackerConfiguration.CashTrackerManagement
+                        </button>
+                    </h2>
+                    <div id="accordionsix"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingsix"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="LoadDataGeneration('CashMovementTrackerConfiguration','DataTable_CashMovementTrackerConfiguration','_CashMovementTrackerConfigurationData','datalistingview_CashMovementTrackerConfiguration',0,'cashMovementTrackerConfiguration','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_CashMovementTrackerConfiguration','_CreateCashMovementTrackerConfiguration','new','CashMovementTrackerConfiguration','cashMovementTrackerConfiguration')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <br />
+                            <div id="datalistingview_CashMovementTrackerConfiguration">
+                                @Html.Partial("_CreateCashMovementTrackerConfiguration")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+   
+
+            </div>
+
+
+
+        </div>
+    </div>
+
+</div>
+
+<!--/ Accordion -->
+
+
+
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/CashMovementTracker/CashMovementTracker.js"></script>
+ 
+
+}
+

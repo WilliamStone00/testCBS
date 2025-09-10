@@ -1,0 +1,128 @@
+﻿@model CBS.FrontDesk.Data.Entity.RequestManagement.RateLimitedUser
+
+<div class="card-body">
+    <table class="table table-bordered table-striped table-sm" id="Detail">
+        <tbody>
+            <!-- General Information -->
+            <tr class="table-primary text-center fw-bold">
+                <td colspan="2">General Information</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Full Name:</td>
+                <td>@Model.FullName</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Username:</td>
+                <td>@Model.UserName</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Phone Number:</td>
+                <td>@Model.PhoneNumber</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Blocked By:</td>
+                <td>@Model.BlockedBy</td>
+            </tr>
+
+            <!-- Blocking Details -->
+            <tr class="table-primary text-center fw-bold">
+                <td colspan="2">Blocking Details</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">IP Address:</td>
+                <td>@Model.IpAddress</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">CIDR:</td>
+                <td>@Model.Cidr</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Block Type:</td>
+                <td class="text-start">
+                    <span class="badge bg-@(Model.BlockType == "IP-Based" ? "danger" : "warning text-dark")">
+                        @Model.BlockType
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fw-semibold">Reason:</td>
+                <td class="text-wrap text-break" style="max-width: 500px;">@Model.Reason</td>
+            </tr>
+
+            <tr>
+                <td class="fw-semibold">Blocked On:</td>
+                <td>@Model.Timestamp.ToLocalTime().ToString("dd MMM yyyy, HH:mm")</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Block Ends:</td>
+                <td>@Model.BlockEndTime.ToLocalTime().ToString("dd MMM yyyy, HH:mm")</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Active?</td>
+                <td>
+                    @if (Model.IsActive)
+                    {
+                        <span class="badge bg-success">Yes</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Expired</span>
+                    }
+                </td>
+            </tr>
+
+            <!-- Branch & Location -->
+            <tr class="table-primary text-center fw-bold">
+                <td colspan="2">Branch & Location</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Branch ID:</td>
+                <td>@Model.BranchId</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Branch Code:</td>
+                <td>@Model.BranchCode</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Branch Name:</td>
+                <td>@Model.BranchName</td>
+            </tr>
+
+            <!-- Geo Information -->
+            <tr class="table-primary text-center fw-bold">
+                <td colspan="2">Geolocation Details</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Country:</td>
+                <td>@Model.Country</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Region:</td>
+                <td>@Model.Region</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">City:</td>
+                <td>@Model.City</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Location:</td>
+                <td>@Model.Location</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Latitude:</td>
+                <td>@Model.Latitude</td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Longitude:</td>
+                <td>@Model.Longitude</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="text-center mt-4">
+        <button class="btn btn-outline-primary px-4" onclick="DeleteDynamic('BlacklistUser','Delete','@Model.Id','myDataTable','_Data', 0,'datalistingview')">
+            <i class="fas fa-unlock me-1"></i> Unblock / Delete User or IP
+        </button>
+    </div>
+</div>

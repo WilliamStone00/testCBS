@@ -1,0 +1,26 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+    @using Resources
+<table class="table table-hover" id="myDataTable_OperationEventAttribute">
+    <thead class="table-light">
+        <tr>
+            <th>@AccountingConfig_OperationEventAttribute.Name</th>
+            <th>@AccountingConfig_OperationEventAttribute.OperationEvent</th>
+
+            <th>@AccountingConfig_OperationEventAttribute.Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.OperationEventAttributeDtos)
+        {
+            <tr>
+                <td style="width:45%">@d.Name</td>
+                <td style="width:35%">@d.OperationEventName</td>
+               
+                <td style="width:25%">
+                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_OperationEventAttribute','_CreateOperationEventAttribute','update','AccountingConfiguration','operationEventAttribute')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit">@GlobalShared.Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.Name" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable_OperationEventAttribute','_OperationEventAttributeData',0,'datalistingview_OperationEventAttribute','operationEventAttribute')">@GlobalShared.Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

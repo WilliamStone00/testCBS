@@ -1,0 +1,18 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+<ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+        <a class="nav-link" href="/TransactionManagement/AccountDetails?KEY=@Model.accountNumber"><i class="mdi mdi-account-outline mdi-20px me-1"></i>Product Details</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/TransactionManagement/AccountInfo?KEY=@Model.accountNumber"><i class="mdi mdi-bookmark-outline mdi-20px me-1"></i>Account Info</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/TransactionManagement/Operation?KEY=@Model.accountNumber"><i class="mdi mdi-bookmark-outline mdi-20px me-1"></i>Operation</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#"><i class="mdi mdi-lock-open-outline mdi-20px me-1"></i>Entries</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#"><i class="mdi mdi-bell-outline mdi-20px me-1"></i>Reporting</a>
+    </li>
+</ul>

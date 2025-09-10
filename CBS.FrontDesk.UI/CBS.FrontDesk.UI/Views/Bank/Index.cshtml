@@ -1,0 +1,93 @@
+﻿@model CBS.FrontDesk.Data.Entity.Config.BankConfig
+@using Resources
+
+@{
+    ViewBag.Title = GlobalBank.PageTitle;
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+        <div class="card">
+            <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+                <div class="accordion-item active">
+                    <h2 class="accordion-header text-body d-flex justify-content-between"
+                        id="accordionPopoutIconThree">
+                        <button type="button"
+                                class="accordion-button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionPopoutIcon-3"
+                                aria-expanded="true"
+                                aria-controls="accordionPopoutIcon-3">
+                            <i class="mdi mdi-cog me-2"></i>
+                        </button>
+                    </h2>
+                    <div id="accordionPopoutIcon-3"
+                         class="accordion-collapse collapse show"
+                         data-bs-parent="#accordionPopoutIcon">
+                        <div class="accordion-body">
+                            <div id="mainviewChange">
+                                <div class="change-group">
+                                    <div class="card mb-4">
+                                        <div class="card-body d-sm-flex d-block">
+                                            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+                                                @GlobalBank.BankConfiguration
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-end">
+                                        <div class="demo-inline-spacing text-end">
+                                            <a type="button" onclick="LoadBanks()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+                                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div id="datalistingview">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-labelledby="imagePreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imagePreviewModalLabel">@Model.Bank.BankCode @Model.Bank.Name @GlobalShared.LogoPreview.</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <a href="~/Views/Bank/Index.cshtml">~/Views/Bank/Index.cshtml</a>
+            <div class="modal-body text-center">
+                @if (Model.Bank.LogoUrl != null)
+                {
+                    <div class="image-upload-container">
+                        <img src="@Model.Bank.LogoUrl" class="img-fluid" alt="Preview Image">
+                    </div>
+                }
+                else
+                {
+                    <div class="image-upload-container">
+                        <img src="@Url.Content(Model.Bank.LogoUrl)" class="img-fluid" alt="Preview Image">
+                    </div>
+                }
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/Crud/Bank/Banks.js"></script>
+}
+
+

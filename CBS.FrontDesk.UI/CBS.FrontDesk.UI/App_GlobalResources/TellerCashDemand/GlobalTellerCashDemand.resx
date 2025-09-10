@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountingMappingForOperations" xml:space="preserve">
+    <value>Accounting Mapping For Operations</value>
+  </data>
+  <data name="accountIsActive" xml:space="preserve">
+    <value>account is active</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="AmountApproved" xml:space="preserve">
+    <value>Amount approved</value>
+  </data>
+  <data name="AmountRequested" xml:space="preserve">
+    <value>Amount requested</value>
+  </data>
+  <data name="ApprovalRequestFailedReferenceId" xml:space="preserve">
+    <value>Approval Request Failed ReferenceId</value>
+  </data>
+  <data name="ApprovedAmount" xml:space="preserve">
+    <value>Approved amount</value>
+  </data>
+  <data name="ApprovedBy" xml:space="preserve">
+    <value>Approved by</value>
+  </data>
+  <data name="ApprovedDate" xml:space="preserve">
+    <value>Approved date</value>
+  </data>
+  <data name="ApprovedMessage" xml:space="preserve">
+    <value>Approved message</value>
+  </data>
+  <data name="ApprovedMessageDescription" xml:space="preserve">
+    <value>Approved message description</value>
+  </data>
+  <data name="BANKING_OPERATIONS_CASH_MANAGEMENT" xml:space="preserve">
+    <value>BANKING OPERATIONS-CASH MANAGEMENT</value>
+  </data>
+  <data name="BranchOffice" xml:space="preserve">
+    <value>Branch office</value>
+  </data>
+  <data name="CashReplenishment" xml:space="preserve">
+    <value>Cash Replenishment</value>
+  </data>
+  <data name="CashReplenishmentDetails" xml:space="preserve">
+    <value>Cash Replenishment Details</value>
+  </data>
+  <data name="CashReplenishmentRequestDetails" xml:space="preserve">
+    <value>Cash Replenishment Request Details</value>
+  </data>
+  <data name="CashReplenishmentRequestStatus" xml:space="preserve">
+    <value>Cash Replenishment Request Status</value>
+  </data>
+  <data name="CASH_REQUISITION_FOR_STILL" xml:space="preserve">
+    <value>CASH REQUISITION FOR STILL</value>
+  </data>
+  <data name="ClickToApproveCashReplenishment" xml:space="preserve">
+    <value>Click to approve cash replenishment</value>
+  </data>
+  <data name="ClickToViewPendingCashReplenishmentRequest" xml:space="preserve">
+    <value>Click to view pending cash replenishment request</value>
+  </data>
+  <data name="For" xml:space="preserve">
+    <value>for</value>
+  </data>
+  <data name="FromBranchFloatAccountNumber" xml:space="preserve">
+    <value>From branch float account number</value>
+  </data>
+  <data name="hasAlreadyBeenApproved" xml:space="preserve">
+    <value>has already been approved</value>
+  </data>
+  <data name="hasAlreadyBeenRejected" xml:space="preserve">
+    <value>has already been rejected</value>
+  </data>
+  <data name="hasNotYetBeenApproved" xml:space="preserve">
+    <value>has not yet been approved</value>
+  </data>
+  <data name="InvoiceNumber" xml:space="preserve">
+    <value>Invoice number</value>
+  </data>
+  <data name="IssuedBy" xml:space="preserve">
+    <value>Issued by</value>
+  </data>
+  <data name="IssuedDate" xml:space="preserve">
+    <value>Issued date</value>
+  </data>
+  <data name="ListOfCashReplenishments" xml:space="preserve">
+    <value>List of cash replenishments</value>
+  </data>
+  <data name="MakeDecision" xml:space="preserve">
+    <value>Make decision</value>
+  </data>
+  <data name="MakeRequest" xml:space="preserve">
+    <value>Make request</value>
+  </data>
+  <data name="ManualEntry" xml:space="preserve">
+    <value>Manual entry</value>
+  </data>
+  <data name="notSent" xml:space="preserve">
+    <value>not sent</value>
+  </data>
+  <data name="notValidated" xml:space="preserve">
+    <value>not validated</value>
+  </data>
+  <data name="OperationEventCode" xml:space="preserve">
+    <value>Operation event code</value>
+  </data>
+  <data name="ProvideThe16DigitAccountNumberThatServesAsReference" xml:space="preserve">
+    <value>Provide the 16 digit account number that serves as reference</value>
+  </data>
+  <data name="PROVISION_BANK_TO_VAULT" xml:space="preserve">
+    <value>PROVISION BANK TO VAULT</value>
+  </data>
+  <data name="ReferenceId" xml:space="preserve">
+    <value>Reference id</value>
+  </data>
+  <data name="RequestedBy" xml:space="preserve">
+    <value>Requested by</value>
+  </data>
+  <data name="RequestedDate" xml:space="preserve">
+    <value>Requested date</value>
+  </data>
+  <data name="RequestMessage" xml:space="preserve">
+    <value>Request message</value>
+  </data>
+  <data name="RequestReferenceId" xml:space="preserve">
+    <value>Request referenceId</value>
+  </data>
+  <data name="SelectDecision" xml:space="preserve">
+    <value>Select decision</value>
+  </data>
+  <data name="SelectSourceAccountToWhichTheVaultWillBe" xml:space="preserve">
+    <value>Select source account to which the vault will be</value>
+  </data>
+  <data name="SelectYourDecisionAndClickOnApproved" xml:space="preserve">
+    <value>Select your decision and click on approved Account Replenishment button to approved the request</value>
+  </data>
+  <data name="SendRequest" xml:space="preserve">
+    <value>Send request</value>
+  </data>
+  <data name="successfully" xml:space="preserve">
+    <value>successfully</value>
+  </data>
+  <data name="TheCashReplenishmentRequestIssuedBy" xml:space="preserve">
+    <value>The Cash replenishment request issued by</value>
+  </data>
+  <data name="UnCheckTheBoxAndClickOnDeActivateButtonToDeactivateAccount" xml:space="preserve">
+    <value>Un-check the box and click on de-activate button to de-activate account</value>
+  </data>
+  <data name="withAmount" xml:space="preserve">
+    <value>with amount</value>
+  </data>
+  <data name="withReference" xml:space="preserve">
+    <value>with reference</value>
+  </data>
+  <data name="YouHaveJustApprovedCashReplenishmentRequestOfXAF" xml:space="preserve">
+    <value>You have just approved cash replenishment request of XAF</value>
+  </data>
+  <data name="YouHaveJustRejectedTheCashReplenishmentRequestOfXAF" xml:space="preserve">
+    <value>You have just rejected the cash replenishment request of XAF</value>
+  </data>
+  <data name="YourCashReplenishmentRequestFailed" xml:space="preserve">
+    <value>Your cash replenishment request Failed. Kindly contact your technical support desk for assistance</value>
+  </data>
+  <data name="YourCashReplenishmentRequestHasBeenSentSuccesfully" xml:space="preserve">
+    <value>Your cash replenishment request has been sent succesfully. Patiently wait for your managers approval</value>
+  </data>
+</root>

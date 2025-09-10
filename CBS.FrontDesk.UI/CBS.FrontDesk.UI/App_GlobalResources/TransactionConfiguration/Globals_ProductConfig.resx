@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountCharacteristicsBehaviour" xml:space="preserve">
+    <value>Account Characteristics/Behaviour</value>
+  </data>
+  <data name="ActivateNotificationsForSavingsWithdrawalsInTheMobileApp" xml:space="preserve">
+    <value>Activate notifications for savings withdrawals in the mobile app.</value>
+  </data>
+  <data name="ActivateSavingWithdrawalNotification" xml:space="preserve">
+    <value>Activate Saving Withdrawal Notification</value>
+  </data>
+  <data name="AddToMembersDefaultOrdinaryAccount" xml:space="preserve">
+    <value>Add to members default ordinary account.</value>
+  </data>
+  <data name="AllowCashOutTransactionsThroughTheMobileApp" xml:space="preserve">
+    <value>Allow cash-out transactions through the mobile app.</value>
+  </data>
+  <data name="AllowDepositsToBeMadeIntoThisAccountFromDifferentBranches" xml:space="preserve">
+    <value>Allow deposits to be made into this account from different branches.</value>
+  </data>
+  <data name="AllowInstallmentPaymentForMoralPerson" xml:space="preserve">
+    <value>Allow installment payment for Moral Person.</value>
+  </data>
+  <data name="AllowInstallmentPaymentForPhysicalPerson" xml:space="preserve">
+    <value>Allow installment payment for Physical Person.</value>
+  </data>
+  <data name="AllowTransferOperationsViaThirdPartyApplications" xml:space="preserve">
+    <value>Allow transfer operations via third-party applications.</value>
+  </data>
+  <data name="AllowUsersToPerformTransfersViaTheMobileApp" xml:space="preserve">
+    <value>Allow users to perform transfers via the mobile app.</value>
+  </data>
+  <data name="AutomaticallyVerifyRemittanceReceiverInformation" xml:space="preserve">
+    <value>Automatically verify remittance receiver information.</value>
+  </data>
+  <data name="AutomaticallyVerifyRemittanceSenderInformation" xml:space="preserve">
+    <value>Automatically verify remittance sender information.</value>
+  </data>
+  <data name="AutomaticTellerMachine" xml:space="preserve">
+    <value>Automatic Teller Machine (ATM).</value>
+  </data>
+  <data name="CheckToActivateThisProduct" xml:space="preserve">
+    <value>Check to activate this product.</value>
+  </data>
+  <data name="CheckToActivateThisProductFor3PPApp" xml:space="preserve">
+    <value>Check to activate this product for 3PP app</value>
+  </data>
+  <data name="CheckToActivateThisProductForMobileApp" xml:space="preserve">
+    <value>Check to activate this product for mobile app so that it can be visible to members</value>
+  </data>
+  <data name="CheckToAllowCommissionSharing" xml:space="preserve">
+    <value>Check to allow commission sharing.</value>
+  </data>
+  <data name="CheckToAllowDirectDeposit" xml:space="preserve">
+    <value>Check to allow direct deposit.</value>
+  </data>
+  <data name="CheckToAllowDirectWithdrawal" xml:space="preserve">
+    <value>Check to allow direct withdrawal.</value>
+  </data>
+  <data name="CheckToAllowInterBranchDeposit" xml:space="preserve">
+    <value>Check to allow inter-branch deposit.</value>
+  </data>
+  <data name="CheckToAllowInterBranchTransfer" xml:space="preserve">
+    <value>Check to allow inter-branch transfer.</value>
+  </data>
+  <data name="CheckToAllowInterBranchWithdrawal" xml:space="preserve">
+    <value>Check to allow inter-branch transfer.</value>
+  </data>
+  <data name="CheckToReserveThisProductForTellerManagement" xml:space="preserve">
+    <value>Check to reserve this product for teller management.</value>
+  </data>
+  <data name="ControlProductSettingsForMobileApplicationAccess" xml:space="preserve">
+    <value>Control product settings for mobile application access, including activation, transfer, cashin, and cashout permissions.</value>
+  </data>
+  <data name="ControlSettingsForThirdPartyApplicationAccess" xml:space="preserve">
+    <value>Control product settings for mobile application access, including activation, transfer, cashin, and cashout permissions.</value>
+  </data>
+  <data name="Currency" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="DailyCollection" xml:space="preserve">
+    <value>Daily collection.</value>
+  </data>
+  <data name="DefaultAccountOpeningConditions" xml:space="preserve">
+    <value>Default Account Opening Conditions</value>
+  </data>
+  <data name="DepositAccount" xml:space="preserve">
+    <value>Deposit account.</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="EnableCashInOperationsThroughTheMobileApp" xml:space="preserve">
+    <value>Enable cash-in operations through the mobile app.</value>
+  </data>
+  <data name="EnableCashInTransactionsViaThirdPartyApplications" xml:space="preserve">
+    <value>Enable cash-in transactions via third-party applications.</value>
+  </data>
+  <data name="EnableCashOutTransactionsViaThirdPartyApplications" xml:space="preserve">
+    <value>Enable cash-out transactions via third-party applications.</value>
+  </data>
+  <data name="EnableOTPControlForTransactions" xml:space="preserve">
+    <value>Enable OTP control for transactions.</value>
+  </data>
+  <data name="EnableThisOptionToActivateTheAccountForTransactions" xml:space="preserve">
+    <value>Enable this option to activate the account for transactions.</value>
+  </data>
+  <data name="EnableThisOptionToActivateTheProductForThirdPartyApplications" xml:space="preserve">
+    <value>Enable this option to activate the product for third-party applications.</value>
+  </data>
+  <data name="EnableThisOptionToMakeThisProductAvailableOnTheMobileApp" xml:space="preserve">
+    <value>Enable this option to make this product available on the mobile app.</value>
+  </data>
+  <data name="EnableTransfersToAndFromOtherBranchesForThisAccount" xml:space="preserve">
+    <value>Enable transfers to and from other branches for this account.</value>
+  </data>
+  <data name="EnableWithdrawalsFromThisAccountAtDifferentBranches" xml:space="preserve">
+    <value>Enable withdrawals from this account at different branches.</value>
+  </data>
+  <data name="FormCharge" xml:space="preserve">
+    <value>Form Charge</value>
+  </data>
+  <data name="GuichetAutomaticVirtuel" xml:space="preserve">
+    <value>Guichet Automatic Virtuel (GAV).</value>
+  </data>
+  <data name="InterestAccrualFrequency" xml:space="preserve">
+    <value>Interest accrual frequency</value>
+  </data>
+  <data name="InterestPostingFrequency" xml:space="preserve">
+    <value>Interest posting frequency</value>
+  </data>
+  <data name="IsOpeningBalanceMandatoryForMoralPerson" xml:space="preserve">
+    <value>Is opening balance mandatory for Moral Person?</value>
+  </data>
+  <data name="IsOpeningBalanceMandatoryForPhysicalPerson" xml:space="preserve">
+    <value>Is opening balance mandatory for Physical Person?</value>
+  </data>
+  <data name="LoanAccount" xml:space="preserve">
+    <value>Loan account.</value>
+  </data>
+  <data name="MaximumAmount" xml:space="preserve">
+    <value>Maximum amount this account can hold</value>
+  </data>
+  <data name="MemberShareAccount" xml:space="preserve">
+    <value>Member share account.</value>
+  </data>
+  <data name="MembershipAccountReservedForOnboardingFee" xml:space="preserve">
+    <value>Membership Account (Reserved to manage onboarding fee once per member upon registration)</value>
+  </data>
+  <data name="MembersOrdinaryAccountTypes" xml:space="preserve">
+    <value>Members Ordinary Account types</value>
+  </data>
+  <data name="MinimumAmount" xml:space="preserve">
+    <value>Minimum amount this account can hold</value>
+  </data>
+  <data name="MinimumBalanceMoralPerson" xml:space="preserve">
+    <value>Minimum balance for a moral person</value>
+  </data>
+  <data name="MinimumBalancePhysicalPerson" xml:space="preserve">
+    <value>Minimum balance for a physical person</value>
+  </data>
+  <data name="MinimumOpeningBalance" xml:space="preserve">
+    <value>Minimum Opening Balance</value>
+  </data>
+  <data name="MobileApplicationControlForCMoney" xml:space="preserve">
+    <value>Mobile Application Control For C-Money</value>
+  </data>
+  <data name="MobileMoneyMTN" xml:space="preserve">
+    <value>Mobile Money MTN</value>
+  </data>
+  <data name="MobileMoneyOrange" xml:space="preserve">
+    <value>Mobile Money Orange</value>
+  </data>
+  <data name="MoneyGram" xml:space="preserve">
+    <value>Money Gram</value>
+  </data>
+  <data name="MoralPerson" xml:space="preserve">
+    <value>Moral Person</value>
+  </data>
+  <data name="MPesa" xml:space="preserve">
+    <value>M-Pesa</value>
+  </data>
+  <data name="OFX" xml:space="preserve">
+    <value>OFX</value>
+  </data>
+  <data name="OrderOfListingOrDisplayInCMoneyAppForMembersUsage" xml:space="preserve">
+    <value>Order of listing or display in C-Money App for Members Usage.</value>
+  </data>
+  <data name="OrdinaryAccount" xml:space="preserve">
+    <value>Ordinary account</value>
+  </data>
+  <data name="OrdinaryAccounts" xml:space="preserve">
+    <value>Ordinary Account</value>
+  </data>
+  <data name="PayInInstallments" xml:space="preserve">
+    <value>Pay in Installments</value>
+  </data>
+  <data name="Payoneer" xml:space="preserve">
+    <value>Payoneer</value>
+  </data>
+  <data name="PerformCashin" xml:space="preserve">
+    <value>Perform cashin</value>
+  </data>
+  <data name="PerformCashout" xml:space="preserve">
+    <value>Perform cashout</value>
+  </data>
+  <data name="PerformTransfer" xml:space="preserve">
+    <value>Perform Transfer</value>
+  </data>
+  <data name="PermitDepositsDirectlyIntoThisAccount" xml:space="preserve">
+    <value>Permit deposits directly into this account.</value>
+  </data>
+  <data name="PermitSharingOfCommissionsWithOtherLinkedAccounts" xml:space="preserve">
+    <value>Permit sharing of commissions with other linked accounts.</value>
+  </data>
+  <data name="PermitWithdrawalsDirectlyFromThisAccount" xml:space="preserve">
+    <value>Permit withdrawals directly from this account.</value>
+  </data>
+  <data name="PhysicalPerson" xml:space="preserve">
+    <value>Physical Person</value>
+  </data>
+  <data name="PreferenceShareAccount" xml:space="preserve">
+    <value>Preference share account.</value>
+  </data>
+  <data name="ProductCategory" xml:space="preserve">
+    <value>Product Category</value>
+  </data>
+  <data name="ProductCode" xml:space="preserve">
+    <value>Product Code</value>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Product name</value>
+  </data>
+  <data name="Remittance" xml:space="preserve">
+    <value>Remittance</value>
+  </data>
+  <data name="RemittanceAccountTypes" xml:space="preserve">
+    <value>Remittance Account types</value>
+  </data>
+  <data name="RequiredOpening" xml:space="preserve">
+    <value>Required Opening</value>
+  </data>
+  <data name="Ria" xml:space="preserve">
+    <value>Ria</value>
+  </data>
+  <data name="SalaryAccount" xml:space="preserve">
+    <value>Salary account.</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SavingAccount" xml:space="preserve">
+    <value>Saving account.</value>
+  </data>
+  <data name="SelectAccount" xml:space="preserve">
+    <value>---Select an account---</value>
+  </data>
+  <data name="SelectCurrency" xml:space="preserve">
+    <value>---Select currency---</value>
+  </data>
+  <data name="SelectInterestCalculationFrequency" xml:space="preserve">
+    <value>---Select interest calculation frequency---</value>
+  </data>
+  <data name="SelectThisOptionToMakeTheAccountAccessibleOnlyToTellersForManagementPurposes" xml:space="preserve">
+    <value>Select this option to make the account accessible only to tellers for management purposes.</value>
+  </data>
+  <data name="SetTheFormChargeForWithdrawaingFromSavingAccount" xml:space="preserve">
+    <value>Set the form charge for withdrawaing from saving account</value>
+  </data>
+  <data name="SystemReservedAccountTypes" xml:space="preserve">
+    <value>System Reserved Account types</value>
+  </data>
+  <data name="Teller" xml:space="preserve">
+    <value>Teller</value>
+  </data>
+  <data name="TellerAccountReservedForOperations" xml:space="preserve">
+    <value>Teller account (Reserved for operations).</value>
+  </data>
+  <data name="ThirdPartiesAccountTypes" xml:space="preserve">
+    <value>Third Parties Account types</value>
+  </data>
+  <data name="ThirdPartyApplicationControl" xml:space="preserve">
+    <value>Third Party Application Control (Like GAV)</value>
+  </data>
+  <data name="ThirdPartySavingWithdrawalFormCharge" xml:space="preserve">
+    <value>Third Party Saving Withdrawal Form Charge</value>
+  </data>
+  <data name="TrustSoftCredit" xml:space="preserve">
+    <value>Trust Soft Credit</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="WesternUnion" xml:space="preserve">
+    <value>Western Union</value>
+  </data>
+  <data name="WorldRemit" xml:space="preserve">
+    <value>World Remit</value>
+  </data>
+</root>

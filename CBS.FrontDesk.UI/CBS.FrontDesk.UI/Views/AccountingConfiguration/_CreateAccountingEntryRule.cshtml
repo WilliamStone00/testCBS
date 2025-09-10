@@ -1,0 +1,88 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+@using Resources
+<div class="card-body">
+        @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {
+            <input type="hidden" name="ServiceOption" value="accountingRuleEntry" id="ServiceOption" />
+            <div class="row mt-2 gy-4">
+
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.AccountingRuleEntry.OperationEventId, new SelectList(ViewBag.OperationEvent == null ? "" : ViewBag.OperationEvent, "Id", "OperationEventName"), "---"+@AccountingConfig_CreateAccountingEntryRule.SelectOperationEvent+"---", new { @class = "form-control select2", @search = "true", id = "OperationEventId" })
+                        @Html.ValidationMessageFor(model => model.AccountingRuleEntry.OperationEventId, "", new { @class = "text-danger" })
+                        <label for="OperationEventId">@AccountingConfig_CreateAccountingEntryRule.Event</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+
+                    <div class="form-floating form-floating-outline">
+
+                        @Html.TextBoxFor(model => model.AccountingRuleEntry.AccountingRuleEntryName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.AccountingRuleEntry.AccountingRuleEntryName, "", new { @class = "text-danger" })
+                        <label for="AccountingRuleEntryName">@AccountingConfig_CreateAccountingEntryRule.RuleEntryName</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.AccountingRuleEntry.OperationEventAttributeId, new SelectList(ViewBag.OperationEventAttributes == null ? "" : ViewBag.OperationEventAttributes, "Id", "Name"), "---"+ @AccountingConfig_CreateAccountingEntryRule.SelectOperationEvent+"---", new { @class = "form-control select2", @search = "true", id = "OperationEventAttributeId" })
+                        @Html.ValidationMessageFor(model => model.AccountingRuleEntry.OperationEventAttributeId, "", new { @class = "text-danger" })
+                        <label for="OperationEventAttributeId">@AccountingConfig_CreateAccountingEntryRule.OperationEventAttribute </label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+
+                        @Html.DropDownListFor(m => m.AccountingRuleEntry.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---"+@AccountingConfig_CreateAccountingEntryRule.SelectBookingDirection+"---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(model => model.AccountingRuleEntry.BookingDirection, "", new { @class = "text-danger" })
+                        <label for="BookingDirection">@AccountingConfig_CreateAccountingEntryRule.BookingDirection</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.AccountingRuleEntry.DeterminationAccountId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), "---"+@AccountingConfig_CreateAccountingEntryRule.SelectAccount+"---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(model => model.AccountingRuleEntry.DeterminationAccountId, "", new { @class = "text-danger" })
+                        <label for="DebitAccountId">@AccountingConfig_CreateAccountingEntryRule.DeterminationAccount</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.AccountingRuleEntry.BalancingAccountId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), "---"+@AccountingConfig_CreateAccountingEntryRule.SelectAccount+"---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(model => model.AccountingRuleEntry.BalancingAccountId, "", new { @class = "text-danger" })
+
+                        <label for="CreditAccountId">@AccountingConfig_CreateAccountingEntryRule.BalancingAccount</label>
+                    </div>
+
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+
+                        @Html.TextAreaFor(m => m.AccountingRuleEntry.Description, new { @class = "form-control", @style = "height: 200px;" })
+                        @Html.ValidationMessageFor(m => m.AccountingRuleEntry.Description, "", new { @class = "text-danger" })
+                        <label>@AccountingConfig_CreateAccountingEntryRule.Description</label>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="mt-4">
+                @if (Model.AccountingRuleEntry.Id == null)
+                {
+                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                    <input type="hidden" name="Action" value="insert" id="Action" />
+                }
+                else
+                { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
+                    @Html.HiddenFor(m => m.AccountingRuleEntry.Id)
+                    <input type="hidden" name="Action" value="update" id="Action" />
+                }
+            </div>
+        }
+    </div>
+ 
+

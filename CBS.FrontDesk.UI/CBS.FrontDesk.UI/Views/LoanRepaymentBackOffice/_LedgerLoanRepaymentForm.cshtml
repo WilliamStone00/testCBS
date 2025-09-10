@@ -1,0 +1,172 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@using Resources
+<input type="hidden" id="customerId" value="@Model.Customer.CustomerId" />
+<input type="hidden" id="memberName" value="@Model.Customer.name" />
+<input type="hidden" id="branchName" value="@Model.Branch.Name" />
+<input type="hidden" id="branchCode" value="@Model.Branch.BranchCode" />
+<input type="hidden" id="accountantName" value="@Session["FullName"].ToString()" />
+
+<div class="form-wrapper">
+    <div class="change-group">
+        <div class="row mb-3 align-items-center">
+            <div class="col-md-12">
+                <div class="form-floating">
+                    <span class="formatted-amount shadow-sm d-block py-3 px-4 bg-light rounded border border-secondary">
+                        <strong>@GlobalLoanRepaymentBackOffice.MembersName:</strong> @Model.Customer.name &nbsp; | &nbsp;
+                        <strong>@GlobalLoanRepaymentBackOffice.BranchName:</strong> @Model.Branch.Name &nbsp; | &nbsp;
+                        <strong>@GlobalLoanRepaymentBackOffice.BranchCode:</strong> @Model.Branch.BranchCode
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <fieldset class="fieldset-custom">
+        <div class="container">
+            <div class="row mb-3">
+                <h6 class="mb-0 fw-bold text-dark">@GlobalLoanRepaymentBackOffice.SourceAccounts</h6>
+                <div class="col-md-12 mb-2">
+                    <div class="form-floating">
+                        @Html.DropDownListFor(m => m.BulkDeposit.ChartOfAccountId, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), "---"+ @GlobalLoanRepaymentBackOffice.SelectGL+"---", new { @class = "form-control select2", id = "account_number", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.BulkDeposit.ChartOfAccountId, "", new { @class = "text-danger" })
+                        <label id="accountNumberLabel">@GlobalLoanRepaymentBackOffice.SelectSourceAccount</label>
+                    </div>
+                </div>
+            </div>
+            <!-- Accounting Date - Top Right -->
+            <div class="row mb-3">
+                <div class="col text-end">
+                    <label class="form-label fw-semibold me-2">Accounting Date</label>
+                    @Html.TextBoxFor(
+                        m => m.BulkDeposit.AccountingDate,
+                        Model.BulkDeposit.AccountingDate.HasValue
+                            ? Model.BulkDeposit.AccountingDate.Value.ToString("yyyy-MM-dd")
+                            : DateTime.Today.ToString("yyyy-MM-dd"),
+                        new
+                        {
+                            @class = "form-control accounting-date d-inline-block",
+                            style = "width: 200px; display:inline-block;",
+                            type = "date",
+                            data_date_default = "today",
+                            data_date_max = "today"
+                        }
+                    )
+                    @Html.ValidationMessageFor(m => m.BulkDeposit.AccountingDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="myDataTableT">
+                        <thead class="table-light">
+                            <tr>
+                                <th colspan="11" class="text-center fw-bold bg-light text-dark">@GlobalLoanRepaymentBackOffice.MEMBERS_OPENED_LOANS</th>
+                            </tr>
+                            <tr>
+                                <th style="display:none;">@GlobalLoanRepaymentBackOffice.LRef</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Date</th>
+                                <th>@GlobalLoanRepaymentBackOffice.LAmount</th>
+                                <th>@GlobalLoanRepaymentBackOffice.AI</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Balance</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Capital</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Interest</th>
+                                <th>@GlobalLoanRepaymentBackOffice.VAT (19.25%)</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Penalty</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Total</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Conf</th>
+                                <th>@GlobalLoanRepaymentBackOffice.VAT-INC/EXC</th>
+                            </tr>
+                        </thead>
+                        <tbody id="loanRepaymentTable">
+                            @foreach (var d in Model.Loans)
+                            {
+                                var loanId = d.Id;
+                                <tr id="row-@loanId">
+                                    <td style="display:none;">@loanId</td>
+                                    <td>@d.LoanDate.ToString("dd/MM/yy")</td>
+                                    <td class="loan-amount" data-loan-amount="@d.LoanAmount">@d.LoanAmount.ToString("#,##0.0")</td>
+                                    <td>@d.AccrualInterest.ToString("#,##0.0")</td>
+                                    <td>@d.Balance.ToString("#,##0.0")</td>
+
+                                    <td>
+                                        <input type="number"
+                                               class="form-control capital-input"
+                                               id="capital-@loanId"
+                                               value="0"
+                                               oninput="updateLedgerRowTotal('@loanId')" />
+                                    </td>
+
+                                    <td>
+                                        <input type="number"
+                                               class="form-control interest-input"
+                                               id="interest-@loanId"
+                                               value="0"
+                                               data-original="0"
+                                               oninput="calculateVatOnlyLedger('@loanId')"/>
+                                    </td>
+
+                                    <td>
+                                        <input type="text"
+                                               class="form-control vat-input"
+                                               id="vat-@loanId"
+                                               value="0"
+                                               readonly />
+                                    </td>
+
+                                    <td>
+                                        <input type="number"
+                                               class="form-control penalty-input"
+                                               id="penalty-@loanId"
+                                               value="0"
+                                               oninput="updateLedgerRowTotal('@loanId')" />
+                                    </td>
+
+                                    <td>
+                                        <span class="total-span" id="total-@loanId">0</span>
+                                    </td>
+
+                                    <td>
+                                        <input type="checkbox" class="form-check-input loan-confirmation-checkbox" />
+                                    </td>
+
+                                    <td>
+                                        <input type="checkbox"
+                                               class="form-check-input vat-exclusive-check"
+                                               id="vatExclusive-@d.Id"
+                                               onchange="handleVatToggle('@d.Id')" />
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="9" style="text-align: right;"><strong>@GlobalLoanRepaymentBackOffice.OverallTotalRepayment:</strong></td>
+                                <td colspan="2" id="grandTotalRepayment">0</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+
+
+                <div class="col-md-12 mt-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control shadow-input-boxes", @id = "Note", rows = "3", placeholder = @GlobalLoanRepaymentBackOffice.EnterReasonForTransaction, style = "height: 90px;" })
+                        @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger" })
+                        <label for="Note">@GlobalLoanRepaymentBackOffice.TransactionNoteReason</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-end mt-4">
+                <button class="btn btn-primary me-2" onclick="PostLoanRepayment()">
+                    <i class="mdi mdi-check me-1"></i> @GlobalLoanRepaymentBackOffice.ConfirmRepayment
+                </button>
+                <button class="btn btn-secondary" onclick="Reprint()">
+                    <i class="mdi mdi-printer me-1"></i> @GlobalLoanRepaymentBackOffice.ReprintReceipt
+                </button>
+
+            </div>
+        </div>
+    </fieldset>
+</div>

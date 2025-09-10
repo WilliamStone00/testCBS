@@ -1,0 +1,71 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+@using Resources
+<div class="card-body">
+        @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {
+            <input type="hidden" name="ServiceOption" value="accountingRuleEntry" id="ServiceOption" />
+            <div class="row mt-2 gy-4">
+                <div class="col-md-6">
+                    <label for="AccountingRuleEntryName">@AccountingConfig_CreateIncomeStatementStructure.Name</label>
+                    @Html.TextBoxFor(model => model.AccountingRuleEntry.AccountingRuleEntryName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.AccountingRuleEntry.AccountingRuleEntryName, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="col-md-6">
+                    <label for="OperationEventId">@AccountingConfig_CreateIncomeStatementStructure.Event</label>
+
+                        @Html.DropDownListFor(m => m.AccountingRuleEntry.OperationEventId, new SelectList(ViewBag.OperationEvent == null ? "" : ViewBag.OperationEvent, "Id", "OperationEventName"), @AccountingConfig_CreateIncomeStatementStructure.SelectOperationEvent, new { @class = "form-control select2", @search = "true", id = "OperationEventId" })
+                        @Html.ValidationMessageFor(model => model.AccountingRuleEntry.OperationEventId, "", new { @class = "text-danger" })
+
+
+                </div>
+                <div class="col-md-6">
+                    <label for="OperationEventAttributeId">@AccountingConfig_CreateIncomeStatementStructure.OperationEventAttribute </label>
+                    
+                        @Html.DropDownListFor(m => m.AccountingRuleEntry.OperationEventAttributeId, new SelectList(ViewBag.OperationEventAttributes == null ? "" : ViewBag.OperationEventAttributes, "Id", "Name"), @AccountingConfig_CreateIncomeStatementStructure.SelectOperationEvent, new { @class = "form-control select2", @search = "true", id = "OperationEventAttributeId" })
+                        @Html.ValidationMessageFor(model => model.AccountingRuleEntry.OperationEventAttributeId, "", new { @class = "text-danger" })
+                    
+                </div>
+
+                <div class="col-md-6">
+                    <label for="BookingDirection">@AccountingConfig_CreateIncomeStatementStructure.BookingDirection</label>
+                    @Html.DropDownListFor(m => m.AccountingRuleEntry.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), @AccountingConfig_CreateIncomeStatementStructure.SelectBookingDirection, new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(model => model.AccountingRuleEntry.BookingDirection, "", new { @class = "text-danger" })
+
+                </div>
+                <div class="col-md-6">
+                    <label for="DebitAccountId">@AccountingConfig_CreateIncomeStatementStructure.DeterminationAccount</label>
+                    @Html.DropDownListFor(m => m.AccountingRuleEntry.DeterminationAccountId, new SelectList(ViewBag.DebitAccounts == null ? "" : ViewBag.DebitAccounts, "Text", "Value"), @AccountingConfig_CreateIncomeStatementStructure.SelectAccount, new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(model => model.AccountingRuleEntry.DeterminationAccountId, "", new { @class = "text-danger" })
+
+                </div>
+                <div class="col-md-6">
+
+                    <label for="CreditAccountId">@AccountingConfig_CreateIncomeStatementStructure.BalancingAccount</label>
+                    @Html.DropDownListFor(m => m.AccountingRuleEntry.BalancingAccountId, new SelectList(ViewBag.CreditAccounts == null ? "" : ViewBag.CreditAccounts, "Text", "Value"), @AccountingConfig_CreateIncomeStatementStructure.SelectAccount, new { @class = "form-control select2", @search = "true" })
+
+                    @Html.ValidationMessageFor(model => model.AccountingRuleEntry.BalancingAccountId, "", new { @class = "text-danger" })
+
+                </div>
+
+
+
+            </div>
+
+            <div class="mt-4">
+                @if (Model.AccountingRuleEntry.Id == null)
+                {
+                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                    <input type="hidden" name="Action" value="insert" id="Action" />
+                }
+                else
+                { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
+                    @Html.HiddenFor(m => m.AccountingRuleEntry.Id)
+                    <input type="hidden" name="Action" value="update" id="Action" />
+                }
+            </div>
+        }
+    </div>
+ 
+

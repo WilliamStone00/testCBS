@@ -1,0 +1,193 @@
+﻿@{
+    ViewBag.Title = "SMS Activities Log";
+}
+@using Resources
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-message-text-outline me-2"></i> @GlobalSMSActivityLog.SMSACTIVITIESLOG
+                </h1>
+                <p class="card-text">
+                    @GlobalSMSActivityLog.MonitorSearchAndAnalyzeSMSActivitiesAcrossBranches.
+                </p>
+                <p class="card-text fw-bold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalSMSActivityLog.UseAdvancedSearchDateRangesAndStatusFiltersToPinpoint.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalSMSActivityLog.TIPS_FOR_USING_SMS_LOG_FILTERS_EFFECTIVELY</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalSMSActivityLog.FilterByOperationType:</strong> @GlobalSMSActivityLog.NarrowDownSMSLogsBySelectingASpecificOperationType.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalSMSActivityLog.FilterByBranch:</strong> @GlobalSMSActivityLog.UseBranchCodeOrNameToViewSMSLogs.</li>
+                <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>@GlobalSMSActivityLog.DateRange:</strong> @GlobalSMSActivityLog.SpecifyAStartAndEndDate.</li>
+                <li><i class="mdi mdi-account-outline text-success me-2"></i> <strong>@GlobalSMSActivityLog.FilterBySender:</strong> @GlobalSMSActivityLog.EnterASenderIDToViewMessagesSentByAspecificUser.</li>
+                <li><i class="mdi mdi-phone-outline text-primary me-2"></i> <strong>@GlobalSMSActivityLog.FilterByRecipient:</strong> @GlobalSMSActivityLog.SearchByRecipientsPhoneNumber.</li>
+                <li><i class="mdi mdi-comment-check-outline text-primary me-2"></i> <strong>@GlobalSMSActivityLog.FilterByStatus:</strong> @GlobalSMSActivityLog.ViewSMSLogsByStatusForDetailedAnalysis.</li>
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>@GlobalShared.Export:</strong> @GlobalSMSActivityLog.ExportFilteredSMSLogsToExcel.</li>
+                <li><i class="mdi mdi-reload text-info me-2"></i> <strong>@GlobalSMSActivityLog.RefreshOften:</strong> @GlobalSMSActivityLog.RegularlyRefreshTheData.</li>
+                <li><i class="mdi mdi-magnify text-info me-2"></i> <strong>@GlobalSMSActivityLog.AdvancedSearch:</strong> @GlobalSMSActivityLog.CombineMultipleFiltersForMorePreciseDataRetrieval.</li>
+                <li><i class="mdi mdi-history text-primary me-2"></i> <strong>@GlobalSMSActivityLog.ViewLogDetails:</strong> @GlobalSMSActivityLog.ClickTheViewButtonToSeeTheFullSMS.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Advanced Filters -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalSMSActivityLog.AdvancedFilters</h5>
+    <div class="card p-3 mb-3 bg-light">
+        <div class="row mb-3">
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="byBranch" />
+                <label class="form-check-label fw-bold" for="byBranch">@GlobalSMSActivityLog.FilterByBranch</label>
+            </div>
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="bySender" />
+                <label class="form-check-label fw-bold" for="bySender">@GlobalSMSActivityLog.FilterBySender</label>
+            </div>
+            <div class="col-md-4 form-check">
+                <input type="checkbox" class="form-check-input" id="byDate" />
+                <label class="form-check-label fw-bold" for="byDate">@GlobalSMSActivityLog.FilterByDateRange</label>
+            </div>
+        </div>
+
+        <div id="branchFilterSection" class="row mb-3" style="display:none;">
+            <div class="col-md-12">
+                <label for="branchInput" class="form-label fw-bold">@GlobalSMSActivityLog.SelectBranch</label>
+                @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "All", new { @class = "form-control select2" })
+            </div>
+        </div>
+
+        <div id="senderFilterSection" class="row mb-3" style="display:none;">
+            <div class="col-md-12">
+                <label class="form-label fw-bold">@GlobalSMSActivityLog.SenderID</label>
+                <input type="text" id="senderId" class="form-control" placeholder="@GlobalSMSActivityLog.SenderID" />
+            </div>
+        </div>
+
+        <div id="dateRangeSection" class="row mb-3" style="display:none;">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">@GlobalSMSActivityLog.DateFrom</label>
+                <input type="date" id="smsDateFrom" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">@GlobalSMSActivityLog.DateTo</label>
+                <input type="date" id="smsDateTo" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">@GlobalSMSActivityLog.OperationType</label>
+                @Html.DropDownList("operationType", new SelectList(ViewBag.OperationTypes, "", ""), new { @class = "form-control select2" })
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">@GlobalSMSActivityLog.Status</label>
+                @Html.DropDownList("status", new SelectList(ViewBag.Statuses, "", ""), new { @class = "form-control select2" })
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-12 d-flex">
+            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalSMSActivityLog.ApplyFilter</button>
+            <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset</button>
+            @*<button id="exportBtn" class="btn btn-primary w-100"><i class="mdi mdi-file-excel"></i> Export</button>*@
+        </div>
+    </div>
+</div>
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    @Html.Partial("_SmsLogsData")
+</div>
+<div class="modal fade" id="smsDetailsModal" tabindex="-1" aria-labelledby="smsDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content position-relative">
+
+            <!-- Loader Overlay -->
+            <div id="smsLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                    <div class="spinner-border text-primary mb-3" role="status"></div>
+                    <p class="fw-semibold text-primary">@GlobalSMSActivityLog.LoadingSMSDetailsPleaseWait...</p>
+                </div>
+            </div>
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="w-100">
+                    <div class="card bg-light mb-2">
+                        <div class="card-body text-center">
+                            <h1 class="card-title text-primary" id="smsDetailsModalTitle">
+                                <i class="mdi mdi-message-text-outline me-2"></i> @GlobalSMSActivityLog.SMSDetails
+                            </h1>
+                            <p class="card-text" id="smsDetailsModalDescription">
+                                @GlobalSMSActivityLog.ViewCompleteSMSTransactionDetailsForRegulatoryAndAuditCompliance.
+                            </p>
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tips Section -->
+            <div class="card m-3">
+                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                    <span><i class="mdi mdi-information-outline me-2"></i> @GlobalSMSActivityLog.WhyThisIsImportant</span>
+                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSmsTips">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                </h6>
+                <div id="collapseSmsTips" class="collapse">
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li><i class="mdi mdi-check-circle-outline text-primary me-2"></i><strong>@GlobalSMSActivityLog.AuditTrail:</strong> @GlobalSMSActivityLog.ProvidesAPermanentRecordOfTheSMSTransaction.</li>
+                            <li><i class="mdi mdi-shield-check-outline text-success me-2"></i><strong>@GlobalSMSActivityLog.Compliance:</strong> @GlobalSMSActivityLog.EnsuresRegulatoryRequirementsAreMet.</li>
+                            <li><i class="mdi mdi-file-document-outline text-warning me-2"></i><strong>@GlobalSMSActivityLog.TransactionDetails:</strong> @GlobalSMSActivityLog.VerifySenderRecipientCostAndMessageContent.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SMS Details Partial -->
+            <div class="modal-body" id="smsDetailsContent">
+                @*@Html.Partial("_SmsDetailsPartial")*@
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer justify-content-between">
+                <div>
+                    <span class="text-muted fw-semibold">
+                        @GlobalSMSActivityLog.TransactionID: <span class="text-dark" id="smsTransactionId"></span>
+                    </span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="mdi mdi-close"></i> @GlobalShared.Close
+                    </button>
+                    <button type="button" class="btn btn-info ms-2" onclick="printSmsDetails()">
+                        <i class="mdi mdi-printer"></i> @GlobalShared.Print
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/SMSActivityLog/SMSActivityLog.js"></script>
+}

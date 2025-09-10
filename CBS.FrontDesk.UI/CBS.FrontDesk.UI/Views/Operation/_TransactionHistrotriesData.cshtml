@@ -1,0 +1,75 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+@using Resources
+
+<div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+    <div class="accordion-item active">
+        <h2 class="accordion-header text-body d-flex justify-content-between"
+            id="accordionPopoutIconThree">
+            <button type="button"
+                    class="accordion-button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordionPopoutIcon-3"
+                    aria-expanded="true"
+                    aria-controls="accordionPopoutIcon-3">
+                <i class="mdi mdi-format-list-numbered me-2"></i>
+                @GlobalOperation.TRANSACTIONS
+            </button>
+        </h2>
+        <div id="accordionPopoutIcon-3"
+             class="accordion-collapse collapse show"
+             data-bs-parent="#accordionPopoutIcon">
+            <div class="accordion-body">
+                <div id="mainviewChange">
+                    <div class="change-group">
+                        <div class="card mb-4">
+                            <div class="card-body d-sm-flex d-block">
+                                <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('Operation', null,'GetReport', '@Model.AccountNumber', 'List', 'customer_account_transaction', null,'customer_account_transaction','DownloadExcelFile',null,'@Model.AccountNumber')" data-bs-toggle="tooltip" title="@GlobalOperation.ExportMembersAccount @Model.AccountNumber @GlobalOperation.statements">
+                                        <span class="tf-icons mdi mdi-file-excel mdi-18px"></span>
+                                    </a>
+                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('Operation', null,'GetReport', null, 'List', 'export_transactions', null,'Transaction_Staement','DownloadExcelFile',null,'Transaction_Staement')" data-bs-toggle="tooltip" title="@GlobalOperation.PrintCustomerAccountStatements">
+                                        <span class="tf-icons mdi mdi-printer mdi-18px"></span>
+                                    </a>
+                                </div>
+                            </div>
+                           
+                        </div>
+                        <div class="table-responsive mb-3">
+                            <table class="table table-hover" id="myDataTableT">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>@GlobalOperation.Date</th>
+                                        <th>@GlobalOperation.Amount</th>
+                                        <th>@GlobalOperation.Fee</th>
+                                        <th>@GlobalOperation.Credit</th>
+                                        <th>@GlobalOperation.Debit</th>
+                                        <th>@GlobalOperation.Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var d in Model.TransactionHistories.OrderBy(t => t.CreatedDate))
+                                    {
+                                        <tr>
+                                            <td style="width:50%">@d.CreatedDate.ToString("dd-MM-yyyy, hh:mm:ss")</td>
+                                            <td style="width:10%">@d.OriginalDepositAmount.ToString("#,##0.0")</td>
+                                            <td style="width:10%">@d.Fee.ToString("#,##0.0")</td>
+                                            <td style="width:10%">@d.Credit.ToString("#,##0.0")</td>
+                                            <td style="width:10%">@d.Debit.ToString("#,##0.0")</td>
+                                            <td style="width:10%">@d.Balance.ToString("#,##0.0")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+

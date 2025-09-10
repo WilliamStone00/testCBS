@@ -1,0 +1,244 @@
+﻿@model CBS.FrontDesk.Data.Entity.Config.BankConfig
+
+<style>
+    /* ——— Watermark upload UI ——— */
+    .logo-legend-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .35rem .65rem;
+        border-radius: 999px;
+        background: rgba(13,110,253,.08);
+        color: #0d6efd;
+        font-weight: 600
+    }
+
+    .upload-panel {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem
+    }
+
+    @@media (min-width:768px) {
+        .upload-panel {
+            grid-template-columns: 360px 1fr
+        }
+    }
+
+    .logo-current {
+        border: 1px solid rgba(0,0,0,.08);
+        border-radius: .75rem;
+        padding: .75rem;
+        background: linear-gradient(180deg,#fff,rgba(0,0,0,.01));
+    }
+
+        .logo-current .img-wrap {
+            width: 100%;
+            aspect-ratio: 1/1;
+            border: 1px dashed rgba(0,0,0,.12);
+            border-radius: .75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            overflow: hidden
+        }
+
+        .logo-current img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain
+        }
+
+    .dropzone {
+        border: 2px dashed rgba(13,110,253,.35);
+        border-radius: .75rem;
+        background: rgba(13,110,253,.03);
+        padding: 1rem;
+        transition: .15s ease-in-out
+    }
+
+        .dropzone.dragover {
+            background: rgba(13,110,253,.08);
+            border-color: #0d6efd
+        }
+
+        .dropzone .hint {
+            color: #6c757d;
+            font-size: .9rem
+        }
+
+    .dz-actions {
+        display: flex;
+        gap: .5rem;
+        flex-wrap: wrap
+    }
+
+    .help-tips {
+        color: #6c757d;
+        font-size: .875rem
+    }
+</style>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        @using (Html.BeginForm("AddOrUpdate", "Bank", FormMethod.Post, new
+        {
+            enctype = "multipart/form-data",
+            @class = "row g-3",
+            onsubmit = "return AjaxPostAndUpdate(this);",
+            id = "formUpdateBankWatermark"
+        }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Bank.Id)
+
+            <fieldset class="fieldset-custom w-100">
+                <legend class="mb-3">
+                    <span class="logo-legend-chip">
+                        <i class="bi bi-image"></i>
+                        Update @(@Model?.Bank?.Name ?? "") Watermark
+                    </span>
+                </legend>
+
+                <!-- Adjust these if your backend expects other values -->
+                <input type="hidden" name="ServiceOption" value="update_bank_watermark" />
+                <input type="hidden" name="CustomerDocumentRequest.DocumentType" value="WaterMark" />
+
+                <div class="upload-panel">
+                    <!-- Current watermark -->
+                    <div class="logo-current">
+                        <div class="mb-2 fw-semibold"><i class="bi bi-eye"></i> Current watermark</div>
+                        <div class="img-wrap">
+                            <img id="WatermarkPreview"
+                                 src="@Url.Content(Model?.Bank?.WaterMarkUrl ?? "~/img/placeholder-watermark.png")"
+                                 alt="@((Model?.Bank?.Name ?? "Bank") + " Watermark")" />
+                        </div>
+                        <div class="mt-2 small text-muted">
+                            Recommended: large transparent PNG (≥ 1024×1024) with ~10–20% opacity.
+                        </div>
+                    </div>
+
+                    <!-- Upload area -->
+                    <div class="dropzone" id="WatermarkDropzone" aria-label="Watermark upload area">
+                        <div class="mb-2 fw-semibold">
+                            <i class="bi bi-cloud-arrow-up"></i> Upload new watermark
+                        </div>
+
+                        <div class="dz-actions">
+                            <label class="btn btn-outline-primary btn-sm mb-1" for="WatermarkFile">
+                                <i class="bi bi-folder2-open"></i> Choose watermark image
+                            </label>
+                            <button type="button" class="btn btn-outline-secondary btn-sm mb-1" id="BtnClearWatermark">
+                                <i class="bi bi-trash"></i> Clear selection
+                            </button>
+                        </div>
+
+                        <input class="form-control d-none"
+                               type="file"
+                               id="WatermarkFile"
+                               name="CustomerDocumentRequest.AttachedFiles"
+                               accept=".png,.jpg,.jpeg,image/png,image/jpeg"
+                               data-max-bytes="5242880" /> @* 5 MB *@
+
+                            <div class="mt-2 hint">
+                                Drag &amp; drop an image here, or click <em>Choose watermark image</em>.
+                                Only PNG/JPG • Max 5&nbsp;MB.
+                            </div>
+
+                            <div class="mt-2 small text-danger d-none" id="WatermarkError"></div>
+                            <div class="mt-2 small text-muted" id="WatermarkInfo"></div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 help-tips">
+                        <i class="bi bi-lightbulb"></i>
+                        The watermark appears behind documents and receipts. Use a transparent PNG for best results.
+                    </div>
+
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-upload"></i> Upload Watermark
+                        </button>
+                        <button type="reset" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-counterclockwise"></i> Reset
+                        </button>
+                    </div>
+                </fieldset>
+            }
+    </div>
+</div>
+
+<script>
+    (function () {
+        const input = document.getElementById('WatermarkFile');
+        const preview = document.getElementById('WatermarkPreview');
+        const dz = document.getElementById('WatermarkDropzone');
+        const err = document.getElementById('WatermarkError');
+        const info = document.getElementById('WatermarkInfo');
+        const btnClear = document.getElementById('BtnClearWatermark');
+
+        function setError(message) {
+            if (!err) return;
+            err.textContent = message || '';
+            err.classList.toggle('d-none', !message);
+        }
+
+        function setInfo(message) {
+            if (!info) return;
+            info.textContent = message || '';
+        }
+
+        function validType(file) {
+            const ok = ['image/png', 'image/jpeg'];
+            return ok.includes(file.type) || /\.(png|jpg|jpeg)$/i.test(file.name);
+        }
+
+        function previewFile(file) {
+            if (!file) return;
+            if (!validType(file)) {
+                setError('Only PNG or JPG images are allowed.');
+                input.value = ''; return;
+            }
+            const max = parseInt(input.getAttribute('data-max-bytes') || '5242880', 10);
+            if (file.size > max) {
+                setError('File too large. Max 5 MB.');
+                input.value = ''; return;
+            }
+            setError('');
+            setInfo(`${file.name} • ${(file.size / 1024 / 1024).toFixed(2)} MB`);
+
+            const reader = new FileReader();
+            reader.onload = e => { preview.src = e.target.result; };
+            reader.readAsDataURL(file);
+        }
+
+        input?.addEventListener('change', e => previewFile(e.target.files[0]));
+
+        btnClear?.addEventListener('click', () => {
+            if (!input) return;
+            input.value = '';
+            setInfo('');
+            setError('');
+            // Keep existing preview (current watermark). To switch to a placeholder, set preview.src = '.../placeholder-watermark.png';
+        });
+
+        // Drag & drop
+        ['dragenter', 'dragover'].forEach(evt =>
+            dz?.addEventListener(evt, e => {
+                e.preventDefault(); e.stopPropagation();
+                dz.classList.add('dragover');
+            })
+        );
+        ['dragleave', 'drop'].forEach(evt =>
+            dz?.addEventListener(evt, e => {
+                e.preventDefault(); e.stopPropagation();
+                if (evt === 'drop') {
+                    const f = e.dataTransfer.files && e.dataTransfer.files[0];
+                    if (f) { previewFile(f); input.files = e.dataTransfer.files; }
+                }
+                dz.classList.remove('dragover');
+            })
+        );
+    })();
+</script>

@@ -1,0 +1,57 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.MenuMaster>
+@using Resources
+<fieldset class="fieldset-custom">
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle mb-0" id="myDataTable">
+            <thead class="table-light text-center">
+                <tr>
+                    <th style="width: 20%">@GlobalRolePermission.Name</th>
+                    <th style="width: 10%">@GlobalRolePermission.Controller</th>
+                    <th style="width: 10%">@GlobalShared.Action</th>
+                    <th style="width: 12%">@GlobalRolePermission.Group</th>
+                    <th style="width: 5%">@GlobalShared.Status</th>
+                    <th style="width: 30%">@GlobalRolePermission.Description</th>
+                    <th style="width: 13%">@GlobalShared.Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model)
+                {
+                    <tr>
+                        <td>@d.MenuText</td>
+                        <td>@d.ControllerName</td>
+                        <td>@d.ActionName</td>
+                        <td>@d.MenuGroup</td>
+                        <td class="text-center">
+                            @if (d.IsVisible)
+                            {
+                                <span class="badge bg-label-primary text-uppercase fs-6">@GlobalRolePermission.Visible</span>
+                            }
+                            else
+                            {
+                        <span class="badge bg-label-dark text-uppercase fs-6">@GlobalRolePermission.None</span>
+                            }
+                        </td>
+                        <td>@d.Description</td>
+                        <td class="text-center">
+                            <a href="#"
+                               class="btn btn-sm btn-outline-primary me-1"
+                               data-bs-toggle="tooltip"
+                               title="Edit @d.MenuText"
+                               onclick="AddORUpdateGen(@d.Id, 'datalistingview', '_MenuMaster', 'get', 'MenuMaster', '')">
+                                <i class="mdi mdi-pencil-outline"></i>
+                            </a>
+                            <a href="#"
+                               class="btn btn-sm btn-outline-danger"
+                               data-bs-toggle="tooltip"
+                               title="Delete @d.MenuText"
+                               onclick="DeleteRecordDataTable('MenuMaster', '@d.Id', 'myDataTable', '_MenuMasterData', 0, 'datalistingview')">
+                                <i class="mdi mdi-delete-outline"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</fieldset>

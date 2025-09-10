@@ -1,0 +1,189 @@
+﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
+    @using Resources
+@{
+    ViewBag.Title = "Salary Summary";
+}
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+        <div class="card">
+            <!-- Page Header -->
+            <div class="card-header text-center bg-light">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-file-cabinet me-2"></i> @GlobalSalaryUpload.SALARY_SUMMARY
+                </h1>
+                <p class="card-text text-muted">
+                    @GlobalSalaryUpload.ViewAnalyzeAndManageEmployeeSalarySummariesEfficiently.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+
+            <!-- Tips Section -->
+            <div class="card mb-2">
+                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                    <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> @GlobalSalaryUpload.TIPS</span>
+                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSalarySummaryTips" aria-expanded="false" aria-controls="collapseSalarySummaryTips">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                </h6>
+                <div id="collapseSalarySummaryTips" class="collapse">
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li><i class="mdi mdi-file-document-outline text-primary me-2"></i> @GlobalSalaryUpload.UseThe <strong>"@GlobalSalaryUpload.RunSalaryAnalysis"</strong> @GlobalSalaryUpload.buttonToAnalyzeUploadedSalaryData.</li>
+                            <li><i class="mdi mdi-eye-outline text-primary me-2"></i> @GlobalSalaryUpload.ClickThe <strong>"@GlobalSalaryUpload.ViewResultOfAnalyzedSalary"</strong> @GlobalSalaryUpload.buttonToCheckPreviouslyAnalyzedResults.</li>
+                            <li><i class="mdi mdi-alert-outline text-warning me-2"></i> @GlobalSalaryUpload.EnsureAllUploadedSalaryFilesAreAccurateAndInTheCorrectFormat (e.g., Excel, CSV).</li>
+                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalSalaryUpload.RegularlyVerifyAnalyzedResultsAgainstPayrollToEnsureAccuracy.</li>
+                            <li><i class="mdi mdi-database-search-outline text-primary me-2"></i> @GlobalSalaryUpload.UseSearchFiltersToQuicklyLocateSpecificEmployeeSalaryRecords.</li>
+                            <li><i class="mdi mdi-alert-decagram-outline text-danger me-2"></i> @GlobalSalaryUpload.AddressAnomaliesLikeOverpaymentsOrMissingRecordsPromptly.</li>
+                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> @GlobalSalaryUpload.EditAnalyzedSalaryRecordsForCorrectionsOrUpdatesWhenNecessary.</li>
+                            <li><i class="mdi mdi-delete-outline text-danger me-2"></i> @GlobalSalaryUpload.DeleteInvalidUploadsToMaintainCleanAndAccurateRecords.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Section -->
+            <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+                <div class="accordion-item active">
+                    <h2 class="accordion-header text-body d-flex justify-content-between"
+                        id="accordionPopoutIconThree">
+                        <button type="button"
+                                class="accordion-button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionPopoutIcon-3"
+                                aria-expanded="true"
+                                aria-controls="accordionPopoutIcon-3">
+                            <i class="mdi mdi-chart-bar me-1"></i> @GlobalSalaryUpload.SalaryAnalysis
+                        </button>
+                    </h2>
+                    <div id="accordionPopoutIcon-3"
+                         class="accordion-collapse collapse show"
+                         data-bs-parent="#accordionPopoutIcon">
+                        <div class="accordion-body">
+                            <div id="mainviewChange">
+                                <div class="change-group">
+                                    <div class="card mb-3">
+                                        <div class="card-body d-flex justify-content-end align-items-center">
+                                            <a type="button" href="/SalaryUpload/UploadedSalaryFiles" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+                                                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+                                            </a>
+                                            @if (Model.ActivateSalaryFileCommand.Status)
+                                            {
+                                                <a type="button" href="#" class="btn btn-label-danger btn-sm me-2"
+                                                   data-bs-toggle="tooltip" title="Deactivate File"
+                                                   onclick="ChangeFileStatus('@Model.SalaryUploadModelSummaryDto.FileUploadId', false)">
+                                                    <i class="mdi mdi-close-circle mdi-18px"></i> @GlobalSalaryUpload.Deactivate
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a type="button" href="#" class="btn btn-label-success btn-sm me-2"
+                                                   data-bs-toggle="tooltip" title="Activate File"
+                                                   onclick="ChangeFileStatus('@Model.SalaryUploadModelSummaryDto.FileUploadId', true)">
+                                                    <i class="mdi mdi-check-circle mdi-18px"></i> @GlobalSalaryUpload.Activate
+                                                </a>
+                                             
+                                            }
+
+                                        </div>
+                                    </div>
+                                    <div id="datalistingview">
+                                        @Html.Partial("_SalaryDetailsData")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+
+            LoadDT("myDataTable", 0)
+
+
+        });
+        function runAnalysis(fileUploadId) {
+
+
+            alertify.confirm("RUN SALARY ANALYSIS WARNING!!!", "Are you sure you want to run the salary analysis?\nThis action cannot be reverted!",
+                function () {
+                    var url = "/SalaryUpload/ExecuteAnalysis";
+                    console.log("Executing analysis at URL: " + url);
+
+                    // Prepare data for the request
+                    var data = {
+                        FileUploadId: fileUploadId
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        contentType: "application/json",
+                        data: JSON.stringify(data),
+                        success: function (response) {
+                            if (response.success) {
+                                appalert(response.message, 1, 1);
+                                // Optionally reload or update the page
+                                location.reload();
+                            } else {
+                                appalert(response.message, 3, 1);
+                            }
+                        },
+                        error: function (err) {
+                            appalert(err.statusText, 3, 1);
+                        }
+                    });
+                },
+                function () {
+                    appalert('Analysis cancelled', 3, 1);
+                });
+        }
+        function ChangeFileStatus(fileUploadId, status) {
+            if (!fileUploadId) {
+                alert("Invalid File Upload ID.");
+                return;
+            }
+
+            // Confirm the action before proceeding
+            if (!confirm("Are you sure you want to change the file status?")) {
+                return;
+            }
+
+            // Prepare the data payload
+            const model = {
+                Id: fileUploadId,
+                Status: status // Change this to the desired status if dynamic
+            };
+
+            $.ajax({
+                url: "/SalaryUpload/ChangeFileStaus", // Ensure this matches your controller action route
+                type: "POST",
+                data: model,
+                success: function (response) {
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+                        // Optionally refresh the page or reload a section of the page
+                        location.reload();
+                    } else {
+                        appalert(response.message, 3, 1);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(`Error: ${error}`);
+                    appalert(err.statusText, 3, 1);
+                }
+            });
+        }
+
+    </script>
+}
+
+
+
+
+

@@ -1,0 +1,167 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+@using Resources
+<div class="card mb-1">
+    <div class="card-body d-sm-flex d-block">
+        <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+            <div class="ms-3">
+                <a type="button" onclick="AddORUpdateGen('@Model.LoanApplication.Id','datalistingview','_MemberLoanApplicationDetail','application_detail','MemberOperation','applications')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@Global_MemberLoanApplicationDetail.ReloadDetailPage">
+                    <span class="tf-icons mdi mdi-reload mdi-18px"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> @Global_MemberLoanApplicationDetail.Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanApprovalTips" aria-expanded="false" aria-controls="collapseLoanApprovalTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseLoanApprovalTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @Global_MemberLoanApplicationDetail.ReviewLoanTermsGuarantorAndCollateralInformationForAccuracy</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @Global_MemberLoanApplicationDetail.AttachAllRequiredDocumentsBeforeSubmission</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @Global_MemberLoanApplicationDetail.JustifyAnyChangesToLoanApplicationDetailsWithProperDocumentation</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @Global_MemberLoanApplicationDetail.BeAwareThatLoanApplicationsAreNotEditableTheyCanOnlyBeRejectedOrCanceled</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @Global_MemberLoanApplicationDetail.LoanManagersCanCancelApplicationsIfDetailsAreIncorrect</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @Global_MemberLoanApplicationDetail.UseTooltipsInEachSectionForGuidance</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="col">
+    <div class="row my-2">
+        <div class="accordion" id="collapsibleSection">
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingDeliveryAddress">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseDeliveryAddress"
+                            aria-expanded="true"
+                            aria-controls="collapseDeliveryAddress">
+                        @Global_MemberLoanApplicationDetail.LoanTerm
+                    </button>
+                </h2>
+
+                <div id="collapseDeliveryAddress"
+                     class="accordion-collapse collapse show"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <div class="table-responsive mb-3">
+                            @Html.Partial("_SharedLoanTerm")
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingLoanCancellation">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseLoanCancellation"
+                            aria-expanded="true"
+                            aria-controls="collapseLoanCancellation">
+                        @Global_MemberLoanApplicationDetail.LoanApplicationCancellation
+                    </button>
+                </h2>
+
+                <div id="collapseLoanCancellation"
+                     class="accordion-collapse collapse show"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        @Html.Partial("_LoanApplicationCancellation")
+                    </div>
+                </div>
+            </div>
+
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingPaymentMethod8">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapsePaymentMethod8"
+                            aria-expanded="false"
+                            aria-controls="collapsePaymentMethod8">
+                        @Global_MemberLoanApplicationDetail.AddGuarantor
+                    </button>
+                </h2>
+                <div id="collapsePaymentMethod8"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="headingPaymentMethod8"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <div class="row g-4">
+                            <div id="datalistingview_gurantor_add">
+                                @Html.Partial("_AddLoanGuarantor")
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="accordion-body">
+                            <div id="datalistingview_data">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingPaymentMethod4">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapsePaymentMethod4"
+                            aria-expanded="false"
+                            aria-controls="collapsePaymentMethod4">
+                        @Global_MemberLoanApplicationDetail.AddCollateral
+                    </button>
+                </h2>
+                <div id="collapsePaymentMethod4"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="headingPaymentMethod4"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <div class="row g-4">
+                            <div id="datalistingview_collateral_add">
+                                @Html.Partial("_AddLoanCollateral")
+                            </div>
+                        </div>
+                        <div id="datalistingview_collateral_data">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingPaymentMethod5">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapsePaymentMethod5"
+                            aria-expanded="false"
+                            aria-controls="collapsePaymentMethod5">
+                        @Global_MemberLoanApplicationDetail.AddDocuments
+                    </button>
+                </h2>
+                <div id="collapsePaymentMethod5"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="headingPaymentMethod5"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <div class="row g-4">
+                            <div id="datalistingview_document_add">
+                                @Html.Partial("_AddtachedLoanDocument")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

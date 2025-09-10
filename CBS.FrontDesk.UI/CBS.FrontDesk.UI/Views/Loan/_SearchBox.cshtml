@@ -1,0 +1,80 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
+@using Resources
+@*<fieldset class="fieldset-custom">
+        <legend>Initialise Loan Download By Dates</legend>
+        <hr />
+        @using (Html.BeginForm("InitializeDownload", "Loan", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {
+
+            @Html.HiddenFor(model => model.Id)
+            <div class="row mt-2 gy-4">
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.InitiateLoanDownloadCommand.StrStartDate, new { @class = "form-control date-picker" })
+                        @Html.ValidationMessageFor(m => m.InitiateLoanDownloadCommand.StrStartDate, "", new { @class = "text-danger" })
+                        <label>Start Data</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.InitiateLoanDownloadCommand.StrEndDate, new { @class = "form-control date-picker" })
+                        @Html.ValidationMessageFor(m => m.InitiateLoanDownloadCommand.StrEndDate, "", new { @class = "text-danger" })
+                        <label>End Date</label>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary me-2">Initiate Download</button>
+            </div>
+        }
+    </fieldset>*@
+
+
+<fieldset class="fieldset-custom">
+    <legend>Loan Portfolio</legend>
+    <form method="post" action="/Loan/DownloadFile/">
+        <hr />
+        <div class="row g-4">
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.InitiateLoanDownloadCommand.IsUnpaidOnly, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="isActive">@GlobalLoan.UnCheckedToIncludePaidLoans.</label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.InitiateLoanDownloadCommand.IsMigratedLoan, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="isActive">@GlobalLoan.ExportMigratedLoans</label>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row g-4">
+            <div class="col-md-4">
+                <label for="branchInput">Branch</label>
+                @Html.DropDownListFor(m => m.InitiateLoanDownloadCommand.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalLoan.SelectBranch+"---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
+            </div>
+            <div class="col-md-8">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label for="dateFromInput">@GlobalLoan.DateFrom</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.InitiateLoanDownloadCommand.StrStartDate, new { @class = "form-control shadow-box date-picker", @placeholder = @GlobalLoan.DateFrom })
+                            @*<input type="date" id="dateFromInput" class="form-control shadow-box date-picker" placeholder="Date From">*@
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="dateToInput">@GlobalLoan.DateTo</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.InitiateLoanDownloadCommand.StrEndDate, new { @class = "form-control shadow-box date-picker", @placeholder = @GlobalLoan.DateTo })
+                            @*<input type="date" id="dateToInput" class="form-control shadow-box date-picker" placeholder="Date To">*@
+                            @*<button class="btn btn-primary btn-sm" onclick="SearchByDates('_Data','datalistingview')">Search</button>*@
+                            <button type="submit" class="btn btn-default btn-sm">Initiate Download</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</fieldset>
+

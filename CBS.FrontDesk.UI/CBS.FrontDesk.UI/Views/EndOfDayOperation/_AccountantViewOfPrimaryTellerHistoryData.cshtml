@@ -1,0 +1,32 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.EndOfTheDay
+    @using Resources
+<table class="table table-hover" id="myDataTable">
+    <thead class="table-light">
+        <tr>
+            <th>@GlobalEndOfDayOperation.DateOpen</th>
+            <th>@GlobalEndOfDayOperation.DateCloses</th>
+            <th>@GlobalEndOfDayOperation.InitialAmount</th>
+            <th>@GlobalEndOfDayOperation.CashAtHandt</th>
+            <th>@GlobalEndOfDayOperation.ClosedStatus</th>
+            <th>@GlobalEndOfDayOperation.PrimaryTellerStatus</th>
+            <th>@GlobalShared.Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.PrimaryTellerProvisioningHistories)
+        {
+            <tr>
+                <td style="width:20%">@d.openedDate</td>
+                <td style="width:15%">@d.clossedDate</td>
+                <td style="width:10%">@d.openOfDayAmount</td>
+                <td style="width:10%">@d.cashAtHand</td>
+                <td style="width:10%">@d.clossedStatus</td>
+                <td style="width:15%">@d.accountantConfirmationStatus</td>
+                <td style="width:20%">
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalEndOfDayOperation.CloseTheOperationOf @d.openOfDayAmount @GlobalEndOfDayOperation.ForDateOf @d.openedDate" onclick="AddORUpdateGen('@d.id','datalistingview','_Accountant','close','EndOfDayOperation')">@GlobalShared.Close</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

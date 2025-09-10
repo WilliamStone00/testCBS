@@ -1,0 +1,129 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+    @using Resources
+@{
+    ViewBag.Title = @GlobalCMoneyMembership.MobileAccountActivation;
+}
+
+<link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
+
+<div class="container mt-4">
+    <header class="text-center mb-4">
+        <h1 class="text-primary fw-bold">@GlobalCMoneyMembership.CMONEYACCOUNTACTIVATION</h1>
+        <p class="text-muted">@GlobalCMoneyMembership.EasilyManageAndActivateAccountsWithOurSimpleInterface.</p>
+        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+    </header>
+
+    <div class="row">
+        <div class="col">
+            <div class="accordion" id="activationAccordio">
+                <!-- Activation Section -->
+                <div class="accordion-item mb-3 shadow">
+                    <h2 class="accordion-header" id="headingActivation">
+                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseActivation" aria-expanded="true" aria-controls="collapseActivation">
+                            <i class="mdi mdi-account-key-outline me-2"></i>
+                            @GlobalCMoneyMembership.CMONEYACCOUNTACTIVATION
+                        </button>
+                    </h2>
+                    <div id="collapseActivation" class="accordion-collapse collapse show" data-bs-parent="#activationAccordio">
+                        <div class="accordion-body">
+                            <!-- Search Box -->
+                            @Html.Partial("_SearchBox")
+                            <!-- Data Listing View -->
+                            <div id="datalistingview">
+                                <p class="text-muted">@GlobalCMoneyMembership.NoSearchResultWasFound.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other Sections Can Be Added Below -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@*@section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+        <script src="~/Scripts/Js/CMoney/cmoney.js"></script>
+    }*@
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="~/Scripts/Js/CMoney/cmoney.js"></script>
+@*<script src="~/Scripts/Js/Crud/Operation/Operation.js"></script>*@
+
+}
+
+<style>
+    /* Custom Styles */
+    .accordion-button {
+        font-weight: bold;
+        color: #0056b3;
+        background-color: #f8f9fa;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        font-size: 1rem;
+    }
+    .upload-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 300px;
+        border: 2px dashed #ccc;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+        .upload-container .image-preview img {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+    .custom-file-upload {
+        cursor: pointer;
+    }
+
+    /*.btn-primary {
+        margin-top: 10px;
+    }*/
+
+        .badge i {
+            font-size: 1.2rem;
+        }
+
+        .accordion-button:hover {
+            background-color: #e9ecef;
+            color: #00376d;
+        }
+
+        .accordion-button i {
+            font-size: 1.2rem;
+        }
+
+    .accordion-body {
+        background-color: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        border-top: none;
+        padding: 1.5rem;
+    }
+
+    hr {
+        border: 1px solid rgba(128, 128, 128, 0.5);
+        margin: 1rem 0;
+    }
+
+    header h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    header p {
+        font-size: 1rem;
+    }
+</style>

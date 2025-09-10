@@ -1,0 +1,25 @@
+﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+    @using Resources
+<div class="table-responsive mb-3">
+    <table class="table table-hover" id="myDataTable">
+        <thead class="table-light">
+            <tr>
+                <th>@GlobalIndividual.Name</th>
+                <th>@GlobalIndividual.Ration</th>
+                <th>@GlobalIndividual.Relationship</th>
+                <th>@GlobalIndividual.Branch</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.CustomerList.MembershipNextOfKings)
+            {
+                <tr>
+                    <td style="width:45%">@d.Name</td>
+                    <td style="width:10%">@d.Ratio</td>
+                    <td style="width:35%">@d.Relation</td>
+                    <td style="width:10%">@d.BranchId</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

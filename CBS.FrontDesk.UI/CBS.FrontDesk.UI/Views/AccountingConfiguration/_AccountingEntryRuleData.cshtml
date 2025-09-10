@@ -1,0 +1,34 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+    @using Resources
+<div class="table-responsive mb-3">
+    <table class="table table-hover" id="myDataTable_AccountingEntryRule">
+        <thead class="table-light">
+            <tr>
+                <th>@AccountingConfig_AccountingEntryRule.EntryRule</th>
+                <th>@AccountingConfig_AccountingEntryRule.Derterminant</th>
+                <th>@AccountingConfig_AccountingEntryRule.DerterminantAccountNumber</th>
+                <th>@AccountingConfig_AccountingEntryRule.BalancingAccount</th>
+                <th>@AccountingConfig_AccountingEntryRule.BalancingAccountNumber</th>
+                <th>@AccountingConfig_AccountingEntryRule.Booking</th>
+    
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var d in Model.AccountingRuleEntriesDTOS)
+                {
+                        <tr>
+                            <td style="width:15%">@d.AccountingRuleEntryName</td>
+                            <td style="width:20%">@d.DebitAccountLabel</td>
+                            <td style="width:20%">@d.DebitAccountNumber</td>
+                            <td style="width:20%">@d.CreditAccountLabel</td>
+                            <td style="width:20%">@d.CreditAccountNumber</td>
+                            <td style="width:5%">@d.BookingDirection</td>
+
+                        </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+</div>

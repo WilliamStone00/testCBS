@@ -1,0 +1,85 @@
+﻿@model CBS.FrontDesk.Data.UserManagement.User
+@using Resources
+<div class="modal-header text-white mb-2">
+    <h5 class="modal-title">
+        <i class="fas fa-shield-alt me-2"></i> @GlobalUserManagement.MultiFactorAuthentication
+    </h5>
+</div>
+
+<div class="modal-body bg-light">
+    @using (Html.BeginForm("AddOrEdit", "UserManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        @Html.Hidden("Option", "EnableMFA")
+        @Html.HiddenFor(m => m.id)
+
+        if (Model.IsGoogleAuthenticatorEnabled)
+        {
+            <div class="alert alert-success shadow-sm mb-2">
+                <i class="fas fa-check-circle me-2"></i>
+                @GlobalUserManagement.MFAIs <strong>@GlobalUserManagement.enabled</strong> @GlobalUserManagement.onThisAccountToDisableClickTheButtonBelow.
+            </div>
+
+            <div class="alert alert-secondary mb-2">
+                <strong>@GlobalUserManagement.HowToLogInAfterEnablingMFA:</strong>
+                <ol class="mt-2">
+                    <li>@GlobalUserManagement.EnterYourUsernameAndPasswordOnTheLoginScreen.</li>
+                    <li>@GlobalUserManagement.OpenYourGoogleAuthenticatorApp.</li>
+                    <li>@GlobalUserManagement.InputTheVerificationCodeIntoTheMFAField.</li>
+                    <li>@GlobalUserManagement.SubmitToCompleteLogin.</li>
+                </ol>
+            </div>
+
+            <div class="text-end mt-3 mb-2">
+                @Html.HiddenFor(m => m.MFAActivation.Email)
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-lock me-1"></i> @GlobalUserManagement.DisableMFA
+                </button>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning shadow-sm mb-2">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                @GlobalUserManagement.MFAIs <strong>@GlobalUserManagement.disabled</strong>. @GlobalUserManagement.YouCanEnableItBelow.
+            </div>
+
+            <div class="alert alert-info mb-2">
+                <strong>@GlobalUserManagement.WhyEnableMFA?</strong><br />
+                @GlobalUserManagement.AddsASecondLayerOfProtectionByRequiring.
+            </div>
+
+            <div class="alert alert-secondary mb-2">
+                <strong>@GlobalUserManagement.HowToEnable:</strong>
+                <ol class="mt-2">
+                    <li>@GlobalUserManagement.InstallThe <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en" target="_blank">@GlobalUserManagement.GoogleAuthenticatorApp</a>.</li>
+                    <li>@GlobalUserManagement.ScanTheQRBelowOrManuallyInputTheSecretKey.</li>
+                    <li>@GlobalUserManagement.EnterTheGeneratedCodeToActivate.</li>
+                </ol>
+            </div>
+
+            <div class="row gy-3 mb-2">
+                <div class="col-12 text-center">
+                    <img src="@Model.BarcodeImageUrl" alt="Barcode" class="img-thumbnail border shadow-sm" style="width: 180px; height: 180px;" />
+                    <p class="mt-2"><strong>@GlobalUserManagement.Key:</strong> @Model.GoogleAuthenticatorSecretKey</p>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.MFAActivation.Code, new { @class = "form-control", placeholder = "MFA Code", @autocomplete = "off" })
+                        <label for="MFAActivation_Code">@GlobalUserManagement.EnterAuthenticatorCode</label>
+                        @Html.ValidationMessageFor(m => m.MFAActivation.Code, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                @Html.HiddenFor(m => m.MFAActivation.Status, new { @value = true })
+                @Html.HiddenFor(m => m.MFAActivation.Email)
+
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-shield-alt me-1"></i> @GlobalUserManagement.EnableMFA
+                    </button>
+                </div>
+            </div>
+        }
+    }
+</div>

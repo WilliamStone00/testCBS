@@ -1,0 +1,52 @@
+﻿@model List<CBS.BusinessService.ThirdPartyBankAccount.ThirdPartyBranch>
+    @using Resources
+    <h4>@GlobalThirdPartyBranch.Correspondant: @Model[0].ThirdPartyInstitutionId </h4>
+<table class="table table-hover" id="myDataTable">
+    <thead class="table-light">
+        <tr>
+  
+            <th>@GlobalThirdPartyBranch.Name</th>
+            <th>@GlobalThirdPartyBranch.Town</th>
+
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model)
+        {
+
+            <tr>
+                <td style="width:25%">@d.Name</td>
+                <td style="width:25%">@d.TownId</td>
+ 
+                <td style="width:50%">
+                    @Html.ActionLink("Edit|", "#", null, new
+                    {
+                        @class = "mr-2 btn btn-default",
+                        title = "Select " + d.Name + " to edit",
+                        onclick = $"AddORUpdateGen('{d.Id}','datalistingview','_Update','update','ThirdPartyInstitution'); return false;"
+                    })     
+
+                    @Html.ActionLink("|Delete", "#", null, new
+                    {
+                        @class = "mr-2 btn btn-danger",
+                         title = "Delete " + d.Name,
+                        onclick = $"DeleteRecordDataTable('ThirdPartyInstitution','{d.Id}','myDataTable','_Data',0,'datalistingview'); return false;"
+                    })
+                </td>
+
+            </tr>
+
+
+        }
+    </tbody>
+</table>
+<div class="card">
+    <div class="card-body">
+        <div id="datalistingview">
+            @Html.Partial("_modal")
+
+        </div>
+    </div>
+</div>
+

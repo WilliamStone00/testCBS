@@ -1,0 +1,88 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+@using Resources
+<div class="change-group">
+    <div class="card mb-4">
+        <div class="card-body d-sm-flex d-block">
+            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+
+                <div class="ms-3">
+                    <a type="button" onclick="AddORUpdateGen(@Model.LoanApplication.Id,'datalistingview_collateral_add','_AddLoanCollatera','application_detail','MemberOperation','applications')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@Global_AddLoanCollateral.AddNewCollateral">
+                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                    </a>
+                </div>
+                <div class="ms-3">
+                    <a type="button" onclick="LoadCollaterals()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@Global_AddLoanCollateral.ViewListOfCollaterals">
+                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col">
+    <div class="accordion-body">
+        @using (Html.BeginForm("Create", "MemberOperation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostCollateral(this);" }))
+        {
+            @Html.HiddenFor(m => m.LoanCollatera.Id)
+            @Html.HiddenFor(m => m.LoanCollatera.CustomerId)
+            @Html.HiddenFor(m => m.LoanCollatera.LoanApplicationId)
+            <input type="hidden" name="ServiceOption" value="collateral" id="ServiceOption" />
+            <input type="hidden" value="@Model.LoanApplication.Id" id="loanapplicationid" />
+
+            <div class="row g-4">
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.LoanCollatera.LoanProductCollateralId, new SelectList(ViewBag.LoanProductCollaterals, "Value", "Text"), "---Select---", new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.LoanCollatera.LoanProductCollateralId, "", new { @class = "text-danger " })
+                        <label>@Global_AddLoanCollateral.SelectLoanCollateral</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.LoanCollatera.Amount, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LoanCollatera.Amount, "", new { @class = "text-danger" })
+                        <label>@Global_AddLoanCollateral.RateInPercentage</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.LoanCollatera.Location, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LoanCollatera.Location, "", new { @class = "text-danger" })
+                        <label>@Global_AddLoanCollateral.Location</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.LoanCollatera.Address, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LoanCollatera.Address, "", new { @class = "text-danger" })
+                        <label>@Global_AddLoanCollateral.Address</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.LoanCollatera.Reference, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LoanCollatera.Reference, "", new { @class = "text-danger" })
+                        <label>@Global_AddLoanCollateral.Reference</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="mt-4">
+                @if (ViewBag.Key == null)
+                {
+                    <button type="submit" class="btn btn-primary me-2">@Global_AddLoanCollateral.AddCollateral</button>
+                    <button type="reset" class="btn btn-outline-secondary">@Global_AddLoanCollateral.Reset</button>
+                    <input type="hidden" name="Path" value="insert" id="Path" />
+
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary me-2">@Global_AddLoanCollateral.Update</button>
+                    <input type="hidden" name="Path" value="update" id="Path" />
+
+                }
+            </div>
+        }
+    </div>
+
+</div>

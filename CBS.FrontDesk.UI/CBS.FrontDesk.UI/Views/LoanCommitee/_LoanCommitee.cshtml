@@ -1,0 +1,124 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanCommitee.LoanCommitee
+    @using Resources
+<div class="col">
+
+    <div class="row my-4">
+        <div class="accordion" id="collapsibleSection">
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingDeliveryAddress">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseDeliveryAddress"
+                            aria-expanded="true"
+                            aria-controls="collapseDeliveryAddress">
+                        @GlobalLoanCommitee.LoanCommiteeGroup
+                    </button>
+                </h2>
+                <div id="collapseDeliveryAddress"
+                     class="accordion-collapse collapse show"
+                     data-bs-parent="#collapsibleSection">
+
+                    <div class="accordion-body">
+
+                        <div class="card mb-4">
+                            <div class="card-body d-sm-flex d-block">
+                                <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+                                    <a type="button" onclick="LoadDataGen('LoanCommitee','myDataTable_commitee_group','_LoanCommiteeData',0,'datalistingview',null,'LoanCommiteeGroup','list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                       <br />
+                        @using (Html.BeginForm("AddOrUpdate", "LoanCommitee", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                        {
+                            <div class="row g-4">
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.LoanCommiteeGroup.Name, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.Name, "", new { @class = "text-danger" })
+                                        <label>@GlobalLoanCommitee.CommiteeName</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.LoanCommiteeGroup.MinimumLoanAmount, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.MinimumLoanAmount, "", new { @class = "text-danger" })
+                                        <label>@GlobalLoanCommitee.MinimumAmountToValide</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.LoanCommiteeGroup.MaximumLoanAmount, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.MinimumLoanAmount, "", new { @class = "text-danger" })
+                                        <label>@GlobalLoanCommitee.MaximumAmountToValide</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.LoanCommiteeGroup.NumberOfMembers, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.NumberOfMembers, "", new { @class = "text-danger" })
+                                        <label>@GlobalLoanCommitee.CommiteeSize</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.LoanCommiteeGroup.NumberToApprovalsToValidationALoan, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.NumberToApprovalsToValidationALoan, "", new { @class = "text-danger" })
+                                        <label>@GlobalLoanCommitee.EnterAcceptableNumberOfApprovals</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.LoanCommiteeGroup.CommiteeLeaderUserId, new SelectList(ViewBag.Users, "Value", "Text"), "---"+ @GlobalLoanCommitee.SelectGroupLeader + "---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.CommiteeLeaderUserId, "", new { @class = "text-danger" })
+                                        <label>@GlobalLoanCommitee.SelectGroupLeader</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.LoanCommiteeGroup.Status, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="isActive">@GlobalLoanCommitee.ActiveStatus</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextAreaFor(m => m.LoanCommiteeGroup.Description, new { @class = "form-control", @style = "height: 200px;" })
+                                        @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.Description, "", new { @class = "text-danger" })
+                                        <label>@GlobalLoanCommitee.Description</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                @if (ViewBag.Key == null)
+                                {
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Create</button>
+                                    <input type="hidden" name="ServiceOption" value="commitee_group" id="ServiceOption" />
+                                    <input type="hidden" name="Action" value="insert" id="Action" />
+
+                                }
+                                else
+                                {
+                            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
+                                    @Html.HiddenFor(m => m.LoanCommiteeGroup.Id)
+                                    <button type="submit" class="btn btn-primary me-2">Create</button>
+                                    <input type="hidden" name="ServiceOption" value="commitee_group" id="ServiceOption" />
+                                    <input type="hidden" name="Action" value="update" id="Action" />
+
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</div>

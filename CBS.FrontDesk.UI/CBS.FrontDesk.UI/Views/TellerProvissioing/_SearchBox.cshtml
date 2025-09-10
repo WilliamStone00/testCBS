@@ -1,0 +1,31 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.DailyTeller
+@using Resources
+<fieldset class="fieldset-custom">
+    <legend>@GlobalTellerProvissioing.FilterTellersInOperation</legend>
+    <hr />
+    <div class="row g-4">
+        <div class="col-md-6">
+            <label for="branchInput">@GlobalTellerProvissioing.Branch</label>
+            @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalTellerProvissioing.SelectBranch+"---", new { @class = "form-control select2", @id = "branchInput" })
+        </div>
+        <div class="col-md-6">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <label for="dateFromInput">@GlobalTellerProvissioing.DateFrom</label>
+                    <div class="input-group">
+                        <input type="date" id="dateFromInput" class="form-control shadow-box date-picker" placeholder="@GlobalTellerProvissioing.DateFrom">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="dateToInput">@GlobalTellerProvissioing.DateTo</label>
+                    <div class="input-group">
+                        <input type="date" id="dateToInput" class="form-control shadow-box date-picker" placeholder="@GlobalTellerProvissioing.DateTo">
+                        <button class="btn btn-primary btn-sm" onclick="SearchByDates('_Data','datalistingview')">@GlobalShared.Search</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</fieldset>
+

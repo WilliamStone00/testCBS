@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountHolderName" xml:space="preserve">
+    <value>Nom du titulaire de compte</value>
+  </data>
+  <data name="AccountReferenceNumber" xml:space="preserve">
+    <value>Numéro de référence du compte</value>
+  </data>
+  <data name="ActiveStatus" xml:space="preserve">
+    <value>Statut actif</value>
+  </data>
+  <data name="AddNewOrder" xml:space="preserve">
+    <value>Ajouter une nouvelle commande</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Montant</value>
+  </data>
+  <data name="Automatic" xml:space="preserve">
+    <value>Automatique</value>
+  </data>
+  <data name="ChooseRealisticStartAndEndDates" xml:space="preserve">
+    <value>Choisissez des dates de début et de fin réalistes</value>
+  </data>
+  <data name="CreateNewOrdersClickOnTheAddNewRequest" xml:space="preserve">
+    <value>**Créer de nouvelles commandes**: Cliquez sur le bouton "Ajouter une nouvelle demande" pour initier un ordre permanent pour un membre</value>
+  </data>
+  <data name="DestinationAccount" xml:space="preserve">
+    <value>Compte de destination</value>
+  </data>
+  <data name="DestinationAccountType" xml:space="preserve">
+    <value>Type de compte de destination</value>
+  </data>
+  <data name="EasilyCeateViewAndManageStandingOrdersForMembers" xml:space="preserve">
+    <value>Gérez facilement les ordres permanents pour les membres</value>
+  </data>
+  <data name="EditExistingOrdersLocateTheStandingOrder" xml:space="preserve">
+    <value>**Modifier les commandes existantes**: Localisez l'ordre permanent en utilisant l'outil de recherche et cliquez sur le bouton "Modifier"</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>Date de fin</value>
+  </data>
+  <data name="EnsureTheAccountHoldersName" xml:space="preserve">
+    <value>Assurez-vous que le nom et le numéro de référence du titulaire de compte sont exacts</value>
+  </data>
+  <data name="EnterMemberReferenceNumber" xml:space="preserve">
+    <value>Entrez le numéro de référence du membre</value>
+  </data>
+  <data name="ExecutedBySystemAutomatically" xml:space="preserve">
+    <value>Exécuté automatiquement par le système</value>
+  </data>
+  <data name="ExecutionType" xml:space="preserve">
+    <value>Type d'exécution</value>
+  </data>
+  <data name="ExternalAccount" xml:space="preserve">
+    <value>Compte externe</value>
+  </data>
+  <data name="ExternalAccountHolderName" xml:space="preserve">
+    <value>Nom du titulaire de compte externe</value>
+  </data>
+  <data name="ExternalAccountNumber" xml:space="preserve">
+    <value>Numéro de compte externe</value>
+  </data>
+  <data name="Frequency" xml:space="preserve">
+    <value>Fréquence</value>
+  </data>
+  <data name="High" xml:space="preserve">
+    <value>Élevé</value>
+  </data>
+  <data name="IfCreatingAStandingOrderForLoanRepayment" xml:space="preserve">
+    <value>Si vous créez un ordre permanent pour le remboursement d'un prêt, assurez-vous que le solde couvre le montant</value>
+  </data>
+  <data name="IfMakingPaymentsToExternalAccounts" xml:space="preserve">
+    <value>Si vous effectuez des paiements vers des comptes externes, vérifiez deux fois le numéro de compte et le nom du titulaire</value>
+  </data>
+  <data name="KeepThisOrderActive" xml:space="preserve">
+    <value>Maintenez cet ordre actif</value>
+  </data>
+  <data name="Low" xml:space="preserve">
+    <value>Faible</value>
+  </data>
+  <data name="MakePaymentToAnExternalAccount" xml:space="preserve">
+    <value>Effectuer un paiement vers un compte externe</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>Manuel</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Moyen</value>
+  </data>
+  <data name="MemberCommunicationInformMembers" xml:space="preserve">
+    <value>**Communication avec les membres**: Informez les membres de leurs ordres permanents actifs</value>
+  </data>
+  <data name="MemberID" xml:space="preserve">
+    <value>ID du membre</value>
+  </data>
+  <data name="MemberName" xml:space="preserve">
+    <value>Nom du membre</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="NoRecordsFoundIfNoRecordsAreDisplayed" xml:space="preserve">
+    <value>**Aucun enregistrement trouvé ?**: Si aucun enregistrement n'est affiché, assurez-vous d'avoir entré les détails corrects</value>
+  </data>
+  <data name="NoStandingOrdersFound" xml:space="preserve">
+    <value>Aucun ordre permanent trouvé</value>
+  </data>
+  <data name="NoStandingOrdersFoundUseTheSearchBox" xml:space="preserve">
+    <value>Aucun ordre permanent trouvé. Utilisez la zone de recherche pour trouver des ordres permanents existants</value>
+  </data>
+  <data name="orders" xml:space="preserve">
+    <value>ordres</value>
+  </data>
+  <data name="PersonalNote" xml:space="preserve">
+    <value>Note personnelle</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Priorité</value>
+  </data>
+  <data name="Purpose" xml:space="preserve">
+    <value>Objet</value>
+  </data>
+  <data name="RegularlyReviewActiveStandingOrders" xml:space="preserve">
+    <value>Examinez régulièrement les ordres permanents actifs</value>
+  </data>
+  <data name="ReviewBeforeDeletingEnsureYouVerifyTheMembersDetails" xml:space="preserve">
+    <value>**Vérifiez avant de supprimer** : Assurez-vous de vérifier les détails du membre et l'objet de l'ordre permanent</value>
+  </data>
+  <data name="SearchMemberReference" xml:space="preserve">
+    <value>Rechercher par référence de membre</value>
+  </data>
+  <data name="SearchMembersEfficientlyUseTheSearchBoxToFindAMember" xml:space="preserve">
+    <value>**Rechercher des membres efficacement**: Utilisez la zone de recherche pour trouver un membre</value>
+  </data>
+  <data name="SetTheIsAutomaticOptionForSystemManagedExecution" xml:space="preserve">
+    <value>Définissez l'option "Est automatique" pour une exécution gérée par le système</value>
+  </data>
+  <data name="SourceAccount" xml:space="preserve">
+    <value>Compte source</value>
+  </data>
+  <data name="SourceAccountType" xml:space="preserve">
+    <value>Type de compte source</value>
+  </data>
+  <data name="StandingOrderDetails" xml:space="preserve">
+    <value>Détails de l'ordre permanent</value>
+  </data>
+  <data name="STANDING_ORDER_DETAILS" xml:space="preserve">
+    <value>DÉTAILS DE L'ORDRE PERMANENT</value>
+  </data>
+  <data name="STANDING_ORDER_FORM" xml:space="preserve">
+    <value>FORMULAIRE D'ORDRE PERMANENT</value>
+  </data>
+  <data name="STANDING_ORDER_MANAGEMENT" xml:space="preserve">
+    <value>GESTION DES ORDRES PERMANENTS</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Date de début</value>
+  </data>
+  <data name="SystemNotificationsUseTheNotifications" xml:space="preserve">
+    <value>**Notifications système**: Utilisez les notifications ou les rappels pour suivre les ordres permanents en attente</value>
+  </data>
+  <data name="TIPS" xml:space="preserve">
+    <value>CONSEILS</value>
+  </data>
+  <data name="TrackStartAndEndDatesRegularlyCheckTheStartAndEndDates" xml:space="preserve">
+    <value>**Suivez les dates de début et de fin** : Vérifiez régulièrement les dates de début et de fin des ordres permanents</value>
+  </data>
+  <data name="UseAppropriateSourceAndDestinationAccountTypes" xml:space="preserve">
+    <value>Utilisez les types de comptes source et de destination appropriés</value>
+  </data>
+  <data name="UseThePersonalNoteFieldToDocumentThePurpose" xml:space="preserve">
+    <value>Utilisez le champ "Note personnelle" pour documenter l'objet ou les instructions spéciales</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Afficher</value>
+  </data>
+  <data name="ViewAndManageDetailsOfTheStandingOrder" xml:space="preserve">
+    <value>Afficher et gérer les détails de l'ordre permanent</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+</root>

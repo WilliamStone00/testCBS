@@ -1,0 +1,132 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductCollateral
+    @using Resources
+<div class="change-group">
+    <div class="card mb-4">
+        <div class="card-body d-sm-flex d-block">
+            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+                <div class="ms-3">
+                    <a type="button" onclick="LoadLoanProductCollateral()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                    </a>
+                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_LoanProductCollateral','new','LoanProductCollateral')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
+                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col">
+    @using (Html.BeginForm("Create", "LoanProductCollateral", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPost(this);" }))
+    {
+        <input type="hidden" name="ServiceOption" value="loan_schedule" id="ServiceOption" />
+        <div class="row my-4">
+            <div class="accordion" id="collapsibleSection">
+                <div class="card accordion-item mb-3">
+                    <h2 class="accordion-header" id="headingDeliveryAddress">
+                        <button type="button"
+                                class="accordion-button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseDeliveryAddress"
+                                aria-expanded="true"
+                                aria-controls="collapseDeliveryAddress">
+                            @GlobalLoanProductCollateral.EnterParameters
+                        </button>
+                    </h2>
+                    <div id="collapseDeliveryAddress"
+                         class="accordion-collapse collapse show"
+                         data-bs-parent="#collapsibleSection">
+                        <div class="accordion-body">
+                            <div class="row g-4">
+                                @Html.HiddenFor(m => m.Id)
+
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(m => m.LoanProductId, new SelectList(ViewBag.Products, "Value", "Text"), "---"+@GlobalLoanProductCollateral.Select+"---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.LoanProductId, "", new { @class = "text-danger " })
+                                        <label>@GlobalLoanProductCollateral.SelectProduct</label>
+                                    </div>
+                                </div>
+                                @*<div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.CollateralId, new SelectList(ViewBag.Collaterals, "id", "name"), "---Select---", new { @class = "form-control select2", @id= "CollateralDropdown", @search = "true", @onchange = "updateCollateralTag()" })
+                @Html.ValidationMessageFor(m => m.CollateralId, "", new { @class = "text-danger " })
+                <label>Select collateral</label>
+            </div>
+        </div>*@
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        <select id="CollateralId" class="form-control select2" onchange="updateCollateralTag()">
+                                            <option value="">---Select---</option>
+                                            @foreach (var item in ViewBag.Collaterals)
+                                            {
+                                                <option value="@item.id" data-name="@item.name">@item.name</option>
+                                            }
+                                        </select>
+                                        <input type="hidden" name="CollateralId" id="HiddenCollateralId" />
+                                        @Html.ValidationMessageFor(m => m.CollateralId, "", new { @class = "text-danger " })
+                                    <label>@GlobalLoanProductCollateral.SelectCollateral</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.LoanProductCollateralTag, new { @class = "form-control", @readonly = "readonly", id = "LoanProductCollateralTag" })
+                                        @Html.ValidationMessageFor(m => m.LoanProductCollateralTag, "", new { @class = "text-danger" })
+                                        <label>@GlobalLoanProductCollateral.Tag</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.MinimumValueRate, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.MinimumValueRate, "", new { @class = "text-danger" })
+                                        <label>@GlobalLoanProductCollateral.MinimumCollateralRate</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.MaximumValueRate, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.MaximumValueRate, "", new { @class = "text-danger" })
+                                        <label>@GlobalLoanProductCollateral.MaximumCollateralRate</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                @if (ViewBag.Key == null)
+                                {
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                                    <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    function updateCollateralTag() {
+        // Get references to the dropdown and tag field
+        var collateralDropdown = document.getElementById("CollateralId");
+        var collateralTag = document.getElementById("LoanProductCollateralTag");
+        var hiddenCollateralId = document.getElementById("HiddenCollateralId");
+
+        // Get the selected option
+        var selectedOption = collateralDropdown.options[collateralDropdown.selectedIndex];
+
+        // Get the collateral name and id
+        var collateralName = selectedOption.getAttribute("data-name");
+        var collateralId = selectedOption.value;
+
+        // Update the fields
+        collateralTag.value = collateralName || "";
+        hiddenCollateralId.value = collateralId || "";
+    }
+
+</script>

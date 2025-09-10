@@ -1,0 +1,117 @@
+﻿@model CBS.FrontDesk.Data.Entity.CashMovementTracker.CashMovementConfiguration
+    @using Resources
+
+<div class="row">
+    <!-- Context Menu -->
+    <div class="col-12 card-body">
+        <div class="card mb-12">
+
+            <div class="card-body">
+                @using (Html.BeginForm("AddOrUpdate", "CashMovementTrackerConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                {
+                    <input type="hidden" name="ServiceOption" value="cashMovementTrackerConfiguration" id="ServiceOption" />
+                    <div class="row mt-2 gy-4">
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.BankingZoneId, new SelectList(ViewBag.BankingZoneId == null ? "" : ViewBag.BankingZoneId, "Text", "Value"), "---"+@GlobalCashMovementTrackerConfiguration.SelectMovement+"---", new { @class = "form-control select2", @search = "true" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.BankingZoneId, "", new { @class = "text-danger" })
+                                <label>@GlobalCashMovementTrackerConfiguration.SelectBankingZone</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.MovementType, new SelectList(ViewBag.MovementTypes == null ? "" : ViewBag.MovementTypes, "Text", "Value"), "---"+@GlobalCashMovementTrackerConfiguration.SelectMovement+"---", new { @class = "form-control select2", @search = "true" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.MovementType, "", new { @class = "text-danger" })
+                                <label>@GlobalCashMovementTrackerConfiguration.SelectMovementType</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.From, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---"+ @GlobalCashMovementTrackerConfiguration.SelectBranch+"---", new { @class = "form-control select2", @search = "true" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.From, "", new { @class = "text-danger" })
+                                <label>@GlobalCashMovementTrackerConfiguration.SelectSourceBranch</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(m => m.CashMovementTrackingConfiguration.To, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "---"+ @GlobalCashMovementTrackerConfiguration.SelectBranch+"---", new { @class = "form-control select2", @search = "true" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.To, "", new { @class = "text-danger" })
+                                <label>@GlobalCashMovementTrackerConfiguration.SelectDestinationBranch</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.CashMovementTrackingConfiguration.Duration, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.Duration, "", new { @class = "text-danger" })
+                                <label>@GlobalCashMovementTrackerConfiguration.DurationForMovement</label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.CashMovementTrackingConfiguration.Distance, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.Distance, "", new { @class = "text-danger" })
+                                <label>@GlobalCashMovementTrackerConfiguration.DistanceToCover</label>
+                            </div>
+
+                        </div>
+                        <input type="hidden" name="MovementTypeOption" value="" id="zoneId" />
+
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.CashMovementTrackingConfiguration.AlertTimeBefore, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.AlertTimeBefore, "", new { @class = "text-danger" })
+                                <label>@GlobalCashMovementTrackerConfiguration.AlertTimeBeforeTimespanElapseInMinutes</label>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.CashMovementTrackingConfiguration.AlertTimeAfter, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.AlertTimeAfter, "", new { @class = "text-danger" })
+                                <label>@GlobalCashMovementTrackerConfiguration.AlertTimeBeforeTimespanElapseInMinutes</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+
+                                @Html.TextAreaFor(m => m.CashMovementTrackingConfiguration.MessageBeforeAlertTime, new { @class = "form-control", @style = "height: 200px;" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.MessageBeforeAlertTime, "", new { @class = "text-danger" })
+                                <label>@GlobalCashMovementTrackerConfiguration.SampleMessageToBeSendBeforeTimespanElapse</label>
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+
+                                @Html.TextAreaFor(m => m.CashMovementTrackingConfiguration.MessageAfterAlertTime, new { @class = "form-control", @style = "height: 200px;" })
+                                @Html.ValidationMessageFor(m => m.CashMovementTrackingConfiguration.MessageAfterAlertTime, "", new { @class = "text-danger" })
+                                <label>@GlobalCashMovementTrackerConfiguration.SampleMessageToBeSendBeforeTimespanElapse</label>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mt-4">
+                        @if (Model.CashMovementTrackingConfiguration.Id == null)
+                        {
+                            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                            <input type="hidden" name="Action" value="insert" id="Action" />
+                        }
+                        else
+                        { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
+                            @Html.HiddenFor(m => m.CashMovementTrackingConfiguration.Id)
+                            <input type="hidden" name="Action" value="update" id="Action" />
+                        }
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

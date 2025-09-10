@@ -1,0 +1,66 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping.Group>
+    @using Resources
+@*@if (Model != null)
+{<div class="table-responsive mb-3">
+        <table class="table table-hover" id="myDataTable">
+            <thead class="table-light">
+                <tr>
+                    <th>Group</th>
+                    <th>Type</th>
+                    <th>Registration number</th>
+                    <th>Members</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model)
+                {
+                    <tr>
+
+                        <td style="width:35%">@d.GroupName</td>
+                        <td style="width:20%">@d.GroupType.GroupTypeName</td>
+                        <td style="width:10%">@d.RegistrationNumber</td>
+                        <td style="width:5%">
+                            <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@d.GroupCustomers.Count()</span>
+                        </td>
+                        <td style="width:10%">
+                            @if (d.Active)
+                            {
+                                <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">In-Active</span>
+                            }
+                        </td>
+                        <td style="width:20%">
+                            <a href="/Group/Details?groupId=@d.GroupId" target="_blank" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.GroupName to edit">Details</a> |
+                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.GroupName" onclick="DeleteRecordDataTable('Group','@d.GroupId','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        No group was found at the moment.
+    </div>
+}*@
+
+
+<div class="table-responsive mb-3">
+    <table class="table table-hover" id="myDataTable">
+        <thead class="table-light">
+            <tr>
+                <th>@GlobalGroup.Group</th>
+                <th>@GlobalGroup.RegistrationNumber</th>
+                <th>@GlobalGroup.Tax</th>
+                <th>@GlobalShared.Action</th>
+            </tr>
+        </thead>
+    </table>
+</div>

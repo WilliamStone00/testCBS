@@ -1,0 +1,28 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+    @using Resources
+<table class="table table-hover" id="myDataTable_Deposit">
+    <thead class="table-light">
+        <tr>
+            <th>@Globals_ManagementFeeData.ProductName</th>
+            <th>@Globals_ManagementFeeData.Flat</th>
+            <th>@Globals_ManagementFeeData.Rate</th>
+            <th>@Globals_ManagementFeeData.Frequency</th>
+            <th>@Globals_ManagementFeeData.Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.ManagementFeeParameters)
+        {
+            <tr>
+                <td style="width:35%">@d.product.name</td>
+                <td style="width:15%">@d.managementFeeFlat</td>
+                <td style="width:10%">@d.managementFeeRate %</td>
+                <td style="width:20%">@d.managementFeeFrequency</td>
+                <td style="width:20%">
+                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview_ManagementFeeConfig','_ManagementFeeConfig','get','TransactionConfiguration','ManagementFeeParameter')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_ManagementFeeData.Select, @d.product.name)">@Globals_ManagementFeeData.Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_ManagementFeeData.Delete, @d.product.name)" onclick="DeleteRecordDataTable('TransactionConfiguration','@d.id','myDataTable_Deposit','ManagementFeeConfigData',0,'datalistingview_ManagementFeeConfig')">@Globals_ManagementFeeData.Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

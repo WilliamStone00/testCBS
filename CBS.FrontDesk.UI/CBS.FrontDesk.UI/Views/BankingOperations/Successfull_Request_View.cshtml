@@ -1,0 +1,122 @@
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalBankingOperations.SuccessfullyTransactionReversalRequest;
+ 
+}
+@model CBS.FrontDesk.Data.Entity.Accounting.TransactionReversalDetailRequestDto
+
+
+<div class="row invoice-preview">
+    <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+        <div class="accordion-item active">
+            <h2 class="accordion-header text-body d-flex justify-content-between"
+                id="accordionPopoutIconThree">
+                <button type="button"
+                        class="accordion-button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#accordionPopoutIcon-3"
+                        aria-expanded="true"
+                        aria-controls="accordionPopoutIcon-3">
+                    <i class="mdi mdi-bank-plus me-2"></i>
+                    <span style="color:forestgreen">@GlobalBankingOperations.TransactionReversalRequestWithReferenceId : @Model.ReferenceId  @GlobalBankingOperations.hasBeenSuccesfullySentForApproval  </span>
+                </button>
+            </h2>
+            <div class="card-body">
+
+                <br />
+                <div class="collapse show">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>@GlobalBankingOperations.TransactionReversalRequestDetails</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                           
+                            <tr>
+                                <td>@GlobalBankingOperations.RequestedDate</td>
+                                <td>@Model.IssuedDate </td>
+                            </tr>
+                            <tr>
+                                <td>@GlobalBankingOperations.RequestMessage</td>
+                                <td>@Model.RequestMessage </td>
+                            </tr>
+                            <tr>
+                                <td>@GlobalBankingOperations.RequestedBy </td>
+                                <td> @Model.IssuedBy </td>
+                            </tr>
+                            <tr>
+                                <td>@GlobalBankingOperations.ApprovedBy </td>
+                                <td> @Model.ApprovedBy </td>
+                            </tr>
+                            <tr>
+                                <td>@GlobalBankingOperations.ApprovedMessage</td>
+                                <td>@Model.ApprovedMessage </td>
+                            </tr>
+
+
+                            <tr>
+                                <td>@GlobalBankingOperations.ApprovedDate</td>
+                                <td>@Model.ApprovedDate </td>
+                            </tr>
+                            <tr>
+                                <td>@GlobalBankingOperations.ApprovedMessage</td>
+                                <td>@Model.ApprovedMessage </td>
+                            </tr>
+                            <tr>
+
+
+                                <td> @GlobalBankingOperations.Status</td>
+                                @if (@Model.Status.ToUpper().Equals("PENDING"))
+                                {
+                                    <td class="badge bg-label-primary rounded-pill text-uppercase">
+                                        @Model.Status
+                                    </td>
+
+
+                                }
+                                else
+                                {
+                                    if (@Model.Status.ToUpper().Equals("APPROVE"))
+                                    {
+                                        <td class="badge bg-label-success rounded-pill text-uppercase">
+                                            @Model.Status
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="badge bg-label-danger rounded-pill text-uppercase">
+                                            @Model.Status
+                                        </td>
+                                    }
+
+                                }
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                  <div class="card card-action mb-5">
+                    <h5 class="card-header"><span style="color:forestgreen">@GlobalBankingOperations.YourTransactionReversalRequestHasBeenSentSuccesfully</span> </h5>
+
+                    <div class="col-12 shift-right">
+
+                        <button type="submit" class="btn btn-primary click-to-go-back-to-menu" onclick="refreshPageHome()">@GlobalBankingOperations.BackToHome. </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+
+<script src="~/Scripts/Js/main.js/CashFlowManagement.js"></script>
+}

@@ -1,0 +1,22 @@
+﻿
+@using Resources
+
+<fieldset class="fieldset-custom p-3">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+
+            <!-- Search Bar -->
+            <div class="input-group shadow">
+                <input type="text" id="manualSearchInput" class="form-control" placeholder="@CashDesk_SearchBoxLoanRepaymentSimulation.EnterMemberReferenceNumber">
+                <button class="btn btn-primary" onclick="GetMemberDataLoanSimulation()">
+                    <i class="mdi mdi-magnify"></i> @CashDesk_SearchBoxLoanRepaymentSimulation.Search
+                </button>
+            </div>
+            <small class="form-text text-muted mt-2">
+                @CashDesk_SearchBoxLoanRepaymentSimulation.EnterThe10DigitMemberReferenceNumber <br />
+                @CashDesk_SearchBoxLoanRepaymentSimulation.PerformLoanRepaymentSimulation
+            </small>
+        </div>
+    </div>
+</fieldset>
+<input type="hidden" class="form-control shadow-box" value="repayment" id="currentselectedOperation" />

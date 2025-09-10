@@ -1,0 +1,30 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductCategory
+    @using Resources
+<div class="card-body">
+    @using (Html.BeginForm("Create", "LoanProductCategory", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        <div class="row mt-2 gy-4">
+            <fieldset class="fieldset-custom">
+
+                <div class="col-md-12 mb-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                        <label>@GlobalLoanProductCategory.Name</label>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 200px;" })
+                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                        <label>@GlobalLoanProductCategory.Description</label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+            <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
+        </div>
+    }
+</div>

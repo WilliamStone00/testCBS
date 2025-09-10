@@ -1,0 +1,112 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+@{
+    var status = false;
+    string comment = "No initial deposit has been made.";
+    if (Model.AccountBalance.accounts.Any())
+    {
+        status = true;
+    }
+}
+<div class="col-12">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex align-items-center flex-wrap gap-2">
+                <div class="card-info">
+                    <div class="d-flex align-items-center">
+                        <h4 class="mb-0">@Model.AccountBalance.totalBalance</h4>
+                    </div>
+                    @if (status)
+                    {
+                        <small>Total account balance</small>
+                    }
+                    else
+                    {
+                        @comment;
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.status == "INPROGRESS")
+    {
+        <br/>
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center flex-wrap gap-2">
+                    <div class="card-info">
+                        @Html.Partial("_OpenAccount")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+       
+
+    }
+    else
+    {
+        <br/>
+        <div class="col-lg-6 col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center flex-wrap gap-2">
+                        <div class="card-info">
+                            <div class="d-flex align-items-center">
+                                <h5 class="mb-0">Balance: @Model.balance</h5>
+                            </div>
+                            <small>Account Number: <b>@Model.accountNumber</b></small><br />
+                            <small class="mb-0">Account Name: <b>@Model.product.name</b></small><br />
+                            <small class="mb-0">Account Status: <b>@Model.status</b></small><br />
+                            <small class="mb-0">Date created: <b>@Model.createdDate</b></small>
+                            @if (Model.status == "INPROGRESS")
+                            {
+                                <hr />
+                                <a href="javascript:;" class="btn btn-primary me-3" data-bs-target="#openAccount" data-bs-toggle="modal">Open account</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+    <br/>
+    <div class="card mb-4">
+        <h5 class="card-header">Accounts</h5>
+        <div class="card-body">
+            <div class="table-responsive mb-3">
+                <table class="table table-hover" id="myDataTableT">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Account Type</th>
+                            <th>Status</th>
+                            <th>Balance</th>
+                            <th>Previouse balance</th>
+                            <th>Account Number</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var d in Model.Accounts)
+                        {
+                            <tr>
+                                <td style="width:25%">@d.product.name</td>
+                                <td style="width:10%">@d.status</td>
+                                <td style="width:20%">@d.balance</td>
+                                <td style="width:20%">@d.previousBalance</td>
+                                <td style="width:20%">@d.accountNumber</td>
+                                <td style="width:5%">
+                                    <a href="/TransactionManagement/AccountDetails?KEY=@d.accountNumber">Select</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+

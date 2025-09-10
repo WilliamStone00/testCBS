@@ -1,0 +1,192 @@
+﻿
+@{
+    ViewBag.Title = "Penalty Configuration Rules";
+}
+
+<div class="container">
+    <!-- 🔷 Page Header -->
+    <div class="row mb-2">
+        <div class="col-12">
+            <div class="card bg-light shadow-sm">
+                <div class="card-body text-center">
+                    <h2 class="card-title text-danger">
+                        <i class="mdi mdi-gavel me-2"></i> Penalty Configuration Rules
+                    </h2>
+                    <p class="card-text text-secondary fs-6">
+                        Manage rules for loan penalties such as late fees, post-maturity fines, and interest-based charges. Penalties are applied based on loan behavior and timing.
+                    </p>
+                    <p class="card-text text-muted small">
+                        Use the buttons below to create or update penalty rules linked to loan products.
+                    </p>
+                    <hr style="border: 2px solid rgba(255, 0, 0, 0.2);" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Html.Partial("_TipPenaltyConfigs")
+
+    <!-- 🔍 Action Section -->
+    <div class="row mb-1">
+        <div class="col-12">
+            <div class="card bg-light border">
+                <div class="card-body d-flex justify-content-end align-items-center">
+                    <div class="me-2">
+                        <a type="button" onclick="LoadPenaltyConfigs()"
+                           class="btn btn-outline-danger btn-sm"
+                           data-bs-toggle="tooltip"
+                           title="Reload and View Penalty Configuration List">
+                            <i class="mdi mdi-view-list me-1"></i> View List
+                        </a>
+                    </div>
+                    <div>
+                        <button onclick="AddORUpdateGen(null,'penaltyConfigDataTableContainer','_PenaltyConfigForm','new','Penalty')"
+                                class="btn btn-outline-danger btn-sm"
+                                data-bs-toggle="tooltip"
+                                title="Create a new penalty configuration">
+                            <i class="mdi mdi-plus me-1"></i> New Penalty Rule
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 📋 Table Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div id="penaltyConfigDataTableContainer">
+                        @Html.Partial("_PenaltyConfigDataTable")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        function LoadPenaltyConfigs() {
+            $("#myDataTable").DataTable({
+                destroy: true, // Reinitialize table
+                serverSide: true, // Server-side processing
+                stateSave: true, // Save pagination/sorting state
+                info: true, // Show record info
+                searching: false, // Disable built-in search
+                lengthMenu: [[10, 25, 100, 500], [10, 25, 100, 500]],
+
+                ajax: {
+                    url: '/Penalty/DataTable', // Controller endpoint
+                    type: 'POST', // Use POST
+                    data: {}, // No parameters for now
+                    dataSrc: function (json) {
+                        if (json.error) {
+                            console.error("❌ Load error:", json.error);
+                            return [];
+                        }
+                        return json.data;
+                    }
+                },
+
+                columns: [
+                    { data: 'PenaltyName', name: 'PenaltyName', autoWidth: true },
+                    { data: 'PenaltyType', name: 'PenaltyType', autoWidth: true },
+                    {
+                        data: 'PenaltyValue',
+                        name: 'PenaltyValue',
+                        autoWidth: true,
+                        render: function (data, type, row) {
+                            return row.IsRate
+                                ? `${parseFloat(data)}%`
+                                : `${parseFloat(data).toLocaleString()} FCFA`;
+                        }
+                    },
+                    {
+                        data: 'IsRate',
+                        name: 'IsRate',
+                        autoWidth: true,
+                        render: function (isRate) {
+                            return isRate
+                                ? '<span class="badge bg-primary">Rate</span>'
+                                : '<span class="badge bg-info">Flat</span>';
+                        }
+                    },
+                    { data: 'CalculatePenaltyOn', name: 'CalculatePenaltyOn', autoWidth: true },
+                    {
+                        data: 'IsEnabled',
+                        name: 'IsEnabled',
+                        autoWidth: true,
+                        render: function (isEnabled) {
+                            return isEnabled
+                                ? '<span class="badge bg-primary">Enabled</span>'
+                                : '<span class="badge bg-secondary">Disabled</span>';
+                        }
+                    },
+                    {
+                        data: 'Id',
+                        name: 'Id',
+                        autoWidth: true,
+                        orderable: false,
+                        render: function (id) {
+                            return `
+                        <button class="btn btn-sm btn-outline-primary me-1" title="Edit" onclick="editPenaltyConfig('${id}')">
+                            <i class="mdi mdi-pencil-outline"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-warning" title="Assign to Product" onclick="mapPenaltyToProduct('${id}')">
+                            <i class="mdi mdi-link-variant"></i>
+                        </button>
+                    `;
+                        }
+                    }
+                ],
+
+                order: [[0, "asc"]],
+                responsive: true,
+
+                language: {
+                    emptyTable: "No penalty configurations found.",
+                    search: "🔍 Search:",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_",
+                    paginate: {
+                        previous: "Prev",
+                        next: "Next"
+                    }
+                }
+            });
+
+            // Enable tooltips on buttons
+            setTimeout(() => {
+                $('[data-toggle="tooltip"]').tooltip();
+            }, 500);
+        }
+        function editPenaltyConfig(id) {
+            $.ajax({
+                url: '/Penalty/InitializeData',
+                type: 'GET',
+                data: {
+                    KEY: id,
+                    partialView: '_PenaltyConfigForm',
+                    path: 'edit'
+                },
+                //beforeSend: function () {
+                //    $('#penaltyConfigDataTableContainer').html('<div class="text-center py-4"><div class="spinner-border text-danger" role="status"></div></div>');
+                //},
+                success: function (html) {
+                    $('#penaltyConfigDataTableContainer').html(html);
+                },
+                error: function (xhr) {
+                    $('#penaltyConfigDataTableContainer').html(`<div class="alert alert-danger">❌ Failed to load form: ${xhr.statusText}</div>`);
+                }
+            });
+        }
+    </script>
+
+}
+
+
+

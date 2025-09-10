@@ -1,0 +1,85 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.WithdrawalNotificationForm
+@using Resources
+
+@using (Html.BeginForm("ApproveOrReject", "WithdrawalNotification", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithdrawalFromRequest(this);" }))
+{
+    @Html.HiddenFor(m => m.WithdrawalNotification.Id)
+    <fieldset class="fieldset-custom">
+        <legend>@GlobalWithdrawalNotification.WithdrawalRequestConfirmation</legend>
+        <div class="row mt-2 gy-4">
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.Customer.name, new { @class = "form-control", @readonly = true })
+                    <label>@GlobalWithdrawalNotification.MembersName</label>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalNotification.TransactionReference, new { @class = "form-control", @readonly = true })
+                    @Html.ValidationMessageFor(m => m.WithdrawalNotification.TransactionReference, "", new { @class = "text-danger" })
+                    <label>@GlobalWithdrawalNotification.Reference</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalNotification.AmountRequired, new { @class = "form-control", @readonly = true })
+                    @Html.ValidationMessageFor(m => m.WithdrawalNotification.AmountRequired, "", new { @class = "text-danger" })
+                    <label>@GlobalWithdrawalNotification.RequestedAmount</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalNotification.ServiceClearName, new { @class = "form-control", @readonly = true })
+                    @Html.ValidationMessageFor(m => m.WithdrawalNotification.ServiceClearName, "", new { @class = "text-danger" })
+                    <label>@GlobalWithdrawalNotification.Initiator</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalNotification.ReasonForWithdrawal, new { @class = "form-control", @readonly = true })
+                    @Html.ValidationMessageFor(m => m.WithdrawalNotification.Purpose, "", new { @class = "text-danger " })
+                    <label for="formValidationDob">@GlobalWithdrawalNotification.ReasonForWithdrawal</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalNotification.AccountNumber, new { @class = "form-control", @readonly = true })
+                    @Html.ValidationMessageFor(m => m.WithdrawalNotification.AccountNumber, "", new { @class = "text-danger" })
+                    <label>@GlobalWithdrawalNotification.AccountNumber</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalNotification.AccountBalance, new { @class = "form-control", @readonly = true })
+                    @Html.ValidationMessageFor(m => m.WithdrawalNotification.AccountBalance, "", new { @class = "text-danger" })
+                    <label>@GlobalWithdrawalNotification.AccountBalance</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalNotification.LoanBalance, new { @class = "form-control", @readonly = true })
+                    @Html.ValidationMessageFor(m => m.WithdrawalNotification.LoanBalance, "", new { @class = "text-danger" })
+                    <label>@GlobalWithdrawalNotification.LoanBalance</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.WithdrawalNotification.ApprovalStatus, new SelectList(ViewBag.Status, "Value", "Text", "Approved"), "---"+GlobalShared.Select+"---", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.WithdrawalNotification.ApprovalStatus, "", new { @class = "text-danger" })
+                    <label>@GlobalWithdrawalNotification.SelectApprovalStatus</label>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextAreaFor(m => m.WithdrawalNotification.ApprovalComment, new { @class = "form-control", @style = "height: 75px;" })
+                    @Html.ValidationMessageFor(m => m.WithdrawalNotification.ApprovalComment, "", new { @class = "text-danger" })
+                    <label>@GlobalWithdrawalNotification.Note</label>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary me-2">@GlobalWithdrawalNotification.ConfirmRequest</button>
+        </div>
+    </fieldset>
+}

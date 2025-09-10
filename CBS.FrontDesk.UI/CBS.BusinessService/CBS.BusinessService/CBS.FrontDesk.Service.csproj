@@ -1,0 +1,473 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\EntityFramework.6.5.1\build\EntityFramework.props" Condition="Exists('..\..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C8E30E49-FC55-431E-9832-CF6F28E30C30}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CBS.BusinessService</RootNamespace>
+    <AssemblyName>CBS.BusinessService</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ClosedXML, Version=0.102.2.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ClosedXML.0.102.2\lib\netstandard2.0\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="DnsClient, Version=1.6.1.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DnsClient.1.6.1\lib\net471\DnsClient.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.16.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DocumentFormat.OpenXml.2.16.0\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelNumberFormat, Version=1.1.0.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ExcelNumberFormat.1.1.0\lib\net20\ExcelNumberFormat.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.Core, Version=1.8.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Hangfire.Core.1.8.12\lib\net46\Hangfire.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.SqlServer, Version=1.8.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Hangfire.SqlServer.1.8.12\lib\net451\Hangfire.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Irony, Version=1.0.11.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Irony.NetCore.1.0.11\lib\net461\Irony.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.4.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.SignalR.Core.2.4.3\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Features, Version=5.0.17.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNetCore.Http.Features.5.0.17\lib\net461\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.Logging.Abstractions.2.0.0\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.Primitives.8.0.0\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Host.SystemWeb.3.0.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Win32.Registry.5.0.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson, Version=3.2.1.0, Culture=neutral, PublicKeyToken=94992a530f44e321, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MongoDB.Bson.3.2.1\lib\net472\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=3.2.1.0, Culture=neutral, PublicKeyToken=94992a530f44e321, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MongoDB.Driver.3.2.1\lib\net472\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpCompress, Version=0.30.1.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SharpCompress.0.30.1\lib\net461\SharpCompress.dll</HintPath>
+    </Reference>
+    <Reference Include="SixLabors.Fonts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SixLabors.Fonts.1.0.0\lib\netstandard2.0\SixLabors.Fonts.dll</HintPath>
+    </Reference>
+    <Reference Include="Snappier, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a1b25124e6e13a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Snappier.1.0.0\lib\netstandard2.0\Snappier.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.Packaging.6.0.0\lib\net461\System.IO.Packaging.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Pipelines, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.Pipelines.5.0.2\lib\net461\System.IO.Pipelines.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.AccessControl.5.0.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Text.Encoding.CodePages.5.0.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.RegularExpressions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Text.RegularExpressions.4.3.1\lib\net463\System.Text.RegularExpressions.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="XLParser, Version=1.5.2.0, Culture=neutral, PublicKeyToken=63397e1e46bb91b4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\XLParser.1.5.2\lib\net461\XLParser.dll</HintPath>
+    </Reference>
+    <Reference Include="ZstdSharp, Version=0.7.3.0, Culture=neutral, PublicKeyToken=8d151af33a4ad5cf, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ZstdSharp.Port.0.7.3\lib\net461\ZstdSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ZXing.Net.0.16.9\lib\net47\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ZXing.Net.0.16.9\lib\net47\zxing.presentation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccountingDayObject\AccountingDayServices.cs" />
+    <Compile Include="Accounting\AccountingReconciliationServices.cs" />
+    <Compile Include="Accounting\AccountPolicyServices.cs" />
+    <Compile Include="Accounting\AccountUploadServices.cs" />
+    <Compile Include="Accounting\AccountBookingDirectionServices.cs" />
+    <Compile Include="Accounting\CashMovementTrackerServices.cs" />
+    <Compile Include="Accounting\CashMovementTrackingConfigurationServices.cs" />
+    <Compile Include="Accounting\ChartOfAccountManagementPositionService.cs" />
+    <Compile Include="Accounting\BlacklistAccountServices.cs" />
+    <Compile Include="Accounting\ProductAccountingHelper.cs" />
+    <Compile Include="Accounting\TransactionTracker.cs" />
+    <Compile Include="Accounts\FileUploadServices.cs" />
+    <Compile Include="DailyCollectionServices\DailyCollectionEndOfDayServices.cs" />
+    <Compile Include="Accounting\DocumentTypeServices.cs" />
+    <Compile Include="Accounting\DocumentReportServices.cs" />
+    <Compile Include="Accounting\ConnectionHub.cs" />
+    <Compile Include="Accounting\ConnectionMonitoringService.cs" />
+    <Compile Include="Accounting\IAccountingEntryServices.cs" />
+    <Compile Include="Accounting\INotificationServices.cs" />
+    <Compile Include="Accounting\NotificationHub.cs" />
+    <Compile Include="Accounting\NotificationServices.cs" />
+    <Compile Include="Accounting\ThirdPartyBranchServices.cs" />
+    <Compile Include="Accounting\TrialBalanceFileServices.cs" />
+    <Compile Include="Accounting\CorrespondingMappingServices.cs" />
+    <Compile Include="Accounting\DocumentRefereceCodeServices.cs" />
+    <Compile Include="Accounting\AccountCategoryServices.cs" />
+    <Compile Include="Accounting\AccountClassServices.cs" />
+    <Compile Include="Accounting\AccountingEntryRuleService.cs" />
+    <Compile Include="Accounting\AccountingStatementService.cs" />
+    <Compile Include="Accounting\AccountTypeServices.cs" />
+    <Compile Include="Accounting\AccountingEntryServices.cs" />
+    <Compile Include="Accounting\BankingOperationServices.cs" />
+    <Compile Include="Accounting\AccountingRuleService.cs" />
+    <Compile Include="Accounting\AccountingServices.cs" />
+    <Compile Include="Accounting\ChartOfAccountServices.cs" />
+    <Compile Include="Accounting\ChartOfAccountServicesAnnex.cs" />
+    <Compile Include="Accounting\TransactionReversalRequest.cs" />
+    <Compile Include="Accounting\EntryFeeParameterServices.cs" />
+    <Compile Include="Accounting\EntryTempDataServices.cs" />
+    <Compile Include="Accounting\OperationEventAttributeServices.cs" />
+    <Compile Include="Accounting\OperationEventServices.cs" />
+    <Compile Include="Accounting\TellerCashReplenishmentServices.cs" />
+    <Compile Include="Accounting\TransactionReferenceValidator.cs" />
+    <Compile Include="Accounts\AccountOpeningRulePerBranchServices.cs" />
+    <Compile Include="Accounts\AccountToAccountTransferService.cs" />
+    <Compile Include="Accounts\GeneralStatisticReport\GeneralStatisticReportServices.cs" />
+    <Compile Include="Accounts\MemberReceiptsP\MemberReceiptServices.cs" />
+    <Compile Include="Accounts\SalaryAnalysisResultServices.cs" />
+    <Compile Include="Accounts\MemberNoneCashOperationServices.cs" />
+    <Compile Include="Accounts\SalaryExecutionServices.cs" />
+    <Compile Include="Accounts\SalaryUploadServices.cs" />
+    <Compile Include="Accounts\StandingOrderServices.cs" />
+    <Compile Include="Accounts\CashChangeHistoryServices.cs" />
+    <Compile Include="Accounts\CashDeskServices.cs" />
+    <Compile Include="Accounts\AccountServices.cs" />
+    <Compile Include="Accounts\BankingOperationServices.cs" />
+    <Compile Include="Accounts\CloseFeeParameterServices.cs" />
+    <Compile Include="Accounts\ChargesWaivedServices.cs" />
+    <Compile Include="Accounts\HolyDayRecurringServices.cs" />
+    <Compile Include="Accounts\CashCeilingRequestServices.cs" />
+    <Compile Include="Accounts\VaultServices.cs" />
+    <Compile Include="Accounts\OldLoanAccountingMapingServices.cs" />
+    <Compile Include="Accounts\FileDownloadServices.cs" />
+    <Compile Include="Accounts\MobileMoneyTopupServices.cs" />
+    <Compile Include="Accounts\GeneralDailyDashboardServices.cs" />
+    <Compile Include="Accounts\HolyDayServices.cs" />
+    <Compile Include="Accounts\RemittanceServices.cs" />
+    <Compile Include="Accounts\TransactionResversalServices.cs" />
+    <Compile Include="Accounts\SubTellerCashReplenishmentServices.cs" />
+    <Compile Include="Accounts\PrimaryTellerCashReplenishmentServices.cs" />
+    <Compile Include="Accounts\IMemberAccountJob.cs" />
+    <Compile Include="Accounts\OtherTransactionServices.cs" />
+    <Compile Include="Accounts\DailyTellerServices.cs" />
+    <Compile Include="Accounts\WithdrawalNotificationServices.cs" />
+    <Compile Include="Accounts\FeePolicyServices.cs" />
+    <Compile Include="Accounts\OperationFeeServices.cs" />
+    <Compile Include="Accounts\SysConfigurationServices.cs" />
+    <Compile Include="Accounts\SavingProductFeeServices.cs" />
+    <Compile Include="AuditTrailP\AuditTrailServices.cs" />
+    <Compile Include="AndriodVersioning\ChangeNumberServices.cs" />
+    <Compile Include="AndriodAppVersioning\AndriodVersionConfigurationServices.cs" />
+    <Compile Include="BulkOperations\BulkOperationResultDetailExcelGenerator.cs" />
+    <Compile Include="BulkOperations\BulkOperationService.cs" />
+    <Compile Include="ChangeNumber\ChangeNumberServices.cs" />
+    <Compile Include="CorrespondingBankBranchServices\BankZoneBranchServices.cs" />
+    <Compile Include="CorrespondingBankBranchServices\BankingZoneServices.cs" />
+    <Compile Include="CustomerManagement\CMoneyMemberServices.cs" />
+    <Compile Include="DailyCollectionServices\DailyCollectionMigrationServices.cs" />
+    <Compile Include="DailyCollectionServices\CollectionZoningServices.cs" />
+    <Compile Include="DailyCollectionServices\DailyCustomerServices.cs" />
+    <Compile Include="DailyCollectionServices\CommissionSettingServices.cs" />
+    <Compile Include="DailyCollectionServices\AgentDashBoardServices.cs" />
+    <Compile Include="DailyCollectionServices\AgentDailyCashLimitServices.cs" />
+    <Compile Include="DailyCollectionServices\AgentServices.cs" />
+    <Compile Include="DailyCollectionServices\AgentAccountServices.cs" />
+    <Compile Include="DailyCollectionServices\ZoneServices.cs" />
+    <Compile Include="LoanP\Config\LoanProductCategoryServices.cs" />
+    <Compile Include="LoanP\LoanAdjustmentP\LoanAdjustmentService.cs" />
+    <Compile Include="LoanP\LoanportFolioFlattener\LoanDelinquencyFlattener.cs" />
+    <Compile Include="LoanP\Overdraft\OverdraftActivationServices.cs" />
+    <Compile Include="LoanP\Overdraft\OverdraftFacilityConfigServices.cs" />
+    <Compile Include="LoanP\Repayment\RefundServices.cs" />
+    <Compile Include="LocalizationService\LocalizationService.cs" />
+    <Compile Include="MemberAdjustment\MemberAdjustmentService.cs" />
+    <Compile Include="Migration\AccountMigrationServices.cs" />
+    <Compile Include="PaymentReceiptMapping.cs" />
+    <Compile Include="Config\EconomicActivityServices.cs" />
+    <Compile Include="Config\CustomerCategoryServices.cs" />
+    <Compile Include="Config\Organization\IBranchServices.cs" />
+    <Compile Include="CustomerManagement\GroupServices.cs" />
+    <Compile Include="CustomerManagement\GroupTypeServices.cs" />
+    <Compile Include="DataContext\CBSDbContext.cs" />
+    <Compile Include="MembersAccountSettings\MemberAccountActivation.cs" />
+    <Compile Include="Accounts\DepositLimitServices.cs" />
+    <Compile Include="Accounts\ManagementFeeParameterServices.cs" />
+    <Compile Include="Accounts\PrimaryTellerEndOfDayServices.cs" />
+    <Compile Include="Accounts\ReopenFeeParameterServices.cs" />
+    <Compile Include="Accounts\SubTellerEndOfDayServices.cs" />
+    <Compile Include="Accounts\TellerProvissioningServices.cs" />
+    <Compile Include="Accounts\SavingProductServices.cs" />
+    <Compile Include="Accounts\TellerServices.cs" />
+    <Compile Include="Accounts\TransferLimitServices.cs" />
+    <Compile Include="Accounts\WithdrawalLimitServices.cs" />
+    <Compile Include="BaseService\BaseService.cs" />
+    <Compile Include="BaseApiServices.cs" />
+    <Compile Include="BudgetManagement\BudgetCategoryServices.cs" />
+    <Compile Include="BudgetManagement\BudgetServices.cs" />
+    <Compile Include="Config\Localization\SubDivisionServices.cs" />
+    <Compile Include="Config\Localization\TownServices.cs" />
+    <Compile Include="Config\Localization\DivisionServices.cs" />
+    <Compile Include="Config\Localization\RegionServices.cs" />
+    <Compile Include="Config\Organization\BankServices.cs" />
+    <Compile Include="Config\Organization\BranchServices.cs" />
+    <Compile Include="Config\Organization\OrganizationServices.cs" />
+    <Compile Include="CustomerManagement\IIndividualProfileServices.cs" />
+    <Compile Include="CustomerManagement\IndividualProfileServices.cs" />
+    <Compile Include="CustomerManagement\SecretQuestionServices.cs" />
+    <Compile Include="Customization\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Customization\CustomClasses.cs" />
+    <Compile Include="Customization\CustomMembership.cs" />
+    <Compile Include="Customization\CustomMembershipUser.cs" />
+    <Compile Include="Customization\CustomPrincipal.cs" />
+    <Compile Include="Customization\CustomRole.cs" />
+    <Compile Include="Authentication\AuthenticationServices.cs" />
+    <Compile Include="Config\Localization\CountryServices.cs" />
+    <Compile Include="LoanCommitee\LoanCommiteeValidationHistoryServices.cs" />
+    <Compile Include="LoanCommitee\LoanCommiteeMemberServices.cs" />
+    <Compile Include="LoanCommitee\LoanCommiteeGroupServices.cs" />
+    <Compile Include="LoanP\Application\LoanApplicationServices.cs" />
+    <Compile Include="LoanP\Application\LoanAmortizationServices.cs" />
+    <Compile Include="LoanP\Application\LoanServices.cs" />
+    <Compile Include="LoanP\Config\DocumentServices.cs" />
+    <Compile Include="LoanP\Config\DocumentPackServices.cs" />
+    <Compile Include="LoanP\Config\LoanApplicationCollateralServices.cs" />
+    <Compile Include="LoanP\Config\LoanCommentryServices.cs" />
+    <Compile Include="LoanP\Config\AlertProfileServices.cs" />
+    <Compile Include="LoanP\Config\FeeServices.cs" />
+    <Compile Include="LoanP\Config\CustomerLoanAccountServices.cs" />
+    <Compile Include="LoanP\Config\FeeRangeServices.cs" />
+    <Compile Include="LoanP\Config\LoanGuarantorServices.cs" />
+    <Compile Include="LoanP\Config\PenaltyServices.cs" />
+    <Compile Include="LoanP\Config\LoanPurposeServices.cs" />
+    <Compile Include="LoanP\Config\TaxServices.cs" />
+    <Compile Include="LoanP\Config\WriteOffLoanServices.cs" />
+    <Compile Include="LoanP\Config\GuaranteeServices.cs" />
+    <Compile Include="LoanP\Config\GurantyPackServices.cs" />
+    <Compile Include="LoanP\Config\AttachedDocumentServices.cs" />
+    <Compile Include="LoanP\Config\InstallmentTypeServices.cs" />
+    <Compile Include="LoanP\Config\FundingLineConfigurationServices.cs" />
+    <Compile Include="LoanP\Config\LoanProductServices.cs" />
+    <Compile Include="LoanP\Config\CollateralServices.cs" />
+    <Compile Include="LoanP\Config\LoanDeliquencyConfigurationServices.cs" />
+    <Compile Include="LoanP\Config\LoanTermServices.cs" />
+    <Compile Include="LoanP\Config\LoanProductCollateralServices.cs" />
+    <Compile Include="MembersAccountSettings\Policy\MemberAccountActivationPolicy.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestLoggerServicesP\ClientDataService.cs" />
+    <Compile Include="RequestLoggerServicesP\PasswordPolicyManagentService.cs" />
+    <Compile Include="RequestLoggerServicesP\RateLimitedUserService.cs" />
+    <Compile Include="RequestLoggerServicesP\SuspiciousPathServices.cs" />
+    <Compile Include="RequestLoggerServicesP\RateLimiteTrackerLoggerServices.cs" />
+    <Compile Include="RequestLoggerServicesP\RateLimitConfigService.cs" />
+    <Compile Include="RoleManagement\RolePermissionServices.cs" />
+    <Compile Include="RoleManagement\MenuMasterServices.cs" />
+    <Compile Include="RoleManagement\MenuTranslationServices.cs" />
+    <Compile Include="RoleManagement\RoleServices.cs" />
+    <Compile Include="Session\AggregateSessionService.cs" />
+    <Compile Include="Session\SessionHelper.cs" />
+    <Compile Include="Session\LocalSession.cs" />
+    <Compile Include="Session\SessionHub.cs" />
+    <Compile Include="CorrespondingBankBranchServices\CorrespondingBankBranchServices.cs" />
+    <Compile Include="CorrespondingBankServices\CorrespondingBankServices.cs" />
+    <Compile Include="SMSP\SMSServices.cs" />
+    <Compile Include="UserManagement\IUserManagementServices.cs" />
+    <Compile Include="UserManagement\UserManagementServices.cs" />
+    <Compile Include="UserManagement\UserPermissionServices.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CBS.API.Helper\CBS.API.Helper\CBS.API.Helper.csproj">
+      <Project>{7789DE1E-5232-46A6-9A96-1DD39E708EEB}</Project>
+      <Name>CBS.API.Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CBS.FrontDesk.Data\CBS.FrontDesk.Data\CBS.FrontDesk.Data.csproj">
+      <Project>{0D7085DF-13B8-4FCE-9E8F-F0FA88FCE730}</Project>
+      <Name>CBS.FrontDesk.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper.csproj">
+      <Project>{192960F3-C2BA-4286-A4E6-F0B94DA85450}</Project>
+      <Name>CBS.FrontDesk.Helper</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BankZone\" />
+    <Folder Include="BlacklistAccount\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
+</Project>

@@ -1,0 +1,64 @@
+﻿@using Resources
+@model CBS.FrontDesk.Data.Entity.Accounting.ChartOfAccount
+
+
+<div class="table-responsive">
+    <div class="modal fade" id="largeModal" tabindex="0" aria-hidden="false">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="accountHeader">@GlobalAccountingChart_CreateModal.ModalTitle</h4>
+                    <p id="accountHeader2" class="p-5"></p>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="@GlobalAccountingChart_CreateModal.Close"></button>
+
+                </div>
+                <hr />
+                <div class="modal-body">
+                    <div class="card-body viewSelector">
+                        @using (Html.BeginForm("Create", "AccountingChart", FormMethod.Post, new { id = "chartOfAccountForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateChartOfAccount(this);" }))
+                        {
+                            @Html.HiddenFor(model => model.ParentAccountId)
+
+                            <div class="form-floating form-floating-outline mb-4">
+                                @Html.TextBoxFor(model => model.AccountNumber, new { @class = "form-control", placeholder = @GlobalAccountingChart_CreateModal.AccountNumber })
+                                @Html.LabelFor(model => model.AccountNumber, new { @for = "accountNumber" })
+                                @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-floating form-floating-outline mb-4">
+                                @Html.TextBoxFor(model => model.LabelEn, new { @class = "form-control", placeholder = @GlobalAccountingChart_CreateModal.AccountLabelEnglish })
+                                <label>@GlobalAccountingChart_CreateModal.AccountLabelEnglish</label>
+                                @Html.ValidationMessageFor(model => model.LabelEn, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-floating form-floating-outline mb-4">
+                                @Html.TextBoxFor(model => model.LabelFr, new { @class = "form-control", placeholder = @GlobalAccountingChart_CreateModal.AccountLabelFrench })
+                                <label>@GlobalAccountingChart_CreateModal.AccountLabelFrench</label>
+                                @Html.ValidationMessageFor(model => model.LabelFr, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-floating form-floating-outline mb-4">
+                                @Html.DropDownListFor(model => model.AccountCartegoryId, new SelectList(ViewBag.AccountCartegories == null ? "" : ViewBag.AccountCartegories, "Id", "Name"), @GlobalAccountingChart_CreateModal.SelectCategory, new { @class = "form-control select2", @search = "true" })
+                                @Html.ValidationMessageFor(model => model.AccountCartegoryId, "", new { @class = "text-danger" })
+                                <label>@GlobalAccountingChart_CreateModal.AccountCategory</label>
+                            </div>
+                            <button type="submit" id="Add" class="btn btn-primary waves-effect waves-light">@GlobalAccountingChart_CreateModal.Save</button>
+
+                        }
+                    </div>
+                </div>
+                <hr />
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary waves-effect waves-light">@GlobalAccountingChart_CreateModal.AddAccountChart</button>
+
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        @GlobalAccountingChart_CreateModal.EditAccountChart
+                    </button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light">@GlobalAccountingChart_CreateModal.DeleteAccountChart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,231 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+    @using Resources
+
+<input type="hidden" id="customerId" value="@Model.Customer.CustomerId" />
+<input type="hidden" id="memberName" value="@Model.Customer.name" />
+<input type="hidden" id="branchName" value="@Model.Branch.Name" />
+<input type="hidden" id="branchCode" value="@Model.Branch.BranchCode" />
+<input type="hidden" id="accountantName" value="@Session["FullName"].ToString()" /> <!-- Assuming User is available -->
+
+
+<div class="form-wrapper">
+    <div class="change-group">
+        <div class="row mb-3 align-items-center">
+            <!-- Member's Name, Branch Name, and Branch Code Section -->
+            <div class="col-md-12">
+                <div class="form-floating">
+                    <span class="formatted-amount shadow-sm d-block py-3 px-4 bg-light rounded border border-secondary">
+                        <strong>@GlobalLoanRepaymentBackOffice.MembersName:</strong> @Model.Customer.name &nbsp; | &nbsp;
+                        <strong>@GlobalLoanRepaymentBackOffice.BranchName:</strong> @Model.Branch.Name &nbsp; | &nbsp;
+                        <strong>@GlobalLoanRepaymentBackOffice.BranchCode:</strong> @Model.Branch.BranchCode
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <fieldset class="fieldset-custom">
+        <div class="container">
+            <!-- Accounts Table -->
+            <div class="row mb-3">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="myDataTableT">
+                        <thead class="table-light">
+                            <!-- Merged Header Row -->
+                            <tr>
+                                <th colspan="7" class="text-center fw-bold bg-light text-dark">@GlobalLoanRepaymentBackOffice.MEMBERS_ACCOUNT_BALANCES</th>
+                            </tr>
+                            <tr>
+                                <th style="display:none;">@GlobalLoanRepaymentBackOffice.ProductID</th>
+                                <th style="display:none;">@GlobalLoanRepaymentBackOffice.AccountNumber</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Accounts</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Balance</th>
+                                <th>@GlobalLoanRepaymentBackOffice.AmountToDebit</th>
+                                <th>@GlobalLoanRepaymentBackOffice.ABValidation</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Confirm</th>
+                            </tr>
+                        </thead>
+                        <tbody id="memberAccountsTable">
+                            @foreach (var d in Model.BulkDeposits.Where(x => !x.AccountType.ToLower().Contains("loan")).OrderBy(t => t.AccountType))
+                            {
+                                <tr>
+                                    <td style="display:none;">@d.ProductId</td>
+                                    <td style="display:none;">@d.AccountNumber</td>
+                                    <td>@d.AccountType</td>
+                                    <td class="balance-span">@d.Balance.ToString("#,##0.0")</td> <!-- Balance -->
+                                    <td>
+                                        <input type="number" class="form-control amount-input" value="0" oninput="applyVatModeToAllRows()">
+                                    </td>
+                                    <td class="status-indicator"></td> <!-- New column for ❌ (Error Indicator) -->
+                                    <td>
+                                        <input type="checkbox" class="form-check-input">
+                                    </td> <!-- Selection Checkbox -->
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2" style="text-align: right;"><strong>@GlobalLoanRepaymentBackOffice.TotalDebited:</strong></td>
+                                <td id="totalDebitedAmount">0</td>
+                                <td colspan="3"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <!-- Accounting Date + VAT mode on one line (6 / 6) -->
+            <div class="row align-items-center mb-3 g-2">
+                <!-- Left: Accounting Date (col-6) -->
+                <div class="col-12 col-md-6">
+                    <div class="d-flex align-items-center gap-2">
+                        <label class="form-label fw-semibold mb-0">Accounting Date</label>
+                        @Html.TextBoxFor(
+                            m => m.BulkDeposit.AccountingDate,
+                            Model.BulkDeposit.AccountingDate.HasValue
+                                ? Model.BulkDeposit.AccountingDate.Value.ToString("yyyy-MM-dd")
+                                : DateTime.Today.ToString("yyyy-MM-dd"),
+                            new
+                                 {
+                                @class = "form-control",
+                                type = "date",
+                                style = "max-width: 220px;",
+                                data_date_default = "today",
+                                data_date_max = "today"
+                            }
+                        )
+                    </div>
+                    @Html.ValidationMessageFor(m => m.BulkDeposit.AccountingDate, "", new { @class = "text-danger" })
+                </div>
+
+                <!-- Right: VAT Mode (col-6) -->
+                <div class="col-12 col-md-6 text-md-end">
+                    <div class="btn-group" role="group" aria-label="VAT Mode">
+                        <input class="btn-check" type="radio" name="vatMode" id="vatModeExclusive"
+                               value="exclusive"
+                               onchange="applyVatModeToAllRows()" onclick="applyVatModeToAllRows()">
+                        <label class="btn btn-outline-primary" for="vatModeExclusive">
+                            VAT Exclusive (19.25%)
+                        </label>
+
+                        <input class="btn-check" type="radio" name="vatMode" id="vatModeInclusive"
+                               value="inclusive" checked
+                               onchange="applyVatModeToAllRows()" onclick="applyVatModeToAllRows()">
+                        <label class="btn btn-outline-primary" for="vatModeInclusive">
+                            VAT Inclusive (16.1425%)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Loan Repayment Table -->
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="myDataTableT">
+                        <thead class="table-light">
+                            <!-- Merged Header Row -->
+                            <tr>
+                                <th colspan="10" class="text-center fw-bold bg-light text-dark">@GlobalLoanRepaymentBackOffice.MEMBERS_OPENED_LOANS</th>
+                            </tr>
+                            <tr>
+                                <th style="display:none;">@GlobalLoanRepaymentBackOffice.LRef</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Date</th>
+                                <th>@GlobalLoanRepaymentBackOffice.LAmount</th>
+                                <th>@GlobalLoanRepaymentBackOffice.AI</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Balance</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Capital</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Interest</th>
+                                <th>@GlobalLoanRepaymentBackOffice.VAT (19.25%)</th> <!-- ✅ NEW VAT COLUMN -->
+                                <th>@GlobalLoanRepaymentBackOffice.Penalty</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Total</th>
+                                <th>@GlobalLoanRepaymentBackOffice.Conf</th>
+                            </tr>
+                        </thead>
+                        <tbody id="loanRepaymentTable">
+                            @foreach (var d in Model.Loans)
+                            {
+                                <tr id="row-@d.Id">
+                                    <td style="display:none;">@d.Id</td>
+                                    <td>@d.LoanDate.ToString("dd/MM/yy")</td>
+                                    <td>@d.LoanAmount.ToString("#,##0.0")</td> <!-- ✅ Fixed Loan Amount Formatting -->
+                                    <td>@d.AccrualInterest.ToString("#,##0.0")</td>
+                                    <td>@d.Balance.ToString("#,##0.0")</td>
+
+                                    <td>
+                                        <input type="number" class="form-control capital-input" id="capital-@d.Id" value="0" oninput="applyVatModeToAllRows()">
+                                    </td>
+                                    <td>
+                                        <input type="number"
+                                               class="form-control interest-input"
+                                               id="interest-@d.Id"
+                                               value="0"
+                                               data-vatrate="@d.VatRate"
+                                               data-loanamount="@d.LoanAmount" />
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control vat-input" id="vat-@d.Id" value="0" readonly> <!-- ✅ NEW VAT FIELD -->
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control penalty-input" id="penalty-@d.Id" value="0" oninput="applyVatModeToAllRows()">
+                                    </td>
+                                    <td><span class="total-span" id="total-@d.Id">0</span></td>
+
+                                    <td>
+                                        <input type="checkbox" class="form-check-input loan-confirmation-checkbox" />
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="7" style="text-align: right;"><strong>@GlobalLoanRepaymentBackOffice.TotalRepayment:</strong></td>
+                                <td id="totalRepaymentAmount">0</td>
+                                <td colspan="2"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="7" style="text-align: right;"><strong>@GlobalLoanRepaymentBackOffice.BalanceRemaining:</strong></td>
+                                <td>
+                                    <span id="remainingBalance">0</span>
+                                    <span id="balanceIndicator" style="font-size: 1.5rem;"></span>
+                                </td>
+                                <td colspan="2"></td>
+                            </tr>
+                            <tr style="display:none;">
+                                <td colspan="7" style="text-align: right;"><strong>@GlobalLoanRepaymentBackOffice.TotalCalculatedVATIfApplicable:</strong></td>
+                                <td id="calculatedVat">0</td>
+                                <td colspan="2"></td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+            </div>
+
+            <!-- Note Section -->
+            <div class="row">
+
+                <div class="col-md-12 mt-2">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextAreaFor(m => m.BulkDeposit.Note,
+                            new { @class = "form-control shadow-input-boxes", @id = "Note", rows = "3", placeholder = @GlobalLoanRepaymentBackOffice.EnterReasonForTransaction, style = "height: 90px;" })
+                        @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
+                        <label for="Note">@GlobalLoanRepaymentBackOffice.TransactionNoteReason</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="text-end mt-4">
+                <button class="btn btn-primary me-2" onclick="PostLoanRepayment()">
+                    <i class="mdi mdi-check me-1"></i> @GlobalLoanRepaymentBackOffice.ConfirmRepayment
+                </button>
+                <button class="btn btn-secondary" onclick="Reprint()">
+                    <i class="mdi mdi-printer me-1"></i> @GlobalLoanRepaymentBackOffice.ReprintReceipt
+                </button>
+            </div>
+        </div>
+    </fieldset>
+</div>
+

@@ -1,0 +1,35 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping.GroupType>
+    @using Resources
+@if (Model != null)
+{<div class="table-responsive mb-3">
+        <table class="table table-hover" id="myDataTable">
+            <thead class="table-light">
+                <tr>
+                    <th>@GlobalGroupType.Type</th>
+                    <th>@GlobalGroupType.Description</th>
+                    <th>@GlobalShared.Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model)
+                {
+                    <tr>
+
+                        <td style="width:20%">@d.GroupTypeName</td>
+                        <td style="width:70%">@d.Description</td>
+                        <td style="width:10%">
+                            <a href="#" onclick="AddORUpdateGen('@d.GroupTypeId','datalistingview','_Create','update','GroupType')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.GroupTypeName @GlobalShared.ToEdit">@GlobalShared.Edit</a> |
+                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.GroupTypeName" onclick="DeleteRecordDataTable('GroupType','@d.GroupTypeId','myDataTable','_Data',0,'datalistingview')">@GlobalShared.Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        No member group type was found at the moment.
+    </div>
+}

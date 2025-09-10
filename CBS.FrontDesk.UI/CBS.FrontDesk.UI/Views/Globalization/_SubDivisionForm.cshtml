@@ -1,0 +1,41 @@
+﻿@model CBS.FrontDesk.Data.Entity.Config.GlobalizationViewModel
+
+<!-- Section Title -->
+<div class="col-12">
+    <h6 class="text-primary border-bottom pt-2 pb-2">
+        <i class="bi bi-diagram-3-fill"></i> SubDivision Management
+    </h6>
+</div>
+
+<!-- SubDivision Form -->
+@using (Html.BeginForm("SaveSubDivision", "Globalization", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    <div class="row g-3 mb-4" id="subDivisionForm">
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                <select id="DivisionId" name="SubDivision.DivisionId" class="form-select select2" required>
+                    <option value="">--- Select Division ---</option>
+                    @foreach (var division in Model.Divisions)
+                    {
+                        <option value="@division.Id">@division.Name</option>
+                    }
+                </select>
+                <label for="DivisionId">Division</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                <input type="text" name="SubDivision.Name" class="form-control" placeholder="SubDivision Name" required />
+                <label>SubDivision Name</label>
+            </div>
+        </div>
+        <div class="col-12 text-end">
+            <button type="submit" class="btn btn-info px-4">
+                <i class="bi bi-save2"></i> Save SubDivision
+            </button>
+        </div>
+    </div>
+}
+
+<!-- Success Message -->
+<div id="successMessageSubDivision" class="alert alert-success d-none"></div>

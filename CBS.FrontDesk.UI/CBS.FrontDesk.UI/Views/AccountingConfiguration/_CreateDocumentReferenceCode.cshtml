@@ -1,0 +1,95 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+@using Resources
+<div class="card-body">
+    @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        <input type="hidden" name="ServiceOption" value="documentReferenceCode" id="ServiceOption" />
+        <div class="row mt-2 gy-4">
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.DocumentReferenceCode.Document, new SelectList(ViewBag.Document == null ? "" : ViewBag.Document, "Text", "Value"), new { @class = "form-control select2", @search = "true", @id = "document" })
+                    @Html.ValidationMessageFor(model => model.DocumentReferenceCode.Document, "", new { @class = "text-danger" })
+                    <label for="Document_type">@AccountingConfig_CreateDocumentReferenceCode.Document</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.DocumentReferenceCode.DocumentType, new SelectList(ViewBag.DocumentType == null ? "" : ViewBag.DocumentType, "Text", "Value"),  new { @class = "form-control select2", @search = "true", @id = "documentType" })
+                    @Html.ValidationMessageFor(model => model.DocumentReferenceCode.DocumentType, "", new { @class = "text-danger" })
+                    <label for="Document_type">@AccountingConfig_CreateDocumentReferenceCode.DocumentType</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(model => model.DocumentReferenceCode.ReferenceCode, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.DocumentReferenceCode.ReferenceCode, "", new { @class = "text-danger" })
+                    <label for="Reference">@AccountingConfig_CreateDocumentReferenceCode.Reference</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(model => model.DocumentReferenceCode.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.DocumentReferenceCode.Description, "", new { @class = "text-danger" })
+                    <label for="Reference">@AccountingConfig_CreateDocumentReferenceCode.Description</label>
+                </div>
+            </div>
+ 
+                <div class="col-md-12" id="itemsToShow1">
+                    <div class="form-floating form-floating-outline">
+                        @Html.ListBoxFor(m => m.DocumentReferenceCode.GrossCorrespondingAccount, new MultiSelectList(ViewBag.GrossAccount == null ? new List<SelectListItem>() : ViewBag.GrossAccount, "Text", "Value"), new { @class = "form-control select2", @id = "GrossCorrespondingAccount" })
+                        @Html.ValidationMessageFor(model => model.DocumentReferenceCode.GrossCorrespondingAccount, "", new { @class = "text-danger" })
+                        <label for="AccountIds">@AccountingConfig_CreateDocumentReferenceCode.SelectGrossAccounts </label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.ListBoxFor(m => m.DocumentReferenceCode.GrossCorrespondingExceptionAccount, new SelectList(ViewBag.GrossExceptionAccount == null ? new List<SelectListItem>() : ViewBag.GrossExceptionAccount, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple", @id = "GrossCorrespondingExceptionAccount" })
+                        @Html.ValidationMessageFor(model => model.DocumentReferenceCode.GrossCorrespondingExceptionAccount, "", new { @class = "text-danger" })
+                        <label for="AccountIds">@AccountingConfig_CreateDocumentReferenceCode.SelectGrossAccountsException </label>
+                    </div>
+                </div>
+        
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.ListBoxFor(m => m.DocumentReferenceCode.ProvCorrespondingAccount, new SelectList(ViewBag.ProvisionAccount == null ? new List<SelectListItem>() : ViewBag.ProvisionAccount, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple", @id = "ProvisionCorrespondingAccount" })
+                        @Html.ValidationMessageFor(model => model.DocumentReferenceCode.ProvCorrespondingAccount, "", new { @class = "text-danger" })
+                        <label for="AccountIds">@AccountingConfig_CreateDocumentReferenceCode.SelectProvisionAccounts </label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.ListBoxFor(m => m.DocumentReferenceCode.ProvCorrespondingExceptionAccount, new SelectList(ViewBag.ProvisionExceptionAccount == null ? new List<SelectListItem>() : ViewBag.ProvisionExceptionAccount, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple", @id = "ProvisionCorrespondingExceptionAccount" })
+                        @Html.ValidationMessageFor(model => model.DocumentReferenceCode.ProvCorrespondingExceptionAccount, "", new { @class = "text-danger" })
+                        <label for="AccountIds">@AccountingConfig_CreateDocumentReferenceCode.SelectProvisionAccountsException </label>
+                    </div>
+                </div>
+      
+
+
+
+            <div class="mt-4">
+                @if (Model.DocumentReferenceCode.Id == null)
+                {
+                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                    <input type="hidden" name="Action" value="insert" id="Action" />
+                    <input type="hidden" name="DocumentReferenceCode.Interface" value="Adding" id="DocumentReferenceCode.Interface" />
+
+                }
+                else
+                { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
+                    @Html.HiddenFor(m => m.DocumentReferenceCode.Id)
+                    <input type="hidden" name="Action" value="update" id="Action" />
+                    <input type="hidden" name="DocumentReferenceCode.Interface" value="Adding" id="DocumentReferenceCode.Interface" />
+                }
+            </div>
+     
+        </div>
+    }
+
+</div>
+@*<script>
+    $(document).ready(function () {
+        $('.select2').select2();
+    });
+</script>*@

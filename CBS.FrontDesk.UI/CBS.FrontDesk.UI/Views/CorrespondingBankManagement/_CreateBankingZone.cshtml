@@ -1,0 +1,63 @@
+﻿
+@using Resources
+@model CBS.FrontDesk.Data.Entity.CorrespondingBankManaagement.CorrespondingBankConfiguration
+
+
+<div class="col-12 card-body">
+    <div class="card mb-12">
+
+        <div class="card-body">
+            @using (Html.BeginForm("AddOrUpdate", "CorrespondingBankManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+            {<input type="hidden" name="ServiceOption" value="bankingZone" id="ServiceOption" />
+             <div class="row mt-2 gy-4">
+
+                 <div class="col-md-6">
+                     <div class="form-floating form-floating-outline">
+                         @Html.TextBoxFor(m => m.BankingZone.Name, new { @class = "form-control" })
+                         @Html.ValidationMessageFor(m => m.BankingZone.Name, "", new { @class = "text-danger" })
+                         <label>@GlobalCorrespondingBankManagement.Name</label>
+                     </div>
+                 </div>
+                 <div class="col-md-6">
+                     <div class="form-floating form-floating-outline">
+                         @Html.TextBoxFor(m => m.BankingZone.Code, new { @class = "form-control" })
+                         @Html.ValidationMessageFor(m => m.BankingZone.Code, "", new { @class = "text-danger" })
+                         <label>@GlobalCorrespondingBankManagement.ZoneCode</label>
+                     </div>
+                 </div>
+
+                 <div class="col-md-6">
+                     <div class="form-floating form-floating-outline">
+                         @Html.DropDownListFor(m => m.BankingZone.LocationType, new SelectList(ViewBag.LocationType == null ? "" : ViewBag.LocationType, "Text", "Value"), "---"+ @GlobalCorrespondingBankManagement.SelectFinancialInstitutionType+"---", new { @class = "form-control select2", @search = "true" })
+                         @Html.ValidationMessageFor(m => m.BankingZone.LocationType, "", new { @class = "text-danger" })
+                         <label>@GlobalCorrespondingBankManagement.LocationLevel</label>
+                     </div>
+                 </div>
+           
+                 <div class="col-md-6">
+                     <div class="form-floating form-floating-outline">
+                         @Html.ListBoxFor(model => model.BankingZone.LocationId, new SelectList(ViewBag.Regions == null ? new List<SelectListItem>() : ViewBag.Regions, "Text", "Value"), new { @class = "form-control select2", @multiple = "multiple", @id = "BankingZoneLocationIds" })
+
+                         @Html.ValidationMessageFor(m => m.BankingZone.LocationId, "", new { @class = "text-danger" })
+                         <label>@GlobalCorrespondingBankManagement.Location</label>
+                     </div>
+                 </div>
+
+             </div>
+                <div class="mt-4">
+                    @if (Model.BankingZone.Id == null)
+                    {
+                        <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                        <input type="hidden" name="Action" value="insert" id="Action" />
+                    }
+                    else
+                    { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
+                        @Html.HiddenFor(m => m.BankingZone.Id)
+                        <input type="hidden" name="Action" value="update" id="Action" />
+                    }
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

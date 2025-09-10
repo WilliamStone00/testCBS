@@ -1,0 +1,60 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+@using Resources
+@if (true)
+{
+    <table class="table table-hover" id="myDataTable_AccountData">
+        <thead class="table-light">
+            <tr>
+                <th>@AccountingConfig_OpeningOfTheDayData.AccountNumber</th>
+                <th>@AccountingConfig_OpeningOfTheDayData.AccountLabel</th>
+                <th>@AccountingConfig_OpeningOfTheDayData.AccountType</th>
+                <th>@AccountingConfig_OpeningOfTheDayData.ChartofAccount</th>
+                <th>@AccountingConfig_OpeningOfTheDayData.Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.Accounts)
+            {
+                <tr>
+                    <td style="width:15%">@d.AccountNumber</td>
+                    <td style="width:25%">@d.AccountName</td>
+                    <td style="width:25%">@d.AccountTypeId</td>
+                    <td style="width:25%">@d.ChartOfAccountManagementPositionId</td>
+                    <td style="width:10%">
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_Account','_CreateAccount','update','AccountingConfiguration','account')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.SelectToEdit @d.AccountName">@GlobalShared.Edit</a>|
+                        <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.AccountName" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable_Account','_AccountData',0,'datalistingview_Account','account')">@GlobalShared.Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <table class="table table-hover" id="myDataTable_AccountData">
+        <thead class="table-light">
+            <tr>
+                <th>@AccountingConfig_OpeningOfTheDayData.AccountNumber</th>
+                <th>@AccountingConfig_OpeningOfTheDayData.AccountLabel</th>
+
+                <th>@AccountingConfig_OpeningOfTheDayData.Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.Accounts)
+            {
+                <tr>
+                    <td style="width:35%">@d.AccountName</td>
+                    <td style="width:35%">@d.AccountNumber</td>
+            
+
+                    <td style="width:30%">
+                        <a href="#" onclick="AddORUpdateGen(@d.Id,'datalistingview_Account','_CreateAccount','update','AccountingConfiguration','account')" class="mr-2 btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.SelectToEdit @d.AccountName">@GlobalShared.Edit</a>
+                        <a href="#" class="mr-2 btn btn-danger" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.AccountName" onclick="DeleteRecordDataTable('AccountingConfiguration','@d.Id','myDataTable_Account','_AccountData',0,'datalistingview_Account')">@GlobalShared.Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

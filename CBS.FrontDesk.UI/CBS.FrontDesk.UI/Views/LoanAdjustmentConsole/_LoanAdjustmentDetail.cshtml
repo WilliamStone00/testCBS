@@ -1,0 +1,136 @@
+﻿@model CBS.FrontDesk.Data.LoanAdjustmentP.LoanAdjustmentRequestDetailsDto
+
+@functions {
+    public class AdjustmentDisplayItem
+    {
+        public string Label { get; set; }
+        public string OldValue { get; set; }
+        public string NewValue { get; set; }
+    }
+}
+
+@{
+    var request = Model.Request;
+    var history = Model.History;
+
+    var financialAdjustments = new List<AdjustmentDisplayItem>
+{
+        new AdjustmentDisplayItem { Label = "Loan Amount", OldValue = request.OldLoanAmount.ToString("N2"), NewValue = request.NewLoanAmount.ToString("N2") },
+        new AdjustmentDisplayItem { Label = "Balance", OldValue = request.OldBalance.ToString("N2"), NewValue = request.NewBalance.ToString("N2") },
+        new AdjustmentDisplayItem { Label = "Interest", OldValue = request.OldInterest.ToString("N2"), NewValue = request.NewInterest.ToString("N2") },
+        new AdjustmentDisplayItem { Label = "VAT", OldValue = request.OldVat.ToString("N2"), NewValue = request.NewVat.ToString("N2") },
+        new AdjustmentDisplayItem { Label = "Penalty", OldValue = request.OldPenalty.ToString("N2"), NewValue = request.NewPenalty.ToString("N2") },
+        new AdjustmentDisplayItem { Label = "Due Amount", OldValue = request.OldDueAmount.ToString("N2"), NewValue = request.NewDueAmount.ToString("N2") },
+        new AdjustmentDisplayItem { Label = "Total Amount Paid", OldValue = request.OldPaid?.ToString("N2"), NewValue = request.NewPaid.ToString("N2") }
+    };
+
+    var statusAdjustments = new List<AdjustmentDisplayItem>
+{
+        new AdjustmentDisplayItem { Label = "Loan Date", OldValue = request.OldLoanDate?.ToString("dd/MM/yyyy"), NewValue = request.NewLoanDate?.ToString("dd/MM/yyyy") },
+        new AdjustmentDisplayItem { Label = "Disbursement Date", OldValue = request.OldDisbursementDate?.ToString("dd/MM/yyyy"), NewValue = request.NewDisbursementDate?.ToString("dd/MM/yyyy") },
+        new AdjustmentDisplayItem { Label = "Loan Status", OldValue = request.OldLoanStatus, NewValue = request.NewLoanStatus },
+        new AdjustmentDisplayItem { Label = "Next Installment Date", OldValue = request.OldNextInstallmentDate?.ToString("dd/MM/yyyy"), NewValue = request.NewNextInstallmentDate?.ToString("dd/MM/yyyy") },
+        new AdjustmentDisplayItem { Label = "VAT Rate (%)", OldValue = request.OldVatRate.ToString("N2"), NewValue = request.NewVatRate.ToString("N2") },
+        new AdjustmentDisplayItem { Label = "Interest Rate (%)", OldValue = request.OldIntRate.ToString("N2"), NewValue = request.NewIntRate.ToString("N2") }
+    };
+}
+
+<div class="card-body">
+    <table class="table table-bordered table-striped">
+        <tbody>
+
+            <!-- 🧾 Request Overview -->
+            <tr class="table-primary">
+                <td colspan="2" class="text-center fw-bold">📋 Loan Adjustment Request Overview</td>
+            </tr>
+            <tr><td class="fw-bold">Customer ID</td><td>@request.CustomerId</td></tr>
+            <tr><td class="fw-bold">Customer Name</td><td>@request.CustomerName</td></tr>
+            <tr><td class="fw-bold">Branch</td><td>@request.BranchName (@request.BranchCode)</td></tr>
+            <tr><td class="fw-bold">Requested Date</td><td>@request.RequestedDate.ToString("dd/MM/yyyy HH:mm:ss")</td></tr>
+            <tr><td class="fw-bold">Requested By</td><td>@request.RequestedBy</td></tr>
+            <tr><td class="fw-bold">Reason</td><td>@request.Reason</td></tr>
+            <tr>
+                <td class="fw-bold">Status</td>
+                <td><span class="badge bg-@(request.Status == "Approved" ? "success" : request.Status == "Rejected" ? "danger" : "warning")">@request.Status</span></td>
+            </tr>
+            @if (!string.IsNullOrWhiteSpace(request.ApprovedBy))
+            {
+                <tr><td class="fw-bold">Approved By</td><td>@request.ApprovedBy (@request.ApprovedDate?.ToString("dd/MM/yyyy HH:mm:ss"))</td></tr>
+            }
+            @if (!string.IsNullOrWhiteSpace(request.RejectionReason))
+            {
+                <tr><td class="fw-bold text-danger">Rejection Reason</td><td class="text-danger">@request.RejectionReason</td></tr>
+            }
+
+            <!-- 💰 Financial Adjustments -->
+            <tr class="table-primary"><td colspan="2" class="text-center fw-bold">💰 Financial Fields</td></tr>
+            @foreach (var item in financialAdjustments)
+            {
+                <tr>
+                    <td class="fw-semibold">@item.Label</td>
+                    <td>
+                        Old: <span class="text-muted">@item.OldValue</span>
+                        <span class="ms-3">New: <strong>@item.NewValue</strong></span>
+                    </td>
+                </tr>
+            }
+
+            <!-- 📌 Status Adjustments -->
+            <tr class="table-primary"><td colspan="2" class="text-center fw-bold">📌 Status & Policy Fields</td></tr>
+            @foreach (var item in statusAdjustments)
+            {
+                <tr>
+                    <td class="fw-semibold">@item.Label</td>
+                    <td>
+                        Old: <span class="text-muted">@item.OldValue</span>
+                        <span class="ms-3">New: <strong>@item.NewValue</strong></span>
+                    </td>
+                </tr>
+            }
+
+            <!-- 📚 Adjustment History -->
+            @if (history?.Any() == true)
+            {
+                <tr class="table-primary">
+                    <td colspan="2" class="text-center fw-bold">📚 Adjustment History</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <table class="table table-sm table-bordered table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Field</th>
+                                    <th>Old</th>
+                                    <th>New</th>
+                                    <th>Status</th>
+                                    <th>Changed By</th>
+                                    <th>Approved By</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var h in history.OrderByDescending(x => x.ChangedDate))
+                                {
+                                    <tr>
+                                        <td>@h.ChangedDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                        <td>@h.FieldAdjusted</td>
+                                        <td>@h.OldValue</td>
+                                        <td>@h.NewValue</td>
+                                        <td>
+                                            <span class="badge bg-@(h.ApprovalStatus == "Approved" ? "success" : h.ApprovalStatus == "Rejected" ? "danger" : "secondary")">
+                                                @h.ApprovalStatus
+                                            </span>
+                                        </td>
+                                        <td>@h.ChangedBy</td>
+                                        <td>@h.ApprovedBy</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>

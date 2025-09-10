@@ -1,0 +1,232 @@
+﻿@{
+    ViewBag.Title = @GlobalAuditTrail.AuditTrailsOverview;
+}
+@using Resources
+
+<div class="row">
+    <div class="col-12">
+
+        <!-- Page Header -->
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-history me-2"></i> @GlobalAuditTrail.AUDITTRAILLOGS
+                </h1>
+                <p class="card-text">
+                    @GlobalAuditTrail.TrackAndMonitorEveryActionPerformed.
+                </p>
+                <p class="card-text text-warning fw-bold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalAuditTrail.UseTheDateRangeAndSearch.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-1">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalAuditTrail.TIPSFOREFFECTIVEAUDITTRAILSEARCH</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalAuditTrail.RefineSearchesChooseAnAppropriateSearch.</li>
+
+                <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> @GlobalAuditTrail.FilterByDateRangeLimitSearchResultsToASpecificPeriod </li>
+
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> @GlobalAuditTrail.ExportLogsUseTheExportButtonToDownload.</li>
+
+                <li>
+                    <i class="mdi mdi-search-web text-primary me-2"></i> @GlobalAuditTrail.AvailableSearchOptionsAndExamples
+                    @GlobalAuditTrail.SelectASearchOptionAndEnter
+                    <ul>
+                        <li>
+                            <strong>@GlobalAuditTrail.UserOrSystemAction:</strong> @GlobalAuditTrail.SelectThisOptionAndEnterTheTypeOfAction <em>@GlobalShared.Create</em>, <em>@GlobalShared.Update</em>, <em>@GlobalShared.Delete,</em>@GlobalAuditTrail.Or <em>@GlobalShared.Login</em>).
+                            <em>@GlobalAuditTrail.Example:</em> @GlobalAuditTrail.Enter <strong>@GlobalShared.Delete</strong> @GlobalAuditTrail.ToViewAllDeleteOperations.
+                        </li>
+                        <li>
+                            <strong>@GlobalAuditTrail.UserName:</strong> @GlobalAuditTrail.SelectThisOptionToSearchByAUserFullName.
+                            <em>@GlobalAuditTrail.Example:</em> @GlobalAuditTrail.Enter <strong>John Doe</strong> @GlobalAuditTrail.ToFindLogsInvolvingThatUser.
+                        </li>
+                        <li>
+                            <strong>@GlobalAuditTrail.CriticalLevel:</strong> @GlobalAuditTrail.SelectThisOptionToSearchByLog <em>@GlobalAuditTrail.Information</em>, <em>@GlobalAuditTrail.Warning,</em> @GlobalAuditTrail.Or <em>@GlobalAuditTrail.Error</em>.
+                            <em>@GlobalAuditTrail.Example:</em> @GlobalAuditTrail.Enter <strong>@GlobalAuditTrail.Error</strong> @GlobalAuditTrail.ToViewLogsRelatedToFailedOrCriticalEvents.
+                        </li>
+                        <li>
+                            <strong>@GlobalAuditTrail.MicroserviceName:</strong> @GlobalAuditTrail.SelectThisOptionToSearchByTheMicroservice.
+                            <em>@GlobalAuditTrail.Example:</em> @GlobalAuditTrail.Enter <strong>@GlobalAuditTrail.PaymentService</strong> @GlobalAuditTrail.ToFindEventsRelatedToPayments.
+                        </li>
+                        <li>
+                            <strong>@GlobalAuditTrail.SystemStatusCode:</strong> @GlobalAuditTrail.UseThisOptionToFilterLogsByHTTPStatusCodes.
+                            <em>@GlobalAuditTrail.Example:</em> @GlobalAuditTrail.Enter <strong>500</strong> @GlobalAuditTrail.ToIdentifyServerErrors.
+                        </li>
+                        <li>
+                            <strong>@GlobalAuditTrail.BranchCode:</strong> @GlobalAuditTrail.SelectThisOptionToSearchLogs.
+                            <em>@GlobalAuditTrail.Example:</em> @GlobalAuditTrail.Enter <strong>001</strong>  @GlobalAuditTrail.ToFindEventsAssociatedWithBranch.
+                        </li>
+                        <li>
+                            <strong>@GlobalAuditTrail.RequestObject:</strong> @GlobalAuditTrail.SearchLogsContainingSpecificDetails.
+                            <em>@GlobalAuditTrail.Example:</em> EnterPartOfTheRequestObjectOrTransactionDetails (e.g., <strong>@GlobalAuditTrail.Account12345</strong>).
+                        </li>
+                        <li>
+                            <strong>@GlobalAuditTrail.DetailResponseMessage:</strong> @GlobalAuditTrail.FilterLogsContainingSpecificResponseMessages.
+                            <em>@GlobalAuditTrail.Example:</em> @GlobalAuditTrail.Enter <strong>@GlobalAuditTrail.TransactionFailed</strong> @GlobalAuditTrail.ToLocateErrorLogs.
+                        </li>
+                        <li>
+                            <strong>@GlobalAuditTrail.BranchName:</strong> @GlobalAuditTrail.SelectThisOptionToFilterLogsByBranchName.
+                            <em>@GlobalAuditTrail.Example:</em> @GlobalAuditTrail.Enter <strong>@GlobalAuditTrail.DowntownBranch</strong> @GlobalAuditTrail.ToRetrieveLogsForThatBranch.
+                        </li>
+                        <li>
+                            <strong>@GlobalAuditTrail.CorrelationIDOrTransactionCode:</strong> @GlobalAuditTrail.UseThisOptionToFindLogs.
+                            <em>@GlobalAuditTrail.Example:</em> @GlobalAuditTrail.Enter <strong>CorrID12345</strong> @GlobalAuditTrail.Or <strong>TXN67890</strong> @GlobalAuditTrail.ToLocateLogsForASpecificTransaction.
+                        </li>
+                    </ul>
+                </li>
+
+                <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> @GlobalAuditTrail.MonitorCriticalLogsReviewLogsMarkedAs <em>@GlobalAuditTrail.Error</em> @GlobalAuditTrail.OrWithStatusCodesToDetectAnomalies.</li>
+
+                <li><i class="mdi mdi-eye-outline text-info me-2"></i> @GlobalAuditTrail.ViewFullDetailsClickOnALogEntryToOpen.</li>
+
+                <li><i class="mdi mdi-reload text-primary me-2"></i> @GlobalAuditTrail.RefreshRegularlyKeepTheLog.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="col-md-12 mt-3">
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="filterByDateOnlySwitch">
+        <label class="form-check-label fw-bold" for="filterByDateOnlySwitch">
+            @GlobalAuditTrail.FilterByDateRangeOnly
+        </label>
+    </div>
+</div>
+
+
+<div id="accordionMembers" class="accordion accordion-popout">
+    <div class="accordion-item active">
+        <h2 class="accordion-header" id="membersHeading">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#membersCollapse" aria-expanded="true" aria-controls="membersCollapse">
+                <i class="mdi mdi-history me-2"></i><strong>@GlobalAuditTrail.AUDITTRAIL [@Session["BranchName"]]</strong>
+            </button>
+        </h2>
+        <div id="membersCollapse" class="accordion-collapse collapse show" aria-labelledby="membersHeading" data-bs-parent="#accordionMembers">
+            <div class="accordion-body">
+                <div class="card mb-4 shadow">
+                    <div class="card-body">
+                        <label for="auditSearchInput" class="form-label fw-bold">@GlobalAuditTrail.SearchAndExportLogs</label>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <input type="text" id="dateFrom" class="form-control" placeholder="@GlobalAuditTrail.DateFrom (dd/mm/yyyy)">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" id="dateTo" class="form-control" placeholder="@GlobalAuditTrail.DateTo (dd/mm/yyyy)">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" id="auditSearchInput" class="form-control" placeholder="@GlobalAuditTrail.SearchByActionUserOrDetails">
+                            </div>
+                            <div class="col-md-2 d-flex">
+                                <button id="searchButton" class="btn btn-primary me-2">
+                                    <i class="mdi mdi-magnify me-1"></i> @GlobalShared.Search
+                                </button>
+                                <button id="exportButton" class="btn btn-success" onclick="downloadAuditTrail()">
+                                    <i class="mdi mdi-file-excel me-1"></i> @GlobalShared.Export
+                                </button>
+                            </div>
+                        </div>
+                        <small class="text-muted mt-2 d-block">@GlobalAuditTrail.UseTheSearchAndDateFilters.</small>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <label class="form-label fw-bold">@GlobalAuditTrail.SelectSearchOption</label>
+                        <div class="card p-3">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchAction" value="@GlobalAuditTrail.Action" checked />
+                                        <label class="form-check-label" for="searchAction">@GlobalAuditTrail.UserOrSystemAction</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchFullName" value="@GlobalAuditTrail.FullName" />
+                                        <label class="form-check-label" for="searchFullName">@GlobalAuditTrail.UserName</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchLevel" value="@GlobalAuditTrail.Level" />
+                                        <label class="form-check-label" for="searchLevel">@GlobalAuditTrail.CriticalLevel</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchMicroserviceName" value="@GlobalAuditTrail.MicroserviceName" />
+                                        <label class="form-check-label" for="searchMicroserviceName">@GlobalAuditTrail.MicroserviceName</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchCorrolationId" value="CorrolationId" />
+                                        <label class="form-check-label" for="searchCorrolationId">@GlobalAuditTrail.CorrolationIdOrTransCode</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchBranchCode" value="@GlobalAuditTrail.BranchCode" />
+                                        <label class="form-check-label" for="searchBranchCode">@GlobalAuditTrail.BranchCode</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchStringifyObject" value="@GlobalAuditTrail.StringifyObject" />
+                                        <label class="form-check-label" for="searchStringifyObject">@GlobalAuditTrail.RequestObject</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchDetailMessage" value="@GlobalAuditTrail.DetailMessage" />
+                                        <label class="form-check-label" for="searchDetailMessage">@GlobalAuditTrail.DetailResponseMessage</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchOption" id="searchBranchName" value="@GlobalAuditTrail.BranchName" />
+                                        <label class="form-check-label" for="searchBranchName">@GlobalAuditTrail.BranchName</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Members Data Listing -->
+                <div id="datalistingview" style="display: none;">
+                    @Html.Partial("_AuditTrailData")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">@GlobalAuditTrail.AuditTrailDetails</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="detailsModalBody">
+                <!-- Details content will be loaded here dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalAuditTrail.Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/AuditTrail/Audits.js"></script>
+
+}

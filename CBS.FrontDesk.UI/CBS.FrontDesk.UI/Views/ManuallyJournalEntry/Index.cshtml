@@ -1,0 +1,158 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
+    @using Resources
+@{
+    ViewBag.Title = "ManuallyJournalEntry";
+}
+
+
+<div class="card mb-12">
+    <div class="card-header">
+        <h5 class="card-title mb-0">@GlobalManuallyJournalEntry.INITIATEJOURNALENTRY</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+
+            <!-- Navigation -->
+            <div class="col-12 col-md-4  card-separator">
+
+                <div id="datalistingview_AddEntry">
+
+                    @using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <input type="hidden" name="ServiceOption" value="EntryTempData" id="ServiceOption" />
+                        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title">
+                                            Reference: @Html.TextBoxFor(m => m.EntryTempData.Reference, new { @class = "form-control shadow-input-boxes" })
+                                            @Html.ValidationMessageFor(m => m.EntryTempData.Reference, "", new { @class = "text-danger" })
+                                        </h5>
+                                    </div>
+                                    <div class="row card-body">
+                                        <div class="row mt-2 gy-4">
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.DropDownListFor(m => m.EntryTempData.BranchId, new SelectList(ViewBag.ListOfEligibleBranch == null ? "" : ViewBag.ListOfEligibleBranch, "Text", "Value"), "---" + @GlobalManuallyJournalEntry.SelectEligibleBranches + "---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
+                                                    @Html.ValidationMessageFor(m => m.EntryTempData.BranchId, "", new { @class = "text-danger" })
+                                                    <label>@GlobalManuallyJournalEntry.BranchId</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.DropDownListFor(m => m.EntryTempData.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---" + @GlobalManuallyJournalEntry.SelectAccount + "---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
+                                                    @Html.ValidationMessageFor(m => m.EntryTempData.AccountId, "", new { @class = "text-danger" })
+                                                    <label>@GlobalManuallyJournalEntry.AccountName</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(m => m.EntryTempData.AccountBalance, new { @class = "form-control shadow-input-boxes", @value = "", @readonly = true })
+
+                                                    @Html.ValidationMessageFor(m => m.EntryTempData.AccountBalance, "", new { @class = "text-danger" })
+                                                    <label>@GlobalManuallyJournalEntry.CurrentBalance</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextBoxFor(model => model.EntryTempData.ValueDate, new { @class = "form-control date-picker", placeholder = @GlobalManuallyJournalEntry.FromDate })
+                                                    @Html.ValidationMessageFor(model => model.EntryTempData.ValueDate, "", new { @class = "text-danger" })
+                                                    <label>@GlobalManuallyJournalEntry.ValueDate</label>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="EntryTempData.AccountCategoryId" id="EntryTempData_AccountCategoryId" value="" />
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.DropDownListFor(m => m.EntryTempData.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---" + @GlobalManuallyJournalEntry.SelectDirection + "---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
+                                                    @Html.ValidationMessageFor(m => m.EntryTempData.BookingDirection, "", new { @class = "text-danger" })
+                                                    <label>@GlobalManuallyJournalEntry.BookingDirection</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+
+                                                    @Html.TextBoxFor(m => m.EntryTempData.Amount, new { @class = "form-control shadow-input-boxes" })
+                                                    @Html.ValidationMessageFor(m => m.EntryTempData.Amount, "", new { @class = "text-danger" })
+                                                    <label>@GlobalManuallyJournalEntry.Amount</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextAreaFor(m => m.EntryTempData.Description, new { @class = "form-control shadow-input-boxes", @style = "height: 100px;" })
+                                                    @Html.ValidationMessageFor(m => m.EntryTempData.Description, "", new { @class = "text-danger" })
+                                                    <label>@GlobalManuallyJournalEntry.Reason</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @Html.HiddenFor(m => m.EntryTempData.AccountName, new { @class = "form-control" })
+                                        @Html.HiddenFor(m => m.EntryTempData.AccountNumber, new { @class = "form-control" })
+                                        <div class="mt-4">
+                                            <button type="button" onclick="addToBasket()" class="btn btn-primary addToBasket">
+                                                @GlobalManuallyJournalEntry.AddEntry &nbsp; &nbsp; <i class="mdi mdi-plus-box-multiple"></i>
+                                            </button>
+                                            <input type="hidden" name="Action" value="insert" id="Action" />
+                                        </div>
+                                    </div>
+                                    <hr />
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+
+            </div>
+            <!-- Navigation Body -->
+            <div class="col-12 col-md-8 ">
+                <div class="col-12 col-md-8 ">
+
+
+
+                </div>
+                <div class="tab-content  card-separator">
+                    <br />
+                    <h2 id="basket_Label"></h2>
+                    <table id="DataEntrybasketTable" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>@GlobalManuallyJournalEntry.AccountDescription</th>
+                                <th>@GlobalManuallyJournalEntry.Debit</th>
+                                <th>@GlobalManuallyJournalEntry.Credit</th>
+                                <th>@GlobalShared.Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>@GlobalManuallyJournalEntry.TotalDebit:<p id="totalDebit"></p></th>
+                                <th>@GlobalManuallyJournalEntry.TotalCredit:<p id="totalCredit"></p></th>
+                                <th>@GlobalManuallyJournalEntry.Difference:<p id="balance"></p></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="shift-right">
+                        <button type="button" onclick="submitBasket()" class="btn btn-primary" id="saveToDB">
+                            @GlobalManuallyJournalEntry.PostEntries&nbsp; &nbsp; <i class="mdi mdi-database"></i>
+                        </button>
+
+                        <br />
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+    @section Scripts { @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/main.js/ManualJournalEntries.js"></script>
+    <!-- Confirmation Modal -->
+
+    }
+
+
+ 
