@@ -385,7 +385,7 @@ namespace CBS.BusinessService.Accounts
                 // Return the SelectList
                 return new SelectList(values, "Value", "Text", defaultSelectedValue);
 
-               
+
             }
             catch (Exception ex)
             {
@@ -657,6 +657,24 @@ namespace CBS.BusinessService.Accounts
                     }
                 }
                 return new EndOfTheDay { CashAtHand = 0, HasError = true, ErrorMessage = $"{cusResponseObject.Message}" };
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw ex;
+            }
+        }
+        public async Task<TellerProvioningHistory> GetCurrentProvision(GetCurrentSubTellerProvisionByUserQuery provisionByUserQuery)
+        {
+            try
+            {
+                var cusResponseObject = await _transactionApiHelper.PostAsync<ResponseObject<TellerProvioningHistory>>(APICallHelper.GetCurrentProvision, provisionByUserQuery);
+                if (cusResponseObject.ApiResponseData != null)
+                {
+
+                    return cusResponseObject.ApiResponseData.Data;
+                }
+                return new TellerProvioningHistory();
             }
             catch (Exception ex)
             {

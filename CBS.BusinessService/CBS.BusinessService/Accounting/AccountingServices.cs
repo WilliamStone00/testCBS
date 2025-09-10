@@ -558,7 +558,7 @@ namespace CBS.BusinessService.Accounting
                 var response = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<AccountingEventAttributs>>>(string.Format(APICallHelper.GetAllOperationServicesAccountingRuleEntryQuery, opertionType));
                 if (response.IsSuccess && response.ApiResponseData != null)
                 {
-                    // Map the API response to StringValues objects with Text and Value properties
+                    // Map the API response to SelectedItemsApprovedUploads objects with Text and Value properties
                     var stringValuesList = response.ApiResponseData.Data
                         .Select(item => new StringValues(item.EventCode, item.AccountingRuleEntryName))
                         .ToList();
@@ -587,7 +587,7 @@ namespace CBS.BusinessService.Accounting
                 var response = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<AccountingEventAttributs>>>(string.Format(APICallHelper.GetAllOperationServicesAccountingRuleEntryQuery, opertionType));
                 if (response.IsSuccess && response.ApiResponseData != null)
                 {
-                    // Map the API response to StringValues objects with Text and Value properties
+                    // Map the API response to SelectedItemsApprovedUploads objects with Text and Value properties
                     var stringValuesList = response.ApiResponseData.Data
                         .Select(item => new StringValues($"{item.AccountingRuleEntryName}", $"{item.EventCode}"))
                         .ToList();

@@ -198,6 +198,108 @@ namespace CBS.BusinessService.UserManagement
                 throw;
             }
         }
+        public async Task<IEnumerable<StringValues>> GetUserTellerRoleDropDown()
+        {
+            try
+            {
+                List<StringValues> stringValues;
+
+                if (IsHeadOffice())
+                {
+                    // GetAllowAnonymous all user roles and filter for tellers
+                    var userRoles = await GetUSerRoles();
+                    var branches = await GetBranches();
+                    stringValues = (from a in userRoles
+                                    join b in branches on a.branchId equals b.Id
+                                    where a.IsTeller
+                                    select new StringValues
+                                    {
+                                        Text = $"[{a.RoleName}]-[{a.FirstName} {a.LastName}] [{b.Name}]",
+                                        Value = $"{a.UserId}@{a.FirstName} {a.LastName}",
+                                    }).ToList();
+
+
+                }
+                else
+                {
+                    // GetAllowAnonymous user roles for the current branch and filter for tellers
+                    var userRoles = await GetUSerRoles();
+                    stringValues = (from a in userRoles
+                                    where a.IsTeller && a.branchId == GetBranchID()
+                                    select new StringValues
+                                    {
+                                        Text = $"[{a.RoleName}]-[{a.FirstName} {a.LastName}]",
+                                        Value = $"{a.UserId}@{a.FirstName} {a.LastName}",
+                                    }).ToList();
+                }
+
+                return stringValues;
+            }
+            catch (Exception ex)
+            {
+                // Log and rethrow exception
+                throw ex;
+            }
+        }
+
+        public async Task<IEnumerable<StringValues>> GetUserDropDownList(string branchId = null)
+        {
+            const string RoleA = "Daily_Collector_Agent";   // canonical
+            const string RoleB = "DailyCollector_Agent";    // alias (seen elsewhere)
+
+            try
+            {
+                // Pull roles once
+                var userRoles = await GetUSerRoles(); // adjust type if you have a concrete DTO
+                if (userRoles.Count() == 0) return Enumerable.Empty<StringValues>();
+
+                var isHeadOffice = IsHeadOffice();
+
+                // Effective branch scoping:
+                // - Head office: use explicit branchId if provided; otherwise all branches.
+                // - Non-head office: force current branch.
+                var effectiveBranchId = isHeadOffice
+                    ? (string.IsNullOrWhiteSpace(branchId) ? null : branchId)
+                    : GetBranchID();
+
+                // Load branches for display (safe even if not HO)
+                var branches = await GetBranches() ?? new List<Branch>();
+
+                // Base filter: must be teller, in the collector role, and match branch scope
+                var filtered = userRoles
+                    .Where(u =>
+                        u != null
+                        && u.IsTeller
+                        && (string.Equals(u.RoleName, RoleA, StringComparison.OrdinalIgnoreCase)
+                            || string.Equals(u.RoleName, RoleB, StringComparison.OrdinalIgnoreCase))
+                        && (string.IsNullOrWhiteSpace(effectiveBranchId) || u.branchId == effectiveBranchId)
+                    )
+                    .ToList();
+
+                if (filtered.Count == 0) return Enumerable.Empty<StringValues>();
+
+                // Join to branches (safe default if not found)
+                var results = (from a in filtered
+                               join b in branches on a.branchId equals b.Id into bj
+                               from b in bj.DefaultIfEmpty()
+                               select new StringValues
+                               {
+                                   Text = isHeadOffice
+                                       ? $"[{a.RoleName}]-[{a.FirstName} {a.LastName}] [{b?.Name}]"
+                                       : $"[{a.RoleName}]-[{a.FirstName} {a.LastName}]",
+                                   Value = $"{a.UserId}",
+                               })
+                              .OrderBy(x => x.Text)
+                              .ToList();
+
+                return results;
+            }
+            catch
+            {
+                // Keep behavior graceful on failure
+                return Enumerable.Empty<StringValues>();
+            }
+        }
 
         public async Task<IEnumerable<StringValues>> GetUserDropDownList()
         {
@@ -326,31 +428,13 @@ namespace CBS.BusinessService.UserManagement
         }
 
         public async Task<IEnumerable<Branch>> GetBranches()
-        {////780400915211061
+        {
             try
             {
 
 
                 var brabces = await _branchServices.GetBranches();
                 return brabces;
-                //var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
-                //if (IsHeadOffice())
-                //{
-                //    var branchApiResponse = await ApiCallerHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
-                //    var bracBranches = branchApiResponse.ApiResponseData.Data;
-                //    var branches = bracBranches;
-                //    return branches;
-                //}
-                //else
-                //{
-                //    var branchApiResponse = await ApiCallerHelper.GetAsync<ResponseObject<Branch>>((string.Format(APICallHelper.Get_Update_Delete_Branch, GetBranchID())));
-                //    var bracBranches = branchApiResponse.ApiResponseData.Data;
-                //    var branches = new List<Branch>();
-                //    branches.Add(bracBranches);
-                //    return branches;
-                //}
-
-           ;
             }
             catch (Exception ex)
             {

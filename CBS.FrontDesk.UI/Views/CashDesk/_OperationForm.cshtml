@@ -9,8 +9,13 @@
     <div class="form-wrapper">
         <fieldset class="fieldset-custom">
             <legend style="color: green">
-                @(ViewBag.Operation == "newsubcription" ? CashDesk_OperationForm.MemberOnboardingDeposit : CashDesk_OperationForm.CashIn )
+                @(isNewSubscription
+        ? CashDesk_OperationForm.MemberOnboardingDeposit
+        : (Model.IsDailyCollector
+            ? "Daily Collector Cash Clearance"
+            : CashDesk_OperationForm.CashIn))
             </legend>
+
 
 
             <hr style="border: 2px solid green;" />
@@ -59,10 +64,56 @@
                             </div>
                         </div>
                     }
-                    else
+                    else if (Model.IsDailyCollector)
                     {
-                        <input type="hidden" id="CustomerAlphaNumber" value="0" />
+                        <!-- Collection Approach (Radio Buttons) -->
+                        <div class="col-md-12">
+                            <fieldset class="mb-3">
+                                <legend class="fs-6 text-muted mb-2">Collection Approach</legend>
+
+                                <div class="d-flex gap-4 flex-wrap" id="collectionApproachGroup">
+                                    <div class="form-check form-check-inline">
+                                        @Html.RadioButtonFor(m => m.DailyCollectorCollectApproach, "Device",
+                                            new { @class = "form-check-input", id = "approachDevice" })
+                                        <label class="form-check-label fw-semibold" for="approachDevice">
+                                            <i class="mdi mdi-nfc-tap-variant me-1"></i> Device (C-Money / POS)
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        @Html.RadioButtonFor(m => m.DailyCollectorCollectApproach, "Manual",
+                                            new { @class = "form-check-input", id = "approachManual" })
+                                        <label class="form-check-label fw-semibold" for="approachManual">
+                                            <i class="mdi mdi-file-upload-outline me-1"></i> Manual (Uploaded batch)
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <small class="text-muted d-block mt-1">
+                                    Choose <strong>Manual</strong> to clear from an approved uploaded batch, or <strong>Device</strong> for C-Money/POS device collections.
+                                </small>
+                            </fieldset>
+                        </div>
+
+                        <!-- Approved Manual Batch (hidden by default; shown only if 'Manual') -->
+                        <div class="col-md-12 d-none" id="manualBatchWrapper">
+                            <div class="form-floating form-floating-outline mb-3">
+                                @Html.DropDownListFor(
+                                    m => m.ManualEntryDailyCollectorId,
+                                    ViewBag.ApprovedManualEntries as IEnumerable<SelectListItem>,
+                                    (ViewBag.ApprovedManualEntries as IEnumerable<SelectListItem>)?.Any() == true
+                                        ? "--- Select Approved Batch ---"
+                                        : "--- No Approved Batches ---",
+                                    new { @class = "form-control select2", id = "ManualEntryDailyCollectorId" } /* required toggled by JS */
+                                )
+                                <label>Approved Daily Collector Batch (Cash Clearance)</label>
+                                <small class="text-muted d-block mt-1">
+                                    Only batches with <em>Status = Approved</em> and not yet fully completed are listed.
+                                </small>
+                            </div>
+                        </div>
                     }
+                <input type="hidden" id="CustomerAlphaNumber" value="0" />
 
 
                     <div class="table-responsive w-100">
@@ -127,7 +178,7 @@
                     <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostCashIn()">
                         <i class="fas fa-money-bill-wave me-1"></i> @CashDesk_OperationForm.CashInB
                     </button>
-                   
+
                     <button type="reset" class="btn btn-outline-secondary">
                         <i class="fas fa-sync-alt me-1"></i> @CashDesk_OperationForm.Reset
                     </button>
@@ -138,6 +189,8 @@
         </fieldset>
     </div>
 }
+
+
 else if (ViewBag.Operation == "withdrawalnotification")
 {
     <div class="form-wrapper">
@@ -979,3 +1032,27 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
         <i class="fas fa-print me-1"></i> @CashDesk_OperationForm.RePrint
     </button>
 </div>
+
+<script>
+    (function () {
+        function toggleManualBatchVisibility() {
+            var value = $('input[name="DailyCollectorCollectApproach"]:checked').val() || '';
+            var $wrap = $('#manualBatchWrapper');
+            var $ddl = $('#ManualEntryDailyCollectorId');
+
+            if (value === 'Manual') {
+                $wrap.removeClass('d-none');
+                $ddl.prop('required', true);
+            } else {
+                $wrap.addClass('d-none');
+                $ddl.prop('required', false).val('').trigger('change');
+            }
+        }
+
+        $(document).ready(function () {
+            // Hide on load unless model already set to 'Manual'
+            toggleManualBatchVisibility();
+            $('#collectionApproachGroup input[type=radio]').on('change', toggleManualBatchVisibility);
+        });
+    })();
+</script>

@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 {
-   
+
     [CheckSessionTimeOutAttribute]
 
     public class OpenningOfDayController : BaseController
@@ -62,10 +62,12 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 ViewBag.HasNoBalance = true;
                 ViewBag.Error = $"The current balance of Teller {openOfDay.Teller.name} is 0. Kindly make a cash request";
             }
-            
 
-            return View(new OpeningOfTheDay { OpenningOfDayRequest = new OpenningOfDayRequest { AccountingDay = openOfDay.AccountingDay, Amount = openOfDay.CashAtHand, InitialAmount = openOfDay.CashAtHand, CurrencyNotes = openOfDay.CloseOfDayRequest.CurrencyNotes, Comment = $"As Sub-Teller {Session["FullName"].ToString()}, I hereby commence today's operations on [{openOfDay.AccountingDay}] with an opening balance of {openOfDay.CashAtHand.ToString("#,##0")}. Date: [{DateTime.Now}]" }
-        });
+
+            return View(new OpeningOfTheDay
+            {
+                OpenningOfDayRequest = new OpenningOfDayRequest { AccountingDay = openOfDay.AccountingDay, Amount = openOfDay.CashAtHand, InitialAmount = openOfDay.CashAtHand, CurrencyNotes = openOfDay.CloseOfDayRequest.CurrencyNotes, Comment = $"As Sub-Teller {Session["FullName"].ToString()}, I hereby commence today's operations on [{openOfDay.AccountingDay}] with an opening balance of {openOfDay.CashAtHand.ToString("#,##0")}. Date: [{DateTime.Now}]" }
+            });
         }
 
         [HttpPost]
@@ -87,6 +89,47 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
         }
 
+        // OpenningOfDayController
+        public async Task<ActionResult> GetCurrentProvision(
+            string tellerId = null,
+            DateTime? accountingDate = null,
+            string branchId = null,
+            string userId = null)
+        {
+            try
+            {
+                var resolvedBranchId = string.IsNullOrWhiteSpace(branchId) ? _accountServices.GetBranchID() : branchId;
+                var resolvedUserId = string.IsNullOrWhiteSpace(userId) ? _accountServices.GetUserId() : userId;
+
+                var result = await _accountServices.GetCurrentProvision(new GetCurrentSubTellerProvisionByUserQuery
+                {
+                    BranchId = resolvedBranchId,
+                    UserId = resolvedUserId,
+                    TellerId = string.IsNullOrWhiteSpace(tellerId) ? null : tellerId,
+                    AccountingDate = accountingDate
+                });
+
+                // Shape: { data, message, statusCode, meta }
+                return Json(new
+                {
+                    data = result, // or result.Data if your service returns an envelope
+                    message = "OK",
+                    statusCode = 200,
+                    meta = new { branchId = resolvedBranchId, userId = resolvedUserId, tellerId, accountingDate }
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(new
+                {
+                    data = (object)null,
+                    message = "Failed to retrieve current provision: " + ex.Message,
+                    statusCode = 500,
+                    meta = new { }
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         public async Task<ActionResult> Ajaxloader(string Key, string path)
         {

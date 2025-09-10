@@ -1732,8 +1732,8 @@ namespace BusinessServices
                 new StringValues { Text = "Understudies", Value = "Understudies" },
                 new StringValues { Text = "Approved", Value = "Approved" },
                 new StringValues { Text = "Disbursed", Value = "Disbursed" },
-                //new StringValues { Text = "CASH", Value = "CASH" },
-                //new StringValues { Text = "CASH", Value = "CASH" }
+                //new SelectedItemsApprovedUploads { Text = "CASH", Value = "CASH" },
+                //new SelectedItemsApprovedUploads { Text = "CASH", Value = "CASH" }
             };
             return list;
         }
@@ -1743,8 +1743,8 @@ namespace BusinessServices
             {
                 new StringValues { Text = "CASH", Value = "CASH" },
                 new StringValues { Text = "CHECK", Value = "CHECK" },
-                //new StringValues { Text = "CASH", Value = "CASH" },
-                //new StringValues { Text = "CASH", Value = "CASH" }
+                //new SelectedItemsApprovedUploads { Text = "CASH", Value = "CASH" },
+                //new SelectedItemsApprovedUploads { Text = "CASH", Value = "CASH" }
             };
             return list;
         }
@@ -1755,7 +1755,7 @@ namespace BusinessServices
                 new StringValues { Text = "Individual", Value = "Individual" },
                 new StringValues { Text = "Group", Value = "Group" },
                 new StringValues { Text = "Organization", Value = "Organization" },
-                //new StringValues { Text = "CASH", Value = "CASH" }
+                //new SelectedItemsApprovedUploads { Text = "CASH", Value = "CASH" }
             };
             return list;
         }

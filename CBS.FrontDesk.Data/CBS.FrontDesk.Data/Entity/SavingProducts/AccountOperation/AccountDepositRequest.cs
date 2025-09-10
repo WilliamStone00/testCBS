@@ -1,5 +1,7 @@
-﻿using CBS.FrontDesk.Data.Entity.Config;
+﻿using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP;
@@ -10,6 +12,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
 {
@@ -60,6 +63,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
 
     public class CashDesk
     {
+        public List<SelectListItem> SelectedItemsApprovedUploads { get; set; }
         public RefundDetailsVM RefundVM { get; set; }
         public string CustomerId { get; set; }
         public string LoanId { get; set; }
@@ -87,6 +91,9 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public AddMemberNoneCashOperationCommand AddMembersNoneCashOperationCommand { get; set; } = new AddMemberNoneCashOperationCommand();
         public List<OtherTransaction> OtherTransactions { get; set; } = new List<OtherTransaction>();
         public string Action { get; set; }
+        public string ManualEntryDailyCollectorId { get; set; }
+        public bool IsDailyCollector { get; set; }
+        public string DailyCollectorCollectApproach { get; set; } //Manual Or Device (C-Money Or POS)
         public SavingProduct SavingProduct { get; set; }
         public string RemittanceId { get; set; }
         public AddNoneCashMobileMoneyCommand AddNoneCashMobileMoneyCommand { get; set; }
@@ -217,7 +224,9 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string BranchId { get; set; }
         public bool IsMobileMoneyOperation { get; set; }
         public string NoneMemberMobileReference { get; set; }
-
+        public bool IsDailyCollector { get; set; }
+        public string CollectionType { get; set; }//Manual Or Device
+        public string ManualEntryDailyCollectorId { get; set; }
         public CurrencyNotes currencyNotes { get; set; } = new CurrencyNotes();
         public Depositer Depositer { get; set; } = new Depositer();
         public OtherTransaction OtherTransaction { get; set; } = new OtherTransaction();
@@ -532,5 +541,16 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public decimal Total { get; set; }
         public string ReferenceId { get; set; }
     }
-
+    public class AddDailyCollectorCashDepositCommand
+    {
+        public string AccountNumber { get; set; }
+        public string CustomerId { get; set; }
+        public decimal Amount { get; set; }
+        public decimal Total { get; set; }
+        public string Note { get; set; }
+        public string CollectionType { get; set; }//Manual Or Direct
+        public CurrencyNotes CurrencyNotes { get; set; }
+        public Depositer Depositer { get; set; }
+        public string ManualEntryDailyCollectorId { get; set; }
+    }
 }
