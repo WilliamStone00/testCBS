@@ -6,6 +6,7 @@ using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using Microsoft.AspNet.SignalR.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -153,7 +154,7 @@ namespace CBS.BusinessService.DailyCollectionServices
                 }
 
                 // Validate input file
-                if (model.ExcelFile == null)
+                if (model.FormFile == null)
                 {
                     return GetExecutionMessages(model, false, "File", MessagesResults.Failed,
                         ExecutionProcessOption.NoFileWasSelected, SystemMessageStatus.Failed.ToString(), null,
@@ -162,7 +163,7 @@ namespace CBS.BusinessService.DailyCollectionServices
 
                 // Validate file extension
                 var allowedExtensions = new[] { ".xlsx", ".xls" };
-                var fileExtension = Path.GetExtension(model.ExcelFile.FileName)?.ToLowerInvariant();
+                var fileExtension = Path.GetExtension(model.FormFile.FileName)?.ToLowerInvariant();
 
                 if (string.IsNullOrEmpty(fileExtension) || !allowedExtensions.Contains(fileExtension))
                 {
@@ -173,7 +174,7 @@ namespace CBS.BusinessService.DailyCollectionServices
 
                 // Validate file size (e.g., max 10MB)
                 const long maxFileSize = 10 * 1024 * 1024; // 10MB
-                if (model.ExcelFile.ContentLength > maxFileSize)
+                if (model.FormFile.ContentLength > maxFileSize)
                 {
                     return GetExecutionMessages(model, false, "File", MessagesResults.Failed,
                         ExecutionProcessOption.FileSizeExceeded, SystemMessageStatus.Failed.ToString(), null,
@@ -194,15 +195,23 @@ namespace CBS.BusinessService.DailyCollectionServices
                         ExecutionProcessOption.ValidationError, SystemMessageStatus.Failed.ToString(), null,
                         "Collector ID is required. Please provide a valid Collector ID.");
                 }
-              
+
+                if (string.IsNullOrWhiteSpace(model.AccountId))
+                {
+                    return GetExecutionMessages(model, false, "AccountId", MessagesResults.Failed,
+                        ExecutionProcessOption.ValidationError, SystemMessageStatus.Failed.ToString(), null,
+                        "Account ID is required. Please provide a valid Collector ID.");
+                }
                 // Prepare additional parameters
                 var additionalParams = new Dictionary<string, string>{
-                 { "formFile", model.ExcelFile.FileName }  };
-                var urlString = string.Format(APICallHelper.DailySavingMigrationFileExecution, model.BranchId, model.CollectorId,model.CollectorName, model.AccountId);
-               var response = await _dailySavingApiHelper.UploadFileToApiAsync<DailySaverUploadResult>(model.ExcelFile, "formFile", urlString, additionalParams);
+                 { "FormFile", model.FormFile.FileName }  };
+                var urlString = string.Format(APICallHelper.DailySavingMigrationFileExecution, model.BranchId, model.CollectorId, model.CollectorName, model.AccountId);
 
-            
-       
+                var response = await _dailySavingApiHelper.UploadFileToApiAsync< ServiceResponseDailySaverUploadResult>(model.FormFile, "formFile", urlString, additionalParams);
+
+
+
+
                 // Process API response
                 if (response == null)
                 {
@@ -211,10 +220,10 @@ namespace CBS.BusinessService.DailyCollectionServices
                         "No response received from server. Please try again later or contact support.");
                 }
 
-                if (response.IsSuccess && response.ApiResponseData != null)
+                if ( response.Data != null)
                 {
                     // Check the actual response data
-                    if (response.ApiResponseData != null)
+                    if (response.Data != null)
                     {
                         return GetExecutionMessages(response, true, "Upload", MessagesResults.Success,
                             ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
@@ -234,11 +243,11 @@ namespace CBS.BusinessService.DailyCollectionServices
                         ? response.Message
                         : "File upload failed. Please try again later or contact support.";
 
-                    return GetExecutionMessages(model, false, "Upload", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
-                        errorMessage);
+                    return GetExecutionMessages(model, false, "Processing", MessagesResults.Failed,
+                        ExecutionProcessOption.ProcessingFailed, SystemMessageStatus.Failed.ToString(), null,
+                        $"File upload processing failed. {response.Message ?? "Please verify your data and try again."}");
                 }
-            }
+                }
             catch (ArgumentException argEx)
             {
                 // Handle argument-specific exceptions
@@ -267,6 +276,45 @@ namespace CBS.BusinessService.DailyCollectionServices
                     ExecutionProcessOption.TryCatch, SystemMessageStatus.Failed.ToString(), ex,
                     "An unexpected error occurred while uploading the file. Please try again later or contact support.");
             }
+        }
+
+
+        public async Task  UploadFileVoid(UploadDailyCollectorData model)
+        {
+              
+                // Prepare additional parameters
+                var additionalParams = new Dictionary<string, string>{
+                 { "formFile", model.FormFile.FileName }  };
+                var urlString = string.Format(APICallHelper.DailySavingMigrationFileExecution, model.BranchId, model.CollectorId, model.CollectorName, model.AccountId);
+                var response = await _dailySavingApiHelper.UploadFileToApiAsync<DailySaverUploadResult>(model.FormFile, "formFile", urlString, additionalParams);
+                if (response.Data != null)
+                {
+                    // Check the actual response data
+                    if (response.Data != null)
+                    {
+                          GetExecutionMessages(response, true, "Upload", MessagesResults.Success,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
+                            "File uploaded successfully. Your data is being processed.");
+                    }
+                    else
+                    {
+                          GetExecutionMessages(model, false, "Processing", MessagesResults.Failed,
+                            ExecutionProcessOption.ProcessingFailed, SystemMessageStatus.Failed.ToString(), null,
+                            $"File upload processing failed. {response.Message ?? "Please verify your data and try again."}");
+                    }
+                }
+                else
+                {
+                    // Handle failed response with user-friendly message
+                    var errorMessage = !string.IsNullOrWhiteSpace(response.Message)
+                        ? response.Message
+                        : "File upload failed. Please try again later or contact support.";
+
+                     GetExecutionMessages(model, false, "Upload", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
+                        errorMessage);
+                }
+     
         }
 
         public async Task<ExecutionMessages> UploadFile(UploadDailyCollectorOperationData model)
@@ -323,7 +371,7 @@ namespace CBS.BusinessService.DailyCollectionServices
             { "file", model.ExcelFile.FileName }
         };
                 var urlString = string.Format(APICallHelper.ManualEntryCollectorUploadFileExecution, model.CollectorId);
-                var response = await _dailySavingApiHelper.UploadFileToApiAsync<ManualEntryDailyCollectorUploadSummaryDto>(model.ExcelFile, "file", urlString, additionalParams);
+                var response = await _dailySavingApiHelper.UploadFileToApiAsync<ManualEntryDailyCollectorUploadSummaryDto>(model.ExcelFile, "formFile", urlString, additionalParams);
 
 
 
@@ -335,10 +383,10 @@ namespace CBS.BusinessService.DailyCollectionServices
                         "No response received from server. Please try again later or contact support.");
                 }
 
-                if (response.IsSuccess && response.ApiResponseData != null)
+                if ( response.Data != null)
                 {
                     // Check the actual response data
-                    if (response.ApiResponseData != null)
+                    if (response.Data != null)
                     {
                         return GetExecutionMessages(response, true, "Upload", MessagesResults.Success,
                             ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,

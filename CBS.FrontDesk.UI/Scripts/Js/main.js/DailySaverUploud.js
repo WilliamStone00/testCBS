@@ -117,14 +117,14 @@ function ReadForExcelFile() {
 
         var branchId = $("#AgentBranchId").val();
         var collectorId = $("#DailyCollectorxCollectorId").val();
-
+        var accountId = $("#DailyCollectorAccountId").val();
         // Debug logging
         console.log("File input element:", fileInput);
         console.log("File object:", file);
         console.log("Files array:", fileInput ? fileInput.files : "No file input");
         console.log("BranchId:", branchId);
         console.log("CollectorId:", collectorId);
-
+        console.log("accountId:", accountId);
         // Enhanced validation checks
         if (!branchId) {
             appalert("PLEASE KINDLY SELECT YOUR BRANCH", 2, 1);
@@ -132,6 +132,10 @@ function ReadForExcelFile() {
         }
         if (!collectorId) {
             appalert("PLEASE KINDLY SELECT A DAILY COLLECTOR", 2, 1);
+            return false;
+        }
+        if (!accountId) {
+            appalert("PLEASE KINDLY SELECT A DAILY COLLECTOR's GL", 2, 1);
             return false;
         }
         if (!fileInput) {
@@ -172,10 +176,10 @@ function ReadForExcelFile() {
         // IMPORTANT: The parameter name MUST exactly match the property name in your C# model
         // Your model has: public IFormFile ExcelFile { get; set; }
         // So the FormData key must be exactly "ExcelFile" (case-sensitive)
-        formData.append("ExcelFile", file, file.name);
+        formData.append("FormFile", file, file.name);
         formData.append("BranchId", branchId);
         formData.append("CollectorId", collectorId);
-
+        formData.append("AccountId", accountId);
         // CRITICAL FOR ASP.NET CORE: Add anti-forgery token
         var token = $('input[name="__RequestVerificationToken"]').val();
         if (token) {
@@ -196,8 +200,8 @@ function ReadForExcelFile() {
         }
 
         // Verify FormData has the file
-        var hasFile = formData.has("ExcelFile");
-        var fileFromFormData = formData.get("ExcelFile");
+        var hasFile = formData.has("FormFile");
+        var fileFromFormData = formData.get("FormFile");
         console.log("FormData has ExcelFile:", hasFile);
         console.log("File from FormData:", fileFromFormData);
 
@@ -249,14 +253,43 @@ function ReadForExcelFile() {
                     success: function (response) {
                         console.log("Upload response:", response);
                         updateProgressBar(100);
+
                         if (response.success) {
-                            appalert("COLLECTORS MEMBER FILE UPLOADED SUCCESSFULLY", 1, 1);
-                            if (typeof displayResults === 'function') {
-                                displayResults(response.data);
+                            appalert(response.message || "FILE UPLOADED SUCCESSFULLY", 1, 1);
+
+                            if (response.Data.Summary!==null) {
+                                var summary = response.Data.Summary;
+
+                                // Fill the result container values
+                                $("#totalMembers").text(summary.totalMembers || 0);
+                                $("#totalVolume").text(summary.totalVolume || 0);
+                                $("#actualVolume").text(summary.actualVolume || 0);
+                                $("#dailyCollectorGL").text(summary.dailyCollectorGL || "N/A");
+                                $("#cashDifference").text(summary.cashDifference || 0);
+                                // Show result container 
+                                $("#resultContainer").show();
+                                // Build download link if recordId exists
+                                if (summary.isexhausive) {
+                                    $("#downloadLink")
+                                        .attr("href", "/DailyAgentManagement/DownloadExcelResult?recordId=" + encodeURIComponent(summary.recordId))
+                                        .text("Post Entries");
+                                } else {
+                                    displayMemberAccounts(summary.absentMembers);
+                                    $("#downloadLink")
+                                        .attr("href", "/DailyAgentManagement/DownloadExcelResult?recordId=" + encodeURIComponent(summary.recordId))
+                                        .text("Download dailysavers not registered successfully");
+                                }
+
                             }
+
                             resetForm();
                         } else {
-                            appalert(response.message || "UPLOAD FAILED", 1, 2);
+                            var msg = response.message || "UPLOAD FAILED";
+                            appalert(msg, 2, 1);
+                            console.warn("Upload failed:", msg, response);
+
+                            // Hide result if failed
+                            $("#resultContainer").hide();
                         }
                     },
                     error: function (xhr, status, error) {
@@ -306,7 +339,328 @@ function ReadForExcelFile() {
     return false;
 }
 
+function DownloadAbsentMembers() {
+    // (string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+
+    window.open('/Reports/DownloadExcelFilelist', '_blank');
+
+
+}
+//function generateDailyCollectorMembersTable(memberAccounts) {
+//    if (!memberAccounts || memberAccounts.length === 0) {
+//        return '<div class="alert alert-info text-center">No member accounts to display</div>';
+//    }
+
+//    let tableHtml = `
+//        <div id="membersContainer" style="background-color: white; max-width: 800px; margin: 20px auto;">
+//            <h3 class="text-bg-primary p-3 text-center mb-0">Daily Collector Member Accounts</h3>
+//            <table class="table table-bordered table-striped mb-0">
+//                <thead>
+//                    <tr>
+//                        <th scope="col" style="width: 25%; background-color: var(--bs-primary); color: white; font-weight: 600;">Member Reference</th>
+//                        <th scope="col" style="width: 45%; background-color: var(--bs-primary); color: white; font-weight: 600;">Name</th>
+//                        <th scope="col" style="width: 30%; background-color: var(--bs-primary); color: white; font-weight: 600;">Account Balance</th>
+//                    </tr>
+//                </thead>
+//                <tbody>`;
+
+//    // Generate table rows
+//    memberAccounts.forEach(function (member) {
+//        tableHtml += `
+//            <tr>
+//                <td style="vertical-align: middle;"><span class="fw-semibold">${member.MemberReference || ''}</span></td>
+//                <td style="vertical-align: middle;">${member.Name || ''}</td>
+//                <td style="vertical-align: middle;"><span class="text-primary fw-semibold">₦${parseFloat(member.AccountBalance || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span></td>
+//            </tr>`;
+//    });
+
+//    // Add summary row
+//    const totalBalance = memberAccounts.reduce((sum, member) => sum + (parseFloat(member.AccountBalance) || 0), 0);
+
+//    tableHtml += `
+//                    <tr style="background-color: #f8f9fa; border-top: 2px solid var(--bs-primary);">
+//                        <td colspan="2" style="vertical-align: middle;"><strong>Total (${memberAccounts.length} members)</strong></td>
+//                        <td style="vertical-align: middle;"><span class="text-success fw-bold">₦${totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span></td>
+//                    </tr>
+//                </tbody>
+//            </table>
+//        </div>`;
+
+//    return tableHtml;
+//}
+
+// Usage function to display the table
+function generateDailyCollectorMembersTable(memberAccounts) {
+    if (!memberAccounts || memberAccounts.length === 0) {
+        return '<div class="alert alert-info text-center">No member accounts to display</div>';
+    }
+
+    let tableHtml = `
+        <div id="membersContainer" style="background-color: white; max-width: 800px; margin: 20px auto;">
+            <h3 class="text-bg-primary p-3 text-center mb-0">Daily Collector Member Accounts</h3>
+            <table class="table table-bordered table-striped mb-0" id="memberAccountsTable">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 25%; background-color: var(--bs-primary); color: white; font-weight: 600;">Member Reference</th>
+                        <th scope="col" style="width: 45%; background-color: var(--bs-primary); color: white; font-weight: 600;">Name</th>
+                        <th scope="col" style="width: 30%; background-color: var(--bs-primary); color: white; font-weight: 600;">Account Balance</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+    // Generate table rows
+    memberAccounts.forEach(function (member) {
+        tableHtml += `
+            <tr>
+                <td style="vertical-align: middle;"><span class="fw-semibold">${member.MemberReference || ''}</span></td>
+                <td style="vertical-align: middle;">${member.Name || ''}</td>
+                <td style="vertical-align: middle;"><span class="text-primary fw-semibold">₦${parseFloat(member.AccountBalance || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span></td>
+            </tr>`;
+    });
+
+    // Add summary row
+    const totalBalance = memberAccounts.reduce((sum, member) => sum + (parseFloat(member.AccountBalance) || 0), 0);
+
+    tableHtml += `
+                    <tr style="background-color: #f8f9fa; border-top: 2px solid var(--bs-primary);">
+                        <td colspan="2" style="vertical-align: middle;"><strong>Total (${memberAccounts.length} members)</strong></td>
+                        <td style="vertical-align: middle;"><span class="text-success fw-bold">₦${totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- Download Button Row -->
+            <div style="background-color: #f8f9fa; padding: 15px; border-top: 1px solid #dee2e6;">
+                <div class="text-center">
+                    <button class="btn btn-success btn-sm me-2" onclick="downloadTableAsExcel('memberAccountsTable', 'Daily_Collector_Members')">
+                        <i class="bi bi-file-earmark-excel me-1"></i>Download Excel
+                    </button>
+                    <button class="btn btn-primary btn-sm me-2" onclick="downloadTableAsCSV('memberAccountsTable', 'Daily_Collector_Members')">
+                        <i class="bi bi-file-earmark-text me-1"></i>Download CSV
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="printTable('memberAccountsTable')">
+                        <i class="bi bi-printer me-1"></i>Print
+                    </button>
+                </div>
+            </div>
+        </div>`;
+
+    return tableHtml;
+}
+
+// Download table as CSV
+function downloadTableAsCSV(tableId, filename) {
+    const table = document.getElementById(tableId);
+    let csv = [];
+
+    // Get headers
+    const headers = [];
+    const headerCells = table.querySelectorAll('thead th');
+    headerCells.forEach(cell => {
+        headers.push('"' + cell.textContent.trim().replace(/"/g, '""') + '"');
+    });
+    csv.push(headers.join(','));
+
+    // Get data rows (exclude summary row)
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach((row, index) => {
+        if (index < rows.length - 1) { // Skip the summary row
+            const rowData = [];
+            const cells = row.querySelectorAll('td');
+            cells.forEach(cell => {
+                let cellText = cell.textContent.trim().replace(/₦/g, '').replace(/,/g, '');
+                rowData.push('"' + cellText.replace(/"/g, '""') + '"');
+            });
+            csv.push(rowData.join(','));
+        }
+    });
+
+    downloadCSV(csv.join('\n'), filename + '.csv');
+}
+
+// Download table as Excel (HTML format that Excel can open)
+function downloadTableAsExcel(tableId, filename) {
+    const table = document.getElementById(tableId);
+    const tableHTML = table.outerHTML;
+
+    const excelContent = `
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <style>
+                table { border-collapse: collapse; width: 100%; }
+                th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+                th { background-color: #4472C4; color: white; font-weight: bold; }
+                .text-primary { color: #0d6efd; }
+                .text-success { color: #198754; }
+                .fw-semibold, .fw-bold { font-weight: bold; }
+            </style>
+        </head>
+        <body>
+            <h2>Daily Collector Member Accounts</h2>
+            ${tableHTML}
+        </body>
+        </html>`;
+
+    const blob = new Blob([excelContent], { type: 'application/vnd.ms-excel' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename + '.xls';
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
+
+// Helper function to download CSV
+function downloadCSV(csvContent, filename) {
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
+
+// Print table function
+function printTable(tableId) {
+    const table = document.getElementById(tableId);
+    const printContent = `
+        <html>
+        <head>
+            <title>Daily Collector Member Accounts</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                table { border-collapse: collapse; width: 100%; }
+                th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+                th { background-color: #4472C4; color: white; }
+                .fw-semibold, .fw-bold { font-weight: bold; }
+                @media print { 
+                    body { margin: 0; }
+                    .no-print { display: none; }
+                }
+            </style>
+        </head>
+        <body>
+            <h2>Daily Collector Member Accounts</h2>
+            ${table.outerHTML}
+        </body>
+        </html>`;
+
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+    printWindow.print();
+}
+
+// Usage function to display the table
+function displayMemberAccounts(memberAccounts, containerId = 'memberAccountsContainer') {
+    const tableHtml = generateDailyCollectorMembersTable(memberAccounts);
+    $('#' + containerId).html(tableHtml).show();
+}
+
+// Example usage:
+$(document).ready(function () {
+    // Sample data
+    const sampleMembers = [
+        {
+            MemberReference: "MEM001",
+            Name: "John Doe",
+            AccountBalance: 15000.50
+        },
+        {
+            MemberReference: "MEM002",
+            Name: "Jane Smith",
+            AccountBalance: 25000.00
+        },
+        {
+            MemberReference: "MEM003",
+            Name: "Mike Johnson",
+            AccountBalance: 8500.75
+        }
+    ];
+
+    // Display the table
+    displayMemberAccounts(sampleMembers);
+});
+function displayMemberAccounts(memberAccounts, containerId = 'memberAccountsContainer') {
+    const tableHtml = generateDailyCollectorMembersTable(memberAccounts);
+    $('#' + containerId).html(tableHtml).show();
+}
+
+// Example usage:
+$(document).ready(function () {
+    // Sample data
+    const sampleMembers = [
+        {
+            MemberReference: "MEM001",
+            Name: "John Doe",
+            AccountBalance: 15000.50
+        },
+        {
+            MemberReference: "MEM002",
+            Name: "Jane Smith",
+            AccountBalance: 25000.00
+        },
+        {
+            MemberReference: "MEM003",
+            Name: "Mike Johnson",
+            AccountBalance: 8500.75
+        }
+    ];
+
+    // Display the table
  
+
+    // Or if you want to append to existing content:
+    // $('#someContainer').append(generateDailyCollectorMembersTable(sampleMembers));
+});
+function updateProgressBar(progress) {
+    if ($('#progressBar').length) {
+        $('#progressBar').css('width', progress + '%').attr('aria-valuenow', progress);
+        $('#progressBar').text(progress + '%');
+    }
+}
+function displayResultProcess(response) {
+    if (response.success && response.Data && response.Data.apiResponseData) {
+        var data = response.Data.apiResponseData;
+        var accountsPresent = data.Account_Present;
+        var totalAccounts = data.Total_Account;
+        var accountsNotMatching = totalAccounts - accountsPresent;
+        var filePath = data.file_path;
+
+        $('#totalMembers').text(totalMembers);
+        $('#totalVolume').text(totalAccounts);
+        $('#dailyCollectorGL').text(dailyCollectorGL);
+        // Update download linkDownload non-matching accounts:
+        var message = "";
+        if (totalMembers === 0) {
+            message = "Download uploaded trailbalance";
+        } else {
+            message = "Download non-matching accounts";
+        }
+
+        var downloadUrl = filePath;
+        //  window.open("", "_blank");
+        $('#downloadLink').attr('href', downloadUrl);
+        $('#downloadLink').text(message);
+        $('#downloadLink').attr('target', '_blank');
+        // Add onclick event to trigger download in a new window
+        $('#downloadLink').off('click').on('click', function (e) {
+            e.preventDefault(); // Prevent default link behavior
+            window.open(downloadUrl, '_blank'); // Open in new window
+        });
+
+        // Show the result container
+        $('#resultContainer').show();
+
+        // Display success message
+        appalert(response.message, 1, 1);
+    } else {
+        console.log(response);
+
+        appalert(response.message, 3, 1);
+    }
+}
 
 // Helper function to debug FormData (use in browser console if needed)
 function debugFormData(formData) {

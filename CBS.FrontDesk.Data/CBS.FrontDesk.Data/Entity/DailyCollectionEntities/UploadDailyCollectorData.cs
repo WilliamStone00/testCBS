@@ -7,7 +7,7 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectionEntities
     public class  UploadDailyCollectorData
     {
         [Required(ErrorMessage = "Please select an Excel file to upload.")]
-        public HttpPostedFileBase ExcelFile { get; set; }
+        public HttpPostedFileBase FormFile { get; set; }
         public string BranchId { get; set; }
         public string CollectorId { get; set; }
         public string AccountId { get; set; }
