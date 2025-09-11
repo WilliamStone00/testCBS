@@ -1,6 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.BusinessService.Config;
+using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.LoanConf;
@@ -27,6 +28,8 @@ namespace CBS.BusinessService.Accounts
             _savingConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
             _branchServices = new BranchServices();
         }
+
+      
 
         public async Task<ExecutionMessages> Delete(string id)
         {
@@ -268,30 +271,15 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> Update(LinkCollectorTransitCommand linkCollectorTransitCommand)
+        public async Task<ExecutionMessages> Update(LinkCollectorToTellerCommand linkCollectorTransitCommand)
         {
             try
             {
-                var existingTeller = await GetTeller(linkCollectorTransitCommand.TellerId);
-                existingTeller.IsLinkedToCollectorTransit=linkCollectorTransitCommand.IsLinkedToCollectorTransit;
-                existingTeller.LikedMemberReference=linkCollectorTransitCommand.LikedMemberReference;
-                if (existingTeller.AccountNumber==null)
-                {
-                    existingTeller.AccountNumber="n/a";
-                }
-                if (existingTeller == null)
-                {
-                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
-                        "Teller not found.");
-                    return ExecutionMessage;
-                }
+                
 
                 // 🔄 Make API call
                 var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<Teller>>(
-                    string.Format(APICallHelper.Get_Update_Delete_Teller, linkCollectorTransitCommand.TellerId),
-                    existingTeller
-                );
+                    string.Format(APICallHelper.CollectorLinkState),linkCollectorTransitCommand);
 
                 // ✅ Handle success
                 if (response.IsSuccess)
@@ -301,7 +289,7 @@ namespace CBS.BusinessService.Accounts
                 }
                 else
                 {
-                    GetExecutionMessages(existingTeller, false, existingTeller.name, MessagesResults.Failed,
+                    GetExecutionMessages(linkCollectorTransitCommand, false, null, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
@@ -396,6 +384,7 @@ namespace CBS.BusinessService.Accounts
 
         }
 
+        
 
         public async Task<ExecutionMessages> UpdateMobileMoneyConfiguration(MobileMoneyTellerConfigurationCommand model, string action)
         {

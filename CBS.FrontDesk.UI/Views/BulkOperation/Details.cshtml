@@ -189,14 +189,10 @@
 
         function loadBulkOperationDetailsDataTable(simulationId) {
             $('#myDataTable').DataTable({
-                "destroy": true,
-                "serverSide": false,
-                 //"processing": true, // Add processing indicator
-                "info": true,
-                "stateSave": true,
-                "lengthMenu": [[10, 20, 50, 100], [10, 20, 50, 100]],
-                "searching": true,
-                "paging": true, // Ensure pagination is enabled
+                serverSide: true,
+                destroy: true,
+                searching: true,
+                order: [[0, 'desc']], // Requested At
                 ajax: {
                     url: '/BulkOperation/LoadBulkOperationDetailsData',
                     type: 'POST',

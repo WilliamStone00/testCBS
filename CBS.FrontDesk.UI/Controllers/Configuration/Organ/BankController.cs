@@ -75,6 +75,13 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration.Organ
                 return () => _bankServices.UploadBankLogo(model.CustomerDocumentRequest);
 
             }
+            else if (serviceOption == "update_bank_watermark")
+            {
+                model.CustomerDocumentRequest.CustomerID = model.Bank.Id;
+                model.CustomerDocumentRequest.ServiceTypeType = "bank_water_mark";
+                return () => _bankServices.UploadBankWaterM(model.CustomerDocumentRequest);
+
+            }
             else
             {
                 return null;

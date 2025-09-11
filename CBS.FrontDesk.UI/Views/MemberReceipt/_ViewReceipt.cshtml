@@ -73,31 +73,19 @@
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                     <i class="mdi mdi-close"></i> Close
                 </button>
-                <button type="button" class="btn btn-primary" onclick="printReceipt()">
-                    <i class="mdi mdi-printer"></i> Print
+                <button type="button"
+                        id="btnPrintReceipt"
+                        class="btn btn-primary"
+                        onclick="ReprintReceipts(this)">
+                    <span class="btn-text"><i class="mdi mdi-printer"></i> Print</span>
+                    <span class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
                 </button>
+
             </div>
 
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <script>
-        function printReceipt() {
-            var content = document.getElementById('receiptContent').innerHTML;
-            var printWindow = window.open('', '', 'width=900,height=650');
-            printWindow.document.write('<html><head><title>Print Receipt</title>');
-            printWindow.document.write('<link rel="stylesheet" href="/Content/bootstrap.min.css" />');
-            printWindow.document.write('<style>body{font-family:sans-serif;margin:20px;} table{width:100%;font-size:12px;} th{text-align:left;}</style>');
-            printWindow.document.write('</head><body>');
-            printWindow.document.write(content);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.print();
-        }
-    </script>
-}
 
 
 

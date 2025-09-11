@@ -131,61 +131,87 @@ namespace CBS.BusinessService.Config
         {
             try
             {
-
                 var bank = await GetBank(model.Id);
-                if (bank != null)
+                if (bank == null)
                 {
-                    bank.BankCode = model.BankCode;
-                    bank.Name = model.Name;
-                    bank.Address = model.Address;
-                    bank.ImmatriculationNumber = model.ImmatriculationNumber;
-                    bank.RegistrationNumber = model.RegistrationNumber;
-                    bank.Capital = model.Capital;
-                    bank.DateOfCreation = model.DateOfCreation;
-                    bank.Email = model.Email;
-                    bank.Telephone = model.Telephone;
-                    bank.Description = model.Description ?? "N/A";
-                    bank.TaxPayerNUmber = model.TaxPayerNUmber;
-                    bank.PBox = model.PBox;
-                    bank.WebSite = model.WebSite;
-                    bank.CustomerServiceContact = model.CustomerServiceContact;
-                    bank.BankInitial = model.BankInitial;
-                    bank.Motto = model.Motto;
-                    bank.Capital = model.Capital ?? "0";
-                    bank.SignatureURL = model.SignatureURL ?? model.LogoUrl;
-                    var response = await _bankConfigApiHelper.PutAsync<ServiceResponse<Teller>>(string.Format(APICallHelper.Get_Update_Delete_Bank, model.Id), bank);
-                    if (response.IsSuccess)
-                    {
-                        // Successful creation
-                        GetExecutionMessages(response, true, $"{bank.Name}", MessagesResults.Success,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
-                        return ExecutionMessage;
-                    }
-                    else
-                    {
-                        // Failed creation
-                        GetExecutionMessages(model, false, $"{bank.Name}", MessagesResults.Failed,
-                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
-                    }
+                    GetExecutionMessages(model, false, "Bank not found", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString());
+                    return ExecutionMessage;
                 }
 
+                MapBankUpdates(bank, model);
+
+                // ✅ Use the correct response type
+                var url = string.Format(APICallHelper.Get_Update_Delete_Bank, model.Id);
+                var response = await _bankConfigApiHelper
+                    .PutAsync<ServiceResponse<Bank>>(url, bank);
+
+                if (response?.IsSuccess == true)
+                {
+                    GetExecutionMessages(response, true, $"{bank.Name}", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+
+                GetExecutionMessages(model, false, $"{bank.Name}", MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response?.Message);
             }
             catch (Exception ex)
             {
-                // Log and handle exception
                 GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
                     SystemMessageStatus.Failed.ToString(), ex);
             }
+
             return ExecutionMessage;
         }
+        private static void MapBankUpdates(Bank bank, Bank src)
+        {
+            string T(string s) => string.IsNullOrWhiteSpace(s) ? null : s.Trim();
+
+            // Core identity
+            bank.BankCode  = T(src.BankCode);
+            bank.Name      = T(src.Name);
+            bank.BankInitial = T(src.BankInitial);
+            bank.Description = string.IsNullOrWhiteSpace(src.Description) ? "N/A" : src.Description.Trim();
+
+            // Contact
+            bank.Telephone = T(src.Telephone);
+            bank.Fax       = T(src.Fax);
+            bank.Email     = T(src.Email);
+            bank.Address   = T(src.Address);
+            bank.PBox      = T(src.PBox);
+            bank.CustomerServiceContact = T(src.CustomerServiceContact);
+
+            // Registration & Tax
+            bank.RegistrationNumber     = T(src.RegistrationNumber);
+            bank.ImmatriculationNumber  = T(src.ImmatriculationNumber);
+            bank.TaxPayerNUmber         = T(src.TaxPayerNUmber);
+            bank.RegistrationInformation = T(src.RegistrationInformation);
+
+            // Organization / category
+            bank.OrganizationId       = "1";
+            bank.CategoryInformation  = T(src.CategoryInformation);
+            bank.ShortHeaderInfo      = T(src.ShortHeaderInfo);
+
+            // Branding & web
+            bank.WebSite  = T(src.WebSite);
+            bank.Motto    = T(src.Motto);
+            if (!string.IsNullOrWhiteSpace(src.LogoUrl))
+                bank.LogoUrl = src.LogoUrl.Trim(); // keep existing if none provided
+
+            // Financials / dates
+            bank.Capital = string.IsNullOrWhiteSpace(src.Capital) ? "0" : src.Capital.Trim();
+
+            // If your entity uses DateTime/DateTime? instead of string, parse safely:
+            // if (DateTime.TryParse(src.DateOfCreation, out var dc)) bank.DateOfCreation = dc; else keep current
+            bank.DateOfCreation = src.DateOfCreation; // keep as-is if your type is string
+        }
+
         public async Task<ExecutionMessages> UploadBankLogo(CustomerDocumentRequest documentRequest)
         {
             try
             {
-                //var additionalParams = new Dictionary<string, string>
-                //{
-                //    { "BankID", attachedToLoan.CustomerID }
-                //};
+               
                 var additionalParams = new Dictionary<string, string>
                 {
                     { "OperationID", documentRequest.CustomerID },
@@ -215,5 +241,40 @@ namespace CBS.BusinessService.Config
             }
             return ExecutionMessage;
         }
+        public async Task<ExecutionMessages> UploadBankWaterM(CustomerDocumentRequest documentRequest)
+        {
+            try
+            {
+
+                var additionalParams = new Dictionary<string, string>
+                {
+                    { "OperationID", documentRequest.CustomerID },
+                    { "DocumentId", "N/A" },
+                    { "DocumentType", "Bank Water Mark" },
+                    { "ServiceType", "BankMicroservice" },
+                    { "CallBackBaseUrl",ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString()},
+                    { "CallBackEndPoint", APICallHelper.AttachedDocumentsRemotelyWaterMark},
+                    { "RemoteFilePath", $"BankWaterMark" },
+                };
+                var response = await _identityServerBaseUrl.PostFilesAndParamsAsync<DocumentAttachedToLoan>(APICallHelper.AttachedDocuments, additionalParams, documentRequest.AttachedFiles);
+
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
+                        response.Message);
+                    return ExecutionMessage;
+                }
+                GetExecutionMessages(documentRequest, false, null, MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+
     }
 }

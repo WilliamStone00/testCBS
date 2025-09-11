@@ -217,6 +217,29 @@
                 $('#actionModal').modal('show');
 
                 $.get(url)
+                    .done(r => $body.html(r))
+                    .fail(() => $body.html(`<div class="alert alert-danger">Could not load form.</div>`));
+
+                // intercept form submission inside modal
+                $('#actionModal').off('submit', 'form').on('submit', 'form', function (e) {
+                    e.preventDefault();
+                    const form = $(this);
+                    $.post(form.attr('action'), form.serialize())
+                        .done(function (res) {
+                            if (res.success) {
+                                $('#actionModal').modal('hide');
+                                appalert.success(res.message || `${mode} successful`);
+                                $('#myDataTable').DataTable().ajax.reload();
+                            } else {
+                                appalert.error(res.message || `Failed to ${mode}`);
+                            }
+                        })
+                        .fail(function () {
+                            appalert.error(`An error occurred while trying to ${mode} the file.`);
+                        });
+                });
+
+                $.get(url)
                     .done(function (html) {
                         $body.html(html);
 

@@ -423,6 +423,28 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             private global::System.Data.DataColumn columnReceiptType;
             
+            private global::System.Data.DataColumn columnHeadOfficeWaterMark;
+            
+            private global::System.Data.DataColumn columnHeadOfficeShortHeaderInfo;
+            
+            private global::System.Data.DataColumn columnHeadOfficeRegistrationNumber;
+            
+            private global::System.Data.DataColumn columnHeadOfficeRegistrationInformation;
+            
+            private global::System.Data.DataColumn columnHeadOfficePBox;
+            
+            private global::System.Data.DataColumn columnHeadOfficeMotto;
+            
+            private global::System.Data.DataColumn columnHeadOfficeImmatriculationNumber;
+            
+            private global::System.Data.DataColumn columnHeadOfficeFax;
+            
+            private global::System.Data.DataColumn columnHeadOfficeCustomerServiceContact;
+            
+            private global::System.Data.DataColumn columnHeadOfficeCategoryInformation;
+            
+            private global::System.Data.DataColumn columnHeadOfficeBankInitial;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public PaymentReciptDSDataTable() {
@@ -754,6 +776,94 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeWaterMarkColumn {
+                get {
+                    return this.columnHeadOfficeWaterMark;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeShortHeaderInfoColumn {
+                get {
+                    return this.columnHeadOfficeShortHeaderInfo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeRegistrationNumberColumn {
+                get {
+                    return this.columnHeadOfficeRegistrationNumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeRegistrationInformationColumn {
+                get {
+                    return this.columnHeadOfficeRegistrationInformation;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficePBoxColumn {
+                get {
+                    return this.columnHeadOfficePBox;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeMottoColumn {
+                get {
+                    return this.columnHeadOfficeMotto;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeImmatriculationNumberColumn {
+                get {
+                    return this.columnHeadOfficeImmatriculationNumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeFaxColumn {
+                get {
+                    return this.columnHeadOfficeFax;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeCustomerServiceContactColumn {
+                get {
+                    return this.columnHeadOfficeCustomerServiceContact;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeCategoryInformationColumn {
+                get {
+                    return this.columnHeadOfficeCategoryInformation;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeBankInitialColumn {
+                get {
+                    return this.columnHeadOfficeBankInitial;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -826,7 +936,18 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                         string BarcodeData, 
                         string BarcodeImagePath, 
                         string TotalAccountBalances, 
-                        string ReceiptType) {
+                        string ReceiptType, 
+                        string HeadOfficeWaterMark, 
+                        string HeadOfficeShortHeaderInfo, 
+                        string HeadOfficeRegistrationNumber, 
+                        string HeadOfficeRegistrationInformation, 
+                        string HeadOfficePBox, 
+                        string HeadOfficeMotto, 
+                        string HeadOfficeImmatriculationNumber, 
+                        string HeadOfficeFax, 
+                        string HeadOfficeCustomerServiceContact, 
+                        string HeadOfficeCategoryInformation, 
+                        string HeadOfficeBankInitial) {
                 PaymentReciptDSRow rowPaymentReciptDSRow = ((PaymentReciptDSRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -865,7 +986,18 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                         BarcodeData,
                         BarcodeImagePath,
                         TotalAccountBalances,
-                        ReceiptType};
+                        ReceiptType,
+                        HeadOfficeWaterMark,
+                        HeadOfficeShortHeaderInfo,
+                        HeadOfficeRegistrationNumber,
+                        HeadOfficeRegistrationInformation,
+                        HeadOfficePBox,
+                        HeadOfficeMotto,
+                        HeadOfficeImmatriculationNumber,
+                        HeadOfficeFax,
+                        HeadOfficeCustomerServiceContact,
+                        HeadOfficeCategoryInformation,
+                        HeadOfficeBankInitial};
                 rowPaymentReciptDSRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowPaymentReciptDSRow);
                 return rowPaymentReciptDSRow;
@@ -925,6 +1057,17 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 this.columnBarcodeImagePath = base.Columns["BarcodeImagePath"];
                 this.columnTotalAccountBalances = base.Columns["TotalAccountBalances"];
                 this.columnReceiptType = base.Columns["ReceiptType"];
+                this.columnHeadOfficeWaterMark = base.Columns["HeadOfficeWaterMark"];
+                this.columnHeadOfficeShortHeaderInfo = base.Columns["HeadOfficeShortHeaderInfo"];
+                this.columnHeadOfficeRegistrationNumber = base.Columns["HeadOfficeRegistrationNumber"];
+                this.columnHeadOfficeRegistrationInformation = base.Columns["HeadOfficeRegistrationInformation"];
+                this.columnHeadOfficePBox = base.Columns["HeadOfficePBox"];
+                this.columnHeadOfficeMotto = base.Columns["HeadOfficeMotto"];
+                this.columnHeadOfficeImmatriculationNumber = base.Columns["HeadOfficeImmatriculationNumber"];
+                this.columnHeadOfficeFax = base.Columns["HeadOfficeFax"];
+                this.columnHeadOfficeCustomerServiceContact = base.Columns["HeadOfficeCustomerServiceContact"];
+                this.columnHeadOfficeCategoryInformation = base.Columns["HeadOfficeCategoryInformation"];
+                this.columnHeadOfficeBankInitial = base.Columns["HeadOfficeBankInitial"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1004,6 +1147,28 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
                 base.Columns.Add(this.columnTotalAccountBalances);
                 this.columnReceiptType = new global::System.Data.DataColumn("ReceiptType", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnReceiptType);
+                this.columnHeadOfficeWaterMark = new global::System.Data.DataColumn("HeadOfficeWaterMark", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeWaterMark);
+                this.columnHeadOfficeShortHeaderInfo = new global::System.Data.DataColumn("HeadOfficeShortHeaderInfo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeShortHeaderInfo);
+                this.columnHeadOfficeRegistrationNumber = new global::System.Data.DataColumn("HeadOfficeRegistrationNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeRegistrationNumber);
+                this.columnHeadOfficeRegistrationInformation = new global::System.Data.DataColumn("HeadOfficeRegistrationInformation", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeRegistrationInformation);
+                this.columnHeadOfficePBox = new global::System.Data.DataColumn("HeadOfficePBox", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficePBox);
+                this.columnHeadOfficeMotto = new global::System.Data.DataColumn("HeadOfficeMotto", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeMotto);
+                this.columnHeadOfficeImmatriculationNumber = new global::System.Data.DataColumn("HeadOfficeImmatriculationNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeImmatriculationNumber);
+                this.columnHeadOfficeFax = new global::System.Data.DataColumn("HeadOfficeFax", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeFax);
+                this.columnHeadOfficeCustomerServiceContact = new global::System.Data.DataColumn("HeadOfficeCustomerServiceContact", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeCustomerServiceContact);
+                this.columnHeadOfficeCategoryInformation = new global::System.Data.DataColumn("HeadOfficeCategoryInformation", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeCategoryInformation);
+                this.columnHeadOfficeBankInitial = new global::System.Data.DataColumn("HeadOfficeBankInitial", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeBankInitial);
                 this.columnId.AllowDBNull = false;
             }
             
@@ -2470,6 +2635,189 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeWaterMark {
+                get {
+                    try {
+                        return ((string)(this[this.tablePaymentReciptDS.HeadOfficeWaterMarkColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeWaterMark\' in table \'PaymentReciptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePaymentReciptDS.HeadOfficeWaterMarkColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeShortHeaderInfo {
+                get {
+                    try {
+                        return ((string)(this[this.tablePaymentReciptDS.HeadOfficeShortHeaderInfoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeShortHeaderInfo\' in table \'PaymentReciptDS\' is DB" +
+                                "Null.", e);
+                    }
+                }
+                set {
+                    this[this.tablePaymentReciptDS.HeadOfficeShortHeaderInfoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeRegistrationNumber {
+                get {
+                    try {
+                        return ((string)(this[this.tablePaymentReciptDS.HeadOfficeRegistrationNumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeRegistrationNumber\' in table \'PaymentReciptDS\' is" +
+                                " DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePaymentReciptDS.HeadOfficeRegistrationNumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeRegistrationInformation {
+                get {
+                    try {
+                        return ((string)(this[this.tablePaymentReciptDS.HeadOfficeRegistrationInformationColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeRegistrationInformation\' in table \'PaymentReciptD" +
+                                "S\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePaymentReciptDS.HeadOfficeRegistrationInformationColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficePBox {
+                get {
+                    try {
+                        return ((string)(this[this.tablePaymentReciptDS.HeadOfficePBoxColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficePBox\' in table \'PaymentReciptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePaymentReciptDS.HeadOfficePBoxColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeMotto {
+                get {
+                    try {
+                        return ((string)(this[this.tablePaymentReciptDS.HeadOfficeMottoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeMotto\' in table \'PaymentReciptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePaymentReciptDS.HeadOfficeMottoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeImmatriculationNumber {
+                get {
+                    try {
+                        return ((string)(this[this.tablePaymentReciptDS.HeadOfficeImmatriculationNumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeImmatriculationNumber\' in table \'PaymentReciptDS\'" +
+                                " is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePaymentReciptDS.HeadOfficeImmatriculationNumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeFax {
+                get {
+                    try {
+                        return ((string)(this[this.tablePaymentReciptDS.HeadOfficeFaxColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeFax\' in table \'PaymentReciptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePaymentReciptDS.HeadOfficeFaxColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeCustomerServiceContact {
+                get {
+                    try {
+                        return ((string)(this[this.tablePaymentReciptDS.HeadOfficeCustomerServiceContactColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeCustomerServiceContact\' in table \'PaymentReciptDS" +
+                                "\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePaymentReciptDS.HeadOfficeCustomerServiceContactColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeCategoryInformation {
+                get {
+                    try {
+                        return ((string)(this[this.tablePaymentReciptDS.HeadOfficeCategoryInformationColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeCategoryInformation\' in table \'PaymentReciptDS\' i" +
+                                "s DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePaymentReciptDS.HeadOfficeCategoryInformationColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string HeadOfficeBankInitial {
+                get {
+                    try {
+                        return ((string)(this[this.tablePaymentReciptDS.HeadOfficeBankInitialColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeBankInitial\' in table \'PaymentReciptDS\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tablePaymentReciptDS.HeadOfficeBankInitialColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsMemberNameNull() {
                 return this.IsNull(this.tablePaymentReciptDS.MemberNameColumn);
             }
@@ -2898,6 +3246,138 @@ namespace CBS.FrontDesk.UI.DataSet.Transaction {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetReceiptTypeNull() {
                 this[this.tablePaymentReciptDS.ReceiptTypeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeWaterMarkNull() {
+                return this.IsNull(this.tablePaymentReciptDS.HeadOfficeWaterMarkColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeWaterMarkNull() {
+                this[this.tablePaymentReciptDS.HeadOfficeWaterMarkColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeShortHeaderInfoNull() {
+                return this.IsNull(this.tablePaymentReciptDS.HeadOfficeShortHeaderInfoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeShortHeaderInfoNull() {
+                this[this.tablePaymentReciptDS.HeadOfficeShortHeaderInfoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeRegistrationNumberNull() {
+                return this.IsNull(this.tablePaymentReciptDS.HeadOfficeRegistrationNumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeRegistrationNumberNull() {
+                this[this.tablePaymentReciptDS.HeadOfficeRegistrationNumberColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeRegistrationInformationNull() {
+                return this.IsNull(this.tablePaymentReciptDS.HeadOfficeRegistrationInformationColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeRegistrationInformationNull() {
+                this[this.tablePaymentReciptDS.HeadOfficeRegistrationInformationColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficePBoxNull() {
+                return this.IsNull(this.tablePaymentReciptDS.HeadOfficePBoxColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficePBoxNull() {
+                this[this.tablePaymentReciptDS.HeadOfficePBoxColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeMottoNull() {
+                return this.IsNull(this.tablePaymentReciptDS.HeadOfficeMottoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeMottoNull() {
+                this[this.tablePaymentReciptDS.HeadOfficeMottoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeImmatriculationNumberNull() {
+                return this.IsNull(this.tablePaymentReciptDS.HeadOfficeImmatriculationNumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeImmatriculationNumberNull() {
+                this[this.tablePaymentReciptDS.HeadOfficeImmatriculationNumberColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeFaxNull() {
+                return this.IsNull(this.tablePaymentReciptDS.HeadOfficeFaxColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeFaxNull() {
+                this[this.tablePaymentReciptDS.HeadOfficeFaxColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeCustomerServiceContactNull() {
+                return this.IsNull(this.tablePaymentReciptDS.HeadOfficeCustomerServiceContactColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeCustomerServiceContactNull() {
+                this[this.tablePaymentReciptDS.HeadOfficeCustomerServiceContactColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeCategoryInformationNull() {
+                return this.IsNull(this.tablePaymentReciptDS.HeadOfficeCategoryInformationColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeCategoryInformationNull() {
+                this[this.tablePaymentReciptDS.HeadOfficeCategoryInformationColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsHeadOfficeBankInitialNull() {
+                return this.IsNull(this.tablePaymentReciptDS.HeadOfficeBankInitialColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetHeadOfficeBankInitialNull() {
+                this[this.tablePaymentReciptDS.HeadOfficeBankInitialColumn] = global::System.Convert.DBNull;
             }
         }
         

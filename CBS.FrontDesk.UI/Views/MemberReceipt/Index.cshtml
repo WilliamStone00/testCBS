@@ -34,9 +34,47 @@
 </div>
 <!-- Modal View Partial -->
 <div id="receiptModalContainer">
-   
+
 </div>
 @section Scripts {
 
     <script src="~/Scripts/Js/MemberReceiptsP/MemberReceipt.js"></script>
+    <script>
+        let _receiptPrintBusy = false;
+
+        function ReprintReceipts(btn) {
+            if (window._receiptPrintBusy) return;
+            window._receiptPrintBusy = true;
+
+            const $btn = btn || document.getElementById('btnPrintReceipt');
+            const $loader = document.getElementById('receiptLoader');
+            const $spinner = $btn.querySelector('.spinner-border');
+            const $text = $btn.querySelector('.btn-text');
+
+            // turn on loading state
+            $btn.dataset.originalHtml = $text.innerHTML;
+            $btn.disabled = true;
+            $spinner.classList.remove('d-none');
+            $text.innerHTML = 'Printing...';
+            $loader?.classList.remove('d-none');
+
+            const done = () => {
+                $loader?.classList.add('d-none');
+                $spinner.classList.add('d-none');
+                $text.innerHTML = $btn.dataset.originalHtml || '<i class="mdi mdi-printer"></i> Print';
+                $btn.disabled = false;
+                window._receiptPrintBusy = false;
+            };
+
+            try {
+                // Call your report
+                ReportView("MemberReceipt", null, "GetReport", null, null, "receipts",
+                    "ReportParameterLessWithSubReports")
+                    .always(done);   // ← works now because ReportView returns the jqXHR
+            } catch (e) {
+                console.error(e);
+                done();
+            }
+        }
+    </script>
 }
