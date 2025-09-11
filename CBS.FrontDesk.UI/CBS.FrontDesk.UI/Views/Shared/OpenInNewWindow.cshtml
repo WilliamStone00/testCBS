@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = ViewBag.ReportTitle;
+}
+@using Resources
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <script type="text/javascript">
+        window.onload = function() {
+            var url = "@ViewBag.UrlToOpen";
+            var errorMessage = "@ViewBag.ErrorMessage";
+
+            if (errorMessage) {
+                alert(errorMessage); // Display error message to the user
+                var referrerUrl = "@ViewBag.CurrentUrl";
+                if (referrerUrl) {
+                    //window.location.href = referrerUrl; // Redirect to the referrer URL
+                }
+            } else {
+                window.open(url, '_blank'); // Open PDF in a new tab/window
+                var referrerUrl = "@ViewBag.CurrentUrl";
+                if (referrerUrl) {
+                    //window.location.href = referrerUrl; // Redirect to the referrer URL after opening the new window
+                }
+            }
+        };
+    </script>
+    <p>
+        @GlobalShared.ThePDFReportIsBeingOpenedInANewWindowIfItDoesntOpen, <a href="@ViewBag.UrlToOpen" target="_blank">@GlobalShared.clickHere</a>.
+        @GlobalShared.OrGoBackToYourPage <a href="@ViewBag.CurrentUrl">@GlobalShared.Back</a>.
+    </p>
+</body>
+</html>

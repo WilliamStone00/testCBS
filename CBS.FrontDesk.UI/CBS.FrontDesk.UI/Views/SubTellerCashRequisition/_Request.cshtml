@@ -1,0 +1,30 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.CashReplenishmentSubTeller
+@using Resources
+
+
+@using (Html.BeginForm("Create", "SubTellerCashRequisition", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    <fieldset class="fieldset-custom">
+        <legend id="select_base">@GlobalSubTellerCashRequisition.RequestForm</legend>
+        <div class="row mt-2 gy-4">
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.RequestedAmount, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.RequestedAmount, "", new { @class = "text-danger " })
+                    <label>@GlobalSubTellerCashRequisition.RequestedAmount</label>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextAreaFor(m => m.Requetcomment, new { @class = "form-control", @style = "height: 70px;" })
+                    @Html.ValidationMessageFor(m => m.Requetcomment, "", new { @class = "text-danger " })
+                    <label for="formValidationDob">@GlobalSubTellerCashRequisition.RequestNote</label>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" id="btnSave" class="btn btn-primary me-2">@GlobalShared.Save</button>
+        </div>
+    </fieldset>
+}

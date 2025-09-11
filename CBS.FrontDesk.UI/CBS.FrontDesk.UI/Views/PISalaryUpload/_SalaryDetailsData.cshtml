@@ -1,0 +1,153 @@
+﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
+@using Resources
+
+
+<fieldset class="fieldset-custom">
+    <div class="mb-0 border-2">
+        <div class="accordion" id="summaryAccordion">
+            <!-- Overall Summary Cards -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="overallSummaryHeading">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#overallSummary" aria-expanded="true" aria-controls="overallSummary">
+                        @GlobalSalaryUpload.OverallPayrollSummary
+                    </button>
+                </h2>
+                <div id="overallSummary" class="accordion-collapse collapse show" aria-labelledby="overallSummaryHeading" data-bs-parent="#summaryAccordion">
+                    <div class="accordion-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="card shadow-sm border-0">
+                                    <div class="card-body text-center">
+                                        <h6 class="card-title text-primary">@GlobalSalaryUpload.TotalMembers</h6>
+                                        <p class="card-text fs-4 fw-bold text-info">
+                                            @Model.SalaryUploadModelSummaryDto.TotalMembers.ToString("N0")
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card shadow-sm border-0">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title text-primary">@GlobalSalaryUpload.TotalNetSalary</h5>
+                                        <p class="card-text fs-4 fw-bold text-success">
+                                            @Model.SalaryUploadModelSummaryDto.TotalNetSalary.ToString("N1")
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="table-responsive mb-3">
+                                @if (Model.SalaryUploadModels != null && Model.SalaryUploadModels.Any())
+                                {
+                                    <table class="table table-hover" id="myDataTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>@GlobalSalaryUpload.Matricule</th>
+                                                <th>@GlobalSalaryUpload.Surname</th>
+                                                <th>@GlobalSalaryUpload.Name</th>
+                                                <th>@GlobalSalaryUpload.NetSalary</th>
+                                                <th>@GlobalSalaryUpload.UploadDate</th>
+                                                <th>@GlobalSalaryUpload.UploadedBy</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{ int rowNumber = 0; }
+                                            @foreach (var salary in Model.SalaryUploadModels)
+                                            {
+                                                rowNumber++;
+                                                <tr>
+                                                    <td>@rowNumber</td>
+                                                    <td>@salary.Matricule</td>
+                                                    <td>@salary.Surname</td>
+                                                    <td>@salary.Name</td>
+                                                    <td>@salary.NetSalary.ToString("N1")</td>
+                                                    <td>@salary.Date.ToString("dd/MM/yyyy")</td>
+                                                    <td>@salary.UploadedBy</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <div class="text-center my-3">
+                                        <p>@GlobalSalaryUpload.NoSalaryUploadsFound.</p>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Branch Payroll Summary -->
+            <div class="accordion-item mb-2">
+                <h2 class="accordion-header" id="branchSummaryHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#branchSummary" aria-expanded="false" aria-controls="branchSummary">
+                        @GlobalSalaryUpload.BranchPayrollSummary
+                    </button>
+                </h2>
+                <div id="branchSummary" class="accordion-collapse collapse" aria-labelledby="branchSummaryHeading" data-bs-parent="#summaryAccordion">
+                    <div class="accordion-body">
+                        <div class="mb-3">
+                            @if (Model.BranchPayrollSummaries != null && Model.BranchPayrollSummaries.Any())
+                            {
+                                var orderedBranches = Model.BranchPayrollSummaries.OrderBy(b => b.BranchCode).ToList();
+                                int totalBranches = orderedBranches.Count;
+                                int totalMembers = orderedBranches.Sum(b => b.TotalMembers);
+                                decimal totalGrossSalary = orderedBranches.Sum(b => b.TotalNetSalary);
+
+                                <div class="row">
+                                    @foreach (var branch in orderedBranches)
+                                    {
+                                        <div class="col-md-6 col-lg-4 mb-3">
+                                            <div class="card shadow-sm border-0 h-100 p-2">
+                                                <div class="card-body">
+                                                    <h6 class="card-title text-primary fw-bold text-start mb-2">@branch.BranchName</h6>
+                                                    <p class="text-muted text-start fw-medium">@GlobalSalaryUpload.BranchCode: <strong>@branch.BranchCode</strong></p>
+
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <p class="text-info fw-bold mb-0 fw-medium">@GlobalSalaryUpload.SalaryEarners</p>
+                                                        <p class="text-info fw-bold mb-0 fw-medium">@branch.TotalMembers.ToString("N0")</p>
+                                                    </div>
+
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <p class="text-success fw-bold mb-0 fw-medium">@GlobalSalaryUpload.GrossSalary</p>
+                                                        <p class="text-success fw-bold mb-0 fw-medium">@branch.TotalNetSalary.ToString("N1") XAF</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                                <!-- Total Summary Card -->
+                                <div class="card shadow-sm border-0 mt-3 p-2">
+                                    <div class="card-body text-center">
+                                        <h6 class="card-title text-dark fw-bold mb-2">@GlobalSalaryUpload.TotalPayrollSummary</h6>
+                                        <div class="d-flex justify-content-around">
+                                            <p class="text-info fw-bold small">@GlobalSalaryUpload.TotalBranches: @totalBranches</p>
+                                            <p class="text-info fw-bold small">@GlobalSalaryUpload.TotalMembers: @totalMembers.ToString("N0")</p>
+                                            <p class="text-success fw-bold small">@GlobalSalaryUpload.TotalGrossSalary: @totalGrossSalary.ToString("N1") XAF</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-center my-3">
+                                    <p>@GlobalSalaryUpload.NoBranchPayrollSummariesFound.</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</fieldset>

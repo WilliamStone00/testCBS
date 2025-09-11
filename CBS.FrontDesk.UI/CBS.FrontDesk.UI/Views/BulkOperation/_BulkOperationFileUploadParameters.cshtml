@@ -1,0 +1,87 @@
+﻿@using Resources
+@model CBS.FrontDesk.Data.Entity.BulkOperation.SimulateCashOutOrCashInBulkOperation
+@{
+    ViewBag.Title = @GlobalBulkOperation.SimulateBulkOperation;
+}
+
+<div class="accordion mb-4" id="operationParamsAccordion">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOperationParams">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOperationParams" aria-expanded="true" aria-controls="collapseOperationParams">
+                <i class="mdi mdi-cog-outline me-2"></i> @GlobalBulkOperation.BulkCashOperationParameters
+            </button>
+        </h2>
+        <div id="collapseOperationParams" class="accordion-collapse collapse show" aria-labelledby="headingOperationParams">
+            <div class="accordion-body">
+                <div class="row g-3">
+                    <!-- Branch Dropdown -->
+                    <div class="col-md-12">
+                        @Html.LabelFor(m => m.BranchId, @GlobalBulkOperation.SelectBranch, new { @class = "form-label" })
+                        @Html.DropDownListFor(m => m.BranchId,
+                            new SelectList(ViewBag.branches, "Id", "Name"),
+                            @GlobalBulkOperation.Branch,
+                            new { @class = "form-select select2", required = "required" })
+                        <div class="invalid-feedback">Please select a branch</div>
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.TransferType, @GlobalBulkOperation.SelectOperationType, new { @class = "form-label" })
+                        @Html.DropDownListFor(m => m.TransferType,
+                            new SelectList(ViewBag.transferType, "Text", "Value"),
+                            @GlobalBulkOperation.SelectOperationType,
+                            new { @class = "form-select select2", required = "required" })
+                        <div class="invalid-feedback">Please select an operation type</div>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.AccountCartId, @GlobalBulkOperation.BulkOperationCashOutOrCashInAccount, new { @class = "form-label" })
+                        @Html.DropDownListFor(m => m.AccountCartId,
+                            new SelectList(ViewBag.eventNames, "Text", "Value"),
+                            @GlobalBulkOperation.SelectAccount,
+                            new { @class = "form-select select2", required = "required" })
+                        <div class="invalid-feedback">Please select a destination account</div>
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.AccountDate, "Account Date", new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.AccountDate,
+                            Model.AccountDate.ToString("yyyy-MM-dd"),  /*< !--Format the date-- >*/
+                            new
+                            {
+                                @class = "form-control datepicker",
+                                required = "required",
+                                @type = "date",
+                                max = DateTime.Now.AddDays(30).ToString("yyyy-MM-dd"),
+                                min = DateTime.Now.ToString("yyyy-MM-dd")
+                            })
+                        <div class="invalid-feedback">Please select a valid account date (within 30 days)</div>
+                    </div>
+
+                    <!-- Title Field -->
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.OperationTitle, "Operation Title", new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.OperationTitle,
+                            new
+                                 {
+                                     @class = "form-control",
+                                  required = "required",
+                                  placeholder = "Enter operation title"
+                                 })
+                        <div class="invalid-feedback">Please enter a title for the operation</div>
+                    </div>
+
+                    <!-- Simulation Description -->
+                    <div class="col-12">
+                        @Html.LabelFor(m => m.SimulationDescription, "Simulation Description", new { @class = "form-label" })
+                        @Html.TextAreaFor(m => m.SimulationDescription,
+                            new
+                                 {
+                                     @class = "form-control",
+                                  rows = "3",
+                                  placeholder = "Enter simulation details or notes"
+                                 })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

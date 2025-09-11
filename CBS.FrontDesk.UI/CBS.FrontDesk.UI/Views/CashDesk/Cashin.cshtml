@@ -1,0 +1,364 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@using Resources
+@{
+    ViewBag.Title = @CashDeskCashin.CashDeskCashinTitle;
+}
+<style>
+    .is-invalid {
+        border-color: red !important;
+        background-color: #fff0f0;
+    }
+</style>
+<link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
+<div class="row">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light mb-1">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-cash me-2"></i> @CashDeskCashin.CashDeskManagement
+                </h1>
+
+                <p class="card-text">
+                    @CashDeskCashin.WelcomeToTheCashDesk
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <!-- Collapsible Description Section -->
+    <div class="col-12">
+        <div class="accordion" id="helpTipsAccordion">
+            <div class="card">
+                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                    <span>
+                        <i class="mdi mdi-information-outline me-2"></i> @CashDeskCashin.HelpTips
+                    </span>
+                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                </h6>
+                <div id="collapseHelpTips" class="collapse" data-bs-parent="#helpTipsAccordion">
+                    <div class="card-body">
+                        <div class="accordion" id="helpDetailsAccordion">
+                            <!-- Loan Repayment Section -->
+                            <div class="accordion-item mt-2">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanRepayment" aria-expanded="false" aria-controls="collapseLoanRepayment">
+                                        @CashDeskCashin.LoanRepayment
+                                    </button>
+                                </h2>
+                                <div id="collapseLoanRepayment" class="accordion-collapse collapse" data-bs-parent="#helpDetailsAccordion">
+                                    <div class="accordion-body">
+                                        <ul>
+                                            <li>
+                                                @CashDeskCashin.ToPerformALoanRepaymentClickTheIcon:
+                                                <ul>
+                                                    <li>@CashDeskCashin.AEnterDenominations.</li>
+                                                    <li>@CashDeskCashin.EnterAmountInThe <strong>@CashDeskCashin.EnterCapital</strong> @CashDeskCashin.Column.</li>
+                                                    <li>@CashDeskCashin.EnterInterestInThe <strong>@CashDeskCashin.EnterInterest</strong> @CashDeskCashin.Column.</li>
+                                                    <li>@CashDeskCashin.EnterPenaltyInThe <strong>@CashDeskCashin.EnterPenalty</strong> @CashDeskCashin.Column.</li>
+                                                    <li>@CashDeskCashin.IfTheLoanHasVATTheVATIsAutomaticallyCalculatedOnInterestInput.</li>
+                                                    <li>@CashDeskCashin.FCheckThe <strong>@CashDeskCashin.CONF</strong> @CashDeskCashin.Checkbox.</li>
+                                                    <li>@CashDeskCashin.Click <strong>@CashDeskCashin.Save</strong>. @CashDeskCashin.AfterASuccessfulTransactionClick <strong>@CashDeskCashin.RePrint</strong> @CashDeskCashin.ToPrintTheReceipt.</li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Cash In Section -->
+                            <div class="accordion-item mt-2">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCashIn" aria-expanded="false" aria-controls="collapseCashIn">
+                                        @CashDeskCashin.CashIn
+                                    </button>
+                                </h2>
+                                <div id="collapseCashIn" class="accordion-collapse collapse" data-bs-parent="#helpDetailsAccordion">
+                                    <div class="accordion-body">
+                                        <ul>
+                                            <li>
+                                                @CashDeskCashin.ToPerformACashInOrDepositWithoutChargesClickThe <strong>@CashDeskCashin.CashIn</strong> @CashDeskCashin.Icon:
+                                                <ul>
+                                                    <li>@CashDeskCashin.EnterDenominations.</li>
+                                                    <li>@CashDeskCashin.EnterTheAmountInThe <strong>@CashDeskCashin.Amount</strong> @CashDeskCashin.ColumnOfAnyListedAccountOfYourChoice.</li>
+                                                    <li>@CashDeskCashin.CheckThe <strong>@CashDeskCashin.CONF</strong> @CashDeskCashin.Checkbox.</li>
+                                                    <li>@CashDeskCashin.Click <strong>@CashDeskCashin.Save</strong>. @CashDeskCashin.AfterASuccessfulTransactionClick <strong>@CashDeskCashin.RePrint</strong> @CashDeskCashin.ToPrintTheReceipt.</li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                @CashDeskCashin.ToPerformACashInOrDepositWithChargesClickThe <strong>@CashDeskCashin.CashIn</strong> @CashDeskCashin.Icon:
+                                                <ul>
+                                                    <li>@CashDeskCashin.EnterDenominations.</li>
+                                                    <li>@CashDeskCashin.EnterTheAmountInThe <strong>@CashDeskCashin.Amount</strong> @CashDeskCashin.ColumnAndChargesInThe <strong>@CashDeskCashin.Fee</strong> @CashDeskCashin.ColumnOfAnyListedAccountOfYourChoice.</li>
+                                                    <li>@CashDeskCashin.CheckThe <strong>@CashDeskCashin.CONF</strong> @CashDeskCashin.Checkbox.</li>
+                                                    <li>@CashDeskCashin.Click <strong>@CashDeskCashin.Save</strong>. @CashDeskCashin.AfterASuccessfulTransactionClick <strong>@CashDeskCashin.RePrint</strong> @CashDeskCashin.ToPrintTheReceipt.</li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <strong>@CashDeskCashin.NB:</strong> @CashDeskCashin.AnyChargeInputtedIncorrectlyWillBeRejectedBecauseTheSystemIsConfiguredToValidateAllNecessaryCharges.
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Cash Out Section -->
+                            <div class="accordion-item mt-2">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCashOut" aria-expanded="false" aria-controls="collapseCashOut">
+                                        @CashDeskCashin.CashOut
+                                    </button>
+                                </h2>
+                                <div id="collapseCashOut" class="accordion-collapse collapse" data-bs-parent="#helpDetailsAccordion">
+                                    <div class="accordion-body">
+                                        <p>@CashDeskCashin.InCashOutTheFeeCanEitherBeInclusiveOrExclusive.</p>
+                                        <ul>
+                                            <li>
+                                                @CashDeskCashin.ToPerformACashOutWithoutChargesClickThe <strong>@CashDeskCashin.CashOut</strong> @CashDeskCashin.Icon:
+                                                <ul>
+                                                    <li>@CashDeskCashin.EnterDenominations.</li>
+                                                    <li>@CashDeskCashin.EnterTheAmountInThe <strong>@CashDeskCashin.Amount</strong> @CashDeskCashin.ColumnOfAnyListedAccountOfYourChoice.</li>
+                                                    <li>@CashDeskCashin.CheckThe <strong>@CashDeskCashin.CONF</strong> @CashDeskCashin.Checkbox.</li>
+                                                    <li>@CashDeskCashin.Click <strong>@CashDeskCashin.Save</strong>. @CashDeskCashin.AfterASuccessfulTransactionClick <strong>@CashDeskCashin.RePrint</strong> @CashDeskCashin.ToPrintTheReceipt.</li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                @CashDeskCashin.ToPerformACashOutWithChargesChooseOneOfTheFollowing:
+                                                <ul>
+                                                    <li>
+                                                        <strong>@CashDeskCashin.ChargesInclusive:</strong> @CashDeskCashin.TheChargeIsDebitedDirectlyFromTheMembersBalanceAndTheFullRequestedAmountIsGivenToTheMember:
+                                                        <ul>
+                                                            <li>@CashDeskCashin.EnterDenominations.</li>
+                                                            <li>@CashDeskCashin.EnterTheAmountInThe <strong>@CashDeskCashin.Amount</strong> @CashDeskCashin.ColumnAndChargesInThe <strong>@CashDeskCashin.Fee</strong> @CashDeskCashin.ColumnOfAnyListedAccountOfYourChoice.</li>
+                                                            <li>@CashDeskCashin.CheckThe <strong>@CashDeskCashin.CONF</strong> @CashDeskCashin.Checkbox.</li>
+                                                            <li>@CashDeskCashin.CheckThe <strong>@CashDeskCashin.INC</strong> @CashDeskCashin.Box.</li>
+                                                            <li>@CashDeskCashin.Click <strong>@CashDeskCashin.Save</strong>. @CashDeskCashin.AfterASuccessfulTransactionClick <strong>@CashDeskCashin.RePrint</strong> @CashDeskCashin.ToPrintTheReceipt.</li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <strong>@CashDeskCashin.ChargesExclusive:</strong> @CashDeskCashin.TheCashierCollectsTheChargeFromTheMemberDuringTheOperationCashOperation:
+                                                        <ul>
+                                                            <li>@CashDeskCashin.EnterDenominations.</li>
+                                                            <li>@CashDeskCashin.EnterTheAmountInThe <strong>@CashDeskCashin.Amount</strong> @CashDeskCashin.ColumnAndChargesInThe <strong>@CashDeskCashin.Fee</strong> @CashDeskCashin.ColumnOfAnyListedAccountOfYourChoice.</li>
+                                                            <li>@CashDeskCashin.CheckThe <strong>@CashDeskCashin.CONF</strong> @CashDeskCashin.Checkbox.</li>
+                                                            <li>@CashDeskCashin.DoNotCheckThe <strong>@CashDeskCashin.INC</strong> @CashDeskCashin.Box.</li>
+                                                            <li>@CashDeskCashin.Click <strong>@CashDeskCashin.Save</strong>. @CashDeskCashin.AfterASuccessfulTransactionClick <strong>@CashDeskCashin.RePrint</strong> @CashDeskCashin.ToPrintTheReceipt.</li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <strong>@CashDeskCashin.NB:</strong> @CashDeskCashin.AnyChargeInputtedIncorrectlyWillBeRejectedBecauseTheSystemIsConfiguredToValidateAllNecessaryCharges.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Definitions Section -->
+                            <div class="accordion-item mt-4">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed bg-primary text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDefinitions" aria-expanded="false" aria-controls="collapseDefinitions">
+                                        @CashDeskCashin.Definitions
+                                    </button>
+                                </h2>
+                                <div id="collapseDefinitions" class="accordion-collapse collapse" data-bs-parent="#helpTipsAccordion">
+                                    <div class="accordion-body">
+                                        <ul>
+                                            <li><strong>@CashDeskCashin.InclusiveCharges:</strong> @CashDeskCashin.TheChargeIsDebitedDirectlyFromTheMembersBalanceAndTheRequestedAmountIsGivenInFull.</li>
+                                            <li><strong>@CashDeskCashin.ExclusiveCharges:</strong> @CashDeskCashin.TheCashierCollectsTheChargeInCashDirectlyFromTheMemberDuringTheOperation.</li>
+                                            <li>
+                                                <strong>@CashDeskCashin.WithdrawalFromSavingAccount:</strong> @CashDeskCashin.AMemberWithdraws
+                                                <ul>
+                                                    <li><strong>@CashDeskCashin.WithNotification:</strong> @CashDeskCashin.TheMemberNotifiedThe</li>
+                                                    <li><strong>@CashDeskCashin.WithoutNotification:</strong> @CashDeskCashin.TheMemberDidNotNotifyThe</li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <h6 class="text-primary mt-3">@CashDeskCashin.ScenarioExamples:</h6>
+                                        <p><strong>@CashDeskCashin.CashIn:</strong> @CashDeskCashin.AMemberDeposits</p>
+                                        <ul>
+                                            <li><strong>@CashDeskCashin.WithoutCharges:</strong> @CashDeskCashin.TheMembersAccountIsCreditedWith</li>
+                                            <li><strong>@CashDeskCashin.WithCharges:</strong> @CashDeskCashin.TheMembersAccountIsCreditedWith</li>
+                                        </ul>
+                                        <p><strong>@CashDeskCashin.LoanRepayment:</strong> @CashDeskCashin.AMemberRepaysALoanOf</p>
+                                        <ul>
+                                            <li><strong>@CashDeskCashin.WithVAT:</strong> @CashDeskCashin.TheVATIsAutomaticallyCalculatedOnTheInterestAndTheSystemDebitsTheTotalAmount.</li>
+                                            <li><strong>@CashDeskCashin.WithoutVAT:</strong> @CashDeskCashin.TheTotalRepaymentAmountOf</li>
+                                        </ul>
+                                        <p><strong>@CashDeskCashin.CashOut:</strong> @CashDeskCashin.AMemberRequestsToWithdraw</p>
+                                        <ul>
+                                            <li><strong>@CashDeskCashin.Inclusive:</strong> @CashDeskCashin.TheMemberReceives</li>
+                                            <li><strong>@CashDeskCashin.Exclusive:</strong> @CashDeskCashin.TheMemberPaysThe</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div> <!-- End of Definitions Section -->
+
+                        </div> <!-- End of helpDetailsAccordion -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 🔘 Action Panel Section -->
+<div class="row mb-1">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body d-flex justify-content-end">
+                <a href="#"
+                   class="btn btn-sm btn-outline-danger d-flex align-items-center gap-2"
+                   onclick="$('#tempMembersModal').modal('show'); setTimeout(loadMemberData, 300);"
+                   data-bs-toggle="tooltip"
+                   title="@CashDesk_Tabs.ManagePreRegisteredMembers">
+                    <i class="mdi mdi-account-alert-outline fs-5"></i> @CashDesk_Tabs.PreRegisteredMembers
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="row my-3">
+            <div class="accordion" id="collapsibleSection">
+                <div class="card accordion-item mb-3">
+                    <h2 class="accordion-header" id="headingDeliveryAddress">
+
+                        <button type="button"
+                                class="accordion-button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionPopoutIcon-3"
+                                aria-expanded="true"
+                                aria-controls="accordionPopoutIcon-3">
+                            <i class="mdi mdi-bank me-2"></i>
+                            <span id="cashDeskOperations">@CashDeskCashin.CashOperations</span>
+                        </button>
+                    </h2>
+                    <hr />
+                    <div id="collapseDeliveryAddress"
+                         data-bs-parent="#collapsibleSection">
+                        <div class="accordion-body">
+
+                            @Html.Partial("_SearchBox")
+                            <div id="datalistingview">
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paymentModalLabel">@CashDeskCashin.LoanPayment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="modalAmount">@CashDeskCashin.EnterAmount:</label>
+                    <input type="number" class="form-control" id="modalAmount" placeholder="@CashDeskCashin.EnterAmount">
+                </div>
+                <div class="form-group">
+                    <label for="modalInterest">@CashDeskCashin.EnterInterest:</label>
+                    <input type="number" class="form-control" id="modalInterest" placeholder="@CashDeskCashin.EnterInterest">
+                </div>
+                <div class="form-group">
+                    <label for="modalPenalty">@CashDeskCashin.EnterPenalty:</label>
+                    <input type="number" class="form-control" id="modalPenalty" placeholder="@CashDeskCashin.EnterPenalty">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@CashDeskCashin.Close</button>
+                <button type="button" class="btn btn-primary" id="modalOkButton" onclick="applyPayment()">@CashDeskCashin.OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="depositerModal" tabindex="-1" aria-labelledby="depositerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content position-relative">
+
+            <!-- Loader Overlay -->
+            <div id="depositorLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                    <div class="spinner-border text-primary mb-3" role="status"></div>
+                    <p class="fw-semibold text-primary">@CashDeskCashin.ProcessingTransactionPleaseWait</p>
+                </div>
+            </div>
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="w-100">
+                    <div class="card bg-light mb-2">
+                        <div class="card-body text-center">
+                            <h1 class="card-title text-primary" id="depositorModalTitle">
+                                <i class="mdi mdi-account-card-details-outline me-2"></i> @CashDeskCashin.DepositorInformationRequired
+                            </h1>
+                            <p class="card-text" id="depositorModalDescription">
+                                @CashDeskCashin.ToCompleteThisTransactionPleaseEnterTheDepositorsFullInformationForRegulatoryAndAuditCompliance.
+                            </p>
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tips Section -->
+            <div class="card m-3">
+                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                    <span><i class="mdi mdi-information-outline me-2"></i> @CashDeskCashin.WhyThisIsRequired</span>
+                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDepositorTips">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                </h6>
+                <div id="collapseDepositorTips" class="collapse">
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li><i class="mdi mdi-account-check-outline text-primary me-2"></i><strong>@CashDeskCashin.IdentityTracking:</strong> @CashDeskCashin.HelpsTrackWhoCompletedTheTransaction.</li>
+                            <li><i class="mdi mdi-shield-lock-outline text-success me-2"></i><strong>@CashDeskCashin.Compliance:</strong> @CashDeskCashin.RequiredForKYCAndAMLRegulations.</li>
+                            <li><i class="mdi mdi-file-document-box-check-outline text-warning me-2"></i><strong>@CashDeskCashin.AuditTrail:</strong> @CashDeskCashin.PermanentProofOfWhoDepositedFunds.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Depositor Form Partial -->
+            @Html.Partial("_DepositerForm")
+
+            <!-- Footer -->
+            <div class="modal-footer justify-content-between">
+                <div>
+                    <span class="text-muted fw-semibold">
+                        @CashDeskCashin.Member: <span class="text-dark" id="depositorCustomerName"></span> |
+                        @CashDeskCashin.ID: <span class="text-dark" id="depositorCustomerId"></span>
+                    </span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="mdi mdi-close"></i> @CashDeskCashin.Cancel
+                    </button>
+                    <button type="button" id="confirmDepositorBtn" class="btn btn-success ms-2">
+                        <i class="mdi mdi-check-circle-outline"></i> @CashDeskCashin.ConfirmAndProceed
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@Html.Partial("_TemporalMembersLookUp")
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+
+<script src="~/Scripts/Js/Crud/CashDesk/PreMemberOnboarding.js"></script>
+<script src="~/Scripts/Js/Crud/CashDesk/CashDeskCashin.js"></script>
+}

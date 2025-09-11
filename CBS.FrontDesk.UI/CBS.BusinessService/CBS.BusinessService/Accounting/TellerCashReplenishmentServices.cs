@@ -1,0 +1,249 @@
+﻿using BusinessServices;
+using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.UserManagement;
+using CBS.FrontDesk.Helper;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CBS.BusinessService.Accounting
+{
+    public class TellerCashReplenishmentServices : BaseService
+    {
+        private readonly ApiCallerHelper _accountingApiCallerHelper;
+
+
+        public TellerCashReplenishmentServices()
+        {
+            _accountingApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
+
+        }
+        public async Task<ExecutionMessages> CreateCashReplenishmentRequest(CashInfusionRequest model)
+        {
+            var response = await _accountingApiCallerHelper.PostAsync<ServiceResponse<DetailsDto>>(APICallHelper.TellerCashReplenishmentRequest, model.GetRequest());
+            if (response.IsSuccess)
+            {
+                // Successful creation
+                GetExecutionMessages(response.ApiResponseData.Data, true, $"Transaction was successfull", MessagesResults.Success,
+                    ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                return ExecutionMessage;
+            }
+            else
+            {
+                // Failed creation
+                GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                return ExecutionMessage;
+            }
+        }
+
+        public async Task<ExecutionMessages> CreateApprovalRequest(Approval model)
+        {
+            try
+            {
+
+                string url = string.Format(APICallHelper.TellerCashReplenishmentRequestApproval, model.id);
+                var response = await _accountingApiCallerHelper.PutAsync<ServiceResponse<DetailsDto>>(url, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response.ApiResponseData, true, $"Transaction was successfull", MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $"Transaction was not successfull", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<List<DetailsDto>> GetAllCashReplenimentRequest()
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<DetailsDto>>>(APICallHelper.TellerCashReplenishmentRequest);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData == null)
+                    {
+                        return new List<DetailsDto>();
+                    }
+                    else
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<DetailsDto>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
+
+
+        public async Task<DetailsDto> GetCashReplenimentRequest(string Id)
+        {
+            try
+            {
+                var url = string.Format(APICallHelper.TellerCashReplenishmentRequestApproval, Id);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<DetailsDto>>(url);
+                if (couApiResponse.IsSuccess)
+                {
+
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new DetailsDto();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
+        public async Task<List<DisplayData>> GetCashReplenimentRequestId()
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<DisplayData>>>(APICallHelper.CurrentOpenOfDayHistory);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData == null)
+                    {
+                        return new List<DisplayData>();
+                    }
+                    else
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<DisplayData>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
+        public async Task<User> GetUser(string userid)
+        {
+            try
+            {
+                var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
+                var user = await ApiCallerHelper.GetAsync<ResponseObject<User>>(string.Format(APICallHelper.GetUserByID, userid));
+                if (user.IsSuccess)
+                {
+                    user.ApiResponseData.Data.name = $"{user.ApiResponseData.Data.firstName} {user.ApiResponseData.Data.lastName}";
+                    user.ApiResponseData.Data.strlastLoginDate = user.ApiResponseData.Data.LastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
+                    user.ApiResponseData.Data.status = user.ApiResponseData.Data.isActive ? "Active" : "In-active";
+                    user.ApiResponseData.Data.ChangePassword.userName = user.ApiResponseData.Data.userName;
+                    user.ApiResponseData.Data.roleID = user.ApiResponseData.Data.userRoles.Select(role => role.roleId).First();
+                }
+                return user.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<IExecutionMessages> Update(CashInfusion cashInfusionModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ExecutionMessages> Delete(string id)
+        {
+            try
+            {
+                var objAccountCategory = await GetCashReplenimentRequest(id);
+
+                var inResponse = await _accountingApiCallerHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(APICallHelper.TellerCashReplenishmentRequestApproval, id));
+                if (inResponse.IsSuccess)
+                {
+
+                    GetExecutionMessages(inResponse, true, $"{objAccountCategory.requesterUserId} cashreplenishement request has been deleted successfully", MessagesResults.Success,
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null, inResponse.Message);
+
+
+                }
+                else
+                {
+                    // Handle failure scenario
+                    GetExecutionMessages(objAccountCategory, false, $"{objAccountCategory.requesterUserId} cashreplenishement request  failed to be deleted", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, inResponse.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+            }
+            return ExecutionMessage;
+        }
+
+        //public async Task<ExecutionMessages> Update(CashInfusionRequest model)
+        //{
+        //    try
+        //    {
+
+        //        var OperationEvent = await GetCashReplenimentRequest(model.Id);
+        //        if (OperationEvent != null)
+        //        {
+        //            //model.BankId = this.BankId;
+        //            ////model.BranchId = this.BranchId;
+        //            ////model.OrganizationId = this.OrganizationId;
+        //            //OperationEvent.DeterminationAccountId = model.DeterminationAccountId;
+        //            //OperationEvent.BalancingAccountId = model.BalancingAccountId;
+        //            //OperationEvent.AccountingRuleEntryName = model.AccountingRuleEntryName;
+        //            //OperationEvent.BookingDirection = model.BookingDirection;
+        //            //OperationEvent.BankId = model.BankId;
+        //            //OperationEvent.OperationEventAttributeId = model.OperationEventAttributeId;
+
+        //            var response = await -_.PutAsync<ServiceResponse<AccountingRuleEntry>>(string.Format(APICallHelper.Get_Update_Delete_AccountingRuleEntry, model.Id), OperationEvent);
+        //            if (response.IsSuccess)
+        //            {
+        //                // Successful creation
+        //                GetExecutionMessages(response, true, $"", MessagesResults.Success,
+        //                    ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+        //                return ExecutionMessage;
+        //            }
+        //            else
+        //            {
+        //                // Failed creation
+        //                GetExecutionMessages(model, false, (string)"", MessagesResults.Failed,
+        //                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+        //                return ExecutionMessage;
+        //            }
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log and handle exception
+        //        GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+        //            SystemMessageStatus.Failed.ToString(), ex);
+        //    }
+        //    return ExecutionMessage;
+        //}
+
+
+    }
+}

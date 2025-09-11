@@ -1,0 +1,15 @@
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalReports.AccountingReports;
+}
+ 
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function Reprint() {
+            ReportView("OpenningOfDay", null, "GetReportReport", null, null, null, "ReportParameterLess");
+        }
+    </script>
+}
+<a href="~/Views/Reports/AccountingPDFReport.cshtml">~/Views/Reports/AccountingPDFReport.cshtml</a>

@@ -1,0 +1,1513 @@
+﻿@model CBS.FrontDesk.Data.Entity.GeneralStatisticReport.GeneralStatisticsDashboard
+@using CBS.FrontDesk.UI.Helper
+@{
+    decimal loanBalance = @Model.LoanBreakdowns.Sum(x => x.TotalAmount);
+    decimal savingBalance = @Model.AccountTypeSummaries.Where(x => x.AccountType=="Saving").Sum(x => x.TotalAmount);
+
+    decimal difference = savingBalance - loanBalance;
+    decimal loanRatio = savingBalance > 0 ? (loanBalance / savingBalance) * 100 : 0;
+    bool isCompliant = loanBalance <= savingBalance;
+
+    string icon = isCompliant ? "✅" : "❌";
+    string statusClass = isCompliant ? "text-success fw-bold" : "text-danger fw-bold";
+    string statusMessage = isCompliant
+        ? "Compliant: Savings exceed loans, providing a strong liquidity buffer."
+        : "Non-Compliant: Loan balances exceed savings, indicating high credit exposure.";
+
+    var savingsOnly = Model.AccountTypeSummaries
+         .Where(x => x.AccountType?.ToLower() == "saving")
+         .ToList();
+
+    var savingMenAmount = savingsOnly.Sum(x => x.MenAmount);
+    var savingWomenAmount = savingsOnly.Sum(x => x.WomenAmount);
+    var savingGroupsAmount = savingsOnly.Sum(x => x.GroupsAmount);
+
+    var loanMenAmount = Model.LoanSummaries.Sum(x => x.MenAmount);
+    var loanWomenAmount = Model.LoanSummaries.Sum(x => x.WomenAmount);
+    var loanGroupsAmount = Model.LoanSummaries.Sum(x => x.GroupsAmount);
+    var categoryLabels = string.Join(",", Model.LoanBreakdowns.Select(c => $"'{c.Category}'"));
+    var categoryAmounts = string.Join(",", Model.LoanBreakdowns.Select(c => c.TotalAmount));
+
+    var totalLoan = loanMenAmount + loanWomenAmount + loanGroupsAmount;
+    var totalSaving = savingMenAmount + savingWomenAmount + savingGroupsAmount;
+    var loanToSavingRatio = totalSaving > 0 ? (decimal)totalLoan / totalSaving * 100 : 0;
+
+    var loanMenPercent = totalLoan > 0 ? (decimal)loanMenAmount / totalLoan * 100 : 0;
+    var loanWomenPercent = totalLoan > 0 ? (decimal)loanWomenAmount / totalLoan * 100 : 0;
+    var loanGroupsPercent = totalLoan > 0 ? (decimal)loanGroupsAmount / totalLoan * 100 : 0;
+
+    var savingMenPercent = totalSaving > 0 ? (decimal)savingMenAmount / totalSaving * 100 : 0;
+    var savingWomenPercent = totalSaving > 0 ? (decimal)savingWomenAmount / totalSaving * 100 : 0;
+    var savingGroupsPercent = totalSaving > 0 ? (decimal)savingGroupsAmount / totalSaving * 100 : 0;
+
+
+    var complianceBreached = loanToSavingRatio > 170;
+
+    var savingTotalPercent = (decimal)totalSaving / @Model.AccountTypeSummaries.Sum(a => a.TotalAmount) * 100;
+    var memberShareTotal = @Model.AccountTypeSummaries.Where(a => a.AccountType == "MemberShare").Sum(a => a.TotalAmount);
+    var preferenceShareTotal = @Model.AccountTypeSummaries.Where(a => a.AccountType == "PreferenceShare").Sum(a => a.TotalAmount);
+    var balanceSavingminusLoan = totalSaving - totalLoan;
+
+
+
+    var totalLoans = Model.LoanBreakdowns?.Sum(x => x.Total) ?? 0;
+    var totalLoanAmount = Model.LoanBreakdowns?.Sum(x => x.TotalAmount) ?? 0M;
+
+
+    var grantedThisMonth = Model.LoanSummaries
+    .FirstOrDefault(x => x.Category == "LoansGrantedThisMonth");
+
+    var loansGrantedThisMonth = grantedThisMonth?.TotalCount ?? 0;
+    var newLoansAmountThisMonth = grantedThisMonth?.TotalAmount ?? 0M;
+
+
+    // Top 3 categories
+    var top3Categories = Model.LoanBreakdowns?.OrderByDescending(x => x.TotalAmount).Take(3).ToList();
+
+}
+<style>
+    canvas {
+        max-height: 200px !important;
+    }
+</style>
+<input type="hidden" id="loanBalance" value="@loanBalance" />
+<input type="hidden" id="savingBalance" value="@savingBalance" />
+
+<input type="hidden" id="genderMen" value="@Model.CustomerGenderSummary.Men" />
+<input type="hidden" id="genderWomen" value="@Model.CustomerGenderSummary.Women" />
+<input type="hidden" id="genderGroups" value="@Model.CustomerGenderSummary.Groups" />
+
+<input type="hidden" id="accountTypeLabels" value="@string.Join(",", Model.AccountTypeSummaries.Select(a => a.AccountType))" />
+<input type="hidden" id="accountTypeValues" value="@string.Join(",", Model.AccountTypeSummaries.Select(a => a.TotalAmount))" />
+
+
+
+<ul class="nav nav-tabs" id="dashboardTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">📊 Overview</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="account-tab" data-bs-toggle="tab" data-bs-target="#account" type="button" role="tab">📈 Account Insights</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="loan-tab" data-bs-toggle="tab" data-bs-target="#loan" type="button" role="tab">💰 Loan Insights</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="demographics-tab" data-bs-toggle="tab" data-bs-target="#demographics" type="button" role="tab">👥 Demographic Insights</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="missing-tab" data-bs-toggle="tab" data-bs-target="#missing" type="button" role="tab">⚠️ Missing Records</button>
+    </li>
+</ul>
+
+<div class="tab-content mt-3" id="dashboardTabContent">
+    <div class="tab-pane fade show active" id="overview" role="tabpanel">
+
+        <div class="row mb-4">
+
+            <div class="col-md-12">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body text-center">
+                                <h6>Total Members</h6>
+                                <h4 class="fw-bold">@Model.MembersWithAccounts.Total.ToString("N0")</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body text-center">
+                                <h6>Men</h6>
+                                <h4 class="fw-bold text-info">@Model.MembersWithAccounts.Men.ToString("N0")</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body text-center">
+                                <h6>Women</h6>
+                                <h4 class="fw-bold text-warning">@Model.MembersWithAccounts.Women.ToString("N0")</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body text-center">
+                                <h6>Groups</h6>
+                                <h4 class="fw-bold text-danger">@Model.MembersWithAccounts.Groups.ToString("N0")</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 📊 GENDER INSIGHT FULL WIDTH -->
+        <div class="card shadow-sm p-3 mb-3">
+            <h6 class="text-muted mb-2">📊 Gender Distribution Insight</h6>
+            <p class="mb-2">
+                Among the <strong>@Model.MembersWithAccounts.Total.ToString("N0")</strong> members:
+                <strong>@Model.MembersWithAccounts.Men.ToString("N0")</strong> (
+                @((Model.MembersWithAccounts.Men * 100) / Model.MembersWithAccounts.Total)%)
+                are <span class="text-info fw-bold">Men</span>,
+                <strong>@Model.MembersWithAccounts.Women.ToString("N0")</strong> (
+                @((Model.MembersWithAccounts.Women * 100) / Model.MembersWithAccounts.Total)%)
+                are <span class="text-warning fw-bold">Women</span>, and
+                <strong>@Model.MembersWithAccounts.Groups.ToString("N0")</strong> (
+                @((Model.MembersWithAccounts.Groups * 100) / Model.MembersWithAccounts.Total)%)
+                are <span class="text-danger fw-bold">Groups</span>.
+            </p>
+        </div>
+
+        <!-- 📈 INSIGHT ROW -->
+        <div class="row mb-4">
+            <!-- 📘 Loan Category -->
+            <div class="col-md-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body small">
+                        <h6 class="text-muted mb-2">📘 Loan Category Analysis</h6>
+                        <p class="mb-0">
+                            A total of <strong>265</strong> loans have been disbursed worth <strong>39,550,000</strong>.
+                            The highest concentration is in <strong>Short</strong> and <strong>Medium Term</strong> loans,
+                            reflecting demand for flexible repayment options.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 📊 Loan Breakdown -->
+            <div class="col-md-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body small">
+                        <h6 class="text-muted mb-2">📊 Sectoral Loan Distribution</h6>
+                        <p class="mb-0">
+                            The largest loan disbursements are in <strong>Business</strong> and <strong>Education</strong> sectors,
+                            totaling <strong>28,200,000</strong>. <strong>Business loans</strong> alone exceed 40% of total value.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 📅 Current Month Loans -->
+            <div class="col-md-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body small">
+                        <h6 class="text-muted mb-2">📅 Loans in June 2025</h6>
+                        <p class="mb-0">
+                            <strong>17</strong> new loans were granted this month, worth <strong>1,620,000</strong>.
+                            This suggests a healthy credit cycle for the ongoing period.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 💼 Account Ownership by Balance -->
+            <!-- 💼 Account Ownership -->
+            <div class="col-md-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body small">
+                        <h6 class="text-muted mb-2">💼 Account Ownership Insight</h6>
+                        <p class="mb-0">
+                            Out of <strong>@Model.MembersWithAccounts.Total.ToString("N0")</strong> members:<br />
+                            <strong>@Model.MembersWithAccounts.Men.ToString("N0")</strong> men,
+                            <strong>@Model.MembersWithAccounts.Women.ToString("N0")</strong> women,
+                            and <strong>@Model.MembersWithAccounts.Groups.ToString("N0")</strong> groups
+                            have active accounts.<br />
+                            <span class="text-success fw-bold">Ownership is balanced across member types.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="tab-pane fade" id="account" role="tabpanel">
+        <!-- 🔹 Group 1: Bar Charts -->
+        <div class="row mb-4">
+            <!-- 📊 Account Balance by Group -->
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h6 class="text-primary mb-2">📊 Saving Account Balance by Group</h6>
+                        <canvas id="accountGroupChart" height="120"></canvas> <!-- reduced height -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 👥 Gender Distribution -->
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h6 class="text-primary mb-2">💼 Account Balances Against Account Type Composition</h6>
+                        <canvas id="accountTypePieChart" height="120"></canvas> <!-- reduced height -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🔹 Group 2: Pie + Line Charts -->
+        <div class="row mb-4">
+            <!-- 🏦 Loan vs. Savings Balance Insight -->
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100 @(isCompliant ? "border-success" : "border-danger")">
+                    <div class="card-body">
+                        <h6 class="text-primary mb-2">🏦 Loan vs. Savings Balance</h6>
+                        <p class="mb-1">
+                            Total Loan Balance: <strong>@loanBalance.ToString("N0")</strong><br />
+                            Total Savings Balance: <strong>@savingBalance.ToString("N0")</strong><br />
+                            Difference: <strong>@difference.ToString("N0")</strong><br />
+                            Loan-to-Savings Ratio: <strong>@loanRatio.ToString("N1")%</strong>
+                        </p>
+                        <p class="@statusClass mt-2">
+                            @icon @statusMessage
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 📈 Loan vs. Savings Chart -->
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h6 class="text-primary mb-2">📈 Loan vs. Saving Balance</h6>
+                        <canvas id="loanSavingLineChart" height="150"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- 🧾 Account Type Summary -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="text-primary mb-3">📘 Account Type Summary</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-sm align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Account Type</th>
+                                <th>Men</th>
+                                <th>Women</th>
+                                <th>Groups</th>
+                                <th>Total</th>
+                                <th>Men Amount</th>
+                                <th>Women Amount</th>
+                                <th>Groups Amount</th>
+                                <th>Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.AccountTypeSummaries)
+                            {
+                                <tr>
+                                    <td>@item.AccountType</td>
+                                    <td>@item.MenCount.ToString("N0")</td>
+                                    <td>@item.WomenCount.ToString("N0")</td>
+                                    <td>@item.GroupsCount.ToString("N0")</td>
+                                    <td>@item.TotalCount.ToString("N0")</td>
+                                    <td>@item.MenAmount.ToString("N0")</td>
+                                    <td>@item.WomenAmount.ToString("N0")</td>
+                                    <td>@item.GroupsAmount.ToString("N0")</td>
+                                    <td class="fw-bold">@item.TotalAmount.ToString("N0")</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot class="fw-bold bg-light">
+                            <tr>
+                                <td>Total</td>
+                                <td>@Model.AccountTypeSummaries.Sum(x => x.MenCount).ToString("N0")</td>
+                                <td>@Model.AccountTypeSummaries.Sum(x => x.WomenCount).ToString("N0")</td>
+                                <td>@Model.AccountTypeSummaries.Sum(x => x.GroupsCount).ToString("N0")</td>
+                                <td>@Model.AccountTypeSummaries.Sum(x => x.TotalCount).ToString("N0")</td>
+                                <td>@Model.AccountTypeSummaries.Sum(x => x.MenAmount).ToString("N0")</td>
+                                <td>@Model.AccountTypeSummaries.Sum(x => x.WomenAmount).ToString("N0")</td>
+                                <td>@Model.AccountTypeSummaries.Sum(x => x.GroupsAmount).ToString("N0")</td>
+                                <td>@Model.AccountTypeSummaries.Sum(x => x.TotalAmount).ToString("N0")</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- 🧠 Account Insight Interpretation (Collapsible) -->
+        <div class="card shadow-sm border-info mb-3">
+            <div class="card-header text-info d-flex justify-content-between align-items-center">
+                <span><i class="mdi mdi-lightbulb-on-outline me-1"></i> Account Insight Interpretation</span>
+                <button class="btn btn-outline-info btn-sm" data-bs-toggle="collapse" data-bs-target="#accountInsightCollapse">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </div>
+
+            <div id="accountInsightCollapse" class="collapse">
+                <div class="card-body text-sm text-dark">
+                    <ul class="mb-3">
+                        <li>
+                            <strong>Liquidity Position:</strong> Total savings (FCFA <b>@totalSaving.ToString("N0")</b>) exceed total loan volume (FCFA <b>@totalLoan.ToString("N0")</b>) by
+                            <b>@balanceSavingminusLoan.ToString("N0")</b>, yielding a loan-to-saving ratio of
+                            <b>@loanToSavingRatio.ToString("N1")%</b>.
+                            <span class="text-success fw-bold">This indicates a compliant liquidity buffer.</span>
+                        </li>
+                        <li>
+                            <strong>Savings Dominance:</strong> The <b>Saving</b> account type holds
+                            <b>@(savingTotalPercent.ToString("N1"))%</b> of all account balances, confirming the cooperative’s strength in deposit mobilization.
+                        </li>
+                        <li>
+                            <strong>Group Performance:</strong> Groups hold the highest savings
+                            (FCFA <b>@savingGroupsAmount.ToString("N0")</b>), contributing
+                            <b>@savingGroupsPercent.ToString("N1")%</b> of the total, which suggests strong collective savings practices and potential lending targets.
+                        </li>
+                        <li>
+                            <strong>Member vs. Preference Shares:</strong> Member shares dominate over preference shares, with FCFA
+                            <b>@memberShareTotal.ToString("N0")</b> vs.
+                            <b>@preferenceShareTotal.ToString("N0")</b>, indicating stronger engagement through standard membership accounts.
+                        </li>
+                    </ul>
+                    <p class="text-muted mt-2">
+                        These insights help guide lending thresholds, identify deposit-rich segments, and track capital sustainability. Monitor trends regularly for strategic financial decisions.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="tab-pane fade" id="loan" role="tabpanel">
+
+
+        <div class="row">
+            <!-- 📊 Demographic Loan Balance -->
+            <div class="col-md-12 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <i class="mdi mdi-account-cash-outline me-1"></i> Loan Balance by Demographic
+                        <canvas id="loanDemographicChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- 💳 Loan Summary -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="text-primary mb-3">💳 Loan Category Summary</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-sm align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Category</th>
+                                <th>Men</th>
+                                <th>Women</th>
+                                <th>Groups</th>
+                                <th>Total</th>
+                                <th>Men Amount</th>
+                                <th>Women Amount</th>
+                                <th>Groups Amount</th>
+                                <th>Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var loan in Model.LoanSummaries.OrderBy(x => x.TotalAmount))
+                            {
+                                <tr>
+                                    <td>@loan.Category</td>
+                                    <td>@loan.MenCount.ToString("N0")</td>
+                                    <td>@loan.WomenCount.ToString("N0")</td>
+                                    <td>@loan.GroupsCount.ToString("N0")</td>
+                                    <td>@loan.TotalCount.ToString("N0")</td>
+                                    <td>@loan.MenAmount.ToString("N0")</td>
+                                    <td>@loan.WomenAmount.ToString("N0")</td>
+                                    <td>@loan.GroupsAmount.ToString("N0")</td>
+                                    <td class="fw-bold">@loan.TotalAmount.ToString("N0")</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot class="fw-bold bg-light">
+                            <tr>
+                                <td>Total</td>
+                                <td>@Model.LoanSummaries.Sum(x => x.MenCount).ToString("N0")</td>
+                                <td>@Model.LoanSummaries.Sum(x => x.WomenCount).ToString("N0")</td>
+                                <td>@Model.LoanSummaries.Sum(x => x.GroupsCount).ToString("N0")</td>
+                                <td>@Model.LoanSummaries.Sum(x => x.TotalCount).ToString("N0")</td>
+                                <td>@Model.LoanSummaries.Sum(x => x.MenAmount).ToString("N0")</td>
+                                <td>@Model.LoanSummaries.Sum(x => x.WomenAmount).ToString("N0")</td>
+                                <td>@Model.LoanSummaries.Sum(x => x.GroupsAmount).ToString("N0")</td>
+                                <td>@Model.LoanSummaries.Sum(x => x.TotalAmount).ToString("N0")</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <!-- 🧾 Loan Amount by Category -->
+            <div class="col-md-12 mb-4">
+                <div class="card shadow-sm mt-4">
+                    <div class="card-body">
+                        <h6 class="text-muted mb-2">📊 Loan Breakdown by Purposes</h6>
+                        <canvas id="loanBreakdownChart" height="1000"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (Model.LoanBreakdowns?.Any() == true)
+        {
+            <div class="card mb-4 shadow-sm">
+               
+                <div class="card-body">
+                    <h5 class="text-primary mb-3">📊 Loan Breakdown by Purposes</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-sm align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Men</th>
+                                    <th>Women</th>
+                                    <th>Groups</th>
+                                    <th>Total</th>
+                                    <th>Men Amount</th>
+                                    <th>Women Amount</th>
+                                    <th>Groups Amount</th>
+                                    <th>Total Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.LoanBreakdowns)
+                                {
+                                    <tr>
+                                        <td>@item.Category</td>
+                                        <td>@item.Men.ToString("N0")</td>
+                                        <td>@item.Women.ToString("N0")</td>
+                                        <td>@item.Groups.ToString("N0")</td>
+                                        <td>@item.Total.ToString("N0")</td>
+                                        <td>@item.MenAmount.ToString("N0")</td>
+                                        <td>@item.WomenAmount.ToString("N0")</td>
+                                        <td>@item.GroupsAmount.ToString("N0")</td>
+                                        <td class="fw-bold">@item.TotalAmount.ToString("N0")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot class="fw-bold bg-light">
+                                <tr>
+                                    <td>Total</td>
+                                    <td>@Model.LoanBreakdowns.Sum(x => x.Men).ToString("N0")</td>
+                                    <td>@Model.LoanBreakdowns.Sum(x => x.Women).ToString("N0")</td>
+                                    <td>@Model.LoanBreakdowns.Sum(x => x.Groups).ToString("N0")</td>
+                                    <td>@Model.LoanBreakdowns.Sum(x => x.Total).ToString("N0")</td>
+                                    <td>@Model.LoanBreakdowns.Sum(x => x.MenAmount).ToString("N0")</td>
+                                    <td>@Model.LoanBreakdowns.Sum(x => x.WomenAmount).ToString("N0")</td>
+                                    <td>@Model.LoanBreakdowns.Sum(x => x.GroupsAmount).ToString("N0")</td>
+                                    <td>@Model.LoanBreakdowns.Sum(x => x.TotalAmount).ToString("N0")</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+        <div class="card shadow-sm border-primary mb-4">
+            <div class="card-header bg-light text-primary fw-bold">
+                <i class="mdi mdi-format-list-bulleted-type me-1"></i> Loan Type Summary
+            </div>
+            <div class="card-body table-responsive mb-2">
+                <table class="table table-bordered table-hover table-sm align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Loan Type</th>
+                            <th>Men</th>
+                            <th>Women</th>
+                            <th>Groups</th>
+                            <th>Total</th>
+                            <th>Men Amount</th>
+                            <th>Women Amount</th>
+                            <th>Groups Amount</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.LoanTypeSummaries)
+                        {
+                            <tr>
+                                <td>@item.Category</td>
+                                <td>@item.MenCount.ToString("N0")</td>
+                                <td>@item.WomenCount.ToString("N0")</td>
+                                <td>@item.GroupsCount.ToString("N0")</td>
+                                <td>@item.TotalCount.ToString("N0")</td>
+                                <td>@item.MenAmount.ToString("N0")</td>
+                                <td>@item.WomenAmount.ToString("N0")</td>
+                                <td>@item.GroupsAmount.ToString("N0")</td>
+                                <td class="fw-bold">@item.TotalAmount.ToString("N0")</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot class="fw-bold bg-light">
+                        <tr>
+                            <td>Total</td>
+                            <td>@Model.LoanTypeSummaries.Sum(x => x.MenCount).ToString("N0")</td>
+                            <td>@Model.LoanTypeSummaries.Sum(x => x.WomenCount).ToString("N0")</td>
+                            <td>@Model.LoanTypeSummaries.Sum(x => x.GroupsCount).ToString("N0")</td>
+                            <td>@Model.LoanTypeSummaries.Sum(x => x.TotalCount).ToString("N0")</td>
+                            <td>@Model.LoanTypeSummaries.Sum(x => x.MenAmount).ToString("N0")</td>
+                            <td>@Model.LoanTypeSummaries.Sum(x => x.WomenAmount).ToString("N0")</td>
+                            <td>@Model.LoanTypeSummaries.Sum(x => x.GroupsAmount).ToString("N0")</td>
+                            <td>@Model.LoanTypeSummaries.Sum(x => x.TotalAmount).ToString("N0")</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="card-body table-responsive mb-2">
+                <div class="mt-4">
+                    <h6 class="text-success"><i class="mdi mdi-chart-bar me-1"></i> Loan Type Breakdown</h6>
+                    <canvas id="loanTypeChart" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-secondary mb-4">
+            <div class="card-header text-primary d-flex justify-content-between align-items-center">
+                <span><i class="mdi mdi-tag-multiple-outline me-1"></i>  Loan Target Summary</span>
+                <button class="btn btn-outline-warning btn-sm" data-bs-toggle="collapse" data-bs-target="#loantargetCollapse">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </div>
+            <div id="loantargetCollapse" class="collapse">
+                <div class="card-body text-sm">
+                    <div class="card-body table-responsive">
+                        <table class="table table-bordered table-hover table-sm align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Loan Target</th>
+                                    <th>Men</th>
+                                    <th>Women</th>
+                                    <th>Groups</th>
+                                    <th>Total</th>
+                                    <th>Men Amount</th>
+                                    <th>Women Amount</th>
+                                    <th>Groups Amount</th>
+                                    <th>Total Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.LoanTargetSummaries)
+                                {
+                                    <tr>
+                                        <td>@item.Category</td>
+                                        <td>@item.MenCount.ToString("N0")</td>
+                                        <td>@item.WomenCount.ToString("N0")</td>
+                                        <td>@item.GroupsCount.ToString("N0")</td>
+                                        <td>@item.TotalCount.ToString("N0")</td>
+                                        <td>@item.MenAmount.ToString("N0")</td>
+                                        <td>@item.WomenAmount.ToString("N0")</td>
+                                        <td>@item.GroupsAmount.ToString("N0")</td>
+                                        <td class="fw-bold">@item.TotalAmount.ToString("N0")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot class="fw-bold bg-light">
+                                <tr>
+                                    <td>Total</td>
+                                    <td>@Model.LoanTargetSummaries.Sum(x => x.MenCount).ToString("N0")</td>
+                                    <td>@Model.LoanTargetSummaries.Sum(x => x.WomenCount).ToString("N0")</td>
+                                    <td>@Model.LoanTargetSummaries.Sum(x => x.GroupsCount).ToString("N0")</td>
+                                    <td>@Model.LoanTargetSummaries.Sum(x => x.TotalCount).ToString("N0")</td>
+                                    <td>@Model.LoanTargetSummaries.Sum(x => x.MenAmount).ToString("N0")</td>
+                                    <td>@Model.LoanTargetSummaries.Sum(x => x.WomenAmount).ToString("N0")</td>
+                                    <td>@Model.LoanTargetSummaries.Sum(x => x.GroupsAmount).ToString("N0")</td>
+                                    <td>@Model.LoanTargetSummaries.Sum(x => x.TotalAmount).ToString("N0")</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+
+          
+        </div>
+        <!-- 📦 Loan Categories Insights & Breakdown -->
+        <div class="card shadow-sm border-secondary mb-4">
+            <div class="card-header text-primary d-flex justify-content-between align-items-center">
+                <span><i class="mdi mdi-tag-multiple-outline me-1"></i> Loan Categories Summary</span>
+                <button class="btn btn-outline-warning btn-sm" data-bs-toggle="collapse" data-bs-target="#loanCategoryCollapse">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </div>
+
+            <div id="loanCategoryCollapse" class="collapse">
+                <div class="card-body text-sm">
+                    <!-- 📋 Data Table -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-sm align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Men</th>
+                                    <th>Women</th>
+                                    <th>Groups</th>
+                                    <th>Total</th>
+                                    <th>Men Amount</th>
+                                    <th>Women Amount</th>
+                                    <th>Groups Amount</th>
+                                    <th>Total Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.LoanCategorySummaries)
+                                {
+                                    <tr>
+                                        <td>@item.Category</td>
+                                        <td>@item.MenCount.ToString("N0")</td>
+                                        <td>@item.WomenCount.ToString("N0")</td>
+                                        <td>@item.GroupsCount.ToString("N0")</td>
+                                        <td>@item.TotalCount.ToString("N0")</td>
+                                        <td>@item.MenAmount.ToString("N0")</td>
+                                        <td>@item.WomenAmount.ToString("N0")</td>
+                                        <td>@item.GroupsAmount.ToString("N0")</td>
+                                        <td class="fw-bold">@item.TotalAmount.ToString("N0")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot class="fw-bold bg-light">
+                                <tr>
+                                    <td>Total</td>
+                                    <td>@Model.LoanCategorySummaries.Sum(x => x.MenCount).ToString("N0")</td>
+                                    <td>@Model.LoanCategorySummaries.Sum(x => x.WomenCount).ToString("N0")</td>
+                                    <td>@Model.LoanCategorySummaries.Sum(x => x.GroupsCount).ToString("N0")</td>
+                                    <td>@Model.LoanCategorySummaries.Sum(x => x.TotalCount).ToString("N0")</td>
+                                    <td>@Model.LoanCategorySummaries.Sum(x => x.MenAmount).ToString("N0")</td>
+                                    <td>@Model.LoanCategorySummaries.Sum(x => x.WomenAmount).ToString("N0")</td>
+                                    <td>@Model.LoanCategorySummaries.Sum(x => x.GroupsAmount).ToString("N0")</td>
+                                    <td>@Model.LoanCategorySummaries.Sum(x => x.TotalAmount).ToString("N0")</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="card-body table-responsive mb-2">
+                        <!-- 📊 Bar Chart: Loan Category Amounts -->
+                        <div class="mb-4">
+                            <h6 class="text-muted mb-2"><i class="mdi mdi-chart-bar"></i> Loan Category Distribution by Amount</h6>
+                            <canvas id="loanCategoryChartx" height="280"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="card shadow-sm border-warning mb-4">
+                <div class="card-header bg-light text-warning fw-bold">
+                    <i class="mdi mdi-tag-multiple-outline me-1"></i> Loan Category Summary
+                </div>
+                <div class="card-body table-responsive">
+                    <table class="table table-bordered table-hover table-sm align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Category</th>
+                                <th>Men</th>
+                                <th>Women</th>
+                                <th>Groups</th>
+                                <th>Total</th>
+                                <th>Men Amount</th>
+                                <th>Women Amount</th>
+                                <th>Groups Amount</th>
+                                <th>Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.LoanCategorySummaries)
+                            {
+                                <tr>
+                                    <td>@item.Category</td>
+                                    <td>@item.MenCount.ToString("N0")</td>
+                                    <td>@item.WomenCount.ToString("N0")</td>
+                                    <td>@item.GroupsCount.ToString("N0")</td>
+                                    <td>@item.TotalCount.ToString("N0")</td>
+                                    <td>@item.MenAmount.ToString("N0")</td>
+                                    <td>@item.WomenAmount.ToString("N0")</td>
+                                    <td>@item.GroupsAmount.ToString("N0")</td>
+                                    <td class="fw-bold">@item.TotalAmount.ToString("N0")</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot class="fw-bold bg-light">
+                            <tr>
+                                <td>Total</td>
+                                <td>@Model.LoanCategorySummaries.Sum(x => x.MenCount).ToString("N0")</td>
+                                <td>@Model.LoanCategorySummaries.Sum(x => x.WomenCount).ToString("N0")</td>
+                                <td>@Model.LoanCategorySummaries.Sum(x => x.GroupsCount).ToString("N0")</td>
+                                <td>@Model.LoanCategorySummaries.Sum(x => x.TotalCount).ToString("N0")</td>
+                                <td>@Model.LoanCategorySummaries.Sum(x => x.MenAmount).ToString("N0")</td>
+                                <td>@Model.LoanCategorySummaries.Sum(x => x.WomenAmount).ToString("N0")</td>
+                                <td>@Model.LoanCategorySummaries.Sum(x => x.GroupsAmount).ToString("N0")</td>
+                                <td>@Model.LoanCategorySummaries.Sum(x => x.TotalAmount).ToString("N0")</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>*@
+
+        <!-- 🧠 Loan Insights Interpretation -->
+        <div class="card shadow-sm border-info mb-3">
+            <div class="card-header text-info d-flex justify-content-between align-items-center">
+                <span><i class="mdi mdi-lightbulb-on-outline me-1"></i> Loan Insights Summary</span>
+                <button class="btn btn-outline-info btn-sm" data-bs-toggle="collapse" data-bs-target="#loanInsightsCollapse">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </div>
+
+            <div id="loanInsightsCollapse" class="collapse">
+                <div class="card-body text-dark text-sm">
+                    <ul class="mb-3">
+                        <li>
+                            <strong>Current Portfolio Size:</strong> Total of <b>@totalLoans.ToString("N0")</b> loans granted, amounting to <b>@totalLoanAmount.ToString("N0") FCFA</b>.
+                        </li>
+                        <li>
+                            <strong>Demographic Split:</strong> Men hold the majority with <b>@loanMenAmount.ToString("N0") FCFA</b>, representing approximately
+                            <b>@loanMenPercent.ToString("N1")%</b> of all outstanding loans, followed by women at <b>@loanWomenPercent.ToString("N1")%</b> and groups at
+                            <b>@loanGroupsPercent.ToString("N1")%</b>.
+                        </li>
+                        <li>
+                            <strong>Top 3 Loan Categories:</strong>
+                            <ul>
+                                @foreach (var category in top3Categories)
+                                {
+                                    <li>
+                                        <b>@category.Category</b>: FCFA <b>@category.TotalAmount.ToString("N0")</b>
+                                    </li>
+                                }
+                            </ul>
+                            These categories jointly represent the primary credit drivers in the institution.
+                        </li>
+
+                        <li>
+                            <strong>Group Borrowing:</strong> Groups show strong credit demand, especially in <b>Business</b> and <b>Farming</b>, with total borrowings exceeding
+                            <b>@loanGroupsAmount.ToString("N0") FCFA</b>, supporting communal economic activity.
+                        </li>
+                        <li>
+                            <strong>Recent Lending Trend:</strong> <b>@loansGrantedThisMonth</b> new loans granted this month, worth <b>@newLoansAmountThisMonth.ToString("N0") FCFA</b>,
+                            showing <span class="text-success">ongoing growth in credit access</span>.
+                        </li>
+                    </ul>
+
+                    <p class="text-muted">
+                        These insights support targeting profitable sectors, improving financial inclusion strategies, and monitoring risk exposure across demographics.
+                        Align credit policies to strengthen compliance and ensure portfolio health.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="tab-pane fade" id="demographics" role="tabpanel">
+        <div class="row mb-3">
+
+            <!-- 🧍 Gender Summary -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="text-primary mb-3">👥 Gender Distribution Summary</h5>
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Men
+                                <span class="badge bg-primary">
+                                    @Model.CustomerGenderSummary.Men.ToString("N0")
+                                    (@Model.CustomerGenderSummary.MenPercentage%)
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Women
+                                <span class="badge bg-warning text-dark">
+                                    @Model.CustomerGenderSummary.Women.ToString("N0")
+                                    (@Model.CustomerGenderSummary.WomenPercentage%)
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Groups
+                                <span class="badge bg-danger">
+                                    @Model.CustomerGenderSummary.Groups.ToString("N0")
+                                    (@Model.CustomerGenderSummary.GroupsPercentage%)
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
+                                Total
+                                <span>@Model.CustomerGenderSummary.Total.ToString("N0")</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 👥 Gender Distribution Chart -->
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h6 class="text-primary mb-2">👥 Gender Distribution</h6>
+                        <canvas id="genderDistributionChart" height="120"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <!-- 📊 Demographic Financial Charts -->
+        <div class="row mt-3 mb-2">
+            <div class="col-md-6">
+                <div class="card shadow-sm border-start h-100">
+                    <div class="card-body">
+                        <h6 class="text-primary mb-3">📊 Loan Distribution by Gender/Group</h6>
+                        <canvas id="loanByDemographicChart" height="220"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow-sm border-start h-100">
+                    <div class="card-body">
+                        <h6 class="text-primary mb-3">💰 Savings Distribution by Gender/Group</h6>
+                        <canvas id="savingsByDemographicChart" height="220"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 📌 Insight Summary -->
+        <div class="card shadow-sm border-info mb-3">
+            <div class="card-header text-info d-flex justify-content-between align-items-center">
+                <span><i class="mdi mdi-lightbulb-on-outline me-1"></i> Insight Summary</span>
+                <button class="btn btn-outline-info btn-sm" data-bs-toggle="collapse" data-bs-target="#insightCollapse">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </div>
+
+            <!-- Keep this expanded by default -->
+            <div id="insightCollapse" class="collapse">
+                <div class="card-body">
+
+                    <!-- 📋 Table: Loan & Saving Breakdown -->
+                    <h6 class="text-primary mb-3">📋 Loan & Saving Breakdown by Demographic</h6>
+
+                    @{
+                        var rows = new[]
+                        {
+             new { Group = "Men", Loan = loanMenAmount, LoanPercent = loanMenPercent, Saving = savingMenAmount, SavingPercent = savingMenPercent },
+             new { Group = "Women", Loan = loanWomenAmount, LoanPercent = loanWomenPercent, Saving = savingWomenAmount, SavingPercent = savingWomenPercent },
+             new { Group = "Groups", Loan = loanGroupsAmount, LoanPercent = loanGroupsPercent, Saving = savingGroupsAmount, SavingPercent = savingGroupsPercent }
+         };
+                    }
+
+                    <table class="table table-bordered table-sm text-center align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Group</th>
+                                <th>Loan (FCFA)</th>
+                                <th>Loan %</th>
+                                <th>Saving (FCFA)</th>
+                                <th>Saving %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var row in rows)
+                            {
+                                <tr>
+                                    <td>@row.Group</td>
+                                    <td>@row.Loan.ToString("N0")</td>
+                                    <td>@row.LoanPercent.ToString("N1")%</td>
+                                    <td>@row.Saving.ToString("N0")</td>
+                                    <td>@row.SavingPercent.ToString("N1")%</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot class="fw-bold table-light">
+                            <tr>
+                                <td>Total</td>
+                                <td>@totalLoan.ToString("N0")</td>
+                                <td>100%</td>
+                                <td>@totalSaving.ToString("N0")</td>
+                                <td>100%</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <!-- 🚨 Compliance Check: shown only if breached -->
+                    @if (complianceBreached)
+                    {
+                        <div class="card mt-4 border-warning border-start border-4 shadow-sm">
+                            <div class="card-body">
+                                <h6 class="text-warning fw-bold"><i class="mdi mdi-alert-outline me-1"></i> Compliance Warning</h6>
+                                <p class="mb-0">
+                                    Loan-to-saving ratio is <strong>@loanToSavingRatio.ToString("N1")%</strong>,
+                                    exceeding the 170% compliance threshold.<br />
+                                    This signals high loan exposure relative to available savings.
+                                    Immediate review of lending strategies is recommended.
+                                </p>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- 🧠 Interpretation -->
+                    <div class="mt-4">
+                        <h6 class="text-success"><i class="mdi mdi-lightbulb-outline me-1"></i> Interpretation</h6>
+                        <p class="mb-3">
+                            <strong>Loan-to-Saving Ratio:</strong> @loanToSavingRatio.ToString("N1")%<br />
+                            <strong>Total Loan Volume:</strong> @totalLoan.ToString("N0") FCFA<br />
+                            <strong>Total Saving Volume:</strong> @totalSaving.ToString("N0") FCFA
+                        </p>
+
+                        <ul>
+                            <li>
+                                <strong>Men:</strong> Hold <b>@loanMenPercent.ToString("N1")%</b> of total loans and <b>@savingMenPercent.ToString("N1")%</b> of savings.
+                                Indicates high borrowing with moderate savings capacity.
+                            </li>
+                            <li>
+                                <strong>Women:</strong> Represent <b>@loanWomenPercent.ToString("N1")%</b> of loans and <b>@savingWomenPercent.ToString("N1")%</b> of savings.
+                                Shows balanced financial engagement.
+                            </li>
+                            <li>
+                                <strong>Groups:</strong> Hold <b>@loanGroupsPercent.ToString("N1")%</b> of loans but contribute <b>@savingGroupsPercent.ToString("N1")%</b> of savings.
+                                Demonstrates strong group-based savings culture.
+                            </li>
+                        </ul>
+
+                        <p class="text-muted mt-3">
+                            Use this insight to refine loan offers, promote targeted saving schemes, and evaluate risk exposure by demographic.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="missing" role="tabpanel">
+        <!-- ❗ Missing Members Card -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="text-danger mb-3">❗ Missing Customers</h5>
+                        <p>Total: <strong>@Model.MembersWithAccounts.Missing.ToString("N0")</strong></p>
+                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                            <table class="table table-sm table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>M.Account Num</th>
+                                        <th>Name</th>
+                                        <th>Gender</th>
+                                        <th>Age</th>
+                                        <th>Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var miss in Model.MembersWithAccounts.MissingDetails)
+                                    {
+                                        <tr>
+                                            <td>@miss.CustomerId</td>
+                                            <td>@miss.FullName</td>
+                                            <td>@miss.Gender</td>
+                                            <td>@miss.Age</td>
+                                            <td>@miss.Reason</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function renderDashboardCharts() {
+        const loanBalance = parseFloat(document.getElementById('loanBalance')?.value || 0);
+        const savingBalance = parseFloat(document.getElementById('savingBalance')?.value || 0);
+
+        const genderMen = parseInt(document.getElementById('genderMen')?.value || 0);
+        const genderWomen = parseInt(document.getElementById('genderWomen')?.value || 0);
+        const genderGroups = parseInt(document.getElementById('genderGroups')?.value || 0);
+
+        const accountLabels = document.getElementById('accountTypeLabels')?.value?.split(',') || [];
+        const accountValues = (document.getElementById('accountTypeValues')?.value?.split(',') || []).map(x => parseFloat(x));
+
+        // Chart 1: Saving Account Balance by Group
+        const ctx1 = document.getElementById('accountGroupChart');
+        if (ctx1) {
+            new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: ['Men saving bal', 'Women saving bal', 'Groups saving bal'],
+                    datasets: [{
+                        label: 'Saving Balance',
+                        data: [@savingMenAmount, @savingWomenAmount, @savingGroupsAmount],
+                        backgroundColor: ['#0d6efd', '#ffc107', '#dc3545'],
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'top',
+                            formatter: val => val.toLocaleString(),
+                            font: { weight: 'bold' }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => `${ctx.raw.toLocaleString()}`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { callback: val => val.toLocaleString() }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
+
+        // Chart 2: Gender Distribution
+        // Chart 2: Gender Distribution
+        const ctx2 = document.getElementById('genderDistributionChart');
+        if (ctx2) {
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['Men', 'Women', 'Groups'],
+                    datasets: [{
+                        label: 'Gender Count',
+                        data: [genderMen, genderWomen, genderGroups],
+                        backgroundColor: ['#198754', '#ffc107', '#dc3545'] // ✅ green, yellow, red
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'top',
+                            formatter: val => val.toLocaleString(),
+                            font: { weight: 'bold' }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
+
+
+        // Chart 3: Account Type Pie Chart
+        const ctx3 = document.getElementById('accountTypePieChart');
+        if (ctx3 && accountLabels.length > 0) {
+            const total = accountValues.reduce((a, b) => a + b, 0);
+
+            new Chart(ctx3, {
+                type: 'pie',
+                data: {
+                    labels: accountLabels,
+                    datasets: [{
+                        data: accountValues,
+                        backgroundColor: ['#0d6efd', '#ffc107', '#dc3545', '#20c997', '#6610f2']
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const val = context.parsed;
+                                    const percent = ((val / total) * 100).toFixed(1);
+                                    return `${context.label}: ${val.toLocaleString()} (${percent}%)`;
+                                }
+                            }
+                        },
+                        datalabels: {
+                            formatter: (value, context) => {
+                                const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                const percent = ((value / total) * 100).toFixed(1);
+                                return percent >= 5 ? `${percent}%` : '';
+                            },
+                            color: '#fff',
+                            font: { weight: 'bold', size: 11 },
+                            anchor: 'end',
+                            align: 'start',
+                            offset: 10,
+                            clamp: true
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
+
+        // Chart 4: Loan vs Saving Line
+        const ctx4 = document.getElementById('loanSavingLineChart');
+        if (ctx4) {
+            new Chart(ctx4, {
+                type: 'line',
+                data: {
+                    labels: ['Loan Balance', 'Saving Balance'],
+                    datasets: [{
+                        label: 'Balance Comparison',
+                        data: [loanBalance, savingBalance],
+                        borderColor: '#0d6efd',
+                        backgroundColor: 'rgba(13,110,253,0.2)',
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: ['#dc3545', '#198754']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => `${ctx.raw.toLocaleString()}`
+                            }
+                        },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'top',
+                            formatter: val => val.toLocaleString(),
+                            font: { weight: 'bold' }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { callback: val => val.toLocaleString() }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
+        @*@Html.Raw(JsonMVC.Serialize(Model.TopIps));*@
+       const ctxLoanCategoryChart = document.getElementById('loanCategoryChart');
+        if (ctxLoanCategoryChart) {
+            new Chart(ctxLoanCategoryChart, {
+                type: 'bar',
+                data: {
+                    labels: @Html.Raw(JsonMVC.Serialize(Model.LoanBreakdowns.Select(c => c.Category))),
+                    datasets: [{
+                        label: 'Total Loan Amount',
+                        data: @Html.Raw(JsonMVC.Serialize(Model.LoanBreakdowns.Select(c => c.TotalAmount))),
+                        backgroundColor: '#0d6efd',
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    indexAxis: 'y', // horizontal bars
+                    maintainAspectRatio: false, // allow full height
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => `${ctx.dataset.label}: ${ctx.raw.toLocaleString()}`
+                            }
+                        },
+                        datalabels: {
+                            align: 'end',
+                            anchor: 'end',
+                            formatter: val => val.toLocaleString(),
+                            font: { weight: 'bold' }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: val => val.toLocaleString()
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                autoSkip: false,
+                                font: { size: 12 }
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
+
+        const ctxDemographicLoanChart = document.getElementById('loanDemographicChart');
+        if (ctxDemographicLoanChart) {
+            new Chart(ctxDemographicLoanChart, {
+                type: 'bar',
+                data: {
+                    labels: ['Men', 'Women', 'Groups'],
+                    datasets: [{
+                        label: 'Loan Balance',
+                        data: [@loanMenAmount, @loanWomenAmount, @loanGroupsAmount],
+                        backgroundColor: ['#198754', '#ffc107', '#dc3545'],
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => `${ctx.dataset.label}: ${ctx.raw.toLocaleString()}`
+                            }
+                        },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'top',
+                            formatter: val => val.toLocaleString(),
+                            font: { weight: 'bold' }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: val => val.toLocaleString()
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
+        const ctx = document.getElementById('loanBreakdownChart');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [@Html.Raw(categoryLabels)],
+                    datasets: [{
+                        label: 'Total Loan Amount',
+                        data: [@Html.Raw(categoryAmounts)],
+                        backgroundColor: '#0d6efd',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => `FCFA ${ctx.raw.toLocaleString()}`
+                            }
+                        },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'right',
+                            formatter: val => val.toLocaleString(),
+                            font: { weight: 'bold' },
+                            color: '#000'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: { callback: val => val.toLocaleString() }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
+
+        // 👤 Demographic Financial Breakdown
+        const loanByGenderValues = [@loanMenAmount, @loanWomenAmount, @loanGroupsAmount];
+        const savingByGenderValues = [@savingMenAmount, @savingWomenAmount, @savingGroupsAmount];
+
+        const demographicLabels = ["Men", "Women", "Groups"];
+        const demoColors = ['#198754', '#ffc107', '#dc3545'];
+
+        // Loan Distribution Chart
+        const loanByCtx = document.getElementById('loanByDemographicChart');
+        if (loanByCtx) {
+            new Chart(loanByCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: demographicLabels,
+                    datasets: [{
+                        data: loanByGenderValues,
+                        backgroundColor: demoColors
+                    }]
+                },
+                options: {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function (ctx) {
+                                    const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                    const value = ctx.raw;
+                                    const percent = ((value / total) * 100).toFixed(1);
+                                    return `${ctx.label}: ${value.toLocaleString()} (${percent}%)`;
+                                }
+                            }
+                        },
+                        datalabels: {
+                            formatter: (val, ctx) => {
+                                const total = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                const percent = (val / total * 100).toFixed(1);
+                                return `${percent}%`;
+                            },
+                            color: '#fff',
+                            font: { weight: 'bold' }
+                        },
+                        legend: { position: 'bottom' }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
+
+        // Savings Distribution Chart
+        const savingsByCtx = document.getElementById('savingsByDemographicChart');
+        if (savingsByCtx) {
+            new Chart(savingsByCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: demographicLabels,
+                    datasets: [{
+                        data: savingByGenderValues,
+                        backgroundColor: demoColors
+                    }]
+                },
+                options: {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function (ctx) {
+                                    const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                    const value = ctx.raw;
+                                    const percent = ((value / total) * 100).toFixed(1);
+                                    return `${ctx.label}: ${value.toLocaleString()} (${percent}%)`;
+                                }
+                            }
+                        },
+                        datalabels: {
+                            formatter: (val, ctx) => {
+                                const total = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                const percent = (val / total * 100).toFixed(1);
+                                return `${percent}%`;
+                            },
+                            color: '#fff',
+                            font: { weight: 'bold' }
+                        },
+                        legend: { position: 'bottom' }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
+        // 🟨 Loan Category Chart (NEW!)
+        const categoryCtx = document.getElementById('loanCategoryChartx');
+        if (categoryCtx) {
+            const categories = @Html.Raw(JsonMVC.Serialize(Model.LoanCategorySummaries.Select(x => x.Category)));
+            const amounts = @Html.Raw(JsonMVC.Serialize(Model.LoanCategorySummaries.Select(x => x.TotalAmount)));
+
+            new Chart(categoryCtx, {
+                type: 'bar',
+                data: {
+                    labels: categories,
+                    datasets: [{
+                        label: 'Loan Amount (FCFA)',
+                        data: amounts,
+                        backgroundColor: 'rgba(255, 159, 64, 0.7)',
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => 'FCFA ' + ctx.parsed.x.toLocaleString()
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: value => 'FCFA ' + value.toLocaleString()
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 📊 Loan Type Chart
+const loanTypeCtx = document.getElementById('loanTypeChart');
+if (loanTypeCtx) {
+    const loanTypeLabels = @Html.Raw(JsonMVC.Serialize(Model.LoanTypeSummaries.Select(x => x.Category)));
+    const loanTypeAmounts = @Html.Raw(JsonMVC.Serialize(Model.LoanTypeSummaries.Select(x => x.TotalAmount)));
+
+    new Chart(loanTypeCtx, {
+        type: 'bar',
+        data: {
+            labels: loanTypeLabels,
+            datasets: [{
+                label: 'Loan Amount (FCFA)',
+                data: loanTypeAmounts,
+                backgroundColor: 'rgba(25, 135, 84, 0.7)',
+                borderColor: 'rgba(25, 135, 84, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => 'FCFA ' + ctx.parsed.y.toLocaleString()
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: value => 'FCFA ' + value.toLocaleString()
+                    }
+                }
+            }
+        }
+    });
+}
+
+    }
+
+
+</script>

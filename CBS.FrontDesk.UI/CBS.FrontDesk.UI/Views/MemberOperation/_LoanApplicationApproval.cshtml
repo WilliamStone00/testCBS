@@ -1,0 +1,145 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+@using Resources
+<div class="col">
+    <div class="row my-4">
+        <div class="accordion" id="collapsibleSection">
+
+            <!-- Loan Application Validation Section -->
+            <div class="card accordion-item">
+                <h2 class="accordion-header" id="headingLoanValidation">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseLoanValidation"
+                            aria-expanded="true"
+                            aria-controls="collapseLoanValidation">
+                        <i class="mdi mdi-shield-check-outline me-2 text-success"></i>
+                        Loan Application Validation
+                    </button>
+                </h2>
+
+                <div id="collapseLoanValidation"
+                     class="accordion-collapse collapse show"
+                     data-bs-parent="#collapsibleSection">
+
+                    <div class="accordion-body">
+                        <!-- OTP Sending Section -->
+                        @Html.Partial("_SendOTP")
+
+                        <!-- Loan Approval Form -->
+                        @using (Html.BeginForm("Update", "MemberOperation", FormMethod.Post,
+                            new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                        {
+                            @Html.HiddenFor(m => m.UpdateLoanApplicationStatus.Id)
+                            @Html.HiddenFor(m => m.LoanApplication.Id)
+                        <fieldset class="fieldset-custom border rounded-3 p-3 mb-3">
+                            <legend class="float-none w-auto px-2 fw-bold text-primary">
+                                <i class="mdi mdi-check-decagram me-1"></i> Approval Details
+                            </legend>
+
+                            <div class="row g-4">
+
+                                <!-- Accounting Date -->
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline position-relative">
+                                        @Html.TextBoxFor(
+                                            m => m.UpdateLoanApplicationStatus.AccountingDate,
+                                            Model.UpdateLoanApplicationStatus.AccountingDate == default(DateTime)
+                                                ? DateTime.Today.ToString("yyyy-MM-dd")
+                                                : "{0:yyyy-MM-dd}",
+                                            new
+                                            {
+                                                @class = "form-control accounting-date",
+                                                type = "date",
+                                                data_date_default = "today",
+                                                data_date_max = "today"
+                                            })
+                                        @Html.ValidationMessageFor(
+                                            m => m.UpdateLoanApplicationStatus.AccountingDate, "",
+                                            new { @class = "text-danger" })
+                                        <label>@(Member_Global_LoanApplication.AccountingDate ?? "Accounting Date")</label>
+                                    </div>
+                                    <small class="text-muted">
+                                        This date will be used for accounting entries tied to this approval.
+                                    </small>
+                                </div>
+
+                                <!-- OTP Code -->
+                                <div class="col-md-3">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.UpdateLoanApplicationStatus.OTPCode,
+                                            new { @class = "form-control", placeholder = "Enter OTP" })
+                                        @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.OTPCode, "",
+                                            new { @class = "text-danger" })
+                                        <label>Enter OTP code from @Model.Customer.name</label>
+                                    </div>
+                                </div>
+
+                                <!-- Approval Status -->
+                                <div class="col-md-9">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(
+                                            m => m.UpdateLoanApplicationStatus.ApprovalStatus,
+                                            new SelectList(ViewBag.LoanApplicationStatus, "Value", "Text"),
+                                            "---Select---",
+                                            new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.ApprovalStatus, "",
+                                            new { @class = "text-danger" })
+                                        <label>Select approval status</label>
+                                    </div>
+                                </div>
+
+                                <!-- Approval Comment -->
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextAreaFor(
+                                            m => m.UpdateLoanApplicationStatus.ApprovalComment,
+                                            new { @class = "form-control", style = "height: 200px;", placeholder = "Add comment" })
+                                        @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.ApprovalComment, "",
+                                            new { @class = "text-danger" })
+                                        <label>Comment</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="mt-4 text-end">
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="mdi mdi-content-save-check-outline me-1"></i> Submit Approval
+                                </button>
+                            </div>
+                        </fieldset>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Committee Actions Section -->
+            <div class="card accordion-item">
+                <h2 class="accordion-header" id="headingCommitteeActions">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseCommitteeActions"
+                            aria-expanded="false"
+                            aria-controls="collapseCommitteeActions">
+                        <i class="mdi mdi-account-group-outline me-2 text-info"></i>
+                        Committee Actions
+                    </button>
+                </h2>
+
+                <div id="collapseCommitteeActions"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="headingCommitteeActions"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <div class="row g-4">
+                            @Html.Partial("_LoanCommiteeValidationData")
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

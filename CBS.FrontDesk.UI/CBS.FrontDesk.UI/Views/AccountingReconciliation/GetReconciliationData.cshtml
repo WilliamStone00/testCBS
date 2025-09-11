@@ -1,0 +1,296 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.TransactionTrackerConfiguration
+
+@{
+    ViewBag.Title = "Banking Reconciliation Interface";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@section Styles {
+    <style type="text/css">
+/*--warning: #f59e0b;
+--mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+*/
+
+
+/*body {
+background: linear-gradient(180deg, #0b1020 0%, #0b1226 100%);
+color: #e5e7eb;
+}
+*/
+
+.app-container {
+max-width: 1400px;
+}
+
+
+/*.card {*/
+/*background: var(--card);*/
+/*border: 1px solid rgba(255,255,255,0.04);
+border-radius: 16px;
+box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}*/
+
+
+/*.card-header {
+border-bottom: 1px solid rgba(255,255,255,0.06);
+background: rgba(255,255,255,0.02);
+}
+*/
+
+textarea.code {
+font-family: var(--mono);
+background: #0a0f23;
+color: #e5e7eb;
+border: 1px solid rgba(255,255,255,0.06);
+border-radius: 12px;
+padding: 12px;
+line-height: 1.4;
+resize: vertical;
+min-height: 160px;
+white-space: pre;
+overflow-wrap: normal;
+overflow-x: auto;
+}
+
+
+.badge-muted { background: rgba(148,163,184,0.15); color: var(--muted); }
+.btn-soft { border: 1px solid rgba(255,255,255,0.08); }
+
+
+.small-hint { color: var(--muted); font-size: 0.9rem; }
+
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@*@media (max-width: 992px){ .grid-2 { grid-template-columns: 1fr; } }*@
+
+
+.log-area { min-height: 220px; white-space: pre-wrap; word-break: break-word; }
+
+
+.kv-grid { display: grid; grid-template-columns: 220px 1fr auto; gap: 8px; align-items: center; }
+.kv-grid input { font-family: var(--mono); }
+
+
+.pill {
+border: 1px dashed rgba(255,255,255,0.1);
+border-radius: 999px;
+padding: 2px 10px;
+font-size: 0.85rem;
+color: var(--muted);
+}
+        /* Make muted text brighter */
+        .badge-muted, .small-hint {
+            color: #cbd5e1 !important; /* light gray-blue */
+        }
+
+        /* Inputs + textareas on dark bg */
+        input.form-control, textarea.form-control {
+            background: none; /* dark navy */
+            color: black; /* near white */
+            border: 1px solid gray;
+        }
+
+        /* Placeholder text should also be brighter */
+        ::placeholder {
+            color: #94a3b8 !important;
+            opacity: 1;
+        }
+
+        /* Card headers: make text stand out */
+        .card-header {
+            color: #f8fafc; /* pure white text */
+            font-weight: 500;
+        }
+
+        /* Buttons outline/soft */
+        .btn-soft {
+            color: #e2e8f0;
+            border-color: #475569;
+        }
+    </style>
+
+}
+
+<div class="card mb-3">
+
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-lifebuoy me-2"></i> TIPS FOR IT SUPPORT - RECONCILIATION</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+
+            <ul class="mb-4">
+                <li>
+                    <i class="mdi mdi-database-search-outline me-1 text-primary"></i>
+                    <strong>Verify Payload:</strong> Ensure <code>commandJsonObject</code> is valid JSON and aligns with business rules.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-lan-connect me-1 text-primary"></i>
+                    <strong>Check Destination URL:</strong> Confirm the <code>destinationUrl</code> is correct (test vs. production).
+                </li>
+
+                <li>
+                    <i class="mdi mdi-account-cash-outline me-1 text-primary"></i>
+                    <strong>Transaction Reference:</strong> Ensure <code>transactionReferenceId</code> is unique and valid.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-history me-1 text-primary"></i>
+                    <strong>Retries & Status:</strong> Review <code>numberOfRetry</code> and <code>hasPassed</code> before reprocessing.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-pencil-box-outline me-1 text-primary"></i>
+                    <strong>Editing Payload:</strong> Modify only <code>commandJsonObject</code>, not audit fields like <code>createdDate</code>.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-shield-alert-outline me-1 text-warning"></i>
+                    <strong>Authorization:</strong> Ensure valid credentials/tokens before posting.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-alert-decagram-outline me-1 text-danger"></i>
+                    <strong>Final Check:</strong> Test in staging before pushing to production.
+                </li>
+            </ul>
+
+            <div class="alert alert-info">
+                <h6 class="alert-heading"><i class="mdi mdi-information-variant me-2"></i>Summary</h6>
+                <p class="mb-2">IT support staff assist the accounting service by validating, reprocessing, or correcting reconciliation entries. Always prioritize data integrity, endpoint accuracy, and secure request handling.</p>
+
+                <!-- Collapsible Checklist -->
+                <div class="accordion" id="accordionChecklist">
+                    <div class="accordion-item">
+                        <h6 class="accordion-header" id="headingChecklist">
+                            <button class="accordion-button collapsed p-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChecklist" aria-expanded="false" aria-controls="collapseChecklist">
+                                <i class="mdi mdi-wrench me-2"></i> Quick Troubleshooting Checklist
+                            </button>
+                        </h6>
+                        <div id="collapseChecklist" class="accordion-collapse collapse" aria-labelledby="headingChecklist" data-bs-parent="#accordionChecklist">
+                            <div class="accordion-body p-3">
+                                <ul class="mb-0">
+                                    <li><strong>Network:</strong> Check connectivity to the accounting service server.</li>
+                                    <li><strong>Logs:</strong> Review application/server logs for errors.</li>
+                                    <li><strong>Auth:</strong> Verify API tokens or credentials are valid.</li>
+                                    <li><strong>Endpoint:</strong> Confirm staging vs. production target.</li>
+                                    <li><strong>Payload:</strong> Validate JSON format before posting.</li>
+                                    <li><strong>Retries:</strong> Escalate with request/response samples if repeated failures occur.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Collapsible Checklist -->
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container py-4 card">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h1 class="h3 m-0">Accounting Reconciliation — Manual Poster</h1>
+        <span style="color:forestgreen">For IT Support • POST <code>commandJsonObject</code> to <code>destinationUrl</code></span>
+    </div>
+
+    <div class="alert alert-warning" role="alert">
+        <strong>Heads‑up:</strong> If this page is opened from a different origin than your API, the browser may block the request due to CORS.
+        Use it within the same domain/VPN as your API gateway, or enable CORS on the server.
+    </div>
+
+    <!-- Payload Input -->
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between">
+            <strong style="color:forestgreen">1) Paste Received Payload</strong>
+            <div>
+                <input id="requestId" type="hidden" value="@Model.TransactionTracker.Id"/>
+                <button id="btn-load-sample"  class="btn btn-sm btn-outline-secondary">Load Sample</button>
+                <button id="btn-parse-payload" class="btn btn-sm btn-primary">Extract</button>
+            </div>
+        </div>
+        <div class="card-body">
+            <textarea id="payloadInput" class="form-control code" rows="10" placeholder="Paste the payload JSON here...">
+@Model.TransactionTracker.CommandJsonObject
+</textarea>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header" style="color:forestgreen">2) Target Endpoint</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="destinationUrl" class="form-label">Destination URL</label>
+                        <input id="destinationUrl" type="url" class="form-control" value="@Model.TransactionTracker.DestinationUrl"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="timeoutMs" class="form-label">Timeout (ms)</label>
+                        <input id="timeoutMs" type="number" class="form-control" value="30000" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Headers (optional)</label>
+                        <div id="headersList" class="kv-grid mb-2">
+                            <input type="text" class="form-control" placeholder="Header-Name" value="Content-Type" />
+                            <input type="text" class="form-control" placeholder="Header-Value" value="application/json" />
+                            <button class="btn btn-outline-danger btn-sm btn-remove-h">Remove</button>
+                        </div>
+                        <button id="btn-add-header" class="btn btn-sm btn-outline-secondary">+ Add header</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header" style="color:forestgreen">3) Edit commandJsonObject</div>
+                <div class="card-body">
+                    <textarea id="commandEditor" class="form-control code" rows="16" placeholder='{"...":"Edit this JSON, then click POST"}'></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between">
+            <strong style="color:forestgreen">4) Send Request</strong>
+            <button id="btn-send" class="btn btn-success btn-sm">POST Now</button>
+        </div>
+        @*<div class="card-body">
+            <label class="form-label">cURL Preview</label>
+            <textarea id="curlPreview" class="form-control code" rows="5" readonly></textarea>
+        </div>*@
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header" style="color:forestgreen">Request Summary</div>
+                <div class="card-body"><div class="log-area" id="requestLog"></div></div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header"  style="color:forestgreen">Response</div>
+                <div class="card-body">
+                    <span id="respStatus" class="badge bg-secondary">—</span>
+                    <span id="respTime" class="badge bg-secondary">—</span>
+                    <textarea id="responseBody" class="form-control code" rows="12" readonly></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/AccountingReconciliation/AccountReconciliation.js"></script>
+}

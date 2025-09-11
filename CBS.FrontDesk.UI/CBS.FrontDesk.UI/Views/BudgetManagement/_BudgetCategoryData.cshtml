@@ -1,0 +1,35 @@
+﻿
+@using Resources
+@model CBS.FrontDesk.Data.Entity.BudgetConfiguration
+@{
+    ViewBag.Title = @GlobalBudgetManagement.BudgetCategoryData;
+}
+
+
+
+<table class="table table-hover" id="myDataTable_BudgetCategoryData">
+    <thead class="table-light">
+        <tr>
+            <th>@GlobalBudgetManagement.Name</th>
+            <th>@GlobalBudgetManagement.ChartOfAccount</th>
+            <th>@GlobalBudgetManagement.Description</th>
+            <th>@GlobalBudgetManagement.Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.BudgetCategories)
+        {
+            <tr>
+                <td style="width:25%">@d.CategoryName</td>
+                <td style="width:20%">@d.ChartOfAccountId</td>
+                <td style="width:20%">@d.Description</td>
+                <td style="width:35%">
+                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_BudgetCategory','_CreateBudgetCategory','update','BudgetManagement','budgetCategory')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.CategoryName @GlobalShared.ToEdit">@GlobalShared.Edit</a>|
+
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.CategoryName" onclick="ViewDataDetails('BudgetManagement','@d.Id','myDataTable_BudgetData','_BudgetData',0,'datalistingview_Budget','budget')">@GlobalShared.Details</a>|
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.CategoryName" onclick="DeleteDataConfiguration('BudgetManagement','@d.Id','myDataTable_BudgetData','_BudgetData',0,'datalistingview_Budget','budget')">@GlobalShared.Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

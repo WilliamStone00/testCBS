@@ -1,0 +1,233 @@
+﻿@{
+    ViewBag.Title = "Globalization Management";
+}
+<style>
+    .nav-tabs .nav-link {
+        background-color: transparent;
+        border: none;
+        color: #6c757d;
+        padding: 0.6rem 1.2rem;
+        transition: color 0.3s ease;
+        border-bottom: 2px solid transparent;
+    }
+
+        .nav-tabs .nav-link.active {
+            color: #28a745; /* TSC Green */
+            font-weight: 600;
+            border-bottom: 3px solid #28a745;
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: #198754; /* Darker TSC green on hover */
+        }
+
+    .tab-pane {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+</style>
+
+<!-- HEADER TITLE SECTION -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-earth me-2"></i> Globalization Management
+                </h1>
+                <p class="card-text">
+                    Manage your country's geographical hierarchy including regions, divisions, subdivisions, and towns.
+                </p>
+                <p class="card-text fw-bold text-danger">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i>
+                    Ensure levels are created in order: <strong>Country → Region → Division → SubDivision → Town</strong>.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TIPS SECTION -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Tips for Effective Location Setup</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Start by creating countries, then build the hierarchy layer-by-layer.</li>
+                <li><i class="mdi mdi-domain text-secondary me-2"></i> Ensure region and division names are consistent for clarity.</li>
+                <li><i class="mdi mdi-database-plus-outline text-success me-2"></i> Each section supports independent <strong>create, edit, delete</strong> operations.</li>
+                <li><i class="mdi mdi-table-edit text-primary me-2"></i> All forms use modal editing and partial updates — no page reload needed.</li>
+                <li><i class="mdi mdi-server-network text-info me-2"></i> Use subdivisions and towns for precise branch/member mappings.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- MAIN CARD WITH NAV TABS -->
+<div class="container-fluid px-2 py-2">
+    <div class="card border-0 shadow-sm rounded-4 bg-white">
+        <div class="card-body">
+
+            <!-- NAV TABS -->
+            <ul class="nav nav-tabs border-0 mb-3 fw-semibold" id="locationTab" role="tablist" style="font-size: 0.95rem;">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="country-tab" data-bs-toggle="tab" data-bs-target="#country" type="button" role="tab">🏳️ COUNTRY</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="region-tab" data-bs-toggle="tab" data-bs-target="#region" type="button" role="tab">🌐 REGION</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="division-tab" data-bs-toggle="tab" data-bs-target="#division" type="button" role="tab">🏙️ DIVISION</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="subdivision-tab" data-bs-toggle="tab" data-bs-target="#subdivision" type="button" role="tab">🏘️ SUBDIVISION</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="town-tab" data-bs-toggle="tab" data-bs-target="#town" type="button" role="tab">🏡 TOWN</button>
+                </li>
+            </ul>
+
+            <!-- TAB CONTENT -->
+            <div class="tab-content pt-2" id="locationTabContent">
+
+                <!-- COUNTRY -->
+                <div class="tab-pane fade show active" id="country" role="tabpanel">
+                    <div id="countryFormContainer">
+                        @Html.Partial("_CountryForm")  <!-- Contains the form only -->
+                    </div>
+                    <div id="countryTableContainer" class="mt-3">
+                        @Html.Partial("_CountryDataTable") <!-- New partial for table -->
+                    </div>
+                </div>
+
+                <!-- REGION -->
+                <div class="tab-pane fade" id="region" role="tabpanel">
+                    <div id="regionFormContainer">
+                        @Html.Partial("_RegionForm")
+                    </div>
+                    <div id="regionTableContainer" class="mt-3">
+                        @Html.Partial("_RegionDataTable")
+                    </div>
+                </div>
+
+                <!-- DIVISION -->
+                <div class="tab-pane fade" id="division" role="tabpanel">
+                    <div id="divisionFormContainer">
+                        @Html.Partial("_DivisionForm")
+                    </div>
+                    <div id="divisionTableContainer" class="mt-3">
+                        @Html.Partial("_DivisionDataTable")
+                    </div>
+                </div>
+
+                <!-- SUBDIVISION -->
+                <div class="tab-pane fade" id="subdivision" role="tabpanel">
+                    <div id="subDivisionFormContainer">
+                        @Html.Partial("_SubDivisionForm")
+                    </div>
+                    <div id="subDivisionTableContainer" class="mt-3">
+                        @Html.Partial("_SubDivisionDataTable")
+                    </div>
+                </div>
+
+                <!-- TOWN -->
+                <div class="tab-pane fade" id="town" role="tabpanel">
+                    <div id="townFormContainer">
+                        @Html.Partial("_TownForm")
+                    </div>
+                    <div id="townTableContainer" class="mt-3">
+                        @Html.Partial("_TownDataTable")
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="globalizationModal" tabindex="-1" aria-labelledby="globalizationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content position-relative">
+
+            <!-- Loader Overlay -->
+            <div id="globalizationLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                    <div class="spinner-border text-primary mb-3" role="status"></div>
+                    <p class="fw-semibold text-primary">Processing request, please wait...</p>
+                </div>
+            </div>
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="w-100">
+                    <div class="card bg-light mb-2">
+                        <div class="card-body text-center">
+                            <h1 class="card-title text-primary" id="globalizationModalTitle">
+                                <i class="bi bi-gear-fill me-2"></i> <span id="globalizationModalTitleText">Globalization Management</span>
+                            </h1>
+                            <p class="card-text" id="globalizationModalDescription">
+                                Manage entries for countries, regions, divisions, subdivisions, and towns.
+                            </p>
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Partial View Content Placeholder -->
+            <div class="px-3 pb-3" id="globalizationFormContainer">
+                @* This will be dynamically filled using @Html.Partial("_CountryForm") or AJAX *@
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer justify-content-between">
+                <div>
+                    <span class="text-muted fw-semibold" id="globalizationEntityInfo"></span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Cancel
+                    </button>
+                    <button type="submit" form="globalizationForm" class="btn btn-success ms-2">
+                        <i class="bi bi-check2-square"></i> Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(document).ready(function () {
+        LoadDT('divisionTable');
+        LoadDT('countryTable');
+        LoadDT('regionTable');
+        LoadDT('divisionTable');
+        LoadDT('divisionTable');
+        LoadDT('divisionTable');
+    });
+</script>
+}
+

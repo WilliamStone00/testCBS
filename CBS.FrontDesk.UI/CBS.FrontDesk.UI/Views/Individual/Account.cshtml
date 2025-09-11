@@ -1,0 +1,221 @@
+﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+    @using Resources
+@{
+    ViewBag.Title = @GlobalIndividual.Account;
+}
+
+<div class="row justify-content-end">
+    <div class="demo-inline-spacing text-end">
+        <a type="button" onclick="LoadDataGen('LoanProduct','myDataTable','_Data',0,'datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+            <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+        </a>
+        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','LoanProduct')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
+            <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+        </a>
+    </div>
+</div>
+<br />
+
+<div class="col-xl-12">
+    <h6 class="text-muted">@GlobalIndividual.FilledTabs</h6>
+    <div class="card mb-4">
+        <div class="card-header p-0">
+            <div class="nav-align-top">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <li class="nav-item">
+                        <button type="button"
+                                class="nav-link active"
+                                role="tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#navs-justified-home"
+                                aria-controls="navs-justified-home"
+                                aria-selected="true">
+                            <i class="tf-icons mdi mdi-account-outline me-1"></i> @GlobalIndividual.Profile
+                            @*<span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">3</span>*@
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button"
+                                class="nav-link"
+                                role="tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#navs-justified-security"
+                                aria-controls="navs-justified-security"
+                                aria-selected="false">
+                            <i class="tf-icons mdi mdi-security me-1"></i> @GlobalIndividual.Security
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button"
+                                class="nav-link"
+                                role="tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#navs-justified-profile"
+                                aria-controls="navs-justified-profile"
+                                aria-selected="false">
+                            <i class="tf-icons mdi mdi-file-document-alert-outline me-1"></i> @GlobalIndividual.Documents
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button"
+                                class="nav-link"
+                                role="tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#navs-justified-messages"
+                                aria-controls="navs-justified-messages"
+                                aria-selected="false">
+                            <i class="tf-icons mdi mdi-account me-1"></i> @GlobalIndividual.Account
+                        </button>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="tab-content p-0">
+                <div class="tab-pane fade show active" id="navs-justified-home" role="tabpanel">
+                    <h5 class="card-header">Delete Account</h5>
+                    <div class="card-body">
+                        <div class="mb-3 col-12 mb-0">
+                            <div class="alert alert-warning">
+                                <h6 class="alert-heading mb-1">@GlobalIndividual.AreYouSureYouWantToDeleteYourAccount</h6>
+                                <p class="mb-0">@GlobalIndividual.OnceYouDeleteYourAccountThereIsNoGoingBackPleaseBeCertain.</p>
+                            </div>
+                        </div>
+                        <form id="formAccountDeactivation" onsubmit="return false">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="accountActivation"
+                                       id="accountActivation" />
+                                <label class="form-check-label" for="accountActivation">@GlobalIndividual.IConfirmMyAccountDeactivation</label>
+                            </div>
+                            <button type="submit" class="btn btn-danger deactivate-account">@GlobalIndividual.DeactivateAccount</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="navs-justified-security" role="tabpanel">
+                    <p>
+                        Donut dragée jelly pie halvah. Danish gingerbread bonbon cookie wafer candy oat cake ice
+                        cream. Gummies halvah tootsie roll muffin biscuit icing dessert gingerbread. Pastry ice
+                        cream cheesecake fruitcake.
+                    </p>
+                    <p class="mb-0">
+                        Jelly-o jelly beans icing pastry cake cake lemon drops. Muffin muffin pie tiramisu halvah
+                        cotton candy liquorice caramels.
+                    </p>
+                </div>
+                <div class="tab-pane fade" id="navs-justified-profile" role="tabpanel">
+                    <p>
+                        Donut dragée jelly pie halvah. Danish gingerbread bonbon cookie wafer candy oat cake ice
+                        cream. Gummies halvah tootsie roll muffin biscuit icing dessert gingerbread. Pastry ice
+                        cream cheesecake fruitcake.
+                    </p>
+                    <p class="mb-0">
+                        Jelly-o jelly beans icing pastry cake cake lemon drops. Muffin muffin pie tiramisu halvah
+                        cotton candy liquorice caramels.
+                    </p>
+                </div>
+                <div class="tab-pane fade" id="navs-justified-messages" role="tabpanel">
+                    <p>
+                        Oat cake chupa chups dragée donut toffee. Sweet cotton candy jelly beans macaroon gummies
+                        cupcake gummi bears cake chocolate.
+                    </p>
+                    <p class="mb-0">
+                        Cake chocolate bar cotton candy apple pie tootsie roll ice cream apple pie brownie cake.
+                        Sweet roll icing sesame snaps caramels danish toffee. Brownie biscuit dessert dessert.
+                        Pudding jelly jelly-o tart brownie jelly.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="card">
+
+        <div id="mainview">
+            @Html.Partial("_AccountBalance")
+        </div>
+    </div>*@
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/Crud/CustomerManagement/Customers/CustomersProfile.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const navLinks = document.querySelectorAll(".nav-link");
+
+        navLinks.forEach(link => {
+            link.addEventListener("click", function (event) {
+                event.preventDefault(); // Prevent default link behavior
+
+                // Remove 'active' class from all links
+                navLinks.forEach(link => {
+                    link.classList.remove("active");
+                });
+
+                // Add 'active' class to the clicked link
+                this.classList.add("active");
+            });
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const navLinks = document.querySelectorAll("#navLinks a");
+
+        navLinks.forEach(link => {
+            link.addEventListener("click", function (event) {
+                event.preventDefault(); // Prevent default link behavior
+                // Remove 'active' class from all links
+                navLinks.forEach(link => {
+                    link.classList.remove("active");
+                });
+                const url = this.getAttribute("href");
+
+                // Navigate to the URL
+                window.location.href = url;
+                this.classList.add("active");
+            });
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const navLinks = document.querySelectorAll("#navLinks a");
+
+        // Function to remove active class from all links
+        function removeActiveClass() {
+            navLinks.forEach(link => {
+                link.classList.remove("active");
+            });
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener("click", function (event) {
+                event.preventDefault(); // Prevent default link behavior
+
+                const url = this.getAttribute("href");
+
+                // Remove active class from all links
+                removeActiveClass();
+
+                // Add active class to the clicked link
+                this.classList.add("active");
+
+                // Navigate to the URL
+                window.location.href = url;
+            });
+        });
+
+        // Apply active class based on current URL
+        const currentUrl = window.location.href;
+        navLinks.forEach(link => {
+            if (link.getAttribute("href") === currentUrl) {
+                removeActiveClass();
+                link.classList.add("active");
+            }
+        });
+    });
+</script>
+
+}

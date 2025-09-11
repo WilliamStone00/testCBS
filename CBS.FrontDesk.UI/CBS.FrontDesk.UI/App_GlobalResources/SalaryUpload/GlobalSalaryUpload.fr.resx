@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Activate" xml:space="preserve">
+    <value>Activer</value>
+  </data>
+  <data name="AddressAnomaliesLikeOverpaymentsOrMissingRecordsPromptly" xml:space="preserve">
+    <value>Résolvez les anomalies telles que les surpaiements ou les enregistrements manquants rapidement</value>
+  </data>
+  <data name="beforeUploadingCivilServants" xml:space="preserve">
+    <value>avant de télécharger (par exemple, fonctionnaires, institutions privées, personnel interne ou serveurs quotidiens)</value>
+  </data>
+  <data name="BranchCode" xml:space="preserve">
+    <value>Code de l'agence</value>
+  </data>
+  <data name="BranchPayrollSummary" xml:space="preserve">
+    <value>Résumé de la paie de l'agence</value>
+  </data>
+  <data name="buttonToAccessAllPreviouslyUploadedSalaryFiles" xml:space="preserve">
+    <value>Bouton pour accéder à tous les fichiers de salaire précédemment</value>
+  </data>
+  <data name="buttonToAnalyzeUploadedSalaryData" xml:space="preserve">
+    <value>Bouton pour analyser les données salariales téléchargées</value>
+  </data>
+  <data name="buttonToCheckPreviouslyAnalyzedResults" xml:space="preserve">
+    <value>Bouton pour vérifier les résultats précédemment analysés</value>
+  </data>
+  <data name="buttonToRemoveFilesThatAreIncorrect" xml:space="preserve">
+    <value>Bouton pour supprimer les fichiers incorrects, obsolètes ou inutiles. Assurez-vous de confirmer l'action car les fichiers supprimés ne peuvent pas être récupérés</value>
+  </data>
+  <data name="buttonToRetrieveAcopyOfTheUploadedFileForOfflineReviewOrBackup" xml:space="preserve">
+    <value>Bouton pour récupérer une copie du fichier téléchargé pour une révision hors ligne ou une sauvegarde</value>
+  </data>
+  <data name="buttonToViewDetailedAnalysis" xml:space="preserve">
+    <value>Bouton pour afficher les détails de l'analyse et les enregistrements liés au fichier téléchargé. Cela ouvre les détails dans un nouvel onglet pour plus de commodité</value>
+  </data>
+  <data name="CivilServants" xml:space="preserve">
+    <value>Fonctionnaires</value>
+  </data>
+  <data name="ClickOnThe" xml:space="preserve">
+    <value>Cliquez sur</value>
+  </data>
+  <data name="ClickThe" xml:space="preserve">
+    <value>Cliquez sur</value>
+  </data>
+  <data name="Deactivate" xml:space="preserve">
+    <value>Désactiver</value>
+  </data>
+  <data name="DeleteFiles" xml:space="preserve">
+    <value>Supprimer les fichiers</value>
+  </data>
+  <data name="DeleteInvalidUploadsToMaintainCleanAndAccurateRecords" xml:space="preserve">
+    <value>Supprimez les téléchargements non valides pour maintenir des enregistrements propres et précis</value>
+  </data>
+  <data name="DoubleCheckFilesForFormattingErrors" xml:space="preserve">
+    <value>Vérifiez les fichiers pour les erreurs de formatage avant la soumission pour éviter les rejets</value>
+  </data>
+  <data name="DownloadSalaryFiles" xml:space="preserve">
+    <value>Télécharger les fichiers de paie</value>
+  </data>
+  <data name="EasilyManageAndUploadEmployeeSalaryFiles" xml:space="preserve">
+    <value>Gérez et téléchargez facilement les fichiers de paie des employés. Assurez l'exactitude et la conformité avec les formats requis</value>
+  </data>
+  <data name="EditableFields" xml:space="preserve">
+    <value>Champs modifiables</value>
+  </data>
+  <data name="EditAnalyzedSalaryRecordsForCorrectionsOrUpdatesWhenNecessary" xml:space="preserve">
+    <value>Modifier les enregistrements de paie analysés pour les corrections ou les mises à jour si nécessaire</value>
+  </data>
+  <data name="EnsureAllUploadedSalaryFilesAreAccurateAndInTheCorrectFormat" xml:space="preserve">
+    <value>Assurez-vous que tous les fichiers de paie téléchargés sont précis et dans le bon format</value>
+  </data>
+  <data name="EnsureTheSalaryFileIsFormattedAs" xml:space="preserve">
+    <value>Assurez-vous que les fichiers de paie sont formattés comme</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>Nom du fichier</value>
+  </data>
+  <data name="FileNaming" xml:space="preserve">
+    <value>Nommage des fichiers</value>
+  </data>
+  <data name="ForMinorCorrectionsEditSalaryRelated" xml:space="preserve">
+    <value>Pour les corrections mineures, modifiez les données liées à la paie après avoir consulté les détails du fichier</value>
+  </data>
+  <data name="GrossSalary" xml:space="preserve">
+    <value>Salaire brut</value>
+  </data>
+  <data name="KeepTrackOfUploadedFiles" xml:space="preserve">
+    <value>Suivez les fichiers téléchargés et leur statut de traitement</value>
+  </data>
+  <data name="MakeSureUploadedFilesHaveMeaningfulNames" xml:space="preserve">
+    <value>Assurez-vous que les fichiers téléchargés ont des noms significatifs</value>
+  </data>
+  <data name="Matricule" xml:space="preserve">
+    <value>Matricule</value>
+  </data>
+  <data name="MonitorTheProcessingStatusOfSalaryFilesThroughTheFileDetailsPage" xml:space="preserve">
+    <value>Surveillez le statut de traitement des fichiers de paie</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="NetSalary" xml:space="preserve">
+    <value>Salaire net</value>
+  </data>
+  <data name="NoBranchPayrollSummariesFound" xml:space="preserve">
+    <value>Aucun résumé de paie d'agence trouvé</value>
+  </data>
+  <data name="NoSalaryUploadsFound" xml:space="preserve">
+    <value>Aucun téléchargement de salaire trouvé</value>
+  </data>
+  <data name="OverallPayrollSummary" xml:space="preserve">
+    <value>Résumé global de la paie</value>
+  </data>
+  <data name="PrivateInstitutions" xml:space="preserve">
+    <value>Institutions privées</value>
+  </data>
+  <data name="RegularlyReviewUploadedFilesToVerifyTheirAccuracy" xml:space="preserve">
+    <value>Examinez régulièrement les fichiers téléchargés</value>
+  </data>
+  <data name="RegularlyVerifyAnalyzedResultsAgainstPayrollToEnsureAccuracy" xml:space="preserve">
+    <value>Vérifiez régulièrement les résultats analysés par rapport à la paie</value>
+  </data>
+  <data name="RegularReviews" xml:space="preserve">
+    <value>Examens réguliers</value>
+  </data>
+  <data name="RunSalaryAnalysis" xml:space="preserve">
+    <value>Exécuter l'analyse salariale</value>
+  </data>
+  <data name="SalaryAnalysis" xml:space="preserve">
+    <value>Analyse salariale</value>
+  </data>
+  <data name="SalaryCodeMatriculeNameNetSalaryForCilvilServantsFile" xml:space="preserve">
+    <value>Code de salaire, matricule, nom, salaire net</value>
+  </data>
+  <data name="SalaryEarners" xml:space="preserve">
+    <value>Bénéficiaires de salaire</value>
+  </data>
+  <data name="SalaryType" xml:space="preserve">
+    <value>Type de salaire</value>
+  </data>
+  <data name="SalaryUpload" xml:space="preserve">
+    <value>Téléchargement de salaire</value>
+  </data>
+  <data name="SalaryUploadForm" xml:space="preserve">
+    <value>Formulaire de téléchargement de salaire</value>
+  </data>
+  <data name="SalaryUploadManagement" xml:space="preserve">
+    <value>Gestion des téléchargements de salaire</value>
+  </data>
+  <data name="SALARY_SUMMARY" xml:space="preserve">
+    <value>RÉSUMÉ SALARIAL</value>
+  </data>
+  <data name="SelectSalaryFile" xml:space="preserve">
+    <value>Sélectionner le fichier de salaire</value>
+  </data>
+  <data name="SelectTheAppropriate" xml:space="preserve">
+    <value>Sélectionnez le approprié</value>
+  </data>
+  <data name="Surname" xml:space="preserve">
+    <value>Nom de famille</value>
+  </data>
+  <data name="TIPS" xml:space="preserve">
+    <value>CONSEILS</value>
+  </data>
+  <data name="TotalBranches" xml:space="preserve">
+    <value>Nombre total d'agences</value>
+  </data>
+  <data name="TotalGrossSalary" xml:space="preserve">
+    <value>Salaire brut total</value>
+  </data>
+  <data name="TotalMembers" xml:space="preserve">
+    <value>Nombre total de membres</value>
+  </data>
+  <data name="TotalNetSalary" xml:space="preserve">
+    <value>Salaire net total</value>
+  </data>
+  <data name="TotalPayrollSummary" xml:space="preserve">
+    <value>Résumé global de la paie</value>
+  </data>
+  <data name="TrackStatus" xml:space="preserve">
+    <value>Suivre le statut</value>
+  </data>
+  <data name="UploadAndManageEmployeeSalaryFilesEasilyAndEfficiently" xml:space="preserve">
+    <value>Téléchargez et gérez les fichiers de paie des employés facilement et efficacement. Utilisez les outils ci-dessous pour télécharger de nouveaux fichiers de paie ou afficher les enregistrements existants</value>
+  </data>
+  <data name="UploadDate" xml:space="preserve">
+    <value>Date de téléchargement</value>
+  </data>
+  <data name="UploadedBy" xml:space="preserve">
+    <value>Téléchargé par</value>
+  </data>
+  <data name="UploadedFiles" xml:space="preserve">
+    <value>Fichiers téléchargés</value>
+  </data>
+  <data name="UploadedOn" xml:space="preserve">
+    <value>Téléchargé le</value>
+  </data>
+  <data name="UploadNewFile" xml:space="preserve">
+    <value>Télécharger un nouveau fichier</value>
+  </data>
+  <data name="UploadNewSalaryFile" xml:space="preserve">
+    <value>Télécharger un nouveau fichier de salaire</value>
+  </data>
+  <data name="UseSearchFiltersToQuicklyLocateSpecificEmployeeSalaryRecords" xml:space="preserve">
+    <value>Utilisez les filtres de recherche</value>
+  </data>
+  <data name="UseThe" xml:space="preserve">
+    <value>Utilisez le</value>
+  </data>
+  <data name="UseTheUploadFormToAddNewSalaryFiles" xml:space="preserve">
+    <value>Utilisez le formulaire de téléchargement</value>
+  </data>
+  <data name="ViewAnalyzeAndManageEmployeeSalarySummariesEfficiently" xml:space="preserve">
+    <value>Affichez, analysez et gérez les résumés de paie des employés</value>
+  </data>
+  <data name="ViewResultOfAnalyzedSalary" xml:space="preserve">
+    <value>Afficher le résultat de l'analyse salariale</value>
+  </data>
+</root>

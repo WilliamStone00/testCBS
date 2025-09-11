@@ -1,0 +1,86 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@using Resources
+@{
+    ViewBag.Title = @CashDesk_Tabs.CashDeskCashinTlt;
+}
+<link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
+
+<!-- Top Member Info -->
+<div class="d-flex flex-wrap align-items-center gap-3 mb-2">
+    <span class="fw-bold text-dark">
+        [@Model.Branch.Name.ToUpper()] : [@Model.Customer.name.ToUpper()]
+    </span>
+
+    @if ((Session["BranchId"]?.ToString()?.ToLower()) == @Model.Branch.Id?.ToLower())
+    {
+        <span class="badge rounded-pill bg-primary-subtle text-primary fw-semibold px-3 py-2 shadow-sm">
+            <i class="mdi mdi-home-map-marker me-1"></i> @CashDesk_Tabs.LocalOperation
+        </span>
+    }
+    else
+    {
+        <span class="badge rounded-pill bg-warning-subtle text-warning fw-semibold px-3 py-2 shadow-sm">
+            <i class="mdi mdi-map-marker-path me-1"></i> @CashDesk_Tabs.InterBranchOperation
+        </span>
+    }
+</div>
+
+<fieldset class="fieldset-custom border border-primary p-3 mb-2 rounded">
+    <legend class="text-primary fw-bold">
+        <i class="fas fa-arrow-down me-1"></i>
+        @(ViewBag.Operation == "newsubcription" ? @CashDesk_Tabs.MemberOnboardingDeposit : @CashDesk_Tabs.CashInOperations)
+    </legend>
+
+    <div class="d-flex flex-wrap gap-2">
+        @if (ViewBag.Operation == "newsubcription")
+        {
+            <!-- Pre-Registered Members -->
+            <a href="#"
+               class="btn btn-sm btn-outline-danger d-flex align-items-center gap-2"
+               onclick="$('#tempMembersModal').modal('show'); setTimeout(loadMemberData, 300);"
+               data-bs-toggle="tooltip"
+               title="@CashDesk_Tabs.ManagePreRegisteredMembers">
+                <i class="mdi mdi-account-alert-outline fs-5"></i> @CashDesk_Tabs.PreRegisteredMembers
+            </a>
+        }
+        else
+        {
+            <!-- Cash Deposit -->
+            <a href="#" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-2"
+               onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','cashin')"
+               data-bs-toggle="tooltip" title="@CashDesk_Tabs.PerformACashDepositIntoTheMembersAccount">
+                <i class="mdi mdi-cash-multiple fs-5"></i> @CashDesk_Tabs.CashIn
+            </a>
+
+            <!-- Loan Repayment -->
+            <a href="#" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-2"
+               onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','repayment')"
+               data-bs-toggle="tooltip" title="@CashDesk_Tabs.RepayALoanForThisMember">
+                <i class="mdi mdi-currency-usd-off fs-5"></i> @CashDesk_Tabs.LoanRepayment
+            </a>
+
+            <!-- Loan Fee Payment -->
+            <a href="#" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-2"
+               onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','loanapplicationfeepayment')"
+               data-bs-toggle="tooltip" title="@CashDesk_Tabs.PayForLoanApplicationProcessing">
+                <i class="mdi mdi-file-document-edit-outline fs-5"></i> @CashDesk_Tabs.LoanFee
+            </a>
+
+            <!-- Notification Charge -->
+            <a href="#" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-2"
+               onclick="GetMemberData('@Model.CustomerId','_OperationDesk','datalistingview','withdrawalnotification')"
+               data-bs-toggle="tooltip" title="@CashDesk_Tabs.PayPendingNotificationFees">
+                <i class="mdi mdi-bell-alert-outline fs-5"></i> @CashDesk_Tabs.NotifCharge
+            </a>
+
+            <!-- Temp Members -->
+            <a href="#"
+               class="btn btn-sm btn-outline-danger d-flex align-items-center gap-2"
+               onclick="$('#tempMembersModal').modal('show'); setTimeout(loadMemberData, 300);"
+               data-bs-toggle="tooltip"
+               title="@CashDesk_Tabs.ManagePreRegisteredMembers">
+                <i class="mdi mdi-account-alert-outline fs-5"></i> @CashDesk_Tabs.PreRegisteredMembers
+            </a>
+        }
+    </div>
+</fieldset>

@@ -1,0 +1,111 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashFlowManagement
+@using Resources
+
+
+<div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+    <div class="accordion-item active">
+        <h2 class="accordion-header text-body d-flex justify-content-between"
+            id="accordionPopoutIconThree">
+            <button type="button"
+                    class="accordion-button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordionPopoutIcon-3"
+                    aria-expanded="true"
+                    aria-controls="accordionPopoutIcon-3">
+                <i class="mdi mdi-bank-plus me-2"></i>
+                @GlobalCashFlowManagement.PROVISIONBANKTOVAULT
+            </button>
+        </h2>
+        <div id="accordionPopoutIcon-3"
+             class="accordion-collapse collapse show"
+             data-bs-parent="#accordionPopoutIcon">
+            <div class="accordion-body">
+                <div id="mainviewChange">
+                    <div class="change-group">
+
+                        @using (Html.BeginForm("Create", "BankingOperation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                        {
+                            <div class="row mt-2 gy-4">
+
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        <label for="Account">@GlobalCashFlowManagement.SelectSourceAccount</label>
+                                        @Html.DropDownListFor(m => m.ManualAccountingEntry.SourceAccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---"+ @GlobalCashFlowManagement.SelectAccount +"---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(model => model.ManualAccountingEntry.SourceAccountId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        <label for="BookingDirection">@GlobalCashFlowManagement.EntryType</label>
+                                        @Html.DropDownListFor(m => m.ManualAccountingEntry.EntryType, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---"+ @GlobalCashFlowManagement.SelectBookingDirection+"---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(model => model.ManualAccountingEntry.EntryType, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(model => model.ManualAccountingEntry.Amount, new { @class = "form-control", placeholder = "XFA 0.0" })
+                                        @Html.ValidationMessageFor(model => model.ManualAccountingEntry.Amount, "", new { @class = "text-danger" })
+                                        <label for="Amount">@GlobalCashFlowManagement.Amount</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextAreaFor(m => m.ManualAccountingEntry.Description, new { @class = "form-control", @style = "height: 200px;" })
+                                        @Html.ValidationMessageFor(model => model.ManualAccountingEntry.Description, "", new { @class = "text-danger" })
+
+                                        <label for="Description"> @GlobalCashFlowManagement.Description</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(model => model.ManualAccountingEntry.ReferenceNumber, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.ManualAccountingEntry.ReferenceNumber, "", new { @class = "text-danger" })
+                                        <label for="ReferenceNumber">@GlobalCashFlowManagement.ReferenceNumber</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    @GlobalCashFlowManagement.ThisIsAManualEntryTransactionReferenceWhichShallBeTracked.
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        <label for="Account">Select Destination Account</label>
+                                        @Html.DropDownListFor(m => m.ManualAccountingEntry.destinationAccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---"+ @GlobalCashFlowManagement.SelectAccount +"---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(model => model.ManualAccountingEntry.destinationAccountId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                @*<div class="form-group">
+            <div class="upload-container">
+                <div class="image-preview">
+                    <img src="" alt="No Image Found" id="previewimage" class="img-fluid" />
+                </div>
+                <label for="imageuploadSignature" class="custom-file-upload">
+                    <i class="fas fa-cloud-upload-alt"></i> Choose Photo
+                </label>
+                <input type="file" name="CustomerDocumentRequest.AttachedFiles" accept="image/jpeg,image/png,image/JPG" id="imageuploadSignature" onchange="ShowImagePreview(this, document.getElementById('previewimage'))" />
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Upload Photo</button>
+        </div>*@
+                            </div>
+
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                                <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+

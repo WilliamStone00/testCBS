@@ -1,0 +1,13 @@
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalDashboard.DailyDashboard;
+}
+
+<input type="hidden" name="branch_id" id="branch_id" value="@ViewBag.BranchID" />
+@Html.Partial("_SharedDBDailyOperations")
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Dashboard/Dailyoperations/BranchOffice.js"></script>
+   
+}

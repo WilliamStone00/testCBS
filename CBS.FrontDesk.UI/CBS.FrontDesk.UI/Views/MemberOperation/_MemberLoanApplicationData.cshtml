@@ -1,0 +1,68 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+@using Resources
+<div class="table-responsive mb-3">
+    <table class="table table-hover table-striped" id="myDataTable">
+        <thead class="table-light">
+            <tr>
+                <th>@Global_MemberLoanApplicationData.Date</th>
+                <th>@Global_MemberLoanApplicationData.LoanType</th>
+                <th>@Global_MemberLoanApplicationData.Amount</th>
+                <th>@Global_MemberLoanApplicationData.Status</th>
+                <th>@Global_MemberLoanApplicationData.Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.LoanApplications.OrderByDescending(app => app.ApplicationDate))
+            {
+                <tr>
+                    <td>@d.ApplicationDate.ToString("dd/MM/yy hh:mm:ss")</td>
+                    <td>
+                        @d.LoanApplicationType
+                    </td>
+                    <td>
+                        @{
+                            var amountFormatted = d.Amount.ToString("#,##0");
+                        }
+                        @amountFormatted
+                    </td>
+                    <td>
+                        @if (d.IsApproved)
+                        {
+                            <span class="badge bg-success text-white">@d.ApprovalStatus</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger text-white">@d.ApprovalStatus</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="#"
+                           onclick="AddORUpdateGen('@d.Id','datalistingview','_MemberLoanApplicationDetail','application_detail','MemberOperation','applications')"
+                           class="btn btn-info btn-sm"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="@Global_MemberLoanApplicationData.ViewDetailsOf @d.LoanType">
+                            <i class="fas fa-info-circle me-1"></i> @Global_MemberLoanApplicationData.Detail
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+
+@*<table class="datatables-users table" id="myDataTable">
+        <thead class="table-light">
+            <tr>
+                <th>Name</th>
+                <th>phone</th>
+                <th>Town</th>
+                <th>Branch</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    </table>*@

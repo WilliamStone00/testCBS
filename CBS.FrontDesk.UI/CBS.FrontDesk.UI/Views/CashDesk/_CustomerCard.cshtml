@@ -1,0 +1,110 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+    @using Resources
+
+<fieldset class="fieldset-custom">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="group-title">
+                @CashDesk_CustomerCard.MemberReference # <span class="highlight-text">@Model.Customer.CustomerId</span><br />
+                <hr />
+                <small>@CashDesk_CustomerCard.MemberCode</small><br />
+                <small>@CashDesk_CustomerCard.BankCode: @Session["BankCode"].ToString()</small><br />
+                <small>@CashDesk_CustomerCard.BranchCode: @Session["BranchCode"].ToString()</small>
+            </h4>
+        </div>
+    </div>
+    <br />
+    <div class="card">
+        <div class="card-body">
+            <h4 class="group-title">
+                @CashDesk_CustomerCard.MemberStatus
+                <hr />
+                @if (Model.Customer.MembershipApprovalStatus == "Approved")
+                {
+                    <small>@CashDesk_CustomerCard.ApprovedBY:  @Model.Customer.MembershipApprovalBy</small><br />
+                    <small>@CashDesk_CustomerCard.ApprovedDate:  @Model.Customer.MembershipApprovedDate</small><br />
+                    <small>@CashDesk_CustomerCard.Status: <span class="highlight-text">@Model.Customer.MembershipApprovalStatus.ToUpper()</span></small>
+                }
+                else
+                {
+                    <small>@CashDesk_CustomerCard.Status: <span class="highlight-text">@Model.Customer.MembershipApprovalStatus</span></small>
+                }
+                <br />
+                <small>@CashDesk_CustomerCard.RegistrationDate: @Model.Customer.MembershipApplicantDate</small>
+            </h4>
+        </div>
+    </div>
+
+
+    <div class="card mt-3">
+        <div class="card-body">
+            <!-- Aligning the card title and Member text in the same row -->
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- Card title aligned to the left -->
+                <h5 class="card-title text-left mb-0">Member: @Model.Customer.name</h5>
+                <hr />
+                <!-- Member name aligned to the right -->
+                <!--<span class="text-end"></span>-->
+            </div>
+            <div class="image-upload-container">
+                <!-- Image for picture -->
+                @if (Model.Customer.photoUrl != null)
+                {
+                    <!-- Clickable photo for preview -->
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#photoPreviewModal">
+                        <img src="@Model.Customer.photoUrl" class="img-fluid preview-image" alt="@CashDesk_CustomerCard.UploadedImage">
+                    </a>
+                    <!-- Modal for photo preview -->
+                    <div class="modal fade" id="photoPreviewModal" tabindex="-1" aria-labelledby="photoPreviewModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <img src="@Model.Customer.photoUrl" class="img-fluid" alt="@CashDesk_CustomerCard.UploadedImage">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <img src="@Url.Content(Model.Customer.ImageNoVirtualPath)" class="img-fluid preview-image" alt="@CashDesk_CustomerCard.NoImageFound" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
+
+                }
+                <!-- ... Other content ... -->
+            </div>
+        </div>
+    </div>
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">Signature</h5>
+            <div class="image-upload-container">
+                <!-- Image for signature -->
+                @if (Model.Customer.signatureUrl != null)
+                {
+                    <!-- Clickable signature for preview -->
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#signaturePreviewModal">
+                        <img src="@Model.Customer.signatureUrl" class="img-fluid preview-image" alt="@CashDesk_CustomerCard.UploadedSignature">
+                    </a>
+                    <!-- Modal for signature preview -->
+                    <div class="modal fade" id="signaturePreviewModal" tabindex="-1" aria-labelledby="signaturePreviewModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <img src="@Model.Customer.signatureUrl" class="img-fluid" alt="@CashDesk_CustomerCard.UploadedSignature">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <img src="@Url.Content(Model.Customer.ImageVirtualNoSignaturePath)" class="img-fluid preview-image" alt="@CashDesk_CustomerCard.NoSignatureFound" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
+
+                }
+                <!-- ... Other content ... -->
+            </div>
+        </div>
+    </div>
+</fieldset>
+
+

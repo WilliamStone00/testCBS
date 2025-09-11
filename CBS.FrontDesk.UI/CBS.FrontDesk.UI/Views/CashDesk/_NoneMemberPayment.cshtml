@@ -1,0 +1,73 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+    @using Resources
+<div class="table-responsive" id="cash_collected" style="width: 100%;">
+    <div class="row mb-3">
+        <div class="col text-end">
+            <label class="form-label fw-semibold me-2">Accounting Date</label>
+            @Html.TextBoxFor(
+                m => m.BulkDeposit.AccountingDate,
+                Model.BulkDeposit.AccountingDate.HasValue
+                    ? Model.BulkDeposit.AccountingDate.Value.ToString("yyyy-MM-dd")
+                    : DateTime.Today.ToString("yyyy-MM-dd"),
+                new
+                {
+                    @class = "form-control accounting-date d-inline-block",
+                    style = "width: 200px; display:inline-block;",
+                    type = "date",
+                    data_date_default = "today",
+                    data_date_max = "today"
+                }
+            )
+            @Html.ValidationMessageFor(m => m.BulkDeposit.AccountingDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <table class="table table-hover" id="myDataTableT">
+        <thead class="table-light">
+            <tr>
+                <th style="display:none;">@CashDesk_NoneMemberPayment.ProductID</th>
+                <th style="display:none;">@CashDesk_NoneMemberPayment.OrdinaryAccounts</th>
+                <th>@CashDesk_NoneMemberPayment.Amount</th>
+                <th style="display:none;">@CashDesk_NoneMemberPayment.Fee</th>
+                <th>@CashDesk_NoneMemberPayment.Total</th>
+                <th>@CashDesk_NoneMemberPayment.Confirm</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.BulkDeposits.Where(x => x.AccountType.ToLower() != "loan").OrderBy(t => t.AccountType))
+            {
+                <tr>
+                    <td style="display:none;">@d.AccountNumber</td>
+                    <td style="display:none;">@d.AccountType</td>
+                    <td>
+                        <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
+                    </td>
+                    <td style="display:none;">
+                        <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee">
+                    </td>
+                    <td>
+                        <span class="total-span">@d.Total</span>
+                    </td>
+                    <td>
+                        <input type="checkbox" class="form-check-input">
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td style="display:none;"></td>
+                <td style="display:none;"></td>
+                <td colspan="1" style="text-align: right;"><strong>@CashDesk_NoneMemberPayment.Total:</strong></td>
+                <td id="tableTotal">0</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="display:none;"></td>
+                <td style="display:none;"></td>
+                <td colspan="1" style="text-align: right;"><strong>@CashDesk_NoneMemberPayment.Difference:</strong></td>
+                <td id="tableBalance">0</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+

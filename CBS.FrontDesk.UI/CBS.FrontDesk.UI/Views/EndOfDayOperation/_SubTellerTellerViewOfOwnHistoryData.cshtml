@@ -1,0 +1,35 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.EndOfTheDay
+@using Resources
+
+<table class="table table-hover" id="myDataTable">
+    <thead class="table-light">
+        <tr>
+            <th>@GlobalEndOfDayOperation.DateOpen</th>
+            <th>@GlobalEndOfDayOperation.DateCloses</th>
+            <th>@GlobalEndOfDayOperation.InitialAmount</th>
+            <th>@GlobalEndOfDayOperation.CashAtHandt</th>
+            <th>@GlobalEndOfDayOperation.ClosedStatus</th>
+            <th>@GlobalEndOfDayOperation.PrimaryTellerStatus</th>
+            <th>@GlobalShared.Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.SubTellerProvioningHistories)
+        {
+            <tr>
+                <td style="width:20%">@d.openedDate</td>
+                <td style="width:20%">@d.clossedDate</td>
+                <td style="width:10%">@d.openOfDayAmount</td>
+                <td style="width:10%">@d.cashAtHand</td>
+                <td style="width:10%">@d.clossedStatus</td>
+                <td style="width:10%">@d.primaryTellerConfirmationStatus</td>
+                <td style="width:20%">
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalEndOfDayOperation.CloseTheOperationOf @d.openOfDayAmount @GlobalEndOfDayOperation.ForDateOf @d.openedDate" onclick="AddORUpdateGen('@d.id','datalistingview','_SubTeller','close','EndOfDayOperation','close_subteller')">@GlobalShared.Close</a>
+                    @*<a href="#" onclick="EditResetModal('@d.id','modal','modalContent','EndOfDayOperation','InitializeData','_SubTellerProvisioningDetails','details','@d.teller.name.ToUpper(), Code: @d.teller.code, OPERATION DETAILS','modalLabel','subteller')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.openOfDayAmount to see details">Details</a> |
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Close the operation of @d.openOfDayAmount for date of @d.openedDate" onclick="EditResetModal('@d.id','modal','modalContent','EndOfDayOperation','InitializeData','_SubTeller','close','CLOSE @d.teller.name.ToUpper() DAILY OPERATION','modalLabel','subteller')">Close</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

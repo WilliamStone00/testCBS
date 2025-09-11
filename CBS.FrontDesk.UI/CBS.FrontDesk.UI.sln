@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CBS.FrontDesk.UI", "CBS.FrontDesk.UI\CBS.FrontDesk.UI.csproj", "{F172CEF7-2184-42D1-A424-96A61F821312}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CBS.FrontDesk.Service", "CBS.BusinessService\CBS.BusinessService\CBS.FrontDesk.Service.csproj", "{C8E30E49-FC55-431E-9832-CF6F28E30C30}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CBS.FrontDesk.Data", "CBS.FrontDesk.Data\CBS.FrontDesk.Data\CBS.FrontDesk.Data.csproj", "{0D7085DF-13B8-4FCE-9E8F-F0FA88FCE730}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CBS.FrontDesk.Helper", "CBS.FrontDesk.Helper\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper.csproj", "{192960F3-C2BA-4286-A4E6-F0B94DA85450}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CBS.API.Helper", "CBS.API.Helper\CBS.API.Helper\CBS.API.Helper.csproj", "{7789DE1E-5232-46A6-9A96-1DD39E708EEB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F172CEF7-2184-42D1-A424-96A61F821312}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F172CEF7-2184-42D1-A424-96A61F821312}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F172CEF7-2184-42D1-A424-96A61F821312}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F172CEF7-2184-42D1-A424-96A61F821312}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8E30E49-FC55-431E-9832-CF6F28E30C30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8E30E49-FC55-431E-9832-CF6F28E30C30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8E30E49-FC55-431E-9832-CF6F28E30C30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8E30E49-FC55-431E-9832-CF6F28E30C30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D7085DF-13B8-4FCE-9E8F-F0FA88FCE730}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D7085DF-13B8-4FCE-9E8F-F0FA88FCE730}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D7085DF-13B8-4FCE-9E8F-F0FA88FCE730}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D7085DF-13B8-4FCE-9E8F-F0FA88FCE730}.Release|Any CPU.Build.0 = Release|Any CPU
+		{192960F3-C2BA-4286-A4E6-F0B94DA85450}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{192960F3-C2BA-4286-A4E6-F0B94DA85450}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{192960F3-C2BA-4286-A4E6-F0B94DA85450}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{192960F3-C2BA-4286-A4E6-F0B94DA85450}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7789DE1E-5232-46A6-9A96-1DD39E708EEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7789DE1E-5232-46A6-9A96-1DD39E708EEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7789DE1E-5232-46A6-9A96-1DD39E708EEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7789DE1E-5232-46A6-9A96-1DD39E708EEB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8862B469-EA79-4596-91E5-CFCB7B423F3F}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,7 @@
+﻿JToken,JToken._annotations,JToken.Type,JToken.HasValues,JToken.Path
+"""data"": null",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,data
+"""errors"": []",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,errors
+"""statusCode"": 409",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,statusCode
+"""statusDescription"": ""Failed, Record already exists. Operation was cancelled""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,statusDescription
+"""message"": ""Country 1420 already exists.""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,message
+"""status"": ""FAILED""",Newtonsoft.Json.Linq.JToken+LineInfoAnnotation,Property,True,status

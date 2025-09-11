@@ -1,0 +1,76 @@
+﻿@using Resources
+@model CBS.FrontDesk.Data.Entity.ChangeNumber.ChangeNumberCarrier
+
+<fieldset class="fieldset-custom p-3 rounded shadow-sm">
+    <legend class="fw-bold text-primary">
+        <i class="mdi mdi-phone me-2"></i> @GlobalChangeNumber.PENDINGPHONENUMBERCHANGEREQUESTS
+    </legend>
+
+    @if (!Model.PhoneNumberChangeHistories.Any())
+    {
+        <div class="text-center my-3">
+            <p class="text-muted">@GlobalChangeNumber.NoPendingPhoneNumberChangeRequests.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive mb-3">
+            <table class="table table-hover table-bordered align-middle" id="myDataTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>@GlobalChangeNumber.CustomerID</th>
+                        <th>@GlobalChangeNumber.MemberName</th>
+                        <th>@GlobalChangeNumber.OldPhoneNumber</th>
+                        <th>@GlobalChangeNumber.NewPhoneNumber</th>
+                        <th>@GlobalChangeNumber.RequestDate</th>
+                        <th>@GlobalShared.Status</th>
+                        <th>@GlobalShared.Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var request in Model.PhoneNumberChangeHistories)
+                    {
+                        <tr>
+                            <td>@request.CustomerId</td>
+                            <td>@request.MemberName</td>
+                            <td>@request.OldPhoneNumber</td>
+                            <td>@request.NewPhoneNumber</td>
+                            <td>@request.DateOfRequest.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>
+                                <span class="badge rounded-pill @(request.Status == "Approved" ? "bg-success" : "bg-warning")">
+                                    <i class="mdi mdi-@(request.Status == "Approved" ? "check-circle-outline" : "alert-circle-outline")"></i>
+                                    @request.Status
+                                </span>
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-center align-items-center gap-2">
+                                    @if (request.Status != "Approved")
+                                    {
+                                        <!-- Approve Button -->
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-success approve-phone-change"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#phoneChangeModal"
+                                            data-id="@request.Id">
+                                        <i class="mdi mdi-check-circle-outline me-1"></i> @GlobalShared.Decision
+                                    </button>
+                                    }
+
+                                    <!-- View Details Button -->
+                                    @*<button type="button"
+                                            class="btn btn-sm btn-outline-info view-phone-change-details"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#phoneChangeModal"
+                                            data-id="@request.Id">
+                                        <i class="mdi mdi-information-outline me-1"></i> Details
+                                    </button>*@
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</fieldset>
+

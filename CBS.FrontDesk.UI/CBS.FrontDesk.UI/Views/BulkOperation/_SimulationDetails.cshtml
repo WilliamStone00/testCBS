@@ -1,0 +1,256 @@
+﻿@model  CBS.FrontDesk.Data.Entity.BulkOperation.BulkOperationData
+@using Resources
+@{ 
+    var firstMember = Model.BulkOperationSimulationDetails.FirstOrDefault();
+    var sourceAccountype = firstMember != null ? firstMember.SourceAccountType : "N/A";
+    var destinationAccountype = firstMember != null ? firstMember.DestinationAccountNumber : "N/A";
+}
+
+<style>
+    .is-invalid {
+        border-color: red !important;
+        background-color: #fff0f0;
+    }
+</style>
+<link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
+
+<div class="card-body">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0">@GlobalBulkOperation.OperationInformation</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.SimulationType</label>
+                        <div class="col-sm-8">
+                            <div class="form-control">@(Model.SimulationType?.ToUpper())</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Branch</label>
+                        <div class="col-sm-8">
+                            <div class="form-control">@(Model.BranchName?.ToUpper()) (@Model.BranchCode)</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Bank</label>
+                        <div class="col-sm-8">
+                            <div class="form-control">@(Model.BankName?.ToUpper()) (@Model.BankCode)</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.TotalVolume</label>
+                        <div class="col-sm-8">
+                            <div class="form-control">@Model.TotalVolume</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.TotalMembers</label>
+                        <div class="col-sm-8">
+                            <div class="form-control">@Model.TotalMembers</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Source Account Type</label>
+                        <div class="col-sm-8">
+                            <div class="form-control">@(sourceAccountype?.ToUpper())</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Destination Account Type</label>
+                        <div class="col-sm-8">
+                            <div class="form-control">@(destinationAccountype?.ToUpper())</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0">@GlobalBulkOperation.ApprovalInformation</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Status</label>
+                        <div class="col-sm-8">
+                            <span class="badge @Model.ApprovalStatusBadge">@(Model.ApprovalStatus?.ToUpper())</span>
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.CreatedBy</label>
+                        <div class="col-sm-8">
+                            <div class="form-control">@(string.IsNullOrEmpty(Model.CreatedBy) ? "N/A" : Model.CreatedBy.ToUpper())</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.ApprovedBy</label>
+                        <div class="col-sm-8">
+                            <div class="form-control">@(string.IsNullOrEmpty(Model.ApprovalBy) ? "N/A" : Model.ApprovalBy.ToUpper())</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.ApprovalDate</label>
+                        <div class="col-sm-8">
+                            <div class="form-control">@(Model.ApprovalValidationDate == default(DateTime) ? "N/A" : Model.ApprovalValidationDate.ToString("dd/MM/yyyy HH:mm:ss"))</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Description</label>
+                        <div class="col-sm-8">
+                            <div class="form-control">@(string.IsNullOrEmpty(Model.ApprovalValidationDescription) ? "N/A" : Model.ApprovalValidationDescription)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion" id="collapsibleSection">
+        <div class="card accordion-item mb-3">
+            <h2 class="accordion-header" id="headingMembers">
+                <button type="button"
+                        class="accordion-button collapsed"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseMembers"
+                        aria-expanded="false"
+                        aria-controls="collapseMembers">
+                    <i class="fas fa-users me-2"></i>@GlobalBulkOperation.OperationMembers (@Model.TotalMembers)
+                </button>
+            </h2>
+            <div id="collapseMembers" class="accordion-collapse collapse" aria-labelledby="headingMembers">
+                <div class="accordion-body">
+                    @Html.Partial("_SimulationDetailsDataTable", Model)
+                </div>
+            </div>
+        </div>
+
+        <div class="card accordion-item mb-3">
+            <h2 class="accordion-header" id="headingActions">
+                <button type="button"
+                        class="accordion-button collapsed"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseActions"
+                        aria-expanded="false"
+                        aria-controls="collapseActions">
+                    <i class="fas fa-tasks me-2"></i>@GlobalBulkOperation.AvailableActions
+                </button>
+            </h2>
+            <div id="collapseActions"
+                 class="accordion-collapse collapse"
+                 aria-labelledby="headingActions"
+                 data-bs-parent="#collapsibleSection">
+                <div class="accordion-body">
+                    <div class="d-flex gap-2">
+                        @if (@Model.ApprovalStatus != "Approved")
+                        {
+                            <button type="button" class="btn btn-primary" id="approveBulkOperation" data-simulation-id="@Model.Id">
+                                <i class="fas fa-check me-1"></i> @GlobalBulkOperation.PerformActions
+                            </button>
+                            @* <button type="button" class="btn btn-warning" id="reviewBulkOperation" data-simulation-id="@Model.Id">
+                                    <i class="fas fa-search me-1"></i> Send for Review
+                                </button>*@
+                        }
+                        <button type="button" class="btn btn-info" data-bs-toggle="tooltip" title="Export bulk operation Analysis to Excel" onclick="exportBulkOperation('@Model.Id')">
+                            <i class="fas fa-download me-1"></i> Export Bulk Operation to Excel
+                        </button>
+                        <button type="button" class="btn btn-danger"  data-bs-toggle="tooltip" title="Delete bulk operation Analysis to Excel" onclick="deleteBulkOperation('@Model.Id','@Model.SimulationType')">
+                            <i class="fas fa-trash me-1"></i> Delete Simulation 
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Modal -->
+<!-- Transfer Details Modal -->
+<div class="modal fade" id="transferDetailsModal" tabindex="-1" aria-labelledby="transferDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content position-relative">
+
+            <!-- Loader Overlay -->
+            <div id="transferDetailsLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                    <div class="spinner-border text-primary mb-3" role="status"></div>
+                    <p class="fw-semibold text-primary">@GlobalBulkOperation.LoadingTransferDetails...</p>
+                </div>
+            </div>
+
+            <!-- Modal Header -->
+            <div class="modal-header border-0">
+                <div class="w-100">
+                    <div class="card bg-light mb-2">
+                        <div class="card-body text-center">
+                            <h1 class="card-title text-primary">
+                                <i class="mdi mdi-bank-transfer me-2"></i>@GlobalBulkOperation.TransferDetails
+                            </h1>
+                            <p class="card-text lead">
+                               @(Model.SimulationType?.ToUpper())
+                            </p>
+                            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tips Section (optional) -->
+            <div class="card m-3">
+                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                    <span><i class="mdi mdi-information-outline me-2"></i> @GlobalBulkOperation.AboutThisTransfer</span>
+                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTransferTips">
+                        <i class="mdi mdi-chevron-down"></i>
+                    </button>
+                </h6>
+                <div id="collapseTransferTips" class="collapse">
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li><i class="mdi mdi-clock-outline text-primary me-2"></i><strong>@GlobalBulkOperation.RealTime:</strong> @GlobalBulkOperation.ShowsTheMostCurrentTransferStatus.</li>
+                            <li><i class="mdi mdi-shield-check-outline text-success me-2"></i><strong>@GlobalBulkOperation.Secure:</strong> @GlobalBulkOperation.AllInformationIsEncrypted.</li>
+                            <li><i class="mdi mdi-history text-warning me-2"></i><strong>@GlobalBulkOperation.CompleteHistory:</strong> @GlobalBulkOperation.ShowsFullTransactionDetails.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="modal-body p-4">
+                <div id="transferDetailsContent" class="details-grid">
+                    <!-- Content will be loaded dynamically -->
+                    <div class="loading-container text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">@GlobalBulkOperation.Loading...</span>
+                        </div>
+                        <p class="mt-2">@GlobalBulkOperation.LoadingTransferDetails...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer border-0 justify-content-between">
+                <div>
+                    <span class="text-muted fw-semibold">
+                        @GlobalBulkOperation.TransactionID: <span class="text-dark" id="transferTransactionId">@Model.Id</span>
+                    </span>
+                </div>
+                <div class="text-center w-100">
+                    <small class="text-muted">@GlobalBulkOperation.PoweredBy FLX-CBS</small>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="mdi mdi-close"></i> @GlobalShared.Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

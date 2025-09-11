@@ -1,0 +1,58 @@
+﻿@model CBS.FrontDesk.Data.Entity.DailyCollectorManagement.DailyCollectionConfiguration
+
+
+@{
+    ViewBag.Title = "CommissionSettings List";
+}
+
+
+
+
+<table class="table table-hover" id="myDataTable">
+    <thead class="table-light">
+        <tr>
+            <th> OperationType</th>
+            <th> Type</th>
+            <th> Provider</th>
+            <th> Scope</th>
+            <th> InterBranch</th>
+            <th> AgentShare</th>
+            <th> ProviderShare</th>
+            <th> AmountPerTransaction</th>
+            <th> Action</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var d in Model.CommissionSettings)
+        {
+            <tr>
+                <td>@d.OperationType</td>
+                <td>@(d.IsProportional ? "Proportional" : "Fixed")</td>
+                <td>@d.ProviderType</td>
+                <td>
+                    @(
+              d.IsGlobal ? "Global" :
+              d.IsBranch ? "Branch" :
+              d.IsAgent ? "Agent" : "-"
+          )
+                </td>
+                <td>@(d.IsInterbranch ?  "YES" :  "NO")</td>
+                <td>@(d.AgentShare)%</td>
+                <td>@(d.CommissionProviderShare)%</td>
+                <td>@d.AgentShare</td>
+                <td>
+                    <a href="#" class="btn btn-dark" onclick="AddORUpdateGen('@d.Id','datalistingview_CommissionSetting','_CreateCommissionSetting','update','DailyCollectionSetting','commissionSetting')" class="Modelr-2" data-toggle="tooltip" title="Edit">
+                        Edit
+                    </a> |
+                    <a href="#"  class="btn btn-danger" onclick="DeleteData('DailyCollectionSetting','@d.Id','myDataTable','_CommissionSettingData',0,'datalistingview_CommissionSetting','commissionSetting')" class="text-danger" data-toggle="tooltip" title="Delete">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+
+
+
+    </tbody>
+</table>

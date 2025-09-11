@@ -1,0 +1,23 @@
+﻿@using Resources
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0"><i class="mdi mdi-bank me-1"></i> Account Opening Rules Per Branch</h5>
+    </div>
+    <div class="card-body">
+        <table id="accountOpeningRulesTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th>@AccountOpeningRuleModal_Data.Branch</th>
+                    <th>@AccountOpeningRuleModal_Data.BranchCode</th>
+                    <th>@AccountOpeningRuleModal_Data.LegalForm</th>
+                    <th>@AccountOpeningRuleModal_Data.SavingProduct</th>
+                    <th>@AccountOpeningRuleModal_Data.MinBalance</th>
+                    <th>@AccountOpeningRuleModal_Data.MaxBalance</th>
+                    <th>@AccountOpeningRuleModal_Data.OpeningRequired</th>
+                    <th>@AccountOpeningRuleModal_Data.PayInInstallments</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>

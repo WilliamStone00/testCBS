@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Date_Issued" xml:space="preserve">
+    <value>Date d'émission</value>
+  </data>
+  <data name="Approved_By" xml:space="preserve">
+    <value>Approuvé par</value>
+  </data>
+  <data name="Approved_Date" xml:space="preserve">
+    <value>Date d'approbation</value>
+  </data>
+  <data name="Issuer" xml:space="preserve">
+    <value>Émetteur</value>
+  </data>
+  <data name="Issuer_Information" xml:space="preserve">
+    <value>Informations sur l'émetteur</value>
+  </data>
+  <data name="Journal_Entry_Status" xml:space="preserve">
+    <value>Statut de l'écriture comptable</value>
+  </data>
+  <data name="loading" xml:space="preserve">
+    <value>Chargement</value>
+  </data>
+  <data name="Posting_Source" xml:space="preserve">
+    <value>Source de publication</value>
+  </data>
+  <data name="Purpose" xml:space="preserve">
+    <value>Objet</value>
+  </data>
+  <data name="Account_Number" xml:space="preserve">
+    <value>Numéro de compte</value>
+  </data>
+  <data name="Debit" xml:space="preserve">
+    <value>Débit</value>
+  </data>
+  <data name="Credit" xml:space="preserve">
+    <value>Crédit</value>
+  </data>
+  <data name="DECISION_STATEMENT" xml:space="preserve">
+    <value>DÉCLARATION DE DÉCISION</value>
+  </data>
+  <data name="The_comment_field_is_required" xml:space="preserve">
+    <value>Le champ de commentaire est requis</value>
+  </data>
+  <data name="Journal_Entries_Reference_loading" xml:space="preserve">
+    <value>Référence des écritures comptables : chargement</value>
+  </data>
+  <data name="ReferenceId" xml:space="preserve">
+    <value>ID de référence</value>
+  </data>
+  <data name="AccountName" xml:space="preserve">
+    <value>Nom du compte</value>
+  </data>
+  <data name="AccountBalance" xml:space="preserve">
+    <value>Solde du compte</value>
+  </data>
+  <data name="BookingDirection" xml:space="preserve">
+    <value>Direction de l'écriture</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Montant</value>
+  </data>
+  <data name="SelectAccount" xml:space="preserve">
+    <value>Sélectionner un compte</value>
+  </data>
+  <data name="SelectBookingDirection" xml:space="preserve">
+    <value>Sélectionner la direction de l'écriture</value>
+  </data>
+  <data name="Journal_Entry_at_this_level_can_only _be_passed_from_branch_office_terminal" xml:space="preserve">
+    <value>L'écriture comptable à ce niveau ne peut être passée que depuis le terminal de l'agence. Veuillez contacter le responsable de l'agence concerné</value>
+  </data>
+  <data name="PostEntries" xml:space="preserve">
+    <value>Publier les écritures</value>
+  </data>
+  <data name="Purpose_of_the_Entry" xml:space="preserve">
+    <value>Objet de l'écriture</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Event_Entry_Metadata" xml:space="preserve">
+    <value>Métadonnées de l'événement</value>
+  </data>
+  <data name="Accounting_Event_Name" xml:space="preserve">
+    <value>Nom de l'événement comptable</value>
+  </data>
+  <data name="Amount_to_be_executed_in_journal" xml:space="preserve">
+    <value>Montant à exécuter dans le journal</value>
+  </data>
+  <data name="Is_Validation_Needed" xml:space="preserve">
+    <value>Validation nécessaire</value>
+  </data>
+  <data name="Select_Eligible_Branches" xml:space="preserve">
+    <value>Sélectionner les succursales éligibles</value>
+  </data>
+  <data name="Select_Entry_Type" xml:space="preserve">
+    <value>Sélectionner le type d'écriture</value>
+  </data>
+  <data name="Select_Transaction" xml:space="preserve">
+    <value>Sélectionner la transaction</value>
+  </data>
+  <data name="Select_Level_of_Execution" xml:space="preserve">
+    <value>Sélectionner le niveau d'exécution</value>
+  </data>
+  <data name="Is_a_chain_entry" xml:space="preserve">
+    <value>Est une écriture en chaîne</value>
+  </data>
+  <data name="Select_Chain_Event_Entry" xml:space="preserve">
+    <value>Sélectionner l'écriture d'événement en chaîne</value>
+  </data>
+  <data name="Accounting_Event_Entry_Rule" xml:space="preserve">
+    <value>Règle d'écriture comptable</value>
+  </data>
+  <data name="Select_Chart_of_Account" xml:space="preserve">
+    <value>Sélectionner le plan comptable</value>
+  </data>
+  <data name="AddEntryRule" xml:space="preserve">
+    <value>Ajouter une règle d'écriture</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Sélectionner</value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Direction</value>
+  </data>
+  <data name="ChartOfAccount" xml:space="preserve">
+    <value>Plan comptable</value>
+  </data>
+  <data name="Registered_Accounting_Entry_Rule" xml:space="preserve">
+    <value>Règle d'écriture comptable enregistrée</value>
+  </data>
+  <data name="SaveEventEntryRule" xml:space="preserve">
+    <value>Enregistrer la règle d'écriture comptable</value>
+  </data>
+  <data name="UpdateEventEntryRule" xml:space="preserve">
+    <value>Mettre à jour la règle d'écriture comptable</value>
+  </data>
+  <data name="SubmitEntry" xml:space="preserve">
+    <value>Soumettre l'écriture</value>
+  </data>
+  <data name="EnterReasonForManualEntry" xml:space="preserve">
+    <value>Entrez la raison de l'écriture manuelle</value>
+  </data>
+  <data name="ConfiguredManualJournalEntry" xml:space="preserve">
+    <value>Écriture manuelle configurée</value>
+  </data>
+  <data name="EntryMetadata" xml:space="preserve">
+    <value>Métadonnées de l'écriture</value>
+  </data>
+  <data name="EventName" xml:space="preserve">
+    <value>Nom de l'événement</value>
+  </data>
+  <data name="DoubleValidationNeeded" xml:space="preserve">
+    <value>Double validation nécessaire</value>
+  </data>
+  <data name="LevelOfExecution" xml:space="preserve">
+    <value>Niveau d'exécution</value>
+  </data>
+  <data name="IsChainExecution" xml:space="preserve">
+    <value>Est une exécution en chaîne</value>
+  </data>
+  <data name="NextAccountingEvent" xml:space="preserve">
+    <value>Prochain événement comptable</value>
+  </data>
+  <data name="AddEntry" xml:space="preserve">
+    <value>Ajouter une écriture</value>
+  </data>
+  <data name="AccountingEntries" xml:space="preserve">
+    <value>Écritures comptables</value>
+  </data>
+  <data name="TransactionReference" xml:space="preserve">
+    <value>Référence de transaction</value>
+  </data>
+  <data name="AccountDescription" xml:space="preserve">
+    <value>Description du compte</value>
+  </data>
+  <data name="TOTAL" xml:space="preserve">
+    <value>TOTAL</value>
+  </data>
+  <data name="NoAccountingRulesAvailable" xml:space="preserve">
+    <value>Aucune règle comptable disponible</value>
+  </data>
+  <data name="TotalDebit" xml:space="preserve">
+    <value>Total débit</value>
+  </data>
+  <data name="TotalCredit" xml:space="preserve">
+    <value>Total crédit</value>
+  </data>
+  <data name="Difference" xml:space="preserve">
+    <value>Différence</value>
+  </data>
+  <data name="AccountNumber" xml:space="preserve">
+    <value>Numéro de compte</value>
+  </data>
+  <data name="Loading_" xml:space="preserve">
+    <value>Chargement</value>
+  </data>
+  <data name="PASSINGJOURNALENTRYFOR" xml:space="preserve">
+    <value>PASSAGE DE L'ÉCRITURE COMPTABLE POUR</value>
+  </data>
+  <data name="RuleName" xml:space="preserve">
+    <value>Nom de la règle</value>
+  </data>
+  <data name="ApproveReject" xml:space="preserve">
+    <value>Approuver/Rejeter</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Reference" xml:space="preserve">
+    <value>Référence</value>
+  </data>
+  <data name="IssuedBy" xml:space="preserve">
+    <value>Émis par</value>
+  </data>
+  <data name="IssuedDate" xml:space="preserve">
+    <value>Date d'émission</value>
+  </data>
+  <data name="IssuerInformation" xml:space="preserve">
+    <value>Informations sur l'émetteur</value>
+  </data>
+  <data name="PostingSource" xml:space="preserve">
+    <value>Source de publication</value>
+  </data>
+  <data name="DateIssued" xml:space="preserve">
+    <value>Date d'émission</value>
+  </data>
+  <data name="ApprovedDate" xml:space="preserve">
+    <value>Date d'approbation</value>
+  </data>
+  <data name="ApprovedBy" xml:space="preserve">
+    <value>Approuvé par</value>
+  </data>
+  <data name="JournalEntryStatus" xml:space="preserve">
+    <value>Statut de l'écriture comptable</value>
+  </data>
+  <data name="TheCommentFieldIsRequired" xml:space="preserve">
+    <value>Le champ de commentaire est requis</value>
+  </data>
+  <data name="DECISIONSTATEMENT" xml:space="preserve">
+    <value>DÉCLARATION DE DÉCISION</value>
+  </data>
+  <data name="SelectBranchOffice" xml:space="preserve">
+    <value>Sélectionner l'agence</value>
+  </data>
+  <data name="SelectUsersInTheBranch" xml:space="preserve">
+    <value>Sélectionner les utilisateurs de l'agence</value>
+  </data>
+  <data name="CheckIfTheApproverIsOutOfTheIssuingBranch" xml:space="preserve">
+    <value>Vérifiez si l'approbateur est hors de l'agence émettrice</value>
+  </data>
+  <data name="SelectUsersInTheSystem" xml:space="preserve">
+    <value>Sélectionner les utilisateurs du système</value>
+  </data>
+  <data name="SelectFilteringOption" xml:space="preserve">
+    <value>Sélectionner l'option de filtrage</value>
+  </data>
+  <data name="ToDate" xml:space="preserve">
+    <value>À date</value>
+  </data>
+  <data name="SearchJournalEntry" xml:space="preserve">
+    <value>Rechercher une écriture comptable</value>
+  </data>
+  <data name="FromDate" xml:space="preserve">
+    <value>De date</value>
+  </data>
+  <data name="AccountingEntryRules" xml:space="preserve">
+    <value>Règles d'écriture comptable</value>
+  </data>
+  <data name="SelectChainEventEntry" xml:space="preserve">
+    <value>Sélectionner l'écriture d'événement en chaîne</value>
+  </data>
+  <data name="IsAChainEntry" xml:space="preserve">
+    <value>Est une écriture en chaîne</value>
+  </data>
+  <data name="SelectTransaction" xml:space="preserve">
+    <value>Sélectionner la transaction</value>
+  </data>
+  <data name="SelectLevelOfExecution" xml:space="preserve">
+    <value>Sélectionner le niveau d'exécution</value>
+  </data>
+  <data name="SelectEntryType" xml:space="preserve">
+    <value>Sélectionner le type d'écriture</value>
+  </data>
+  <data name="SelectEligibleBranches" xml:space="preserve">
+    <value>Sélectionner les succursales éligibles</value>
+  </data>
+  <data name="IsValidationNeeded" xml:space="preserve">
+    <value>Validation nécessaire</value>
+  </data>
+  <data name="EnterEventName" xml:space="preserve">
+    <value>Entrez le nom de l'événement</value>
+  </data>
+  <data name="EventEntryMetadata" xml:space="preserve">
+    <value>Métadonnées de l'événement</value>
+  </data>
+  <data name="SettingAccountingEventEntryRule" xml:space="preserve">
+    <value>Définition de la règle d'écriture comptable</value>
+  </data>
+  <data name="EnterDescription" xml:space="preserve">
+    <value>Entrez la description</value>
+  </data>
+  <data name="INITIATEEXCEPTIONALJOURNALENTRY" xml:space="preserve">
+    <value>INITIER UNE ÉCRITURE COMPTABLE EXCEPTIONNELLE</value>
+  </data>
+  <data name="Reason" xml:space="preserve">
+    <value>Raison</value>
+  </data>
+  <data name="ValueDate" xml:space="preserve">
+    <value>Date de valeur</value>
+  </data>
+  <data name="CurrentBalance" xml:space="preserve">
+    <value>Solde actuel</value>
+  </data>
+  <data name="SelectDirection" xml:space="preserve">
+    <value>Sélectionner la direction</value>
+  </data>
+  <data name="EventDescription" xml:space="preserve">
+    <value>Description de l'événement</value>
+  </data>
+  <data name="AmountToBeExecuted" xml:space="preserve">
+    <value>Montant à exécuter</value>
+  </data>
+  <data name="ChainEntry" xml:space="preserve">
+    <value>Chaîne d'écriture</value>
+  </data>
+  <data name="EntryType" xml:space="preserve">
+    <value>Type d'écriture</value>
+  </data>
+  <data name="ListOfAccountingEntriesInvolve" xml:space="preserve">
+    <value>Liste des écritures comptables impliquées</value>
+  </data>
+  <data name="YES" xml:space="preserve">
+    <value>OUI</value>
+  </data>
+  <data name="YouHaveRequestedToDeleteTheAccountingEventRule" xml:space="preserve">
+    <value>Vous avez demandé de supprimer la règle d'événement comptable avec les détails suivants</value>
+  </data>
+  <data name="ThisActionCannotBeUndone" xml:space="preserve">
+    <value>Cette action ne peut pas être annulée</value>
+  </data>
+  <data name="PleaseConfirmThatYouWouldLikeToPermanentlyDeleteThisAccountingEvent" xml:space="preserve">
+    <value>Veuillez confirmer que vous souhaitez supprimer définitivement cette règle d'événement comptable et ses données associées</value>
+  </data>
+  <data name="BranchsEligibleForTheExecutionOf" xml:space="preserve">
+    <value>Agence éligibles pour l'exécution de</value>
+  </data>
+  <data name="INITIATEJOURNALENTRY" xml:space="preserve">
+    <value>INITIER UNE ÉCRITURE COMPTABLE</value>
+  </data>
+  <data name="FilterByBranch" xml:space="preserve">
+    <value>Filtrer par agence</value>
+  </data>
+  <data name="DateRange" xml:space="preserve">
+    <value>Plage de dates</value>
+  </data>
+  <data name="FilterByRequestStatus" xml:space="preserve">
+    <value>Filtrer par statut de demande</value>
+  </data>
+  <data name="FilterByRequestIssuer" xml:space="preserve">
+    <value>Filtrer par émetteur de demande</value>
+  </data>
+  <data name="FilterByRequestApprover" xml:space="preserve">
+    <value>Filtrer par approbateur de demande</value>
+  </data>
+  <data name="AvailableOnlyWhenAssignedByTheHeadOffice" xml:space="preserve">
+    <value>Disponible uniquement lorsqu'il est attribué par le siège</value>
+  </data>
+  <data name="SpecifyADateRangeToFilterJournalEntriesAccordingly" xml:space="preserve">
+    <value>Spécifiez une plage de dates pour filtrer les écritures comptables en conséquence</value>
+  </data>
+  <data name="FilterBasedOnTheStatus" xml:space="preserve">
+    <value>Filtrer en fonction du statut — en attente, rejeté ou approuvé</value>
+  </data>
+  <data name="SelectTheUserWhoInitiatedTheRequestWithinTheBranch" xml:space="preserve">
+    <value>Sélectionnez l'utilisateur qui a initié la demande au sein de l'agence</value>
+  </data>
+  <data name="SelectTheUserWhoApprovedTheRequest" xml:space="preserve">
+    <value>Sélectionnez l'utilisateur qui a approuvé la demande — peut être de l'agence ou de l'ensemble du système</value>
+  </data>
+  <data name="JOURNALENTRIES" xml:space="preserve">
+    <value>ÉCRITURES COMPTABLES</value>
+  </data>
+  <data name="VALIDATEJOURNALENTRIES" xml:space="preserve">
+    <value>VALIDER LES ÉCRITURES COMPTABLES</value>
+  </data>
+  <data name="TheJournalEntriesRetrievedInThisInterfaceIncludeDataFromTheLastFinancialYear" xml:space="preserve">
+    <value>Les écritures comptables récupérées dans cette interface incluent les données de l'année financière précédente</value>
+  </data>
+  <data name="TIPSFORFILTERINGJOURNALENTRIES" xml:space="preserve">
+    <value>CONSEILS POUR FILTRER LES ÉCRITURES COMPTABLES</value>
+  </data>
+  <data name="andTheCurrentYear" xml:space="preserve">
+    <value>et l'année en cours</value>
+  </data>
+  <data name="InCaseYouWishToHaveDataAboveThePeriod" xml:space="preserve">
+    <value>Si vous souhaitez avoir des données au-delà de la période de l'année, veuillez contacter votre administrateur système</value>
+  </data>
+  <data name="BranchId" xml:space="preserve">
+    <value>Branch</value>
+  </data>
+</root>

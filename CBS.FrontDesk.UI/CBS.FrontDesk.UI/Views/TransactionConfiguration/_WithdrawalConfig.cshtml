@@ -1,0 +1,143 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+@using Resources
+
+@using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    <!-- Withdrawal Policies Section -->
+    <fieldset class="fieldset-custom mb-4">
+        <legend>@Globals_WithdrawalConfig.WithdrawalPoliciesFor @Model.SavingProduct.Name</legend>
+        <input type="hidden" name="ServiceOption" value="withdrawallimit" id="ServiceOption" />
+        @Html.HiddenFor(m => m.WithdrawalLimit.ProductId)
+        <div class="row g-4">
+            <!-- Withdrawal Type -->
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(
+                        m => m.WithdrawalLimit.WithdrawalType,
+                        new SelectList(ViewBag.WithdrawalLimitTypes, "Text", "Value"),
+                        @Globals_WithdrawalConfig.SelectWithdrawalLimitType,
+                        new { @class = "form-control select2", @search = "true" }
+                    )
+                    @Html.ValidationMessageFor(m => m.WithdrawalLimit.WithdrawalType, "", new { @class = "text-danger" })
+                    <label>@Globals_WithdrawalConfig.SelectWithdrawalLimitType</label>
+                </div>
+            </div>
+            <!-- Minimum Withdrawal -->
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalLimit.MinAmount, new { @class = "form-control", placeholder = @Globals_WithdrawalConfig.MinimumWithdrawal })
+                    @Html.ValidationMessageFor(m => m.WithdrawalLimit.MinAmount, "", new { @class = "text-danger" })
+                    <label>@Globals_WithdrawalConfig.MinimumWithdrawal</label>
+                </div>
+            </div>
+            <!-- Maximum Withdrawal -->
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalLimit.MaxAmount, new { @class = "form-control", placeholder = @Globals_WithdrawalConfig.MaximumWithdrawal })
+                    @Html.ValidationMessageFor(m => m.WithdrawalLimit.MaxAmount, "", new { @class = "text-danger" })
+                    <label>@Globals_WithdrawalConfig.MaximumWithdrawal</label>
+                </div>
+            </div>
+            <!-- Withdrawal Form Fee (Moral Person) -->
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalLimit.MoralPersonWithdrawalFormFee, new { @class = "form-control", placeholder = @Globals_WithdrawalConfig.FromFeeMoralPerson })
+                    @Html.ValidationMessageFor(m => m.WithdrawalLimit.MoralPersonWithdrawalFormFee, "", new { @class = "text-danger" })
+                    <label>@Globals_WithdrawalConfig.WithdrawalFormChargeMoralPerson</label>
+                </div>
+            </div>
+            <!-- Withdrawal Form Fee (Physical Person) -->
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalLimit.PhysicalPersonWithdrawalFormFee, new { @class = "form-control", placeholder = @Globals_WithdrawalConfig.FromFeePhysicalPerson })
+                    @Html.ValidationMessageFor(m => m.WithdrawalLimit.PhysicalPersonWithdrawalFormFee, "", new { @class = "text-danger" })
+                    <label>@Globals_WithdrawalConfig.WithdrawalFormChargePhysicalPerson</label>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <!-- Notification Section -->
+    <fieldset class="fieldset-custom mb-4">
+        <legend>@Globals_WithdrawalConfig.NotificationOnWithdrawal</legend>
+        <div class="row g-4">
+            <!-- Notification Checkbox -->
+            <div class="col-12">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.WithdrawalLimit.MustNotifyOnWithdrawal, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="isActive">@Globals_WithdrawalConfig.MustNotifyOnWithdrawal</label>
+                </div>
+            </div>
+            <!-- Notification Period -->
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalLimit.NotificationPeriodInMonths, new { @class = "form-control", placeholder = @Globals_WithdrawalConfig.NotificationDurationInMonths })
+                    @Html.ValidationMessageFor(m => m.WithdrawalLimit.NotificationPeriodInMonths, "", new { @class = "text-danger" })
+                    <label>@Globals_WithdrawalConfig.EnterNotificationDuration</label>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <!-- Sharing Section -->
+    <fieldset class="fieldset-custom">
+        <legend>@Globals_WithdrawalConfig.Sharing</legend>
+        <div class="row g-4">
+            <!-- Source Branch Share -->
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalLimit.SourceBrachOfficeShare, new { @class = "form-control", placeholder = @Globals_WithdrawalConfig.SourceBranchShare })
+                    @Html.ValidationMessageFor(m => m.WithdrawalLimit.SourceBrachOfficeShare, "", new { @class = "text-danger" })
+                    <label>@Globals_WithdrawalConfig.SourceBranchShare (%)</label>
+                </div>
+            </div>
+            <!-- Destination Branch Share -->
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalLimit.DestinationBranchOfficeShare, new { @class = "form-control", placeholder = @Globals_WithdrawalConfig.DestinationBranchShare })
+                    @Html.ValidationMessageFor(m => m.WithdrawalLimit.DestinationBranchOfficeShare, "", new { @class = "text-danger" })
+                    <label>@Globals_WithdrawalConfig.DestinationBranchShare (%)</label>
+                </div>
+            </div>
+            <!-- Head Office Share -->
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalLimit.HeadOfficeShare, new { @class = "form-control", placeholder = @Globals_WithdrawalConfig.HeadOfficeShare })
+                    @Html.ValidationMessageFor(m => m.WithdrawalLimit.HeadOfficeShare, "", new { @class = "text-danger" })
+                    <label>@Globals_WithdrawalConfig.HeadOfficeShare (%)</label>
+                </div>
+            </div>
+            <!-- Flux and PTM Share -->
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalLimit.FluxAndPTMShare, new { @class = "form-control", placeholder = @Globals_WithdrawalConfig.FluxAndPTMShare })
+                    @Html.ValidationMessageFor(m => m.WithdrawalLimit.FluxAndPTMShare, "", new { @class = "text-danger" })
+                    <label>@Globals_WithdrawalConfig.FluxAndPTMShare (%)</label>
+                </div>
+            </div>
+            <!-- CamCCUL Share -->
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.WithdrawalLimit.CamCCULShare, new { @class = "form-control", placeholder = @Globals_WithdrawalConfig.CamCCULShare })
+                    @Html.ValidationMessageFor(m => m.WithdrawalLimit.CamCCULShare, "", new { @class = "text-danger" })
+                    <label>@Globals_WithdrawalConfig.CamCCULShare (%)</label>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <!-- Action Buttons -->
+    <div class="mt-4 text-end">
+        @if (Model.WithdrawalLimit.Id == null)
+        {
+            <button type="submit" class="btn btn-primary">@Globals_WithdrawalConfig.Save</button>
+            <input type="hidden" name="Action" value="insert" id="Action" />
+        }
+        else
+        {
+            <button type="submit" class="btn btn-primary">@Globals_WithdrawalConfig.Update</button>
+            @Html.HiddenFor(m => m.WithdrawalLimit.Id)
+            <input type="hidden" name="Action" value="update" id="Action" />
+        }
+    </div>
+}

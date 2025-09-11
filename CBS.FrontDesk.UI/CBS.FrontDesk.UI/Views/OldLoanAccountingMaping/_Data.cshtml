@@ -1,0 +1,41 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.SavingProducts.OldLoanAccountingMaping>
+    @using Resources
+<fieldset class="fieldset-custom">
+    <legend>@GlobalOldLoanAccountingMaping.Data</legend>
+    @if (Model.Count == 0)
+    {
+        <div class="text-center my-3">
+            <p>@GlobalOldLoanAccountingMaping.NoOldLoanMapingIsCreated</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive mb-3">
+            <table class="table table-hover" id="myDataTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>@GlobalOldLoanAccountingMaping.Name</th>
+                        @*<th>Branch</th>*@
+                    <th>@GlobalShared.Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model)
+                    {
+                        <tr>
+                            <td style="width:80%">@d.LoanTypeName</td>
+                            @*<td style="width:70%">@d.BranchName</td>*@
+                            <td style="width:10%">
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Create','update','OldLoanAccountingMaping')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.LoanTypeName to edit">@GlobalShared.Edit</a> |
+                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.LoanTypeName" onclick="DeleteRecordDataTable('OldLoanAccountingMaping','@d.Id','myDataTable','_Data',0,'datalistingview')">@GlobalShared.Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    }
+    </fieldset>
+
+

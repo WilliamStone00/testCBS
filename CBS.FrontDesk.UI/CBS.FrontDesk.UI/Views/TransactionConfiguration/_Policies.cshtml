@@ -1,0 +1,142 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+@using Resources
+<div class="col">
+    <div class="row my-4">
+        <div class="accordion" id="collapsibleSection">
+            <!-- CASH IN Section -->
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingDeliveryAddress">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseDeliveryAddress"
+                            aria-expanded="true"
+                            aria-controls="collapseDeliveryAddress">
+                        @Globals_Policies.CashIn
+                    </button>
+                </h2>
+                <div id="collapseDeliveryAddress"
+                     class="accordion-collapse collapse show"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <h5 class="text-primary mb-3">@Globals_Policies.ManageCashInConfigurations</h5>
+                        <p class="text-muted">
+                            @string.Format(Globals_Policies.ManageDepositLimits, Model.SavingProduct.Name)
+                        </p>
+                        <div class="text-end">
+                            <a type="button"
+                               onclick="LoadDataGen('TransactionConfiguration','myDataTable_Deposit','_DepositData',0,'datalistingview_Deposit','@Model.SavingProduct.Id','depositlimit')"
+                               class="btn btn-label-primary btn-sm me-2"
+                               data-bs-toggle="tooltip" title="@Globals_Policies.ViewList">
+                                <i class="mdi mdi-view-list mdi-18px"></i> @Globals_Policies.ViewList
+                            </a>
+                            <a type="button"
+                               onclick="AddORUpdateGen('@Model.SavingProduct.Id','datalistingview_Deposit','_DepositConfig','new','TransactionConfiguration','depositlimit')"
+                               class="btn btn-label-secondary btn-sm"
+                               data-bs-toggle="tooltip" title="@Globals_Policies.AddNew">
+                                <i class="mdi mdi-plus mdi-18px"></i> @Globals_Policies.AddNew
+                            </a>
+                        </div>
+                        <br />
+                        <div class="row g-4">
+                            <div id="datalistingview_Deposit">
+                                @Html.Partial("_DepositConfig")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WITHDRAWAL Section -->
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingPaymentMethod3">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapsePaymentMethod3"
+                            aria-expanded="false"
+                            aria-controls="collapsePaymentMethod3">
+                        @Globals_Policies.Withdrawal
+                    </button>
+                </h2>
+                <div id="collapsePaymentMethod3"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="headingPaymentMethod3"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <h5 class="text-primary mb-3">@Globals_Policies.ManageWithdrawalConfigurations</h5>
+                        <p class="text-muted">
+                            @string.Format(Globals_Policies.ConfigureWithdrawalLimits, Model.SavingProduct.Name)
+                        </p>
+                        <div class="text-end">
+                            <a type="button"
+                               onclick="LoadDataGen('TransactionConfiguration','myDataTable_Withdrawal','_WithdrawalData',0,'datalistingview_Withdrawal','@Model.SavingProduct.Id','withdrawallimit')"
+                               class="btn btn-label-primary btn-sm me-2"
+                               data-bs-toggle="tooltip" title="@Globals_Policies.ViewList">
+                                <i class="mdi mdi-view-list mdi-18px"></i> @Globals_Policies.ViewList
+                            </a>
+                            <a type="button"
+                               onclick="AddORUpdateGen('@Model.SavingProduct.Id','datalistingview_Withdrawal','_WithdrawalConfig','new','TransactionConfiguration','withdrawallimit')"
+                               class="btn btn-label-secondary btn-sm"
+                               data-bs-toggle="tooltip" title="@Globals_Policies.AddNew">
+                                <i class="mdi mdi-plus mdi-18px"></i> @Globals_Policies.AddNew
+                            </a>
+                        </div>
+                        <br />
+                        <div class="row g-4">
+                            <div id="datalistingview_Withdrawal">
+                                @Html.Partial("_WithdrawalConfig")
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRANSFER Section -->
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingPaymentMethod4">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapsePaymentMethod4"
+                            aria-expanded="false"
+                            aria-controls="collapsePaymentMethod4">
+                        @Globals_Policies.Transfer
+                    </button>
+                </h2>
+                <div id="collapsePaymentMethod4"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="headingPaymentMethod4"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <h5 class="text-primary mb-3">@Globals_Policies.ManageTransferConfigurations</h5>
+                        <p class="text-muted">
+                            @string.Format(Globals_Policies.DefineTransferLimits, Model.SavingProduct.Name)
+                        </p>
+                        <div class="text-end">
+                            <a type="button"
+                               onclick="LoadDataGen('TransactionConfiguration','myDataTable_Transfer','_TransferData',0,'datalistingview_Transfer','@Model.SavingProduct.Id','transferlimit')"
+                               class="btn btn-label-primary btn-sm me-2"
+                               data-bs-toggle="tooltip" title="@Globals_Policies.ViewList">
+                                <i class="mdi mdi-view-list mdi-18px"></i> @Globals_Policies.ViewList
+                            </a>
+                            <a type="button"
+                               onclick="AddORUpdateGen('@Model.SavingProduct.Id','datalistingview_Transfer','_TransferConfig','new','TransactionConfiguration','transferlimit')"
+                               class="btn btn-label-secondary btn-sm"
+                               data-bs-toggle="tooltip" title="@Globals_Policies.AddNew">
+                                <i class="mdi mdi-plus mdi-18px"></i> @Globals_Policies.AddNew
+                            </a>
+                        </div>
+                        <br />
+                        <div class="row g-4">
+                            <div id="datalistingview_Transfer">
+                                @Html.Partial("_TransferConfig")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

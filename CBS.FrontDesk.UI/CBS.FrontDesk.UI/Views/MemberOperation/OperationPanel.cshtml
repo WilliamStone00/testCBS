@@ -1,0 +1,206 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+@using Resources
+@{
+    ViewBag.Title = "Loan Application Panel";
+}
+
+<div class="row">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light mb-4">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-bank-outline me-2"></i> @GlobalOperationPanel.LoanApplicationProcess
+                </h1>
+                <p class="card-text">
+                    @GlobalOperationPanel.LoanApplicationProcessDescription
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row invoice-preview">
+    <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconThree">
+        <button type="button"
+                class="accordion-button"
+                data-bs-toggle="collapse"
+                data-bs-target="#accordionPopoutIcon-3"
+                aria-expanded="true"
+                aria-controls="accordionPopoutIcon-3">
+            <i class="mdi mdi-file me-2"></i>
+            <div class="d-flex justify-content-center">
+                <div class="fw-bold fs-4" id="panelTitle">@GlobalOperationPanel.NewLoanApplicationForm</div>
+            </div>
+        </button>
+    </h2>
+    <br />
+    <hr />
+    <div class="col-xl-3 col-md-4 col-12 invoice-actions">
+        <fieldset class="fieldset-custom">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="group-title">
+                        @GlobalOperationPanel.MemberReference #: <span class="highlight-text">@Model.Customer.CustomerId</span><br />
+                        <hr />
+                        <small>@GlobalOperationPanel.MemberCode:</small><br />
+                        <small>@GlobalOperationPanel.BankCode: @Session["BankCode"].ToString()</small><br />
+                        <small>@GlobalOperationPanel.BranchCode: @Session["BranchCode"].ToString()</small>
+                    </h4>
+                </div>
+            </div>
+            <br />
+            <div class="card mt-3">
+                <div class="card-body">
+                    <!-- Aligning the card title and Member text in the same row -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- Card title aligned to the left -->
+                        <h5 class="card-title text-left mb-0">@GlobalOperationPanel.Member: @Model.Customer.name</h5>
+                        <hr />
+                        <!-- Member name aligned to the right -->
+                        <!--<span class="text-end"></span>-->
+                    </div>
+                    <div class="image-upload-container">
+                        <!-- Image for picture -->
+                        @if (Model.Customer.photoUrl != null)
+                        {
+                            <!-- Clickable photo for preview -->
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#photoPreviewModal">
+                                <img src="@Model.Customer.photoUrl" class="img-fluid preview-image" alt="@GlobalOperationPanel.UploadedImage">
+                            </a>
+                            <!-- Modal for photo preview -->
+                            <div class="modal fade" id="photoPreviewModal" tabindex="-1" aria-labelledby="photoPreviewModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <img src="@Model.Customer.photoUrl" class="img-fluid" alt="@GlobalOperationPanel.UploadedImage">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <img src="@Url.Content(Model.Customer.ImageNoVirtualPath)" class="img-fluid preview-image" alt="@GlobalOperationPanel.NoImageFound" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
+
+                        }
+                        <!-- ... Other content ... -->
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">@GlobalOperationPanel.Signature</h5>
+                    <div class="image-upload-container">
+                        <!-- Image for signature -->
+                        @if (Model.Customer.signatureUrl != null)
+                        {
+                            <!-- Clickable signature for preview -->
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#signaturePreviewModal">
+                                <img src="@Model.Customer.signatureUrl" class="img-fluid preview-image" alt="@GlobalOperationPanel.UploadedSignature">
+                            </a>
+                            <!-- Modal for signature preview -->
+                            <div class="modal fade" id="signaturePreviewModal" tabindex="-1" aria-labelledby="signaturePreviewModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <img src="@Model.Customer.signatureUrl" class="img-fluid" alt="@GlobalOperationPanel.UploadedSignature">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <img src="@Url.Content(Model.Customer.ImageVirtualNoSignaturePath)" class="img-fluid preview-image" alt="@GlobalOperationPanel.NoSignatureFound" data-bs-toggle="modal" data-bs-target="#imagePreviewModal">
+
+                        }
+                        <!-- ... Other content ... -->
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+
+
+
+    <div class="col-xl-9 col-lg-8 col-md-8 order-0 order-md-1">
+        <fieldset class="fieldset-custom">
+            <div class="card">
+                <div class="card-body d-sm-flex d-block">
+                    <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+
+                        <div class="ms-3">
+                            <a href="/MemberOperation/OperationPanel?KEY=@Model.Customer.CustomerId" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalOperationPanel.ApplyForNewLoan">
+                                <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                            </a>
+                        </div>
+                        <div class="ms-3">
+                            <a type="button" onclick="LoadDataGen('MemberOperation','myDataTable','_MemberLoanApplicationData',0,'datalistingview','@Model.Customer.CustomerId','applications','list_of_members_loan_application')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalOperationPanel.ViewListingOfLoanApplications">
+                                <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                            </a>
+                        </div>
+                        <div class="ms-3">
+                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_MakeLoanSimulation','create_loan_simulation','MemberOperation','applications')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalOperationPanel.PerformLoanSimulation">
+                                <span class="tf-icons mdi mdi-calculator mdi-18px"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+
+        <fieldset class="fieldset-custom">
+            <div id="datalistingview">
+                @Html.Partial("_LoanApplication")
+            </div>
+        </fieldset>
+
+
+
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-labelledby="imagePreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imagePreviewModalLabel">@GlobalOperationPanel.PhotoPreview @Model.Customer.FirstName @Model.Customer.LastName.</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                @if (Model.Customer.photoUrl != null)
+                {
+                    <div class="image-upload-container">
+                        <img src="@Model.Customer.photoUrl" class="img-fluid" alt="@GlobalOperationPanel.PreviewImage">
+                    </div>
+                }
+                else
+                {
+                    <div class="image-upload-container">
+                        <img src="@Url.Content(Model.Customer.ImageVirtualPath)" class="img-fluid" alt="@GlobalOperationPanel.PreviewImage">
+                    </div>
+                }
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalOperationPanel.Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/Crud/OperationPanel/LoanApplication.js"></script>
+<script src="~/Scripts/Js/Crud/OperationPanel/Guarantor.js"></script>
+<script src="~/Scripts/Js/Crud/OperationPanel/Collateral.js"></script>
+<script src="~/Scripts/Js/Crud/OperationPanel/Attachedment.js"></script>
+
+
+
+}

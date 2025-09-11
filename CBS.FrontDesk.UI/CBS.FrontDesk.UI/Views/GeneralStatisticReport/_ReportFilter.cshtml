@@ -1,0 +1,100 @@
+﻿<div class="card-body p-4">
+    <div class="row g-3 bg-light p-3 rounded border shadow-sm mb-3">
+
+        <!-- 🔘 Horizontal Toggles -->
+        <div class="row mb-2">
+            <div class="col-auto">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="enableBranch" checked />
+                    <label class="form-check-label fw-bold" for="enableBranch">Filter by branch</label>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="enableDateRange" />
+                    <label class="form-check-label fw-bold" for="enableDateRange">Filter by date range</label>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="enableReportType" />
+                    <label class="form-check-label fw-bold" for="enableReportType">Choose report type</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- ✅ Branch Filter -->
+        <div class="col-md-12 branch-section">
+            <label for="branchInput" class="form-label fw-semibold">Branch</label>
+            @Html.DropDownList("branchInput",
+                new SelectList(ViewBag.Branches as List<SelectListItem> ?? new List<SelectListItem>(), "Value", "Text"),
+                "Select Branch",
+                new { @class = "form-control form-control-sm select2 filter-input", id = "branchInput" })
+        </div>
+
+        <!-- 📅 Date Range -->
+        <div class="row g-2 date-range-section d-none">
+            <div class="col-md-6">
+                <label for="startDate" class="form-label fw-semibold">Start Date</label>
+                <input type="date" class="form-control form-control-sm filter-input" id="startDate" placeholder="Start date" />
+            </div>
+            <div class="col-md-6">
+                <label for="endDate" class="form-label fw-semibold">End Date</label>
+                <input type="date" class="form-control form-control-sm filter-input" id="endDate" placeholder="End date" />
+            </div>
+        </div>
+
+        <!-- 👤 Account Type & Profile -->
+        <div class="col-md-4">
+            <label for="accountTypes" class="form-label fw-semibold">Account Types</label>
+            @Html.DropDownList("accountTypes",
+     new SelectList(ViewBag.AccountTypes as List<SelectListItem> ?? new List<SelectListItem>(), "Value", "Text"),
+     new { @class = "form-control form-control-sm select2", id = "accountTypes", multiple = "multiple", name = "accountTypes[]" })
+
+        </div>
+        <div class="col-md-4">
+            <label for="accountProfiles" class="form-label fw-semibold">Account Profiles</label>
+            @Html.DropDownList("accountProfiles",
+                new SelectList(ViewBag.AccountProfiles as List<SelectListItem> ?? new List<SelectListItem>(), "Value", "Text"),
+                "Select profiles",
+                new { @class = "form-control form-control-sm select2", id = "accountProfiles"})
+        </div>
+
+        <!-- 🧾 Loan Status -->
+        <div class="col-md-4">
+            <label for="loanStatus" class="form-label fw-semibold">Loan Status</label>
+            @Html.DropDownList("loanStatus",
+                new SelectList(new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "-- Loan status --", Value = "" },
+                    new SelectListItem { Text = "All", Value = "All" },
+                    new SelectListItem { Text = "Active", Value = "Opened" },
+                    new SelectListItem { Text = "Closed", Value = "Closed" }
+                }, "Value", "Text"),
+                new { @class = "form-control form-control-sm", id = "loanStatus" })
+        </div>
+
+        <!-- 📊 Report Type -->
+        <div class="col-md-12 report-type-section d-none">
+            <label for="mainReportType" class="form-label fw-semibold">Report Type</label>
+            @Html.DropDownList("mainReportType",
+                new SelectList(new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "-- Report type --", Value = "" },
+                    new SelectListItem { Text = "📌 General Member's Statistical Report", Value = "generalmembersreport" },
+                    new SelectListItem { Text = "📋 Approved Members Listing", Value = "generalmemberslisting" },
+                    new SelectListItem { Text = "❗ Members Without Active Accounts", Value = "customerslistingwithoutaccount" },
+                    new SelectListItem { Text = "📊 Gender Distribution Summary Report", Value = "customergendersummary" },
+                    new SelectListItem { Text = "📈 General Member & Account Statistics Report", Value = "generalstatistics" }
+                }, "Value", "Text"),
+                new { @class = "form-control form-control-sm select2", id = "mainReportType" })
+        </div>
+    </div>
+
+    <!-- 🔘 Action Buttons -->
+    <div class="d-flex justify-content-between">
+        <button id="applyFilterBtn" class="btn btn-primary w-100 me-2"><i class="mdi mdi-magnify"></i> Apply Filter</button>
+        <button id="resetFilterBtn" class="btn btn-dark w-100 me-2"><i class="mdi mdi-refresh"></i> Reset</button>
+        <button id="exportBtn" class="btn btn-lime w-100"><i class="mdi mdi-file-export"></i> Export</button>
+    </div>
+</div>

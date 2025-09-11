@@ -1,0 +1,174 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
+@using Resources
+
+<div class="col">
+    @using (Html.BeginForm("Create", "LoanProduct", FormMethod.Post, new
+    {
+        enctype = "multipart/form-data",
+        onsubmit = "return AjaxPostAndUpdate(this);"
+    }))
+    {
+        <fieldset class="fieldset-custom">
+
+            <!-- 📘 Section: Loan Classification -->
+            <div class="card mb-3 shadow-sm">
+                <div class="card-header fw-bold text-primary">
+                    <i class="mdi mdi-bank-outline me-1"></i> Loan Classification
+                </div>
+                <div class="card-body row g-4">
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.AddLoanProductCommand.LoanTermId,
+                                new SelectList(ViewBag.LoanTerms, "Id", "Name"),
+                                "--- Select Term ---",
+                                new { @class = "form-control select2" })
+                            @Html.ValidationMessageFor(m => m.AddLoanProductCommand.LoanTermId, "", new { @class = "text-danger" })
+                            <label>Loan Term</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 📘 Section: Product & Target Binding -->
+            <div class="card mb-3 shadow-sm">
+                <div class="card-header fw-bold text-primary">
+                    <i class="mdi mdi-target-variant me-1"></i> Product & Target Binding
+                </div>
+                <div class="card-body row g-4">
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.AddLoanProductCommand.LoanProductCategoryId,
+                                new SelectList(ViewBag.ProductCategories, "Id", "Name"),
+                                "--- Select Category ---",
+                                new { @class = "form-control select2" })
+                            @Html.ValidationMessageFor(m => m.AddLoanProductCommand.LoanProductCategoryId, "", new { @class = "text-danger" })
+                            <label>Loan Product Category</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.AddLoanProductCommand.TargetType,
+                                new SelectList(ViewBag.LoanTargets, "Value", "Text"),
+                                "--- Select Target ---",
+                                new { @class = "form-control select2" })
+                            @Html.ValidationMessageFor(m => m.AddLoanProductCommand.TargetType, "", new { @class = "text-danger" })
+                            <label>Target Type</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(m => m.AddLoanProductCommand.LoanTypeCategory,
+                                new SelectList(new List<SelectListItem>
+                                {
+                                    new SelectListItem { Text = "[Revolving Facility] Line of Credit", Value = "LineOfCredit" },
+                                    new SelectListItem { Text = "[Revolving Facility] Over-draft", Value = "Overdraft" },
+                                    new SelectListItem { Text = "[Classic Loan] Loan Within Standard Saving Facilities (SSF)", Value = "SSF" },
+                                    new SelectListItem { Text = "[Classic Loan] Loan Out Of Standard Saving Facilities (Main_Loan)", Value = "Main_Loan" },
+                                    new SelectListItem { Text = "[Special Loan] Exceptional Loan", Value = "ExceptionalLoan" }
+
+                                }, "Value", "Text"),
+                                "--- Select Category ---",
+                                new { @class = "form-control select2", onchange = "handleLoanTypeChange(this.value);" })
+                            @Html.ValidationMessageFor(m => m.AddLoanProductCommand.LoanTypeCategory, "", new { @class = "text-danger" })
+                            <label>Loan Type Category</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 📘 Section: Product Details -->
+            <div class="card mb-3 shadow-sm">
+                <div class="card-header fw-bold text-primary">
+                    <i class="mdi mdi-format-title me-1"></i> Product Information
+                </div>
+                <div class="card-body row g-4">
+                    <div class="col-md-3">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.AddLoanProductCommand.ProductCode, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.AddLoanProductCommand.ProductCode, "", new { @class = "text-danger" })
+                            <label>Product Code</label>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.AddLoanProductCommand.ProductName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.AddLoanProductCommand.ProductName, "", new { @class = "text-danger" })
+                            <label>Product Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextAreaFor(m => m.AddLoanProductCommand.Description, new { @class = "form-control", @style = "height: 180px;" })
+                            @Html.ValidationMessageFor(m => m.AddLoanProductCommand.Description, "", new { @class = "text-danger" })
+                            <label>Product Description</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 📘 Section: Status & Tags -->
+            <div class="card mb-3 shadow-sm">
+                <div class="card-header fw-bold text-primary">
+                    <i class="mdi mdi-check-decagram-outline me-1"></i> Product Activation, Facility Link & Mortgage Tag
+                </div>
+                <div class="card-body row g-3">
+                    <div class="col-12">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.AddLoanProductCommand.ActiveStatus, new { @class = "form-check-input", id = "isActive" })
+                            <label class="form-check-label" for="isActive">Mark Product as Active</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.AddLoanProductCommand.IsProductWithSavingFacilities,
+                                new { @class = "form-check-input", id = "isSSF", @checked = "checked", disabled = "disabled" })
+                            <label class="form-check-label" for="isSSF">Reserve this product for Saving Facility Integration (SSF)</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.AddLoanProductCommand.IsMortgage,
+                                new { @class = "form-check-input", id = "isMortgage" })
+                            <label class="form-check-label" for="isMortgage">Tag this product as a Mortgage Loan product</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- 🟦 Submit -->
+            <div class="mt-4">
+                @Html.HiddenFor(m => m.AddLoanProductCommand.Id)
+
+                @if (ViewBag.Key == null)
+                {
+                    <input type="hidden" name="ServiceOption" value="insert" id="ServiceOption" />
+                    <button type="submit" class="btn btn-primary">@GlobalShared.Save</button>
+                }
+                else
+                {
+                    <input type="hidden" name="ServiceOption" value="product" id="ServiceOption" />
+                    <button type="submit" class="btn btn-primary">@GlobalShared.Update</button>
+                }
+            </div>
+        </fieldset>
+    }
+</div>
+
+<script>
+    function handleLoanTypeChange(selectedValue) {
+        const ssfCheckbox = document.getElementById("isSSF");
+
+        if (selectedValue === "SSF") {
+            ssfCheckbox.checked = true;
+        } else {
+            ssfCheckbox.checked = false;
+        }
+    }
+
+    // Optional: initialize on page load (if editing existing)
+    document.addEventListener("DOMContentLoaded", function () {
+        const loanType = document.querySelector('[name="AddLoanProductCommand.LoanTypeCategory"]').value;
+        handleLoanTypeChange(loanType);
+    });
+</script>

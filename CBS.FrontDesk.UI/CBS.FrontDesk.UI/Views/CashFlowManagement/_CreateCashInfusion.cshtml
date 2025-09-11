@@ -1,0 +1,156 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+    @using Resources
+@if (Convert.ToBoolean(ViewBag.IsAuthourized) == false)
+{
+    @Html.Partial("_GeneralErrorDiv")
+}
+
+@if (Convert.ToBoolean(ViewBag.IsSystemError) == true)
+{
+    @Html.Partial("_SystemError")
+}
+
+@using (Html.BeginForm("AddOrUpdate", "CashFlowManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    <input type="hidden" name="ServiceOption" value="CashClearing" id="ServiceOption" />
+    <fieldset class="fieldset-custom">
+        <legend id="select_base">@GlobalCashFlowManagement.CashClearing @Model.CashClearing.AccountInfo </legend>
+        <div class="row mt-2 gy-4">
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    <div class="col-sm-12 col-lg-12">
+                        <div class="d-flex justify-content-between align-items-start border-end pb-3 pb-sm-0 card-widget-6">
+                            <div>
+                                @{
+                                    var formattedAmount = Convert.ToDecimal(Model.CashReplenimentRequest.AmountApproved).ToString("N");
+                                }
+                                <h3 class="mb-3">XAF @formattedAmount</h3>
+                                <p class="mb-0">@GlobalCashFlowManagement.AuthorizedBy @Model.CashReplenimentRequest.TempId2 </p>
+                                <p class="mb-0">@GlobalCashFlowManagement.TransferBy @Model.CashClearing.TransferBy </p>
+                                <p class="mb-0">@GlobalCashFlowManagement.TransactionDoneOnThe @Model.CashClearing.CreatedDate </p>
+                            </div>
+                            <div class="avatar me-sm-6">
+                                <span class="avatar-initial rounded bg-label-secondary">
+                                    <i class="mdi mdi-wallet-outline mdi-24px"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6" hidden="hidden">
+                <div class="form-floating form-floating-outline">
+                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalCashFlowManagement.TotalAmount: 0.0</span>
+                    <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
+                    <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.CashClearing.AmountExpected">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    <span class="formatted-amount shadow-box" id="lblBalance">@GlobalCashFlowManagement.Balance: 0</span>
+                </div>
+            </div>
+            @Html.HiddenFor(m => m.CashClearing.ReferenceId)
+            @Html.HiddenFor(m => m.CashClearing.ToAccountId)
+            @Html.HiddenFor(m => m.CashClearing.FromAccountId)
+        <legend>@GlobalCashFlowManagement.Denomination</legend>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.CashClearing.CurrencyNotes.note10000, new { @class = "form-control", @id = "Notes_note10000", @oninput = "calculateCashBalance()", @Value = Model.CashClearing.CurrencyNotes.note10000 })
+                    @Html.ValidationMessageFor(m => m.CashClearing.CurrencyNotes.note10000, "", new { @class = "text-danger " })
+                    <label>N10,000</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.CashClearing.CurrencyNotes.note5000, new { @class = "form-control", @id = "Notes_note5000", @oninput = "calculateCashBalance()", @Value = Model.CashClearing.CurrencyNotes.note5000 })
+                    @Html.ValidationMessageFor(m => m.CashClearing.CurrencyNotes.note5000, "", new { @class = "text-danger " })
+                    <label>N5,000</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.CashClearing.CurrencyNotes.note2000, new { @class = "form-control", @id = "Notes_note2000", @oninput = "calculateCashBalance()", @Value =  Model.CashClearing.CurrencyNotes.note2000 })
+                    @Html.ValidationMessageFor(m => m.CashClearing.CurrencyNotes.note2000, "", new { @class = "text-danger " })
+                    <label>N2,000</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.CashClearing.CurrencyNotes.note1000, new { @class = "form-control", @id = "Notes_note1000", @oninput = "calculateCashBalance()", @Value = Model.CashClearing.CurrencyNotes.note1000 })
+                    @Html.ValidationMessageFor(m => m.CashClearing.CurrencyNotes.note1000, "", new { @class = "text-danger " })
+                    <label>N1,000</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.CashClearing.CurrencyNotes.note500, new { @class = "form-control", @id = "Notes_note500", @oninput = "calculateCashBalance()", @Value = Model.CashClearing.CurrencyNotes.note500 })
+                    @Html.ValidationMessageFor(m => m.CashClearing.CurrencyNotes.note500, "", new { @class = "text-danger " })
+                    <label>N500</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.CashClearing.CurrencyNotes.coin500, new { @class = "form-control", @id = "Notes_coin500", @oninput = "calculateCashBalance()", @Value = Model.CashClearing.CurrencyNotes.coin500 })
+                    @Html.ValidationMessageFor(m => m.CashClearing.CurrencyNotes.coin500, "", new { @class = "text-danger " })
+                    <label>C500</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.CashClearing.CurrencyNotes.coin100, new { @class = "form-control", @id = "Notes_coin100", @oninput = "calculateCashBalance()", @Value = Model.CashClearing.CurrencyNotes.coin100 })
+                    @Html.ValidationMessageFor(m => m.CashClearing.CurrencyNotes.coin100, "", new { @class = "text-danger " })
+                    <label>C100</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.CashClearing.CurrencyNotes.coin50, new { @class = "form-control", @id = "Notes_coin50", @oninput = "calculateCashBalance()", @Value = Model.CashClearing.CurrencyNotes.coin50 })
+                    @Html.ValidationMessageFor(m => m.CashClearing.CurrencyNotes.coin50, "", new { @class = "text-danger " })
+                    <label>C50</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.CashClearing.CurrencyNotes.coin25, new { @class = "form-control", @id = "Notes_coin25", @oninput = "calculateCashBalance()", @Value = Model.CashClearing.CurrencyNotes.coin25 })
+                    @Html.ValidationMessageFor(m => m.CashClearing.CurrencyNotes.coin25, "", new { @class = "text-danger " })
+                    <label>C25</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.CashClearing.CurrencyNotes.coin10, new { @class = "form-control", @id = "Notes_coin10", @oninput = "calculateCashBalance()", @Value =Model.CashClearing.CurrencyNotes.coin10 })
+                    @Html.ValidationMessageFor(m => m.CashClearing.CurrencyNotes.coin10, "", new { @class = "text-danger " })
+                    <label>C10</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.CashClearing.CurrencyNotes.coin5, new { @class = "form-control", @id = "Notes_coin5", @oninput = "calculateCashBalance()", @Value=  Model.CashClearing.CurrencyNotes.coin5 })
+                    @Html.ValidationMessageFor(m => m.CashClearing.CurrencyNotes.coin5, "", new { @class = "text-danger " })
+                    <label>C5</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.CashClearing.CurrencyNotes.coin1, new { @class = "form-control", @id = "Notes_coin1", @oninput = "calculateBalance()", @Value = Model.CashClearing.CurrencyNotes.coin1})
+                    @Html.ValidationMessageFor(m => m.CashClearing.CurrencyNotes.coin1, "", new { @class = "text-danger " })
+                    <label>C1</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextAreaFor(m => m.CashClearing.Description, new { @class = "form-control", @style = "height: 70px;" })
+                    @Html.ValidationMessageFor(m => m.CashClearing.Description, "", new { @class = "text-danger " })
+                    <label for="formValidationDob">@GlobalCashFlowManagement.CashClearingDescription</label>
+                </div>
+            </div>
+
+        </div>
+        <div class="mt-4">
+            <button type="submit" id="btnSave" class="btn btn-primary me-2">@GlobalShared.Validate</button>
+        </div>
+    </fieldset>
+}

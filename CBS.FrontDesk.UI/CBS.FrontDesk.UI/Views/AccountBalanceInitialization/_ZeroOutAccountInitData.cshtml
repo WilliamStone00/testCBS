@@ -1,0 +1,65 @@
+﻿<table class="table table-bordered table-striped" id="depositTable">
+    <thead class="table-light">
+        <tr>
+            <th>#</th>
+            <th>Account Number</th>
+            <th>Account Type</th>
+            <th>Member Reference</th>
+            <th>Member Name</th>
+            <th>Branch Code</th>
+            <th>Branch Name</th>
+            <th>Balance</th>
+            <th>Amount to Credit</th>
+            <th>Total Balance</th>
+            <th>Net Balance</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="depositTableBody">
+        <!-- Data rows will be appended here -->
+    </tbody>
+</table>
+
+
+<div class="modal fade" id="postingDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Account Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6"><strong>Account Number:</strong> <span id="modalAccountNumber"></span></div>
+                    <div class="col-md-6"><strong>Account Type:</strong> <span id="modalAccountType"></span></div>
+                    <div class="col-md-6"><strong>Member Reference:</strong> <span id="modalMemberRef"></span></div>
+                    <div class="col-md-6"><strong>Member Name:</strong> <span id="modalMemberName"></span></div>
+                    <div class="col-md-6"><strong>Branch Code:</strong> <span id="modalBranchCode"></span></div>
+                    <div class="col-md-6"><strong>Branch Name:</strong> <span id="modalBranchName"></span></div>
+                    <div class="col-md-6"><strong>Balance:</strong> <span id="modalBalance"></span></div>
+                    <div class="col-md-6"><strong>Amount to Credit:</strong> <span id="modalAmountToCredit"></span></div>
+                    <div class="col-md-6"><strong>Total Balance:</strong> <span id="modalTotalBalance"></span></div>
+                    <div class="col-md-6"><strong>Net Balance:</strong> <span id="modalNetBalance"></span></div>
+                </div>
+                <hr />
+                <h6>Amount Collections</h6>
+                <table class="table table-bordered table-sm">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>Event</th>
+                            <th>Liaison</th>
+                            <th>Amount (XAF)</th>
+                            <th>Principal</th>
+                            <th>Narration</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalAmounts">
+                        <!-- Dynamically injected content -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+

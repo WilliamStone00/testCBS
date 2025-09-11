@@ -1,0 +1,68 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+    @using Resources
+<fieldset class="fieldset-custom">
+    <legend id="select_base" style="font-size: 14px;">@Global_LoanScheduleData.SimulatedRepaymentData</legend>
+    <hr style="border: 2px solid blue;" />
+    <div class="table-responsive mb-3">
+        <table class="table table-hover" id="myDataTable">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 3%">@Global_LoanScheduleData.SerialNumber</th>
+                    <th style="width: 7%">@Global_LoanScheduleData.Date</th>
+                    <th style="width: 10%">@Global_LoanScheduleData.Description</th>
+                    <th style="width: 8%">@Global_LoanScheduleData.Principal</th>
+                    <th style="width: 8%">@Global_LoanScheduleData.Interest</th>
+                    <th style="width: 7%">@Global_LoanScheduleData.Fees</th>
+                    <th style="width: 7%">@Global_LoanScheduleData.Penalty</th>
+                    <th style="width: 7%">@Global_LoanScheduleData.Due</th>
+                    <th style="width: 7%">@Global_LoanScheduleData.Paid</th>
+                    @*<th style="width: 7%">@Global_LoanScheduleData.PendingDue</th>*@
+                    <th style="width: 7%">@Global_LoanScheduleData.TotalDue</th>
+                    @*<th style="width: 7%">@Global_LoanScheduleData.PrincipalDue</th>
+                        <th style="width: 7%">@Global_LoanScheduleData.PrincipalBalance</th>*@
+                </tr>
+            </thead>
+            <tbody>
+                <!-- First Additional Row -->
+                <tr>
+                    <td colspan="1"></td>
+                    <td style="width: 12%">@Global_LoanScheduleData.Principal: @Model.Loan.Principal.ToString("#,0.00")</td>
+                </tr>
+                <!-- Second Additional Row -->
+                <tr>
+                    <td colspan="2"></td>
+                    <td style="width: 20%">@DateTime.Now</td>
+                    <td style="width: 20%">@Global_LoanScheduleData.Today</td>
+                </tr>
+                @foreach (var d in Model.LoanAmortizations.OrderBy(app => app.Sno))
+                {
+                    <tr>
+                        <td style="width: 3%">@d.Sno</td>
+                        <td style="width: 7%">@d.NextPaymentDate.ToShortDateString()</td>
+                        <td style="width: 10%">@d.Description</td>
+                        <td style="width: 8%">@d.Principal.ToString("#,0.00")</td>
+                        <td style="width: 8%">@d.Interest.ToString("#,0.00")</td>
+                        <td style="width: 7%">@d.Fee.ToString("#,0.00")</td>
+                        <td style="width: 7%">@d.Penalty.ToString("#,0.00")</td>
+                        <td style="width: 7%">@d.Due.ToString("#,0.00")</td>
+                        <td style="width: 7%">@d.Paid.ToString("#,0.00")</td>
+                        @*<td style="width: 7%">@d.PendingDue.ToString("#,0.00")</td>*@
+                        <td style="width: 7%">@d.TotalDue.ToString("#,0.00")</td>
+                        <td style="width: 7%">@*@d.PrincipalDue.ToString("#,0.00")*@</td>
+                        <td style="width: 7%">@*@d.PrincipalBalance.ToString("#,0.00")*@</td>
+                    </tr>
+                }
+            </tbody>
+            <!-- Footer -->
+            <tfoot>
+                <tr>
+                    <td colspan="8"></td>
+                    <td style="width: 12%">@Global_LoanScheduleData.TotalDue: @Model.LoanAmortizations.Sum(x => x.Due).ToString("#,0.00")</td>
+                    <td style="width: 12%">@Global_LoanScheduleData.TotalPaid: @Model.LoanAmortizations.Sum(x => x.Paid).ToString("#,0.00")</td>
+                    <td style="width: 12%">@*@Global_LoanScheduleData.TotalPendingDue: @Model.LoanAmortizations.Sum(x => x.PendingDue).ToString("#,0.00")*@</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+</fieldset>

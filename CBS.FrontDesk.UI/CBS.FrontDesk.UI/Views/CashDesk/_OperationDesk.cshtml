@@ -1,0 +1,26 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+
+<div class="row g-4">
+    <div class="card mb-0">
+        @if (ViewBag.OperationType=="cashin")
+        {
+            @Html.Partial("_Tabs")
+        }
+        else
+        {
+            @Html.Partial("_TabsCashout")
+        }
+
+    </div>
+    <div class="col-md-3">
+        @Html.Partial("_DenominationBreakDown")
+    </div>
+    <div class="col-md-9">
+        <div class="mb-3 border-2">
+            <div id="datalistingview_inner">
+                @Html.Partial("_OperationForm")
+            </div>
+        </div>
+    </div>
+
+</div>

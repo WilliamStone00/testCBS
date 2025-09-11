@@ -1,0 +1,50 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+    @using Resources
+<div class="card-body pt-2 mt-1">
+    <fieldset class="fieldset-custom">
+        @if (!Model.TransactionHistories.Any())
+        {
+            <div class="text-center my-3">
+                <p>@GlobalOperation.NoTransactionAreAvailableForAccount @Model.AccountNumber</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">@GlobalOperation.AccountStatementsOf @Model.AccountType (Acc No: @Model.AccountNumber)</h5>
+                </div>
+
+                <table class="table table-hover" id="myDataTableT">
+                    <thead class="table-light">
+                        <tr>
+                            <th>@GlobalOperation.Date</th>
+                            <th>@GlobalOperation.Amount</th>
+                            <th>@GlobalOperation.Fee</th>
+                            <th>@GlobalOperation.Credit</th>
+                            <th>@GlobalOperation.Debit</th>
+                            <th>@GlobalOperation.Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var d in Model.TransactionHistories.OrderBy(t => t.CreatedDate))
+                        {
+                            <tr>
+                                <td style="width:50%">@d.CreatedDate.ToString("dd-MM-yyyy, hh:mm:ss")</td>
+                                <td style="width:10%">@d.OriginalDepositAmount.ToString("#,##0.0")</td>
+                                <td style="width:10%">@d.Fee.ToString("#,##0.0")</td>
+                                <td style="width:10%">@d.Credit.ToString("#,##0.0")</td>
+                                <td style="width:10%">@d.Debit.ToString("#,##0.0")</td>
+                                <td style="width:10%">@d.Balance.ToString("#,##0.0")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+            </div>
+        }
+
+    </fieldset>
+
+</div>

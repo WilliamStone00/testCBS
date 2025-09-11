@@ -1,0 +1,13 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+    @using Resources
+<fieldset class="fieldset-custom">
+    <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+        <a href="#" onclick="GetMemberData('@Model.RemittanceId','_OperationDesk','datalistingview','cashin')" class="btn btn-icon btn-label-success btn-sm btn-fab demo btn-space cashin" data-bs-toggle="tooltip" title="@GlobalRemittanceCashDesk.PerformRemittanceCashinOperation">
+            <i class="fas fa-money-check"></i>
+        </a>
+        <a href="#" onclick="GetMemberData('@Model.RemittanceId','_OperationDesk','datalistingview','cashout')" class="btn btn-icon btn-label-danger btn-sm btn-fab demo btn-space cashout" data-bs-toggle="tooltip" title="@GlobalRemittanceCashDesk.PerformRemittanceCashoutOperation">
+            <i class="fas fa-money-bill-wave-alt"></i>
+        </a>
+    </div>
+
+</fieldset>

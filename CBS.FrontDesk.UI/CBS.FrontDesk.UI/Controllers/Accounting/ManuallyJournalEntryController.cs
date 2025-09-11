@@ -1,0 +1,1671 @@
+﻿using Azure;
+using CBS.BusinessService;
+using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounts;
+using CBS.BusinessService.Config;
+using CBS.BusinessService.UserManagement;
+using CBS.FrontDesk.Data;
+using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
+using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.UserManagement;
+using CBS.FrontDesk.Helper;
+using DocumentFormat.OpenXml.Drawing;
+using DocumentFormat.OpenXml.Drawing.ChartDrawing;
+using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using DocumentFormat.OpenXml.Office2016.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.SignalR.Owin;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Net.Http.Headers;
+using System.Reflection;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.DynamicData;
+using System.Web.Mvc;
+using System.Web.Services.Description;
+using System.Web.WebPages.Html;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
+
+namespace CBS.FrontDesk.UI.Controllers
+{
+    //[CheckSessionTimeOutAttribute]
+    public class ManuallyJournalEntryController : BaseController
+    {
+        private readonly EntryTempDataServices _Service;
+        private readonly ChartOfAccountManagementPositionService _ChartOfAccountManagementPositionServicesServices;
+        private readonly ChartOfAccountServices _chartOfAccountServices;
+        private readonly AccountCategoryServices _accountCategoryServices;
+        private readonly UserManagementServices _userService;
+        private readonly AccountingServices _AccountServices;
+        private readonly AccountingEntryRuleService _accountingEntryRuleService;
+        private readonly BranchServices _branchService;
+        private readonly AccountingRuleService _AccountingRuleServices;
+        private readonly BlacklistAccountServices _blacklistAccountServices;
+        //  private readonly List<string> excludedPrefixes = ['2', '5', '6', '46', '41', '42'];
+        //private 
+        private const string CLASS_4 = "4"; //THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)
+        private const string CLASS_4_Payabels = "THIRD PARTY ACCOUNTS AND ACCRUALS(Payabels)";
+        private const string CLASS_4_Simple = "THIRD PARTY ACCOUNTS AND ACCRUALS";
+        private const string CLASS_4_Recievabels = "THIRD PARTY ACCOUNTS AND ACCRUALS(Recievables)";
+        public ManuallyJournalEntryController()
+        {
+            _Service = new EntryTempDataServices();
+            _ChartOfAccountManagementPositionServicesServices = new ChartOfAccountManagementPositionService();
+            _chartOfAccountServices = new ChartOfAccountServices();
+            _accountingEntryRuleService = new AccountingEntryRuleService();
+            _AccountServices = new AccountingServices();
+            _userService = new UserManagementServices();
+            _branchService = new BranchServices();
+            _AccountingRuleServices = new AccountingRuleService();
+            _accountCategoryServices = new AccountCategoryServices();
+            _blacklistAccountServices = new BlacklistAccountServices();
+        }
+        // GET:ManuallyJournalEntry/PendingAccountingEntries
+        public async Task<ActionResult> ExceptionalEntry()
+        {
+
+            await GetExInfoList();
+            return View();
+
+        }
+        public async Task<ActionResult> Index()
+        {
+            await GetList();
+            return View(new ManuallyJournalEntryDataSet { });
+        }
+        public async Task<ActionResult> PendingAccountingEntries()
+        {
+
+
+            ViewBag.Branches = BuildBranchViewBag((await _branchService.GetBranches()).ToList());
+            ViewBag.filteringOptions = GetFilteringOptions();
+
+            //var users = (await _userService.GetUsers()).ToList();
+            //ViewBag.UsersInBranch = BuildUserViewBag(users);
+
+            return View();
+
+        }
+
+        private dynamic BuildUserViewBag(List<User> listOfItems)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = $"I don't know the issuer", Value = "XXXXX" });
+            foreach (var item in listOfItems)
+            {
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = $"{item.firstName} {item.name}", Value = item.id.ToString() });
+            }
+            return selectListItems;
+        }
+        private dynamic BuildUserApproverViewBag(List<User> listOfItems)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = $"I don't know the approver", Value = "XXXXX" });
+            foreach (var item in listOfItems)
+            {
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = $"{item.firstName} {item.name}", Value = item.id.ToString() });
+            }
+            return selectListItems;
+        }
+
+        private async Task<List<ChartofAccountManagementPosition>> GetAllAccountsExcludingOperationsAccountIncludingBlacklistedAccountAsync()
+        {
+            var accounts = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
+            var accountingRules = await _accountingEntryRuleService.GetAccountingEntryRules();
+            var blacklistedAccounts = await _blacklistAccountServices.GetBlacklistAccounts();
+
+            // Use HashSet for O(1) lookup time
+            var excludedFromRules = new HashSet<string>(accountingRules.Select(x => x.DeterminationAccountId));
+            var excludedFromBlacklist = new HashSet<string>(blacklistedAccounts.Select(x => x.Id));
+
+            var result = accounts
+                .Where(account => !excludedFromRules.Contains(account.Id) && !excludedFromBlacklist.Contains(account.Id))
+                .ToList();
+
+            return result;
+        }
+
+
+        public async Task<ManuallyJournalEntryDataSet> GetEntries(QueryFilter model, string filter)
+        {
+            try
+            {
+                List<PostedEntryX> postedCollectionEntries = new List<PostedEntryX>();
+                var PostedEntries = await _Service.RetrieveManualEntriesWithFilterAsync(model); //()
+                var users = await _userService.GetUsers();
+                var usersx = users;
+                var branch = await _branchService.GetBranches();
+                bool isPending = model.Status.ToUpper() == EntryStatus.Pending.ToString().ToUpper();
+
+                if (isPending)
+                {
+                    postedCollectionEntries = (from p in PostedEntries
+                                               join u1 in users on p.CreatedBy equals u1.id.ToString()
+                                               join b in branch on p.BranchId equals b.Id.ToString()
+                                               select new PostedEntryX
+                                               {
+                                                   Amount = decimal.TryParse(p.Amount.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal amt) ? amt : 0,
+                                                   BranchCode = b.BranchCode,
+                                                   CreatedBy = $"{u1.firstName} {u1.lastName}",
+                                                   IssuedBy = u1.id.ToString(),
+                                                   Description = p.Description ?? string.Empty,
+                                                   CreatedDate = p.CreatedDate,// DateTime.TryParseExact(p.CreatedDate, "dd-MMM-yy h:mm:ss tt",
+                                                   //            CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime createdDate)
+                                                   //            ? createdDate : DateTime.MinValue,
+                                                   ApprovedBy = isPending ? "NOT APPROVED" : p.ApprovedBy,
+                                                   EndorseBy = p.ApprovedBy,
+                                                   ApprovedDate = p.ApprovedDate,
+                                                   //DateTime.TryParseExact(p.ApprovedDate, "dd-MMM-yy h:mm:ss tt",
+                                                   //             CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime approvedDate)
+                                                   //             ? approvedDate : DateTime.MinValue,
+                                                   Status = p.Status ?? string.Empty,
+                                                   PostingSource = p.PostingSource ?? string.Empty,
+                                                   Id = p.Id,
+                                                   EntryDetail = p.EntryDetail
+                                               }).ToList();
+                }
+                else
+                {
+                    postedCollectionEntries = (from p in PostedEntries
+                                               join u1 in users on p.CreatedBy equals u1.id.ToString()
+                                               join u2 in usersx on p.ApprovedBy equals u2.id.ToString() into approverJoin
+                                               from u2 in approverJoin.DefaultIfEmpty()
+                                               join b in branch on p.BranchId equals b.Id.ToString()
+                                               select new PostedEntryX
+                                               {
+                                                   Amount = decimal.TryParse(p.Amount.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal amt) ? amt : 0,
+                                                   BranchCode = b.BranchCode,
+                                                   CreatedBy = $"{u1.firstName} {u1.lastName}",
+                                                   IssuedBy = u1.id.ToString(),
+                                                   Description = p.Description ?? string.Empty,
+                                                   CreatedDate = p.CreatedDate,
+                                                   //DateTime.TryParseExact( "dd-MMM-yy h:mm:ss tt",
+                                                   //            CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime createdDate)
+                                                   //            ? createdDate : DateTime.MinValue,
+                                                   ApprovedBy = isPending ? "NOT APPROVED" : p.ApprovedBy,
+                                                   EndorseBy = p.ApprovedBy,
+                                                   ApprovedDate = p.ApprovedDate,
+                                                   //DateTime.TryParseExact(p.ApprovedDate, "dd-MMM-yy h:mm:ss tt",
+                                                   //             CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime approvedDate)
+                                                   //             ? approvedDate : DateTime.MinValue,
+                                                   Status = p.Status ?? string.Empty,
+                                                   PostingSource = p.PostingSource ?? string.Empty,
+                                                   Id = p.Id,
+                                                   EntryDetail = p.EntryDetail
+                                               }).ToList();
+                }
+
+
+
+                this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()] = postedCollectionEntries;
+                return new ManuallyJournalEntryDataSet
+                {
+                    PostedEntriesX = postedCollectionEntries
+            
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+        }
+        private async Task GetList()
+        {
+
+
+            try
+            {
+                var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
+
+                var CreditAccounts = BuildMenuViewBag(await _AccountServices.GetJournalEntryMFIAccountQuery(_AccountServices.GetBranchID()));
+                ViewBag.Accounts = CreditAccounts;
+                ViewBag.BookingDirections = await GetBookingDirections();
+                ViewBag.ChartOfAccountManagementPositions = BuildMenuCOAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList());
+                ViewBag.DoubbleEntryValidation = await GetDoubbleEntryValidation();
+                ViewBag.ListOfEligibleBranch = BuildBranchViewBag((await _branchService.GetBranches()).ToList());
+                ViewBag.EntryTypes = BuildEntryTypesViewBag();
+                ViewBag.LevelOfExecution = BuildLevelOfExecutionViewBag();
+                ViewBag.IsInterBranchTransaction = BuildIsInterBranchTransactionViewBag();
+                ViewBag.IsChainEntry = await GetEntrySystem();
+                ViewBag.AccountingEventRuleIds = BuildAccountingRuleViewBag((await _AccountingRuleServices.GetAccountingRules()).ToList());
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        private async Task GetExInfoList()
+        {
+
+
+            var listAccounts = await _AccountServices.GetAllAccounting();
+
+            var CreditAccounts = BuildMenuViewBag(listAccounts);
+            ViewBag.Accounts = CreditAccounts;
+            ViewBag.ListOfEligibleBranch = BuildBranchViewBag((await _branchService.GetBranches()).ToList());
+            ViewBag.BookingDirections = await GetBookingDirections();
+
+        }
+        private dynamic BuildIsInterBranchTransactionViewBag()
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = "true", Text = $"InterBranchTransaction" });
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = "false", Text = $"Local" });
+            return selectListItems;
+        }
+
+        private dynamic BuildAccountingRuleViewBag(List<AccountingEventRule> listOfItems)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+
+            foreach (var item in listOfItems)
+            {
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = $"{item.EventName}", Value = item.Id });
+            }
+            return selectListItems;
+        }
+
+        /// <summary>
+        /// Retrieves users filtered by branch ID and returns them in a format suitable for approver selection
+        /// </summary>
+        /// <param name="branchId">The branch ID to filter users by. Use "XXXXX" to get all users regardless of branch</param>
+        /// <returns>JSON result containing formatted user data for approver selection, or null if an error occurs</returns>
+        public async Task<ActionResult> GetBranchUsersByBranchId(string branchId)
+        {
+
+
+            try
+            {
+                var users = (await _userService.GetUsers()).ToList();
+                if (branchId != "XXXXX")
+                {
+                    users = users.Where(x => x.BranchID == branchId).ToList();
+                }
+
+
+                var AccountData = BuildUserApproverViewBag(users);
+
+
+
+
+                return Json(AccountData, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> GetBranchAccount(string BranchId)
+        {
+            if (_AccountServices.IsHeadOffice())
+            {
+                var ListOfData = await _AccountServices.GetAllAccounting();
+                ListOfData = ListOfData.Where(x => x.AccountOwnerId == BranchId).ToList();
+                return Json(BuildDropDown(ListOfData), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                //   var ListOfData = await _AccountServices.GetJournalEntryMFIAccountQuery(BranchId);
+                var ListOfData = await _AccountServices.GetAllAccounting();
+                ListOfData = ListOfData.Where(x => x.AccountOwnerId == BranchId).ToList();
+                return Json(BuildDropDown(ListOfData), JsonRequestBehavior.AllowGet);
+            }
+
+        }
+        private List<StringValues> BuildDropDown(List<Data.Account> ListOfData)
+        {
+            List<StringValues> list = new List<StringValues>();
+            foreach (var item in ListOfData)
+            {
+
+                list.Add(new StringValues { Text = $"{item.AccountNumberCU}-{item.AccountName}", Value = item.Id });
+
+            }
+
+            return list;
+        }
+
+        public async Task<ActionResult> GetAccountMFIChartOfAccount()
+        {
+            try
+            {
+                var AccountData = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions();
+                return Json(BuildMenuCOAccountViewBag(AccountData.ToList()), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+        private dynamic BuildBranchViewBag(List<CBS.FrontDesk.Data.Entity.Config.Branch> listOfItems)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+
+            foreach (var item in listOfItems)
+            {
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = $"{item.Name}", Text = item.Id });
+            }
+            return selectListItems;
+        }
+        private dynamic BuildLevelOfExecutionViewBag()
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = LevelOfExecution.BRANCH_OFFICE.ToString(), Text = LevelOfExecution.BRANCH_OFFICE.ToString() });
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = LevelOfExecution.HEAD_OFFICE.ToString(), Text = LevelOfExecution.HEAD_OFFICE.ToString() });
+            return selectListItems;
+        }
+        private dynamic BuildEntryTypesViewBag()
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+
+
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "USER", Value = $"USER" });
+            selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "SYSTEM", Value = "SYSTEM" });
+            return selectListItems;
+        }
+        private dynamic BuildMenuCOAccountViewBag(List<ChartofAccountManagementPosition> ChartofAccountManagementPositions)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            string code = "";
+            var listOfItems = (from item in ChartofAccountManagementPositions
+                                   //join element in ListchartOfAccounts on item.ChartOfAccountId equals element.Id
+                               select new ManagementSelectionOption
+                               {
+                                   Id = item.Id,
+                                   AccountNumber = item.AccountNumber.PadRight(6, '0'),
+                                   PositionNumber = item.PositionNumber.PadRight(3, '0'),
+                                   Description = item.Description,
+                                   GeneralRepresentation = item.AccountNumber.PadRight(6, '0') + code + item.PositionNumber.PadRight(3, '0'),
+                                   TempData = item.TempData
+                               }).ToList();
+            foreach (var item in listOfItems)
+            {
+                if (item.AccountNumber.Equals("451000"))
+                {
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = item.Id, Text = $"{item.Description} - {item.AccountNumber}{item.PositionNumber}-{item.Id}" });
+
+                }
+                else
+                {
+                    selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Value = item.Id, Text = $"{item.Description} - {item.AccountNumber}{item.PositionNumber}-{item.Id}" });
+
+                }
+            }
+            return selectListItems;
+        }
+        private dynamic BuildMenuAccountViewBag(List<ChartOfAccount> ListchartOfAccounts)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+
+            foreach (var item in ListchartOfAccounts)
+            {
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.AccountNumber} - {item.LabelEn}" });
+            }
+            return selectListItems;
+        }
+
+        private async Task<List<Data.Account>> GetAllAccountsExcludingOperationsAccountAsync()
+        {
+            var accounts = await _AccountServices.GetAllAccounting();
+            var accountingRules = (await _accountingEntryRuleService.GetAccountingEntryRules()).ToList();
+            //return accounts.ToList();
+            return accounts.Where(account =>
+                !CheckIfAccountIsOperationsAccount(account, accountingRules).Result)
+                .ToList();
+        }
+
+        private Task<bool> CheckIfAccountIsOperationsAccount(Data.Account account, List<AccountingRuleEntry> accountingRules)
+        {
+            const string OPERATIONS_PREFIX_1 = "3";
+            const string OPERATIONS_PREFIX_2 = "571";
+
+            var virtualTellerCodes = new[] {
+        "Virtual_Teller_MTN",
+        "Virtual_Teller_Orange",
+        "Virtual_Teller_Momo_cash_Collection"
+    };
+
+            var matchingRules = accountingRules
+                .FirstOrDefault(x => x.DeterminationAccountId.Equals(account.ChartOfAccountManagementPositionId));
+
+            return Task.FromResult(
+                matchingRules != null && virtualTellerCodes.Contains(matchingRules.EventCode) ||
+                account.AccountNumber.StartsWith(OPERATIONS_PREFIX_1) ||
+                account.AccountNumber.StartsWith(OPERATIONS_PREFIX_2)
+            );
+        }
+
+        private async Task<List<Data.Account>> GetAllAccountOpenForJEAsync(List<ChartofAccountManagementPosition> requiredChartofAccountManagementPositions)
+        {
+            var accountList = await _AccountServices.GetAllAccounting();
+
+            // Build a dictionary for fast lookups (O(1) time)
+            var accountDict = accountList
+                .GroupBy(a => a.ChartOfAccountManagementPositionId)
+                .ToDictionary(g => g.Key, g => g.First());
+
+            // Select only matching accounts
+            var result = requiredChartofAccountManagementPositions
+                .Where(pos => accountDict.ContainsKey(pos.Id))
+                .Select(pos => accountDict[pos.Id])
+                .ToList();
+
+            return result;
+        }
+
+
+
+
+        private Task<List<System.Web.WebPages.Html.SelectListItem>> GetBookingDirections()
+        {
+            var bookingDirections = new System.Web.WebPages.Html.SelectListItem[] { new System.Web.WebPages.Html.SelectListItem { Text = "DEBIT", Value = "DEBIT" }, new System.Web.WebPages.Html.SelectListItem { Text = "CREDIT", Value = "CREDIT" } }.ToList();
+            return Task.FromResult(bookingDirections);
+        }
+        private List<System.Web.WebPages.Html.SelectListItem> GetFilteringOptions()
+        {
+            //        
+            var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[]
+            { new System.Web.WebPages.Html.SelectListItem { Text = "Pending", Value = "Pending" },
+                new System.Web.WebPages.Html.SelectListItem { Text = "Approved", Value = "Approved" },
+                new System.Web.WebPages.Html.SelectListItem { Text = "Rejected", Value = "Rejected" } }.ToList();
+            return doubbleEntryValidations;
+        }
+        private Task<List<System.Web.WebPages.Html.SelectListItem>> GetDoubbleEntryValidation()
+        {
+            var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[]
+            { new System.Web.WebPages.Html.SelectListItem { Text = "Doubble validation is mandatory", Value = "true" },
+                new System.Web.WebPages.Html.SelectListItem { Text = "Doubble validation is NOT mandatory", Value = "false" } }.ToList();
+            return Task.FromResult(doubbleEntryValidations);
+        }
+        private Task<List<System.Web.WebPages.Html.SelectListItem>> GetEntrySystem()
+        {
+            var doubbleEntryValidations = new System.Web.WebPages.Html.SelectListItem[] { new System.Web.WebPages.Html.SelectListItem { Text = "Chain Entry", Value = "true" }, new System.Web.WebPages.Html.SelectListItem { Text = "Not Chain Entry", Value = "false" } }.ToList();
+            return Task.FromResult(doubbleEntryValidations);
+        }
+        private dynamic BuildMenuViewBag(IEnumerable<Data.Account> debitAccounts)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> list = new List<System.Web.WebPages.Html.SelectListItem>();
+            foreach (var item in debitAccounts)
+            {
+
+                list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.TempData.PadRight(12,'0') + "-" + item.AccountName });
+
+            }
+
+            return list;
+        }
+
+        private async Task<bool> CheckIfAccountIsReceivableAsync(Data.Account account)
+        {
+            var model = await _accountCategoryServices.GetAccountCategory(account.AccountCategoryId);
+            return model.Name.ToLower() == "revenue";
+        }
+
+        public async Task<ActionResult> GetAccountBalance(string accountId)
+        {
+
+
+            try
+            {
+                var AccountData = await _AccountServices.GetAccountWithAccountCartegorieStatus(accountId);
+                var data = new ManuallyJournalEntryDataSet { Account = AccountData };
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public async Task<ActionResult> GetSequenceReference()
+        {
+
+
+            try
+            {
+                //var AccountData = await _AccountServices.GetSequenceReference();
+
+
+                var data = $"{BaseUtilities.GenerateInsuranceUniqueNumber(5, $"MET-{_AccountServices.GetBranchCode()}-{BaseUtilities.DayCode()}")}";
+
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public async Task<ActionResult> GetAccountrJournalEntry(string Id)
+        {
+
+
+            try
+            {
+                var data = await _Service.GetAccountrJournalEntry(Id);
+
+
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public async Task<ActionResult> MultipleJournalEntryConfiguration()
+        {
+
+
+            try
+            {
+                await GetList();
+
+                return View(new ManuallyJournalEntryDataSet { });
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+        //AccountingEventRuleId
+        [HttpPost]
+        public async Task<ActionResult> AddAccountingEntryRule(ManuallyJournalEntryDataSet model)
+        {
+            AddAccountingRuleCommand modelRequest = AddAccountingRuleCommand.BuildRequest(model);
+            try
+            {
+                var data = await _AccountingRuleServices.Creating(modelRequest);
+                if (data.Result)
+                {
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                }
+                else
+                {
+                    return Json(new { success = false, status = false, message = data.MessageString });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+            }
+
+
+        }
+        [HttpPost]
+        public async Task<ActionResult> UpdateAccountingRule(ManuallyJournalEntryDataSet model)
+        {
+            try
+            {
+                var data = await _AccountingRuleServices.Update(model.AccountingEventRule);
+                if (data.Result)
+                {
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                }
+                else
+                {
+                    return Json(new { success = false, status = false, message = data.MessageString });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+            }
+
+
+        }
+
+        public class TempData
+        {
+
+            public string identifier { get; set; }
+            public string oldValue { get; set; }
+            public string newValue { get; set; }
+        }
+
+        public async Task<ActionResult> updateChartOfAccount(TempData model)
+        {
+            try
+            {
+                var list = (await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList();
+                var results = (AccountingEventRule)this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()];
+                var Id = GetIdentifier(model.identifier.Split('-'));
+                var Modelreturn = list.Find(x => x.Id.Contains(Id));
+
+                var data = results.AccountingRules.Find(x => x.Id.Contains(Id));
+
+                if (results.AccountingRules.Remove(data))
+                {
+                    data.Id = Modelreturn.Description + "-" + Modelreturn.AccountNumber + Modelreturn.PositionNumber + "-" + Modelreturn.Id; ;
+                    data.MFI_ChartOfAccountId = Modelreturn.Description + "-" + Modelreturn.AccountNumber + Modelreturn.PositionNumber + "-" + Modelreturn.Id;
+                    results.AccountingRules.Add(data);
+                }
+                this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()] = results;
+                return Json(results, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
+        private string GetIdentifier(string[] strings)
+        {
+            if (strings.Length > 1)
+            {
+                return strings[2];
+            }
+            else
+            {
+                return strings[0];
+            }
+        }
+
+        public async Task<ActionResult> updateBookingDirection(TempData model)
+        {
+            try
+            {
+                var list = (await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList();
+                var results = (AccountingEventRule)this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()];
+                var Id = GetIdentifier(model.identifier.Split('-'));
+                var Modelreturn = list.Find(x => x.Id.Contains(Id));
+
+                var data = results.AccountingRules.Find(x => x.Id.Contains(Id));
+                if (results.AccountingRules.Remove(data))
+                {
+                    data.Id = Modelreturn.Id;
+                    data.BookingDirection = model.newValue;
+                    results.AccountingRules.Add(data);
+                }
+                this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()] = results;
+                return Json(results, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
+        [HttpGet] //ExecuteAutomatedEntry
+        public async Task<ActionResult> EventEntrySystemInfo(string Key)
+        {
+            try
+            {
+                var model = await _AccountingRuleServices.GetAccountingRuleById(Key);
+                this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()] = model;
+
+
+                var Branches = GetSetOfBranchesActivatedForEvents((await _branchService.GetBranches()).ToList(), model.ListOfEligibleBranchId);
+                // model.AccountingRules = GetSetOfAccountsUsed((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList(), model.AccountingRules);        
+                model.AccountingRules = SetAccountRuleId(model);
+                ViewBag.ListOfEligibleBranchId = BuildBranchViewBag((await _branchService.GetBranches()).ToList());
+                ViewBag.EntryTypes = BuildEntryTypesViewBag();
+                ViewBag.LevelOfExecution = BuildLevelOfExecutionViewBag();
+                ViewBag.DoubbleEntryValidation = await GetDoubbleEntryValidation();
+                ViewBag.IsChainEntry = await GetEntrySystem();
+                ViewBag.IsInterBranchTransaction = BuildIsInterBranchTransactionViewBag();
+                ViewBag.AccountingEventRuleIds = BuildAccountingRuleViewBag((await _AccountingRuleServices.GetAccountingRules()).ToList());
+
+                return View(new ManuallyJournalEntryDataSet { AccountingEventRule = model });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"An error occurred" });
+            }
+
+
+        }
+
+        [HttpGet] //ExecuteAutomatedEntry
+        public async Task<ActionResult> GetAccountingRules()
+        {
+            try
+            {
+                var model = (AccountingEventRule)this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()];
+                return Json(model.AccountingRules, JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"An error occurred" });
+            }
+
+
+        }
+
+        private List<AccountingEventRule.AccountingRule> SetAccountRuleId(AccountingEventRule model)
+        {
+            List<AccountingEventRule.AccountingRule> list = new List<AccountingEventRule.AccountingRule>();
+            foreach (var item in model.AccountingRules)
+            {
+                list.Add(new AccountingEventRule.AccountingRule { BookingDirection = item.BookingDirection, Id = item.MFI_ChartOfAccountId, MFI_ChartOfAccountId = item.MFI_ChartOfAccountId });
+            }
+            return list;
+        }
+
+        [HttpGet] //ExecuteAutomatedEntry
+        public async Task<ActionResult> GetAccountingEventToDelete(string Key)
+        {
+            try
+            {
+                var model = await _AccountingRuleServices.GetAccountingRuleById(Key);
+                var Branches = GetSetOfBranchesActivatedForEvents((await _branchService.GetBranches()).ToList(), model.ListOfEligibleBranchId);
+                // model.AccountingRules = GetSetOfAccountsUsed((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList(), model.AccountingRules);        
+                model.ListOfEligibleBranchId = BuildAllBrachScope((await _branchService.GetBranches()).ToList(), model);
+                ViewBag.EntryTypes = BuildEntryTypesViewBag();
+                ViewBag.LevelOfExecution = BuildLevelOfExecutionViewBag();
+                ViewBag.DoubbleEntryValidation = await GetDoubbleEntryValidation();
+                ViewBag.IsChainEntry = await GetEntrySystem();
+                ViewBag.AccountingEventRuleIds = BuildAccountingRuleViewBag((await _AccountingRuleServices.GetAccountingRules()).ToList());
+
+
+
+                return View(new ManuallyJournalEntryDataSet { AccountingEventRule = model });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"An error occurred" });
+            }
+
+
+        }
+
+        private dynamic BuildAllBrachScope(List<CBS.FrontDesk.Data.Entity.Config.Branch> collection, AccountingEventRule model)
+        {
+            List<string> branchString = new List<string>();
+            foreach (var item in model.ListOfEligibleBranchId)
+            {
+                var branch = collection.Find(x => x.Id.Equals(item));
+                branchString.Add(branch.BranchCode + "-" + branch.Name);
+
+            }
+            return branchString;
+        }
+
+        [HttpGet] //
+
+        public async Task<ActionResult> ExecuteAutomatedEntry(string Key)
+        {
+            try
+
+            {
+                var model = await _AccountingRuleServices.GetAccountingRuleById(Key);
+
+                // Determine if BranchId can execute this Automated JE
+                if (model.ListOfEligibleBranchId.Contains(_AccountingRuleServices.BranchId))
+                {
+                    var tempData = model;
+                    this.HttpContext.Session["EventEntrySystemInfo" + this.HttpContext.Session.SessionID + _AccountingRuleServices.GetUserID()] = tempData;
+                    if (model.IsChainEntry == true)
+                    {
+                        var EventRuleId = await _AccountingRuleServices.GetAccountingRuleById(model.AccountingEventRuleId);
+                        model.AccountingEventRuleId = $"{EventRuleId.EventName}[{EventRuleId.Description}]";
+                    }
+                    ViewBag.IsAuthourized = true;
+                    return View(new ManuallyJournalEntryDataSet { AccountingEventRule = model });
+                }
+                else
+                {
+                    if (model.LevelOfExecution.ToUpper() == LevelOfExecution.HEAD_OFFICE.ToString() && _AccountingRuleServices.IsHeadOffice())
+                    {
+                        var tempData = model;
+                        ViewBag.IsAuthourized = true;
+                        this.HttpContext.Session["EventEntrySystemInfo" + this.HttpContext.Session.SessionID + _AccountingRuleServices.GetUserID()] = tempData;
+                        if (model.IsChainEntry == true)
+                        {
+                            var EventRuleId = await _AccountingRuleServices.GetAccountingRuleById(model.AccountingEventRuleId);
+                            //model.AccountingEventRuleId = $"{EventRuleId.EventName}[{EventRuleId.Description}]";
+                        }
+                        return View(new ManuallyJournalEntryDataSet { AccountingEventRule = model });
+
+                    }
+                    else
+                    {
+                        ViewBag.IsAuthourized = false;
+                        ViewBag.Error = _AccountServices.GetUserFullName() + ", You are not authorized to perform this transaction kindly contact the financial service ";
+                        return View(new ManuallyJournalEntryDataSet { AccountingEventRule = model });
+
+                    }
+                }
+
+                // model.AccountingRules = GetSetOfAccountsUsed((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList(), model.AccountingRules);      
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"An error occurred" });
+            }
+
+
+        }
+
+        private List<AccountingEventRule.AccountingRule> GetSetOfAccountsUsed(List<ChartofAccountManagementPosition> chartofAccountManagementPositions, List<AccountingEventRule.AccountingRule> accountingRules)
+        {
+            List<AccountingEventRule.AccountingRule> listOfBranch = new List<AccountingEventRule.AccountingRule>();
+            foreach (var item in accountingRules)
+            {
+                var model = chartofAccountManagementPositions.Find(x => x.Id == item.MFI_ChartOfAccountId.Split('-')[2]);
+
+                listOfBranch.Add(new AccountingEventRule.AccountingRule { Id = model.ChartOfAccountId, MFI_ChartOfAccountId = $"{model.Description}-{model.AccountNumber}{model.PositionNumber}-{model.ChartOfAccountId}", BookingDirection = item.BookingDirection });
+            }
+            return listOfBranch;
+        }
+
+        private List<CBS.FrontDesk.Data.Entity.Config.Branch> GetSetOfBranchesActivatedForEvents(List<CBS.FrontDesk.Data.Entity.Config.Branch> enumerable, List<string> listOfEligibleBranchId)
+        {
+            List<CBS.FrontDesk.Data.Entity.Config.Branch> listOfBranch = new List<CBS.FrontDesk.Data.Entity.Config.Branch>();
+            foreach (var item in listOfEligibleBranchId)
+            {
+                listOfBranch.Add(enumerable.Find(x => x.Id == item));
+            }
+            return listOfBranch;
+        }
+
+        private dynamic BuildMenuAccountViewBag(List<ChartofAccountManagementPosition> ChartofAccountManagementPositions, List<ChartOfAccount> ListchartOfAccounts)
+        {
+            List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
+            string code = "[BCD]";
+            var listOfItems = (from item in ChartofAccountManagementPositions
+                               join element in ListchartOfAccounts on item.ChartOfAccountId equals element.Id
+                               select new ManagementSelectionOption
+                               {
+                                   Id = item.Id,
+                                   AccountNumber = element.AccountNumber.PadRight(6, '0'),
+                                   PositionNumber = item.PositionNumber.PadRight(3, '0'),
+                                   Description = item.Description,
+                                   GeneralRepresentation = element.AccountNumber.PadRight(6, '0') + code + item.PositionNumber.PadRight(3, '0')
+
+                               }).ToList();
+            foreach (var item in listOfItems)
+            {
+                selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = $"{item.Description} - {item.AccountNumber}[BCD]{item.PositionNumber}" });
+            }
+            return selectListItems;
+        }
+        public async Task<ActionResult> MultipleJournalEntryClient()
+        {
+            var model = new ManuallyJournalEntryDataSet();
+            model.AccountingRuleDtos = new List<AccountingRuleDtos>();
+            try
+            {
+                var ResponseList = await _AccountingRuleServices.GetAccountingRules();
+                model.AccountingEventRules = ResponseList.ToList();
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public List<AccountingRule> GetUniqueRuleNames(List<AccountingRule> accountingRules)
+        {
+            Dictionary<string, AccountingRule> uniqueRules = new Dictionary<string, AccountingRule>();
+
+            foreach (var rule in accountingRules)
+            {
+                if (!uniqueRules.ContainsKey(rule.RuleName))
+                {
+                    uniqueRules[rule.RuleName] = rule;
+                }
+            }
+
+            return uniqueRules.Values.ToList();
+        }
+        private List<AccountingRuleDtos> BuildEntryTable(List<AccountingRule> responseList)
+        {
+            var collection = GetUniqueRuleNames(responseList);
+
+            List<AccountingRuleDtos> modelList = new List<AccountingRuleDtos>();
+            foreach (var response in collection)
+            {
+                var result = new AccountingRuleDtos();
+
+                result.RuleName = response.RuleName;
+                result.System_Id = response.System_Id;
+
+                modelList.Add(result);
+            }
+            return modelList;
+        }
+
+        private List<AccountingRuleDtos> GetTestData()
+        {
+            AccountingRuleDtos[] serverResponse = new AccountingRuleDtos[]
+        {
+            new AccountingRuleDtos { SystemDescription = "Revenue system rule", System_Id = "SYS001",  RuleName = "Revenue" },
+            new AccountingRuleDtos { SystemDescription = "Expense system rule", System_Id = "SYS002",  RuleName = "Expense" },
+            new AccountingRuleDtos { SystemDescription = "Depreciation system rule", System_Id = "SYS003", RuleName = "Depreciation" },
+            new AccountingRuleDtos {  SystemDescription = "Accrual system rule", System_Id = "SYS004",  RuleName = "Liability" }
+        };
+            return serverResponse.ToList();
+        }
+        private AccountingModelRule GetJournalEntryTestData(string message)
+        {
+            AccountingModelRule modelRule = new AccountingModelRule();
+            AccountingRule[] serverResponse = new AccountingRule[]
+          {
+            new AccountingRule { Id = "1", RuleName = $"{message}", Description =  $"{message}", EventName =  $"{message}", System_Id = "SYS001", BookingDirection = "Credit", MFI_ChartOfAccountId = "000000", AccountNumber =  $"{message}", Amount = 1500.00, AccountName =  $"{message}" },
+            new AccountingRule { Id = "2", RuleName =  $"{message}", Description =  $"{message}", EventName =  $"{message}", System_Id = "SYS002", BookingDirection = "Debit", MFI_ChartOfAccountId = "000000", AccountNumber =  $"{message}", Amount = 800.00, AccountName =  $"{message}" },
+            new AccountingRule { Id = "3", RuleName =  $"{message}", Description =  $"{message}", EventName =  $"{message}", System_Id = "SYS003", BookingDirection = "Debit", MFI_ChartOfAccountId = "000000", AccountNumber =  $"{message}", Amount = 500.00, AccountName = $"{message}" },
+            new AccountingRule { Id = "4", RuleName =  $"{message}", Description =  $"{message}", EventName =  $"{message}", System_Id = "SYS004", BookingDirection = "Credit", MFI_ChartOfAccountId = "000000", AccountNumber =  $"{message}", Amount = 1200.00, AccountName = $"{message}" }
+          };
+            modelRule.AccountingRule = serverResponse.ToList();
+            modelRule.HasError = true;
+            return modelRule;
+        }
+        public async Task<ActionResult> GetAllEntriesForJournalEntryReference(string Id)
+        {
+
+            try
+            {
+                var results = (List<PostedEntryX>)this.HttpContext.Session["postedEntryDetails" + _AccountServices.GetUserID()];
+
+                var data = results.Find(x => x.Id.Equals(Id)); //<<<await _Service.GetPostedEntryReference(Id);
+
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public async Task<ActionResult> GetAccountingEntryEventID(string system_Id)
+        {
+            AccountingModelRule modelRule = new AccountingModelRule();
+
+            try
+            {
+                var modelList = await _AccountingRuleServices.GetAccountingRules();
+                var list = modelList.Where(c => c.Id == system_Id).ToList();
+                //list = await RebuildEntryBookAsync(list);
+                //modelRule.AccountingRule = list;
+                //modelRule.HasError = false;
+                return Json(modelRule, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+
+                return Json(GetJournalEntryTestData(ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        private async Task<List<AccountingRule>> RebuildEntryBookAsync(List<AccountingRule> list)
+        {
+            List<AccountingRule> accountingRules = new List<AccountingRule>();
+
+            foreach (var rule in list)
+            {
+                var model = await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositionServiceByIdandBranchIDAsync(rule.MFI_ChartOfAccountId, _AccountServices.GetUserID());
+                rule.AccountNumber = $"{model.AccountNumberCU}-{model.AccountName}";
+                accountingRules.Add(rule);
+            }
+            return accountingRules;
+
+
+
+        }
+        //
+        [HttpPost]
+        public async Task<ActionResult> AddOrUpdate(ManuallyJournalEntryDataSet model)
+        {
+            Func<Task<ExecutionMessages>> serviceAction = null;
+            if (model.ServiceOption == "SearchAndFilter")
+            {
+                ExecutionMessages data = new ExecutionMessages();
+                data.Result = true;
+                data.MessageStatus = "Success";
+                data.Data = model.QueryModel;
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data), Data = data.Data });
+
+            }
+            if (model.Action == "insert")
+            {
+                serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
+            }
+            else
+            {
+
+                serviceAction = await GetUpdateServiceAction(model.ServiceOption, model);
+            }
+            //if (model.ServiceOption == "CreateAccountingEntries")
+            //{
+            //        serviceAction = await PostAccountingEntryActionAsync(model.ServiceOption, model);
+            //}
+            //else if (model.ServiceOption == "accountingEventRule")
+            //{
+            //    AddAccountingRuleCommand modelRequest = AddAccountingRuleCommand.BuildRequest(model);
+            //    serviceAction = await PostAccountingEntryActionAsync(model.ServiceOption, model);
+            //}
+
+
+            if (serviceAction != null)
+            {
+                try
+                {
+                    var data = await serviceAction();
+                    if (data.Result)
+                    {
+                        return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                    }
+                    else
+                    {
+                        return Json(new { success = false, status = false, message = data.MessageString });
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+                }
+            }
+
+            return Json(new { success = false, status = false, message = "Invalid option selected." });
+        }
+
+        public async Task<ActionResult> PostToRetrieveData(ManuallyJournalEntryDataSet model)
+        {
+            Func<Task<ExecutionMessages>> serviceAction = null;
+            if (model.Action == "insert")
+            {
+                serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
+            }
+            else
+            {
+
+                serviceAction = await GetUpdateServiceAction(model.ServiceOption, model);
+            }
+            //if (model.ServiceOption == "CreateAccountingEntries")
+            //{
+            //        serviceAction = await PostAccountingEntryActionAsync(model.ServiceOption, model);
+            //}
+            //else if (model.ServiceOption == "accountingEventRule")
+            //{
+            //    AddAccountingRuleCommand modelRequest = AddAccountingRuleCommand.BuildRequest(model);
+            //    serviceAction = await PostAccountingEntryActionAsync(model.ServiceOption, model);
+            //}
+
+
+            if (serviceAction != null)
+            {
+                try
+                {
+                    var data = await serviceAction();
+                    if (data.Result)
+                    {
+                        return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                    }
+                    else
+                    {
+                        return Json(new { success = false, status = false, message = data.MessageString });
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+                }
+            }
+
+            return Json(new { success = false, status = false, message = "Invalid option selected." });
+        }
+
+        // = results;
+
+        [HttpGet]
+        public async Task<ActionResult> ApproveEntries(string Id, bool HasApproved, string Comment)
+        {
+            var model = new EntryApproval { HasApproved = HasApproved, Id = Id, Comment = Comment, BranchId = _Service.GetBranchID(), TransactionDate = BaseUtilities.UtcToLocal() };
+            try
+            {
+                var data = await _Service.ApproveAccountingEntry(model);
+                if (data.Result)
+                {
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, status = false, message = data.MessageString }, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+            }
+
+        }
+
+        [HttpGet]
+
+        public async Task<ActionResult> PrintDataEntries(string id)
+        {
+            try
+            {
+                string userKey = "postedEntryDetails" + _AccountServices.GetUserID();
+                List<PostedEntryX> listPosted = (List<PostedEntryX>)this.HttpContext.Session[userKey];
+                var branchModel = await _branchService.GetBranch(listPosted.ToArray()[0].EntryDetail.ToArray()[0].BranchId);
+                var entry = await _Service.GetPostedEntryReference(id);
+                var entryX = entry.ConvertToPostedEntry(entry);
+                var issuer = await _userService.GetUser(entryX.IssuedBy);
+                var approver = await _userService.GetUser(entryX.EndorseBy);
+                var modelData = PostedEntryX.ConvertToManualEntry(entryX, branchModel, issuer, approver);
+                // Set session values using the standard indexer 
+                //  string userPrefix = $"rpt_{_AccountServices.GetUserID()}_";
+                HttpContext.Session["rptSource"] = modelData;
+                HttpContext.Session["fileType"] = "MET";
+                HttpContext.Session["rptType"] = "Entry_" + id;
+                string reportName = "PrintedManualJE.rpt";
+                HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{reportName}";
+
+                return Json(new { success = true, message = "Report generated successfully" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = $"Print failed: {ex.Message}"
+                });
+            }
+        }
+
+
+        [HttpGet]
+
+        public async Task<ActionResult> PrintCurrentDataEntries(string id)
+        {
+            try
+            {
+
+
+
+                var entry = await _Service.GetPostedEntryReference(id);
+                var entryX = entry.ConvertToPostedEntry(entry);
+                var branchModel = await _branchService.GetBranch(entry.EntryDetail.ToArray()[0].BranchId);
+
+                if (entryX == null)
+                    throw new Exception($"Entry with ID {id} not found");
+
+                if (entryX.EntryDetail == null || !entryX.EntryDetail.Any())
+                    throw new Exception("Entry has no details");
+                var issuer = await _userService.GetUser(entryX.IssuedBy);
+                var approver = await _userService.GetUser(entryX.EndorseBy);
+                var modelData = PostedEntryX.ConvertToManualEntry(entryX, branchModel, issuer, approver);
+                // Set session values using the standard indexer 
+                //  string userPrefix = $"rpt_{_AccountServices.GetUserID()}_";
+                HttpContext.Session["rptSource"] = modelData;
+                HttpContext.Session["fileType"] = "MET";
+                HttpContext.Session["rptType"] = "Entry_" + id;
+                string reportName = "PrintedManualJE.rpt";
+                HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{reportName}";
+
+                return Json(new { success = true, message = "Report generated successfully" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = $"Print failed: {ex.Message}"
+                });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> PostAutoJournalEntries(AutomatedEventEntryCommand data)
+        {
+            if (string.IsNullOrEmpty(data.Description))
+            {
+                return Json("Kindly fill in the transaction description");
+            }
+            // Process the received data
+            // For example, you can save it to the database or perform any business logic
+            if (data.Entries[0].MFI_ChartOfAccountId.Contains("000000"))
+            {
+                return Json(await _Service.PostAutomatedJournalEntry(data, true));
+            }
+            else
+            {
+
+                return Json(await _Service.PostAutomatedJournalEntry(data));
+
+
+
+            }
+            // Return a success response
+
+        }
+
+        [HttpPost]
+
+        public async Task<ActionResult> SubmitManualEntry(ManualJournalEntryRequest model)
+        {
+            try
+            {
+                // Retrieve AccountingEventRule from session
+                var sessionKey = "EventEntrySystemInfo" + HttpContext.Session.SessionID + _AccountingRuleServices.GetUserID();
+                var accountingEventRule = HttpContext.Session[sessionKey] as AccountingEventRule;
+
+                // Validate if session object exists
+                if (accountingEventRule == null)
+                {
+                    return Json(ExecutionMessages.StaticGetExecutionMessages(model, false,
+                        "Session data not found or expired. Please re-authenticate.",
+                        MessagesResults.Failed, ExecutionProcessOption.DefaultFailedMessages,
+                        SystemMessageStatus.Failed.ToString(), null, "Session data is missing."));
+                }
+
+
+
+                // Determine processing path based on branch count
+                bool isBatchProcessingRequired = accountingEventRule.ListOfEligibleBranchId.Count() > 8;
+
+                // Process entries based on rule
+                var response = await _Service.PostAutomatedEntries(model, accountingEventRule);
+
+                if (isBatchProcessingRequired)
+                {
+                    string message = "The size of data to be processed exceeds the amount required for real-time processing. " +
+                                     "Processing will continue as background processes.";
+
+                    // Log batch processing decision
+                    return Json(ExecutionMessages.StaticGetExecutionMessages(response, true, response.MessageString,
+            MessagesResults.Success, ExecutionProcessOption.InsertObject,
+            SystemMessageStatus.Success.ToString(), null, response.MessageString));
+                    //return Json(ExecutionMessages.StaticGetExecutionMessages(model, false, message,
+                    //    MessagesResults.Failed, ExecutionProcessOption.DefaultFailedMessages,
+                    //    SystemMessageStatus.Failed.ToString(), null, message));
+                }
+
+                // Log successful processing
+
+                return Json(ExecutionMessages.StaticGetExecutionMessages(response, true, response.MessageString,
+                    MessagesResults.Success, ExecutionProcessOption.InsertObject,
+                    SystemMessageStatus.Success.ToString(), null, response.MessageString));
+            }
+            catch (Exception ex)
+            {
+                // Log error
+
+                return Json(ExecutionMessages.StaticGetExecutionMessages(model, false,
+                    "An error occurred while processing the request.", MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, ex.Message));
+            }
+        }
+
+        private async Task<Func<Task<ExecutionMessages>>> PostAccountingEntryActionAsync(string serviceOption, ManuallyJournalEntryDataSet model)
+        {
+
+            if (serviceOption == "CreateAccountingEntries")
+            {
+                return () => _Service.Create(model.EntryTempDatas);
+            }
+            else if (model.ServiceOption == "accountingEventRule")
+            {
+                if (true)
+                {
+                    AddAccountingRuleCommand modelRequest = AddAccountingRuleCommand.BuildRequest(model);
+                    return () => _AccountingRuleServices.Creating(modelRequest);
+                }
+
+            }
+
+            else
+            {
+                return null;
+            }
+        }
+
+        private async Task<Func<Task<ExecutionMessages>>> GetInsertServiceActionAsync(string serviceOption, ManuallyJournalEntryDataSet model)
+        {
+
+            if (serviceOption == "CreateAccountingEntries")
+            {
+
+                return () => _Service.Create(model.EntryTempDatas);
+            }
+            else if (model.ServiceOption == "accountingEventRule")
+            {
+                AddAccountingRuleCommand modelRequest = AddAccountingRuleCommand.BuildRequest(model);
+                return () => _AccountingRuleServices.Creating(modelRequest);
+
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
+        private async Task<Func<Task<ExecutionMessages>>> GetUpdateServiceAction(string serviceOption, ManuallyJournalEntryDataSet model)
+        {
+            if (serviceOption == "CreateAccountingEntries")
+            {
+
+                return () => _Service.Create(model.EntryTempDatas);
+            }
+            else if (serviceOption == "accountingEventRule")
+            {
+
+                AccountingEventRule modelRequest = AccountingEventRule.BuildRequest(model);
+                var objec = (AccountingEventRule)this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()];
+                modelRequest.Id = objec.Id;
+                return () => _AccountingRuleServices.Update(modelRequest);
+
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        //[HttpPost]
+        //public async Task<ActionResult> AddOrUpdate(ManuallyJournalEntryDataSet model)
+        //{
+
+        //    Func<Task<ExecutionMessages>> serviceAction = null;
+        //    if (model.ServiceOption == "CreateAccountingEntries")
+        //    {
+        //        if (model.Action == "insert")
+        //        {
+        //            serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
+        //        }
+        //        else
+        //        {
+
+        //            serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+        //        }
+        //    }
+        //    else if (model.ServiceOption == "accountingEventRule")
+        //    {
+        //        if (model.Action == "insert")
+        //        {
+        //            serviceAction = await GetInsertServiceActionAsync(model.ServiceOption, model);
+        //        }
+        //        else
+        //        {
+
+        //            serviceAction = GetUpdateServiceAction(model.ServiceOption, model);
+        //        }
+        //    }
+
+
+        //    if (model.ServiceOption == "CreateAccountingEntries")
+        //    {
+
+
+
+        //        serviceAction = await PostAccountingEntryActionAsync(model.ServiceOption, model);
+
+        //    }
+        //    else if (model.ServiceOption == "accountingEventRule")
+        //    {
+        //        AddAccountingRuleCommand modelRequest = AddAccountingRuleCommand.BuildRequest(model);
+        //        serviceAction = await PostAccountingEntryActionAsync(model.ServiceOption, model);
+        //    }
+
+
+        //    if (serviceAction != null)
+        //    {
+        //        try
+        //        {
+        //            var data = await serviceAction();
+        //            if (data.Result)
+        //            {
+        //                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+        //            }
+        //            else
+        //            {
+        //                return Json(new { success = false, status = false, message = data.MessageString });
+        //            }
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+        //        }
+        //    }
+
+        //    return Json(new { success = false, status = false, message = "Invalid option selected." });
+        //}
+
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+        {
+            await GetList();
+            var partialResult = await GetServiceAction(path, partialView, KEY, serviceOption);
+
+            return partialResult;
+        }
+
+        private async Task<PartialViewResult> GetServiceAction(string path, string partialView, string key, string serviceOption)
+        {
+            if (serviceOption == "EntryTempData")
+            {
+                if (path == "list")
+                {
+                    var data = await _Service.GetAllEntriesForJournalEntryReference(key);
+                    var dataAccounts = await _AccountServices.GetAllAccounting();
+                    dataAccounts = dataAccounts.Where(po => po.AccountOwnerId == _AccountServices.GetBranchID()).ToList();
+                    var dataset = from entry in data
+                                  join account in dataAccounts on entry.AccountNumber equals account.AccountNumber
+                                  select new EntryTempDataResult
+                                  {
+                                      Id = entry.Reference,
+                                      AccountName = entry.AccountName,
+                                      AccountNumber = entry.AccountNumber,
+                                      Amount = Convert.ToDecimal(entry.Amount),
+                                      Reference = entry.Reference,
+                                      BookingDirection = entry.BookingDirection,
+                                      SumDebit = data.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDecimal(x.Amount)),
+                                      SumCredit = data.Where(x => x.BookingDirection == "CREDIT").Sum(x => Convert.ToDecimal(x.Amount)),
+                                      Difference = (data.Where(x => x.BookingDirection == "CREDIT").Sum(x => Convert.ToDecimal(x.Amount)) - data.Where(x => x.BookingDirection == "DEBIT").Sum(x => Convert.ToDecimal(x.Amount))),
+                                  };
+                    var sysData = new ManuallyJournalEntryDataSet { EntryTempDataResult = dataset.ToList(), EntryTempDatas = data };
+
+                    return PartialView(partialView, sysData);
+
+                }
+
+
+                else if (path == "new")
+                {
+                    var chartOfAccount = await _AccountServices.GetAccount(key);
+                    //Data.Account account = new Data.Account
+                    //{
+                    //    ChartOfAccountId =  chartOfAccount.Id,
+                    //    AccountNumber =  chartOfAccount.AccountNumber,
+
+                    //};
+                    return PartialView(partialView, new ManuallyJournalEntryDataSet { });
+                }
+                else
+                {
+                    var data = await _Service.GetAccountrJournalEntry(key);
+                    return PartialView(partialView, new ManuallyJournalEntryDataSet { EntryTempData = data });
+
+                }
+
+
+            }
+            else if (serviceOption == "FilteringOption")
+            {
+                try
+                {
+                    var settings = new JsonSerializerSettings
+                    {
+                        DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                        DateTimeZoneHandling = DateTimeZoneHandling.Unspecified,
+                        Culture = CultureInfo.InvariantCulture
+                    };
+                    var modelc = JsonConvert.DeserializeObject<QueryFilter>(key, settings);
+
+                    var dataModel = await GetEntries(modelc, "Pending");
+                    ViewBag.IsAuthourized = true;
+                    return PartialView(partialView, dataModel);
+                }
+                catch (Exception EX)
+                {
+                    ViewBag.IsAuthourized = false;
+                    ViewBag.Error = _AccountServices.GetUserFullName() + ", You must select a date range you estimated the data was inputed";
+
+                    return PartialView(partialView, new ManuallyJournalEntryDataSet { });
+                }
+
+
+            }
+            else if (serviceOption == "Account")
+            {
+                var AccountData = await _AccountServices.GetAccount(key);
+                //if (AccountData == null)
+                //{
+                //    AccountData = AccountDataSample.Accounts.Find(i => i.Id == key);
+                //}
+                return PartialView(partialView, new ManuallyJournalEntryDataSet { Account = AccountData });
+
+
+            }
+            else if (serviceOption == "accountingEventRule")
+            {
+
+                if (path == "list")
+                {
+                    var model = new ManuallyJournalEntryDataSet();
+                    model.AccountingRuleDtos = new List<AccountingRuleDtos>();
+
+                    var ResponseList = await _AccountingRuleServices.GetAccountingRules();
+                    model.AccountingEventRules = ResponseList.ToList();
+
+
+                    return PartialView(partialView, model);
+
+                }
+
+                else if (path == "new")
+                {
+
+                    return PartialView(partialView, new ManuallyJournalEntryDataSet { });
+                }
+                else
+                {
+                    try
+                    {
+                        var model = await _AccountingRuleServices.GetAccountingRuleById(key);
+                        this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()] = model;
+
+
+                        var Branches = GetSetOfBranchesActivatedForEvents((await _branchService.GetBranches()).ToList(), model.ListOfEligibleBranchId);
+                        // model.AccountingRules = GetSetOfAccountsUsed((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList(), model.AccountingRules);        
+                        model.AccountingRules = SetAccountRuleId(model);
+                        ViewBag.ListOfEligibleBranchId = BuildBranchViewBag((await _branchService.GetBranches()).ToList());
+                        ViewBag.EntryTypes = BuildEntryTypesViewBag();
+                        ViewBag.LevelOfExecution = BuildLevelOfExecutionViewBag();
+                        ViewBag.DoubbleEntryValidation = await GetDoubbleEntryValidation();
+                        ViewBag.IsChainEntry = await GetEntrySystem();
+                        ViewBag.IsInterBranchTransaction = BuildIsInterBranchTransactionViewBag();
+                        ViewBag.AccountingEventRuleIds = BuildAccountingRuleViewBag((await _AccountingRuleServices.GetAccountingRules()).ToList());
+                        AccountingRule AccountingRule = SetAccountingRules(model);
+                        return PartialView(partialView, new ManuallyJournalEntryDataSet { AccountingRule = AccountingRule });
+                    }
+                    catch (Exception ex)
+                    {
+                        throw (ex);
+                    }
+
+
+                }
+
+
+            }
+            else if (serviceOption == "EntryDescription")
+            {
+                var data = await _Service.GetAllEntriesForJournalEntryReference(key);
+
+
+            }
+            return null;
+        }
+
+        private AccountingRule SetAccountingRules(AccountingEventRule model)
+        {
+            AccountingRule accountingRule = new AccountingRule();
+            accountingRule.Id = model.Id;
+            accountingRule.RuleName = model.EventName;
+            accountingRule.IsChainEntry = model.IsChainEntry;
+            accountingRule.ListOfEligibleBranchId = model.ListOfEligibleBranchId;
+            accountingRule.LevelOfExecution = model.LevelOfExecution;
+            accountingRule.Description = model.Description;
+            accountingRule.AccountingRules = GetAllAccountingRules(model.AccountingRules);
+            accountingRule.IsChainEntry = model.IsChainEntry;
+            accountingRule.AccountingEventRuleId = model.AccountingEventRuleId;
+            accountingRule.IsValidationNeed = model.IsDoubleValidationNeeded;
+            accountingRule.IsInterBranchTransaction = model.IsInterBranchTransaction;
+            return accountingRule;
+        }
+
+        private List<AccountEventRule> GetAllAccountingRules(List<AccountingEventRule.AccountingRule> accountingRules)
+        {
+            var list = from item in accountingRules
+                       select new AccountEventRule
+                       {
+                           Id = item.Id,
+                           MFI_ChartOfAccountId = item.MFI_ChartOfAccountId,
+                           BookingDirection = item.BookingDirection
+
+                       };
+            return list.Any() ? list.ToList() : new List<AccountEventRule>();
+        }
+
+        public List<OperationEventAttributeDto> ConvertToOperationEventAttributeDtos(List<OperationEventAttribute> attributes, List<OperationEvent> events)
+        {
+            return (from a in attributes
+                    join e in events on a.OperationEventId equals e.Id
+                    select new OperationEventAttributeDto
+                    {
+                        Id = a.Id,
+                        Name = a.Name,
+                        OperationEventName = e.OperationEventName
+                    }).ToList();
+        }
+
+        public async Task<ActionResult> DeleteAccountingRule(string KEY)
+        {
+            var data = await _AccountingRuleServices.Delete(KEY);
+            return Json(new { success = data, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+        }
+        public async Task<ActionResult> Delete(string KEY, string serviceOption)
+        {
+
+
+            if (serviceOption == "EntryTempData")
+            {
+                var data = await _Service.Delete(KEY);
+                return Json(new { success = data, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+
+
+            }
+
+            else
+            {
+                return null;
+            }
+
+        }
+    }
+
+
+}

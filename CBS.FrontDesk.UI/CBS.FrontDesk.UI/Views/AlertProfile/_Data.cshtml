@@ -1,0 +1,29 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.LoanConf.AlertProfile>
+    @using Resources
+<table class="table table-hover" id="myDataTable">
+    <thead class="table-light">
+        <tr>
+            <th>@GlobalAlertProfile.Name</th>
+            <th>@GlobalAlertProfile.Service</th>
+            <th>@GlobalAlertProfile.Alert</th>
+            <th>@GlobalAlertProfile.NotificationLanguage</th>
+            <th>@GlobalShared.Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model)
+        {
+            <tr>
+                <td style="width:20%">@d.name</td>
+                <td style="width:15%">@d.serviceId</td>
+                <td style="width:35%">@GlobalShared.SmsNotification: @d.sendSMS, @GlobalShared.EmailNotification: @d.sendEmail</td>
+                <td style="width:10%">@d.language</td>
+                <td style="width:20%">
+                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview','_Update','update','AlertProfile')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.name @GlobalShared.ToEdit">@GlobalShared.Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.name" onclick="DeleteRecordDataTable('AlertProfile','@d.id','myDataTable','_Data',0,'datalistingview')">@GlobalShared.Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

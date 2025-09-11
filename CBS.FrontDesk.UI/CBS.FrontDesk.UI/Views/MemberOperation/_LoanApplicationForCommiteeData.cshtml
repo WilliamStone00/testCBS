@@ -1,0 +1,98 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+@using Resources
+
+@if (Model.LoanApplications.Count == 0)
+{
+    <div class="text-center my-3">
+        <p class="fs-5 text-muted">@Global_LoanApplicationForCommiteeData.NoLoanApplicationWasFoundForValidation</p>
+    </div>
+}
+else
+{
+    <div class="table-responsive mb-3">
+        <table class="table table-hover table-bordered" id="myDataTable">
+            <thead class="table-light">
+                <tr>
+                    <th>@Global_LoanApplicationForCommiteeData.Date</th>
+                    <th>@Global_LoanApplicationForCommiteeData.CustomerCode</th>
+                    <th>@Global_LoanApplicationForCommiteeData.Amount</th>
+                    <th>@Global_LoanApplicationForCommiteeData.ApplicationType</th>
+                    <th>@Global_LoanApplicationForCommiteeData.Status</th>
+                    <th>@Global_LoanApplicationForCommiteeData.Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model.LoanApplications.OrderByDescending(app => app.ApplicationDate))
+                {
+                    <tr>
+                        <td>@d.ApplicationDate.ToString("dd/MMM/yyyy, hh:mm:ss")</td>
+                        <td>@d.CustomerId</td>
+                        <td>@d.Amount.ToString("#,##0.0")</td>
+                        <td>@d.LoanApplicationType</td>
+                        <td>
+                            @if (d.ApprovalStatus == "Awaits_Loan_Commitee_Validation")
+                            {
+                                <span class="badge bg-warning text-dark">@Global_LoanApplicationForCommiteeData.AwaitingCommittee</span>
+                            }
+                            else if (d.ApprovalStatus == "Await_Initialization_Fee_Payment")
+                            {
+                                <span class="badge bg-info text-white">@Global_LoanApplicationForCommiteeData.AwaitingFeePayment [@d.LoanApplicationFees.Sum(x => x.FeeAmount).ToString("#,##0")]</span>
+                            }
+                            else if (d.ApprovalStatus == "Under_review_By_Loan_Comminitee")
+                            {
+                                <span class="badge bg-primary text-white">@Global_LoanApplicationForCommiteeData.InReviewByCommittee [@d.LoanCommiteeValidations.Count()]</span>
+                            }
+                            else
+                            {
+                                if (d.IsApproved)
+                                {
+                                    <span class="badge bg-success text-white">@d.ApprovalStatus</span>
+                                }
+                                else
+                                {
+                                    if (d.ApprovalStatus == "Validated")
+                                    {
+                                        <span class="badge bg-dark text-white">@d.ApprovalStatus</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger text-white">@d.ApprovalStatus</span>
+                                    }
+                                }
+                            }
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="actionDropdown@d.Id" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="actionDropdown@d.Id">
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="AddORUpdateGen('@d.Id', 'datalistingview', '_LoanCommiteeValidation', 'loan_commitee_validation_history', 'MemberOperation', 'applications')">
+                                            <i class="fas fa-check-circle me-2"></i>@Global_LoanApplicationForCommiteeData.Control
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#viewDetailsModal@d.Id">
+                                            <i class="fas fa-info-circle me-2"></i>@Global_LoanApplicationForCommiteeData.Details
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="#" onclick="DeleteRecordDataTable('LoanApplications', '@d.Id', 'myDataTable', '_Data', 0, 'datalistingview')">
+                                            <i class="fas fa-trash-alt me-2"></i>@Global_LoanApplicationForCommiteeData.Delete
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="ResetStatus('@d.Id')">
+                                            <i class="fas fa-undo me-2"></i>@Global_LoanApplicationForCommiteeData.ResetStatus
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

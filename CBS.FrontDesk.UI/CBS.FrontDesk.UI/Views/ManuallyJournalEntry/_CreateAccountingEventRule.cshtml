@@ -1,0 +1,190 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
+    @using Resources
+@{
+    ViewBag.Title = "Create AccountingEvent Rule Entry";
+
+}
+
+<div class="card-body">
+    <div class="row">
+        <div id="datalistingview_accountingevent">
+            <!-- Sidebar Navigation -->
+            <div class="col-12">
+                <div id="datalistingview_AddEntry">
+                    @using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <input type="hidden" name="ServiceOption" value="accountingEventRule" id="ServiceOptionn" />
+                        <div id="accordionPopoutIcon" class="accordion mt-3">
+                            <div class="col-12">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <fieldset class="border p-3 rounded">
+                                            <legend class="w-auto text-primary fw-bold"><i class="fas fa-database"></i> @GlobalManuallyJournalEntry.Event_Entry_Metadata</legend>
+                                            <div class="row mt-2 gy-3">
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
+
+                                                    @Html.TextBoxFor(m => m.AccountingRule.RuleName, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.RuleName, "", new { @class = "text-danger" })
+                                                    <label class="form-label">@GlobalManuallyJournalEntry.Accounting_Event_Name</label>
+                                                </div>
+                                                <div class="form-floating form-floating-outline">
+
+                                                    @Html.TextAreaFor(m => m.AccountingRule.Description, new { @class = "form-control", @style = "height: 100px;" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.Description, "", new { @class = "text-danger" })
+                                                    <label>@GlobalManuallyJournalEntry.Description</label>
+
+                                                </div>
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
+
+                                                    @Html.TextBoxFor(m => m.AccountingRule.UnitAmount, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.UnitAmount, "", new { @class = "text-danger" })
+                                                    <label class="form-label">@GlobalManuallyJournalEntry.Amount_to_be_executed_in_journal</label>
+                                                </div>
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
+
+                                                    @Html.DropDownListFor(m => m.AccountingRule.IsValidationNeed, new SelectList(ViewBag.DoubbleEntryValidation, "Value", "Text"), new { @class = "form-control select2" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.IsValidationNeed, "", new { @class = "text-danger" })
+                                                    <label class="form-label">@GlobalManuallyJournalEntry.Is_Validation_Needed?</label>
+                                                </div>
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
+
+                                                    @Html.ListBoxFor(model => model.AccountingRule.ListOfEligibleBranchId, new SelectList(ViewBag.ListOfEligibleBranch, "Value", "Text"), new { @class = "form-control select2", @multiple = "multiple" })
+                                                    @Html.ValidationMessageFor(model => model.AccountingRule.ListOfEligibleBranchId, "", new { @class = "text-danger" })
+                                                    <label class="form-label">@GlobalManuallyJournalEntry.Select_Eligible_Branches</label>
+                                                </div>
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
+
+                                                    @Html.DropDownListFor(model => model.AccountingRule.EntryType, new SelectList(ViewBag.EntryTypes, "Value", "Text"), new { @class = "form-control select2" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.EntryType, "", new { @class = "text-danger" })
+                                                    <label class="form-label">@GlobalManuallyJournalEntry.Select_Entry_Type</label>
+                                                </div>
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
+
+                                                    @Html.DropDownListFor(model => model.AccountingRule.IsInterBranchTransaction, new SelectList(ViewBag.IsInterBranchTransaction, "Value", "Text"), new { @class = "form-control select2" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.IsInterBranchTransaction, "", new { @class = "text-danger" })
+                                                    <label class="form-label">@GlobalManuallyJournalEntry.Select_Transaction</label>
+                                                </div>
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
+
+                                                    @Html.DropDownListFor(model => model.AccountingRule.LevelOfExecution, new SelectList(ViewBag.LevelOfExecution, "Value", "Text"), new { @class = "form-control select2" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.LevelOfExecution, "", new { @class = "text-danger" })
+                                                    <label class="form-label">@GlobalManuallyJournalEntry.Select_Level_of_Execution</label>
+                                                </div>
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
+
+                                                    @Html.DropDownListFor(model => model.AccountingRule.IsChainEntry, new SelectList(ViewBag.IsChainEntry, "Value", "Text"), new { @class = "form-control select2" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.IsChainEntry, "", new { @class = "text-danger" })
+                                                    <label class="form-label">@GlobalManuallyJournalEntry.Is_a_chain_entry</label>
+                                                </div>
+                                                <div id="AccountingEvent">
+                                                    <div class="col-md-12 form-floating form-floating-outline mb-4">
+
+                                                        @Html.DropDownListFor(model => model.AccountingRule.AccountingEventRuleId, new SelectList(ViewBag.AccountingEventRuleIds, "Value", "Text"), new { @class = "form-control select2" })
+                                                        @Html.ValidationMessageFor(m => m.AccountingRule.AccountingEventRuleId, "", new { @class = "text-danger" })
+                                                        <label class="form-label">@GlobalManuallyJournalEntry.Select_Chain_Event_Entry</label>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </fieldset>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <fieldset class="border p-3 rounded">
+                                            <legend class="w-auto text-primary fw-bold"><i class="fas fa-file-invoice-dollar"></i> @GlobalManuallyJournalEntry.Accounting_Event_Entry_Rule</legend>
+                                            <div class="row mt-2 gy-3">
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
+                                                    @Html.DropDownListFor(m => m.AccountingRule.MFI_ChartOfAccountId, new SelectList(ViewBag.ChartOfAccountManagementPositions, "Value", "Text"), "---"+@GlobalManuallyJournalEntry.Select+"---", new { @class = "form-control select2" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.MFI_ChartOfAccountId, "", new { @class = "text-danger" })
+                                                    <label class="form-label">@GlobalManuallyJournalEntry.Select_Chart_of_Account</label>
+                                                </div>
+                                                <div class="col-md-12 form-floating form-floating-outline mb-4">
+                                                    @Html.DropDownListFor(m => m.AccountingRule.BookingDirection, new SelectList(ViewBag.BookingDirections, "Value", "Text"), "---"+@GlobalManuallyJournalEntry.Select+"---", new { @class = "form-control select2" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.BookingDirection, "", new { @class = "text-danger" })
+                                                    <label class="form-label">@GlobalManuallyJournalEntry.BookingDirection</label>
+
+                                                </div>
+                                            </div>
+                                            <div class="mt-0 text-md-start">
+
+                                                @if (Model.AccountingRule.Id == null)
+                                                {
+                                                    <button type="button" onclick="addToBasketForInsert()" class="btn btn-success">
+                                                        @GlobalManuallyJournalEntry.AddEntryRule <i class="mdi mdi-plus-box-multiple"></i>
+                                                    </button>
+                                                }
+                                                else
+                                                {
+
+                                                    <button type="button" onclick="addToBasketForUpdate()" class="btn btn-success">
+                                                        @GlobalManuallyJournalEntry.AddEntryRule <i class="mdi mdi-plus-box-multiple"></i>
+                                                    </button>
+
+                                                }
+
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <!-- Main Content -->
+            <div class="col-12">
+                <div class="card p-4 shadow-sm">
+                    <fieldset class="border p-3 rounded">
+                        <legend class="w-auto text-primary fw-bold"><i class="fas fa-file-invoice-dollar"></i> @GlobalManuallyJournalEntry.Registered_Accounting_Entry_Rule</legend>
+                        <table id="AccountingRulebasketTable" class="table table-bordered table-hover">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>@GlobalManuallyJournalEntry.ChartOfAccount</th>
+                                    <th>@GlobalManuallyJournalEntry.Direction</th>
+                                    <th>@GlobalShared.Action</th>
+                                </tr>
+                            </thead>
+
+                            @if (Model.AccountingRule.Id == null)
+                            {
+                                <tbody></tbody>
+                            }
+                            else
+                            {
+                                foreach (var d in Model.AccountingRule.AccountingRules)
+                                {
+                                    <tr>
+                                        <td style="width:50%">@d.MFI_ChartOfAccountId</td>
+                                        <td style="width:25%">@d.BookingDirection</td>
+                                        <td style="width:25%">
+                                            <button type="button" class="btn btn-danger removeButton">@GlobalShared.Remove</button>
+                                        </td>
+
+                                    </tr>
+                                }
+                            }
+
+                        </table>
+                        <div class="text-end mt-3">
+                            @if (Model.AccountingRule.Id == null)
+                            {
+                                <button type="button" onclick="submitBasket()" class="btn btn-primary">
+                                    @GlobalManuallyJournalEntry.SaveEventEntryRule <i class="mdi mdi-database"></i>
+                                </button>
+                            }
+                            else
+                            {
+                            <button type="button" onclick="SubmitUpdatedForm()" class="btn btn-primary" id="submitUpdateFormButton">
+                                @GlobalManuallyJournalEntry.UpdateEventEntryRule <i class="mdi mdi-database"></i>
+                            </button>
+                            }
+
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

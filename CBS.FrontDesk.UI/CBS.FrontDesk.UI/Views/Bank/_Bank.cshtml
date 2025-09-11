@@ -1,0 +1,311 @@
+﻿@model CBS.FrontDesk.Data.Entity.Config.BankConfig
+@using Resources
+<style>
+    .section-chip {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .35rem .6rem;
+        border-radius: 999px;
+        background: rgba(13,110,253,.06); /* soft primary tint */
+        color: #0d6efd;
+        font-weight: 600;
+        width: max-content;
+    }
+
+        .section-chip .bi {
+            font-size: 1rem;
+        }
+
+    .section-subtle {
+        margin: .35rem 0 0 0;
+        color: #6c757d;
+        font-size: .875rem;
+    }
+
+    .section-divider {
+        height: 1px;
+        background: rgba(0,0,0,.06);
+        margin: .75rem 0 1rem 0;
+        border: 0;
+    }
+    /* Optional left accent for sections */
+    .section-wrap {
+        border-left: 3px solid rgba(13,110,253,.25);
+        padding-left: .75rem;
+    }
+</style>
+
+@using (Html.BeginForm("AddOrUpdate", "Bank", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    <fieldset class="fieldset-custom">
+        <legend class="d-flex align-items-center">
+            <i class="bi bi-bank2"></i>
+            @string.Format("{0} {1} {2}", GlobalBank.Update, Model?.Bank?.Name ?? "", GlobalBank.BankInformation)
+        </legend>
+
+        @Html.HiddenFor(m => m.Bank.Id)
+        <input type="hidden" name="ServiceOption" value="bank" id="ServiceOption" />
+        <input type="hidden" name="Action" value="@(Model?.Bank?.Id == null ? "insert" : "update")" id="Action" />
+        <!-- Section: Identity -->
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="px-2 pt-2 section-wrap">
+                <div class="section-chip">
+                    <i class="bi bi-info-circle"></i>
+                    <span>Identity</span>
+                </div>
+                <div class="section-subtle">Official bank details and basics.</div>
+            </div>
+            <hr class="section-divider" />
+
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Bank.BankCode, new { @class = "form-control", placeholder = GlobalBank.BankCode })
+                            <label>@GlobalBank.BankCode</label>
+                            @Html.ValidationMessageFor(m => m.Bank.BankCode, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Bank.Name, new { @class = "form-control", placeholder = GlobalBank.BankName })
+                            <label>@GlobalBank.BankName</label>
+                            @Html.ValidationMessageFor(m => m.Bank.Name, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Bank.BankInitial, new { @class = "form-control", placeholder = GlobalBank.BankInitial })
+                            <label>@GlobalBank.BankInitial</label>
+                            @Html.ValidationMessageFor(m => m.Bank.BankInitial, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-floating">
+                            @Html.TextAreaFor(m => m.Bank.Description, 5, 50, new { @class = "form-control", placeholder = "Description" })
+                            <label>Description</label>
+                            @Html.ValidationMessageFor(m => m.Bank.Description, "", new { @class = "text-danger small" })
+                        </div>
+                        <div class="form-text">A concise description used in headers and public pages.</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Bank.Capital, new { @class = "form-control", placeholder = "e.g. 5,000,000,000", inputmode = "numeric" })
+                            <label>Capital</label>
+                            <div class="form-text">Paid-up capital (local currency). Numbers only.</div>
+                            @Html.ValidationMessageFor(m => m.Bank.Capital, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Bank.DateOfCreation, new { @class = "form-control", type = "date" })
+                            <label>@GlobalBank.DateOfCreation</label>
+                            @Html.ValidationMessageFor(m => m.Bank.DateOfCreation, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Contact -->
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="px-2 pt-2 section-wrap">
+                <div class="section-chip">
+                    <i class="bi bi-telephone"></i>
+                    <span>Contact</span>
+                </div>
+                <div class="section-subtle">Addresses, phone, email used on receipts.</div>
+            </div>
+            <hr class="section-divider" />
+
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Bank.Telephone, new { @class = "form-control", placeholder = GlobalBank.Telephone })
+                            <label>@GlobalBank.Telephone</label>
+                            @Html.ValidationMessageFor(m => m.Bank.Telephone, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Bank.Fax, new { @class = "form-control", placeholder = "Fax" })
+                            <label>Fax</label>
+                            @Html.ValidationMessageFor(m => m.Bank.Fax, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Bank.Email, new { @class = "form-control", placeholder = GlobalBank.Email, type = "email" })
+                            <label>@GlobalBank.Email</label>
+                            @Html.ValidationMessageFor(m => m.Bank.Email, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Bank.Address, new { @class = "form-control", placeholder = GlobalBank.Address })
+                            <label>@GlobalBank.Address</label>
+                            @Html.ValidationMessageFor(m => m.Bank.Address, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Bank.PBox, new { @class = "form-control", placeholder = GlobalBank.PBox })
+                            <label>@GlobalBank.PBox</label>
+                            @Html.ValidationMessageFor(m => m.Bank.PBox, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Bank.CustomerServiceContact, new { @class = "form-control", placeholder = GlobalBank.CustomerServiceContact })
+                            <label>@GlobalBank.CustomerServiceContact</label>
+                            @Html.ValidationMessageFor(m => m.Bank.CustomerServiceContact, "", new { @class = "text-danger small" })
+                        </div>
+                        <div class="form-text">Phone(s) or email used on receipts and notifications.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Registration & Tax -->
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="px-2 pt-2 section-wrap">
+                <div class="section-chip">
+                    <i class="bi bi-file-text"></i>
+                    <span>Registration &amp; Tax</span>
+                </div>
+                <div class="section-subtle">Legal identifiers and extra registration notes.</div>
+            </div>
+            <hr class="section-divider" />
+
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Bank.RegistrationNumber, new { @class = "form-control", placeholder = GlobalBank.RegistrationNumber })
+                            <label>@GlobalBank.RegistrationNumber</label>
+                            @Html.ValidationMessageFor(m => m.Bank.RegistrationNumber, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Bank.ImmatriculationNumber, new { @class = "form-control", placeholder = GlobalBank.ImmatriculationNumber })
+                            <label>@GlobalBank.ImmatriculationNumber</label>
+                            @Html.ValidationMessageFor(m => m.Bank.ImmatriculationNumber, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Bank.TaxPayerNUmber, new { @class = "form-control", placeholder = GlobalBank.TaxPayerNumber })
+                            <label>@GlobalBank.TaxPayerNumber</label>
+                            @Html.ValidationMessageFor(m => m.Bank.TaxPayerNUmber, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-floating">
+                            @Html.TextAreaFor(m => m.Bank.RegistrationInformation, 3, 50, new { @class = "form-control", placeholder = "Extra registration notes" })
+                            <label>Registration Information</label>
+                            @Html.ValidationMessageFor(m => m.Bank.RegistrationInformation, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Branding & Web -->
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="px-2 pt-2 section-wrap">
+                <div class="section-chip">
+                    <i class="bi bi-palette"></i>
+                    <span>Branding &amp; Web</span>
+                </div>
+                <div class="section-subtle">Logo, motto, website and header text.</div>
+            </div>
+            <hr class="section-divider" />
+
+            <div class="card-body">
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-8">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Bank.WebSite, new { @class = "form-control", placeholder = GlobalBank.WebSite, type = "url" })
+                            <label>@GlobalBank.WebSite</label>
+                            @Html.ValidationMessageFor(m => m.Bank.WebSite, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+
+                    @*<div class="col-md-4">
+                        <div class="d-flex gap-3 align-items-center">
+                            <div>
+                                <label class="form-label">Logo (PNG/JPG)</label>
+                                <input class="form-control" type="file" id="LogoFile" name="LogoFile" accept=".png,.jpg,.jpeg" />
+                                <input type="hidden" id="LogoUrl" name="LogoUrl" value="@Model?.Bank?.LogoUrl" />
+                            </div>
+                            <img id="LogoPreview" src="@Model?.Bank?.LogoUrl" alt="Logo" class="rounded border" style="width:64px;height:64px;object-fit:contain;" />
+                        </div>
+                        <div class="form-text">If you upload a new logo, it will replace the current one.</div>
+                    </div>*@
+
+                    <div class="col-md-12">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Bank.Motto, new { @class = "form-control", placeholder = GlobalBank.Motto })
+                            <label>@GlobalBank.Motto</label>
+                            @Html.ValidationMessageFor(m => m.Bank.Motto, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Bank.ShortHeaderInfo, new { @class = "form-control", placeholder = "Short header text" })
+                            <label>Short Header Info</label>
+                            <div class="form-text">Shown on receipts and compact headers.</div>
+                            @Html.ValidationMessageFor(m => m.Bank.ShortHeaderInfo, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Bank.CategoryInformation, new { @class = "form-control", placeholder = "Category / classification" })
+                            <label>Category Information</label>
+                            @Html.ValidationMessageFor(m => m.Bank.CategoryInformation, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-check2-circle me-1"></i> @(Model?.Bank?.Id == null ? GlobalBank.Save : GlobalBank.Update)
+            </button>
+            @*<button type="reset" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-counterclockwise me-1"></i> @GlobalBank.Reset
+                </button>*@
+        </div>
+    </fieldset>
+}
+
+@section Scripts {
+    <script>
+        // Capital: keep only digits and separators (very light client-side hygiene)
+        document.querySelector('[name="Bank.Capital"]')?.addEventListener('input', function () {
+            this.value = this.value.replace(/[^\d.,\s]/g, '');
+        });
+
+        // Live logo preview
+        const fileInput = document.getElementById('LogoFile');
+        const previewImg = document.getElementById('LogoPreview');
+        fileInput?.addEventListener('change', (e) => {
+            const f = e.target.files?.[0];
+            if (!f) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => { previewImg.src = ev.target.result; };
+            reader.readAsDataURL(f);
+        });
+    </script>
+}

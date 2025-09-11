@@ -1,0 +1,39 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+@using Resources
+@{
+    ViewBag.Title = @GlobalAccountingChart.AccountingChart;
+}
+
+<div class="card-body">
+    <a type="button" id="loadChartOfAccount" class="btn btn-icon btn-label-secondary" data-bs-toggle="tooltip" title="@GlobalAccountingChart.ReloadChartOfAccount">
+        <span class="tf-icons mdi mdi-refresh-auto mdi-18px"></span>
+    </a>
+    <div>&nbsp;</div>
+    <div class="row">
+        <!-- Context Menu -->
+        <div class="col-md-6 col-6">
+            <div class="card mb-4">
+                <br>
+                <h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @GlobalAccountingChart.AccountingChartTitle</h5>
+
+                <div class="card-body">
+                    <div id="jstree-context-menu" class="overflow-auto"></div>
+
+                </div>
+
+
+            </div>
+        </div>
+        <input type="hidden" id="selectedID" name="name" value="" />
+        <div class="col-md-6 col-6 operationSelector">
+
+            @Html.Partial("_Operation")
+
+        </div>
+    </div>
+</div>
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+
+<script src="~/Scripts/Js/Accounting/AccountingChart.js"></script>
+<!-- Vendors JS -->
+}

@@ -1,0 +1,121 @@
+﻿@model CBS.FrontDesk.Data.UserManagement.User
+@using Resources
+@{
+    ViewBag.Title = "User Profile";
+}
+
+<style>
+    .nav-flat .nav-link {
+        border: none;
+        border-radius: 0;
+        background: #f8f9fa;
+        color: #333;
+        padding: 12px 16px;
+        text-align: left;
+        transition: all 0.2s ease-in-out;
+        font-weight: 500;
+        border-left: 4px solid transparent;
+    }
+
+        .nav-flat .nav-link:hover {
+            background-color: #e9ecef;
+            color: #007bff;
+            border-left: 4px solid #007bff;
+        }
+
+        .nav-flat .nav-link.active {
+            background-color: #e3f2fd;
+            color: #0d6efd;
+            font-weight: 600;
+            border-left: 4px solid #0d6efd;
+        }
+</style>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2 shadow-sm">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-account-group-outline me-2"></i> [@Model.name.ToUpper()] @GlobalUserManagement.ACCOUNT_SETTINGS
+                </h1>
+                <p class="card-text">
+                    @GlobalUserManagement.ViewAndManageYourPersonalAccount.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalUserManagement.TIPS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUserTips" aria-expanded="false" aria-controls="collapseUserTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseUserTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><strong>📇 @GlobalUserManagement.UpdateProfile:</strong> @GlobalUserManagement.AlwaysKeepYourContactInfoUpToDate.</li>
+                <li><strong>📸 @GlobalUserManagement.ProfilePicture:</strong> @GlobalUserManagement.UploadAClearPictureToPersonalizeYourAccount.</li>
+                <li><strong>🔒 @GlobalUserManagement.ChangePassword:</strong> @GlobalUserManagement.PeriodicallyUpdateYourPasswordForBetterSecurity.</li>
+                <li><strong>🛡️ @GlobalUserManagement.MFASettings:</strong> @GlobalUserManagement.EnableMultiFactorAuthenticationForAdvancedProtection.</li>
+                <li><strong>⏱️ @GlobalUserManagement.UserSessions:</strong> @GlobalUserManagement.ViewAndTerminateActiveLoginSessionsToStaySafe.</li>
+                <li><strong>🔁 @GlobalUserManagement.RecoveryCode:</strong> @GlobalUserManagement.RegenerateYourSessionRecoveryCodeAfterPasswordResetOrCompromise.</li>
+                <li><strong>👁️ @GlobalUserManagement.Permissions:</strong> @GlobalUserManagement.ReviewTheListOfMenusAndPermissionsAssignedToYou.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Sidebar Tabs -->
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm border">
+            <div class="card-body p-2">
+                <div class="nav flex-column nav-pills nav-flat" id="userAccountTabs" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="vtab-awareness" data-bs-toggle="pill" href="#tab-awareness" role="tab" aria-selected="true">@GlobalUserManagement.SecurityAwareness</a>
+                    <a class="nav-link" id="vtab-profile" data-bs-toggle="pill" href="#tab-profile" role="tab" aria-selected="false">@GlobalUserManagement.UpdateProfile</a>
+                    <a class="nav-link" id="vtab-picture" data-bs-toggle="pill" href="#tab-picture" role="tab" aria-selected="false">@GlobalUserManagement.ChangePicture</a>
+                    <a class="nav-link" id="vtab-language" data-bs-toggle="pill" href="#tab-language" role="tab" aria-selected="false">@GlobalUserManagement.ChangeLanguage</a>
+                    <a class="nav-link" id="vtab-password" data-bs-toggle="pill" href="#tab-password" role="tab" aria-selected="false">@GlobalUserManagement.ChangePassword</a>
+                    <a class="nav-link" id="vtab-mfa" data-bs-toggle="pill" href="#tab-mfa" role="tab" aria-selected="false">@GlobalUserManagement.MFASettings</a>
+                    <a class="nav-link" id="vtab-session" data-bs-toggle="pill" href="#tab-session" role="tab" aria-selected="false">@GlobalUserManagement.UserSessions</a>
+                    <a class="nav-link" id="vtab-recovery" data-bs-toggle="pill" href="#tab-recovery" role="tab" aria-selected="false">@GlobalUserManagement.RecoveryCode</a>
+                    <a class="nav-link" id="vtab-permission" data-bs-toggle="pill" href="#tab-permission" role="tab" aria-selected="false">@GlobalUserManagement.UserPermissions</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="col-md-9">
+        <div class="card h-100 shadow-sm border">
+            <div class="card-body">
+                <div class="tab-content" id="userAccountTabsContent">
+                    <div class="tab-pane fade show active" id="tab-awareness" role="tabpanel">@Html.Partial("_UserSecurityAwareness")</div>
+                    <div class="tab-pane fade" id="tab-profile" role="tabpanel">@Html.Partial("_UserUpdateProfile")</div>
+                    <div class="tab-pane fade" id="tab-picture" role="tabpanel">@Html.Partial("_UpdateImage")</div>
+                    <div class="tab-pane fade" id="tab-language" role="tabpanel">@Html.Partial("_UserChangeLanguage")</div>
+                    <div class="tab-pane fade" id="tab-password" role="tabpanel">@Html.Partial("_UserChangePassword")</div>
+                    <div class="tab-pane fade" id="tab-mfa" role="tabpanel">@Html.Partial("_UserEnableMFA")</div>
+                    <div class="tab-pane fade" id="tab-session" role="tabpanel">@Html.Partial("_UserSessions")</div>
+                    <div class="tab-pane fade" id="tab-recovery" role="tabpanel">@Html.Partial("_UserGenerateNewRecoveryCode")</div>
+                    <div class="tab-pane fade" id="tab-permission" role="tabpanel">@Html.Partial("_UserProfileManagePermissions")</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(document).ready(function () {
+        // Initialize DataTables
+        $('#myDataTable').DataTable();
+    });
+    </script>
+}

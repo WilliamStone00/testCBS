@@ -1,0 +1,1351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DaysAfterAccountCreation" xml:space="preserve">
+    <value>3 days after account creation</value>
+  </data>
+  <data name="Account" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="AccountBlocked" xml:space="preserve">
+    <value>Account blocked</value>
+  </data>
+  <data name="AccountCompliancePolicies" xml:space="preserve">
+    <value>Account Compliance Policies</value>
+  </data>
+  <data name="AccountLockout" xml:space="preserve">
+    <value>Account lockout</value>
+  </data>
+  <data name="AccountOverridePolicy" xml:space="preserve">
+    <value>Account Override Policy</value>
+  </data>
+  <data name="AccountProfile" xml:space="preserve">
+    <value>Account profile</value>
+  </data>
+  <data name="AcrossAllUsers" xml:space="preserve">
+    <value>Across all users</value>
+  </data>
+  <data name="ActiveSessions" xml:space="preserve">
+    <value>Active Sessions</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="AddRole" xml:space="preserve">
+    <value>Add role(s)</value>
+  </data>
+  <data name="AddsASecondLayerOfProtectionByRequiring" xml:space="preserve">
+    <value>Adds a second layer of protection by requiring a one-time code from an Authenticator app during login</value>
+  </data>
+  <data name="AddUserRole" xml:space="preserve">
+    <value>Add user role</value>
+  </data>
+  <data name="AdministratorsCannotEnableMFAOnBehalfOfUsers" xml:space="preserve">
+    <value>Administrators cannot enable MFA on behalf of users. The user must log into their account and activate MFA from their own dashboard for proper configuration and device binding</value>
+  </data>
+  <data name="AdminView" xml:space="preserve">
+    <value>Admin view</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="AllowedIP" xml:space="preserve">
+    <value>Allowed ip</value>
+  </data>
+  <data name="AllowsPasswordsThatDontMeetPolicyStrengthRequirements" xml:space="preserve">
+    <value>Allows passwords that don't meet policy strength requirements</value>
+  </data>
+  <data name="AllowWeakPassword" xml:space="preserve">
+    <value>Allow weak password</value>
+  </data>
+  <data name="AllSessionCookiesAre" xml:space="preserve">
+    <value>All session cookies are</value>
+  </data>
+  <data name="and" xml:space="preserve">
+    <value>and</value>
+  </data>
+  <data name="andNotifyYourSystemAdministrator" xml:space="preserve">
+    <value>and notify your system administrator</value>
+  </data>
+  <data name="aRegularSecurityHygieneBestPractice" xml:space="preserve">
+    <value>a regular security hygiene best practice</value>
+  </data>
+  <data name="AreYouSureYouWantToResetTheUsersPasswordTo" xml:space="preserve">
+    <value>Are you sure you want to reset the user's password to</value>
+  </data>
+  <data name="asDefaultPassword" xml:space="preserve">
+    <value>as default password</value>
+  </data>
+  <data name="AskTheUserToOpenTheirGoogleAuthenticator" xml:space="preserve">
+    <value>Ask the user to open their Google Authenticator app and manually enter this key if scanning is not possible</value>
+  </data>
+  <data name="AssignNewRolesPermissionsToUser" xml:space="preserve">
+    <value>Assign new roles/permissions to user</value>
+  </data>
+  <data name="BestPracticesToStaySecure" xml:space="preserve">
+    <value>Best Practices to Stay Secure</value>
+  </data>
+  <data name="Branch" xml:space="preserve">
+    <value>Branch</value>
+  </data>
+  <data name="BranchAndIPRestrictions" xml:space="preserve">
+    <value>Branch and ip restrictions</value>
+  </data>
+  <data name="BypassLockoutPolicy" xml:space="preserve">
+    <value>Bypass lockout policy</value>
+  </data>
+  <data name="byPolicy" xml:space="preserve">
+    <value>by policy</value>
+  </data>
+  <data name="cannotDisableOrModify" xml:space="preserve">
+    <value>cannot disable or modify</value>
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="ChangePreferredLanguage" xml:space="preserve">
+    <value>Change Preferred Language</value>
+  </data>
+  <data name="ChangeUserBranch" xml:space="preserve">
+    <value>Change User Branch</value>
+  </data>
+  <data name="ChangeUserRole" xml:space="preserve">
+    <value>Change User Role</value>
+  </data>
+  <data name="changeYourPasswordImmediately" xml:space="preserve">
+    <value>change your password immediately</value>
+  </data>
+  <data name="codesAreUsedToInvalidateAllOpenSessions" xml:space="preserve">
+    <value>codes are used to invalidate all open sessions and regain exclusive access</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="CouldNotLoadLiveSessionDashboard" xml:space="preserve">
+    <value>Could not load live session dashboard. Please check your connection or try again later</value>
+  </data>
+  <data name="CreateAccount" xml:space="preserve">
+    <value>Create account</value>
+  </data>
+  <data name="CurrentAccountStatus" xml:space="preserve">
+    <value>Current Account Status</value>
+  </data>
+  <data name="currentlyDisabled" xml:space="preserve">
+    <value>currently disabled</value>
+  </data>
+  <data name="CurrentlyOnline" xml:space="preserve">
+    <value>Currently online</value>
+  </data>
+  <data name="CurrentRecoveryCode" xml:space="preserve">
+    <value>Current recovery code</value>
+  </data>
+  <data name="CustomExpiryDate" xml:space="preserve">
+    <value>Custom expiry date</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="DeleteSelectedPermissions" xml:space="preserve">
+    <value>Delete selected permissions</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="disabled" xml:space="preserve">
+    <value>disabled</value>
+  </data>
+  <data name="DisableMFA" xml:space="preserve">
+    <value>Disable MFA</value>
+  </data>
+  <data name="DisablesPasswordExpiryForThisAccount" xml:space="preserve">
+    <value>Disables password expiry for this account</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="enabled" xml:space="preserve">
+    <value>enabled</value>
+  </data>
+  <data name="EnableMFA" xml:space="preserve">
+    <value>Enable MFA</value>
+  </data>
+  <data name="EncourageUsers" xml:space="preserve">
+    <value>Encourage users</value>
+  </data>
+  <data name="enforcesAcomprehensiveSecurityPolicyFramework" xml:space="preserve">
+    <value>enforces a comprehensive security policy framework. All users must comply with these security and usage standards to ensure protection of personal, organizational, and system-wide data</value>
+  </data>
+  <data name="EnterAuthenticatorCode" xml:space="preserve">
+    <value>Enter authenticator code</value>
+  </data>
+  <data name="EnterThe6DigitTimeBasedVerificationCode" xml:space="preserve">
+    <value>Enter the 6-digit time-based verification code</value>
+  </data>
+  <data name="EnterTheGeneratedCodeToActivate" xml:space="preserve">
+    <value>Enter the generated code to activate</value>
+  </data>
+  <data name="EnterUsernameAndPassword" xml:space="preserve">
+    <value>Enter username and password</value>
+  </data>
+  <data name="EnterYourUsernameAndPasswordOnTheLoginScreen" xml:space="preserve">
+    <value>Enter your username and password on the login screen</value>
+  </data>
+  <data name="ExpiredSessions" xml:space="preserve">
+    <value>Expired Sessions</value>
+  </data>
+  <data name="ExpiryDate" xml:space="preserve">
+    <value>Expiry date</value>
+  </data>
+  <data name="FailedLoginAttempts" xml:space="preserve">
+    <value>Failed login attempts</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>First name</value>
+  </data>
+  <data name="forThisUser" xml:space="preserve">
+    <value>for this user</value>
+  </data>
+  <data name="From0Branches" xml:space="preserve">
+    <value>From 0 branch(es)</value>
+  </data>
+  <data name="FromBranch" xml:space="preserve">
+    <value>From branch</value>
+  </data>
+  <data name="fromSharedComputersAndClearBrowserDataAfterUse" xml:space="preserve">
+    <value>from shared computers and clear browser data after use</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Full name</value>
+  </data>
+  <data name="GenerateNewCode" xml:space="preserve">
+    <value>Generate new code</value>
+  </data>
+  <data name="GenerateNewSessionRecoveryCode" xml:space="preserve">
+    <value>Generate New Session Recovery Code</value>
+  </data>
+  <data name="GoogleAuthenticatorApp" xml:space="preserve">
+    <value>Google Authenticator app</value>
+  </data>
+  <data name="HowToEnable" xml:space="preserve">
+    <value>How to enable</value>
+  </data>
+  <data name="HowToLogInAfterEnablingMFA" xml:space="preserve">
+    <value>How to log in after enabling MFA</value>
+  </data>
+  <data name="HttpOnly" xml:space="preserve">
+    <value>HttpOnly</value>
+  </data>
+  <data name="IDCardDetails" xml:space="preserve">
+    <value>ID card details</value>
+  </data>
+  <data name="IdleAccountPolicy" xml:space="preserve">
+    <value>Idle account policy</value>
+  </data>
+  <data name="IdleTimeSessionManagement" xml:space="preserve">
+    <value>Idle Time &amp; Session Management</value>
+  </data>
+  <data name="IfTheUserHasLostAccessToTheirAuthenticatorApp" xml:space="preserve">
+    <value>If the user has lost access to their authenticator app, share the secret key and QR code below with them to reconfigure MFA on a new device</value>
+  </data>
+  <data name="IfYouNoticeUnusualAccountActivityOrSuspectCompromise" xml:space="preserve">
+    <value>If you notice unusual account activity or suspect compromise</value>
+  </data>
+  <data name="IgnoreMFARequirement" xml:space="preserve">
+    <value>Ignore MFA requirement</value>
+  </data>
+  <data name="Important" xml:space="preserve">
+    <value>Important</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
+  <data name="InactivityLock" xml:space="preserve">
+    <value>Inactivity lock</value>
+  </data>
+  <data name="InputTheVerificationCodeIntoTheMFAField" xml:space="preserve">
+    <value>Input the verification code into the MFA field</value>
+  </data>
+  <data name="InstallThe" xml:space="preserve">
+    <value>Install the</value>
+  </data>
+  <data name="IssueDate" xml:space="preserve">
+    <value>Issue date</value>
+  </data>
+  <data name="KeepYourDevicesBrowsersAndOSUpdatedToPatchKnownVulnerabilities" xml:space="preserve">
+    <value>Keep your devices, browsers, and OS updated to patch known vulnerabilities</value>
+  </data>
+  <data name="Key" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="KeyAbbreviations" xml:space="preserve">
+    <value>Key Abbreviations</value>
+  </data>
+  <data name="LanguagePreference" xml:space="preserve">
+    <value>Language Preference</value>
+  </data>
+  <data name="LastLogin" xml:space="preserve">
+    <value>Last login</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Last name</value>
+    <comment>Last name</comment>
+  </data>
+  <data name="LastPasswordChange" xml:space="preserve">
+    <value>Last password change</value>
+  </data>
+  <data name="LoginIsCompletedUponValidCodeVerification" xml:space="preserve">
+    <value>Login is completed upon valid code verification</value>
+  </data>
+  <data name="LoginTime" xml:space="preserve">
+    <value>Login time</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="mandatory" xml:space="preserve">
+    <value>mandatory</value>
+  </data>
+  <data name="Menu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="MFAEnforcement" xml:space="preserve">
+    <value>MFA enforcement</value>
+  </data>
+  <data name="MFAForThemHoweverYouCanAssistWithRecoveryIfTheyveLostAccess" xml:space="preserve">
+    <value>MFA for them. However, you can assist with recovery if they've lost access</value>
+  </data>
+  <data name="MFAIs" xml:space="preserve">
+    <value>MFA is</value>
+  </data>
+  <data name="MFASetupKey" xml:space="preserve">
+    <value>MFA Setup Key</value>
+  </data>
+  <data name="MFAStatusRecovery" xml:space="preserve">
+    <value>MFA Status &amp; Recovery</value>
+  </data>
+  <data name="MonitorYourRecentLoginHistory" xml:space="preserve">
+    <value>Monitor your recent login history. Report suspicious behavior immediately</value>
+  </data>
+  <data name="MultiFactorAuthentication" xml:space="preserve">
+    <value>Multi-Factor Authentication</value>
+  </data>
+  <data name="MultipleSessionEnforcement" xml:space="preserve">
+    <value>Multiple session enforcement</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="NationalIDCardNumber" xml:space="preserve">
+    <value>National ID card number</value>
+  </data>
+  <data name="NeverEnterYourCredentialsOnUntrustedLinksOrFakeSites" xml:space="preserve">
+    <value>Never enter your credentials on untrusted links or fake sites. TSC will never email you for your password</value>
+  </data>
+  <data name="NeverShareYourPasswordOrMFACode" xml:space="preserve">
+    <value>Never share your password or MFA code</value>
+  </data>
+  <data name="NewDefaultPassword" xml:space="preserve">
+    <value>New default password</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="NoLoginAfterCreation" xml:space="preserve">
+    <value>No login after creation</value>
+  </data>
+  <data name="NoLongerActive" xml:space="preserve">
+    <value>No longer active</value>
+  </data>
+  <data name="NoSystemActionsHaveBeenLoggedForThisUser" xml:space="preserve">
+    <value>No system actions have been logged for this user</value>
+  </data>
+  <data name="NoteToAdministrator" xml:space="preserve">
+    <value>Note to Administrator</value>
+  </data>
+  <data name="NotRequired" xml:space="preserve">
+    <value>Not required</value>
+  </data>
+  <data name="NotVerified" xml:space="preserve">
+    <value>Not verified</value>
+  </data>
+  <data name="ofInactivity" xml:space="preserve">
+    <value>of inactivity</value>
+  </data>
+  <data name="OldPassword" xml:space="preserve">
+    <value>Old password</value>
+  </data>
+  <data name="onThisAccountToDisableClickTheButtonBelow" xml:space="preserve">
+    <value>on this account. To disable, click the button below</value>
+  </data>
+  <data name="OpenGoogleAuthenticatorAppOnTheirPhone" xml:space="preserve">
+    <value>Open Google Authenticator app on their phone</value>
+  </data>
+  <data name="OpenYourGoogleAuthenticatorApp" xml:space="preserve">
+    <value>Open your Google Authenticator app</value>
+  </data>
+  <data name="OtherSupportedTypesInclude" xml:space="preserve">
+    <value>Other supported types include</value>
+  </data>
+  <data name="OverrideSecurityPolicy" xml:space="preserve">
+    <value>Override Security Policy</value>
+  </data>
+  <data name="OverrideSecurityRules" xml:space="preserve">
+    <value>Override security rules</value>
+  </data>
+  <data name="Parent" xml:space="preserve">
+    <value>Parent</value>
+  </data>
+  <data name="PasswordExpiration" xml:space="preserve">
+    <value>Password expiration</value>
+  </data>
+  <data name="PasswordNeverExpires" xml:space="preserve">
+    <value>Password never expires</value>
+  </data>
+  <data name="PendingChangeOfPasswordFrom" xml:space="preserve">
+    <value>Pending change of password from</value>
+  </data>
+  <data name="PerformedBy" xml:space="preserve">
+    <value>Performed by</value>
+  </data>
+  <data name="Phishing" xml:space="preserve">
+    <value>Phishing</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Phone number</value>
+  </data>
+  <data name="PlaceOfIssue" xml:space="preserve">
+    <value>Place of issue</value>
+  </data>
+  <data name="PreferredLanguage" xml:space="preserve">
+    <value>Preferred language</value>
+  </data>
+  <data name="PreventsTheAccountFromBeingLockedDueToMultipleFailedLoginAttempts" xml:space="preserve">
+    <value>Prevents the account from being locked due to multiple failed login attempts</value>
+  </data>
+  <data name="ProfileAddress" xml:space="preserve">
+    <value>Profile &amp; Address</value>
+  </data>
+  <data name="ProtectYourselfFromThreats" xml:space="preserve">
+    <value>Protect Yourself from Threats</value>
+  </data>
+  <data name="ProvideReasonForPasswordReset" xml:space="preserve">
+    <value>Provide reason for password reset...</value>
+  </data>
+  <data name="ReasonForBlocking" xml:space="preserve">
+    <value>Reason for Blocking</value>
+  </data>
+  <data name="ReasonForDeactivation" xml:space="preserve">
+    <value>Reason for deactivation</value>
+  </data>
+  <data name="ReasonForPasswordReset" xml:space="preserve">
+    <value>Reason for password reset</value>
+  </data>
+  <data name="ReasonForReactivation" xml:space="preserve">
+    <value>Reason for reactivation</value>
+  </data>
+  <data name="RecoveryOptions" xml:space="preserve">
+    <value>Recovery Options</value>
+  </data>
+  <data name="RequirePasswordChangeOnNextLogin" xml:space="preserve">
+    <value>Require Password Change on Next Login</value>
+  </data>
+  <data name="ResetPassword" xml:space="preserve">
+    <value>Reset Password</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="RoleBranch" xml:space="preserve">
+    <value>Role &amp; Branch</value>
+  </data>
+  <data name="RootUser" xml:space="preserve">
+    <value>Root user</value>
+  </data>
+  <data name="SameSiteStrict" xml:space="preserve">
+    <value>SameSite=Strict</value>
+  </data>
+  <data name="SavePolicy" xml:space="preserve">
+    <value>Save policy</value>
+  </data>
+  <data name="ScanTheQRBelowOrManuallyInputTheSecretKey" xml:space="preserve">
+    <value>Scan the QR below or manually input the secret key</value>
+  </data>
+  <data name="Secure" xml:space="preserve">
+    <value>Secure</value>
+  </data>
+  <data name="SecureCookies" xml:space="preserve">
+    <value>Secure cookies</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="SelectBranch" xml:space="preserve">
+    <value>Select branch</value>
+  </data>
+  <data name="SelectLanguage" xml:space="preserve">
+    <value>Select language</value>
+  </data>
+  <data name="SelectRole" xml:space="preserve">
+    <value>Select role</value>
+  </data>
+  <data name="SessionCode" xml:space="preserve">
+    <value>Session code</value>
+  </data>
+  <data name="SessionHijacking" xml:space="preserve">
+    <value>Session hijacking</value>
+  </data>
+  <data name="SessionsAreAutomaticallyTerminatedAfter" xml:space="preserve">
+    <value>Sessions are automatically terminated after</value>
+  </data>
+  <data name="SessionTimeout" xml:space="preserve">
+    <value>Session timeout</value>
+  </data>
+  <data name="ShowingLatest20Of" xml:space="preserve">
+    <value>Showing latest 20 of</value>
+  </data>
+  <data name="SkipsMFAForLoginNotRecommendedForNormalUsers" xml:space="preserve">
+    <value>Skips MFA for login. Not recommended for normal users</value>
+  </data>
+  <data name="StandardLoginProcess" xml:space="preserve">
+    <value>Standard login process (For MFA Users)</value>
+  </data>
+  <data name="SubmitToCompleteLogin" xml:space="preserve">
+    <value>Submit to complete login</value>
+  </data>
+  <data name="SystemActionLogsFor" xml:space="preserve">
+    <value>System Action Logs For</value>
+  </data>
+  <data name="ThatYouDoNotUseOnOtherSystems" xml:space="preserve">
+    <value>that you do not use on other systems</value>
+  </data>
+  <data name="TheDefaultMFAMethodIs" xml:space="preserve">
+    <value>The default MFA method is</value>
+  </data>
+  <data name="ThisIsTheCurrentlyAssignedSessionRecoveryCode" xml:space="preserve">
+    <value>This is the currently assigned session recovery code</value>
+  </data>
+  <data name="ThisUserHasActivatedMFAUsingTheGoogleAuthenticatorApp" xml:space="preserve">
+    <value>This user has activated MFA (Multi-Factor Authentication) using the Google Authenticator app</value>
+  </data>
+  <data name="toActivateMFAToImproveTheirAccountSecurity" xml:space="preserve">
+    <value>to activate MFA to improve their account security and reduce risks of unauthorized access</value>
+  </data>
+  <data name="ToggleAccountStatus" xml:space="preserve">
+    <value>Toggle account status</value>
+  </data>
+  <data name="ToRevokeAnExistingCodeThatMayHaveBeenExposed" xml:space="preserve">
+    <value>To revoke an existing code that may have been exposed</value>
+  </data>
+  <data name="TotalSessions" xml:space="preserve">
+    <value>Total Sessions</value>
+  </data>
+  <data name="TSCMonitorsSimultaneousLoginsAndTerminatesOverlappingSessionsToPreventAbuse" xml:space="preserve">
+    <value>TSC monitors simultaneous logins and terminates overlapping sessions to prevent abuse</value>
+  </data>
+  <data name="UnauthorizedAccess" xml:space="preserve">
+    <value>Unauthorized access</value>
+  </data>
+  <data name="uniquePassword" xml:space="preserve">
+    <value>unique password</value>
+  </data>
+  <data name="UniqueUsers" xml:space="preserve">
+    <value>Unique Users</value>
+  </data>
+  <data name="UpdateAccountStatus" xml:space="preserve">
+    <value>Update Account Status</value>
+  </data>
+  <data name="UpdateRole" xml:space="preserve">
+    <value>Update role</value>
+  </data>
+  <data name="UploadProfilePicture" xml:space="preserve">
+    <value>Upload Profile Picture</value>
+  </data>
+  <data name="UseA" xml:space="preserve">
+    <value>Use a</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="UsersCurrentPermissions" xml:space="preserve">
+    <value>User's current permissions</value>
+  </data>
+  <data name="UserSecurityAwareness" xml:space="preserve">
+    <value>User Security Awareness</value>
+  </data>
+  <data name="UsersMustActivateMFAWithin" xml:space="preserve">
+    <value>Users must activate MFA within</value>
+  </data>
+  <data name="UsersWhoRemainInactiveForSeveralDaysMayHaveTheirAccountsAutoBlocked" xml:space="preserve">
+    <value>Users who remain inactive for several days may have their accounts auto-blocked</value>
+  </data>
+  <data name="UseVPNsOnPublicNetworks" xml:space="preserve">
+    <value>Use VPNs on public networks. Never leave active sessions open on shared devices</value>
+  </data>
+  <data name="usingAppsLikeGoogleAuthenticator" xml:space="preserve">
+    <value>using apps like Google authenticator</value>
+  </data>
+  <data name="VerificationStatus" xml:space="preserve">
+    <value>Verification Status</value>
+  </data>
+  <data name="Verified" xml:space="preserve">
+    <value>Verified</value>
+  </data>
+  <data name="VeryStrongPassword" xml:space="preserve">
+    <value>Very strong password</value>
+  </data>
+  <data name="VeryWeakPasswords" xml:space="preserve">
+    <value>Very weak passwords</value>
+  </data>
+  <data name="WhenUsersSuspectUnauthorizedAccessToTheirAccount" xml:space="preserve">
+    <value>When users suspect unauthorized access to their account</value>
+  </data>
+  <data name="WhitelistIP" xml:space="preserve">
+    <value>Whitelist ip</value>
+  </data>
+  <data name="WhyDoYouWantToReActivateThisAccount" xml:space="preserve">
+    <value>Why do you want to re-activate this account?. Imply add to the existing text</value>
+  </data>
+  <data name="WhyEnableMFA" xml:space="preserve">
+    <value>Why enable MFA</value>
+  </data>
+  <data name="WhyRegenerateARecoveryCode" xml:space="preserve">
+    <value>Why regenerate a recovery code</value>
+  </data>
+  <data name="withAnyoneNotEvenITStaff" xml:space="preserve">
+    <value>with anyone — not even IT staff</value>
+  </data>
+  <data name="YesResetPassword" xml:space="preserve">
+    <value>Yes, reset password</value>
+  </data>
+  <data name="You" xml:space="preserve">
+    <value>You</value>
+  </data>
+  <data name="YouCanEnableItBelow" xml:space="preserve">
+    <value>You can enable it below</value>
+  </data>
+  <data name="YouNeedToProvideReasonWhyYouWantToBlockOrDeactivateThisAccount" xml:space="preserve">
+    <value>You need to provide reason why you want to block or deactivate this account. Add your reason to the existing text if any</value>
+  </data>
+  <data name="orRiskAccountSuspension" xml:space="preserve">
+    <value>or risk account suspension</value>
+  </data>
+  <data name="TOTPTimeBasedOneTimePassword" xml:space="preserve">
+    <value>TOTP (Time-based One-Time Password)</value>
+  </data>
+  <data name="PasswordHistory" xml:space="preserve">
+    <value>Password history</value>
+  </data>
+  <data name="RepetitionAvoidance" xml:space="preserve">
+    <value>Repetition avoidance</value>
+  </data>
+  <data name="CalendarYearRestriction" xml:space="preserve">
+    <value>Calendar year restriction</value>
+  </data>
+  <data name="CommonWordFilter" xml:space="preserve">
+    <value>Common word filter</value>
+  </data>
+  <data name="UsernameExclusion" xml:space="preserve">
+    <value>Username exclusion</value>
+  </data>
+  <data name="YourPasswordMustNotContainYourUsername" xml:space="preserve">
+    <value>Your password must not contain your username</value>
+  </data>
+  <data name="ForbiddenWordsLike" xml:space="preserve">
+    <value>Forbidden words like</value>
+  </data>
+  <data name="YouCannotReuseYourLast" xml:space="preserve">
+    <value>You cannot reuse your last</value>
+  </data>
+  <data name="SerialPatterns" xml:space="preserve">
+    <value>Serial patterns</value>
+  </data>
+  <data name="PasswordsMustNotIncludeYearsSuchAs" xml:space="preserve">
+    <value>Passwords must not include years such as</value>
+  </data>
+  <data name="_90days" xml:space="preserve">
+    <value>90days</value>
+  </data>
+  <data name="accordanceWithTheFraudPreventionPolicy" xml:space="preserve">
+    <value>accordance with the fraud prevention policy</value>
+  </data>
+  <data name="areDisallowed" xml:space="preserve">
+    <value>are disallowed</value>
+  </data>
+  <data name="_5PreviouslyUsedPasswords" xml:space="preserve">
+    <value>5 previously used passwords</value>
+  </data>
+  <data name="areNotAllowed" xml:space="preserve">
+    <value>are not allowed</value>
+  </data>
+  <data name="TheseMakePasswordsEasierToGuess" xml:space="preserve">
+    <value>These make passwords easier to guess</value>
+  </data>
+  <data name="PasswordsMustBeChangedEvery" xml:space="preserve">
+    <value>Passwords must be changed every</value>
+  </data>
+  <data name="distributedAcrossThePassword" xml:space="preserve">
+    <value>distributed across the password</value>
+  </data>
+  <data name="fromTheApprovedSet" xml:space="preserve">
+    <value>from the approved set</value>
+  </data>
+  <data name="ThreeNonRepeatingSpecialCharacters" xml:space="preserve">
+    <value>Three non-repeating special characters</value>
+  </data>
+  <data name="OneDigit" xml:space="preserve">
+    <value>One digit</value>
+  </data>
+  <data name="OneLowercaseLetter" xml:space="preserve">
+    <value>One lowercase letter</value>
+  </data>
+  <data name="OneUppercaseLetter" xml:space="preserve">
+    <value>One uppercase letter</value>
+  </data>
+  <data name="MustIncludeAtLeast" xml:space="preserve">
+    <value>Must include at least</value>
+  </data>
+  <data name="Composition" xml:space="preserve">
+    <value>Composition</value>
+  </data>
+  <data name="PasswordsMustBeBetween" xml:space="preserve">
+    <value>Passwords must be between</value>
+  </data>
+  <data name="PasswordPolicy" xml:space="preserve">
+    <value>Password Policy</value>
+  </data>
+  <data name="Length" xml:space="preserve">
+    <value>Length</value>
+  </data>
+  <data name="_8And128Characters" xml:space="preserve">
+    <value>8 and 128 characters</value>
+  </data>
+  <data name="IfYourAccountIsBlockedPleaseContactYourAdministrator" xml:space="preserve">
+    <value>If your account is blocked, please contact your administrator or IT support team for assistance</value>
+  </data>
+  <data name="FailureToComplyWithAnyOfTheAbovePoliciesWillResultInThe" xml:space="preserve">
+    <value>Failure to comply with any of the above policies will result in the</value>
+  </data>
+  <data name="automaticBlockingOfYourAccount" xml:space="preserve">
+    <value>automatic blocking of your account</value>
+  </data>
+  <data name="byTheSystem" xml:space="preserve">
+    <value>by the system</value>
+  </data>
+  <data name="UsersMust" xml:space="preserve">
+    <value>Users must</value>
+  </data>
+  <data name="changeTheirPasswordEvery90Days" xml:space="preserve">
+    <value>change their password every 90 days</value>
+  </data>
+  <data name="inAccordanceWithTheOrganizationsFraudPreventionAndSecurityPolicies" xml:space="preserve">
+    <value>in accordance with the organization's fraud prevention and security policies</value>
+  </data>
+  <data name="toPreventBruteForceAttacks" xml:space="preserve">
+    <value>to prevent brute-force attacks</value>
+  </data>
+  <data name="ofAccountCreation" xml:space="preserve">
+    <value>of account creation</value>
+  </data>
+  <data name="otherwiseTheyWillBeAutomaticallyDisabled" xml:space="preserve">
+    <value>otherwise, they will be automatically disabled</value>
+  </data>
+  <data name="LoginIsRestrictedToAuthorizedBranchesAndApprovedIPAddressRanges" xml:space="preserve">
+    <value>Login is restricted to authorized branches and approved IP address ranges</value>
+  </data>
+  <data name="AccountsAreLockedAfter" xml:space="preserve">
+    <value>Accounts are locked after</value>
+  </data>
+  <data name="UsersAreRequiredToActivateMultiFactorAuthenticationWithin" xml:space="preserve">
+    <value>Users are required to activate Multi-Factor Authentication within</value>
+  </data>
+  <data name="NewlyCreatedAccountsMustBeAccessedWithin" xml:space="preserve">
+    <value>Newly created accounts must be accessed within</value>
+  </data>
+  <data name="AccountsAreAutomaticallyDisabledAfterAConfiguredPeriodOfUserInactivity" xml:space="preserve">
+    <value>Accounts are automatically disabled after a configured period of user inactivity</value>
+  </data>
+  <data name="_3FailedLoginAttempts" xml:space="preserve">
+    <value>3 failed login attempts</value>
+  </data>
+  <data name="_3Days" xml:space="preserve">
+    <value>3 days</value>
+  </data>
+  <data name="_12Days" xml:space="preserve">
+    <value>12 days</value>
+  </data>
+  <data name="MultiFactorAuthenticationMFA" xml:space="preserve">
+    <value>Multi-Factor Authentication (MFA)</value>
+  </data>
+  <data name="SessionRecoveryMetadata" xml:space="preserve">
+    <value>Session Recovery &amp; Metadata</value>
+  </data>
+  <data name="RecoveryCode" xml:space="preserve">
+    <value>Recovery code</value>
+  </data>
+  <data name="TerminateAllActiveSessions" xml:space="preserve">
+    <value>Terminate all active sessions</value>
+  </data>
+  <data name="DefaultSettings" xml:space="preserve">
+    <value>Default settings</value>
+  </data>
+  <data name="CustomSettings" xml:space="preserve">
+    <value>Custom settings</value>
+  </data>
+  <data name="ThisIsUsedToTerminateAllActiveSessionsIfYourAccountIsCompromised" xml:space="preserve">
+    <value>This is used to terminate all active sessions if your account is compromised</value>
+  </data>
+  <data name="SecurityTips" xml:space="preserve">
+    <value>Security Tips</value>
+  </data>
+  <data name="DoNotShareYourRecoveryCode" xml:space="preserve">
+    <value>Do not share your recovery code</value>
+  </data>
+  <data name="GenerateANewCodeRegularlyForSecurityHygiene" xml:space="preserve">
+    <value>Generate a new code regularly for security hygiene</value>
+  </data>
+  <data name="UseRecoveryCodeOnlyIfYouDetectUnauthorizedAccess" xml:space="preserve">
+    <value>Use recovery code only if you detect unauthorized access</value>
+  </data>
+  <data name="ConsiderChangingYourPasswordAfterRecovery" xml:space="preserve">
+    <value>Consider changing your password after recovery</value>
+  </data>
+  <data name="IPAddress" xml:space="preserve">
+    <value>IP address</value>
+  </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>Created date</value>
+  </data>
+  <data name="ExpiresAt" xml:space="preserve">
+    <value>Expires at</value>
+  </data>
+  <data name="ExpireTime" xml:space="preserve">
+    <value>Expire time</value>
+  </data>
+  <data name="TimeLeft" xml:space="preserve">
+    <value>Time left</value>
+  </data>
+  <data name="TotalActiveSessions" xml:space="preserve">
+    <value>Total active sessions</value>
+  </data>
+  <data name="SessionStatus" xml:space="preserve">
+    <value>Session status</value>
+  </data>
+  <data name="MultipleActive" xml:space="preserve">
+    <value>Multiple active</value>
+  </data>
+  <data name="Healthy" xml:space="preserve">
+    <value>Healthy</value>
+  </data>
+  <data name="InvalidExpired" xml:space="preserve">
+    <value>Invalid / Expired</value>
+  </data>
+  <data name="LastErrorMessage" xml:space="preserve">
+    <value>Last error message</value>
+  </data>
+  <data name="ProfilePicture" xml:space="preserve">
+    <value>Profile picture</value>
+  </data>
+  <data name="UpdateUserProfile" xml:space="preserve">
+    <value>Update User Profile</value>
+  </data>
+  <data name="AccountStatus" xml:space="preserve">
+    <value>Account status</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="MFAEnabled" xml:space="preserve">
+    <value>MFA enabled</value>
+  </data>
+  <data name="NotBlocked" xml:space="preserve">
+    <value>Not blocked</value>
+  </data>
+  <data name="OpenedDate" xml:space="preserve">
+    <value>Opened date</value>
+  </data>
+  <data name="NationalID" xml:space="preserve">
+    <value>National ID</value>
+  </data>
+  <data name="IDCard" xml:space="preserve">
+    <value>ID Card</value>
+  </data>
+  <data name="Expired" xml:space="preserve">
+    <value>Expired</value>
+  </data>
+  <data name="LoginTo" xml:space="preserve">
+    <value>Login to</value>
+  </data>
+  <data name="LoginFrom" xml:space="preserve">
+    <value>Login from</value>
+  </data>
+  <data name="ApplyFilter" xml:space="preserve">
+    <value>Apply filter</value>
+  </data>
+  <data name="ConnectedUsers" xml:space="preserve">
+    <value>Connected users</value>
+  </data>
+  <data name="FilterByBranch" xml:space="preserve">
+    <value>Filter by branch</value>
+  </data>
+  <data name="FilterByUserDetails" xml:space="preserve">
+    <value>Filter by user details</value>
+  </data>
+  <data name="FilterByLoginDate" xml:space="preserve">
+    <value>Filter by login date</value>
+  </data>
+  <data name="AdvancedSessionFilters" xml:space="preserve">
+    <value>Advanced session filters</value>
+  </data>
+  <data name="SessionOverviewStatistics" xml:space="preserve">
+    <value>Session overview statistics</value>
+  </data>
+  <data name="UpdatedEvery30Seconds" xml:space="preserve">
+    <value>Updated every 30 seconds</value>
+  </data>
+  <data name="CONNECTED_USERS" xml:space="preserve">
+    <value>CONNECTED USERS</value>
+  </data>
+  <data name="MonitorAllActiveUserSessionsAcrossTheSystem" xml:space="preserve">
+    <value>Monitor all active user sessions across the system. This dashboard allows you to track login activity, branch distribution, and session health in real-time</value>
+  </data>
+  <data name="UseFiltersSuchAsSessionCodeUsernameRoleAndBranch" xml:space="preserve">
+    <value>Use filters such as session code, username, role, and branch to narrow down connected users or detect multiple concurrent logins</value>
+  </data>
+  <data name="TIPS_FOR_SESSION_MONITORING" xml:space="preserve">
+    <value>TIPS FOR SESSION MONITORING</value>
+  </data>
+  <data name="LoginDate" xml:space="preserve">
+    <value>Login date</value>
+  </data>
+  <data name="UserInfo" xml:space="preserve">
+    <value>User info</value>
+  </data>
+  <data name="IdentifyUsersByUniqueSessionIdentifiers" xml:space="preserve">
+    <value>Identify users by unique session identifiers</value>
+  </data>
+  <data name="FilterByUsernameOrFullName" xml:space="preserve">
+    <value>Filter by username or full name</value>
+  </data>
+  <data name="TrackLoginsBasedOnOrganizationalLocation" xml:space="preserve">
+    <value>Track logins based on organizational location</value>
+  </data>
+  <data name="FindUsersWhoLoggedInDuringASpecificTimeframe" xml:space="preserve">
+    <value>Find users who logged in during a specific timeframe</value>
+  </data>
+  <data name="ViewExpiredOrSuspiciousSessionsEasily" xml:space="preserve">
+    <value>View expired or suspicious sessions easily</value>
+  </data>
+  <data name="USER_MANAGEMENT_DASHBOARD" xml:space="preserve">
+    <value>USER MANAGEMENT DASHBOARD</value>
+  </data>
+  <data name="CreateAndManageUserAccountsDefineAccessRoles" xml:space="preserve">
+    <value>Create and manage user accounts, define access roles, and ensure strong security posture. This interface provides full visibility and control over user identity, activity, and protection mechanisms</value>
+  </data>
+  <data name="TIPS" xml:space="preserve">
+    <value>TIPS</value>
+  </data>
+  <data name="FillAllRequiredFieldsAccurately" xml:space="preserve">
+    <value>Fill all required fields accurately</value>
+  </data>
+  <data name="UsersShouldChangeTheirPasswordsOnFirstLogin" xml:space="preserve">
+    <value>Users should change their passwords on first login</value>
+  </data>
+  <data name="AccountsInactiveForOver1MonthWillBeAutoSuspended" xml:space="preserve">
+    <value>Accounts inactive for over 1 month will be auto-suspended</value>
+  </data>
+  <data name="PasswordsOlderThan3MonthsWillPromptAForcedChange" xml:space="preserve">
+    <value>Passwords older than 3 months will prompt a forced change</value>
+  </data>
+  <data name="EncourageMFAActivationForEnhancedLoginSecurity" xml:space="preserve">
+    <value>Encourage MFA activation for enhanced login security</value>
+  </data>
+  <data name="SessionARecoveryCodesMustBeRegeneratedAfterPasswordUpdates" xml:space="preserve">
+    <value>Session recovery codes must be regenerated after password updates</value>
+  </data>
+  <data name="EnsureEmailAndPhoneNumberAreVerifiedForAlerts" xml:space="preserve">
+    <value>Ensure email and phone number are verified for alerts on security activities and breach notifications</value>
+  </data>
+  <data name="ViewUsers" xml:space="preserve">
+    <value>View users</value>
+  </data>
+  <data name="GoToUsersList" xml:space="preserve">
+    <value>Go to users list</value>
+  </data>
+  <data name="USER_ACCOUNT_CREATION" xml:space="preserve">
+    <value>USER ACCOUNT CREATION</value>
+  </data>
+  <data name="PasswordCopiedToClipboard" xml:space="preserve">
+    <value>Password copied to clipboard</value>
+  </data>
+  <data name="DownloadAsText" xml:space="preserve">
+    <value>Download as text</value>
+  </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>Copy to clipboard</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="GeneratedPassword" xml:space="preserve">
+    <value>Generated password</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="RoleOptional" xml:space="preserve">
+    <value>Role (optional)</value>
+  </data>
+  <data name="EmailVerified" xml:space="preserve">
+    <value>Email verified</value>
+  </data>
+  <data name="ActiveStatus" xml:space="preserve">
+    <value>Active status</value>
+  </data>
+  <data name="CreatedTo" xml:space="preserve">
+    <value>Created to</value>
+  </data>
+  <data name="CreatedFrom" xml:space="preserve">
+    <value>Created from</value>
+  </data>
+  <data name="SearchByLastnameOrUserNameOrFullName" xml:space="preserve">
+    <value>Search by lastname [or user name or full name]</value>
+  </data>
+  <data name="SearchByFirstnameOrUserNameOrFullName" xml:space="preserve">
+    <value>Search by firstname [or user name or full name]</value>
+  </data>
+  <data name="FilterByLastLoginDates" xml:space="preserve">
+    <value>Filter by last login dates</value>
+  </data>
+  <data name="FilterByUserNames" xml:space="preserve">
+    <value>Filter by user names</value>
+  </data>
+  <data name="FilterByBranchName" xml:space="preserve">
+    <value>Filter by branch name</value>
+  </data>
+  <data name="AdvancedUserFilters" xml:space="preserve">
+    <value>Advanced User Filters</value>
+  </data>
+  <data name="CreateNewUser" xml:space="preserve">
+    <value>Create new user</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="EnsureDataIsUpToDate" xml:space="preserve">
+    <value>Ensure data is up to date</value>
+  </data>
+  <data name="FilterByActiveBlockedOrVerificationStatus" xml:space="preserve">
+    <value>Filter by active, blocked, or verification status</value>
+  </data>
+  <data name="NarrowByRegistrationPeriod" xml:space="preserve">
+    <value>Narrow by registration period</value>
+  </data>
+  <data name="ViewUsersByOrganizationalBranch" xml:space="preserve">
+    <value>View users by organizational branch</value>
+  </data>
+  <data name="FilterUsersByAssignedRole" xml:space="preserve">
+    <value>Filter users by assigned role</value>
+  </data>
+  <data name="TIPS_FOR_USER_FILTERING" xml:space="preserve">
+    <value>TIPS FOR USER FILTERING</value>
+  </data>
+  <data name="UseFiltersLikeRoleBranchAndDateToManage" xml:space="preserve">
+    <value>Use filters like role, branch, and date to manage and audit user access effectively</value>
+  </data>
+  <data name="ManageSystemUsersTrackRolesAndStatuses" xml:space="preserve">
+    <value>Manage system users, track roles and statuses, and apply filters to search by user details, status, and organization unit</value>
+  </data>
+  <data name="USER_MANAGEMENT" xml:space="preserve">
+    <value>USER MANAGEMENT</value>
+  </data>
+  <data name="BestPractices" xml:space="preserve">
+    <value>Best practices</value>
+  </data>
+  <data name="NeverShareYourPasswordOrRecoveryCode" xml:space="preserve">
+    <value>Never share your password or recovery code</value>
+  </data>
+  <data name="UseComplexPasswordsWithUpperLowercaseNumbersAndSymbols" xml:space="preserve">
+    <value>Use complex passwords with upper/lowercase, numbers, and symbols</value>
+  </data>
+  <data name="BeAlertToUnfamiliarDevicesOrLoginLocations" xml:space="preserve">
+    <value>Be alert to unfamiliar devices or login locations</value>
+  </data>
+  <data name="LogOutFromSharedOrPublicDevicesAfterUse" xml:space="preserve">
+    <value>Log out from shared or public devices after use</value>
+  </data>
+  <data name="Suspension" xml:space="preserve">
+    <value>Suspension</value>
+  </data>
+  <data name="RoleAndBranchAccuracy" xml:space="preserve">
+    <value>Role and branch accuracy</value>
+  </data>
+  <data name="VerifyYourContacts" xml:space="preserve">
+    <value>Verify your contacts</value>
+  </data>
+  <data name="RegenerateRecoveryCodes" xml:space="preserve">
+    <value>Regenerate recovery codes</value>
+  </data>
+  <data name="KeepYourProfileUpdated" xml:space="preserve">
+    <value>Keep your profile updated</value>
+  </data>
+  <data name="ResetYourPasswordRegularly" xml:space="preserve">
+    <value>Reset your password regularly</value>
+  </data>
+  <data name="BackToUsersList" xml:space="preserve">
+    <value>Back to Users List</value>
+  </data>
+  <data name="ACCOUNT_MANAGER" xml:space="preserve">
+    <value>ACCOUNT MANAGER</value>
+  </data>
+  <data name="SecurityProfileTips" xml:space="preserve">
+    <value>Security &amp; Profile Tips</value>
+  </data>
+  <data name="ManageUserAccountsCredentialsRolesMFASessions" xml:space="preserve">
+    <value>Manage user accounts, credentials, roles, MFA, sessions, recovery codes, and permissions in one place. Ensure secure access and user management across your organization</value>
+  </data>
+  <data name="USER_ACCOUNT_MANAGER" xml:space="preserve">
+    <value>USER ACCOUNT MANAGER</value>
+  </data>
+  <data name="OverridePolicy" xml:space="preserve">
+    <value>Override policy</value>
+  </data>
+  <data name="ActionLogs" xml:space="preserve">
+    <value>Action logs</value>
+  </data>
+  <data name="UserPermissions" xml:space="preserve">
+    <value>User permissions</value>
+  </data>
+  <data name="UserSessions" xml:space="preserve">
+    <value>User sessions</value>
+  </data>
+  <data name="ChangeBranch" xml:space="preserve">
+    <value>Change branch</value>
+  </data>
+  <data name="ChangeRole" xml:space="preserve">
+    <value>Change role</value>
+  </data>
+  <data name="MFAStatus" xml:space="preserve">
+    <value>MFA status</value>
+  </data>
+  <data name="UpdateProfile" xml:space="preserve">
+    <value>Update profile</value>
+  </data>
+  <data name="ActivateDeactivate" xml:space="preserve">
+    <value>Activate/Deactivate</value>
+  </data>
+  <data name="SecurityAwareness" xml:space="preserve">
+    <value>Security awareness</value>
+  </data>
+  <data name="EnsureYourNameEmailPhoneAndAddressAreAccurateAtAllTimes" xml:space="preserve">
+    <value>Ensure your name, email, phone, and address are accurate at all times</value>
+  </data>
+  <data name="ChangeYourPasswordEvery90DaysOrSoonerIfCompromised" xml:space="preserve">
+    <value>Change your password every 90 days or sooner if compromised</value>
+  </data>
+  <data name="AddMultiFactorAuthenticationToProtectYourAccountAgainstUnauthorizedAccess" xml:space="preserve">
+    <value>Add Multi-Factor Authentication to protect your account against unauthorized access</value>
+  </data>
+  <data name="DoThisAfterAPasswordResetOrSuspectedCompromise" xml:space="preserve">
+    <value>Do this after a password reset or suspected compromise</value>
+  </data>
+  <data name="SessionsAutomaticallyExpireAfter" xml:space="preserve">
+    <value>Sessions automatically expire after</value>
+  </data>
+  <data name="MultipleFailedLoginsWillTemporarilyLockYourAccount" xml:space="preserve">
+    <value>Multiple failed logins will temporarily lock your account. Contact an admin for reactivation</value>
+  </data>
+  <data name="PasswordsOlderThan90DaysWillRequireUpdating" xml:space="preserve">
+    <value>Passwords older than 90 days will require updating</value>
+  </data>
+  <data name="EmailAndPhoneMustBeVerifiedToReceiveAlertsAndRecoveryLinks" xml:space="preserve">
+    <value>Email and phone must be verified to receive alerts and recovery links</value>
+  </data>
+  <data name="EnsureYourAssignedBranchAndRolesReflectYourResponsibilities" xml:space="preserve">
+    <value>Ensure your assigned branch and roles reflect your responsibilities</value>
+  </data>
+  <data name="AccountsInactiveForOver" xml:space="preserve">
+    <value>Accounts inactive for over</value>
+  </data>
+  <data name="mayBeAutomaticallySuspended" xml:space="preserve">
+    <value>may be automatically suspended</value>
+  </data>
+  <data name="_30Days" xml:space="preserve">
+    <value>30 days</value>
+  </data>
+  <data name="ofInactivityForSecurity" xml:space="preserve">
+    <value>of inactivity for security</value>
+  </data>
+  <data name="_1hour" xml:space="preserve">
+    <value>1 hour</value>
+  </data>
+  <data name="MFASettings" xml:space="preserve">
+    <value>MFA settings</value>
+  </data>
+  <data name="ChangeLanguage" xml:space="preserve">
+    <value>Change language</value>
+  </data>
+  <data name="ChangePicture" xml:space="preserve">
+    <value>Change picture</value>
+  </data>
+  <data name="Permissions" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="ReviewTheListOfMenusAndPermissionsAssignedToYou" xml:space="preserve">
+    <value>Review the list of menus and permissions assigned to you</value>
+  </data>
+  <data name="RegenerateYourSessionRecoveryCodeAfterPasswordResetOrCompromise" xml:space="preserve">
+    <value>Regenerate your session recovery code after password reset or compromise</value>
+  </data>
+  <data name="ViewAndTerminateActiveLoginSessionsToStaySafe" xml:space="preserve">
+    <value>View and terminate active login sessions to stay safe</value>
+  </data>
+  <data name="EnableMultiFactorAuthenticationForAdvancedProtection" xml:space="preserve">
+    <value>Enable Multi-Factor Authentication for advanced protection</value>
+  </data>
+  <data name="PeriodicallyUpdateYourPasswordForBetterSecurity" xml:space="preserve">
+    <value>Periodically update your password for better security</value>
+  </data>
+  <data name="UploadAClearPictureToPersonalizeYourAccount" xml:space="preserve">
+    <value>Upload a clear picture to personalize your account</value>
+  </data>
+  <data name="AlwaysKeepYourContactInfoUpToDate" xml:space="preserve">
+    <value>Always keep your contact info up to date</value>
+  </data>
+  <data name="ACCOUNT_SETTINGS" xml:space="preserve">
+    <value>ACCOUNT SETTINGS</value>
+  </data>
+  <data name="ViewAndManageYourPersonalAccount" xml:space="preserve">
+    <value>View and manage your personal account, update your information, set up security features such as MFA, manage your sessions, change your password, and review your assigned permissions</value>
+  </data>
+</root>

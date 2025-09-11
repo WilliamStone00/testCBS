@@ -1,0 +1,35 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+@using Resources
+
+<fieldset class="fieldset-custom border rounded-3 p-3 mb-3">
+    <legend class="float-none w-auto px-2 text-primary fw-bold">
+        🔐 @Global_SendOTP.SendOTPCode
+        <i class="mdi mdi-help-circle text-primary ms-2"
+           data-bs-toggle="tooltip"
+           title="@Global_SendOTP.SendOTPCodeDescription"></i>
+    </legend>
+
+    <div class="col-12 col-md-8 mx-auto">
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center">
+                <h5 class="card-title fw-bold">@Global_SendOTP.SendOTPCode</h5>
+                <p class="text-muted mb-4">@Global_SendOTP.SendOTPCodeDescription</p>
+
+                @using (Html.BeginForm(
+                    "GenerateOTP",
+                    "MemberOperation",
+                    FormMethod.Post,
+                    new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                {
+                    @Html.HiddenFor(m => m.AddOTPNotificationCommand.LoanApplicationId)
+                    @Html.HiddenFor(m => m.AddOTPNotificationCommand.CustomerId)
+
+                    <button type="submit" class="btn btn-primary btn-lg px-4">
+                        <i class="fas fa-paper-plane me-2"></i>
+                        @Global_SendOTP.SendOTPTo @Model.Customer.name
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+</fieldset>

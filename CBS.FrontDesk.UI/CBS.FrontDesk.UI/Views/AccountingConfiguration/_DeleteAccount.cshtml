@@ -1,0 +1,65 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+    @using Resources
+<div class="row">
+    <!-- Context Menu -->
+    <div class="col-12 card-body">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">@AccountingConfig_DeleteAccount.AddNewAccount:</h5>
+                <small class="text-body float-end">@Model.ChartOfAccount.AccountNumber-@Model.ChartOfAccount.LabelEn</small>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                {<input type="hidden" name="ServiceOption" value="account" id="ServiceOption" />
+                    @Html.HiddenFor(m => m.Account.ChartOfAccountId)
+                    <div class="row mt-2 gy-4">
+                        <div class="row mt-2 gy-4">
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.Account.AccountNumber, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Account.AccountNumber, "", new { @class = "text-danger" })
+                                    <label>@AccountingConfig_DeleteAccount.AccountNumber</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.Account.AccountHolder, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Account.AccountHolder, "", new { @class = "text-danger" })
+                                    <label>@AccountingConfig_DeleteAccount.AccountLabel</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(m => m.Account.AccountTypeId, new SelectList(ViewBag.AccountTypes == null ? "" : ViewBag.AccountTypes, "Id", "name"), "---"+@AccountingConfig_DeleteAccount.SelectAccountType+"---", new { @class = "form-control select2", @search = "true" })
+                                    @Html.ValidationMessageFor(model => model.Account.AccountTypeId, "", new { @class = "text-danger" })
+                                    <label>@AccountingConfig_DeleteAccount.AccountType</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(m => m.Account.AccountOwnerId, new SelectList(ViewBag.AccountOwners == null ? "" : ViewBag.AccountOwnerId, "Id", "name"), "---"+@AccountingConfig_DeleteAccount.SelectAccountOwner+"---", new { @class = "form-control select2", @search = "true" })
+                                    @Html.ValidationMessageFor(m => m.Account.AccountOwnerId, "", new { @class = "text-danger" })
+                                    <label>@AccountingConfig_DeleteAccount.AccountOwner</label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        @if (Model.Account.Id == null)
+                        {
+                            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                            <input type="hidden" name="@GlobalShared.Action" value="insert" id="Action" />
+                        }
+                        else
+                        { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
+                            @Html.HiddenFor(m => m.Account.Id)
+                            <input type="hidden" name="@GlobalShared.Action" value="update" id="Action" />
+                        }
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

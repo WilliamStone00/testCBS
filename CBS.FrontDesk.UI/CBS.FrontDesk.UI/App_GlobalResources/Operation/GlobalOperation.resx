@@ -1,0 +1,636 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccNumber" xml:space="preserve">
+    <value>Acc. number</value>
+  </data>
+  <data name="AccountHolderName" xml:space="preserve">
+    <value>Account holder name</value>
+  </data>
+  <data name="AccountInitialization" xml:space="preserve">
+    <value>Account initialization</value>
+  </data>
+  <data name="AccountName" xml:space="preserve">
+    <value>Account name</value>
+  </data>
+  <data name="AccountNumber" xml:space="preserve">
+    <value>Account number</value>
+  </data>
+  <data name="ACCOUNTS" xml:space="preserve">
+    <value>ACCOUNTS</value>
+  </data>
+  <data name="AccountStatementsOf" xml:space="preserve">
+    <value>Account statements of</value>
+  </data>
+  <data name="AccountStatus" xml:space="preserve">
+    <value>Account status</value>
+  </data>
+  <data name="AccountToAccountTransferRequest" xml:space="preserve">
+    <value>Account to account transfer request</value>
+  </data>
+  <data name="AccountType" xml:space="preserve">
+    <value>Account type</value>
+  </data>
+  <data name="ACCOUNT_CONFIGURATION_DETAILS" xml:space="preserve">
+    <value>ACCOUNT CONFIGURATION DETAILS</value>
+  </data>
+  <data name="ACCOUNT_INFORMATION" xml:space="preserve">
+    <value>ACCOUNT INFORMATION</value>
+  </data>
+  <data name="AccrualInterest" xml:space="preserve">
+    <value>Accrual interest</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="ApprovalComment" xml:space="preserve">
+    <value>Approval comment</value>
+  </data>
+  <data name="ApprovalDate" xml:space="preserve">
+    <value>Approval date</value>
+  </data>
+  <data name="ApprovedBy" xml:space="preserve">
+    <value>Approved by</value>
+  </data>
+  <data name="Balance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="BalanceAccountNumber" xml:space="preserve">
+    <value>Balance Account Number</value>
+  </data>
+  <data name="BankCode" xml:space="preserve">
+    <value>Bank code</value>
+  </data>
+  <data name="Branch" xml:space="preserve">
+    <value>Branch</value>
+  </data>
+  <data name="BranchCode" xml:space="preserve">
+    <value>Branch code</value>
+  </data>
+  <data name="Charges" xml:space="preserve">
+    <value>Charges</value>
+  </data>
+  <data name="CheckToFilterByBranch" xml:space="preserve">
+    <value>Check to filter by branch</value>
+  </data>
+  <data name="CheckToFilterByTeller" xml:space="preserve">
+    <value>Check to filter by teller</value>
+  </data>
+  <data name="CNI" xml:space="preserve">
+    <value>CNI</value>
+  </data>
+  <data name="Coins" xml:space="preserve">
+    <value>Coins</value>
+  </data>
+  <data name="ConfirmRequest" xml:space="preserve">
+    <value>Confirm request</value>
+  </data>
+  <data name="Credit" xml:space="preserve">
+    <value>Credit</value>
+  </data>
+  <data name="Current" xml:space="preserve">
+    <value>Current</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="DateCreated" xml:space="preserve">
+    <value>Date created</value>
+  </data>
+  <data name="DateExpire" xml:space="preserve">
+    <value>Date expire</value>
+  </data>
+  <data name="DateFrom" xml:space="preserve">
+    <value>Date from</value>
+  </data>
+  <data name="DateIssue" xml:space="preserve">
+    <value>Date issue</value>
+  </data>
+  <data name="DateOfInitiation" xml:space="preserve">
+    <value>Date of Initiation</value>
+  </data>
+  <data name="DateTo" xml:space="preserve">
+    <value>Date to</value>
+  </data>
+  <data name="Debit" xml:space="preserve">
+    <value>Debit</value>
+  </data>
+  <data name="DepositerNote" xml:space="preserve">
+    <value>Depositer note</value>
+  </data>
+  <data name="DepositOperation" xml:space="preserve">
+    <value>Deposit operation</value>
+  </data>
+  <data name="DepositorName" xml:space="preserve">
+    <value>Depositor name</value>
+  </data>
+  <data name="DepositorsInformation" xml:space="preserve">
+    <value>Depositors information</value>
+  </data>
+  <data name="DepositPolicyIsNotConfigureForProduct" xml:space="preserve">
+    <value>Deposit policy is not configure for product</value>
+  </data>
+  <data name="DEPOSITS_CONFIGURATION" xml:space="preserve">
+    <value>DEPOSITS CONFIGURATION</value>
+  </data>
+  <data name="DepositType" xml:space="preserve">
+    <value>Deposit type</value>
+  </data>
+  <data name="DestinationAccount" xml:space="preserve">
+    <value>Destination account</value>
+  </data>
+  <data name="DestinationBranch" xml:space="preserve">
+    <value>Destination branch</value>
+  </data>
+  <data name="DestinationCommission" xml:space="preserve">
+    <value>Destination commission</value>
+  </data>
+  <data name="Due" xml:space="preserve">
+    <value>Due</value>
+  </data>
+  <data name="EnterAmount" xml:space="preserve">
+    <value>Enter amount</value>
+  </data>
+  <data name="EnterInitialDeposit" xml:space="preserve">
+    <value>Enter initial deposit</value>
+  </data>
+  <data name="EnterRecievingAccountNumber" xml:space="preserve">
+    <value>Enter recieving account number</value>
+  </data>
+  <data name="EnterSendingAccountNumber" xml:space="preserve">
+    <value>Enter sending account number</value>
+  </data>
+  <data name="ErrorOcuredWhileGettingMember" xml:space="preserve">
+    <value>Error ocured while getting member. Please refresh your browser</value>
+  </data>
+  <data name="ExportMembersAccount" xml:space="preserve">
+    <value>Export members account</value>
+  </data>
+  <data name="Fee" xml:space="preserve">
+    <value>Fee</value>
+  </data>
+  <data name="FilterByDate" xml:space="preserve">
+    <value>Filter by date</value>
+  </data>
+  <data name="HomePhoneNumber" xml:space="preserve">
+    <value>Home phone number</value>
+  </data>
+  <data name="IdentityNumber" xml:space="preserve">
+    <value>Identity number</value>
+  </data>
+  <data name="InActive" xml:space="preserve">
+    <value>In-Active</value>
+  </data>
+  <data name="InitiationComment" xml:space="preserve">
+    <value>Initiation comment</value>
+  </data>
+  <data name="Initiator" xml:space="preserve">
+    <value>Initiator</value>
+  </data>
+  <data name="InitiatorComment" xml:space="preserve">
+    <value>Initiator comment</value>
+  </data>
+  <data name="Interest" xml:space="preserve">
+    <value>Interest</value>
+  </data>
+  <data name="LastPayment" xml:space="preserve">
+    <value>Last payment</value>
+  </data>
+  <data name="LoanId" xml:space="preserve">
+    <value>Loan id</value>
+  </data>
+  <data name="LoanRepaymentOperationByCash" xml:space="preserve">
+    <value>Loan Repayment operation by cash</value>
+  </data>
+  <data name="Loans" xml:space="preserve">
+    <value>Loans</value>
+  </data>
+  <data name="MaturityDate" xml:space="preserve">
+    <value>Maturity date</value>
+  </data>
+  <data name="Max" xml:space="preserve">
+    <value>Max</value>
+  </data>
+  <data name="MaxAmount" xml:space="preserve">
+    <value>Max amount</value>
+  </data>
+  <data name="Member" xml:space="preserve">
+    <value>Member</value>
+  </data>
+  <data name="MemberAccountName" xml:space="preserve">
+    <value>Member account name</value>
+  </data>
+  <data name="MemberRef" xml:space="preserve">
+    <value>Member ref</value>
+  </data>
+  <data name="MembersAccountStatementOf" xml:space="preserve">
+    <value>Member's account statement of</value>
+  </data>
+  <data name="MembersCurrentLoan" xml:space="preserve">
+    <value>Member's Current Loan(s)</value>
+  </data>
+  <data name="MEMBERS_CASH_DESK_OPERATIONS" xml:space="preserve">
+    <value>MEMBER'S CASH DESK OPERATIONS</value>
+  </data>
+  <data name="MEMBERS_CASH_DESK_OPERATIONS_ACCOUNT" xml:space="preserve">
+    <value>MEMBER'S CASH DESK OPERATIONS (ACCOUNT</value>
+  </data>
+  <data name="Min" xml:space="preserve">
+    <value>Min</value>
+  </data>
+  <data name="MinimumAmount" xml:space="preserve">
+    <value>Minimum amount</value>
+  </data>
+  <data name="MoreInformation" xml:space="preserve">
+    <value>More information</value>
+  </data>
+  <data name="NewTransferOperation" xml:space="preserve">
+    <value>New transfer operation</value>
+  </data>
+  <data name="NoLoansHaveBeenContractedBy" xml:space="preserve">
+    <value>No loans have been contracted by</value>
+  </data>
+  <data name="NoPendingTransferAreAvailableForTheMoment" xml:space="preserve">
+    <value>No pending transfer(s) are available for the moment</value>
+  </data>
+  <data name="NotActive" xml:space="preserve">
+    <value>Not active</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="NotesDenomination" xml:space="preserve">
+    <value>Notes Denomination</value>
+  </data>
+  <data name="NoTransactionAreAvailableForAccount" xml:space="preserve">
+    <value>No transaction(s) are available for account</value>
+  </data>
+  <data name="NoTransferIsAvailableForTheMainTime" xml:space="preserve">
+    <value>No transfer is available for the main time</value>
+  </data>
+  <data name="Number" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="OnlineBankingStatus" xml:space="preserve">
+    <value>Online banking status</value>
+  </data>
+  <data name="OpenAccount" xml:space="preserve">
+    <value>Open account</value>
+  </data>
+  <data name="OpeningBalance" xml:space="preserve">
+    <value>Opening balance</value>
+  </data>
+  <data name="OpeningDate" xml:space="preserve">
+    <value>Opening date</value>
+  </data>
+  <data name="Paid" xml:space="preserve">
+    <value>Paid</value>
+  </data>
+  <data name="Penalty" xml:space="preserve">
+    <value>Penalty</value>
+  </data>
+  <data name="PENDING_TRANSFER" xml:space="preserve">
+    <value>PENDING TRANSFER</value>
+  </data>
+  <data name="PerformMemberDepositOperation" xml:space="preserve">
+    <value>Perform member deposit operation</value>
+  </data>
+  <data name="PerformMemberDepositOperationIn" xml:space="preserve">
+    <value>Perform member deposit operation in</value>
+  </data>
+  <data name="PerformMemberLoanRepaymentOperationIn" xml:space="preserve">
+    <value>Perform member loan repayment operation in</value>
+  </data>
+  <data name="PerformMemberWithdrawalOperation" xml:space="preserve">
+    <value>Perform member withdrawal operation</value>
+  </data>
+  <data name="PerformTransferFrom" xml:space="preserve">
+    <value>Perform transfer from</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Phone number</value>
+  </data>
+  <data name="PlaceARequest" xml:space="preserve">
+    <value>Place a request</value>
+  </data>
+  <data name="PlaceOfIssue" xml:space="preserve">
+    <value>Place of issue</value>
+  </data>
+  <data name="PostingFrequency" xml:space="preserve">
+    <value>Posting frequency</value>
+  </data>
+  <data name="Principal" xml:space="preserve">
+    <value>Principal</value>
+  </data>
+  <data name="PrintCustomerAccountStatements" xml:space="preserve">
+    <value>Print customer account statements</value>
+  </data>
+  <data name="printMembersAccount" xml:space="preserve">
+    <value>print members account</value>
+  </data>
+  <data name="ProductActiveStatus" xml:space="preserve">
+    <value>Product active status</value>
+  </data>
+  <data name="Rate" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="ReasonsForDepositSaving" xml:space="preserve">
+    <value>Reasons for deposit/saving</value>
+  </data>
+  <data name="Receiver" xml:space="preserve">
+    <value>Receiver</value>
+  </data>
+  <data name="ReceiverName" xml:space="preserve">
+    <value>Receiver name</value>
+  </data>
+  <data name="ReceivingAccount" xml:space="preserve">
+    <value>Receiving account</value>
+  </data>
+  <data name="Reference" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="ReferenceNumber" xml:space="preserve">
+    <value>Reference number</value>
+  </data>
+  <data name="ReloadPageToGetCustomerDetails" xml:space="preserve">
+    <value>Reload page to get customer details</value>
+  </data>
+  <data name="RequestSource" xml:space="preserve">
+    <value>Request source</value>
+  </data>
+  <data name="Restructured" xml:space="preserve">
+    <value>Restructured</value>
+  </data>
+  <data name="SavingOfficer" xml:space="preserve">
+    <value>Saving officer</value>
+  </data>
+  <data name="SavingProduct" xml:space="preserve">
+    <value>Saving product</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="SelectApprovalStatus" xml:space="preserve">
+    <value>Select approval status</value>
+  </data>
+  <data name="SelectBranch" xml:space="preserve">
+    <value>Select branch</value>
+  </data>
+  <data name="SelectedAccount" xml:space="preserve">
+    <value>Selected account</value>
+  </data>
+  <data name="SelectLoanToRepay" xml:space="preserve">
+    <value>Select loan to repay</value>
+  </data>
+  <data name="SelectTeller" xml:space="preserve">
+    <value>Select teller</value>
+  </data>
+  <data name="SelectToApprove" xml:space="preserve">
+    <value>Select to approve</value>
+  </data>
+  <data name="Sender" xml:space="preserve">
+    <value>Sender</value>
+  </data>
+  <data name="SenderName" xml:space="preserve">
+    <value>Sender name</value>
+  </data>
+  <data name="SendingAccount" xml:space="preserve">
+    <value>Sending account</value>
+  </data>
+  <data name="SourceAccount" xml:space="preserve">
+    <value>Source account</value>
+  </data>
+  <data name="SourceBranch" xml:space="preserve">
+    <value>Source branch</value>
+  </data>
+  <data name="SourceCommission" xml:space="preserve">
+    <value>Source commission</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="statements" xml:space="preserve">
+    <value>statements</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>Use accounting date</value>
+  </data>
+  <data name="SubmitQuery" xml:space="preserve">
+    <value>Submit query</value>
+  </data>
+  <data name="Tax" xml:space="preserve">
+    <value>Tax</value>
+  </data>
+  <data name="Telephone" xml:space="preserve">
+    <value>Telephone</value>
+  </data>
+  <data name="Teller" xml:space="preserve">
+    <value>Teller</value>
+  </data>
+  <data name="TellerNote" xml:space="preserve">
+    <value>Teller note</value>
+  </data>
+  <data name="toAnotherAccount" xml:space="preserve">
+    <value>to another account</value>
+  </data>
+  <data name="TotalAccountBalance" xml:space="preserve">
+    <value>Total account balance</value>
+  </data>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>Total amount</value>
+  </data>
+  <data name="TotalBalance" xml:space="preserve">
+    <value>Total balance</value>
+  </data>
+  <data name="TransactionQueryForm" xml:space="preserve">
+    <value>Transaction Query Form</value>
+  </data>
+  <data name="TransactionQueryParameters" xml:space="preserve">
+    <value>Transaction Query Parameters</value>
+  </data>
+  <data name="TRANSACTIONS" xml:space="preserve">
+    <value>TRANSACTIONS</value>
+  </data>
+  <data name="TransactionType" xml:space="preserve">
+    <value>Transaction type</value>
+  </data>
+  <data name="TransferDetails" xml:space="preserve">
+    <value>Transfer details</value>
+  </data>
+  <data name="Transfers" xml:space="preserve">
+    <value>Transfers</value>
+  </data>
+  <data name="TRANSFERS_" xml:space="preserve">
+    <value>TRANSFERS</value>
+  </data>
+  <data name="transferType" xml:space="preserve">
+    <value>transfer type</value>
+  </data>
+  <data name="TRANSFER_CONFIGURATION" xml:space="preserve">
+    <value>TRANSFER CONFIGURATION</value>
+  </data>
+  <data name="TRANSFER_REQUEST_FORM" xml:space="preserve">
+    <value>TRANSFER REQUEST FORM</value>
+  </data>
+  <data name="UncheckIfDepositIsNotDoneByAccountOwner" xml:space="preserve">
+    <value>Uncheck if deposit is not done by account owner</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="UseAccountingDate" xml:space="preserve">
+    <value>Use accounting date</value>
+  </data>
+  <data name="Values" xml:space="preserve">
+    <value>Values</value>
+  </data>
+  <data name="Vat" xml:space="preserve">
+    <value>Vat</value>
+  </data>
+  <data name="ViewOfAllmMemberAccountInformation" xml:space="preserve">
+    <value>View of allmMember account information</value>
+  </data>
+  <data name="ViewPendingList" xml:space="preserve">
+    <value>View pending list</value>
+  </data>
+  <data name="WithdrawalNote" xml:space="preserve">
+    <value>Withdrawal note</value>
+  </data>
+  <data name="WithdrawalOperation" xml:space="preserve">
+    <value>Withdrawal operation</value>
+  </data>
+  <data name="WithdrawalPolicyIsNotConfigureForProduct" xml:space="preserve">
+    <value>Withdrawal policy is not configure for Product</value>
+  </data>
+  <data name="WithdrawalType" xml:space="preserve">
+    <value>Withdrawal type</value>
+  </data>
+  <data name="WITHDRAWAL_CONFIGURATION" xml:space="preserve">
+    <value>WITHDRAWAL CONFIGURATION</value>
+  </data>
+</root>

@@ -1,0 +1,89 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+
+<div class="col-12">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex align-items-center flex-wrap gap-2">
+                <div class="card-info">
+                    <div class="d-flex align-items-center">
+                        <h4 class="mb-0">@Model.AccountBalance.totalBalance</h4>
+                    </div>
+                    <small>Total account balance</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="nav-align-left">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-left-deposit" aria-controls="navs-left-deposit" aria-selected="true">
+                            Deposit
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button"
+                                class="nav-link"
+                                role="tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#navs-left-withdrawal"
+                                aria-controls="navs-left-withdrawal"
+                                aria-selected="false">
+                            Withdrawal
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button"
+                                class="nav-link"
+                                role="tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#navs-left-actualize-saving"
+                                aria-controls="navs-left-actualize-saving"
+                                aria-selected="false">
+                            Actualize saving
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button"
+                                class="nav-link"
+                                role="tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#navs-left-lock"
+                                aria-controls="navs-left-lock"
+                                aria-selected="false">
+                            Lock
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button"
+                                class="nav-link"
+                                role="tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#navs-left-close"
+                                aria-controls="navs-left-close"
+                                aria-selected="false">
+                            Close
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="navs-left-deposit">
+                        <h4 class="card-header">DEPOSIT</h4>
+                        @Html.Partial("_Deposit")
+                    </div>
+                    <div class="tab-pane fade" id="navs-left-withdrawal">
+                        <h4 class="card-header">WITHDRAWAL</h4>
+                        @Html.Partial("_Withdrawal")
+                    </div>
+                    <div class="tab-pane fade" id="navs-left-actualize-saving">
+                        actualize-saving
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

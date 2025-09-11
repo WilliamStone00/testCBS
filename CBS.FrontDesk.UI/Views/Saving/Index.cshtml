@@ -1,0 +1,56 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+@{
+    ViewBag.Title = "Saving";
+}
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+            <div class="accordion-item active">
+                <h2 class="accordion-header text-body d-flex justify-content-between"
+                    id="accordionPopoutIconThree">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#accordionPopoutIcon-3"
+                            aria-expanded="true"
+                            aria-controls="accordionPopoutIcon-3">
+                        <i class="mdi mdi-format-list-numbered me-2"></i>
+                        MEMBERS ACCOUNTS
+                    </button>
+                </h2>
+                <div id="accordionPopoutIcon-3"
+                     class="accordion-collapse collapse show"
+                     data-bs-parent="#accordionPopoutIcon">
+                    <div class="accordion-body">
+                        <div id="mainviewChange">
+                            <div class="change-group">
+                                <div class="card mb-4">
+                                    <div class="card-body d-sm-flex d-block">
+                                        <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+                                            <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('Operation', null,'GetReport', null, 'List', 'export_transactions', null,'Transaction_Staement','DownloadExcelFile',null,'Transaction_Staement')" data-bs-toggle="tooltip" title="Export file">
+                                                <span class="tf-icons mdi mdi-file-excel mdi-18px"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="datalistingview">
+                                    @Html.Partial("_AccountData")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/Crud/Operation/Savings.js"></script>
+}
+

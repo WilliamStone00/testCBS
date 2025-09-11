@@ -1,0 +1,237 @@
+﻿@model CBS.FrontDesk.Data.Entity.Overdraft.SubmitOverdraftActivationRequestCommand
+
+<div class="card-body">
+    @using (Html.BeginForm("SubmitOverdraftRequest", "Overdraft", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate", id = "overdraftForm" }))
+    {
+        <div class="row gy-4">
+
+            <!-- 🔍 Section: Member & Account Info -->
+            <!-- 📍 Section: Member & Account Information -->
+            <div class="col-12">
+                <h6 class="text-primary border-bottom pt-2 pb-1">
+                    <i class="mdi mdi-account-circle-outline me-1"></i> Member & Account Information
+                </h6>
+            </div>
+
+            <!-- 🔍 Member account reference number & Name -->
+            <div class="col-md-12">
+                <label class="form-label">Member account reference number</label>
+                <div class="input-group shadow-sm">
+                    @Html.TextBoxFor(m => m.CustomerId, new { @class = "form-control", placeholder = "Enter Member account reference number", id = "CustomerId" })
+                    <button type="button" class="btn btn-outline-secondary" onclick="searchCustomer()">
+                        <i class="mdi mdi-magnify"></i> Search
+                    </button>
+                </div>
+                <small class="text-muted d-block mt-1">💡 Enter or search the Member account reference number to fetch related details.</small>
+            </div>
+
+            <div class="col-md-5">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.CustomerName, new { @class = "form-control", id = "CustomerName", @readonly = "readonly" })
+                    <label>Member Name</label>
+                </div>
+            </div>
+
+            <!-- 🏦 Branch Info -->
+            <div class="col-md-2">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.BranchId, new { @class = "form-control", id = "BranchId", @readonly = "readonly" })
+                    <label>Branch ID</label>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.BranchCode, new { @class = "form-control", id = "BranchCode", @readonly = "readonly" })
+                    <label>Branch Code</label>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.BranchName, new { @class = "form-control", id = "BranchName", @readonly = "readonly" })
+                    <label>Branch Name</label>
+                </div>
+            </div>
+
+            <!-- 🔽 Account & Config -->
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.DropDownListFor(m => m.AccountId, Enumerable.Empty<SelectListItem>(), "Select account...", new { @class = "form-select select2", id = "AccountId" })
+                    <label>Main Overdraft Account</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.DropDownListFor(m => m.OverdraftFacilityConfigId, new SelectList(ViewBag.OverdraftConfigs, "Id", "Name"), "Select config...", new { @class = "form-select select2", required = "required" })
+                    <label>Overdraft Facility Config</label>
+                </div>
+            </div>
+
+
+            <!-- 💼 Section: Overdraft Parameters -->
+            <!-- 💼 Section: Overdraft Parameters -->
+            <div class="col-12">
+                <h6 class="text-primary border-bottom pt-2 pb-1">
+                    <i class="mdi mdi-cash me-1"></i> Overdraft Parameters
+                </h6>
+            </div>
+
+            <!-- Pay-as-you-go Checkbox -->
+            <!-- Pay-as-you-go Checkbox -->
+            <div class="col-md-4">
+                <div class="form-check mb-1">
+                    @Html.CheckBoxFor(m => m.PayAsYouGoInterest, new { @class = "form-check-input", id = "PayAsYouGoInterest" })
+                    <label class="form-check-label" for="PayAsYouGoInterest">Pay-as-you-go</label>
+                    <small class="text-muted d-block">
+                        💡 Charges are incurred only when a portion of the overdraft is consumed, based on a usage percentage as configured.<br />
+                        👉 <em>Example:</em> If you use 20,000 from a 100,000 overdraft limit, interest applies only on the 20,000 used.
+                    </small>
+                </div>
+            </div>
+
+
+            <!-- Flat Interest + Interest Rate -->
+            <div class="col-md-4">
+                <div class="form-check mb-1">
+                    @Html.CheckBoxFor(m => m.FlatInterestRate, new { @class = "form-check-input", id = "FlatInterestRate" })
+                    <label class="form-check-label" for="FlatInterestRate">Flat Interest</label>
+                    <small class="text-muted d-block">💡 Charges fixed interest periodically, regardless of usage.</small>
+                </div>
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.InterestRate, new { @class = "form-control", type = "number", step = "0.01", id = "InterestRate" })
+                    <label>Interest Rate (%)</label>
+                    <small class="text-muted d-block">💡 Enter the interest rate applicable to the overdraft (e.g. 10%).</small>
+                </div>
+            </div>
+
+            <!-- Auto Recover + Penalty Rate -->
+            <div class="col-md-4">
+                <div class="form-check mb-1">
+                    @Html.CheckBoxFor(m => m.AutoRecoverOnDeposit, new { @class = "form-check-input", id = "AutoRecoverOnDeposit" })
+                    <label class="form-check-label" for="AutoRecoverOnDeposit">Auto Recover</label>
+                    <small class="text-muted d-block">💡 Automatically settles overdraft when deposits are received.</small>
+                </div>
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.PenaltyRate, new { @class = "form-control", type = "number", step = "0.01" })
+                    <label>Penalty Rate (%)</label>
+                    <small class="text-muted d-block">💡 Late repayment penalties applied when repayment terms are violated.</small>
+                </div>
+            </div>
+
+
+            <!-- 💳 Section: Salary & Recovery -->
+            <!-- 💳 Section: Salary & Recovery Settings -->
+            <div class="col-12 mt-4">
+                <h6 class="text-primary border-bottom pt-2 pb-1">
+                    <i class="mdi mdi-cash-refund me-1"></i> Salary & Recovery Settings
+                </h6>
+            </div>
+
+            <!-- ✅ IsSalaryOverdraftAccount Checkbox -->
+            <div class="col-md-6">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.IsSalaryOverdraftAccount, new { @class = "form-check-input", id = "IsSalaryOD", onchange = "handleSalaryODToggle()" })
+                    <label class="form-check-label" for="IsSalaryOD">Link Salary Account to Overdraft</label>
+                    <small class="text-muted d-block">💡 Required if the overdraft depends on salary-based crediting.</small>
+                </div>
+            </div>
+
+            <!-- 🔗 Linked Salary Account -->
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.LinkedSalaryAccountId, new { @class = "form-control", placeholder = "Optional", id = "LinkedSalaryAccountId" })
+                    <label>Linked Salary Account ID</label>
+                    <small class="text-muted d-block">💡 Provide the account to which salary is credited.</small>
+                </div>
+            </div>
+
+            <!-- 💼 Recovery Source Accounts -->
+            <div class="col-md-12">
+                <div class="form-floating shadow-sm">
+                    @Html.ListBoxFor(m => m.RecoverySourceAccountIds,
+                        new MultiSelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                        new { @class = "form-select select2", id = "RecoverySourceAccountIds", multiple = "multiple" })
+                    <label>Recovery Source Accounts</label>
+                    <small class="text-muted d-block">💡 OD will be auto-recovered from these accounts when funds are available.</small>
+                </div>
+            </div>
+
+
+            <!-- 🔁 Section: Provisioning & Expiry -->
+            <!-- 🔁 Section: Provisioning & Expiry -->
+            <div class="col-12 mt-4">
+                <h6 class="text-primary border-bottom pt-2 pb-1">
+                    <i class="mdi mdi-timer-cog-outline me-1"></i> Provisioning & Expiry
+                </h6>
+            </div>
+
+            <!-- ✅ Auto Provision Toggle -->
+            <div class="col-md-4">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.AutoProvisionEnabled, new { @class = "form-check-input", id = "AutoProvisionEnabled" })
+                    <label class="form-check-label" for="AutoProvisionEnabled">Enable Auto-Provision</label>
+                    <small class="text-muted d-block">💡 Automatically replenishes OD limit based on defined frequency.</small>
+                </div>
+            </div>
+
+            <!-- 🔁 Provision Frequency - Only visible when AutoProvisionEnabled is checked -->
+            <div class="col-md-4" id="ProvisionFrequencyContainer">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.AutoProvisionFrequencyInDays, new { @class = "form-control", type = "number", min = "1" })
+                    <label>Provision Frequency (days)</label>
+                    <small class="text-muted d-block">💡 How often (in days) the OD limit is refreshed automatically.</small>
+                </div>
+            </div>
+
+
+            <!-- 📅 Expiry Date -->
+            <div class="col-md-4">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.ProposedExpiryDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                    <label>Expiry Date</label>
+                    <small class="text-muted d-block">💡 The proposed date when this overdraft facility expires.</small>
+                </div>
+            </div>
+
+            <!-- 💷 Salary & Segment Info -->
+            <div class="col-md-4">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.AverageSalaryAmount, new { @class = "form-control", type = "number", placeholder = "e.g. 250000" })
+                    <label>Average Monthly Salary</label>
+                    <small class="text-muted d-block">💡 Enter the member’s average salary amount. This value helps compute the eligible overdraft limit.</small>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.RequestedLimit, new { @class = "form-control", type = "number", placeholder = "e.g. 500000" })
+                    <label>Requested Limit</label>
+                    <small class="text-muted d-block">💡 Set the eligible overdraft limit as determined by credit score analysis.</small>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.CustomerSegment, new { @class = "form-control", placeholder = "e.g. Platinum" })
+                    <label>Member Segment</label>
+                    <small class="text-muted d-block">💡 Helps apply segment-based overdraft rules (optional).</small>
+                </div>
+            </div>
+
+
+
+            <!-- ✅ Submit -->
+            <div class="col-12 text-end mt-4">
+                <button type="submit" class="btn btn-primary px-4" title="Submit and send overdraft activation request for processing">
+                    <i class="mdi mdi-send-check-outline me-2"></i> Submit Overdraft Request
+                </button>
+            </div>
+
+        </div>
+    }
+</div>
+
+
+

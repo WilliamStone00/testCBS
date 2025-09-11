@@ -1,0 +1,227 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+    @using Resources
+@{
+    ViewBag.Title = "View Cash Replenishment Details";
+
+}
+
+<div class="row invoice-preview">
+    <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+        <div class="accordion-item active">
+            <h2 class="accordion-header text-body d-flex justify-content-between"
+                id="accordionPopoutIconThree">
+                <button type="button"
+                        class="accordion-button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#accordionPopoutIcon-3"
+                        aria-expanded="true"
+                        aria-controls="accordionPopoutIcon-3">
+                    <i class="mdi mdi-bank-plus me-2"></i>
+                    @GlobalTellerCashDemand.RequestReferenceId :@Model.DetailsDtoModel.id      @GlobalTellerCashDemand.Amount : XFA @Model.DetailsDtoModel.requestedAmount.ToString("N")
+                </button>
+            </h2>
+            <div class="card-body">
+
+                <br />
+                <div class="collapse show">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>@GlobalTellerCashDemand.CashReplenishmentRequestDetails</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            <tr>
+                                <td>@GlobalTellerCashDemand.InvoiceNumber</td>
+                                <td>@Model.DetailsDtoModel.id </td>
+                            </tr>
+                            <tr>
+                                <td>@GlobalTellerCashDemand.AmountRequested</td>
+                                <td>@Model.DetailsDtoModel.requestedAmount.ToString("N") </td>
+                            </tr>
+                            <tr>
+                                <td>@GlobalTellerCashDemand.RequestMessage</td>
+                                <td>@Model.DetailsDtoModel.requetcomment </td>
+                            </tr>
+                            <tr>
+                                <td>@GlobalTellerCashDemand.RequestedBy </td>
+                                <td> @Model.DetailsDtoModel.requesterUserId </td>
+                            </tr>
+                            <tr>
+                                <td>@GlobalTellerCashDemand.ApprovedBy </td>
+                                <td> @Model.DetailsDtoModel.approvedBy </td>
+                            </tr>
+                            <tr>
+                                <td>@GlobalTellerCashDemand.AmountApproved</td>
+                                <td>@Model.DetailsDtoModel.confirmedAmount.ToString("N") </td>
+                            </tr>
+
+
+                            <tr>
+                                <td>@GlobalTellerCashDemand.ApprovedDate</td>
+                                <td>@Model.DetailsDtoModel.approvedDate </td>
+                            </tr>
+                            <tr>
+                                <td>@GlobalTellerCashDemand.ApprovedMessage</td>
+                                <td>@Model.DetailsDtoModel.approvedComment </td>
+                            </tr>
+                            <tr>
+
+
+                                <td> @GlobalShared.Status</td>
+                                @if (@Model.DetailsDtoModel.approvedStatus.ToUpper().Equals("PENDING"))
+                                {
+                                    <td class="badge bg-label-primary rounded-pill text-uppercase">
+                                        @Model.DetailsDtoModel.approvedStatus
+                                    </td>
+
+
+                                }
+                                else
+                                {
+                                    if (@Model.DetailsDtoModel.approvedStatus.ToUpper().Equals("APPROVE"))
+                                    {
+                                        <td class="badge bg-label-success rounded-pill text-uppercase">
+                                            @Model.DetailsDtoModel.approvedStatus
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="badge bg-label-danger rounded-pill text-uppercase">
+                                            @Model.DetailsDtoModel.approvedStatus
+                                        </td>
+                                    }
+
+                                }
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card card-action mb-5">
+                    <h5 class="card-header">@GlobalTellerCashDemand.CashReplenishmentRequestStatus</h5>
+                    <div class="card-body">
+                        <div class="mb-3 col-12 mb-0">
+                            @if (@Model.DetailsDtoModel.approvedStatus.ToUpper().Equals("APPROVE"))
+                            {
+                                <div class="alert alert-outline-success" role="alert">
+                                    <h6 class="alert-heading mb-1">@GlobalTellerCashDemand.TheCashReplenishmentRequestIssuedBy  @Model.DetailsDtoModel.requesterUserId @GlobalTellerCashDemand.withReference :@Model.DetailsDtoModel.id  @GlobalTellerCashDemand.withAmount XFA @Model.DetailsDtoModel.confirmedAmount.ToString("N")  @GlobalTellerCashDemand.hasAlreadyBeenApproved.</h6>
+
+                                </div>
+                                <div class="col-12 shift-right">
+
+
+                                    <a href="/TellerCashDemand/GetAllCashReplenimentRequestData" class="btn btn-primary click-to-go-back-to-menu">@GlobalTellerCashDemand.ClickToViewPendingCashReplenishmentRequest. </a>
+
+
+                                </div>
+
+                            }
+                            else
+                            {
+                                if (@Model.DetailsDtoModel.approvedStatus.ToUpper().Equals("REJECTED"))
+                                {
+                                    <div class="alert alert-outline-danger" role="alert">
+                                        <h6 class="alert-heading mb-1">@GlobalTellerCashDemand.TheCashReplenishmentRequestIssuedBy  @Model.DetailsDtoModel.requesterUserId @GlobalTellerCashDemand.withReference :@Model.DetailsDtoModel.id  @GlobalTellerCashDemand.withAmount XFA @Model.DetailsDtoModel.requestedAmount.ToString("N")  @GlobalTellerCashDemand.hasAlreadyBeenRejected.</h6>
+
+                                    </div>
+                                    <div class="col-12 shift-right">
+
+
+                                        <a href="/TellerCashDemand/GetAllCashReplenimentRequestData" class="btn btn-primary ">@GlobalTellerCashDemand.ClickToViewPendingCashReplenishmentRequest. </a>
+
+
+                                    </div>
+
+                                }
+                                else
+                                {
+                                    <div class="alert alert-outline-primary" role="alert">
+                                        <h6 class="alert-heading mb-1">@GlobalTellerCashDemand.ReferenceId :@Model.DetailsDtoModel.id  @GlobalTellerCashDemand.withAmount XFA @Model.DetailsDtoModel.requestedAmount.ToString("N") @GlobalTellerCashDemand.hasNotYetBeenApproved</h6>
+                                        <p class="mb-0">@GlobalTellerCashDemand.SelectYourDecisionAndClickOnApproved</p>
+                                    </div>
+                                    <div class="col-12 shift-right">
+
+
+                                        <a href="/TellerCashDemand/GetAllCashReplenimentRequestData" class="btn btn-primary">@GlobalTellerCashDemand.ClickToViewPendingCashReplenishmentRequest. </a>
+
+
+                                    </div>
+
+                                }
+
+                            }
+
+                        </div>
+                        @using (Html.BeginForm("CreateApprovalRequest", "TellerCashDemand", FormMethod.Post))
+                        {
+                            <!-- Account Details -->
+                            @Html.HiddenFor(model => model.DetailsDtoModel.id)
+                            @Html.HiddenFor(model => model.DetailsDtoModel.requetcomment)
+                            <input type="hidden" name="option" value="Status" id="option" />
+
+                            if (@Model.DetailsDtoModel.approvedStatus.ToUpper().Equals("APPROVE"))
+                            {
+                              
+
+                            }
+                            else
+                            {
+                                if (@Model.DetailsDtoModel.approvedStatus.ToUpper().Equals("REJECTED"))
+                                {
+                                    
+
+                                }
+                                else
+                                {<div class="form-check mb-3">
+                                        <div class="form-floating form-floating-outline">
+                                            <label for="Account">@GlobalTellerCashDemand.MakeDecision</label>
+                                            @Html.DropDownListFor(m => m.DetailsDtoModel.approvedStatus, new SelectList(ViewBag.Decisions == null ? "" : ViewBag.Decisions, "Text", "Value"), "---"+ @GlobalTellerCashDemand.SelectDecision +"---", new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(model => model.DetailsDtoModel.approvedStatus, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.DetailsDtoModel.confirmedAmount, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.DetailsDtoModel.confirmedAmount, "", new { @class = "text-danger" })
+
+                                            <label for="confirmedAmount"> @GlobalTellerCashDemand.ApprovedAmount</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextAreaFor(m => m.DetailsDtoModel.approvedComment, new { @class = "form-control", @style = "height: 200px;" })
+                                            @Html.ValidationMessageFor(model => model.DetailsDtoModel.approvedComment, "", new { @class = "text-danger" })
+
+                                            <label for="Description"> @GlobalTellerCashDemand.ApprovedMessageDescription</label>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary deactivate-account">@GlobalTellerCashDemand.ClickToApproveCashReplenishment</button>
+                                    </div>
+                                }
+
+
+                            }
+
+
+
+                        }
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")}

@@ -1,0 +1,67 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingDayObject.GetAccountingDayQuery
+@using Resources
+
+<fieldset class="fieldset-custom">
+    <legend id="select_basex">@AccountingDay_StatusQuery.AccountingDayStatusQueryParameters</legend>
+    <div class="card-body">
+        @using (Html.BeginForm("DownloadAccountingDayStatus", "AccountingDay", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdatePrintTillStatus(this);" }))
+        {
+            <hr />
+            <div class="row g-4">
+                <!-- Group for Query By (All or By Branch) -->
+                <div class="col-md-12">
+                    <fieldset>
+                        <legend>Query By</legend>
+                        <div class="form-check form-check-inline">
+                            @Html.RadioButtonFor(m => m.QueryParameter, "All", new { @class = "form-check-input", @id = "allRadio", @onclick = "toggleBranchDiv(false);" })
+                            <label class="form-check-label" for="allRadio">@AccountingDay_StatusQuery.All</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            @Html.RadioButtonFor(m => m.QueryParameter, "ByBranch", new { @class = "form-check-input", @id = "byBranchRadio", @onclick = "toggleBranchDiv(true);" })
+                            <label class="form-check-label" for="byBranchRadio">@AccountingDay_StatusQuery.Branch</label>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <hr />
+            <div class="row g-4">
+                <div class="col-md-4" id="branchDiv">
+                    <label for="branchInput">Branch</label>
+                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @AccountingDay_StatusQuery.SelectBranch+"---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
+                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-8">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label for="dateFromInput">Date From</label>
+                            <div class="input-group">
+                                @Html.TextBoxFor(m => m.DateFrom, new { @class = "form-control shadow-box date-picker", @id = "dateFromInput", @placeholder = @AccountingDay_StatusQuery.DateFrom })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.DateFrom, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-6">
+                            <label for="dateToInput">@AccountingDay_StatusQuery.DateTo</label>
+                            <div class="input-group">
+                                @Html.TextBoxFor(m => m.DateTo, new { @class = "form-control shadow-box date-picker", @id = "dateToInput", @placeholder = @AccountingDay_StatusQuery.DateTo })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.DateTo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa fa-print me-2"></i> @GlobalShared.Print
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="viewInDataTable()">
+                    <i class="fa fa-table me-2"></i> @GlobalShared.ViewInDatatable
+                </button>
+            </div>
+        }
+        <br />
+        @Html.Partial("_StatusData")
+    </div>
+</fieldset>
+
+

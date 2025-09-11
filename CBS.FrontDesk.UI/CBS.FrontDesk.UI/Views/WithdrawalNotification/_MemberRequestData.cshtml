@@ -1,0 +1,44 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.WithdrawalNotificationForm
+@using Resources
+
+    @if (Model.WithdrawalNotifications.Any())
+    {<div class="table-responsive mb-3">
+            <table class="table table-hover" id="myDataTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>@GlobalWithdrawalNotification.Ref</th>
+                        <th>@GlobalWithdrawalNotification.Amount</th>
+                        <th>Date</th>
+                        <th>G Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.WithdrawalNotifications)
+                    {
+                        <tr>
+
+                            <td style="width:40%">@d.TransactionReference</td>
+                            <td style="width:10%">@d.AmountRequired.ToString("#,##0.0")</td>
+                            <td style="width:15%">@d.DateOfIntendedWithdrawal.ToShortDateString()</td>
+                            <td style="width:15%">@d.GracePeriodDate.ToShortDateString()</td>
+                            <td style="width:20%">
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_OperationDesk','update','WithdrawalNotification')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.TransactionReference @GlobalShared.ToEdit">@GlobalShared.Edit</a> |
+                                <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.TransactionReference" onclick="DeleteRecordDataTable('WithdrawalNotification','@d.Id','myDataTable','_MemberRequestData',0,'dataloader')">@GlobalShared.Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center my-3">
+            <p> @GlobalWithdrawalNotification.NoDataWasFoundAtTheMoment..</p>
+        </div>
+    }
+
+
+
+

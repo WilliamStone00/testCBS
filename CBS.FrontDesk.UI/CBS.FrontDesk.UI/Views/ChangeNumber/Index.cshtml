@@ -1,0 +1,119 @@
+﻿@using Resources
+@{
+    ViewBag.Title = @GlobalChangeNumber.ChangeMemberPhoneNumber;
+}
+
+<div class="row">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-phone me-2"></i> @GlobalChangeNumber.ChangeMemberPhoneNumber
+                </h1>
+                <p class="card-text">
+                    @GlobalChangeNumber.ManageRequestsForUpdatingMemberPhoneNumbers.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Card -->
+<div class="card mb-1">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalChangeNumber.TIPS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePhoneTips" aria-expanded="false" aria-controls="collapsePhoneTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapsePhoneTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalChangeNumber.EnsureTheNewPhoneNumberBelongsToTheMember.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalChangeNumber.RequestsMustBeApprovedByAnAuthorizedOfficer.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalChangeNumber.ApprovedChangesCannotBeRevertedAutomatically2.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12">
+               <!-- Member Search Partial -->
+        <div id="searchMemberContainer">
+            @Html.Partial("_SearchMember")
+        </div>
+
+        <!-- Dynamic Section for Request Form -->
+        <div id="requestPhoneChangeContainer">
+            <!-- Content will be loaded dynamically here -->
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="phoneChangeModal" tabindex="-1" aria-labelledby="phoneChangeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header p-2">
+                <header class="w-100 text-center">
+                    <h4 class="text-primary fw-bold mb-1">
+                        <i class="mdi mdi-phone me-2"></i> @GlobalChangeNumber.PHONENUMBERCHANGEDETAILS
+                    </h4>
+                    <p class="text-muted mb-0">
+                        @GlobalChangeNumber.ViewDetailsAndManagePhoneNumberChangeRequests.
+                    </p>
+                    <hr style="border: 1px solid rgba(128, 128, 128, 0.5);" />
+                </header>
+            </div>
+            <div class="modal-body p-2">
+                <div id="phoneChangeContent">
+                    <!-- Partial view or dynamic content will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">@GlobalShared.Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    function searchMember() {
+        var memberRef = $("#MemberReference").val();
+        if (!memberRef) {
+            alert("Please enter a Member Reference.");
+            return;
+        }
+
+        $.ajax({
+            url: '/ChangeNumber/SearchMember',
+            type: 'GET',
+            data: { memberReference: memberRef },
+            success: function (response) {
+                $("#requestPhoneChangeContainer").html(response);
+            },
+            error: function () {
+                $("#requestPhoneChangeContainer").html(`
+                <div class="card bg-light shadow-sm text-center p-4 mt-3">
+                    <div class="card-body">
+                        <i class="mdi mdi-account-off text-danger" style="font-size: 3rem;"></i>
+                        <h4 class="text-danger fw-bold mt-2">Member Not Found</h4>
+                        <p class="text-muted">The member reference you entered does not exist. Please check the reference and try again.</p>
+                        <button class="btn btn-primary mt-2" onclick="$('#MemberReference').focus();">
+                            <i class="mdi mdi-arrow-left"></i> Try Again
+                        </button>
+                    </div>
+                </div>
+            `);
+            }
+        });
+    }
+
+</script>
+}

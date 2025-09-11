@@ -1,0 +1,192 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.AccountToAccountTransferDto
+<style>
+    .amount-input,
+    .fee-input {
+        width: 100%;
+        padding-right: 0.5rem;
+    }
+
+    .status-indicator i {
+        font-size: 1rem;
+    }
+
+    .table th,
+    .table td {
+        vertical-align: middle !important;
+        white-space: nowrap;
+        padding: 0.45rem 0.75rem;
+    }
+
+    .form-control {
+        width: 100%;
+    }
+
+    /* --- Grayed-out rows (disabled except radio column) --- */
+    .grayed-out {
+        background-color: #f9f9f9 !important;
+        opacity: 0.6;
+        pointer-events: none;
+    }
+
+        .grayed-out td:last-child {
+            pointer-events: auto; /* Allow radio buttons only */
+            opacity: 1;
+        }
+
+    /* --- Status icon size --- */
+    .status-indicator i {
+        font-size: 1rem;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-right: 0px !important;
+    }
+    .table td, .table th {
+        vertical-align: middle;
+        padding: 0.55rem 0.75rem;
+    }
+
+    input.form-control-sm {
+        height: calc(1.6rem + 2px);
+        font-size: 0.85rem;
+        padding: 0.2rem 0.4rem;
+    }
+
+</style>
+
+
+<input type="hidden" id="customerId" value="@Model.Sender.Customer.CustomerId" />
+<input type="hidden" id="memberName" value="@Model.Sender.Customer.name" />
+<input type="hidden" id="branchName" value="@Model.Sender.Branch.Name" />
+<input type="hidden" id="branchCode" value="@Model.Sender.Branch.BranchCode" />
+<input type="hidden" id="accountantName" value="@Session["FullName"].ToString()" />
+
+<div class="form-wrapper">
+    <!-- 🔹 Member Info Summary -->
+    <div class="change-group mb-3">
+        <div class="row align-items-center">
+            <div class="col-12">
+                <div class="bg-light rounded border px-4 py-3 shadow-sm text-dark fw-bold">
+                    <span><strong>Member Name:</strong> @Model.Sender.Customer.name</span> &nbsp; | &nbsp;
+                    <span><strong>Branch Name:</strong> @Model.Sender.Branch.Name</span> &nbsp; | &nbsp;
+                    <span><strong>Branch Code:</strong> @Model.Sender.Branch.BranchCode</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔸 Sender Table Section -->
+    <div class="change-group">
+        <div class="row">
+            <div class="col-12">
+                <div class="bg-white border border-secondary-subtle rounded shadow-sm px-3 py-2">
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle text-nowrap mb-0" id="myDataTableT">
+                            <thead class="table-light text-dark text-center">
+                                <tr>
+                                    <th colspan="8" class="text-center fw-bold">Sender's Available Accounts</th>
+                                </tr>
+                                <tr class="align-middle">
+                                    <th style="display:none;">Product ID</th>
+                                    <th style="display:none;">Account Number</th>
+                                    <th class="text-start" style="min-width: 180px;">------------Account Type-------------</th>
+                                    <th class="text-end" style="width: 120px;">------Balance----</th>
+                                    <th class="text-end" style="width: 120px;">----------------------Amount--------------------</th>
+                                    <th class="text-end" style="width: 100px;">-------------Fee------------</th>
+                                    <th class="text-center" style="width: 50px;" title="Validation">&#10004;</th>
+                                    <th class="text-center" style="width: 50px;" title="Select Source">&#8646;</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="senderAccountsTable">
+                                @foreach (var d in Model.Sender.Accounts.OrderBy(t => t.AccountType))
+                                {
+                                    <tr>
+                                        <td style="display:none;">@d.ProductId</td>
+                                        <td style="display:none;">@d.AccountNumber</td>
+                                        <td class="text-start">@d.AccountType</td>
+                                        <td class="text-end">@d.Balance.ToString("#,##0.00")</td>
+                                        <td class="text-end">
+                                            <input type="number"
+                                                   class="form-control form-control-sm amount-input text-end"
+                                                   data-account="@d.AccountNumber"
+                                                   value="0"
+                                                   min="0"
+                                                   max="@d.Balance"
+                                                   oninput="validateTransferAmount(this, @d.Balance)" />
+                                        </td>
+                                        <td class="text-end">
+                                            <input type="number"
+                                                   class="form-control form-control-sm fee-input text-end"
+                                                   value="0"
+                                                   min="0"
+                                                   oninput="updateTotalTransfer()" />
+                                        </td>
+                                        <td class="text-center status-indicator align-middle"></td>
+                                        <td class="text-center">
+                                            <input type="radio"
+                                                   name="senderAccountRadio"
+                                                   value="@d.AccountNumber"
+                                                   class="form-check-input"
+                                                   onchange="enforceSingleTransferSelection()" />
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                            <tfoot class="table-light text-dark">
+                                <tr>
+                                    <td colspan="2" class="text-end fw-bold">Total Transfer Amount:</td>
+                                    <td colspan="3"><span id="totalTransferAmount">0.00</span></td>
+                                    <td colspan="3"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="text-end fw-bold">Transfer Fee (if any):</td>
+                                    <td colspan="3"><span id="transferFeeAmount">0.00</span></td>
+                                    <td colspan="3"></td>
+                                </tr>
+                                <tr class="table-secondary fw-bold">
+                                    <td colspan="2" class="text-end">Grand Total:</td>
+                                    <td colspan="3"><span id="grandTotalAmount">0.00</span></td>
+                                    <td colspan="3"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <!-- Transfer Description Box -->
+                    <div class="form-floating mt-3">
+                        @Html.TextAreaFor(m => m.Transfer.Note,
+                            new
+                                 {
+                                @class = "form-control shadow-input-boxes",
+                                rows = "3",
+                                placeholder = "Enter reason for transfer",
+                                style = "height: 90px;"
+                            })
+                        <label for="Note">Transfer Description</label>
+                        @Html.ValidationMessageFor(m => m.Transfer.Note, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Receiver Info -->
+                    <div class="mt-4">
+                        @Html.Partial("_ReceiversInformation")
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="text-end mt-4 d-flex justify-content-end gap-2">
+                        <button class="btn btn-tsc d-none" id="searchReceiverBtn" data-bs-toggle="modal" data-bs-target="#receiverSearchModal">
+                            <i class="mdi mdi-account-search"></i> Search & Select Receiver
+                        </button>
+
+                        <button class="btn btn-primary" type="button" id="confirmTransferBtn" onclick="PostAccountTransfer()">
+                            <i class="mdi mdi-check me-1"></i> CONFIRM TRANSFER
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

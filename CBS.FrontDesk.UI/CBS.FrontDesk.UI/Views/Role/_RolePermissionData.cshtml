@@ -1,0 +1,43 @@
+﻿@model CBS.FrontDesk.Data.Entity.RolePermissionManagement
+@using Resources
+<fieldset class="fieldset-custom">
+
+    @if (Model.RolePermissions.Any())
+    {<h4 class="mb-2">
+            <i class="mdi mdi-lock-outline me-2"></i>
+            @GlobalRole.PermisionAssociatedToRole: @Model.RolePermissions.FirstOrDefault().roleName
+        </h4>
+
+    }
+    else
+    {
+        <h4 class="mb-2">
+            <i class="mdi mdi-lock-outline me-2"></i>
+            @GlobalRole.NoPermisionAssociatedToSelectedRole.
+        </h4>
+    }
+    <div class="table-responsive">
+        <table class="table table-hover" id="myDataTable">
+            <thead class="table-light">
+                <tr>
+                    <th>@GlobalRole.MenuText</th>
+                    <th>@GlobalRole.Description</th>
+                    <th>@GlobalShared.Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model.RolePermissions)
+                {
+                    <tr>
+                        <td style="width:20%">@d.menuText</td>
+                        <td style="width:70%">@d.description</td>
+                        <td style="width:10%">
+                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.menuText" onclick="DeleteDynamicRolePermission('Role','DeleteRolePersmission','@d.id','myDataTable','_RolePermissionData',0,'datalistingview','@d.roleID','view_role_permission')">@GlobalShared.Remove</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</fieldset>

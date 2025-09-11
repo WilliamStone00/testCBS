@@ -1,0 +1,117 @@
+﻿@using Resources
+<div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel3"> @GlobalManuallyJournalEntry.Loading_ ...</h4>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th colspan="2">  <h5 class="card-title" style="text-justify:auto">@GlobalManuallyJournalEntry.IssuerInformation</h5></th>
+
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        <tr>
+                            <td>@GlobalManuallyJournalEntry.Issuer</td>
+                            <td id="issuer"> @GlobalManuallyJournalEntry.loading ... </td>
+                        </tr>
+                        <tr>
+                            <td>@GlobalManuallyJournalEntry.PostingSource</td>
+                            
+                            <td id="branchCode">loading ...</td>
+                        </tr>
+                        <tr>
+                            <td>@GlobalManuallyJournalEntry.DateIssued</td>
+                            <td id="dateIssued">loading ...</td>
+                        </tr>
+                        <tr>
+                            <td>@GlobalManuallyJournalEntry.JournalEntryStatus</td>
+                            <td id="status">@GlobalManuallyJournalEntry.loading ...</td>
+                        </tr>
+                        <tr>
+                            <td>@GlobalManuallyJournalEntry.ApprovedBy</td>
+                            <td id="approvedBy">@GlobalManuallyJournalEntry.loading ...</td>
+                        </tr>
+                        <tr>
+                            <td>@GlobalManuallyJournalEntry.ApprovedDate</td>
+                            <td id="approvedDate">@GlobalManuallyJournalEntry.loading ...</td>
+                        </tr>
+                        <tr>
+                            <td>@GlobalManuallyJournalEntry.Purpose</td>
+                            <td id="description">@GlobalManuallyJournalEntry.loading ...</td>
+                        </tr>
+                        <tr>
+
+                            <td colspan="2">  <h5 class="card-title" style="text-justify:auto" id="referenceID">@GlobalManuallyJournalEntry.Journal_Entries_Reference_loading</h5></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-hover" id="ReferenceEntriesDataTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>@GlobalManuallyJournalEntry.AccountNumber</th>
+                            <th>@GlobalManuallyJournalEntry.Debit (XFA)</th>
+                            <th>@GlobalManuallyJournalEntry.Credit (XFA)</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <input type="hidden" id="selectedId" value="" />
+                <input type="hidden" id="status_button" value="" />
+               
+            </div>
+            <div id="under_review">
+                <div class="card-header">
+
+                    <form id="myCommentForm">
+                        <h5 class="card-title">
+                            @GlobalManuallyJournalEntry.DECISIONSTATEMENT : <textarea class="form-control textbox" cols="20" data-val="true" data-val-required="@GlobalManuallyJournalEntry.TheCommentFieldIsRequired." id="comment_description" name="EntryDescription.Description" rows="2"></textarea>
+                            <span class="field-validation-valid text-danger" data-valmsg-for="EntryDescription.Description" data-valmsg-replace="true"></span>
+                        </h5>
+               
+                        <div class="modal-footer">
+                        
+                            <button type="button" id="Reject" onclick="ApprovePostedEntries(false)" class="btn btn-danger" data-bs-dismiss="modal">
+                                @GlobalShared.Reject
+                            </button>
+                            <button type="button" id="Approve" onclick="ApprovePostedEntries(true)" class="btn btn-primary" data-bs-dismiss="modal">
+                                @GlobalShared.Approve
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+                   
+            </div>
+            <div id="rejected">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        @GlobalShared.Close
+                    </button>
+                </div> 
+            </div>
+            <div id="approved">
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        @GlobalShared.Close
+                    </button>
+                    <button type="button" id="print" onclick="PrintDataEntries(false)" class="btn btn-primary">
+                        <i class="mdi mdi-printer"></i>  @GlobalShared.Print
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

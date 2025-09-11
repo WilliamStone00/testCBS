@@ -1,0 +1,310 @@
+﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+@using Resources
+@{
+    var status = false;
+    var balance = Model.CustomerAccounts.Sum(x => x.balance);
+    string comment = "No initial deposit has been made.";
+    if (Model.CustomerAccounts.Any())
+    {
+        status = true;
+
+    }
+}
+@{
+    var isPIS = Model.CustomerList.TagAsPISCollectionProfile;
+    string pisBadgeClass = isPIS ? "bg-primary" : "bg-danger";
+    string pisStatusText = isPIS ? "Member profile is tagged for PISCA" : "Member profile is not tagged for PISCA";
+    string pisButtonLabel = isPIS ? "Untag from PISCA" : "Tag as PISCA";
+    string pisButtonClass = isPIS ? "btn-outline-danger" : "btn-outline-success";
+}
+<style>
+    /* .card {
+        border-radius: 10px;
+        border: none;
+    }*/
+
+    /*.card-header {
+        border-radius: 10px 10px 0 0;
+        font-weight: bold;
+    }*/
+
+    .balance-info h1 {
+        font-weight: bold;
+    }
+
+    .balance-info .badge {
+        font-size: 1rem;
+        padding: 0.5em 1em;
+    }
+
+    .text-success {
+        color: #28a745 !important;
+    }
+
+    .text-muted em {
+        font-style: italic;
+    }
+
+    .card .badge {
+        font-size: 0.95rem;
+        padding: 0.45em 0.85em;
+    }
+</style>
+
+<div class="col-lg-12 mb-3">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">@GlobalIndividual.AccountBalance</h5>
+        </div>
+        <div class="card-body">
+            <div class="row gy-4">
+                <div class="balance-info text-center">
+                    <h1 class="display-4 text-success mb-1">@balance.ToString("#,##0.0 XAF")</h1>
+                    <p class="text-muted">
+                        @if (Model.CustomerList.MembershipApprovalStatus != "Approved")
+                        {
+                            <span class="badge bg-danger">@GlobalIndividual.AwaitMembershipApproval</span>
+                        }
+                        else
+                        {
+                            if (balance >= 0)
+                            {
+                                <span class="badge bg-success">@GlobalIndividual.InGoodStanding</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">@GlobalIndividual.Overdrawn</span>
+                            }
+                        }
+                    </p>
+                    <p class="text-muted mt-2 mb-0">
+                        <small>
+                            @if (status) // Assuming "status" represents a display condition for the total balance message
+                            {
+                                <em>@GlobalIndividual.TotalAccountBalanceAsOfToday.</em>
+                            }
+                        </small>
+                    </p>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (Model.CustomerAccounts != null && Model.CustomerAccounts.Any())
+{
+    <div class="col-lg-12 mb-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">@GlobalIndividual.AccountsOverview</h5>
+            </div>
+            <div class="card-body">
+                <div class="row gy-4">
+                    @foreach (var account in Model.CustomerAccounts)
+                    {
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="card shadow-sm">
+                                <div class="card-body pb-2">
+                                    <!-- Reduced bottom padding -->
+                                    <div class="account-details">
+                                        <h6 class="mb-1">
+                                            @GlobalIndividual.Balance: <span class="text-success">@account.balance.ToString("#,##0.00")</span>
+                                        </h6>
+                                        <small>@GlobalIndividual.AccountName: <b>@account.product.Name</b></small><br />
+                                        <small>@GlobalIndividual.AccountNumber: <b>@account.accountNumber</b></small><br />
+                                    </div>
+                                </div>
+                                <!-- Slimmer Card Footer -->
+                                <div class="card-footer py-2 bg-light d-flex justify-content-end gap-2">
+                                    <button class="btn btn-outline-secondary btn-sm px-2 py-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#accountDetailModal"
+                                            onclick="loadAccountDetails('@account.id')">
+                                        <i class="mdi mdi-information"></i> @GlobalShared.Detail
+                                    </button>
+                                    <button class="btn btn-danger btn-sm px-2 py-1"
+                                            onclick="removeAccount('@account.id','@account.accountNumber','@account.accountName','@account.balance')">
+                                        <i class="mdi mdi-trash-can"></i> @GlobalShared.Remove
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <!-- No Accounts Alert -->
+    <div class="col-lg-12 mb-3">
+        <div class="alert alert-warning text-center" role="alert">
+            <h5 class="alert-heading"><i class="mdi mdi-alert"></i> @GlobalIndividual.NoAccountsFound</h5>
+            <p>@Model.CustomerList.name @GlobalIndividual.DoesNotHaveAnyAccountsAssociatedWithHiHerProfile.</p>
+            <hr>
+            <p class="mb-0">@GlobalIndividual.PleaseAddNewAccountsToStartManagingFinancialTransactions.</p>
+        </div>
+    </div>
+}
+
+
+
+
+
+<!-- Add New Customer Account Section -->
+<div class="col-lg-12 mb-3">
+    <div class="card card-action shadow-sm">
+        <div class="card-body">
+            @Html.Partial("_AddCustomerAccount")
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12 mb-3">
+    <div class="card border shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">Private Institution Salary Collection Account (PISCA)</h5>
+            <span class="badge @pisBadgeClass">@pisStatusText</span>
+        </div>
+        <div class="card-body">
+            <p class="mb-3 text-muted">
+                This member is currently <strong>@(isPIS ? "tagged" : "not tagged")</strong> for the PISCA program.
+                You can use the action below to <strong>@(isPIS ? "untag" : "tag")</strong> the member as a
+                Private Institution Salary Collection Account profile.
+            </p>
+            <button class="btn @pisButtonClass"
+                    onclick="togglePISStatus('@Model.CustomerList.CustomerId', @(isPIS.ToString().ToLower()))">
+                <i class="mdi mdi-account-check"></i> @pisButtonLabel
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Profile Section -->
+<div class="col-lg-12 mb-3">
+    <div class="card card-action shadow-sm">
+        <div class="card-body">
+            @Html.Partial("_DeleteProfile")
+        </div>
+    </div>
+</div>
+<script>
+    function togglePISStatus(customerId, currentStatus) {
+        const tagAsPIS = currentStatus !== "true";
+        const actionText = tagAsPIS ? "TAG" : "UNTAG";
+        const description = tagAsPIS
+            ? "This will tag the member as a Private Institution Salary Collection Account (PISCA) profile."
+            : "This will untag the member from the PISCA profile.";
+
+        alertify.confirm(
+            `${actionText} MEMBER AS PISCA`,
+            `
+            Are you sure you want to <b>${actionText}</b> this member as a PISCA profile?<br><br>
+            <b>Member ID:</b> ${customerId}<br>
+            <b>Action:</b> ${actionText}<br><br>
+            <span style="color:red;">This action will immediately affect payroll tagging status.</span><br><br>
+            <small class="text-muted">${description}</small>
+            `,
+            function () {
+                $.ajax({
+                    url: `/Individual/TagMemberPISCA`,
+                    method: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        customerId: customerId,
+                        tagAsPISCollectionProfile: tagAsPIS
+                    }),
+                    beforeSend: function () {
+                        appalert("Updating PISCA status...", 2, 0);
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            appalert(response.message, 1, 1);
+                            location.reload();
+                        } else {
+                            appalert(response.message, 3, 1);
+                        }
+                    },
+                    error: function (xhr) {
+                        appalert("Failed to update PISCA status: " + xhr.statusText, 3, 1);
+                    }
+                });
+            },
+            function () {
+                appalert("Operation cancelled.", 3, 1);
+            }
+        );
+    }
+</script>
+
+<script>
+    // Function to load account details into the modal
+    function loadAccountDetails(accountId) {
+        $.ajax({
+            url: '/Individual/AccountDetails',
+            type: 'GET',
+            data: { accountid: accountId },
+            beforeSend: function () {
+                $("#accountDetailContent").html("<p class='text-center'>Loading account details...</p>");
+            },
+            success: function (response) {
+                if (response.trim()) { // Ensure the response is not empty
+                    $("#accountDetailContent").html(response);
+                    $("#accountDetailModal").modal("show"); // Show the modal only when content is ready
+                } else {
+                    alert("No account details found.");
+                }
+            },
+            error: function () {
+                alert("Failed to load account details.");
+            }
+        });
+    }
+
+
+
+    function removeAccount(accountId, accountNumber, accountName, balance) {
+        // Format balance with thousand separators and append "FCFA"
+        const formattedBalance = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2 }).format(balance) + " FCFA";
+
+        alertify.confirm(
+            "ACCOUNT REMOVAL WARNING!!!",
+            `Are you sure you want to remove this account? <br><br>
+        <b>Account Number:</b> ${accountNumber} <br>
+        <b>Account Name:</b> ${accountName} <br>
+        <b>Balance:</b> ${formattedBalance} <br><br>
+        <span style="color:red;">This action cannot be undone!</span>`,
+
+            function () { // If user confirms
+                $.ajax({
+                    type: "GET",
+                    url: `/Individual/RemoveAccount?id=${accountId}`,
+                    success: function (response) {
+                        if (response.success) {
+                            appalert(response.message, 1, 1);
+                            location.reload(); // Reload the page on success
+                        } else {
+                            appalert(response.message, 3, 1);
+                        }
+                    },
+                    error: function (err) {
+                        appalert(err.statusText, 3, 1);
+                    }
+                });
+            },
+
+            function () { // If user cancels
+                appalert('Transaction cancelled', 3, 1);
+            }
+        );
+    }
+
+
+
+
+</script>
+

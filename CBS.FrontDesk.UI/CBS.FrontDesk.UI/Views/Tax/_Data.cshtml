@@ -1,0 +1,43 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.LoanConf.Tax>
+    @using Resources
+@if (Model != null)
+{<div class="table-responsive mb-3">
+        <table class="table table-hover" id="myDataTable">
+            <thead class="table-light">
+                <tr>
+                    <th>@GlobalTax.Name</th>
+                    <th>@GlobalTax.Rate</th>
+                    <th>@GlobalTax.ControlOnSaving</th>
+                    <th>@GlobalTax.AppliedOnInterest</th>
+                    <th>@GlobalTax.ControlAmount</th>
+                    <th>@GlobalTax.Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model)
+                {
+                    <tr>
+                        
+                        <td style="width:15%">@d.Name</td>
+                        <td style="width:10%">@d.TaxRate %</td>
+                        <td style="width:8%">@d.AppliedWhenLoanRequestIsGreaterThanSaving</td>
+                        <td style="width:8%">@d.AppliedOnInterest</td>
+                        <td style="width:10%">@d.SavingControlAmount.ToString("#0,0.0")</td>
+                        <td style="width:22%">@d.Description</td>
+                        <td style="width:20%">
+                            <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_Update','update','Tax')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.Name @GlobalShared.ToEdit">@GlobalShared.Edit</a> |
+                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.Name" onclick="DeleteRecordDataTable('Tax','@d.Id','myDataTable','_Data',0,'datalistingview')">@GlobalShared.Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        @GlobalTax.NoDataWasFoundAtTheMoment.
+    </div>
+}

@@ -1,0 +1,78 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
+@using Resources
+<div class="table-responsive mb-3">
+    <table class="table table-hover card-body" id="JournalEntryDataTable">
+        <thead class="table-light">
+            <tr>
+                <th>@GlobalManuallyJournalEntry.AccountNumber</th>
+                <th>@GlobalManuallyJournalEntry.AccountName</th>
+                <th>@GlobalManuallyJournalEntry.Credit</th>
+                <th>@GlobalManuallyJournalEntry.Debit</th>
+                <th>@GlobalShared.Action</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.EntryTempDatas.Count() > 0)
+            {
+                foreach (var d in Model.EntryTempDataResult)
+                {
+                    <tr>
+                        <td style="width:10%">@d.AccountNumber</td>
+                        <td style="width:25%">@d.AccountName</td>
+                        @if (d.BookingDirection == "DEBIT")
+                        {
+                            <td style="width:20%">0.00</td>
+                            <td style="width:20%">@d.Amount.ToString("N")</td>
+
+                        }
+                        else
+                        {
+
+                            <td style="width:20%">@d.Amount.ToString("N")</td>
+                            <td style="width:20%">0.00</td>
+                        }
+                        <td style="width:25%">
+
+                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.AccountName" onclick="DeleteDataJournal('ManuallyJournalEntry','@d.Id','JournalEntryDataTable','_JournalEntries','desc','datalistingview_JournalEntries','EntryTempData')">@GlobalShared.Delete</a>
+                        </td>
+
+                    </tr>
+                }
+                <tr>
+                    @if (Model.EntryTempDataResult.Count() > 0)
+                    {
+                        <td>@GlobalManuallyJournalEntry.TotalDebit:@Model.EntryTempDataResult[0].SumDebit</td>
+                        <td></td>
+                        <td>@GlobalManuallyJournalEntry.TotalCredit:@Model.EntryTempDataResult[0].SumCredit</td>
+                        <td></td>
+                        <td>@GlobalManuallyJournalEntry.Difference:@Model.EntryTempDataResult[0].Difference</td>
+
+                    }
+
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+    <div id="datalistingview_AddEntryPurpose">
+        @if (@Model.EntryTempDataResult.Count() > 0)
+        {
+            if (@Model.EntryTempDataResult[0].SumDebit == @Model.EntryTempDataResult[0].SumCredit)
+            {
+
+                @Html.Partial("_AddEntryPurpose")
+
+            }
+
+        }
+        else
+        {
+
+        }
+    </div>
+
+
+
+

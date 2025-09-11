@@ -1,0 +1,392 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\EntityFramework.6.5.1\build\EntityFramework.props" Condition="Exists('..\..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0D7085DF-13B8-4FCE-9E8F-F0FA88FCE730}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CBS.FrontDesk.Data</RootNamespace>
+    <AssemblyName>CBS.FrontDesk.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Features, Version=5.0.17.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNetCore.Http.Features.5.0.17\lib\net461\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=5.0.0.1, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.Primitives.5.0.1\lib\net461\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Pipelines, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.Pipelines.5.0.2\lib\net461\System.IO.Pipelines.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Accounting\ProductAccountingBook.cs" />
+    <Compile Include="Entity\Accounting\Acknowledge.cs" />
+    <Compile Include="Entity\Accounting\BlacklistAccount.cs" />
+    <Compile Include="Entity\Accounting\Class1.cs" />
+    <Compile Include="Entity\Accounting\TransactionTracker.cs" />
+    <Compile Include="Entity\Accounting\DailyTrendDataDto.cs" />
+    <Compile Include="Entity\Accounting\FinancialDocumentReference.cs" />
+    <Compile Include="Entity\Accounting\Enumeration.cs" />
+    <Compile Include="Entity\Accounting\TrialBalanceDt.cs" />
+    <Compile Include="Entity\AccountOpeningRulePerBranchP\AccountOpeningRulePerBranch.cs" />
+    <Compile Include="Entity\AndriodApp\AndriodVersionConfiguration.cs" />
+    <Compile Include="Entity\AuditTralP\AuditTrailDto.cs" />
+    <Compile Include="Entity\BulkOperation\BulkCashOperationFileDetails.cs" />
+    <Compile Include="Entity\BulkOperation\BulkCashOperationFileDetailsData.cs" />
+    <Compile Include="Entity\BulkOperation\BulkCashOperationFileSummary.cs" />
+    <Compile Include="Entity\BulkOperation\ConfirmBulkOperationCommand.cs" />
+    <Compile Include="Entity\BulkOperation\CreateBulkOperationSimulation.cs" />
+    <Compile Include="Entity\BulkOperation\BulkOperationData.cs" />
+    <Compile Include="Entity\BulkOperation\BulkOperationDataDetails.cs" />
+    <Compile Include="Entity\BulkOperation\SimulateBulkCreditOrDebitOperationCommand.cs" />
+    <Compile Include="Entity\BulkOperation\SimulateBulkOperationDetailCommandDto.cs" />
+    <Compile Include="Entity\BulkOperation\SimulateCashOutOrCashInBulkOperation.cs" />
+    <Compile Include="Entity\BulkOperation\SimulateBulkOperation.cs" />
+    <Compile Include="Entity\BulkOperation\BulkOperationAccountTopupSimulationCommand.cs" />
+    <Compile Include="Entity\BulkOperation\BulkOperationContributionSimulationCommand.cs" />
+    <Compile Include="Entity\CashCeilingManagement\CashCeilingRequest.cs" />
+    <Compile Include="Entity\CashChangeManagement\CashChangeHistory.cs" />
+    <Compile Include="Entity\ChangeNumber\PhoneNumberChangeHistory.cs" />
+    <Compile Include="Entity\Class1.cs" />
+    <Compile Include="Entity\CMoney\CMoneyMembersActivationAccount.cs" />
+    <Compile Include="Entity\DailyCollectionData\AgentAccount\AgentAccount.cs" />
+    <Compile Include="Entity\DailyCollectionData\AgentDailyCashLimit\AgentDailyCashLimit.cs" />
+    <Compile Include="Entity\DailyCollectionData\AgentDashBoard\AgentDashBoard.cs" />
+    <Compile Include="Entity\DailyCollectionData\Agent\Agent.cs" />
+    <Compile Include="Entity\DailyCollectionData\CommissionSetting\CommissionSetting.cs" />
+    <Compile Include="Entity\DailyCollectionData\DailyCustomer\Class1.cs" />
+    <Compile Include="Entity\DailyCollectionData\DailyCustomer\DailyCustomer.cs" />
+    <Compile Include="Entity\DailyCollectionData\Zone\Zone.cs" />
+    <Compile Include="Entity\DailyCollectionEntities\Class1.cs" />
+    <Compile Include="Entity\DailyCollectionEntities\DailySaverUploadResult.cs" />
+    <Compile Include="Entity\DailyCollectionEntities\CollectorSalarySummaryDto.cs" />
+    <Compile Include="Entity\DailyCollectionEntities\FileApproval.cs" />
+    <Compile Include="Entity\DailyCollectionEntities\FileUploadCollectorDto.cs" />
+    <Compile Include="Entity\DailyCollectionEntities\FinancialReportData.cs" />
+    <Compile Include="Entity\DailyCollectionEntities\DailyDashBoardData.cs" />
+    <Compile Include="Entity\DailyCollectionEntities\ManualEntryDailyCollectorDetailsDto.cs" />
+    <Compile Include="Entity\DailyCollectionEntities\ManualEntryDailyCollectorDto.cs" />
+    <Compile Include="Entity\DailyCollectionEntities\UploadDailyCollectorData.cs" />
+    <Compile Include="Entity\DailyCollectionEntities\UploadDailyCollectorOperationData.cs" />
+    <Compile Include="Entity\DailyCollectorManagement\DailyCollectionConfiguration.cs" />
+    <Compile Include="Entity\DataSetLoanPortfolio\DelinquencyByAgeAndGenderRow.cs" />
+    <Compile Include="Entity\DataSetLoanPortfolio\DelinquencyByAgeAndLoanTypeRow.cs" />
+    <Compile Include="Entity\DataSetLoanPortfolio\DelinquencyByCategoryRow.cs" />
+    <Compile Include="Entity\DataSetLoanPortfolio\DelinquencyByLoanTermRow.cs" />
+    <Compile Include="Entity\DataSetLoanPortfolio\DelinquencyByTargetGroupRow.cs" />
+    <Compile Include="Entity\DataSetLoanPortfolio\DelinquencyByZoneRow.cs" />
+    <Compile Include="Entity\DataSetLoanPortfolio\DelinquencyCellData.cs" />
+    <Compile Include="Entity\DataSetLoanPortfolio\LoanDelinquencyReportResult.cs" />
+    <Compile Include="Entity\DataSetLoanPortfolio\LoanPortfolioDto.cs" />
+    <Compile Include="Entity\DownLoadDTO\FileDownloadDto.cs" />
+    <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportRPT.cs" />
+    <Compile Include="Entity\GeneralStatisticReport\GeneralStatisticsReportDtoMapper.cs" />
+    <Compile Include="Entity\LoanAdjustmentP\LoanAdjustment.cs" />
+    <Compile Include="Entity\MemberAdjustmentConsole\ApproveMemberAdjustmentRequestCommand.cs" />
+    <Compile Include="Entity\MemberAdjustmentConsole\GetMemberAdjustmentRequestsDataTableQuery.cs" />
+    <Compile Include="Entity\MemberAdjustmentConsole\MemberAdjustmentModel.cs" />
+    <Compile Include="Entity\MemberAdjustmentConsole\MemberAdjustmentRequestDetailsDto.cs" />
+    <Compile Include="Entity\MemberAdjustmentConsole\MemberAdjustmentRequestDetailsWithHistoryDto.cs" />
+    <Compile Include="Entity\MemberAdjustmentConsole\RejectMemberAdjustmentRequestCommand.cs" />
+    <Compile Include="Entity\MemberAdjustmentConsole\SubmitMemberAdjustmentRequestCommand.cs" />
+    <Compile Include="Entity\MemberNoneCashOperationsP\MemberNoneCashOperation.cs" />
+    <Compile Include="Entity\MenuTranslationP\MenuTranslation.cs" />
+    <Compile Include="Entity\Overdraft\OverdraftFacilityConfig.cs" />
+    <Compile Include="Entity\Overdraft\OverdraftActivation.cs" />
+    <Compile Include="Entity\RequestManagement\IdleTime.cs" />
+    <Compile Include="Entity\RequestManagement\RateLimitDashboardDto.cs" />
+    <Compile Include="Entity\RequestManagement\ClientDataModel.cs" />
+    <Compile Include="Entity\RequestManagement\RateLimitConfig.cs" />
+    <Compile Include="Entity\RequestManagement\RateLimitedUser.cs" />
+    <Compile Include="Entity\RequestManagement\RateLimiteTrackerLogger.cs" />
+    <Compile Include="Entity\RequestManagement\SuspiciousPath.cs" />
+    <Compile Include="Entity\SalaryManagement\SalaryAnalysisResultSummary.cs" />
+    <Compile Include="Entity\SalaryManagement\SalaryExecutionModel.cs" />
+    <Compile Include="Entity\SalaryManagement\SalaryUploadModel.cs" />
+    <Compile Include="Entity\SalaryManagement\StandingOrder.cs" />
+    <Compile Include="Entity\SMSP\Sms.cs" />
+    <Compile Include="Entity\VaultManagement\VaultAuthorisedPersonP\VaultAuthorisedPerson.cs" />
+    <Compile Include="Entity\VaultManagement\VaultOperationP\VaultOperation.cs" />
+    <Compile Include="Entity\VaultManagement\VaultP\Vault.cs" />
+    <Compile Include="Enum.cs" />
+    <Compile Include="CurrencyMapper.cs" />
+    <Compile Include="Entity\AccountingDayObject\AccountingDay.cs" />
+    <Compile Include="Entity\AccountingDayObject\BranchListing.cs" />
+    <Compile Include="Entity\AccountingDayObject\DeleteAccountingDayCommand.cs" />
+    <Compile Include="Entity\AccountingDayObject\Holyday.cs" />
+    <Compile Include="Entity\AccountingDayObject\HolyDayRecurring.cs" />
+    <Compile Include="Entity\AccountingDayObject\OpenOrCloseOfAccountingDayCommand.cs" />
+    <Compile Include="Entity\AccountingDayObject\OpenOrCloseOfAccountingDayResultDto.cs" />
+    <Compile Include="Entity\AccountingDayObject\GetAccountingDayQuery.cs" />
+    <Compile Include="Entity\Accounting\Account.cs" />
+    <Compile Include="Entity\Accounting\AccountCategory.cs" />
+    <Compile Include="Entity\Accounting\AccountClass.cs" />
+    <Compile Include="Entity\Accounting\AccountClassDto.cs" />
+    <Compile Include="Entity\Accounting\AccountingConfiguration.cs" />
+    <Compile Include="Entity\Accounting\AccountingEntry.cs" />
+    <Compile Include="Entity\Accounting\AccountingStatementDto.cs" />
+    <Compile Include="Entity\Accounting\AccountSettingPolicy.cs" />
+    <Compile Include="Entity\Accounting\AccountType.cs" />
+    <Compile Include="Entity\Accounting\AccountValidator.cs" />
+    <Compile Include="Entity\Accounting\BankCashOut.cs" />
+    <Compile Include="Entity\Accounting\BankTransaction.cs" />
+    <Compile Include="Entity\Accounting\BranchToBranchTransfer.cs" />
+    <Compile Include="Entity\Accounting\CashApprovalResponse.cs" />
+    <Compile Include="Entity\Accounting\CashDemandDataEntity.cs" />
+    <Compile Include="Entity\Accounting\CashFlowManagement.cs" />
+    <Compile Include="Entity\Accounting\BankingOperations.cs" />
+    <Compile Include="Entity\Accounting\CashReplenimentRequest.cs" />
+    <Compile Include="Entity\Accounting\CashInfusionRequest.cs" />
+    <Compile Include="Entity\Accounting\BranchLiaisonLedgerEntry.cs" />
+    <Compile Include="Entity\Accounting\ChartofAccountManagementPosition.cs" />
+    <Compile Include="Entity\Accounting\TrialBalanceFile.cs" />
+    <Compile Include="Entity\Accounting\DocumentConfiguration.cs" />
+    <Compile Include="Entity\Accounting\FSDocument.cs" />
+    <Compile Include="Entity\Accounting\DepositNotificationDto.cs" />
+    <Compile Include="Entity\Accounting\DocumentUpload.cs" />
+    <Compile Include="Entity\Accounting\IncomeStatement.cs" />
+    <Compile Include="Entity\Accounting\PostedEntry.cs" />
+    <Compile Include="Entity\Accounting\DocumentReferenceCode.cs" />
+    <Compile Include="Entity\Accounting\ModelIncomeExpenses.cs" />
+    <Compile Include="Entity\Accounting\ModelBalanceSheetAssets.cs" />
+    <Compile Include="Entity\Accounting\TrailBalanceUploud.cs" />
+    <Compile Include="Entity\Accounting\TrialBalance6ColumnDto.cs" />
+    <Compile Include="Entity\Accounting\TrialBalance4ColumnDto.cs" />
+    <Compile Include="Entity\Accounting\LiaisonLedgerEntry.cs" />
+    <Compile Include="Entity\Accounting\Currency.cs" />
+    <Compile Include="Entity\Accounting\EntryTempData.cs" />
+    <Compile Include="Entity\Accounting\EntryType.cs" />
+    <Compile Include="Entity\Accounting\CreditAccountingEntry.cs" />
+    <Compile Include="Entity\Accounting\ManualAccountingEntry.cs" />
+    <Compile Include="Entity\Accounting\AccountingRole.cs" />
+    <Compile Include="Entity\Accounting\AccountingRule.cs" />
+    <Compile Include="Entity\Accounting\AccountingRuleDto.cs" />
+    <Compile Include="Entity\Accounting\AccountingRuleEntry.cs" />
+    <Compile Include="Entity\Accounting\AccountTreeNode.cs" />
+    <Compile Include="Entity\Accounting\ChartOfAccount.cs" />
+    <Compile Include="Entity\Accounting\ChartOfAccountDto.cs" />
+    <Compile Include="Entity\Accounting\AccountingRuleEntryDto.cs" />
+    <Compile Include="Entity\Accounting\OperationEvent.cs" />
+    <Compile Include="Entity\Accounting\OperationEventAttribute.cs" />
+    <Compile Include="Entity\Accounting\OperationEventAttributeDto.cs" />
+    <Compile Include="Entity\Accounting\OperationEventDto.cs" />
+    <Compile Include="Entity\Accounting\CashInfusion.cs" />
+    <Compile Include="Entity\Accounting\TrialBalanceDto.cs" />
+    <Compile Include="Entity\BudgetManagement\BubgetConfiguration.cs" />
+    <Compile Include="Entity\BudgetManagement\BudgetCategorie.cs" />
+    <Compile Include="Entity\BudgetManagement\Budget.cs" />
+    <Compile Include="Entity\BudgetManagement\BudgetPeriod.cs" />
+    <Compile Include="Entity\BudgetManagement\OrganizationUnit.cs" />
+    <Compile Include="Entity\CashMovementTracker\CashMovementRecord.cs" />
+    <Compile Include="Entity\CashMovementTracker\CashMovementTrackingConfiguration.cs" />
+    <Compile Include="Entity\CorrespondingBankManaagement\CorrespondingBankConfiguration.cs" />
+    <Compile Include="Entity\GeneralDailyDashboardDto.cs" />
+    <Compile Include="Entity\Config\Organization\BankConfig.cs" />
+    <Compile Include="Entity\Config\Others\CustomerCategory.cs" />
+    <Compile Include="Entity\Config\System\SysConfiguration.cs" />
+    <Compile Include="Entity\CustomerManagement\Grouping\GroupCustomer.cs" />
+    <Compile Include="Entity\CustomerManagement\Grouping\GroupDocument.cs" />
+    <Compile Include="Entity\CustomerManagement\Grouping\GroupType.cs" />
+    <Compile Include="Entity\CustomerManagement\Individual\CustomerActivation.cs" />
+    <Compile Include="Entity\CustomerManagement\MembershipNextOfKing.cs" />
+    <Compile Include="Entity\CustomerManagement\CustomerDocument.cs" />
+    <Compile Include="Entity\CustomerManagement\SecretQuestion.cs" />
+    <Compile Include="Entity\DashBoards\DashboardData.cs" />
+    <Compile Include="Entity\DashBoards\DashboardStatistics.cs" />
+    <Compile Include="Entity\FrontEndAuditTB.cs" />
+    <Compile Include="Entity\LoanCommitee\LoanCommitee.cs" />
+    <Compile Include="Entity\LoanCommitee\LoanCommiteeGroup.cs" />
+    <Compile Include="Entity\LoanCommitee\LoanCommiteeMember.cs" />
+    <Compile Include="Entity\LoanCommitee\LoanCommiteeValidationHistory.cs" />
+    <Compile Include="Entity\LoanConf\AlertProfile.cs" />
+    <Compile Include="Entity\LoanConf\Collateral.cs" />
+    <Compile Include="Entity\LoanConf\Fee.cs" />
+    <Compile Include="Entity\LoanConf\CustomerLoanAccount.cs" />
+    <Compile Include="Entity\LoanConf\Document.cs" />
+    <Compile Include="Entity\LoanConf\DocumentAttachedToLoan.cs" />
+    <Compile Include="Entity\LoanConf\DocumentPack.cs" />
+    <Compile Include="Entity\LoanConf\FundingLine.cs" />
+    <Compile Include="Entity\LoanConf\Guaranty.cs" />
+    <Compile Include="Entity\LoanConf\GurantiPack.cs" />
+    <Compile Include="Entity\LoanConf\InstallmentType.cs" />
+    <Compile Include="Entity\LoanConf\LoanApplication.cs" />
+    <Compile Include="Entity\LoanConf\LoanApplicationCollateral.cs" />
+    <Compile Include="Entity\LoanConf\LoanCommentry.cs" />
+    <Compile Include="Entity\LoanConf\LoanDeliquencyConfiguration.cs" />
+    <Compile Include="Entity\LoanConf\LoanGuarantor.cs" />
+    <Compile Include="Entity\LoanConf\LoanHistory.cs" />
+    <Compile Include="Entity\LoanConf\LoanApplicationFee.cs" />
+    <Compile Include="Entity\LoanConf\LoanProduct.cs" />
+    <Compile Include="Entity\LoanConf\LoanProductCollateral.cs" />
+    <Compile Include="Entity\LoanConf\LoanPurpose.cs" />
+    <Compile Include="Entity\LoanConf\FeeRange.cs" />
+    <Compile Include="Entity\LoanConf\LoanProductCategory.cs" />
+    <Compile Include="Entity\LoanConf\LoanTerm.cs" />
+    <Compile Include="Entity\LoanConf\RescheduleLoan.cs" />
+    <Compile Include="Entity\LoanConf\Tax.cs" />
+    <Compile Include="Entity\LoanConf\WriteOffLoan.cs" />
+    <Compile Include="Entity\MemberOperation\MemberOperationPanel.cs" />
+    <Compile Include="Entity\Menu\MenuMaster.cs" />
+    <Compile Include="Entity\RoleManagement\Role.cs" />
+    <Compile Include="Entity\SavingProducts\AccountOperation\AccountTransfer.cs" />
+    <Compile Include="Entity\SavingProducts\AccountOperation\TransactionHistory.cs" />
+    <Compile Include="Entity\SavingProducts\Remittance.cs" />
+    <Compile Include="Entity\SavingProducts\TellersEndOfDay.cs" />
+    <Compile Include="Entity\StringValues.cs" />
+    <Compile Include="Entity\Config\Organization\Bank.cs" />
+    <Compile Include="Entity\Config\Organization\Branch.cs" />
+    <Compile Include="Entity\Config\Localization\Country.cs" />
+    <Compile Include="Entity\Config\Others\Currency.cs" />
+    <Compile Include="Entity\Config\Localization\Division.cs" />
+    <Compile Include="Entity\Config\Others\EconomicActivity.cs" />
+    <Compile Include="Entity\Config\Organization\Organization.cs" />
+    <Compile Include="Entity\Config\Localization\Region.cs" />
+    <Compile Include="Entity\Config\Others\SubcriptionPackage.cs" />
+    <Compile Include="Entity\Config\Localization\SubDivision.cs" />
+    <Compile Include="Entity\Config\Localization\Town.cs" />
+    <Compile Include="Entity\Organization\Oranization.cs" />
+    <Compile Include="Entity\SavingProducts\AccountOperation\AccountDepositRequest.cs" />
+    <Compile Include="Entity\SavingProducts\AccountOperation\TransactionRespose.cs" />
+    <Compile Include="Entity\ThirdPartyBankConfiguration.cs" />
+    <Compile Include="Entity\ThirdPartyBranch.cs" />
+    <Compile Include="Entity\TrialBalanceReference.cs" />
+    <Compile Include="Entity\UserSession.cs" />
+    <Compile Include="Entity\Config\Aggregrate.cs" />
+    <Compile Include="Entity\CustomerManagement\Grouping\Group.cs" />
+    <Compile Include="Entity\CustomerManagement\Individual\IndividualCustomerProfile.cs" />
+    <Compile Include="Entity\CustomerManagement\Individual\IndividualProfile.cs" />
+    <Compile Include="Entity\CustomerManagement\Organization\Class1.cs" />
+    <Compile Include="Entity\DataTable\DatatableHelper.cs" />
+    <Compile Include="Entity\DataTable\DataTableOptions.cs" />
+    <Compile Include="Entity\DataTable\ICustomDataTable.cs" />
+    <Compile Include="Entity\SavingProducts\AccountBalance.cs" />
+    <Compile Include="Entity\SavingProducts\CustomerAccount\CustomerAccount.cs" />
+    <Compile Include="Entity\SavingProducts\Saving.cs" />
+    <Compile Include="Entity\User\UserDto.cs" />
+    <Compile Include="ImageProperties\ImagesProperties.cs" />
+    <Compile Include="LocalContext\MongoDbContext.cs" />
+    <Compile Include="Message\Messaging.cs" />
+    <Compile Include="PropertiesBuilder\PropertyBuilder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportDataSetDto\LoanPortfolioAnalysis.cs" />
+    <Compile Include="ReportDataSetDto\LoanPortFolioDataSet\FlatAgeGenderRecord.cs" />
+    <Compile Include="ReportDataSetDto\LoanPortFolioDataSet\FlatAgeLoanTypeRecord.cs" />
+    <Compile Include="ReportDataSetDto\LoanPortFolioDataSet\FlatCategoryRecord.cs" />
+    <Compile Include="ReportDataSetDto\LoanPortFolioDataSet\FlatGroupBreakdown.cs" />
+    <Compile Include="ReportDataSetDto\LoanPortFolioDataSet\FlatLoanTermRecord.cs" />
+    <Compile Include="ReportDataSetDto\LoanPortFolioDataSet\FlatTargetGroupRecord.cs" />
+    <Compile Include="ReportDataSetDto\LoanPortFolioDataSet\FlatZoneRecord.cs" />
+    <Compile Include="ReportDataSetDto\LoanPortFolioDataSet\LoanDelinquencyReportResultRPT.cs" />
+    <Compile Include="ReportDataSetDto\LoanDeliquentAnalysis\DelinquencyByGenderSummary.cs" />
+    <Compile Include="ReportDataSetDto\LoanDeliquentAnalysis\DelinquencyByLoanTypeSummary.cs" />
+    <Compile Include="ReportDataSetDto\LoanDeliquentAnalysis\LoanDelinquencyCategorySummary.cs" />
+    <Compile Include="ReportDataSetDto\LoanDeliquentAnalysis\LoanDelinquencyEntry.cs" />
+    <Compile Include="ReportDataSetDto\LoanDeliquentAnalysis\LoanDelinquencyReportDto.cs" />
+    <Compile Include="ReportDataSetDto\LoanDeliquentAnalysis\LoanDeliquentDto.cs" />
+    <Compile Include="ReportDataSetDto\TransactionReportDS.cs" />
+    <Compile Include="Entity\ThirdPartyInstitution.cs" />
+    <Compile Include="UserManagement\Request\UserAllowedIP.cs" />
+    <Compile Include="UserManagement\Response\UserClaim.cs" />
+    <Compile Include="UserManagement\Response\User.cs" />
+    <Compile Include="UserManagement\Request\UserRole.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
+</Project>

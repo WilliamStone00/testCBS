@@ -1,0 +1,66 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+@using Resources
+@using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    <input type="hidden" name="ServiceOption" value="EntryFeeParameter" id="ServiceOption" />
+    <div class="row mt-2 gy-4">
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.EntryFeeParameter.productId, new SelectList(ViewBag.Products, "Id", "name"), @Globals_EntryFeeConfig.SelectProduct, new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.EntryFeeParameter.productId, "", new { @class = "text-danger" })
+                <label>@Globals_EntryFeeConfig.SelectProductLabel</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.EntryFeeParameter.entryFeeFlat, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.EntryFeeParameter.entryFeeFlat, "", new { @class = "text-danger" })
+                <label>@Globals_EntryFeeConfig.FlatFeeLabel</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.EntryFeeParameter.entryFeeRate, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.EntryFeeParameter.entryFeeRate, "", new { @class = "text-danger" })
+                <label>@Globals_EntryFeeConfig.FeeRateLabel</label>
+            </div>
+        </div>
+        <h3>@Globals_EntryFeeConfig.SharingLabel</h3>
+        <br />
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.EntryFeeParameter.SourceBrachOfficeShare, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.EntryFeeParameter.SourceBrachOfficeShare, "", new { @class = "text-danger" })
+                <label>@Globals_EntryFeeConfig.SourceBranchShareLabel</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.EntryFeeParameter.DestinationBranchOfficeShare, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.EntryFeeParameter.DestinationBranchOfficeShare, "", new { @class = "text-danger" })
+                <label>@Globals_EntryFeeConfig.DestinationBranchShareLabel</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.EntryFeeParameter.HeadOfficeShare, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.EntryFeeParameter.HeadOfficeShare, "", new { @class = "text-danger" })
+                <label>@Globals_EntryFeeConfig.HeadOfficeShareLabel</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        @if (Model.EntryFeeParameter.id == null)
+        {
+            <button type="submit" class="btn btn-primary me-2">@Globals_EntryFeeConfig.SaveButton</button>
+            <input type="hidden" name="Action" value="insert" id="Action" />
+        }
+        else
+        {
+            <button type="submit" class="btn btn-primary me-2">@Globals_EntryFeeConfig.UpdateButton</button>
+            @Html.HiddenFor(m => m.EntryFeeParameter.id)
+            <input type="hidden" name="Action" value="update" id="Action" />
+        }
+    </div>
+}

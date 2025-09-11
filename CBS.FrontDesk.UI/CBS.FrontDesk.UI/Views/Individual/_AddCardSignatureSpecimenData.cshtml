@@ -1,0 +1,39 @@
+﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+    @using Resources
+<div class="table-responsive mb-3">
+    <table class="table table-hover" id="myDataTable">
+        <thead class="table-light">
+            <tr>
+                <th>@GlobalIndividual.Name</th>
+                <th>@GlobalIndividual.CNI</th>
+                <th>@GlobalIndividual.Instruction</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.CustomerList.CardSignatureSpecimens)
+            {
+                <tr>
+                    <td style="width:25%">@d.Name</td>
+                    <td style="width:10%">@d.IdentityCardNumber</td>
+                    <td style="width:65%">@d.Instruction</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+
+@*<table class="datatables-users table" id="myDataTable">
+        <thead class="table-light">
+            <tr>
+                <th>Name</th>
+                <th>phone</th>
+                <th>Town</th>
+                <th>Branch</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    </table>*@

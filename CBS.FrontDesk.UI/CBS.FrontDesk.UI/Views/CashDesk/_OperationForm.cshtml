@@ -1,0 +1,1058 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@using Resources
+@{
+    var isNewSubscription = ViewBag.Operation?.ToString()?.ToLower() == "newsubcription";
+}
+<span id="customerName" class="d-none">@Model.Customer.name</span>
+@if (ViewBag.Operation == "cashin" || isNewSubscription)
+{
+    <div class="form-wrapper">
+        <fieldset class="fieldset-custom">
+            <legend style="color: green">
+                @(isNewSubscription
+        ? CashDesk_OperationForm.MemberOnboardingDeposit
+        : (Model.IsDailyCollector
+            ? "Daily Collector Cash Clearance"
+            : CashDesk_OperationForm.CashIn))
+            </legend>
+
+
+
+            <hr style="border: 2px solid green;" />
+
+            @if (isNewSubscription)
+            {
+                <div id="preMemberOnboardingContainer" class="mt-3">
+                    @Html.Partial("_PreMemberOnboardingSummary")
+                </div>
+            }
+
+            <div class="change-group">
+                <div class="row mt-2 gy-2">
+                    <div class="col-md-8">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box float-start mb-2">
+                                @CashDesk_OperationForm.MemberName : @Model.Customer.name
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box mb-2" id="lblDepositRequest_amount">
+                                @CashDesk_OperationForm.TotalAmount : <b>@Model.MemberOnboardingDetailDto.GrandTotal.ToString("N0")</b>
+                            </span>
+                            <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0" />
+                        </div>
+                    </div>
+
+                    <!-- ✅ Nice placement of the Hide Balance option below -->
+                    <div class="col-md-12">
+                        <div class="form-check form-switch d-flex align-items-center gap-2 mt-1">
+                            <input class="form-check-input" type="checkbox" id="hideBalanceCheckbox" onchange="toggleHideBalance()" />
+                            <label class="form-check-label fw-bold" id="hideBalanceLabel" for="hideBalanceCheckbox" style="font-size: 0.95rem;">
+                                @CashDesk_OperationForm.BalancewWllBeShownOnReceipt
+                            </label>
+                        </div>
+                    </div>
+                    @if (isNewSubscription)
+                    {
+                        <div class="col-md-12">
+                            <div class="form-floating form-floating-outline mb-3">
+                                <input type="text" class="form-control shadow-input-boxes" id="CustomerAlphaNumber" placeholder=" @CashDesk_OperationForm.MemberCustomAccountNumberExample" required />
+                                <label for="CustomerAlphaNumber"> @CashDesk_OperationForm.MemberCustomAccountNumber</label>
+                            </div>
+                        </div>
+                    }
+                    else if (Model.IsDailyCollector)
+                    {
+                        <!-- Collection Approach (Radio Buttons) -->
+                        <div class="col-md-12">
+                            <fieldset class="mb-3">
+                                <legend class="fs-6 text-muted mb-2">Collection Approach</legend>
+
+                                <div class="d-flex gap-4 flex-wrap" id="collectionApproachGroup">
+                                    <div class="form-check form-check-inline">
+                                        @Html.RadioButtonFor(m => m.DailyCollectorCollectApproach, "Device",
+                                            new { @class = "form-check-input", id = "approachDevice" })
+                                        <label class="form-check-label fw-semibold" for="approachDevice">
+                                            <i class="mdi mdi-nfc-tap-variant me-1"></i> Device (C-Money / POS)
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        @Html.RadioButtonFor(m => m.DailyCollectorCollectApproach, "Manual",
+                                            new { @class = "form-check-input", id = "approachManual" })
+                                        <label class="form-check-label fw-semibold" for="approachManual">
+                                            <i class="mdi mdi-file-upload-outline me-1"></i> Manual (Uploaded batch)
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <small class="text-muted d-block mt-1">
+                                    Choose <strong>Manual</strong> to clear from an approved uploaded batch, or <strong>Device</strong> for C-Money/POS device collections.
+                                </small>
+                            </fieldset>
+                        </div>
+
+                        <!-- Approved Manual Batch (hidden by default; shown only if 'Manual') -->
+                        <div class="col-md-12 d-none" id="manualBatchWrapper">
+                            <div class="form-floating form-floating-outline mb-3">
+                                @Html.DropDownListFor(
+                                    m => m.ManualEntryDailyCollectorId,
+                                    ViewBag.ApprovedManualEntries as IEnumerable<SelectListItem>,
+                                    (ViewBag.ApprovedManualEntries as IEnumerable<SelectListItem>)?.Any() == true
+                                        ? "--- Select Approved Batch ---"
+                                        : "--- No Approved Batches ---",
+                                    new { @class = "form-control select2", id = "ManualEntryDailyCollectorId" } /* required toggled by JS */
+                                )
+                                <label>Approved Daily Collector Batch (Cash Clearance)</label>
+                                <small class="text-muted d-block mt-1">
+                                    Only batches with <em>Status = Approved</em> and not yet fully completed are listed.
+                                </small>
+                            </div>
+                        </div>
+                    }
+                <input type="hidden" id="CustomerAlphaNumber" value="0" />
+
+
+                    <div class="table-responsive w-100">
+                        <table class="table table-hover" id="myDataTableT">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="display: none;"> @CashDesk_OperationForm.ProductID</th>
+                                    <th> @CashDesk_OperationForm.Accounts</th>
+                                    <th> @CashDesk_OperationForm.Balance</th>
+                                    <th> @CashDesk_OperationForm.Amount</th>
+                                    <th> @CashDesk_OperationForm.Fee</th>
+                                    <th> @CashDesk_OperationForm.Total</th>
+                                    <th> @CashDesk_OperationForm.Conf</th>
+                                    <th> @CashDesk_OperationForm.Inc</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var d in Model.BulkDeposits
+                                                       .Where(x => !x.AccountType.ToLower().Contains("loan"))
+                                                       .OrderBy(t => t.AccountType))
+                                {
+                                    <tr>
+                                        <td style="display: none;">@d.AccountNumber</td>
+                                        <td>@d.AccountType</td>
+                                        <td>@d.Balance.ToString("#,##0.0")</td>
+                                        <td>
+                                            <input type="number"
+                                                   class="form-control amount-input shadow-input-boxes"
+                                                   value="@d.Amount" />
+                                        </td>
+                                        <td>
+                                            <input type="number"
+                                                   class="form-control fee-input shadow-input-boxes"
+                                                   value="@d.Fee" />
+                                        </td>
+                                        <td><span class="total-span">@d.Total</span></td>
+                                        <td><input type="checkbox" class="form-check-input" /></td>
+                                        <td><input type="checkbox" class="form-check-input check-inclussive" disabled /></td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-end fw-bold">Total:</td>
+                                    <td id="tableTotal"><b>@Model.MemberOnboardingDetailDto.GrandTotal.ToString("N0")</b></td>
+                                    <td colspan="4"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-end fw-bold"> @CashDesk_OperationForm.Difference:</td>
+                                    <td id="tableBalance">0</td>
+                                    <td colspan="4"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="header-buttons mt-4 float-end">
+                    <input type="hidden" name="OperationType" value="CashIn" id="OperationType" />
+                    <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
+
+                    <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostCashIn()">
+                        <i class="fas fa-money-bill-wave me-1"></i> @CashDesk_OperationForm.CashInB
+                    </button>
+
+                    <button type="reset" class="btn btn-outline-secondary">
+                        <i class="fas fa-sync-alt me-1"></i> @CashDesk_OperationForm.Reset
+                    </button>
+                </div>
+            </div>
+
+            <hr style="border: 2px solid green;" />
+        </fieldset>
+    </div>
+}
+
+
+else if (ViewBag.Operation == "withdrawalnotification")
+{
+    <div class="form-wrapper">
+        <fieldset class="fieldset-custom">
+            <legend style="color: red">S.W.N<small>(@CashDesk_OperationForm.SavingWithdrawalNotification)</small></legend>
+            <hr style="border: 2px solid red;" />
+            <div class="change-group">
+                <div class="row mt-2 gy-4">
+                    <div class="col-md-8">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box float-start">@CashDesk_OperationForm.MemberName: @Model.Customer.name</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@CashDesk_OperationForm.TotalAmount: 0.0</span>
+                            <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
+                        </div>
+                    </div>
+                    <hr style="border: 2px solid red;" />
+                    @if (!Model.WithdrawalNotifications.Any())
+                    {
+
+                        <div class="text-center my-3">
+                            <p>@Model.Customer.name @CashDesk_OperationForm.hasNoNotifcationToWithdrawalFromSavingAccount. <br /><i>@CashDesk_OperationForm.NormalwithdrawalChargesFromSavingShallBeAppled.</i> </p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive" style="width: 100%;">
+                            <table class="table table-hover" id="myDataTableT">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="display:none;">@CashDesk_OperationForm.NotificationId</th>
+                                        <th>@CashDesk_OperationForm.RequestedAmount</th>
+                                        <th>@CashDesk_OperationForm.FormCharges</th>
+                                        <th>@CashDesk_OperationForm.Status</th>
+                                        <th>@CashDesk_OperationForm.IDW</th>
+                                        <th>@CashDesk_OperationForm.Grace</th>
+                                        <th>@CashDesk_OperationForm.Total</th>
+                                        <th>@CashDesk_OperationForm.Conf</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var d in Model.WithdrawalNotifications.Where(x => !x.IsWithdrawalDone).OrderBy(t => t.NotificationDate))
+                                    {
+                                        <tr>
+                                            <td style="display:none;">@d.Id</td>
+                                            <td>
+                                                <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.AmountRequired">
+                                            </td>
+                                            <td>
+                                                <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.FormNotificationCharge" readonly="readonly">
+                                            </td>
+                                            <td>
+                                                <span class="status">@d.ApprovalStatus</span>
+                                            </td>
+                                            <td>
+                                                <span class="doiw">@d.DateOfIntendedWithdrawal.ToShortDateString()</span>
+                                            </td>
+                                            <td>
+                                                <span class="dogp">@d.GracePeriodDate.ToShortDateString()</span>
+                                            </td>
+                                            <td>
+                                                <span class="total-span">@d.Total</span>
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" class="form-check-input">
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="5" style="text-align: right;"><strong>@CashDesk_OperationForm.Total:</strong></td>
+                                        <td id="tableTotal">0</td>
+                                        <td></td> <!-- Empty cell to align with the checkbox column -->
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="text-align: right;"><strong>@CashDesk_OperationForm.Balance:</strong></td>
+                                        <td id="tableBalance">0</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="header-buttons mt-4 float-end">
+                            <input type="hidden" name="OperationType" value="SavingWithdrawalFormFee" id="OperationType" />
+                            <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
+                            <button type="submit" id="submit" class="btn btn-danger me-2" onclick="PostWithdrawalFromFee()">
+                                <i class="fas fa-money-bill-wave me-1"></i> @CashDesk_OperationForm.ConfirmPayment
+                            </button>
+                            <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
+                                <i class="fas fa-print me-1"></i> @CashDesk_OperationForm.RePrint
+                            </button>
+                            <button type="reset" class="btn btn-outline-secondary">
+                                <i class="fas fa-sync-alt me-1"></i> @CashDesk_OperationForm.Reset
+                            </button>
+                        </div>
+                        <hr style="border: 2px solid red;" />
+                    }
+                </div>
+
+            </div>
+        </fieldset>
+    </div>
+
+}
+else if (ViewBag.Operation == "cashout")
+{
+    <div class="form-wrapper">
+        <fieldset class="fieldset-custom">
+            <legend style="color: red"> @CashDesk_OperationForm.CashOut</legend>
+            <hr style="border: 2px solid red;" />
+            <div class="change-group">
+                <div class="row mt-2 gy-4">
+                    <div class="col-md-8">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box float-start"> @CashDesk_OperationForm.MemberName: @Model.Customer.name</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount"> @CashDesk_OperationForm.TotalAmount: 0.0</span>
+                            <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
+                        </div>
+                    </div>
+                    <!-- ✅ Nice placement of the Hide Balance option below -->
+                    <div class="col-md-12">
+                        <div class="form-check form-switch d-flex align-items-center gap-2 mt-1">
+                            <input class="form-check-input" type="checkbox" id="hideBalanceCheckbox" onchange="toggleHideBalance()" />
+                            <label class="form-check-label fw-bold" id="hideBalanceLabel" for="hideBalanceCheckbox" style="font-size: 0.95rem;">
+                                @CashDesk_OperationForm.BalancewWllBeShownOnReceipt
+                            </label>
+                        </div>
+                    </div>
+                    <hr style="border: 2px solid red;" />
+                    <div class="table-responsive" style="width: 100%;">
+                        <table class="table table-hover" id="myDataTableT">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="display:none;">@CashDesk_OperationForm.ProductID</th>
+                                    <th>@CashDesk_OperationForm.OrdinaryAccounts</th>
+                                    <th>@CashDesk_OperationForm.Balance</th>
+                                    <th>@CashDesk_OperationForm.Amount</th>
+                                    <th>>@CashDesk_OperationForm.FeeCharges</th>
+                                    <th>@CashDesk_OperationForm.Total</th>
+                                    <th>@CashDesk_OperationForm.Conf</th>
+                                    <th>@CashDesk_OperationForm.Inc</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var d in Model.BulkDeposits.Where(x => !x.AccountType.ToLower().Contains("loan")).OrderBy(t => t.AccountType))
+                                {
+                                    <tr>
+                                        <td style="display:none;">@d.AccountNumber</td>
+                                        <td>@d.AccountType</td>
+                                        <td>@d.Balance.ToString("#,##0.0")</td>
+                                        <td>
+                                            <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee">
+                                        </td>
+                                        <td>
+                                            <span class="total-span">@d.Total</span>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="form-check-input">
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="form-check-input check-inclussive">
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" style="text-align: right;"><strong>>@CashDesk_OperationForm.Total:</strong></td>
+                                    <td id="tableTotal">0</td>
+                                    <td></td> <!-- Empty cell to align with the checkbox column -->
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="text-align: right;"><strong>>@CashDesk_OperationForm.Balance:</strong></td>
+                                    <td id="tableBalance">0</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    @*<div class="col-md-12">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control", @style = "height: 75px;", @id = "Note" })
+                                @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
+                                <label for="formValidationDob">Reasons for cash out</label>
+                            </div>
+                        </div>*@
+                </div>
+                <div class="header-buttons mt-4 float-end">
+                    <input type="hidden" name="OperationType" value="Withdrawal" id="OperationType" />
+                    <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
+                    <button type="submit" id="submit" class="btn btn-danger me-2" onclick="PostCashOut()">
+                        <i class="fas fa-money-bill-wave me-1"></i> >@CashDesk_OperationForm.CashOutB
+                    </button>
+                    <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
+                        <i class="fas fa-print me-1"></i> >@CashDesk_OperationForm.RePrint
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary">
+                        <i class="fas fa-sync-alt me-1"></i> >@CashDesk_OperationForm.Reset
+                    </button>
+                </div>
+            </div>
+            <hr style="border: 2px solid red;" />
+        </fieldset>
+    </div>
+
+}
+else if (ViewBag.Operation == "cashoutsws")
+{
+    <div class="form-wrapper">
+        <fieldset class="fieldset-custom">
+            <legend style="color: red">@CashDesk_OperationForm.CashOutSws</legend>
+            <hr style="border: 2px solid red;" />
+            <div class="change-group">
+                <div class="row mt-2 gy-4">
+                    <div class="col-md-8">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box float-start">@CashDesk_OperationForm.MemberName: @Model.Customer.name</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@CashDesk_OperationForm.TotalAmount: 0.0</span>
+                            <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
+                        </div>
+                    </div>
+                    <!-- ✅ Nice placement of the Hide Balance option below -->
+                    <div class="col-md-12">
+                        <div class="form-check form-switch d-flex align-items-center gap-2 mt-1">
+                            <input class="form-check-input" type="checkbox" id="hideBalanceCheckbox" onchange="toggleHideBalance()" />
+                            <label class="form-check-label fw-bold" id="hideBalanceLabel" for="hideBalanceCheckbox" style="font-size: 0.95rem;">
+                                @CashDesk_OperationForm.BalancewWllBeShownOnReceipt
+                            </label>
+                        </div>
+                    </div>
+                    <hr style="border: 2px solid red;" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.BulkDeposit.CheckName, new { @class = "form-control shadow-input-boxes", @id = "CheckName" })
+                                @Html.ValidationMessageFor(m => m.BulkDeposit.CheckName, "", new { @class = "text-danger" })
+                                <label>@CashDesk_OperationForm.CheckName</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextBoxFor(m => m.BulkDeposit.CheckNumber, new { @class = "form-control shadow-input-boxes", @id = "CheckNumber" })
+                                @Html.ValidationMessageFor(m => m.BulkDeposit.CheckNumber, "", new { @class = "text-danger" })
+                                <label>@CashDesk_OperationForm.CheckNumber</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive" style="width: 100%;">
+                        <div class="row">
+                            <table class="table table-hover" id="myDataTableT">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="display:none;">@CashDesk_OperationForm.ProductID</th>
+                                        <th>@CashDesk_OperationForm.OrdinaryAccounts</th>
+                                        <th>@CashDesk_OperationForm.Balance</th>
+                                        <th>@CashDesk_OperationForm.Amount</th>
+                                        <th>@CashDesk_OperationForm.FeeCharges</th>
+                                        <th>@CashDesk_OperationForm.Total</th>
+                                        <th>@CashDesk_OperationForm.Conf</th>
+                                        <th>@CashDesk_OperationForm.Inc</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var d in Model.BulkDeposits.Where(x => !x.AccountType.ToLower().Contains("loan")).OrderBy(t => t.AccountType))
+                                    {
+                                        <tr>
+                                            <td style="display:none;">@d.AccountNumber</td>
+                                            <td>@d.AccountType</td>
+                                            <td>@d.Balance.ToString("#,##0.0")</td>
+                                            <td>
+                                                <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
+                                            </td>
+                                            <td>
+                                                <input type="number" class="form-control fee-input shadow-input-boxes" value="@d.Fee">
+                                            </td>
+                                            <td>
+                                                <span class="total-span">@d.Total</span>
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" class="form-check-input">
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" class="form-check-input check-inclussive">
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" style="text-align: right;"><strong>@CashDesk_OperationForm.Total:</strong></td>
+                                        <td id="tableTotal">0</td>
+                                        <td></td> <!-- Empty cell to align with the checkbox column -->
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" style="text-align: right;"><strong>@CashDesk_OperationForm.Balance:</strong></td>
+                                        <td id="tableBalance">0</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                        </div>
+                    </div>
+                    @*<div class="col-md-12">
+                            <div class="form-floating form-floating-outline">
+                                @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control", @style = "height: 75px;", @id = "Note" })
+                                @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
+                                <label for="formValidationDob">Reasons for cash out</label>
+                            </div>
+                        </div>*@
+                </div>
+                <div class="header-buttons mt-4 float-end">
+                    <input type="hidden" name="OperationType" value="WithdrawalSWS" id="OperationType" />
+                    <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
+                    <button type="submit" id="submit" class="btn btn-danger me-2" onclick="PostCashOutSWS()">
+                        <i class="fas fa-money-bill-wave me-1"></i> @CashDesk_OperationForm.CashOutB
+                    </button>
+                    <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
+                        <i class="fas fa-print me-1"></i> @CashDesk_OperationForm.RePrint
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary">
+                        <i class="fas fa-sync-alt me-1"></i> @CashDesk_OperationForm.Reset
+                    </button>
+                </div>
+            </div>
+            <hr style="border: 2px solid red;" />
+        </fieldset>
+    </div>
+
+}
+else if (ViewBag.Operation == "repayment")
+{
+    <div class="form-wrapper">
+        <fieldset class="fieldset-custom">
+            <legend>LOAN REPAYMENT</legend>
+            <hr style="border: 2px solid green;" />
+            <div class="change-group">
+                <div class="row mt-2 gy-4">
+                    <div class="col-md-8">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box float-start">@CashDesk_OperationForm.MemberName: @Model.Customer.name</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@CashDesk_OperationForm.TotalAmount: 0.0</span>
+                            <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
+                            <input type="hidden" class="form-control vat-input shadow-input-boxes" id="vatRate" value="0"> <!-- Ensure the vatRate is set dynamically -->
+                        </div>
+                    </div>
+                    <div class="table-responsive" style="width: 100%;">
+                        <table class="table table-hover" id="myDataTableT">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="display:none;">@CashDesk_OperationForm.LoanId</th>
+                                    <th>@CashDesk_OperationForm.Date</th>
+                                    <th style="display:none;">@CashDesk_OperationForm.Amount</th> <!-- Hide Amount column -->
+                                    <th>@CashDesk_OperationForm.Balance</th>
+                                    <th>@CashDesk_OperationForm.Int</th>
+                                    <th style="display:none;">@CashDesk_OperationForm.VRate</th> <!-- Hide V.Rate column -->
+                                    <th style="display:none;">@CashDesk_OperationForm.DueA</th> <!-- Hide Due A column -->
+                                    <th>@CashDesk_OperationForm.EnterCapital</th>
+                                    <th>@CashDesk_OperationForm.EnterInterest</th>
+                                    <th>@CashDesk_OperationForm.EnterPenalty</th> <!-- Added Penalty input column -->
+                                    <th>@CashDesk_OperationForm.Total</th>
+                                    <th>@CashDesk_OperationForm.Conf</th>
+                                    <th>@CashDesk_OperationForm.VatIncExc</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var d in Model.Loans)
+                                {
+                                    <tr id="row-@d.Id">
+                                        <td style="display:none;">@d.Id</td>
+                                        <td>@d.LoanDate.ToString("dd/MM/yy")</td>
+                                        <td style="display:none;">@d.LoanAmount.ToString("#,##0.0")</td> <!-- Hide Amount column -->
+                                        <td>@d.Balance.ToString("#,##0.0")</td>
+                                        <td>@d.AccrualInterest.ToString("#,##0.0")</td>
+                                        <td style="display:none;">@d.VatRate.ToString("#,##0.00")</td> <!-- Hide V.Rate column -->
+                                        <td style="display:none;">@d.DueAmount.ToString("#,##0.0")</td> <!-- Hide Due A column -->
+                                        <td>
+                                            <input type="number" class="form-control amount-input shadow-input-boxes" id="capital-@d.Id" value="0">
+                                        </td>
+                                        <td>
+                                            <input type="number"
+                                                   class="form-control interest-input shadow-input-boxes"
+                                                   id="interest-@d.Id"
+                                                   value="0"
+                                                   oninput="previewVat('@d.Id', this.value, '@d.VatRate', '@d.LoanAmount')"
+                                                   onblur="applyVatAdjustment('@d.Id')" />
+
+
+
+                                        </td>
+                                        <td>
+                                            <!-- Penalty input field -->
+                                            <input type="number" class="form-control penalty-input shadow-input-boxes" id="penalty-@d.Id" value="0">
+                                        </td>
+                                        <td>
+                                            <span class="total-span" id="total-@d.Id">0</span>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="form-check-input">
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                                   class="form-check-input vat-exclusive-check"
+                                                   id="vatExclusive-@d.Id"
+                                                   onchange="handleVatToggle('@d.Id')" />
+                                        </td>
+
+
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6" style="text-align: right;"><strong>@CashDesk_OperationForm.Total:</strong></td>
+                                    <td id="tableTotal">0</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" style="text-align: right;"><strong>@CashDesk_OperationForm.Balance:</strong></td>
+                                    <td id="tableBalance">0</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" style="text-align: right;"><strong>@CashDesk_OperationForm.CalculatedVAT:</strong></td>
+                                    <td id="calculatedVat">0</td> <!-- This will display the calculated VAT -->
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <!-- Loan Details Modal -->
+                    <div class="modal fade" id="loanDetailsModal" tabindex="-1" role="dialog" aria-labelledby="loanDetailsModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content shadow-lg border-0">
+                                <div class="modal-header bg-info text-white">
+                                    <h5 class="modal-title" id="loanDetailsModalLabel">📋 @CashDesk_OperationForm.LoanDetails</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body p-4">
+                                    <!-- Loan Details Section -->
+                                    <div class="row mb-4">
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.LoanDate</h6>
+                                                    <h4 class="card-text text-dark" id="detailLoanDate">@CashDesk_OperationForm.na</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.Amount</h6>
+                                                    <h4 class="card-text text-dark" id="detailLoanAmount">@CashDesk_OperationForm.xaf 0</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.Balance</h6>
+                                                    <h4 class="card-text text-dark" id="detailBalance">@CashDesk_OperationForm.xaf 0</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.Interest</h6>
+                                                    <h4 class="card-text text-dark" id="detailInterest">@CashDesk_OperationForm.xaf 0</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.DueAmount</h6>
+                                                    <h4 class="card-text text-dark" id="detailDueAmount">@CashDesk_OperationForm.xaf 0</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.Penalty</h6>
+                                                    <h4 class="card-text text-dark" id="detailPenalty">@CashDesk_OperationForm.xaf 0</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.vat</h6>
+                                                    <h4 class="card-text text-dark" id="vatRate">0 %</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.InterestRate</h6>
+                                                    <h4 class="card-text text-dark" id="interestRate">0 %</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer d-flex justify-content-between">
+                                    <button type="button" class="btn btn-secondary btn-lg shadow-sm" data-bs-dismiss="modal">
+                                        <i class="bi bi-x-circle"></i> @CashDesk_OperationForm.Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
+                        <input type="hidden" id="modalLoanId">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content shadow-lg border-0">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title" id="paymentModalLabel">💵 @CashDesk_OperationForm.PaymentDetails</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body p-4">
+                                    <!-- Loan Information Section (Due Amount and Balance) -->
+                                    <div class="row mb-4">
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.AccrualInterest</h6>
+                                                    <h4 class="card-text text-dark" id="modalAccrualInterest">@CashDesk_OperationForm.xaf 0</h4> <!-- Dynamically populated -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="card bg-light shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.Balance</h6>
+                                                    <h4 class="card-text text-dark" id="modalBalance">@CashDesk_OperationForm.xaf# 0</h4> <!-- Dynamically populated -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Capital Input Group -->
+                                    <div class="input-group mb-4">
+                                        <span class="input-group-text bg-primary text-white">
+                                            <i class="bi bi-cash-stack"></i> @CashDesk_OperationForm.Capital
+                                        </span>
+                                        <input type="number" class="form-control form-control-lg shadow-sm" id="modalAmount" placeholder="@CashDesk_OperationForm.EnterCapital amount" oninput="updateTotal()">
+                                    </div>
+
+                                    <!-- Interest Input Group -->
+                                    <div class="input-group mb-4">
+                                        <span class="input-group-text bg-primary text-white">
+                                            <i class="bi bi-piggy-bank"></i> @CashDesk_OperationForm.Interest
+                                        </span>
+                                        <input type="number" class="form-control form-control-lg shadow-sm" id="modalInterest" placeholder="@CashDesk_OperationForm.EnterInterest" oninput="updateTotal()">
+                                    </div>
+
+                                    <!-- Penalty Input Group -->
+                                    <div class="input-group mb-4">
+                                        <span class="input-group-text bg-primary text-white">
+                                            <i class="bi bi-exclamation-triangle"></i> @CashDesk_OperationForm.Penalty
+                                        </span>
+                                        <input type="number" class="form-control form-control-lg shadow-sm" id="modalPenalty" placeholder="@CashDesk_OperationForm.EnterPenalty" oninput="updateTotal()">
+                                    </div>
+
+                                    <!-- Total Amount Display -->
+                                    <div class="input-group mb-4">
+                                        <span class="input-group-text bg-primary text-white">
+                                            <i class="bi bi-calculator"></i> @CashDesk_OperationForm.TotalEntered
+                                        </span>
+                                        <input type="text" class="form-control form-control-lg shadow-sm" id="modalTotalAmount" readonly value="@CashDesk_OperationForm.xaf 0">
+                                    </div>
+                                </div>
+
+                                <!-- Modal Footer -->
+                                <div class="modal-footer d-flex justify-content-between">
+                                    <button type="button" class="btn btn-secondary btn-lg shadow-sm" data-bs-dismiss="modal">
+                                        <i class="bi bi-x-circle"></i> @CashDesk_OperationForm.Cancel
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-lg shadow-sm" onclick="applyPayment()">
+                                        <i class="bi bi-check-circle"></i> @CashDesk_OperationForm.Confirm
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <!-- Add Bootstrap Icons in case they are not loaded -->
+                    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+                    <style>
+                        /* Custom modal content styling */
+                        .modal-content {
+                            border-radius: 12px;
+                            overflow: hidden;
+                        }
+
+                        .modal-header {
+                            padding: 1rem 1.5rem;
+                            border-bottom: none;
+                        }
+
+                        .modal-body {
+                            background-color: #f9fafb;
+                        }
+
+                        .modal-footer {
+                            border-top: none;
+                            padding: 1rem 1.5rem;
+                        }
+
+                        /* Card styling for Loan Details */
+                        .card {
+                            border: none;
+                            border-radius: 8px;
+                            padding: 10px;
+                        }
+
+                        .card-body {
+                            padding: 1rem;
+                        }
+
+                        .card-title {
+                            font-size: 0.9rem;
+                        }
+
+                        .card-text {
+                            font-size: 1.4rem;
+                        }
+
+                        /* Shadow effects for form controls */
+                        .form-control-lg {
+                            border-radius: 8px;
+                            font-size: 1.2rem;
+                        }
+
+                        /* Input group text styling */
+                        .input-group-text {
+                            border: none;
+                            border-radius: 8px 0 0 8px;
+                            font-size: 1.1rem;
+                        }
+
+                        .input-group {
+                            border-radius: 12px;
+                            overflow: hidden;
+                        }
+
+                        /* Modal button styling */
+                        .btn-lg {
+                            padding: 0.75rem 1.5rem;
+                            font-size: 1.2rem;
+                        }
+
+                        .shadow-sm {
+                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        }
+                    </style>
+
+                </div>
+                <div class="header-buttons mt-4 float-end">
+                    <input type="hidden" name="OperationType" value="LoanRepayment" id="OperationType" />
+                    <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
+                    <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostLoanRepayment()">
+                        <i class="fas fa-money-bill-wave me-1"></i> @CashDesk_OperationForm.RePay
+                    </button>
+                    <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="ReprintLoan()">
+                        <i class="fas fa-print me-1"></i> @CashDesk_OperationForm.RePrint
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary">
+                        <i class="fas fa-sync-alt me-1"></i> @CashDesk_OperationForm.Reset
+                    </button>
+                </div>
+                <hr style="border: 2px solid green;" />
+            </div>
+        </fieldset>
+
+    </div>
+
+}
+else if (ViewBag.Operation == "loanapplicationfeepayment")
+{
+    <div class="form-wrapper">
+        <fieldset class="fieldset-custom">
+            <legend style="color: green">@CashDesk_OperationForm.LoanFee</legend>
+            <hr style="border: 2px solid green;" />
+            <div class="change-group">
+                <div class="row mt-2 gy-4">
+                    <div class="col-md-8">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box float-start">@CashDesk_OperationForm.MemberName: @Model.Customer.name</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating form-floating-outline">
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@CashDesk_OperationForm.TotalAmount: 0.0</span>
+                            <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
+                        </div>
+                    </div>
+                </div>
+                <hr style="border: 2px solid green;" />
+                @if (!Model.LoanApplicationFees.Any())
+                {
+
+                    <div class="text-center my-3">
+                        <p>@Model.Customer.name @CashDesk_OperationForm.HasNoPendingLoanFee. <br /><i>Oops!!!</i> </p>
+                    </div>
+                }
+                else
+                {
+                    var GTotal = 0;
+                    <table class="table table-hover" id="myDataTableT">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="display:none;">@CashDesk_OperationForm.FeeRangeId</th>
+                                <th style="display:none;">@CashDesk_OperationForm.LoanApplicationId</th>
+                                <th style="display:none;">@CashDesk_OperationForm.Period</th>
+                                <th>@CashDesk_OperationForm.FeeLabel</th>
+                                <th>@CashDesk_OperationForm.Amount</th>
+                                <th style="display:none;">@CashDesk_OperationForm.FeeCharges</th>
+                                <th>@CashDesk_OperationForm.Total</th>
+                                <th>@CashDesk_OperationForm.Conf</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var d in Model.LoanApplicationFees.GroupBy(fee => fee.Period))
+                            {
+
+                                decimal periodTotal = 0;
+                                <tr class="period-group">
+                                    <td colspan="8"><strong>@d.Key</strong></td>
+                                </tr>
+                                foreach (var fee in d)
+                                {
+                                    periodTotal += fee.FeeAmount;
+                                    <tr>
+                                        <td style="display:none;">@fee.Id</td>
+                                        <td style="display:none;">
+                                            <input type="text" class="form-control loan-application-id shadow-input-boxes" value="@fee.LoanApplicationId">
+                                        </td>
+                                        <td style="display:none;">
+                                            <input type="text" class="form-control period shadow-input-boxes" value="@fee.Period">
+                                        </td>
+                                        <td>@fee.FeeLable</td>
+                                        <td>
+                                            <input type="number" class="form-control amount-input shadow-input-boxes" value="@fee.FeeAmount">
+                                        </td>
+                                        <td style="display:none;">
+                                            <input type="number" class="form-control fee-input shadow-input-boxes" value="0">
+                                        </td>
+                                        <td>
+                                            <span class="total-span">@fee.FeeAmount</span>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="form-check-input">
+                                        </td>
+                                    </tr>
+                                }
+                                <tr class="period-total">
+                                    <td colspan="2" style="text-align: right;"><strong>Total:</strong></td>
+                                    <td style="color:blue"><b>@periodTotal.ToString("#,##0.0")</b></td>
+                                    <td></td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2" style="text-align: right;"><strong>@CashDesk_OperationForm.Total:</strong></td>
+                                <td id="tableTotal">0</td>
+                                <td style="color:blue"><b>G.T: @Model.LoanApplicationFees.Sum(x => x.FeeAmount).ToString("#,##0.0")</b></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: right;"><strong>@CashDesk_OperationForm.Balance:</strong></td>
+                                <td id="tableBalance">0</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                }
+            </div>
+            <div class="header-buttons mt-4 float-end">
+                <input type="hidden" name="OperationType" value="LoanFee" id="OperationType" />
+                <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
+                <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostFEE()">
+                    <i class="fas fa-money-bill-wave me-1"></i> @CashDesk_OperationForm.PayFee
+                </button>
+                <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
+                    <i class="fas fa-print me-1"></i> @CashDesk_OperationForm.RePrint
+                </button>
+                <button type="reset" class="btn btn-outline-secondary">
+                    <i class="fas fa-sync-alt me-1"></i> @CashDesk_OperationForm.Reset
+                </button>
+            </div>
+            <hr style="border: 2px solid green;" />
+        </fieldset>
+    </div>
+
+}
+
+
+<input type="hidden" id="totalProvision" value="0" />
+
+<div class="col-md-12" style="display:none">
+    <div class="form-floating form-floating-outline">
+        <span class="formatted-amount shadow-box" id="lblBalance">@CashDesk_OperationForm.Balance: 0</span>
+    </div>
+    <button type="submit" id="btnSave" class="btn btn-secondary me-2" onclick="Reprint()">
+        <i class="fas fa-print me-1"></i> @CashDesk_OperationForm.RePrint
+    </button>
+</div>
+
+<script>
+    (function () {
+        function toggleManualBatchVisibility() {
+            var value = $('input[name="DailyCollectorCollectApproach"]:checked').val() || '';
+            var $wrap = $('#manualBatchWrapper');
+            var $ddl = $('#ManualEntryDailyCollectorId');
+
+            if (value === 'Manual') {
+                $wrap.removeClass('d-none');
+                $ddl.prop('required', true);
+            } else {
+                $wrap.addClass('d-none');
+                $ddl.prop('required', false).val('').trigger('change');
+            }
+        }
+
+        $(document).ready(function () {
+            // Hide on load unless model already set to 'Manual'
+            toggleManualBatchVisibility();
+            $('#collectionApproachGroup input[type=radio]').on('change', toggleManualBatchVisibility);
+        });
+    })();
+</script>

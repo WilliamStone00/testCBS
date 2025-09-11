@@ -1,0 +1,58 @@
+﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+@using Resources
+<div class="card-body">
+
+
+    @using (Html.BeginForm("Update", "Individual", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3", onsubmit = "return AjaxPostAndUpdate(this);", @id = "formValidationExamples" }))
+    {
+        <!-- Account Details -->
+        @Html.HiddenFor(model => model.CustomerList.CustomerId)
+        <input type="hidden" name="option" value="maritalstatus" id="option" />
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.CustomerList.MaritalStatus, new SelectList(ViewBag.maritalStatuses, "Text", "Value"), "---"+ @GlobalIndividual.SelectMaritalStatus+"---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.CustomerList.MaritalStatus, "", new { @class = "text-danger " })
+                <label for="formValidationDob">@GlobalIndividual.MaritalStatus</label>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.SpouseName, new { @class = "form-control", @placeholder = @GlobalIndividual.SpouseName })
+                @Html.ValidationMessageFor(m => m.CustomerList.SpouseName, "", new { @class = "text-danger" })
+                <label>@GlobalIndividual.SpouseName</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.SpouseAddress, new { @class = "form-control", @placeholder = @GlobalIndividual.SpouseAddress })
+                @Html.ValidationMessageFor(m => m.CustomerList.SpouseAddress, "", new { @class = "text-danger" })
+                <label>@GlobalIndividual.SpouseAddress</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.SpouseContactNumber, new { @class = "form-control", @placeholder = @GlobalIndividual.SpouseContact })
+                @Html.ValidationMessageFor(m => m.CustomerList.SpouseContactNumber, "", new { @class = "text-danger" })
+                <label>@GlobalIndividual.SpouseContact</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.SpouseOccupation, new { @class = "form-control", @placeholder = @GlobalIndividual.SpouseOccupation })
+                @Html.ValidationMessageFor(m => m.CustomerList.SpouseOccupation, "", new { @class = "text-danger" })
+                <label>@GlobalIndividual.SpouseOccupation</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CustomerList.NumberOfKids, new { @class = "form-control", @placeholder = "Number of kids" })
+                @Html.ValidationMessageFor(m => m.CustomerList.NumberOfKids, "", new { @class = "text-danger" })
+                <label>@GlobalIndividual.NumberOfKids</label>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">@GlobalShared.Update</button>
+        </div>
+    }
+</div>

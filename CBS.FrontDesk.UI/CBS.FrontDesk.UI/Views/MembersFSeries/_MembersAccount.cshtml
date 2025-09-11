@@ -1,0 +1,99 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@{
+    decimal totalBalance = Model.Accounts.Sum(x => x.balance);
+    decimal totalBlocked = Model.Accounts.Sum(x => x.blockedAmount);
+    decimal totalActual = totalBalance - totalBlocked;
+}
+
+<div class="container-fluid px-3 py-3">
+    <!-- Member Info -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body d-flex justify-content-between align-items-center flex-wrap">
+            <div class="text-black fw-bold">
+                <i class="mdi mdi-account-circle-outline me-2 text-secondary"></i>
+                Member's Name: <span class="text-dark">@Model.Customer.name</span>
+            </div>
+            <div class="text-black fw-bold fs-6">
+                <i class="mdi mdi-cash-multiple text-warning me-1"></i> Total Account Balance:
+                <span class="text-black">@totalBalance.ToString("#,##0.0")</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accounts Table -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white fw-bold text-black">
+            <i class="mdi mdi-bank me-1 text-black"></i> Accounts
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover" id="myDataTableT">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Account number</th>
+                            <th>Ordinary accounts</th>
+                            <th>Balance</th>
+                            <th>Blocked</th>
+                            <th>Actual Balance</th>
+                            <th style="display:none">Balance</th>
+                            <th style="display:none">Blocked</th>
+                            <th>Account Status</th>
+                            <th>Print</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var d in Model.Accounts.OrderBy(t => t.accountType))
+                        {
+                            decimal ActualBalance = d.balance - d.blockedAmount;
+                            <tr>
+                                <td style="width: 15%">@d.accountNumber</td>
+                                <td style="width: 37%">@d.product.Name</td>
+                                <td style="width: 10%" class="text-end">@d.balance.ToString("#,##0.0")</td>
+                                <td style="width: 10%" class="text-end">@d.blockedAmount.ToString("#,##0.0")</td>
+                                <td style="width: 10%" class="text-end">@ActualBalance.ToString("#,##0.0")</td>
+
+                                <!-- Hidden fields for calculations or scripts -->
+                                <td style="display:none">
+                                    <input type="number" class="form-control amount-input shadow-input-boxes" readonly value="@d.balance">
+                                </td>
+                                <td style="display:none">
+                                    <input type="number" class="form-control blocked-input shadow-input-boxes" readonly value="@d.blockedAmount">
+                                </td>
+
+                                <td style="width: 8%" class="text-center">@d.status</td>
+                                <td style="width: 10%" class="text-center">
+                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space"
+                                       onclick="PrintSingleObject('MembersFSeries', '@d.accountNumber','customer_account_transaction_rpt','ReportParameterLess')"
+                                       data-bs-toggle="tooltip" title="Print statement for @d.accountNumber">
+                                        <span class="tf-icons mdi mdi-printer mdi-18px"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                    <tfoot>
+                        <tr class="table-light fw-bold text-end">
+                            <td colspan="2" class="text-end">Total:</td>
+                            <td class="text-black text-end">@totalBalance.ToString("#,##0.0")</td>
+                            <td class="text-warning text-end">@totalBlocked.ToString("#,##0.0")</td>
+                            <td class="text-info text-end">@totalActual.ToString("#,##0.0")</td>
+                            <td></td>
+                            <td class="text-center">
+                                <button class="btn btn-outline-primary btn-sm" onclick="ModalShowUp()" title="Print all account statements">
+                                    <i class="mdi mdi-printer"></i> PRINT ALL
+                                </button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+

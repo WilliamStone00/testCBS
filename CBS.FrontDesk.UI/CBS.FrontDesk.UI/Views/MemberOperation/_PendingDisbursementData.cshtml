@@ -1,0 +1,89 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+@using Resources
+@if (Model.Loans.Count == 0)
+{
+    <div class="text-center my-3">
+        <p class="text-muted">@GlobalPendingDisbursment.ThereAreNoPendingLoansForDisbursement</p>
+    </div>
+}
+else
+{
+    <div class="table-responsive mb-3">
+        <table class="table table-hover table-striped" id="myDataTable">
+            <thead class="table-light">
+                <tr>
+                    <th>@GlobalPendingDisbursment.LoanDate</th>
+                    <th>@GlobalPendingDisbursment.MemberReference</th>
+                    <th>@GlobalPendingDisbursment.Principal</th>
+                    <th>@GlobalPendingDisbursment.FeePaid</th>
+                    <th>@GlobalPendingDisbursment.Status</th>
+                    <th>@GlobalPendingDisbursment.State</th>
+                    <th>@GlobalPendingDisbursment.Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model.Loans.OrderBy(app => app.LoanDate))
+                {
+                    <tr>
+                        <td>@d.LoanDate</td>
+                        <td>@d.CustomerId</td>
+                        <td>@d.Principal.ToString("#,##0.0")</td>
+                        <td>@d.FeePaid.ToString("#,##0.0")</td>
+                        <td>
+                            <span class="badge bg-success">@GlobalPendingDisbursment.Approved</span>
+                        </td>
+                        <td>
+                            @if (!d.IsLoanDisbursted)
+                            {
+                                <span class="badge bg-warning">@GlobalPendingDisbursment.AwaitsDisbursement</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-info">@GlobalPendingDisbursment.Disbursed</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="actionDropdown@d.Id" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="actionDropdown@d.Id">
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="GetPendingLoans('@d.Id')">
+                                            <i class="fas fa-check-circle me-2"></i>@GlobalPendingDisbursment.Disburse
+                                        </a>
+                                    </li>
+                                    @*<li>
+                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#viewDetailsModal@d.Id">
+                                                <i class="fas fa-info-circle me-2"></i>@GlobalPendingDisbursment.Details
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-danger" href="#" onclick="DeleteRecordDataTable('LoanApplications', '@d.Id', 'myDataTable', '_Data', 0, 'datalistingview')">
+                                                <i class="fas fa-trash-alt me-2"></i>@GlobalPendingDisbursment.Delete
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#" onclick="ResetStatus('@d.Id')">
+                                                <i class="fas fa-undo me-2"></i>@GlobalPendingDisbursment.ResetStatus
+                                            </a>
+                                        </li>*@
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot class="table-light">
+                <tr>
+                    <td colspan="1"></td>
+                    <td><strong>@GlobalPendingDisbursment.Totals:</strong></td>
+                    <td><strong>@Model.Loans.Sum(x => x.Principal).ToString("#,##0.0")</strong></td>
+                    <td><strong>@Model.Loans.Sum(x => x.Paid).ToString("#,##0.0")</strong></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+}

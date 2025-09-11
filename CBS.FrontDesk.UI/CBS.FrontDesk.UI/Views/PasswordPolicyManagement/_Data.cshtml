@@ -1,0 +1,94 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.RequestManagement.IdleTime>
+@using Resources
+<fieldset class="fieldset-custom">
+    <legend id="select_base">@GlobalPasswordPolicyManagement.PASSWORD_POLICY_CONFIGURATIONS</legend>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center my-3">
+            <p>@GlobalPasswordPolicyManagement.NoPasswordPolicyConfigurationsDefined.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive mb-3">
+            <table class="table table-hover table-bordered align-middle" id="myDataTable">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.ConfigurationScope</th>
+                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.IdleTimeout</th>
+                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.LoginAttempts</th>
+                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.ResetAfterDays</th>
+                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.BlockInactiveDays</th>
+                        <th style="width: 30%;">@GlobalPasswordPolicyManagement.PasswordRules</th>
+                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @if (item.IsCentral)
+                                {
+                                    <span class="badge bg-primary">@GlobalPasswordPolicyManagement.Central</span>
+                                }
+                                else
+                                {
+                                    <div>
+                                        <strong>@item.BranchCode</strong><br />
+                                        <small class="text-muted">@item.BranchName</small>
+                                    </div>
+                                }
+                            </td>
+                            <td>@item.IdleDuration</td>
+                            <td>@item.NumberOfLoginAttemps</td>
+                            <td>@item.NumberOfDaysRequiredToResetPassword</td>
+                            <td>@item.NumberOfDaysToBlockUserIfInactive</td>
+                            <td>
+                                @if (item.PasswordPolicies != null && item.PasswordPolicies.Any())
+                                {
+                                    <ul class="mb-0 small ps-3">
+                                        @foreach (var rule in item.PasswordPolicies.Take(5))
+                                        {
+                                            <li><strong>@rule.Key</strong>: @rule.Value</li>
+                                        }
+                                        @if (item.PasswordPolicies.Count > 5)
+                                        {
+                                            <li class="text-muted">...@GlobalPasswordPolicyManagement.andMore</li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Default Applied</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-center align-items-center gap-2">
+                                    <!-- ✅ Updated Edit Button to call Update controller -->
+                                    <a href="@Url.Action("Update", "PasswordPolicyManagement", new { key = item.Id })"
+                                       class="btn btn-sm btn-outline-primary"
+                                       data-bs-toggle="tooltip"
+                                       title="Edit Config">
+                                        <i class="fas fa-edit me-1"></i> @GlobalShared.Edit
+                                    </a>
+
+                                    <!-- ❌ Reset/Delete Button remains unchanged -->
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-danger"
+                                            onclick="DeleteDynamic('PasswordPolicyManagement','Delete','@item.Id','myDataTable','_Data', 2,'datalistingview')"
+                                            data-bs-toggle="tooltip"
+                                            title="Delete Config">
+                                        <i class="fas fa-trash-alt me-1"></i> @GlobalShared.Reset
+                                    </button>
+                                </div>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</fieldset>

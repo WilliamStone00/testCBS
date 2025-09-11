@@ -1,0 +1,128 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+    @using Resources
+@{
+    ViewBag.Title = @GlobalCashFlowManagement.ViewCashReplenishmentDetails;
+
+}
+<div class="table-responsive">
+    <div class="modal fade" id="exLargeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel3">
+                        @GlobalCashFlowManagement.BankTransactionInformation : @GlobalCashFlowManagement.Loading ...
+                    </h4>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+
+                </div>
+                <div class="modal-body">
+                    <div class="row invoice-preview">
+                        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+                            <div class="accordion-item active">
+                              
+                                <div class="card-body">
+
+                                    <br />
+                                    <div class="collapse show">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="2"> <h5 class="card-title">@GlobalCashFlowManagement.BankCashOutTransactionDetails</h5></th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table-border-bottom-0">
+                                                @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
+                                                {
+                                                    <tr>
+                                                        <td>@GlobalCashFlowManagement.BranchOffice</td>
+                                                        <td id="BranchName">@GlobalCashFlowManagement.Loading ...</td>
+                                                    </tr>
+                                                }
+
+                                                <tr>
+                                                    <td>Request Reference</td>
+                                                    <td id="AccountReferenceId">@GlobalCashFlowManagement.Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>@GlobalCashFlowManagement.AccountBalanceBeforeOperation</td>
+                                                    <td id="Balance">@GlobalCashFlowManagement.Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>@GlobalCashFlowManagement.BankTransactionDate</td>
+                                                    <td id="BankTransactionDate"> @GlobalCashFlowManagement.Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>@GlobalCashFlowManagement.AmountWithdrawn</td>
+                                                    <td id="Amount">@GlobalCashFlowManagement.Loading ...</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>@GlobalCashFlowManagement.CreatedBy</td>
+                                                    <td id="CreatedBy"> @GlobalCashFlowManagement.Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>@GlobalCashFlowManagement.CreatedDate </td>
+                                                    <td id="CreatedDate"> @GlobalCashFlowManagement.Loading ...</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>@GlobalCashFlowManagement.CashRequestedBy </td>
+                                                    <td id="CashRequestedBy">@GlobalCashFlowManagement.Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>@GlobalCashFlowManagement.RequestedAmount </td>
+                                                    <td id="CashRequestedAmount">@GlobalCashFlowManagement.Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>@GlobalCashFlowManagement.CashRequestedDate</td>
+                                                    <td id="CashRequestedDate">@GlobalCashFlowManagement.Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>@GlobalCashFlowManagement.ApprovedAmount </td>
+                                                    <td id="CashApprovedAmount">@GlobalCashFlowManagement.Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>@GlobalCashFlowManagement.CashRequestApprovedBy </td>
+                                                    <td id="CashApprovedBy"> @GlobalCashFlowManagement.Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>@GlobalCashFlowManagement.CashRequestApprovedDate</td>
+                                                    <td id="CashApprovedDate">@GlobalCashFlowManagement.Loading ... </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>@GlobalCashFlowManagement.BankReciept</td>
+                                                    <td>
+                                                        <div class="image-preview">
+                                                            <img src="@Url.Content(Model.BankCashOut.FileUpload)" alt="No Image Found" id="previewimage" class="img-fluid" />
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+      
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        @GlobalShared.Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
