@@ -98,6 +98,7 @@
 
 <!-- This is the container where our dynamic form will be injected by JavaScript -->
 <div id="config-form-container">
+
 </div>
 
 @section Scripts {
@@ -266,37 +267,43 @@
             });
         }
 
+          function deleteConfiguration() {
+            var configId = $('#Id').val();
+            if (!configId) {
+                appalert('Cannot delete a configuration that has not been saved yet.', 3, 1);
+                return;
+            }
 
-        //function deleteConfiguration() {
-        //    var configId = $('#Id').val();
-        //    if (!configId) {
-        //        appalert('Cannot delete a configuration that has not been saved yet.', 3, 1);
-        //        return;
-        //    }
+            // Use alertify for a better confirmation experience
+            alertify.confirm('Confirm Deletion', 'Are you sure you want to permanently delete this fee configuration?',
+                function() { // onOk
+                    var token = $('input[name="__RequestVerificationToken"]').val();
+                    $.ajax({
+                        url: '@Url.Action("Delete", "FeeConfig")',
+                        type: 'GET', // Matching your controller action
+                        data: { KEY: configId },
+                        headers: { "__RequestVerificationToken": token }, // Send token for security
+                        success: function (response) {
+                            if (response.success) {
+                                appalert(response.message, 1, 1);
+                                // Clear the form container after successful deletion
+                                $('#config-form-container').empty();
+                            } else {
+                                appalert(response.message, 4, 1); // Use 4 for danger/error
+                            }
+                        },
+                        error: function (err) {
+                            appalert('An error occurred during deletion: ' + err.statusText, 4, 1);
+                        }
+                    });
+                },
+                function() { // onCancel
+                    appalert('Deletion cancelled.', 3, 1);
+                }
+            );
+        }
+    
 
-        //    if (confirm('Are you sure you want to delete this fee configuration?')) {
-        //        var token = $('input[name="__RequestVerificationToken"]').val();
-        //        $.ajax({
-        //            url: '/FeeConfig/Delete',
-        //            type: 'Get',
-        //            data: {
-        //                KEY: configId,
-        //                __RequestVerificationToken: token
-        //            },
-        //            success: function (response) {
-        //                if (response.success) {
-        //                    appalert(response.message, 1, 1);
-        //                    $('#config-form-container').empty();
-        //                } else {
-        //                    appalert(response.message, 2, 1);
-        //                }
-        //            },
-        //            error: function (err) {
-        //                appalert('An error occurred during deletion: ' + err.statusText, 0, 1);
-        //            }
-        //        });
-        //    }
-        //}
-
+       
     </script>
 }

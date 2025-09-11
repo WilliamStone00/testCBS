@@ -536,13 +536,13 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
         /// ACTION 5: Deletes an uploaded file by its ID. Works with your generic DeleteRecordDataTable helper.
         /// </summary>
         [HttpGet] // Matching your existing pattern, but [HttpPost] is recommended for security.
-        public async Task<ActionResult> Delete(string KEY)
+        public async Task<ActionResult> Delete(string fileUploadId)
         {
-            if (string.IsNullOrEmpty(KEY))
+            if (string.IsNullOrEmpty(fileUploadId))
             {
                 return Json(new { success = false, status = "Bad Request", message = "File ID cannot be null." }, JsonRequestBehavior.AllowGet);
             }
-            var result = await _manualService.DeleteFileByIdAsync(KEY);
+            var result = await _manualService.DeleteFileByIdAsync(fileUploadId);
             return Json(new { success = result.Result, status = result.MessageStatus, message = Messaging.MessageResult(result) }, JsonRequestBehavior.AllowGet);
         }
     }

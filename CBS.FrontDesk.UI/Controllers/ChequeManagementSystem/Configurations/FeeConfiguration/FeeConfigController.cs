@@ -33,18 +33,23 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Fee
         }
 
         // THIS IS THE ONLY INITIALIZE ACTION WE NEED
-        public async Task<ActionResult> InitializeData(string partialView, bool? isCentralized, string feeType, string branchId = null)
+        public async Task<ActionResult> InitializeData(string partialView, bool? isCentralized, string feeType, string branchId = null, string path = null)
         {
+            if (path == "list")
+            {
+                var data = await _feeConfigService.GetAllConfigsAsSummaryAsync();
+                return PartialView(partialView, data);
+            }
+
+            // The rest of the method for loading the form is correct.
             bool isCentralizedValue = isCentralized ?? false;
             await Loader();
             FeeConfig model = null;
-
             if (!string.IsNullOrWhiteSpace(feeType))
             {
                 var configs = await _feeConfigService.GetConfigsMockAsync(feeType, isCentralizedValue ? null : branchId, isCentralizedValue);
                 model = configs.FirstOrDefault();
             }
-
             if (model == null)
             {
                 model = new FeeConfig

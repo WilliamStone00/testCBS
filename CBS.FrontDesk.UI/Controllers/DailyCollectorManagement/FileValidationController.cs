@@ -40,7 +40,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
 
         [HttpPost]
         public async Task<ActionResult> LoadFiles(GetFilesForDataTableQuery query)
-        {
+         {
             try
             {
                 var dataTable = await _manualService.GetextractedFilesForDataTableAsync(query);

@@ -618,39 +618,93 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         /// <summary>
         /// Deletes an uploaded file by its ID.
         /// </summary>
+        //public async Task<ExecutionMessages> DeleteFileByIdAsync(string fileUploadId)
+        //{
+        //    try
+        //    {
+        //        if (string.IsNullOrWhiteSpace(fileUploadId))
+        //        {
+        //            GetExecutionMessages(null, false, "Delete File", MessagesResults.Failed, ExecutionProcessOption.DeleteObject, "Failed", null, "File ID cannot be null.");
+        //            return ExecutionMessage;
+        //        }
+
+        //        string url = APICallHelper.DeleteManualEntryFile.Replace("{fileId}", fileUploadId);
+        //        var response = await _apiHelper.DeleteAsync<ServiceResponse<bool>>(url);
+
+        //        if (response.IsSuccess && response.ApiResponseData.Data)
+        //        {
+        //            GetExecutionMessages(null, true, fileUploadId, MessagesResults.Success, ExecutionProcessOption.DeleteObject, "Success", null, "File deleted successfully.");
+        //        }
+        //        else
+        //        {
+        //            GetExecutionMessages(null, false, fileUploadId, MessagesResults.Failed, ExecutionProcessOption.DeleteObject, "Failed", null, response.ApiResponseData?.Message ?? response.Message);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        GetExecutionMessages(null, false, "Delete File", MessagesResults.Error, ExecutionProcessOption.TryCatch, "Error", ex, ex.Message);
+        //    }
+        //    return ExecutionMessage;
+        //}
+
         public async Task<ExecutionMessages> DeleteFileByIdAsync(string fileUploadId)
         {
             try
             {
+                // 1) Validate input early
                 if (string.IsNullOrWhiteSpace(fileUploadId))
                 {
                     GetExecutionMessages(null, false, "Delete File", MessagesResults.Failed, ExecutionProcessOption.DeleteObject, "Failed", null, "File ID cannot be null.");
-                    return ExecutionMessage;
+                    return ExecutionMessage ?? new ExecutionMessages { Result = false, MessageString = "File ID cannot be null." };
                 }
 
+                // 2) Build API URL
                 string url = APICallHelper.DeleteManualEntryFile.Replace("{fileId}", fileUploadId);
+
+                // 3) Call API (this may return null or ApiResponseData may be null)
                 var response = await _apiHelper.DeleteAsync<ServiceResponse<bool>>(url);
 
-                if (response.IsSuccess && response.ApiResponseData.Data)
+                // 4) Debug trace to help find shape of response (remove or replace with logger)
+                System.Diagnostics.Trace.WriteLine($"DeleteFileByIdAsync: url={url} responseIsNull={(response == null)} ApiResponseDataIsNull={(response?.ApiResponseData == null)} message='{response?.Message}'");
+
+                // 5) Defensive checks
+                if (response == null)
+                {
+                    GetExecutionMessages(null, false, fileUploadId, MessagesResults.Failed, ExecutionProcessOption.DeleteObject, "Failed", null, "No response from API.");
+                    return ExecutionMessage ?? new ExecutionMessages { Result = false, MessageString = "No response from API." };
+                }
+
+                // 6) Determine success carefully:
+                var apiDataPresent = response.ApiResponseData != null;
+                var apiDataIsTrue = apiDataPresent && (response.ApiResponseData.Data == true);
+
+                // Interpret success:
+                // - Prefer explicit ApiResponseData.Data == true
+                // - If ApiResponseData missing but response.IsSuccess == true, treat as a success to preserve compatibility with older API shapes
+                if (response.IsSuccess && (apiDataIsTrue || (!apiDataPresent && response.IsSuccess)))
                 {
                     GetExecutionMessages(null, true, fileUploadId, MessagesResults.Success, ExecutionProcessOption.DeleteObject, "Success", null, "File deleted successfully.");
                 }
                 else
                 {
-                    GetExecutionMessages(null, false, fileUploadId, MessagesResults.Failed, ExecutionProcessOption.DeleteObject, "Failed", null, response.ApiResponseData?.Message ?? response.Message);
+                    var failMsg = response.ApiResponseData?.Message ?? response.Message ?? "API reported failure.";
+                    GetExecutionMessages(null, false, fileUploadId, MessagesResults.Failed, ExecutionProcessOption.DeleteObject, "Failed", null, failMsg);
                 }
             }
             catch (Exception ex)
             {
+                // 7) Capture exception inside ExecutionMessage (uses your helper)
                 GetExecutionMessages(null, false, "Delete File", MessagesResults.Error, ExecutionProcessOption.TryCatch, "Error", ex, ex.Message);
             }
-            return ExecutionMessage;
+
+            // 8) Always return a non-null ExecutionMessage so callers (controller) can read .Result/.MessageString safely
+            return ExecutionMessage ?? new ExecutionMessages { Result = false, MessageString = "An unknown error occurred in DeleteFileByIdAsync." };
         }
 
         #endregion
 
         #region Helpers for Dropdowns
- 
+
         public async Task<IEnumerable<SelectListItem>> GetCollectorsAsSelectListAsync(string branchId = null)
         {
             if (branchId==null)

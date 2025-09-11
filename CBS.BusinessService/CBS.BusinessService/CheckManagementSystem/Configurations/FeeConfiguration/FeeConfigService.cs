@@ -94,6 +94,24 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
         ////***************************************** end of real methods *****************************************
         ///***************************************** MOCK methods *****************************************
 
+        public async Task<IEnumerable<FeeConfig>> GetAllConfigsAsSummaryAsync()
+        {
+            // We will work with the existing mock data for now.
+            // This simulates fetching a summarized list from the backend.
+            var summaryList = _mockFeeConfigs.Select(c => new FeeConfig
+            {
+                Id = c.Id,
+                // Use the BranchName if it's a branch-specific config
+               // Scope = c.IsCentralized ? "Centralized" : (c.BranchName ?? "Branch Specific"),
+                FeeType = c.FeeType,
+                Description = c.Description,
+                IsActive = c.IsActive
+            }).ToList();
+
+            // Simulate an async operation and return the result.
+            return await Task.FromResult(summaryList);
+        }
+
         /// <summary>
         /// // MOCK: Get list of available FeeTypes (enum values)
         /// </summary>
