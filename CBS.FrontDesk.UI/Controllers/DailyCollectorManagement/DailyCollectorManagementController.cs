@@ -67,16 +67,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
             return partialResult;
         }
-        ///DailyAgentManagement/DownloadExcelResult
-        /// <summary>
-        /// DailyAgentManagement/DownloadExcelResult "rptSource" + Session.SessionID
-        public async Task<ActionResult> Download(string recordId)
-        {
-            
-            var data =(ServiceResponseDailySaverUploadResult) this.HttpContext.Session["rptSource" + Session.SessionID];
-           
-            return View(data.Data.AbsentMembers);
-        }
+   
         private async Task<ActionResult> GetServiceAction(string path, string partialView, string KEY, string serviceOption)
         {
             if (serviceOption == "agent")
