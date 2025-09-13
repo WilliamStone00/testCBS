@@ -1,31 +1,13 @@
-﻿using CBS.BusinessService.Accounting;
-using CBS.BusinessService.Accounts;
-using CBS.BusinessService.Config;
-using CBS.BusinessService.Config.Localization;
+﻿using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
-using CBS.BusinessService.MembersAccountSettings;
 using CBS.BusinessService.Session;
-using CBS.BusinessService.UserManagement;
-using CBS.FrontDesk.Data.Entity;
-using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.CustomerManagement;
-using CBS.FrontDesk.Data.Entity.DataTable;
-using CBS.FrontDesk.Data.Entity.DownLoadDTO;
-using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
-using CBS.FrontDesk.Data.UserManagement;
-using DocumentFormat.OpenXml.EMMA;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Net;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Services.Description;
 
 namespace CBS.FrontDesk.UI.Controllers.DailySaverManagementP
 {

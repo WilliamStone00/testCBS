@@ -17,7 +17,6 @@ using CBS.FrontDesk.Data.UserManagement;
 using CBS.FrontDesk.UI.Models;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.EMMA;
-using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -123,7 +122,6 @@ namespace CBS.FrontDesk.UI.Controllers
 
             }
         }
-        //
         public async Task<ActionResult> UploadDailyCollectorOperation()
         {
             ViewBag.Branches = BuildMenuISViewBag((await _branchService.GetBranches()).ToList());
