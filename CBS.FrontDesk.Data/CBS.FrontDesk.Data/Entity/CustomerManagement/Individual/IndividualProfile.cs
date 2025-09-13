@@ -1,6 +1,8 @@
-﻿using CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping;
+﻿using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -39,7 +41,7 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string BranchId { get; set; }
         public string TransactionRferenceId { get; set; }
         public decimal Amount { get; set; }
-        public DateTime Date  { get; set; }
+        public DateTime Date { get; set; }
         public decimal TotalSubcriptionAmount { get; set; }
         public string EventName { get; set; }
     }
@@ -125,6 +127,92 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
 
 
     }
+
+
+
+
+    public enum GenderType { Male, Female, Other }
+
+    public class DailySaverCreateVm
+    {
+        // Branch selection (dropdown)
+        [Display(Name = "Branch"), Required]
+        public string BranchId { get; set; }
+
+        // Identity
+        [Display(Name = "First name"), Required, StringLength(80)]
+        public string FirstName { get; set; }
+        [Display(Name = "Last name"), Required, StringLength(80)]
+        public string LastName { get; set; }
+        [Display(Name = "Gender"), Required]
+        public GenderType Gender { get; set; } = GenderType.Male;
+        [Display(Name = "Date of birth"), Required, DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime DateOfBirth { get; set; }
+        [Display(Name = "Phone"), Required, StringLength(20)]
+        [RegularExpression(@"^\+?[0-9\s\-]{6,20}$", ErrorMessage = "Enter a valid phone number.")]
+        public string Phone { get; set; }
+        [Display(Name = "Email"), EmailAddress]
+        public string Email { get; set; }
+
+        // Address
+        [Display(Name = "Country"), Required] public string CountryId { get; set; }
+        [Display(Name = "Region"), Required] public string RegionId { get; set; }
+        [Display(Name = "Division"), Required] public string DivisionId { get; set; }
+        [Display(Name = "Sub-Division"), Required] public string SubDivisionId { get; set; }
+        [Display(Name = "Town"), Required] public string TownId { get; set; }
+        [Display(Name = "Address"), Required, StringLength(200)] public string Address { get; set; }
+
+        // ID
+        [Display(Name = "National ID / Passport No."), Required, StringLength(50)]
+        [RegularExpression(@"^[A-Za-z0-9\-\/]{4,50}$", ErrorMessage = "Enter a valid ID number.")]
+        public string IDNumber { get; set; }
+        [Display(Name = "Date issued"), Required, DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime IDNumberIssueDate { get; set; }
+        [Display(Name = "Place issued"), Required, StringLength(80)]
+        public string IDNumberIssueAt { get; set; }
+
+        // Socio-economic
+        [Display(Name = "Economic activity"), Required]
+        public string EconomicActivitiesId { get; set; }
+        [Display(Name = "Occupation"), Required, StringLength(80)]
+        public string Occupation { get; set; }
+
+        // Daily Saver specifics
+        [Display(Name = "Initial subscription / opening amount")]
+        [Range(typeof(decimal), "0", "79228162514264337593543950335", ErrorMessage = "Amount must be >= 0.")]
+        public decimal TotalSubscriptionAmount { get; set; }
+        [Display(Name = "External transaction ref."), StringLength(60)]
+        public string ExternalTransactionReference { get; set; }
+
+        // New vs Existing member
+        [Display(Name = "Is new customer?")]
+        public bool IsNewCustomer { get; set; } = true;
+
+        // Only when Existing is selected (10 digits)
+        [Display(Name = "Existing Member Account (CustomerId)")]
+        [RegularExpression(@"^\d{10}$", ErrorMessage = "Member account number must be exactly 10 digits.")]
+        public string CustomerId { get; set; }
+        public string BankName { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+        [Display(Name = "Daily saver account number")]
+        [RegularExpression(@"^\d{1,7}$",
+        ErrorMessage = "Daily saver account number must be digits only, with a length between 1 and 7.")]
+        [StringLength(7, MinimumLength = 1,
+        ErrorMessage = "Daily saver account number must be between 0 and 9 digits.")]
+        public string DailySaverId { get; set; } = default;
+       
+
+        public string PlaceOfBirth { get; set; }
+        public string Language { get; set; }
+        public string MaritalStatus { get; set; }
+        public bool IsUploadedData { get; set; } = false;
+        public string BankCode { get; set; }//
+
+    }
+
 
     public class IndividualProfile
     {
