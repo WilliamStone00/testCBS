@@ -1,0 +1,156 @@
+﻿@{
+    ViewBag.Title = "Manual Entry Daily Collector Details";
+}
+
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3">
+        <i class="mdi mdi-filter-outline me-1"></i> Advanced Manual Entry Filters
+    </h5>
+
+    <div class="alert alert-info">
+        <strong>Tip:</strong> Select checkboxes to reveal filter options. Click "Apply Filters" to fetch results.
+    </div>
+
+    <div class="card p-3 mb-3 bg-light">
+        <div class="row mb-2">
+            <div class="col-md-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="byMemberReferenceToggle">
+                    <label class="form-check-label" for="byMemberReferenceToggle">Filter by Member Reference</label>
+                </div>
+                <div id="memberReferenceFilterSection" style="display:none;">
+                    <input type="text" id="memberReference" class="form-control" placeholder="Enter reference..." />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="byAccountNumberToggle">
+                    <label class="form-check-label" for="byAccountNumberToggle">Filter by Account Number</label>
+                </div>
+                <div id="accountNumberFilterSection" style="display:none;">
+                    <input type="text" id="accountNumber" class="form-control" placeholder="Enter account number..." />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="byCollectorToggle">
+                    <label class="form-check-label" for="byCollectorToggle">Filter by Collector</label>
+                </div>
+                <div id="collectorFilterSection" style="display:none;">
+                    <input type="text" id="dailyCollectorName" class="form-control" placeholder="Enter collector name..." />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="byUploadByToggle">
+                    <label class="form-check-label" for="byUploadByToggle">Filter by Uploaded By</label>
+                </div>
+                <div id="uploadByFilterSection" style="display:none;">
+                    <input type="text" id="uploadBy" class="form-control" placeholder="Uploader..." />
+                </div>
+            </div>
+        </div>
+        <!-- Add similar blocks for dates, status, treatment, etc -->
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-md-12 d-flex">
+            <button id="applyFilterBtn" class="btn btn-primary me-2"><i class="mdi mdi-magnify"></i> Apply Filters</button>
+            <button id="resetFilterBtn" class="btn btn-secondary"><i class="mdi mdi-refresh"></i> Reset</button>
+            <button id="printBtn" class="btn btn-outline-danger ms-auto"><i class="mdi mdi-printer"></i> Print PDF</button>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<table id="manualEntryDetailsTable" class="table table-bordered table-striped" width="100%">
+    <thead class="table-light">
+        <tr>
+            <th>Branch Code</th>
+            <th>Member Name</th>
+            <th>Member Reference</th>
+            <th>Account Number</th>
+            <th>Amount</th>
+            <th>Collector</th>
+            <th>Uploaded By</th>
+            <th>Processing Status</th>
+            <th>Treatment Status</th>
+            <th>Treatment Date</th>
+            <th>Accounting Date</th>
+        </tr>
+    </thead>
+</table>
+section Scripts {
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(document).ready(function () {
+
+        // Toggle filters
+        $('#byMemberReferenceToggle').change(function () {
+            $('#memberReferenceFilterSection').toggle(this.checked);
+        });
+        $('#byAccountNumberToggle').change(function () {
+            $('#accountNumberFilterSection').toggle(this.checked);
+        });
+        $('#byCollectorToggle').change(function () {
+            $('#collectorFilterSection').toggle(this.checked);
+        });
+        $('#byUploadByToggle').change(function () {
+            $('#uploadByFilterSection').toggle(this.checked);
+        });
+
+        var table = $('#manualEntryDetailsTable').DataTable({
+            processing: true,
+            serverSide: true,
+            searching: false,
+            ordering: true,
+            paging: true,
+            ajax: {
+                url: '@Url.Action("LoadDetailsDataTable", "ManualEntryCollector")',
+                type: 'POST',
+                contentType: "application/json",
+                data: function (d) {
+                    return JSON.stringify({
+                        Options: d,
+                        MemberReference: $('#memberReference').val(),
+                        AccountNumber: $('#accountNumber').val(),
+                        DailyCollectorName: $('#dailyCollectorName').val(),
+                        UploadBy: $('#uploadBy').val()
+                        // add more filters here
+                    });
+                }
+            },
+            columns: [
+                { data: "memberBranchCode" },
+                { data: "memberName" },
+                { data: "memberReference" },
+                { data: "accountNumber" },
+                { data: "amount" },
+                { data: "dailyCollectorName" },
+                { data: "uploadBy" },
+                { data: "processingStatus" },
+                { data: "treatementStatus" },
+                { data: "treatementDate" },
+                { data: "accountingDate" }
+            ]
+        });
+
+        $('#applyFilterBtn').on('click', function () {
+            table.ajax.reload();
+        });
+
+        $('#resetFilterBtn').on('click', function () {
+            $('input[type=text]').val('');
+            $('input[type=checkbox]').prop('checked', false);
+            $('.form-check-input').trigger('change'); // hide sections
+            table.clear().draw();
+        });
+
+        $('#printBtn').on('click', function () {
+            alert('TODO: Implement PDF export after filters are applied.');
+        });
+    });
+</script>
+
+}

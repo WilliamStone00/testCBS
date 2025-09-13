@@ -330,6 +330,7 @@ using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -425,43 +426,106 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
         /// <summary>
         /// ACTION 3: Handles the AJAX file upload from the _UploadForm.
         /// </summary>
-        [System.Web.Mvc.HttpPost]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> UploadFile(string BranchId, string CollectorAndUser, HttpPostedFileBase UploadedFile, DateTime)
+        //{
+        //    // ... (Manual validation for parameters) ...
+        //    if (UploadedFile == null || UploadedFile.ContentLength == 0)
+        //        return Json(new { success = false, message = "Please select a file to upload." });
+        //    if (string.IsNullOrWhiteSpace(BranchId))
+        //        return Json(new { success = false, message = "Please select a branch." });
+        //    if (string.IsNullOrWhiteSpace(CollectorAndUser))
+        //        return Json(new { success = false, message = "Please select a collector." });
+
+        //    try
+        //    {
+        //        var collectorAndUserParts = CollectorAndUser.Split('|');
+        //        var collectorId = collectorAndUserParts[0];
+        //        var userId = collectorAndUserParts[1];
+
+        //        var response = await _manualService.UploadManualEntryFileAsync(UploadedFile, BranchId, collectorId, userId);
+
+        //        if (response.IsSuccess && response.ApiResponseData.Success)
+        //        {
+        //            return Json(new
+        //            {
+        //                success = true,
+        //                message = response.ApiResponseData.Message ?? "File processed successfully.",
+        //                data = response.ApiResponseData.Data // Return the COMPLETE data object
+        //            });
+        //        }
+        //        return Json(new { success = false, message = response.ApiResponseData?.Message ?? response.Message });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log ex
+        //        return Json(new { success = false, message = "An unexpected server error occurred." });
+        //    }
+        //}
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> UploadFile(string BranchId, string CollectorAndUser, HttpPostedFileBase UploadedFile)
-        {
-            // ... (Manual validation for parameters) ...
-            if (UploadedFile == null || UploadedFile.ContentLength == 0)
+        public async Task<ActionResult> UploadFile(string BranchId,string CollectorAndUser,HttpPostedFileBase UploadedFile,string AccountingDate)
+        {   if (UploadedFile == null || UploadedFile.ContentLength == 0)
                 return Json(new { success = false, message = "Please select a file to upload." });
+
             if (string.IsNullOrWhiteSpace(BranchId))
                 return Json(new { success = false, message = "Please select a branch." });
+
             if (string.IsNullOrWhiteSpace(CollectorAndUser))
                 return Json(new { success = false, message = "Please select a collector." });
 
+            if (string.IsNullOrWhiteSpace(AccountingDate))
+                return Json(new { success = false, message = "Please select a date." });
+
+            // --- 2) Parse and validate the date ---
+            DateTime parsedDate;
+            if (!DateTime.TryParseExact(AccountingDate, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
+            {
+                return Json(new { success = false, message = "Invalid date format." });
+            }
+
+            if (parsedDate == DateTime.MinValue || parsedDate == new DateTime(1, 1, 1))
+            {
+                return Json(new { success = false, message = "Invalid date selection." });
+            }
+
+            if (parsedDate.Date > DateTime.Now.Date)
+            {
+                return Json(new { success = false, message = "Date cannot be in the future." });
+            }
+
             try
             {
+                // --- 3) Extract collector & user ---
                 var collectorAndUserParts = CollectorAndUser.Split('|');
                 var collectorId = collectorAndUserParts[0];
                 var userId = collectorAndUserParts[1];
 
-                var response = await _manualService.UploadManualEntryFileAsync(UploadedFile, BranchId, collectorId, userId);
+                // --- 4) Pass date into your service if needed ---
+                var response = await _manualService.UploadManualEntryFileAsync(UploadedFile,BranchId,collectorId,userId, AccountingDate );
 
+                // --- 5) Return result ---
                 if (response.IsSuccess && response.ApiResponseData.Success)
                 {
                     return Json(new
                     {
                         success = true,
                         message = response.ApiResponseData.Message ?? "File processed successfully.",
-                        data = response.ApiResponseData.Data // Return the COMPLETE data object
+                        data = response.ApiResponseData.Data
                     });
                 }
+
                 return Json(new { success = false, message = response.ApiResponseData?.Message ?? response.Message });
             }
             catch (Exception ex)
             {
-                // Log ex
+                // TODO: log ex
                 return Json(new { success = false, message = "An unexpected server error occurred." });
             }
         }
+
 
         /// <summary>
         /// ACTION 4: Handles the "Download Template" button click.
@@ -534,14 +598,14 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
         /// <summary>
         /// ACTION 5: Deletes an uploaded file by its ID. Works with your generic DeleteRecordDataTable helper.
         /// </summary>
-        [System.Web.Mvc.HttpGet] // Matching your existing pattern, but [HttpPost] is recommended for security.
-        public async Task<ActionResult> Delete(string KEY)
+        [HttpGet] // Matching your existing pattern, but [HttpPost] is recommended for security.
+        public async Task<ActionResult> Delete(string fileUploadId)
         {
-            if (string.IsNullOrEmpty(KEY))
+            if (string.IsNullOrEmpty(fileUploadId))
             {
                 return Json(new { success = false, status = "Bad Request", message = "File ID cannot be null." }, JsonRequestBehavior.AllowGet);
             }
-            var result = await _manualService.DeleteFileByIdAsync(KEY);
+            var result = await _manualService.DeleteFileByIdAsync(fileUploadId);
             return Json(new { success = result.Result, status = result.MessageStatus, message = Messaging.MessageResult(result) }, JsonRequestBehavior.AllowGet);
         }
     }

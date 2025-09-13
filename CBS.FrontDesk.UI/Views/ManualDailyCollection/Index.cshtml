@@ -94,51 +94,62 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-<script>
-        // --- FIXED FUNCTION: Load Collectors Dropdown ---
-function loadCollectors(branchId) {
-    let $collectorDropdown = $('#CollectorxCollectorId');
+    <script>
+    // --- FIXED FUNCTION: Load Collectors Dropdown ---
+    function loadCollectors(branchId) {
+        let $collectorDropdown = $('#CollectorxCollectorId');
 
-    // Reset dropdown
-    $collectorDropdown.empty().append('<option value="">--- Loading ---</option>');
+        // Reset dropdown
+        $collectorDropdown.empty().append('<option value="">--- Loading ---</option>');
 
-    if (branchId) {
-        $.getJSON('@Url.Action("GetCollectorsByBranch", "ManualDailyCollection")', { branchId: branchId })
-            .done(function (data) {
-                $collectorDropdown.empty().append('<option value="">--- Select Daily Collector ---</option>');
-                $.each(data, function (i, item) {
-                    $collectorDropdown.append($('<option>', {
-                        value: item.Value,   // Correct casing
-                        text: item.Text     // Correct casing
-                    }));
+        if (branchId) {
+            $.getJSON('@Url.Action("GetCollectorsByBranch", "ManualDailyCollection")', { branchId: branchId })
+                .done(function (data) {
+                    $collectorDropdown.empty().append('<option value="">--- Select Daily Collector ---</option>');
+                    $.each(data, function (i, item) {
+                        $collectorDropdown.append($('<option>', {
+                            value: item.Value,
+                            text: item.Text
+                        }));
+                    });
+                })
+                .fail(function () {
+                    $collectorDropdown.empty().append('<option value="">--- Error loading collectors ---</option>');
                 });
-            })
-            .fail(function () {
-                $collectorDropdown.empty().append('<option value="">--- Error loading collectors ---</option>');
-            });
-    } else {
-        $collectorDropdown.empty().append('<option value="">--- Select Daily Collector ---</option>');
+        } else {
+            $collectorDropdown.empty().append('<option value="">--- Select Daily Collector ---</option>');
+        }
     }
-}
+
     (function ($) {
         let currentFileUploadId = null; // Store the ID of the last successful upload
 
-        // --- INITIALIZATION ---
+        // -------------------------------
+        // Initialization: delegate handlers
+        // -------------------------------
         function initialize() {
             // Main form submission for the initial upload
             $('#mainWorkspace').on('submit', '#manualUploadForm', handleUploadSubmit);
 
-            // Delegated handlers for buttons inside the dynamic preview containers
+            // Delegated handlers for buttons inside dynamic preview containers
+            // We keep these on #mainWorkspace for other handlers but attach delete as robust document delegation
             $('#mainWorkspace')
-                //.on('click', '#resetPreviewBtn', resetInitialPreview) // Resets the FIRST preview
-                .on('click', '#deleteUploadedFileBtn', deleteUploadedFile)
-                .on('click', '#extractFileBtn', extractFile)
-                .on('click', '#closeExtractedPreviewBtn', resetInitialPreview); // The new "Close" button will also reset everything
+                .on('click', '#extractFileBtn', extractFile);
+
+            // NEW: bind reset buttons on mainWorkspace (if present)
+            $('#mainWorkspace')
+                .on('click', '#resetFirstPreviewBtn', resetFirstPreview)
+                .on('click', '#resetExtractedPreviewBtn', resetExtractedPreview)
+                .on('click', '#resetAllBtn', resetAllPreviews);
+
+            // IMPORTANT: use document-level delegation for Delete button to ensure dynamically inserted button is always caught.
+            // We off() first to avoid duplicate bindings if initialize gets called again.
+            $(document).off('click', '#deleteUploadedFileBtn').on('click', '#deleteUploadedFileBtn', deleteUploadedFile);
         }
 
-
-
-        // --- FUNCTION 1: Handles the initial file UPLOAD ---
+        // -------------------------------
+        // Upload handler
+        // -------------------------------
         function handleUploadSubmit(e) {
             e.preventDefault();
             const form = this;
@@ -148,8 +159,9 @@ function loadCollectors(branchId) {
             const $submitButton = $form.find('button[type="submit"]');
             const $resultContainer = $('#uploadResultContainer');
 
-            if (!$form.valid()) return false;
+            if ($form.length && typeof $form.valid === 'function' && !$form.valid()) return false;
 
+            // confirm before uploading
             alertify.confirm("Confirmation", "Are you sure you want to upload this file?", function () {
                 $.ajax({
                     type: 'POST',
@@ -165,32 +177,42 @@ function loadCollectors(branchId) {
                         if ((response.success === true || response.isSuccess === true) && response.data) {
                             appalert(response.message || "File processed successfully!", 1, 1);
 
-                            currentFileUploadId = response.data.FileUploadId;
+                            // Save ID for later actions (delete/extract)
+                            currentFileUploadId = response.data.FileUploadId || response.data.fileUploadId || currentFileUploadId;
 
                             const previewHtml = buildInitialPreviewHtml(response.data);
                             $resultContainer.html(previewHtml).slideDown();
 
                             const tableData = response.data.manualEntryDailyCollectorUploadListDtos || [];
 
-                            $('#previewDetailsTable').DataTable({
-                                destroy: true,
-                                data: tableData,
-                                columns: [
-                                    { data: "memberReference", title: "Member Ref." },
-                                    { data: "memberName", title: "Member Name" },
-                                    { data: "dailyCollectorName", title: "Collector Name" },
-                                    { data: "memberBranchName", title: "Member Branch" },
-                                    {
-                                        data: "amount",
-                                        title: "Amount",
-                                        className: "text-end",
-                                        render: $.fn.dataTable.render.number(',', '.', 2)
-                                    }
-                                ],
-                                responsive: true,
-                                pageLength: 5,
-                                lengthMenu: [5, 10, 25, 50]
-                            });
+                            // initialize preview details table (destroy any prior instance)
+                            try {
+                                if ($.fn.DataTable.isDataTable('#previewDetailsTable')) {
+                                    $('#previewDetailsTable').DataTable().clear().destroy();
+                                    $('#previewDetailsTable').empty();
+                                }
+                                $('#previewDetailsTable').DataTable({
+                                    destroy: true,
+                                    data: tableData,
+                                    columns: [
+                                        { data: "memberReference", title: "Member Ref." },
+                                        { data: "memberName", title: "Member Name" },
+                                        { data: "dailyCollectorName", title: "Collector Name" },
+                                        { data: "memberBranchName", title: "Member Branch" },
+                                        {
+                                            data: "amount",
+                                            title: "Amount",
+                                            className: "text-end",
+                                            render: $.fn.dataTable.render.number(',', '.', 2)
+                                        }
+                                    ],
+                                    responsive: true,
+                                    pageLength: 5,
+                                    lengthMenu: [5, 10, 25, 50]
+                                });
+                            } catch (dtErr) {
+                                console.error('Error initializing previewDetailsTable', dtErr);
+                            }
 
                             form.reset();
                             $form.find('.select2').val(null).trigger('change');
@@ -210,51 +232,85 @@ function loadCollectors(branchId) {
             });
         }
 
+        // -------------------------------
+        // Build preview HTML (unchanged)
+        // -------------------------------
         function buildInitialPreviewHtml(data) {
             const formatCurrency = (num) => (num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const uploadedBy = data.UploadedBy ?? data.uploadedBy ?? '';
+            const branchName = data.BranchName ?? data.branchName ?? '';
+            const totalMembers = data.TotalMembers ?? data.totalMember ?? 0;
+            const totalAmount = data.TotalAmount ?? data.totalAmount ?? 0;
+
             return `
         <fieldset class="fieldset-custom">
-            <legend class="legend-custom">File Preview: ${data.FileUploadId || 'N/A'}</legend>
             <div class="row g-2">
-                <div class="col-6 col-md-3"><div class="card card-border-shadow-warning h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Uploaded By</p><h6 class="ms-1 mb-0">${data.UploadedBy || ''}</h6></div></div></div>
-                <div class="col-6 col-md-3"><div class="card card-border-shadow-info h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Branch</p><h6 class="ms-1 mb-0">${data.BranchName || ''}</h6></div></div></div>
-                <div class="col-6 col-md-3"><div class="card card-border-shadow-success h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Members</p><h6 class="ms-1 mb-0">${data.TotalMembers || 0}</h6></div></div></div>
-                <div class="col-6 col-md-3"><div class="card card-border-shadow-danger h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Amount</p><h6 class="ms-1 mb-0">${formatCurrency(data.TotalAmount)}</h6></div></div></div>
+            <h4 class="legend-custom text-info">File Preview: ${data.FileUploadId || data.fileUploadId || 'N/A'}</h4>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-warning h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Uploaded By</p><h6 class="ms-1 mb-0">${uploadedBy}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-info h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Branch</p><h6 class="ms-1 mb-0">${branchName}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-success h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Members</p><h6 class="ms-1 mb-0">${totalMembers}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-danger h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Amount</p><h6 class="ms-1 mb-0">${formatCurrency(totalAmount)}</h6></div></div></div>
             </div>
             <div class="table-responsive mt-3">
                 <table id="previewDetailsTable" class="table table-striped table-bordered" style="width:100%"></table>
             </div>
             <div class="d-flex justify-content-end mt-3">
-                <button type="button" id="resetPreviewBtn" class="btn btn-outline-secondary me-2">Reset</button>
+                <button type="button" id="resetFirstPreviewBtn" class="btn btn-outline-secondary me-2">Reset upload Preview</button> <!-- NEW -->
                 <button type="button" id="deleteUploadedFileBtn" class="btn btn-danger me-2">Delete</button>
                 <button type="button" id="extractFileBtn" class="btn btn-primary">Extract File</button>
             </div>
         </fieldset>`;
         }
 
+        // -------------------------------
+        // Build extracted preview HTML (unchanged)
+        // -------------------------------
         function buildExtractedPreviewHtml(data) {
             const formatCurrency = (num) => (num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            const fileUploadId = data.FileUploadId ?? data.fileUploadId ?? data.FileUploadId ?? 'N/A';
+            const collectorName = data.CollectorName ?? data.collectorName ?? '';
+            const branchName = data.BranchName ?? data.branchName ?? '';
+            const totalMember = data.TotalMember ?? data.totalMember ?? 0;
+            const totalAmount = data.TotalAmount ?? data.totalAmount ?? 0;
+
             return `
-        <fieldset class="fieldset-custom">
-            <legend class="legend-custom text-success">Extraction Successful: ${data.FileUploadId || 'N/A'}</legend>
+        <fieldset class="fieldset-custom">            
             <div class="row g-2">
-                <div class="col-6 col-md-3"><div class="card card-border-shadow-warning h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Collector Name</p><h6 class="ms-1 mb-0">${data.CollectorName || ''}</h6></div></div></div>
-                <div class="col-6 col-md-3"><div class="card card-border-shadow-info h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Branch</p><h6 class="ms-1 mb-0">${data.BranchName || ''}</h6></div></div></div>
-                <div class="col-6 col-md-3"><div class="card card-border-shadow-success h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Members</p><h6 class="ms-1 mb-0">${data.TotalMember || 0}</h6></div></div></div>
-                <div class="col-6 col-md-3"><div class="card card-border-shadow-danger h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Amount</p><h6 class="ms-1 mb-0">${formatCurrency(data.TotalAmount)}</h6></div></div></div>
+            <h4 class="legend-custom text-info">Extraction Successful: ${fileUploadId}</h4>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-warning h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Collector Name</p><h6 class="ms-1 mb-0">${collectorName}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-info h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Branch</p><h6 class="ms-1 mb-0">${branchName}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-success h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Members</p><h6 class="ms-1 mb-0">${totalMember}</h6></div></div></div>
+                <div class="col-6 col-md-3"><div class="card card-border-shadow-danger h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Amount</p><h6 class="ms-1 mb-0">${formatCurrency(totalAmount)}</h6></div></div></div>
             </div>
             <div class="table-responsive mt-3">
                 <table id="extractedDetailsTable" class="table table-striped table-bordered" style="width:100%"></table>
             </div>
             <div class="d-flex justify-content-end mt-3">
+                <button type="button" id="resetExtractedPreviewBtn" class="btn btn-outline-secondary me-2">Reset Extracted Preview</button> <!-- NEW -->
                 <button type="button" id="closeExtractedPreviewBtn" class="btn btn-secondary">Close</button>
             </div>
         </fieldset>`;
         }
 
-        // --- FUNCTION 4: Handles FILE EXTRACTION ---
+        // -------------------------------
+        // File extraction
+        // -------------------------------
         function extractFile() {
-            if (!currentFileUploadId) {
+            // if called as handler with event, prevent default
+            if (arguments.length && arguments[0] && arguments[0].preventDefault) {
+                arguments[0].preventDefault();
+            }
+
+            // allow passing explicit id via parameter when needed
+            let fileId = null;
+            if (arguments.length > 1 && typeof arguments[1] === 'string') {
+                fileId = arguments[1];
+            } else {
+                fileId = currentFileUploadId;
+            }
+
+            if (!fileId) {
                 appalert('No file to extract.', 3, 1);
                 return;
             }
@@ -265,88 +321,366 @@ function loadCollectors(branchId) {
             $.ajax({
                 url: '/ManualDailyCollection/extract',
                 type: 'POST',
-                data: { KEY: currentFileUploadId },
+                data: { KEY: fileId },
                 headers: token ? { 'RequestVerificationToken': token } : {},
                 dataType: 'json',
                 beforeSend: function () {
-                    $resultContainer.html('<p class="text-center">Extracting data...</p>');
+                    $resultContainer.stop(true, true).html('<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-2 text-primary">Extracting data...</p></div>').show();
                 },
                 success: function (response) {
-                    if (response && response.status === "SUCCESS" && response.data) {
-                        appalert(response.statusDescription || 'File extracted successfully.', 1, 1);
-                        const extractedHtml = buildExtractedPreviewHtml(response.data);
-                        $resultContainer.html(extractedHtml);
-                        $('#extractedDetailsTable').DataTable({
-                            /*destroy: true,*/
-                            data: response.data.details || [],
-                            columns: [
-                                { data: "MemberReference", title: "Member Ref." },
-                                { data: "MemberName", title: "Member Name" },
-                                { data: "FullAccountNumber", title: "Account No." },
-                                { data: "MemberBranchName", title: "Member Branch" },
-                                {
-                                    data: "amount",
-                                    title: "Amount",
-                                    className: "text-end",
-                                    render: $.fn.dataTable.render.number(',', '.', 2)
+                    try {
+                        // tolerate different success casing
+                        const status = (response && (response.status ?? response.Status ?? '')).toString();
+                        const data = response && (response.data ?? response.Data ?? null);
+
+                        if ((status && status.toLowerCase() === 'success') && data) {
+                            appalert(response.statusDescription || 'File extracted successfully.', 1, 1);
+
+                            // update currentFileUploadId from response if provided
+                            currentFileUploadId = data.FileUploadId ?? data.fileUploadId ?? currentFileUploadId;
+
+                            // build and inject extracted preview
+                            const extractedHtml = buildExtractedPreviewHtml(data);
+                            $resultContainer.hide().html(extractedHtml).fadeIn();
+
+                            // Initialize extracted details DataTable defensively
+                            try {
+                                // ensure prior table destroyed
+                                if ($.fn.DataTable.isDataTable('#extractedDetailsTable')) {
+                                    $('#extractedDetailsTable').DataTable().clear().destroy();
+                                    $('#extractedDetailsTable').empty();
                                 }
-                            ],
-                            responsive: true,
-                            pageLength: 5,
-                            lengthMenu: [5, 10, 25, 50]
-                        });
-                    } else {
-                        appalert((response && response.message) || 'Extraction failed.', 4, 1);
+
+                                // details array tolerance
+                                let detailsArray = data.details ?? data.Details ?? data.data?.details ?? [];
+                                if (!Array.isArray(detailsArray)) detailsArray = [];
+
+                                $('#extractedDetailsTable').DataTable({
+                                    destroy: true,
+                                    data: detailsArray,
+                                    columns: [
+                                        {
+                                            title: "Member Ref.",
+                                            data: function (row) {
+                                                return row.memberReference ?? row.MemberReference ?? row.MemberRef ?? '';
+                                            }
+                                        },
+                                        {
+                                            title: "Member Name",
+                                            data: function (row) {
+                                                return row.memberName ?? row.MemberName ?? row.Member ?? '';
+                                            }
+                                        },
+                                        {
+                                            title: "Account No.",
+                                            data: function (row) {
+                                                return row.accountNumber ?? row.AccountNumber ?? row.fullAccountNumber ?? row.FullAccountNumber ?? '';
+                                            }
+                                        },
+                                        {
+                                            title: "Member Branch",
+                                            data: function (row) {
+                                                return row.memberBranchName ?? row.MemberBranchName ?? row.memberBranch ?? '';
+                                            }
+                                        },
+                                        {
+                                            title: "Amount",
+                                            className: "text-end",
+                                            data: function (row) {
+                                                return row.amount ?? row.Amount ?? 0;
+                                            },
+                                            render: $.fn.dataTable.render.number(',', '.', 2)
+                                        }
+                                    ],
+                                    responsive: true,
+                                    pageLength: 5,
+                                    lengthMenu: [5, 10, 25, 50]
+                                });
+                            } catch (dtErr) {
+                                console.error('Error initializing extractedDetailsTable', dtErr);
+                                appalert('An error occurred displaying extracted details.', 4, 1);
+                            }
+
+                            // wire close button to reset preview (keeps single behavior)
+                            $('#closeExtractedPreviewBtn').off('click').on('click', function () {
+                                resetInitialPreview();
+                            });
+
+                        } else {
+                            const errMsg = (response && (response.message || response.statusDescription)) || 'Extraction failed.';
+                            appalert(errMsg, 4, 1);
+                            $resultContainer.html(`<div class="alert alert-warning">${errMsg}</div>`);
+                        }
+                    } catch (err) {
+                        console.error('extractFile: exception', err);
+                        appalert('An unexpected error occurred while processing extraction results.', 4, 1);
+                        $resultContainer.html('<div class="alert alert-danger">An unexpected error occurred while showing extracted data.</div>');
                     }
                 },
-                error: function () {
+                error: function (xhr, status, err) {
+                    console.error('extractFile: ajax error', status, err, xhr);
                     appalert('An error occurred during extraction.', 4, 1);
+                    $resultContainer.html('<div class="alert alert-danger">An error occurred during extraction. Please try again.</div>');
                 }
             });
         }
 
-        // --- UTILITIES ---
-        function resetInitialPreview() {
-            $('#uploadResultContainer').slideUp().html('');
-            if ($.fn.DataTable.isDataTable('#previewDetailsTable')) {
-                $('#previewDetailsTable').DataTable().destroy();
-            }
-            if ($.fn.DataTable.isDataTable('#extractedDetailsTable')) {
-                $('#extractedDetailsTable').DataTable().destroy();
-            }
-            currentFileUploadId = null;
-        }
+      //acconting day script function
+       
+        (function () {
+            const dateDisplay = document.getElementById("SelectedDateDisplay");
+            const hiddenField = document.getElementById("AccountingDate");
 
-        function deleteUploadedFile() {
-            if (!currentFileUploadId) {
-                appalert('No uploaded file to delete.', 3, 1);
-                return;
-            }
-            alertify.confirm('Confirm Delete', 'This will permanently delete the uploaded file. Continue?', function () {
-                const token = $('input[name="__RequestVerificationToken"]').val();
-                $.ajax({
-                    url: '/ManualDailyCollection/DeleteFile',
-                    type: 'POST',
-                    data: { fileUploadId: currentFileUploadId },
-                    headers: token ? { 'RequestVerificationToken': token } : {},
-                    success: function (response) {
-                        if (response && response.success) {
-                            appalert(response.message || 'File deleted.', 1, 1);
-                            resetInitialPreview();
-                        } else {
-                            appalert((response && response.message) || 'Could not delete file.', 4, 1);
-                        }
-                    },
-                    error: function () {
-                        appalert('Error deleting file.', 4, 1);
+            // --- 1) Set max = today so future dates are blocked in the picker ---
+            const today = new Date();
+            const isoToday = today.toISOString().split('T')[0]; // yyyy-MM-dd
+            dateDisplay.setAttribute('max', isoToday);
+
+            // --- 2) If hidden field already has a formatted value (dd-MM-yyyy HH:mm:ss),
+            // convert it to yyyy-MM-dd and populate the date picker for UX ---
+            (function initFromHidden() {
+                const existing = hiddenField.value;
+                if (!existing) return;
+
+                // Try parse "dd-MM-yyyy HH:mm:ss" to a Date
+                // Accept also if user previously saved "dd-MM-yyyy" only
+                let dt = null;
+                const fullFormat = /^(\d{2})-(\d{2})-(\d{4})\s+(\d{2}):(\d{2}):(\d{2})$/;
+                const shortFormat = /^(\d{2})-(\d{2})-(\d{4})$/;
+
+                if (fullFormat.test(existing)) {
+                    const m = existing.match(fullFormat);
+                    const d = parseInt(m[1], 10), mo = parseInt(m[2], 10), y = parseInt(m[3], 10);
+                    dt = new Date(y, mo - 1, d);
+                } else if (shortFormat.test(existing)) {
+                    const m = existing.match(shortFormat);
+                    const d = parseInt(m[1], 10), mo = parseInt(m[2], 10), y = parseInt(m[3], 10);
+                    dt = new Date(y, mo - 1, d);
+                }
+
+                if (dt) {
+                    // Only set if not future
+                    const now = new Date();
+                    now.setHours(0, 0, 0, 0);
+                    dt.setHours(0, 0, 0, 0);
+                    if (dt > now) {
+                        // invalid stored value — clear both
+                        hiddenField.value = "";
+                        dateDisplay.value = "";
+                        return;
+                    }
+                    // set visible date in ISO yyyy-mm-dd so calendar shows it
+                    const iso = dt.toISOString().split('T')[0];
+                    dateDisplay.value = iso;
+                }
+            })();
+
+            // --- 3) When user picks a date, validate and set formatted hidden value ---
+            dateDisplay.addEventListener('change', function () {
+                const val = dateDisplay.value; // yyyy-MM-dd
+
+                if (!val) {
+                    hiddenField.value = ""; // clear
+                    return;
+                }
+
+                const selected = new Date(val + "T00:00:00"); // local midnight
+                const now = new Date();
+                now.setHours(0, 0, 0, 0);
+
+                // Block future dates
+                if (selected > now) {
+                    appalert('Date cannot be in the future.', 4, 1);
+                    dateDisplay.value = "";         // clear UI
+                    hiddenField.value = "";         // clear posted value
+                    return;
+                }
+
+                // Build dd-MM-yyyy 00:00:00
+                const dd = String(selected.getDate()).padStart(2, '0');
+                const MM = String(selected.getMonth() + 1).padStart(2, '0');
+                const yyyy = selected.getFullYear();
+                const formatted = `${dd}-${MM}-${yyyy} 00:00:00`;
+
+                // Reject default .NET date just in case
+                if (formatted === "01-01-0001 00:00:00") {
+                    appalert('Invalid date selection.', 4, 1);
+                    dateDisplay.value = "";
+                    hiddenField.value = "";
+                    return;
+                }
+
+                // All good: set hidden field (controller will receive this)
+                hiddenField.value = formatted;
+            });
+
+            // --- 4) Extra safety: ensure hidden field is set just before any form POST (AJAX or normal) ---
+            // If you have multiple forms, scope this to the specific form (change '#yourFormId')
+            const forms = document.querySelectorAll('form');
+            forms.forEach(function (f) {
+                f.addEventListener('submit', function (e) {
+                    // If visible has a value but hidden is empty (unlikely), sync it
+                    if (dateDisplay.value && !hiddenField.value) {
+                        // trigger change logic to populate
+                        const event = new Event('change');
+                        dateDisplay.dispatchEvent(event);
+                    }
+
+                    // final server-side guard: prevent submit if hidden still empty
+                    // (optionally, you can allow empty and let server validate required)
+                    if (!hiddenField.value) {
+                        // prevent form submission and show message
+                        // (If you want to allow empty, comment out the next lines.)
+                        e.preventDefault();
+                        appalert('Please select a valid date (not in the future).', 2, 1);
+                        return false;
                     }
                 });
             });
-        }
 
-        // --- Start ---
-        $(document).ready(initialize);
+        })();
+  
+    // -------------------------------
+    // NEW RESET FUNCTIONS (optional)
+    // -------------------------------
+    function resetFirstPreview() {
+    // hide & clear first preview area (previewDetailsTable)
+    $('#firstPreviewContainer').slideUp(function () { $(this).html(''); });
+    if ($.fn.DataTable.isDataTable('#previewDetailsTable')) {
+    try { $('#previewDetailsTable').DataTable().destroy(); } catch (e) { /* ignore */ }
+    $('#previewDetailsTable').empty();
+    }
+    }
 
-    }(jQuery));
-</script>
+    function resetExtractedPreview() {
+    // hide & clear second preview area (extractedDetailsTable)
+    $('#secondPreviewContainer').slideUp(function () { $(this).html(''); });
+    if ($.fn.DataTable.isDataTable('#extractedDetailsTable')) {
+    try { $('#extractedDetailsTable').DataTable().destroy(); } catch (e) { /* ignore */ }
+    $('#extractedDetailsTable').empty();
+    }
+    }
+
+    function resetAllPreviews() {
+    resetFirstPreview();
+    resetExtractedPreview();
+    currentFileUploadId = null;
+    }
+
+
+    //  reset functionalities
+
+    function resetInitialPreview() {
+    $('#uploadResultContainer').slideUp(function () {
+    $(this).html('');
+    });
+
+    if ($.fn.DataTable.isDataTable('#previewDetailsTable')) {
+    try { $('#previewDetailsTable').DataTable().destroy(); } catch(e) { console.warn(e); }
+    $('#previewDetailsTable').empty();
+    }
+    if ($.fn.DataTable.isDataTable('#extractedDetailsTable')) {
+    try { $('#extractedDetailsTable').DataTable().destroy(); } catch(e) { console.warn(e); }
+    $('#extractedDetailsTable').empty();
+    }
+    currentFileUploadId = null;
+    }
+
+    // -------------------------------
+    // Robust delete handler (updated)
+    // -------------------------------
+    // This function will:
+    // 1) confirm via alertify (or fallback to native confirm)
+    // 2) send an AJAX GET to /ManualDailyCollection/Delete
+    // 3) send both KEY and fileUploadId in query to maximize compatibility with your controller signatures
+    // 4) call resetInitialPreview() on success
+    function confirmDialog(title, message, onOk, onCancel) {
+    // Try common alertify signatures; fallback to window.confirm if necessary
+    if (window.alertify && typeof alertify.confirm === 'function') {
+    try {
+    // Newer signature: alertify.confirm(title, message, onok, oncancel)
+    alertify.confirm(title, message, function () {
+    if (typeof onOk === 'function') onOk();
+    }, function () {
+    if (typeof onCancel === 'function') onCancel();
+    }).set('labels', { ok: 'Yes', cancel: 'No' });
+    return;
+    } catch (ex) {
+    try {
+    // Older signature: alertify.confirm(message, onok, oncancel)
+    alertify.confirm(message, function () {
+    if (typeof onOk === 'function') onOk();
+    }, function () {
+    if (typeof onCancel === 'function') onCancel();
+    });
+    return;
+    } catch (ex2) {
+    console.warn('alertify confirm failed, falling back to window.confirm', ex, ex2);
+    }
+    }
+    }
+
+    // fallback
+    if (window.confirm(message)) {
+    if (typeof onOk === 'function') onOk();
+    } else {
+    if (typeof onCancel === 'function') onCancel();
+    }
+    }
+
+    function deleteUploadedFile(e) {
+    // prevent default when called as a click event
+    if (e && e.preventDefault) e.preventDefault();
+
+    console.log('deleteUploadedFile: invoked, currentFileUploadId=', currentFileUploadId);
+
+    if (!currentFileUploadId) {
+    appalert('No uploaded file to delete.', 3, 1);
+    return;
+    }
+
+    // Use the robust confirmDialog wrapper
+    confirmDialog('Confirm Delete', 'This will permanently delete the uploaded file. Continue?',
+    function onOk() {
+    console.log('deleteUploadedFile: user confirmed. Sending AJAX request.');
+
+    const token = $('input[name="__RequestVerificationToken"]').val();
+
+    $.ajax({
+    url: '/ManualDailyCollection/Delete',
+    type: 'GET', // keep GET to match current controller; change to POST if you update controller
+    data: {
+    // supply both parameter names so controller binding works with either signature
+    KEY: currentFileUploadId,
+    fileUploadId: currentFileUploadId
+    },
+    headers: token ? { 'RequestVerificationToken': token } : {},
+    success: function (response) {
+    console.log('deleteUploadedFile: ajax success response', response);
+    if (response && response.success) {
+    appalert(response.message || 'File deleted.', 1, 1);
+    // reset the preview(s) the same way as original behaviour
+    resetInitialPreview();
+    } else {
+    appalert((response && response.message) || 'Could not delete file.', 4, 1);
+    }
+    },
+    error: function (xhr, status, err) {
+    console.error('deleteUploadedFile: ajax error', status, err, xhr);
+    appalert('Error deleting file.', 4, 1);
+    }
+    });
+    },
+    function onCancel() {
+    console.log('deleteUploadedFile: user cancelled.');
+    appalert('Delete cancelled.', 3, 1);
+    }
+    );
+    }
+
+    $(document).ready(initialize);
+
+}(jQuery));
+    </script>
+
 }

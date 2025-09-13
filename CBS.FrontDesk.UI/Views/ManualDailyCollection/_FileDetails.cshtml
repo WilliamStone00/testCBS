@@ -2,12 +2,8 @@
 @using Resources
 
 <fieldset class="fieldset-custom">
-    <legend class="legend-custom">File Details: @(Model?.FileUploadId ?? "N/A")</legend>
-
-    <!-- =================================================
-         SUMMARY CARDS SECTION
-    ================================================== -->
     <div class="row g-2">
+        <h4 class="legend-custom text-info">File Details: @(Model?.FileUploadId ?? "N/A")</h4>
         <!-- Uploaded By -->
         <div class="col-6 col-md-3">
             <div class="card card-border-shadow-warning h-100 p-2">
@@ -35,7 +31,7 @@
                         </div>
                         <h6 class="ms-1 mb-0" style="font-size: 0.95rem;">
                             @* CORRECTED: The Branch Name is not part of the FileUploadResponse entity. We'll display the Branch ID. *@
-                            @Model.BranchId
+                            @Model.BranchName
                         </h6>
                     </div>
                     <p class="mb-0 text-muted" style="font-size: 0.75rem;">@ChequeManagements.Branch</p>
@@ -107,7 +103,7 @@
                             <td>@detail.memberReference</td>
                             <td>@detail.memberName</td>
                             <td>@detail.memberBranchName</td>
-                            <td>@* BranchName is not in the detail DTO, we can omit or add it if available *@</td>
+                            <td>@Model.BranchName</td>
                             <td class="text-end">@string.Format("{0:N2}", detail.amount)</td>
                         </tr>
                     }
