@@ -1,0 +1,208 @@
+﻿
+
+@{
+    ViewBag.Title = @AccountingDay_Create.OpenOrCloseAccountingDay;
+}
+@using Resources
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+        <div class="card">
+            <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+                <div class="accordion-item active">
+                    <h2 class="accordion-header text-body d-flex justify-content-between"
+                        id="accordionPopoutIconThree">
+                        <button type="button"
+                                class="accordion-button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionPopoutIcon-3"
+                                aria-expanded="true"
+                                aria-controls="accordionPopoutIcon-3">
+                            <i class="mdi mdi-cash-multiple me-2"></i>@AccountingDay_Create.OpenOrCloseAccountingDay
+                        </button>
+                    </h2>
+                    <div id="accordionPopoutIcon-3"
+                         class="accordion-collapse collapse show"
+                         data-bs-parent="#accordionPopoutIcon">
+                        <div class="accordion-body">
+                            <div id="mainviewChange">
+                                <div class="change-group">
+                                    @*<div class="card mb-4">
+                                        <div class="card-body d-sm-flex d-block">
+                                            <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0 ms-auto">
+                                                <div class="ms-3">
+                                                    <a type="button" onclick="LoadDataGen('Fee','myDataTable','_Data',0,'datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View List">
+                                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                                    </a>
+                                                </div>
+                                                <div class="ms-3">
+                                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','Fee')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Add new">
+                                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>*@
+                                    <div id="datalistingview">
+                                        @Html.Partial("_Create")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+    function AjaxPostAndUpdateOpenCloseOfDay(form) {
+        console.log("Form Action:", form.action);
+        console.log("Form Method:", form.method);
+        if (!validateDate()) {
+            return false;
+        }
+        var formData = new FormData(form);
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+
+        $.validator.unobtrusive.parse(form);
+        if ($(form).valid()) {
+            alertify.confirm("Confirmation", "Are you sure you want to perform this action? ",
+                function () {
+                    var ajaxConfig = {
+                        type: 'POST',
+                        url: form.action,
+                        data: formData,
+                        success: function (response) {
+                            console.log("Response:", response);
+                            if (response.success) {
+                                if (response.status === "Exist") {
+                                    appalert(response.message, 3, 1);
+                                } else if (response.status === "Failed") {
+                                    appalert(response.message, 2, 1);
+                                } else {
+                                    appalert(response.message, 1, 1);
+                                }
+
+                                if (response.option === 'Update' && response.reloadDataView === "Yes") {
+                                    LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                                } else if (response.optype === 'Insert' && response.reloadDataView === "Yes") {
+                                    EditResetMain("KEY", response.option, response.divLoaderCreator, response.controllerName, response.reinitializedActionName, response.groupID);
+                                } else if (response.reloadDataView === "Yes") {
+                                    LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                                }
+                            } else {
+                                if (response.Status === "Exist") {
+                                    appalert(response.message, 3, 1);
+                                } else {
+                                    appalert(response.message, 2, 1);
+                                }
+                            }
+                        },
+                        error: function (err) {
+                            console.log("Error:", err);
+
+                            if (err.status === 401) { // Unauthorized
+                                // Session has expired, redirect to the login page
+                                window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+                            } else {
+                                appalert(err.statusText, 0, 1);
+                            }
+                        }
+                    };
+
+                    if ($(form).attr('enctype') === "multipart/form-data") {
+                        ajaxConfig.contentType = false;
+                        ajaxConfig.processData = false;
+                    }
+
+                    console.log("AJAX Config:", ajaxConfig);
+                    $.ajax(ajaxConfig);
+                },
+                function () {
+                    appalert('Transaction cancelled', 3, 1);
+                }
+            );
+        }
+        return false;
+    }
+
+    $(document).ready(function () {
+       
+        updateBranchesVisibility();
+        toggleBranchSelection();
+
+        $("#checkAllBranches").change(function () {
+            var isChecked = $(this).is(":checked");
+            $(".branch-item input[type=checkbox]").prop("checked", isChecked);
+        });
+
+        $("#branchSearch").on("input", function () {
+            var searchValue = $(this).val().toLowerCase();
+            $(".branch-item").each(function () {
+                var branchName = $(this).data("branch-name").toLowerCase();
+                $(this).toggle(branchName.indexOf(searchValue) > -1);
+            });
+        });
+
+        $("#centralizeOptionCheckbox").change(function () {
+            toggleBranchSelection();
+        });
+
+        function updateBranchesVisibility() {
+            var branchCount = $(".branch-item").length;
+            if (branchCount <= 1) {
+                $("#centralizeOptionWrapper").hide();
+                $("#branchSearchWrapper").hide();
+                $("#selectAll").hide();
+                $(".branch-item input[type=checkbox]").prop("checked", true);
+                $(".branch-item input[type=checkbox]").prop("disabled", true);
+                $("#checkAllBranches").hide();
+            } else {
+                $("#centralizeOptionWrapper").show();
+                $("#selectAll").show();
+                $("#branchSearchWrapper").show();
+                $(".branch-item input[type=checkbox]").prop("disabled", false);
+                $("#checkAllBranches").show();
+            }
+        }
+
+        function toggleBranchSelection() {
+            var isCentralized = $('#centralizeOptionCheckbox').is(':checked');
+            $('#branchSearchWrapper, #branchesSelection .branch-list, #checkAllBranchesWrapper').toggle(!isCentralized);
+        }
+    });
+    function validateDate() {
+        var dateInput = document.getElementById("dateInput").value;
+        var selectedDate = new Date(dateInput);
+
+        // Normalize both dates to the start of the day (midnight)
+        selectedDate.setHours(0, 0, 0, 0);
+
+        var currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+
+        if (selectedDate > currentDate) {
+            appalert("The Date cannot be greater than today's date.", 2, 1);
+            return false;
+        }
+
+        return true;
+    }
+
+
+</script>
+}
+
+
+

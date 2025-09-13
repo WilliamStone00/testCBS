@@ -1,0 +1,95 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+    @using Resources
+@{
+    ViewBag.Title = @ExpenseOtherPayment.OtherExpenseOperations;
+}
+
+<!-- 🔷 Page Title and Welcome Message -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-3">
+            <div class="card-body text-center">
+                <h1 class="card-title text-danger">
+                    <i class="mdi mdi-cash-minus me-2"></i> @ExpenseOtherPayment.CashDeskManagement
+                </h1>
+                <p class="card-text">
+                    @ExpenseOtherPayment.WelcomeToTheCashDeskOf <strong>@ExpenseOtherPayment.TRUSTSOFTCREDITTSC</strong>. @ExpenseOtherPayment.ThisInterfaceManages <strong>@ExpenseOtherPayment.OtherCashOutOperations</strong> @ExpenseOtherPayment.IncludingExpensesMadeTo <strong>@ExpenseOtherPayment.Members</strong>, <strong>@ExpenseOtherPayment.Staff</strong>, @ExpenseOtherPayment.Or <strong>@ExpenseOtherPayment.NonMembers</strong>.
+                </p>
+                <p class="card-text">
+                    <strong>@ExpenseOtherPayment.OtherExpenses</strong> @ExpenseOtherPayment.RefersToPhysicalCashPaidOut <strong>@ExpenseOtherPayment.GeneralLedgerGLAccounts</strong> @ExpenseOtherPayment.UsingPredefined <strong>@ExpenseOtherPayment.AccountingEventItems</strong>.
+                </p>
+                <p class="card-text">
+                    💡 <strong>@ExpenseOtherPayment.Note:</strong> @ExpenseOtherPayment.ThisInterfaceSupportsGLLinked <strong>@ExpenseOtherPayment.CashOutPayments</strong> @ExpenseOtherPayment.WithOptionalMemberAssociation.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section for Other Expenses -->
+<div class="row">
+    <div class="col-12">
+        <div class="accordion mb-4" id="tipsAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed fw-bold text-danger" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+                        <i class="mdi mdi-alert-circle-outline me-2"></i> @ExpenseOtherPayment.TipsAndGuidelinesForOtherExpense
+                    </button>
+                </h2>
+                <div id="collapseTips" class="accordion-collapse collapse" data-bs-parent="#tipsAccordion">
+                    <div class="accordion-body">
+                        <ul class="mb-2">
+                            <li><strong>@ExpenseOtherPayment.MemberVsNonMember:</strong> @ExpenseOtherPayment.UseTheRadioButtonsToIndicateWhetherTheRecipientIsA <strong>@ExpenseOtherPayment.Member</strong> (@ExpenseOtherPayment.SearchRequired) @ExpenseOtherPayment.OrA <strong>@ExpenseOtherPayment.NonMemberStaff</strong>.</li>
+                            <li><strong>@ExpenseOtherPayment.GLPosting:</strong> @ExpenseOtherPayment.EachTransactionIsRecordedAgainstAConfigured <strong>@ExpenseOtherPayment.GLAccount</strong> @ExpenseOtherPayment.TiedToTheSelected <strong>@ExpenseOtherPayment.EventItem</strong>.</li>
+                            <li><strong>@ExpenseOtherPayment.MandatoryEventItem:</strong> @ExpenseOtherPayment.SelectingAnEventItemIs <strong>@ExpenseOtherPayment.Required</strong> @ExpenseOtherPayment.ToEnsureProperGLMappingAndAuditTrail.</li>
+                            <li><strong>@ExpenseOtherPayment.ClearBeneficiaryInfo:</strong> @ExpenseOtherPayment.TheRecipientsNameIsRequiredForAllTransactions</li>
+                            <li><strong>@ExpenseOtherPayment.NarrationMatters:</strong> @ExpenseOtherPayment.AMeaningfulNarrationOrDescriptionIsVitalForAccountabilityAndFinancialClarity.</li>
+                            <li><strong>@ExpenseOtherPayment.DenominationBreakdown:</strong> @ExpenseOtherPayment.TheActualAmountDisbursedShouldBeBrokenDownUsingTheDenominationInterfaceToMatchTheTotalCashOut.</li>
+                            <li><strong>@ExpenseOtherPayment.BranchLevelConfig:</strong> @ExpenseOtherPayment.OnlyEventItemsAuthorizedForYourBranchWillBeVisibleInTheDropdown.</li>
+                        </ul>
+                        <p class="text">
+                            <strong>@ExpenseOtherPayment.Reminder:</strong> @ExpenseOtherPayment.ThisModuleIsDesignedFor <strong>@ExpenseOtherPayment.NonLoanAndNonWithdrawalCashOuts</strong>. @ExpenseOtherPayment.ForThoseOperationsPleaseUseTheirRespectiveModules.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 🔷 Main Transaction Area -->
+<div class="row g-4">
+    <div class="col-md-3">
+        <!-- Denominations Breakdown -->
+        @Html.Partial("_DenominationBreakDown")
+    </div>
+
+    <div class="col-md-9">
+        <!-- Collapsible Card for Cash Transactions -->
+        <div class="accordion" id="collapsibleSection">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingExpenseOps">
+                    <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapseExpenseOps" aria-expanded="true" aria-controls="collapseExpenseOps">
+                        <i class="mdi mdi-cash-refund me-2"></i> <span id="cashDeskOperations">OTHER CASH-OUT OPERATIONS</span>
+                    </button>
+                </h2>
+                <div id="collapseExpenseOps" class="accordion-collapse collapse show" data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body p-4">
+                        <!-- Cash-Out Form Partial -->
+                        <div class="mt-4" id="datalistingview_inner">
+                            @Html.Partial("_ExpenseOtherTransactionDesk")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_model")
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/Crud/CashDesk/ExpensesCashDesk.js"></script>
+}

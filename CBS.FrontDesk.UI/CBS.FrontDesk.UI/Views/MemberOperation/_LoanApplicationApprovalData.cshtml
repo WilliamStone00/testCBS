@@ -1,0 +1,211 @@
+﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
+@using Resources
+
+
+@if (Model.LoanApplications.Count == 0)
+{
+    <div class="text-center my-3">
+        <p class="fs-5 text-muted">@GlobalLoanApplicationApproval.NoLoanApplicationFound</p>
+    </div>
+}
+else
+{
+    <div class="table-responsive mb-3">
+        <table class="table table-hover table-bordered" id="myDataTable">
+            <thead class="table-light">
+                <tr>
+                    <th>@GlobalLoanApplicationApproval.Date</th>
+                    <th>@GlobalLoanApplicationApproval.MembersReferences</th>
+                    <th>@GlobalLoanApplicationApproval.LoanType</th>
+                    <th>@GlobalLoanApplicationApproval.Amount</th>
+                    <th>@GlobalLoanApplicationApproval.ApplicationType</th>
+                    <th>@GlobalLoanApplicationApproval.Status</th>
+                    <th>@GlobalLoanApplicationApproval.Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model.LoanApplications.OrderByDescending(app => app.ApplicationDate))
+                {
+                    <tr>
+                        <td>@d.ApplicationDate.ToString("dd MMM yyyy")</td>
+                        <td>@d.CustomerId</td>
+                        <td>@d.LoanType</td>
+                        <td>@d.Amount.ToString("#,0.00")</td>
+                        <td>@d.LoanApplicationType</td>
+                        <td>
+                            @if (d.ApprovalStatus == "Awaits_Loan_Commitee_Validation")
+                            {
+                                <span class="badge bg-warning text-dark">@GlobalLoanApplicationApproval.AwaitingCommittee</span>
+                            }
+                            else if (d.ApprovalStatus == "Await_Initialization_Fee_Payment")
+                            {
+                                <span class="badge bg-info text-white">@GlobalLoanApplicationApproval.AwaitingFeePayment</span>
+                            }
+                            else
+                            {
+                                if (d.IsApproved)
+                                {
+                                    <span class="badge bg-success text-white">@d.ApprovalStatus</span>
+                                }
+                                else
+                                {
+                                    if (d.ApprovalStatus == "Validated")
+                                    {
+                                        <span class="badge bg-dark text-white">@d.ApprovalStatus</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger text-white">@d.ApprovalStatus</span>
+                                    }
+                                }
+                            }
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="actionDropdown@d.Id" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="actionDropdown@d.Id">
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="AddORUpdateGen('@d.Id', 'datalistingview', '_LoanApplicationApproval', 'loan_approval', 'MemberOperation', 'applications')">
+                                            <i class="fas fa-check-circle me-2"></i> @GlobalLoanApplicationApproval.Approve
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#viewDetailsModal@d.Id">
+                                            <i class="fas fa-info-circle me-2"></i>@GlobalLoanApplicationApproval.Details
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="#" onclick="DeleteRecordDataTable('LoanApplications', '@d.Id', 'myDataTable', '_Data', 0, 'datalistingview')">
+                                            <i class="fas fa-trash-alt me-2"></i>@GlobalLoanApplicationApproval.Delete
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="ResetStatus('@d.Id')">
+                                            <i class="fas fa-undo me-2"></i>@GlobalLoanApplicationApproval.Reset Status
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Modal for View Details -->
+                    @*<div class="modal fade" id="viewDetailsModal@d.Id" tabindex="-1" aria-labelledby="viewDetailsModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="viewDetailsModalLabel">Loan Application Details</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        @Html.Partial("_LoanDetails", d)
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+
+
+@*<div class="container my-4">
+        @if (Model.LoanApplications.Count == 0)
+        {
+            <div class="alert alert-info text-center" role="alert">
+                No loan application was found for validation.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive mb-3">
+                <table class="table table-hover table-bordered" id="loanApplicationsTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Date</th>
+                            <th>Member Ref</th>
+                            <th>Product</th>
+                            <th>Amount</th>
+                            <th>I.Rate (%)</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var d in Model.LoanApplications.OrderByDescending(app => app.ApplicationDate))
+                        {
+                            <tr>
+                                <td>@d.ApplicationDate.ToString("dd MMM yyyy")</td>
+                                <td>@d.CustomerId</td>
+                                <td>@d.LoanProduct.ProductName</td>
+                                <td>@d.Amount.ToString("#,0.00")</td>
+                                <td>@d.InterestRate.ToString("F2")</td>
+                                <td>
+                                    @if (d.IsApproved)
+                                    {
+                                        <span class="badge bg-success text-white">@d.ApprovalStatus</span>
+                                    }
+                                    else
+                                    {
+                                        if (d.ApprovalStatus == "Validated")
+                                        {
+                                            <span class="badge bg-secondary text-white">@d.ApprovalStatus</span>
+                                        }
+                                        else if (d.ApprovalStatus == "Awaits_Loan_Commitee_Validation")
+                                        {
+                                            <span class="badge bg-warning text-dark">Awaiting Committee</span>
+                                        }
+                                        else if (d.ApprovalStatus == "Await_Initialization_Fee_Payment")
+                                        {
+                                            <span class="badge bg-info text-white">Awaiting Fee Payment</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger text-white">@d.ApprovalStatus</span>
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @if (!d.IsApproved)
+                                    {
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-light btn-sm dropdown-toggle" id="actionDropdown@d.Id" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fas fa-cogs"></i>
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="actionDropdown@d.Id">
+                                                <li>
+                                                    <a class="dropdown-item" href="#" onclick="AddORUpdateGen('@d.Id', 'datalistingview', '_LoanApplicationApproval', 'application_detail', 'MemberOperation', 'applications')">
+                                                        <i class="fas fa-check-circle me-2"></i> Approve
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="#" onclick="ViewDetails('@d.Id')">
+                                                        <i class="fas fa-info-circle me-2"></i> View Details
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item text-danger" href="#" onclick="DeleteRecordDataTable('LoanApplications', '@d.Id', 'loanApplicationsTable', '_Data', 0, 'datalistingview')">
+                                                        <i class="fas fa-trash-alt me-2"></i> Delete
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>*@
+

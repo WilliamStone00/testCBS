@@ -1,0 +1,163 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.CashCeilingManagement.CashCeilingRequest>
+    @using Resources
+@{
+    ViewBag.Title = @InitiatorListing.MyCashCeilingRequests;
+}
+<div class="container mt-4">
+    <header class="mb-3 text-center">
+        <h1 class="text-primary fw-bold">
+            <i class="mdi mdi-cash-multiple me-2"></i> @InitiatorListing.MyCashCeilingRequests
+        </h1>
+        <p class="text-muted">
+            @InitiatorListing.ManageYourSubmittedCashCeiling.
+        </p>
+        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+    </header>
+
+    <!-- Tips Section -->
+    <div class="card mb-4">
+        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+            <span><i class="mdi mdi-information-outline me-2"></i> @InitiatorListing.TIPS</span>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRequestTips" aria-expanded="false" aria-controls="collapseRequestTips">
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+        </h6>
+        <div id="collapseRequestTips" class="collapse">
+            <div class="card-body">
+                <ul class="mb-0">
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @InitiatorListing.YouCanEditRequestsWithAPendingStatus.</li>
+                    <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @InitiatorListing.DeletingARequestRemovesItPermanently.</li>
+                    <li><i class="mdi mdi-information-outline text-primary me-2"></i> @InitiatorListing.EnsureYourRequestDetailsAreAccurateBeforeSubmitting.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table Section -->
+    @if (!Model.Any())
+    {
+        <div class="text-center my-3">
+            <p class="text-muted">@InitiatorListing.YouHaventCreatedAnyCashCeilingRequestsYet.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th>@InitiatorListing.Branch</th>
+                        <th>@InitiatorListing.RequestType</th>
+                        <th>@InitiatorListing.Amount</th>
+                        <th>@InitiatorListing.Status</th>
+                        <th>@InitiatorListing.Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var request in Model)
+                    {
+                        <tr>
+                            <td>@request.BranchName</td>
+                            <td>
+                                @if (request.RequestType == "Cash_To_Vault")
+                                {
+                                    <span class="badge bg-primary">@InitiatorListing.CashToVault</span>
+                                }
+                                else if (request.RequestType == "Subteller_Cash_To_PrimaryTeller")
+                                {
+                            <span class="badge bg-warning">@InitiatorListing.SubtellerToPrimaryTeller</span>
+                                }
+                                else
+                                {
+                            <span class="badge bg-secondary">@InitiatorListing.Unknown</span>
+                                }
+                            </td>
+                            <td>@request.CashoutRequestAmount.ToString("#,##0.0") FCFA</td>
+                            <td>
+                                @if (request.ApprovedStatus == "Pending")
+                                {
+                                    <span class="badge bg-warning">@InitiatorListing.Pending</span>
+                                }
+                                else if (request.ApprovedStatus == "Approved")
+                                {
+                            <span class="badge bg-success">@InitiatorListing.Approved</span>
+                                }
+                                else if (request.ApprovedStatus == "Rejected")
+                                {
+                            <span class="badge bg-danger">@InitiatorListing.Rejected</span>
+                                }
+                                else
+                                {
+                            <span class="badge bg-secondary">@InitiatorListing.Unknown</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-center align-items-center gap-2">
+                                    @if (request.ApprovedStatus == "Pending")
+                                    {
+                                        <!-- Edit Button -->
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-primary"
+                                            onclick="editRequest('@request.Id')"
+                                            data-bs-toggle="tooltip"
+                                            title="Edit Request">
+                                        <i class="fas fa-edit"></i> @GlobalShared.Edit
+                                    </button>
+                                    }
+                                    <!-- Delete Button -->
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-danger"
+                                        onclick="deleteRequest('@request.Id')"
+                                        data-bs-toggle="tooltip"
+                                        title="Delete Request">
+                                    <i class="fas fa-trash-alt"></i> @GlobalShared.Delete
+                                </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function editRequest(requestId) {
+            // Show modal and load edit form via AJAX
+            $('#vaultDetailsModal').modal('show');
+            $('#vaultDetailsContent').html('<p>Loading...</p>');
+
+            $.ajax({
+                url: '/CashCeiling/EditRequest',
+                type: 'GET',
+                data: { id: requestId },
+                success: function (data) {
+                    $('#vaultDetailsContent').html(data);
+                },
+                error: function () {
+                    $('#vaultDetailsContent').html('<p class="text-danger">Error loading edit form.</p>');
+                }
+            });
+        }
+
+        function deleteRequest(requestId) {
+            if (confirm("Are you sure you want to delete this request?")) {
+                $.ajax({
+                    url: '/CashCeiling/DeleteRequest',
+                    type: 'POST',
+                    data: { id: requestId },
+                    success: function () {
+                        alert("Request deleted successfully.");
+                        location.reload();
+                    },
+                    error: function () {
+                        alert("Error deleting the request.");
+                    }
+                });
+            }
+        }
+    </script>
+}

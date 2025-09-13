@@ -1,30 +1,30 @@
-﻿using Newtonsoft.Json;
+﻿using CBS.API.Helper.APICallHelper;
+using CBS.FrontDesk.Data;
+using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
+using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
+using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Sockets;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Security;
-using CBS.API.Helper.APICallHelper;
-using Newtonsoft.Json.Linq;
-using System.Net;
-using System.IdentityModel.Tokens.Jwt;
-using System.IO;
-using CBS.FrontDesk.Data.Entity.LoanConf;
-using System.Net.Http.Headers;
 using System.Web.UI.WebControls;
-using CBS.FrontDesk.Data.Entity.Accounting;
-using System.Net.Sockets;
-using CBS.FrontDesk.Data.Entity.CustomerManagement;
-using CBS.FrontDesk.Data;
-
-using System.Threading;
-using CBS.FrontDesk.Data.Entity.SavingProducts;
-using Microsoft.AspNetCore.Http;
 
 namespace CBS.API.Helper
 {
@@ -42,7 +42,7 @@ namespace CBS.API.Helper
                 {
                     _httpClient = new HttpClient();
                     _httpClient.BaseAddress = new Uri(newbaseUrl);
-                   
+
                     _baseURL = newbaseUrl;
                     _newbaseURL = baseUrl;
 
@@ -55,7 +55,7 @@ namespace CBS.API.Helper
 
         }
 
-        
+
 
         public async Task<(List<IndividualProfile> customers, PaginationMetadata pagination)> GetCustomersWithPagination(string apiUrl)
         {
@@ -145,7 +145,7 @@ namespace CBS.API.Helper
             }
             catch (Exception ex)
             {
-                
+
             }
             return null;
         }
@@ -289,7 +289,325 @@ namespace CBS.API.Helper
         }
 
 
-        public async Task<ApiResponse<T>> UploadFileToApiAsync<T>(
+        public async Task<ServiceResponseDailySaverUploadResult> UploadFileToApiAsync<T>(
+    HttpPostedFileBase uploadedFile,
+    string fileFormFieldName,
+    string apiEndpointUrl,
+    Dictionary<string, string> additionalFields = null)
+        {
+            try
+            {
+                // Validate inputs
+                if (uploadedFile == null || uploadedFile.ContentLength <= 0)
+                {
+                    return new ServiceResponseDailySaverUploadResult
+                    {
+                        Status = "FAILED",
+                        Message = "No file was uploaded or the file is empty."
+                    };
+                }
+
+                if (string.IsNullOrEmpty(fileFormFieldName))
+                {
+                    return new ServiceResponseDailySaverUploadResult
+                    {
+                        Status = "FAILED",
+                        Message = "File form field name cannot be null or empty."
+                    };
+                }
+
+                if (string.IsNullOrEmpty(apiEndpointUrl))
+                {
+                    return new ServiceResponseDailySaverUploadResult
+                    {
+                        Status = "FAILED",
+                        Message = "API endpoint URL cannot be null or empty."
+                    };
+                }
+
+                apiEndpointUrl = RemoveDuplicateSlashesException($"{GetEndpoint(_newbaseURL)}{apiEndpointUrl}");
+
+                using (var formContent = new MultipartFormDataContent())
+                {
+                    // Reset stream position to beginning
+                    uploadedFile.InputStream.Position = 0;
+
+                    // Create stream content from uploaded file
+                    var streamContent = new StreamContent(uploadedFile.InputStream);
+
+                    // Set content type - handle null/empty content type
+                    var contentType = string.IsNullOrEmpty(uploadedFile.ContentType)
+                        ? "application/octet-stream"
+                        : uploadedFile.ContentType;
+                    streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(contentType);
+
+                    // CRITICAL FIX: Add file content with proper field name and filename
+                    // Use quotes around field name for proper form-data formatting
+                    formContent.Add(streamContent, $"\"{fileFormFieldName}\"", $"\"{uploadedFile.FileName}\"");
+
+                    // Add any additional form fields
+                    if (additionalFields != null)
+                    {
+                        foreach (var field in additionalFields)
+                        {
+                            if (!string.IsNullOrEmpty(field.Key)) // Validate field key
+                            {
+                                formContent.Add(new StringContent(field.Value ?? string.Empty), field.Key);
+                            }
+                        }
+                    }
+
+                    // Add authorization header
+                    AddAuthorizationHeader(_httpClient);
+
+                    string url = RemoveDuplicateSlashes(apiEndpointUrl);
+                    var request = new HttpRequestMessage(HttpMethod.Post, _httpClient.BaseAddress.OriginalString + url)
+                    {
+                        Content = formContent
+                    };
+
+                    // Set timeout for this specific request to 30 seconds (30,000 milliseconds)
+                    using (var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(30000 * 4)))
+                    {
+                        // Send POST request with timeout
+                        var response = await _httpClient.SendAsync(request, cts.Token);
+                        var responseText = await response.Content.ReadAsStringAsync();
+
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            return new ServiceResponseDailySaverUploadResult
+                            {
+                                Status = "FAILED",
+                                Message = $"API call failed with status {response.StatusCode}: {responseText}"
+                            };
+                        }
+
+                        // Handle empty response
+                        if (string.IsNullOrWhiteSpace(responseText))
+                        {
+                            return new ServiceResponseDailySaverUploadResult
+                            {
+                                Status = "FAILED",
+                                Message = "API returned empty response."
+                            };
+                        }
+
+                        // Deserialize to ApiResponse<T>
+                        try
+                        {
+                            var result = JsonConvert.DeserializeObject<ServiceResponseDailySaverUploadResult>(responseText);
+
+                            if (result == null)
+                            {
+                                return new ServiceResponseDailySaverUploadResult
+                                {
+                                    Status = "FAILED",
+                                    Message = "Failed to deserialize API response - result is null."
+                                };
+                            }
+
+                            return result;
+                        }
+                        catch (JsonException jsonEx)
+                        {
+                            return new ServiceResponseDailySaverUploadResult
+                            {
+                                Status = "FAILED",
+                                Message = $"Failed to deserialize API response: {jsonEx.Message}. Raw response: {responseText}"
+                            };
+                        }
+                    }
+                }
+            }
+            catch (OperationCanceledException ocEx) when (ocEx.CancellationToken.IsCancellationRequested)
+            {
+                return new ServiceResponseDailySaverUploadResult
+                {
+                    Status = "FAILED",
+                    Message = "Request timeout: The operation was cancelled after 120 seconds."
+                };
+            }
+            catch (HttpRequestException httpEx)
+            {
+                return new ServiceResponseDailySaverUploadResult
+                {
+                    Status = "FAILED",
+                    Message = $"HTTP request failed: {httpEx.Message}"
+                };
+            }
+            catch (TaskCanceledException tcEx)
+            {
+                return new ServiceResponseDailySaverUploadResult
+                {
+                    Status = "FAILED",
+                    Message = $"Request timeout: {tcEx.Message}"
+                };
+            }
+            catch (Exception ex)
+            {
+                var model = new ServiceResponseDailySaverUploadResult();
+
+                model.Status = "FAILED";
+
+                model.Message = $"Unexpected error: {ex.Message}";
+                return model;
+            }
+        }
+        
+
+        public async Task<ApiResponse<T>> UploadFileToApiAsyncoo<T>(
+    HttpPostedFileBase uploadedFile,
+    string fileFormFieldName,
+    string apiEndpointUrl,
+    Dictionary<string, string> additionalFields = null)
+        {
+            try
+            {
+                // Validate inputs
+                if (uploadedFile == null || uploadedFile.ContentLength <= 0)
+                {
+                    return new ApiResponse<T>
+                    {
+                        IsSuccess = false,
+                        Message = "No file was uploaded or the file is empty."
+                    };
+                }
+
+                if (string.IsNullOrEmpty(fileFormFieldName))
+                {
+                    return new ApiResponse<T>
+                    {
+                        IsSuccess = false,
+                        Message = "File form field name cannot be null or empty."
+                    };
+                }
+
+                if (string.IsNullOrEmpty(apiEndpointUrl))
+                {
+                    return new ApiResponse<T>
+                    {
+                        IsSuccess = false,
+                        Message = "API endpoint URL cannot be null or empty."
+                    };
+                }
+
+                apiEndpointUrl = RemoveDuplicateSlashesException($"{GetEndpoint(_newbaseURL)}{apiEndpointUrl}");
+
+                using (var formContent = new MultipartFormDataContent())
+                {
+                    // Reset stream position to beginning
+                    uploadedFile.InputStream.Position = 0;
+
+                    // Create stream content from uploaded file
+                    var streamContent = new StreamContent(uploadedFile.InputStream);
+
+                    // Set content type - handle null/empty content type
+                    var contentType = string.IsNullOrEmpty(uploadedFile.ContentType)
+                        ? "application/octet-stream"
+                        : uploadedFile.ContentType;
+                    streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(contentType);
+
+                    // CRITICAL FIX: Add file content with proper field name and filename
+                    // Use quotes around field name for proper form-data formatting
+                    formContent.Add(streamContent, $"\"{fileFormFieldName}\"", $"\"{uploadedFile.FileName}\"");
+
+                    // Add any additional form fields
+                    if (additionalFields != null)
+                    {
+                        foreach (var field in additionalFields)
+                        {
+                            if (!string.IsNullOrEmpty(field.Key)) // Validate field key
+                            {
+                                formContent.Add(new StringContent(field.Value ?? string.Empty), field.Key);
+                            }
+                        }
+                    }
+
+                    // Add authorization header
+                    AddAuthorizationHeader(_httpClient);
+
+                    string url = RemoveDuplicateSlashes(apiEndpointUrl);
+                    var request = new HttpRequestMessage(HttpMethod.Post, _httpClient.BaseAddress.OriginalString + url)
+                    {
+                        Content = formContent
+                    };
+
+                    // Send POST request
+                    var response = await _httpClient.SendAsync(request);
+                    var responseText = await response.Content.ReadAsStringAsync();
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        return new ApiResponse<T>
+                        {
+                            IsSuccess = false,
+                            Message = $"API call failed with status {response.StatusCode}: {responseText}"
+                        };
+                    }
+
+                    // Handle empty response
+                    if (string.IsNullOrWhiteSpace(responseText))
+                    {
+                        return new ApiResponse<T>
+                        {
+                            IsSuccess = false,
+                            Message = "API returned empty response."
+                        };
+                    }
+
+                    // Deserialize to ApiResponse<T>
+                    try
+                    {
+                        var result = JsonConvert.DeserializeObject<ApiResponse<T>>(responseText);
+
+                        if (result == null)
+                        {
+                            return new ApiResponse<T>
+                            {
+                                IsSuccess = false,
+                                Message = "Failed to deserialize API response - result is null."
+                            };
+                        }
+
+                        return result;
+                    }
+                    catch (JsonException jsonEx)
+                    {
+                        return new ApiResponse<T>
+                        {
+                            IsSuccess = false,
+                            Message = $"Failed to deserialize API response: {jsonEx.Message}. Raw response: {responseText}"
+                        };
+                    }
+                }
+            }
+            catch (HttpRequestException httpEx)
+            {
+                return new ApiResponse<T>
+                {
+                    IsSuccess = false,
+                    Message = $"HTTP request failed: {httpEx.Message}"
+                };
+            }
+            catch (TaskCanceledException tcEx)
+            {
+                return new ApiResponse<T>
+                {
+                    IsSuccess = false,
+                    Message = $"Request timeout: {tcEx.Message}"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<T>
+                {
+                    IsSuccess = false,
+                    Message = $"Unexpected error: {ex.Message}"
+                };
+            }
+        }
+
+        public async Task<ApiResponse<T>> UploadFileToApiAsync00<T>(
     HttpPostedFileBase uploadedFile,
     string fileFormFieldName,
     string apiEndpointUrl,
@@ -359,11 +677,11 @@ namespace CBS.API.Helper
                                 }
                             }
                         }
- 
+
                         // Add authorization header
                         AddAuthorizationHeader(_httpClient);
-                        string url =RemoveDuplicateSlashes(apiEndpointUrl);
-                        var request = new HttpRequestMessage(HttpMethod.Post, _httpClient.BaseAddress.OriginalString+ url)
+                        string url = RemoveDuplicateSlashes(apiEndpointUrl);
+                        var request = new HttpRequestMessage(HttpMethod.Post, _httpClient.BaseAddress.OriginalString + url)
                         {
                             Content = formContent
                         };
@@ -442,6 +760,84 @@ namespace CBS.API.Helper
                 };
             }
         }
+
+
+
+        public async Task UploadFileToApi(
+HttpPostedFileBase uploadedFile,
+string fileFormFieldName,
+string apiEndpointUrl,
+Dictionary<string, string> additionalFields = null)
+        {
+            try
+            {
+
+
+                apiEndpointUrl = RemoveDuplicateSlashesException($"{GetEndpoint(_newbaseURL)}{apiEndpointUrl}");
+
+                using (var formContent = new MultipartFormDataContent())
+                {
+                    // Create stream content from uploaded file
+                    using (var streamContent = new StreamContent(uploadedFile.InputStream))
+                    {
+                        // Set content headers properly
+                        streamContent.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data")
+                        {
+                            Name = fileFormFieldName, // Remove extra quotes
+                            FileName = Path.GetFileName(uploadedFile.FileName) // Remove extra quotes
+                        };
+
+                        // Set content type - handle null/empty content type
+                        var contentType = string.IsNullOrEmpty(uploadedFile.ContentType)
+                            ? "application/octet-stream"
+                            : uploadedFile.ContentType;
+                        streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(contentType);
+
+                        // Add file content to form
+                        formContent.Add(streamContent, fileFormFieldName, uploadedFile.FileName);
+
+                        // Add any additional form fields
+                        if (additionalFields != null)
+                        {
+                            foreach (var field in additionalFields)
+                            {
+                                if (!string.IsNullOrEmpty(field.Key)) // Validate field key
+                                {
+                                    formContent.Add(new StringContent(field.Value ?? string.Empty), field.Key);
+                                }
+                            }
+                        }
+
+                        // Add authorization header
+                        AddAuthorizationHeader(_httpClient);
+                        string url = RemoveDuplicateSlashes(apiEndpointUrl);
+                        var request = new HttpRequestMessage(HttpMethod.Post, _httpClient.BaseAddress.OriginalString + url)
+                        {
+                            Content = formContent
+                        };
+                        // Send POST request
+                        await _httpClient.SendAsync(request);
+                        //await response.Content.ReadAsStringAsync();
+
+
+
+                    }
+                }
+            }
+            catch (HttpRequestException httpEx)
+            {
+
+            }
+            catch (TaskCanceledException tcEx)
+            {
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
 
         // Alternative version with better resource management
         public async Task<ApiResponse<T>> UploadFileToApiAsyncImproved<T>(
@@ -624,7 +1020,7 @@ namespace CBS.API.Helper
                 Console.WriteLine($"[ERROR] Exception Details: {exception}");
             }
         }
-    
+
 
         public async Task<APICallBackRespose> PostFilesAndParamsAsync(string apiUrl, Dictionary<string, string> additionalParams, List<HttpPostedFileBase> imageFiles)
         {
@@ -987,7 +1383,7 @@ namespace CBS.API.Helper
 
         public async Task<ApiResponse<List<InfoAccount>>> PostServicesAsync<T>(string apiUrl, object data)
         {
-             
+
             try
             {
                 apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
@@ -1001,7 +1397,7 @@ namespace CBS.API.Helper
             {
 
                 throw (EX);
-       
+
             }
         }
 
@@ -1268,30 +1664,31 @@ namespace CBS.API.Helper
             return await HandleResponse<T>(response);
         }
 
-       
+
+
 
 
 
 
         public class NullableDoubleConverter : JsonConverter<double?>
+    {
+        public override double? ReadJson(JsonReader reader, Type objectType, double? existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            public override double? ReadJson(JsonReader reader, Type objectType, double? existingValue, bool hasExistingValue, JsonSerializer serializer)
-            {
-                if (reader.TokenType == JsonToken.Null)
-                    return null;
+            if (reader.TokenType == JsonToken.Null)
+                return null;
 
-                if (reader.TokenType == JsonToken.Float || reader.TokenType == JsonToken.Integer)
-                    return Convert.ToDouble(reader.Value);
+            if (reader.TokenType == JsonToken.Float || reader.TokenType == JsonToken.Integer)
+                return Convert.ToDouble(reader.Value);
 
-                // Handle other cases if needed
+            // Handle other cases if needed
 
-                return null; // Default return null
-            }
+            return null; // Default return null
+        }
 
-            public override void WriteJson(JsonWriter writer, double? value, JsonSerializer serializer)
-            {
-                throw new NotImplementedException(); // Optional if you don't need to serialize back
-            }
+        public override void WriteJson(JsonWriter writer, double? value, JsonSerializer serializer)
+        {
+            throw new NotImplementedException(); // Optional if you don't need to serialize back
+        }
         }
         // Define a method to deserialize JSON data
         public static T DeserializeJson<T>(string jsonData)
@@ -1337,7 +1734,7 @@ namespace CBS.API.Helper
                 {
                     string responseData = await response.Content.ReadAsStringAsync();
 
-                     if (string.IsNullOrEmpty(responseData))
+                    if (string.IsNullOrEmpty(responseData))
                     {
 
                         if (response.StatusCode == HttpStatusCode.Unauthorized)
@@ -1382,7 +1779,7 @@ namespace CBS.API.Helper
                             return new ApiResponse<T>
                             {
                                 IsSuccess = true,
-                              //  ApiResponseData = obj,
+                                //  ApiResponseData = obj,
                                 Message = statusDescription + " " + message
                             };
                         }
@@ -1714,7 +2111,7 @@ namespace CBS.API.Helper
                             };
                         }
 
-                        AccountResponseDto  data = JsonConvert.DeserializeObject<AccountResponseDto>(responseData, new JsonSerializerSettings
+                        AccountResponseDto data = JsonConvert.DeserializeObject<AccountResponseDto>(responseData, new JsonSerializerSettings
                         {
                             Converters = new List<JsonConverter> { new NullableDoubleConverter() },
                             DateParseHandling = DateParseHandling.DateTimeOffset // Depending on your date format
@@ -2025,9 +2422,9 @@ namespace CBS.API.Helper
                         if (responseData.Contains("\"status\":SUCCESS") || responseData.Contains("\"data\":true") || responseData.Contains("\"isSuccess\":true"))
                         {
                             jsonResponse = JObject.Parse(responseData);
-                         
+
                             message = jsonResponse["message"]?.ToString();
-                            var dataMessage =  jsonResponse["apiResponseData"]?.ToString();
+                            var dataMessage = jsonResponse["apiResponseData"]?.ToString();
                             statusDescription = jsonResponse["statusDescription"]?.ToString();
                             var obj = JsonConvert.DeserializeObject<List<InfoAccount>>(dataMessage);
 
@@ -3863,27 +4260,201 @@ namespace CBS.API.Helper
         {
             _httpClient.Dispose();
         }
+
+        public void UploadFileToApiBackground(
+    HttpPostedFileBase uploadedFile,
+    string fileFormFieldName,
+    string apiEndpointUrl,
+    Dictionary<string, string> additionalFields = null,
+    Action<bool, string> onComplete = null) // Callback for completion
+        {
+            // Fire and forget - run in background
+            Task.Run(async () =>
+            {
+                bool success = false;
+                string message = "";
+
+                try
+                {
+                    await UploadFileToApiInternal(uploadedFile, fileFormFieldName, apiEndpointUrl, additionalFields);
+                    success = true;
+                    message = "Upload completed successfully";
+                }
+                catch (Exception ex)
+                {
+                    success = false;
+                    message = $"Upload failed: {ex.Message}";
+                    // Log the exception
+                    LogError(ex, "Background file upload failed");
+                }
+                finally
+                {
+                    // Notify completion if callback provided
+                    onComplete?.Invoke(success, message);
+                }
+            });
+        }
+
+        // Alternative: Return Task for better control
+        public Task UploadFileToApiBackgroundAsync(
+            HttpPostedFileBase uploadedFile,
+            string fileFormFieldName,
+            string apiEndpointUrl,
+            Dictionary<string, string> additionalFields = null)
+        {
+            // Return task but don't await - allows fire-and-forget
+            return Task.Run(async () =>
+            {
+                try
+                {
+                    await UploadFileToApiInternal(uploadedFile, fileFormFieldName, apiEndpointUrl, additionalFields);
+                }
+                catch (Exception ex)
+                {
+                    // Log but don't throw - this is background operation
+                    LogError(ex, "Background file upload failed");
+                }
+            });
+        }
+
+        // Refactored internal method with proper response handling
+        private async Task UploadFileToApiInternal(
+            HttpPostedFileBase uploadedFile,
+            string fileFormFieldName,
+            string apiEndpointUrl,
+            Dictionary<string, string> additionalFields = null)
+        {
+            if (uploadedFile == null || uploadedFile.ContentLength == 0)
+                throw new ArgumentException("Invalid file provided");
+
+            apiEndpointUrl = RemoveDuplicateSlashesException($"{GetEndpoint(_newbaseURL)}{apiEndpointUrl}");
+
+            using (var formContent = new MultipartFormDataContent())
+            {
+                // Create stream content from uploaded file
+                using (var streamContent = new StreamContent(uploadedFile.InputStream))
+                {
+                    // Set content headers properly
+                    streamContent.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data")
+                    {
+                        Name = $"\"{fileFormFieldName}\"", // Proper quoting
+                        FileName = $"\"{Path.GetFileName(uploadedFile.FileName)}\""
+                    };
+
+                    // Set content type
+                    var contentType = string.IsNullOrEmpty(uploadedFile.ContentType)
+                        ? "application/octet-stream"
+                        : uploadedFile.ContentType;
+                    streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(contentType);
+
+                    // Add file content to form
+                    formContent.Add(streamContent, fileFormFieldName, uploadedFile.FileName);
+
+                    // Add additional form fields
+                    if (additionalFields != null)
+                    {
+                        foreach (var field in additionalFields.Where(f => !string.IsNullOrEmpty(f.Key)))
+                        {
+                            formContent.Add(new StringContent(field.Value ?? string.Empty), field.Key);
+                        }
+                    }
+
+                    // Add authorization header
+                    AddAuthorizationHeader(_httpClient);
+
+                    string url = RemoveDuplicateSlashes(apiEndpointUrl);
+
+                    // Send POST request with proper response handling
+                    using (var response = await _httpClient.PostAsync(url, formContent))
+                    {
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            var errorContent = await response.Content.ReadAsStringAsync();
+                            throw new HttpRequestException($"Upload failed with status {response.StatusCode}: {errorContent}");
+                        }
+
+                        // Optional: Read success response
+                        var responseContent = await response.Content.ReadAsStringAsync();
+                        LogInfo($"Upload successful. Response: {responseContent}");
+                    }
+                }
+            }
+        }
+
+        // Usage Examples:
+
+        // 1. Fire-and-forget with callback
+        //public void UploadWithCallback()
+        //{
+        //    UploadFileToApiBackground(uploadedFile, "file", "/api/upload", null,
+        //        (success, message) => {
+        //            if (success)
+        //                Console.WriteLine("Upload completed!");
+        //            else
+        //                Console.WriteLine($"Upload failed: {message}");
+        //        });
+        //}
+
+        // 2. Fire-and-forget without waiting
+        //public void UploadFireAndForget()
+        //{
+        //    _ = UploadFileToApiBackgroundAsync(uploadedFile, "file", "/api/upload");
+        //    // Method returns immediately, upload runs in background
+        //}
+
+        // 3. Background with optional monitoring
+        //public async void UploadWithMonitoring()
+        //{
+        //    var uploadTask = UploadFileToApiBackgroundAsync(uploadedFile, "file", "/api/upload");
+
+        // Do other work immediately
+        //DoOtherWork();
+
+        //// Optionally wait for completion later
+        //try
+        //{
+        //    await uploadTask;
+        //    ShowSuccessMessage();
+        //}
+        //catch (Exception ex)
+        //{
+        //    ShowErrorMessage(ex.Message);
+        //}
+        //}
+
+        // Helper methods (add to your class)
+        private void LogError(Exception ex, string message)
+        {
+            // Your logging implementation
+            Console.WriteLine($"ERROR: {message} - {ex}");
+        }
+
+        private void LogInfo(string message)
+        {
+            // Your logging implementation
+            Console.WriteLine($"INFO: {message}");
+        }
     }
     public class NullableDoubleConverter : JsonConverter<double?>
+{
+    public override double? ReadJson(JsonReader reader, Type objectType, double? existingValue, bool hasExistingValue, JsonSerializer serializer)
     {
-        public override double? ReadJson(JsonReader reader, Type objectType, double? existingValue, bool hasExistingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null)
-                return null;
+        if (reader.TokenType == JsonToken.Null)
+            return null;
 
-            if (reader.TokenType == JsonToken.Float || reader.TokenType == JsonToken.Integer)
-                return Convert.ToDouble(reader.Value);
+        if (reader.TokenType == JsonToken.Float || reader.TokenType == JsonToken.Integer)
+            return Convert.ToDouble(reader.Value);
 
-            return null; // Default return null
-        }
-
-        public override void WriteJson(JsonWriter writer, double? value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException(); // Optional if you don't need to serialize back
-        }
-       
-
-
+        return null; // Default return null
     }
+
+    public override void WriteJson(JsonWriter writer, double? value, JsonSerializer serializer)
+    {
+        throw new NotImplementedException(); // Optional if you don't need to serialize back
+    }
+
+
+
+}
 
 }

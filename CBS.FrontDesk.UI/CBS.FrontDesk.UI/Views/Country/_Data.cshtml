@@ -1,0 +1,26 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.Config.Country>
+    @using Resources
+<table class="table table-hover" id="myDataTable">
+    <thead class="table-light">
+        <tr>
+            <th>@GlobalCountry.Code</th>
+            <th>@GlobalCountry.Name</th>
+            <th>@GlobalShared.Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model)
+        {
+            <tr>
+                <td style="width:10%">@d.Code</td>
+                <td style="width:80%">@d.Name</td>
+                <td style="width:10%">
+                    @*<a href="/Country/Update/@d.Id" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.Name to edit" onclick="EditResetMain('@d.Id','_Update','datalistingview','Country','InitializeData')">Edit</a>*@
+                    <a href="#" onclick="AddORUpdate(@d.Id,'datalistingview','_Update','update')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.Name @GlobalShared.ToEdit">@GlobalShared.Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.Name" onclick="DeleteRecordDataTable('Country','@d.Id','myDataTable','_Data',2,'datalistingview')">@GlobalShared.Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

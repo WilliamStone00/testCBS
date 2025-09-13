@@ -1,0 +1,96 @@
+﻿@model CBS.FrontDesk.Data.UserManagement.MFAActivation
+@{
+    ViewBag.Title = "TOTP Account Verification";
+    Layout = "~/Views/Shared/_MfaLayout.cshtml";
+}
+
+<div class="mfa-form-box">
+    <div class="text-center mb-4">
+        <img src="~/AppFiles/Images/Logog2XI.png" alt="Logo" class="logo mb-3" style="max-height: 60px;" />
+        <h5 class="text-primary fw-bold">TOTP (Time-based One-Time Password)</h5>
+        <p class="text-muted">Hello <strong>@Model.FullName</strong>, please enter your current code to continue.</p>
+    </div>
+
+    @using (Html.BeginForm("MFACodeVerification", "MFAVerification", FormMethod.Post, new
+    {
+        enctype = "multipart/form-data",
+        onsubmit = "return AjaxPostAndUpdateChangePassword(this);"
+    }))
+    {
+        <fieldset class="border-0">
+            @Html.HiddenFor(m => m.Email)
+            @Html.HiddenFor(m => m.ReturnUrl)
+
+            <div class="form-floating mb-3">
+                @Html.TextBoxFor(m => m.Code, new
+                {
+                    @class = "form-control",
+                    @placeholder = "Enter TOTP Code",
+                    @autocomplete = "off"
+                })
+                <label for="Code">Enter TOTP Code</label>
+                @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Verify Code</button>
+
+            <a href="~/Authentication/Logout" class="btn btn-outline-secondary w-100 mt-2">Cancel & Return to Login</a>
+        </fieldset>
+    }
+
+    @Html.Partial("_Alert")
+
+    <div class="alert alert-info mt-4">
+        <strong>How to Use TOTP:</strong>
+        <ul class="mb-0">
+            <li>Open the <strong>Google Authenticator</strong> or <strong>Microsoft Authenticator</strong> app on your phone.</li>
+            <li>Find the 6-digit code associated with your TSC account. It refreshes every 30 seconds.</li>
+            <li>Type the current code above and click <strong>Verify Code</strong>.</li>
+        </ul>
+    </div>
+
+    @if (ViewBag.Success == false)
+    {
+        <div class="alert alert-outline-danger mt-3">
+            @ViewBag.Message
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function AjaxPostAndUpdateChangePassword(form) {
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                var ajaxConfig = {
+                    type: 'POST',
+                    url: form.action,
+                    data: new FormData(form),
+                    success: function (response) {
+                        if (response.success) {
+                            appalert(response.message, 1, 1);
+                            window.location.href = response.url || '/';
+                        } else {
+                            if (response.state === "Exist") {
+                                appalert(response.message, 3, 1);
+                            } else if (response.state === "Expired") {
+                                appalert(response.message, 2, 1);
+                                window.location.href = response.url || '/Authentication/Logout';
+                            } else {
+                                appalert(response.message, 2, 1);
+                            }
+                        }
+                    },
+                    error: function (err) {
+                        appalert(err.statusText, 0, 1);
+                    },
+                    contentType: false,
+                    processData: false
+                };
+                $.ajax(ajaxConfig);
+            }
+            return false;
+        }
+    </script>
+}

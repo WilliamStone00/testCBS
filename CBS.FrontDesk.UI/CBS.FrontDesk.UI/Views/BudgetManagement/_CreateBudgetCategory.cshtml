@@ -1,0 +1,79 @@
+﻿@model CBS.FrontDesk.Data.Entity.BudgetConfiguration
+    @using Resources
+<div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+    <div class="accordion-item active">
+        <h2 class="accordion-header text-body d-flex justify-content-between"
+            id="accordionPopoutIconThree">
+            <button type="button"
+                    class="accordion-button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordionPopoutIcon-3"
+                    aria-expanded="true"
+                    aria-controls="accordionPopoutIcon-3">
+                <i class="mdi mdi-bank-plus me-2"></i>
+                @GlobalBudgetManagement.BudgetCreation
+            </button>
+        </h2>
+        <div id="accordionPopoutIcon-3"
+             class="accordion-collapse collapse show"
+             data-bs-parent="#accordionPopoutIcon">
+            <div class="accordion-body">
+                <div id="mainviewChange">
+                    <div class="change-group">
+
+                        @using (Html.BeginForm("AddOrUpdate", "BudgetManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                        {
+                            <input type="hidden" name="ServiceOption" value="budgetCategory" id="ServiceOption" />
+                            <div class="row mt-2 gy-4">
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.BudgetCategory.CategoryName, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.BudgetCategory.CategoryName, "", new { @class = "text-danger" })
+                                        <label>@GlobalBudgetManagement.CategoryName</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+
+                                        @Html.DropDownListFor(m => m.BudgetCategory.ChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? "" : ViewBag.ChartOfAccounts, "Text", "Value"), "---"+ @GlobalBudgetManagement.SelectChartOfAccount +"---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(model => model.BudgetCategory.ChartOfAccountId, "", new { @class = "text-danger" })
+                                        <label>@GlobalBudgetManagement.ChartOfAccount</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextAreaFor(m => m.BudgetCategory.Description, new { @class = "form-control", @style = "height: 200px;" })
+                                        @Html.ValidationMessageFor(model => model.BudgetCategory.Description, "", new { @class = "text-danger" })
+
+                                        <label for="Description"> @GlobalBudgetManagement.Description</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            if (Model.BudgetCategory.Id == null)
+                            {
+                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                                <input type="hidden" name="Action" value="@GlobalShared.Insert" id="Action" />
+
+                            }
+                            else
+                            { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
+                                @Html.HiddenFor(m => m.BudgetCategory.Id)
+                                <input type="hidden" name="Action" value="@GlobalShared.Update" id="Action" />
+                            }
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+

@@ -1,0 +1,35 @@
+﻿@model CBS.FrontDesk.Data.Entity.CMoney.CMoneyMembersActivationAccount
+    @using Resources
+@{
+    ViewBag.Title = @GlobalCMoneyMembership.CMoneyMemberProfileManagement;
+}
+
+<div class="container mt-4">
+    <header class="text-center mb-4">
+        <h3 class="text-primary fw-bold">@GlobalCMoneyMembership.CMONEYMEMBERPROFILEMANAGEMENTUC</h3>
+        <p class="text-muted">@GlobalCMoneyMembership.EasilyManageProfilesIncludingActivationAndMore.</p>
+        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);">
+    </header>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">@Model.Name @GlobalCMoneyMembership.CMONEYPROFILE</h5>
+                        @*<button class="btn btn-outline-secondary" onclick="refreshMembersList()">
+                            <i class="mdi mdi-refresh"></i> Refresh
+                        </button>*@
+                    </div>
+                    <div id="membersList">
+                        @Html.Partial("_ManageProfileDesk")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/CMoney/profileManagement.js"></script>
+}

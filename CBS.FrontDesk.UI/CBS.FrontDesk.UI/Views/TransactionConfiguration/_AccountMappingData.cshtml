@@ -1,0 +1,92 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+@using Resources
+@if (Model.SavingProduct.ChartOfAccountIdPricipalAccount == null)
+{
+    <div class="text-center my-3">
+        <p>@GlobalsAccountMapping.NoOrdinaryAccountMapped</p>
+    </div>
+}
+else
+{
+    <div class="table-responsive mb-3">
+        <table class="table table-bordered" id="myDataTable ">
+            <tr>
+                <td><strong>@GlobalsAccountMapping.OrdinaryAccountName:</strong></td>
+                <td>@Model.SavingProduct.Name</td>
+            </tr>
+            <tr>
+                <td><strong>@GlobalsAccountMapping.Code:</strong></td>
+                <td>@Model.SavingProduct.Code</td>
+            </tr>
+            <tr>
+                <td><strong>@GlobalsAccountMapping.Description:</strong></td>
+                <td>@Model.SavingProduct.Description</td>
+            </tr>
+            <tr>
+                <td><strong>@GlobalsAccountMapping.Range:</strong></td>
+                <td>@Model.SavingProduct.MinAmount.ToString("0#,00.0")-@Model.SavingProduct.MaxAmount.ToString("0#,00.0") FCFA</td>
+            </tr>
+            <tr>
+                <td><strong>@GlobalsAccountMapping.AccountType:</strong></td>
+                <td>@Model.SavingProduct.AccountType</td>
+            </tr>
+        </table>
+        <fieldset class="fieldset-custom">
+            <legend>@GlobalsAccountMapping.AccountMappings</legend>
+            <input type="hidden" name="ServiceOption" value="accountmapping" id="ServiceOption" />
+            <div class="row mt-2 gy-4">
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdPricipalAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount, new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdPricipalAccount, "", new { @class = "text-danger" })
+                        <label>@GlobalsAccountMapping.CapitalAccountDescription</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdInterestAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount, new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestAccount, "", new { @class = "text-danger" })
+                        <label>@GlobalsAccountMapping.InterestAccountDescription</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdInterestExpenseAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount, new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestExpenseAccount, "", new { @class = "text-danger" })
+                        <label>@GlobalsAccountMapping.InterestExpenseAccountDescription</label>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdCommissionAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount, new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdCommissionAccount, "", new { @class = "text-danger" })
+                        <label>@GlobalsAccountMapping.CommissionAccountDescription</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdLiassonAccount, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount, new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdLiassonAccount, "", new { @class = "text-danger" })
+                        <label>@GlobalsAccountMapping.LiassonAccountDescription</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdWithrawalFee, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount, new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdWithrawalFee, "", new { @class = "text-danger" })
+                        <label>@GlobalsAccountMapping.WithdrawalFeeDescription</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.SavingProduct.ChartOfAccountIdTransferFee, new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount, new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdTransferFee, "", new { @class = "text-danger" })
+                        <label>@GlobalsAccountMapping.TransferFeeDescription</label>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+    </div>
+}

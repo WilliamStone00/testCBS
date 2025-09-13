@@ -530,7 +530,6 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
         /// <summary>
         /// ACTION 4: Handles the "Download Template" button click.
         /// </summary>
-        [System.Web.Mvc.HttpGet]
         public ActionResult DownloadTemplate()
         {
             string physicalPath = Server.MapPath("~/AppFiles/ManualDailyCollection/Manualdaillycollectiontemplete.xlsx");

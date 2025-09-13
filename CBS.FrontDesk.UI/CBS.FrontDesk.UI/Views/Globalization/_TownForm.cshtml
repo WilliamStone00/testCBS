@@ -1,0 +1,41 @@
+﻿@model CBS.FrontDesk.Data.Entity.Config.GlobalizationViewModel
+
+<!-- Section Title -->
+<div class="col-12">
+    <h6 class="text-primary border-bottom pt-2 pb-2">
+        <i class="bi bi-geo-alt"></i> Town Management
+    </h6>
+</div>
+
+<!-- Town Form -->
+@using (Html.BeginForm("SaveTown", "Globalization", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    <div class="row g-3 mb-4" id="townForm">
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                <select id="SubDivisionId" name="Town.SubdivisionId" class="form-select select2" required>
+                    <option value="">--- Select SubDivision ---</option>
+                    @foreach (var sub in Model.SubDivisions)
+                    {
+                        <option value="@sub.Id">@sub.Name</option>
+                    }
+                </select>
+                <label for="SubDivisionId">SubDivision</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                <input type="text" name="Town.Name" class="form-control" placeholder="Town Name" required />
+                <label>Town Name</label>
+            </div>
+        </div>
+        <div class="col-12 text-end">
+            <button type="submit" class="btn btn-warning px-4">
+                <i class="bi bi-save2"></i> Save Town
+            </button>
+        </div>
+    </div>
+}
+
+<!-- Success Message -->
+<div id="successMessageTown" class="alert alert-success d-none"></div>

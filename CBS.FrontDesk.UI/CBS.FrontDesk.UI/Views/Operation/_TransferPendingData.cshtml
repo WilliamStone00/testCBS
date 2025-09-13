@@ -1,0 +1,70 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+@using Resources
+<fieldset class="fieldset-custom">
+    @if (!Model.Transfers.Any())
+    {
+        <div class="text-center my-3">
+            <p>@GlobalOperation.NoPendingTransferAreAvailableForTheMoment</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive mb-3">
+            <div class="card-header">
+                <h5 class="card-title">@GlobalOperation.Transfers</h5>
+            </div>
+
+            <table class="table table-hover table-striped table-bordered align-middle" id="myDataTableT">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 15%;">@GlobalOperation.Date</th>
+                        <th style="width: 15%;">@GlobalOperation.SendingAccount</th>
+                        <th style="width: 15%;">@GlobalOperation.ReceivingAccount</th>
+                        <th style="width: 10%;">@GlobalOperation.Amount</th>
+                        <th style="width: 10%;">@GlobalShared.Status</th>
+                        <th style="width: 25%;">@GlobalOperation.Initiator</th>
+                        <th style="width: 10%;">@GlobalShared.Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.Transfers)
+                    {
+                        <tr>
+                            <td>@d.DateOfInitiation.ToString("dd-MM-yyyy, hh:mm:ss")</td>
+                            <td>@d.SourceAccountNumber</td>
+                            <td>@d.DestinationAccountNumber</td>
+                            <td>@d.Amount.ToString("#,##0.0")</td>
+                            <td>
+                                <!-- Beautified Status with Badges -->
+                                @if (d.Status == "Pending")
+                                {
+                                    <span class="badge bg-warning text-dark">@GlobalShared.Pending</span>
+                                }
+                                else if (d.Status == "Approved")
+                                {
+                                    <span class="badge bg-success">@GlobalShared.Approved</span>
+                                }
+                                else if (d.Status == "Rejected")
+                                {
+                                    <span class="badge bg-danger">@GlobalShared.Rejected</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">@GlobalOperation.Unknown</span>
+                                }
+                            </td>
+                            <td>@d.InitiatedByUSerName</td>
+                            <td>
+                                <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_TransferConfirmation','confirmation_request','Operation')"
+                                   class="btn btn-sm btn-outline-primary" data-toggle="tooltip" data-placement="top" title="@GlobalOperation.SelectToApprove">
+                                    @GlobalShared.Approve
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</fieldset>
+

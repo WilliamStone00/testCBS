@@ -1,0 +1,80 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+    @using Resources
+@using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    <input type="hidden" name="ServiceOption" value="ManagementFeeParameter" id="ServiceOption" />
+    <div class="row mt-2 gy-4">
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.ManagementFeeParameter.productId, new SelectList(ViewBag.Products, "Id", "name"), @Globals_ManagementFeeConfig.SelectProduct, new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.ManagementFeeParameter.productId, "", new { @class = "text-danger" })
+                <label>@Globals_ManagementFeeConfig.SelectProductLabel</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.ManagementFeeParameter.managementFeeFrequency, new SelectList(ViewBag.Frequences, "Text", "Value"), @Globals_ManagementFeeConfig.SelectFrequencyType, new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.ManagementFeeParameter.managementFeeFrequency, "", new { @class = "text-danger" })
+                <label>@Globals_ManagementFeeConfig.SelectFeeFrequencyLabel</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.ManagementFeeParameter.managementFeeFlat, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ManagementFeeParameter.managementFeeFlat, "", new { @class = "text-danger" })
+                <label>@Globals_ManagementFeeConfig.FlatFeeLabel</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.ManagementFeeParameter.managementFeeRate, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ManagementFeeParameter.managementFeeRate, "", new { @class = "text-danger" })
+                <label>@Globals_ManagementFeeConfig.FeeRateLabel</label>
+            </div>
+        </div>
+        <h3>@Globals_ManagementFeeConfig.SharingLabel</h3>
+        <br />
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.ManagementFeeParameter.SourceBrachOfficeShare, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ManagementFeeParameter.SourceBrachOfficeShare, "", new { @class = "text-danger" })
+                <label>@Globals_ManagementFeeConfig.SourceBranchShareLabel</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.ManagementFeeParameter.DestinationBranchOfficeShare, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ManagementFeeParameter.DestinationBranchOfficeShare, "", new { @class = "text-danger" })
+                <label>@Globals_ManagementFeeConfig.DestinationBranchShareLabel</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.ManagementFeeParameter.HeadOfficeShare, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ManagementFeeParameter.HeadOfficeShare, "", new { @class = "text-danger" })
+                <label>@Globals_ManagementFeeConfig.HeadOfficeShareLabel</label>
+            </div>
+        </div>
+        @*<div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.CloseFeeParameter.PartnerShare, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CloseFeeParameter.PartnerShare, "", new { @class = "text-danger" })
+                <label>Partner branch share (in percentage %)</label>
+            </div>
+        </div>*@
+    </div>
+
+    <div class="mt-4">
+        @if (Model.ManagementFeeParameter.id == null)
+        {
+            <button type="submit" class="btn btn-primary me-2">@Globals_ManagementFeeConfig.SaveButton</button>
+            <input type="hidden" name="Action" value="insert" id="Action" />
+        }
+        else
+        {
+            <button type="submit" class="btn btn-primary me-2">@Globals_ManagementFeeConfig.UpdateButton</button>
+            @Html.HiddenFor(m => m.ManagementFeeParameter.id)
+            <input type="hidden" name of="Action" value="update" id="Action" />
+        }
+    </div>
+}

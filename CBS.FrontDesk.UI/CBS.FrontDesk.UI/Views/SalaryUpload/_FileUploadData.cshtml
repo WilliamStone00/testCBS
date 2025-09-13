@@ -1,0 +1,27 @@
+﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
+@using Resources
+
+
+<fieldset class="fieldset-custom">
+    <div class="mb-1 border-2">
+        <div id="datalistingview_inner">
+            <div class="table-responsive">
+                <table id="myDataTable" class="table table-bordered table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>@GlobalSalaryUpload.FileName</th>
+                            <th>File Type</th>
+                            @*<th>Branch</th>*@
+                            <th>Visibility</th>
+                            <th>@GlobalSalaryUpload.UploadedBy</th>
+                            <th>@GlobalSalaryUpload.UploadedOn</th>
+                            @*<th>@GlobalShared.Status</th>*@
+                            <th style="width:1%;">@GlobalShared.Action</th>
+                        </tr>
+                    </thead>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</fieldset>

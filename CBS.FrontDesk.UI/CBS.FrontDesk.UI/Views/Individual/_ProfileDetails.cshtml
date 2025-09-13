@@ -1,0 +1,123 @@
+﻿@using Resources
+<div class="col-lg-12 col-md-8 col-12">
+    <div class="tab-content p-0">
+        <div class="tab-pane fade show active" id="payment" role="tabpanel">
+            <div id="accordionPayment" class="accordion">
+
+                <!-- Photo and Signature -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#accordionPayment-1" aria-expanded="true"
+                                aria-controls="accordionPayment-1">
+                            @GlobalIndividual.PhotoAndSignature
+                        </button>
+                    </h2>
+                    <div id="accordionPayment-1" class="accordion-collapse collapse show" data-bs-parent="#accordionPayment">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-xl-6 col-md-6 col-12">
+                                    @Html.Partial("_ImageUploader")
+                                </div>
+                                <div class="col-xl-6 col-md-6 col-12">
+                                    @Html.Partial("_SignatureUploader")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Information -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#accordionPayment-2" aria-controls="accordionPayment-2">
+                            @GlobalIndividual.PersonalInformation
+                        </button>
+                    </h2>
+                    <div id="accordionPayment-2" class="accordion-collapse collapse" data-bs-parent="#accordionPayment">
+                        <div class="accordion-body">
+                            @Html.Partial("_UpdateProfile")
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Marital Status -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#accordionPayment-3" aria-controls="accordionPayment-3">
+                            @GlobalIndividual.MaritalStatus
+                        </button>
+                    </h2>
+                    <div id="accordionPayment-3" class="accordion-collapse collapse" data-bs-parent="#accordionPayment">
+                        <div class="accordion-body">
+                            @Html.Partial("_MaritalStatus")
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Employment Status -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#accordionPayment-4" aria-controls="accordionPayment-4">
+                            @GlobalIndividual.EmploymentStatus
+                        </button>
+                    </h2>
+                    <div id="accordionPayment-4" class="accordion-collapse collapse" data-bs-parent="#accordionPayment">
+                        <div class="accordion-body">
+                            @Html.Partial("_EmploymentDetails")
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bank Information -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#accordionPayment-5" aria-controls="accordionPayment-5">
+                            @GlobalIndividual.BankInformation
+                        </button>
+                    </h2>
+                    <div id="accordionPayment-5" class="accordion-collapse collapse" data-bs-parent="#accordionPayment">
+                        <div class="accordion-body">
+                            @Html.Partial("_BankInformation")
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Membership Status -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#membershipstatus" aria-controls="membershipstatus">
+                            @GlobalIndividual.MembershipStatus
+                        </button>
+                    </h2>
+                    <div id="membershipstatus" class="accordion-collapse collapse" data-bs-parent="#accordionPayment">
+                        <div class="accordion-body">
+                            @Html.Partial("_MembershipStatus")
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legal Status -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#legalstatus" aria-controls="legalstatus">
+                            @GlobalIndividual.LegalStatus
+                        </button>
+                    </h2>
+                    <div id="legalstatus" class="accordion-collapse collapse" data-bs-parent="#accordionPayment">
+                        <div class="accordion-body">
+                            @Html.Partial("_LegalSector")
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

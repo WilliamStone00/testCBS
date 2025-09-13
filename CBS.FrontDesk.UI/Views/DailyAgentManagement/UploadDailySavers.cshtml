@@ -3,7 +3,6 @@
     ViewBag.Title = "Upload  DailyCollectors";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 
-
 }
 <div class="row">
     <div class="col-12">
@@ -68,8 +67,12 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <br />
-                        <button type="button" class="btn btn-secondary ms-2" id="downloadExcelButton">Download sample file structure to be uploaded</button>
+
+                        <label for="DailyCollectorAccountId"> Select GL Account</label>
+                        @Html.DropDownListFor(m => m.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "--- Select GL account", new { @class = "form-control select2", @id = "DailyCollectorAccountId", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.AccountId, "", new { @class = "text-danger" })
+
+                        @*   <button type="button" class="btn btn-secondary ms-2" id="downloadExcelButton">Download sample file structure to be uploaded</button>*@
                     </div>
                     <!-- CRITICAL: File input name MUST match C# property name exactly -->
                     <div class="col-md-6">
@@ -85,7 +88,7 @@
                         <button type="button" onclick="ReadForExcelFile(); return false;" class="btn btn-primary">
                             <i class="mdi mdi-cloud-upload me-1"></i> Upload & Process
                         </button>
-                    
+
                     </div>
                 </div>
             </form>
@@ -97,17 +100,63 @@
                          role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                         0%
                     </div>
-                </div>
-            </div>
-        </div>
 
-        <div id="progressBarContainer" style="display: none;" class="mt-3">
-            <div class="progress">
-                <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated"
-                     role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                    0%
+                </div>
+
+            </div>
+            <div class="container mt-4">
+                <div id="resultContainer" style="display: none; background-color: white; max-width: 800px; margin: 20px auto;" >
+                    <h3 class="text-bg-primary p-3 text-center mb-0">Upload Results</h3>
+
+                    <table class="table table-bordered table-striped mb-0">
+                        <thead >
+                            <tr>
+                                <th scope="col" style="width: 40%; background-color: var(--bs-primary); color: white; font-weight: 600;">Field</th>
+                                <th scope="col" style="width: 60%; background-color: var(--bs-primary); color: white; font-weight: 600;">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="vertical-align: middle;"><strong>Daily Collector GL</strong></td>
+                                <td style="vertical-align: middle;"><span id="dailyCollectorGL" class="text-primary fw-semibold"></span></td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: middle;"><strong>Total Members</strong></td>
+                                <td style="vertical-align: middle;"><span id="totalMembers" class="text-primary fw-semibold"></span></td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: middle;"><strong>Sum of Member Balances</strong></td>
+                                <td style="vertical-align: middle;"><span id="totalVolume" class="text-primary fw-semibold"></span></td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: middle;"><strong>GL Account Balance</strong></td>
+                                <td style="vertical-align: middle;"><span id="actualVolume" class="text-primary fw-semibold"></span></td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: middle;"><strong>Cash Difference</strong></td>
+                                <td style="vertical-align: middle;"><span id="cashDifference" class="text-danger fw-semibold"></span></td>
+                            </tr>
+                            <tr style="background-color: #f8f9fa;">
+                                <td><strong>Action </strong></td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm" id="downloadLink" href="#" target="_blank" style=" min-width: 150px;">
+                                        <i class="bi bi-download me-1"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+            @*<div id="resultContainer" style="display: none; background-color:white">
+                    <h3 class="text-bg-primary">UploadResults:</h3>
+                    <p>Daily Collector GL: <span id="dailyCollectorGL"></span></p>
+                    <p>Total Members: <span id="totalMembers"></span></p>
+                    <p>Sum of Member Balances: <span id="totalVolume"></span></p>
+                    <p>Actual Balance: <span id="actualVolume"></span></p>
+                    <p>Cash Difference: <span id="cashDifference"></span></p>
+                    <a class="btn btn-primary" id="downloadLink" href="#" target="_blank"></a>
+                </div>*@
         </div>
     </div>
 </div>

@@ -1,0 +1,74 @@
+﻿@using Resources
+@model CBS.FrontDesk.Data.Entity.BulkOperation.SimulateCashOutOrCashInBulkOperation
+@{
+    ViewBag.Title = @GlobalBulkOperation.SimulateBulkOperation;
+}
+
+<!-- Tips Section -->
+<div class="card shadow-sm mb-4">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalBulkOperation.TIPS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUserTips" aria-expanded="false" aria-controls="collapseUserTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseUserTips" class="collapse">
+        <div class="card-body">
+            <div class="row gy-2">
+                <div class="col-md-12">
+                    <h5 class="text-primary mb-3"><i class="mdi mdi-playlist-check me-2"></i> How to Execute a Bulk Cash Operation:</h5>
+                    <ol class="list-group list-group-numbered">
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Define Operation Type</div>
+                                Select whether this is a bulk cash in (deposit) or cash out (withdrawal) operation.
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Set Destination Account</div>
+                                Specify the central account that will receive funds (for cash in) or distribute funds (for cash out).
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Add Member Accounts</div>
+                                Add all member accounts that will participate in this bulk operation with their respective amounts.
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Run Simulation</div>
+                                Review the simulation results carefully before executing the actual operation.
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Execute Operation</div>
+                                After verifying simulation results, proceed with the actual bulk cash operation.
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="col-md-6 mt-3">
+                    <div class="alert alert-primary d-flex align-items-center" role="alert">
+                        <i class="mdi mdi-cash-check me-2"></i>
+                        Ensure all account numbers and amounts are accurate before submission.
+                    </div>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <div class="alert alert-warning d-flex align-items-center" role="alert">
+                        <i class="mdi mdi-alert-outline me-2"></i>
+                        Cash operations are immediate and cannot be easily reversed.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    @Html.Partial("_BulkOperationFileUploadPartial")
+
+    @Html.Partial("_BulkOperationFileContentPartial")

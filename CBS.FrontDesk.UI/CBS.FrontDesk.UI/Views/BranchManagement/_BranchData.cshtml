@@ -1,0 +1,49 @@
+﻿@model CBS.FrontDesk.Data.Entity.Config.BankConfig
+    @using Resources
+<table class="table table-hover" id="myDataTable_Branch">
+    <thead class="table-light">
+        <tr>
+            <th>@GlobalBranchManagement.Name</th>
+            <th>@GlobalBranchManagement.Code</th>
+            <th>@GlobalBranchManagement.Tell</th>
+            <th>@GlobalBranchManagement.OfficeType</th>
+            <th>@GlobalBranchManagement.Status</th>
+            <th>@GlobalBranchManagement.Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.Branches)
+        {
+            <tr>
+                <td style="width:45%">@d.Name</td>
+                <td style="width:5%">@d.BranchCode</td>
+                <td style="width:10%">@d.Telephone</td>
+                <td style="width:15%">
+                    @if (d.IsHeadOffice)
+                    {
+                        <span class="badge bg-info">@GlobalBranchManagement.HeadOffice</span>
+                    }
+                    else
+                    {
+                <span class="badge bg-dark">@GlobalBranchManagement.BranchOffice</span>
+                    }
+                </td>
+                <td style="width:10%">
+                    @if (d.ActiveStatus)
+                    {
+                        <span class="badge bg-info">@GlobalBranchManagement.Active</span>
+                    }
+                    else
+                    {
+                <span class="badge bg-danger">@GlobalBranchManagement.Inactive</span>
+                    }
+                </td>
+                <td style="width:15%">
+                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_Branch','_Branch','get','BranchManagement','branch')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.Name @GlobalShared.ToEdit">@GlobalShared.Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.Name" onclick="DeleteRecordDataTable('BranchManagement','@d.Id','myDataTable_Branch','_BranchData',0,'datalistingview_Branch')">@GlobalShared.Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

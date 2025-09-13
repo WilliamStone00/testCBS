@@ -1,0 +1,141 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+    @using Resources
+@{
+    ViewBag.Title = "Successfull_RequestApproval_View";
+
+}
+
+<div class="row invoice-preview">
+    <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+        <div class="accordion-item active">
+            <h2 class="accordion-header text-body d-flex justify-content-between"
+                id="accordionPopoutIconThree">
+                <button type="button"
+                        class="accordion-button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#accordionPopoutIcon-3"
+                        aria-expanded="true"
+                        aria-controls="accordionPopoutIcon-3">
+                    <i class="mdi mdi-bank-plus me-2"></i>
+                    @GlobalTellerCashDemand.RequestReferenceId : @Model.DetailsDtoModel.id
+                </button>
+            </h2>
+            <div class="card-body">
+
+                <br />
+                <div class="collapse show">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>@GlobalTellerCashDemand.CashReplenishmentRequestDetails</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            <tr>
+                                <td>@GlobalTellerCashDemand.InvoiceNumber</td>
+                                <td>@Model.DetailsDtoModel.id </td>
+                            </tr>
+                            <tr>
+                                <td>@GlobalTellerCashDemand.AmountRequested</td>
+                                <td>@Model.DetailsDtoModel.requestedAmount.ToString("N") </td>
+                            </tr>
+                            <tr>
+                                <td>@GlobalTellerCashDemand.RequestMessage</td>
+                                <td>@Model.DetailsDtoModel.requetcomment </td>
+                            </tr>
+                            <tr>
+                                <td>@GlobalTellerCashDemand.RequestedBy </td>
+                                <td> @Model.DetailsDtoModel.requesterUserId </td>
+                            </tr>
+                            <tr>
+                                <td>@GlobalTellerCashDemand.ApprovedBy </td>
+                                <td> @Model.DetailsDtoModel.approvedBy </td>
+                            </tr>
+                            <tr>
+                                <td>@GlobalTellerCashDemand.AmountApproved</td>
+                                <td>@Model.DetailsDtoModel.confirmedAmount.ToString("N") </td>
+                            </tr>
+
+
+                            <tr>
+                                <td>@GlobalTellerCashDemand.ApprovedDate</td>
+                                <td>@Model.DetailsDtoModel.approvedDate </td>
+                            </tr>
+                            <tr>
+                                <td>@GlobalTellerCashDemand.ApprovedMessage</td>
+                                <td>@Model.DetailsDtoModel.approvedComment </td>
+                            </tr>
+                            <tr>
+
+
+                                <td> @GlobalShared.Status</td>
+                                @if (@Model.DetailsDtoModel.approvedStatus.ToUpper().Equals("PENDING"))
+                                {
+                                    <td class="badge bg-label-primary rounded-pill text-uppercase">
+                                        @Model.DetailsDtoModel.approvedStatus
+                                    </td>
+
+
+                                }
+                                else
+                                {
+                                    if (@Model.DetailsDtoModel.approvedStatus.ToUpper().Equals("APPROVE"))
+                                    {
+                                        <td class="badge bg-label-success rounded-pill text-uppercase">
+                                            @Model.DetailsDtoModel.approvedStatus
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="badge bg-label-danger rounded-pill text-uppercase">
+                                            @Model.DetailsDtoModel.approvedStatus
+                                        </td>
+                                    }
+
+                                }
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card card-action mb-5">
+
+                    @if (@Model.DetailsDtoModel.approvedStatus.ToUpper().Equals("PENDING"))
+                    {
+                        <h5 class="card-header">@GlobalTellerCashDemand.YouHaveJustRejectedTheCashReplenishmentRequestOfXAF @Model.DetailsDtoModel.requestedAmount.ToString("N") @GlobalTellerCashDemand.IssuedBy @Model.DetailsDtoModel.requesterUserId @GlobalTellerCashDemand.successfully.</h5>
+                    }
+                    else
+                    {
+                        if (@Model.DetailsDtoModel.approvedStatus.ToUpper().Equals("APPROVE"))
+                        {
+                            <h5 class="card-header" style="color:forestgreen">@GlobalTellerCashDemand.YouHaveJustApprovedCashReplenishmentRequestOfXAF @Model.DetailsDtoModel.confirmedAmount.ToString("N") @GlobalTellerCashDemand.IssuedBy @Model.DetailsDtoModel.requesterUserId @GlobalTellerCashDemand.For @Model.DetailsDtoModel.requestedAmount.ToString("N")  @GlobalTellerCashDemand.successfully.</h5>
+
+                        }
+                        else
+                        {
+                            <h5 class="card-header" style="color:firebrick">@GlobalTellerCashDemand.YouHaveJustRejectedTheCashReplenishmentRequestOfXAF @Model.DetailsDtoModel.requestedAmount.ToString("N") @GlobalTellerCashDemand.IssuedBy @Model.DetailsDtoModel.requesterUserId @GlobalTellerCashDemand.successfully.</h5>
+                        }
+
+                    }
+                    <div class="col-12 shift-right">
+
+                        <a href="/TellerCashDemand/GetAllCashReplenimentRequestData" class="btn btn-primary click-to-go-back-to-menu">@GlobalTellerCashDemand.ClickToViewPendingCashReplenishmentRequest. </a>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+
+<script src="~/Scripts/Js/main.js/CashFlowManagement.js"></script>
+}

@@ -1,0 +1,178 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
+@using Resources
+<fieldset class="fieldset-custom">
+    <legend>Refunds</legend>
+    @if (Model.Refunds.Count() == 0)
+    {
+        <div class="text-center my-3">
+            <p>@GlobalLoan.NoRefundIsDoneBy @Model.IndividualCustomer.CustomerList.name</p>
+        </div>
+    }
+    else
+    {
+        // Calculate totals
+        decimal totalRefunds = Model.Refunds.Sum(r => r.Amount);
+        decimal totalCapital = Model.Refunds.Sum(r => r.Principal);
+        decimal totalInterest = Model.Refunds.Sum(r => r.Interest);
+        decimal totalVAT = Model.Refunds.Sum(r => r.Tax); // Total VAT calculation
+        decimal totalPenalties = Model.Refunds.Sum(r => r.Penalty); // Total Penalties calculation
+        decimal totalBalance = Model.Balance; // Assuming there is a Balance property in your Refund model
+        decimal grandTotal = totalRefunds + totalCapital + totalInterest;
+        decimal totalDueAmount = Model.DueAmount; // Due amount field
+        int serialNumber = 1; // Initialize the serial number
+
+        <hr style="border: 2px solid green;" />
+
+        <!-- Card Dashboard -->
+<div class="container-fluid">
+    <div class="row mb-3">
+        <!-- Row 1: Total Refunds, Total Capital, and Total Interest -->
+        <div class="col-md-4">
+            <div class="d-flex gap-3" style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                <div class="avatar">
+                    <div class="avatar-initial bg-label-primary rounded">
+                        <i class="mdi mdi-currency-usd mdi-24px"></i> <!-- Icon for totalRefunds -->
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h4 class="mb-0">@totalRefunds.ToString("#,##0.0")</h4>
+                    <small>@GlobalLoan.TotalRefunds</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="d-flex gap-3" style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                <div class="avatar">
+                    <div class="avatar-initial bg-label-warning rounded">
+                        <i class="mdi mdi-currency-usd mdi-24px"></i> <!-- Icon for totalCapital -->
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h4 class="mb-0">@totalCapital.ToString("#,##0.0")</h4>
+                    <small>@GlobalLoan.Capital</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="d-flex gap-3" style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                <div class="avatar">
+                    <div class="avatar-initial bg-label-info rounded">
+                        <i class="mdi mdi-currency-usd mdi-24px"></i> <!-- Icon for totalInterest -->
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h4 class="mb-0">@totalInterest.ToString("#,##0.0")</h4>
+                    <small>@GlobalLoan.Interest</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <!-- Row 2: Penalties, VAT, and Balance -->
+        <div class="col-md-4">
+            <div class="d-flex gap-3" style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                <div class="avatar">
+                    <div class="avatar-initial bg-label-danger rounded">
+                        <i class="mdi mdi-currency-usd mdi-24px"></i> <!-- Icon for totalPenalties -->
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h4 class="mb-0">@totalPenalties.ToString("#,##0.0")</h4>
+                    <small>@GlobalLoan.Penalties</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="d-flex gap-3" style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                <div class="avatar">
+                    <div class="avatar-initial bg-label-info rounded">
+                        <i class="mdi mdi-currency-usd mdi-24px"></i> <!-- Icon for totalVAT -->
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h4 class="mb-0">@totalVAT.ToString("#,##0.0")</h4>
+                    <small>@GlobalLoan.VATLc</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="d-flex gap-3" style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                <div class="avatar">
+                    <div class="avatar-initial bg-label-danger rounded">
+                        <i class="mdi mdi-currency-usd mdi-24px"></i> <!-- Icon for totalBalance -->
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h4 class="mb-0">@totalBalance.ToString("#,##0.0")</h4>
+                    <small>@GlobalLoan.Balance</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="d-flex gap-3" style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                <div class="avatar">
+                    <div class="avatar-initial bg-label-danger rounded">
+                        <i class="mdi mdi-currency-usd mdi-24px"></i> <!-- Icon for totalDueAmount -->
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h4 class="mb-0">@totalDueAmount.ToString("#,##0.0")</h4>
+                    <small>@GlobalLoan.DueAmount</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+        <hr style="border: 2px solid green;" />
+
+        <!-- Refund Table -->
+        <div class="table-responsive mb-3">
+            <table class="table table-hover" id="myDataTableRefund">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th> <!-- Serial number column -->
+                        <th>@GlobalLoan.Date</th>
+                        <th>@GlobalLoan.Amount</th>
+                        <th>@GlobalLoan.Capital</th>
+                        <th>@GlobalLoan.Interest</th>
+                        <th>@GlobalLoan.VATLc</th>
+                        <th>@GlobalLoan.Penalties</th>
+                        <th>@GlobalLoan.Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.Refunds.OrderByDescending(r => r.DateOfPayment))
+                    {
+                        <tr>
+                            <td>@serialNumber</td> <!-- Serial number cell -->
+                            <td style="width:40%">@d.DateOfPayment</td>
+                            <td style="width:10%">@d.Amount.ToString("#,##0.0")</td>
+                            <td style="width:10%">@d.Principal.ToString("#,##0.0")</td>
+                            <td style="width:10%">@d.Interest.ToString("#,##0.0")</td>
+                            <td style="width:10%">@d.Tax.ToString("#,##0.0")</td>
+                            <td style="width:10%">@d.Penalty.ToString("#,##0.0")</td>
+                            <td style="width:10%">@d.Balance.ToString("#,##0.0")</td>
+                        </tr>
+                        serialNumber++; // Increment the serial number for each row
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2"><strong>Totals:</strong></td>
+                        <td><strong>@totalRefunds.ToString("#,##0.0")</strong></td>
+                        <td><strong>@totalCapital.ToString("#,##0.0")</strong></td>
+                        <td><strong>@totalInterest.ToString("#,##0.0")</strong></td>
+                        <td><strong>@totalVAT.ToString("#,##0.0")</strong></td> <!-- Total VAT -->
+                        <td><strong>@totalPenalties.ToString("#,##0.0")</strong></td> <!-- Total Penalties -->
+                        <td colspan="1"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    }
+</fieldset>

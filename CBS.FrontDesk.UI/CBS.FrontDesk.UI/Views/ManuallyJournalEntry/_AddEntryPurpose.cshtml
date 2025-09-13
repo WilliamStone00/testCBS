@@ -1,0 +1,46 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
+    @using Resources
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "" }))
+{
+    <input type="hidden" name="ServiceOption" value="EntryDescription" id="ServiceOptionEntryDescription" />
+
+    <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+
+                    <h5 class="card-title" id="Purpose">
+                        @GlobalManuallyJournalEntry.Purpose_of_the_Entry: @Html.TextAreaFor(m => m.EntryDescription.Description, new { @class = "form-control textbox" })
+                        @Html.ValidationMessageFor(m => m.EntryDescription.Description, "", new { @class = "text-danger" })
+                    </h5>
+
+                </div>
+
+                @if (Model.EntryTempDataResult.Count() > 0)
+                {
+                    @Html.HiddenFor(x => x.EntryTempDataResult[0].Reference)
+                }
+
+                @Html.ValidationMessageFor(m => m.EntryTempData.Reference, "", new { @class = "text-danger" })
+
+                <div class="shift-right">
+                    <button type="button" onclick="DoPosting()" class="btn btn-primary" id="post-entries">
+                        @GlobalManuallyJournalEntry.PostEntries &nbsp;&nbsp;<i class="mdi mdi-database-plus"></i>
+                    </button>
+                    <input type="hidden" name="Action" value="insert" id="Action" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+}
+
+
+
+
+
+
+
+

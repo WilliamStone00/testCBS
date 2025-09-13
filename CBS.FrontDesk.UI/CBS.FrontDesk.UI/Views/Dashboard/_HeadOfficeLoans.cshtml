@@ -1,0 +1,64 @@
+﻿@using Resources
+<div class="section-header">@GlobalDashboard.LOANUC</div>
+
+<div class="row">
+    <!-- Number of Loans Card -->
+    <div class="col-sm-6 col-lg-4 mb-3">
+        <div class="card card-border-shadow-primary h-100" style="padding: 0.5rem;">
+            <div class="card-body p-2">
+                <div class="d-flex align-items-center mb-1 pb-1">
+                    <div class="avatar me-1">
+                        <span class="avatar-initial rounded bg-label-secondary">
+                            <!-- Group icon represents "Number of loans" -->
+                            <i class="mdi mdi-account-multiple mdi-20px"></i>
+                        </span>
+                    </div>
+                    <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">
+                        <span id="totalNumberOfLoans"></span>
+                    </h5>
+                </div>
+                <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalDashboard.NumberOfLoans</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Volume Granted Card -->
+    <div class="col-sm-6 col-lg-4 mb-3">
+        <div class="card card-border-shadow-warning h-100" style="padding: 0.5rem;">
+            <div class="card-body p-2">
+                <div class="d-flex align-items-center mb-1 pb-1">
+                    <div class="avatar me-1">
+                        <span class="avatar-initial rounded bg-label-secondary">
+                            <!-- Cash icon represents "Volume granted" -->
+                            <i class="mdi mdi-cash-multiple mdi-20px"></i>
+                        </span>
+                    </div>
+                    <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">
+                        <span id="totalVolumeOfLoanGranted"></span>
+                    </h5>
+                </div>
+                <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalDashboard.VolumeGranted</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remaining Volume Card -->
+    <div class="col-sm-6 col-lg-4 mb-3">
+        <div class="card card-border-shadow-info h-100" style="padding: 0.5rem;">
+            <div class="card-body p-2">
+                <div class="d-flex align-items-center mb-1 pb-1">
+                    <div class="avatar me-1">
+                        <span class="avatar-initial rounded bg-label-secondary">
+                            <!-- Wallet icon represents "Remaining Volume" -->
+                            <i class="mdi mdi-wallet-outline mdi-20px"></i>
+                        </span>
+                    </div>
+                    <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">
+                        <span id="totalRemainingBalance"></span>
+                    </h5>
+                </div>
+                <p class="mb-0 text-heading" style="font-size: 0.85rem;">@GlobalDashboard.RemainingVolume</p>
+            </div>
+        </div>
+    </div>
+</div>

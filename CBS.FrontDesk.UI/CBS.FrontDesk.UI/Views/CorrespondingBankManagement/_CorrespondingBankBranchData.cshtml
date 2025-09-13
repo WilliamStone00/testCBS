@@ -1,0 +1,33 @@
+﻿@using Resources
+@model CBS.FrontDesk.Data.Entity.CorrespondingBankManaagement.CorrespondingBankConfiguration
+
+<table class="table table-hover" id="myDataTable">
+    <thead class="table-light">
+        <tr>
+            <th>@GlobalCorrespondingBankManagement.Name</th>
+            <th>@GlobalCorrespondingBankManagement.BranchName</th>
+            <th>@GlobalCorrespondingBankManagement.FocalPointContact</th>
+            <th>@GlobalCorrespondingBankManagement.FocalPointName</th>
+            <th>@GlobalCorrespondingBankManagement.TownName</th>
+            <th>@GlobalShared.Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.CorrespondingBankBranches)
+        {
+            <tr>
+                <td style="width:20%">@d.BankName</td>
+                <td style="width:20%">@d.BranchName</td>
+                <td style="width:15%">@d.FocalPointContact</td>
+                <td style="width:15%">@d.FocalPointName</td>
+                <td style="width:15%">@d.TownName</td>
+                <td style="width:15%">
+                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_CreateCorrespondingBankBranch','update','CorrespondingBankManagement','correspondingBank')" class="mr-2 btn btn-default" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.BranchName @GlobalShared.ToEdit">@GlobalShared.Edit</a>
+                    |<a href="#" class="mr-2 btn btn-danger" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.BranchName" onclick="DeleteDataConfiguration('CorrespondingBankManagement','@d.Id','DataTableCorrespondingBank','_CorrespondingBankBranchData',0,'datalistingview','correspondingBank')">@GlobalShared.Delete</a>
+      
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+ 

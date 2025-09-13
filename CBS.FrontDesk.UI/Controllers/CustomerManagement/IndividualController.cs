@@ -28,7 +28,7 @@ using CBS.FrontDesk.Data.Entity.DownLoadDTO;
 
 namespace CBS.FrontDesk.UI.Controllers.CustomerManagement
 {
-    //[CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
 
     public class IndividualController : BaseController
     {

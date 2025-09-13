@@ -1,0 +1,29 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingRule
+    @using Resources
+<div class="card-body">
+    @using (Html.BeginForm("Create", "AccountingRule", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        <div class="row mt-2 gy-4">
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+               
+                    @Html.DropDownListFor(m => m.OperationEventId, new SelectList(ViewBag.OperationEvents==null?"": ViewBag.OperationEvents,  "id","description"), "---"+ @GlobalAccountingRule.SelectOperationEvent+"---", new { @class = "form-control select2", @search = "true" })
+                    @Html.ValidationMessageFor(m => m.OperationEventId, "", new { @class = "text-danger " })
+                    <label>@GlobalAccountingRule.OperationEvent</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.RuleName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.RuleName, "", new { @class = "text-danger" })
+                    <label>@GlobalAccountingRule.Name</label>
+                </div>
+            </div>
+        </div>
+   
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+            <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
+        </div>
+    }
+</div>

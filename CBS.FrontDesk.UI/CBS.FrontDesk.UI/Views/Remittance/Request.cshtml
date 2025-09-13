@@ -1,0 +1,56 @@
+﻿@using Resources
+@{
+    ViewBag.Title = "Remittance Request";
+}
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+        <div class="card">
+            <!-- Accordion for Remittance Request -->
+            <div id="accordionRemittance" class="accordion mt-3 accordion-popout">
+                <div class="accordion-item active">
+                    <!-- Accordion Header -->
+                    <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionRemittanceHeader">
+                        <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                data-bs-target="#accordionRemittanceBody" aria-expanded="true"
+                                aria-controls="accordionRemittanceBody">
+                            <i class="mdi mdi-cash me-2"></i>
+                            @GlobalRemittance.REMITTANCE_FORM
+                        </button>
+                    </h2>
+                    <!-- Accordion Body -->
+                    <div id="accordionRemittanceBody" class="accordion-collapse collapse show"
+                         data-bs-parent="#accordionRemittance">
+                        <div class="accordion-body">
+                            <!-- Remittance Request View -->
+                            <div id="remittanceMainView">
+                                <div class="remittance-group">
+                                    <!-- Card with Action Button -->
+                                    <div class="card mb-4">
+                                        <div class="card-body d-flex justify-content-between align-items-center">
+                                            <h5 class="mb-0 text-black">@GlobalRemittance.RemittanceRequestInitialization</h5>
+                                            <a href="/Remittance/PendingRequest"
+                                               class="btn btn-label-primary btn-sm"
+                                               data-bs-toggle="tooltip"
+                                               title="@GlobalRemittance.ViewAllPendingRemittanceRequests.">
+                                                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalRemittance.Requests
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!-- Data Listing View -->
+                                    <div class="remittance-listing-view">
+                                        @Html.Partial("_Request")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/Crud/Remittance/RemittanceRequest.js"></script>
+}

@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddNewRequest" xml:space="preserve">
+    <value>Add new request</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="AllMMCOMMRequests" xml:space="preserve">
+    <value>All MMC/OMM Requests</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="ApprovalDate" xml:space="preserve">
+    <value>Approval date</value>
+  </data>
+  <data name="ApprovalNote" xml:space="preserve">
+    <value>Approval note</value>
+  </data>
+  <data name="ApprovalStatus" xml:space="preserve">
+    <value>Approval status</value>
+  </data>
+  <data name="ApprovedBy" xml:space="preserve">
+    <value>Approved by</value>
+  </data>
+  <data name="Branch" xml:space="preserve">
+    <value>Branch</value>
+  </data>
+  <data name="BranchToHeadOffice" xml:space="preserve">
+    <value>Branch to head office</value>
+  </data>
+  <data name="ChooseTheSourceTypeForThisTransaction" xml:space="preserve">
+    <value>Choose the source type for this transaction</value>
+  </data>
+  <data name="ClickToViewTheDetailedInformationOfTheRequest" xml:space="preserve">
+    <value>Click to view the detailed information of the request</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="EnterAnyNotesRegardingTheApprovalStatus" xml:space="preserve">
+    <value>Enter any notes regarding the approval status</value>
+  </data>
+  <data name="EnterTheAmountYouWishToRequest" xml:space="preserve">
+    <value>Enter the amount you wish to request</value>
+  </data>
+  <data name="EnterTheMobileMoneyNoneMembersAccountNumber" xml:space="preserve">
+    <value>Enter the mobile money none member's account number</value>
+  </data>
+  <data name="HeadOfficeToBranch" xml:space="preserve">
+    <value>Head-office to branch</value>
+  </data>
+  <data name="InitiatedBy" xml:space="preserve">
+    <value>Initiated by</value>
+  </data>
+  <data name="MemberReferenceAccountNumber" xml:space="preserve">
+    <value>Member reference &amp; account number</value>
+  </data>
+  <data name="MobileMoneyMemberAccountNumber" xml:space="preserve">
+    <value>Mobile money member account number</value>
+  </data>
+  <data name="MobileOrangeMoneyTransferFormRequest" xml:space="preserve">
+    <value>Mobile/Orange Money Transfer Form Request</value>
+  </data>
+  <data name="MobileOrOrangeMoneyTopupPendingRequests" xml:space="preserve">
+    <value>Mobile Or Orange Money Topup Pending Requests</value>
+  </data>
+  <data name="MobileOrOrangeMoneyTransferPendingRequestsValidation" xml:space="preserve">
+    <value>Mobile Or Orange Money Transfer Pending Requests Validation</value>
+  </data>
+  <data name="NoDataFound" xml:space="preserve">
+    <value>No data found</value>
+  </data>
+  <data name="Operator" xml:space="preserve">
+    <value>Operator</value>
+  </data>
+  <data name="OperatorType" xml:space="preserve">
+    <value>Operator type</value>
+  </data>
+  <data name="ProvideAnyAdditionalNotesOrCommentsRegardingYourRequest" xml:space="preserve">
+    <value>Provide any additional notes or comments regarding your request</value>
+  </data>
+  <data name="ProvideTheTransactionReferenceForTrackingPurposes" xml:space="preserve">
+    <value>Provide the transaction reference for tracking purposes</value>
+  </data>
+  <data name="ReloadAllRequests" xml:space="preserve">
+    <value>Reload all requests</value>
+  </data>
+  <data name="RequestDetails" xml:space="preserve">
+    <value>Request details</value>
+  </data>
+  <data name="RequestedAmount" xml:space="preserve">
+    <value>Requested amount</value>
+  </data>
+  <data name="RequestedDateTime" xml:space="preserve">
+    <value>Requested Date &amp; Time</value>
+  </data>
+  <data name="RequestFilters" xml:space="preserve">
+    <value>Request filters</value>
+  </data>
+  <data name="RequestNote" xml:space="preserve">
+    <value>Request note</value>
+  </data>
+  <data name="RequestReference" xml:space="preserve">
+    <value>Request reference</value>
+  </data>
+  <data name="SelectBranch" xml:space="preserve">
+    <value>Select branch</value>
+  </data>
+  <data name="SelectTheBranchWhereTheRequestIsBeingMade" xml:space="preserve">
+    <value>Select the branch where the request is being made</value>
+  </data>
+  <data name="SelectTheCurrentApprovalStatusForTheTransferRequest" xml:space="preserve">
+    <value>Select the current approval status for the transfer request</value>
+  </data>
+  <data name="SelectTheMobileMoneyOperatorYouAreUsing" xml:space="preserve">
+    <value>Select the mobile money operator you are using</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="SourceType" xml:space="preserve">
+    <value>Source type</value>
+  </data>
+  <data name="SubTellersRequests" xml:space="preserve">
+    <value>Sub Tellers Requests</value>
+  </data>
+  <data name="ThisIsTheAmountRequestedInTheTransfer" xml:space="preserve">
+    <value>This is the amount requested in the transfer</value>
+  </data>
+  <data name="ThisNoteContainsAdditionalInformationAboutTheRequest" xml:space="preserve">
+    <value>This note contains additional information about the request</value>
+  </data>
+  <data name="TransactionReference" xml:space="preserve">
+    <value>Transaction reference</value>
+  </data>
+  <data name="TransferRequestForm" xml:space="preserve">
+    <value>Transfer Request Form</value>
+  </data>
+  <data name="TransferType" xml:space="preserve">
+    <value>Transfer type</value>
+  </data>
+  <data name="TRANSFER_PENDING_VALIDATION" xml:space="preserve">
+    <value>TRANSFER PENDING VALIDATION</value>
+  </data>
+  <data name="ViewPendingRequests" xml:space="preserve">
+    <value>View pending requests</value>
+  </data>
+  <data name="ViewRequestDetails" xml:space="preserve">
+    <value>View request details</value>
+  </data>
+</root>

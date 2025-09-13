@@ -1,0 +1,445 @@
+﻿@model CBS.FrontDesk.Data.Entity.RequestManagement.WafDashboardData
+@using Newtonsoft.Json
+@{
+    ViewBag.Title = "WAF Dashboard";
+}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+    .chart-fixed {
+        height: 300px !important;
+        max-height: 300px !important;
+    }
+
+    canvas.chart-fixed {
+        width: 100% !important;
+        height: 300px !important;
+        max-height: 300px;
+        display: block !important;
+    }
+
+    #blockedUserMap {
+        height: 400px;
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        z-index: 0;
+        position: relative;
+        background: #f3f3f3;
+    }
+
+    .leaflet-container {
+        height: 100% !important;
+        width: 100% !important;
+    }
+</style>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="bi bi-shield-lock-fill me-2"></i> WAF Dashboard
+                </h1>
+                <p class="card-text">Monitor and analyze access control enforced by the WAF. Apply filters below to view metrics within the selected date range.</p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Form -->
+<form id="filterForm" method="post" asp-action="GetWafDashBoardForBlockedUsers" class="card bg-light p-3 mb-3">
+    <h5 class="text-primary mb-3"><i class="bi bi-filter me-1"></i> Filters</h5>
+    <div class="row g-3">
+        <div class="col-md-3">
+            <label class="form-label fw-bold">From Date</label>
+            <input type="date" name="FromDate" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label fw-bold">To Date</label>
+            <input type="date" name="ToDate" class="form-control" />
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <button id="applyFilterBtn" type="submit" class="btn btn-primary w-100">
+                <i class="bi bi-search"></i> Apply Filter
+            </button>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <button id="exportExcelBtn" type="button" class="btn btn-success w-100">
+                <i class="bi bi-file-earmark-excel"></i> Export to Excel
+            </button>
+        </div>
+    </div>
+</form>
+<div id="dashboardWrapper">
+    <!-- Summary Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card text-center p-3 h-100 d-flex flex-column justify-content-center">
+                <h6 class="text-warning">Active Blocks</h6>
+                <h3>@Model.Summary.ActiveBlocks</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center p-3 h-100 d-flex flex-column justify-content-center">
+                <h6 class="text-info">Top Country</h6>
+                <h3>@Model.Summary.TopCountry</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center p-3 h-100 d-flex flex-column justify-content-center">
+                <h6 class="text-danger">Blocked IPs</h6>
+                <h3>@Model.Summary.BlockedIps</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center p-3 h-100 d-flex flex-column justify-content-center">
+                <h6 class="text-warning">Top Reason</h6>
+                <p class="mb-0">@Model.Summary.TopReason</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card mt-2">
+    <h5 class="section-title mb-2">Blocked User Locations</h5>
+    <div id="blockedUserMap" style="height: 400px; width: 100%; border-radius: 12px;"></div>
+</div>
+
+
+<!-- Charts -->
+@*<div class="row">
+        <div class="col-md-6">
+            <div class="card p-3">
+                <h5 class="text-primary text-center"><i class="bi bi-pie-chart-fill me-1"></i> Block Reasons</h5>
+                <canvas id="blockReasonsPie" class="chart-fixed"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-3">
+                <h5 class="text-primary text-center"><i class="bi bi-bar-chart-fill me-1"></i> Blocked Requests (Last 30 Days)</h5>
+                <canvas id="blockTrendsChart" class="chart-fixed"></canvas>
+            </div>
+        </div>
+    </div>*@
+@*<canvas id="blockReasonsPie"></canvas>
+    <canvas id="blockTrendsChart"></canvas>*@
+<!-- Recent Blocked Users -->
+<h5 class="text-primary mt-5"><i class="bi bi-person-lines-fill me-1"></i> Recent Blocked Users</h5>
+<div class="card p-3">
+    <div class="d-flex justify-content-end mb-2">
+        <button class="btn btn-danger btn-sm" onclick="releaseSelectedUsers()" id="releaseSelectedBtn" disabled>
+            <i class="bi bi-unlock"></i> Release Selected
+        </button>
+    </div>
+    <div class="table-responsive">
+        <table id="myDataTable" class="table table-bordered table-striped table-hover w-100 nowrap">
+            <thead class="table-light text-center">
+                <tr>
+                    <th style="width: 30px;">
+                        <input type="checkbox" id="selectAll" title="Select All" />
+                    </th>
+                    <th>IP</th>
+                    <th>User</th>
+                    <th>Reason</th>
+                    <th>Country</th>
+                    <th>Time</th>
+                    <th style="width: 90px;">Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="blacklistDetailModal" tabindex="-1" aria-labelledby="blacklistDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="blacklistDetailModalLabel">
+                    <i class="mdi mdi-eye-outline text-primary me-1"></i> Blacklisted User Details
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body" id="blacklistDetailContent">
+                <!-- AJAX-loaded partial view (_Details.cshtml) will appear here -->
+                <div class="text-center text-muted">
+                    <i class="fas fa-spinner fa-spin"></i> Loading details...
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+    // Injected only ONCE globally
+    window.geoBlockData = @Html.Raw(Json.Encode(Model.GeoBranchAnalytics));
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            const data = window.geoBlockData;
+            const mapContainer = $('#blockedUserMap');
+
+            if (!data || data.length === 0) {
+                mapContainer.html('<p class="text-muted p-2">No geo-location data available.</p>');
+                return;
+            }
+
+            // ✅ Fix missing icon references
+            L.Icon.Default.mergeOptions({
+                iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+                iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+                shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png'
+            });
+
+            const map = L.map('blockedUserMap');
+            const bounds = [];
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            data.forEach(entry => {
+                if (entry.Latitude && entry.Longitude) {
+                    const marker = L.marker([entry.Latitude, entry.Longitude])
+                        .addTo(map)
+                        .bindPopup(
+                            `<strong>📍 ${entry.BranchName}</strong><br/>🔒 ${entry.BlockCount} block(s)`
+                        );
+                    bounds.push([entry.Latitude, entry.Longitude]);
+                }
+            });
+
+            if (bounds.length > 0) {
+                map.fitBounds(bounds, { padding: [30, 30] });
+            } else {
+                map.setView([data[0].Latitude, data[0].Longitude], 6);
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Select All Toggle
+            $('#myDataTable').on('change', '#selectAll', function () {
+                const isChecked = $(this).is(':checked');
+                $('#myDataTable .select-user').prop('checked', isChecked);
+            });
+
+            // Load DataTable
+            loadBlockedUsersTable();
+
+            // Filter form submit
+            $('#filterForm').on('submit', function (e) {
+                e.preventDefault();
+                reloadDashboard();
+                $('#myDataTable').DataTable().ajax.reload();
+            });
+
+            // Export button
+            $('#exportExcelBtn').on('click', function () {
+                const fromDate = $('input[name="FromDate"]').val();
+                const toDate = $('input[name="ToDate"]').val();
+                const form = $('<form method="post" action="/BlackListUser/ExportWafDashboardToExcel">')
+                    .append($('<input type="hidden" name="FromDate" />').val(fromDate))
+                    .append($('<input type="hidden" name="ToDate" />').val(toDate));
+                $('body').append(form);
+                form.submit();
+            });
+
+            // ⏱ Auto-refresh dashboard + datatable every 60 seconds
+            setInterval(function () {
+                reloadDashboard();
+                $('#myDataTable').DataTable().ajax.reload(null, false); // reload table without resetting pagination
+            }, 60000);
+        });
+
+        function showBlacklistDetails(id) {
+            $('#blacklistDetailModal').modal('show');
+            $('#blacklistDetailContent').html('<div class="text-center text-muted"><i class="fas fa-spinner fa-spin"></i> Loading details...</div>');
+
+            $.get('/BlacklistUser/Details', { id: id })
+                .done(function (html) {
+                    $('#blacklistDetailContent').html(html);
+                })
+                .fail(function () {
+                    $('#blacklistDetailContent').html('<div class="text-danger">Failed to load details.</div>');
+                });
+        }
+
+        function collectFilters() {
+            return {
+                FromDate: $('input[name="FromDate"]').val(),
+                ToDate: $('input[name="ToDate"]').val(),
+                Options: {} // Will be populated by DataTables
+            };
+        }
+
+        function loadBlockedUsersTable() {
+            $('#myDataTable').DataTable({
+                processing: false,
+                serverSide: true,
+                destroy: true,
+                searching: false,
+                scrollX: true,
+                order: [[5, 'desc']],
+                ajax: {
+                    url: '/BlackListUser/LoadData',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        let filters = collectFilters(); // you must implement this
+                        filters.Options = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            skip: d.start,
+                            pageSize: d.length,
+                            sortColumnName: d.columns[d.order[0].column].data,
+                            sortColumnDirection: d.order[0].dir
+                        };
+                        return JSON.stringify(filters);
+                    }
+                },
+                columnDefs: [
+                    { targets: 0, orderable: false, searchable: false },
+                    { targets: 6, orderable: false, searchable: false }
+                ],
+                columns: [
+                    {
+                        data: null,
+                        className: 'text-center',
+                        render: function (data, type, row) {
+                            return `<input type="checkbox" class="select-user" value="${row.Id}" />`;
+                        }
+                    },
+                    { data: 'IpAddress' },
+                    { data: 'UserName' },
+                    { data: 'Reason' },
+                    { data: 'Country' },
+                    {
+                        data: 'Timestamp',
+                        render: function (data) {
+                            return moment(data).format('DD/MM/YYYY HH:mm');
+                        }
+                    },
+                    {
+                        data: null,
+                        className: 'text-center',
+                        render: function (data, type, row) {
+                            return `<button class="btn btn-sm btn-primary" onclick="showBlacklistDetails('${row.Id}')">
+                                                                                    <i class="bi bi-eye"></i> View
+                                                                                </button>`;
+                        }
+                    }
+                ],
+                drawCallback: function () {
+                    updateReleaseButton();
+                }
+            });
+        }
+
+        // Handle select all
+        $(document).on('change', '#selectAll', function () {
+            const checked = this.checked;
+            $('.select-user').prop('checked', checked);
+            updateReleaseButton();
+        });
+
+        // Update release button state
+        $(document).on('change', '.select-user', function () {
+            updateReleaseButton();
+        });
+
+        function updateReleaseButton() {
+            const anyChecked = $('.select-user:checked').length > 0;
+            $('#releaseSelectedBtn').prop('disabled', !anyChecked);
+        }
+
+        // Handle release selected
+        //$('#releaseSelectedBtn').on('click', function () {
+        //    const selectedIds = $('.select-user:checked').map(function () {
+        //        return $(this).val();
+        //    }).get();
+
+        //    if (selectedIds.length === 0) return;
+
+        //    if (confirm(`Release ${selectedIds.length} selected users/IPs?`)) {
+        //        $.ajax({
+        //            url: '/BlackListUser/ReleaseSelected',
+        //            method: 'POST',
+        //            contentType: 'application/json',
+        //            data: JSON.stringify({ ids: selectedIds }),
+        //            success: function () {
+        //                $('#myDataTable').DataTable().ajax.reload();
+        //                alert('Selected entries released successfully.');
+        //            },
+        //            error: function () {
+        //                alert('❌ Failed to release selected users.');
+        //            }
+        //        });
+        //    }
+        //});
+
+        function reloadDashboard() {
+            const form = $('#filterForm');
+            const url = form.attr('action') || window.location.pathname;
+            const data = form.serialize();
+            $.post(url, data, function (html) {
+                const dom = $(html);
+                const updated = dom.find('#dashboardWrapper').html();
+                $('#dashboardWrapper').html(updated);
+            });
+        }
+
+
+
+        $('#releaseSelectedBtn').on('click', function () {
+            const selectedIds = $('.select-user:checked').map(function () {
+                return $(this).val();
+            }).get();
+
+            if (selectedIds.length === 0) {
+                alertify.alert('No Selection', 'Please select at least one user to release.');
+                return;
+            }
+
+            alertify.confirm(
+                `Release Confirmation`,
+                `Are you sure you want to release ${selectedIds.length} selected user(s)/IP(s)?`,
+                function () {
+                    // ✅ On confirm
+                    $.ajax({
+                        url: '/BlackListUser/ReleaseSelected',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(selectedIds),
+                        success: function () {
+                            reloadDashboard();
+                            $('#myDataTable').DataTable().ajax.reload();
+                            alertify.success('Selected entries released successfully.');
+                        },
+                        error: function () {
+                            alertify.error('❌ Failed to release selected users.');
+                        }
+                    });
+                },
+                function () {
+                    // ❌ On cancel
+                    alertify.message('Release canceled');
+                }
+            ).set('labels', { ok: 'Yes, Release', cancel: 'Cancel' });
+        });
+
+    </script>
+}

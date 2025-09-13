@@ -1,0 +1,103 @@
+﻿@model CBS.FrontDesk.Data.UserManagement.User
+@using Resources
+<div class="accordion" id="userPermissionAccordion">
+
+    <!-- 🔐 Section 1: Add User Role -->
+    <div class="accordion-item mb-3">
+        <h2 class="accordion-header" id="headingAddRole">
+            <button class="accordion-button bg-primary text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAddRole" aria-expanded="true" aria-controls="collapseAddRole">
+                <i class="fas fa-code-branch me-2"></i> @GlobalUserManagement.AddUserRole
+            </button>
+        </h2>
+        <div id="collapseAddRole" class="accordion-collapse collapse show" aria-labelledby="headingAddRole" data-bs-parent="#userPermissionAccordion">
+            <div class="accordion-body bg-light">
+
+                <p class="mb-3 text-muted">@GlobalUserManagement.AssignNewRolesPermissionsToUser: <strong class="text-dark">@Model.userName</strong></p>
+
+                @Html.Hidden("Option", "AddUserRole")
+                @Html.HiddenFor(m => m.id)
+
+                <div class="table-responsive mb-3 shadow-sm">
+                    <table class="table table-hover table-bordered" id="myDataTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>@GlobalUserManagement.Menu</th>
+                                <th>@GlobalUserManagement.Parent</th>
+                                <th>@GlobalUserManagement.Description</th>
+                                <th>
+                                    <label class="form-check-label">
+                                        <input type="checkbox" id="selectAll" class="form-check-input" />
+                                        @GlobalUserManagement.All
+                                    </label>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var d in Model.PermissionMenuLoaders)
+                            {
+                                <tr>
+                                    <td style="width:23%">@d.MenuText</td>
+                                    <td style="width:23%">@d.ParentName</td>
+                                    <td style="width:49%">@d.Description</td>
+                                    <td class="text-center" style="width:5%">
+                                        <input type="checkbox" name="selectedMenus" value="@d.MenuMasterId" />
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="text-end mt-3">
+                    <button onclick="submitUserRoles('@Model.id')" type="button" class="btn btn-primary">
+                        <i class="fas fa-check-circle me-1"></i> @GlobalUserManagement.AddRole
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🛡️ Section 2: User's Current Permissions -->
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingCurrentPermissions">
+            <button class="accordion-button bg-dark text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCurrentPermissions" aria-expanded="false" aria-controls="collapseCurrentPermissions">
+                <i class="fas fa-user-shield me-2"></i> @GlobalUserManagement.UsersCurrentPermissions
+            </button>
+        </h2>
+        <div id="collapseCurrentPermissions" class="accordion-collapse collapse" aria-labelledby="headingCurrentPermissions" data-bs-parent="#userPermissionAccordion">
+            <div class="accordion-body bg-light">
+
+                <div class="table-responsive shadow-sm">
+                    <table class="table table-hover table-bordered" id="myDataTableT2">
+                        <thead class="table-light">
+                            <tr>
+                                <th><input type="checkbox" id="selectAllPermissions" /></th>
+                                <th>@GlobalUserManagement.Name</th>
+                                <th>@GlobalUserManagement.Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var d in Model.UserPermissions)
+                            {
+                                <tr>
+                                    <td style="width:5%">
+                                        <input type="checkbox" class="permission-checkbox" value="@d.Id" />
+                                    </td>
+                                    <td style="width:25%">@d.MenuMaster.MenuText</td>
+                                    <td style="width:70%">@d.MenuMaster.Description</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <div class="text-end mt-3">
+                        <button id="deleteSelectedPermissionsBtn" class="btn btn-danger">
+                            <i class="fas fa-trash-alt me-1"></i> @GlobalUserManagement.DeleteSelectedPermissions
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

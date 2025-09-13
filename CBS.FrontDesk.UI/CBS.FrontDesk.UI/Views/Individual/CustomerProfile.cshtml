@@ -1,0 +1,261 @@
+﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
+    @using Resources
+@{
+    ViewBag.Title = @GlobalIndividual.Profile;
+}
+
+
+
+
+
+
+<div class="row">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-account-circle me-2"></i> @GlobalIndividual.MemberProfileManagement <strong>@Session["BranchName"]</strong>
+                </h1>
+                <p class="card-text text-muted">
+                    @GlobalIndividual.ManageMemberProfilesEfficientlyByUpdatingPersonalDetails.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row invoice-preview">
+    <div class="col-xl-3 col-md-4 col-12 invoice-actions">
+        <fieldset class="fieldset-custom">
+            <!-- Member Reference Information -->
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="group-title">
+                        @ViewBag.MemberStatus <span class="highlight-text">@Model.CustomerList.CustomerId</span>
+                        <hr />
+                        <small>@GlobalIndividual.MemberCode</small><br />
+                        <small>@GlobalIndividual.BankCode: @Session["BankCode"].ToString()</small><br />
+                        <small>@GlobalIndividual.BranchCode: @Session["BranchCode"].ToString()</small>
+                    </h4>
+                </div>
+            </div>
+            <br />
+            <!-- Member Status Information -->
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="group-title">
+                        @GlobalIndividual.MEMBER_STATUS
+                        <hr />
+                        @if (Model.CustomerList.MembershipApprovalStatus == "Approved")
+                        {
+                            <small>@GlobalIndividual.Approved BY: @Model.CustomerList.MembershipApprovalBy</small><br />
+                            <small>@GlobalIndividual.Approved Date: @Model.CustomerList.MembershipApprovedDate</small><br />
+                            <small>@GlobalIndividual.Status: <span class="highlight-text">@Model.CustomerList.MembershipApprovalStatus.ToUpper()</span></small>
+                        }
+                        else
+                        {
+                            <small>@GlobalIndividual.Status: <span class="highlight-text">@Model.CustomerList.MembershipApprovalStatus</span></small>
+                        }
+                        <br />
+                        <small>@GlobalIndividual.RegistrationDate: @Model.CustomerList.MembershipApplicantDate</small>
+                    </h4>
+                </div>
+            </div>
+            <br />
+            <!-- Member Photo -->
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">@GlobalIndividual.Photo</h5>
+                    <div class="image-upload-container">
+                        @if (Model.CustomerList.photoUrl != null)
+                        {
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#photoPreviewModal">
+                                <img src="@Model.CustomerList.photoUrl" class="img-fluid preview-image" alt="@GlobalShared.UploadedImage">
+                            </a>
+                        }
+                        else
+                        {
+                            <img src="@Url.Content(Model.CustomerList.ImageNoVirtualPath)" class="img-fluid preview-image" alt="@GlobalShared.NoPhotoFound">
+                        }
+                    </div>
+                </div>
+            </div>
+            <br />
+            <!-- Member Signature -->
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">@GlobalShared.Signature</h5>
+                    <div class="image-upload-container">
+                        @if (Model.CustomerList.signatureUrl != null)
+                        {
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#signaturePreviewModal">
+                                <img src="@Model.CustomerList.signatureUrl" class="img-fluid preview-image" alt="@GlobalShared.UploadedSignature">
+                            </a>
+                        }
+                        else
+                        {
+                            <img src="@Url.Content(Model.CustomerList.ImageVirtualNoSignaturePath)" class="img-fluid preview-image" alt="@GlobalShared.NoSignatureFound">
+                        }
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <!-- Rest of the content -->
+    <div class="col-xl-9 col-md-8 col-12 mb-md-0 mb-4">
+        <!-- Tips Section -->
+        <div class="card mb-4">
+            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                <span><i class="mdi mdi-information-outline me-2"></i> @GlobalIndividual.HELPTIPS</span>
+                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </h6>
+            <div id="collapseHelpTips" class="collapse">
+                <div class="card-body">
+                    <p class="text-muted mb-2">@GlobalIndividual.FollowTheseTipsToManageMemberProfilesEffectively:</p>
+                    <ul>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalIndividual.EnsureAllMemberDetailsSuchAsNameIDAndAddressAreAccurate.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalIndividual.MemberReferenceNumbersAreAutoGeneratedUnlessCustomized.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalIndividual.CivilServantsAndSalaryEarnersMustProvideSalaryDetails.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalIndividual.PhotoAndSignatureUploadsAreMandatoryForIdentificationPurposes.</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i>@GlobalIndividual.MembershipApprovalStatusAndDatesShouldBeReviewedRegularlyForUpdates.</li>
+                    </ul>
+                    <p class="text-muted">@GlobalIndividual.AdditionalNotes:</p>
+                    <ul>
+                        <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalIndividual.CollectiveAccountsRequireTheNoneMemberAccountOptionToBeChecked.</li>
+                        <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalIndividual.MemberReferencesConsistOfABranchCodeAndA7DigitMemberCode.</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalIndividual.EnsureProperDocumentationIsUploadedForVerificationPurposes.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Tabbed Content -->
+        <div class="card mb-4">
+            <div class="card-header p-0">
+                <div class="nav-align-top">
+                    <ul class="nav nav-tabs nav-fill" role="tablist">
+                        <li class="nav-item">
+                            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-profile" aria-controls="navs-profile" aria-selected="true">
+                                <i class="tf-icons mdi mdi-account-outline me-1"></i> @GlobalIndividual.ProfileDetails
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-account" aria-controls="navs-account" aria-selected="false">
+                                <i class="tf-icons mdi mdi-account-circle-outline me-1"></i> @GlobalIndividual.AccountView
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-document" aria-controls="navs-document" aria-selected="false">
+                                <i class="tf-icons mdi mdi-file-document-outline me-1"></i> @GlobalIndividual.DocumentManagement
+                            </button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-nextofkin" aria-controls="navs-nextofkin" aria-selected="false">
+                                <i class="tf-icons mdi mdi-account-multiple-outline me-1"></i> @GlobalIndividual.NextOfKingManagement
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-signatory" aria-controls="navs-signatory" aria-selected="false">
+                                <i class="tf-icons mdi mdi-pen me-1"></i> @GlobalIndividual.SignatoryManagement
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="tab-content p-0">
+                    <div class="tab-pane fade show active" id="navs-profile" role="tabpanel">
+                        @Html.Partial("_ProfileDetails")
+                    </div>
+                    <div class="tab-pane fade" id="navs-account" role="tabpanel">
+                        @Html.Partial("_AccountBalance")
+                    </div>
+                    <div class="tab-pane fade" id="navs-document" role="tabpanel">
+                        @Html.Partial("_DocumentManagement")
+                    </div>
+                    <div class="tab-pane fade" id="navs-nextofkin" role="tabpanel">
+                        @Html.Partial("_NextOfKinManagement")
+                    </div>
+                    <div class="tab-pane fade" id="navs-signatory" role="tabpanel">
+                        @Html.Partial("_SignatoryManagement")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Photo Modal -->
+<div class="modal fade" id="photoPreviewModal" tabindex="-1" aria-labelledby="photoPreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="photoPreviewModalLabel">@Model.CustomerList.FirstName @Model.CustomerList.LastName - @GlobalShared.PhotoPreview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                @if (Model.CustomerList.photoUrl != null)
+                {
+                    <img src="@Model.CustomerList.photoUrl" class="img-fluid" alt="@GlobalShared.PreviewImage">
+                }
+                else
+                {
+                    <img src="@Url.Content(Model.CustomerList.ImageVirtualPath)" class="img-fluid" alt="@GlobalShared.NoImageFound">
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Signature Modal -->
+<div class="modal fade" id="signaturePreviewModal" tabindex="-1" aria-labelledby="signaturePreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signaturePreviewModalLabel">@Model.CustomerList.FirstName @Model.CustomerList.LastName - @GlobalShared.SignaturePreview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                @if (Model.CustomerList.signatureUrl != null)
+                {
+                    <img src="@Model.CustomerList.signatureUrl" class="img-fluid" alt="@GlobalShared.PreviewSignature">
+                }
+                else
+                {
+                    <img src="@Url.Content(Model.CustomerList.ImageVirtualNoSignaturePath)" class="img-fluid" alt="@GlobalShared.NoSignatureFound">
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="accountDetailModal" tabindex="-1" aria-labelledby="accountDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@GlobalIndividual.AccountDetails</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="accountDetailContent">
+                <!-- Account details will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+
+}

@@ -1,0 +1,39 @@
+﻿@model CBS.FrontDesk.Data.UserManagement.User
+@using Resources
+<div class="accordion" id="userPermissionAccordion">
+
+
+    <div class="accordion-item mb-3">
+        <h2 class="accordion-header" id="headingAddRole">
+            <button class="accordion-button bg-primary text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAddRole" aria-expanded="true" aria-controls="collapseAddRole">
+                <i class="fas fa-user-shield me-2"></i> @GlobalUserManagement.UsersCurrentPermissions
+            </button>
+        </h2>
+        <div id="collapseAddRole" class="accordion-collapse collapse show" aria-labelledby="headingAddRole" data-bs-parent="#userPermissionAccordion">
+            <div class="accordion-body bg-light">
+
+                <div class="table-responsive shadow-sm">
+                    <table class="table table-hover table-bordered" id="myDataTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>@GlobalUserManagement.Name</th>
+                                <th>@GlobalUserManagement.Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var d in Model.UserPermissions)
+                            {
+                                <tr>
+                                    <td style="width:25%">@d.MenuMaster.MenuText</td>
+                                    <td style="width:75%">@d.MenuMaster.Description</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

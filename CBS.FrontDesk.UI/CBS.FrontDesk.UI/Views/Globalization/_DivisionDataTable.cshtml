@@ -1,0 +1,70 @@
+﻿@model CBS.FrontDesk.Data.Entity.Config.GlobalizationViewModel
+
+<!-- Table of Divisions -->
+<hr />
+<h6 class="text-secondary mb-3"><i class="bi bi-list-check"></i> Existing Divisions</h6>
+
+<div class="table-responsive">
+    <table id="divisionTable" class="table table-bordered table-striped table-hover table-sm w-100">
+        <thead class="table-light">
+            <tr>
+                <th>Region</th>
+                <th>Division Name</th>
+                <th style="width: 120px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Divisions != null && Model.Divisions.Count > 0)
+            {
+                foreach (var division in Model.Divisions)
+                {
+                    <tr>
+                        <td>@division.RegionName</td>
+                        <td>@division.Name</td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-primary"
+                                        onclick="openGlobalizationModal(
+                                            '@division.Id',
+                                            'globalizationModal',
+                                            'globalizationFormContainer',
+                                            'Globalization',
+                                            'InitializeData',
+                                            '_DivisionForm',
+                                            '',
+                                            'Edit Division',
+                                            'globalizationModalTitleText',
+                                            'id'
+                                        )">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+
+                                <button class="btn btn-sm btn-outline-danger"
+                                        onclick="deleteEntity({
+                                            key: '@division.Id',
+                                            type: 'division',
+                                            deleteUrl: '/Globalization/Delete',
+                                            reloadUrl: '/Globalization/InitializeData',
+                                            containerId: 'divisionTableContainer',
+                                            partialView: '_DivisionDataTable',
+                                            path: 'division',
+                                            parentKey: '@division.RegionId'
+                                        })">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3" class="text-center text-muted">
+                        <i class="bi bi-info-circle me-1"></i> No divisions found.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

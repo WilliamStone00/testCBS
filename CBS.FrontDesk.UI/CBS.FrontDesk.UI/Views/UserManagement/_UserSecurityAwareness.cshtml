@@ -1,0 +1,109 @@
+﻿@using Resources
+<div class="tab-pane fade show active" id="tab-awareness" role="tabpanel">
+    <h5 class="text-primary mb-3">
+        <i class="mdi mdi-shield-account-outline me-2"></i>@GlobalUserManagement.UserSecurityAwareness
+    </h5>
+
+    <div class="alert alert-info shadow-sm mb-4">
+        <i class="mdi mdi-security me-2"></i>
+        <strong>Trust Soft Credit (TSC)</strong> @GlobalUserManagement.enforcesAcomprehensiveSecurityPolicyFramework.
+    </div>
+
+    <!-- 🔐 ACCOUNT POLICIES -->
+    <h6 class="text-secondary fw-bold mt-4">🔐 @GlobalUserManagement.AccountCompliancePolicies</h6>
+    <ul>
+        <li><strong>@GlobalUserManagement.InactivityLock:</strong> @GlobalUserManagement.AccountsAreAutomaticallyDisabledAfterAConfiguredPeriodOfUserInactivity (e.g., @GlobalUserManagement._12Days).</li>
+        <li><strong>@GlobalUserManagement.NoLoginAfterCreation:</strong> @GlobalUserManagement.NewlyCreatedAccountsMustBeAccessedWithin <strong>@GlobalUserManagement._3Days</strong>; @GlobalUserManagement.otherwiseTheyWillBeAutomaticallyDisabled.</li>
+        <li><strong>@GlobalUserManagement.MFAEnforcement:</strong> @GlobalUserManagement.UsersAreRequiredToActivateMultiFactorAuthenticationWithin <strong>@GlobalUserManagement._3Days</strong> @GlobalUserManagement.ofAccountCreation.</li>
+        <li><strong>@GlobalUserManagement.AccountLockout:</strong> @GlobalUserManagement.AccountsAreLockedAfter <strong>@GlobalUserManagement._3FailedLoginAttempts</strong> @GlobalUserManagement.toPreventBruteForceAttacks.</li>
+        <li><strong>@GlobalUserManagement.BranchAndIPRestrictions:</strong> @GlobalUserManagement.LoginIsRestrictedToAuthorizedBranchesAndApprovedIPAddressRanges.</li>
+        <li><strong>@GlobalUserManagement.PasswordExpiration:</strong> @GlobalUserManagement.UsersMust <strong>@GlobalUserManagement.changeTheirPasswordEvery90Days</strong> @GlobalUserManagement.inAccordanceWithTheOrganizationsFraudPreventionAndSecurityPolicies.</li>
+    </ul>
+
+  
+
+    <div class="alert alert-warning mt-3 shadow-sm">
+        <i class="mdi mdi-alert-outline me-2"></i>
+        <strong>@GlobalUserManagement.Important:</strong> @GlobalUserManagement.FailureToComplyWithAnyOfTheAbovePoliciesWillResultInThe <strong>@GlobalUserManagement.automaticBlockingOfYourAccount</strong> @GlobalUserManagement.byTheSystem.
+        @GlobalUserManagement.IfYourAccountIsBlockedPleaseContactYourAdministrator.
+    </div>
+
+
+
+    <!-- 🔑 PASSWORD POLICIES -->
+    <h6 class="text-secondary fw-bold mt-4">🔐 @GlobalUserManagement.PasswordPolicy</h6>
+    <ul>
+        <li><strong>@GlobalUserManagement.Length:</strong> @GlobalUserManagement.PasswordsMustBeBetween <strong>@GlobalUserManagement._8And128Characters</strong>.</li>
+        <li>
+            <strong>@GlobalUserManagement.Composition:</strong> @GlobalUserManagement.MustIncludeAtLeast:
+            <ul>
+                <li>@GlobalUserManagement.OneUppercaseLetter (A–Z)</li>
+                <li>@GlobalUserManagement.OneLowercaseLetter (a–z)</li>
+                <li>@GlobalUserManagement.OneDigit (0–9)</li>
+                <li><strong>@GlobalUserManagement.ThreeNonRepeatingSpecialCharacters</strong> @GlobalUserManagement.fromTheApprovedSet <code>!@@#$%^&*()_+-=[]{}|;:,.&lt;&gt;?</code>, @GlobalUserManagement.distributedAcrossThePassword.</li>
+            </ul>
+        </li>
+        <li><strong>@GlobalUserManagement.UsernameExclusion:</strong> @GlobalUserManagement.YourPasswordMustNotContainYourUsername.</li>
+        <li><strong>@GlobalUserManagement.CommonWordFilter:</strong> @GlobalUserManagement.ForbiddenWordsLike <code>admin</code>, <code>password</code>, <code>welcome</code>, etc., @GlobalUserManagement.areNotAllowed.</li>
+        <li><strong>@GlobalUserManagement.CalendarYearRestriction:</strong> @GlobalUserManagement.PasswordsMustNotIncludeYearsSuchAs <code>1999</code>, <code>2024</code>, etc. @GlobalUserManagement.TheseMakePasswordsEasierToGuess.</li>
+        <li><strong>@GlobalUserManagement.RepetitionAvoidance:</strong> @GlobalUserManagement.SerialPatterns (e.g., <code>1234</code>, <code>abcd</code>) @GlobalUserManagement.areDisallowed.</li>
+        <li><strong>@GlobalUserManagement.PasswordHistory:</strong> @GlobalUserManagement.YouCannotReuseYourLast <strong>@GlobalUserManagement._5PreviouslyUsedPasswords</strong>.</li>
+        <li><strong>@GlobalUserManagement.PasswordExpiration:</strong> @GlobalUserManagement.PasswordsMustBeChangedEvery <strong>@GlobalUserManagement._90days</strong> @GlobalUserManagement.accordanceWithTheFraudPreventionPolicy.</li>
+    </ul>
+
+
+    <!-- 📱 MFA -->
+    <h6 class="text-secondary fw-bold mt-4">📱 @GlobalUserManagement.MultiFactorAuthenticationMFA</h6>
+    <ul>
+        <li>@GlobalUserManagement.MFAIs <strong>@GlobalUserManagement.mandatory</strong> @GlobalUserManagement.byPolicy.</li>
+        <li>@GlobalUserManagement.TheDefaultMFAMethodIs <strong>@GlobalUserManagement.TOTPTimeBasedOneTimePassword</strong> @GlobalUserManagement.usingAppsLikeGoogleAuthenticator.</li>
+        <li>@GlobalUserManagement.OtherSupportedTypesInclude <strong>SMS</strong> @GlobalUserManagement.and <strong>Email</strong>-based tokens.</li>
+        <li>@GlobalUserManagement.UsersMustActivateMFAWithin <strong>@GlobalUserManagement.DaysAfterAccountCreation</strong> @GlobalUserManagement.orRiskAccountSuspension.</li>
+    </ul>
+
+    <!-- ⏳ SESSION MANAGEMENT -->
+    <h6 class="text-secondary fw-bold mt-4">⏳ @GlobalUserManagement.IdleTimeSessionManagement</h6>
+    <ul>
+        <li><strong>@GlobalUserManagement.SessionTimeout:</strong> @GlobalUserManagement.SessionsAreAutomaticallyTerminatedAfter <strong>15 minutes</strong> @GlobalUserManagement.ofInactivity.</li>
+        <li><strong>@GlobalUserManagement.IdleAccountPolicy:</strong> @GlobalUserManagement.UsersWhoRemainInactiveForSeveralDaysMayHaveTheirAccountsAutoBlocked.</li>
+        <li><strong>@GlobalUserManagement.SecureCookies:</strong> @GlobalUserManagement.AllSessionCookiesAre <code>@GlobalUserManagement.HttpOnly</code>, <code>@GlobalUserManagement.Secure</code>, @GlobalUserManagement.and <code>@GlobalUserManagement.SameSiteStrict</code>.</li>
+        <li><strong>@GlobalUserManagement.MultipleSessionEnforcement:</strong> @GlobalUserManagement.TSCMonitorsSimultaneousLoginsAndTerminatesOverlappingSessionsToPreventAbuse.</li>
+    </ul>
+
+    <!-- 🧪 EXAMPLES -->
+    <h6 class="text-secondary fw-bold mt-4">🧪 Examples</h6>
+    <p><strong class="text-primary">✅ @GlobalUserManagement.VeryStrongPassword:</strong> <code>Xr@91$FeB!tYz2025</code></p>
+    <p><strong class="text-danger">❌ @GlobalUserManagement.VeryWeakPasswords:</strong> <code>password123</code>, <code>admin</code>, <code>12345678</code></p>
+
+    <!-- 🛡️ BEST PRACTICES -->
+    <h6 class="text-secondary fw-bold mt-4">🛡️ @GlobalUserManagement.BestPracticesToStaySecure</h6>
+    <ul>
+        <li>@GlobalUserManagement.UseA <strong>@GlobalUserManagement.uniquePassword</strong> @GlobalUserManagement.ThatYouDoNotUseOnOtherSystems.</li>
+        <li><strong>@GlobalUserManagement.NeverShareYourPasswordOrMFACode</strong> @GlobalUserManagement.withAnyoneNotEvenITStaff.</li>
+        <li><strong>@GlobalUserManagement.Logout</strong> @GlobalUserManagement.fromSharedComputersAndClearBrowserDataAfterUse.</li>
+        <li>@GlobalUserManagement.KeepYourDevicesBrowsersAndOSUpdatedToPatchKnownVulnerabilities.</li>
+    </ul>
+
+    <!-- 🚫 THREATS -->
+    <h6 class="text-secondary fw-bold mt-4">🚫 @GlobalUserManagement.ProtectYourselfFromThreats</h6>
+    <ul>
+        <li><strong>@GlobalUserManagement.Phishing:</strong> @GlobalUserManagement.NeverEnterYourCredentialsOnUntrustedLinksOrFakeSites.</li>
+        <li><strong>@GlobalUserManagement.SessionHijacking:</strong> @GlobalUserManagement.UseVPNsOnPublicNetworks.</li>
+        <li><strong>@GlobalUserManagement.UnauthorizedAccess:</strong> @GlobalUserManagement.MonitorYourRecentLoginHistory.</li>
+    </ul>
+
+    <!-- 📘 GLOSSARY -->
+    <h6 class="text-secondary fw-bold mt-4">📘 @GlobalUserManagement.KeyAbbreviations</h6>
+    <ul>
+        <li><strong>MFA:</strong> Multi-Factor Authentication</li>
+        <li><strong>TOTP:</strong> Time-based One-Time Password</li>
+        <li><strong>CSRF:</strong> Cross-Site Request Forgery</li>
+        <li><strong>HTTPS:</strong> HyperText Transfer Protocol Secure</li>
+    </ul>
+
+    <!-- ⚠️ ALERT -->
+    <div class="alert alert-warning mt-4 shadow-sm">
+        <i class="mdi mdi-alert-outline me-2"></i>
+        <strong>@GlobalUserManagement.Important:</strong> @GlobalUserManagement.IfYouNoticeUnusualAccountActivityOrSuspectCompromise, <span class="text-danger">@GlobalUserManagement.changeYourPasswordImmediately</span> @GlobalUserManagement.andNotifyYourSystemAdministrator.
+    </div>
+</div>

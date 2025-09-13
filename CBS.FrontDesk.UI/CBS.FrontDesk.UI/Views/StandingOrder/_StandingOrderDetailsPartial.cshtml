@@ -1,0 +1,238 @@
+﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.StandingOrderCarrier
+@using Resources
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr class="table-primary">
+            <th colspan="2" class="font-weight-bold text-center">@GlobalStandingOrder.StandingOrderDetails</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="font-weight-bold">@GlobalStandingOrder.MemberName:</td>
+            <td>@Model.StandingOrder.MemberName</td>
+        </tr>
+        <tr>
+            <td class="font-weight-bold">@GlobalStandingOrder.MemberID:</td>
+            <td>@Model.StandingOrder.MemberId</td>
+        </tr>
+        <tr>
+            <td class="font-weight-bold">@GlobalStandingOrder.Amount:</td>
+            <td>@Model.StandingOrder.Amount.ToString("#,##0") XAF</td>
+        </tr>
+        <tr>
+            <td class="font-weight-bold">@GlobalStandingOrder.SourceAccount:</td>
+            <td>@Model.StandingOrder.SourceAccountType</td>
+        </tr>
+        <tr>
+            <td class="font-weight-bold">@GlobalStandingOrder.DestinationAccount:</td>
+            <td>@Model.StandingOrder.DestinationAccountType</td>
+        </tr>
+        <tr>
+            <td class="font-weight-bold">@GlobalStandingOrder.Purpose:</td>
+            <td>@Model.StandingOrder.Purpose</td>
+        </tr>
+        <tr>
+            <td class="font-weight-bold">@GlobalStandingOrder.Frequency:</td>
+            <td>@Model.StandingOrder.Frequency</td>
+        </tr>
+        <tr>
+            <td class="font-weight-bold">@GlobalStandingOrder.Priority:</td>
+            <td>
+                @if (Model.StandingOrder.Priority == "High")
+                {
+                    <span class="badge bg-danger text-white">@GlobalStandingOrder.High</span>
+                }
+                else if (Model.StandingOrder.Priority == "Medium")
+                {
+                    <span class="badge bg-warning text-dark">@GlobalStandingOrder.Medium</span>
+                }
+                else if (Model.StandingOrder.Priority == "Low")
+                {
+                    <span class="badge bg-success text-white">@GlobalStandingOrder.Low</span>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td class="font-weight-bold">@GlobalStandingOrder.ActiveStatus:</td>
+            <td>
+                @if (Model.StandingOrder.IsActive)
+                {
+                    <span class="badge bg-primary text-white">@GlobalShared.Active</span>
+                }
+                else
+                {
+            <span class="badge bg-danger text-white">@GlobalShared.Inactive</span>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td class="font-weight-bold">@GlobalStandingOrder.ExecutionType:</td>
+            <td>
+                @if (Model.StandingOrder.IsAutomatic)
+                {
+                    <span class="badge bg-primary text-white">@GlobalStandingOrder.Automatic</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary text-white">@GlobalStandingOrder.Manual</span>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td class="font-weight-bold">@GlobalStandingOrder.ExternalAccount:</td>
+            <td>
+                @if (Model.StandingOrder.ExternalAccount)
+                {
+                    <span class="badge bg-primary text-white">@GlobalStandingOrder.Yes</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary text-white">@GlobalStandingOrder.No</span>
+                }
+            </td>
+        </tr>
+        @if (Model.StandingOrder.ExternalAccount)
+        {
+            <tr>
+                <td class="font-weight-bold">@GlobalStandingOrder.ExternalAccountNumber:</td>
+                <td>@Model.StandingOrder.ExternalAccountNumber</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">@GlobalStandingOrder.ExternalAccountHolderName:</td>
+                <td>@Model.StandingOrder.ExternalAccountHolderName</td>
+            </tr>
+        }
+        <tr>
+            <td class="font-weight-bold">@GlobalStandingOrder.StartDate:</td>
+            <td>@Model.StandingOrder.StartDate.Value.ToString("dd-MM-yyyy")</td>
+        </tr>
+        <tr>
+            <td class="font-weight-bold">@GlobalStandingOrder.EndDate:</td>
+            <td>@Model.StandingOrder.EndDate.Value.ToString("dd-MM-yyyy")</td>
+        </tr>
+        <tr>
+            <td class="font-weight-bold">@GlobalStandingOrder.PersonalNote:</td>
+            <td style="max-width: 300px; white-space: normal; word-wrap: break-word;">
+                @Model.StandingOrder.PersonalNote
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+@*<table class="table table-bordered table-striped">
+        <tbody>
+            <tr class="table-primary">
+                <td colspan="2" class="font-weight-bold text-center">Standing Order Summary</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Member Name:</td>
+                <td>@Model.StandingOrder.MemberName</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Member ID:</td>
+                <td>@Model.StandingOrder.MemberId</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Amount:</td>
+                <td>@Model.StandingOrder.Amount.ToString("#,##0") XAF</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Source Account:</td>
+                <td>@Model.StandingOrder.SourceAccountType</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Destination Account:</td>
+                <td>@Model.StandingOrder.DestinationAccountType</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Purpose:</td>
+                <td>@Model.StandingOrder.Purpose</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Frequency of execution:</td>
+                <td>@Model.StandingOrder.Frequency</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Active status:</td>
+                <td>
+                    @if (Model.StandingOrder.IsActive)
+                    {
+                        <span class="badge bg-primary text-white">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger text-white">Inactive</span>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Execution type:</td>
+                <td>
+                    @if (Model.StandingOrder.IsAutomatic)
+                    {
+                        <span class="badge bg-primary text-white">Automatic</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary text-white">Manual</span>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Active Status:</td>
+                <td>
+                    @if (Model.StandingOrder.IsActive)
+                    {
+                        <span class="badge bg-primary text-white">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger text-white">Inactive</span>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Execution Type:</td>
+                <td>
+                    @if (Model.StandingOrder.IsAutomatic)
+                    {
+                        <span class="badge bg-primary text-white">Automatic</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary text-white">Manual</span>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">External Account:</td>
+                <td>
+                    @if (Model.StandingOrder.ExternalAccount)
+                    {
+                        <span class="badge bg-primary text-white">Yes</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary text-white">No</span>
+                    }
+                </td>
+            </tr>
+            @if (Model.StandingOrder.ExternalAccount)
+            {
+                <tr>
+                    <td class="font-weight-bold">External Account Number:</td>
+                    <td>@Model.StandingOrder.ExternalAccountNumber</td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold">External Account Holder Name:</td>
+                    <td>@Model.StandingOrder.ExternalAccountHolderName</td>
+                </tr>
+            }
+            <tr>
+                <td class="font-weight-bold">Personal Note:</td>
+                <td>@Model.StandingOrder.PersonalNote</td>
+            </tr>
+        </tbody>
+    </table>*@
+

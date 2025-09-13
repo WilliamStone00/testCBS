@@ -1,0 +1,71 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+@using Resources
+@if (Model.SavingProducts.Count == 0)
+{
+    <div class="text-center my-3">
+        <p>@Globals_OrdinaryAccountData.NoOrdinaryProductCreated</p>
+        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_ProductConfig','new','TransactionConfiguration','savingproduct')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@Globals_OrdinaryAccountData.AddNewTooltip">
+            <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+        </a>
+    </div>
+}
+else
+
+{
+    <fieldset class="fieldset-custom">
+        <legend>@Globals_OrdinaryAccountData.OrdinaryAccountListings</legend>
+        <div class="demo-inline-spacing text-end">
+            <a type="button"
+               href="/TransactionConfiguration/GetSavingProductAccountMapping"
+               class="btn btn-icon btn-label-primary btn-sm btn-fab demo"
+               data-bs-toggle="tooltip"
+               title="@Globals_OrdinaryAccountData.DownloadAllSavingProductAccountConfigurationsTooltip">
+                <span class="tf-icons mdi mdi-download-circle-outline mdi-18px"></span>
+            </a>
+        </div>
+        <div class="table-responsive mb-3">
+            <table class="table table-hover" id="myDataTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>@Globals_OrdinaryAccountData.Code</th>
+                        <th>@Globals_OrdinaryAccountData.Name</th>
+                        <th>@Globals_OrdinaryAccountData.Type</th>
+                        <th>@Globals_OrdinaryAccountData.Range</th>
+                        <th>@Globals_OrdinaryAccountData.Status</th>
+                        <th>@Globals_OrdinaryAccountData.Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.SavingProducts)
+                    {
+                        <tr>
+                            <td style="width:10%">@d.Code</td>
+                            <td style="width:30%">@d.Name</td>
+                            <td style="width:13%">@d.AccountType</td>
+                            <td style="width:20%">@d.MinAmount.ToString("#,##0.0")-@d.MaxAmount.ToString("#,##0.0")</td>
+                            <td style="width:7%">
+                                @if (d.ActiveStatus)
+                                {
+                                    <span class="badge bg-info">@Globals_OrdinaryAccountData.ActiveStatus</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning">@Globals_OrdinaryAccountData.InactiveStatus</span>
+                                }
+                            </td>
+                            <td style="width:20%">
+                                @if (!d.IsUsedForTellerProvisioning)
+                                {
+                                    <a href="/TransactionConfiguration/PolicyandSharing?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_OrdinaryAccountData.Policies, @d.Name)">@Globals_OrdinaryAccountData.Policies |</a>
+                                    <a href="/TransactionConfiguration/AccountMapping?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_OrdinaryAccountData.Mappings, @d.Name)">@Globals_OrdinaryAccountData.Mappings |</a>
+                                    <a href="/TransactionConfiguration/AccountMappingInfo?Key=@d.Id" class="mr-2" target="_blank" data-toggle="tooltip" data-placement="top" title="@string.Format(Globals_OrdinaryAccountData.Simulation, @d.Name)">@Globals_OrdinaryAccountData.Simulation</a>
+
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+}

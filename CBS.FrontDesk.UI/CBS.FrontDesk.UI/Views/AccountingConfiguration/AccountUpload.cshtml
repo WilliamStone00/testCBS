@@ -1,0 +1,141 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+@using Resources
+
+
+@{
+    ViewBag.Title = GlobalAccountUpload.UploadingAccounts;
+
+}
+
+<!-- Basic  -->
+<div class="row">
+    <div class="col-md-12">
+
+
+        @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
+        {
+            <div class="accordion mt-3" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionThree"
+                                aria-expanded="false"
+                                aria-controls="accordionThree">
+                            <i class="tf-icons mdi mdi-typewriter me-1"></i>
+                            &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;@GlobalAccountUpload.UploadTrialBalance
+                        </button>
+                    </h2>
+                    <div id="accordionThree"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingThree"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_accountUpload','_AccountUploud','new','AccountingConfiguration','uploadedTrialBalance')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+                                    <a type="button" onclick=" LoadDataGeneration('AccountingConfiguration', 'FileUploadDataTable', '_FileUploadHistory', 'datalistingview_accountUpload', '0', 'uploadedTrialBalance', 'list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <br />
+                            <div id="datalistingview_accountUpload">
+                                @Html.Partial("_AccountUploud")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion mt-3" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingFour">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionFour"
+                                aria-expanded="false"
+                                aria-controls="accordionFour">
+                            <i class="tf-icons mdi mdi-trash-can-outline me-1"></i>
+                            &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;@GlobalAccountUpload.CleanTrialBalanceEntries
+                        </button>
+                    </h2>
+                    <div id="accordionFour"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="accordionFour"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_CleanAccountingEntries','_CleanAccountingEntries','new','AccountingConfiguration','cleanTrialBalance')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <br />
+                            <div id="datalistingview_CleanAccountingEntries">
+                                @Html.Partial("_CleanAccountingEntries")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="accordion mt-3" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button type="button"
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionThree"
+                                aria-expanded="false"
+                                aria-controls="accordionThree">
+                            <i class="tf-icons mdi mdi-typewriter me-1"></i>
+                            &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;@GlobalAccountUpload.UploadTrialBalance
+                        </button>
+                    </h2>
+                    <div id="accordionThree"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="headingThree"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-end">
+                                <div class="demo-inline-spacing text-end">
+                                    <a type="button" onclick="AddORUpdateGen(null,'datalistingview_account_account_account AccountUploud','_AccountUploud','new','AccountingConfiguration','uploadedTrialBalance')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
+                                        <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+                                    </a>
+                                    <a type="button" onclick=" LoadDataGeneration('AccountingConfiguration', 'FileUploadDataTable', '_FileUploadHistory', 'datalistingview_accountUpload', '0', 'uploadedTrialBalance', 'list')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <br />
+                            <div id="datalistingview_accountUpload">
+                                @Html.Partial("_AccountUploud")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+
+<!-- /Basic  -->
+
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/AccountEventConfigurtion/MFIChartOfAccount.js"></script>
+<script src="~/Scripts/Js/main.js/Account_Upload.js"></script>
+
+}
+

@@ -1,0 +1,26 @@
+﻿@model  CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+    @using Resources
+<table class="table table-hover" id="myDataTable_AccountType">
+    <thead class="table-light">
+        <tr>
+            <th>@GlobalAccount.Name</th>
+            <th>@GlobalAccount.Description</th>
+          
+            <th>@GlobalAccount.Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.AccountTypes)
+        {
+            <tr>
+                <td style="width:35%">@d.name</td>
+                <td style="width:35%">@d.operationAccountType</td>
+                <td style="width:30%">
+                    <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_AccountType','_CreateAccountType','update','AccountingConfiguration','accountType')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.name @GlobalShared.ToEdit">@GlobalShared.Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.name" onclick="DeleteDataConfiguration('AccountingConfiguration','@d.Id','myDataTable_AccountType','_AccountTypeData',0,'datalistingview_AccountType','accountType')">@GlobalShared.Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

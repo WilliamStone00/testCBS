@@ -1,0 +1,489 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountNumber" xml:space="preserve">
+    <value>Account number</value>
+  </data>
+  <data name="AddNewRequest" xml:space="preserve">
+    <value>Add new request</value>
+  </data>
+  <data name="AdvancedRemittanceFilters" xml:space="preserve">
+    <value>Advanced remittance filters</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="AmountToBeReceivedByReceiver" xml:space="preserve">
+    <value>Amount to be Received by Receiver</value>
+  </data>
+  <data name="andReviewTheCalculatedFinalAmounts" xml:space="preserve">
+    <value>and review the calculated final amounts to ensure clarity for both sender and receiver</value>
+  </data>
+  <data name="andTheReceiversAmountIsReducedByTheApplicableCharges" xml:space="preserve">
+    <value>and the receiver's amount is reduced by the applicable charges</value>
+  </data>
+  <data name="ApprovalNote" xml:space="preserve">
+    <value>Approval note</value>
+  </data>
+  <data name="Branch" xml:space="preserve">
+    <value>Branch</value>
+  </data>
+  <data name="BranchID" xml:space="preserve">
+    <value>Branch id</value>
+  </data>
+  <data name="canSecurelyCollectTheFunds" xml:space="preserve">
+    <value>can securely collect the funds and that the transaction meets necessary verification requirements</value>
+  </data>
+  <data name="ChargeExcludedFromAmount" xml:space="preserve">
+    <value>Charge excluded from amount</value>
+  </data>
+  <data name="ChargeIncludedInAmount" xml:space="preserve">
+    <value>Charge included in amount</value>
+  </data>
+  <data name="Charges" xml:space="preserve">
+    <value>Charges</value>
+  </data>
+  <data name="ChargesSection" xml:space="preserve">
+    <value>Charges section</value>
+  </data>
+  <data name="ChargeStatus" xml:space="preserve">
+    <value>Charge status</value>
+  </data>
+  <data name="ChargeType" xml:space="preserve">
+    <value>Charge type</value>
+  </data>
+  <data name="ComputeCharges" xml:space="preserve">
+    <value>Compute charges</value>
+  </data>
+  <data name="DataListings" xml:space="preserve">
+    <value>Data listings</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="DateFrom" xml:space="preserve">
+    <value>Date from</value>
+  </data>
+  <data name="DateOfIssue" xml:space="preserve">
+    <value>Date of issue</value>
+  </data>
+  <data name="DateTo" xml:space="preserve">
+    <value>Date to</value>
+  </data>
+  <data name="determinesTheProcessingFlowAndEnsuresProperIdentification" xml:space="preserve">
+    <value>determines the processing flow and ensures proper identification and routing of the transaction</value>
+  </data>
+  <data name="EnsureThatAllInputsAlignWithTheRemittancesRequirements" xml:space="preserve">
+    <value>Ensure that all inputs align with the remittance's requirements and are entered accurately. This information</value>
+  </data>
+  <data name="EnterAmountToTransfer" xml:space="preserve">
+    <value>Enter amount to transfer</value>
+  </data>
+  <data name="EnterSearchValue" xml:space="preserve">
+    <value>Enter search value</value>
+  </data>
+  <data name="Exclusive" xml:space="preserve">
+    <value>Exclusive</value>
+  </data>
+  <data name="ExclusiveCharges" xml:space="preserve">
+    <value>Exclusive charges</value>
+  </data>
+  <data name="ExclusiveChargesAreAddedOnTopOfTheSpecifiedAmount" xml:space="preserve">
+    <value>Exclusive: Charges are added on top of the specified amount. The final amount will include additional charges</value>
+  </data>
+  <data name="ExpiryDate" xml:space="preserve">
+    <value>Expiry date</value>
+  </data>
+  <data name="ExternalReference" xml:space="preserve">
+    <value>External reference</value>
+  </data>
+  <data name="FeeType" xml:space="preserve">
+    <value>Fee type</value>
+  </data>
+  <data name="FilterByBranch" xml:space="preserve">
+    <value>Filter by branch</value>
+  </data>
+  <data name="FilterByDateRange" xml:space="preserve">
+    <value>Filter by date range</value>
+  </data>
+  <data name="FilterByStatus" xml:space="preserve">
+    <value>Filter by status</value>
+  </data>
+  <data name="FinalAmountToTransfer" xml:space="preserve">
+    <value>Final amount to transfer</value>
+  </data>
+  <data name="Inclusive" xml:space="preserve">
+    <value>Inclusive</value>
+  </data>
+  <data name="InclusiveCharges" xml:space="preserve">
+    <value>Inclusive charges</value>
+  </data>
+  <data name="InclusiveChargesAreIncludedInTheFinalAmount" xml:space="preserve">
+    <value>Inclusive: Charges are included in the final amount. The specified amount remains unchanged</value>
+  </data>
+  <data name="IncomingInternationalTransfer" xml:space="preserve">
+    <value>Incoming international transfer</value>
+  </data>
+  <data name="INITAmount" xml:space="preserve">
+    <value>INIT amount</value>
+  </data>
+  <data name="InitialAmount" xml:space="preserve">
+    <value>Initial amount</value>
+  </data>
+  <data name="InitiatedBy" xml:space="preserve">
+    <value>Initiated by</value>
+  </data>
+  <data name="InitiatingBranch" xml:space="preserve">
+    <value>Initiating branch</value>
+  </data>
+  <data name="InternationalRemittance" xml:space="preserve">
+    <value>International remittance</value>
+  </data>
+  <data name="intoOperation" xml:space="preserve">
+    <value>into operation</value>
+  </data>
+  <data name="LocalRemittance" xml:space="preserve">
+    <value>Local remittance</value>
+  </data>
+  <data name="LocalTransfer" xml:space="preserve">
+    <value>Local transfer</value>
+  </data>
+  <data name="NoDataFound" xml:space="preserve">
+    <value>No data found</value>
+  </data>
+  <data name="NoPendingRemittanceRequestsFound" xml:space="preserve">
+    <value>No pending remittance requests found</value>
+  </data>
+  <data name="OutgoingInternationalTransfer" xml:space="preserve">
+    <value>Outgoing international transfer</value>
+  </data>
+  <data name="Paid" xml:space="preserve">
+    <value>Paid</value>
+  </data>
+  <data name="PendingRemittanceRequests" xml:space="preserve">
+    <value>Pending remittance requests</value>
+  </data>
+  <data name="PlaceOfIssue" xml:space="preserve">
+    <value>Place of issue</value>
+  </data>
+  <data name="plusTheChargesWhileTheReceiversAmountRemains" xml:space="preserve">
+    <value>plus the charges, while the receiver's amount remains unaffected by the charges</value>
+  </data>
+  <data name="Receiver" xml:space="preserve">
+    <value>Receiver</value>
+  </data>
+  <data name="ReceiverAddress" xml:space="preserve">
+    <value>Receiver address</value>
+  </data>
+  <data name="ReceiverAmount" xml:space="preserve">
+    <value>Receiver amount</value>
+  </data>
+  <data name="ReceiverCNI" xml:space="preserve">
+    <value>Receiver CNI</value>
+  </data>
+  <data name="ReceiverCountry" xml:space="preserve">
+    <value>Receiver country</value>
+  </data>
+  <data name="ReceiverInformation" xml:space="preserve">
+    <value>Receiver information</value>
+  </data>
+  <data name="ReceiverName" xml:space="preserve">
+    <value>Receiver name</value>
+  </data>
+  <data name="ReceiverPhoneNumber" xml:space="preserve">
+    <value>Receiver phone number</value>
+  </data>
+  <data name="ReceivingBranch" xml:space="preserve">
+    <value>Receiving branch</value>
+  </data>
+  <data name="ReceivingBranchID" xml:space="preserve">
+    <value>Receiving branch id</value>
+  </data>
+  <data name="Reference" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="REMITTANCE_QUERY_LOGS" xml:space="preserve">
+    <value>REMITTANCE QUERY LOGS</value>
+  </data>
+  <data name="RemittanceCharge" xml:space="preserve">
+    <value>Remittance charge</value>
+  </data>
+  <data name="RemittanceDetails" xml:space="preserve">
+    <value>Remittance details</value>
+  </data>
+  <data name="RemittanceType" xml:space="preserve">
+    <value>Remittance type</value>
+  </data>
+  <data name="RequestedAmount" xml:space="preserve">
+    <value>Requested amount</value>
+  </data>
+  <data name="RequestFilters" xml:space="preserve">
+    <value>Request filters</value>
+  </data>
+  <data name="RequestProperties" xml:space="preserve">
+    <value>Request properties</value>
+  </data>
+  <data name="ResetFilter" xml:space="preserve">
+    <value>Reset filter</value>
+  </data>
+  <data name="ReviewAndApproveForm" xml:space="preserve">
+    <value>Review and approve form</value>
+  </data>
+  <data name="SearchBy" xml:space="preserve">
+    <value>Search by</value>
+  </data>
+  <data name="SecretCode" xml:space="preserve">
+    <value>Secret code</value>
+  </data>
+  <data name="SelectBranch" xml:space="preserve">
+    <value>Select branch</value>
+  </data>
+  <data name="SelectLanguage" xml:space="preserve">
+    <value>Select language</value>
+  </data>
+  <data name="SelectReceiverPreferredLanguageForSMS" xml:space="preserve">
+    <value>Select receiver preferred language for SMS</value>
+  </data>
+  <data name="SelectRemittanceType" xml:space="preserve">
+    <value>Select remittance type</value>
+  </data>
+  <data name="SelectStatus" xml:space="preserve">
+    <value>Select status</value>
+  </data>
+  <data name="Sender" xml:space="preserve">
+    <value>Sender</value>
+  </data>
+  <data name="SenderAddress" xml:space="preserve">
+    <value>Sender address</value>
+  </data>
+  <data name="SenderCNI" xml:space="preserve">
+    <value>Sender CNI</value>
+  </data>
+  <data name="SenderCountry" xml:space="preserve">
+    <value>Sender country</value>
+  </data>
+  <data name="SenderInformation" xml:space="preserve">
+    <value>Sender information</value>
+  </data>
+  <data name="SenderName" xml:space="preserve">
+    <value>Sender name</value>
+  </data>
+  <data name="SenderNationalIdentityCardInformation" xml:space="preserve">
+    <value>Sender national identity Card information</value>
+  </data>
+  <data name="SenderNoteIoTheReceiver" xml:space="preserve">
+    <value>Sender note to the receiver</value>
+  </data>
+  <data name="SenderPhoneNumber" xml:space="preserve">
+    <value>Sender phone number</value>
+  </data>
+  <data name="SendSMSNotificationToReceiver" xml:space="preserve">
+    <value>Send sms notification to receiver</value>
+  </data>
+  <data name="ServiceCharge" xml:space="preserve">
+    <value>Service charge</value>
+  </data>
+  <data name="SourceBranch" xml:space="preserve">
+    <value>Source branch</value>
+  </data>
+  <data name="SourceBranchID" xml:space="preserve">
+    <value>Source branch id</value>
+  </data>
+  <data name="SubTellersRequests" xml:space="preserve">
+    <value>Sub Tellers Requests</value>
+  </data>
+  <data name="TheChargesAreAddedOnTopOfTheSpecifiedAmount" xml:space="preserve">
+    <value>The charges are added on top of the specified amount. The sender pays the specified amount</value>
+  </data>
+  <data name="TheChargesAreIncludedInTheSpecifiedAmount" xml:space="preserve">
+    <value>The charges are included in the specified amount. The sender's specified amount remains unchanged</value>
+  </data>
+  <data name="TheTransactionIsSecurelyProcessedAndCompliesWithNecessaryIdentificationRequirements" xml:space="preserve">
+    <value>the transaction is securely processed and complies with necessary identification requirements</value>
+  </data>
+  <data name="ThisSectionAllowsYouToConfigureTheEssentialDetails" xml:space="preserve">
+    <value>This section allows you to configure the essential details required to initiate a remittance request</value>
+  </data>
+  <data name="ThisSectionCapturesDetailsAboutTheSenderOfTheRemittance" xml:space="preserve">
+    <value>This section captures details about the sender of the remittance. Providing accurate and complete sender information ensures</value>
+  </data>
+  <data name="ThisSectionCapturesEssentialDetails" xml:space="preserve">
+    <value>This section captures essential details about the receiver of the remittance. Providing accurate information ensures that the receiver</value>
+  </data>
+  <data name="ThisSectionOutlinesTheChargesAssociatedWithTheRemittanceTransaction" xml:space="preserve">
+    <value>This section outlines the charges associated with the remittance transaction. Specify whether charges are inclusive or exclusive</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="TotalAmountToBePaidBySender" xml:space="preserve">
+    <value>Total Amount to be Paid by Sender</value>
+  </data>
+  <data name="TransactionReference" xml:space="preserve">
+    <value>Transaction reference</value>
+  </data>
+  <data name="TransferSource" xml:space="preserve">
+    <value>Transfer source</value>
+  </data>
+  <data name="TransferType" xml:space="preserve">
+    <value>Transfer type</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="ValidateRemittanceRequest" xml:space="preserve">
+    <value>Validate remittance request</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="ViewPendingRequests" xml:space="preserve">
+    <value>View pending requests</value>
+  </data>
+  <data name="WithdrawalSecretCode" xml:space="preserve">
+    <value>Withdrawal secret code</value>
+  </data>
+  <data name="Withdrawn" xml:space="preserve">
+    <value>Withdrawn</value>
+  </data>
+  <data name="TrackAndAnalyzeRemittanceTransactions" xml:space="preserve">
+    <value>Track and analyze remittance transactions, monitor statuses, and review transfer details. This interface allows efficient management of remittance operations with dynamic search filters and exportable reports</value>
+  </data>
+  <data name="REMITTANCE_FORM" xml:space="preserve">
+    <value>REMITTANCE FORM</value>
+  </data>
+  <data name="Requests" xml:space="preserve">
+    <value>Requests</value>
+  </data>
+  <data name="RemittanceRequestInitialization" xml:space="preserve">
+    <value>Remittance request initialization</value>
+  </data>
+  <data name="ViewAllPendingRemittanceRequests" xml:space="preserve">
+    <value>View all pending remittance requests</value>
+  </data>
+  <data name="RemittanceStatus" xml:space="preserve">
+    <value>Remittance status</value>
+  </data>
+  <data name="REMITTANCE_VALIDATION" xml:space="preserve">
+    <value>REMITTANCE VALIDATION</value>
+  </data>
+</root>

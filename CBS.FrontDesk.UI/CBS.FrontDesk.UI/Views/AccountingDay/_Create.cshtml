@@ -1,0 +1,108 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingDayObject.OpenOrCloseOfAccountingDayCommand
+@using Resources
+<div class="card-body">
+    @using (Html.BeginForm("OpenOrClose", "AccountingDay", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateOpenCloseOfDay(this);" }))
+    {
+        <fieldset class="fieldset-custom">
+            <legend>@AccountingDay_Create.OpenOrCloseAccountingDay</legend>
+            <div class="row mt-2 gy-4">
+
+                <!-- Submit and Reset Buttons -->
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                    <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
+                </div>
+
+                <!-- Date Input -->
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline border p-3 rounded">
+                        @Html.TextBoxFor(m => m.Date, new { @class = "form-control datetimepicker", @type = "datetime-local", placeholder = @AccountingDay_Create.SelectDateAndTime, id = "dateInput" })
+                        @Html.ValidationMessageFor(m => m.Date, "", new { @class = "text-danger" })
+                        <label for="dateInput">@AccountingDay_Create.DateAndTime</label>
+                    </div>
+                </div>
+
+                <!-- Open or Close Accounting Day -->
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline border p-3 rounded">
+                        <div class="d-flex flex-row">
+                            <div class="form-check me-3">
+                                @Html.RadioButtonFor(m => m.OpenOrCloseAccountingDay, "Open", new { @class = "form-check-input", id = "openOption" })
+                                <label class="form-check-label" for="openOption">@AccountingDay_Create.OpenAccountingDay</label>
+                            </div>
+                            <div class="form-check">
+                                @Html.RadioButtonFor(m => m.OpenOrCloseAccountingDay, "Close", new { @class = "form-check-input", id = "closeOption" })
+                                <label class="form-check-label" for="closeOption">Close Accounting Day</label>
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(m => m.OpenOrCloseAccountingDay, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Centralized Opening Checkbox -->
+                <div class="col-md-12" id="centralizeOptionWrapper">
+                    <div class="form-check" id="centralizeOption">
+                        @Html.CheckBoxFor(m => m.IsCentraliseOpening, new { @class = "form-check-input", id = "centralizeOptionCheckbox" })
+                        <label class="form-check-label" for="centralizeOptionCheckbox">@AccountingDay_Create.CentralizedOpeningForAllBranches</label>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.IsCentraliseOpening, "", new { @class = "text-danger" })
+                </div>
+
+                <!-- Search and Branches Selection -->
+                <div class="col-md-12" id="branchesSelection">
+                    <div class="border p-3 rounded">
+                        <div class="mb-3" id="branchSearchWrapper">
+                            <input type="text" id="branchSearch" class="form-control" placeholder="@AccountingDay_Create.SearchBranches" />
+                        </div>
+
+                        <div class="form-check mb-3" id="selectAll">
+                            @Html.CheckBox("checkAllBranches", false, new { @class = "form-check-input", id = "checkAllBranches" })
+                            <label class="form-check-label" for="checkAllBranches">@AccountingDay_Create.SelectAllBranches</label>
+                        </div>
+
+                        @{
+                            var halfCount = (Model.Branches.Count + 1) / 2;
+                            var firstHalf = Model.Branches.Take(halfCount).ToList();
+                            var secondHalf = Model.Branches.Skip(halfCount).ToList();
+                        }
+
+                        <div class="row">
+                            <div class="col-md-6 branch-list" id="firstHalfBranches">
+                                @for (int i = 0; i < firstHalf.Count; i++)
+                                {
+                                    var branch = firstHalf[i];
+                                    <div class="form-check border p-2 mb-2 rounded branch-item" data-branch-name="@branch.BranchName">
+                                        <input type="checkbox" name="Branches[@i].BranchId" value="@branch.BranchId" class="form-check-input" id="branch_@branch.BranchId" />
+                                        <input type="hidden" name="Branches[@i].BranchCode" value="@branch.BranchCode" />
+                                        <input type="hidden" name="Branches[@i].BranchName" value="@branch.BranchName" />
+                                        <label class="form-check-label" for="branch_@branch.BranchId">
+                                            @($"{i + 1}. {branch.BranchCode} - {branch.BranchName}")
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="col-md-6 branch-list" id="secondHalfBranches">
+                                @for (int i = 0; i < secondHalf.Count; i++)
+                                {
+                                    var branch = secondHalf[i];
+                                    <div class="form-check border p-2 mb-2 rounded branch-item" data-branch-name="@branch.BranchName">
+                                        <input type="checkbox" name="Branches[@(i + firstHalf.Count)].BranchId" value="@branch.BranchId" class="form-check-input" id="branch_@branch.BranchId" />
+                                        <input type="hidden" name="Branches[@(i + firstHalf.Count)].BranchCode" value="@branch.BranchCode" />
+                                        <input type="hidden" name="Branches[@(i + firstHalf.Count)].BranchName" value="@branch.BranchName" />
+                                        <label class="form-check-label" for="branch_@branch.BranchId">
+                                            @($"{i + firstHalf.Count + 1}. {branch.BranchCode} - {branch.BranchName}")
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        @Html.ValidationMessageFor(m => m.Branches, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    }
+</div>
+

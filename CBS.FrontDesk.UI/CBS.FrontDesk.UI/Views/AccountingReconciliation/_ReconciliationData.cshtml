@@ -1,0 +1,63 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.TransactionTrackerConfiguration
+
+@{
+    ViewBag.Title = "Reconciliation Data";
+}
+
+
+<div class="table-responsive mb-3">
+    @if (Convert.ToBoolean(ViewBag.IsAuthourized) == false)
+    {
+        @Html.Partial("_GeneralErrorDiv")
+    }
+    <hr />
+    <div class="change-group">
+        <div class="table-responsive mb-3">
+            @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
+            {
+                <table class="table table-hover" id="myDataTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Branch Office</th>
+                            <th>Issued By</th>
+                            <th>TransactionDate</th>
+                            <th>Command Type</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+
+                            foreach (var d in Model.TransactionTrackers)
+                            {
+                                <tr>
+                                    <td style="width:25%">@d.BranchOffice</td>
+                                    <td style="width:25%">@d.UserFullName</td>
+                                    <td style="width:15%">@d.TransactionDate</td>
+                                    <td style="width:20%">@d.CommandDataType</td>
+       
+                                    <td style="width:15%">
+                                        <a href="@Url.Action("GetReconciliationData", "AccountingReconciliation", new { id = d.Id })"
+                                           target="_blank"
+                                           data-bs-toggle="tooltip"
+                                           title="Execute Action">
+                                            <span class="tf-icons mdi mdi-view-comfy mdi-18px"></span>
+                                            View Payload
+                                        </a>
+                                    </td>
+                                </tr>
+
+                            }
+
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+             
+            }
+        </div>
+    </div>
+</div>
+

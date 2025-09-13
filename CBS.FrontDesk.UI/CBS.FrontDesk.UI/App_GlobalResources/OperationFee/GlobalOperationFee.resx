@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ADDITIONAL_CHARGES" xml:space="preserve">
+    <value>ADDITIONAL CHARGES</value>
+  </data>
+  <data name="ApplicableForMoralPersons" xml:space="preserve">
+    <value>Applicable for moral persons (Group. If not checked, then it's for individual)</value>
+  </data>
+  <data name="Applied" xml:space="preserve">
+    <value>Applied</value>
+  </data>
+  <data name="AppliedOnHolidays" xml:space="preserve">
+    <value>Applied on holidays</value>
+  </data>
+  <data name="BASIC_INFORMATION" xml:space="preserve">
+    <value>BASIC INFORMATION</value>
+  </data>
+  <data name="CivilServants" xml:space="preserve">
+    <value>Civil Servants</value>
+  </data>
+  <data name="DailyCollections" xml:space="preserve">
+    <value>Daily collections</value>
+  </data>
+  <data name="DefineAnyExtraChargesThatApplyWhenTheLimitIsExceeded" xml:space="preserve">
+    <value>Define any extra charges that apply when the limit is exceeded. This can be a flat fee or a percentage</value>
+  </data>
+  <data name="DESCRIPTION" xml:space="preserve">
+    <value>DESCRIPTION</value>
+  </data>
+  <data name="DescriptionLc" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Entity" xml:space="preserve">
+    <value>Entity</value>
+  </data>
+  <data name="FeeDescription" xml:space="preserve">
+    <value>Fee description</value>
+  </data>
+  <data name="FeeIsCalculatedAsRate" xml:space="preserve">
+    <value>Fee is calculated as rate</value>
+  </data>
+  <data name="FeeIsCalculatedOnRanges" xml:space="preserve">
+    <value>Fee is calculated on ranges</value>
+  </data>
+  <data name="FEE_CALCULATION_TYPE" xml:space="preserve">
+    <value>FEE CALCULATION TYPE</value>
+  </data>
+  <data name="FlatExtraChargeOnExceedingLimit" xml:space="preserve">
+    <value>Flat Extra Charge on Exceeding Limit</value>
+  </data>
+  <data name="Membership" xml:space="preserve">
+    <value>Membership (Member Registration)</value>
+  </data>
+  <data name="Moral" xml:space="preserve">
+    <value>Moral</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="NormalCashOperation" xml:space="preserve">
+    <value>Normal cash operation</value>
+  </data>
+  <data name="NormalDays" xml:space="preserve">
+    <value>Normal days</value>
+  </data>
+  <data name="OnlyOnHolidays" xml:space="preserve">
+    <value>Only on holidays</value>
+  </data>
+  <data name="OperationChargesTypes" xml:space="preserve">
+    <value>Operation Charges Types</value>
+  </data>
+  <data name="OperationFeeDetails" xml:space="preserve">
+    <value>Operation Fee Details</value>
+  </data>
+  <data name="PercentageExtraChargeOnExceedingLimit" xml:space="preserve">
+    <value>Percentage extra charge on exceeding limit</value>
+  </data>
+  <data name="Physical" xml:space="preserve">
+    <value>Physical</value>
+  </data>
+  <data name="PrivateInstitutions" xml:space="preserve">
+    <value>Private Institutions</value>
+  </data>
+  <data name="ProvideADetailedDescriptionForThisFeeType" xml:space="preserve">
+    <value>Provide a detailed description for this fee type</value>
+  </data>
+  <data name="ProvideTheBasicDetailsOfTheOperationFeeSuchAsItsName" xml:space="preserve">
+    <value>Provide the basic details of the operation fee, such as its name</value>
+  </data>
+  <data name="REGULAR_OPERATIONS_FEE_TYPE" xml:space="preserve">
+    <value>REGULAR OPERATIONS FEE TYPE</value>
+  </data>
+  <data name="REMITTANCE_FEE_TYPE" xml:space="preserve">
+    <value>REMITTANCE FEE TYPE</value>
+  </data>
+  <data name="SALARY_FEE_TYPE" xml:space="preserve">
+    <value>SALARY FEE TYPE</value>
+  </data>
+  <data name="SelectHowTheFeeWillBeCalculated" xml:space="preserve">
+    <value>Select how the fee will be calculated: as a percentage rate or based on defined ranges. Specify if it applies on holidays or for moral persons</value>
+  </data>
+  <data name="SelectTheApplicableFeeTypeForThRemittanceTransaction" xml:space="preserve">
+    <value>Select the applicable fee type for the remittance transaction. This fee type determines the charges associated with transferring money through different remittance services such as Western Union, MoneyGram, or other platforms</value>
+  </data>
+  <data name="SelectTheTypeOfOperationFeeApplicable" xml:space="preserve">
+    <value>Select the type of operation fee applicable, such as membership or C-Money</value>
+  </data>
+  <data name="SelectTheTypeOfSalaryFeeApplicable" xml:space="preserve">
+    <value>Select the type of salary fee applicable, such as Civil Servants, Private Institutions, Daily Servers Or Internal</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+</root>

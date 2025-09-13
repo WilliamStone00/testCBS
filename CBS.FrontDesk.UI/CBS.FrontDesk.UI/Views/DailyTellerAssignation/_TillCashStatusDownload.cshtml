@@ -1,0 +1,111 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.GetTillStatusQuery
+@using Resources
+
+<fieldset class="fieldset-custom">
+    <legend id="select_base">@GlobalDailyTellerAssignation.TillCashStatusPrintingParameters</legend>
+    <div class="card-body">
+        @using (Html.BeginForm("TillCashStatusDownload", "DailyTellerAssignation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdatePrintTillStatus(this);" }))
+        {
+            <hr />
+
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.ByBranch, new { @class = "form-check-input", @id = "byBranchCheckbox" })
+                        <label class="form-check-label" for="byBranchCheckbox">@GlobalDailyTellerAssignation.CheckToPrintByBranch</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.ByTeller, new { @class = "form-check-input", @id = "byTellerCheckbox" })
+                        <label class="form-check-label" for="byTellerCheckbox">@GlobalDailyTellerAssignation.CheckToPrintByTill</label>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row g-4">
+                <div class="col-md-4" id="branchDiv" style="display:block">
+                    <label for="branchInput">Branch</label>
+                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalDailyTellerAssignation.SelectBranch +"---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
+                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-4" id="tellerDiv" style="display:none">
+                    <label for="tellerInput">Select a till</label>
+                    @Html.DropDownListFor(m => m.TellerId, new SelectList(ViewBag.Tellers, "Value", "Text"), "---"+ @GlobalDailyTellerAssignation.SelectTill+"---", new { @class = "form-control shadow-box select2", @id = "tellerInput" })
+                    @Html.ValidationMessageFor(m => m.TellerId, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-8">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label for="dateFromInput">@GlobalDailyTellerAssignation.DateFrom</label>
+                            <div class="input-group">
+                                @Html.TextBoxFor(m => m.DateFrom, new { @class = "form-control shadow-box date-picker", @id = "dateFromInput", @placeholder = "Date From" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.DateFrom, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-6">
+                            <label for="dateToInput">@GlobalDailyTellerAssignation.DateTo</label>
+                            <div class="input-group">
+                                @Html.TextBoxFor(m => m.DateTo, new { @class = "form-control shadow-box date-picker", @id = "dateToInput", @placeholder = "Date To" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.DateTo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa fa-print me-2"></i> @GlobalShared.Print
+                </button>
+            </div>
+        }
+    </div>
+</fieldset>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var byBranchCheckbox = document.getElementById('byBranchCheckbox');
+        var byTellerCheckbox = document.getElementById('byTellerCheckbox');
+        var branchDiv = document.getElementById('branchDiv');
+        var tellerDiv = document.getElementById('tellerDiv');
+
+        // Function to toggle visibility of branchDiv and tellerDiv
+        function toggleDivs() {
+            if (byBranchCheckbox.checked) {
+                branchDiv.style.display = 'block';
+                tellerDiv.style.display = 'none';
+            } else if (byTellerCheckbox.checked) {
+                tellerDiv.style.display = 'block';
+                branchDiv.style.display = 'none';
+            }
+        }
+
+        // Set Branch as checked by default on page load
+        byBranchCheckbox.checked = true;
+        byTellerCheckbox.checked = false;
+
+        // Initial check on page load
+        toggleDivs();
+
+        // Add event listeners to checkboxes to handle changes
+        byBranchCheckbox.addEventListener('change', function () {
+            if (byBranchCheckbox.checked) {
+                byTellerCheckbox.checked = false;
+            } else {
+                byTellerCheckbox.checked = true; // Ensure the other is checked if unchecked
+            }
+            toggleDivs();
+        });
+
+        byTellerCheckbox.addEventListener('change', function () {
+            if (byTellerCheckbox.checked) {
+                byBranchCheckbox.checked = false;
+            } else {
+                byBranchCheckbox.checked = true; // Ensure the other is checked if unchecked
+            }
+            toggleDivs();
+        });
+    });
+</script>
+

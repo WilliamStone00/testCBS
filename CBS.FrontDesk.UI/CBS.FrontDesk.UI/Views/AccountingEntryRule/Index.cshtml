@@ -1,0 +1,99 @@
+﻿
+
+@{
+    ViewBag.Title = @GlobalAccountingEntryRule.AccountingEntryRule;
+}
+@using Resources
+
+<div class="row justify-content-end">
+    <div class="demo-inline-spacing text-end">
+        <a type="button" onclick="LoadDataGen('AccountingEntryRule','myDataTable','_Data',0,'datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+            <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+        </a>
+        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','AccountingEntryRule')" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.AddNew">
+            <span class="tf-icons mdi mdi-plus mdi-18px"></span>
+        </a>
+    </div>
+</div>
+
+<br />
+<div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalCenterTitle">@GlobalAccountingEntryRule.ModalTitle</h4>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col mb-4 mt-2">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text"
+                                   id="nameWithTitle"
+                                   class="form-control"
+                                   placeholder="Enter Name" />
+                            <label for="nameWithTitle">@GlobalAccountingEntryRule.Name</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-2">
+                    <div class="col mb-2">
+                        <div class="form-floating form-floating-outline">
+                            <input type="email"
+                                   id="emailWithTitle"
+                                   class="form-control"
+                                   placeholder="xxxx@xxx.xx" />
+                            <label for="emailWithTitle">@GlobalAccountingEntryRule.Email</label>
+                        </div>
+                    </div>
+                    <div class="col mb-2">
+                        <div class="form-floating form-floating-outline">
+                            <input type="date" id="dobWithTitle" class="form-control" />
+                            <label for="dobWithTitle">@GlobalAccountingEntryRule.DOB</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    @GlobalShared.Close
+                </button>
+                <button type="button" class="btn btn-primary">@GlobalShared.SaveChanges</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div id="datalistingview" >
+            @Html.Partial("_Create")
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @*<script>
+    
+
+
+        function loadOperationEventAttributeDropdown(id) {
+
+            var url = "/AccountingEntryRule/LoadComboboxOfOperationEventAttributeByEventID?id=" + id ;
+            FillDropDownAjaxCall(url, "OperationEventAttributeId", "---Select a OperationEventAttribute from list---")
+        }
+    
+    </script>*@
+
+}
+
+
+<!-- Your existing HTML code -->

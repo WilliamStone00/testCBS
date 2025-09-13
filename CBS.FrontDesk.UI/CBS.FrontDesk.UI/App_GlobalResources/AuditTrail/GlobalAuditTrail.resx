@@ -1,0 +1,414 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Account12345" xml:space="preserve">
+    <value>Account12345</value>
+  </data>
+  <data name="AUDITTRAIL" xml:space="preserve">
+    <value>AUDIT-TRAIL</value>
+  </data>
+  <data name="AUDITTRAILLOGS" xml:space="preserve">
+    <value>AUDIT TRAIL LOGS</value>
+  </data>
+  <data name="AuditTrailsOverview" xml:space="preserve">
+    <value>Audit Trails Overview</value>
+  </data>
+  <data name="AvailableSearchOptionsAndExamples" xml:space="preserve">
+    <value>**Available Search Options and Examples:**</value>
+  </data>
+  <data name="BranchCode" xml:space="preserve">
+    <value>Branch Code</value>
+  </data>
+  <data name="BranchName" xml:space="preserve">
+    <value>Branch Name</value>
+  </data>
+  <data name="CorrelationIDOrTransactionCode" xml:space="preserve">
+    <value>Correlation id or transaction code</value>
+  </data>
+  <data name="CriticalLevel" xml:space="preserve">
+    <value>Critical Level</value>
+  </data>
+  <data name="DateFrom" xml:space="preserve">
+    <value>Date From</value>
+  </data>
+  <data name="DateTo" xml:space="preserve">
+    <value>DateTo</value>
+  </data>
+  <data name="DetailResponseMessage" xml:space="preserve">
+    <value>Detail Response Message</value>
+  </data>
+  <data name="DowntownBranch" xml:space="preserve">
+    <value>Downtown branch</value>
+  </data>
+  <data name="Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="EnterPartOfTheRequestObjectOrTransactionDetails" xml:space="preserve">
+    <value>Enter part of the request object or transaction details</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Example" xml:space="preserve">
+    <value>Example</value>
+  </data>
+  <data name="ExportLogsUseTheExportButtonToDownload" xml:space="preserve">
+    <value>**Export Logs:** Use the "Export" button to download filtered logs as an Excel or CSV file for external review and reporting</value>
+  </data>
+  <data name="FilterByDateRangeLimitSearchResultsToASpecificPeriod" xml:space="preserve">
+    <value>**Filter by Date Range:** Limit search results to a specific period using the “Date From” and “Date To” fields to find logs within a timeframe of interest.</value>
+  </data>
+  <data name="FilterByDateRangeOnly" xml:space="preserve">
+    <value>Filter by Date Range Only (Ignore Search)</value>
+  </data>
+  <data name="FilterLogsContainingSpecificResponseMessages" xml:space="preserve">
+    <value>Filter logs containing specific response messages, such as errors or confirmation messages</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="MonitorCriticalLogsReviewLogsMarkedAs" xml:space="preserve">
+    <value>**Monitor Critical Logs:** Review logs marked as</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+    <value>or</value>
+  </data>
+  <data name="OrWithStatusCodesToDetectAnomalies" xml:space="preserve">
+    <value>or with status codes 500 to detect anomalies and potential issues</value>
+  </data>
+  <data name="PaymentService" xml:space="preserve">
+    <value>Payment service</value>
+  </data>
+  <data name="RefineSearchesChooseAnAppropriateSearch" xml:space="preserve">
+    <value>**Refine Searches:** Choose an appropriate search option before entering search terms to find specific events easily. For example, you can search by user, action type, branch, or error messages</value>
+  </data>
+  <data name="RefreshRegularlyKeepTheLog" xml:space="preserve">
+    <value>**Refresh Regularly:** Keep the log listing updated by refreshing the page to capture newly generated entries</value>
+  </data>
+  <data name="RequestObject" xml:space="preserve">
+    <value>Request Object</value>
+  </data>
+  <data name="SearchAndExportLogs" xml:space="preserve">
+    <value>Search and Export Logs</value>
+  </data>
+  <data name="SearchByActionUserOrDetails" xml:space="preserve">
+    <value>Search by action, user, or details</value>
+  </data>
+  <data name="SearchLogsContainingSpecificDetails" xml:space="preserve">
+    <value>Search logs containing specific details within the request payload</value>
+  </data>
+  <data name="SelectASearchOptionAndEnter" xml:space="preserve">
+    <value>Select a search option and enter relevant search terms to filter logs effectively. Here are common options and examples:</value>
+  </data>
+  <data name="SelectSearchOption" xml:space="preserve">
+    <value>Select Search Option</value>
+  </data>
+  <data name="SelectThisOptionAndEnterTheTypeOfAction" xml:space="preserve">
+    <value>Select this option and enter the type of action (e.g.,</value>
+  </data>
+  <data name="SelectThisOptionToFilterLogsByBranchName" xml:space="preserve">
+    <value>Select this option to filter logs by branch name</value>
+  </data>
+  <data name="SelectThisOptionToSearchByAUserFullName" xml:space="preserve">
+    <value>Select this option to search by a user's full name</value>
+  </data>
+  <data name="SelectThisOptionToSearchByLog" xml:space="preserve">
+    <value>Select this option to search by log severity, such as</value>
+  </data>
+  <data name="SelectThisOptionToSearchByTheMicroservice" xml:space="preserve">
+    <value>Select this option to search by the microservice that triggered the log entry</value>
+  </data>
+  <data name="SelectThisOptionToSearchLogs" xml:space="preserve">
+    <value>Select this option to search logs by a specific branch code</value>
+  </data>
+  <data name="SystemStatusCode" xml:space="preserve">
+    <value>System Status Code</value>
+  </data>
+  <data name="TIPSFOREFFECTIVEAUDITTRAILSEARCH" xml:space="preserve">
+    <value>TIPS FOR EFFECTIVE AUDIT TRAIL SEARCH</value>
+  </data>
+  <data name="ToFindEventsAssociatedWithBranch" xml:space="preserve">
+    <value>to find events associated with Branch 001</value>
+  </data>
+  <data name="ToFindEventsRelatedToPayments" xml:space="preserve">
+    <value>to find events related to payments</value>
+  </data>
+  <data name="ToFindLogsInvolvingThatUser" xml:space="preserve">
+    <value>to find logs involving that user</value>
+  </data>
+  <data name="ToIdentifyServerErrors" xml:space="preserve">
+    <value>to identify server errors</value>
+  </data>
+  <data name="ToLocateErrorLogs" xml:space="preserve">
+    <value>to locate error logs</value>
+  </data>
+  <data name="ToLocateLogsForASpecificTransaction" xml:space="preserve">
+    <value>to locate logs for a specific transaction</value>
+  </data>
+  <data name="ToRetrieveLogsForThatBranch" xml:space="preserve">
+    <value>to retrieve logs for that branch</value>
+  </data>
+  <data name="ToViewAllDeleteOperations" xml:space="preserve">
+    <value>to view all delete operations</value>
+  </data>
+  <data name="ToViewLogsRelatedToFailedOrCriticalEvents" xml:space="preserve">
+    <value>to view logs related to failed or critical events</value>
+  </data>
+  <data name="TrackAndMonitorEveryActionPerformed" xml:space="preserve">
+    <value>Track and monitor every action performed in the system, from user interactions to system-generated events. Easily search, filter, and analyze critical logs to ensure accountability and detect anomalies</value>
+  </data>
+  <data name="TransactionFailed" xml:space="preserve">
+    <value>Transaction failed</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>User Name (Full)</value>
+  </data>
+  <data name="UserOrSystemAction" xml:space="preserve">
+    <value>User or System Action</value>
+  </data>
+  <data name="UseTheDateRangeAndSearch" xml:space="preserve">
+    <value>Use the date range and search filters to pinpoint key events. Export data for reporting, compliance, and audit purposes</value>
+  </data>
+  <data name="UseTheSearchAndDateFilters" xml:space="preserve">
+    <value>Use the search and date filters to refine the export results</value>
+  </data>
+  <data name="UseThisOptionToFilterLogsByHTTPStatusCodes" xml:space="preserve">
+    <value>Use this option to filter logs by HTTP status codes (e.g., 200, 404, 500)</value>
+  </data>
+  <data name="UseThisOptionToFindLogs" xml:space="preserve">
+    <value>Use this option to find logs by correlation ID or specific transaction codes</value>
+  </data>
+  <data name="ViewFullDetailsClickOnALogEntryToOpen" xml:space="preserve">
+    <value>**View Full Details:** Click on a log entry to open a detailed view with complete information, including the affected entity and associated request/response data</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="MicroserviceName" xml:space="preserve">
+    <value>Microservice Name</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="CorrolationIdOrTransCode" xml:space="preserve">
+    <value>Corrolation Id or Trans Code</value>
+  </data>
+  <data name="StringifyObject" xml:space="preserve">
+    <value>Stringify Object</value>
+  </data>
+  <data name="DetailMessage" xml:space="preserve">
+    <value>Detail message</value>
+  </data>
+  <data name="AuditTrailDetails" xml:space="preserve">
+    <value>Audit Trail Details</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="Timestamp" xml:space="preserve">
+    <value>Timestamp</value>
+  </data>
+  <data name="Response" xml:space="preserve">
+    <value>Response</value>
+  </data>
+  <data name="Requests" xml:space="preserve">
+    <value>Requests</value>
+  </data>
+  <data name="IMPORTANTTIPS" xml:space="preserve">
+    <value>IMPORTANT TIPS</value>
+  </data>
+  <data name="ReviewTheDetailsOfTheSelectedAuditLog" xml:space="preserve">
+    <value>Review the details of the selected audit log entry, including user, action, and associated metadata</value>
+  </data>
+  <data name="ReviewKeyDetailsIncludingUserActions" xml:space="preserve">
+    <value>Review key details, including user actions, entity affected, and metadata, before making decisions</value>
+  </data>
+  <data name="UseThe" xml:space="preserve">
+    <value>Use the</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="ButtonToCopyLogInformation" xml:space="preserve">
+    <value>button to copy log information (e.g., messages and object details) for reporting or debugging</value>
+  </data>
+  <data name="ConfirmTheUserWhoPerformedTheAction" xml:space="preserve">
+    <value>Confirm the user who performed the action and cross-check the timestamp for accuracy</value>
+  </data>
+  <data name="HandleSensitiveDataWithCaution" xml:space="preserve">
+    <value>Handle sensitive data with caution. Avoid sharing log details that contain PII (personally identifiable information)</value>
+  </data>
+  <data name="AuditEntriesInvolvingCriticalOperations" xml:space="preserve">
+    <value>Audit entries involving critical operations should be further investigated if any irregularities are detected</value>
+  </data>
+  <data name="TheCorrelationIDCanBeUseful" xml:space="preserve">
+    <value>The “Correlation ID” can be useful for tracking multiple actions or transactions within the same workflow</value>
+  </data>
+  <data name="AuditInformation" xml:space="preserve">
+    <value>Audit Information</value>
+  </data>
+  <data name="CorrelationInformation" xml:space="preserve">
+    <value>Correlation Information</value>
+  </data>
+  <data name="GeneralInformation" xml:space="preserve">
+    <value>General Information</value>
+  </data>
+  <data name="ID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="NetworkInformation" xml:space="preserve">
+    <value>Network Information</value>
+  </data>
+  <data name="IPAddress" xml:space="preserve">
+    <value>IP address</value>
+  </data>
+  <data name="StatusCode" xml:space="preserve">
+    <value>Status code</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="BranchInformation" xml:space="preserve">
+    <value>Branch information</value>
+  </data>
+  <data name="BranchID" xml:space="preserve">
+    <value>Branch id</value>
+  </data>
+  <data name="BankID" xml:space="preserve">
+    <value>Bank id</value>
+  </data>
+  <data name="CorrelationID" xml:space="preserve">
+    <value>Correlation id</value>
+  </data>
+  <data name="EntityAffected" xml:space="preserve">
+    <value>Entity affected</value>
+  </data>
+  <data name="StringifiedObject" xml:space="preserve">
+    <value>Stringified object</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+</root>

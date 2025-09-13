@@ -1,0 +1,65 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+    @using Resources
+<div class="row">
+    <!-- Context Menu -->
+    <div class="col-12 card-body">
+        <div class="card mb-12">
+            <div class="card-header d-flex justify-content-between align-items-center">
+          
+              
+                <small class="text-body float-end">@GlobalAccount.YouAreAboutToAndCreateAccountUnderChart @Model.ChartOfAccount.AccountNumber-@Model.ChartOfAccount.LabelEn<br></small>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("AddOrUpdate", "AccountingConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                {<input type="hidden" name="ServiceOption" value="account" id="ServiceOption" />
+                    
+                   
+            <div class="row mt-2 gy-4">
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Account.AccountNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Account.AccountNumber, "", new { @class = "text-danger" })
+                        <label>@GlobalAccount.AccountNumber</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Account.AccountHolder, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Account.AccountHolder, "", new { @class = "text-danger" })
+                        <label>@GlobalAccount.AccountLabel</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.Account.AccountTypeId, new SelectList(ViewBag.AccountTypes == null ? "" : ViewBag.AccountTypes, "Text", "Value"), @GlobalAccount.SelectAccountType, new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.Account.AccountTypeId, "", new { @class = "text-danger" })
+                        <label>@GlobalAccount.AccountType</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.DropDownListFor(m => m.Account.ChartOfAccountId, new SelectList(ViewBag.ChartOfAccounts == null ? "" : ViewBag.ChartOfAccounts, "Text", "Value"), @GlobalAccount.SelectAccount, new { @class = "form-control select2", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.Account.ChartOfAccountId, "", new { @class = "text-danger" })
+                        <label>@GlobalAccount.ChartOfAccount</label>
+                    </div>
+                </div>
+
+            </div>
+                    <div class="mt-4">
+                        @if (Model.Account.Id == null)
+                        {
+                            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                            <input type="hidden" name="Action" value="insert" id="Action" />
+                        }
+                        else
+                        { <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
+                            @Html.HiddenFor(m => m.Account.Id)
+                            <input type="hidden" name="Action" value="update" id="Action" />
+                        }
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

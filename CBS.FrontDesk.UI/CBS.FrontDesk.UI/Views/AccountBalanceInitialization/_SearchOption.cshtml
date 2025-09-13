@@ -1,0 +1,93 @@
+﻿@model CBS.FrontDesk.Data.AccountBalanInitConfiguration
+
+<div class="modal-body bg-light card-border-shadow-dark">
+    @using (Html.BeginForm("AjaxPostingForSearch", "AccountBalanceInitialization", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostingForSearch(this);" }))
+    {
+        @Html.ValidationSummary(true, "Please correct the errors and try again.", new { @class = "alert alert-danger" })
+        <input type="hidden" name="ServiceOption" value="search" id="ServiceOption" />
+        <div class="row gy-3">
+
+            <!-- 🏢 Branch Selection -->
+            <div class="col-12">
+                <h6 class="text-primary border-bottom pt-2 pb-1">
+                    <i class="mdi mdi-office-building-marker-outline me-1"></i> Branch & Account Type
+                </h6>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.DropDownListFor(m => m.InitInfoDto.BranchId, new SelectList(ViewBag.Branches, "Value", "Text"), "--- Select Branch ---", new { @class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.InitInfoDto.BranchId, "", new { @class = "text-danger" })
+                    <label>Branch</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.DropDownListFor(m => m.InitInfoDto.ProductId, new SelectList(ViewBag.AccountTypes, "Value", "Text"), "--- Select Account Type ---", new { @class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.InitInfoDto.ProductId, "", new { @class = "text-danger" })
+                    <label>Account Type</label>
+                </div>
+            </div>
+
+
+            <!-- ✅ Submit -->
+            <div class="col-12 text-end mt-3">
+                <button type="submit" class="btn btn-primary shadow-sm px-4">
+                    <span class="tf-icons mdi mdi-search-web mdi-18px"></span>  Search Details
+                </button>
+                <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">
+                    Reset
+                </button>
+            </div>
+
+        </div> <!-- .row -->
+    }
+    <table class="table table-bordered table-striped" id="depositTable">
+        <thead class="table-light">
+            <tr>
+                <th>#</th>
+                <th>Account</th>
+                <th>Branch-Holder</th>
+                <th>Amount</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="postingDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Transaction Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6"><strong>Transaction Ref:</strong> <span id="modalRef"></span></div>
+                    <div class="col-md-6"><strong>Date:</strong> <span id="modalDate"></span></div>
+                    <div class="col-md-6"><strong>Account:</strong> <span id="modalAccount"></span></div>
+                    <div class="col-md-6"><strong>Holder:</strong> <span id="modalHolder"></span></div>
+                    <div class="col-md-6"><strong>Product:</strong> <span id="modalProduct"></span></div>
+                    <div class="col-md-6"><strong>Branch:</strong> <span id="modalBranch"></span></div>
+                </div>
+                <hr />
+                <h6>Amount Collections</h6>
+                <table class="table table-bordered table-sm">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>Event</th>
+                            <th>Liaison</th>
+                            <th>Amount (XAF)</th>
+                            <th>Principal</th>
+                            <th>Narration</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalAmounts"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

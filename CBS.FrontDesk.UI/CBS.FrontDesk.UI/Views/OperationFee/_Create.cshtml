@@ -1,0 +1,259 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.OperationFee
+     @using Resources
+<div class="card-body">
+    @using (Html.BeginForm("Create", "OperationFee", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        <fieldset class="fieldset-custom">
+            <legend>@GlobalOperationFee.OperationFeeDetails</legend>
+
+            @Html.HiddenFor(model => model.Id)
+
+            <!-- Basic Information -->
+            <div class="row mt-2 gy-3">
+                <h5 class="border-bottom pb-2 mb-3">
+                    @GlobalOperationFee.BASIC_INFORMATION
+                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.ProvideTheBasicDetailsOfTheOperationFeeSuchAsItsName."></i>
+                </h5>
+                <div class="col-md-12 mb-3">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                        <label>@GlobalOperationFee.Name</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fee Type and Application -->
+            <div class="row mt-3 gy-3">
+                <h5 class="border-bottom pb-2 mb-3">
+                    @GlobalOperationFee.FEE_CALCULATION_TYPE
+                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.SelectHowTheFeeWillBeCalculated."></i>
+                </h5>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.FeeType, "Rate", new { @class = "form-check-input shadow-input-boxes", id = "rateOption" })
+                        <label class="form-check-label" for="rateOption">@GlobalOperationFee.FeeIsCalculatedAsRate (%)</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.FeeType, "Range", new { @class = "form-check-input shadow-input-boxes", id = "rangeOption" })
+                        <label class="form-check-label" for="rangeOption">@GlobalOperationFee.FeeIsCalculatedOnRanges</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.IsAppliesOnHoliday, new { @class = "form-check-input", id = "IsAppliesOnHoliday" })
+                        <label class="form-check-label" for="IsAppliesOnHoliday">@GlobalOperationFee.AppliedOnHolidays</label>
+                    </div>
+                </div>
+                <div class="col-6 mb-3">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.IsMoralPerson, new { @class = "form-check-input", id = "IsMoralPerson" })
+                        <label class="form-check-label" for="IsMoralPerson">@GlobalOperationFee.ApplicableForMoralPersons</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Operation Fee Type -->
+            <div class="row mt-3 gy-3">
+                <h5 class="border-bottom pb-2 mb-3">
+                    @GlobalOperationFee.REGULAR_OPERATIONS_FEE_TYPE
+                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.SelectTheTypeOfOperationFeeApplicable."></i>
+                </h5>
+                <!-- Operation Fee Type options -->
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "MemberShip", new { @class = "form-check-input shadow-input-boxes", id = "MemberShip" })
+                        <label class="form-check-label" for="MemberShip">@GlobalOperationFee.Membership</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "Operation", new { @class = "form-check-input shadow-input-boxes", id = "Operation" })
+                        <label class="form-check-label" for="Operation">@GlobalOperationFee.NormalCashOperation</label>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "CMoney", new { @class = "form-check-input shadow-input-boxes", id = "CMoney" })
+                        <label class="form-check-label" for="CMoney">C-Money</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "Gav", new { @class = "form-check-input shadow-input-boxes", id = "Gav" })
+                        <label class="form-check-label" for="Gav">Gav</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "MobileMoney", new { @class = "form-check-input shadow-input-boxes", id = "MobileMoney" })
+                        <label class="form-check-label" for="MobileMoney">Mobile Money</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "OrangeMoney", new { @class = "form-check-input shadow-input-boxes", id = "OrangeMoney" })
+                        <label class="form-check-label" for="OrangeMoney">Orange Money</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "DailyCollections", new { @class = "form-check-input shadow-input-boxes", id = "DailyCollections" })
+                        <label class="form-check-label" for="DailyCollections">@GlobalOperationFee.DailyCollections</label>
+                    </div>
+                </div>
+                <!-- ✅ New Option: Daily Saver Registration Fee -->
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "DailySaverRegistrationFee", new { @class = "form-check-input shadow-input-boxes", id = "DailySaverRegistrationFee" })
+                        <label class="form-check-label" for="DailySaverRegistrationFee">Daily Saver Registration/Onboarding Fee</label>
+                    </div>
+                </div>
+            </div>
+           
+            <!-- Operation Fee Type -->
+            <div class="row mt-3 gy-3">
+                <h5 class="border-bottom pb-2 mb-3">
+                    @GlobalOperationFee.SALARY_FEE_TYPE
+                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.SelectTheTypeOfSalaryFeeApplicable"></i>
+                </h5>
+                <!-- Operation Fee Type options -->
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "CivilServants", new { @class = "form-check-input shadow-input-boxes", id = "CivilServants" })
+                        <label class="form-check-label" for="CivilServants">@GlobalOperationFee.CivilServants</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "PrivateInstitutions", new { @class = "form-check-input shadow-input-boxes", id = "PrivateInstitutions" })
+                        <label class="form-check-label" for="PrivateInstitutions">@GlobalOperationFee.PrivateInstitutions</label>
+                    </div>
+                </div>
+                @*<div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "Internal", new { @class = "form-check-input shadow-input-boxes", id = "Internal" })
+                        <label class="form-check-label" for="Internal">Internal</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "DailyServers", new { @class = "form-check-input shadow-input-boxes", id = "DailyServers" })
+                        <label class="form-check-label" for="DailyServers">Daily Servers</label>
+                    </div>
+                </div>*@
+            </div>
+
+            <div class="row mt-3 gy-3">
+                <h5 class="border-bottom pb-2 mb-3">
+                    @GlobalOperationFee.REMITTANCE_FEE_TYPE
+                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.SelectTheApplicableFeeTypeForThRemittanceTransaction."></i>
+                </h5>
+                <!-- Operation Fee Type options -->
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "WesternUnion", new { @class = "form-check-input shadow-input-boxes", id = "WesternUnion" })
+                        <label class="form-check-label" for="WesternUnion">Western Union</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "MoneyGram", new { @class = "form-check-input shadow-input-boxes", id = "MoneyGram" })
+                        <label class="form-check-label" for="MoneyGram">MoneyGram</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "Ria", new { @class = "form-check-input shadow-input-boxes", id = "Ria" })
+                        <label class="form-check-label" for="Ria">Ria</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "OFX", new { @class = "form-check-input shadow-input-boxes", id = "OFX" })
+                        <label class="form-check-label" for="OFX">OFX</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "MPesa", new { @class = "form-check-input shadow-input-boxes", id = "MPesa" })
+                        <label class="form-check-label" for="MPesa">M-Pesa</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "Payoneer", new { @class = "form-check-input shadow-input-boxes", id = "Payoneer" })
+                        <label class="form-check-label" for="Payoneer">Payoneer</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "WorldRemit", new { @class = "form-check-input shadow-input-boxes", id = "WorldRemit" })
+                        <label class="form-check-label" for="WorldRemit">World Remit</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.OperationFeeType, "TrustSoftCredit", new { @class = "form-check-input shadow-input-boxes", id = "TrustSoftCredit" })
+                        <label class="form-check-label" for="TrustSoftCredit">Trust Soft Credit</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Additional Charges -->
+            <div class="row mt-3 gy-3">
+                <h5 class="border-bottom pb-2 mb-3">
+                    @GlobalOperationFee.ADDITIONAL_CHARGES
+                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.DefineAnyExtraChargesThatApplyWhenTheLimitIsExceeded."></i>
+                </h5>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.MaximumExtraCharge, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MaximumExtraCharge, "", new { @class = "text-danger" })
+                        <label>@GlobalOperationFee.FlatExtraChargeOnExceedingLimit</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextBoxFor(m => m.MaximumRateAboveMaximumRange, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MaximumRateAboveMaximumRange, "", new { @class = "text-danger" })
+                        <label>@GlobalOperationFee.PercentageExtraChargeOnExceedingLimit</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="row mt-3 gy-3">
+                <h5 class="border-bottom pb-2 mb-3">
+                    @GlobalOperationFee.DESCRIPTION
+                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.ProvideADetailedDescriptionForThisFeeType."></i>
+                </h5>
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 90px;" })
+                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                        <label for="formValidationDob">@GlobalOperationFee.FeeDescription</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-4 text-end">
+                @if (ViewBag.Key != null)
+                {
+                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                    <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
+                }
+            </div>
+        </fieldset>
+    }
+</div>

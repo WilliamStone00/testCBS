@@ -1,0 +1,467 @@
+﻿
+@using Resources
+<style>
+    .text-center label {
+        font-size: 16px;
+    }
+
+    .dropdown-language img {
+        border-radius: 3px;
+        object-fit: cover;
+    }
+
+    .navbar-nav .text-muted {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .info-banner {
+        font-size: 14px;
+        border: 1px solid #e0e0e0;
+        background-color: #fdfdfd;
+        border-radius: 10px;
+        padding: 10px 16px;
+        min-height: 45px;
+        display: flex;
+        justify-content: flex-start; /* Align content to the left */
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    body {
+        top: 0 !important;
+    }
+
+    .goog-te-banner-frame.skiptranslate {
+        display: none !important;
+    }
+
+    .goog-te-combo {
+        margin: 0;
+    }
+
+    #google_translate_element {
+        display: none !important;
+    }
+
+    .goog-logo-link,
+    .goog-te-gadget {
+        display: none !important;
+    }
+</style>
+@if (User.Identity.IsAuthenticated && Session != null && Session["UserID"] != null)
+{
+
+    <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme mt-2" id="layout-navbar">
+
+        <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+            <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                <i class="mdi mdi-menu mdi-24px"></i>
+            </a>
+        </div>
+
+        <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+            <!-- Search -->
+            <div class="info-banner bg-light rounded px-4 py-2 shadow-sm d-flex justify-content-start">
+                <!-- Logo Text -->
+                <span class="text-primary fw-bold me-2" style="font-size: 16px;">T R U S T S O F T</span>
+                <span class="fw-bold text-success me-3" style="font-size: 16px;">C R E D I T</span>
+
+                <!-- Divider -->
+                <span class="text-muted mx-2">[</span>
+
+                <!-- Branch Info -->
+                <span class="text-dark fw-medium me-2">
+                    @if (Session["BranchName"] != null && Session["BranchCode"] != null)
+                    {
+                        @($"{Session["BranchName"]} | BCDE: {Session["BranchCode"]}")
+                    }
+                    else if (Session["BranchName"] != null)
+                    {
+                        @Session["BranchName"]
+                    }
+                    else if (Session["BranchCode"] != null)
+                    {
+                        @Session["BranchCode"]
+                    }
+                    else
+                    {
+                        <small class="text-muted">Unknown Branch</small>
+                    }
+                </span>
+
+                @if (Session["BranchCode"] != null)
+                {
+                    <!-- Roles -->
+                    if (Session["Roles"] is string[] rolesArrayDropdown)
+                    {
+                        foreach (var role in rolesArrayDropdown)
+                        {
+                            var displayRole = role.Length > 15 ? role.Substring(0, 15) + "..." : role;
+                            <small class="text-muted">| @displayRole</small><br />
+                        }
+                    }
+                }
+
+
+
+                <!-- Accounting Day -->
+                <span class="text-muted mx-2">|</span>
+                <span id="accountingDayStatus" style="display: none; color: green;">🟢</span>
+                <span class="fw-bold text-primary" id="accountingDayLabel">@GlobalShared.Loading...</span>
+                <span class="text-danger small ms-2" id="accountingDayError"></span>
+
+                <!-- Close bracket -->
+                <span class="text-muted ms-2">]</span>
+            </div>
+
+            <!-- Configuration Banner -->
+            <!-- /Search -->
+
+            <ul class="navbar-nav flex-row align-items-center ms-auto">
+
+
+                @Html.Partial("_LanguageSwitcher")
+
+                <!-- / Style Switcher-->
+                <!-- Quick links  -->
+                @*<li class="nav-item dropdown-shortcuts navbar-dropdown dropdown me-1 me-xl-0">
+                    <a class="nav-link btn btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow"
+                       href="javascript:void(0);"
+                       data-bs-toggle="dropdown"
+                       data-bs-auto-close="outside"
+                       aria-expanded="false">
+                        <i class="mdi mdi-view-grid-plus-outline mdi-24px"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end py-0">
+                        <div class="dropdown-menu-header border-bottom">
+                            <div class="dropdown-header d-flex align-items-center py-3">
+                                <h5 class="text-body mb-0 me-auto">Shortcuts</h5>
+                                <a href="javascript:void(0)"
+                                   class="dropdown-shortcuts-add text-muted"
+                                   data-bs-toggle="tooltip"
+                                   data-bs-placement="top"
+                                   title="Add shortcuts">
+                                    <i class="mdi mdi-view-grid-plus-outline mdi-24px"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="dropdown-shortcuts-list scrollable-container">
+                            <div class="row row-bordered overflow-visible g-0">
+                                <div class="dropdown-shortcuts-item col">
+                                    <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                                        <i class="mdi mdi-calendar fs-4"></i>
+                                    </span>
+                                    <a href="app-calendar.html" class="stretched-link">Calendar</a>
+                                    <small class="text-muted mb-0">Appointments</small>
+                                </div>
+                                <div class="dropdown-shortcuts-item col">
+                                    <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                                        <i class="mdi mdi-file-document-outline fs-4"></i>
+                                    </span>
+                                    <a href="app-invoice-list.html" class="stretched-link">Invoice App</a>
+                                    <small class="text-muted mb-0">Manage Accounts</small>
+                                </div>
+                            </div>
+                            <div class="row row-bordered overflow-visible g-0">
+                                <div class="dropdown-shortcuts-item col">
+                                    <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                                        <i class="mdi mdi-account-outline fs-4"></i>
+                                    </span>
+                                    <a href="app-user-list.html" class="stretched-link">User App</a>
+                                    <small class="text-muted mb-0">Manage Users</small>
+                                </div>
+                                <div class="dropdown-shortcuts-item col">
+                                    <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                                        <i class="mdi mdi-shield-check-outline fs-4"></i>
+                                    </span>
+                                    <a href="app-access-roles.html" class="stretched-link">Role Management</a>
+                                    <small class="text-muted mb-0">Permission</small>
+                                </div>
+                            </div>
+                            <div class="row row-bordered overflow-visible g-0">
+                                <div class="dropdown-shortcuts-item col">
+                                    <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                                        <i class="mdi mdi-chart-pie-outline fs-4"></i>
+                                    </span>
+                                    <a href="index.html" class="stretched-link">Dashboard</a>
+                                    <small class="text-muted mb-0">Analytics</small>
+                                </div>
+                                <div class="dropdown-shortcuts-item col">
+                                    <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                                        <i class="mdi mdi-cog-outline fs-4"></i>
+                                    </span>
+                                    <a href="pages-account-settings-account.html" class="stretched-link">Setting</a>
+                                    <small class="text-muted mb-0">Account Settings</small>
+                                </div>
+                            </div>
+                            <div class="row row-bordered overflow-visible g-0">
+                                <div class="dropdown-shortcuts-item col">
+                                    <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                                        <i class="mdi mdi-help-circle-outline fs-4"></i>
+                                    </span>
+                                    <a href="pages-faq.html" class="stretched-link">FAQs</a>
+                                    <small class="text-muted mb-0">FAQs & Articles</small>
+                                </div>
+                                <div class="dropdown-shortcuts-item col">
+                                    <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                                        <i class="mdi mdi-dock-window fs-4"></i>
+                                    </span>
+                                    <a href="modal-examples.html" class="stretched-link">Modals</a>
+                                    <small class="text-muted mb-0">Useful Popups</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>*@
+                <!-- Quick links -->
+                <!-- Notification -->
+                <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-2 me-xl-1">
+                    <a class="nav-link btn btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow"
+                       href="javascript:void(0);"
+                       data-bs-toggle="dropdown"
+                       data-bs-auto-close="outside"
+                       aria-expanded="false">
+                        <i class="mdi mdi-bell-outline mdi-24px"></i>
+                        <span class="position-absolute top-0 start-50 translate-middle-y badge badge-dot bg-success mt-2 border"></span>
+
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end py-0">
+                        <li class="dropdown-menu-header border-bottom">
+                            <div class="dropdown-header d-flex align-items-center py-3">
+                                <h6 class="mb-0 me-auto">@GlobalShared.Notification</h6>
+                                <span class="badge rounded-pill bg-label-primary" id="totalNotification">0</span>
+                            </div>
+                        </li>
+                        <li class="dropdown-notifications-list scrollable-container">
+                            <ul class="list-group list-group-flush">
+
+                                <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                                    <div class="d-flex gap-2">
+                                        <div class="flex-shrink-0">
+                                            <div class="avatar me-1">
+                                                <span class="avatar-initial rounded-circle bg-label-danger" id="user_initial">CF</span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-column flex-grow-1 overflow-hidden w-px-200">
+                                            <h6 class="mb-1 text-truncate" id="userName">Charles Franklin</h6>
+                                            <div class="mb-1 text-truncate" id="branchName">Upstation-Bamenda</div>
+                                            <small class="text-truncate text-body" id="indent_action">@GlobalShared.AcceptedYourConnection</small>
+                                        </div>
+                                        <div class="flex-shrink-0 dropdown-notifications-actions">
+                                            <small class="text-muted" id="vAge_of_notification">12hr ago</small>
+                                        </div>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="dropdown-menu-footer border-top p-2">
+                            <a href="/Notification/Index" class="btn btn-primary d-flex justify-content-center" id="simulateNotificationButton">
+                                @GlobalShared.View all notifications
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!--/ Notification -->
+                <!-- User -->
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                        <div class="avatar avatar-online">
+                            <img src="@Session["LogoUrl"].ToString()" alt class="w-px-40 h-auto rounded-circle" />
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="/UserManagement/UserProfile?KEY=@Session["UserID"].ToString()">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="avatar avatar-online">
+                                            <img src="@Session["LogoUrl"].ToString()" alt class="w-px-40 h-auto rounded-circle" />
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <span class="fw-medium d-block">@Session["FullName"].ToString()</span>
+                                        @if (Session["Roles"] is string[] rolesArray)
+                                        {
+                                            foreach (var role in rolesArray)
+                                            {
+                                                <small class="text-muted">@role</small>
+                                                <br> <!-- Optional: Add line break for each role -->
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="dropdown-divider"></div>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/UserManagement/MyProfile?KEY=@Session["UserID"].ToString()">
+                                <i class="mdi mdi-account-outline me-2"></i>
+                                <span class="align-middle">@GlobalShared.MyProfile</span>
+                            </a>
+                        </li>
+                        @*<li>
+                            <a class="dropdown-item" href="pages-account-settings-account.html">
+                                <i class="mdi mdi-cog-outline me-2"></i>
+                                <span class="align-middle">Settings</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="pages-account-settings-billing.html">
+                                <span class="d-flex align-items-center align-middle">
+                                    <i class="flex-shrink-0 mdi mdi-credit-card-outline me-2"></i>
+                                    <span class="flex-grow-1 align-middle ms-1">Billing</span>
+                                    <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="dropdown-divider"></div>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="pages-faq.html">
+                                <i class="mdi mdi-help-circle-outline me-2"></i>
+                                <span class="align-middle">FAQ</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="pages-pricing.html">
+                                <i class="mdi mdi-currency-usd me-2"></i>
+                                <span class="align-middle">Pricing</span>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="dropdown-divider"></div>
+                        </li>*@
+                        <li>
+                            <a class="dropdown-item" href="/Authentication/Logout">
+                                <i class="mdi mdi-logout me-2"></i>
+                                <span class="align-middle">@GlobalShared.LogOut</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!--/ User -->
+            </ul>
+        </div>
+        <div id="configurationBanner" style="position: fixed; top: 60px; left: 0; display: none; right: 200px; z-index: 1000; background: linear-gradient(90deg, #ff6b6b, #ffa500); padding: 12px 0; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); ">
+            <div style="max-width: 1320px; margin: 0px 0px 0px 0px; padding: 0 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <div id="bannerMessage" style="display: flex; align-items: center; font-size: 14px; font-weight: 500;">
+                        <i class="mdi mdi-alert-circle-outline" style="margin-right: 8px; font-size: 18px;"></i>
+                        <span id="configurationBanner"></span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <a href="#" id="showUnconfiguredProducts" style="color: white; text-decoration: underline; font-weight: 500; font-size: 14px;">View Details</a>
+                        <button type="button" id="closeBanner" style="background: none; border: none; color: white; cursor: pointer; padding: 4px;" onclick="this.parentElement.parentElement.parentElement.parentElement.style.display='none'">
+                            <i class="mdi mdi-close" style="font-size: 18px;"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </nav>
+    
+
+
+    @*<div id="configurationBanner" class="configuration-banner container-xxl  navbar-expand-xl navbar-detached align-items-center bg-navbar-theme">
+            <div class="container-xxl">
+                <div class="banner-content">
+                    <div class="banner-message" id="bannerMessage">
+                        <i class="mdi mdi-alert-circle-outline me-2"></i>
+                        <span>Some products have not been configured. Some accounting entries might not impact your trial balance.</span>
+                    </div>
+                    <div class="banner-actions">
+                        <a href="#" class="banner-link" id="showUnconfiguredProducts">
+                            View Details
+                        </a>
+                        <button type="button" class="banner-close" id="closeBanner" aria-label="Close">
+                            <i class="mdi mdi-close"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+}
+else
+{
+    <div class="alert text-center shadow-sm p-4 rounded-4" style="
+    background: linear-gradient(135deg, #fff3cd, #ffeeba);
+    border: 1px solid #ffcc00;
+    color: #856404;
+    font-weight: 600;
+    font-size: 16px;
+    max-width: 500px;
+    margin: 50px auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+">
+        <i class="mdi mdi-alert-circle-outline" style="font-size: 30px; color: #f0ad4e;"></i>
+        <div class="mt-2">
+            @GlobalShared.YourSessionHasExpiredOrIsInvalid.<br />
+            <small class="d-block mt-1 text-muted">@GlobalShared.RedirectingYouToLogin...</small>
+        </div>
+    </div>
+
+    <script>
+        // 🕒 Wait 30 seconds before redirecting
+        setTimeout(function () {
+            window.location.href = '/Authentication/Logout';
+        }, 30000);
+    </script>
+
+}
+
+<!-- Unconfigured Products Modal -->
+<div class="modal fade unconfigured-modal  justify-content-md-start" id="unconfiguredModal" tabindex="-1" role="dialog" aria-labelledby="unconfiguredModalLabel">
+    <div class="modal-dialog modal-fullscreen" role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-md-start bg-primary">
+                <button type="button" class="close" id="closeBanner1" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title  text-white" id="unconfiguredModalLabel">Unconfigured Products</h4>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent">
+                    <div class="loading-spinner">
+                        <i class="glyphicon glyphicon-refresh glyphicon-spin"></i>
+                        Loading unconfigured products...
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" id="closeBanner" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Product Details Modal -->
+<div class="modal fade  justify-content-md-start" id="productDetailsModal" tabindex="-1" role="dialog" aria-labelledby="productDetailsModalLabel">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-md-start bg-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" id="closeBanner2">&times;</span>
+                </button>
+                <h4 class="modal-title text-white" id="productDetailsModalLabel">Product Configuration Details</h4>
+            </div>
+            <div class="modal-body" id="productDetailsContent">
+                <!-- Content will be loaded dynamically -->
+                <input type="hidden" id="productIdConfig" value="" />
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" onclick="GoToProductConfiguration()">
+                    Map To ChartOfAccount
+                </button>
+                <button type="button" class="btn btn-default" id="closeBanner3" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

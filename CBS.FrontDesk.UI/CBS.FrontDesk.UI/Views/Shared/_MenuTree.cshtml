@@ -1,0 +1,194 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.PermissionNode>
+
+@{
+    var isRoot = ViewData["IsRoot"] as bool? ?? false;
+    var level = (int?)ViewData["Level"] ?? 0;
+    var maxDepth = 10;
+
+    var currentController = (ViewContext.RouteData.Values["controller"]?.ToString() ?? "").ToLower();
+    var currentAction = (ViewContext.RouteData.Values["action"]?.ToString() ?? "").ToLower();
+
+    bool isHomeActive = currentController == "home" && currentAction == "index";
+}
+
+
+<style>
+    .menu-text {
+        position: relative;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 160px;
+        display: inline-block;
+        color: black;
+        vertical-align: middle;
+        cursor: default;
+    }
+
+    .menu-link {
+        display: flex;
+        align-items: center;
+        padding: 6px 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        gap: 0 !important;
+        position: relative;
+        overflow: visible !important;
+        z-index: 1;
+    }
+
+        .menu-link i {
+            margin-right: 0 !important;
+            vertical-align: middle;
+        }
+
+        .menu-item.active > .menu-link,
+        .menu-item.active.open > .menu-link,
+        .menu-link.active {
+            background-color: #d1e7dd;
+            color: #0f5132 !important;
+            font-weight: bold;
+        }
+
+    .menu-sub {
+        display: none;
+    }
+
+    .menu-item.open > .menu-sub {
+        display: block;
+    }
+
+    .menu-inner,
+    .menu-sub,
+    .menu-item {
+        list-style: none;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .menu-item {
+        padding-left: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    .menu-link.active {
+        background-color: #d1e7dd;
+        color: #0f5132 !important;
+        font-weight: bold;
+    }
+</style>
+<link href="https://unpkg.com/balloon-css/balloon.min.css" rel="stylesheet" />
+
+@functions {
+    bool IsActive(CBS.FrontDesk.Data.Entity.PermissionNode node, string currentController, string currentAction)
+    {
+        var nodeController = node.Menu.ControllerName?.ToLower() ?? "";
+        var nodeAction = node.Menu.ActionName?.ToLower() ?? "";
+
+        if (nodeController == currentController && nodeAction == currentAction)
+        {
+            return true;
+        }
+
+        return node.Children?.Any(child => IsActive(child, currentController, currentAction)) == true;
+    }
+}
+
+@if (level > maxDepth)
+{
+    <div class="menu-item"><span style="color:red;">⚠ Too deep</span></div>
+}
+else if (Model != null && Model.Any())
+{
+    <div class="@(isRoot ? "menu-inner" : "menu-sub")">
+        @if (isRoot)
+        {
+            <div class="menu-item @(isHomeActive ? "active" : "")">
+                <a href="@Url.Action("Index", "Home")" class="menu-link @(isHomeActive ? "active" : "")">
+                    <i class="mdi mdi-home text-primary"></i>
+                    <div class="menu-text"
+                         aria-label="Home"
+                         data-balloon-pos="right">Home</div>
+                </a>
+            </div>
+        }
+
+        @foreach (var node in Model.OrderBy(n => n.Menu.MenuOrder))
+        {
+            if (!node.Menu.IsVisible) { continue; }
+
+            var hasChildren = node.Children != null && node.Children.Any(c => c.Menu.IsVisible);
+            var isActive = IsActive(node, currentController, currentAction);
+            var subViewData = new ViewDataDictionary(ViewData)
+            {
+                ["IsRoot"] = false,
+                ["Level"] = level + 1
+            };
+
+            <div class="menu-item @(isActive ? "active open" : "")">
+                @if (hasChildren)
+                {
+                    <div class="menu-link menu-toggle @(isActive ? "active" : "")" aria-expanded="@(isActive ? "true" : "false")">
+                        @if (!string.IsNullOrWhiteSpace(node.Menu.IconClass))
+                        {
+                            <i class="@node.Menu.IconClass"></i>
+                        }
+                        <div class="menu-text"
+                             aria-label="@(node.Menu.Tooltip ?? node.Menu.Description)"
+                             data-balloon-pos="right">
+                            @node.Menu.MenuText
+                        </div>
+                    </div>
+
+                    @Html.Partial("_MenuTree", node.Children.Where(c => c.Menu.IsVisible).ToList(), subViewData)
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(node.Menu.ControllerName))
+                    {
+                        <div class="menu-link" style="cursor: default;">
+                            @if (!string.IsNullOrWhiteSpace(node.Menu.IconClass))
+                            {
+                                <i class="@node.Menu.IconClass"></i>
+                            }
+                            <div class="menu-text"
+                                 aria-label="@(node.Menu.Tooltip ?? node.Menu.Description)"
+                                 data-balloon-pos="right">
+                                @node.Menu.MenuText
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action(node.Menu.ActionName, node.Menu.ControllerName)" class="menu-link @(isActive ? "active" : "")">
+                            @if (!string.IsNullOrWhiteSpace(node.Menu.IconClass))
+                            {
+                                <i class="@node.Menu.IconClass"></i>
+                            }
+                            <div class="menu-text"
+                                 aria-label="@(node.Menu.Tooltip ?? node.Menu.Description)"
+                                 data-balloon-pos="right">
+                                @node.Menu.MenuText
+                            </div>
+                        </a>
+                    }
+                }
+            </div>
+        }
+    </div>
+}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const menuLinks = document.querySelectorAll("#layout-menu .menu-link");
+
+        menuLinks.forEach(link => {
+            link.addEventListener("click", function () {
+                // Remove active from all links
+                menuLinks.forEach(l => l.classList.remove("active"));
+
+                // Add to this clicked link
+                this.classList.add("active");
+            });
+        });
+    });
+</script>

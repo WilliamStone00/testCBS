@@ -1,0 +1,36 @@
+﻿@model CBS.FrontDesk.Data.Entity.CustomerManagement.Grouping.GroupManagement
+    @using Resources
+
+<fieldset class="fieldset-custom">
+    @using (Html.BeginForm("Update", "Group", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        <div class="row g-4">
+
+            @Html.HiddenFor(m => m.GroupDocument.GroupDocumentId)
+            @Html.HiddenFor(m => m.GroupDocument.GroupId)
+            <input type="hidden" name="Option" value="adddocument" id="Option" />
+            <input type="hidden" value="@Model.Group.GroupId" id="groupId" />
+            <div class="row g-4">
+                <div class="input-group">
+                    <button type="submit" class="input-group-text" for="inputGroupFile02">@GlobalShared.Upload</button>
+                    <input type="file" name="GroupDocument.AttachedFiles"
+                           class="form-control"
+                           id="inputGroupFile03"
+                           aria-describedby="inputGroupFile02"
+                           aria-label="Upload" accept=".pdf,.doc,.docx,.txt,.xlsx,.xls,.ppt,.pptx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation" />
+                </div>
+
+            </div>
+            @*<div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Add selected members</button>
+                    @Html.HiddenFor(m => m.Group.GroupId)
+                    <input type="hidden" name="Action" value="update" id="Action" />
+                </div>*@
+
+        </div>
+
+    }
+
+    @Html.Partial("_AttachedFileData")
+
+</fieldset>

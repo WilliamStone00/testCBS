@@ -142,5 +142,28 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectionEntities
         public string MemberBranchId { get; set; }
         public string MemberBranchName { get; set; }
     }
+
+    public class DailySaverUploadResult
+    {
+
+        public string BranchName { get; set; }
+        public string CollectorName { get; set; }
+        public int NumberOfSaversUploaded { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal GLAccountBalance { get; set; }
+        public bool IsExhausive { get; set; }
+        public string FileUploaded { get; set; }
+        public string AccountName { get; set; }
+        public string AccountNumber { get; set; }
+        public string AccountId { get; set; }
+        public List<DailyCollectorMemberAccounts> CollectorMembers { get; set; }
+        public List<DailyCollectorMemberAccounts> AbsentMembers { get; set; }
+    }
+    public class DailyCollectorMemberAccounts
+    {
+        public string MemberReference { get; set; }
+        public string Name { get; set; }
+        public decimal AccountBalance { get; set; }
+    }
 }
-   
+

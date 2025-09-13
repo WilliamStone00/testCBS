@@ -1,0 +1,258 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+@using Resources
+
+@{
+    var name = $"{Model.Customer.firstName} {Model.Customer.lastName}";
+}
+
+<div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+
+    <div class="accordion-item active">
+        <h2 class="accordion-header text-body d-flex justify-content-between"
+            id="accordionPopoutIconThree">
+            <button type="button"
+                    class="accordion-button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordionPopoutIcon-3"
+                    aria-expanded="true"
+                    aria-controls="accordionPopoutIcon-3">
+                <i class="mdi mdi-information me-2"></i>
+                <b> @Model.product.name.ToUpper() @GlobalOperation.ACCOUNT_CONFIGURATION_DETAILS</b>
+            </button>
+        </h2>
+        <div id="accordionPopoutIcon-3"
+             class="accordion-collapse collapse show"
+             data-bs-parent="#accordionPopoutIcon">
+            <div class="accordion-body">
+                <div id="mainviewChange">
+                    <div class="change-group">
+                        <div class="card mb-4">
+                            <div class="card-body pt-2 mt-1">
+                                <div class="row mt-2 gy-4">
+                                    <div class="col-md-8">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.accountName, new { @class = "form-control", @readonly = true })
+                                            <label>@GlobalOperation.MemberAccountName</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.product.name, new { @class = "form-control", @readonly = true })
+                                            <label>@GlobalOperation.SavingProduct</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.createdBy, new { @class = "form-control", @readonly = true })
+                                            <label>@GlobalOperation.SavingOfficer</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.createdDate, new { @class = "form-control", @readonly = true })
+                                            <label>@GlobalOperation.OpeningDate</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.product.minAmount, new { @class = "form-control", @readonly = true })
+                                            <label>@GlobalOperation.MinimumAmount</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.product.maxAmount, new { @class = "form-control", @readonly = true })
+                                            <label>@GlobalOperation.MaxAmount</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.product.activeStatus, new { @class = "form-control", @readonly = true })
+                                            <label>@GlobalOperation.ProductActiveStatus</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.product.postingFrequency, new { @class = "form-control", @readonly = true })
+                                            <label>@GlobalOperation.PostingFrequency</label>
+                                        </div>
+                                    </div>
+                                </div>
+                             
+                            </div>
+                            <!-- /Account -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="accordion-item">
+        <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconTwo">
+            <button type="button"
+                    class="accordion-button collapsed"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordionPopoutIcon-2"
+                    aria-controls="accordionPopoutIcon-2">
+                <i class="mdi mdi-outdoor-lamp me-2"></i>
+                @GlobalOperation.WITHDRAWAL_CONFIGURATION
+            </button>
+        </h2>
+        <div id="accordionPopoutIcon-2"
+             class="accordion-collapse collapse"
+             data-bs-parent="#accordionPopoutIcon">
+            <div class="accordion-body">
+                <div id="mainviewReset">
+                    <div class="reset-group">
+                        <div class="card mb-4">
+                            <div class="table-responsive mb-3">
+                                <table class="table table-hover" id="myDataTableW">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>@GlobalOperation.WithdrawalType</th>
+                                            <th>@GlobalOperation.Fee</th>
+                                            <th>@GlobalOperation.Min</th>
+                                            <th>@GlobalOperation.Max</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var d in Model.product.WithdrawalParameters)
+                                        {
+                                            <tr>
+                                                <td style="width:70%">@d.withdrawalType</td>
+                                                <td style="width:10%">@d.withdrawalFeeFlat</td>
+                                                <td style="width:10%">@d.minAmount</td>
+                                                <td style="width:10%">@d.maxAmount</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconOne">
+            <button type="button"
+                    class="accordion-button collapsed"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordionPopoutIcon-1"
+                    aria-controls="accordionPopoutIcon-1">
+                <i class="mdi mdi-octagram-plus me-2"></i>
+                @GlobalOperation.DEPOSITS_CONFIGURATION
+            </button>
+        </h2>
+
+        <div id="accordionPopoutIcon-1"
+             class="accordion-collapse collapse"
+             data-bs-parent="#accordionPopoutIcon">
+            <div class="accordion-body">
+                <div id="mainview_mfa">
+                    <div class="reset-group">
+                        <div class="card mb-4">
+                            <div class="table-responsive mb-3">
+                                <table class="table table-hover" id="myDataTableD">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>@GlobalOperation.DepositType</th>
+                                            <th>@GlobalOperation.Fee</th>
+                                            <th>@GlobalOperation.Min</th>
+                                            <th>@GlobalOperation.Max</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var d in Model.product.CashDepositParameters)
+                                        {
+                                            <tr>
+                                                <td style="width:70%">@d.depositType</td>
+                                                <td style="width:10%">@d.depositFeeFlat</td>
+                                                <td style="width:10%">@d.minAmount</td>
+                                                <td style="width:10%">@d.maxAmount</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="accordion-item">
+        <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconOneT">
+            <button type="button"
+                    class="accordion-button collapsed"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordionPopoutIcon-T"
+                    aria-controls="accordionPopoutIcon-T">
+                <i class="mdi mdi-transfer me-2"></i>
+                @GlobalOperation.TRANSFER_CONFIGURATION
+            </button>
+        </h2>
+
+        <div id="accordionPopoutIcon-T"
+             class="accordion-collapse collapse"
+             data-bs-parent="#accordionPopoutIcon">
+            <div class="accordion-body">
+                <div id="transferSeting">
+                    <div class="reset-group">
+                        <div class="card mb-4">
+                            <div class="table-responsive mb-3">
+                                <table class="table table-hover" id="myDataTableT">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>@GlobalOperation.transferType</th>
+                                            <th>@GlobalOperation.Fee</th>
+                                            <th>@GlobalOperation.Rate</th>
+                                            <th>@GlobalOperation.Min</th>
+                                            <th>@GlobalOperation.Max</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var d in Model.product.TransferParameters)
+                                    {
+                                        <tr>
+                                            <td style="width:70%">@d.transferType</td>
+                                            <td style="width:10%">@d.transferFeeFlat</td>
+                                            <td style="width:10%">@d.transferFeeRate</td>
+                                            <td style="width:10%">@d.minAmount</td>
+                                            <td style="width:10%">@d.maxAmount</td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+

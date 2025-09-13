@@ -1,0 +1,44 @@
+﻿@model  CBS.FrontDesk.Data.Entity.Accounting.DocumentConfiguration
+    @using Resources
+<table class="table table-hover" id="myDataTable_DocumentReferenceCode">
+    <thead class="table-light">
+        <tr>
+            <th>@GlobalDocumentConfiguration.Document</th>
+            <th>@GlobalDocumentConfiguration.Type</th>
+            <th>@GlobalDocumentConfiguration.ReferenceCode</th>
+            <th>@GlobalDocumentConfiguration.Description</th>
+            <th>@GlobalShared.Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model.DocumentReferenceCodes)
+        {
+
+            <tr>
+                <td style="width:15%">@d.Document</td>
+                <td style="width:15%">@d.DocumentType</td>
+                <td style="width:15%">@d.ReferenceCode</td>
+                <td style="width:30%">@d.Description</td>
+                @if (d.Document.ToLower() == "profitandloss")
+                {
+
+                }
+                else
+                {
+                    <td style="width:40%">
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_DocumentReferenceCode','_CreateDocumentReferenceCode','update','DocumentConfiguration','DocumentReferenceCode')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ReferenceCode @GlobalShared.ToEdit">@GlobalDocumentConfiguration.GrossAccounts</a>|
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_DocumentReferenceCode','_CreateDocumentReferenceCode','update','DocumentConfiguration','DocumentReferenceCode')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ReferenceCode @GlobalShared.ToEdit">@GlobalDocumentConfiguration.ProvisionAccounts</a>|
+                        <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview_DocumentReferenceCode','_CreateDocumentReferenceCode','update','DocumentConfiguration','DocumentReferenceCode')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Select @d.ReferenceCode @GlobalShared.ToEdit">@GlobalDocumentConfiguration.EditReferenceCode</a>|
+                        <a href="#" class="mr-2 " data-toggle="tooltip" data-placement="top" title="@GlobalShared.Delete @d.ReferenceCode" onclick="DeleteDataConfiguration('DocumentConfiguration','@d.Id','myDataTable_DocumentReferenceCode','_DocumentReferenceCodeData',0,'datalistingview_DocumentReferenceCode','DocumentReferenceCode')">@GlobalDocumentConfiguration.DeleteReferenceCode</a>
+
+                    </td>
+
+                }
+
+
+            </tr>
+
+
+        }
+    </tbody>
+</table>

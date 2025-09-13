@@ -1,0 +1,762 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccMap" xml:space="preserve">
+    <value>AccMap</value>
+  </data>
+  <data name="AccountMappings" xml:space="preserve">
+    <value>Mappages de comptes</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Actif</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Catégorie</value>
+  </data>
+  <data name="CategoryIsNotConfigured" xml:space="preserve">
+    <value>La catégorie n'est pas configurée</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inactif</value>
+  </data>
+  <data name="InterestReceivedAccount" xml:space="preserve">
+    <value>Compte d'intérêts reçus</value>
+  </data>
+  <data name="LoanTermIsNotConfigured" xml:space="preserve">
+    <value>La durée du prêt n'est pas configurée</value>
+  </data>
+  <data name="LoanTransitAccount" xml:space="preserve">
+    <value>Compte de transit de prêt</value>
+  </data>
+  <data name="MAIN" xml:space="preserve">
+    <value>PRINCIPAL</value>
+  </data>
+  <data name="MaxAmountMustBeGreaterThan0" xml:space="preserve">
+    <value>Le montant maximum doit être supérieur à 0</value>
+  </data>
+  <data name="MinAmountCannotExceedMaxAmount" xml:space="preserve">
+    <value>Le montant minimum ne peut pas dépasser le montant maximum</value>
+  </data>
+  <data name="MinAmountMustBeGreaterThan0" xml:space="preserve">
+    <value>Le montant minimum doit être supérieur à 0</value>
+  </data>
+  <data name="MinMax" xml:space="preserve">
+    <value>Min : Max</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="NoLoanProductHasBeenCreated" xml:space="preserve">
+    <value>Aucun produit de prêt n'a été créé</value>
+  </data>
+  <data name="PenaltyAccount" xml:space="preserve">
+    <value>Compte de pénalité</value>
+  </data>
+  <data name="Policies" xml:space="preserve">
+    <value>Politiques</value>
+  </data>
+  <data name="PrincipalDisbursementAccount" xml:space="preserve">
+    <value>Compte de décaissement principal</value>
+  </data>
+  <data name="ProductCode" xml:space="preserve">
+    <value>Code du produit</value>
+  </data>
+  <data name="ProductDescription" xml:space="preserve">
+    <value>Description du produit</value>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Nom du produit</value>
+  </data>
+  <data name="PRODUCT_NAME" xml:space="preserve">
+    <value>NOM DU PRODUIT</value>
+  </data>
+  <data name="ProvisionAccountForLoansExceeding2Year" xml:space="preserve">
+    <value>Compte de provision pour les prêts dépassant 2 ans mais moins de 3 ans</value>
+  </data>
+  <data name="ProvisionAccountForLoansExceeding1Year" xml:space="preserve">
+    <value>Compte de provision pour les prêts dépassant 1 an mais moins de 2 ans</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Sélectionner</value>
+  </data>
+  <data name="SSF" xml:space="preserve">
+    <value>SSF</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+  <data name="Target" xml:space="preserve">
+    <value>Cible</value>
+  </data>
+  <data name="TargetTypIsNotConfigured" xml:space="preserve">
+    <value>Le type de cible n'est pas configuré</value>
+  </data>
+  <data name="TaxAccount" xml:space="preserve">
+    <value>Compte de taxe</value>
+  </data>
+  <data name="TERM" xml:space="preserve">
+    <value>TERM</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="WriteOffAccount" xml:space="preserve">
+    <value>Compte d'abandon</value>
+  </data>
+  <data name="ProvisionAccountForLoansExceeding3Year" xml:space="preserve">
+    <value>Compte de provision pour les prêts dépassant 3 ans mais moins de 4 ans</value>
+  </data>
+  <data name="ProvisionAccountForLoansExceeding4Year" xml:space="preserve">
+    <value>Compte de provision pour les prêts dépassant 4 ans</value>
+  </data>
+  <data name="MapAccounts" xml:space="preserve">
+    <value>Mapper les comptes</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="ActiveStatus" xml:space="preserve">
+    <value>Statut actif</value>
+  </data>
+  <data name="CheckToReserveThisProductAsSSF" xml:space="preserve">
+    <value>Cochez pour réserver ce produit en tant que SSF (Installation d'épargne spéciale)</value>
+  </data>
+  <data name="LoanTerm" xml:space="preserve">
+    <value>Durée du prêt</value>
+  </data>
+  <data name="LoanProductCategory" xml:space="preserve">
+    <value>Catégorie de produit de prêt</value>
+  </data>
+  <data name="Balance" xml:space="preserve">
+    <value>Solde</value>
+  </data>
+  <data name="Interest" xml:space="preserve">
+    <value>Intérêt</value>
+  </data>
+  <data name="LateFeeAreAppliedOn" xml:space="preserve">
+    <value>Les frais de retard sont appliqués sur</value>
+  </data>
+  <data name="SpecifyInDaysWhenChargesShouldStopApplyingToThisProduct" xml:space="preserve">
+    <value>Spécifiez en jours quand les frais devraient cesser de s'appliquer à ce produit. (En jours)</value>
+  </data>
+  <data name="MaximumDaysToApplyChargesAfterDueDate" xml:space="preserve">
+    <value>Nombre maximum de jours pour appliquer des frais après la date d'échéance</value>
+  </data>
+  <data name="DefaultDaysToApplyChargesAfterDueDate" xml:space="preserve">
+    <value>Nombre par défaut de jours pour appliquer des frais après la date d'échéance</value>
+  </data>
+  <data name="MinimumDaysToApplyChargesAfterDueDate" xml:space="preserve">
+    <value>Nombre minimum de jours pour appliquer des frais après la date d'échéance</value>
+  </data>
+  <data name="MaximumChargeToBeApplied" xml:space="preserve">
+    <value>Montant maximum de frais à appliquer (en %)</value>
+  </data>
+  <data name="DefaultChargeToBeApplied" xml:space="preserve">
+    <value>Montant par défaut de frais à appliquer (en %)</value>
+  </data>
+  <data name="MinimumChargeToBeApplied" xml:space="preserve">
+    <value>Montant minimum de frais à appliquer (en %)</value>
+  </data>
+  <data name="CheckIfChargesShouldBeAppliedToThisProduct" xml:space="preserve">
+    <value>Vérifiez si des frais doivent être appliqués à ce produit</value>
+  </data>
+  <data name="DefaultedLoans" xml:space="preserve">
+    <value>Paramètres de prêt en souffrance (paramètres de frais de retard)</value>
+  </data>
+  <data name="ChargesDefineTheChargePoliciesForTheLoanProduct" xml:space="preserve">
+    <value>Frais : Définissez les politiques de frais pour le produit de prêt, y compris l'application de frais, les taux de frais minimum et maximum, et les conditions pour l'arrêt des frais.</value>
+  </data>
+  <data name="KeyPoints" xml:space="preserve">
+    <value>Points clés</value>
+  </data>
+  <data name="ApplyChargesCheckThisBoxToApplyChargesToThisLoanProduct" xml:space="preserve">
+    <value>Appliquer des frais : Cochez cette case pour appliquer des frais à ce produit de prêt</value>
+  </data>
+  <data name="MinimumChargeRateSetTheMinimumChargeRateApplicableToTheLoanProduct" xml:space="preserve">
+    <value>Taux de frais minimum : Définissez le taux de frais minimum applicable au produit de prêt</value>
+  </data>
+  <data name="DefaultChargeRateDefineTheDefaultChargeRateApplicableToTheLoanProduct" xml:space="preserve">
+    <value>Taux de frais par défaut : Définissez le taux de frais par défaut applicable au produit de prêt</value>
+  </data>
+  <data name="MinimumDaysToApplyChargesAfterDueDateSpecifyTheMinimumNumberOfDays" xml:space="preserve">
+    <value>Nombre minimum de jours pour appliquer des frais après la date d'échéance : Spécifiez le nombre minimum de jours pour appliquer des frais après la date d'échéance du prêt</value>
+  </data>
+  <data name="MaximumDaysToApplyChargesAfterDueDateSpecifyTheMaximumNumberOfDaysToApply" xml:space="preserve">
+    <value>Nombre maximum de jours pour appliquer des frais après la date d'échéance : Spécifiez le nombre maximum de jours pour appliquer des frais après la date d'échéance du prêt</value>
+  </data>
+  <data name="DefaultDaysToApplyChargesAfterDueDateSetTheDefaultNumberOfDaysToApply" xml:space="preserve">
+    <value>Nombre par défaut de jours pour appliquer des frais après la date d'échéance : Définissez le nombre par défaut de jours pour appliquer des frais après la date d'échéance du prêt</value>
+  </data>
+  <data name="MaximumChargeRateDefineTheMaximumChargeRateApplicableToTheLoanProduct" xml:space="preserve">
+    <value>Taux de frais maximum : Définissez le taux de frais maximum applicable au produit de prêt</value>
+  </data>
+  <data name="ChargesCessationSpecifyTheNumberOfDaysAfterWhichChargesShouldStopApplying" xml:space="preserve">
+    <value>Arrêt des frais : Spécifiez le nombre de jours après lequel les frais devraient cesser de s'appliquer à ce produit</value>
+  </data>
+  <data name="ChargesAppliedOnSelectWhetherChargesAreAppliedToInterestOrBalance" xml:space="preserve">
+    <value>Frais appliqués sur : Sélectionnez si les frais sont appliqués aux intérêts ou au solde</value>
+  </data>
+  <data name="DefaultedLoanSettings" xml:space="preserve">
+    <value>Paramètres de prêt en souffrance</value>
+  </data>
+  <data name="FinePercentToRefund" xml:space="preserve">
+    <value>Pourcentage d'amende à rembourser</value>
+  </data>
+  <data name="CapitalPercentToRefund" xml:space="preserve">
+    <value>Pourcentage de capital à rembourser</value>
+  </data>
+  <data name="InterestPercentToRefund" xml:space="preserve">
+    <value>Pourcentage d'intérêts à rembourser</value>
+  </data>
+  <data name="FineOrder" xml:space="preserve">
+    <value>Ordre des amendes</value>
+  </data>
+  <data name="CapitalOrder" xml:space="preserve">
+    <value>Ordre du capital</value>
+  </data>
+  <data name="InterestOrder" xml:space="preserve">
+    <value>Ordre des intérêts</value>
+  </data>
+  <data name="NoRepaymentCyclesSelected" xml:space="preserve">
+    <value>Aucun cycle de remboursement sélectionné</value>
+  </data>
+  <data name="RepaymentCycles" xml:space="preserve">
+    <value>Cycles de remboursement</value>
+  </data>
+  <data name="RepaymentPeriods" xml:space="preserve">
+    <value>Périodes de remboursement</value>
+  </data>
+  <data name="Repayment" xml:space="preserve">
+    <value>Remboursement</value>
+  </data>
+  <data name="CustomerEducationProvideClearInformation" xml:space="preserve">
+    <value>Éducation du client : Fournissez des informations claires aux emprunteurs sur les conditions et les options de remboursement pour promouvoir un comportement de remboursement responsable</value>
+  </data>
+  <data name="FlexibleOptionsOfferFlexibleRepaymentOptions" xml:space="preserve">
+    <value>Options flexibles : Offrez des options de remboursement flexibles pour répondre aux préférences et aux circonstances variables des emprunteurs</value>
+  </data>
+  <data name="PenaltyChargesDefinePenaltiesForLateRepayments" xml:space="preserve">
+    <value>Pénalités : Définissez des pénalités pour les retards de remboursement ou les défauts pour encourager un remboursement en temps voulu</value>
+  </data>
+  <data name="GracePeriodSetAGracePeriodDuringWhichBorrowers" xml:space="preserve">
+    <value>Délai de grâce : Définissez un délai de grâce pendant lequel les emprunteurs sont exemptés de rembourser</value>
+  </data>
+  <data name="RepaymentMethodDetermineTheMethods" xml:space="preserve">
+    <value>Méthode de remboursement : Déterminez les méthodes par lesquelles les emprunteurs peuvent effectuer des remboursements, telles que le virement bancaire, les espèces ou le paiement mobile</value>
+  </data>
+  <data name="RepaymentFrequencySpecifyHowOftenBorrowers" xml:space="preserve">
+    <value>Fréquence de remboursement : Spécifiez la fréquence à laquelle les emprunteurs sont tenus d'effectuer des remboursements, par exemple mensuellement, bi-hebdomadairement ou trimestriellement</value>
+  </data>
+  <data name="RepaymentDefineTheRepaymentTermsAndOptionsForTheLoanProduct" xml:space="preserve">
+    <value>Remboursement : Définissez les conditions et les options de remboursement pour le produit de prêt</value>
+  </data>
+  <data name="MaximumMonth" xml:space="preserve">
+    <value>Durée maximale (mois)</value>
+  </data>
+  <data name="MinimumMonth" xml:space="preserve">
+    <value>Durée minimale (mois)</value>
+  </data>
+  <data name="LoanDurationPeriod" xml:space="preserve">
+    <value>Période de durée du prêt</value>
+  </data>
+  <data name="LoanDuration" xml:space="preserve">
+    <value>Durée du prêt (en mois)</value>
+  </data>
+  <data name="DurationInMonths" xml:space="preserve">
+    <value>Durée en mois</value>
+  </data>
+  <data name="MarketAnalysisConsiderMarketTrends" xml:space="preserve">
+    <value>Analyse de marché : Tenez compte des tendances du marché et de la demande lors de la détermination des limites de durée du prêt</value>
+  </data>
+  <data name="RiskMitigationBalanceRiskAndBorrower" xml:space="preserve">
+    <value>Atténuation des risques : Équilibrez le risque et les préférences de l'emprunteur lors de la fixation des paramètres de durée du prêt</value>
+  </data>
+  <data name="FlexibilityOfferCustomizableLoanDurations" xml:space="preserve">
+    <value>Flexibilité : Offrez des durées de prêt personnalisables pour répondre aux besoins de l'emprunteur</value>
+  </data>
+  <data name="MaximumLoanDurationDefineTheLongestDuration" xml:space="preserve">
+    <value>Durée maximale du prêt : Définissez la durée la plus longue autorisée pour le prêt</value>
+  </data>
+  <data name="DefaultLoanDurationSetTheDefaultDurationForTheLoanProduct" xml:space="preserve">
+    <value>Durée par défaut du prêt : Définissez la durée par défaut pour le produit de prêt</value>
+  </data>
+  <data name="MinimumLoanDurationSpecifyTheShortestDurationAllowedForTheLoan" xml:space="preserve">
+    <value>Durée minimale du prêt : Spécifiez la durée la plus courte autorisée pour le prêt</value>
+  </data>
+  <data name="DurationSetTheLoanDurationParameters" xml:space="preserve">
+    <value>Durée : Définissez les paramètres de durée du prêt, y compris la durée minimale, par défaut et maximale pour le produit de prêt</value>
+  </data>
+  <data name="ConfigurationMissing" xml:space="preserve">
+    <value>Configuration manquante</value>
+  </data>
+  <data name="LoanTermIsNotConfiguredForThisLoanProduct" xml:space="preserve">
+    <value>La durée du prêt n'est pas configurée pour ce produit de prêt. Veuillez définir la durée du prêt avant de mettre à jour les paramètres de durée</value>
+  </data>
+  <data name="LoanTermDurationParametersAreNotProperlySet" xml:space="preserve">
+    <value>Les paramètres de durée du prêt (minimum ou maximum) ne sont pas correctement définis. Assurez-vous que les deux valeurs sont supérieures à 0 avant de mettre à jour les paramètres de durée</value>
+  </data>
+  <data name="InterestMustBePaidUpfront" xml:space="preserve">
+    <value>Les intérêts doivent-ils être payés à l'avance</value>
+  </data>
+  <data name="MaximumInterestWaiverRate" xml:space="preserve">
+    <value>Taux maximum de remise d'intérêts</value>
+  </data>
+  <data name="StopInterestCalculationAtLoaMaturityDate" xml:space="preserve">
+    <value>Arrêter le calcul des intérêts à la date d'échéance du prêt</value>
+  </data>
+  <data name="MinimumInterestWaiverRate" xml:space="preserve">
+    <value>Taux minimum de remise d'intérêts</value>
+  </data>
+  <data name="CheckToAllowInterestWaiverForThisProduct" xml:space="preserve">
+    <value>Cochez pour autoriser la remise d'intérêts pour ce produit</value>
+  </data>
+  <data name="CheckToStartAccrualInterestAfterDisbustment" xml:space="preserve">
+    <value>Cochez pour commencer à accumuler des intérêts après le décaissement</value>
+  </data>
+  <data name="MaximumInterestValue" xml:space="preserve">
+    <value>Valeur maximale des intérêts</value>
+  </data>
+  <data name="MinimumInterestValue" xml:space="preserve">
+    <value>Valeur minimale des intérêts</value>
+  </data>
+  <data name="InterestSettings" xml:space="preserve">
+    <value>Paramètres d'intérêts</value>
+  </data>
+  <data name="ValidationError" xml:space="preserve">
+    <value>Erreur de validation</value>
+  </data>
+  <data name="MinimumLoanAmountMustBeGreaterThan0" xml:space="preserve">
+    <value>Le montant minimum du prêt doit être supérieur à 0</value>
+  </data>
+  <data name="MaximumLoanAmountMustBeGreaterThan0" xml:space="preserve">
+    <value>Le montant maximum du prêt doit être supérieur à 0</value>
+  </data>
+  <data name="MinimumLoanAmountCannotExceedMaximumLoanAmount" xml:space="preserve">
+    <value>Le montant minimum du prêt ne peut pas dépasser le montant maximum du prêt</value>
+  </data>
+  <data name="LoanRangeSetTheMinimumDefaultAndMaximumLoanAmounts" xml:space="preserve">
+    <value>Plage de prêt : Définissez les montants minimum, par défaut et maximum du prêt pour définir la plage dans laquelle les montants du prêt peuvent varier, en offrant une flexibilité tout en garantissant des pratiques de prêt responsables</value>
+  </data>
+  <data name="MinimumLoanAmountDetermineAReasonableMinimumLoanAmount" xml:space="preserve">
+    <value>Montant minimum du prêt : Déterminez un montant minimum raisonnable pour le prêt</value>
+  </data>
+  <data name="DefaultLoanAmountSetBasedOnMarketDemandAndHistoricalData" xml:space="preserve">
+    <value>Montant par défaut du prêt : Définissez en fonction de la demande du marché et des données historiques</value>
+  </data>
+  <data name="MaximumLoanAmountDefineToLimitRiskExposure" xml:space="preserve">
+    <value>Montant maximum du prêt : Définissez pour limiter l'exposition au risque</value>
+  </data>
+  <data name="MinimumLoanAmount" xml:space="preserve">
+    <value>Montant minimum du prêt</value>
+  </data>
+  <data name="MaximumLoanAmount" xml:space="preserve">
+    <value>Montant maximum du prêt</value>
+  </data>
+  <data name="MinimumDownPaymentRate" xml:space="preserve">
+    <value>Taux d'acompte minimum</value>
+  </data>
+  <data name="MustApartialFeeBePaidBeforeTheLoanApplicationIsProcessed" xml:space="preserve">
+    <value>Un acompte partiel doit-il être payé avant le traitement de la demande de prêt</value>
+  </data>
+  <data name="MaximumInterestWaiverRateDefineTheMaximumRate" xml:space="preserve">
+    <value>Taux maximum de remise d'intérêts : Définissez le taux maximum auquel les frais d'intérêts peuvent être remis, exprimé en pourcentage</value>
+  </data>
+  <data name="MinimumInterestWaiverRateSpecifyTheMinimumRate" xml:space="preserve">
+    <value>Taux minimum de remise d'intérêts : Spécifiez le taux minimum auquel les frais d'intérêts peuvent être remis, exprimé en pourcentage</value>
+  </data>
+  <data name="InterestWaiverAllowForTheWaiverOfInterestCharges" xml:space="preserve">
+    <value>Remise d'intérêts : Autorisez la remise de frais d'intérêts sous certaines conditions pour le produit de prêt</value>
+  </data>
+  <data name="StartGeneratingInterestAfterDisbursementDecideIfInterestAccrualStarts" xml:space="preserve">
+    <value>Commencer à générer des intérêts après le décaissement : Décidez si l'accumulation d'intérêts commence immédiatement après le décaissement du prêt</value>
+  </data>
+  <data name="MaximumInterestRateDefineTheMaximumInterestRate" xml:space="preserve">
+    <value>Taux d'intérêt maximum : Définissez le taux d'intérêt maximum applicable au prêt</value>
+  </data>
+  <data name="DefaultInterestRateSetTheDefaultInterestRateForTheLoanProduct" xml:space="preserve">
+    <value>Taux d'intérêt par défaut : Définissez le taux d'intérêt par défaut pour le produit de prêt</value>
+  </data>
+  <data name="MinimumInterestRateDefineTheMinimumInterestRateApplicableToTheLoan" xml:space="preserve">
+    <value>Taux d'intérêt minimum : Définissez le taux d'intérêt minimum applicable au prêt</value>
+  </data>
+  <data name="LoanInterestPeriodSpecifyThePeriodForInterest" xml:space="preserve">
+    <value>Période d'intérêt du prêt : Spécifiez la période de calcul des intérêts, par exemple mensuellement ou annuellement</value>
+  </data>
+  <data name="LoanInterestTypeDetermineTheTypeOfInterest" xml:space="preserve">
+    <value>Type d'intérêt du prêt : Déterminez le type d'intérêt, par exemple intérêt fixe ou intérêt dégressif</value>
+  </data>
+  <data name="InterestSetTheInterestTypePeriodAndRatesForTheLoanProduct" xml:space="preserve">
+    <value>Intérêts : Définissez le type d'intérêt, la période et les taux pour le produit de prêt</value>
+  </data>
+  <data name="MinimumPercentageThatMustBeRefundedForToppingUp" xml:space="preserve">
+    <value>Pourcentage minimum qui doit être remboursé pour le rechargement</value>
+  </data>
+  <data name="DoesThisProductReqiresRefinancing" xml:space="preserve">
+    <value>Ce produit nécessite-t-il un refinancement</value>
+  </data>
+  <data name="LoanTopUpSettings" xml:space="preserve">
+    <value>Paramètres de rechargement de prêt</value>
+  </data>
+  <data name="MaximumTopUpAmountDefineTheMaximumAmountAllowed" xml:space="preserve">
+    <value>Montant maximum de rechargement : Définissez le montant maximum autorisé pour les prêts de refinancement ou de rechargement</value>
+  </data>
+  <data name="DefaultTopUpAmountSetTheDefaultAmountForRefinancing" xml:space="preserve">
+    <value>Montant par défaut de rechargement : Définissez le montant par défaut pour les prêts de refinancement ou de rechargement</value>
+  </data>
+  <data name="MinimumTopUpAmountSpecifyTheMinimumAmountAllowed" xml:space="preserve">
+    <value>Montant minimum de rechargement : Spécifiez le montant minimum autorisé pour les prêts de refinancement ou de rechargement</value>
+  </data>
+  <data name="HasTopUpDetermineIfTheProductOffersRefinancing" xml:space="preserve">
+    <value>Possibilité de rechargement : Déterminez si le produit offre des options de refinancement ou de rechargement de prêt</value>
+  </data>
+  <data name="LoanTopUpLimitsDefineTheLimitsAndCriteria" xml:space="preserve">
+    <value>Limites de rechargement de prêt : Définissez les limites et les critères pour refinancer les prêts existants ou fournir des prêts de rechargement aux emprunteurs</value>
+  </data>
+  <data name="TopupOption" xml:space="preserve">
+    <value>Option de rechargement</value>
+  </data>
+  <data name="AllowThirdPartyPropertyOwnership" xml:space="preserve">
+    <value>Autoriser la propriété par des tiers</value>
+  </data>
+  <data name="EnablePhasedDisbursement" xml:space="preserve">
+    <value>Activer le décaissement échelonné</value>
+  </data>
+  <data name="MinCollateralCoverage" xml:space="preserve">
+    <value>Couverture minimale de garantie</value>
+  </data>
+  <data name="MaxLTVRatio" xml:space="preserve">
+    <value>Ratio LTV maximum</value>
+  </data>
+  <data name="GracePeriodMonths" xml:space="preserve">
+    <value>Délai de grâce (mois)</value>
+  </data>
+  <data name="RequireLandTitleRegistratio" xml:space="preserve">
+    <value>Exiger l'enregistrement du titre foncier</value>
+  </data>
+  <data name="RequireInsuranceBeforeDisbursement" xml:space="preserve">
+    <value>Exiger une assurance avant le décaissement</value>
+  </data>
+  <data name="IsThisAMortgageLoanProduct" xml:space="preserve">
+    <value>Est-ce un produit de prêt hypothécaire</value>
+  </data>
+  <data name="MortgageConfiguration" xml:space="preserve">
+    <value>Configuration hypothécaire</value>
+  </data>
+  <data name="MortgageSettingsConfigureSpecificParameters" xml:space="preserve">
+    <value>Paramètres hypothécaires : Configurez des paramètres spécifiques pour les produits de prêt hypothécaire tels que l'exigence d'assurance, le ratio LTV, le délai de grâce et les règles de propriété</value>
+  </data>
+  <data name="EnterShorteeMinimumPercentageCoverage" xml:space="preserve">
+    <value>Entrez le pourcentage minimum de couverture court</value>
+  </data>
+  <data name="ShorteeMustHaveFundToGuaranteeThisLoan" xml:space="preserve">
+    <value>Le courtier doit avoir des fonds pour garantir ce prêt</value>
+  </data>
+  <data name="BlockedCoGuarantorsAccount" xml:space="preserve">
+    <value>Compte de co-garant bloqué</value>
+  </data>
+  <data name="BlockedSalaryAccountForStandingOrders" xml:space="preserve">
+    <value>Compte de salaire bloqué pour les ordres permanents</value>
+  </data>
+  <data name="MinimumSalaryAccountRate" xml:space="preserve">
+    <value>Taux minimum du compte de salaire</value>
+  </data>
+  <data name="MinimumSavingAccountRate" xml:space="preserve">
+    <value>Taux minimum du compte d'épargne</value>
+  </data>
+  <data name="BlockedDownPaymentsForSavingAccount" xml:space="preserve">
+    <value>Acomptes bloqués pour le compte d'épargne</value>
+  </data>
+  <data name="MinimumShareAccountBalanceRequired" xml:space="preserve">
+    <value>Solde minimum du compte d'actions requis</value>
+  </data>
+  <data name="MembersAccount" xml:space="preserve">
+    <value>Compte des membres</value>
+  </data>
+  <data name="CollateralRate" xml:space="preserve">
+    <value>Taux de garantie</value>
+  </data>
+  <data name="RequireLandTitleRegistration" xml:space="preserve">
+    <value>Exiger l'enregistrement du titre foncier</value>
+  </data>
+  <data name="Collateral" xml:space="preserve">
+    <value>Garantie</value>
+  </data>
+  <data name="RequiresRegisteredPublicAuthority" xml:space="preserve">
+    <value>Exiger une autorité publique enregistrée</value>
+  </data>
+  <data name="RequiresIrrivocableFundTransfer" xml:space="preserve">
+    <value>Exiger un transfert de fonds irrévocable</value>
+  </data>
+  <data name="RequiresMembersSavingAccount" xml:space="preserve">
+    <value>Exiger un compte d'épargne des membres</value>
+  </data>
+  <data name="RequiresMembersShareAccount" xml:space="preserve">
+    <value>Exiger un compte d'actions des membres</value>
+  </data>
+  <data name="CoObligorMustHaveFundToGuranteeThisLoan" xml:space="preserve">
+    <value>Le co-obligé doit avoir des fonds pour garantir ce prêt</value>
+  </data>
+  <data name="RequiresSalaryAccount" xml:space="preserve">
+    <value>Exiger un compte de salaire</value>
+  </data>
+  <data name="DoesThisProductRequiresGuarantor" xml:space="preserve">
+    <value>Ce produit nécessite-t-il un garant</value>
+  </data>
+  <data name="RequiresCollateralSuchAsLandsBuildingCars" xml:space="preserve">
+    <value>Exiger une garantie telle que des terres, des bâtiments, des voitures, etc</value>
+  </data>
+  <data name="CollateralValuesEvaluationSettingsDefineTheRequirements" xml:space="preserve">
+    <value>Paramètres d'évaluation des garanties : Définissez les exigences et les critères d'évaluation pour les garanties afin d'atténuer les risques et d'assurer la sécurité du prêt</value>
+  </data>
+  <data name="RequiresGuarantorDetermineIfTheProductRequiresGuarantor" xml:space="preserve">
+    <value>Exiger un garant : Déterminez si le produit nécessite un garant pour la garantie</value>
+  </data>
+  <data name="RequiresCollateralSpecifyIfCollateralIsNecessary" xml:space="preserve">
+    <value>Exiger une garantie : Spécifiez si une garantie telle que des terres, des bâtiments ou des voitures est nécessaire</value>
+  </data>
+  <data name="RequiresSalaryAccountDecideIfAsalaryAccountIsNeededForTheLoan" xml:space="preserve">
+    <value>Exiger un compte de salaire : Décidez si un compte de salaire est nécessaire pour le prêt</value>
+  </data>
+  <data name="RequiresShareAccountDetermineIfAMemberShareAccountIsRequired" xml:space="preserve">
+    <value>Exiger un compte d'actions : Déterminez si un compte d'actions des membres est requis</value>
+  </data>
+  <data name="RequiresSavingAccountSpecifyIfAMemberSavingAccountIsRequired" xml:space="preserve">
+    <value>Exiger un compte d'épargne : Spécifiez si un compte d'épargne des membres est requis</value>
+  </data>
+  <data name="RequiresIrrevocableSalaryTransferDecide" xml:space="preserve">
+    <value>Exiger un transfert de salaire irrévocable : Décidez si un transfert de fonds irrévocable est nécessaire</value>
+  </data>
+  <data name="RequiresRegisteredPublicAuthorityDetermineIfARegistered" xml:space="preserve">
+    <value>Exiger une autorité publique enregistrée : Déterminez si une autorité publique enregistrée est requise pour l'évaluation de la garantie</value>
+  </data>
+  <data name="CollateralCheckListSettings" xml:space="preserve">
+    <value>Paramètres de la liste de contrôle des garanties</value>
+  </data>
+  <data name="MinimumAndDownPaymentSettings" xml:space="preserve">
+    <value>Paramètres minimums et d'acompte</value>
+  </data>
+  <data name="FixedAmount" xml:space="preserve">
+    <value>Montant fixe</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Produit</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Valeur</value>
+  </data>
+  <data name="PenaltiesConfigurations" xml:space="preserve">
+    <value>Configurations de pénalités</value>
+  </data>
+  <data name="SetPenalty" xml:space="preserve">
+    <value>Définir une pénalité</value>
+  </data>
+  <data name="PenaltyDescription" xml:space="preserve">
+    <value>Description de la pénalité</value>
+  </data>
+  <data name="CheckToEnable" xml:space="preserve">
+    <value>Cochez pour activer</value>
+  </data>
+  <data name="EnterDaysToApplyPenalt" xml:space="preserve">
+    <value>Entrez les jours pour appliquer la pénalité. La pénalité sera appliquée après le délai de grâce</value>
+  </data>
+  <data name="GracePeriodInDaysOptional" xml:space="preserve">
+    <value>Délai de grâce en jours (facultatif)</value>
+  </data>
+  <data name="EnterPenaltyValue" xml:space="preserve">
+    <value>Entrez la valeur de la pénalité. (Gardez à l'esprit que vous avez sélectionné un taux ou un montant fixe)</value>
+  </data>
+  <data name="CalculatePenaltyOn" xml:space="preserve">
+    <value>Calculer la pénalité sur</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="OptionalWaivePenaltyOnBranchHolidays" xml:space="preserve">
+    <value>(facultatif) Annuler la pénalité les jours fériés de l'agence</value>
+  </data>
+  <data name="IWantPenaltyToBeAFixedAmount" xml:space="preserve">
+    <value>Je veux que la pénalité soit un montant fixe</value>
+  </data>
+  <data name="IWantPenaltyToBePercentageBased" xml:space="preserve">
+    <value>Je veux que la pénalité soit basée sur un % pourcentage</value>
+  </data>
+  <data name="EnterPenaltyUniqueName" xml:space="preserve">
+    <value>Entrez le nom unique de la pénalité</value>
+  </data>
+  <data name="PenaltyType" xml:space="preserve">
+    <value>Type de pénalité</value>
+  </data>
+  <data name="SetPenaltyConfigurationsFor" xml:space="preserve">
+    <value>Définir les configurations de pénalité pour</value>
+  </data>
+  <data name="SelectPenaltyType" xml:space="preserve">
+    <value>Sélectionner le type de pénalité</value>
+  </data>
+  <data name="AccountNumber" xml:space="preserve">
+    <value>Numéro de compte</value>
+  </data>
+  <data name="OperationEvent" xml:space="preserve">
+    <value>Événement d'opération</value>
+  </data>
+  <data name="LoanProductAccountingConfigurations" xml:space="preserve">
+    <value>Configurations comptables du produit de prêt</value>
+  </data>
+  <data name="LoanProduct" xml:space="preserve">
+    <value>Produit de prêt</value>
+  </data>
+  <data name="LoanProductListingForAccountingMapping" xml:space="preserve">
+    <value>Liste des produits de prêt pour la cartographie comptable</value>
+  </data>
+  <data name="LoanProductCategoryIsNotConfigured" xml:space="preserve">
+    <value>La catégorie de produit de prêt n'est pas configurée</value>
+  </data>
+  <data name="TargetTypeIsNotSpecified" xml:space="preserve">
+    <value>Le type de cible n'est pas spécifié</value>
+  </data>
+  <data name="PleaseEnsureAllFieldsAreProperlyConfigured" xml:space="preserve">
+    <value>Veuillez vous assurer que tous les champs sont correctement configurés avant de procéder</value>
+  </data>
+  <data name="SettingLoanPolicyFor" xml:space="preserve">
+    <value>Définition de la politique de prêt pour</value>
+  </data>
+  <data name="For" xml:space="preserve">
+    <value>Pour</value>
+  </data>
+  <data name="Between" xml:space="preserve">
+    <value>Entre</value>
+  </data>
+  <data name="Months" xml:space="preserve">
+    <value>Mois</value>
+  </data>
+  <data name="LoanProductListingForPolicySet" xml:space="preserve">
+    <value>Liste des produits de prêt pour la définition de la politique</value>
+  </data>
+  <data name="BlockedShareAccountForStandingOrders" xml:space="preserve">
+    <value>Bloquer le compte de part du membre pour les ordres permanents ou garanties.</value>
+  </data>
+  <data name="BlockedSavingAccountForStandingOrders" xml:space="preserve">
+    <value>Bloquer le compte d’épargne du membre pour les ordres permanents ou garanties.</value>
+  </data>
+</root>

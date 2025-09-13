@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "Countries";
+}
+
+<div class="card">
+    <div class="card-datatable table-responsive">
+        <div id="datalistingview">
+            @Html.Partial("_Data")
+        </div>
+    </div>
+    <!-- Offcanvas to add new user -->
+</div>
+
+
+
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/Js/Crud/Config/Localization/Countries.js"></script>
+}
+

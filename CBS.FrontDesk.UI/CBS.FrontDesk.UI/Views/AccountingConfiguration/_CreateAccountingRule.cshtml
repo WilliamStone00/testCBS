@@ -1,0 +1,111 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingConfiguration
+@using Resources
+
+@{
+    ViewBag.Title = AccountingConfig_CreateAccountingRule.AccountingRule;
+}
+
+<div class="card mb-12">
+    <div class="card-header">
+        <h5 class="card-title mb-0">@AccountingConfig_CreateAccountingRule.SettingMultipleAccountingEntryRule </h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+
+            <!-- Navigation -->
+            <div class="col-12 col-md-4  card-separator">
+
+                <div id="datalistingview_AddEntry">
+
+                    @using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <input type="hidden" name="ServiceOption" value="accountingRule" id="ServiceOptionn" />
+                        @Html.Hidden("Id", Model.FinancialDocumentReference.Id, new { id = "xxxxx" })
+                        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title">
+                                            @AccountingConfig_CreateAccountingRule.EntryRuleEventCode: @Html.TextBoxFor(m => m.AccountingRule.RuleName, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.AccountingRule.RuleName, "", new { @class = "text-danger" })
+                                        </h5>
+                                    </div>
+                                    <div class="row card-body">
+                                        <div class="row mt-2 gy-4">
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.DropDownListFor(m => m.AccountingRule.MFI_ChartOfAccountId, new SelectList(ViewBag.ChartOfAccountManagementPositions == null ? "" : ViewBag.ChartOfAccountManagementPositions, "Text", "Value"), "---" + @AccountingConfig_CreateAccountingRule.SelectEntryRule + "---", new { @class = "form-control select2", @search = "true" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.MFI_ChartOfAccountId, "", new { @class = "text-danger" })
+                                                    <label>@AccountingConfig_CreateAccountingRule.AccountingEntryRule</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.DropDownListFor(m => m.AccountingRule.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---" + @AccountingConfig_CreateAccountingRule.SelectDirection + "---", new { @class = "form-control select2", @search = "true" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.BookingDirection, "", new { @class = "text-danger" })
+                                                    <label>@AccountingConfig_CreateAccountingRule.BookingDirection</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="form-floating form-floating-outline">
+                                                    @Html.TextAreaFor(m => m.AccountingRule.Description, new { @class = "form-control", @style = "height: 100px;" })
+                                                    @Html.ValidationMessageFor(m => m.AccountingRule.Description, "", new { @class = "text-danger" })
+                                                    <label>@AccountingConfig_CreateAccountingRule.Description</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4">
+                                            <button type="button" onclick="addToBasket()" class="btn btn-primary">
+                                                @AccountingConfig_CreateAccountingRule.AddEntryRule&nbsp; &nbsp; <i class="mdi mdi-plus-box-multiple"></i>
+                                            </button>
+                                            <input type="hidden" name="Action" value="insert" id="Action" />
+                                        </div>
+                                    </div>
+                                    <hr />
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+
+            </div>
+            <!-- Navigation Body -->
+            <div class="col-12 col-md-8 ">
+                <div class="col-12 col-md-8 ">
+
+
+
+                </div>
+                <div class="tab-content  card-separator">
+                    <br />
+                  
+                    <table id="AccountingRulebasketTable" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>@AccountingConfig_CreateAccountingRule.RuleName</th>
+                                <th>@AccountingConfig_CreateAccountingRule.ChartOfAccount</th>
+                                <th>@AccountingConfig_CreateAccountingRule.BookingDirection</th>
+                                <th>@AccountingConfig_CreateAccountingRule.Description</th>
+                                <th>@AccountingConfig_CreateAccountingRule.Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+                    <button type="button" onclick="submitBasket()" class="btn btn-danger" id="saveToDB">
+                        @AccountingConfig_CreateAccountingRule.SaveEntryRule&nbsp; &nbsp; <i class="mdi mdi-database"></i>
+                    </button>
+                    
+                    <br />
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

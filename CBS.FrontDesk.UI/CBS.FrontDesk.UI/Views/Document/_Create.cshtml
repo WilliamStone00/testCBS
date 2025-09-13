@@ -1,0 +1,60 @@
+﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Document
+@using Resources
+
+<div class="col">
+    @using (Html.BeginForm("Create", "Document", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        <input type="hidden" name="ServiceOption" value="loan_schedule" id="ServiceOption" />
+        <div class="row my-4">
+            <div class="accordion" id="collapsibleSection">
+                <div class="card accordion-item mb-3">
+                    <h2 class="accordion-header" id="headingDeliveryAddress">
+                        <button type="button"
+                                class="accordion-button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseDeliveryAddress"
+                                aria-expanded="true"
+                                aria-controls="collapseDeliveryAddress">
+                            @GlobalDocument.Document
+                        </button>
+                    </h2>
+                    <div id="collapseDeliveryAddress"
+                         class="accordion-collapse collapse show"
+                         data-bs-parent="#collapsibleSection">
+                        <div class="accordion-body">
+                            @Html.HiddenFor(m => m.Id)
+                            <div class="row mt-2 gy-4">
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                        <label>@GlobalDocument.Name</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                @if (ViewBag.Key == null)
+                                {
+                                    <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                                    <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
+
+                                }
+                                else
+                                {
+                            <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
+
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    }
+</div>
+
+

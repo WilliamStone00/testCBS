@@ -303,11 +303,12 @@ namespace CBS.FrontDesk.Helper
         //Customer
         ///api/v1/Customers/{BranchId}
         public static string CreateIndividualProfile = "/api/v1/Customer";
+        public static string CreateDailySaverCustomer = "/api/v1/DailySaverCustomer";
         public static string SearchByAnyCriterialQuery = "/api/v1/Customers/SearchByAnyCriterialQuery";
         public static string GetAllByParameters = "/api/v1/Customer/GetAllByParameters";
         public static string MembersDatatableQuery = "/api/v1/customers/datatable";
         public static string MembersDownloadDatatableQuery = "/api/v1/customer-download/customers";
-
+        
 
         public static string AllCustomers = "/api/v1/Customers";
         public static string GetAllIndividualProfileByBranch = "/api/v1/Customers/{0}";
@@ -1216,7 +1217,7 @@ namespace CBS.FrontDesk.Helper
         //DailySavingUpload /api/v1/ViewFileByFileUploadId/{FileUploadId}}
         public static string Delete_DailySavingMigrationFile = "/api/v1/DailySavingMigrationFile/{0}";
         public static string GetAllDailySavingMigrationFile = "/api/v1/DailySavingMigrationFile/all/{0}";
-        public static string DailySavingMigrationFileExecution = "api/v1/DailySavingMigrationFileExecution/{0}/{1}";
+        public static string DailySavingMigrationFileExecution = "api/v1/DailySavingMigrationFileExecution/{0}/{1}/{2}/{3}";
         public static string ManualEntryCollectorUploadFileExecution = "api/v1/ManualEntryCollectorUpload?collectorId={0}";
         public static string GetAllDailyOperationFileUploadsByProcessingStatus = "/api/v1/GetAllFileUploadsByProcessingStatus/{0}";
         public static string ViewFileByFileUploadId = "/api/v1/ViewFileByFileUploadId/{0}}";
