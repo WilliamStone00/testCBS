@@ -43,6 +43,19 @@
                 @Html.ValidationMessageFor(m => m.CollectorAndUser, "", new { @class = "text-danger" })
             </div>
 
+            @* Visible date picker + hidden formatted input bound to controller param AccountingDate *@
+            <div class="col-md-12">
+                <label for="SelectedDateDisplay">Select Date</label>
+
+                @* Visible date picker — user interacts with this. Not bound to controller param. *@
+                <input id="SelectedDateDisplay"
+                       name="SelectedDateDisplay"
+                       type="date"
+                       class="form-control" />
+
+                @* Hidden field submitted to controller (name must match controller param) *@
+                @Html.Hidden("AccountingDate", Model?.AccountingDay ?? "", new { id = "AccountingDate" })
+            </div>
 
 
             <!-- File upload input -->

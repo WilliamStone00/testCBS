@@ -61,12 +61,12 @@ namespace CBS.FrontDesk.Data.Entity.ManualDailycollection
         public string ApprovedBy { get; set; } = null;
         public DateTime? ApprovalDateTime { get; set; } = null;
         public string ApprovalStatement { get; set; } = null;
-        public DateTime? CashReceptionDate { get; set; }  = null;
+        public DateTime? CashReceptionDate { get; set; } = null;
         public string CashierName { get; set; } = null;
         public string CashierBranchId { get; set; } = null;
         public string CashierBranchName { get; set; } = null;
         public string CashierBranchCode { get; set; } = null;
-        public decimal TotalCashInAmount { get; set; } 
+        public decimal TotalCashInAmount { get; set; }
         public string CashierComment { get; set; } = null;
         public bool CashInStatus { get; set; } = false;
         public string TellerId { get; set; } = null;
@@ -81,7 +81,7 @@ namespace CBS.FrontDesk.Data.Entity.ManualDailycollection
     public class TransactionDetail
     {
         public string Id { get; set; }
-        public string MemberBranchCode { get; set; }
+        public string memberBranchCode { get; set; }
         public string MemberBranchId { get; set; }
         public string MemberBranchName { get; set; }
         public decimal Amount { get; set; }
@@ -94,7 +94,7 @@ namespace CBS.FrontDesk.Data.Entity.ManualDailycollection
         public string ProcessingStatus { get; set; } = null;
         public string TreatementStatus { get; set; } = null;
         public DateTime? TreatementDate { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }   // <- made nullable
         public DateTime? ModifiedDate { get; set; }
     }
 

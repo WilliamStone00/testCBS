@@ -6,7 +6,6 @@
 @using Resources
 @Html.AntiForgeryToken()
 
-<!-- ================================================= HEADER & TIPS SECTIONS ================================================== -->
 <div class="card bg-light mb-3">
     <div class="card-body text-center">
         <h1 class="card-title text-primary"><i class="mdi mdi-file-check-outline me-2"></i> File Processing System</h1>
@@ -17,31 +16,29 @@
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR FILE VALIDATION</span>
-        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseValidationTips" aria-expanded="true">
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseValidationTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </h6>
-    <div id="collapseValidationTips" class="collapse show">
+    <div id="collapseValidationTips" class="collapse">
         <div class="card-body">
             <ul>
                 <li><i class="mdi mdi-filter-variant text-primary me-2"></i><strong>Default View:</strong> The table automatically shows all files with a 'Pending' status.</li>
                 <li><i class="mdi mdi-magnify text-info me-2"></i><strong>Advanced Search:</strong> Use filters for File Name or Branch.</li>
                 <li><i class="mdi mdi-cogs text-success me-2"></i><strong>Taking Action:</strong> Use the dropdown on each row for Approve / Review / Reject.</li>
                 <li><i class="mdi mdi-cogs text-success me-2"></i><strong>Taking Action:</strong> We must review a file before Approve it so if you see file review but nor approve review it firt.</li>
-
             </ul>
         </div>
     </div>
 </div>
 
-<!-- ================================================= FILTERING SECTION ================================================== -->
 <div class="card shadow p-3 mb-4">
     <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Advanced File Filters</h5>
     <div class="card p-3 mb-3 bg-light">
         <div class="row mb-3">
             <div class="col-md-4">
                 <label for="statusFilter" class="form-label fw-bold">Filter by Status</label>
-                @Html.DropDownList("StatusFilter", (SelectList)ViewBag.Statuses, "Pending", new { @class = "form-control select2", id = "statusFilter" })
+                @Html.DropDownList("StatusFilter", (SelectList)ViewBag.Statuses, "---- All Status ----", new { @class = "form-control select2", id = "statusFilter" })
             </div>
             <div class="col-md-4">
                 <label class="form-label fw-bold">Upload Date From</label>
@@ -84,10 +81,9 @@
     </div>
 </div>
 
-<!-- ================================================= DATATABLE CONTAINER ================================================== -->
 <div class="card shadow p-3">
     <div class="table-responsive">
-        <table id="myDataTable" class="table table-hover" style="width:100%;">
+        <table id="myDataTable" class="table table-hover table-bordered" style="width:100%;">
             <thead class="table-light">
                 <tr>
                     <th>Collector Name</th>
@@ -103,7 +99,6 @@
     </div>
 </div>
 
-<!-- ================================================= DETAILS PANEL & MODAL ================================================== -->
 <div id="detailsContainer" class="card shadow p-3 mt-4" style="display:none;">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 id="detailsHeader" class="mb-0">File Details For </h5>
@@ -133,250 +128,213 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        (function ($) {
-            function getStatusBadge(status) {
-                if (!status) return "<span class='badge bg-secondary'>Unknown</span>";
-                let badgeClass = "bg-secondary";
-                switch (status.toLowerCase()) {
-                    case "pending": badgeClass = "bg-warning text-dark"; break;
-                    case "approved":
-                    case "extracted":
-                    case "completed":
-                    case "treated": badgeClass = "bg-success"; break;
-                    case "rejected":
-                    case "failed": badgeClass = "bg-danger"; break;
-                    case "review": badgeClass = "bg-info text-dark"; break;
-                }
-                return `<span class='badge ${badgeClass}'>${status}</span>`;
+<script>
+    (function ($) {
+        // ---------------------------
+        // Helper UI & rendering fns
+        // ---------------------------
+        function getStatusBadge(status) {
+            if (!status) return "<span class='badge bg-secondary'>Unknown</span>";
+            let badgeClass = "bg-secondary";
+            switch ((status + "").toLowerCase()) {
+                case "pending": badgeClass = "bg-warning text-dark"; break;
+                case "approved":
+                case "extracted":
+                case "completed":
+                case "treated": badgeClass = "bg-success"; break;
+                case "rejected":
+                case "failed": badgeClass = "bg-danger"; break;
+                case "review": badgeClass = "bg-info text-dark"; break;
             }
+            return `<span class='badge ${badgeClass}'>${status}</span>`;
+        }
 
-            function generateActionButtons(id, status) {
-                return `
-                    <div class="btn-group btn-group-sm">
-                        <!-- Always show Details -->
-                        <a href="#" class="btn btn-outline-primary action-btn" data-action="details" data-id="${id}" title="View Details">
-                            <i class="mdi mdi-eye-outline"></i>
-                        </a>
+        function generateActionButtons(id, status) {
+            return `
+                <div class="btn-group btn-group-sm">
+                    <a href="#" class="btn btn-outline-primary action-btn" data-action="details" data-id="${id}" title="View Details">
+                        <i class="mdi mdi-eye-outline"></i>
+                    </a>
 
-                        <!-- Dropdown toggle -->
-                        <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
+                    <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
 
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            ${status === 'Pending' ? `
-                                <li><a class="dropdown-item action-btn" href="#" data-action="review" data-id="${id}">
-                                    <i class="mdi mdi-magnify me-1"></i> Review
-                                </a></li>
-                                <li><a class="dropdown-item action-btn" href="#" data-action="reject" data-id="${id}">
-                                    <i class="mdi mdi-close me-1"></i> Reject
-                                </a></li>
-                            ` : ''}
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        ${status === 'Pending' ? `
+                            <li><a class="dropdown-item action-btn" href="#" data-action="review" data-id="${id}"><i class="mdi mdi-magnify me-1"></i> Review</a></li>
+                            <li><a class="dropdown-item action-btn" href="#" data-action="reject" data-id="${id}"><i class="mdi mdi-close me-1"></i> Reject</a></li>
+                        ` : ''}
 
-                            ${status === 'Reviewed' ? `
-                                <li><a class="dropdown-item action-btn" href="#" data-action="approve" data-id="${id}">
-                                    <i class="mdi mdi-check me-1"></i> Approve
-                                </a></li>
-                                <li><a class="dropdown-item action-btn" href="#" data-action="reject" data-id="${id}">
-                                    <i class="mdi mdi-close me-1"></i> Reject
-                                </a></li>
-                            ` : ''}
-                        </ul>
-                    </div>
-                `;
+                        ${status === 'Reviewed' ? `
+                            <li><a class="dropdown-item action-btn" href="#" data-action="approve" data-id="${id}"><i class="mdi mdi-check me-1"></i> Approve</a></li>
+                            <li><a class="dropdown-item action-btn" href="#" data-action="reject" data-id="${id}"><i class="mdi mdi-close me-1"></i> Reject</a></li>
+                        ` : ''}
+                    </ul>
+                </div>
+            `;
+        }
+
+        // Robust confirm wrapper that uses alertify if present, otherwise window.confirm
+        function confirmDialog(title, message, onOk, onCancel) {
+            if (window.alertify && typeof alertify.confirm === 'function') {
+                try {
+                    alertify.confirm(title, message, function () { if (typeof onOk === 'function') onOk(); }, function () { if (typeof onCancel === 'function') onCancel(); }).set('labels', { ok: 'Yes', cancel: 'No' });
+                    return;
+                } catch (e) { /* fallback to native */ }
             }
+            if (window.confirm(message)) { if (typeof onOk === 'function') onOk(); } else { if (typeof onCancel === 'function') onCancel(); }
+        }
 
-            function viewDetails(fileId) {
-                const detailsContainer = $('#detailsContainer');
-                const detailsBody = $('#detailsBody');
-                const detailsHeader = $('#detailsHeader');
+        // ---------------------------
+        // Modal loader + submit handler
+        // ---------------------------
+        function loadActionForm(id, mode) {
+            const url = `@Url.Action("GetActionForm", "FileValidation")?fileUploadId=${id}&mode=${mode}`;
+            const $body = $('#actionModalBody');
 
-                detailsHeader.text(`File Details: ${fileId}`);
-                detailsBody.html('<div class="text-center p-4"><div class="spinner-border text-primary"></div><p>Loading details...</p></div>');
-                detailsContainer.slideDown();
+            $('#actionModalLabel').text(`${mode.charAt(0).toUpperCase() + mode.slice(1)} File`);
+            $body.html(`<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-2 text-primary">Loading form...</p></div>`);
+            $('#actionModal').modal('show');
 
-                $.get(`@Url.Action("GetextractedFileDetails", "FileValidation")?id=${fileId}`)
-                    .done(function (response) {
-                        detailsBody.html(response);
-                    })
-                    .fail(function () {
-                        detailsBody.html('<div class="alert alert-danger">Error loading details.</div>');
-                    });
+            $.get(url)
+                .done(function (html) {
+                    $body.html(html);
 
-                document.getElementById('detailsContainer').scrollIntoView({ behavior: 'smooth' });
-            }
+                    // Find form inside partial
+                    const $form = $body.find('form').first();
+                    if (!$form || $form.length === 0) {
+                        $body.prepend('<div class="alert alert-danger">Form not found in the response.</div>');
+                        return;
+                    }
 
-            // === REPLACED: robust modal form loader + submit handler (keeps rest of code unchanged) ===
-            function loadActionForm(id, mode) {
-                const url = `@Url.Action("GetActionForm", "FileValidation")?fileUploadId=${id}&mode=${mode}`;
-                const $body = $('#actionModalBody');
-                $('#actionModalLabel').text(`${mode.charAt(0).toUpperCase() + mode.slice(1)} File`);
-                $body.html(`<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-2 text-primary">Loading form...</p></div>`);
-                $('#actionModal').modal('show');
-
-                $.get(url)
-                    .done(r => $body.html(r))
-                    .fail(() => $body.html(`<div class="alert alert-danger">Could not load form.</div>`));
-
-                // intercept form submission inside modal
-                $('#actionModal').off('submit', 'form').on('submit', 'form', function (e) {
-                    e.preventDefault();
-                    const form = $(this);
-                    $.post(form.attr('action'), form.serialize())
-                        .done(function (res) {
-                            if (res.success) {
-                                $('#actionModal').modal('hide');
-                                appalert.success(res.message || `${mode} successful`);
-                                $('#myDataTable').DataTable().ajax.reload();
-                            } else {
-                                appalert.error(res.message || `Failed to ${mode}`);
-                            }
-                        })
-                        .fail(function () {
-                            appalert.error(`An error occurred while trying to ${mode} the file.`);
-                        });
-                });
-
-                $.get(url)
-                    .done(function (html) {
-                        $body.html(html);
-
-                        // find the first form inside the partial
-                        const $form = $body.find('form').first();
-                        if (!$form || $form.length === 0) {
-                            // no form found — notify and return
-                            $body.prepend('<div class="alert alert-danger">Form not found in the response.</div>');
-                            return;
+                    // show validation errors helper
+                    function showValidationErrors(errors) {
+                        let $summary = $form.find('.validation-summary.custom');
+                        if ($summary.length === 0) {
+                            $summary = $('<div class="validation-summary custom mb-3"></div>');
+                            $form.prepend($summary);
                         }
-
-                        // helper: render ModelState-style errors returned by controller
-                        function showValidationErrors(errors) {
-                            let $summary = $form.find('.validation-summary.custom');
-                            if ($summary.length === 0) {
-                                $summary = $('<div class="validation-summary custom mb-3"></div>');
-                                $form.prepend($summary);
-                            }
-                            $summary.empty();
-                            if (!errors || Object.keys(errors).length === 0) return;
-                            const $alert = $('<div class="alert alert-warning mb-2">Please fix the errors below:</div>');
-                            const $list = $('<ul class="mb-0"></ul>');
-                            Object.keys(errors).forEach(function (k) {
-                                (errors[k] || []).forEach(function (msg) {
-                                    $list.append(`<li>${msg}</li>`);
-                                });
+                        $summary.empty();
+                        if (!errors || Object.keys(errors).length === 0) return;
+                        const $alert = $('<div class="alert alert-warning mb-2">Please fix the errors below:</div>');
+                        const $list = $('<ul class="mb-0"></ul>');
+                        Object.keys(errors).forEach(function (k) {
+                            (errors[k] || []).forEach(function (msg) {
+                                $list.append(`<li>${msg}</li>`);
                             });
-                            $summary.append($alert).append($list);
-                        }
+                        });
+                        $summary.append($alert).append($list);
+                    }
 
-                        // detach previous and attach a robust submit handler
-                        $form.off('submit.actionForm').on('submit.actionForm', function (e) {
-                            e.preventDefault();
+                    // attach submit handler
+                    $form.off('submit.actionForm').on('submit.actionForm', function (e) {
+                        e.preventDefault();
+                        const $submit = $form.find('[type="submit"]').first();
+                        const origHtml = $submit.data('orig-html') || $submit.html();
+                        $submit.data('orig-html', origHtml);
+                        $submit.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Processing...');
 
-                            const $submit = $form.find('[type="submit"]').first();
-                            const origHtml = $submit.data('orig-html') || $submit.html();
-                            $submit.data('orig-html', origHtml);
-                            $submit.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Processing...');
+                        showValidationErrors({});
 
-                            // clear previous validation display
-                            showValidationErrors({});
-
-                            $.ajax({
-                                url: $form.attr('action'),
-                                type: 'POST',
-                                data: $form.serialize(),
-                                dataType: 'json',
-                                timeout: 30000,
-                                success: function (res) {
-                                    try {
-                                        // Defensive: ensure we have an object
-                                        if (!res || typeof res !== 'object') {
-                                            appalert('Unexpected server response. Please refresh and try again.', 4, 1);
-                                            return;
-                                        }
-
-                                        if (res.success) {
-                                            // use existing appalert signature (message, level, timeout)
-                                            appalert(res.message || `${mode} successful`, 1, 1);
-
-                                            // close modal and reload datatable
-                                            $('#actionModal').modal('hide');
-                                            if ($.fn.DataTable.isDataTable('#myDataTable')) {
-                                                $('#myDataTable').DataTable().ajax.reload(null, false);
-                                            }
-                                        } else {
-                                            // show validation errors if returned
-                                            if (res.errors) {
-                                                showValidationErrors(res.errors);
-                                            }
-                                            appalert(res.message || `Failed to ${mode}`, 4, 1);
-                                        }
-                                    } catch (handlerErr) {
-                                        console.error('Error handling form success:', handlerErr);
-                                        appalert('An unexpected client error occurred. Check console.', 4, 1);
+                        $.ajax({
+                            url: $form.attr('action'),
+                            type: 'POST',
+                            data: $form.serialize(),
+                            dataType: 'json',
+                            success: function (res) {
+                                try {
+                                    if (!res || typeof res !== 'object') {
+                                        appalert('Unexpected server response. Please refresh and try again.', 4, 1);
+                                        return;
                                     }
-                                },
-                                error: function (xhr, status, err) {
-                                    console.error('Action form submit error:', status, err, xhr);
-                                    if (status === 'timeout') {
-                                        appalert('Request timed out. Please try again.', 4, 1);
-                                    } else if (xhr && xhr.responseJSON && xhr.responseJSON.message) {
-                                        appalert(xhr.responseJSON.message, 4, 1);
+                                    if (res.success) {
+                                        appalert(res.message || `${mode} successful`, 1, 1);
+                                        $('#actionModal').modal('hide');
+                                        if ($.fn.DataTable.isDataTable('#myDataTable')) $('#myDataTable').DataTable().ajax.reload(null, false);
                                     } else {
-                                        appalert('An error occurred while processing the request. Check your session or console.', 4, 1);
+                                        if (res.errors) showValidationErrors(res.errors);
+                                        appalert(res.message || `Failed to ${mode}`, 4, 1);
                                     }
-                                },
-                                complete: function () {
-                                    // re-enable submit with original content
-                                    $submit.prop('disabled', false).html($submit.data('orig-html'));
+                                } catch (err) {
+                                    console.error('Action form success handler error', err);
+                                    appalert('An unexpected client error occurred. Check console.', 4, 1);
                                 }
-                            });
+                            },
+                            error: function (xhr, status, err) {
+                                console.error('Action form submit error:', status, err, xhr);
+                                if (status === 'timeout') appalert('Request timed out. Please try again.', 4, 1);
+                                else if (xhr && xhr.responseJSON && xhr.responseJSON.message) appalert(xhr.responseJSON.message, 4, 1);
+                                else appalert('An error occurred while processing the request.', 4, 1);
+                            },
+                            complete: function () {
+                                $submit.prop('disabled', false).html($submit.data('orig-html'));
+                            }
                         });
-                    })
-                    .fail(function () {
-                        $body.html(`<div class="alert alert-danger">Could not load form.</div>`);
                     });
-            }
-            // === END replacement ===
+                })
+                .fail(function () {
+                    $body.html(`<div class="alert alert-danger">Could not load form.</div>`);
+                });
+        }
 
-            let dataTable = $('#myDataTable').DataTable({
+        // ---------------------------
+        // DataTable & filter logic
+        // ---------------------------
+        let dataTable = null;
+
+        // Build the payload expected by your LoadFiles action
+        function buildPayload(d) {
+            const order = (d.order && d.order[0]) || {};
+            // The logic here is already correct and sends all filter values at once.
+            // No changes are needed to the payload structure.
+            return {
+                options: {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    pageSize: d.length,
+                    // Send both common names used in controller to make binding easier
+                    sortColumn: d.columns[order.column]?.data || '',
+                    sortColumnName: d.columns[order.column]?.data || '',
+                    sortDirection: order.dir || '',
+                    searchValue: d.search?.value || ''
+                },
+                filters: {
+                    status: $('#statusFilter').val(),
+                    dateFrom: $('#startDate').val(),
+                    dateTo: $('#endDate').val(),
+                    fileName: $('#byFileNameToggle').is(':checked') ? $('#fileName').val() : '',
+                    branchId: $('#byBranchNameToggle').is(':checked') ? $('#BranchIdFilter').val() : ''
+                }
+            };
+        }
+
+        // Create DataTable (called on first Apply)
+        function createDataTable() {
+            dataTable = $('#myDataTable').DataTable({
                 serverSide: true,
                 processing: false,
                 ajax: {
                     url: '@Url.Action("LoadFiles", "FileValidation")',
                     type: 'POST',
                     contentType: "application/json; charset=utf-8",
-                    data: function (d) {
-                        const filters = {
-                            status: $('#statusFilter').val(),
-                            dateFrom: $('#startDate').val(),
-                            dateTo: $('#endDate').val(),
-                            fileName: $('#byFileNameToggle').is(':checked') ? $('#fileName').val() : '',
-                            branchId: $('#byBranchNameToggle').is(':checked') ? $('#BranchIdFilter').val() : ''
-                        };
-                        const order = d.order[0] || {};
-                        return JSON.stringify({
-                            options: {
-                                draw: d.draw,
-                                start: d.start,
-                                pageSize: d.length,
-                                sortColumn: d.columns[order.column]?.data,
-                                sortDirection: order.dir,
-                                searchValue: d.search.value
-                            },
-                            filters: filters
-                        });
+                    data: function (d) { return JSON.stringify(buildPayload(d)); },
+                    error: function (xhr, status, err) {
+                        console.error('DataTable ajax error', status, err, xhr);
                     }
                 },
+                order: [[0, 'asc']], // default sort by Collector Name
                 columns: [
-                    { data: "collectorName" },
-                    { data: "branchName" },
-                    { data: "uploadedBy" },
+                    { data: "collectorName", name: "collectorName" },
+                    { data: "branchName", name: "branchName" },
+                    { data: "uploadedBy", name: "uploadedBy" },
                     {
                         data: "uploadedOn",
+                        name: "uploadedOn",
                         render: function (data, type, row) {
-                            const raw = data ?? row.uploadedOn ?? row.uploadedOnFormatted ?? '';
+                            const raw = data ?? row.uploadedOn ?? row.uploadDateTime ?? '';
                             if (!raw) return '';
                             const d = new Date(raw);
                             if (!isNaN(d.getTime())) return d.toLocaleString();
@@ -384,12 +342,13 @@
                         }
                     },
                     {
-                        data: "status",
-                        render: function (data, type, row) {
-                            const rawStatus = (data ?? row.status ?? row.Status ?? '') + '';
-                            const statusTrim = rawStatus.trim();
-                            return getStatusBadge(statusTrim);
-                        }
+                         data: function (row) {
+                            return row.status ?? row.Status ?? row.fileStatus ?? '';
+                        },
+                        render: function (data) {
+                            return getStatusBadge((data ?? '').toString().trim());
+                        },
+                        name: 'status'
                     },
                     {
                         data: "id",
@@ -398,38 +357,119 @@
                         render: function (data, type, row) {
                             const rawStatus = (row.status ?? row.Status ?? '') + '';
                             const statusTrim = rawStatus.trim();
-                            const statusForButtons = statusTrim
-                                ? statusTrim.charAt(0).toUpperCase() + statusTrim.slice(1).toLowerCase()
-                                : '';
+                            const statusForButtons = statusTrim ? statusTrim.charAt(0).toUpperCase() + statusTrim.slice(1).toLowerCase() : '';
                             return generateActionButtons(data, statusForButtons);
                         }
                     }
-                ]
+                ],
+                responsive: true,
+                autoWidth: false,
+                lengthMenu: [10, 25, 50, 100],
+                pageLength: 10,
+                language: {
+                    emptyTable: "No files. Choose filters and click 'Apply Filters' to load files."
+                }
             });
+        }
 
-            // Filters
-            $('#applyFilterBtn').on('click', () => dataTable.ajax.reload());
-            $('#resetFilterBtn').on('click', () => {
-                $('#statusFilter').val('Pending').trigger('change');
-                $('#startDate, #endDate, #fileName').val('');
-                $('#byFileNameToggle, #byBranchNameToggle').prop('checked', false).trigger('change');
-                $('#BranchIdFilter').val('').trigger('change');
-                dataTable.ajax.reload();
-            });
+        // Toggle UI for optional filter sections
+        $('#byFileNameToggle').on('change', function () {
+            if ($(this).is(':checked')) $('#fileNameFilterSection').slideDown();
+            else { $('#fileNameFilterSection').slideUp().find('input').val(''); }
+        });
+        $('#byBranchNameToggle').on('change', function () {
+            if ($(this).is(':checked')) $('#branchNameFilterSection').slideDown();
+            else { $('#branchNameFilterSection').slideUp().find('select').val('').trigger('change'); }
+        });
 
-            $('#closeDetailsBtn').on('click', () => $('#detailsContainer').slideUp());
+        // Apply Filters button: create or reload the DataTable
+        $('#applyFilterBtn').on('click', function () {
+            if (!dataTable) createDataTable();
+            else dataTable.ajax.reload();
+        });
 
-            $('#myDataTable tbody').on('click', '.action-btn', function (e) {
-                e.preventDefault();
-                const $btn = $(this);
-                if ($btn.hasClass('disabled')) return;
-                const action = $btn.data('action');
-                const id = $btn.data('id');
-                if (action === 'details') viewDetails(id);
-                else loadActionForm(id, action);
-            });
+        // Reset filters
+        $('#resetFilterBtn').on('click', function () {
+            // MODIFICATION HERE: Set status filter to the empty string value of the placeholder.
+            $('#statusFilter').val('').trigger('change');
+            $('#startDate, #endDate').val('');
+            $('#fileName').val('');
+            $('#byFileNameToggle, #byBranchNameToggle').prop('checked', false);
+            // Trigger change events to hide the sections
+            $('#byFileNameToggle, #byBranchNameToggle').trigger('change');
+            $('#BranchIdFilter').val('').trigger('change');
+            if (dataTable) dataTable.ajax.reload();
+        });
 
-            $('.select2').select2();
-        }(jQuery));
-    </script>
+        // ---------------------------
+        // Details loader: show spinner, reveal card only after loaded
+        // ---------------------------
+        function viewDetails(fileId) {
+            const detailsContainer = $('#detailsContainer');
+            const detailsBody = $('#detailsBody');
+            const detailsHeader = $('#detailsHeader');
+
+            // --- THIS IS THE NEW, IMPROVED LOGIC ---
+
+            // 1. Prepare the container but KEEP IT HIDDEN.
+            detailsHeader.text(`File Details: ${fileId}`);
+            detailsBody.html('<div class="text-center p-4"><div class="spinner-border text-primary"></div></div>');
+
+            // 2. Make the AJAX call to get the content.
+            const url = `@Url.Action("GetextractedFileDetails", "FileValidation")?id=${fileId}`;
+
+            $.get(url)
+                .done(function (response) {
+                    // 3. SUCCESS: The content is now loaded. Inject it into the body.
+                    detailsBody.html(response);
+
+                    // 4. NOW, make the container visible with a smooth animation.
+                    detailsContainer.slideDown();
+
+                    // 5. Scroll the user to the details view.
+                    document.getElementById('detailsContainer').scrollIntoView({ behavior: 'smooth' });
+                })
+                .fail(function (xhr) {
+                    // If it fails, we can still show the panel but with an error message.
+                    detailsBody.html(`<div class="alert alert-danger">Error loading details. Status: ${xhr.statusText}</div>`);
+                    detailsContainer.slideDown();
+                });
+        }
+
+        // Delegate action button clicks
+        // Note: bind to document if table not present at ready or created later
+        $(document).on('click', '#myDataTable tbody .action-btn', function (e) {
+            e.preventDefault();
+            const $btn = $(this);
+            if ($btn.hasClass('disabled')) return;
+            const action = $btn.data('action');
+            const id = $btn.data('id');
+            if (action === 'details') viewDetails(id);
+            else loadActionForm(id, action);
+        });
+
+        // Close details
+        $('#closeDetailsBtn').on('click', function () {
+            $('#detailsContainer').slideUp();
+        });
+
+        // Initialize select2 if available
+        $(document).ready(function () {
+            if ($.fn.select2 && $('#BranchIdFilter').length) {
+                $('#BranchIdFilter').select2({ width: '100%' });
+            }
+            if ($.fn.select2 && $('#statusFilter').length) {
+                $('#statusFilter').select2({ width: '100%' });
+            }
+
+            // Respect toggles initial state
+            if ($('#byFileNameToggle').is(':checked')) $('#fileNameFilterSection').show();
+            if ($('#byBranchNameToggle').is(':checked')) $('#branchNameFilterSection').show();
+
+            // REMOVED: This line is no longer needed as the default is now the empty placeholder
+            // $('#statusFilter').val(initialStatus).trigger('change');
+        });
+
+    }(jQuery));
+</script>
 }

@@ -270,14 +270,19 @@ using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.ManualDailycollection;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using static System.Net.WebRequestMethods;
 
 namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Service
 {
@@ -314,11 +319,7 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         //    );
         //}
 
-        public async Task<ApiResponse<ServiceResponse<FileUploadResponse>>> UploadManualEntryFileAsync(
-        HttpPostedFileBase file,
-        string branch,
-        string collectorId,
-        string userId)
+        public async Task<ApiResponse<ServiceResponse<FileUploadResponse>>> UploadManualEntryFileAsync(HttpPostedFileBase file,string branch,string collectorId,string userId,string AccountingDate)
         {
             try
             {
@@ -332,8 +333,9 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
                     };
                 }
 
+                ///******* when Accounting date is updated on the endpoint add it to the endpoint beign sent here dont forget man****
                
-                var endpoint = $"{APICallHelper.ManualEntryUpload}?collectorId={collectorId}&branchId={branch}&userId={userId}";
+                var endpoint = $"{APICallHelper.ManualEntryUpload}?collectorId={collectorId}&branchId={branch}&userId={userId}&accountingDate={AccountingDate}";
                 var result = await _apiHelper.UploadBulkCashPaymentFileAsync<ServiceResponse<FileUploadResponse>>( file, endpoint);
 
              
@@ -509,49 +511,95 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         }
 
 
+        //public async Task<FileDetailsResponse> GetExtractedDetailsAsync(string fileUploadId)
+        //{
+        //    if (string.IsNullOrWhiteSpace(fileUploadId))
+        //        return null;
+
+        //    // Build URL safely
+        //    var safeId = Uri.EscapeDataString(fileUploadId);
+        //    var endpoint = $"{APICallHelper.getextracteddetails.TrimEnd('/')}/{safeId}";
+
+        //    // Expect an array under "data"
+        //    var resp = await _apiHelper.GetAsync<ResponseObject<List<TransactionDetail>>>(endpoint);
+
+        //    if (resp == null || !resp.IsSuccess || resp.ApiResponseData?.Data == null)
+        //    {
+        //        return new FileDetailsResponse
+        //        {
+        //            FileUploadId = fileUploadId,
+        //            Details = new List<TransactionDetail>()
+        //        };
+        //    }
+
+        //    var details = resp.ApiResponseData.Data;
+
+        //    // Compute summary fields from details (best-effort)
+        //    var totalAmount = details.Sum(d => d.Amount);
+        //    var totalMember = details.Count;
+
+        //    var first = details.FirstOrDefault();
+        //    var collectorName = first?.DailyCollectorName ?? string.Empty;
+        //    var branchName = first?.MemberBranchName ?? string.Empty;
+
+        //    var model = new FileDetailsResponse
+        //    {
+        //        FileUploadId = fileUploadId,
+        //        CollectorName = collectorName,
+        //        BranchName = branchName,
+        //        TotalAmount = totalAmount,
+        //        TotalMember = totalMember,
+        //        Details = details,
+
+        //    };
+
+        //    return model;
+        //}
+
         public async Task<FileDetailsResponse> GetExtractedDetailsAsync(string fileUploadId)
         {
             if (string.IsNullOrWhiteSpace(fileUploadId))
                 return null;
 
-            // Build URL safely
-            var safeId = Uri.EscapeDataString(fileUploadId);
-            var endpoint = $"{APICallHelper.getextracteddetails.TrimEnd('/')}/{safeId}";
-
-            // Expect an array under "data"
-            var resp = await _apiHelper.GetAsync<ResponseObject<List<TransactionDetail>>>(endpoint);
-
-            if (resp == null || !resp.IsSuccess || resp.ApiResponseData?.Data == null)
+            try
             {
-                return new FileDetailsResponse
+                var endpoint = $"{APICallHelper.getextracteddetails}/{Uri.EscapeDataString(fileUploadId)}";
+
+                // We correctly expect a List<TransactionDetail> from the API.
+                var response = await _apiHelper.GetAsync<ResponseObject<List<TransactionDetail>>>(endpoint);
+
+                // Check for a successful response and that the list contains items.
+                // Because of our [JsonProperty] fix, the deserialization will now work correctly.
+                if (response.IsSuccess && response.ApiResponseData?.Data != null && response.ApiResponseData.Data.Any())
                 {
-                    FileUploadId = fileUploadId,
-                    Details = new List<TransactionDetail>()
-                };
+                    var detailsList = response.ApiResponseData.Data;
+
+                    // The list is now correctly populated. We can build the summary.
+                    var firstDetail = detailsList.First();
+
+                    var summary = new FileDetailsResponse
+                    {
+                        FileUploadId = firstDetail.ManualEntryDailyCollectorId,
+                        CollectorName = firstDetail.DailyCollectorName,
+                        BranchName = firstDetail.MemberBranchName,
+                        UploadedBy = firstDetail.UploadBy,
+                        //status = firstDetail.ProcessingStatus,
+                        TotalMember = detailsList.Count,
+                        TotalAmount = detailsList.Sum(d => d.Amount),
+                        Details = detailsList
+                    };
+
+                    return summary;
+                }
+
+                // If the API call fails or the list is empty, return null.
+                return null;
             }
-
-            var details = resp.ApiResponseData.Data;
-
-            // Compute summary fields from details (best-effort)
-            var totalAmount = details.Sum(d => d.Amount);
-            var totalMember = details.Count;
-          
-            var first = details.FirstOrDefault();
-            var collectorName = first?.DailyCollectorName ?? string.Empty;
-            var branchName = first?.MemberBranchName ?? string.Empty;
-
-            var model = new FileDetailsResponse
+            catch (Exception ex)
             {
-                FileUploadId = fileUploadId,
-                CollectorName = collectorName,
-                BranchName = branchName,
-                TotalAmount = totalAmount,
-                TotalMember = totalMember,
-                Details = details,
-                
-            };
-
-            return model;
+                // Log the exception for debugging.
+                return null;
+            }
         }
 
         #endregion
@@ -790,5 +838,41 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         #endregion
 
         #endregion
+        ////////// ***************************** get extracted details data trable ************************
+
+        public async Task<CustomDataTable> GetManualEntryDetailsForDataTableAsync(GetManualEntryDailyCollectionDetailDataTableQuery query)
+        {
+            try
+            {
+                var url = APICallHelper.GetManualEntryCollectorDetailsDataTable; 
+                var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(url, query);
+
+                if (response.IsSuccess && response.ApiResponseData != null)
+                {
+                    return response.ApiResponseData.Data;
+                }
+
+                return new CustomDataTable(
+                    draw: Convert.ToInt32(query.Options.draw),
+                    recordsTotal: 0,
+                    recordsFiltered: 0,
+                    data: new List<object>(),
+                    dataTableOptions: query.Options
+                );
+            }
+            catch (Exception)
+            {
+                return new CustomDataTable(
+                    draw: Convert.ToInt32(query.Options.draw),
+                    recordsTotal: 0,
+                    recordsFiltered: 0,
+                    data: new List<object>(),
+                    dataTableOptions: query.Options
+                );
+            }
+        }
+
+
+
     }
 }

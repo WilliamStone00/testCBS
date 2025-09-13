@@ -3,6 +3,8 @@
     Func<decimal, string> formatCurrency = amount => amount.ToString("N2");
 }
 
+@*add accounting day*@
+
 <div class="card bg-light border-primary mb-4">
     <div class="card-body">
         <div class="row">
@@ -47,6 +49,7 @@ $(function () {
             { data: 'memberName' },
             { data: 'accountNumber' },
             { data: 'memberBranchName' },
+            // add accounting day here 
             { data: 'amount', className: 'text-end', render: $.fn.dataTable.render.number(',', '.', 2) }
         ],
         paging: true,

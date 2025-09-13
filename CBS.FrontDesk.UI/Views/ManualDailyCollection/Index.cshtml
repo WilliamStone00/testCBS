@@ -275,9 +275,9 @@
             const totalAmount = data.TotalAmount ?? data.totalAmount ?? 0;
 
             return `
-        <fieldset class="fieldset-custom">
-            <legend class="legend-custom text-success">Extraction Successful: ${fileUploadId}</legend>
+        <fieldset class="fieldset-custom">            
             <div class="row g-2">
+            <h4 class="legend-custom text-info">Extraction Successful: ${fileUploadId}</h4>
                 <div class="col-6 col-md-3"><div class="card card-border-shadow-warning h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Collector Name</p><h6 class="ms-1 mb-0">${collectorName}</h6></div></div></div>
                 <div class="col-6 col-md-3"><div class="card card-border-shadow-info h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Branch</p><h6 class="ms-1 mb-0">${branchName}</h6></div></div></div>
                 <div class="col-6 col-md-3"><div class="card card-border-shadow-success h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Members</p><h6 class="ms-1 mb-0">${totalMember}</h6></div></div></div>
@@ -425,147 +425,262 @@
             });
         }
 
-        // -------------------------------
-        // NEW RESET FUNCTIONS (optional)
-        // -------------------------------
-        function resetFirstPreview() {
-            // hide & clear first preview area (previewDetailsTable)
-            $('#firstPreviewContainer').slideUp(function () { $(this).html(''); });
-            if ($.fn.DataTable.isDataTable('#previewDetailsTable')) {
-                try { $('#previewDetailsTable').DataTable().destroy(); } catch (e) { /* ignore */ }
-                $('#previewDetailsTable').empty();
-            }
-        }
-
-        function resetExtractedPreview() {
-            // hide & clear second preview area (extractedDetailsTable)
-            $('#secondPreviewContainer').slideUp(function () { $(this).html(''); });
-            if ($.fn.DataTable.isDataTable('#extractedDetailsTable')) {
-                try { $('#extractedDetailsTable').DataTable().destroy(); } catch (e) { /* ignore */ }
-                $('#extractedDetailsTable').empty();
-            }
-        }
-
-        function resetAllPreviews() {
-            resetFirstPreview();
-            resetExtractedPreview();
-            currentFileUploadId = null;
-        }
-
+      //acconting day script function
        
-        //  reset functionalities
- 
-        function resetInitialPreview() {
-            $('#uploadResultContainer').slideUp(function () {
-                $(this).html('');
+        (function () {
+            const dateDisplay = document.getElementById("SelectedDateDisplay");
+            const hiddenField = document.getElementById("AccountingDate");
+
+            // --- 1) Set max = today so future dates are blocked in the picker ---
+            const today = new Date();
+            const isoToday = today.toISOString().split('T')[0]; // yyyy-MM-dd
+            dateDisplay.setAttribute('max', isoToday);
+
+            // --- 2) If hidden field already has a formatted value (dd-MM-yyyy HH:mm:ss),
+            // convert it to yyyy-MM-dd and populate the date picker for UX ---
+            (function initFromHidden() {
+                const existing = hiddenField.value;
+                if (!existing) return;
+
+                // Try parse "dd-MM-yyyy HH:mm:ss" to a Date
+                // Accept also if user previously saved "dd-MM-yyyy" only
+                let dt = null;
+                const fullFormat = /^(\d{2})-(\d{2})-(\d{4})\s+(\d{2}):(\d{2}):(\d{2})$/;
+                const shortFormat = /^(\d{2})-(\d{2})-(\d{4})$/;
+
+                if (fullFormat.test(existing)) {
+                    const m = existing.match(fullFormat);
+                    const d = parseInt(m[1], 10), mo = parseInt(m[2], 10), y = parseInt(m[3], 10);
+                    dt = new Date(y, mo - 1, d);
+                } else if (shortFormat.test(existing)) {
+                    const m = existing.match(shortFormat);
+                    const d = parseInt(m[1], 10), mo = parseInt(m[2], 10), y = parseInt(m[3], 10);
+                    dt = new Date(y, mo - 1, d);
+                }
+
+                if (dt) {
+                    // Only set if not future
+                    const now = new Date();
+                    now.setHours(0, 0, 0, 0);
+                    dt.setHours(0, 0, 0, 0);
+                    if (dt > now) {
+                        // invalid stored value — clear both
+                        hiddenField.value = "";
+                        dateDisplay.value = "";
+                        return;
+                    }
+                    // set visible date in ISO yyyy-mm-dd so calendar shows it
+                    const iso = dt.toISOString().split('T')[0];
+                    dateDisplay.value = iso;
+                }
+            })();
+
+            // --- 3) When user picks a date, validate and set formatted hidden value ---
+            dateDisplay.addEventListener('change', function () {
+                const val = dateDisplay.value; // yyyy-MM-dd
+
+                if (!val) {
+                    hiddenField.value = ""; // clear
+                    return;
+                }
+
+                const selected = new Date(val + "T00:00:00"); // local midnight
+                const now = new Date();
+                now.setHours(0, 0, 0, 0);
+
+                // Block future dates
+                if (selected > now) {
+                    appalert('Date cannot be in the future.', 4, 1);
+                    dateDisplay.value = "";         // clear UI
+                    hiddenField.value = "";         // clear posted value
+                    return;
+                }
+
+                // Build dd-MM-yyyy 00:00:00
+                const dd = String(selected.getDate()).padStart(2, '0');
+                const MM = String(selected.getMonth() + 1).padStart(2, '0');
+                const yyyy = selected.getFullYear();
+                const formatted = `${dd}-${MM}-${yyyy} 00:00:00`;
+
+                // Reject default .NET date just in case
+                if (formatted === "01-01-0001 00:00:00") {
+                    appalert('Invalid date selection.', 4, 1);
+                    dateDisplay.value = "";
+                    hiddenField.value = "";
+                    return;
+                }
+
+                // All good: set hidden field (controller will receive this)
+                hiddenField.value = formatted;
             });
 
-            if ($.fn.DataTable.isDataTable('#previewDetailsTable')) {
-                try { $('#previewDetailsTable').DataTable().destroy(); } catch(e) { console.warn(e); }
-                $('#previewDetailsTable').empty();
-            }
-            if ($.fn.DataTable.isDataTable('#extractedDetailsTable')) {
-                try { $('#extractedDetailsTable').DataTable().destroy(); } catch(e) { console.warn(e); }
-                $('#extractedDetailsTable').empty();
-            }
-            currentFileUploadId = null;
-        }
-
-        // -------------------------------
-        // Robust delete handler (updated)
-        // -------------------------------
-        // This function will:
-        // 1) confirm via alertify (or fallback to native confirm)
-        // 2) send an AJAX GET to /ManualDailyCollection/Delete
-        // 3) send both KEY and fileUploadId in query to maximize compatibility with your controller signatures
-        // 4) call resetInitialPreview() on success
-        function confirmDialog(title, message, onOk, onCancel) {
-            // Try common alertify signatures; fallback to window.confirm if necessary
-            if (window.alertify && typeof alertify.confirm === 'function') {
-                try {
-                    // Newer signature: alertify.confirm(title, message, onok, oncancel)
-                    alertify.confirm(title, message, function () {
-                        if (typeof onOk === 'function') onOk();
-                    }, function () {
-                        if (typeof onCancel === 'function') onCancel();
-                    }).set('labels', { ok: 'Yes', cancel: 'No' });
-                    return;
-                } catch (ex) {
-                    try {
-                        // Older signature: alertify.confirm(message, onok, oncancel)
-                        alertify.confirm(message, function () {
-                            if (typeof onOk === 'function') onOk();
-                        }, function () {
-                            if (typeof onCancel === 'function') onCancel();
-                        });
-                        return;
-                    } catch (ex2) {
-                        console.warn('alertify confirm failed, falling back to window.confirm', ex, ex2);
+            // --- 4) Extra safety: ensure hidden field is set just before any form POST (AJAX or normal) ---
+            // If you have multiple forms, scope this to the specific form (change '#yourFormId')
+            const forms = document.querySelectorAll('form');
+            forms.forEach(function (f) {
+                f.addEventListener('submit', function (e) {
+                    // If visible has a value but hidden is empty (unlikely), sync it
+                    if (dateDisplay.value && !hiddenField.value) {
+                        // trigger change logic to populate
+                        const event = new Event('change');
+                        dateDisplay.dispatchEvent(event);
                     }
-                }
-            }
 
-            // fallback
-            if (window.confirm(message)) {
-                if (typeof onOk === 'function') onOk();
-            } else {
-                if (typeof onCancel === 'function') onCancel();
-            }
-        }
+                    // final server-side guard: prevent submit if hidden still empty
+                    // (optionally, you can allow empty and let server validate required)
+                    if (!hiddenField.value) {
+                        // prevent form submission and show message
+                        // (If you want to allow empty, comment out the next lines.)
+                        e.preventDefault();
+                        appalert('Please select a valid date (not in the future).', 2, 1);
+                        return false;
+                    }
+                });
+            });
 
-        function deleteUploadedFile(e) {
-            // prevent default when called as a click event
-            if (e && e.preventDefault) e.preventDefault();
+        })();
+  
+    // -------------------------------
+    // NEW RESET FUNCTIONS (optional)
+    // -------------------------------
+    function resetFirstPreview() {
+    // hide & clear first preview area (previewDetailsTable)
+    $('#firstPreviewContainer').slideUp(function () { $(this).html(''); });
+    if ($.fn.DataTable.isDataTable('#previewDetailsTable')) {
+    try { $('#previewDetailsTable').DataTable().destroy(); } catch (e) { /* ignore */ }
+    $('#previewDetailsTable').empty();
+    }
+    }
 
-            console.log('deleteUploadedFile: invoked, currentFileUploadId=', currentFileUploadId);
+    function resetExtractedPreview() {
+    // hide & clear second preview area (extractedDetailsTable)
+    $('#secondPreviewContainer').slideUp(function () { $(this).html(''); });
+    if ($.fn.DataTable.isDataTable('#extractedDetailsTable')) {
+    try { $('#extractedDetailsTable').DataTable().destroy(); } catch (e) { /* ignore */ }
+    $('#extractedDetailsTable').empty();
+    }
+    }
 
-            if (!currentFileUploadId) {
-                appalert('No uploaded file to delete.', 3, 1);
-                return;
-            }
+    function resetAllPreviews() {
+    resetFirstPreview();
+    resetExtractedPreview();
+    currentFileUploadId = null;
+    }
 
-            // Use the robust confirmDialog wrapper
-            confirmDialog('Confirm Delete', 'This will permanently delete the uploaded file. Continue?',
-                function onOk() {
-                    console.log('deleteUploadedFile: user confirmed. Sending AJAX request.');
 
-                    const token = $('input[name="__RequestVerificationToken"]').val();
+    //  reset functionalities
 
-                    $.ajax({
-                        url: '/ManualDailyCollection/Delete',
-                        type: 'GET', // keep GET to match current controller; change to POST if you update controller
-                        data: {
-                            // supply both parameter names so controller binding works with either signature
-                            KEY: currentFileUploadId,
-                            fileUploadId: currentFileUploadId
-                        },
-                        headers: token ? { 'RequestVerificationToken': token } : {},
-                        success: function (response) {
-                            console.log('deleteUploadedFile: ajax success response', response);
-                            if (response && response.success) {
-                                appalert(response.message || 'File deleted.', 1, 1);
-                                // reset the preview(s) the same way as original behaviour
-                                resetInitialPreview();
-                            } else {
-                                appalert((response && response.message) || 'Could not delete file.', 4, 1);
-                            }
-                        },
-                        error: function (xhr, status, err) {
-                            console.error('deleteUploadedFile: ajax error', status, err, xhr);
-                            appalert('Error deleting file.', 4, 1);
-                        }
-                    });
-                },
-                function onCancel() {
-                    console.log('deleteUploadedFile: user cancelled.');
-                    appalert('Delete cancelled.', 3, 1);
-                }
-            );
-        }
+    function resetInitialPreview() {
+    $('#uploadResultContainer').slideUp(function () {
+    $(this).html('');
+    });
 
-         $(document).ready(initialize);
+    if ($.fn.DataTable.isDataTable('#previewDetailsTable')) {
+    try { $('#previewDetailsTable').DataTable().destroy(); } catch(e) { console.warn(e); }
+    $('#previewDetailsTable').empty();
+    }
+    if ($.fn.DataTable.isDataTable('#extractedDetailsTable')) {
+    try { $('#extractedDetailsTable').DataTable().destroy(); } catch(e) { console.warn(e); }
+    $('#extractedDetailsTable').empty();
+    }
+    currentFileUploadId = null;
+    }
 
-    }(jQuery));
+    // -------------------------------
+    // Robust delete handler (updated)
+    // -------------------------------
+    // This function will:
+    // 1) confirm via alertify (or fallback to native confirm)
+    // 2) send an AJAX GET to /ManualDailyCollection/Delete
+    // 3) send both KEY and fileUploadId in query to maximize compatibility with your controller signatures
+    // 4) call resetInitialPreview() on success
+    function confirmDialog(title, message, onOk, onCancel) {
+    // Try common alertify signatures; fallback to window.confirm if necessary
+    if (window.alertify && typeof alertify.confirm === 'function') {
+    try {
+    // Newer signature: alertify.confirm(title, message, onok, oncancel)
+    alertify.confirm(title, message, function () {
+    if (typeof onOk === 'function') onOk();
+    }, function () {
+    if (typeof onCancel === 'function') onCancel();
+    }).set('labels', { ok: 'Yes', cancel: 'No' });
+    return;
+    } catch (ex) {
+    try {
+    // Older signature: alertify.confirm(message, onok, oncancel)
+    alertify.confirm(message, function () {
+    if (typeof onOk === 'function') onOk();
+    }, function () {
+    if (typeof onCancel === 'function') onCancel();
+    });
+    return;
+    } catch (ex2) {
+    console.warn('alertify confirm failed, falling back to window.confirm', ex, ex2);
+    }
+    }
+    }
+
+    // fallback
+    if (window.confirm(message)) {
+    if (typeof onOk === 'function') onOk();
+    } else {
+    if (typeof onCancel === 'function') onCancel();
+    }
+    }
+
+    function deleteUploadedFile(e) {
+    // prevent default when called as a click event
+    if (e && e.preventDefault) e.preventDefault();
+
+    console.log('deleteUploadedFile: invoked, currentFileUploadId=', currentFileUploadId);
+
+    if (!currentFileUploadId) {
+    appalert('No uploaded file to delete.', 3, 1);
+    return;
+    }
+
+    // Use the robust confirmDialog wrapper
+    confirmDialog('Confirm Delete', 'This will permanently delete the uploaded file. Continue?',
+    function onOk() {
+    console.log('deleteUploadedFile: user confirmed. Sending AJAX request.');
+
+    const token = $('input[name="__RequestVerificationToken"]').val();
+
+    $.ajax({
+    url: '/ManualDailyCollection/Delete',
+    type: 'GET', // keep GET to match current controller; change to POST if you update controller
+    data: {
+    // supply both parameter names so controller binding works with either signature
+    KEY: currentFileUploadId,
+    fileUploadId: currentFileUploadId
+    },
+    headers: token ? { 'RequestVerificationToken': token } : {},
+    success: function (response) {
+    console.log('deleteUploadedFile: ajax success response', response);
+    if (response && response.success) {
+    appalert(response.message || 'File deleted.', 1, 1);
+    // reset the preview(s) the same way as original behaviour
+    resetInitialPreview();
+    } else {
+    appalert((response && response.message) || 'Could not delete file.', 4, 1);
+    }
+    },
+    error: function (xhr, status, err) {
+    console.error('deleteUploadedFile: ajax error', status, err, xhr);
+    appalert('Error deleting file.', 4, 1);
+    }
+    });
+    },
+    function onCancel() {
+    console.log('deleteUploadedFile: user cancelled.');
+    appalert('Delete cancelled.', 3, 1);
+    }
+    );
+    }
+
+    $(document).ready(initialize);
+
+}(jQuery));
     </script>
 
 }

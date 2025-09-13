@@ -2360,7 +2360,6 @@
     <Compile Include="Helper\ReportLogoHelper.cs" />
     <Compile Include="Helper\SalarySheetExcelExporter.cs" />
     <Compile Include="Models\Class1.cs" />
-
     <Content Include="aspnet_client\system_web\4_0_30319\crystalreportviewers13\ActiveXControls\PrintControl.cab" />
     <Content Include="aspnet_client\system_web\4_0_30319\crystalreportviewers13\ActiveXControls\PrintControl.cab" />
     <Content Include="aspnet_client\system_web\4_0_30319\crystalreportviewers13\ActiveXControls\PrintControl_res_cs.cab" />
@@ -3498,10 +3497,8 @@
     <Content Include="bin\System.Security.Cryptography.X509Certificates.dll" />
     <Content Include="bin\System.Text.RegularExpressions.dll" />
     <Content Include="FIx\ManualJE.txt" />
-
     <Content Include="AppFiles\Images\UpdatedLogo\WaterMark.png" />
     <Content Include="AppFiles\Images\UpdatedLogo\Logo.png" />
-
     <Content Include="Scripts\Js\AccountingReconciliation\AccountReconciliation.js" />
     <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MemberAdjustmentConsole.js" />
     <Compile Include="WAF\Middleware\Core\StaticPathHelper.cs" />
@@ -9474,7 +9471,6 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>AccountingConfig_CreateFinancialReferenceCode.Designer.cs</LastGenOutput>
     </Content>
-
     <Content Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ChequeManagements.designer.cs</LastGenOutput>
@@ -9484,12 +9480,10 @@
       <LastGenOutput>ChequeManagements.fr.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\Payment\MainReportOld.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>MainReportOld.cs</LastGenOutput>
     </EmbeddedResource>
-
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -10836,15 +10830,13 @@
     <Content Include="Views\AccountingReconciliation\GetReconciliationData.cshtml" />
     <Content Include="Views\AccountingReconciliation\Index.cshtml" />
     <Content Include="Views\AccountingReconciliation\_ReconciliationData.cshtml" />
-
     <Content Include="Views\AccountingReconciliation\_SearchOption.cshtml" />
     <Content Include="Views\FileValidation\Index.cshtml" />
     <Content Include="Views\FileValidation\_ActionForm.cshtml" />
     <Content Include="Views\FileValidation\_FileDetails.cshtml" />
-
     <Content Include="Views\AccountingReconciliation\GetReconciliationData.cshtml" />
     <Content Include="Views\Bank\_WatermarkUploader.cshtml" />
-
+    <Content Include="Views\FileValidation\LoadDetailsDataTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
