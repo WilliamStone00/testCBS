@@ -18,8 +18,8 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         // GET: Migration
         private readonly MemberAccountJob _services;
         private readonly SavingProductServices _savingProductServices;
-        private readonly IBranchServices _branchServices;
-        public MigrationController(MemberAccountJob services, SavingProductServices savingProduct = null, IBranchServices branchServices = null)
+        private readonly BranchServices _branchServices;
+        public MigrationController(MemberAccountJob services, SavingProductServices savingProduct = null, BranchServices branchServices = null)
         {
             _services = services;
             _savingProductServices = savingProduct;
