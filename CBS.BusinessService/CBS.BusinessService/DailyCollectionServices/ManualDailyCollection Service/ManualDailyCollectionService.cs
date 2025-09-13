@@ -270,14 +270,19 @@ using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.ManualDailycollection;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using static System.Net.WebRequestMethods;
 
 namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Service
 {
@@ -314,11 +319,7 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         //    );
         //}
 
-        public async Task<ApiResponse<ServiceResponse<FileUploadResponse>>> UploadManualEntryFileAsync(
-        HttpPostedFileBase file,
-        string branch,
-        string collectorId,
-        string userId)
+        public async Task<ApiResponse<ServiceResponse<FileUploadResponse>>> UploadManualEntryFileAsync(HttpPostedFileBase file,string branch,string collectorId,string userId,string AccountingDate)
         {
             try
             {
@@ -332,8 +333,9 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
                     };
                 }
 
+                ///******* when Accounting date is updated on the endpoint add it to the endpoint beign sent here dont forget man****
                
-                var endpoint = $"{APICallHelper.ManualEntryUpload}?collectorId={collectorId}&branchId={branch}&userId={userId}";
+                var endpoint = $"{APICallHelper.ManualEntryUpload}?collectorId={collectorId}&branchId={branch}&userId={userId}&accountingDate={AccountingDate}";
                 var result = await _apiHelper.UploadBulkCashPaymentFileAsync<ServiceResponse<FileUploadResponse>>( file, endpoint);
 
              
@@ -355,51 +357,51 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         /// <summary>
         /// Calls the endpoint to process/extract a recently uploaded file.
         /// </summary>
-    public async Task<ExecutionMessages> ExtractFileAsync(string fileUploadId){
-    try
-    {
-        var url = APICallHelper.ExtractUploadedFile;
-        var payload = new { fileUploadId = fileUploadId };
-
-         var response = await _apiHelper.PostAsync<ServiceResponse<FileDetailsResponse>>(url, payload);
-
-        if (response?.IsSuccess == true && response.ApiResponseData?.Data != null)
+        public async Task<ExecutionMessages> ExtractFileAsync(string fileUploadId){
+        try
         {
-            var data = response.ApiResponseData.Data;
+            var url = APICallHelper.ExtractUploadedFile;
+            var payload = new { fileUploadId = fileUploadId };
 
-            // do whatever you need with 'data' (e.g. save, render, map to viewmodel)
-            GetExecutionMessages(
-                data,
-                true,
-                fileUploadId,
-                MessagesResults.Success,
-                ExecutionProcessOption.DefaultSuccessdMessages,
-                "Success",
-                null,
-                "File extracted successfully."
-            );
+             var response = await _apiHelper.PostAsync<ServiceResponse<FileDetailsResponse>>(url, payload);
+
+            if (response?.IsSuccess == true && response.ApiResponseData?.Data != null)
+            {
+                var data = response.ApiResponseData.Data;
+
+                // do whatever you need with 'data' (e.g. save, render, map to viewmodel)
+                GetExecutionMessages(
+                    data,
+                    true,
+                    fileUploadId,
+                    MessagesResults.Success,
+                    ExecutionProcessOption.DefaultSuccessdMessages,
+                    "Success",
+                    null,
+                    "File extracted successfully."
+                );
+            }
+            else
+            {
+                GetExecutionMessages(
+                    null,
+                    false,
+                    fileUploadId,
+                    MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages,
+                    "Failed",
+                    null,
+                    response?.ApiResponseData?.Message ?? response?.Message ?? "Extraction failed."
+                );
+            }
         }
-        else
+        catch (Exception ex)
         {
-            GetExecutionMessages(
-                null,
-                false,
-                fileUploadId,
-                MessagesResults.Failed,
-                ExecutionProcessOption.DefaultFailedMessages,
-                "Failed",
-                null,
-                response?.ApiResponseData?.Message ?? response?.Message ?? "Extraction failed."
-            );
+            GetExecutionMessages(null, false, "Extract File", MessagesResults.Error, ExecutionProcessOption.TryCatch, "Error", ex, ex.Message);
         }
-    }
-    catch (Exception ex)
-    {
-        GetExecutionMessages(null, false, "Extract File", MessagesResults.Error, ExecutionProcessOption.TryCatch, "Error", ex, ex.Message);
-    }
 
-    return ExecutionMessage;
-}
+        return ExecutionMessage;
+    }
 
 
         #endregion
@@ -509,48 +511,95 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         }
 
 
+        //public async Task<FileDetailsResponse> GetExtractedDetailsAsync(string fileUploadId)
+        //{
+        //    if (string.IsNullOrWhiteSpace(fileUploadId))
+        //        return null;
+
+        //    // Build URL safely
+        //    var safeId = Uri.EscapeDataString(fileUploadId);
+        //    var endpoint = $"{APICallHelper.getextracteddetails.TrimEnd('/')}/{safeId}";
+
+        //    // Expect an array under "data"
+        //    var resp = await _apiHelper.GetAsync<ResponseObject<List<TransactionDetail>>>(endpoint);
+
+        //    if (resp == null || !resp.IsSuccess || resp.ApiResponseData?.Data == null)
+        //    {
+        //        return new FileDetailsResponse
+        //        {
+        //            FileUploadId = fileUploadId,
+        //            Details = new List<TransactionDetail>()
+        //        };
+        //    }
+
+        //    var details = resp.ApiResponseData.Data;
+
+        //    // Compute summary fields from details (best-effort)
+        //    var totalAmount = details.Sum(d => d.Amount);
+        //    var totalMember = details.Count;
+
+        //    var first = details.FirstOrDefault();
+        //    var collectorName = first?.DailyCollectorName ?? string.Empty;
+        //    var branchName = first?.MemberBranchName ?? string.Empty;
+
+        //    var model = new FileDetailsResponse
+        //    {
+        //        FileUploadId = fileUploadId,
+        //        CollectorName = collectorName,
+        //        BranchName = branchName,
+        //        TotalAmount = totalAmount,
+        //        TotalMember = totalMember,
+        //        Details = details,
+
+        //    };
+
+        //    return model;
+        //}
+
         public async Task<FileDetailsResponse> GetExtractedDetailsAsync(string fileUploadId)
         {
             if (string.IsNullOrWhiteSpace(fileUploadId))
                 return null;
 
-            // Build URL safely
-            var safeId = Uri.EscapeDataString(fileUploadId);
-            var endpoint = $"{APICallHelper.getextracteddetails.TrimEnd('/')}/{safeId}";
-
-            // Expect an array under "data"
-            var resp = await _apiHelper.GetAsync<ResponseObject<List<TransactionDetail>>>(endpoint);
-
-            if (resp == null || !resp.IsSuccess || resp.ApiResponseData?.Data == null)
+            try
             {
-                return new FileDetailsResponse
+                var endpoint = $"{APICallHelper.getextracteddetails}/{Uri.EscapeDataString(fileUploadId)}";
+
+                // We correctly expect a List<TransactionDetail> from the API.
+                var response = await _apiHelper.GetAsync<ResponseObject<List<TransactionDetail>>>(endpoint);
+
+                // Check for a successful response and that the list contains items.
+                // Because of our [JsonProperty] fix, the deserialization will now work correctly.
+                if (response.IsSuccess && response.ApiResponseData?.Data != null && response.ApiResponseData.Data.Any())
                 {
-                    FileUploadId = fileUploadId,
-                    Details = new List<TransactionDetail>()
-                };
+                    var detailsList = response.ApiResponseData.Data;
+
+                    // The list is now correctly populated. We can build the summary.
+                    var firstDetail = detailsList.First();
+
+                    var summary = new FileDetailsResponse
+                    {
+                        FileUploadId = firstDetail.ManualEntryDailyCollectorId,
+                        CollectorName = firstDetail.DailyCollectorName,
+                        BranchName = firstDetail.MemberBranchName,
+                        UploadedBy = firstDetail.UploadBy,
+                        //status = firstDetail.ProcessingStatus,
+                        TotalMember = detailsList.Count,
+                        TotalAmount = detailsList.Sum(d => d.Amount),
+                        Details = detailsList
+                    };
+
+                    return summary;
+                }
+
+                // If the API call fails or the list is empty, return null.
+                return null;
             }
-
-            var details = resp.ApiResponseData.Data;
-
-            // Compute summary fields from details (best-effort)
-            var totalAmount = details.Sum(d => d.Amount);
-            var totalMember = details.Count;
-
-            var first = details.FirstOrDefault();
-            var collectorName = first?.DailyCollectorName ?? string.Empty;
-            var branchName = first?.MemberBranchName ?? string.Empty;
-
-            var model = new FileDetailsResponse
+            catch (Exception ex)
             {
-                FileUploadId = fileUploadId,
-                CollectorName = collectorName,
-                BranchName = branchName,
-                TotalAmount = totalAmount,
-                TotalMember = totalMember,
-                Details = details
-            };
-
-            return model;
+                // Log the exception for debugging.
+                return null;
+            }
         }
 
         #endregion
@@ -617,39 +666,93 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         /// <summary>
         /// Deletes an uploaded file by its ID.
         /// </summary>
+        //public async Task<ExecutionMessages> DeleteFileByIdAsync(string fileUploadId)
+        //{
+        //    try
+        //    {
+        //        if (string.IsNullOrWhiteSpace(fileUploadId))
+        //        {
+        //            GetExecutionMessages(null, false, "Delete File", MessagesResults.Failed, ExecutionProcessOption.DeleteObject, "Failed", null, "File ID cannot be null.");
+        //            return ExecutionMessage;
+        //        }
+
+        //        string url = APICallHelper.DeleteManualEntryFile.Replace("{fileId}", fileUploadId);
+        //        var response = await _apiHelper.DeleteAsync<ServiceResponse<bool>>(url);
+
+        //        if (response.IsSuccess && response.ApiResponseData.Data)
+        //        {
+        //            GetExecutionMessages(null, true, fileUploadId, MessagesResults.Success, ExecutionProcessOption.DeleteObject, "Success", null, "File deleted successfully.");
+        //        }
+        //        else
+        //        {
+        //            GetExecutionMessages(null, false, fileUploadId, MessagesResults.Failed, ExecutionProcessOption.DeleteObject, "Failed", null, response.ApiResponseData?.Message ?? response.Message);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        GetExecutionMessages(null, false, "Delete File", MessagesResults.Error, ExecutionProcessOption.TryCatch, "Error", ex, ex.Message);
+        //    }
+        //    return ExecutionMessage;
+        //}
+
         public async Task<ExecutionMessages> DeleteFileByIdAsync(string fileUploadId)
         {
             try
             {
+                // 1) Validate input early
                 if (string.IsNullOrWhiteSpace(fileUploadId))
                 {
                     GetExecutionMessages(null, false, "Delete File", MessagesResults.Failed, ExecutionProcessOption.DeleteObject, "Failed", null, "File ID cannot be null.");
-                    return ExecutionMessage;
+                    return ExecutionMessage ?? new ExecutionMessages { Result = false, MessageString = "File ID cannot be null." };
                 }
 
+                // 2) Build API URL
                 string url = APICallHelper.DeleteManualEntryFile.Replace("{fileId}", fileUploadId);
+
+                // 3) Call API (this may return null or ApiResponseData may be null)
                 var response = await _apiHelper.DeleteAsync<ServiceResponse<bool>>(url);
 
-                if (response.IsSuccess && response.ApiResponseData.Data)
+                // 4) Debug trace to help find shape of response (remove or replace with logger)
+                System.Diagnostics.Trace.WriteLine($"DeleteFileByIdAsync: url={url} responseIsNull={(response == null)} ApiResponseDataIsNull={(response?.ApiResponseData == null)} message='{response?.Message}'");
+
+                // 5) Defensive checks
+                if (response == null)
+                {
+                    GetExecutionMessages(null, false, fileUploadId, MessagesResults.Failed, ExecutionProcessOption.DeleteObject, "Failed", null, "No response from API.");
+                    return ExecutionMessage ?? new ExecutionMessages { Result = false, MessageString = "No response from API." };
+                }
+
+                // 6) Determine success carefully:
+                var apiDataPresent = response.ApiResponseData != null;
+                var apiDataIsTrue = apiDataPresent && (response.ApiResponseData.Data == true);
+
+                // Interpret success:
+                // - Prefer explicit ApiResponseData.Data == true
+                // - If ApiResponseData missing but response.IsSuccess == true, treat as a success to preserve compatibility with older API shapes
+                if (response.IsSuccess && (apiDataIsTrue || (!apiDataPresent && response.IsSuccess)))
                 {
                     GetExecutionMessages(null, true, fileUploadId, MessagesResults.Success, ExecutionProcessOption.DeleteObject, "Success", null, "File deleted successfully.");
                 }
                 else
                 {
-                    GetExecutionMessages(null, false, fileUploadId, MessagesResults.Failed, ExecutionProcessOption.DeleteObject, "Failed", null, response.ApiResponseData?.Message ?? response.Message);
+                    var failMsg = response.ApiResponseData?.Message ?? response.Message ?? "API reported failure.";
+                    GetExecutionMessages(null, false, fileUploadId, MessagesResults.Failed, ExecutionProcessOption.DeleteObject, "Failed", null, failMsg);
                 }
             }
             catch (Exception ex)
             {
+                // 7) Capture exception inside ExecutionMessage (uses your helper)
                 GetExecutionMessages(null, false, "Delete File", MessagesResults.Error, ExecutionProcessOption.TryCatch, "Error", ex, ex.Message);
             }
-            return ExecutionMessage;
+
+            // 8) Always return a non-null ExecutionMessage so callers (controller) can read .Result/.MessageString safely
+            return ExecutionMessage ?? new ExecutionMessages { Result = false, MessageString = "An unknown error occurred in DeleteFileByIdAsync." };
         }
 
         #endregion
 
         #region Helpers for Dropdowns
- 
+
         public async Task<IEnumerable<SelectListItem>> GetCollectorsAsSelectListAsync(string branchId = null)
         {
             if (branchId==null)
@@ -735,5 +838,41 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         #endregion
 
         #endregion
+        ////////// ***************************** get extracted details data trable ************************
+
+        public async Task<CustomDataTable> GetManualEntryDetailsForDataTableAsync(GetManualEntryDailyCollectionDetailDataTableQuery query)
+        {
+            try
+            {
+                var url = APICallHelper.GetManualEntryCollectorDetailsDataTable; 
+                var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(url, query);
+
+                if (response.IsSuccess && response.ApiResponseData != null)
+                {
+                    return response.ApiResponseData.Data;
+                }
+
+                return new CustomDataTable(
+                    draw: Convert.ToInt32(query.Options.draw),
+                    recordsTotal: 0,
+                    recordsFiltered: 0,
+                    data: new List<object>(),
+                    dataTableOptions: query.Options
+                );
+            }
+            catch (Exception)
+            {
+                return new CustomDataTable(
+                    draw: Convert.ToInt32(query.Options.draw),
+                    recordsTotal: 0,
+                    recordsFiltered: 0,
+                    data: new List<object>(),
+                    dataTableOptions: query.Options
+                );
+            }
+        }
+
+
+
     }
 }

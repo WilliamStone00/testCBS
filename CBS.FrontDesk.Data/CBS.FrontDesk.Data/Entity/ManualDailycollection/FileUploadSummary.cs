@@ -27,7 +27,19 @@ namespace CBS.FrontDesk.Data.Entity.ManualDailycollection
         public string FileType { get; set; }
         public DateTime CreatedDate { get; set; }
         public string CreatedBy { get; set; }
+        public string collectorId { get; set; }
         public string CollectorName { get; set; }
+        
+
+        // rebused measures for name mismatch 
+        public string Status { get; set; }
+        public string branchId { get; set; }
+        public string branchName { get; set; }
+        public string collectorName { get; set; }
+        public string uploadedBy { get; set; }
+        public string fileUploadId { get; set; }
+        public string TotalAmount { get; set; }
+        public string TotalMember { get; set; }
     }
 
     public class FileValidationRequest

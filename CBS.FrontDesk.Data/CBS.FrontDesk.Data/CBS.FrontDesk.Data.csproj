@@ -136,6 +136,7 @@
     <Compile Include="Entity\CheckManagementSystem\Configurations\ChequeNumber\NumConfig.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\ChequeNumber\VariablePosition.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\FeeConfiguration\FeeConfig.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Configurations\FeeConfiguration\InitOptions.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\FeeConfiguration\Range.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\NotificationConfig\NotificationConfig.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\NotificationConfig\NotificationType.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="Entity\ManualDailycollection\FileUploadSummary.cs" />
     <Compile Include="Entity\ManualDailycollection\ManualCollectionUploadViewModel.cs" />
     <Compile Include="Entity\ManualDailycollection\ManualDailyCollectionFileDetail.cs" />
+    <Compile Include="Entity\ManualDailycollection\TransactionDetailDto.cs" />
     <Compile Include="Entity\ManualDailycollection\ValidationFormViewModel.cs" />
     <Compile Include="Entity\MemberAdjustmentConsole\ApproveMemberAdjustmentRequestCommand.cs" />
     <Compile Include="Entity\MemberAdjustmentConsole\GetMemberAdjustmentRequestsDataTableQuery.cs" />

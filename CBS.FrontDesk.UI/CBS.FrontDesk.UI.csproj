@@ -10653,6 +10653,7 @@
     <Content Include="Views\FileValidation\_FileDetails.cshtml" />
     <Content Include="Views\AccountingReconciliation\GetReconciliationData.cshtml" />
     <Content Include="Views\Bank\_WatermarkUploader.cshtml" />
+    <Content Include="Views\FileValidation\LoadDetailsDataTable.cshtml" />
     <Content Include="Views\DailySaverManagement\Index.cshtml" />
     <Content Include="Views\DailySaverManagement\_CreateDailySaver.cshtml" />
     <Content Include="Views\DailySaverManagement\_Data.cshtml" />
