@@ -763,7 +763,7 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
 
             if (response.IsSuccess && response.ApiResponseData?.Data != null)
             {
-                return response.ApiResponseData.Data.Select(c => new SelectListItem
+                return response.ApiResponseData.Data.Where(x=>x.BranchId==branchId).Select(c => new SelectListItem
                 {
                     Value = $"{c.CustomerId}|{c.UserId}",
                     Text = $"{c.CustomerId}|{c.FullName}",

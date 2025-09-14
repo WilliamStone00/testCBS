@@ -28,7 +28,7 @@
                     <label class="form-check-label" for="rbNew">New Daily saver</label>
                 </div>
                 <div class="form-check">
-                    @Html.RadioButtonFor(m => m.IsNewCustomer, false, new { @class = "form-check-input", id = "rbExisting" })
+                    @Html.RadioButtonFor(m => m.IsNewCustomer, false, new { @class = "form-check-input", id = "rbExisting", disabled = "disabled" })
                     <label class="form-check-label" for="rbExisting">Existing member</label>
                 </div>
             </div>
@@ -68,14 +68,15 @@
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.CustomerId, new
-                        {
-                            @class = "form-control",
-                            id = "CustomerId",
-                            maxlength = "10",
-                            pattern = @"\d{10}",
-                            inputmode = "numeric",
-                            placeholder = "0123456789"
-                        })
+                   {
+                       @class = "form-control",
+                       id = "CustomerId",
+                       maxlength = "10",
+                       pattern = @"\d{10}",
+                       inputmode = "numeric",
+                       placeholder = "0123456789",
+                       disabled = "disabled"
+                   })
                         @Html.ValidationMessageFor(m => m.CustomerId, "", new { @class = "text-danger" })
                         <label>Existing Member Account (10 digits)</label>
                     </div>
