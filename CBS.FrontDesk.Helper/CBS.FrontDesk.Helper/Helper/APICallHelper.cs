@@ -303,11 +303,12 @@ namespace CBS.FrontDesk.Helper
         //Customer
         ///api/v1/Customers/{BranchId}
         public static string CreateIndividualProfile = "/api/v1/Customer";
+        public static string CreateDailySaverCustomer = "/api/v1/DailySaverCustomer";
         public static string SearchByAnyCriterialQuery = "/api/v1/Customers/SearchByAnyCriterialQuery";
         public static string GetAllByParameters = "/api/v1/Customer/GetAllByParameters";
         public static string MembersDatatableQuery = "/api/v1/customers/datatable";
         public static string MembersDownloadDatatableQuery = "/api/v1/customer-download/customers";
-
+        
 
         public static string AllCustomers = "/api/v1/Customers";
         public static string GetAllIndividualProfileByBranch = "/api/v1/Customers/{0}";
@@ -1286,7 +1287,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetDaillycollectors = "api/v1/customers/basic-info-collectors";
         public static string GetextracyedFileDetailsEndpoint = "api/v1/ManualEntryCollector/Extracted/data-table";
         public static string getextracteddetails = "/api/v1/ManualEntryCollector/Extracted/details";
-
+        public static string GetManualEntryCollectorDetailsDataTable = "/api/v1/ManualEntryCollector/Extracted/details/data-table";
         //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
     }
 }

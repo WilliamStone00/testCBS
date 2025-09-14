@@ -26,14 +26,10 @@ namespace CBS.FrontDesk.Service
     {
 
         private readonly ApiCallerHelper _identityServer;
-        private readonly ApiCallerHelper _BankServer;
-        private readonly ApiCallerHelper _accountingHelper;
 
         public AuthenticationServices()
         {
             _identityServer = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-            _BankServer = new ApiCallerHelper(ConfigurationManager.AppSettings["BankConfigurationBaseUrl"].ToString());
-            _accountingHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
         }
         private string GetClientIPAddress()
         {

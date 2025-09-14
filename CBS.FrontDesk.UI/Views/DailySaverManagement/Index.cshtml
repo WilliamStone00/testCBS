@@ -1,0 +1,230 @@
+﻿@using System.Web.Optimization
+@{
+    ViewBag.Title = "Daily Saver Account Creation";
+}
+
+<div class="row">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light border-0 shadow-sm mb-3">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary mb-1">
+                    <i class="mdi mdi-account-plus-outline me-2"></i> Daily Saver – Open New Account
+                </h1>
+                <p class="card-text text-muted mb-0">
+                    Capture only the essentials to quickly onboard a Daily Saver.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Notifications -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="mdi mdi-check-circle-outline me-2"></i>@TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="mdi mdi-alert-circle-outline me-2"></i>@TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<!-- Help Tips Card -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span>
+            <i class="mdi mdi-information-outline me-2"></i> Help Tips
+        </span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseHelpTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Required fields are minimal: Identity, Address, ID, Economic activity.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Opening amount is optional — enter if initial subscription is paid now.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use the cascading Country → Region → Division → Sub-Division → Town selectors.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> External transaction ref helps reconcile with cash desk or MoMo receipts.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12">
+        <div class="accordion accordion-popout" id="accordionDailySaver">
+            <div class="accordion-item active">
+                <h2 class="accordion-header" id="dsFormHeader">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#dsFormCollapse" aria-expanded="true" aria-controls="dsFormCollapse">
+                        <i class="mdi mdi-account-card-details me-2"></i> Daily Saver – Identification Form
+                    </button>
+                </h2>
+                <div id="dsFormCollapse" class="accordion-collapse collapse show" data-bs-parent="#accordionDailySaver">
+                    <div class="accordion-body">
+                        @Html.Partial("_CreateDailySaver") @* Partial contains the form *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        (function () {
+            function toggleBlocks() {
+                const isExisting = $('#rbExisting').is(':checked');
+
+                // Existing member path (10-digit CustomerId 0–9)
+                const existingBlock = $('#existingCustomerBlock');
+                const customerId = $('#CustomerId');
+
+                // New daily saver path (7 digits, each 0–7)
+                const newBlock = $('#newSaverBlock');
+                const dsId = $('#DailySaverId');
+
+                if (isExisting) {
+                    existingBlock.show();
+                    customerId.attr('required', 'required');
+
+                    newBlock.hide();
+                    dsId.removeAttr('required').val('');
+                    $('#DailySaverIdError').text('');
+                } else {
+                    existingBlock.hide();
+                    customerId.removeAttr('required').val('');
+
+                    newBlock.show();
+                    dsId.attr('required', 'required');
+                }
+            }
+
+            // Enforce numeric & max length on CustomerId (10 digits, 0–9)
+            $('#CustomerId').on('input', function () {
+                this.value = this.value.replace(/\D/g, '').slice(0, 10);
+            });
+
+            // Enforce digits 0–7 only, max length 7 on DailySaverId
+            $('#DailySaverId').on('input', function () {
+                // keep only digits 0–7
+                let v = this.value.replace(/[^0-7]/g, '');
+                if (v.length > 7) {
+                    v = v.slice(0, 7);
+                    $('#DailySaverIdError').text('Daily saver account number must be exactly 7 digits (0–7). Extra digits were removed.');
+                } else {
+                    // clear message if back within bounds
+                    $('#DailySaverIdError').text('');
+                }
+                this.value = v;
+            });
+
+            // Final guard on submit
+            $('#memberForm').on('submit', function (e) {
+                const isExisting = $('#rbExisting').is(':checked');
+                if (!isExisting) {
+                    const val = ($('#DailySaverId').val() || '').trim();
+                    if (!/^[0-7]{7}$/.test(val)) {
+                        e.preventDefault();
+                        const len = val.length;
+                        $('#DailySaverIdError').text(
+                            len !== 7
+                                ? `Daily saver account number must be exactly 7 digits. You entered ${len} character(s).`
+                                : 'Only digits 0–7 are allowed (no 8 or 9).'
+                        );
+                        $('#DailySaverId').focus();
+                    }
+                } else {
+                    const cid = ($('#CustomerId').val() || '').trim();
+                    if (!/^\d{10}$/.test(cid)) {
+                        e.preventDefault();
+                        // Use the existing validation span next to CustomerId
+                        $('#CustomerId').closest('.form-floating').next('.text-danger')
+                            .text('CustomerId must be exactly 10 digits (0–9).');
+                        $('#CustomerId').focus();
+                    }
+                }
+            });
+
+            $('#rbNew, #rbExisting').on('change', toggleBlocks);
+            toggleBlocks(); // initial
+        })();
+    </script>
+
+
+    <script>
+        $(function () {
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+        // Simple console markers for the cascading dropdown lifecycle
+        console.log("Cascading Location Dropdowns Initialized");
+
+        $('#CountryId').on('change', function () {
+            const countryId = $(this).val();
+            resetDropdowns(['#RegionId', '#DivisionId', '#SubDivisionId', '#TownId']);
+            if (!countryId) return;
+
+            $('#RegionId').append('<option>Loading...</option>');
+            $.getJSON('/DailySaverManagement/GetRegionsByCountry', { countryId: countryId })
+                .done(function (data) { populateDropdown('#RegionId', data, '---Select Region---'); })
+                .fail(function () { populateDropdown('#RegionId', [], 'Error loading regions'); });
+        });
+
+        $('#RegionId').on('change', function () {
+            const regionId = $(this).val();
+            resetDropdowns(['#DivisionId', '#SubDivisionId', '#TownId']);
+            if (!regionId) return;
+
+            $('#DivisionId').append('<option>Loading...</option>');
+            $.getJSON('/DailySaverManagement/GetDivisionsByRegion', { regionId: regionId })
+                .done(function (data) { populateDropdown('#DivisionId', data, '---Select Division---'); })
+                .fail(function () { populateDropdown('#DivisionId', [], 'Error loading divisions'); });
+        });
+
+        $('#DivisionId').on('change', function () {
+            const divisionId = $(this).val();
+            resetDropdowns(['#SubDivisionId', '#TownId']);
+            if (!divisionId) return;
+
+            $('#SubDivisionId').append('<option>Loading...</option>');
+            $.getJSON('/DailySaverManagement/GetSubDivisionsByDivision', { divisionId: divisionId })
+                .done(function (data) { populateDropdown('#SubDivisionId', data, '---Select Sub-Division---'); })
+                .fail(function () { populateDropdown('#SubDivisionId', [], 'Error loading sub-divisions'); });
+        });
+
+        $('#SubDivisionId').on('change', function () {
+            const subDivisionId = $(this).val();
+            resetDropdowns(['#TownId']);
+            if (!subDivisionId) return;
+
+            $('#TownId').append('<option>Loading...</option>');
+            $.getJSON('/DailySaverManagement/GetTownsBySubDivision', { subDivisionId: subDivisionId })
+                .done(function (data) { populateDropdown('#TownId', data, '---Select Town---'); })
+                .fail(function () { populateDropdown('#TownId', [], 'Error loading towns'); });
+        });
+
+        function populateDropdown(selector, data, placeholder) {
+            const dropdown = $(selector);
+            dropdown.empty().append($('<option>').val('').text(placeholder));
+            $.each(data, function (i, item) {
+                dropdown.append($('<option>').val(item.Id).text(item.Name));
+            });
+            if (dropdown.hasClass('select2')) dropdown.trigger('change.select2');
+        }
+
+        function resetDropdowns(selectors) {
+            selectors.forEach(id => {
+                $(id).empty().append('<option value="">---Select---</option>');
+                if ($(id).hasClass('select2')) $(id).trigger('change.select2');
+            });
+        }
+    </script>
+}
