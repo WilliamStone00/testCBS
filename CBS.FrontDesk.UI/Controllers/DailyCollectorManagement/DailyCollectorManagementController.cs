@@ -14,11 +14,13 @@ using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
  
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.UserManagement;
+using CBS.FrontDesk.Helper;
 using CBS.FrontDesk.UI.Models;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.EMMA;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -27,6 +29,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 // 
 namespace CBS.FrontDesk.UI.Controllers
 {
@@ -142,7 +145,7 @@ namespace CBS.FrontDesk.UI.Controllers
             ViewBag.BankName = _branchService.GetBankName();
             return View(new UploadDailyCollectorData ());
         }
-        private dynamic BuildMenuISViewBag(List<Branch> listOfItems)
+        private dynamic BuildMenuISViewBag(List<CBS.FrontDesk.Data.Entity.Config.Branch> listOfItems)
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
             selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select BranchCode" });
@@ -202,13 +205,18 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
 
+      
+
+
+
+
         [HttpPost]
-        public async Task<ActionResult> UploadDailyCollectorModel(UploadDailyCollectorData model)
+        public async Task<ActionResult> UploadDailyCollectorModelcccc(UploadDailyCollectorData model)
         {
-       
+
             List<DailySaverRequest> dataList = new List<DailySaverRequest>();
             var branches = await _branchService.GetBranches();
-            var branch = branches.Where(x=>x.Id==model.BranchId).FirstOrDefault();
+            var branch = branches.Where(x => x.Id == model.BranchId).FirstOrDefault();
             try
             {
                 // Step 1: Validate Model State (Data Annotation Checks)
@@ -233,13 +241,14 @@ namespace CBS.FrontDesk.UI.Controllers
                 model.CollectorName = $"{modek.firstName} {modek.lastName}";
                 // Step 4: (Optional) Save the file to a temp location or process directly from stream
                 string fileName = Path.GetFileName(model.FormFile.FileName);
-             var response =  await _dailyCollectionMigrationServices.UploadFile(model);
-          
+                #region MyRegion
+                var response = await _dailyCollectionMigrationServices.UploadFile(model);
+
                 if (response.Result)
                 {
                     var serviceResponse = (ServiceResponseDailySaverUploadResult)response.Data;
                     this.HttpContext.Session["rptSource" + Session.SessionID] = serviceResponse.Data;
-              var data = new
+                    var data = new
                     {
                         DataList = serviceResponse.Data.CollectorMembers.ToList(),
                         Summary = new
@@ -249,8 +258,8 @@ namespace CBS.FrontDesk.UI.Controllers
                             isexhausive = serviceResponse.Data.IsExhausive,
                             dailyCollectorGL = serviceResponse.Data.AccountNumber + "-" + serviceResponse.Data.AccountName,
                             totalMembers = serviceResponse.Data.CollectorMembers.Count(),
-                            absentMembers= serviceResponse.Data.AbsentMembers,
-                            cashDifference = Math.Abs(Convert.ToDecimal(serviceResponse.Data.GLAccountBalance)- Convert.ToDecimal(serviceResponse.Data.CollectorMembers.Sum(x => x.AccountBalance))),
+                            absentMembers = serviceResponse.Data.AbsentMembers,
+                            cashDifference = Math.Abs(Convert.ToDecimal(serviceResponse.Data.GLAccountBalance) - Convert.ToDecimal(serviceResponse.Data.CollectorMembers.Sum(x => x.AccountBalance))),
                             recordId = _accountServices.GetUserId() + "@" + model.CollectorId
                         }
                     };
@@ -269,39 +278,44 @@ namespace CBS.FrontDesk.UI.Controllers
                     return Json(new { success = false, status = "Error", message = "The file structure does not respect the expected file format", Data = "nullable" });
 
                 }
-                //if (Path.GetExtension(model.ExcelFile.FileName).Equals(".xlsx"))
+
+                #endregion
+
+                //if (response.Result)
+                //{
+                //    var serviceResponse = (ServiceResponseDailySaverUploadResult)response.Data;
+                //    this.HttpContext.Session["rptSource" + Session.SessionID] = serviceResponse.Data;
+                //    var data = new
                 //    {
-                //        try
-
+                //        DataList = serviceResponse.Data.CollectorMembers.ToList(),
+                //        Summary = new
                 //        {
-
-                //            using (var stream = model.ExcelFile.InputStream)
-                //            {
-                //                // Call the method to read the Excel file and convert it to a list of Data objects
-                //                dataList = ReadExcelFile(stream, branch.Id, branch.Name, model.AccountId, _accountServices.GetUserName());
-                //                if (dataList.Count() == 0)
-                //                {
-                //                    return Json(new { success = false, status = "Error", message = "The file structure does not respect the expected file format", Data = "null" });
-
-                //                }
-                //                else
-                //                {
-
-                //                    return Json(new { success = true, status = "success", message = "File was uploaded successfully", Data = new { DataList = dataList, Summary = new { totalVolume = Convert.ToDecimal(dataList.Sum(x => x.Amount)), dailyCollectorGL = "", totalMembers = dataList.Count(), recordId = _accountServices.UserID + "@" + model.CollectorId } } });
-                //                }
-                //            }
+                //            actualVolume = Convert.ToDecimal(serviceResponse.Data.GLAccountBalance),
+                //            totalVolume = Convert.ToDecimal(serviceResponse.Data.CollectorMembers.Sum(x => x.AccountBalance)),
+                //            isexhausive = serviceResponse.Data.IsExhausive,
+                //            dailyCollectorGL = serviceResponse.Data.AccountNumber + "-" + serviceResponse.Data.AccountName,
+                //            totalMembers = serviceResponse.Data.CollectorMembers.Count(),
+                //            absentMembers = serviceResponse.Data.AbsentMembers,
+                //            cashDifference = Math.Abs(Convert.ToDecimal(serviceResponse.Data.GLAccountBalance) - Convert.ToDecimal(serviceResponse.Data.CollectorMembers.Sum(x => x.AccountBalance))),
+                //            recordId = _accountServices.GetUserId() + "@" + model.CollectorId
                 //        }
-                //        catch (Exception ex)
-                //        {
-                //            string message = $"The file structure was not respected. Please check your input.{Path.GetExtension(model.ExcelFile.FileName)}";
-                //            return Json(new { success = true, status = false, message = message }, JsonRequestBehavior.AllowGet);
-                //        }
-                //    }
-                //    else
+                //    };
+
+                //    return Json(new
                 //    {
-                //        string message = $"Invalid file extension. Please check your input.{Path.GetExtension(model.ExcelFile.FileName)}";
-                //        return Json(new { success = true, status = false, message = message }, JsonRequestBehavior.AllowGet);
-                //    }
+                //        success = true,
+                //        status = "success",
+                //        message = "File was uploaded successfully",
+                //        Data = data
+                //    });
+
+                //}
+                //else
+                //{
+                //    return Json(new { success = false, status = "Error", message = "The file structure does not respect the expected file format", Data = "nullable" });
+
+                //}
+
 
 
             }
@@ -314,8 +328,160 @@ namespace CBS.FrontDesk.UI.Controllers
             }
 
         }
+        private List<AddDailySaverMinCommand> CreateBatchLinq(List<BusinessService.DailyCollectionServices.DailySaverRequest> responseData)
+        {
+            return responseData?
+                .Where(request => request != null) // Filter out null entries
+                .Select(request => new AddDailySaverMinCommand
+                {
+                    DailySaverId = request.DailySaverId,
+                    IsNewCustomer = request.IsNewCustomer,
+                    FirstName = request.FirstName,
+                    BankCode = request.BankCode,
+                    BranchName = request.BranchName,
+                    BranchCode = request.BranchCode
+                })
+                .ToList() ?? new List<AddDailySaverMinCommand>();
+        }
+        [HttpPost]
+        public async Task<JsonResult> PostAgentGLForInitialization()
+        {
+            var sessionKey = "rptSource" + _dailyCollectionMigrationServices.GetUserID();
+            var modelData = this.HttpContext.Session[sessionKey] as DailySaverUploadTempResult;
 
-        private List<DailySaverRequest> ReadExcelFile(Stream stream,string BranchCode,string branchName, string accountId,string username)
+            if (modelData == null)
+            {
+                return Json(new { success = false, message = "Session expired or report data not found." }, JsonRequestBehavior.AllowGet);
+            }
+
+            var result = await _dailyCollectionMigrationServices.PostAgentGLForInitialization(modelData);
+
+            if (result != null)
+            {
+                return Json(new { success = true, data = result, message = "Collector Account Initialize successfully processed." }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { success = false, message = "Error occurred while Initializing Collector Account." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        [HttpPost]
+        public async Task<ActionResult> UploadDailyCollectorModel(UploadDailyCollectorData model)
+        {
+            List<DailySaverRequest> dataList = new List<DailySaverRequest>();
+            var branches = await _branchService.GetBranches();
+            var branch = branches.Where(x => x.Id == model.BranchId).FirstOrDefault();
+
+            try
+            {
+                // Step 1: Validate Model State (Data Annotation Checks)
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { success = false, message = "Invalid input. Please fill all required fields." }, JsonRequestBehavior.AllowGet);
+                }
+
+                // Step 2: Check if file was uploaded and has content
+                if (model.FormFile == null || model.FormFile.ContentLength == 0)
+                {
+                    return Json(new { success = false, message = "No file uploaded or file is empty." }, JsonRequestBehavior.AllowGet);
+                }
+
+                // Step 3: Validate Excel file extension
+                string fileExtension = Path.GetExtension(model.FormFile.FileName);
+                if (fileExtension != ".xlsx" && fileExtension != ".xls")
+                {
+                    return Json(new { success = false, message = "Invalid file format. Please upload a .xlsx or .xls file." }, JsonRequestBehavior.AllowGet);
+                }
+
+                var modek = (await _userServices.GetUsers()).Where(x => x.id.ToString() == model.CollectorId).FirstOrDefault();
+                model.CollectorName = $"{modek.firstName} {modek.lastName}";
+
+                var accountId =await _accountServices.GetAccount(model.AccountId);
+                if (accountId == null)
+                {
+                    return Json(new { success = false, message = "Invalid account selected. Please select a valid account." }, JsonRequestBehavior.AllowGet);
+                }
+
+                // Read Excel file and get all data
+                var responseData = await _dailyCollectionMigrationServices.ReadExcelFileAsync(
+                    model.FormFile,
+                     branch.Name,
+                    branch.BranchCode,
+                    _dailyCollectionMigrationServices.GetUserName(),
+
+                    model.AccountId,
+                    branch.Id,
+                    model.CollectorId
+                );
+
+            
+                var batchModel = new DailySaverUpload
+                {
+                    AccountId = model.AccountId,
+                    BranchId = branch.Id,
+                    CollectorId= model.CollectorId,
+                    CashDifferenceAccountId= model.AccountId,
+                    CollectorName= model.CollectorName,
+                    ProductId="",
+                    DailySaverList = responseData
+                };
+                var tempResult00 = await _dailyCollectionMigrationServices.Create(batchModel);
+                var temp1 = (ResponseObject<DailySaverUploadTempResult>)tempResult00.Data;
+                var tempResult = temp1.Data;
+
+                //var serviceResponse = (ServiceResponseDailySaverUploadResult)response.Data;
+                //this.HttpContext.Session["rptSource" + Session.SessionID] = serviceResponse.Data;
+                var sessionKey = "rptSource" + _agentServices.GetUserID();
+                  this.HttpContext.Session[sessionKey] = temp1.Data;
+                var data = new
+                {
+                    DataList =BuildDailyCollectorMembersAsync(responseData),
+                    Summary = new
+                    {
+                        actualVolume = Convert.ToDecimal(tempResult.GLAccountBalance),
+                        totalVolume = Convert.ToDecimal(responseData.Sum(x => x.Amount)),
+                        isexhausive = false,
+                        dailyCollectorGL = tempResult.CollectorGL,
+                        totalMembers = tempResult.TotalMembers,
+                        absentMembers = "Still Processing" ,
+                        cashDifference = Convert.ToDecimal(tempResult.GLAccountBalance) - Convert.ToDecimal(responseData.Sum(x => x.Amount)),//Math.Abs(Convert.ToDecimal(serviceResponse.Data.GLAccountBalance) - Convert.ToDecimal(serviceResponse.Data.CollectorMembers.Sum(x => x.AccountBalance))),
+                        id = tempResult.Id// _accountServices.GetUserId() + "@" + model.CollectorId
+                    }
+                };
+
+                return Json(new
+                {
+                    success = true,
+                    status = "success",
+                    message = $"Branch {tempResult.BranchName} | Collector {tempResult.CollectorName} | Total Members: {tempResult.TotalMembers} | Total Amount: {tempResult.TotalAmount} | Collector GL: {tempResult.CollectorGL} (Balance {tempResult.GLAccountBalance}) | Expected processing time: {TimeSpan.FromMilliseconds(200 * responseData.Count)}.",
+
+                    Data = data
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details
+                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($"StackTrace: {ex.StackTrace}");
+                return Json(new
+                {
+                    success = false,
+                    message = $"An error occurred: {ex.Message}"
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        private List<DailyCollectorMemberAccounts> BuildDailyCollectorMembersAsync(List<DailySaverRequest> responseData)
+        {
+            List <DailyCollectorMemberAccounts> dailyCollectors = new List<DailyCollectorMemberAccounts>();
+            foreach (var item in responseData)
+            {
+                dailyCollectors.Add(new DailyCollectorMemberAccounts { AccountBalance = item.Amount, Name = item.FirstName, MemberReference = item.DailySaverId });
+            }
+            return dailyCollectors;
+        }
+
+        private List<DailySaverRequest> ReadExcelFile(Stream stream,string BranchCode,string branchName, string accountId,string username, string branchId)
         {
             int i = 0;
             var dataList = new List<DailySaverRequest>();
@@ -354,14 +520,15 @@ namespace CBS.FrontDesk.UI.Controllers
                             AccountNumber = GetCellValueAsString(currentRow.Cell(1)),
                             FirstName = GetCellValueAsString(currentRow.Cell(2)),
                             Username = username,
-                            BranchCode = BranchCode,//GetCellValueAsString(currentRow.Cell(4)),
+                            BranchCode = BranchCode,
+                            BranchId = branchId,//GetCellValueAsString(currentRow.Cell(4)),
                             DailySaverId = PrepareDailySaverIDFormat(GetCellValueAsString(currentRow.Cell(1)), BranchCode),
                             BranchName = branchName,
                             IsNewCustomer = false, // Default value, adjust as needed
                             BankCode = "012",
                             AccountId = accountId,
-                            Amount = GetCellValueAsDecimal(currentRow.Cell(5))
-
+                            Amount = GetCellValueAsDecimal(currentRow.Cell(5)),
+                            HasBeenProcessed = false
                         };
                         dataList.Add(record);
                     }
@@ -514,7 +681,7 @@ namespace CBS.FrontDesk.UI.Controllers
         new DailyCollectorInfo { userId = "COL003", name = "Fatou Bayo" }
     };
         }
-        private dynamic BuildBranch(List<Branch> listOfItems)
+        private dynamic BuildBranch(List<CBS.FrontDesk.Data.Entity.Config.Branch> listOfItems)
         {
             List<System.Web.WebPages.Html.SelectListItem> selectListItems = new List<System.Web.WebPages.Html.SelectListItem>();
             selectListItems.Add(new System.Web.WebPages.Html.SelectListItem { Text = "", Value = $"Select BranchCode" });
@@ -581,6 +748,10 @@ namespace CBS.FrontDesk.UI.Controllers
                 return Json(new { success = false, message = "Error occurred while processing payment." }, JsonRequestBehavior.AllowGet);
             }
         }
+
+
+
+
         [HttpGet]
         public async Task<JsonResult> RetrieveDailyCollectionDashboardActivitiesAsync(string Month, string BranchId, string CollectorId)
         {

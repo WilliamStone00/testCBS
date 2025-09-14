@@ -289,171 +289,273 @@ namespace CBS.API.Helper
         }
 
 
+        //    public async Task<ServiceResponseDailySaverUploadResult> UploadFileToApiAsync<T>(
+        //HttpPostedFileBase uploadedFile,
+        //string fileFormFieldName,
+        //string apiEndpointUrl,
+        //Dictionary<string, string> additionalFields = null)
+        //    {
+        //        try
+        //        {
+        //            // Validate inputs
+        //            if (uploadedFile == null || uploadedFile.ContentLength <= 0)
+        //            {
+        //                return new ServiceResponseDailySaverUploadResult
+        //                {
+        //                    Status = "FAILED",
+        //                    Message = "No file was uploaded or the file is empty."
+        //                };
+        //            }
+
+        //            if (string.IsNullOrEmpty(fileFormFieldName))
+        //            {
+        //                return new ServiceResponseDailySaverUploadResult
+        //                {
+        //                    Status = "FAILED",
+        //                    Message = "File form field name cannot be null or empty."
+        //                };
+        //            }
+
+        //            if (string.IsNullOrEmpty(apiEndpointUrl))
+        //            {
+        //                return new ServiceResponseDailySaverUploadResult
+        //                {
+        //                    Status = "FAILED",
+        //                    Message = "API endpoint URL cannot be null or empty."
+        //                };
+        //            }
+
+        //            apiEndpointUrl = RemoveDuplicateSlashesException($"{GetEndpoint(_newbaseURL)}{apiEndpointUrl}");
+
+        //            using (var formContent = new MultipartFormDataContent())
+        //            {
+        //                // Reset stream position to beginning
+        //                uploadedFile.InputStream.Position = 0;
+
+        //                // Create stream content from uploaded file
+        //                var streamContent = new StreamContent(uploadedFile.InputStream);
+
+        //                // Set content type - handle null/empty content type
+        //                var contentType = string.IsNullOrEmpty(uploadedFile.ContentType)
+        //                    ? "application/octet-stream"
+        //                    : uploadedFile.ContentType;
+        //                streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(contentType);
+
+        //                // CRITICAL FIX: Add file content with proper field name and filename
+        //                // Use quotes around field name for proper form-data formatting
+        //                formContent.Add(streamContent, $"\"{fileFormFieldName}\"", $"\"{uploadedFile.FileName}\"");
+
+        //                // Add any additional form fields
+        //                if (additionalFields != null)
+        //                {
+        //                    foreach (var field in additionalFields)
+        //                    {
+        //                        if (!string.IsNullOrEmpty(field.Key)) // Validate field key
+        //                        {
+        //                            formContent.Add(new StringContent(field.Value ?? string.Empty), field.Key);
+        //                        }
+        //                    }
+        //                }
+
+        //                // Add authorization header
+        //                AddAuthorizationHeader(_httpClient);
+
+        //                string url = RemoveDuplicateSlashes(apiEndpointUrl);
+        //                var request = new HttpRequestMessage(HttpMethod.Post, _httpClient.BaseAddress.OriginalString + url)
+        //                {
+        //                    Content = formContent
+        //                };
+
+        //                // Set timeout for this specific request to 30 seconds (30,000 milliseconds)
+        //                using (var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5)))
+        //                {
+        //                    // Send POST request with timeout
+        //                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] Form content created, sending request to: {url}");
+
+        //                    var response = await _httpClient.SendAsync(request, cts.Token);
+        //                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] Response received - Status: {response.StatusCode}");
+
+        //                    var responseText = await response.Content.ReadAsStringAsync();
+
+        //                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] Response content read - Length: {responseText?.Length ?? 0}");
+
+        //                    if (!response.IsSuccessStatusCode)
+        //                    {
+        //                        return new ServiceResponseDailySaverUploadResult
+        //                        {
+        //                            Status = "FAILED",
+        //                            Message = $"API call failed with status {response.StatusCode}: {responseText}"
+        //                        };
+        //                    }
+
+        //                    // Handle empty response
+        //                    if (string.IsNullOrWhiteSpace(responseText))
+        //                    {
+        //                        return new ServiceResponseDailySaverUploadResult
+        //                        {
+        //                            Status = "FAILED",
+        //                            Message = "API returned empty response."
+        //                        };
+        //                    }
+
+        //                    // Deserialize to ApiResponse<T>
+        //                    try
+        //                    {
+        //                        var result = JsonConvert.DeserializeObject<ServiceResponseDailySaverUploadResult>(responseText);
+
+        //                        if (result == null)
+        //                        {
+        //                            return new ServiceResponseDailySaverUploadResult
+        //                            {
+        //                                Status = "FAILED",
+        //                                Message = "Failed to deserialize API response - result is null."
+        //                            };
+        //                        }
+
+        //                        return result;
+        //                    }
+        //                    catch (JsonException jsonEx)
+        //                    {
+        //                        return new ServiceResponseDailySaverUploadResult
+        //                        {
+        //                            Status = "FAILED",
+        //                            Message = $"Failed to deserialize API response: {jsonEx.Message}. Raw response: {responseText}"
+        //                        };
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        catch (OperationCanceledException ocEx) when (ocEx.CancellationToken.IsCancellationRequested)
+        //        {
+        //            return new ServiceResponseDailySaverUploadResult
+        //            {
+        //                Status = "FAILED",
+        //                Message = "Request timeout: The operation was cancelled after 120 seconds."
+        //            };
+        //        }
+        //        catch (HttpRequestException httpEx)
+        //        {
+        //            return new ServiceResponseDailySaverUploadResult
+        //            {
+        //                Status = "FAILED",
+        //                Message = $"HTTP request failed: {httpEx.Message}"
+        //            };
+        //        }
+        //        catch (TaskCanceledException tcEx)
+        //        {
+        //            return new ServiceResponseDailySaverUploadResult
+        //            {
+        //                Status = "FAILED",
+        //                Message = $"Request timeout: {tcEx.Message}"
+        //            };
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            var model = new ServiceResponseDailySaverUploadResult();
+
+        //            model.Status = "FAILED";
+
+        //            model.Message = $"Unexpected error: {ex.Message}";
+        //            return model;
+        //        }
+        //    }
+
+
+        // Modern async method for uploading file to an API endpoint
         public async Task<ServiceResponseDailySaverUploadResult> UploadFileToApiAsync<T>(
-    HttpPostedFileBase uploadedFile,
-    string fileFormFieldName,
-    string apiEndpointUrl,
-    Dictionary<string, string> additionalFields = null)
+            HttpPostedFileBase uploadedFile,     // File from client
+            string fileFormFieldName,            // Form field name expected by the API
+            string apiEndpointUrl,               // Target API endpoint
+            Dictionary<string, string> additionalFields = null) // Optional extra fields
         {
+            // ------------------------------
+            // Step 1: Input validation
+            // ------------------------------
+            if (uploadedFile == null || uploadedFile.ContentLength <= 0)
+                return new ServiceResponseDailySaverUploadResult().Failed("No file was uploaded or the file is empty.");
+
+            if (string.IsNullOrEmpty(fileFormFieldName))
+                return new ServiceResponseDailySaverUploadResult().Failed("File form field name cannot be null or empty.");
+
+            if (string.IsNullOrEmpty(apiEndpointUrl))
+                return new ServiceResponseDailySaverUploadResult().Failed("API endpoint URL cannot be null or empty.");
+
+            apiEndpointUrl = RemoveDuplicateSlashesException($"{GetEndpoint(_newbaseURL)}{apiEndpointUrl}");
+            string url = RemoveDuplicateSlashes(apiEndpointUrl);
+
             try
             {
-                // Validate inputs
-                if (uploadedFile == null || uploadedFile.ContentLength <= 0)
-                {
-                    return new ServiceResponseDailySaverUploadResult
-                    {
-                        Status = "FAILED",
-                        Message = "No file was uploaded or the file is empty."
-                    };
-                }
-
-                if (string.IsNullOrEmpty(fileFormFieldName))
-                {
-                    return new ServiceResponseDailySaverUploadResult
-                    {
-                        Status = "FAILED",
-                        Message = "File form field name cannot be null or empty."
-                    };
-                }
-
-                if (string.IsNullOrEmpty(apiEndpointUrl))
-                {
-                    return new ServiceResponseDailySaverUploadResult
-                    {
-                        Status = "FAILED",
-                        Message = "API endpoint URL cannot be null or empty."
-                    };
-                }
-
-                apiEndpointUrl = RemoveDuplicateSlashesException($"{GetEndpoint(_newbaseURL)}{apiEndpointUrl}");
-
+                // ------------------------------
+                // Step 2: Build multipart form-data request
+                // ------------------------------
                 using (var formContent = new MultipartFormDataContent())
                 {
-                    // Reset stream position to beginning
                     uploadedFile.InputStream.Position = 0;
 
-                    // Create stream content from uploaded file
                     var streamContent = new StreamContent(uploadedFile.InputStream);
+                    streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(
+                        string.IsNullOrEmpty(uploadedFile.ContentType) ? "application/octet-stream" : uploadedFile.ContentType
+                    );
 
-                    // Set content type - handle null/empty content type
-                    var contentType = string.IsNullOrEmpty(uploadedFile.ContentType)
-                        ? "application/octet-stream"
-                        : uploadedFile.ContentType;
-                    streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(contentType);
+                    // Add file
+                    formContent.Add(streamContent, fileFormFieldName, uploadedFile.FileName);
 
-                    // CRITICAL FIX: Add file content with proper field name and filename
-                    // Use quotes around field name for proper form-data formatting
-                    formContent.Add(streamContent, $"\"{fileFormFieldName}\"", $"\"{uploadedFile.FileName}\"");
-
-                    // Add any additional form fields
+                    // Add extra fields
                     if (additionalFields != null)
                     {
-                        foreach (var field in additionalFields)
-                        {
-                            if (!string.IsNullOrEmpty(field.Key)) // Validate field key
-                            {
-                                formContent.Add(new StringContent(field.Value ?? string.Empty), field.Key);
-                            }
-                        }
+                        foreach (var field in additionalFields.Where(f => !string.IsNullOrEmpty(f.Key)))
+                            formContent.Add(new StringContent(field.Value ?? string.Empty), field.Key);
                     }
 
-                    // Add authorization header
+                    // Add authorization headers
                     AddAuthorizationHeader(_httpClient);
 
-                    string url = RemoveDuplicateSlashes(apiEndpointUrl);
-                    var request = new HttpRequestMessage(HttpMethod.Post, _httpClient.BaseAddress.OriginalString + url)
+                    // ------------------------------
+                    // Step 3: Send request
+                    // ------------------------------
+                    using (var request = new HttpRequestMessage(HttpMethod.Post, _httpClient.BaseAddress + url))
+                    using (var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5)))
                     {
-                        Content = formContent
-                    };
+                        request.Content = formContent;
 
-                    // Set timeout for this specific request to 30 seconds (30,000 milliseconds)
-                    using (var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(30000 * 4)))
-                    {
-                        // Send POST request with timeout
-                        var response = await _httpClient.SendAsync(request, cts.Token);
-                        var responseText = await response.Content.ReadAsStringAsync();
+                        var response = await _httpClient.SendAsync(request, cts.Token).ConfigureAwait(false);
+                        var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                         if (!response.IsSuccessStatusCode)
-                        {
-                            return new ServiceResponseDailySaverUploadResult
-                            {
-                                Status = "FAILED",
-                                Message = $"API call failed with status {response.StatusCode}: {responseText}"
-                            };
-                        }
+                            return new ServiceResponseDailySaverUploadResult().Failed($"API call failed with status {response.StatusCode}: {responseText}");
 
-                        // Handle empty response
                         if (string.IsNullOrWhiteSpace(responseText))
-                        {
-                            return new ServiceResponseDailySaverUploadResult
-                            {
-                                Status = "FAILED",
-                                Message = "API returned empty response."
-                            };
-                        }
+                            return new ServiceResponseDailySaverUploadResult().Failed("API returned empty response.");
 
-                        // Deserialize to ApiResponse<T>
-                        try
-                        {
-                            var result = JsonConvert.DeserializeObject<ServiceResponseDailySaverUploadResult>(responseText);
-
-                            if (result == null)
-                            {
-                                return new ServiceResponseDailySaverUploadResult
-                                {
-                                    Status = "FAILED",
-                                    Message = "Failed to deserialize API response - result is null."
-                                };
-                            }
-
-                            return result;
-                        }
-                        catch (JsonException jsonEx)
-                        {
-                            return new ServiceResponseDailySaverUploadResult
-                            {
-                                Status = "FAILED",
-                                Message = $"Failed to deserialize API response: {jsonEx.Message}. Raw response: {responseText}"
-                            };
-                        }
+                        var result = JsonConvert.DeserializeObject<ServiceResponseDailySaverUploadResult>(responseText);
+                        return result ?? new ServiceResponseDailySaverUploadResult().Failed("Failed to deserialize API response - result is null.");
                     }
+
+       
+                    // ------------------------------
+                    // Step 4: Handle response
+                    // ------------------------------
+             
                 }
             }
-            catch (OperationCanceledException ocEx) when (ocEx.CancellationToken.IsCancellationRequested)
+            // ------------------------------
+            // Step 5: Error handling
+            // ------------------------------
+            catch (OperationCanceledException)
             {
-                return new ServiceResponseDailySaverUploadResult
-                {
-                    Status = "FAILED",
-                    Message = "Request timeout: The operation was cancelled after 120 seconds."
-                };
+                return new ServiceResponseDailySaverUploadResult().Failed("Request timeout: The operation was cancelled.");
             }
             catch (HttpRequestException httpEx)
             {
-                return new ServiceResponseDailySaverUploadResult
-                {
-                    Status = "FAILED",
-                    Message = $"HTTP request failed: {httpEx.Message}"
-                };
+                return new ServiceResponseDailySaverUploadResult().Failed($"HTTP request failed: {httpEx.Message}");
             }
-            catch (TaskCanceledException tcEx)
-            {
-                return new ServiceResponseDailySaverUploadResult
-                {
-                    Status = "FAILED",
-                    Message = $"Request timeout: {tcEx.Message}"
-                };
-            }
+           
             catch (Exception ex)
             {
-                var model = new ServiceResponseDailySaverUploadResult();
-
-                model.Status = "FAILED";
-
-                model.Message = $"Unexpected error: {ex.Message}";
-                return model;
+                return new ServiceResponseDailySaverUploadResult().Failed($"Unexpected error: {ex.Message}");
             }
         }
-        
+
 
         public async Task<ApiResponse<T>> UploadFileToApiAsyncoo<T>(
     HttpPostedFileBase uploadedFile,

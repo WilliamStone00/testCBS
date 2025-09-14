@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,5 +36,13 @@ namespace CBS.API.Helper
         public string StatusDescription { get; set; }
         public string Message { get; set; }
         public string Status { get; set; }
+
+        public ServiceResponseDailySaverUploadResult Failed(string v)
+        {
+            this.StatusDescription = v;
+            this.Status = "Failed";
+            this.Message= v;
+            return this;
+        }
     }
 }

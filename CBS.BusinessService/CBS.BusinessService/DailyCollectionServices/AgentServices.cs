@@ -12,6 +12,7 @@ using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.Helper;
+using Microsoft.AspNet.SignalR.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -222,5 +223,7 @@ namespace CBS.BusinessService.DailyCollectionServices
                 return new List<AgentDto>();
             }
         }
+        //<Agent>
+      
     }
 }

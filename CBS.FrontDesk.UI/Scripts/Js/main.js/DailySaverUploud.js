@@ -99,6 +99,122 @@ function loadDailyAgent(branchId) {
     });
 }
 
+// Option 2: Using jQuery AJAX (if jQuery is available)
+function postAgentGLForInitializationJQuery() {
+    var messageStatus = "Are you sure you want to RE-INITIALIZE this GL ACCOUNT?";
+ 
+    alertify.confirm("TSC COLLECTORS GL ACCOUNT INIT", messageStatus,
+        function () {
+                $.ajax({
+                url: '/DailyAgentManagement/PostAgentGLForInitialization',
+                type: 'POST',
+                dataType: 'json',
+               success: function (result) {
+                    if (result.success) {
+                        console.log('Success:', result.message);
+                        showSuccessMessage(result.message);
+
+                        // Process the returned data if needed
+                        if (result.data) {
+                            handleInitializationData(result.data);
+                        }
+                    } else {
+                        console.error('Error:', result.message);
+                        showErrorMessage(result.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error:', error);
+                    let errorMessage = 'An unexpected error occurred. Please try again.';
+
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+
+                    showErrorMessage(errorMessage);
+                },
+                complete: function () {
+                    // Hide loading indicator
+                    showLoadingIndicator(false);
+                }
+            });
+        },
+        function () {
+            appalert('TSC COLLECTORS GL ACCOUNT INIT', 3, 1);
+            $('#progressBarContainer').hide();
+        }
+    );
+   
+
+  
+}
+// Helper function to get anti-forgery token (if using ASP.NET MVC anti-forgery)
+function getAntiForgeryToken() {
+    // Method 1: From meta tag
+    const token = document.querySelector('meta[name="__RequestVerificationToken"]');
+    if (token) {
+        return token.getAttribute('content');
+    }
+
+    // Method 2: From hidden input field
+    const hiddenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+    if (hiddenInput) {
+        return hiddenInput.value;
+    }
+
+    // Method 3: From cookie (if configured)
+    return getCookie('__RequestVerificationToken');
+}
+
+// Helper function to get cookie value
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+}
+
+// UI Helper functions (customize based on your UI framework)
+function showLoadingIndicator(show) {
+    const loadingElement = document.getElementById('loading-indicator');
+    if (loadingElement) {
+        loadingElement.style.display = show ? 'block' : 'none';
+    }
+
+    // Or disable button during loading
+    const button = document.getElementById('initialize-btn');
+    if (button) {
+        button.disabled = show;
+        button.textContent = show ? 'Initializing...' : 'Initialize Collector Account';
+    }
+}
+
+function showSuccessMessage(message) {
+    // Customize based on your notification system
+    alert('Success: ' + message);
+
+    // Or use a toast notification, modal, etc.
+    // toastr.success(message);
+    // showToast(message, 'success');
+}
+
+function showErrorMessage(message) {
+    // Customize based on your notification system
+    alert('Error: ' + message);
+
+    // Or use a toast notification, modal, etc.
+    // toastr.error(message);
+    // showToast(message, 'error');
+}
+
+// Handle the returned data
+function handleInitializationData(data) {
+    console.log('Initialization data received:', data);
+
+    // Process the data as needed for your application
+    // For example: update UI, redirect, refresh page section, etc.
+}
+
 function ReadForExcelFile() {
     try {
         // Prevent form submission if event exists
@@ -265,20 +381,22 @@ function ReadForExcelFile() {
                                 $("#totalVolume").text(summary.totalVolume || 0);
                                 $("#actualVolume").text(summary.actualVolume || 0);
                                 $("#dailyCollectorGL").text(summary.dailyCollectorGL || "N/A");
-                                $("#cashDifference").text(summary.cashDifference || 0);
+                                $("#cashDifference").text(summary.cashDifference);
                                 // Show result container 
                                 $("#resultContainer").show();
                                 // Build download link if recordId exists
-                                if (summary.isexhausive) {
-                                    $("#downloadLink")
-                                        .attr("href", "/DailyAgentManagement/DownloadExcelResult?recordId=" + encodeURIComponent(summary.recordId))
-                                        .text("Post Entries");
-                                } else {
-                                    displayMemberAccounts(summary.absentMembers);
-                                    $("#downloadLink")
-                                        .attr("href", "/DailyAgentManagement/DownloadExcelResult?recordId=" + encodeURIComponent(summary.recordId))
-                                        .text("Download dailysavers not registered successfully");
-                                }
+                                
+                                $("#postEntries")
+                                    .text("Post Entries")
+                                        .on('click', function (e) {
+                                          
+
+                                            postAgentGLForInitializationJQuery();
+                                            
+                                            return true;
+                                        });
+
+                              
 
                             }
 
@@ -543,7 +661,7 @@ function printTable(tableId) {
         <body>
             <h2>Daily Collector Member Accounts</h2>
             ${table.outerHTML}
-        </body>
+        </body>wx
         </html>`;
 
     const printWindow = window.open('', '_blank');
