@@ -511,50 +511,6 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         }
 
 
-        //public async Task<FileDetailsResponse> GetExtractedDetailsAsync(string fileUploadId)
-        //{
-        //    if (string.IsNullOrWhiteSpace(fileUploadId))
-        //        return null;
-
-        //    // Build URL safely
-        //    var safeId = Uri.EscapeDataString(fileUploadId);
-        //    var endpoint = $"{APICallHelper.getextracteddetails.TrimEnd('/')}/{safeId}";
-
-        //    // Expect an array under "data"
-        //    var resp = await _apiHelper.GetAsync<ResponseObject<List<TransactionDetail>>>(endpoint);
-
-        //    if (resp == null || !resp.IsSuccess || resp.ApiResponseData?.Data == null)
-        //    {
-        //        return new FileDetailsResponse
-        //        {
-        //            FileUploadId = fileUploadId,
-        //            Details = new List<TransactionDetail>()
-        //        };
-        //    }
-
-        //    var details = resp.ApiResponseData.Data;
-
-        //    // Compute summary fields from details (best-effort)
-        //    var totalAmount = details.Sum(d => d.Amount);
-        //    var totalMember = details.Count;
-
-        //    var first = details.FirstOrDefault();
-        //    var collectorName = first?.DailyCollectorName ?? string.Empty;
-        //    var branchName = first?.MemberBranchName ?? string.Empty;
-
-        //    var model = new FileDetailsResponse
-        //    {
-        //        FileUploadId = fileUploadId,
-        //        CollectorName = collectorName,
-        //        BranchName = branchName,
-        //        TotalAmount = totalAmount,
-        //        TotalMember = totalMember,
-        //        Details = details,
-
-        //    };
-
-        //    return model;
-        //}
 
         public async Task<FileDetailsResponse> GetExtractedDetailsAsync(string fileUploadId)
         {
@@ -563,33 +519,17 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
 
             try
             {
-                var endpoint = $"{APICallHelper.getextracteddetails}/{Uri.EscapeDataString(fileUploadId)}";
+                var endpoint = string.Format(APICallHelper.GetManualEntryCollectorById, fileUploadId);
 
                 // We correctly expect a List<TransactionDetail> from the API.
-                var response = await _apiHelper.GetAsync<ResponseObject<List<TransactionDetail>>>(endpoint);
+                var response = await _apiHelper.GetAsync<ResponseObject<FileDetailsResponse>>(endpoint);
 
                 // Check for a successful response and that the list contains items.
                 // Because of our [JsonProperty] fix, the deserialization will now work correctly.
-                if (response.IsSuccess && response.ApiResponseData?.Data != null && response.ApiResponseData.Data.Any())
+                if (response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
                     var detailsList = response.ApiResponseData.Data;
-
-                    // The list is now correctly populated. We can build the summary.
-                    var firstDetail = detailsList.First();
-
-                    var summary = new FileDetailsResponse
-                    {
-                        FileUploadId = firstDetail.ManualEntryDailyCollectorId,
-                        CollectorName = firstDetail.DailyCollectorName,
-                        BranchName = firstDetail.MemberBranchName,
-                        UploadedBy = firstDetail.UploadBy,
-                        //status = firstDetail.ProcessingStatus,
-                        TotalMember = detailsList.Count,
-                        TotalAmount = detailsList.Sum(d => d.Amount),
-                        Details = detailsList
-                    };
-
-                    return summary;
+                    return detailsList;
                 }
 
                 // If the API call fails or the list is empty, return null.

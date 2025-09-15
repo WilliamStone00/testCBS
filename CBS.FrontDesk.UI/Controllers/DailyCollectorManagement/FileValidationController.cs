@@ -401,7 +401,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
                     fileUploadId = f.FileUploadId ?? f.fileUploadId,
                     collectorName = f.CollectorName ?? f.collectorName,
                     branchName = f.BranchName ?? f.branchName,
-                    id = f.FileUploadId ?? f.fileUploadId,
+                    id = f.Id ?? f.Id,
                     uploadedBy = f.UploadedBy ?? f.uploadedBy,
                     uploadedOn = (f.CreatedDate != default(DateTime) ? f.CreatedDate.ToString("yyyy-MM-dd HH:mm")
                                  : (f.UploadedOn != default(DateTime) ? f.UploadedOn.ToString("yyyy-MM-dd HH:mm")

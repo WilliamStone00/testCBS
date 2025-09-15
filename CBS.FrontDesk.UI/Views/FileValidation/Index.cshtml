@@ -35,7 +35,21 @@
 <div class="card shadow p-3 mb-4">
     <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Advanced File Filters</h5>
     <div class="card p-3 mb-3 bg-light">
-        <div class="row mb-3">
+        <div class="row mb-2">
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="byBranchNameToggle">
+                    <label class="form-check-label" for="byBranchNameToggle">Filter by Branch</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="byFileNameToggle">
+                    <label class="form-check-label" for="byFileNameToggle">Filter by File Name</label>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-1">
             <div class="col-md-4">
                 <label for="statusFilter" class="form-label fw-bold">Filter by Status</label>
                 @Html.DropDownList("StatusFilter", (SelectList)ViewBag.Statuses, "---- All Status ----", new { @class = "form-control select2", id = "statusFilter" })
@@ -49,28 +63,17 @@
                 <input type="date" id="endDate" class="form-control" />
             </div>
         </div>
-        <div class="row mb-2">
-            <div class="col-md-4">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="byFileNameToggle">
-                    <label class="form-check-label" for="byFileNameToggle">Filter by File Name</label>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="byBranchNameToggle">
-                    <label class="form-check-label" for="byBranchNameToggle">Filter by Branch</label>
-                </div>
-            </div>
-        </div>
+
         <div class="row">
-            <div class="col-md-4" id="fileNameFilterSection" style="display:none;">
-                <input type="text" id="fileName" class="form-control" placeholder="Enter file name..." />
-            </div>
-            <div class="col-md-4" id="branchNameFilterSection" style="display:none;">
+            <div class="col-md-12" id="branchNameFilterSection" style="display:none;">
                 <label for="BranchIdFilter" class="form-label">Branch</label>
                 @Html.DropDownList("BranchIdFilter", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", id = "BranchIdFilter" })
             </div>
+            <div class="col-md-12" id="fileNameFilterSection" style="display:none;">
+                <label for="fileName" class="form-label">File name</label>
+                <input type="text" id="fileName" class="form-control" placeholder="Enter file name..." />
+            </div>
+
         </div>
     </div>
     <div class="row mt-2">
@@ -99,13 +102,15 @@
     </div>
 </div>
 
-<div id="detailsContainer" class="card shadow p-3 mt-4" style="display:none;">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 id="detailsHeader" class="mb-0">File Details For </h5>
-        <button id="closeDetailsBtn" type="button" class="btn-close"></button>
+<div id="detailsContainer" style="display:none;">
+
+    <div class="card">
+        <div class="card-header" id="detailsHeader"></div>
+        <div class="card-body" id="detailsBody"></div>
     </div>
-    <div class="card-body" id="detailsBody"></div>
 </div>
+<div id="detailsError" class="alert alert-danger d-none"></div>
+
 
 <div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -128,7 +133,84 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-<script>
+    <script>
+        // Only if DataTables is used
+        // const dt = $('#fileDetailsTable').DataTable({ autoWidth: false, responsive: true });
+
+        document.getElementById('fileDetailsCollapse')
+            ?.addEventListener('shown.bs.collapse', function () {
+                if ($.fn.dataTable) {
+                    const t = $('#fileDetailsTable').DataTable();
+                    t.columns.adjust().responsive?.recalc();
+                }
+            });
+    </script>
+
+    <script>
+        function printD3C() {
+            const src = document.getElementById('dashboardPrint');
+            if (!src) { window.print(); return; }
+
+            // --- Build a temporary print canvas and move content into it ---
+            const parent = src.parentNode;
+            const next = src.nextSibling;
+            const container = document.createElement('div');
+            container.id = '__printContainer';
+            document.body.appendChild(container);
+            container.appendChild(src);
+
+            // Enable print CSS
+            document.body.classList.add('print-mode');
+
+            // --- Fit to a single A4 page (within margins) ---
+            // Keep these in sync with @@page margin values above.
+            const margin = { top: 8, bottom: 8, left: 10, right: 10 }; // mm
+            const pxPerMm = 96 / 25.4;
+            const printableWidthPx = (210 - margin.left - margin.right) * pxPerMm;
+            const printableHeightPx = (297 - margin.top - margin.bottom) * pxPerMm;
+
+            // Save & normalize styles before measuring
+            const original = {
+                width: src.style.width,
+                height: src.style.height,
+                transform: src.style.transform
+            };
+
+            // Constrain width so wrapping is stable; measure full natural height
+            src.style.width = printableWidthPx + 'px';
+            src.style.height = '';         // let it grow
+            src.style.transform = '';      // reset any previous scale
+
+            // Force layout and measure
+            const measuredWidth = src.offsetWidth;
+            const measuredHeight = src.scrollHeight;
+
+            // Uniform scale so both width and height fit within the canvas
+            const scaleW = printableWidthPx / measuredWidth;
+            const scaleH = printableHeightPx / measuredHeight;
+            const scale = Math.min(scaleW, scaleH, 1); // never upscale
+
+            // Apply scale
+            src.style.transform = 'scale(' + scale + ')';
+
+            // Clean up after printing (restore DOM + styles)
+            const cleanup = () => {
+                if (next) parent.insertBefore(src, next); else parent.appendChild(src);
+                container.remove();
+                src.style.width = original.width;
+                src.style.height = original.height;
+                src.style.transform = original.transform;
+                document.body.classList.remove('print-mode');
+                window.removeEventListener('afterprint', cleanup);
+            };
+            window.addEventListener('afterprint', cleanup);
+
+            // Go!
+            window.print();
+        }
+    </script>
+    <script>
+
     (function ($) {
         // ---------------------------
         // Helper UI & rendering fns
@@ -286,7 +368,7 @@
 
         // Build the payload expected by your LoadFiles action
         function buildPayload(d) {
-            const order = (d.order && d.order[0]) || {};
+            const order = (d.order && d.order[3]) || {};
             // The logic here is already correct and sends all filter values at once.
             // No changes are needed to the payload structure.
             return {
@@ -401,40 +483,54 @@
             if (dataTable) dataTable.ajax.reload();
         });
 
-        // ---------------------------
-        // Details loader: show spinner, reveal card only after loaded
-        // ---------------------------
-        function viewDetails(fileId) {
-            const detailsContainer = $('#detailsContainer');
-            const detailsBody = $('#detailsBody');
-            const detailsHeader = $('#detailsHeader');
+// ---------------------------
+// Details loader: fetch first, then reveal on success
+// ---------------------------
+       function viewDetails(fileId) {
+    const $detailsContainer = $('#detailsContainer');   // panel to reveal on success
+    const $detailsBody = $('#detailsBody');             // content target
+    const $detailsHeader = $('#detailsHeader');         // header text
+    const $errorBox = $('#detailsError');               // error placeholder (separate from details)
 
-            // --- THIS IS THE NEW, IMPROVED LOGIC ---
+    // Always start hidden and clear previous content/errors
+    $detailsContainer.hide();
+    $detailsBody.empty();
+    $detailsHeader.text('');
+    if ($errorBox.length) $errorBox.addClass('d-none').empty();
 
-            // 1. Prepare the container but KEEP IT HIDDEN.
-            detailsHeader.text(`File Details: ${fileId}`);
-            detailsBody.html('<div class="text-center p-4"><div class="spinner-border text-primary"></div></div>');
+    const url = `@Url.Action("GetextractedFileDetails", "FileValidation")?id=${fileId}`;
 
-            // 2. Make the AJAX call to get the content.
-            const url = `@Url.Action("GetextractedFileDetails", "FileValidation")?id=${fileId}`;
+    $.get(url)
+        .done(function (response) {
+            // Guard: empty/whitespace response -> treat as error
+            if (!response || (typeof response === 'string' && response.trim().length === 0)) {
+                if ($errorBox.length) {
+                    $errorBox
+                        .removeClass('d-none')
+                        .html('No details were returned for this file.');
+                }
+                return; // do NOT show details container
+            }
 
-            $.get(url)
-                .done(function (response) {
-                    // 3. SUCCESS: The content is now loaded. Inject it into the body.
-                    detailsBody.html(response);
+            // Success: inject and reveal
+            $detailsHeader.text(`File Details: ${fileId}`);
+            $detailsBody.html(response);
+            $detailsContainer.slideDown();
 
-                    // 4. NOW, make the container visible with a smooth animation.
-                    detailsContainer.slideDown();
-
-                    // 5. Scroll the user to the details view.
-                    document.getElementById('detailsContainer').scrollIntoView({ behavior: 'smooth' });
-                })
-                .fail(function (xhr) {
-                    // If it fails, we can still show the panel but with an error message.
-                    detailsBody.html(`<div class="alert alert-danger">Error loading details. Status: ${xhr.statusText}</div>`);
-                    detailsContainer.slideDown();
-                });
-        }
+            // Scroll into view
+            document.getElementById('detailsContainer')
+                ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        })
+        .fail(function (xhr) {
+            // Show error only (do not open details panel)
+            if ($errorBox.length) {
+                const msg = xhr?.responseText
+                    ? xhr.responseText
+                    : `Error loading details. Status: ${xhr.status} ${xhr.statusText}`;
+                $errorBox.removeClass('d-none').html(msg);
+            }
+        });
+}
 
         // Delegate action button clicks
         // Note: bind to document if table not present at ready or created later
@@ -471,5 +567,5 @@
         });
 
     }(jQuery));
-</script>
+    </script>
 }
