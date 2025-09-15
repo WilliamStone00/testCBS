@@ -27,5 +27,6 @@ namespace CBS.BusinessService.DailyCollectionServices
 
  
         public string CollectorId { get; set; }
+        public string ChartOfAccountId { get;   set; }
     }
 }

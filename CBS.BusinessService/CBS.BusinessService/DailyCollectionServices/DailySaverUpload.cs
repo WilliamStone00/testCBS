@@ -12,6 +12,7 @@ namespace CBS.BusinessService.DailyCollectionServices
         public string CollectorId { get; set; }
         public string CollectorName { get; set; }
         public string AccountId { get; set; }
+        public string ChartOfAccountId { get; set; }
         public string CashDifferenceAccountId { get; set; }
         public string ProductId { get; set; }
     }
@@ -40,7 +41,8 @@ namespace CBS.BusinessService.DailyCollectionServices
         public string ProductId { get; set; }
         public string Id { get; set; }
         public decimal TotalAmount { get; set; }
-
+        public string ChartOfAccountId { get; set; }
+ 
         internal PostingCommand ToPostingCommand()
         {
             return new PostingCommand

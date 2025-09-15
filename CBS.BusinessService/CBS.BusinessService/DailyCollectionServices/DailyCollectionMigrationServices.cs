@@ -410,6 +410,7 @@ namespace CBS.BusinessService.DailyCollectionServices
                             IsNewCustomer = false, // Default value, adjust as needed
                             BankCode = "012",
                             AccountId = accountId,
+                            ChartOfAccountId = accountId,
                             Amount = GetCellValueAsDecimal(currentRow.Cell(5)),
                             HasBeenProcessed = false,
                             Id = branchId + "@" + collectorId + "@" + PrepareDailySaverIDFormat(GetCellValueAsString(currentRow.Cell(1)), BranchCode),

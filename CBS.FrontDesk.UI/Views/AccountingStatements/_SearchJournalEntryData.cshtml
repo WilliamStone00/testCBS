@@ -1,0 +1,17 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingEntryQuery
+ 
+<div class="container">
+    @*<fieldset class="fieldset">*@
+    <div class="card-body">
+   
+                    <div class="col-md-12 mb-sm-1">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.SystemQuery.ReferenceId, new { @class = "form-control", placeholder = "Enter Transaction Reference" })
+                            @Html.ValidationMessageFor(model => model.SystemQuery.ReferenceId, "", new { @class = "text-danger" })
+                            <label>Enter journal entries</label>
+                        </div>
+                    </div>
+ 
+      
+    </div>
+</div>
