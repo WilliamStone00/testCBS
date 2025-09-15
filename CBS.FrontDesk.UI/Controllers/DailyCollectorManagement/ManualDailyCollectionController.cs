@@ -383,6 +383,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             {
                 // IMPORTANT: For a server-side DataTable, we just return the EMPTY partial view.
                 // The table will make its own AJAX call to get the data.
+                await Loader();
                 return PartialView(partialView);
             }
             else if (path == "new")
@@ -481,7 +482,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
 
             // --- 2) Parse and validate the date ---
             DateTime parsedDate;
-            if (!DateTime.TryParseExact(AccountingDate, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
+            if (!DateTime.TryParseExact(AccountingDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
             {
                 return Json(new { success = false, message = "Invalid date format." });
             }

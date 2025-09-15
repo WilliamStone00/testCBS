@@ -1,4 +1,512 @@
-﻿<fieldset class="fieldset-custom">   
+﻿@using Resources
+
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Advanced File Filters</h5>
+    <div class="card p-3 mb-3 bg-light">
+        <div class="row mb-3">
+            <div class="col-md-3 form-check">
+                <input type="checkbox" class="form-check-input" id="byBranch" />
+                <label class="form-check-label fw-bold" for="byBranch">@GlobalUserManagement.FilterByBranchName</label>
+            </div>
+            <div class="col-md-3 form-check">
+                <input type="checkbox" class="form-check-input" id="byUser" />
+                <label class="form-check-label fw-bold" for="byUser">@GlobalUserManagement.FilterByUserNames</label>
+            </div>
+            <div class="col-md-3 form-check">
+                <input type="checkbox" class="form-check-input" id="byDate" />
+                <label class="form-check-label fw-bold" for="byDate">@GlobalUserManagement.FilterByLastLoginDates</label>
+            </div>
+            <div class="col-md-3 form-check">
+                <input type="checkbox" class="form-check-input" id="showAll" />
+                <label class="form-check-label fw-bold" for="showAll">Show All</label>
+            </div>
+        </div>
+
+        <div id="branchFilterSection" class="row mb-3" style="display:none;">
+            <div class="col-md-12">
+                <label class="form-label fw-bold">@GlobalUserManagement.SelectBranch</label>
+                @Html.DropDownList("BranchIdFilter", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", id = "BranchIdFilter" })
+            </div>
+        </div>
+
+        <div id="userFilterSection" class="row mb-3" style="display:none;">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Collector</label>
+                @Html.DropDownList("CollectorIdFilter", new SelectList(ViewBag.Collectors ?? Enumerable.Empty<object>(), "Id", "Name"), "--- All Collectors ---", new { @class = "form-control select2", id = "CollectorIdFilter" })
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Uploaded By</label>
+                @Html.DropDownList("UploadedByUserIdFilter", new SelectList(ViewBag.Users ?? Enumerable.Empty<object>(), "Id", "FullName"), "--- All Users ---", new { @class = "form-control select2", id = "UploadedByUserIdFilter" })
+            </div>
+        </div>
+
+        <div id="dateRangeSection" class="row mb-3" style="display:none;">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Upload Date From</label>
+                <input type="date" id="startDate" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Upload Date To</label>
+                <input type="date" id="endDate" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            @*<div class="col-md-4">
+                <label class="form-label fw-bold">Status</label>
+                @Html.DropDownList("StatusFilter", (SelectList)ViewBag.Statuses, "---- All Status ----", new { @class = "form-control select2", id = "statusFilter" })
+            </div>*@
+            <div class="col-md-4">
+                <label class="form-label fw-bold">File Category</label>
+                <input type="text" id="fileCategory" class="form-control" placeholder="Category (optional)" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold">File Name</label>
+                <input type="text" id="fileName" class="form-control" placeholder="Search filename..." />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label class="form-label fw-bold">Global Search</label>
+                <input type="text" id="globalSearch" class="form-control" placeholder="Search across collector, branch, file name..." />
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-md-12 d-flex">
+            <button id="applyFilterBtn" class="btn btn-primary me-2 w-50"><i class="mdi mdi-magnify"></i> @GlobalUserManagement.ApplyFilter</button>
+            <button id="resetFilterBtn" class="btn btn-secondary w-50"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset</button>
+        </div>
+    </div>
+</div>
+@Html.Partial("_model")
+<!-- DataTable Partial -->
+<div id="userTableView">
+    @Html.Partial("_listingFilesdatatable")
+</div>
+
+<script>
+    /*
+      Fixed drop-in script. Copy & paste to replace the broken version.
+      Preserves your extract/details handlers and exposes window.filesDataTable
+      for backward compatibility.
+    */
+    (function ($) {
+        // -----------------------
+        // Helpers & Preview HTML
+        // -----------------------
+        function formatCurrency(num) {
+            return (num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        window.buildExtractedPreviewHtml = function (data) {
+            data = data || {};
+            const formatCurr = (n) => (n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            const fileUploadId = data.FileUploadId ?? data.fileUploadId ?? 'N/A';
+            const collectorName = data.CollectorName ?? data.collectorName ?? '';
+            const branchName = data.BranchName ?? data.branchName ?? '';
+            const totalMember = data.TotalMember ?? data.totalMember ?? data.totalMembers ?? 0;
+            const totalAmount = data.TotalAmount ?? data.totalAmount ?? 0;
+
+            return `
+    <fieldset class="fieldset-custom">
+        <legend class="legend-custom text-success">Extraction Successful: ${fileUploadId}</legend>
+        <div class="row g-2">
+            <div class="col-6 col-md-3">
+                <div class="card h-100 p-2"><div class="card-body p-2 text-center">
+                    <p class="mb-0 text-muted" style="font-size: 0.75rem;">Collector Name</p>
+                    <h6 class="ms-1 mb-0">${collectorName}</h6>
+                </div></div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card h-100 p-2"><div class="card-body p-2 text-center">
+                    <p class="mb-0 text-muted" style="font-size: 0.75rem;">Branch</p>
+                    <h6 class="ms-1 mb-0">${branchName}</h6>
+                </div></div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card h-100 p-2"><div class="card-body p-2 text-center">
+                    <p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Members</p>
+                    <h6 class="ms-1 mb-0">${totalMember}</h6>
+                </div></div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card h-100 p-2"><div class="card-body p-2 text-center">
+                    <p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Amount</p>
+                    <h6 class="ms-1 mb-0">${formatCurr(totalAmount)}</h6>
+                </div></div>
+            </div>
+        </div>
+
+        <div class="table-responsive mt-3">
+            <table id="extractedDetailsTable" class="table table-striped table-bordered" style="width:100%"></table>
+        </div>
+
+        <div class="d-flex justify-content-end mt-3">
+            <button type="button" id="closeExtractedPreviewBtn" class="btn btn-secondary">Close</button>
+        </div>
+    </fieldset>`;
+        };
+
+        // -----------------------
+        // Action Buttons helper
+        // -----------------------
+        function generateActionButtons(fileId, status) {
+            const raw = (status ?? '').toString().trim().toLowerCase();
+            const detailsLink = `<a href="#" onclick="AddORUpdateGen('${fileId}', 'mainWorkspace', '_FileDetails', 'details', 'ManualDailyCollection'); return false;" class="ms-2">Details</a>`;
+            const showExtract = raw === 'viewed';
+            const extractLink = showExtract ? `<a href="#" onclick="extractFile('${fileId}'); return false;" class="ms-2 text-primary">Extract</a>` : '';
+            return detailsLink + extractLink;
+        }
+        window.generateActionButtons = generateActionButtons;
+
+        // -----------------------
+        // extractFile (kept behavior)
+        // -----------------------
+        window.extractFile = function (fileId) {
+            if (!fileId) {
+                appalert('No file to extract.', 3, 1);
+                return;
+            }
+
+            alertify.confirm("Confirmation", "Are you sure you want to extract this file?",
+                function () {
+                    const token = $('input[name="__RequestVerificationToken"]').val();
+                    const $resultContainer = $('#uploadResultContainer');
+
+                    $.ajax({
+                        url: '/ManualDailyCollection/extract',
+                        type: 'POST',
+                        data: { KEY: fileId },
+                        headers: token ? { 'RequestVerificationToken': token } : {},
+                        dataType: 'json',
+                        beforeSend: function () {
+                            $resultContainer.stop(true, true).show().html(
+                                '<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-2 text-primary">Extracting data...</p></div>'
+                            );
+                            console.log('extractFile: started for', fileId);
+                        },
+                        success: function (response) {
+                            try {
+                                console.log('extractFile: success response', response);
+                                const status = (response && (response.status ?? response.Status ?? '')).toString().toLowerCase();
+                                const data = response && (response.data ?? response.Data ?? null);
+
+                                if (status === 'success' && data) {
+                                    appalert(response.statusDescription || 'File extracted successfully.', 1, 1);
+
+                                    window.currentFileUploadId = data.FileUploadId ?? data.fileUploadId ?? window.currentFileUploadId;
+
+                                    const extractedHtml = window.buildExtractedPreviewHtml(data);
+                                    $resultContainer.stop(true, true).hide().html(extractedHtml).fadeIn();
+
+                                    let detailsArray = data.details ?? data.Details ?? [];
+                                    if (!Array.isArray(detailsArray)) {
+                                        console.warn('extractFile: expected details array, got:', detailsArray);
+                                        detailsArray = [];
+                                    }
+
+                                    if ($.fn.DataTable.isDataTable('#extractedDetailsTable')) {
+                                        try {
+                                            $('#extractedDetailsTable').DataTable().clear().destroy();
+                                            $('#extractedDetailsTable').empty();
+                                        } catch (cleanupErr) {
+                                            console.warn('extractFile: cleanup error', cleanupErr);
+                                        }
+                                    }
+
+                                    try {
+                                        $('#extractedDetailsTable').DataTable({
+                                            destroy: true,
+                                            data: detailsArray,
+                                            columns: [
+                                                {
+                                                    title: "Member Ref.",
+                                                    data: function (row) { return row.memberReference ?? row.MemberReference ?? row.MemberRef ?? ''; }
+                                                },
+                                                {
+                                                    title: "Member Name",
+                                                    data: function (row) { return row.memberName ?? row.MemberName ?? ''; }
+                                                },
+                                                {
+                                                    title: "Account No.",
+                                                    data: function (row) {
+                                                        return row.accountNumber ?? row.AccountNumber ?? row.fullAccountNumber ?? row.FullAccountNumber ?? '';
+                                                    }
+                                                },
+                                                {
+                                                    title: "Member Branch",
+                                                    data: function (row) { return row.memberBranchName ?? row.MemberBranchName ?? ''; }
+                                                },
+                                                {
+                                                    title: "Amount",
+                                                    className: "text-end",
+                                                    data: function (row) { return row.amount ?? row.Amount ?? 0; },
+                                                    render: $.fn.dataTable.render.number(',', '.', 2)
+                                                }
+                                            ],
+                                            responsive: true,
+                                            pageLength: 5,
+                                            lengthMenu: [5, 10, 25, 50]
+                                        });
+                                        handleExtractSuccess(fileId);
+                                    } catch (dtErr) {
+                                        console.error('Error initializing extractedDetailsTable', dtErr);
+                                        $resultContainer.append(`<div class="alert alert-danger">Error displaying extracted table: ${dtErr?.message ?? dtErr}</div>`);
+                                        throw dtErr;
+                                    }
+
+                                    $('#closeExtractedPreviewBtn').off('click').on('click', function () {
+                                        $resultContainer.fadeOut(function () { $(this).empty(); });
+                                    });
+
+                                    $('html, body').animate({ scrollTop: $resultContainer.offset().top - 80 }, 300);
+                                } else {
+                                    const msg = (response && (response.message || response.statusDescription)) || 'Extraction failed.';
+                                    appalert(msg, 4, 1);
+                                    $resultContainer.html(`<div class="alert alert-warning">${msg}</div>`);
+                                }
+                            } catch (err) {
+                                console.error('extractFile: success handler error', err);
+                                appalert('An unexpected error occurred while building extraction results.', 4, 1);
+                                $resultContainer.html(`<div class="alert alert-danger">An error occurred while showing extracted data.<br/><small>${err?.message ?? err}</small></div>`);
+                            }
+                        },
+                        error: function (xhr, status, err) {
+                            console.error('extractFile: ajax error', status, err, xhr);
+                            appalert('An error occurred during extraction.', 4, 1);
+                            $('#uploadResultContainer').html('<div class="alert alert-danger">An error occurred during extraction. Please try again.</div>');
+                        },
+                        complete: function () {
+                            console.log('extractFile: request complete for', fileId);
+                        }
+                    });
+                },
+                function () {
+                    appalert("Extraction cancelled.", 3, 1);
+                }
+            );
+        };
+
+        // -----------------------
+        // handleExtractSuccess
+        // -----------------------
+        function handleExtractSuccess(fileId) {
+            try {
+                if (window.filesDataTable && window.filesDataTable.ajax && typeof window.filesDataTable.ajax.reload === 'function') {
+                    window.filesDataTable.ajax.reload(null, false);
+                    console.log('filesDataTable: reloaded after successful extract for', fileId);
+                } else if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                    $('#myDataTable').DataTable().ajax.reload(null, false);
+                    console.log('myDataTable: reloaded after successful extract for', fileId);
+                } else {
+                    console.warn('No DataTable found to reload after extract.');
+                }
+            } catch (err) {
+                console.error('handleExtractSuccess error', err);
+            }
+        }
+        window.handleExtractSuccess = handleExtractSuccess;
+
+        // -----------------------
+        // DOM ready initialisation
+        // -----------------------
+        $(function () {
+            // select2 init
+            if ($.fn.select2) {
+                $('#BranchIdFilter, #CollectorIdFilter, #UploadedByUserIdFilter, #statusFilter').each(function () {
+                    if ($(this).length) $(this).select2({ width: '100%' });
+                });
+            }
+
+            // Show/hide sections based on toggles (keeps compatibility)
+            if ($('#byFileNameToggle').is(':checked')) $('#fileNameFilterSection').show();
+            if ($('#byBranchNameToggle').is(':checked')) $('#branchNameFilterSection').show();
+
+            $('#byUser').on('change', function () {
+                if ($(this).is(':checked')) $('#userFilterSection').slideDown();
+                else $('#userFilterSection').slideUp().find('select').val('').trigger('change');
+            });
+            $('#byBranch').on('change', function () {
+                if ($(this).is(':checked')) $('#branchFilterSection').slideDown();
+                else $('#branchFilterSection').slideUp().find('select').val('').trigger('change');
+            });
+            $('#byDate').on('change', function () {
+                if ($(this).is(':checked')) $('#dateRangeSection').slideDown();
+                else $('#dateRangeSection').slideUp().find('input').val('');
+            });
+
+            if ($('#byUser').is(':checked')) $('#userFilterSection').show();
+            if ($('#byBranch').is(':checked')) $('#branchFilterSection').show();
+            if ($('#byDate').is(':checked')) $('#dateRangeSection').show();
+        });
+
+        // -----------------------
+        // Build filter payload
+        // -----------------------
+        function collectFilterData() {
+            function isoOrNull(selector) {
+                const v = $(selector).val();
+                return v ? new Date(v).toISOString() : null;
+            }
+
+            return {
+                StatusFilter: $('#statusFilter').val() || null,
+                StartDate: $('#byDate').is(':checked') ? isoOrNull('#startDate') : null,
+                EndDate: $('#byDate').is(':checked') ? isoOrNull('#endDate') : null,
+                BranchId: $('#byBranch').is(':checked') ? ($('#BranchIdFilter').val() || null) : null,
+                CollectorId: $('#byUser').is(':checked') ? ($('#CollectorIdFilter').val() || null) : null,
+                UploadedByUserId: $('#byUser').is(':checked') ? ($('#UploadedByUserIdFilter').val() || null) : null,
+                GlobalSearch: $('#globalSearch').val() || null,
+                FileCategory: $('#fileCategory').val() || null,
+                ShowAll: $('#showAll').is(':checked'),
+                FileName: $('#fileName').val() || null,
+                Options: {}
+            };
+        }
+
+        // -----------------------
+        // DataTable create/reload
+        // -----------------------
+        var dataTable = null;
+
+        function createOrReloadDataTable() {
+            if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                // ensure dataTable variable references the instance
+                dataTable = $('#myDataTable').DataTable();
+                window.filesDataTable = dataTable;
+                dataTable.ajax.reload(null, false);
+                return;
+            }
+
+            dataTable = $('#myDataTable').DataTable({
+                serverSide: true,
+                processing: true,
+                deferRender: true,
+                ajax: {
+                    url: '/ManualDailyCollection/LoadFilesForDataTable',
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: function (d) {
+                        const filters = collectFilterData();
+                        const orderInfo = (d.order && d.order.length && d.order[0]) ? d.order[0] : null;
+                        let sortColumnName = '';
+                        let sortDirection = '';
+
+                        if (orderInfo) {
+                            const colIndex = orderInfo.column;
+                            const colDef = (d.columns && d.columns[colIndex]) || {};
+                            sortColumnName = colDef.data || colDef.name || $('#myDataTable thead th').eq(colIndex).attr('data-col') || '';
+                            sortDirection = orderInfo.dir || '';
+                        }
+
+                        filters.Options = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            pageSize: d.length,
+                            skip: d.start,
+                            sortColumnName: sortColumnName,
+                            sortColumnDirection: sortDirection,
+                            sortColumn: sortColumnName,
+                            sortDirection: sortDirection,
+                            searchValue: d.search?.value || ''
+                        };
+
+                        return JSON.stringify(filters);
+                    },
+                    beforeSend: function (jqXhr) {
+                        const token = $('input[name="__RequestVerificationToken"]').val();
+                        if (token) jqXhr.setRequestHeader('RequestVerificationToken', token);
+                    },
+                    dataSrc: function (json) {
+                        if (!json) return [];
+                        return json.data || json.items || [];
+                    },
+                    error: function (xhr, status, err) {
+                        console.error('DataTable ajax error', status, err, xhr);
+                    }
+                },
+                order: [[3, 'desc']],
+                columns: [
+                  //  { data: "FileUploadId", name: "FileUploadId" },
+                    { data: "FileName", name: "FileName" },
+                    { data: "BranchName", name: "BranchName" },
+                    { data: "UploadedOn", name: "UploadedOn", render: (data) => data ? new Date(data).toLocaleString() : '' },
+                    { data: "SalaryProcessingStatus", name: "SalaryProcessingStatus", orderable: false, render: getStatusBadge },
+                    {
+                        data: "FileUploadId",
+                        orderable: false,
+                        render: function (data, type, row) {
+                            return generateActionButtons(data, row.SalaryProcessingStatus);
+                        }
+                    }
+                ],
+                responsive: true,
+                autoWidth: false,
+                lengthMenu: [10, 25, 50, 100],
+                pageLength: 10,
+                language: {
+                    emptyTable: "No files. Choose filters and click 'Apply Filters' to load files."
+                },
+                drawCallback: function () {
+                    try { dataTable.columns.adjust(); } catch (e) { /* ignore */ }
+                }
+            });
+
+            // expose global ref for backward compatibility
+            window.filesDataTable = dataTable;
+        }
+
+        // -----------------------
+        // Event bindings
+        // -----------------------
+        $(document).on('click', '#applyFilterBtn', function () {
+            createOrReloadDataTable();
+        });
+
+        $(document).on('click', '#resetFilterBtn', function () {
+            $('#statusFilter').val('').trigger('change');
+            $('#startDate, #endDate, #fileCategory, #fileName, #globalSearch').val('');
+            $('#byUser, #byBranch, #byDate, #showAll').prop('checked', false);
+            $('#BranchIdFilter, #CollectorIdFilter, #UploadedByUserIdFilter').val('').trigger('change');
+            $('#userFilterSection, #branchFilterSection, #dateRangeSection').hide();
+
+            if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                $('#myDataTable').DataTable().ajax.reload();
+            }
+        });
+
+        $(document).on('click', '#myDataTable tbody .action-btn', function (e) {
+            e.preventDefault();
+            const $btn = $(this);
+            if ($btn.hasClass('disabled')) return;
+            const action = $btn.data('action');
+            const id = $btn.data('id');
+            if (action === 'details') viewDetails(id);
+            else loadActionForm(id, action);
+        });
+
+        $(document).on('click', '#closeDetailsBtn', function () {
+            $('#detailsContainer').slideUp();
+        });
+
+        // Optionally auto-load table on page load:
+        // createOrReloadDataTable();
+
+    })(jQuery);
+</script>
+
+
+
+
+
+
+
+<!--<fieldset class="fieldset-custom">
     <div class="table-responsive">
 
         <h4 class="legend-custom text-info">Previously Uploaded Files</h4>
@@ -14,15 +522,14 @@
                     <th class="text-center" style="width:10%">Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- DataTable will populate this via an AJAX call -->
-            </tbody>
+            <tbody>-->
+<!-- DataTable will populate this via an AJAX call -->
+<!--</tbody>
         </table>
     </div>
-</fieldset>
-
+</fieldset>-->
 <!-- ✅ Container for summary + extracted DataTable -->
-<div id="uploadResultContainer" class="mt-3"></div>
+<!--<div id="uploadResultContainer" class="mt-3"></div>
 
 <script>
 $(document).ready(function () {
@@ -83,7 +590,7 @@ $(document).ready(function () {
         </div>
     </fieldset>`;
     }
-       
+
 
     // --- Generate action buttons for each row ---
     function generateActionButtons(fileId, status) {
@@ -317,7 +824,4 @@ function extractFile(fileId) {
 
 
 
-</script>
-
-
-
+</script>-->

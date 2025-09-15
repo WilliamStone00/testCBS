@@ -10623,6 +10623,7 @@
     <Content Include="Views\FileValidation\LoadDetailsDataTable.cshtml" />
     <Content Include="Views\DailySaverManagement\Index.cshtml" />
     <Content Include="Views\DailySaverManagement\_CreateDailySaver.cshtml" />
+    <Content Include="Views\ManualDailyCollection\_listingFilesdatatable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
