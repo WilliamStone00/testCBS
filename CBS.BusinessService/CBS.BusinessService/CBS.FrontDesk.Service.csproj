@@ -340,6 +340,8 @@
     <Compile Include="DailyCollectionServices\AgentDailyCashLimitServices.cs" />
     <Compile Include="DailyCollectionServices\AgentServices.cs" />
     <Compile Include="DailyCollectionServices\AgentAccountServices.cs" />
+    <Compile Include="DailyCollectionServices\DailySaverRequest.cs" />
+    <Compile Include="DailyCollectionServices\DailySaverUpload.cs" />
     <Compile Include="DailyCollectionServices\ManualDailyCollection Service\IManualDailyCollectionService.cs" />
     <Compile Include="DailyCollectionServices\ManualDailyCollection Service\ManualDailyCollectionMockService.cs" />
     <Compile Include="DailyCollectionServices\ManualDailyCollection Service\ManualDailyCollectionService.cs" />

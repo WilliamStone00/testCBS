@@ -591,7 +591,6 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         /// <summary>Optional comment to store when unlinking.</summary>
         public string UnlinkedComment { get; set; }
     }
-
     public class Teller
     {
 
@@ -739,22 +738,12 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         /// <summary>Date when this teller was unlinked (default = MinValue).</summary>
         public DateTime UnlinkedDate { get; set; } = DateTime.MinValue;
 
-
-
-        // --- Account & Status ---
-        public bool IsPrimary { get; set; }
-        public bool ActiveStatus { get; set; }
-
-  
-
         // --- Navigation Properties ---
         public virtual ICollection<OtherTransaction> OtherTransactions { get; set; }
         public virtual ICollection<PrimaryTellerProvisioningHistory> PrimaryTellerProvisioningHistories { get; set; }
         public virtual ICollection<CashReplenishmentPrimaryTeller> CashReplenishmentPrimaryTellers { get; set; }
         public virtual ICollection<CashReplenishmentSubTeller> CashReplenishmentSubTellers { get; set; }
 
-
-        public bool InUseStatus { get; set; }
         public Teller()
         {
             MinimumAmountToManage = 0m;
@@ -769,6 +758,183 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
             MobileMoneyMaximumBalanceAlertLevel = 0m;
         }
     }
+    //public class Tellerxxx
+    //{
+
+    //    [Required]
+    //    public string id { get; set; }
+
+    //    [Required]
+    //    public bool isPrimary { get; set; }
+
+    //    [Required]
+    //    [StringLength(100, MinimumLength = 2, ErrorMessage = "Name must be between 2 and 100 characters.")]
+    //    public string name { get; set; }
+
+    //    [Required]
+    //    [StringLength(10, MinimumLength = 2, ErrorMessage = "Code must be between 2 and 10 characters.")]
+    //    public string code { get; set; }
+
+    //    [Required]
+    //    [RegularExpression(@"^[A-Za-z0-9\-]+$", ErrorMessage = "Bank ID can only contain alphanumeric characters and hyphens.")]
+    //    public string bankId { get; set; }
+
+    //    [Required]
+    //    [RegularExpression(@"^[A-Za-z0-9\-]+$", ErrorMessage = "Branch ID can only contain alphanumeric characters and hyphens.")]
+    //    public string branchId { get; set; }
+
+    //    [Required]
+    //    [StringLength(50, ErrorMessage = "TellerType cannot exceed 50 characters.")]
+    //    public string TellerType { get; set; } // VirtualTeller, PhysicalTeller, DailyCollectorTeller, NoneCashTeller
+    //    public bool AllowRemoteTellerClose { get; set; }
+    //    public string LikedMemberReference { get; set; }
+    //    public bool IsLinkedToCollectorTransit { get; set; }
+
+
+    //    public bool PerformCashIn { get; set; }
+    //    public bool ShowbalancesOnCloseOfDay { get; set; }
+    //    public decimal BalanceInitialization { get; set; }
+    //    public bool ShowbalancesOnOpenOfDay { get; set; }
+
+    //    public bool PerformCashOut { get; set; }
+
+    //    [Required]
+    //    [RegularExpression(@"^[A-Za-z0-9\-]+$", ErrorMessage = "Event Code can only contain alphanumeric characters and hyphens.")]
+    //    public string EventCode { get; set; }
+
+    //    public bool PerformTransfer { get; set; }
+
+    //    [Required]
+    //    [StringLength(20, ErrorMessage = "OperationType cannot exceed 20 characters.")]
+    //    public string OperationType { get; set; } // Cash, NoneCash
+
+    //    [Required]
+    //    [Range(0, double.MaxValue, ErrorMessage = "MinimumAmountToManage must be a positive number.")]
+    //    public decimal MinimumAmountToManage { get; set; } = 0m;
+
+    //    [Required]
+    //    [Range(0, double.MaxValue, ErrorMessage = "MaximumAmountToManage must be a positive number.")]
+    //    public decimal MaximumAmountToManage { get; set; } = 0m;
+
+    //    [Required]
+    //    [Range(0, double.MaxValue, ErrorMessage = "MinimumDepositAmount must be a positive number.")]
+    //    public decimal MinimumDepositAmount { get; set; } = 0m;
+
+    //    [Required]
+    //    [Range(0, double.MaxValue, ErrorMessage = "MaximumDepositAmount must be a positive number.")]
+    //    public decimal MaximumDepositAmount { get; set; } = 0m;
+
+    //    [Required]
+    //    [Range(0, double.MaxValue, ErrorMessage = "MinimumWithdrawalAmount must be a positive number.")]
+    //    public decimal MinimumWithdrawalAmount { get; set; } = 0m;
+
+    //    [Required]
+    //    [Range(0, double.MaxValue, ErrorMessage = "MaximumWithdrawalAmount must be a positive number.")]
+    //    public decimal MaximumWithdrawalAmount { get; set; } = 0m;
+
+    //    [Required]
+    //    [Range(0, double.MaxValue, ErrorMessage = "MinimumTransferAmount must be a positive number.")]
+    //    public decimal MinimumTransferAmount { get; set; } = 0m;
+
+    //    [Required]
+    //    [Range(0, double.MaxValue, ErrorMessage = "MaximumTransferAmount must be a positive number.")]
+    //    public decimal MaximumTransferAmount { get; set; } = 0m;
+    //    public string AccountNumber { get; set; }
+
+    //    public Branch Branch { get; set; }
+
+    //    public bool inUseStatus { get; set; }
+
+    //    public bool activeStatus { get; set; }
+    //    public string OperationEventCode { get; set; }
+    //    public string MobileMoneyUserKeepingThePhone { get; set; }
+    //    public string MobileMoneyFloatNumber { get; set; }
+    //    [Required]
+    //    [Range(0, double.MaxValue, ErrorMessage = "Minimum alert balance must be a positive number.")]
+    //    public decimal MobileMoneyMinimumBalanceAlertLevel { get; set; }
+    //    [Required]
+    //    [Range(0, double.MaxValue, ErrorMessage = "Maximum alert balance must be a positive number.")]
+
+    //    public decimal MobileMoneyMaximumBalanceAlertLevel { get; set; }
+    //    [Required]
+    //    public string FromAuxillaryAccountNumber_A { get; set; }
+    //    [Required]
+    //    public string ToBranchFloatAccountNumberAuxillary_A { get; set; }
+    //    [Required]
+    //    public string FromHeadOfficeAccountNumber_B { get; set; }
+    //    [Required]
+    //    public string ToBranchFloatAccountNumberHeadOffice_B { get; set; }
+    //    [Required]
+    //    public string FromBranchAccountNumber_C { get; set; }
+    //    [Required]
+    //    public string ToBranchFloatAccountNumberBranch_C { get; set; }
+    //    [Required]
+    //    public string FromBranchFloatAccountNumber_D { get; set; }
+    //    [Required]
+    //    public string ToHeadOfficeFloatAccountNumber_D { get; set; }
+    //    public string PhoneNumberToRecieveAlert { get; set; }
+    //    public string MobileMoneyAlertMessageInFrench { get; set; }
+    //    public string MobileMoneyAlertMessageInEnglish { get; set; }
+    //    public bool IsBlockedDueToCashCeilling { get; set; }
+    //    public DateTime DateOfBlocked { get; set; }
+    //    public string Blockedby { get; set; }
+    //    public string Comment { get; set; }
+    //    public InitializeAccountCommand InitializeAccountCommand { get; set; } = new InitializeAccountCommand();
+    //    public List<TransactionHistory> Transactions { get; set; }
+    //    public string MapMobileMoneyToNoneMemberMobileMoneyReference { get; set; }
+
+
+
+    //    /// <summary>General free-form comment about the teller.</summary>
+
+    //    /// <summary>Comment provided when the teller was linked.</summary>
+    //    public string LinkedComment { get; set; }
+
+    //    /// <summary>Comment provided when the teller was unlinked.</summary>
+    //    public string UnlinkedComment { get; set; }
+
+    //    /// <summary>User who linked this teller.</summary>
+    //    public string LinkedBy { get; set; }
+
+    //    /// <summary>User who unlinked this teller.</summary>
+    //    public string UnlinkedBy { get; set; }
+
+    //    /// <summary>Date when this teller was linked (default = MinValue).</summary>
+    //    public DateTime LinkedDate { get; set; } = DateTime.MinValue;
+
+    //    /// <summary>Date when this teller was unlinked (default = MinValue).</summary>
+    //    public DateTime UnlinkedDate { get; set; } = DateTime.MinValue;
+
+
+
+    //    // --- Account & Status ---
+    //    public bool IsPrimary { get; set; }
+    //    public bool ActiveStatus { get; set; }
+
+  
+
+    //    // --- Navigation Properties ---
+    //    public virtual ICollection<OtherTransaction> OtherTransactions { get; set; }
+    //    public virtual ICollection<PrimaryTellerProvisioningHistory> PrimaryTellerProvisioningHistories { get; set; }
+    //    public virtual ICollection<CashReplenishmentPrimaryTeller> CashReplenishmentPrimaryTellers { get; set; }
+    //    public virtual ICollection<CashReplenishmentSubTeller> CashReplenishmentSubTellers { get; set; }
+
+
+    //    public bool InUseStatus { get; set; }
+    //    public Teller()
+    //    {
+    //        MinimumAmountToManage = 0m;
+    //        MaximumAmountToManage = 1;
+    //        MinimumDepositAmount = 0m;
+    //        MaximumDepositAmount = 1;
+    //        MinimumWithdrawalAmount = 0m;
+    //        MaximumWithdrawalAmount = 1;
+    //        MinimumTransferAmount = 0m;
+    //        MaximumTransferAmount = 1;
+    //        MobileMoneyMinimumBalanceAlertLevel = 0m;
+    //        MobileMoneyMaximumBalanceAlertLevel = 0m;
+    //    }
+    //}
     public class InitializeAccountCommand
     {
         public string TellerId { get; set; }

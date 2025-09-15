@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 
@@ -13,5 +14,6 @@ namespace CBS.FrontDesk.Data.Entity.DailyCollectionEntities
         public string AccountId { get; set; }
         public string CollectorName { get; set; }
 
+        
     }
 }

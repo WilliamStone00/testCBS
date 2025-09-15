@@ -2,21 +2,27 @@
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using ClosedXML.Excel;
 using Microsoft.AspNet.SignalR.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace CBS.BusinessService.DailyCollectionServices
 {
@@ -207,7 +213,7 @@ namespace CBS.BusinessService.DailyCollectionServices
                  { "FormFile", model.FormFile.FileName }  };
                 var urlString = string.Format(APICallHelper.DailySavingMigrationFileExecution, model.BranchId, model.CollectorId, model.CollectorName, model.AccountId);
 
-                var response = await _dailySavingApiHelper.UploadFileToApiAsync< ServiceResponseDailySaverUploadResult>(model.FormFile, "formFile", urlString, additionalParams);
+                var response = await _dailySavingApiHelper. UploadFileToApiAsync< ServiceResponseDailySaverUploadResult>(model.FormFile, "formFile", urlString, additionalParams);
 
 
 
@@ -277,8 +283,54 @@ namespace CBS.BusinessService.DailyCollectionServices
                     "An unexpected error occurred while uploading the file. Please try again later or contact support.");
             }
         }
-
-
+        public async Task<ExecutionMessages> PostAgentGLForInitialization(DailySaverUploadTempResult modelData)
+        {
+            var model = modelData.ToPostingCommand();
+            var apiResponse = await _dailySavingApiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.PostDailyCollectorGLForInitialization, model);
+            if (apiResponse.IsSuccess)
+            {
+                GetExecutionMessages(apiResponse.ApiResponseData, true, $"Reconciliation was successfully done", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, apiResponse.Message);
+                return ExecutionMessage;
+            }
+            else
+            {
+                GetExecutionMessages(apiResponse.ApiResponseData, true, $" Reconciliation was successfully done", MessagesResults.Success,
+                   ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, apiResponse.Message);
+                return ExecutionMessage;
+            }
+        }
+        public async Task<ExecutionMessages> Create(DailySaverUpload model)
+        {
+            try
+            {
+                //model.bankId = GetBankID();
+                // Make an API call to create an individual profile/api/v1/DailySaver/DailyCustomer/AddDailySaverMinimumCommand 
+                var urlString = string.Format(APICallHelper.DailySavingMigrationFileExecution);
+                var response = await _dailySavingApiHelper.PostAsync<ResponseObject<DailySaverUploadTempResult>>(urlString, model);
+                if (response.IsSuccess)
+                {
+                    // Successful creation
+                    GetExecutionMessages(response.ApiResponseData, true, $" Successfully done", MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(model, false, $" Successfully done", MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+ 
         public async Task  UploadFileVoid(UploadDailyCollectorData model)
         {
               
@@ -317,6 +369,124 @@ namespace CBS.BusinessService.DailyCollectionServices
      
         }
 
+        public async Task<List<DailySaverRequest>> ReadExcelFileAsync(HttpPostedFileBase excelFile, string branchName, string BranchCode, string username, string accountId, string branchId, string collectorId)
+        {
+            var dailySavers = new List<DailySaverRequest>();
+
+            try
+            {
+                using (var stream = excelFile.InputStream)
+                using (var workbook = new XLWorkbook(stream))
+                {
+                    var worksheet = workbook.Worksheets.FirstOrDefault();
+                    if (worksheet == null)
+                    {
+                        throw new InvalidOperationException("No worksheet found in the Excel file.");
+                    }
+
+                    var lastRow = worksheet.LastRowUsed()?.RowNumber() ?? 0;
+                    if (lastRow < 2)
+                    {
+                        throw new InvalidOperationException("Excel file must contain at least a header row and one data row.");
+                    }
+
+                    // Skip header row, start from row 2
+                    for (int row = 2; row <= lastRow; row++)
+                    {
+                        var currentRow = worksheet.Row(row);
+
+                        // Skip empty rows
+                        if (currentRow.IsEmpty()) continue;
+                
+                        var record = new DailySaverRequest
+                        {
+                            AccountNumber = GetCellValueAsString(currentRow.Cell(1)),
+                            FirstName = GetCellValueAsString(currentRow.Cell(2)),
+                            Username = username,
+                            BranchCode = BranchCode,
+                            BranchId = branchId,//GetCellValueAsString(currentRow.Cell(4)),
+                            DailySaverId = PrepareDailySaverIDFormat(GetCellValueAsString(currentRow.Cell(1)), BranchCode),
+                            BranchName = branchName,
+                            IsNewCustomer = false, // Default value, adjust as needed
+                            BankCode = "012",
+                            AccountId = accountId,
+                            Amount = GetCellValueAsDecimal(currentRow.Cell(5)),
+                            HasBeenProcessed = false,
+                            Id = branchId + "@" + collectorId + "@" + PrepareDailySaverIDFormat(GetCellValueAsString(currentRow.Cell(1)), BranchCode),
+                            CreatedBy = username,
+                            ModifiedBy = "NOT-SET",
+                            CollectorId =collectorId
+                            
+                        };
+                        dailySavers.Add(record);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+               
+                throw new InvalidOperationException($"Error processing Excel file: {ex.Message}", ex);
+            }
+
+            return dailySavers;
+        }
+
+        public string PrepareDailySaverIDFormat(string id, string branchCode)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                throw new ArgumentException("ID must not be null or empty.");
+
+            if (string.IsNullOrWhiteSpace(branchCode) || branchCode.Length != 3)
+                throw new ArgumentException("Branch code must be exactly 3 characters long.  " + branchCode);
+
+            // Get last 5 characters of the ID or pad with '0' to the left if shorter
+            string formattedIdPart = id.Length > 5
+                ? id.Substring(id.Length - 5)
+                : id.PadLeft(5, '0');
+
+            // Combine branchCode + "DS" + 5-character ID
+            return branchCode + "DS" + formattedIdPart;
+        }
+        public string GetCellValueAsString(IXLCell cell)
+        {
+            if (cell == null || cell.IsEmpty())
+                return string.Empty;
+
+            return cell.GetString()?.Trim() ?? string.Empty;
+        }
+
+        // Basic version - returns 0 for invalid values
+        public decimal GetCellValueAsDecimal(IXLCell cell)
+        {
+            if (cell == null || cell.IsEmpty())
+                return 0m;
+
+            // Try to get as double first (Excel's native numeric type)
+            if (cell.TryGetValue(out double doubleValue))
+            {
+                return Convert.ToDecimal(doubleValue);
+            }
+
+            // If not a number, try to parse the string representation
+            var stringValue = cell.GetString()?.Trim();
+            if (string.IsNullOrEmpty(stringValue))
+                return 0m;
+
+            // Try parsing as decimal with culture-invariant format
+            if (decimal.TryParse(stringValue, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal result))
+            {
+                return result;
+            }
+
+            // Try parsing with current culture (handles localized number formats)
+            if (decimal.TryParse(stringValue, NumberStyles.Number, CultureInfo.CurrentCulture, out result))
+            {
+                return result;
+            }
+
+            // If all parsing attempts fail, return 0
+            return 0m;
+        }
         public async Task<ExecutionMessages> UploadFile(UploadDailyCollectorOperationData model)
         {
             try
