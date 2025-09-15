@@ -1285,6 +1285,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetDaillycollectors = "api/v1/customers/basic-info-collectors";
         public static string GetextracyedFileDetailsEndpoint = "api/v1/ManualEntryCollector/Extracted/data-table";
         public static string getextracteddetails = "/api/v1/ManualEntryCollector/Extracted/details";
+        public static string GetManualEntryCollectorById = "/api/v1/ManualEntryCollector/{0}";
         public static string GetManualEntryCollectorDetailsDataTable = "/api/v1/ManualEntryCollector/Extracted/details/data-table";
         //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
     }

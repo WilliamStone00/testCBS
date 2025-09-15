@@ -81,7 +81,7 @@ namespace CBS.FrontDesk.Data.Entity.ManualDailycollection
     public class TransactionDetail
     {
         public string Id { get; set; }
-        public string memberBranchCode { get; set; }
+        public string MemberBranchCode { get; set; }
         public string MemberBranchId { get; set; }
         public string MemberBranchName { get; set; }
         public decimal Amount { get; set; }
@@ -89,13 +89,19 @@ namespace CBS.FrontDesk.Data.Entity.ManualDailycollection
         public string MemberReference { get; set; }
         public string AccountNumber { get; set; }
         public string DailyCollectorName { get; set; }
-        public string UploadBy { get; set; } = null;
-        public string ManualEntryDailyCollectorId { get; set; } = null;
-        public string ProcessingStatus { get; set; } = null;
-        public string TreatementStatus { get; set; } = null;
+        public string UploadBy { get; set; }
+        public string ManualEntryDailyCollectorId { get; set; }
+        public string ProcessingStatus { get; set; }
+        public string TreatementStatus { get; set; }
         public DateTime? TreatementDate { get; set; }
-        public DateTime? CreatedDate { get; set; }   // <- made nullable
-        public DateTime? ModifiedDate { get; set; }
+        public DateTime? AccountingDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public bool IsInterBranch { get; set; }
+        public string MemberPhoneNumber { get; set; }
+        public string AgeCategoryStatus { get; set; }
+        public string LegalForm { get; set; }
+        public string Gender { get; set; }
+        public FileDetailsResponse ManualEntryDailyCollector { get; set; }
     }
 
 }
