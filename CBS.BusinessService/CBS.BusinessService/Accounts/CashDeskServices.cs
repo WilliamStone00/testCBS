@@ -341,7 +341,7 @@ namespace CBS.BusinessService.Accounts
         }
 
         // ---------------- Local helper keeps both branches identical on success/failure ----------------
-        ExecutionMessages HandlePaymentResponse(ServiceResponse<PaymentReceipt> response, string actionLabel)
+        ExecutionMessages HandlePaymentResponse(ServiceResponse<PaymentReceipt> response, string actionLabel,string message)
         {
             if (response?.Data != null)
             {
@@ -362,7 +362,7 @@ namespace CBS.BusinessService.Accounts
             }
 
             // Failed or empty payload
-            var failMsg = response?.Message ?? $"{actionLabel} failed: empty response from server.";
+            var failMsg = message ?? $"{actionLabel} failed: empty response from server.";
             GetExecutionMessages(
                 null, false, null, MessagesResults.Failed,
                 ExecutionProcessOption.DefaultFailedMessages,
@@ -539,7 +539,7 @@ namespace CBS.BusinessService.Accounts
                             var response = await _transactionApiHelper
                                 .PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.DailyCollectorCashClearing, cmd);
 
-                            return HandlePaymentResponse(response.ApiResponseData, "Daily collector cash clearance");
+                            return HandlePaymentResponse(response.ApiResponseData, "Daily collector cash clearance", response.Message);
                         }
                         else
                         {
@@ -556,7 +556,7 @@ namespace CBS.BusinessService.Accounts
                             var response = await _transactionApiHelper
                                 .PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, request);
 
-                            return HandlePaymentResponse(response.ApiResponseData, "Bulk cash-in");
+                            return HandlePaymentResponse(response.ApiResponseData, "Bulk cash-in", response.Message);
                         }
                     }
                     catch (Exception ex)
