@@ -194,7 +194,7 @@
         // send AccountingDate in dd-MM-yyyy HH:mm:ss for the controller
         const parts = iso.split('-'); // [Y,M,D]
         if (parts.length === 3) {
-            const ddMMyyyyHHmmss = `${parts[2]}-${parts[1]}-${parts[0]} 00:00:00`;
+            const ddMMyyyyHHmmss = `${parts[0]}-${parts[1]}-${parts[2]}`;
             formData.set('AccountingDate', ddMMyyyyHHmmss);
         }
 
@@ -207,7 +207,7 @@
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + units[i];
         }
-        const niceDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+        const niceDate = `${parts[0]}-${parts[1]}-${parts[2]}`;
 
         const html = `
     <div class="text-start">
@@ -408,11 +408,13 @@
         const branchName = data.BranchName ?? data.branchName ?? '';
         const totalMembers = data.TotalMembers ?? data.totalMember ?? 0;
         const totalAmount = data.TotalAmount ?? data.totalAmount ?? 0;
+        const fileId = data.FileUploadId || data.fileUploadId || '';
+        const currentFileUploadId = data.FileUploadId || data.fileUploadId || '';
 
         return `
  <fieldset class="fieldset-custom">
      <div class="row g-2">
-     <h4 class="legend-custom text-info">File Preview: ${data.FileUploadId || data.fileUploadId || 'N/A'}</h4>
+     <h5 class="legend-custom text-info">File Preview: ${data.FileUploadId || data.fileUploadId || 'N/A'}</h5>
          <div class="col-6 col-md-3"><div class="card card-border-shadow-warning h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Uploaded By</p><h6 class="ms-1 mb-0">${uploadedBy}</h6></div></div></div>
          <div class="col-6 col-md-3"><div class="card card-border-shadow-info h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Branch</p><h6 class="ms-1 mb-0">${branchName}</h6></div></div></div>
          <div class="col-6 col-md-3"><div class="card card-border-shadow-success h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Members</p><h6 class="ms-1 mb-0">${totalMembers}</h6></div></div></div>
@@ -423,8 +425,8 @@
      </div>
      <div class="d-flex justify-content-end mt-3">
          <button type="button" id="resetFirstPreviewBtn" class="btn btn-outline-secondary me-2">Reset upload Preview</button> <!-- NEW -->
-         <button type="button" id="deleteUploadedFileBtn" class="btn btn-danger me-2">Delete</button>
-         <button type="button" id="extractFileBtn" class="btn btn-primary">Extract File</button>
+         <button type="button" onclick="deleteUploadedFile('${currentFileUploadId}')" class="btn btn-danger me-2">Delete</button>
+         <button type="button" onclick="extractFile('${fileId}')" class="btn btn-primary">Extract File</button>
      </div>
  </fieldset>`;
     }
@@ -463,19 +465,19 @@
     // -------------------------------
     // File extraction
     // -------------------------------
-    function extractFile() {
-        // if called as handler with event, prevent default
-        if (arguments.length && arguments[0] && arguments[0].preventDefault) {
-            arguments[0].preventDefault();
-        }
+    window.extractFile = function (fileId) {
+        //// if called as handler with event, prevent default
+        //if (arguments.length && arguments[0] && arguments[0].preventDefault) {
+        //    arguments[0].preventDefault();
+        //}
 
-        // allow passing explicit id via parameter when needed
-        let fileId = null;
-        if (arguments.length > 1 && typeof arguments[1] === 'string') {
-            fileId = arguments[1];
-        } else {
-            fileId = currentFileUploadId;
-        }
+        //// allow passing explicit id via parameter when needed
+        //let fileId = null;
+        //if (arguments.length > 1 && typeof arguments[1] === 'string') {
+        //    fileId = arguments[1];
+        //} else {
+        //    fileId = currentFileUploadId;
+        //}
 
         if (!fileId) {
             appalert('No file to extract.', 3, 1);
@@ -680,11 +682,10 @@
         }
     }
 
-    function deleteUploadedFile(e) {
+    function deleteUploadedFile(currentFileUploadId) {
         // prevent default when called as a click event
-        if (e && e.preventDefault) e.preventDefault();
+        //f (e && e.preventDefault) e.preventDefault();
 
-        console.log('deleteUploadedFile: invoked, currentFileUploadId=', currentFileUploadId);
 
         if (!currentFileUploadId) {
             appalert('No uploaded file to delete.', 3, 1);
@@ -703,7 +704,7 @@
                     type: 'GET', // keep GET to match current controller; change to POST if you update controller
                     data: {
                         // supply both parameter names so controller binding works with either signature
-                        KEY: currentFileUploadId,
+                       // KEY: currentFileUploadId,
                         fileUploadId: currentFileUploadId
                     },
                     headers: token ? { 'RequestVerificationToken': token } : {},
