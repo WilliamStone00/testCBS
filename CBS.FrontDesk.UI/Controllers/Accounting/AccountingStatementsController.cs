@@ -63,6 +63,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             var reportData = await _accountingServices.GetAllFileDownloadInfoPerUser();
             return View(new AccountingEntryQuery { ReportDownloadInfo = reportData.OrderByDescending(x=>x.CreatedDate).ToList() });
         }
+        public async Task<ActionResult> AccountingJournalReport()
+        {
+         
+            return View(new AccountingEntryQuery {  });
+        }
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {

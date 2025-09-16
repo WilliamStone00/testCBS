@@ -417,7 +417,8 @@ namespace CBS.FrontDesk.UI.Controllers
                 {
                     AccountId = model.AccountId,
                     BranchId = branch.Id,
-                    CollectorId= model.CollectorId,
+                    ChartOfAccountId = model.AccountId,
+                    CollectorId = model.CollectorId,
                     CashDifferenceAccountId= model.AccountId,
                     CollectorName= model.CollectorName,
                     ProductId="",
