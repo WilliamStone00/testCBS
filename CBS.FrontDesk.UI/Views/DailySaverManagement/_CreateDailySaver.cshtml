@@ -32,7 +32,7 @@
                     <label class="form-check-label" for="rbExisting">Existing member</label>
                 </div>
             </div>
-            <!-- New Daily Saver ID (1–7 digits) -->
+            <!-- New Daily Saver ID (DS + 1–7 digits) -->
             <div id="newSaverBlock" class="row mt-3" style="display:none;">
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
@@ -40,10 +40,10 @@
                         {
                             @class = "form-control",
                             id = "DailySaverId",
-                            maxlength = "7",          // hard stop typing beyond 7
-                            pattern = @"\d{1,7}",     // allow 1 to 7 digits
-                            inputmode = "numeric",
-                            placeholder = "e.g. 123, 1010, 0001245"
+                            maxlength = "9",               // "DS" + 7 digits
+                            pattern = @"^DS\d{1,7}$",      // enforce DS + digits
+                            inputmode = "numeric",         // mobile keyboard hints numeric
+                            placeholder = "e.g. DS1, DS00945, DS01238"
                         })
                         @Html.ValidationMessageFor(m => m.DailySaverId, "", new { @class = "text-danger", id = "DailySaverIdError" })
 
@@ -52,12 +52,13 @@
                             <i class="mdi mdi-information-outline text-primary ms-1"
                                data-bs-toggle="tooltip"
                                data-bs-placement="right"
-                               title="Daily saver account number must be between 1 and 7 digits. Any digits 0–9 are allowed. Example: 12, 1010, 0001245."></i>
+                               title="Daily saver account number must start with 'DS' followed by 1 to 7 digits. Example: DS1, DS00945, DS01238."></i>
                         </label>
                     </div>
-                    <small class="text-muted">Must be 1–7 digits. Any digits 0–9 are allowed. Not more than 7 digits.</small>
+                    <small class="text-muted">Format: DS + 1–7 digits (e.g. DS1, DS00945, DS01238).</small>
                 </div>
             </div>
+
 
 
 

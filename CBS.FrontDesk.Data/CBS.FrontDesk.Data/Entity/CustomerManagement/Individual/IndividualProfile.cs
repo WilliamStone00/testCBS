@@ -197,11 +197,11 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string BankName { get; set; }
         public string BranchName { get; set; }
         public string BranchCode { get; set; }
+
         [Display(Name = "Daily saver account number")]
-        [RegularExpression(@"^\d{1,7}$",
-        ErrorMessage = "Daily saver account number must be digits only, with a length between 1 and 7.")]
-        [StringLength(7, MinimumLength = 1,
-        ErrorMessage = "Daily saver account number must be between 0 and 9 digits.")]
+        //[RegularExpression(@"^\d{1,9}$",  ErrorMessage = "Daily saver account number must be digits only, with a length between 1 and 9.")]
+        //[StringLength(7, MinimumLength = 1,
+        //ErrorMessage = "Daily saver account number must be between 0 and 9 digits.")]
         public string DailySaverId { get; set; } = default;
        
 
