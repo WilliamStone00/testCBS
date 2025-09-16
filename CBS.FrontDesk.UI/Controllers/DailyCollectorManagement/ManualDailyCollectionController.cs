@@ -328,9 +328,11 @@ using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -372,6 +374,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
         // Helper to load ViewBag data
         private async Task Loader()
         {
+            ViewBag.Statuses = new SelectList(new[] { "Pending", "Approved", "Extracted", "Rejected", "Treated", "Completed" });
             ViewBag.Branches = await _branchServices.GetBranches();
             ViewBag.Collectors = new List<StringValues>();
         }
@@ -399,31 +402,97 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
         }
 
         // ACTION 3: The dedicated endpoint for the server-side DataTable.
+        //[HttpPost]
+        //public async Task<ActionResult> LoadFilesForDataTable(GetFilesForDataTableQuery query)
+        //{
+        //    try
+        //    {
+        //        var dataTable = await _manualService.GetFilesForDataTableAsync(query);
+
+        //        // Deserialize the data into a type that has the properties we need
+        //        var fileList = JsonConvert.DeserializeObject<List<FileUploadResponse>>(
+        //            JsonConvert.SerializeObject(dataTable.data)
+        //        );
+
+        //        return Json(new
+        //        {
+        //            draw = query.Options?.draw ?? "1",
+        //            recordsTotal = dataTable.recordsTotal,
+        //            recordsFiltered = dataTable.recordsFiltered,
+        //            data = fileList // Send the raw data; JavaScript will render it
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading file data.");
+        //    }
+        //}
+
         [HttpPost]
         public async Task<ActionResult> LoadFilesForDataTable(GetFilesForDataTableQuery query)
         {
             try
             {
+                // If client sent JSON (content-type application/json), read and deserialize it.
+                // This handles the new client behavior that sends JSON in the request body.
+                var contentType = Request.ContentType ?? string.Empty;
+                if (contentType.IndexOf("application/json", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    Request.InputStream.Position = 0;
+                    using (var reader = new StreamReader(Request.InputStream))
+                    {
+                        var body = await reader.ReadToEndAsync();
+                        if (!string.IsNullOrWhiteSpace(body))
+                        {
+                            // body can be { "query": { ... } } or just { ... }
+                            try
+                            {
+                                var wrapper = JsonConvert.DeserializeObject<JObject>(body);
+                                if (wrapper != null && wrapper["query"] != null)
+                                {
+                                    query = wrapper["query"].ToObject<GetFilesForDataTableQuery>();
+                                }
+                                else
+                                {
+                                    query = wrapper.ToObject<GetFilesForDataTableQuery>();
+                                }
+                            }
+                            catch (JsonException)
+                            {
+                                // ignore — leave the model binder's value in 'query' if json fails
+                            }
+                        }
+                    }
+                }
+
+                // Ensure query.Options is non-null (your constructor already does this but be safe)
+                if (query == null)
+                {
+                    query = new GetFilesForDataTableQuery();
+                }
                 var dataTable = await _manualService.GetFilesForDataTableAsync(query);
 
-                // Deserialize the data into a type that has the properties we need
                 var fileList = JsonConvert.DeserializeObject<List<FileUploadResponse>>(
                     JsonConvert.SerializeObject(dataTable.data)
                 );
 
                 return Json(new
                 {
-                    draw = query.Options?.draw ?? "1",
+                    draw = dataTable.draw,
                     recordsTotal = dataTable.recordsTotal,
                     recordsFiltered = dataTable.recordsFiltered,
-                    data = fileList // Send the raw data; JavaScript will render it
-                });
+                    data = fileList
+                }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading file data.");
+                // Log the exception server-side (not shown here). Return JSON and set 500 status code.
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Json(new { error = "Error loading file data.", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+
         /// <summary>
         /// ACTION 3: Handles the AJAX file upload from the _UploadForm.
         /// </summary>

@@ -1,10 +1,10 @@
-﻿<!-- TABLE (match columns to your FileUploadResponse) -->
+﻿<!-- Main table (KEEP this exact HTML) -->
 <div class="card p-3 shadow mb-4">
     <div class="table-responsive">
-        <table id="myDataTable" class="table table-bordered table-striped">
+        <table id="myDataTable" class="table table-bordered table-striped" style="width:100%;">
             <thead class="table-light">
                 <tr>
-                    <th data-col="collectorName">Collector Name</th>
+                    @*<th data-col="collectorName">Collector Name</th>*@
                     <th data-col="branchName">Branch Name</th>
                     <th data-col="fileName">File Name</th>
                     <th data-col="uploadedOn">Uploaded On</th>
@@ -12,10 +12,13 @@
                     <th data-col="id">Actions</th>
                 </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+
+            </tbody>
         </table>
     </div>
 </div>
+
 <!--<fieldset class="fieldset-custom">
     <div class="table-responsive">
 
