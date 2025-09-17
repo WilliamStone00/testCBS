@@ -9394,6 +9394,7 @@
     <Content Include="Scripts\Js\main.js\AccountingBookingAlert.js" />
     <Content Include="Scripts\Js\main.js\DailySaverOperations.js" />
     <Content Include="Scripts\Js\main.js\DailySaverUploud.js" />
+    <Content Include="Scripts\Js\main.js\GetJournalEntryByReference.js" />
     <Content Include="Scripts\Js\main.js\TransactionTracker.js" />
     <Content Include="Scripts\Js\MemberReceiptsP\MemberReceipt.js" />
     <Content Include="Scripts\Js\CMoney\cmoney.js" />
@@ -10635,6 +10636,7 @@
     <Content Include="Views\DailySaverManagement\_CreateDailySaver.cshtml" />
     <Content Include="Views\AccountingStatements\AccountingJournalReport.cshtml" />
     <Content Include="Views\AccountingStatements\_SearchJournalEntryData.cshtml" />
+    <Content Include="Views\AccountingStatements\_JournalEntryData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -1,0 +1,39 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingEntryQuery
+<div class="table-responsive mb-3">
+
+    <table class="table table-hover" id="myDataTable">
+        <thead class="table-light">
+            <tr>
+                <th>AccountNumber</th>
+                <th>Description</th>
+                <th>Debit</th>
+                <th>Credit</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var d in Model.AccountingEntryDtos)
+            {
+                <tr>
+                    <!-- If DrAmount > 0, show DrAccountNumber, else CrAccountNumber -->
+                    <td style="width:30%">@(d.DrAmount > 0 ? d.DrAccountNumber : d.CrAccountNumber)</td>
+
+                    <!-- Show narration -->
+                    <td style="width:30%">@d.Naration</td>
+
+                    <!-- Debit and Credit amounts -->
+                    <td style="width:20%">@d.DrAmount</td>
+                    <td style="width:20%">@d.CrAmount</td>
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+
+    <div class="col-md-12 d-flex justify-content-start">
+        <!-- Right-aligned button -->
+        <button type="submit" class="btn btn-primary mdi mdi-printer-pos-star-outline mdi-24px me-2" onclick="printJournalEntry()">Print</button>
+
+    </div>
+</div>
