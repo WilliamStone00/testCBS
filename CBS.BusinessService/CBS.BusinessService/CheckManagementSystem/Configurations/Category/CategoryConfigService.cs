@@ -79,18 +79,18 @@ namespace CBS.BusinessService.CheckManagementSystem
                 // CORRECTED: Pass the ServiceResponse object to GetExecutionMessages
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, model.Name, MessagesResults.Success,
+                    GetExecutionMessages(response.ApiResponseData.Data, true, model.name, MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
                 }
                 else
                 {
-                    GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.name, MessagesResults.Failed,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
             }
             catch (Exception ex)
             {
-                GetExecutionMessages(model, false, model.Name, MessagesResults.Error,
+                GetExecutionMessages(model, false, model.name, MessagesResults.Error,
                     ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
             return ExecutionMessage;
@@ -100,24 +100,25 @@ namespace CBS.BusinessService.CheckManagementSystem
         {
             try
             {
-                string formattedUrl = string.Format(APICallHelper.UpdateChequeBookCategory);
+                var catid = model.Id;
+                string formattedUrl = string.Format(APICallHelper.UpdateChequeBookCategory,catid);
                 var response = await _apiCallerHelper.PutAsync<ServiceResponse<CategoryConfig>>(formattedUrl, model);
 
                 // CORRECTED: Pass the ServiceResponse object to GetExecutionMessages
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, model.Name, MessagesResults.Success,
-                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
+                    GetExecutionMessages(response.ApiResponseData.Data, true, model.name, MessagesResults.Success,
+                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, "Update was Succesful");
                 }
                 else
                 {
-                    GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.name, MessagesResults.Failed,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
             }
             catch (Exception ex)
             {
-                GetExecutionMessages(model, false, model.Name, MessagesResults.Error,
+                GetExecutionMessages(model, false, model.name, MessagesResults.Error,
                     ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
             return ExecutionMessage;
@@ -140,18 +141,19 @@ namespace CBS.BusinessService.CheckManagementSystem
                 if (response == null)
                     throw new InvalidOperationException("API returned null response.");
 
-                if (response.IsSuccess)
-                {
-                    GetExecutionMessages(null, true, $"Category ID: {categoryId}", MessagesResults.Success,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null,
-                        response.ApiResponseData?.Message ?? "Category deactivated successfully.");
-                }
-                else
-                {
-                    GetExecutionMessages(null, false, $"Category ID: {categoryId}", MessagesResults.Failed,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Failed.ToString(), null,
-                        response.ApiResponseData?.Message ?? response.Message ?? "Unknown error.");
-                }
+                //if (response.IsSuccess)
+                //{
+                //    GetExecutionMessages(null, true, $"Category ID: {categoryId}", MessagesResults.Success,
+                //        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null,
+                //        response.ApiResponseData?.Message ?? "Category deleted successfully.");
+                //}
+                //else
+                //{
+                //    GetExecutionMessages(null, false, $"Category ID: {categoryId}", MessagesResults.Failed,
+                //        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Failed.ToString(), null,
+                //        response.ApiResponseData?.Message ?? response.Message ?? "Unknown error.");
+                //}
+
             }
             catch (Exception ex)
             {
@@ -204,12 +206,12 @@ namespace CBS.BusinessService.CheckManagementSystem
         {
             return new CategoryConfig
             {
-                Name = cat.Name,
-                BasePrice = cat.BasePrice,
-                NumberOfPages = cat.NumberOfPages,
-                IssuanceLimitPerCustomerType = cat.IssuanceLimitPerCustomerType,
-                ValidityPeriodInMonths = cat.ValidityPeriodInMonths,
-                IsActive = cat.IsActive,
+                name = cat.name,
+                basePrice = cat.basePrice,
+                numberOfPages = cat.numberOfPages,
+                issuanceLimitPerCustomerType = cat.issuanceLimitPerCustomerType,
+                validityPeriodInMonths = cat.validityPeriodInMonths,
+                isActive = cat.isActive,
             };
         }
 

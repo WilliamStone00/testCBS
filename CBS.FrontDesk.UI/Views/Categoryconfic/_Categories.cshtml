@@ -12,43 +12,44 @@
         </div>
         <div class="col-md-6">
             <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = ChequeManagements.Name })
-                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(m => m.name, new { @class = "form-control", placeholder = ChequeManagements.Name })
+                @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
                 <label>@ChequeManagements.Name</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.BasePrice, new { @class = "form-control", placeholder = ChequeManagements.Price })
-                @Html.ValidationMessageFor(m => m.BasePrice, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(m => m.basePrice, new { @class = "form-control", placeholder = ChequeManagements.Price })
+                @Html.ValidationMessageFor(m => m.basePrice, "", new { @class = "text-danger" })
                 <label>@ChequeManagements.Price</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.NumberOfPages, new { @class = "form-control", placeholder = ChequeManagements.Numberofpages })
-                @Html.ValidationMessageFor(m => m.NumberOfPages, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(m => m.numberOfPages, new { @class = "form-control", placeholder = ChequeManagements.Numberofpages })
+                @Html.ValidationMessageFor(m => m.numberOfPages, "", new { @class = "text-danger" })
                 <label>@ChequeManagements.Numberofpages</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.IssuanceLimitPerCustomerType, new { @class = "form-control", placeholder = ChequeManagements.isc })
-                @Html.ValidationMessageFor(m => m.IssuanceLimitPerCustomerType, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(m => m.issuanceLimitPerCustomerType, new { @class = "form-control", placeholder = ChequeManagements.isc })
+                @Html.ValidationMessageFor(m => m.issuanceLimitPerCustomerType, "", new { @class = "text-danger" })
                 <label>@ChequeManagements.isc</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.ValidityPeriodInMonths, new { @class = "form-control", placeholder = ChequeManagements.validity })
-                @Html.ValidationMessageFor(m => m.ValidityPeriodInMonths, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(m => m.validityPeriodInMonths, new { @class = "form-control", placeholder = ChequeManagements.validity })
+                @Html.ValidationMessageFor(m => m.validityPeriodInMonths, "", new { @class = "text-danger" })
                 <label>@ChequeManagements.validity</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating shadow-sm">
-                @Html.DropDownListFor(m => m.BranchID, new SelectList(ViewBag.Branches, "Id", "Name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2" })
-                @Html.ValidationMessageFor(m => m.BranchID, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(m => m.branchID, new SelectList(ViewBag.Branches, "Id", "name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2" })
+                @Html.ValidationMessageFor(m => m.branchID, "", new { @class = "text-danger" })
+
                 <label>@GlobalUserManagement.Branch</label>
             </div>
         </div>
@@ -56,10 +57,10 @@
         <div class="col-md-12">
             <div class="form-group ps-2">
                 <div class="form-check">
-                    @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "IsActive" })
+                    @Html.CheckBoxFor(m => m.isActive, new { @class = "form-check-input", id = "IsActive" })
                     <label class="form-check-label" for="IsActive">@ChequeManagements.isactive</label>
                 </div>
-                @Html.ValidationMessageFor(m => m.IsActive, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(m => m.isActive, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="col-12 text-end mt-3">
@@ -73,9 +74,7 @@
                 </button>
             }
             else
-            { <button type="submit" class="btn btn-primary me-2">@GlobalBank.Update</button>
-
-        }
+            { <button type="submit" class="btn btn-primary me-2">@GlobalBank.Update</button> }
         </div>
        
     </div>

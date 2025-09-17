@@ -3292,6 +3292,9 @@
     <Content Include="AppFiles\Images\UpdatedLogo\WaterMark.png" />
     <Content Include="AppFiles\Images\UpdatedLogo\Logo.png" />
     <Content Include="Scripts\Js\AccountingReconciliation\AccountReconciliation.js" />
+    <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\Category.js" />
+    <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\FeeConfig.js" />
+    <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\Notification\NotificationConfig.js" />
     <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MemberAdjustmentConsole.js" />
     <Compile Include="WAF\Middleware\Core\StaticPathHelper.cs" />
     <Compile Include="WAF\Middleware\Correlation\CorrelationIdMiddleware.cs" />

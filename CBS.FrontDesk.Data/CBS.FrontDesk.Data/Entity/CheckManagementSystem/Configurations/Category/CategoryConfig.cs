@@ -12,14 +12,14 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem
 {
     public class CategoryConfig
     {
-        public string Id { get; set; } = null;    
-        public string BranchID { get; set; }
-        public string Name { get; set; } = string.Empty; // Unique per institution
-        public decimal BasePrice { get; set; } // >= 0     
-        public int NumberOfPages { get; set; } // 25, 50, 100 etc.
-        public int ValidityPeriodInMonths { get; set; } // 12, 24 etc.
-        public int IssuanceLimitPerCustomerType { get; set; } // per customer type
-        public bool IsActive { get; set; } = true; // active/inactive toggle
+        public string Id { get; set; } = null;
+        public string branchID { get; set; } = null;
+        public string name { get; set; }  = string.Empty; 
+        public decimal basePrice { get; set; } 
+        public int numberOfPages { get; set; } 
+        public int validityPeriodInMonths { get; set; } 
+        public int issuanceLimitPerCustomerType { get; set; } 
+        public bool isActive { get; set; } 
     }
 
     public class CategoryDataTableRequest

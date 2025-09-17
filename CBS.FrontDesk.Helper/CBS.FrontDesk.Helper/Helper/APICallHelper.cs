@@ -1237,11 +1237,11 @@ namespace CBS.FrontDesk.Helper
         //*************************** CHEQUE BOOK ******************************
 
         // ---------------- CHEQUE BOOK CATEGORY ----------------
-        public static string GetAllChequeBookCategories = "/api/v1/ChequeBookCategory";
-        public static string GetChequeBookCategoryById = "/api/v1/ChequeBookCategory/{id}";
-        public static string CreateChequeBookCategory = "/api/v1/ChequeBookCategory";
-        public static string UpdateChequeBookCategory = "/api/v1/ChequeBookCategory/{id}";
-        public static string DeactivateChequeBookCategory = "/api/v1/ChequeBookCategory/{id}/deactivate";
+        public static string GetAllChequeBookCategories = "/api/CheckBookCategory";
+        public static string GetChequeBookCategoryById = "/api/CheckBookCategory/{0}";
+        public static string CreateChequeBookCategory = "/api/CheckBookCategory";
+        public static string UpdateChequeBookCategory = "/api/CheckBookCategory/{0}";
+        public static string DeactivateChequeBookCategory = "/api/CheckBookCategory/{0}";
 
         // ---------------- GENERIC CRUD ----------------
         public static string GetAll = "/api/v1/{entity}";
