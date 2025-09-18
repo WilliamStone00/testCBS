@@ -427,6 +427,18 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
         //        return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error loading file data.");
         //    }
         //}
+        [HttpGet]
+        public async Task<ActionResult> GetFileDetailsModal(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Missing id");
+
+            var model = await _manualService.GetFileDetailsByIdAsync(id);
+            if (model == null)
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "File not found");
+
+            return PartialView("_FileDetails", model); // your existing detail PV
+        }
 
         [HttpPost]
         public async Task<ActionResult> LoadFilesForDataTable(GetFilesForDataTableQuery query)
