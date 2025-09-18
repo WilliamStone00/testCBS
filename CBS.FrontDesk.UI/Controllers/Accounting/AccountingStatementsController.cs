@@ -2,6 +2,7 @@
 using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
+using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
@@ -14,6 +15,7 @@ using CBS.FrontDesk.UI.AppFiles.Reporting.Accounting;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.ExtendedProperties;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OfficeOpenXml;
 using System;
@@ -39,8 +41,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         private readonly AccountingServices _accountingServices;
         private readonly AccountingEntryServices _accountingEntryServices;
         private const string UniversalId = "XXXXXX";
+        private readonly UserManagementServices _userManagementServices;
 
-      
 
         public AccountingStatementsController()
         {
@@ -48,6 +50,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             _branchServices = new BranchServices();
             _accountingServices = new AccountingServices();
             _accountingEntryServices = new AccountingEntryServices();
+            _userManagementServices = new UserManagementServices();
         }
         // GET: AccountingStatements
         public async Task<ActionResult> Index()
@@ -79,15 +82,51 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
 
         private async Task<PartialViewResult> GetServiceAction(string path, string partialView, string key, string serviceOption)
         {
-
-            var reportData = await _accountingServices.GetAllFileDownloadInfoPerUser();
-            return PartialView(partialView, new AccountingEntryQuery { ReportDownloadInfo = reportData.OrderByDescending(x => x.CreatedDate).ToList() });
-
          
+            if (serviceOption== "accountingEntry")
+            {
+                var reportData = await _accountingEntryServices.GetAccountingEntriesDtoByReferceId(key);
+                List<AccountingEntryReport> entryReport =await BuildReport(reportData,_branchServices); 
+                this.HttpContext.Session["rptSource"] = entryReport;
+    
+                // Set session values using the standard indexer 
+                //  string userPrefix = $"rpt_{_AccountServices.GetUserID()}_";
+                HttpContext.Session["fileType"] = "JournalEntryReference";
+                HttpContext.Session["rptType"] = "Entry_" + _accountingEntryServices.GetUserID();
+                string reportName = "Accounting Journal Receipt.rpt";
+                HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{reportName}";
 
 
+                return PartialView(partialView, new AccountingEntryQuery { AccountingEntryDtos = reportData});
+
+            }
+            else
+            {
+                var reportData = await _accountingServices.GetAllFileDownloadInfoPerUser();
+                return PartialView(partialView, new AccountingEntryQuery { ReportDownloadInfo = reportData.OrderByDescending(x => x.CreatedDate).ToList() });
+            }
+   
         }
 
+        private async Task<List<AccountingEntryReport>> BuildReport(List<AccountingEntryDto> reportData, BranchServices branchServices)
+        {
+            List<AccountingEntryReport> entryReports = new List<AccountingEntryReport>();
+            var Branches =(await branchServices.GetBranches()).ToList();
+            var branch = Branches.Where(x => x.Id == reportData.FirstOrDefault().BranchId).FirstOrDefault();
+          var accountDatas=  await _accountingServices.GetAllAccounting();
+            foreach (var item in reportData)
+            {
+                var account = accountDatas.Where(x=>x.Id== item.AccountId).FirstOrDefault();
+                entryReports.Add(await CreateAEreport(item, branch, account));
+            }
+            return entryReports;
+        }
+
+        private async Task<AccountingEntryReport> CreateAEreport(AccountingEntryDto item,  Branch branch, Data.Account account)
+        {
+            var postedBy =await _userManagementServices.GetUser(item.CreatedBy);
+            return AccountingEntryReport.ConvertToEntity(item, branch, account, branch.Name,_accountingServices.GetBankName(),postedBy.firstName+" "+postedBy.lastName);
+        }
 
         public async Task<ActionResult> DownloadById(string fileId)
         {
@@ -133,6 +172,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             }
         }
 
+       
 
         public async Task<ActionResult> Delete(string id)
         {
