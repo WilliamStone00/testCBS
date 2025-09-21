@@ -18,8 +18,8 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem
         public decimal basePrice { get; set; } 
         public int numberOfPages { get; set; } 
         public int validityPeriodInMonths { get; set; } 
-        public int issuanceLimitPerCustomerType { get; set; } 
-        public bool isActive { get; set; } 
+        public int issuanceLimitPerCustomerType { get; set; }
+        public bool isActive { get; set; } = false;
     }
 
     public class CategoryDataTableRequest

@@ -9,17 +9,37 @@
     @Html.HiddenFor(m => m.IsCentralized, new { id = "IsCentralized", Name = "IsCentralized" })
     @Html.HiddenFor(m => m.BranchId, new { id = "BranchId", Name = "BranchId" })
     @Html.HiddenFor(m => m.FeeType, new { id = "FeeType", Name = "FeeType" })
+    @Html.HiddenFor(m => m.BranchName, new { id = "BranchName", name = "BranchName" })
+
 
     <div class="card shadow p-3">
         <h5 class="text-primary mb-3">
             <i class="mdi mdi-pencil-box-outline me-2"></i>
-            Manage Configuration for: <span class="text-dark">@Model?.FeeType</span>
+            Manage Configuration for: <span class="text-dark">@Model.FeeType</span>
         </h5>
 
         <div class="form-floating mb-3">
             @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Description" })
             <label>Description</label>
         </div>
+
+        <div class="modal-body bg-light">
+            <div class="mb-3">
+                <h5 class="text-primary mb-3"><i class="mdi mdi-pencil-box-outline me-2"></i> Static Config</h5>
+                <div class="form-check form-switch mb-2">
+                    @Html.CheckBoxFor(m => m.AcceptStatus, new { id = "AcceptStatus", @class = "form-check-input" })
+                    <label class="form-check-label fw-bold" for="AcceptStatus">Enable Status Fee</label>
+                </div>
+
+                <div class="form-floating">
+                    @Html.TextBoxFor(m => m.Static, new { @class = "form-control", type = "number", step = "1", placeholder = "Static " })
+                    @Html.ValidationMessageFor(m => m.Static, "", new { @class = "text-danger" })
+                    <label>Static</label>
+                </div>
+            </div>
+        </div>
+
+        <hr />
 
         <div class="modal-body bg-light">
             <div class="mb-3">

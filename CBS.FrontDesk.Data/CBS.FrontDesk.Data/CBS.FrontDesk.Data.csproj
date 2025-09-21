@@ -140,6 +140,7 @@
     <Compile Include="Entity\CheckManagementSystem\Configurations\FeeConfiguration\Range.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\NotificationConfig\NotificationConfig.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\NotificationConfig\NotificationType.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Operations\ChequeRequest\ChequeBookRequest.cs" />
     <Compile Include="Entity\Class1.cs" />
     <Compile Include="Entity\CMoney\CMoneyMembersActivationAccount.cs" />
     <Compile Include="Entity\DailyCollectionData\AgentAccount\AgentAccount.cs" />

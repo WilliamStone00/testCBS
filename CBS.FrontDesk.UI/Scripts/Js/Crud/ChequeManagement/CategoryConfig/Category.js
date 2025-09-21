@@ -83,141 +83,274 @@ function LoadCategories() {
 
 })(jQuery);
 
+/* Category AJAX helpers
+   - categorySubmitAjax(form) => used for CreateOrUpdate form submission
+   - deleteCategoryAjax(key)  => used for Delete
+   Designed to match your controller responses and be defensive about unexpected replies.
+*/
+
+(function ($) {
+    'use strict';
+
+    // small wrapper to show messages consistently (uses appalert if present)
+    function showMsg(message, level) {
+        // level: 1=success, 2=warning, 3=info, 4=error
+        if (typeof appalert === 'function') {
+            appalert(message || 'No message', level || 1, 1);
+        } else {
+            // fallback
+            alert(message || 'No message');
+        }
+    }
+
+    // Helper: extract antiforgery token value (works if there's a hidden input in page or inside the form)
+    function getAntiForgeryToken(form) {
+        var token = null;
+        if (form) {
+            token = $(form).find('input[name="__RequestVerificationToken"]').val();
+        }
+        if (!token) {
+            token = $('input[name="__RequestVerificationToken"]').first().val();
+        }
+        return token;
+    }
+
+    // Helper: try to normalise server response into { success, status, message, ... }
+    function normalizeResponse(raw) {
+        if (!raw) return { success: false, message: 'Empty response' };
+
+        // Already object
+        if (typeof raw === 'object') {
+            return raw;
+        }
+
+        // If it's a string, try to parse JSON
+        if (typeof raw === 'string') {
+            var trimmed = raw.trim();
+            try {
+                var parsed = JSON.parse(trimmed);
+                return parsed;
+            } catch (e) {
+                // attempt to extract JSON substring from HTML (very defensive)
+                var jsonStart = trimmed.indexOf('{');
+                var jsonEnd = trimmed.lastIndexOf('}');
+                if (jsonStart >= 0 && jsonEnd > jsonStart) {
+                    try {
+                        var candidate = trimmed.substring(jsonStart, jsonEnd + 1);
+                        return JSON.parse(candidate);
+                    } catch (e2) {
+                        // fall through
+                    }
+                }
+            }
+        }
+
+        return { success: false, message: 'Unexpected server response' };
+    }
+
+    // Primary function: submit the Category create/update form via AJAX
+    // call by setting form's onsubmit="return categorySubmitAjax(this);" OR by binding below
+    window.categorySubmitAjax = function (form) {
+        // parse unobtrusive validation if used
+        try { $.validator.unobtrusive.parse(form); } catch (e) { /* ignore */ }
+
+        if ($(form).length && !$(form).valid()) {
+            return false; // let client validator show messages
+        }
+
+        var $form = $(form);
+        var isMultipart = ($form.attr('enctype') || '').toLowerCase() === 'multipart/form-data';
+        var token = getAntiForgeryToken(form);
+
+        // ask confirmation (preserves alertify if present)
+        var doAction = function () {
+            var $submit = $form.find('[type="submit"]').first();
+            var origHtml = $submit.data('orig-html') || $submit.html();
+            $submit.data('orig-html', origHtml);
+            $submit.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>Processing...');
+
+            var ajaxOptions = {
+                url: $form.attr('action'),
+                type: ($form.attr('method') || 'POST').toUpperCase(),
+                dataType: 'text', // get raw text and normalise ourselves to be defensive
+                success: function (raw) {
+                    var res = normalizeResponse(raw);
+
+                    if (res && res.success) {
+                        // if status indicates special cases, map to levels
+                        var level = 1; // success
+                        if (res.status === 'Exist') level = 3;
+                        if (res.status === 'Failed') level = 2;
+                        showMsg(res.message || 'Operation successful', level);
+
+                        // reload instructions: first try legacy keys then fallback
+                        if (res.reloadDataView === "Yes" || res.reload === true) {
+                            if (typeof LoadDataGen === 'function') {
+                                // try to use the same defaults as your existing script
+                                try {
+                                    LoadDataGen(res.controllerName || 'Categoryconfic', res.tableName || 'myDataTable', res.PartialView || res.dataLoaderActionName || '_CategoryDataTable', 0, res.divLoaderList || res.div || 'datalistingview', null, res.path || 'list');
+                                } catch (e) {
+                                    console.warn('LoadDataGen call failed', e);
+                                    // fallback: reload the partial container
+                                    if ($('#datalistingview').length) {
+                                        $('#datalistingview').load('@Url.Action("InitializeData", "Categoryconfic")?path=list&partialView=_Categories');
+                                    } else {
+                                        location.reload();
+                                    }
+                                }
+                            } else {
+                                // fallback: reload the container if exists else reload page
+                                if ($('#datalistingview').length) {
+                                    // try to fetch the partial view
+                                    $.get('@Url.Action("InitializeData", "Categoryconfic")', { path: 'list', partialView: '_Categories' })
+                                        .done(function (html) { $('#datalistingview').html(html); })
+                                        .fail(function () { location.reload(); });
+                                } else {
+                                    location.reload();
+                                }
+                            }
+                        }
+                    } else {
+                        // operation-level failure
+                        var level = 2;
+                        if (res && res.status === 'Exist') level = 3;
+                        showMsg(res && res.message ? res.message : 'Operation failed', level);
+                    }
+                },
+                error: function (xhr, status, err) {
+                    // Try to salvage JSON from HTML or responseText
+                    var parsed = null;
+                    try {
+                        parsed = normalizeResponse(xhr.responseText);
+                    } catch (e) { parsed = null; }
+
+                    if (parsed && parsed.message) {
+                        showMsg(parsed.message, parsed.success ? 1 : 2);
+                    } else if (xhr.status === 401) {
+                        // unauthorized -> redirect to login
+                        window.location.href = '/Authentication/Login';
+                    } else {
+                        showMsg(xhr.statusText || 'A network error occurred', 4);
+                        console.error('AJAX error', xhr.status, status, err, xhr.responseText);
+                    }
+                },
+                complete: function () {
+                    $submit.prop('disabled', false).html($submit.data('orig-html') || $submit.html());
+                }
+            };
+
+            if (isMultipart) {
+                ajaxOptions.data = new FormData(form);
+                ajaxOptions.processData = false;
+                ajaxOptions.contentType = false;
+                if (token) ajaxOptions.headers = { 'RequestVerificationToken': token };
+            } else {
+                // send urlencoded data
+                ajaxOptions.data = $form.serialize();
+                if (token) {
+                    // include token in header for non-multipart too
+                    ajaxOptions.headers = { 'RequestVerificationToken': token };
+                }
+            }
+
+            $.ajax(ajaxOptions);
+        };
+
+        // confirmation (alertify preferred)
+        if (window.alertify && typeof alertify.confirm === 'function') {
+            try {
+                alertify.confirm("Confirmation", "Are you sure you want to perform this action?", function () { doAction(); }, function () { showMsg('Transaction cancelled', 3); }).set('labels', { ok: 'Yes', cancel: 'No' });
+            } catch (e) { if (confirm('Are you sure you want to perform this action?')) doAction(); else showMsg('Transaction cancelled', 3); }
+        } else {
+            if (confirm('Are you sure you want to perform this action?')) doAction(); else showMsg('Transaction cancelled', 3);
+        }
+
+        return false; // prevent normal form submit
+    };
+
+    // Primary function: delete by KEY (uses POST and antiforgery)
+    window.deleteCategoryAjax = function (key) {
+        if (!key) { showMsg('Invalid id', 2); return; }
+
+        var proceed = function () {
+            var token = $('input[name="__RequestVerificationToken"]').first().val();
+            var $btn = $('[data-delete-key="' + key + '"]');
+            if ($btn && $btn.length) {
+                $btn.prop('disabled', true).data('orig', $btn.html()).html('<span class="spinner-border spinner-border-sm" role="status"></span>');
+            }
+
+            $.ajax({
+                url: '@Url.Action("Delete", "Categoryconfic")',
+                type: 'POST',
+                dataType: 'text', // defensive
+                data: { KEY: key },
+                headers: token ? { 'RequestVerificationToken': token } : {},
+                success: function (raw) {
+                    var res = normalizeResponse(raw);
+                    if (res && res.success) {
+                        showMsg(res.message || 'Deleted successfully', 1);
+
+                        // try reload listing same as above
+                        if (typeof LoadDataGen === 'function') {
+                            try {
+                                LoadDataGen('Categoryconfic', 'myDataTable', '_CategoryDataTable', 0, 'datalistingview', null, 'list');
+                            } catch (e) {
+                                if ($('#datalistingview').length) {
+                                    $('#datalistingview').load('@Url.Action("InitializeData", "Categoryconfic")?path=list&partialView=_Categories');
+                                } else location.reload();
+                            }
+                        } else {
+                            if ($('#datalistingview').length) {
+                                $('#datalistingview').load('@Url.Action("InitializeData", "Categoryconfic")?path=list&partialView=_Categories');
+                            } else location.reload();
+                        }
+                    } else {
+                        showMsg((res && res.message) ? res.message : 'Delete failed', 2);
+                    }
+                },
+                error: function (xhr) {
+                    var parsed = null;
+                    try { parsed = normalizeResponse(xhr.responseText); } catch (e) { parsed = null; }
+                    if (parsed && parsed.message) showMsg(parsed.message, parsed.success ? 1 : 2);
+                    else if (xhr.status === 401) window.location.href = '/Authentication/Login';
+                    else showMsg('An error occurred while deleting. See console for details.', 4);
+                    console.error('Delete AJAX error', xhr.status, xhr.responseText);
+                },
+                complete: function () {
+                    if ($btn && $btn.length) {
+                        $btn.prop('disabled', false).html($btn.data('orig') || $btn.html());
+                    }
+                }
+            });
+        };
+
+        if (window.alertify && typeof alertify.confirm === 'function') {
+            try {
+                alertify.confirm('Confirm delete', 'Are you sure you want to delete this category?', function () { proceed(); }, function () { showMsg('Delete cancelled', 3); }).set('labels', { ok: 'Yes', cancel: 'No' });
+            } catch (e) { if (confirm('Are you sure you want to delete this category?')) proceed(); else showMsg('Delete cancelled', 3); }
+        } else {
+            if (confirm('Are you sure you want to delete this category?')) proceed(); else showMsg('Delete cancelled', 3);
+        }
+    };
+
+    // OPTIONAL: automatic binding for your modal form(s)
+    // If your modal partial uses Html.BeginForm("CreateOrUpdate", "Categoryconfic", ... , onsubmit = "return AjaxPostAndUpdate(this);")
+    // replace it by onsubmit="return categorySubmitAjax(this);" OR let this auto-bind:
+    $(document).on('submit', 'form[action*="CreateOrUpdate"][action*="Categoryconfic"]', function (e) {
+        e.preventDefault();
+        return window.categorySubmitAjax(this);
+    });
+
+    // OPTIONAL: bind delete links that call DeleteRecordDataTable to use our delete function
+    // Your delete links probably call DeleteRecordDataTable('Categoryconfic', 'id', ...) - we can't override that here,
+    // but if you use links/buttons with data-delete-key attribute, this handler will pick them up:
+    $(document).on('click', '[data-delete-key]', function (e) {
+        e.preventDefault();
+        var key = $(this).data('delete-key');
+        window.deleteCategoryAjax(key);
+    });
+
+})(jQuery);
 
 
 
-
-//$(document).ready(function () {
-//    // This is the only document ready block you need.
-//    // It is important to structure it this way to avoid multiple bindings.
-
-//    // 1. Initialize the DataTable
-//    var dataTable = loadBulkOperationDataTable();
-
-//    // 2. Initialize filter toggles
-//    initFilterToggles();
-
-//    // 3. Bind filter buttons to the specific DataTable instance
-//    bindFilterActions(dataTable);
-
-//    // 4. Set up the modern event handlers for Edit and Delete
-//    // This should be called only ONCE.
-//    setupActionHandlers();
-//});
-
-
-//function loadBulkOperationDataTable() {
-//    if ($.fn.DataTable.isDataTable('#myDataTable')) {
-//        $('#myDataTable').DataTable().destroy();
-//    }
-
-//    // Return the table instance so other functions can use it
-//    return $('#myDataTable').DataTable({
-//        processing: false,
-//        serverSide: true,
-//        responsive: true,
-//        searching: false,
-//        order: [[0, 'asc']],
-//        ajax: {
-//            url: '/Categoryconfic/LoadCategories',
-//            type: 'POST',
-//            contentType: 'application/json',
-//            data: function (d) {
-//                var payload = {
-//                    Name: $('#userName').val() || '',
-//                    BranchId: $('#branchInput').val() || '',
-//                    DataTableOptions: {
-//                        draw: d.draw,
-//                        start: d.start,
-//                        length: d.length,
-//                        sortColumnName: d.columns[d.order[0].column].data,
-//                        sortColumnDirection: d.order[0].dir
-//                    }
-//                };
-//                return JSON.stringify(payload);
-//            }
-//        },
-//        columns: [
-//            { data: 'name' },
-//            { data: 'basePrice' },
-//            { data: 'numberOfPages' },
-//            {
-//                data: 'isActive',
-//                render: function (data) {
-//                    return data ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>';
-//                }
-//            },
-//            { data: 'validityPeriodInMonths' },
-//            { data: 'issuanceLimitPerCustomerType' },
-//            {
-//                data: 'id',
-//                orderable: false,
-//                render: function (data, type, row) {
-//                    // This render function is correct. It adds the hooks for our event handlers.
-//                    return `
-//                        <a href="#" class="mr-2 js-edit" data-id="${data}" title="Edit ${row.name}">Edit</a>
-//                        <a href="#" class="mr-2 text-danger js-delete" data-id="${data}" title="Delete ${row.name}">Delete</a>
-//                    `;
-//                }
-//            }
-//        ]
-//    });
-//}
-
-
-///**
-// * Sets up the click handlers for the Edit and Delete buttons.
-// * This function should only be called once.
-// */
-//function setupActionHandlers() {
-//    // Use event delegation on the table body. This is more efficient.
-//    $('#myDataTable tbody').off('click').on('click', '.js-edit', function (e) {
-//        e.preventDefault();
-//        var categoryId = $(this).data('id');
-
-//        // --- RESTORED: Calling your custom helper function for editing ---
-//        AddORUpdateGen(categoryId, 'datalistingview', '_Categories', 'get', 'Categoryconfic', '');
-//    });
-
-//    $('#myDataTable tbody').on('click', '.js-delete', function (e) {
-//        e.preventDefault();
-//        var categoryId = $(this).data('id');
-
-//        // --- RESTORED: Calling your custom helper function for deleting ---
-//        // This function contains YOUR specific confirmation popup logic.
-//        DeleteRecordDataTable('Categoryconfic', categoryId, 'myDataTable', '_CategoryDataTable', 0, 'datalistingview');
-//    });
-//}
-
-
-//// --- Filter and Reset Functions (No changes needed here) ---
-
-//function initFilterToggles() {
-//    $('#byBranch').change(function () {
-//        $('#branchFilterSection').slideToggle(this.checked);
-//        if (!this.checked) $('#branchInput').val('').trigger('change');
-//    });
-
-//    $('#byUser').change(function () {
-//        $('#userFilterSection').slideToggle(this.checked);
-//        if (!this.checked) $('#userName').val('');
-//    });
-//}
-
-//function bindFilterActions(table) {
-//    $('#applyFilterBtn').off('click').on('click', function () {
-//        table.ajax.reload();
-//    });
-
-//    $('#resetFilterBtn').off('click').on('click', function () {
-//        resetFilterForm();
-//        table.ajax.reload();
-//    });
-//}
-
-//function resetFilterForm() {
-//    $('#userName').val('');
-//    $('#branchInput').val('').trigger('change');
-//    $('#byBranch, #byUser').prop('checked', false);
-//    $('#branchFilterSection, #userFilterSection').hide();
-//}

@@ -2032,10 +2032,12 @@
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\ChequeNumber\ChequeNumberController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\FeeConfiguration\FeeConfigController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\NotificationConfiguration\NotificationConfigController.cs" />
+    <Compile Include="Controllers\ChequeManagementSystem\Operations\ChequeRequest\ChequeRequestController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectionDashboardController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailySaverRequest.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\FileValidationController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\ManualDailyCollectionController.cs" />
+    <Compile Include="Controllers\DailyCollectorManagement\TransactionDetailsController.cs" />
     <Compile Include="Controllers\DailySaverManagementP\DailySaverManagementController.cs" />
     <Compile Include="Controllers\Loan\LoanAdjustmentP\LoanAdjustmentConsoleController.cs" />
     <Compile Include="Controllers\MemberAdjustmentConsole\MemberAdjustmentConsoleController.cs" />
@@ -10639,6 +10641,12 @@
     <Content Include="Views\AccountingStatements\AccountingJournalReport.cshtml" />
     <Content Include="Views\AccountingStatements\_SearchJournalEntryData.cshtml" />
     <Content Include="Views\ManualDailyCollection\_listingFilesdatatable.cshtml" />
+    <Content Include="Views\FileValidation\_ExtractedDetails.cshtml" />
+    <Content Include="Views\TransactionDetails\Index.cshtml" />
+    <Content Include="Views\ChequeRequest\Index.cshtml" />
+    <Content Include="Views\ChequeRequest\_CreateRequest.cshtml" />
+    <Content Include="Views\ChequeRequest\_RequestList.cshtml" />
+    <Content Include="Views\ChequeRequest\_ActionForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

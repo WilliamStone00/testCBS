@@ -256,6 +256,8 @@
     <Compile Include="CheckManagementSystem\Configurations\FeeConfiguration\FeeConfigService.cs" />
     <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationConfigmockService.cs" />
     <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationConfigService.cs" />
+    <Compile Include="CheckManagementSystem\Operations\ChequeRequestService\ChequeRequestMockService.cs" />
+    <Compile Include="CheckManagementSystem\Operations\ChequeRequestService\ChequeRequestService.cs" />
     <Compile Include="CustomerManagement\DailySaverServices.cs" />
     <Compile Include="DailyCollectionServices\DailyCollectionEndOfDayServices.cs" />
     <Compile Include="Accounting\DocumentTypeServices.cs" />
