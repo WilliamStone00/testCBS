@@ -1008,6 +1008,8 @@ namespace CBS.BusinessService.Accounting
         {
             return item.BookingDirection.ToUpper() == OperationTypes.CREDIT.ToString() ? OperationTypes.CREDIT : OperationTypes.DEBIT;
         }
+
+     
     }
 
   

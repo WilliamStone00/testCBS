@@ -136,13 +136,13 @@ namespace CBS.FrontDesk.UI.Controllers.DailySaverManagementP
             // 1) Path-specific validation
             if (vm.IsNewCustomer)
             {
-                if (string.IsNullOrWhiteSpace(vm.DailySaverId) ||
-       !System.Text.RegularExpressions.Regex.IsMatch(vm.DailySaverId, @"^\d{1,7}$"))
-                {
-                    var len = string.IsNullOrEmpty(vm.DailySaverId) ? 0 : vm.DailySaverId.Length;
-                    ModelState.AddModelError(nameof(vm.DailySaverId),
-                        $"Daily saver account number must be between 1 and 7 digits. You entered {len} digit(s).");
-                }
+       //         if (string.IsNullOrWhiteSpace(vm.DailySaverId) ||
+       //!System.Text.RegularExpressions.Regex.IsMatch(vm.DailySaverId, @"^\d{1,7}$"))
+       //         {
+       //             var len = string.IsNullOrEmpty(vm.DailySaverId) ? 0 : vm.DailySaverId.Length;
+       //             ModelState.AddModelError(nameof(vm.DailySaverId),
+       //                 $"Daily saver account number must be between 1 and 7 digits. You entered {len} digit(s).");
+       //         }
 
                 // Optional: ensure uniqueness within the branch
                 // if (await _dailySaverServices.ExistsDailySaverIdAsync(vm.BranchId, vm.DailySaverId))

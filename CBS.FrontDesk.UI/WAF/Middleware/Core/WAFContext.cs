@@ -86,7 +86,7 @@ namespace CBS.FrontDesk.UI.WAF.Middleware.Core
             // 🔍 Resolve IP address from X-Forwarded-For or fallback to UserHostAddress
             var ip = request?.Headers["X-Forwarded-For"]?.Split(',')?.FirstOrDefault()?.Trim()
                   ?? request.UserHostAddress;
-            //var ip = "102.244.43.113";
+            //var ip = "102.244.98.34";
 
             // 👤 Resolve user identity from token or session
             var (username, branchId, branchCode, branchName, phone, fullName, isAuthenticated) = userResolver(request);

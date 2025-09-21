@@ -625,6 +625,32 @@ namespace CBS.BusinessService
                 throw (ex);
             }
         }
+        public async Task<List<AccountingEntryDto>> GetAccountingEntriesDtoByReferceId(string reference)
+        {
+            try
+            {
+                string url = string.Format(APICallHelper.AccountingEntry_Get_reference_Id, reference);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<AccountingEntryDto>>>(url);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData == null)
+                    {
+                        return new List<AccountingEntryDto>();
+                    }
+                    else
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new List<AccountingEntryDto>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
         public async Task<List<AccountingEntry>> GetAllAccountingEntriesForAnAccountPerBranch(string branchId, string accountId)
         {
             try
@@ -1844,6 +1870,23 @@ namespace CBS.BusinessService
                 // Log and handle exception
                 throw ex;
             }
+        }
+
+
+
+        public List<AccountingEntryDto> ConvertToAccountingEntryDto(List<AccountingEntry> collection)
+        {
+            List<AccountingEntryDto> listDto = new List<AccountingEntryDto>();
+            foreach (var item in collection)
+            {
+                listDto.Add(AccountingEntryDto.ConvertToEntity(item));
+            }
+            return listDto;
+        }
+
+        Task<List<AccountingEntry>> IAccountingEntryServices.GetAccountingEntriesByReferceId(string reference)
+        {
+            throw new NotImplementedException();
         }
     }
 
