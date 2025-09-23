@@ -326,8 +326,9 @@ namespace CBS.BusinessService.Accounting
                         AccountName = modell.Description + " " + GetBranchName(),// .BranchName,
                         AccountNumber = modell.AccountNumber,
 
-                        AccountNumberNetwok = (modell.AccountNumber.PadRight(6, '0') + modell.PositionNumber.PadRight(3, '0') + GetBranchCode() + GetBranchCode()).PadRight(6, '0'),
-                        AccountNumberCU = (modell.AccountNumber.PadRight(6, '0') + modell.PositionNumber.PadRight(3, '0') + GetBranchCode()).PadRight(9, '0'),
+                        AccountNumberNetwork =  modell.Old_AccountNumber.PadRight(3, '0') ,
+                        AccountNumberCU = modell.Old_AccountNumber.PadRight(3, '0'),
+                        //(modell.AccountNumber.PadRight(6, '0') + modell.PositionNumber.PadRight(3, '0') + GetBranchCode()).PadRight(9, '0'),
                         AccountCategoryId = "XXX",
                         AccountTypeId = "",
                         AccountOwnerId = GetBranchID(),

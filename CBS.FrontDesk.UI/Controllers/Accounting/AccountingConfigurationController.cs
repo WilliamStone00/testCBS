@@ -2135,7 +2135,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                         // Skip rows with insufficient columns
                         if (row.CellsUsed().Count()==8)
                         {
-                            i++;
+                            if (i<=102)
+                            {
+
+                            }
+                            else
+                            {
+
+                            }
+                                i++;
                             var AccountNumber = row.Cell(1).GetString();
                             var AccountName = row.Cell(2).GetString();
                            var ChartofAccount = row.Cell(1).GetString().Substring(0, Math.Min(6, row.Cell(1).GetString().Length));

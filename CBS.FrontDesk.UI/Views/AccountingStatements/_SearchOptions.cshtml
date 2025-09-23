@@ -41,7 +41,7 @@
                                  @class = "form-control",
                                  type = "datetime-local",
                                  id = "fromDate"
-                             })   
+                             })
                             @Html.ValidationMessageFor(model => model.SystemQuery.FromDate, "", new { @class = "text-danger" })
                             <label>From Date</label>
                         </div>
@@ -84,10 +84,17 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="col-md-12 mb-sm-1">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(model => model.SystemQuery.ReferenceId, new SelectList(ViewBag.ZeroStatus == null ? "" : ViewBag.ZeroStatus, "Value", "Text"), "---Select  ZeroStatus---", new { @class = "form-control select2", @search = "true", @id = "SystemQuery_ReferenceId" })
+                            @Html.ValidationMessageFor(model => model.SystemQuery.ReferenceId, "", new { @class = "text-danger" })
+                            <label>Select ReportType</label>
+                        </div>
+                    </div>
                 }
                 else
                 {
+                    //
                     <div class="col-md-6 mb-sm-1">
                         <div class="form-floating form-floating-outline">
                             @Html.DropDownListFor(model => model.SystemQuery.ReportType, new SelectList(ViewBag.ReportTypes == null ? "" : ViewBag.ReportTypes, "Text", "Value"), "---Select ReportTypes---", new { @class = "form-control select2", @search = "true", @id = "SystemQuery_ReportType" })
@@ -143,7 +150,13 @@
                             <label>To Date</label>
                         </div>
                     </div>
-
+                    <div class="col-md-12 mb-sm-1">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(model => model.SystemQuery.ReferenceId, new SelectList(ViewBag.ZeroStatus == null ? "" : ViewBag.ZeroStatus, "Value", "Text"), "---Select  ZeroStatus---", new { @class = "form-control select2", @search = "true", @id = "SystemQuery_ReferenceId" })
+                            @Html.ValidationMessageFor(model => model.SystemQuery.ReferenceId, "", new { @class = "text-danger" })
+                            <label>Select ReportType</label>
+                        </div>
+                    </div>
                 }
                 <input type="hidden" id="selectedBranchID" value="" />
             </div>

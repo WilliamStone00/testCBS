@@ -332,7 +332,7 @@ namespace CBS.FrontDesk.UI.Controllers
             foreach (var item in ListOfData)
             {
 
-                list.Add(new StringValues { Text = $"{item.AccountNumberCU}-{item.AccountName}", Value = item.Id });
+                list.Add(new StringValues { Text = $"{item.AccountNumberNetwork}-{item.AccountName}", Value = item.Id });
 
             }
 

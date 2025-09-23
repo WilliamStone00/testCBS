@@ -985,7 +985,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAccountByReference = "/api/v1/Account/GetAccountByReference/{0}";
 
         public static string GetAccountByAccountType = "/api/v1/Account/GetAccountByAccountType/{0}";
-        public static string GetAccount = "/api/v1/Account/{0}";
+        public static string GetAccount = "api/v1/Account/{0}";
         public static string Delete_Account = "/api/v1/Account/{0}";
         public static string GetAccountByAccountNumberUrl = "/api/v1/Account/GetAccountByAccountNumberRef/{0}";
         public static string GetAccountByBranchIdUrl = "/api/v1/Account/GetAccountByBranchIDQuery/{0}";

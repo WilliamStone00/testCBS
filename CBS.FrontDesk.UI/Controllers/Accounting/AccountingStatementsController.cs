@@ -57,6 +57,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             ViewBag.FileTypes = BuildDropDown(GenerateFIleType());
             ViewBag.ReportTypes = BuildDropDown(GenerateReportType());
+            ViewBag.ZeroStatus = BuildDropDownStatus();
             //var listAccount = (await _accountingServices.GetAllAccounting());
             //listAccount.Add(new Account { Id = "XXXXXX", AccountNumber = "000000", AccountName = "ALL" });
             //ViewBag.Accounts = BuildDropDown(GenerateAccountsListView(listAccount));
@@ -419,7 +420,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 foreach (var item in debitAccounts)
                 {
 
-                    list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.TempData + "-" + item.AccountName });
+                    list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.AccountNumberNetwork + "-" + item.AccountName });
 
                 }
             list.Add(new System.Web.WebPages.Html.SelectListItem { Text = "XXXXXX", Value = "[x]-ALL Account" });
@@ -436,7 +437,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                  var data = (from account in listOfAccounts
                             select new Data. Account
                             {
-                                AccountNumber= account.TempData,
+                                AccountNumber= account.AccountNumberNetwork,
                             AccountName = account.AccountName,
                             Id = account.Id
                             }).ToList();
@@ -465,6 +466,18 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
         }
+         private dynamic BuildDropDownStatus()
+        {
+            List<System.Web.WebPages.Html.SelectListItem> list = new List<System.Web.WebPages.Html.SelectListItem>();
+            
+
+                list.Add(new System.Web.WebPages.Html.SelectListItem { Text = "REMOVE ZEROS ACCOUNT", Value = "REMOVE_ZEROS" });
+            list.Add(new System.Web.WebPages.Html.SelectListItem { Text = "ADD ZEROS ACCOUNT", Value = "ADD_ZEROS" });
+
+
+            return list;
+        }
+
         private dynamic BuildDropDown(IEnumerable<StringValues> stringValues)
         {
             List<System.Web.WebPages.Html.SelectListItem> list = new List<System.Web.WebPages.Html.SelectListItem>();
