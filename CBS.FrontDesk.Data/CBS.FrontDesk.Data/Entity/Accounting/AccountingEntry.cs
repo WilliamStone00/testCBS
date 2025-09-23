@@ -276,7 +276,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                     ValueDate = item.ValueDate,          // Effective posting date
 
                     // Entry classification
-                    EntityType = "dto.EntryType",          // Debit or Credit
+                    EntityType = "BranchId",          // Debit or Credit
 
                     // Description or narration (prefer dto.Naration if available)
                     Description = dto.Description,
