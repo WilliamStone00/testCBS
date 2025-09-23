@@ -323,6 +323,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     }
     public class TellerOperationGL
     {
+        public decimal OpeningBalance { get; set; }
+
         public decimal Amount { get; set; }
         public string AccountNumber { get; set; }
         public string TransactionType { get; set; }
@@ -386,6 +388,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string CashierName { get; set; }
         public string TransactionReference { get; set; }
         public string BranchId { get; set; }
+
     }
 
 

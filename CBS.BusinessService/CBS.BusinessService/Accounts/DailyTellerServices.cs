@@ -391,7 +391,7 @@ namespace CBS.BusinessService.Accounts
         {
             List<ExportTellerGL> exportTellerGLList = new List<ExportTellerGL>();
 
-            decimal openingBalance = tellerOperationGLList.FirstOrDefault()?.BalanceBF ?? 0;
+            decimal openingBalance = tellerOperationGLList.FirstOrDefault()?.OpeningBalance ?? 0;
             decimal totalCredit = tellerOperationGLList.Sum(item => item.Credit);
             decimal totalDebit = tellerOperationGLList.Sum(item => item.Debit);
             decimal closingBalance = openingBalance + totalCredit - totalDebit;
