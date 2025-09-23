@@ -985,7 +985,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAccountByReference = "/api/v1/Account/GetAccountByReference/{0}";
 
         public static string GetAccountByAccountType = "/api/v1/Account/GetAccountByAccountType/{0}";
-        public static string GetAccount = "/api/v1/Account/{0}";
+        public static string GetAccount = "api/v1/Account/{0}";
         public static string Delete_Account = "/api/v1/Account/{0}";
         public static string GetAccountByAccountNumberUrl = "/api/v1/Account/GetAccountByAccountNumberRef/{0}";
         public static string GetAccountByBranchIdUrl = "/api/v1/Account/GetAccountByBranchIDQuery/{0}";
@@ -1237,11 +1237,11 @@ namespace CBS.FrontDesk.Helper
         //*************************** CHEQUE BOOK ******************************
 
         // ---------------- CHEQUE BOOK CATEGORY ----------------
-        public static string GetAllChequeBookCategories = "/api/v1/ChequeBookCategory";
-        public static string GetChequeBookCategoryById = "/api/v1/ChequeBookCategory/{id}";
-        public static string CreateChequeBookCategory = "/api/v1/ChequeBookCategory";
-        public static string UpdateChequeBookCategory = "/api/v1/ChequeBookCategory/{id}";
-        public static string DeactivateChequeBookCategory = "/api/v1/ChequeBookCategory/{id}/deactivate";
+        public static string GetAllChequeBookCategories = "/api/CheckBookCategory";
+        public static string GetChequeBookCategoryById = "/api/CheckBookCategory/{0}";
+        public static string CreateChequeBookCategory = "/api/CheckBookCategory";
+        public static string UpdateChequeBookCategory = "/api/CheckBookCategory/{0}";
+        public static string DeactivateChequeBookCategory = "/api/CheckBookCategory/{0}";
 
         // ---------------- GENERIC CRUD ----------------
         public static string GetAll = "/api/v1/{entity}";
@@ -1252,11 +1252,11 @@ namespace CBS.FrontDesk.Helper
 
         // ---------------- FEE CONFIG ----------------
         public static string GetAllFeeConfigs = "/api/v1/FeeConfig";
-        public static string GetFeeTypes = "/api/v1/FeeConfig/types";
+        public static string GetFeeTypes = "/api/v1/Fee-types";
         public static string GetFeeConfigById = "/api/v1/FeeConfig/{id}";
-        public static string CreateFeeConfig = "/api/v1/FeeConfig";
-        public static string UpdateFeeConfig = "/api/v1/FeeConfig/{id}";
-        public static string DeleteFeeConfig = "/api/v1/FeeConfig/{id}";
+        public static string CreateFeeConfig = "/api/v1/fee-config";
+        public static string UpdateFeeConfig = "/api/v1/fee-config/{Id}";
+        public static string DeleteFeeConfig = "/api/v1/fee-config/{Id}";
 
         // ---------------- NOTIFICATIONS ----------------
         public static string GetAllnot = "/api/v1/Notification/types";
@@ -1264,6 +1264,13 @@ namespace CBS.FrontDesk.Helper
         public static string Createnot = "/api/v1/Notification";
         public static string Updatenot = "/api/v1/Notification/{id}";
         public static string Deletenot = "/api/v1/Notification/{id}";
+
+        //------------------------- Cheque Request -------------------------
+         public const string CreateChequeRequest = "/api/v1/cheque-requests";
+        public const string GetAllChequeRequests = "/api/v1/cheque-requests";
+        public const string GetChequeRequestById = "/api/v1/cheque-requests/{0}";
+        public const string ApproveChequeRequest = "/api/v1/cheque-requests/{0}/approve";
+        public const string RejectChequeRequest = "/api/v1/cheque-requests/{0}/reject";
 
         //************************** END CHEQUE BOOK *******************************
 
@@ -1288,7 +1295,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetextracyedFileDetailsEndpoint = "api/v1/ManualEntryCollector/Extracted/data-table";
         public static string getextracteddetails = "/api/v1/ManualEntryCollector/Extracted/details";
         public static string GetManualEntryCollectorById = "/api/v1/ManualEntryCollector/{0}";
-        public static string GetManualEntryCollectorDetailsDataTable = "/api/v1/ManualEntryCollector/Extracted/details/data-table";
+        public static string GetManualEntryCollectorDetailsDataTable = "api/v1/ManualEntryCollector/Extracted/details/data-table";
         //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
     }
 }

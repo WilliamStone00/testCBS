@@ -164,6 +164,7 @@ using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration;
 using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -193,58 +194,170 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Fee
         private async Task Loader()
         {
             ViewBag.Branches = await _branchServices.GetBranches();
-            ViewBag.FeeTypes = await _mockFeeConfigService.GetFeeTypesMockAsync(); // keep using mock for dropdowns by default
+            ViewBag.FeeTypes = await _feeConfigService.GetFeeTypesAsync(); // keep using mock for dropdowns by default
         }
 
-        // Single initialize entry point supporting list path and form path.
-        // Single initialize entry point supporting list path and form path.
-        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
-        {
-            // ROUTE 1: return summary list
-            if (path == "list")
+        //// Single initialize entry point supporting list path and form path.
+        //// Single initialize entry point supporting list path and form path.
+        //public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+        //{
+        //    // ROUTE 1: return summary list
+        //    if (path == "list")
+        //    {
+        //        var data = await _feeConfigService.GetConfigsAsync();
+        //        return PartialView(partialView ?? "_ListPartial", data);
+        //    }
+
+        //    // ROUTE 2: load data for the form
+        //    await Loader();
+        //    FeeConfig model = null;
+
+        //    if (!string.IsNullOrWhiteSpace(serviceOption))
+        //    {
+        //        InitOptions options = null;
+        //        try { options = JsonConvert.DeserializeObject<InitOptions>(serviceOption); }
+        //        catch { options = new InitOptions(); }
+
+        //        bool isCentralized = options?.isCentralized ?? false;
+        //        string branchId = options?.branchId;
+        //        string feeType = options?.feeType;
+
+        //        if (!string.IsNullOrWhiteSpace(feeType))
+        //        {
+        //            var configs = await _feeConfigService.GetConfigsAsync(feeType, isCentralized ? null : branchId, isCentralized);
+        //            model = configs.FirstOrDefault();
+        //        }
+
+        //        if (model == null)
+        //        {
+        //            model = new FeeConfig
+        //            {
+        //                IsCentralized = isCentralized,
+        //                BranchId = isCentralized ? null : branchId,
+        //                FeeType = options?.feeType,
+        //                IsActive = true,
+        //                AcceptPercentage = true
+        //            };
+        //        }
+        //    }
+
+        //    // C# 7.3 compatible replacement for `model ??= new FeeConfig();`
+        //    if (model == null) model = new FeeConfig();
+
+        //    return PartialView(partialView ?? "_FormPartial", model);
+        //}
+
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null,string path = null,string serviceOption = null)
+         {
+            // ROUTE: Return summary list
+            if (string.Equals(path, "list", StringComparison.OrdinalIgnoreCase))
             {
-                var data = await _mockFeeConfigService.GetAllConfigsAsSummaryAsync();
-                return PartialView(partialView ?? "_ListPartial", data);
+                var data = await _feeConfigService.GetConfigsAsync();
+                return PartialView(partialView ?? "_DataTable", data);
             }
 
-            // ROUTE 2: load data for the form
-            await Loader();
-            FeeConfig model = null;
-
-            if (!string.IsNullOrWhiteSpace(serviceOption))
+            // ROUTE: Get by id (KEY expected)
+            if (string.Equals(path, "get", StringComparison.OrdinalIgnoreCase))
             {
-                InitOptions options = null;
-                try { options = JsonConvert.DeserializeObject<InitOptions>(serviceOption); }
-                catch { options = new InitOptions(); }
+                if (string.IsNullOrWhiteSpace(KEY))
+                    return new HttpStatusCodeResult(400, "KEY is required for 'get'.");
 
-                bool isCentralized = options?.isCentralized ?? false;
-                string branchId = options?.branchId;
-                string feeType = options?.feeType;
+                FeeConfig model = null;
 
-                if (!string.IsNullOrWhiteSpace(feeType))
+                // Prefer a dedicated GetById method if available
+                // await _feeConfigService.GetConfigByIdAsync(KEY)
+                try
                 {
-                    var configs = await _mockFeeConfigService.GetConfigsMockAsync(feeType, isCentralized ? null : branchId, isCentralized);
-                    model = configs.FirstOrDefault();
+                    // If your service has GetConfigByIdAsync use it:
+                    model = await _feeConfigService.GetByIdAsync(KEY);
+                }
+                catch (MissingMethodException)
+                {
+                    // Fallback: query all and find by Id (less efficient)
+                    var all = await _feeConfigService.GetConfigsAsync();
+                    model = all?.FirstOrDefault(m => string.Equals(m.Id, KEY, StringComparison.OrdinalIgnoreCase));
                 }
 
                 if (model == null)
+                    return HttpNotFound($"FeeConfig with id '{KEY}' not found.");
+
+                await Loader();
+                return PartialView(partialView ?? "_FormPartial", model);
+            }
+
+            // ROUTE: Create (return a new FeeConfig prefilled if serviceOption provided)
+            if (string.Equals(path, "create", StringComparison.OrdinalIgnoreCase))
+            {
+                await Loader();
+
+                FeeConfig model = null;
+                if (!string.IsNullOrWhiteSpace(serviceOption))
                 {
+                    InitOptions options = null;
+                    try { options = JsonConvert.DeserializeObject<InitOptions>(serviceOption); }
+                    catch { options = new InitOptions(); }
+
+                    bool isCentralized = options?.isCentralized ?? false;
+                    string branchId = options?.branchId;
+                    string feeType = options?.feeType;
+
                     model = new FeeConfig
                     {
                         IsCentralized = isCentralized,
                         BranchId = isCentralized ? null : branchId,
-                        FeeType = options?.feeType,
+                        FeeType = feeType,
                         IsActive = true,
                         AcceptPercentage = true
                     };
                 }
+
+                // Ensure model not null
+                if (model == null) model = new FeeConfig();
+
+                return PartialView(partialView ?? "_Create", model);
             }
 
-            // C# 7.3 compatible replacement for `model ??= new FeeConfig();`
-            if (model == null) model = new FeeConfig();
+            // DEFAULT BEHAVIOUR:
+            // If path is null or unknown, attempt: if KEY provided => get by id, else => create new
+            await Loader();
+            FeeConfig defaultModel = null;
 
-            return PartialView(partialView ?? "_FormPartial", model);
+            if (!string.IsNullOrWhiteSpace(KEY))
+            {
+                try
+                {
+                    defaultModel = await _feeConfigService.GetByIdAsync(KEY);
+                }
+                catch (MissingMethodException)
+                {
+                    var all = await _feeConfigService.GetConfigsAsync();
+                    defaultModel = all?.FirstOrDefault(m => string.Equals(m.Id, KEY, StringComparison.OrdinalIgnoreCase));
+                }
+
+                if (defaultModel == null)
+                    return HttpNotFound($"FeeConfig with id '{KEY}' not found.");
+            }
+            else if (!string.IsNullOrWhiteSpace(serviceOption))
+            {
+                // prefill new model from serviceOption when KEY not provided
+                InitOptions opts = null;
+                try { opts = JsonConvert.DeserializeObject<InitOptions>(serviceOption); }
+                catch { opts = new InitOptions(); }
+
+                defaultModel = new FeeConfig
+                {
+                    IsCentralized = opts?.isCentralized ?? false,
+                    BranchId = (opts?.isCentralized ?? false) ? null : opts?.branchId,
+                    FeeType = opts?.feeType,
+                    IsActive = true,
+                    AcceptPercentage = true
+                };
+            }
+
+            if (defaultModel == null) defaultModel = new FeeConfig();
+            return PartialView(partialView ?? "_Create", defaultModel);
         }
+
 
 
         [HttpPost]
@@ -259,7 +372,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Fee
             ExecutionMessages data;
             if (string.IsNullOrWhiteSpace(model.Id))
             {
-                data = await _mockFeeConfigService.CreateMockAsync(model);
+                data = await _feeConfigService.CreateAsync(model);
             }
             else
             {
