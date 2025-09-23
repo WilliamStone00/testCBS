@@ -1021,6 +1021,8 @@ namespace CBS.FrontDesk.Helper
         public static string AccountingEntry_LiaisonEntries = "/api/v1/AccountingEntries/LiaisonEntries";
         public static string AccountingEntry_Get_Update_delete = "/api/v1/AccountingEntry/{0}";
         public static string AccountingEntry_Get_reference_Id = "/api/v1/AccountingEntry/GetAccountingEntryByReferenceIdQuery/{0}";
+
+        public static string AccountingEntry_Report_reference_Id = "/api/v1/AccountingEntry/GetAccountingEntryByReferenceIdForReporting/{0}";
         public static string AccountingEntry_ReverseEntry = "/api/v1/AccountingEntry/ReverseAccountingEntry";
         public static string PostAutomatedEventEntryCommand_url = "/api/v1/AccountingEntries/PostAutomatedEventEntryCommand";
         public static string RetrieveAllUnProcessedTransactionTracker = "/api/v1/AccountingEntries/RetrieveAllUnProcessedTransactionTracker";

@@ -84,11 +84,14 @@
                             </div>
                         </div>
                     </div>
+     
                     <div class="col-md-12 mb-sm-1">
-                        <div class="form-floating form-floating-outline">
-                            @Html.DropDownListFor(model => model.SystemQuery.ReferenceId, new SelectList(ViewBag.ZeroStatus == null ? "" : ViewBag.ZeroStatus, "Value", "Text"), "---Select  ZeroStatus---", new { @class = "form-control select2", @search = "true", @id = "SystemQuery_ReferenceId" })
-                            @Html.ValidationMessageFor(model => model.SystemQuery.ReferenceId, "", new { @class = "text-danger" })
-                            <label>Select ReportType</label>
+                        <div id="ZeroAccount">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(model => model.SystemQuery.ReferenceId, new SelectList(ViewBag.ZeroStatus == null ? "" : ViewBag.ZeroStatus, "Value", "Text"), "---Select  ZeroStatus---", new { @class = "form-control select2", @search = "true", @id = "SystemQuery_ReferenceId" })
+                                @Html.ValidationMessageFor(model => model.SystemQuery.ReferenceId, "", new { @class = "text-danger" })
+                                <label>Select Zeros Account</label>
+                            </div>
                         </div>
                     </div>
                 }
@@ -150,13 +153,16 @@
                             <label>To Date</label>
                         </div>
                     </div>
-                    <div class="col-md-12 mb-sm-1">
-                        <div class="form-floating form-floating-outline">
-                            @Html.DropDownListFor(model => model.SystemQuery.ReferenceId, new SelectList(ViewBag.ZeroStatus == null ? "" : ViewBag.ZeroStatus, "Value", "Text"), "---Select  ZeroStatus---", new { @class = "form-control select2", @search = "true", @id = "SystemQuery_ReferenceId" })
-                            @Html.ValidationMessageFor(model => model.SystemQuery.ReferenceId, "", new { @class = "text-danger" })
-                            <label>Select ReportType</label>
+                    <div id="ZeroAccount">
+                        <div class="col-md-12">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(model => model.SystemQuery.ReferenceId, new SelectList(ViewBag.ZeroStatus == null ? "" : ViewBag.ZeroStatus, "Value", "Text"), "---Select  ZeroStatus---", new { @class = "form-control select2", @search = "true", @id = "SystemQuery_ReferenceId" })
+                                @Html.ValidationMessageFor(model => model.SystemQuery.ReferenceId, "", new { @class = "text-danger" })
+                                <label>Select Zeros Account</label>
+                            </div>
                         </div>
                     </div>
+
                 }
                 <input type="hidden" id="selectedBranchID" value="" />
             </div>
@@ -165,7 +171,7 @@
 
                 <!-- Left-aligned button -->
                 <div id="lunchBalanceSheetBuilder">
-                     
+
                     <button type="button" class="btn btn-primary mdi mdi-play-box mdi-24px" data-bs-toggle="modal" data-bs-target="#fullscreenModal" onclick="launchBalanceSheetBuilder()">
                         Lunch Balance Sheet Builder
                     </button>

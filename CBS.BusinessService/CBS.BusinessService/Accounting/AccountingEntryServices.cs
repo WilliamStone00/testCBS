@@ -625,17 +625,17 @@ namespace CBS.BusinessService
                 throw (ex);
             }
         }
-        public async Task<List<AccountingEntryDto>> GetAccountingEntriesDtoByReferceId(string reference)
+        public async Task<AccountingEntryReportDto> GetAccountingEntriesDtoByReferceId(string reference)
         {
             try
             {
-                string url = string.Format(APICallHelper.AccountingEntry_Get_reference_Id, reference);
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<AccountingEntryDto>>>(url);
+                string url = string.Format(APICallHelper.AccountingEntry_Report_reference_Id, reference);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<AccountingEntryReportDto>>(url);
                 if (couApiResponse.IsSuccess)
                 {
                     if (couApiResponse.ApiResponseData == null)
                     {
-                        return new List<AccountingEntryDto>();
+                        return new AccountingEntryReportDto();
                     }
                     else
                     {
@@ -643,7 +643,7 @@ namespace CBS.BusinessService
                     }
 
                 }
-                return new List<AccountingEntryDto>();
+                return new AccountingEntryReportDto();
             }
             catch (Exception ex)
             {

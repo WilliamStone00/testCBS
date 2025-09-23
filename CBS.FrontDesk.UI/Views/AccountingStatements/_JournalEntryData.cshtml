@@ -16,10 +16,10 @@
             {
                 <tr>
                     <!-- If DrAmount > 0, show DrAccountNumber, else CrAccountNumber -->
-                    <td style="width:30%">@(d.DrAmount > 0 ? d.DrAccountNumber : d.CrAccountNumber)</td>
+                    <td style="width:30%">@(d.AccountNumber)</td>
 
                     <!-- Show narration -->
-                    <td style="width:30%">@d.Naration</td>
+                    <td style="width:30%">@d.Description</td>
 
                     <!-- Debit and Credit amounts -->
                     <td style="width:20%">@d.DrAmount</td>

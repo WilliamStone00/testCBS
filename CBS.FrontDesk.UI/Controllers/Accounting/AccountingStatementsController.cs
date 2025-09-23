@@ -87,8 +87,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             if (serviceOption== "accountingEntry")
             {
                 var reportData = await _accountingEntryServices.GetAccountingEntriesDtoByReferceId(key);
-                List<AccountingEntryReport> entryReport =await BuildReport(reportData,_branchServices); 
-                this.HttpContext.Session["rptSource"] = entryReport;
+              
+                this.HttpContext.Session["rptSource"] = AccountingEntryReport.ConvertToAccountingEntryReportDto(reportData, _accountingEntryServices.GetUserFullName());
     
                 // Set session values using the standard indexer 
                 //  string userPrefix = $"rpt_{_AccountServices.GetUserID()}_";
@@ -98,7 +98,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{reportName}";
 
 
-                return PartialView(partialView, new AccountingEntryQuery { AccountingEntryDtos = reportData});
+                return PartialView(partialView, new AccountingEntryQuery { AccountingEntryDtos = reportData.GetEntries()});
 
             }
             else
@@ -109,25 +109,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
    
         }
 
-        private async Task<List<AccountingEntryReport>> BuildReport(List<AccountingEntryDto> reportData, BranchServices branchServices)
-        {
-            List<AccountingEntryReport> entryReports = new List<AccountingEntryReport>();
-            var Branches =(await branchServices.GetBranches()).ToList();
-            var branch = Branches.Where(x => x.Id == reportData.FirstOrDefault().BranchId).FirstOrDefault();
-          var accountDatas=  await _accountingServices.GetAllAccounting();
-            foreach (var item in reportData)
-            {
-                var account = accountDatas.Where(x=>x.Id== item.AccountId).FirstOrDefault();
-                entryReports.Add(await CreateAEreport(item, branch, account));
-            }
-            return entryReports;
-        }
-
-        private async Task<AccountingEntryReport> CreateAEreport(AccountingEntryDto item,  Branch branch, Data.Account account)
-        {
-            var postedBy =await _userManagementServices.GetUser(item.CreatedBy);
-            return AccountingEntryReport.ConvertToEntity(item, branch, account, branch.Name,_accountingServices.GetBankName(),postedBy.firstName+" "+postedBy.lastName);
-        }
+     
+     
 
         public async Task<ActionResult> DownloadById(string fileId)
         {
